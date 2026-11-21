@@ -1,0 +1,49 @@
+{
+  "candidate": "506dfc8c343c5d24fe26e89a9542cf985c52853e",
+  "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "proof": "371b9aef07e75cf99e20417884402a22a9ad58da",
+  "pr": 721,
+  "runs": {
+    "native": 44959001079,
+    "gdextension": 44959001009,
+    "documentation": 44959001005,
+    "wave": 44959001040,
+    "palette": 44959001022,
+    "advisory": 44959001024,
+    "paired_proof": 44959131042
+  },
+  "review_source": 6008732190,
+  "state": "qualification running; no merge decision",
+  "files": {
+    "contract-preservation.json": "87a90a6fb3d6bb636b8a000407b8c64010a79849e6be9631dc49fe3de2520d26",
+    "native/before-after-contract.json": "5b49bf99cac61a3cba8ed7648ffa218b41425383360b4ef34e4a33ea3374e193",
+    "reviews/worldgen-source.md": "132083087ba1348fa563831c989a30020683fed5c11e6a7107313f8decbdfca1",
+    "reviews/worldgen-inventory-comparison.json": "27e5fd071913c657d700285c2a4ce709e8fca813a76f11419b4b1908b1bb0b8d",
+    "reviews/worldgen-warm-graph.json": "d587c3a40ccda14f07471bd687cbfa5bff631f7c9c14beb4d7df658fd0d15834"
+  },
+  "second_candidate": {
+    "pr": 722,
+    "head": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+    "tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+    "source_review": 6008792911,
+    "proof": "fd4921ace2c4f97f06c70b887778b2366d7a9f0f",
+    "proof_run": 44961498877,
+    "native_run": 44960371733,
+    "gdextension_run": 44960371856,
+    "status": "Ready qualification; merge HOLD pending final full-source CI + sanitizer pair"
+  },
+  "third_candidate": {
+    "pr": 723,
+    "superseded_head": "28ec075afab840cf6fbb35190a7b1915808904f3",
+    "status": "Draft/HOLD pending P2 partial diagnostic retention repair",
+    "review": 6008857476,
+    "base_pr": 722,
+    "proof_run": null
+  },
+  "first_candidate_complete_cohort": {
+    "elapsed_seconds": 1799,
+    "unweighted_runner_minutes": 292.28333333333336,
+    "executed_jobs": 76,
+    "status": "all applicable checks successful; performance HOLD pending sameworker sanitizer pair"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "status": "timeout",
+  "first_failure_marker": true,
+  "hanging_stdout_marker": true,
+  "hanging_stderr_marker": true,
+  "log": "make: jobserver mkfifo: /tmp/GMfifo71: File exists\nRunning build/test_megatruss_station\nRunning build/test_seeded_typology_megablock\nCONTROL-BEGIN build/test_megatruss_station\nCONTROL-ERR build/test_megatruss_station\nCONTROL-BEGIN build/test_seeded_typology_megablock\nCONTROL-ERR build/test_seeded_typology_megablock\nmake: *** [Makefile:464: build/test_megatruss_station.run] Error 29\nmake: *** Waiting for unfinished jobs....\n",
+  "terminated_pids": [
+    "75",
+    "77"
+  ]
+}

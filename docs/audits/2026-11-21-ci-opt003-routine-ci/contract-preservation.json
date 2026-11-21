@@ -1,0 +1,520 @@
+{
+  "schema": "ci-opt003-complete-contract-v1",
+  "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "candidate": "506dfc8c343c5d24fe26e89a9542cf985c52853e",
+  "native_budget_inventory": {
+    "schema": "native-execution-budgets-v1",
+    "execution_policy": {
+      "schema_version": 1,
+      "policy_id": "github-hosted-complete-execution-v1",
+      "scale": 1.0,
+      "watchdogs": {
+        "main_ack_seconds": 600.0,
+        "graphical_case_seconds": 1200.0,
+        "godot_import_seconds": 1200.0,
+        "operation_seconds": 300.0,
+        "complex_fixture_seconds": 3600.0,
+        "hosted_job_minutes": 180.0,
+        "diagnostic_capture_seconds": 30.0,
+        "terminate_grace_seconds": 10.0,
+        "native_suite_seconds": 7200.0,
+        "native_compile_seconds": 3600.0,
+        "native_case_seconds": 3600.0,
+        "dependency_prepare_seconds": 1200.0,
+        "aggregate_headroom_seconds": 600.0,
+        "ordinary_case_seconds": 1200.0,
+        "godot_job_minutes": 360.0,
+        "godot_setup_seconds": 4200.0,
+        "godot_metadata_seconds": 900.0
+      },
+      "advisories": {
+        "warning_ratio": 1.5,
+        "prominent_ratio": 2.0,
+        "rolling_window": 10,
+        "minimum_baseline_samples": 3,
+        "drift_window": 5,
+        "drift_ratio": 1.2
+      },
+      "path": "godot/tests/support/ci_execution_policy.json",
+      "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+    },
+    "physics_invocations": 154,
+    "physics_dispatch_workers": 8,
+    "physics_dispatch_waves": 20,
+    "families": {
+      "tsan": {
+        "commands": [
+          {
+            "label": "build-tests-tsan",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "make",
+              "build/tests_tsan"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "tests-tsan",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "env",
+              "TSAN_OPTIONS=halt_on_error=1",
+              "./build/tests_tsan"
+            ],
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 7880,
+        "hosted_job_minutes": 180
+      },
+      "native-normal": {
+        "commands": [
+          {
+            "label": "c-header-check",
+            "policy_key": "operation_seconds",
+            "command": [
+              "make",
+              "c-header-check"
+            ],
+            "timeout_seconds": 300
+          },
+          {
+            "label": "build-tests",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "make",
+              "build/tests"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "tests",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "./build/tests"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "shared",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "make",
+              "shared"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "build-benchmark",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "make",
+              "build/benchmark"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "benchmark",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "./build/benchmark"
+            ],
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 19140,
+        "hosted_job_minutes": 350
+      },
+      "asan-ubsan": {
+        "commands": [
+          {
+            "label": "build-tests-sanitized",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "make",
+              "build/tests_sanitized"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "tests-sanitized",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "./build/tests_sanitized"
+            ],
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 7880,
+        "hosted_job_minutes": 180
+      },
+      "worldgen": {
+        "commands": [
+          {
+            "label": "physics-characterisation-sanitize",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+              "make",
+              "physics-characterisation-sanitize"
+            ],
+            "timeout_seconds": 10200
+          },
+          {
+            "label": "worldgen-test",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "-j2",
+              "worldgen-test"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "worldgen-sanitize",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "-j2",
+              "worldgen-sanitize"
+            ],
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 18120,
+        "hosted_job_minutes": 333
+      },
+      "soliding-normal": {
+        "commands": [
+          {
+            "label": "soliding-test",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "make",
+              "soliding-test"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "soliding-benchmark-smoke",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "make",
+              "soliding-benchmark-smoke"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "soliding-stage3b-validation-apparatus-test",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "make",
+              "soliding-stage3b-validation-apparatus-test"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "soliding-stage3-cost-smoke",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "make",
+              "soliding-stage3-cost-smoke"
+            ],
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 15160,
+        "hosted_job_minutes": 284
+      },
+      "soliding-asan": {
+        "commands": [
+          {
+            "label": "build-settled-regions-sanitized",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "build/test_settled_regions_sanitized"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "build-soliding-sanitized",
+            "policy_key": "native_compile_seconds",
+            "command": [
+              "make",
+              "build/test_soliding_lifecycle_sanitized",
+              "build/test_settled_discovery_sanitized",
+              "build/test_settled_regions_sanitized",
+              "build/test_settled_world_discovery_sanitized",
+              "build/test_stage3b_runtime_storage_sanitized",
+              "build/test_stage3b_bounded_spatial_index_sanitized",
+              "build/test_stage3b_sparse_mutation_witness_sanitized",
+              "build/test_stage3b_sparse_activity_deadline_sanitized"
+            ],
+            "timeout_seconds": 3600
+          },
+          {
+            "label": "soliding-sanitize",
+            "policy_key": "native_case_seconds",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "make",
+              "soliding-sanitize"
+            ],
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 11520,
+        "hosted_job_minutes": 223
+      }
+    }
+  },
+  "native_expected_case_names": [
+    "player material field payloads and signed seams",
+    "player material field blocking and invalid nonmutation",
+    "player material field budgets and source snapshot",
+    "player material field storage refusal",
+    "player material field distinct spread and squeeze",
+    "player material field native quantity and worker parity",
+    "persistent material contacts survive sleep",
+    "Ice contact boundaries and worker parity",
+    "inert material contacts still sleep",
+    "material deadlines pause and unmask",
+    "Ice neighbor success keeps pending contact",
+    "material deadlines follow contact removal and reset",
+    "material deadlines with discovery observer",
+    "INT-000 sparse schema shadow equivalence",
+    "flow resting packing, films, barriers and signed seams",
+    "flow conserved state, temperature, workers and exclusion",
+    "powder pairs and void-driven rearrangement",
+    "Mercury lanes, sleeping wakes, seams and worker parity",
+    "granular sampled support policy",
+    "physics diagnostic observer and worker parity",
+    "physics diagnostic isolated controls",
+    "physics masked source characterisation",
+    "ACT-004 articulated body identity capacity",
+    "negative coordinates",
+    "scheduler geometry",
+    "sand fall",
+    "cross chunk",
+    "cross scheduler core",
+    "activity sleep and wake",
+    "serial/phased behavioral parity",
+    "density swap",
+    "conserved water",
+    "Water lateral speed",
+    "level water surface",
+    "water single/multiworker parity",
+    "water storage boundary",
+    "runtime Water experiment policy",
+    "odd-lattice Water boundaries and ledgers",
+    "Water experiment validation and coherence",
+    "Water coherence gravity and exhaustive merge",
+    "Water experiment worker parity",
+    "default Water experiment state-hash correspondence",
+    "optional temperature movement",
+    "serialized relocation preserves payload",
+    "preallocated hot path",
+    "chunk capacity",
+    "smoke",
+    "smoke density displacement",
+    "smoke lifecycle and fire exclusion",
+    "fire and extinguishing",
+    "hot material reactions",
+    "acid and stone",
+    "water/oil density",
+    "cloner",
+    "deferred explosion",
+    "explosion worker parity",
+    "growth and seed",
+    "mite and rocket",
+    "complete material worker parity",
+    "determinism",
+    "single/multiworker determinism",
+    "sleeping",
+    "issue #1 failed tick stop/reset",
+    "issue #1 late failure and publication",
+    "issue #1 C API failure/recovery",
+    "issue #2 interest resume boundaries",
+    "issue #2 sleeping region transitions",
+    "issue #2 conservation and worker determinism",
+    "issues #1/#2 failed re-entry and recovery",
+    "dirty rectangles",
+    "immutable render snapshots",
+    "render copy production qualification",
+    "concurrent render leases",
+    "C API and RGBA",
+    "extended material families",
+    "Sandspiel material catalog",
+    "themed static material catalog",
+    "themed combustible kernels",
+    "building material catalog",
+    "building combustibles ignite",
+    "building pair reactions execute",
+    "building inert controls stay inert",
+    "building CYSD1 constructor and snapshot round trip",
+    "building transport schema bounds",
+    "building contact boundaries and worker parity",
+    "LCB-001 liquid policy SHA-256 known answers",
+    "LCB-001 liquid policy identity matches source",
+    "LCB-001 liquid policy catalogue matches descriptors",
+    "LCB-001 liquid policy wire vectors",
+    "LCB-001 liquid policy session transcript",
+    "LCB-001 liquid policy running build admits defaults and qualified candidates",
+    "LCB-001 liquid policy World construction and refusal",
+    "LCB-001 liquid policy default behavior and workers",
+    "LCB-001 liquid policy C API transaction",
+    "LCB-005 inertial boundary workers",
+    "LCB-005 inertial reset products",
+    "LCB-005 inertial storage capture",
+    "LCB-005 inertial residual motion",
+    "LCB-005 inertial admission",
+    "Water IN admission and normalization",
+    "Water IN coherence and resting contacts",
+    "Water IN actual carrier and complete footprint",
+    "Water IN real workers and continuation",
+    "worker activity publication and observer independence",
+    "Water IN mandatory material hooks and lifecycle",
+    "Water IN independent arithmetic examples",
+    "Water IN cadence and powder exchange control",
+    "Water IN storage pause and capacity",
+    "LCB-005 inertial damping parameters",
+    "LCB-005 inertial comparison projections",
+    "LCB-005 inertial contract examples",
+    "LCB-005 inertial ledgers rest parity",
+    "LCB-005 inertial no tunnelling",
+    "LCB-005 inertial lifecycle",
+    "LCB-005 inertial three families",
+    "LCB-005 inertial body contact",
+    "LCB-001 pressure admission and refusal",
+    "LCB-001 pressure gas ID restore bounds",
+    "LCB-001 pressure gas ID creation exhaustion",
+    "LCB-001 pressure gas ID split exhaustion",
+    "LCB-001 pressure quantity rectangle bounds",
+    "LCB-001 pressure pending event restore bounds",
+    "LCB-001 pressure gas single and twin pockets",
+    "LCB-001 pressure gas unequal merge",
+    "LCB-001 pressure gas compress, vent and reseal",
+    "LCB-001 pressure gas split",
+    "LCB-001 pressure gas in Empty-only and unallocated chunks",
+    "LCB-001 pressure quantity, motion and worker parity",
+    "LCB-001 pressure vented two-limb head transmission",
+    "LCB-001 pressure walls and body masks block head",
+    "LCB-001 pressure static rest, sleep and remote wake",
+    "LCB-001 pressure lifecycle state and ledgers",
+    "LCB-001 pressure physical hash and exact persistence",
+    "LCB-001 pressure default policy untouched",
+    "LCB-002 comparison static content and retained authority",
+    "LCB-002 comparison pressure variant normalization",
+    "LCB-002 cached incremental heads and continuation",
+    "LCB-002 native optimization identity and readback",
+    "LCB-002 deterministic dormant proof-cost admission",
+    "LCB-002 cached gas invalidation and exact fallback",
+    "LCB-002 affected gas component discovery and continuation",
+    "LCB-002 gas component capacity and pair-budget fallback",
+    "LCB-002 dormant motion and stationary body obligations",
+    "LCB-002 acceptance remote hydraulic wake and sparse interest",
+    "LCB-002 acceptance rotating native masks",
+    "LCB-002 acceptance mandatory obligations and reconstruction",
+    "LCB-002 acceptance communicating narrow and broad passages",
+    "LCB-002 acceptance isolated vent into certified target",
+    "LCB-002 moving gas masks retire and preserve exact identities",
+    "LCB-002 P1 wake summaries skip quiet scans and stay exact",
+    "LCB-001 gas exact hotpath seams, masks and worker parity",
+    "LCB-002 #201 moving region keeps exact warm pressure caches",
+    "LCB-003 prepared initial pressure gas capacity",
+    "LCB-001 liquid policy C API allocation failures",
+    "LCB-001 W-CY admission and ingress",
+    "LCB-001 W-CY coherence, viscosity and masks",
+    "LCB-001 W-CY material hooks",
+    "LCB-001 W-CY workers, persistence and transport",
+    "LCB-001 W-CY liveness and cadence",
+    "LCB-001 Water normalization rounding",
+    "LCB-001 Water normalization refusals",
+    "LCB-001 Water normalization final identity",
+    "LCB-001 Water normalization thermal fields",
+    "LCB-001 Water normalization arithmetic",
+    "LCB-001 Water normalization canonical vectors",
+    "LCB-001 native run receipt identity",
+    "LCB-001 native-issued construction refusals",
+    "LCB-001 native quantity ledger",
+    "BW-001 ballistic Water defaults unchanged",
+    "BW-001 ballistic Water upward arc and return",
+    "BW-001 ballistic Water ceiling wall no tunnel",
+    "BW-001 ballistic Water surface merge and injection",
+    "BW-001 ballistic Water families",
+    "BW-001 ballistic Water capacity mask deferral",
+    "BW-001 ballistic Water body contact",
+    "BW-001 ballistic Water persistence and parity",
+    "BW-001 ballistic Water render overlay and forced age",
+    "BW-001 ballistic Water run receipt identity",
+    "BW-001 ballistic Water engulfed parcel column",
+    "BW-001 ballistic Water retained rebuild inheritance",
+    "BW-001 ballistic Water face release dam break",
+    "BW-001 ballistic Water face release pooled pre-pass matches serial",
+    "IN-B1 signed vertical control and identity",
+    "IN-B1 signed vertical arc ceiling parity",
+    "IN-B1 signed vertical support and hybrid",
+    "Workbench parallel PressureFlow heads match serial (all variants)",
+    "Pair reaction tables match the authored resolver",
+    "Active-core capacity counts distinct cores",
+    "Hard-surface bits match the display projection",
+    "Hard-surface invalidation is independent and tile exact",
+    "Hard-surface invalidation matches across worker counts",
+    "LCB-002 PressureFlow pocket sealed from open air is atmospheric"
+  ],
+  "unchanged_contract_files": {
+    ".github/workflows/native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+    ".github/workflows/gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+    ".github/workflows/documentation.yml": "934ebe4f8f749e9ca222a00f5ac7b5445cb8308c882aab8fe86d72198da26960",
+    "tools/ci/run_native_family.sh": "5a3cbcf58659d4ac91da3334e4e2ad68788b669b445bcb240c3134e3c6327b1b",
+    "tools/ci/native_execution_policy.py": "16c2c5f3b8920c0ece202cdaf9bb674dfcc03a4f72934af84885ed7bc7d7f7b1",
+    "tools/ci/verify_native_shards.py": "7cfdf6bccf0fbd17786b38acc8ebc45e23d57493e53fc0fc16263b9ce942c2c3",
+    "tools/ci/run_timed_command.py": "f9d8d2979335c7a59e2b3d47e8956e1c157f8c7d74bf74b57bb9cfd1c56663da",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "tools/ci/check_worldgen_build_inventory.py": "94a44ae85778ca866416cfcf3cac915211cb40f66004afc2423c71db27f15ea5"
+  },
+  "unchanged_scientific_and_runtime_roots": [
+    "native",
+    "godot",
+    "third_party",
+    "tools/physics"
+  ],
+  "source_scope": [
+    "Makefile",
+    "docs/operations/ci-execution-and-performance.md",
+    "docs/operations/local-build-and-validation.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md",
+    "tools/ci/test_worldgen_build_inventory.py"
+  ],
+  "native_source_count": 192,
+  "published_inputs": {
+    "runtime-provenance.json": {
+      "native_input_count": 105,
+      "artifact_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "manifest_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+    },
+    "runtime-provenance.linux.json": {
+      "native_input_count": 105,
+      "artifact_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "manifest_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1"
+    }
+  }
+}

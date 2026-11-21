@@ -1,0 +1,123 @@
+{
+  "schema": "cybersand-ci-opt003-independent-review-v1",
+  "reviewer": "/root/review_soliding",
+  "independence": "Reviewer authored no production candidate changes or submitted regressions. Independent probes reside outside candidate checkout.",
+  "reviewed_at": "2026-11-21T23:09:23.684617+00:00",
+  "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "candidate_commit": "Pending publication; exact reviewed file SHA-256 values below",
+  "source_verdict": "GO",
+  "merge_verdict": "PENDING hosted exact-source qualification and independent performance admission",
+  "findings": [],
+  "severity_counts": {
+    "P1": 0,
+    "P2": 0,
+    "P3": 0
+  },
+  "reviewed_files_sha256": {
+    "Makefile": "55955e7a3cfb593cfe276ad55a71e26360a44065ecbabef9837816d6139bcd44",
+    "tools/ci/native_build_configuration.py": "0e57af8210215cf36f006dffab4a511773f06428bb2d51a49dbd0be2e280a303",
+    "tools/ci/check_soliding_build_inventory.py": "0e643d5bd4d72d63c1d605868cabd0dcb2e4641c66c29d181f47ab659e021a93",
+    "tools/ci/test_soliding_build_reuse.py": "4a6d732eb2008539a29f1379e399c303edd1f05f87d95b4cb702614466e1f661",
+    ".github/workflows/documentation.yml": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d",
+    "docs/operations/ci-execution-and-performance.md": "4d9048ca5d27852998aa57aa9306810070a68687b07013d65a32be736a63325c",
+    "docs/operations/local-build-and-validation.md": "0157a993fe7e9f4958694bd929bea9d68add30fb173748dc635680b2d06b89c0",
+    "docs/reference/retrieval-index.md": "2bff17eda07376f4c7000c9c99692017aa764acbe07a57710aface9a5b9f6965",
+    "docs/reference/status-and-roadmap.md": "feb1a287ed2d1637925864794a6262f2c88a3021cd0bab82bf9bbabce364cf10"
+  },
+  "unchanged_contracts_sha256": {
+    ".github/workflows/native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+    ".github/workflows/gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+    "tools/ci/run_native_family.sh": "5a3cbcf58659d4ac91da3334e4e2ad68788b669b445bcb240c3134e3c6327b1b",
+    "tools/ci/native_execution_policy.py": "16c2c5f3b8920c0ece202cdaf9bb674dfcc03a4f72934af84885ed7bc7d7f7b1",
+    "tools/ci/verify_native_shards.py": "7cfdf6bccf0fbd17786b38acc8ebc45e23d57493e53fc0fc16263b9ce942c2c3",
+    "tools/ci/run_timed_command.py": "f9d8d2979335c7a59e2b3d47e8956e1c157f8c7d74bf74b57bb9cfd1c56663da",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+  },
+  "unmodified_source_roots": [
+    "native",
+    "godot",
+    "third_party",
+    "tools/physics"
+  ],
+  "checks": [
+    {
+      "command": "python3 tools/ci/test_soliding_build_reuse.py",
+      "status": "passed",
+      "tests": 12,
+      "seconds": 46.695
+    },
+    {
+      "command": "python3 -m unittest discover -s tools/ci -p test_native_shards.py",
+      "status": "passed",
+      "tests": 45,
+      "seconds": 15.357
+    },
+    {
+      "command": "python3 -m unittest discover -s tools/ci -p test_execution_policy.py",
+      "status": "passed",
+      "tests": 14,
+      "seconds": 33.73
+    },
+    {
+      "command": "python3 tools/ci/check_ci_provider_policy.py",
+      "status": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    },
+    {
+      "description": "Independent raw Make baseline/candidate expanded source/flags/order comparison",
+      "status": "passed",
+      "artifact": "soliding-independent-contract.json"
+    },
+    {
+      "description": "Independent actual Make/GCC controls",
+      "status": "passed",
+      "artifact": "soliding-independent-controls.json",
+      "controls": [
+        {
+          "control": "parallel-normal-and-sanitized-profiles",
+          "status": "passed",
+          "seconds": 3.5404706049957895,
+          "detail": {
+            "core_compilations": 12,
+            "sanitized_core_compilations": 6,
+            "executed_binaries": 2,
+            "second_build_compilations": 0
+          }
+        },
+        {
+          "control": "corrupt-missing-config-and-environment-change",
+          "status": "passed",
+          "seconds": 8.89028734400199,
+          "detail": {
+            "corrupt_configuration_recompiled": 6,
+            "missing_configuration_recompiled": 6,
+            "changed_include_environment_recompiled": 6
+          }
+        },
+        {
+          "control": "actual-test-and-compiler-failure-propagation",
+          "status": "passed",
+          "seconds": 6.161837103005382,
+          "detail": {
+            "test_exit": 17,
+            "executions_before_failure": [
+              "soliding_lifecycle",
+              "settled_discovery"
+            ],
+            "executions_after_compile_failure": 0,
+            "partial_object_files": 0
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Local GCC14.2 controls use synthetic fixtures and do not qualify complete production scientific cases or hosted GCC13.3.",
+    "Actual Linux/Windows/Native exact-head checks and controlled timings remain separate pending gates.",
+    "The workflow continues to isolate hosted build directories. This review does not qualify concurrent separate Make invocations with different configurations sharing one output directory.",
+    "Only local object reuse is introduced; no cross-job result or binary cache admission is added."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "status": "timeout",
+  "first_failure_marker": true,
+  "hanging_stdout_marker": false,
+  "hanging_stderr_marker": false,
+  "log": "Running build/test_megatruss_station\nCONTROL-BEGIN build/test_megatruss_station\nCONTROL-ERR build/test_megatruss_station\nmake: *** [Makefile:464: build/test_megatruss_station.run] Error 29\nmake: *** Waiting for unfinished jobs....\n",
+  "terminated_pids": [
+    "75",
+    "77"
+  ]
+}

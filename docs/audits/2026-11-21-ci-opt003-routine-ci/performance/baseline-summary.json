@@ -1,0 +1,243 @@
+{
+  "schema": "ci-opt003-readonly-baseline-v1",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "complete_historical_source": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+  "complete_cohort": [
+    {
+      "run_id": 44941414698,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "GDExtension build and current Godot regression",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T19:51:01Z",
+      "event_to_last_job_seconds": 1151.0,
+      "runner_minutes": 169.8,
+      "executed_jobs": 54,
+      "conditional_skips": 2,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414698"
+    },
+    {
+      "run_id": 44941414743,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "Native source-scope advisory (report only)",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T19:32:21Z",
+      "event_to_last_job_seconds": 31.0,
+      "runner_minutes": 0.45,
+      "executed_jobs": 1,
+      "conditional_skips": 0,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414743"
+    },
+    {
+      "run_id": 44941414570,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "Architectural Generator A+B source qualification",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T19:32:16Z",
+      "event_to_last_job_seconds": 26.0,
+      "runner_minutes": 0.38333333333333336,
+      "executed_jobs": 1,
+      "conditional_skips": 4,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414570"
+    },
+    {
+      "run_id": 44941414560,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "Palette shader actual backend qualification",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T19:39:04Z",
+      "event_to_last_job_seconds": 434.0,
+      "runner_minutes": 15.95,
+      "executed_jobs": 8,
+      "conditional_skips": 0,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414560"
+    },
+    {
+      "run_id": 44941414603,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "Documentation and provenance",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T19:41:00Z",
+      "event_to_last_job_seconds": 550.0,
+      "runner_minutes": 9.116666666666667,
+      "executed_jobs": 1,
+      "conditional_skips": 0,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414603"
+    },
+    {
+      "run_id": 44941414598,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "Wave Flow native qualification",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T19:37:12Z",
+      "event_to_last_job_seconds": 322.0,
+      "runner_minutes": 13.05,
+      "executed_jobs": 4,
+      "conditional_skips": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414598"
+    },
+    {
+      "run_id": 44941414576,
+      "run_attempt": 1,
+      "source_sha": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "name": "Native C++ validation",
+      "event": "push",
+      "event_at": "2026-11-21T19:31:50Z",
+      "last_job_completed": "2026-11-21T20:02:27Z",
+      "event_to_last_job_seconds": 1837.0,
+      "runner_minutes": 89.95,
+      "executed_jobs": 8,
+      "conditional_skips": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44941414576"
+    }
+  ],
+  "native_observations": [
+    {
+      "run_id": 44941414576,
+      "run_attempt": 1,
+      "artifact_id": 14722054189,
+      "artifact_sha256": "77adf07cbe9e5753043041c2ad0124188eb30257a39285e85fef33f25d22ef99",
+      "commands": [
+        {
+          "label": "worldgen-physics-characterisation-sanitize",
+          "wall_seconds": 97.899214068,
+          "watchdog_seconds": 10200.0,
+          "result": "passed"
+        },
+        {
+          "label": "worldgen-worldgen-sanitize",
+          "wall_seconds": 1404.917254708,
+          "watchdog_seconds": 3600.0,
+          "result": "passed"
+        },
+        {
+          "label": "worldgen-worldgen-test",
+          "wall_seconds": 241.91816604399997,
+          "watchdog_seconds": 3600.0,
+          "result": "passed"
+        }
+      ],
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+        "hardware_cohort": "github-hosted",
+        "logical_cpu_count": 4,
+        "os": "Linux 7.0.0-1014-aws #14~24.04.1-Ubuntu SMP PREEMPT Fri Sep 18 21:24:59 UTC 2026",
+        "platform": "Linux",
+        "runner_class": "github-hosted",
+        "runner_environment": "github-hosted",
+        "runner_image": "ubuntu24",
+        "runner_image_version": "20261116.133.1"
+      },
+      "source": {
+        "commit": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+        "job": "native-shards",
+        "run_attempt": "1",
+        "run_id": "44941414576",
+        "runner_name_sha256": "ca1237f631e31c0bb1dfd0ecac1eaf9d3a3f7c55123e95c8dc56939fc01a06f1",
+        "tracked_delta_sha256": null,
+        "tree": "a2feaac1bc32ed089c53ee245a1539ec6238df16"
+      }
+    },
+    {
+      "run_id": 44948256292,
+      "run_attempt": 1,
+      "artifact_id": 14725108726,
+      "artifact_sha256": "3a5a402f27fef61e2f9c940e212d339187dc2b26ed79fa9ee99ef3ee37826e9f",
+      "commands": [
+        {
+          "label": "worldgen-physics-characterisation-sanitize",
+          "wall_seconds": 96.55639194099999,
+          "watchdog_seconds": 10200.0,
+          "result": "passed"
+        },
+        {
+          "label": "worldgen-worldgen-sanitize",
+          "wall_seconds": 1691.766929179,
+          "watchdog_seconds": 3600.0,
+          "result": "passed"
+        },
+        {
+          "label": "worldgen-worldgen-test",
+          "wall_seconds": 354.881676539,
+          "watchdog_seconds": 3600.0,
+          "result": "passed"
+        }
+      ],
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+        "hardware_cohort": "github-hosted",
+        "logical_cpu_count": 4,
+        "os": "Linux 7.0.0-1017-azure #17~24.04.1-Ubuntu SMP PREEMPT Thu Sep 24 18:46:57 UTC 2026",
+        "platform": "Linux",
+        "runner_class": "github-hosted",
+        "runner_environment": "github-hosted",
+        "runner_image": "ubuntu24",
+        "runner_image_version": "20261116.376.1"
+      },
+      "source": {
+        "commit": "8fada1df005553eecb98935afdbcebd27615bd13",
+        "job": "native-shards",
+        "run_attempt": "1",
+        "run_id": "44948256292",
+        "runner_name_sha256": "2b9c26883bce6f8d697942b93e9ed166b8a5ca241abc1afb85d4c584d9c55c84",
+        "tracked_delta_sha256": null,
+        "tree": "704886453b1452f6481290f9ed94454cc3736ac3"
+      }
+    },
+    {
+      "run_id": 44948729271,
+      "run_attempt": 1,
+      "artifact_id": 14725619047,
+      "artifact_sha256": "65ca2fb8a8525cc4c3a5146fc6ff6c06e7e6cd93cff28dd9059d2776bbd527dc",
+      "commands": [
+        {
+          "label": "worldgen-sanitize-worldgen-sanitize",
+          "wall_seconds": 2124.820510802,
+          "watchdog_seconds": 3600.0,
+          "result": "passed"
+        }
+      ],
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "AMD EPYC 7763 64-Core Processor",
+        "hardware_cohort": "github-hosted",
+        "logical_cpu_count": 4,
+        "os": "Linux 7.0.0-1017-azure #17~24.04.1-Ubuntu SMP PREEMPT Thu Sep 24 18:46:57 UTC 2026",
+        "platform": "Linux",
+        "runner_class": "github-hosted",
+        "runner_environment": "github-hosted",
+        "runner_image": "ubuntu24",
+        "runner_image_version": "20261116.376.1"
+      },
+      "source": {
+        "commit": "9ae8b2a483d756af18ad21f1d99f529645640f12",
+        "job": "native-shards",
+        "run_attempt": "1",
+        "run_id": "44948729271",
+        "runner_name_sha256": "1be3aa5f35487d66e7048d770817babf919e0c97d6efebe9d31c657e4f7e5b02",
+        "tracked_delta_sha256": null,
+        "tree": "b01d95a8cb90ae0be9fb36e368694167dd80efb6"
+      }
+    }
+  ],
+  "cautions": [
+    "Historical observations do not qualify a new HEAD.",
+    "No compile/runtime phase timing exists inside historical worldgen make receipts.",
+    "Unweighted runner-minutes include all executed jobs, exclude skipped jobs, and are not billed minutes.",
+    "Same source inputs can still have different workflow/check inventories; report scope explicitly."
+  ],
+  "cohort_runner_minutes": 298.7
+}

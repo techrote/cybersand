@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "scope": "Synthetic actual GNU Make/GCC controls; no production scientific qualification",
+  "makefile_sha256": "55955e7a3cfb593cfe276ad55a71e26360a44065ecbabef9837816d6139bcd44",
+  "controls": [
+    {
+      "control": "parallel-normal-and-sanitized-profiles",
+      "status": "passed",
+      "seconds": 3.5404706049957895,
+      "detail": {
+        "core_compilations": 12,
+        "sanitized_core_compilations": 6,
+        "executed_binaries": 2,
+        "second_build_compilations": 0
+      }
+    },
+    {
+      "control": "corrupt-missing-config-and-environment-change",
+      "status": "passed",
+      "seconds": 8.89028734400199,
+      "detail": {
+        "corrupt_configuration_recompiled": 6,
+        "missing_configuration_recompiled": 6,
+        "changed_include_environment_recompiled": 6
+      }
+    },
+    {
+      "control": "actual-test-and-compiler-failure-propagation",
+      "status": "passed",
+      "seconds": 6.161837103005382,
+      "detail": {
+        "test_exit": 17,
+        "executions_before_failure": [
+          "soliding_lifecycle",
+          "settled_discovery"
+        ],
+        "executions_after_compile_failure": 0,
+        "partial_object_files": 0
+      }
+    }
+  ]
+}

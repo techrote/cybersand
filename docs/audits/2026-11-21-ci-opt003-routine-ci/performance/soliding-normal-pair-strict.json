@@ -1,0 +1,426 @@
+{
+  "arms": {
+    "baseline": {
+      "binary_digests": {
+        "build/settled_discovery": {
+          "bytes": 26952,
+          "sha256": "1725d7dbb5e7ed921b02e22ce90d806fbe31dc41adf6fbe6f8c4ca175e3eac25"
+        },
+        "build/stage3_cost": {
+          "bytes": 755456,
+          "sha256": "6b18165beb77d161bc90241584a4d5a0f878d2cc1aa6d6d2321b9d42edfccbab"
+        },
+        "build/test_settled_discovery": {
+          "bytes": 9537440,
+          "sha256": "2c86986e4856db6a9f48b59e080465987ec20491d444968c6a4202a5bb5ec507"
+        },
+        "build/test_settled_regions": {
+          "bytes": 34351488,
+          "sha256": "cfbe61e7866d0d898d2e9915795f8d3cfa086150a4495cb82e237770108b402e"
+        },
+        "build/test_settled_world_discovery": {
+          "bytes": 9361208,
+          "sha256": "19415ea02d179c47fbcf8dbdf66d75dc59e9fb9992bbb3e49e683ce4adf8631b"
+        },
+        "build/test_soliding_lifecycle": {
+          "bytes": 320784,
+          "sha256": "5c6cfbf3a019469d4e16783c6ef549674d7e0ded9d950e3f2f41390dc0ad139e"
+        },
+        "build/test_stage3b_bounded_spatial_index": {
+          "bytes": 11896880,
+          "sha256": "312f62358b2d19a74f283d45bfd7d4ff0bf7842d780a5edc55716989fe3cd1c1"
+        },
+        "build/test_stage3b_runtime_storage": {
+          "bytes": 13431216,
+          "sha256": "abc730c11c97525bb44f731b6e7d0f7ca8662e3977803e5e65cd4163f818cb14"
+        },
+        "build/test_stage3b_sparse_activity_deadline": {
+          "bytes": 9285160,
+          "sha256": "ed21877a92e9d3c0524aa993aa7e754cfdd3c9e9f8600702c2ff991f91a32ea9"
+        },
+        "build/test_stage3b_sparse_mutation_witness": {
+          "bytes": 9265992,
+          "sha256": "2bae6470af21a0d0d4f821c62dc5ba5d9bbfaf63e7d203311c8dcab91668d6cb"
+        }
+      },
+      "command_outputs": {
+        "commands/soliding-benchmark-smoke/command.log": {
+          "bytes": 2446,
+          "sha256": "68f85d3ca0280220cd27feccec342ec614664d27d9b2f8bd28e1d17e4925fd24"
+        },
+        "commands/soliding-benchmark-smoke/performance.jsonl": {
+          "bytes": 3388,
+          "sha256": "c106d1c1db6a652c9fde77ea5745b1de808abe54758b9d971af99c985d309d06"
+        },
+        "commands/soliding-benchmark-smoke/receipt.json": {
+          "bytes": 2130,
+          "sha256": "497e3064eb327688fe6b2b63a29f969ec4aa7c2d2cc79c1e0ed7530f90c13ea7"
+        },
+        "commands/soliding-stage3-cost-smoke/command.log": {
+          "bytes": 4245,
+          "sha256": "00ade2dd4d671f8c453c9ecb0d8025b975cf34a0f1847932a33abd5385ca9f66"
+        },
+        "commands/soliding-stage3-cost-smoke/performance.jsonl": {
+          "bytes": 3463,
+          "sha256": "959e67b43b56d6d2ab4de99a2dd73171375ca6cc49da6632de0633238da1c234"
+        },
+        "commands/soliding-stage3-cost-smoke/receipt.json": {
+          "bytes": 2129,
+          "sha256": "11262a93ee503c625231d9cba005d89099c4a773471a8f3fab65cd55a3f519d5"
+        },
+        "commands/soliding-stage3b-validation-apparatus-test/command.log": {
+          "bytes": 604,
+          "sha256": "0e823ccfee953283449ad42eca408a932503534c2b9189afbf1bf4c4620a03de"
+        },
+        "commands/soliding-stage3b-validation-apparatus-test/performance.jsonl": {
+          "bytes": 2771,
+          "sha256": "d0e96ff69e083fccf2cc6f679ec0d9fc96807bb884ad3502af34769c7b69e299"
+        },
+        "commands/soliding-stage3b-validation-apparatus-test/receipt.json": {
+          "bytes": 2166,
+          "sha256": "06530196ee5608cfc1bd3146a6d3152a5e213aadc5e4b19ed1c804a6f47ca83e"
+        },
+        "commands/soliding-test/command.log": {
+          "bytes": 12076,
+          "sha256": "67005039dc846756e4448e1590cfe5f6300e3dd2de834241dd944476c05369ac"
+        },
+        "commands/soliding-test/performance.jsonl": {
+          "bytes": 2743,
+          "sha256": "6cf98e591a40307f42a95fea2c255bbaac4e8114adfc8627129b515b31073825"
+        },
+        "commands/soliding-test/receipt.json": {
+          "bytes": 2109,
+          "sha256": "3eceacd962804c298bd0714d69256dd3a4230e3565a54bb3feb5a15c22779c54"
+        },
+        "family/command.log": {
+          "bytes": 19703,
+          "sha256": "f01988911a88749e64b5ed1a90fd6325dbe559aeaaf45db72cfb30c5efa1332e"
+        },
+        "family/performance.jsonl": {
+          "bytes": 4087,
+          "sha256": "3fbb0a50f712fda6b5d95fecc7787290e27d16b4091681d79c3d4159f1aeb188"
+        },
+        "family/receipt.json": {
+          "bytes": 2187,
+          "sha256": "3491e7f16e4a606496ff5da61ea4cc544d8470f9d250b1eac72628af0d0c6948"
+        }
+      },
+      "commands": [
+        {
+          "label": "soliding-test",
+          "seconds": 153.17193296199997
+        },
+        {
+          "label": "soliding-benchmark-smoke",
+          "seconds": 1.5882645369999864
+        },
+        {
+          "label": "soliding-stage3b-validation-apparatus-test",
+          "seconds": 0.6239144970000439
+        },
+        {
+          "label": "soliding-stage3-cost-smoke",
+          "seconds": 31.390450289
+        }
+      ],
+      "family_elapsed_seconds": 190.81170139,
+      "family_started_utc": "2026-11-21T23:23:04.073541+00:00",
+      "first_complete_functional_command_seconds": 154.18162202835083,
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "AMD EPYC 7763 64-Core Processor",
+        "environment": {
+          "CC": "gcc-13",
+          "CXX": "g++-13",
+          "CYBERSAND_CI_WATCHDOG_SCALE": "1",
+          "GNUMAKEFLAGS": "",
+          "MAKEFILES": "",
+          "MAKEFLAGS": "",
+          "MFLAGS": ""
+        },
+        "image": "ubuntu24",
+        "image_version": "20261116.376.1",
+        "job": "pair",
+        "logical_cpu_count": 4,
+        "runner_environment": "github-hosted",
+        "runner_name_sha256": "222bc1ef6c46eb0e820b158e6e70d01e7eae2b0d9b4a0ba09a23de61644eb35b",
+        "runner_os": "Linux",
+        "tools": {
+          "g++-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+            "target": "x86_64-linux-gnu",
+            "version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "gcc-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+            "target": "x86_64-linux-gnu",
+            "version": "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "ld": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+          },
+          "make": {
+            "path": "/usr/bin/make",
+            "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+            "version": "GNU Make 4.3\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+          }
+        }
+      },
+      "receipt_sha256": "b54664d362e0227dfbf19116e48deef81bf058f082d68ff309b32f0db708348b",
+      "run_log_sha256": "bb0b10cea20add2a5aed728400646ef4dcdf2f27f37c25be1a4ebda8dba94ca9",
+      "scientific_outputs": {
+        "stage3b-validation-plan-smoke.json": {
+          "bytes": 331774,
+          "sha256": "5e1b09266768a4b63b1cc4bfd4a2f79f4a8f66dc0f8b52291abbddab63469ee3"
+        },
+        "stage3b-validation-synthetic-smoke.json": {
+          "bytes": 873588,
+          "sha256": "2eff4a40b4564054f2a4d465def882487a8e086d9a7132d8869a7062d3821167"
+        }
+      },
+      "source_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "source_snapshot_end": 1795303576.873353,
+      "source_snapshot_start": 1795303383.965687,
+      "source_tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590",
+      "test_commands": [
+        "./build/test_soliding_lifecycle",
+        "./build/test_settled_discovery",
+        "./build/test_settled_regions",
+        "./build/test_settled_world_discovery",
+        "./build/test_stage3b_runtime_storage",
+        "./build/test_stage3b_bounded_spatial_index",
+        "./build/test_stage3b_sparse_mutation_witness",
+        "./build/test_stage3b_sparse_activity_deadline"
+      ]
+    },
+    "candidate": {
+      "binary_digests": {
+        "build/settled_discovery": {
+          "bytes": 26952,
+          "sha256": "1725d7dbb5e7ed921b02e22ce90d806fbe31dc41adf6fbe6f8c4ca175e3eac25"
+        },
+        "build/stage3_cost": {
+          "bytes": 755456,
+          "sha256": "6b18165beb77d161bc90241584a4d5a0f878d2cc1aa6d6d2321b9d42edfccbab"
+        },
+        "build/test_settled_discovery": {
+          "bytes": 9537440,
+          "sha256": "85141676f1022b7029dae0eaaafb6f6263d4ceb7a890cf5a536296dfac226777"
+        },
+        "build/test_settled_regions": {
+          "bytes": 34351488,
+          "sha256": "f7087e8770bb321947304245633362db436d4b1430fe94f70c426146b302d611"
+        },
+        "build/test_settled_world_discovery": {
+          "bytes": 9361208,
+          "sha256": "944c64a0474069466c7d015fec9b2b71d61f047c6a558e72ecd082011da9ff13"
+        },
+        "build/test_soliding_lifecycle": {
+          "bytes": 320784,
+          "sha256": "81c970baffcbcb60a13f4511a9ecd08f2521a98efb6b379340382fbc83f0ecf3"
+        },
+        "build/test_stage3b_bounded_spatial_index": {
+          "bytes": 11896880,
+          "sha256": "f36be8cdaa26037497faf0f60e43fa251b9b2754e207ad38891cb5b3b07cfe01"
+        },
+        "build/test_stage3b_runtime_storage": {
+          "bytes": 13431216,
+          "sha256": "cf85df915852eeb96f2480422b44419a146b7666ca52b966d60455a68b4ab27a"
+        },
+        "build/test_stage3b_sparse_activity_deadline": {
+          "bytes": 9285160,
+          "sha256": "2d9e3a0f7e8503f19b403677c32b414dde19b9549f6581a4f55390e1b838b3ae"
+        },
+        "build/test_stage3b_sparse_mutation_witness": {
+          "bytes": 9265992,
+          "sha256": "834b89bd71bc94f02072b3221f7b04e85da174549b1a20b561ef07e3a5ccf2de"
+        }
+      },
+      "command_outputs": {
+        "commands/soliding-benchmark-smoke/command.log": {
+          "bytes": 2447,
+          "sha256": "46f4547906bf80a66d812ea2392616816e0b25c2f279f82aebf6b6099eabdfc1"
+        },
+        "commands/soliding-benchmark-smoke/performance.jsonl": {
+          "bytes": 3387,
+          "sha256": "8c32326fd616d74ceb7ded79994cdf6c4b6af79e1ad4f1b9405ee679e6620951"
+        },
+        "commands/soliding-benchmark-smoke/receipt.json": {
+          "bytes": 2129,
+          "sha256": "080f89d189ed003f9f203eaf210722697deb9f9045d757b89cafd5a78e58817b"
+        },
+        "commands/soliding-stage3-cost-smoke/command.log": {
+          "bytes": 4241,
+          "sha256": "022e84795e368359ee9a4f17b691112bfc48e782c29b07b8050aad46cef5f736"
+        },
+        "commands/soliding-stage3-cost-smoke/performance.jsonl": {
+          "bytes": 3469,
+          "sha256": "b2ee9515d011a98b8d9453b3aeae031df771d2cb65d5ad98d643f2fd3f392db4"
+        },
+        "commands/soliding-stage3-cost-smoke/receipt.json": {
+          "bytes": 2135,
+          "sha256": "e8e7db39dacd3e00d4f1e66fe6b22a98a36b5587e15e9fda6b6157e3e16aadf4"
+        },
+        "commands/soliding-stage3b-validation-apparatus-test/command.log": {
+          "bytes": 604,
+          "sha256": "47ef5b9ef8f7ff80d5035b15dda06f73eebd9bef876dbadc900cf777bac8ce19"
+        },
+        "commands/soliding-stage3b-validation-apparatus-test/performance.jsonl": {
+          "bytes": 2768,
+          "sha256": "a98d1a26da0ec94a91cc34dc4aaba19b44f862b584f6cb4904092d1ed346cdec"
+        },
+        "commands/soliding-stage3b-validation-apparatus-test/receipt.json": {
+          "bytes": 2163,
+          "sha256": "3c8d8e714b435708cc2139778c3ea8dd2a3fc9892e3a232915a96f434b646fbb"
+        },
+        "commands/soliding-test/command.log": {
+          "bytes": 5588,
+          "sha256": "1cee02cf6540fa70cd695c9fc7f221f98522e822209bb9ad83121f145e35db16"
+        },
+        "commands/soliding-test/performance.jsonl": {
+          "bytes": 2737,
+          "sha256": "4d76baf4ff794dc6e662e711c38196a33cc83a13186a8bce426e1d44479dc8bc"
+        },
+        "commands/soliding-test/receipt.json": {
+          "bytes": 2103,
+          "sha256": "8f0176670e2687059f260c428af39d505312dd2503b4990b01becd6a1e3b9766"
+        },
+        "family/command.log": {
+          "bytes": 13211,
+          "sha256": "f03ebf89716aa00f27aac5cbf96ac9ac569c2b7bd44c116e0345b12e7ada90a3"
+        },
+        "family/performance.jsonl": {
+          "bytes": 4093,
+          "sha256": "98961f3678c190522f9418a292f1a113edaf783ac73c7a4c420dcbaa0bf9cfeb"
+        },
+        "family/receipt.json": {
+          "bytes": 2193,
+          "sha256": "3d538e0d08d4b9feb1c1323f92da5e514370d06a9df648da41108e0bc5de8bbe"
+        }
+      },
+      "commands": [
+        {
+          "label": "soliding-test",
+          "seconds": 71.423789914
+        },
+        {
+          "label": "soliding-benchmark-smoke",
+          "seconds": 1.551776695000001
+        },
+        {
+          "label": "soliding-stage3b-validation-apparatus-test",
+          "seconds": 0.6477548650000244
+        },
+        {
+          "label": "soliding-stage3-cost-smoke",
+          "seconds": 30.243580036000026
+        }
+      ],
+      "family_elapsed_seconds": 108.00614587799998,
+      "family_started_utc": "2026-11-21T23:26:19.150738+00:00",
+      "first_complete_functional_command_seconds": 72.44074702262878,
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "AMD EPYC 7763 64-Core Processor",
+        "environment": {
+          "CC": "gcc-13",
+          "CXX": "g++-13",
+          "CYBERSAND_CI_WATCHDOG_SCALE": "1",
+          "GNUMAKEFLAGS": "",
+          "MAKEFILES": "",
+          "MAKEFLAGS": "",
+          "MFLAGS": ""
+        },
+        "image": "ubuntu24",
+        "image_version": "20261116.376.1",
+        "job": "pair",
+        "logical_cpu_count": 4,
+        "runner_environment": "github-hosted",
+        "runner_name_sha256": "222bc1ef6c46eb0e820b158e6e70d01e7eae2b0d9b4a0ba09a23de61644eb35b",
+        "runner_os": "Linux",
+        "tools": {
+          "g++-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+            "target": "x86_64-linux-gnu",
+            "version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "gcc-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+            "target": "x86_64-linux-gnu",
+            "version": "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "ld": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+          },
+          "make": {
+            "path": "/usr/bin/make",
+            "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+            "version": "GNU Make 4.3\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+          }
+        }
+      },
+      "receipt_sha256": "66d3914ae0ecbbbce4239698049da05e9fb9ea19a4a45b66248982798aa58346",
+      "run_log_sha256": "f0cb574eccce4647449c253d1f9854eec43d6dddf6b96dff9692d8141e9c7c60",
+      "scientific_outputs": {
+        "stage3b-validation-plan-smoke.json": {
+          "bytes": 331774,
+          "sha256": "61433491694d8569595f5830f2b2494db844015d11bd48803165e2d11ac7cf2b"
+        },
+        "stage3b-validation-synthetic-smoke.json": {
+          "bytes": 873588,
+          "sha256": "72771a427f0f1f5d188fd38d83a71c66fc30ff3ef104857f4a30961083935132"
+        }
+      },
+      "source_sha": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+      "source_snapshot_end": 1795303689.173981,
+      "source_snapshot_start": 1795303579.041516,
+      "source_tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+      "test_commands": [
+        "./build/test_soliding_lifecycle",
+        "./build/test_settled_discovery",
+        "./build/test_settled_regions",
+        "./build/test_settled_world_discovery",
+        "./build/test_stage3b_runtime_storage",
+        "./build/test_stage3b_bounded_spatial_index",
+        "./build/test_stage3b_sparse_mutation_witness",
+        "./build/test_stage3b_sparse_activity_deadline"
+      ]
+    }
+  },
+  "measurement_limit": "One baseline-then-candidate cold same-worker pair; no percentile or population speedup claim. Family elapsed times exclude hosted setup, queue, capture and upload; obtain job runner-minutes separately.",
+  "observed_percent_saved": 43.396476688163766,
+  "proof": {
+    "fingerprints": {
+      ".github/workflows/ci-opt003-soliding-proof.yml": "fbbbd2e974d93379efcb36b8302d353885e9cf5a7c6a7b8f968b5d045d04c9c6",
+      "tools/ci/ci_opt003_soliding_proof/README.md": "08e1c4bd8869bb50e9efc5a964e71e18dbe29d511fb68733d1d7c386caa679eb",
+      "tools/ci/ci_opt003_soliding_proof/common.py": "4a74cfee014a3555e8192974e11bd1f8062fbc090815f49c6d8818db3aefb8df",
+      "tools/ci/ci_opt003_soliding_proof/compare_pair.py": "ab0be75fd3cd58d0af24a2bd44b9dff392bbb6c73ab8729217b53c40dd6a573a",
+      "tools/ci/ci_opt003_soliding_proof/proof.py": "a878536d26f892e7037b8ad334a47e7dae479ba97902e70a83bf68751c1f45f9",
+      "tools/ci/ci_opt003_soliding_proof/run_arm.sh": "535716cf96f048d39e143b90e9e1af38dd6525b04fc085a0e336e2575d820ad0",
+      "tools/ci/ci_opt003_soliding_proof/test_compare_pair.py": "3fd7e44e5569c9f5a77b98fea8617bc6b285e7e246e0a3e73bf148fef86b68c1"
+    },
+    "sha": "fd4921ace2c4f97f06c70b887778b2366d7a9f0f",
+    "tree": "c0ef9677e8f3d652c0b4ab19b25b721e1b974219"
+  },
+  "routine_ci_qualified": false,
+  "run_attempt": 1,
+  "run_id": 44961498877,
+  "schema": "ci-opt003-soliding-pair-comparison-v1",
+  "scope": "paired-family-only",
+  "seconds_saved": 82.80555551200001,
+  "status": "passed",
+  "suite": "soliding-normal",
+  "whole_native_qualified": false
+}

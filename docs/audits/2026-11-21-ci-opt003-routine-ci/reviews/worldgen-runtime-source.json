@@ -1,0 +1,73 @@
+{
+  "reviewer": "/root/review_worldgen_runtime",
+  "independent_of_implementation": true,
+  "scope": "Frozen third candidate before diagnostic repair",
+  "base": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+  "reviewed_utc": "2026-11-21T23:28:56.839369+00:00",
+  "verdict": "HOLD pending P2 diagnostic-preservation repair",
+  "file_sha256": {
+    "Makefile": "57243f2d7d9bc5834bfb8c1541fa90e42365a31fc1546d891dc7597415780c1f",
+    "docs/operations/ci-execution-and-performance.md": "46a5decc4338ecb1328afc8505d56181fee900e4d7e6672d4ddf8bdee4df363d",
+    "docs/operations/local-build-and-validation.md": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+    "docs/reference/retrieval-index.md": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+    "docs/reference/status-and-roadmap.md": "cfe96a20f85c9143a251ce772065577171bf46ae8fac50954a52e95ef4fcd180",
+    "tools/ci/check_worldgen_build_inventory.py": "8f2990b70a2f0387c5e0c75b919eebde06259f185300163aace223582272c0cb",
+    "tools/ci/native_execution_policy.py": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb",
+    "tools/ci/run_native_family.sh": "34e5d9da827a02b8846ad27c5b85277dcf4e419bd9483cf599359221e300a607",
+    "tools/ci/test_native_watchdogs.py": "14d4be9c2cf9328e3167fd9a303b7a5b73b9f1c7da7521913c8ff7417a9f05f7",
+    "tools/ci/test_worldgen_build_inventory.py": "b31e04ae7d646a1db708eb396daf5dc5253d9425ce45ed2de76e67eec8170bec"
+  },
+  "tests": {
+    "worldgen_graph_controls": {
+      "count": 20,
+      "seconds": 18.451,
+      "status": "passed"
+    },
+    "native_watchdogs": {
+      "count": 22,
+      "seconds": 13.181,
+      "status": "passed"
+    },
+    "native_shards": {
+      "count": 45,
+      "seconds": 3.078,
+      "status": "passed"
+    },
+    "independent_controls": [
+      "exact actual GNU Make baseline/candidate28 argv comparison in both modes",
+      "reversed prerequisite ordering in normal and sanitized graphs",
+      "repeated aggregate/shared-showcase targets still execute16tests once",
+      "keep-going after a failed showcase cannot run nine-test tail"
+    ]
+  },
+  "findings": [
+    {
+      "id": "WGEN-RUNTIME-P2-01",
+      "severity": "P2",
+      "status": "open",
+      "paths": [
+        "tools/ci/run_native_family.sh:57-58",
+        "Makefile:463-468"
+      ],
+      "title": "Grouped Make output discards flushed diagnostics from a timed-out peer",
+      "reproduction": "Warm actual Make graph; megatruss double exits29 after seeded peer starts; seeded flushes stdout/stderr and hangs; production run_timed_command expires after1s. Grouped final command.log lacks both peer markers; identical invocation without --output-sync=target retains them.",
+      "impact": "Correct nonpassing timeout receipt and child cleanup remain, but partial stdout/stderr needed to diagnose the stalled sanitizer case is lost.",
+      "evidence": [
+        "worldgen-runtime-timeout-output.json",
+        "worldgen-runtime-ungrouped-control.json"
+      ],
+      "required_change": "Preserve independently retained per-case raw output through timeout/cancellation and bind/upload it, or use a diagnostic approach that demonstrably retains partial output."
+    },
+    {
+      "id": "WGEN-RUNTIME-P3-01",
+      "severity": "P3",
+      "status": "resolved",
+      "path": "docs/operations/ci-execution-and-performance.md:74",
+      "title": "Exact original-command claim omitted the two output-grouping argv changes",
+      "resolution": "Root corrected wording to same20 command obligations with explicit worldgen output grouping."
+    }
+  ],
+  "hosted_scientific_qualification": "PENDING",
+  "performance_verdict": "PENDING",
+  "production_source_changed_by_reviewer": false
+}
