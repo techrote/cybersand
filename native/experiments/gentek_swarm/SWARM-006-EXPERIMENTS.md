@@ -50,6 +50,19 @@ JSON only after a byte-for-byte round-trip check. Each execution retains its
 command, process exit, timeout/cancellation, child-reaping receipt and log hash.
 An incomplete/failed invocation remains in its expected denominator.
 
+An input refusal before native admission can return `input_header_only: 1` with
+the bounded identity header instead of copying unadmitted vectors. The runner
+accepts this representation only for nonauthorizing `exhausted`/`invalid` results,
+with zero work, no material/ledger/joints/history and the exact native empty plan.
+Only the declared input arrays may be empty; every scalar identity, profile,
+limit, option and other input field must still match exactly, including JSON
+types. The full original request is always separately retained and hashed.
+`input_representation` distinguishes this refusal from `full_exact`; a full
+native response still requires exact input equality. Rejected or malformed
+responses retain all original request/response bytes and hashes while the
+campaign fails integrity checks. A runner correction is recorded in a new
+campaign with its own runner hash; old failed campaigns are not overwritten.
+
 The compatibility comparison verifies stored compressed and raw response hashes.
 It normalizes only explicitly enumerated source identities, source-bound native
 request/result digests and the exact compiled-definition suffix. It supplies the

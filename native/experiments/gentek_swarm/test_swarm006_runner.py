@@ -34,7 +34,125 @@ def registration_fixture():
     return registration, receipt
 
 
+def header_refusal_fixture():
+    # Small representation of the actual native preflight refusal contract;
+    # values come from an exhausted max-bytes request, never a passing fixture.
+    owner = {"gentek": "FRAMEWEAVER", "version": 0, "source": "a" * 40, "definition": "definition",
+        "fixture": "workbench_territory", "seed": 605, "width": 3, "height": 1, "origin": [0, 0],
+        "profile": {"name": "industrial", "clutter": 0.35}, "limits": {"work": 2000000, "bytes": 1024},
+        "activation": [[1, 0]], "eligible": [1, 1, 0], "protected": [0, 0, 0], "transition": [0, 0, 0],
+        "context": [0, 0, 0], "neighbor_cells": [3],
+        "neighbors": {"hard": [1], "soft": [], "protected": [], "transition": []}}
+    request = {"frame": copy.deepcopy(owner), "mosaic": copy.deepcopy(owner),
+        "shared_zone": [0, 1, 0], "options": {"negotiated_recovery": True, "rounds": 4}}
+    request["mosaic"]["gentek"] = "MOSAIC"
+    header = copy.deepcopy(request); header["shared_zone"] = []
+    for side in ("frame", "mosaic"):
+        for key in ("activation", "eligible", "protected", "transition", "context", "neighbor_cells"):
+            header[side][key] = []
+        header[side]["neighbors"] = {key: [] for key in ("hard", "soft", "protected", "transition")}
+    empty = {"gentek": "FRAMEWEAVER", "implementation": "", "definition": "", "source": "", "seed": 0,
+        "status": "complete", "termination": "complete", "request_digest": "0000000000000000",
+        "material_digest": "0000000000000000", "digest": "0000000000000000", "width": 0, "height": 0,
+        "work": 0, "candidates": 0, "solver_work": 0, "backtracks": -1, "protected_violations": 0,
+        "illegal_overlaps": 0, "unresolved_joints": 0, "metrics": {}, "rejected": {}, "notes": [],
+        "cells": [], "roles": [], "provenance": [], "instances": [], "connectors": [], "attachments": [],
+        "boundary": {"hard": [], "soft": [], "protected": [], "transition": []}}
+    value = {"input": header, "status": "exhausted", "can_apply": False, "source": "a" * 40,
+        "digest": "0000000000000000", "metrics": {"input_header_only": 1, "frame_work": 0, "total_charged_work": 0},
+        "rounds": [], "cells": [], "ledger": [], "rules": [], "obligations": [], "joints": [], "rejections": [],
+        "damage_derivative": None, "original_frame": {"core": copy.deepcopy(empty), "result": copy.deepcopy(empty),
+            "slots": [], "reservation_rejections": [], "source_feasibility": []}}
+    return request, value
+
+
 class EvidenceTests(unittest.TestCase):
+    def test_header_refusal_preserves_full_original_request(self):
+        request, value = header_refusal_fixture(); original = copy.deepcopy(request)
+        self.assertEqual("bounded_header_refusal", runner.verify_native_input(request, value))
+        self.assertEqual(original, request)
+        row = runner.reduce_result(value)
+        self.assertFalse(row["can_apply"])
+        self.assertIsNone(row["still_required"])
+        self.assertEqual(0, row["native_material_cells"])
+
+    def test_header_refusal_cannot_change_identity_limits_or_input_shape(self):
+        request, value = header_refusal_fixture()
+        mutations = [(("input", "frame", "source"), "forged"), (("input", "mosaic", "seed"), 606),
+            (("input", "frame", "limits", "work"), 2000001), (("input", "frame", "limits", "bytes"), 1024.0),
+            (("input", "mosaic", "profile", "clutter"), 0.5), (("input", "options", "rounds"), 3),
+            (("input", "frame", "origin"), [1, 0]), (("input", "frame", "eligible"), [0]),
+            (("input", "frame", "neighbors", "hard"), [1]), (("input", "shared_zone"), [0]),
+            (("source",), "forged"), (("digest",), "1111111111111111")]
+        for path, replacement in mutations:
+            changed = copy.deepcopy(value); parent = changed
+            for key in path[:-1]: parent = parent[key]
+            parent[path[-1]] = replacement
+            with self.subTest(path=path), self.assertRaises(ValueError): runner.verify_native_input(request, changed)
+        changed = copy.deepcopy(value); del changed["input"]["frame"]["activation"]
+        with self.assertRaises(ValueError): runner.verify_native_input(request, changed)
+
+    def test_header_refusal_cannot_hide_work_outputs_or_authorization(self):
+        request, value = header_refusal_fixture()
+        bad = []
+        for status in ("complete", "blocked", "cancelled"):
+            changed = copy.deepcopy(value); changed["status"] = status; bad.append(changed)
+        for flag in (None, 0, True, 2):
+            changed = copy.deepcopy(value); changed["metrics"]["input_header_only"] = flag; bad.append(changed)
+        changed = copy.deepcopy(value); changed["can_apply"] = True; bad.append(changed)
+        changed = copy.deepcopy(value); changed["metrics"]["frame_work"] = 1; bad.append(changed)
+        for name in ("rounds", "cells", "ledger", "rules", "obligations", "joints", "rejections"):
+            changed = copy.deepcopy(value); changed[name] = [0]; bad.append(changed)
+        changed = copy.deepcopy(value); changed["damage_derivative"] = {}; bad.append(changed)
+        changed = copy.deepcopy(value); changed["original_frame"]["result"]["cells"] = [3]; bad.append(changed)
+        changed = copy.deepcopy(value); changed["original_frame"]["core"]["work"] = 1; bad.append(changed)
+        changed = copy.deepcopy(value); changed["original_frame"]["slots"] = [{}]; bad.append(changed)
+        for changed in bad:
+            with self.assertRaises(ValueError): runner.verify_native_input(request, changed)
+
+    def test_full_native_input_remains_exact_without_header_exception(self):
+        request, value = header_refusal_fixture()
+        value["input"] = copy.deepcopy(request); value["metrics"]["input_header_only"] = 0
+        self.assertEqual("full_exact", runner.verify_native_input(request, value))
+        value["input"]["frame"]["limits"]["bytes"] = 1024.0
+        with self.assertRaises(ValueError): runner.verify_native_input(request, value)
+
+    def test_rejected_native_header_still_retains_original_request_and_response(self):
+        request, value = header_refusal_fixture()
+        value["input"]["frame"]["seed"] = 606
+        response_bytes = json.dumps(value).encode() + b"\n"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary); build = root / "build"; build.mkdir()
+            binary = build / "unused-binary"; binary.write_bytes(b"not executed")
+            receipt = {"result": "PASS", "variant": "swarm006", "binary": str(binary),
+                "binary_sha256": runner.sha(binary), "source_root": str(root / "source"),
+                "source_commit": "a" * 40, "source_dirty": "", "source_inputs": {}}
+            (build / "build.json").write_text(json.dumps(receipt))
+            args = SimpleNamespace(build=build, out=root / "evidence", registration=None,
+                suite="development", policy=["recovery+memory_budget@4"], controls=False, timeout=None)
+            def execute(command, log, timeout):
+                destination = Path(command[2]); destination.mkdir()
+                (destination / "request-envelope.json").write_text(json.dumps({"input": request}))
+                (destination / "response-native.json").write_bytes(response_bytes)
+                log.write_text("malformed header fixture\n")
+                return {"returncode": 0, "cancelled": False, "timed_out": False}
+            case = {"fixture": "island", "profile": "industrial", "seed": 605}
+            with mock.patch.object(runner, "cases", return_value=[case]), \
+                    mock.patch.object(runner, "execute", side_effect=execute), \
+                    mock.patch.object(runner, "source_inputs", return_value={}), mock.patch("builtins.print"):
+                self.assertEqual(1, runner.run(args))
+            manifest = json.loads((args.out / "manifest.json").read_text()); row = manifest["records"][0]
+            self.assertEqual("FAIL", manifest["result"])
+            self.assertFalse(row["can_apply"])
+            self.assertIn("evidence_error", row)
+            self.assertEqual(hashlib.sha256(runner.canonical(request)).hexdigest(), row["request_sha256"])
+            directory = args.out / row["id"]
+            stored_request = row["storage"]["request.json"]
+            self.assertEqual(request, json.loads(gzip.decompress((directory / stored_request["file"]).read_bytes())))
+            stored_response = row["storage"]["response-native.json"]
+            self.assertEqual(response_bytes, gzip.decompress((directory / stored_response["file"]).read_bytes()))
+            self.assertEqual(hashlib.sha256(response_bytes).hexdigest(), stored_response["raw_sha256"])
+
     def test_registration_rejects_revealed_development_seeds(self):
         registration, receipt = registration_fixture()
         for seed in runner.FRESH_EXCLUDED_SEEDS:

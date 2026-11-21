@@ -285,6 +285,51 @@ def validate_registration(value: dict, receipt: dict, runner_sha256: str) -> tup
     return selected_cases, selected_policies
 
 
+def verify_native_input(request: dict, value: dict) -> str:
+    """Match the full request, or the native bounded preflight-refusal header.
+
+    A refusal may omit only the vectors that assemble() deliberately avoids
+    copying before input admission. It never supplies material or authorization.
+    All scalar identity, profile, option and limit fields remain exact.
+    """
+    flag = value.get("metrics", {}).get("input_header_only")
+    if flag is not None and (type(flag) is not int or flag not in (0, 1)):
+        raise ValueError("Invalid native input-header receipt")
+    if flag != 1:
+        if canonical(request) != canonical(value["input"]): raise ValueError("Native input changed during execution")
+        return "full_exact"
+    if value.get("status") not in ("exhausted", "invalid") or value.get("can_apply") is not False:
+        raise ValueError("Header-only input is not a nonauthorizing preflight refusal")
+    if value.get("source") != request["frame"]["source"] or value.get("digest") != "0000000000000000":
+        raise ValueError("Header refusal changed source or supplied a composition digest")
+    if canonical(value.get("metrics")) != canonical({"frame_work": 0, "input_header_only": 1, "total_charged_work": 0}):
+        raise ValueError("Header refusal supplied work or extra outcome receipts")
+    for key in ("rounds", "cells", "ledger", "rules", "obligations", "joints", "rejections"):
+        if value.get(key) != []: raise ValueError("Header refusal supplied native output or history")
+    if value.get("damage_derivative") is not None:
+        raise ValueError("Header refusal supplied damage output")
+    empty_result = {"gentek": "FRAMEWEAVER", "implementation": "", "definition": "", "source": "",
+        "seed": 0, "status": "complete", "termination": "complete", "request_digest": "0000000000000000",
+        "material_digest": "0000000000000000", "digest": "0000000000000000", "width": 0, "height": 0,
+        "work": 0, "candidates": 0, "solver_work": 0, "backtracks": -1, "protected_violations": 0,
+        "illegal_overlaps": 0, "unresolved_joints": 0, "metrics": {}, "rejected": {}, "notes": [],
+        "cells": [], "roles": [], "provenance": [], "instances": [], "connectors": [], "attachments": [],
+        "boundary": {key: [] for key in ("hard", "soft", "protected", "transition")}}
+    empty_frame = {"core": empty_result, "result": empty_result, "slots": [], "reservation_rejections": []}
+    if "source_feasibility" in value.get("original_frame", {}): empty_frame["source_feasibility"] = []
+    if canonical(value.get("original_frame")) != canonical(empty_frame):
+        raise ValueError("Header refusal supplied a native plan or changed its empty-state receipt")
+    expected = copy.deepcopy(request)
+    expected["shared_zone"] = []
+    for owner in ("frame", "mosaic"):
+        for key in ("activation", "eligible", "protected", "transition", "context", "neighbor_cells"):
+            expected[owner][key] = []
+        expected[owner]["neighbors"] = {key: [] for key in ("hard", "soft", "protected", "transition")}
+    if canonical(expected) != canonical(value["input"]):
+        raise ValueError("Native refusal header changed identity/limits or omitted unexpected data")
+    return "bounded_header_refusal"
+
+
 def cell_sha(cells: list) -> str:
     if any(type(cell) is not int or not 0 <= cell <= 65535 for cell in cells):
         raise ValueError("Invalid material plane")
@@ -540,19 +585,25 @@ def run(args) -> int:
         try:
             raw = destination / "response-native.json"
             if raw.exists():
-                value = json.loads(raw.read_text())
-                row.update(reduce_result(value))
                 envelope = json.loads((destination / "request-envelope.json").read_text())
-                if envelope["input"] != value["input"]: raise ValueError("Native input changed during execution")
                 atomic_json(destination / "request.json", envelope["input"])
                 row["request_sha256"] = hashlib.sha256(canonical(envelope["input"])).hexdigest()
+                value = json.loads(raw.read_text())
+                row.update(reduce_result(value))
+                row["input_representation"] = verify_native_input(envelope["input"], value)
                 # Nonzero exits never become success because a child left plausible JSON.
                 if execution["returncode"] != 0 and row["can_apply"]:
                     raise ValueError("Failed child left an authorizing result")
                 if (destination / "controls.json").exists():
                     row["controls"] = json.loads((destination / "controls.json").read_text())
                     verify_recovery_controls(value, destination, row["controls"])
-            row["storage"] = {}
+        except (ValueError, KeyError, TypeError, OSError) as error:
+            row["evidence_error"] = str(error)
+            row["can_apply"] = False
+        # A malformed or rejected response still keeps the original request and
+        # every response byte with hashes. Failed validation never erases data.
+        row["storage"] = {}
+        try:
             if destination.exists():
                 for path in sorted(destination.glob("*.json")):
                     row["storage"][path.name] = compress_json(path)

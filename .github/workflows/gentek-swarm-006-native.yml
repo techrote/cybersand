@@ -100,11 +100,16 @@ jobs:
           runner=native/experiments/gentek_swarm/run_swarm006.py
           python3 "$runner" run --build "$RUNNER_TEMP/swarm004-build" --out "$RUNNER_TEMP/swarm006-evidence/swarm004" --suite development --policy off@2 --controls
           python3 "$runner" run --build "$RUNNER_TEMP/swarm005-build" --out "$RUNNER_TEMP/swarm006-evidence/swarm005" --suite development --controls
-          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/candidate" --suite development --policy off@2 --policy recovery@0 --policy recovery@1 --policy recovery@2 --policy recovery@3 --policy recovery@4 --controls
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/candidate" --suite development --policy off@2 --policy terminal_only@2 --policy receptor_only@2 --policy both@2 --policy recovery@0 --policy recovery@1 --policy recovery@2 --policy recovery@3 --policy recovery@4 --policy recovery+no_offers@2 --policy recovery+frame_frozen@2 --policy recovery+mosaic_frozen@2 --policy recovery+hard_only@2 --policy recovery+fixed@2 --controls
           python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/reverse" --suite development --policy recovery+reverse@2
           python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/stress" --suite stress
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/stress-zero-round" --suite stress --policy recovery@0 --policy recovery+cancel@0 --policy recovery+frame_budget@0 --policy recovery+mosaic_budget@0 --policy recovery+solver_budget@0 --policy recovery+memory_budget@0
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/owner-resource-refusals" --suite owner --policy recovery+cancel@2 --policy recovery+frame_budget@2 --policy recovery+mosaic_budget@2 --policy recovery+solver_budget@2 --policy recovery+memory_budget@2
           python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/swarm004" --after "$RUNNER_TEMP/swarm006-evidence/swarm005" --before-policy off@2 --after-policy off@2 --out "$RUNNER_TEMP/swarm006-evidence/swarm004-sw005-off.json"
           python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/swarm005" --after "$RUNNER_TEMP/swarm006-evidence/candidate" --before-policy off@2 --after-policy off@2 --out "$RUNNER_TEMP/swarm006-evidence/swarm005-sw006-off.json"
+          for policy in terminal_only receptor_only both; do
+            python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/swarm005" --after "$RUNNER_TEMP/swarm006-evidence/candidate" --before-policy "$policy@2" --after-policy "$policy@2" --out "$RUNNER_TEMP/swarm006-evidence/swarm005-sw006-$policy.json"
+          done
           python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/candidate" --after "$RUNNER_TEMP/swarm006-evidence/reverse" --before-policy recovery@2 --after-policy recovery+reverse@2 --exact --out "$RUNNER_TEMP/swarm006-evidence/reversal.json"
       - name: Retain full native requests, responses, source and work receipts
         if: always()
