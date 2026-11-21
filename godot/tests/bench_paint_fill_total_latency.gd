@@ -198,6 +198,9 @@ func run() -> void:
 	var result: Dictionary={
 		"schema":"paint-fill-total-latency-v1","status":"passed" if failures.is_empty() else "failed",
 		"scenario":scenario,"mode":mode,"rendered":true,
+		"active_graphics_adapter":RenderingServer.get_video_adapter_name(),
+		"rendering_driver":RenderingServer.get_current_rendering_driver_name(),
+		"display_server":DisplayServer.get_name(),
 		"requested_cells":requested,"applied":int(receipt.get("applied",0)),
 		"source_native":true,"source_size":region.size,
 		"capture_count":captures.size(),
