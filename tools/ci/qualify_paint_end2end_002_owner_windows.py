@@ -183,6 +183,26 @@ def run(args: argparse.Namespace) -> int:
     try:
         report["custody"] = verify_setup(args)
         record(report_path, report)
+        # A fresh immutable source checkout has no Godot import/class cache.
+        # Build it from the same exact-source DLL before running any fixture.
+        import_root = args.output / "userdata" / "import"
+        (import_root / "Roaming").mkdir(parents=True, exist_ok=True)
+        (import_root / "Local").mkdir(parents=True, exist_ok=True)
+        import_env = os.environ.copy()
+        import_env["APPDATA"] = str(import_root / "Roaming")
+        import_env["LOCALAPPDATA"] = str(import_root / "Local")
+        import_env.pop("CYBERSAND_PAINT_BURST_SLICES", None)
+        import_env.pop("CYBERSAND_PAINT_BULK_CAPTURE", None)
+        imported = subprocess.run(
+            [str(args.godot), "--headless", "--editor", "--path", str(ROOT / "godot"), "--import"],
+            env=import_env, cwd=ROOT, capture_output=True, text=True,
+            errors="replace", timeout=300)
+        import_log = args.output / "godot-import.log"
+        import_log.write_text(imported.stdout + "\n" + imported.stderr, encoding="utf-8")
+        report["import"] = {"exit_code": imported.returncode,
+                            "log_sha256": sha256(import_log), "log": import_log.name}
+        record(report_path, report)
+        require(imported.returncode == 0, "Godot exact-source editor import failed")
         for scenario in scenarios:
             completed = []
             for index, mode in enumerate(ORDER, start=1):
