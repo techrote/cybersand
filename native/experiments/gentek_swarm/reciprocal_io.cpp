@@ -233,6 +233,8 @@ void write_composition_json(const std::string& path, const Composition& c) {
       << ",\"mosaic_adaptation\":" << (options.mosaic_adaptation ? "true" : "false")
       << ",\"optional_negotiation\":" << (options.optional_negotiation ? "true" : "false")
       << ",\"native_mosaic_bearing\":" << (options.native_mosaic_bearing ? "true" : "false")
+      << ",\"supported_native_receptors\":" << (options.supported_native_receptors ? "true" : "false")
+      << ",\"compact_native_termination\":" << (options.compact_native_termination ? "true" : "false")
       << ",\"final_validation\":" << (options.final_validation ? "true" : "false")
       << ",\"shared_extent\":" << options.shared_extent
       << ",\"orientation_preference\":" << options.orientation_preference << "}}";
@@ -273,6 +275,16 @@ void write_composition_json(const std::string& path, const Composition& c) {
             point(s, replacement.point); s << ",\"before\":" << static_cast<unsigned>(replacement.before)
               << ",\"after\":" << static_cast<unsigned>(replacement.after) << ",\"rule\":";
             str(s, replacement.rule); s << '}';
+        });
+        stream << ",\"mosaic_supported_receptor_work\":" << round.mosaic_supported_receptor_work
+               << ",\"mosaic_supported_receptors\":";
+        array(stream, round.mosaic_supported_receptors, [](auto& s, const SupportedNativeReceptor& r) {
+            s << "{\"slot\":" << r.slot << ",\"connector\":" << r.connector
+              << ",\"source_instance\":" << r.source_instance
+              << ",\"receiving_instance\":" << r.receiving_instance
+              << ",\"port_id\":" << r.port_id << ",\"root\":"; point(s, r.root);
+            s << ",\"contact\":"; point(s, r.contact); s << ",\"backing\":"; point(s, r.backing);
+            s << ",\"facing\":"; point(s, r.facing); s << '}';
         });
         stream << ",\"mosaic_trace\":"; resilience_trace(stream, round.mosaic_trace);
         stream << '}';
