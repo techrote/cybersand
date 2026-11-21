@@ -454,18 +454,19 @@ $(BUILD_DIR)/test_suspended_arcology_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE
 
 # Independent no-argument suites share make's existing jobserver with builds.
 # Phony executions also run for warm binaries; every showcase must pass before
-# the nine ordered worldgen tests. CI groups each target's complete output.
+# the nine ordered worldgen tests. Write raw output before grouped replay so a
+# watchdog kill retains flushed diagnostics even while make buffers the target.
 GENTEK_SHOWCASE_TEST_RUNS := $(addsuffix .run,$(GENTEK_SHOWCASE_TEST_BINS))
 GENTEK_SHOWCASE_SANITIZED_RUNS := $(addsuffix .run,$(GENTEK_SHOWCASE_SANITIZED_BINS))
 .PHONY: $(GENTEK_SHOWCASE_TEST_RUNS) $(GENTEK_SHOWCASE_SANITIZED_RUNS)
 
 $(GENTEK_SHOWCASE_TEST_RUNS): %.run: %
 	@echo "Running $<"
-	@"$<"
+	@set -eu; log="$(BUILD_DIR)/worldgen-showcase-logs/$(notdir $<).log"; mkdir -p "$${log%/*}"; printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\n' "$${GITHUB_SHA:-unqualified}" "$${GITHUB_RUN_ID:-unqualified}" "$${GITHUB_RUN_ATTEMPT:-unqualified}" "$(notdir $<)" > "$$log"; status=0; "$<" >> "$$log" 2>&1 || status=$$?; capture=0; cat "$$log" || capture=$$?; if [ "$$status" -ne 0 ]; then exit "$$status"; fi; exit "$$capture"
 
 $(GENTEK_SHOWCASE_SANITIZED_RUNS): %.run: %
 	@echo "Running sanitized $<"
-	@ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$<"
+	@set -eu; log="$(BUILD_DIR)/worldgen-showcase-logs/$(notdir $<).log"; mkdir -p "$${log%/*}"; printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\n' "$${GITHUB_SHA:-unqualified}" "$${GITHUB_RUN_ID:-unqualified}" "$${GITHUB_RUN_ATTEMPT:-unqualified}" "$(notdir $<)" > "$$log"; status=0; ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$<" >> "$$log" 2>&1 || status=$$?; capture=0; cat "$$log" || capture=$$?; if [ "$$status" -ne 0 ]; then exit "$$status"; fi; exit "$$capture"
 
 gentek-showcases-test: $(GENTEK_SHOWCASE_TEST_RUNS)
 

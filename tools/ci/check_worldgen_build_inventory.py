@@ -85,9 +85,15 @@ def expected_commands(sanitized: bool) -> dict[str, list[str]]:
 
 
 def showcase_command(binary: str, sanitized: bool) -> list[str]:
-    environment = (["ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1}",
-                    "UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1}"] if sanitized else [])
-    return [*environment, binary]
+    environment = ('ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} '
+                   'UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} ' if sanitized else '')
+    name = Path(binary).name
+    return shlex.split(f'set -eu; log="build/worldgen-showcase-logs/{name}.log"; mkdir -p "${{log%/*}}"; '
+                       "printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\\n' "
+                       '"${GITHUB_SHA:-unqualified}" "${GITHUB_RUN_ID:-unqualified}" '
+                       f'"${{GITHUB_RUN_ATTEMPT:-unqualified}}" "{name}" > "$log"; status=0; '
+                       f'{environment}"{binary}" >> "$log" 2>&1 || status=$?; capture=0; '
+                       'cat "$log" || capture=$?; if [ "$status" -ne 0 ]; then exit "$status"; fi; exit "$capture"')
 
 
 def inspect_commands(text: str, sanitized: bool) -> dict:
@@ -146,6 +152,8 @@ def inspect_commands(text: str, sanitized: bool) -> dict:
     require(main_tests == required_main, "Nine-main-test inventory/order changed")
     return {"compile_link_commands":compile_commands,
             "required_showcase_tests":required_showcases, "ordered_main_tests":main_tests,
+            "required_showcase_logs":[f"worldgen-showcase-logs/{Path(binary).name}.log"
+                                      for binary in required_showcases],
             "execution_count":len(showcases) + len(main_tests),
             "object_count":sum(output.endswith(".o") for output in outputs),
             "binary_count":sum(not output.endswith(".o") for output in outputs)}
@@ -186,7 +194,8 @@ def check(root: Path) -> dict:
         "scope":"forced cold dry-run flags/build/showcase union/ordered main-tail equivalence; no execution",
         "execution_contract":{"showcases":"seven independent phony targets sharing make's build jobserver",
                               "main_tests":"nine ordered tests after all seven showcases pass",
-                              "ci_jobs":2, "ci_output_sync":"target"},
+                              "ci_jobs":2, "ci_output_sync":"target",
+                              "showcase_output":"raw combined files before replay; source/run/attempt/binary header"},
         "source_revision":subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True,
                                                    timeout=watchdog_seconds("operation_seconds")).strip(),
         "makefile_sha256":hashlib.sha256((root / "Makefile").read_bytes()).hexdigest(),

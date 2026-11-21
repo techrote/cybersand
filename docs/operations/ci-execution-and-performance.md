@@ -118,10 +118,20 @@ and benchmark modes remain outside these invocations.
 
 All seven showcases must succeed before the nine principal test recipes run in
 their original order. The showcase completion order is intentionally independent.
-`--output-sync=target` keeps each target's diagnostic output together. A failed
-prerequisite prevents successful aggregate completion; an already-running peer
-may finish while Make unwinds. The original outer watchdog and descendant cleanup
-remain responsible for a hung or cancelled peer, and incomplete work cannot pass
+`--output-sync=target` keeps each target's diagnostic output together. Before
+replaying output to Make, each showcase writes its combined raw stdout/stderr to
+`build/worldgen-showcase-logs/<binary>.log`. This preserves flushed diagnostics
+when a watchdog or cancellation terminates Make before its grouped buffer is
+printed. Native artifacts retain these files on success and failure. Each file
+has a source/run/attempt/binary header; the reducer requires all fourteen normal
+and sanitized logs with the current context and original hashes. Missing, stale,
+unexpected or header-only logs cannot qualify. Local executions without GitHub
+identity are explicitly marked unqualified.
+
+A failed prerequisite prevents successful aggregate completion; an already-running
+peer may finish while Make unwinds. The original outer watchdog and descendant
+cleanup remain responsible for a hung or cancelled peer. The original test exit
+takes precedence over an output replay failure, and incomplete work cannot pass
 the Native evidence reducer.
 
 The [worldgen build inventory](../../tools/ci/check_worldgen_build_inventory.py)

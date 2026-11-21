@@ -13,6 +13,7 @@ import time
 
 from execution_policy import identity as execution_policy_identity, watchdog_seconds
 from native_execution_policy import COMMANDS, command_timeout_seconds, family_timeout_seconds
+from check_worldgen_build_inventory import SHOWCASES
 
 ROOT = Path(__file__).resolve().parents[2]
 SUITES = frozenset({"tsan", "native-normal", "asan-ubsan", "worldgen", "soliding-normal", "soliding-asan"})
@@ -35,6 +36,8 @@ INPUTS = {
 }
 EXIT_FILES = {"family": "family-exit-code.txt", "log_capture": "log-capture-exit-code.txt"}
 STAGE_OUTPUTS = frozenset({"stage3b-validation-synthetic-smoke.json", "stage3b-validation-plan-smoke.json"})
+SHOWCASE_OUTPUTS = frozenset(f"worldgen-showcase-logs/test_{name}{suffix}.log"
+                             for name in SHOWCASES for suffix in ("", "_sanitized"))
 
 
 
@@ -184,11 +187,12 @@ def validate_command_outputs(folder, suite, inventory):
 
 def scientific_inventory(root):
     paths = list(root.glob("stage3b-validation-*.json"))
-    physics = root / "physics-cli-validation"
-    require(not physics.is_symlink(), "Physics evidence directory is a symlink")
-    if physics.exists():
-        require(physics.is_dir(), "Physics evidence path is not a directory")
-        paths.extend(physics.rglob("*"))
+    for name in ("physics-cli-validation", "worldgen-showcase-logs"):
+        directory = root / name
+        require(not directory.is_symlink(), "Scientific evidence directory is a symlink")
+        if directory.exists():
+            require(directory.is_dir(), "Scientific evidence path is not a directory")
+            paths.extend(directory.rglob("*"))
     inventory = {}
     for path in sorted(paths):
         require(not path.is_symlink(), "Scientific output contains a symlink")
@@ -200,7 +204,7 @@ def scientific_inventory(root):
     return inventory
 
 
-def validate_scientific_outputs(root, suite, inventory):
+def validate_scientific_outputs(root, suite, inventory, *, expected_source=None, run_id=None, run_attempt=None):
     require(isinstance(inventory, dict), "Scientific output inventory is not an object")
     for path, value in inventory.items():
         require(isinstance(path, str) and isinstance(value, dict)
@@ -208,13 +212,23 @@ def validate_scientific_outputs(root, suite, inventory):
                 and re.fullmatch(r"[0-9a-f]{64}", value.get("sha256", "")),
                 "Scientific output identity is malformed")
     if suite == "worldgen":
+        require(isinstance(expected_source, str) and re.fullmatch(r"[0-9a-f]{40}", expected_source)
+                and type(run_id) is int and run_id > 0 and type(run_attempt) is int and run_attempt > 0,
+                "Worldgen log verification requires explicit source/run/attempt context")
         required = {"physics-cli-validation/validation.log", "physics-cli-validation/sanitized/results.json"}
         require(required <= set(inventory), "Required physics results or validation log are absent")
+        require(SHOWCASE_OUTPUTS <= set(inventory), "Required fourteen raw showcase logs are absent")
+        for name in sorted(SHOWCASE_OUTPUTS):
+            header = (f"source_sha={expected_source} run_id={run_id} run_attempt={run_attempt} "
+                      f"binary={Path(name).stem}\n").encode()
+            raw = (root / name).read_bytes()
+            require(raw.startswith(header) and len(raw) > len(header),
+                    "Showcase log source/run/attempt/binary identity differs or raw output is absent: " + name)
         result = load_json((root / "physics-cli-validation/sanitized/results.json").read_text(encoding="utf-8"))
         rows = result.get("invocations")
         require(isinstance(rows, list) and rows, "Physics invocation output inventory is absent")
         names = set()
-        expected = set(required)
+        expected = set(required) | SHOWCASE_OUTPUTS
         # This checks output custody from the producing report, not its scientific assertions.
         for row in rows:
             require(isinstance(row, dict) and isinstance(row.get("name"), str)
@@ -226,7 +240,7 @@ def validate_scientific_outputs(root, suite, inventory):
                 require(path in inventory and inventory[path]["sha256"] == row.get(field + "_sha256"),
                         "Original physics invocation output is absent or differs")
                 expected.add(path)
-        require(set(inventory) == expected, "Unexpected or missing physics scientific output")
+        require(set(inventory) == expected, "Unexpected or missing worldgen scientific output")
     elif suite == "soliding-normal":
         require(set(inventory) == STAGE_OUTPUTS, "Required Stage3B scientific outputs are absent or unexpected")
     else:
@@ -271,7 +285,8 @@ def record_shard(root, output, suite, outcome, expected_source, run_id, run_atte
         receipt["errors"].append("execution outputs: " + type(error).__name__ + ": " + str(error))
     try:
         receipt["scientific_outputs"] = scientific_inventory(output.parent)
-        validate_scientific_outputs(output.parent, suite, receipt["scientific_outputs"])
+        validate_scientific_outputs(output.parent, suite, receipt["scientific_outputs"],
+                                    expected_source=expected_source, run_id=run_id, run_attempt=run_attempt)
     except Exception as error:
         receipt["errors"].append("scientific output: " + type(error).__name__ + ": " + str(error))
     if outcome != "success":
@@ -337,9 +352,11 @@ def verify_evidence(directory, identity, expected_source, run_id, run_attempt, p
             validate_command_outputs(path.parent, suite, command_outputs)
             output_root = path.parent.parent.parent
             outputs = scientific_inventory(output_root)
-            validate_scientific_outputs(output_root, suite, r.get("scientific_outputs"))
+            validate_scientific_outputs(output_root, suite, r.get("scientific_outputs"),
+                                        expected_source=expected_source, run_id=run_id, run_attempt=run_attempt)
             require(r["scientific_outputs"] == outputs, "Original scientific output inventory/bytes differ")
-            validate_scientific_outputs(output_root, suite, outputs)
+            validate_scientific_outputs(output_root, suite, outputs,
+                                        expected_source=expected_source, run_id=run_id, run_attempt=run_attempt)
             log = path.parent / "run.log"
             require(log.is_file() and not log.is_symlink(), "Original Native family log is absent or a symlink")
             raw = log.read_bytes()

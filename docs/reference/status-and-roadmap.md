@@ -16,7 +16,9 @@ The [bounded showcase scheduling change](../operations/ci-execution-and-performa
 runs seven independent worldgen showcases through the existing two-job Make
 budget. All seven remain required before the nine principal tests. The original
 compiler flags, scientific fixtures, sixteen executables and sanitizer coverage
-remain; target-grouped output preserves individual failure diagnostics. The
+remain. Raw per-showcase output is retained before grouped replay, including
+flushed partial output from hung or cancelled peers; source/run/attempt checks
+reject stale or incomplete log inventories. The
 dedicated CI-only PR records source-matched execution, controlled performance
 and independent review before any merge or turnaround claim.
 

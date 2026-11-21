@@ -232,6 +232,7 @@ jobs:
           path: |
             build/native-parallel/
             build/physics-cli-validation/
+            build/worldgen-showcase-logs/
             build/stage3b-validation-*.json
           if-no-files-found: error
           retention-days: 90

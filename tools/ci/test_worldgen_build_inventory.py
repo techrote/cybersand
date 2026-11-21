@@ -144,7 +144,9 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
 
     def test_duplicate_or_missing_showcase_cannot_satisfy_the_main_tail(self):
         serial, bounded = self.streams("worldgen-test")
-        marker = 'echo "Running build/test_megatruss_station"\n"build/test_megatruss_station"\n'
+        lines = bounded.splitlines()
+        index = lines.index('echo "Running build/test_megatruss_station"')
+        marker = "\n".join(lines[index:index + 2]) + "\n"
         for replacement in ("", marker * 2):
             with self.subTest(replacement=replacement), self.assertRaisesRegex(
                     ValueError, "Main tests start before all seven|duplicate showcase"):
@@ -152,7 +154,9 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
 
     def test_showcase_must_be_linked_before_it_runs(self):
         serial, bounded = self.streams("worldgen-test")
-        marker = 'echo "Running build/test_megatruss_station"\n"build/test_megatruss_station"\n'
+        lines = bounded.splitlines()
+        index = lines.index('echo "Running build/test_megatruss_station"')
+        marker = "\n".join(lines[index:index + 2]) + "\n"
         with self.assertRaisesRegex(ValueError, "Showcase execution precedes its binary"):
             inventory.compare(serial, marker + bounded.replace(marker, ""), False)
 
@@ -232,7 +236,7 @@ event("end")
         env = os.environ.copy()
         for key in ("MAKEFLAGS", "MFLAGS", "ASAN_OPTIONS", "UBSAN_OPTIONS"):
             env.pop(key, None)
-        return env | extra
+        return env | {"GITHUB_SHA":"a" * 40, "GITHUB_RUN_ID":"1234", "GITHUB_RUN_ATTEMPT":"1"} | extra
 
     def execute(self, sanitized=False, **environment):
         result = subprocess.run(self.command(sanitized), cwd=self.root, env=self.environment(**environment),
@@ -242,7 +246,7 @@ event("end")
     def rows(self):
         return [json.loads(line) for line in self.events.read_text().splitlines()] if self.events.exists() else []
 
-    def assert_contract(self, result, rows, sanitized=False, warm=False):
+    def assert_contract(self, result, rows, sanitized=False, warm=False, qualified=True):
         self.assertEqual(result.returncode, 0, result.stdout)
         compile_rows = [row for row in rows if row["kind"] == "compile" and row["phase"] == "start"]
         expected = inventory.expected_commands(sanitized)
@@ -276,13 +280,22 @@ event("end")
         for index in range(0, len(output), 3):
             name = output[index].split(" ", 1)[1]
             self.assertEqual(output[index:index + 3], [f"CONTROL-{part} {name}" for part in ("BEGIN", "ERR", "END")])
+        logs = self.root / "build/worldgen-showcase-logs"
+        expected_logs = {f"test_{name}{mode}.log" for name in inventory.SHOWCASES
+                         for mode in ("", "_sanitized") if (self.root / f"build/test_{name}{mode}").is_file()}
+        self.assertEqual({path.name for path in logs.iterdir()}, expected_logs)
+        source, run, attempt = ("a" * 40, "1234", "1") if qualified else ("unqualified",) * 3
+        for binary in showcases:
+            header = f"source_sha={source} run_id={run} run_attempt={attempt} binary={Path(binary).name}\n"
+            self.assertEqual((logs / (Path(binary).name + ".log")).read_text(), header +
+                             "".join(f"CONTROL-{part} {binary}\n" for part in ("BEGIN", "ERR", "END")))
 
     def test_actual_graph_shares_two_jobs_groups_output_and_runs_warm_tests_again(self):
         for sanitized in (False, True):
             with self.subTest(sanitized=sanitized):
                 self.reset()
-                result, rows = self.execute(sanitized)
-                self.assert_contract(result, rows, sanitized)
+                result, rows = self.execute(sanitized, GITHUB_SHA="", GITHUB_RUN_ID="", GITHUB_RUN_ATTEMPT="")
+                self.assert_contract(result, rows, sanitized, qualified=False)
                 if sanitized:
                     for row in rows:
                         if row["kind"] == "test" and any(name in row["name"] for name in inventory.SHOWCASES):
@@ -291,12 +304,32 @@ event("end")
                 suffix = "_sanitized" if sanitized else ""
                 for name in inventory.SHOWCASES:
                     (self.root / f"build/test_{name}{suffix}.run").write_text("stale run marker")
+                    (self.root / f"build/worldgen-showcase-logs/test_{name}{suffix}.log").write_text("stale raw log")
                 self.reset()
                 result, rows = self.execute(sanitized, ASAN_OPTIONS="detect_leaks=0:strict_string_checks=1",
                                              UBSAN_OPTIONS="halt_on_error=1")
                 self.assert_contract(result, rows, sanitized, warm=True)
                 self.assertTrue(all(row["asan"] == "detect_leaks=0:strict_string_checks=1" and
                                     row["ubsan"] == "halt_on_error=1" for row in rows))
+
+    def test_replay_failure_fails_and_cannot_mask_an_original_test_failure(self):
+        result, _ = self.execute()
+        self.assertEqual(result.returncode, 0, result.stdout)
+        binaries = self.root / "fault-bin"
+        binaries.mkdir()
+        cat = binaries / "cat"
+        cat.write_text("#!/bin/sh\nexit 37\n")
+        cat.chmod(0o755)
+        for failed in (False, True):
+            with self.subTest(original_test_failure=failed):
+                self.reset(**({"fail":"build/test_megatruss_station"} if failed else {}))
+                result, rows = self.execute(PATH=str(binaries) + os.pathsep + os.environ["PATH"])
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(f"build/test_megatruss_station.run] Error {29 if failed else 37}", result.stdout)
+                self.assert_no_main_or_live_peer(rows)
+                raw = (self.root / "build/worldgen-showcase-logs/test_megatruss_station.log").read_text()
+                self.assertIn("CONTROL-BEGIN build/test_megatruss_station\n", raw)
+                self.assertIn("CONTROL-ERR build/test_megatruss_station\n", raw)
 
     def timed(self, label, timeout=10):
         with patch.dict(os.environ, self.environment(), clear=True), redirect_stdout(io.StringIO()):
@@ -337,6 +370,12 @@ event("end")
         self.assertEqual(result.returncode, 0, result.stdout)
         self.reset(fail="build/test_megatruss_station", hang="build/test_seeded_typology_megablock")
 
+    def assert_hung_peer_raw_output_survived(self):
+        binary = "test_seeded_typology_megablock"
+        path = self.root / "build/worldgen-showcase-logs" / (binary + ".log")
+        self.assertEqual(path.read_text(), f"source_sha={'a' * 40} run_id=1234 run_attempt=1 binary={binary}\n"
+                         f"CONTROL-BEGIN build/{binary}\nCONTROL-ERR build/{binary}\n")
+
     def test_failure_with_hanging_peer_times_out_and_reaps_the_peer(self):
         self.prepare_failure_and_hang()
         receipt = self.timed("timeout", timeout=1)
@@ -348,6 +387,7 @@ event("end")
         self.assertEqual([row["phase"] for row in hanging], ["start"])
         self.assertIn(str(hanging[0]["pid"]), receipt["terminated_descendants"])
         self.assert_no_main_or_live_peer(rows)
+        self.assert_hung_peer_raw_output_survived()
 
     def test_cancellation_after_failure_reaps_the_inflight_peer_and_is_incomplete(self):
         self.prepare_failure_and_hang()
@@ -371,6 +411,7 @@ event("end")
             self.assertFalse(receipt["complete"])
             self.assertFalse(receipt["natural_completion"])
             self.assert_no_main_or_live_peer(self.rows())
+            self.assert_hung_peer_raw_output_survived()
         finally:
             if process.poll() is None:
                 process.send_signal(signal.SIGINT)
