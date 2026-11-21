@@ -1,0 +1,84 @@
+name: SCRIPT-HOTPATH-690 independent Web WASM compile portability smoke
+
+on:
+  push:
+    branches: [ci/script-hotpath-690-exact-5cdf41b0]
+    paths: ['.github/workflows/script-hotpath-690-wasm-compile.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: script-hotpath-690-wasm-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    name: Source-matched Web threaded and non-threaded side modules
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/ci/script-hotpath-690-exact-5cdf41b0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      EXPECTED_SOURCE: 5cdf41b0fcc88de647976e93049dec0460138748
+      SCONS_JOBS: '2'
+    steps:
+      - name: Checkout exactly the published CyberSand production source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 5cdf41b0fcc88de647976e93049dec0460138748
+          lfs: false
+      - name: Refuse source mismatch
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE"
+          git diff --exit-code
+      - name: Install source-expected Emscripten 4.0.20
+        timeout-minutes: 45
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch 4.0.20 https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
+          "$RUNNER_TEMP/emsdk/emsdk" install 4.0.20
+          "$RUNNER_TEMP/emsdk/emsdk" activate 4.0.20
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          emcc --version | tee "$RUNNER_TEMP/emsdk-version.txt"
+          grep -q '4.0.20' "$RUNNER_TEMP/emsdk-version.txt"
+      - name: Prepare source-matched godot-cpp and pinned SCons
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir -p "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Compile unthreaded and threaded Web GDExtension modules
+        timeout-minutes: 35
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+        run: |
+          set -euo pipefail
+          source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+          "$RUNNER_TEMP/scons/bin/python" tools/build_web.py --compile-only --profile compat
+          "$RUNNER_TEMP/scons/bin/python" tools/build_web.py --compile-only --profile threaded
+          file build/web-libs/*.wasm
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ("libcybersand_native.web.nothreads.wasm", "libcybersand_native.web.threads.wasm"):
+              file = Path("build/web-libs") / name
+              assert file.is_file() and file.read_bytes()[:4] == b"\\0asm".replace(b"\\0", b"\0"), name
+              print(name, file.stat().st_size)
+          PY
+          sha256sum build/web-libs/*.wasm | tee build/web-libs/sha256sum.txt
+      - name: Retain complete exact-head Web compile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: script-hotpath-wasm-5cdf41b0fcc88de647976e93049dec0460138748-${{ github.run_id }}
+          path: build/web-libs/
+          if-no-files-found: warn
+          retention-days: 30
