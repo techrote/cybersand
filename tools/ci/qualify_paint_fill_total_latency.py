@@ -99,8 +99,9 @@ def run(args):
             require(data.get("rendered") is True and data.get("image_pixel_changed") is True,
                     "Actual updated framebuffer not proved")
             require(data.get("raw_material_pixel_changed") is True
-                    and data.get("changed_interior_samples",0) >= 3,
-                    "Actual native image and at least three changed viewport pixels required")
+                    and data.get("changed_world_screen_samples",0) >= 32
+                    and data.get("world_screen_sample_count",0) >= 256,
+                    "Actual native image and 32 changed WorldView samples required")
             require(data.get("render_attempts",0)>=1
                     and data.get("first_visible_post_draw_usec",-1)>=data.get("first_post_draw_usec",0),
                     "Missing actual first visible draw identity")
