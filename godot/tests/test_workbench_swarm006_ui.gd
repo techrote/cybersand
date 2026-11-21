@@ -172,9 +172,9 @@ func known_recipe()->void:
 		panel.controls.supported_native_receptors.button_pressed=true
 		panel.controls.negotiated_recovery.button_pressed=selected.recovery
 
-func map_name()->String:
-	if RECOVERY_CASES.has(example):return example+"-synthetic-evaluation"
-	return "swarm005-v3-irregular-evaluation" if example=="swarm005_irregular" else "swarm004-interactive-evaluation"
+static func map_name(selected:String)->String:
+	if RECOVERY_CASES.has(selected):return selected+"-synthetic-eval"
+	return "swarm005-v3-irregular-evaluation" if selected=="swarm005_irregular" else "swarm004-interactive-evaluation"
 
 func reciprocal_witness()->Dictionary:
 	var document:Dictionary=panel.document
@@ -439,7 +439,7 @@ func create_map()->void:
 	var regenerated:=await capture()
 	retain_world("regenerated",regenerated.cells)
 	check(regenerated.cells==expected,"same-seed regenerated native construction is exact")
-	bench._name.text=map_name()
+	bench._name.text=map_name(example)
 	var save:=find_button(bench,"Save start [Ctrl+S]")
 	if not check(save!=null,"ordinary Save start button exists"):return
 	await click(save)
@@ -458,7 +458,7 @@ func create_map()->void:
 	completed=true
 
 func reopen_map()->void:
-	bench._name.text=map_name()
+	bench._name.text=map_name(example)
 	await click(find_button(bench,"Load start"))
 	if not await until(settled,"saved map installs in a fresh OS process"):return
 	var actual:=await capture()
@@ -484,6 +484,11 @@ func run()->void:
 	if example.is_empty():example="transaction"
 	if not check(example in ["transaction","reciprocal","swarm005_irregular","swarm005_viaduct"] or RECOVERY_CASES.has(example),"explicit registered authoring example"):
 		quit(1);return
+	# Validate every synthetic label against the real saved-map contract before
+	# spending time on graphical startup or native construction.
+	for selected:String in RECOVERY_CASES:
+		if not check(not Setup._path(map_name(selected)).is_empty(),"valid synthetic saved-map name: "+selected):
+			quit(1);return
 	root.size=Vector2i(1920,1080)
 	if not evidence.is_empty():DirAccess.make_dir_recursive_absolute(evidence)
 	if OS.get_environment("SWARM004_REQUIRE_GRAPHICS")=="1" and not check(DisplayServer.get_name()!="headless","graphical qualification has a real display"):
