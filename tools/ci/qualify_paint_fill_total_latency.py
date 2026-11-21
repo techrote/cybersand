@@ -69,6 +69,7 @@ def run(args):
         log = args.output / f"run-{index:02d}-{mode}.log"
         env = os.environ.copy()
         env["FILL_TOTAL_CASE"] = args.scenario
+        env["FILL_TOTAL_CAPTURE_DIR"] = str(args.output / f"verification-{index:02d}")
         env["CYBERSAND_NATIVE_PAINT_FILL"] = "script" if mode == "script" else "native"
         # Isolate user:// settings, archives, save names from test runs.
         env["XDG_DATA_HOME"] = str(args.output / f"user-data-{index:02d}")
@@ -97,6 +98,12 @@ def run(args):
             require(data.get("status")=="passed" and data.get("failures")==[],"Failed Workbench assertions")
             require(data.get("rendered") is True and data.get("image_pixel_changed") is True,
                     "Actual updated framebuffer not proved")
+            require(data.get("raw_material_pixel_changed") is True
+                    and data.get("changed_interior_samples",0) >= 3,
+                    "Actual native image and at least three changed viewport pixels required")
+            require(data.get("render_attempts",0)>=1
+                    and data.get("first_visible_post_draw_usec",-1)>=data.get("first_post_draw_usec",0),
+                    "Missing actual first visible draw identity")
             require(data.get("source_native") is True and data.get("capture_count")==1,
                     "Wrong native source capture")
             require(data.get("requested_cells")==EXPECTED_CELLS[args.scenario]
