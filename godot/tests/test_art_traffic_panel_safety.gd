@@ -38,7 +38,10 @@ func run() -> void:
 	check(config.save("user://art-provider.cfg") == OK,"configure absent legacy source")
 	var host: Node = load("res://main.tscn").instantiate()
 	root.add_child(host)
-	var panel: Window = host.shared_workbench.art_batches
+	check(host.shared_workbench.art_batches == null,"startup keeps Art unconstructed")
+	# The safety controls below intentionally exercise a separately created,
+	# still-hidden panel; this must not force saved-history restoration.
+	var panel: Window = host.shared_workbench._ensure_art_batches()
 	for _frame in range(3): await process_frame
 	check(not panel.visible and not panel.conversation_loaded,"hidden startup leaves missing saved history unexamined")
 	panel.change_provider(1)
@@ -136,7 +139,8 @@ func run() -> void:
 	await process_frame
 	var reopened: Node = load("res://main.tscn").instantiate()
 	root.add_child(reopened)
-	var reopened_panel: Window = reopened.shared_workbench.art_batches
+	check(reopened.shared_workbench.art_batches == null,"reopened Workbench has no eager Art panel")
+	var reopened_panel: Window = reopened.shared_workbench._ensure_art_batches()
 	reopened_panel.show()
 	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"undo","status":"completed","label":"confirmed during restore","applied":1})
 	check(reopened_panel.provider.resume_active and reopened_panel.pending_history_receipts.size() == 1,"confirmed editor receipt arriving during restore is retained")

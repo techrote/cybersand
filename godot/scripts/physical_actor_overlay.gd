@@ -7,6 +7,7 @@ var outlines: bool = true
 var _parts: Array = []
 var source_origin: Vector2 = Vector2.INF
 var equipment_markers: Dictionary = {}
+var actor_labels: Dictionary = {}
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
 
@@ -24,6 +25,12 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
 	queue_redraw()
+
+
+func show_actor_labels(labels: Dictionary) -> void:
+	if labels != actor_labels:
+		actor_labels = labels.duplicate(true)
+		queue_redraw()
 
 
 func polygon(part: Dictionary) -> PackedVector2Array:
@@ -140,3 +147,20 @@ func _draw() -> void:
 			if intent.length_squared() > 1.0:
 				draw_line(centre, centre + intent.normalized() * clampf(intent.length() * 0.075, 2.0, 6.0),
 					color.darkened(0.55), 1.0, true)
+
+	# Labels use the same presented root-part transform as the actor polygons.
+	# They identify controller ownership, never add a separate pose authority.
+	var labelled := {}
+	var font := ThemeDB.fallback_font
+	for part: Dictionary in _parts:
+		var actor_id: int = int(part.actor_id)
+		if labelled.has(actor_id) or not actor_labels.has(actor_id): continue
+		labelled[actor_id] = true
+		var label: Dictionary = actor_labels[actor_id]
+		var anchor: Vector2 = _point(part.transform.origin) + Vector2(0,-14)
+		if anchor.x < 0 or anchor.x > size.x or anchor.y < 0 or anchor.y > size.y: continue
+		var text_size := font.get_string_size(str(label.text),HORIZONTAL_ALIGNMENT_LEFT,-1,12)
+		anchor.x = clampf(anchor.x-text_size.x*0.5,3,maxf(3,size.x-text_size.x-3))
+		draw_rect(Rect2(anchor-Vector2(3,13),text_size+Vector2(6,3)),Color(0.03,0.05,0.08,0.86))
+		draw_string(font,anchor,str(label.text),HORIZONTAL_ALIGNMENT_LEFT,-1,12,label.color)
+		if label.selected: draw_circle(_point(part.transform.origin),5,label.color,false,1.0,true)

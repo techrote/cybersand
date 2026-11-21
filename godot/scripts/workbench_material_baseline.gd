@@ -169,7 +169,7 @@ static func _canonical_setup(setup: Dictionary) -> Dictionary:
 		setup[key] = Array(PackedInt32Array(setup[key]))
 	for index: int in setup.edits.size():
 		setup.edits[index] = Array(PackedInt32Array(setup.edits[index]))
-	for actor: Dictionary in setup.actors: actor.id = int(actor.id)
+	for actor: Dictionary in setup.actors: Setup.canonical_actor_numbers(actor)
 	if setup.has(Setup.EQUIPMENT_KEY):
 		setup[Setup.EQUIPMENT_KEY] = Setup.Equipment.canonical(setup[Setup.EQUIPMENT_KEY])
 	return setup

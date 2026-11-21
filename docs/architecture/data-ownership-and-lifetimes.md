@@ -6,10 +6,20 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-20
 ---
 
 # Data ownership and lifetimes
+
+The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
+keeps the existing native worker and main-thread Rapier owner. Each multipart
+actor has stable authored identity and distinct per-part native response owners;
+compound proxies share only their actual body owner. The copied body/equipment
+frame and queued actions are admitted together. Controllers consume copied
+observations and submit bounded, independently revocable leases. They own no
+World, body RID, material-edit pointer or inference-blocking worker. The prepared
+replacement graph remains frozen until the existing native adoption transaction
+accepts it. Source changes and authoring replacements retire stale authority.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private

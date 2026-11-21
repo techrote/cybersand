@@ -189,7 +189,7 @@ func run() -> void:
 	root.add_child(host)
 	bench = host.shared_workbench
 	editor = bench.paint_editor
-	panel = bench.art_batches
+	panel = bench._ensure_art_batches()
 	if not await until(ready,"native Workbench ready"):
 		quit(1)
 		return

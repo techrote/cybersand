@@ -93,7 +93,9 @@ func _draw() -> void:
 			_draw_region(region, Color(SELECTION, 0.08), SELECTION)
 		_reset_stroke()
 		return
-	if editor.dragging and tool in ["Brush", "Eraser"]:
+	# Running edits publish actual disc samples; never preview an interpolated
+	# paused stroke across cells that were not admitted to the native queue.
+	if editor.dragging and not editor._live_stroke and tool in ["Brush", "Eraser"]:
 		_draw_stroke(editor.stroke, radius, tint, edge)
 	else:
 		_reset_stroke()

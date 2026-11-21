@@ -366,7 +366,13 @@ func inspect() -> void:
 	var common_space := PhysicsServer2D.body_get_space(main.rigid_bodies[0].get_rid())
 	for body: RigidBody2D in main.rigid_bodies:
 		check(common_space == PhysicsServer2D.body_get_space(body.get_rid()),"same actual Rapier space")
-	check(panel.pilot_slot == 1 and panel.applied.source == [1525,1370,14],"selection and source reproduced")
+	# Inspection selection must not silently steal the pilot from the first
+	# eligible human actor. The separate pilot authority is reconstructed from
+	# authored controls, not inferred from the selected inspector item.
+	check(panel.selected_id() == 2 and panel.pilot_id() == 1
+		and panel.pilot_slot == actor_session.slot_for_instance(1)
+		and panel.applied.source == [1525,1370,14],
+		"selection, independently owned pilot and source reproduced")
 	for row: Dictionary in main.tower_context.liquid_solver_policy.assignments:
 		if row.material == 3: check(row.applied_family == "inertial_cellular_v1","Water IN readback")
 	check(main.paused and not panel._stream.button_pressed,"load is paused with neutral source")
