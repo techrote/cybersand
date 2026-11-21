@@ -1,0 +1,158 @@
+{
+  "benchmark": "ordinary-native-generate",
+  "checksum": 18256848940782223200,
+  "configuration": {
+    "accent_material": 65,
+    "bay_width": 64,
+    "chunk_size": 64,
+    "floor_height": 64,
+    "floor_material": 62,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 58,
+    "window_material": 121
+  },
+  "results": [
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 468,
+      "max_ms": 239.201496,
+      "median_ms": 238.837377,
+      "min_ms": 238.316567,
+      "module": "suspended_deck",
+      "trials_ms": [
+        238.316567,
+        239.201496,
+        238.855965,
+        238.626676,
+        239.108719,
+        238.837377,
+        238.822525
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 476,
+      "max_ms": 239.62338,
+      "median_ms": 239.005055,
+      "min_ms": 232.035511,
+      "module": "space_frame",
+      "trials_ms": [
+        232.035511,
+        238.924747,
+        239.147876,
+        239.046186,
+        238.835214,
+        239.62338,
+        239.005055
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 476,
+      "max_ms": 245.767733,
+      "median_ms": 238.982752,
+      "min_ms": 238.441681,
+      "module": "cable_gallery",
+      "trials_ms": [
+        245.767733,
+        238.441681,
+        239.62301,
+        240.43377,
+        238.705192,
+        238.442783,
+        238.982752
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 604,
+      "max_ms": 243.2175,
+      "median_ms": 242.691611,
+      "min_ms": 241.811318,
+      "module": "suspended_arcology",
+      "trials_ms": [
+        243.2175,
+        242.890656,
+        242.691611,
+        242.708116,
+        242.384286,
+        242.051795,
+        241.811318
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 468,
+      "max_ms": 1022.70042,
+      "median_ms": 963.802966,
+      "min_ms": 955.38981,
+      "module": "suspended_deck",
+      "trials_ms": [
+        955.437897,
+        955.38981,
+        956.303764,
+        973.40548,
+        963.802966,
+        964.855212,
+        1022.70042
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 476,
+      "max_ms": 1014.4373,
+      "median_ms": 956.709918,
+      "min_ms": 955.728411,
+      "module": "space_frame",
+      "trials_ms": [
+        956.445049,
+        955.728411,
+        956.224115,
+        956.709918,
+        967.534991,
+        964.440068,
+        1014.4373
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 476,
+      "max_ms": 1013.06127,
+      "median_ms": 963.991625,
+      "min_ms": 955.222488,
+      "module": "cable_gallery",
+      "trials_ms": [
+        957.526781,
+        955.222488,
+        956.878053,
+        964.938978,
+        963.991625,
+        964.277269,
+        1013.06127
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 604,
+      "max_ms": 1013.93722,
+      "median_ms": 979.582335,
+      "min_ms": 969.488419,
+      "module": "suspended_arcology",
+      "trials_ms": [
+        969.488419,
+        970.701177,
+        971.982123,
+        979.758696,
+        979.582335,
+        979.963803,
+        1013.93722
+      ]
+    }
+  ],
+  "timed_scope": "complete native chunk generation, allocation and content hashing; preparation excluded",
+  "trial_order": "rotating-module-order",
+  "warm_trials": 7,
+  "warmup_trials": 1
+}

@@ -1,0 +1,11 @@
+{
+  "qualified_source_commit": "8f39f68ae1bcf81045b007e233b2e6838cca4d24",
+  "qualified_source_tree": "a4453f91437de3bef6e20bc4b3ea5b9c38467060",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "branch": "experiment/gentek-showcase-interlaced-001",
+  "evidence_scope": "This directory contains evidence only; the source-input ledger identifies every qualified input independently of a later documentation commit.",
+  "native_captures": 26,
+  "derived_pngs": 4,
+  "source_input_digest": "0fd1085e99b764fb21a3b9b963587fbea483252d0b99a57102adca3345792c1a",
+  "qualification_directory": "interlaced-qualification-final"
+}

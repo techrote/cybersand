@@ -1,0 +1,39 @@
+{
+  "scope": "local GCC14 development confirmation; authoritative hosted GCC13 qualification is separate",
+  "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "linker": "GNU ld (GNU Binutils for Debian) 2.44",
+  "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+  "godot_cpp_library_sha256": "007a8e0048aca9b1680390e12f7fa0c34e1ee96ae6baf512526cad55910e486a",
+  "godot_binary_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "extension_sha256": "7889a11f943dc7e489081e60dbb11bc81c81b3b21f7ff46f2a4380cbbaed5985",
+  "build_input_ledger_sha256": "8a314a17a9fbf48e15408ce06e8d6656277f8b95c91118ccba644a5dd12b9209",
+  "native_source_input_count": 98,
+  "test_input_count": 725,
+  "project_contract_checks": 2829,
+  "project_contract_failures": 0,
+  "native_gallery_checks": 2490,
+  "native_gallery_failures": 0,
+  "classic_maps": 73,
+  "classic_unique_material_hashes": 73,
+  "preserved_parent_gallery_maps": 72,
+  "megatruss_material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+  "standalone_native_material_parity": true,
+  "process_results": [
+    {
+      "name": "project-contract",
+      "returncode": 0,
+      "seconds": 5.257881956998972,
+      "log_sha256": "463f9c431583cf46acb2bc065d236fc8af8193c1c1d8a194c2aa5bbe90e5712d"
+    },
+    {
+      "name": "native-gallery",
+      "returncode": 0,
+      "seconds": 103.77891868999905,
+      "log_sha256": "7367a73e6fb12f1cbf2f41fbda8bdf47b63a37ee0ca42f626d8a12e37117ea07"
+    }
+  ],
+  "native_report_sha256": "2a7d3bc6426af62c99319597cc42d74ca7413493657303122a869fe0031461c9"
+}

@@ -33,9 +33,22 @@ var _segment_id := ""
 var _event_index := 0
 var _written_size := -1
 var _write_broken := false
+# A first history event may reach disk before its profile checkpoint can be
+# replaced. Retain exactly that bounded segment for checkpoint retry rather
+# than leaking a new orphan on every pending-receipt timer tick.
+var _pending_history_segment := {}
 var _conversation_turns := 0
 var _conversation_bytes := 0
 var _validated_segments: Array[Dictionary] = []
+# Track only journalled receipts, never every event in a potentially huge
+# archive. Replay builds a provisional table and publishes it only after the
+# entire linked conversation has passed validation.
+const MAX_HISTORY_RECEIPTS := 4096
+const MAX_HISTORY_RECEIPT_BYTES := 262144
+const MAX_PENDING_HISTORY_SEGMENT_BYTES := 2 * 1024 * 1024 + MAX_HISTORY_RECEIPT_BYTES + 1024
+static var _history_id_pattern := RegEx.create_from_string("^[0-9]{20}-[0-9a-f]{32}$")
+var _history_receipts := {}
+var _resume_history_receipts := {}
 var _export_archive: RefCounted
 var _export_output: FileAccess
 var _export_temporary := ""
@@ -157,6 +170,11 @@ func _redacted_value(value: Variant) -> Variant:
 
 func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	# Envelope IDs, roles, offsets and segment paths are structural, not free text.
+	if kind == "history_result" and data is Dictionary:
+		var clean: Dictionary = _redacted_value(data)
+		for field: String in ["_history_receipt_id","_history_world_epoch","_history_turn_sha256"]:
+			if data.has(field): clean[field] = data[field]
+		return clean
 	if kind == "conversation" and data is Dictionary:
 		var clean: Dictionary = data.duplicate(true)
 		if clean.get("content") is String: clean.content = redact(clean.content)
@@ -180,8 +198,134 @@ func new_log_path() -> String:
 static func valid_traffic_path(path: String) -> bool:
 	return Archive.valid_path(path)
 
+static func valid_history_receipt_id(identity: Variant) -> bool:
+	return identity is String and _history_id_pattern.search(identity) != null
+
+func watch_history_receipt(item: Dictionary) -> bool:
+	var identity: Variant = item.get("id")
+	var schema: Variant = item.get("schema",1)
+	if not valid_history_receipt_id(identity) or not item.get("receipt") is Dictionary \
+			or item.receipt.get("_history_receipt_id") != identity \
+			or not item.get("source") is String or not valid_traffic_path(item.source) \
+			or not Archive.integer(item.get("epoch")) or (schema != 1 and schema != 2):
+		log_warning = "Invalid pending history receipt identity, session or epoch."
+		return false
+	# Schema 2 freezes the sanitized raw result and user-visible projection at
+	# capture. Process-local secrets can change or disappear before recovery;
+	# applying today's redactor would change the immutable transaction identity.
+	var recorded: Dictionary = item.receipt.duplicate(true) if schema == 2 else _sanitized_event_data("history_result",item.receipt)
+	var encoded := JSON.stringify(recorded)
+	if encoded.to_utf8_buffer().size() > MAX_HISTORY_RECEIPT_BYTES:
+		log_warning = "Pending history receipt exceeds its 256 KiB limit."
+		return false
+	var content := ""
+	var turn_event_sha256 := ""
+	if schema == 2:
+		if not Archive.integer(recorded.get("_history_world_epoch")) or recorded._history_world_epoch != item.epoch \
+				or not item.get("turn") is Dictionary or item.turn.size() != 3 \
+				or item.turn.get("role") != "user" or not item.turn.get("content") is String \
+				or item.turn.get("_history_receipt_id") != identity \
+				or not recorded.get("_history_turn_sha256") is String:
+			log_warning = "Invalid frozen history result projection or captured world epoch."
+			return false
+		content = item.turn.content
+		if content.to_utf8_buffer().size() > MAX_HISTORY_RECEIPT_BYTES or content.sha256_text() != recorded._history_turn_sha256:
+			log_warning = "Frozen history result projection differs from its native receipt digest."
+			return false
+		turn_event_sha256 = JSON.stringify(item.turn).sha256_text()
+	else:
+		content = redact("Canvas result (world epoch %d): Human %s: %s" % [int(item.epoch),str(recorded.get("action","undo")),encoded])
+	var target := {"schema":int(schema),"source":item.source,"raw_sha256":encoded.sha256_text(),"turn_sha256":content.sha256_text(),"turn_event_sha256":turn_event_sha256,"raw":false,"turn":false}
+	if _history_receipts.has(identity):
+		var known: Dictionary = _history_receipts[identity]
+		if known.schema != target.schema or known.source != target.source or known.raw_sha256 != target.raw_sha256 or known.turn_sha256 != target.turn_sha256:
+			log_warning = "Pending history receipt identity was reused with different data or session."
+			return false
+		return true
+	if _history_receipts.size() >= MAX_HISTORY_RECEIPTS:
+		log_warning = "Pending history receipt tracking reached its 4096-entry limit."
+		return false
+	_history_receipts[identity] = target
+	# A newly confirmed native result can arrive while an earlier archive is
+	# restoring. It cannot already occur in the prefix read before it existed.
+	if resume_active: _resume_history_receipts[identity] = target.duplicate(true)
+	return true
+
+func history_receipt_state(identity: String) -> Dictionary:
+	var state: Dictionary = _history_receipts.get(identity,{})
+	return {"raw":bool(state.get("raw",false)),"turn":bool(state.get("turn",false))}
+
+func has_history_receipt(identity: String) -> bool:
+	return _history_receipts.has(identity)
+
+func forget_history_receipt(identity: String) -> void:
+	_history_receipts.erase(identity)
+	_resume_history_receipts.erase(identity)
+
+func _history_event_identity(kind: String, data: Variant) -> String:
+	if not data is Dictionary: return ""
+	if kind == "history_result" or (kind == "conversation" and data.has("_history_receipt_id")):
+		return str(data.get("_history_receipt_id",""))
+	if kind != "conversation" or not data.get("content") is String: return ""
+	# Earlier journal writers placed the ID in the exact Canvas-result text.
+	# Recognize only a watched receipt whose complete expected content matches;
+	# arbitrary user text containing an ID never establishes a commit.
+	var marker := '"_history_receipt_id":"'
+	var start: int = data.content.find(marker)
+	if start < 0: return ""
+	start += marker.length()
+	var finish: int = data.content.find('"',start)
+	return data.content.substr(start,finish-start) if finish > start else ""
+
+func _observe_history_event(kind: String, data: Variant, source: String, segments: Array[Dictionary], tracked: Dictionary, commit: bool, require_watch: bool = false) -> Dictionary:
+	var result := {"error":"","duplicate_turn":false}
+	var identity := _history_event_identity(kind,data)
+	if require_watch and kind in ["history_result","conversation"] and data is Dictionary \
+			and data.has("_history_receipt_id") and not valid_history_receipt_id(data._history_receipt_id):
+		result.error = "Invalid history receipt identity; nothing written."
+		return result
+	if identity.is_empty(): return result
+	if not tracked.has(identity):
+		if require_watch and data is Dictionary and data.has("_history_receipt_id"):
+			result.error = "History receipt must be durably staged and registered before archive append."
+		return result
+	var target: Dictionary = tracked[identity]
+	var target_index := -1
+	var source_index := -1
+	for index: int in range(segments.size()):
+		if str(segments[index].path) == str(target.source): target_index = index
+		if str(segments[index].path) == source: source_index = index
+	if target_index < 0 or source_index < target_index:
+		result.error = "History receipt does not belong to this conversation's validated source ancestry."
+		return result
+	if kind == "history_result":
+		if JSON.stringify(data).sha256_text() != str(target.raw_sha256):
+			result.error = "Archived history receipt differs from its durable pending record."
+		elif commit: target.raw = true
+	elif kind == "conversation":
+		if data.get("role") != "user" or not data.get("content") is String \
+				or data.content.sha256_text() != str(target.turn_sha256) \
+				or data.has("image_offset") or data.has("image_log_path") \
+				or (int(target.schema) == 2 and JSON.stringify(data).sha256_text() != str(target.turn_event_sha256)):
+			result.error = "Archived history result has different text, role, image or world epoch."
+		elif not bool(target.raw):
+			result.error = "History conversation result has no preceding committed native receipt."
+		else:
+			result.duplicate_turn = bool(target.turn)
+			if commit: target.turn = true
+	return result
+
+func _active_history_segments() -> Array[Dictionary]:
+	var segments: Array[Dictionary] = _validated_segments.duplicate(true)
+	if not log_path.is_empty() and _segment(log_path,segments).is_empty(): segments.append({"path":log_path})
+	return segments
+
 func prepare_resume(previous: String) -> void:
 	# No existence check, open, scan or write at startup. Keep unavailable pointers.
+	if not _pending_history_segment.is_empty() and previous != parent_log_path:
+		resume_error = "Cannot rebind a conversation while its native history checkpoint is pending."
+		resume_ok = false
+		return
 	if not log_path.is_empty():
 		resume_error = "Cannot rebind a conversation while its writable segment is active."
 		resume_ok = false
@@ -328,6 +472,9 @@ static func checked_conversation(value: Variant) -> Variant:
 		if not raw is Dictionary or raw.get("role") not in ["user","assistant"] or not raw.get("content") is String:
 			return null
 		var turn := {"role":raw.role,"content":raw.content}
+		if raw.has("_history_receipt_id"):
+			if not valid_history_receipt_id(raw._history_receipt_id): return null
+			turn._history_receipt_id = raw._history_receipt_id
 		if raw.has("image_offset"):
 			var offset: Variant = raw.image_offset
 			# JSON numbers must be exact, representable byte offsets before int().
@@ -377,6 +524,10 @@ func _validate_conversation_event(event: Dictionary, source: String, offset: int
 
 func begin_resume(previous: String) -> Error:
 	if resume_active or export_active: return ERR_BUSY
+	if not _pending_history_segment.is_empty() and previous != parent_log_path:
+		resume_error = "Cannot restore another conversation while its native history checkpoint is pending."
+		log_warning = resume_error
+		return ERR_BUSY
 	# Reading the active writer is allowed; rebinding it to another history is not.
 	var own_writer := not log_path.is_empty() and previous == log_path
 	if not log_path.is_empty() and not own_writer:
@@ -390,6 +541,9 @@ func begin_resume(previous: String) -> Error:
 	resumed_last_result = ""
 	_resumed_turns = []
 	_resume_restored = {"turns":[],"last_result":"","bytes":0}
+	_resume_history_receipts = _history_receipts.duplicate(true)
+	for target: Dictionary in _resume_history_receipts.values():
+		target.raw = false; target.turn = false
 	if previous.is_empty(): return OK
 	var archive := Archive.new()
 	if not archive.resolve(previous):
@@ -411,6 +565,8 @@ func poll_resume(max_bytes: int = 1048576) -> Dictionary:
 	var callback := func(event: Dictionary, source: String, offset: int, _raw: PackedByteArray) -> String:
 		var problem := _validate_conversation_event(event, source, offset, archive.segments, _queue_image)
 		if not problem.is_empty(): return problem
+		var observed := _observe_history_event(str(event.kind),event.data,source,archive.segments,_resume_history_receipts,true)
+		if not str(observed.error).is_empty(): return str(observed.error)
 		archive.paused = not _image_queue.is_empty()
 		if event.kind == "conversation_cleared":
 			restored.turns = []; restored.last_result = ""; restored.bytes = 0
@@ -421,11 +577,12 @@ func poll_resume(max_bytes: int = 1048576) -> Dictionary:
 			restored.turns = turns; restored.last_result = event.data.last_result; restored.bytes = 0
 			for turn: Dictionary in turns: restored.bytes += str(turn.content).to_utf8_buffer().size()
 		elif event.kind == "conversation":
+			if bool(observed.duplicate_turn): return ""
 			var turn: Dictionary = checked_conversation([event.data])[0]
 			if turn.has("image_offset") and not turn.has("image_log_path"): turn.image_log_path = source
 			restored.turns.append(turn)
 			restored.bytes += str(turn.content).to_utf8_buffer().size()
-			if str(turn.content).begins_with("Canvas result ("): restored.last_result = turn.content
+			if str(turn.content).begins_with("Canvas result (") or turn.has("_history_receipt_id"): restored.last_result = turn.content
 		if restored.turns.size() > MAX_CONVERSATION_TURNS or int(restored.bytes) > MAX_CONVERSATION_BYTES:
 			return "Saved transcript exceeds the 16384-turn / 16 MiB replay limit; original archives preserved."
 		return ""
@@ -447,10 +604,11 @@ func poll_resume(max_bytes: int = 1048576) -> Dictionary:
 			resumed_last_result = restored.last_result
 			_conversation_turns = restored.turns.size(); _conversation_bytes = int(restored.bytes)
 			_resumed_turns = restored.turns
+			_history_receipts = _resume_history_receipts
 			traffic = "[Earlier conversation traffic retained in the export]\n"
 			readable = traffic
 			progress.ok = true; progress.turns = _resumed_turns
-		_resume_archive = null; _resume_restored = {}
+		_resume_archive = null; _resume_restored = {}; _resume_history_receipts = {}
 		_reset_image_validation()
 	return progress
 
@@ -459,7 +617,7 @@ func cancel_resume() -> void:
 	resume_active = false; resume_ok = false
 	resume_error = "Conversation restoration cancelled; original files remain unchanged."
 	log_warning = resume_error
-	_resume_archive = null; _resume_restored = {}; _resumed_turns = []
+	_resume_archive = null; _resume_restored = {}; _resumed_turns = []; _resume_history_receipts = {}
 	_reset_image_validation()
 
 func resume_traffic(previous: String) -> Array:
@@ -574,10 +732,21 @@ func log_event(kind: String, data: Variant) -> bool:
 	if not _known_sources_unchanged():
 		traffic_changed.emit()
 		return false
-	var sanitized: Variant = _sanitized_event_data(kind, data)
+	var history_identity := _history_event_identity(kind,data)
+	var frozen_history: bool = kind in ["history_result","conversation"] and data is Dictionary \
+		and data.has("_history_receipt_id") and _history_receipts.has(history_identity) \
+		and int(_history_receipts[history_identity].schema) == 2
+	# Exact digest checks below authenticate this registered, previously sanitized
+	# projection before it reaches either live traffic or the archive writer.
+	var sanitized: Variant = data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data)
 	var admission := _admit_conversation_event(kind, sanitized)
 	if not admission.ok:
 		log_warning = admission.error; traffic_changed.emit()
+		return false
+	var history_source := log_path if not log_path.is_empty() else parent_log_path
+	var observed := _observe_history_event(kind,sanitized,history_source,_active_history_segments(),_history_receipts,false,true)
+	if not str(observed.error).is_empty():
+		log_warning = str(observed.error); traffic_changed.emit()
 		return false
 	var line := JSON.stringify({"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":sanitized})
 	traffic += line + "\n"
@@ -599,6 +768,12 @@ func log_event(kind: String, data: Variant) -> bool:
 	if readable.length() > 2000000: readable = "[Earlier traffic retained on disk]\n" + readable.right(1500000)
 	if traffic.length() > 2000000: traffic = "[Earlier traffic retained on disk]\n" + traffic.right(1500000)
 	var stored := _store_event(kind, sanitized, admission)
+	if stored:
+		observed = _observe_history_event(kind,sanitized,log_path,_active_history_segments(),_history_receipts,true,true)
+		if not str(observed.error).is_empty():
+			_write_broken = true
+			log_warning = str(observed.error)+" Restart Workbench to validate the committed archive."
+			stored = false
 	last_event_stored = stored
 	traffic_changed.emit()
 	return stored
@@ -630,6 +805,46 @@ func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
 	if not problem.is_empty(): return {"ok":false,"error":problem + " Nothing written."}
 	return result
 
+func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: Dictionary) -> bool:
+	var pending: Dictionary = _pending_history_segment
+	if kind != "history_result" or not data is Dictionary \
+			or not _history_receipts.has(str(data.get("_history_receipt_id",""))) \
+			or JSON.stringify(data).sha256_text() != str(pending.data_sha256) \
+			or int(admission.turns) != int(pending.turns) or int(admission.bytes) != int(pending.bytes) \
+			or parent_log_path != str(pending.parent):
+		log_warning = "The original native history checkpoint is pending; retry that same receipt before adding different traffic."
+		return false
+	var parent := _segment(parent_log_path,_validated_segments)
+	if not parent_log_path.is_empty() and (parent.is_empty() or str(parent.id) != str(pending.parent_id) \
+			or int(parent.limit) != int(pending.parent_bytes) or str(parent.sha256) != str(pending.parent_sha256)):
+		log_warning = "Pending history segment's validated parent changed; original archive and receipt preserved."
+		return false
+	var destination: String = pending.destination
+	var directory := DirAccess.open(destination.get_base_dir())
+	if directory == null or directory.is_link(destination.get_file()) \
+			or str(pending.canonical).is_empty() or Archive.canonical_path(destination) != str(pending.canonical):
+		log_warning = "Pending history segment is unavailable or aliased; restore its original file before retrying."
+		return false
+	var file := FileAccess.open(destination,FileAccess.READ)
+	if file == null or file.get_length() != int(pending.length) \
+			or int(pending.length) > MAX_PENDING_HISTORY_SEGMENT_BYTES:
+		log_warning = "Pending history segment changed or cannot be read; original receipt remains pending."
+		return false
+	# This is our one new header+receipt file, never an inherited transcript.
+	var raw := file.get_buffer(int(pending.length))
+	file = null
+	if raw.size() != int(pending.length) or Archive.digest(raw) != str(pending.sha256):
+		log_warning = "Pending history segment content changed; refusing checkpoint adoption."
+		return false
+	if not commit_segment.is_valid() or not bool(commit_segment.call(destination)):
+		log_warning = "Conversation pointer could not be committed. The same bounded history segment remains pending at "+destination
+		return false
+	log_path = destination; _segment_id = str(pending.id); _event_index = int(pending.index); _written_size = int(pending.length)
+	_conversation_turns = int(pending.turns); _conversation_bytes = int(pending.bytes)
+	_pending_history_segment = {}
+	log_warning = resume_warning
+	return true
+
 func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 	if kind in ["session_start", "session_parent"]:
 		log_warning = "Segment metadata cannot be appended as a conversation event."
@@ -637,7 +852,14 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 	if _write_broken:
 		log_warning = "Traffic append was interrupted; restart Workbench to recover its complete events."
 		return false
+	if not _pending_history_segment.is_empty(): return _retry_history_segment_checkpoint(kind,data,admission)
 	var new_segment := log_path.is_empty()
+	var retain_history_segment: bool = new_segment and kind == "history_result" and data is Dictionary \
+		and _history_receipts.has(str(data.get("_history_receipt_id",""))) and commit_segment.is_valid()
+	var history_segment_hash: HashingContext
+	if retain_history_segment:
+		history_segment_hash = HashingContext.new()
+		history_segment_hash.start(HashingContext.HASH_SHA256)
 	if new_segment and _validated_segments.size() >= Archive.MAX_SEGMENTS:
 		log_warning = "Conversation reached the 4096-segment limit; prior history preserved and nothing written."
 		return false
@@ -686,6 +908,7 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 			log_warning = "Conversation metadata reached its bounded replay capacity; nothing written."
 			return false
 		file.store_buffer(header_line)
+		if retain_history_segment: history_segment_hash.update(header_line)
 	else:
 		if file.get_length() != _written_size:
 			file = null
@@ -694,6 +917,7 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 		file.seek_end()
 	var offset := file.get_position()
 	file.store_buffer(encoded)
+	if retain_history_segment: history_segment_hash.update(encoded)
 	file.flush()
 	var error := file.get_error()
 	var length := file.get_position()
@@ -706,6 +930,13 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 		else: _write_broken = true
 		log_warning = "Traffic write failed; prior conversation remains preserved."
 		return false
+	if retain_history_segment:
+		var parent := _segment(parent_log_path,_validated_segments)
+		_pending_history_segment = {"destination":destination,"canonical":Archive.canonical_path(destination),
+			"id":id,"index":index,"length":length,"sha256":history_segment_hash.finish().hex_encode(),
+			"data_sha256":JSON.stringify(data).sha256_text(),"turns":int(admission.turns),"bytes":int(admission.bytes),
+			"parent":parent_log_path,"parent_id":str(parent.get("id","")),"parent_bytes":int(parent.get("limit",0)),"parent_sha256":str(parent.get("sha256",""))}
+		return _retry_history_segment_checkpoint(kind,data,admission)
 	if new_segment and commit_segment.is_valid() and not bool(commit_segment.call(destination)):
 		log_warning = "Conversation pointer could not be committed. Prior history is unchanged; unreferenced complete segment preserved at " + destination
 		return false

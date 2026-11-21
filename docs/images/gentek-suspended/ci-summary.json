@@ -1,0 +1,107 @@
+{
+  "source_commit": "eb376b267a619226a572af5aa01d99c9b011391c",
+  "source_tree": "043fe628ffd86e0ee8d261c19ee6570773a4363a",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "run_id": 43972895680,
+  "url": "https://github.com/techrote/cybersand/actions/runs/43972895680",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 133669372846,
+      "name": "native",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133669373219,
+      "name": "godot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133672994395,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14280327064,
+      "name": "suspended-source-verification-43972895680",
+      "size_bytes": 359,
+      "sha256": "7bd5f32e016d5937e5f9dbd6407f9a48d048226d64200b41d83267e792a39f8a",
+      "expired": false,
+      "expires_at": "2027-02-14T22:44:19Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972895680/artifacts/14280327064"
+    },
+    {
+      "id": 14280297089,
+      "name": "suspended-godot-43972895680",
+      "size_bytes": 2251595,
+      "sha256": "c810c14fffc6fddf666fc7e5e5c8a11699010002fe9bbd636dbd09209c2d34d4",
+      "expired": false,
+      "expires_at": "2027-02-14T22:44:19Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972895680/artifacts/14280297089"
+    },
+    {
+      "id": 14279727127,
+      "name": "suspended-native-43972895680",
+      "size_bytes": 8066398,
+      "sha256": "0c506bc8312fceb37f541b4c55e1aaea72d04222bcdd385507cd291a88d686bf",
+      "expired": false,
+      "expires_at": "2027-02-14T22:44:19Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972895680/artifacts/14279727127"
+    }
+  ],
+  "cross_renderer_verification": {
+    "source_commit": "eb376b267a619226a572af5aa01d99c9b011391c",
+    "passed": true,
+    "native_pngs": 62,
+    "godot_checks": 2490,
+    "ordinary_preset_material_sha256": "de8fde572232500206fc756569afd183785c030c3f4e087c6c607da66f744ad6"
+  },
+  "gcc13_gcc14_complete_campaign_material_parity": {
+    "passed": true,
+    "captures": 62,
+    "cells_compared": 18014208
+  },
+  "performance": {
+    "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+    "configuration": {
+      "accent_material": 65,
+      "bay_width": 64,
+      "chunk_size": 64,
+      "floor_height": 64,
+      "floor_material": 62,
+      "schema": 4,
+      "seed": 271828,
+      "wall": 3,
+      "wall_material": 58,
+      "window_material": 121
+    },
+    "comparative_module": "space_frame",
+    "sampler": "suspended_arcology",
+    "measurements": [
+      {
+        "extent": 512,
+        "sampler_median_ms": 242.691611,
+        "comparator_median_ms": 239.005055,
+        "median_paired_ratio": 1.014859919274718,
+        "sampler_min_ms": 241.811318,
+        "sampler_max_ms": 243.2175,
+        "logical_operations_per_cell": 604
+      },
+      {
+        "extent": 1024,
+        "sampler_median_ms": 979.582335,
+        "comparator_median_ms": 956.709918,
+        "median_paired_ratio": 1.015666339754757,
+        "sampler_min_ms": 969.488419,
+        "sampler_max_ms": 1013.93722,
+        "logical_operations_per_cell": 604
+      }
+    ]
+  }
+}

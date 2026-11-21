@@ -1,0 +1,37 @@
+{
+  "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+  "configuration": {
+    "accent_material": 65,
+    "bay_width": 96,
+    "chunk_size": 64,
+    "floor_height": 88,
+    "floor_material": 62,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 58,
+    "window_material": 121
+  },
+  "comparative_module": "cantilever_spine",
+  "sampler": "metabolist_spine",
+  "measurements": [
+    {
+      "extent": 512,
+      "sampler_median_ms": 128.534893,
+      "comparator_median_ms": 127.026632,
+      "median_paired_ratio": 1.0126484428769296,
+      "sampler_min_ms": 128.268875,
+      "sampler_max_ms": 129.775467,
+      "logical_operations_per_cell": 568
+    },
+    {
+      "extent": 1024,
+      "sampler_median_ms": 515.899642,
+      "comparator_median_ms": 508.701109,
+      "median_paired_ratio": 1.0129565140494021,
+      "sampler_min_ms": 514.634301,
+      "sampler_max_ms": 517.242023,
+      "logical_operations_per_cell": 568
+    }
+  ]
+}

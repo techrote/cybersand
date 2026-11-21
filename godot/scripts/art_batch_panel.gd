@@ -71,7 +71,26 @@ var conversation: Array = []
 var _pending_traffic_path := ""
 var conversation_loaded := false
 var history_load_error := ""
+# Small, durable per-receipt files keep native Undo/Redo independent of the
+# potentially multi-gigabyte immutable Art transcript. They are replayed only
+# after explicit Art restoration, and never treated as an archive themselves.
+const HISTORY_RECEIPT_DIR := "user://art-pending-history"
+const MAX_HISTORY_RECEIPT_BYTES := 262144
+const MAX_HISTORY_RECEIPTS := 4096
+const MAX_HISTORY_JOURNAL_BYTES := 64 * 1024 * 1024
+const MAX_VOLATILE_HISTORY_RECEIPTS := 64
+const MAX_VOLATILE_HISTORY_BYTES := 4 * 1024 * 1024
+const MAX_PROFILE_BYTES := 1024 * 1024
+static var _history_receipt_clock_us := 0
 var pending_history_receipts: Array[Dictionary] = []
+var _history_draining := false
+var _history_retry_after_ms := 0
+var _history_retry_needed := false
+var _history_persistence_error := ""
+var _history_lost_receipt_error := ""
+var _history_live_turns := {}
+var _profile_session_error := ""
+var _profile_creation_allowed := false
 var context_mode := OptionButton.new()
 var turn_limit := SpinBox.new()
 var guidance := TextEdit.new()
@@ -212,7 +231,9 @@ func _bind_selection() -> void:
 	selection_editor.selection_changed.connect(focus_selection)
 
 func _selection_visibility_changed() -> void:
-	if visible: _begin_history_restore()
+	if visible:
+		if conversation_loaded: _drain_pending_history_receipts()
+		else: _begin_history_restore()
 	_bind_selection()
 	# Revealing the panel must not overwrite manually entered bounds with
 	# an old selection (image capture also hides and restores this Window).
@@ -227,20 +248,45 @@ func _ensure_history_loaded() -> bool:
 
 func _accept_restored_history(restored: Array) -> void:
 	conversation = restored
+	_history_live_turns.clear() # The validated replay is authoritative, including cleared turns.
 	last_result = provider.resumed_last_result
 	conversation_loaded = true
 	if not history_load_error.is_empty() or input_error.begins_with("Saved conversation is still restoring."): input_error = ""
 	history_load_error = ""
 	if not provider.resume_warning.is_empty(): input_error = provider.resume_warning
-	var pending := pending_history_receipts
-	pending_history_receipts = []
-	for item: Dictionary in pending: history_edited(item.receipt,int(item.epoch))
+	_drain_pending_history_receipts()
 
 func _begin_history_restore() -> void:
 	if conversation_loaded or provider.resume_active: return
+	if not _profile_session_error.is_empty():
+		var recovered := read_history_session()
+		if recovered.state == "error":
+			history_load_error = str(recovered.error)
+			input_error = history_load_error
+			return
+		settings.load("user://art-provider.cfg")
+		_pending_traffic_path = str(recovered.source)
+		provider.prepare_resume(_pending_traffic_path)
+		_profile_session_error = ""
+	var pending := _read_pending_history_receipts()
+	if not bool(pending.ok):
+		history_load_error = str(pending.error)
+		input_error = history_load_error
+		return
+	for item: Dictionary in pending.rows:
+		if not provider.watch_history_receipt(item):
+			history_load_error = provider.log_warning
+			input_error = history_load_error
+			return
+	for item: Dictionary in pending_history_receipts:
+		if not provider.watch_history_receipt(item):
+			history_load_error = provider.log_warning
+			input_error = history_load_error
+			return
 	var source_path := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
 	if source_path.is_empty():
 		conversation_loaded = true
+		_drain_pending_history_receipts()
 		return
 	var err := provider.begin_resume(source_path)
 	if err != OK:
@@ -407,6 +453,10 @@ func submit_text() -> void:
 func _process(_delta: float) -> void:
 	_poll_history_restore()
 	_poll_traffic_export()
+	if _history_retry_needed and Time.get_ticks_msec() >= _history_retry_after_ms:
+		_history_retry_after_ms = Time.get_ticks_msec()+1000
+		_retry_history_journal()
+		if conversation_loaded: _drain_pending_history_receipts()
 	if wb == null: return
 	_bind_selection()
 	executor.wb = wb
@@ -476,8 +526,19 @@ func _exit_tree() -> void:
 	if wb != null: stop_all("Workbench closed")
 
 func mount_provider_controls(column: VBoxContainer) -> void:
-	settings.load("user://art-provider.cfg")
-	_pending_traffic_path = str(settings.get_value("session","traffic_path",""))
+	var association := read_history_session()
+	if association.state != "error":
+		_profile_creation_allowed = bool(association.get("absent",false))
+		settings.load("user://art-provider.cfg")
+		_pending_traffic_path = str(association.source)
+		settings.set_value("session","traffic_path",_pending_traffic_path)
+	else:
+		_profile_session_error = str(association.error)
+		input_error = _profile_session_error
+		# A Workbench that read this session before the outage may still retain
+		# confirmed receipts, but cannot invent or overwrite a saved profile.
+		if wb != null and wb._art_history_session.get("state","") == "session":
+			_pending_traffic_path = str(wb._art_history_session.source)
 	provider.prepare_resume(_pending_traffic_path)
 	provider.commit_segment = _commit_traffic_path
 	add_child(provider)
@@ -693,6 +754,9 @@ func _cancel_traffic_export() -> void:
 	traffic_path.text = export_message
 
 func _save_settings() -> Error:
+	if not _profile_session_error.is_empty():
+		input_error = _profile_session_error
+		return ERR_FILE_CANT_READ
 	# Never truncate the only committed profile/session pointer. Reuse the native
 	# same-directory replacement; Godot's Windows rename first deletes its target.
 	var temporary := "user://art-provider.cfg."+Crypto.new().generate_random_bytes(16).hex_encode()+".partial"
@@ -769,6 +833,8 @@ func stop_all(reason: String = "Human Stop") -> void:
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
 func history_block_reason() -> String:
+	if not _history_lost_receipt_error.is_empty(): return _history_lost_receipt_error
+	if not _history_persistence_error.is_empty(): return _history_persistence_error
 	if provider.resume_active: return "Finish or stop conversation restoration before changing history."
 	if provider.export_active: return "Finish or cancel the traffic export before changing history."
 	if executor.active or executor.waiting or not executor.manual.is_empty() \
@@ -790,25 +856,388 @@ func _history_action(action: String) -> void:
 	var admitted: bool = wb.paint_editor.undo() if action == "undo" else wb.paint_editor.redo()
 	input_error = "" if admitted else str(wb.message)
 
+# Each confirmed receipt is durably staged as its own small atomically
+# published file, not as an in-memory queue with a silent 64-item overflow.
+# No previous conversation is opened, copied or scanned on this path.
+func _history_receipt_source() -> String:
+	if not provider.log_path.is_empty(): return provider.log_path
+	if not _pending_traffic_path.is_empty(): return _pending_traffic_path
+	return provider.parent_log_path
+
+# Only the small profile is read here. In particular, a failed load is not
+# evidence that the user has no saved conversation. A source captured earlier
+# by this Workbench remains usable during a later profile outage.
+static func read_history_session() -> Dictionary:
+	var directory := DirAccess.open("user://")
+	if directory == null or directory.list_dir_begin() != OK:
+		return {"state":"error","source":"","error":"Cannot inspect the Art profile directory; restore access before changing history."}
+	var present := false
+	var filename := directory.get_next()
+	while not filename.is_empty():
+		if filename == "art-provider.cfg": present = true; break
+		filename = directory.get_next()
+	directory.list_dir_end()
+	if not present:
+		# Missing configuration is a virgin profile only when there is no
+		# evidence of previous Art persistence. Inspect names, never transcripts.
+		for folder: String in ["user://art-traffic",HISTORY_RECEIPT_DIR]:
+			if directory.is_link(folder.get_file()) or FileAccess.file_exists(folder):
+				return {"state":"error","source":"","error":"Art profile is missing while prior storage is unavailable; restore the original art-provider.cfg."}
+			if not DirAccess.dir_exists_absolute(folder): continue
+			var prior := DirAccess.open(folder)
+			if prior == null or prior.list_dir_begin() != OK:
+				return {"state":"error","source":"","error":"Art profile is missing and prior storage cannot be inspected; restore access and the original profile."}
+			var name := prior.get_next()
+			while not name.is_empty():
+				if name.ends_with(".jsonl") or name.ends_with(".json"):
+					prior.list_dir_end()
+					return {"state":"error","source":"","error":"Art profile is missing but saved history exists; restore its original art-provider.cfg. No session has been guessed."}
+				name = prior.get_next()
+			prior.list_dir_end()
+		return {"state":"no_session","source":"","error":"","absent":true}
+	if directory.is_link("art-provider.cfg") or directory.dir_exists("art-provider.cfg"):
+		return {"state":"error","source":"","error":"Art profile exists but is not a regular readable file; restore art-provider.cfg and retry."}
+	var file := FileAccess.open("user://art-provider.cfg",FileAccess.READ)
+	if file == null:
+		return {"state":"error","source":"","error":"Art profile exists but cannot be read; restore access to art-provider.cfg and retry."}
+	var length := file.get_length()
+	file = null
+	if length > MAX_PROFILE_BYTES:
+		return {"state":"error","source":"","error":"Art profile exceeds the 1 MiB limit; original profile preserved."}
+	var config := ConfigFile.new()
+	if config.load("user://art-provider.cfg") != OK:
+		return {"state":"error","source":"","error":"Art profile is corrupt or unreadable; repair art-provider.cfg before retrying. No conversation has been guessed."}
+	if not config.has_section_key("session","traffic_path"):
+		return {"state":"error","source":"","error":"Art profile has incomplete session metadata; restore its traffic_path before retrying."}
+	var path: Variant = config.get_value("session","traffic_path")
+	if not path is String or (not path.is_empty() and not Provider.valid_traffic_path(path)):
+		return {"state":"error","source":"","error":"Art profile has an invalid session path; original profile and archives are preserved."}
+	return {"state":"no_session" if path.is_empty() else "session","source":path,"error":"","absent":false}
+
+static func _journal_directory() -> DirAccess:
+	var parent := DirAccess.open("user://")
+	if parent == null or parent.is_link(HISTORY_RECEIPT_DIR.get_file()): return null
+	if DirAccess.make_dir_recursive_absolute(HISTORY_RECEIPT_DIR) != OK: return null
+	return DirAccess.open(HISTORY_RECEIPT_DIR)
+
+static func _history_journal_name(filename: String) -> Dictionary:
+	if not filename.ends_with(".json"): return {}
+	var base := filename.trim_suffix(".json")
+	if Provider.valid_history_receipt_id(base):
+		return {"id":base,"order":base.substr(0,20),"legacy":true}
+	if base.length() < 22 or base[20] != "_": return {}
+	var order := base.substr(0,20)
+	var identity := base.substr(21)
+	if not order.is_valid_int() or int(order) < 0 or "%020d" % int(order) != order \
+			or not Provider.valid_history_receipt_id(identity): return {}
+	return {"id":identity,"order":order,"legacy":false}
+
+static func _history_journal_names(directory: DirAccess) -> Dictionary:
+	# Opening an execute-only directory can succeed while listing it fails.
+	# Never mistake that failure for an empty journal or bypass its quota.
+	if directory == null or directory.list_dir_begin() != OK:
+		return {"ok":false,"names":[],"error":"Cannot list pending Art history; restore directory read access."}
+	var names: Array[String] = []
+	var filename := directory.get_next()
+	var error := ""
+	while not filename.is_empty():
+		if filename.ends_with(".json"):
+			if directory.current_is_dir() or directory.is_link(filename):
+				error = "Pending Art history record is not a regular file: "+filename
+				break
+			if _history_journal_name(filename).is_empty():
+				error = "Invalid pending Art history filename; original file preserved."
+				break
+			if names.size() >= MAX_HISTORY_RECEIPTS:
+				error = "Pending Art history exceeds its bounded record capacity; originals preserved."
+				break
+			names.append(filename)
+		filename = directory.get_next()
+	directory.list_dir_end()
+	return {"ok":error.is_empty(),"names":names,"error":error}
+
+static func _valid_frozen_history_turn(item: Dictionary) -> bool:
+	return item.get("turn") is Dictionary and item.turn.size() == 3 \
+		and item.turn.get("role") == "user" and item.turn.get("content") is String \
+		and item.turn.get("_history_receipt_id") == item.id \
+		and Provider.Archive.integer(item.receipt.get("_history_world_epoch")) \
+		and item.receipt._history_world_epoch == item.epoch \
+		and item.turn.content.sha256_text() == item.receipt.get("_history_turn_sha256")
+
+static func _persist_history_receipt(item: Dictionary) -> bool:
+	if not Provider.valid_history_receipt_id(item.get("id")) or not item.get("source") is String \
+			or not Provider.valid_traffic_path(item.source) or not Provider.Archive.integer(item.get("epoch")) \
+			or not item.get("receipt") is Dictionary or item.receipt.get("_history_receipt_id") != item.id: return false
+	var schema: Variant = item.get("schema",1)
+	if (schema != 1 and schema != 2) or (schema == 2 and not _valid_frozen_history_turn(item)): return false
+	var directory := _journal_directory()
+	if directory == null: return false
+	var listing := _history_journal_names(directory)
+	if not bool(listing.ok): return false
+	# Identity is immutable at capture; ordering is assigned only when the
+	# complete existing journal is listable. A clock rollback during an outage
+	# must not publish a newer volatile result before an older durable result.
+	var tick := maxi(int(Time.get_unix_time_from_system()*1000000.0),_history_receipt_clock_us+1)
+	for filename: String in listing.names:
+		var prior := _history_journal_name(filename)
+		if str(prior.id) == str(item.id): return false
+		tick = maxi(tick,int(prior.order)+1)
+	var order := "%020d" % tick
+	var filename := order+"_"+str(item.id)+".json" if schema == 2 else str(item.id)+".json"
+	var destination := HISTORY_RECEIPT_DIR.path_join(filename)
+	if directory.file_exists(filename) or directory.dir_exists(filename) or directory.is_link(filename): return false
+	var record := {"schema":schema,"id":item.id,"source":item.source,"epoch":item.epoch,"receipt":item.receipt}
+	if schema == 2:
+		record["turn"] = item.turn
+		record["order"] = order
+	var payload := (JSON.stringify(record)+"\n").to_utf8_buffer()
+	if payload.size() > MAX_HISTORY_RECEIPT_BYTES: return false
+	var count := 0
+	var bytes := payload.size()
+	for prior_filename: String in listing.names:
+		count += 1
+		if count >= MAX_HISTORY_RECEIPTS or directory.is_link(prior_filename): return false
+		var existing := FileAccess.open(HISTORY_RECEIPT_DIR.path_join(prior_filename),FileAccess.READ)
+		if existing == null: return false
+		bytes += existing.get_length()
+		if bytes > MAX_HISTORY_JOURNAL_BYTES: return false
+	# Keep the independent same-directory temporary name short on Windows.
+	var temporary := HISTORY_RECEIPT_DIR.path_join("pending-"+Crypto.new().generate_random_bytes(16).hex_encode()+".partial")
+	var file := FileAccess.open(temporary,FileAccess.WRITE)
+	if file == null: return false
+	file.store_buffer(payload)
+	file.flush()
+	var error := file.get_error()
+	file = null
+	if error == OK and bool(Provider.Archive.atomic_replace(temporary,destination).get("ok",false)):
+		_history_receipt_clock_us = maxi(_history_receipt_clock_us,tick)
+		if schema == 2: item["order"] = order
+		item["file"] = destination
+		return true
+	DirAccess.remove_absolute(temporary)
+	return false
+
+static func _make_history_receipt(receipt: Dictionary, epoch: int, source: String, masker: Node) -> Dictionary:
+	var tick := maxi(int(Time.get_unix_time_from_system()*1000000.0),_history_receipt_clock_us+1)
+	# Names provide a clock floor when available, never transcript contents.
+	# Durable publication separately establishes order after an unavailable
+	# listing recovers; the captured identity and projection never change.
+	if DirAccess.dir_exists_absolute(HISTORY_RECEIPT_DIR):
+		var listing := _history_journal_names(DirAccess.open(HISTORY_RECEIPT_DIR))
+		for filename: String in listing.names:
+			var prior := _history_journal_name(filename)
+			if not prior.is_empty(): tick = maxi(tick,int(prior.order)+1)
+	_history_receipt_clock_us = tick
+	var identity := "%020d-%s" % [tick,Crypto.new().generate_random_bytes(16).hex_encode()]
+	var recorded: Dictionary = masker._sanitized_event_data("history_result",receipt)
+	recorded["_history_receipt_id"] = identity
+	recorded["_history_world_epoch"] = epoch
+	# Freeze JSON numbers and the sanitized visible projection once. In-memory
+	# secrets may change before retry or disappear entirely after a restart.
+	recorded = JSON.parse_string(JSON.stringify(recorded))
+	var content: String = masker.redact("Canvas result (world epoch %d): Human %s: %s" % [epoch,str(recorded.get("action","undo")),JSON.stringify(recorded)])
+	recorded["_history_turn_sha256"] = content.sha256_text()
+	return {"schema":2,"id":identity,"source":source,"epoch":epoch,"receipt":recorded,
+		"turn":{"role":"user","content":content,"_history_receipt_id":identity}}
+
+# A completed native edit is never repeated during persistence recovery. This
+# returns its immutable receipt to the caller even if the journal is unwritable.
+static func capture_unopened_history_receipt(receipt: Dictionary, epoch: int, association: Dictionary = {}, defer_staging: bool = false) -> Dictionary:
+	var session := association if not association.is_empty() else read_history_session()
+	if session.get("state","") == "no_session": return {"ok":true,"status":"no_session","error":"","item":{}}
+	if session.get("state","") != "session":
+		return {"ok":false,"status":"unassociated","error":"Native history completed, but its Art receipt was not retained: no trustworthy session is available. Do not repeat the native edit. "+str(session.get("error","Restore the saved profile before further history actions.")),"item":{}}
+	var masker := Provider.new()
+	var item := _make_history_receipt(receipt,epoch,str(session.source),masker)
+	masker.free()
+	var durable := not defer_staging and _persist_history_receipt(item)
+	item["volatile"] = not durable
+	if not durable: item["file"] = ""
+	return {"ok":durable,"status":"staged" if durable else "pending_write","item":item,
+		"error":"" if durable else "Confirmed Art history receipt could not be saved. Restore access/free space for art-pending-history; keep Workbench open for retry."}
+
+static func stage_unopened_history_receipt(receipt: Dictionary, epoch: int, association: Dictionary = {}) -> bool:
+	return bool(capture_unopened_history_receipt(receipt,epoch,association).ok)
+
+static func retain_volatile_receipt(queue: Array[Dictionary], item: Dictionary) -> bool:
+	var count := 0
+	var bytes := JSON.stringify(item).to_utf8_buffer().size()
+	for prior: Dictionary in queue:
+		if not bool(prior.get("volatile",false)): continue
+		count += 1
+		bytes += JSON.stringify(prior).to_utf8_buffer().size()
+	if count >= MAX_VOLATILE_HISTORY_RECEIPTS or bytes > MAX_VOLATILE_HISTORY_BYTES: return false
+	queue.append(item)
+	return true
+
+func _queue_history_receipt(receipt: Dictionary, epoch: int) -> bool:
+	var source_path := _history_receipt_source()
+	if source_path.is_empty():
+		if not _profile_session_error.is_empty():
+			_history_persistence_error = "Confirmed native receipt cannot be associated. "+_profile_session_error
+			input_error = _history_persistence_error
+			return false
+		input_error = "Native history completed; no saved Art conversation is associated."
+		return true
+	var item := _make_history_receipt(receipt,epoch,source_path,provider)
+	# Grouped native completions can arrive before the periodic retry. Preserve
+	# capture order by staging all earlier volatile results before this one.
+	var earlier_volatile := false
+	for prior: Dictionary in pending_history_receipts:
+		if bool(prior.get("volatile",false)): earlier_volatile = true; break
+	var durable := not earlier_volatile and _persist_history_receipt(item)
+	item["volatile"] = not durable
+	if not durable: item["file"] = ""
+	if durable: pending_history_receipts.append(item)
+	elif not retain_volatile_receipt(pending_history_receipts,item):
+		_history_lost_receipt_error = "Confirmed Art receipt exceeded bounded recovery capacity. Free space/restore journal access; this receipt could not be retained. Further history is blocked for this Workbench."
+		input_error = _history_lost_receipt_error
+		return false
+	_history_retry_needed = true
+	if not provider.watch_history_receipt(item):
+		_history_persistence_error = provider.log_warning
+		input_error = _history_persistence_error
+		return false
+	if not durable:
+		_history_persistence_error = "Confirmed Art receipt awaits a durable journal. Restore access/free space; keep Workbench open for automatic retry."
+		input_error = _history_persistence_error
+	return durable
+
+func _retry_history_journal() -> bool:
+	for item: Dictionary in pending_history_receipts:
+		if not bool(item.get("volatile",false)): continue
+		if not _persist_history_receipt(item): return false
+		item.volatile = false
+	_history_persistence_error = ""
+	return true
+
+func _read_pending_history_receipts() -> Dictionary:
+	var result: Dictionary = {"ok":true,"rows":[],"error":""}
+	var parent := DirAccess.open("user://")
+	if parent == null or parent.is_link(HISTORY_RECEIPT_DIR.get_file()):
+		return {"ok":false,"rows":[],"error":"Pending Art history directory is unavailable or aliased; original data preserved."}
+	if not DirAccess.dir_exists_absolute(HISTORY_RECEIPT_DIR):
+		if FileAccess.file_exists(HISTORY_RECEIPT_DIR): return {"ok":false,"rows":[],"error":"Pending Art history directory is obstructed; restore directory access."}
+		return result
+	var directory := DirAccess.open(HISTORY_RECEIPT_DIR)
+	var listing := _history_journal_names(directory)
+	if not bool(listing.ok): return {"ok":false,"rows":[],"error":str(listing.error)}
+	var bytes := 0
+	for filename: String in listing.names: # Unpublished partials are not committed receipts.
+		var name := _history_journal_name(filename)
+		var identity := str(name.id)
+		var path := HISTORY_RECEIPT_DIR.path_join(filename)
+		var file := FileAccess.open(path,FileAccess.READ)
+		if file == null: return {"ok":false,"rows":[],"error":"Pending Art history is unreadable: "+filename}
+		bytes += file.get_length()
+		if file.get_length() > MAX_HISTORY_RECEIPT_BYTES or bytes > MAX_HISTORY_JOURNAL_BYTES or result.rows.size() >= MAX_HISTORY_RECEIPTS:
+			return {"ok":false,"rows":[],"error":"Pending Art history exceeds its bounded receipt/count/byte capacity; originals preserved."}
+		var length := file.get_length()
+		var raw := file.get_buffer(length)
+		var read_error := file.get_error()
+		file = null
+		if read_error != OK or raw.size() != length or raw.is_empty() or raw[-1] != 10 or Provider.Archive.utf8_text(raw) == null:
+			return {"ok":false,"rows":[],"error":"Partial or invalid UTF-8 pending Art history record: "+filename}
+		var parsed: Variant = JSON.parse_string(raw.get_string_from_utf8())
+		if not parsed is Dictionary:
+			return {"ok":false,"rows":[],"error":"Malformed pending Art history record: "+filename}
+		var item: Dictionary = parsed
+		if (item.get("schema") != 1 and item.get("schema") != 2) or item.get("id") != identity or not item.get("source") is String or not Provider.valid_traffic_path(item.source) \
+				or not item.get("receipt") is Dictionary or not Provider.Archive.integer(item.get("epoch")) \
+				or str(item.receipt.get("_history_receipt_id","")) != identity:
+			return {"ok":false,"rows":[],"error":"Invalid pending Art history source or receipt: "+filename}
+		if item.schema == 2 and not _valid_frozen_history_turn(item):
+			return {"ok":false,"rows":[],"error":"Invalid frozen pending Art history projection: "+filename}
+		if (item.schema == 1 and not bool(name.legacy)) or (item.schema == 2 and (bool(name.legacy) or item.get("order") != name.order)):
+			return {"ok":false,"rows":[],"error":"Invalid pending Art history publication order: "+filename}
+		item["order"] = name.order
+		item["file"] = path
+		item["volatile"] = false
+		result.rows.append(item)
+	result.rows.sort_custom(func(a: Dictionary,b: Dictionary) -> bool:
+		return str(a.id)<str(b.id) if str(a.order) == str(b.order) else str(a.order)<str(b.order))
+	return result
+
+func _drain_pending_history_receipts() -> void:
+	if _history_draining or not conversation_loaded or provider.resume_active or provider.export_active: return
+	_history_draining = true
+	_drain_history_journal()
+	_history_draining = false
+
+func _drain_history_journal() -> void:
+	if not _retry_history_journal(): return
+	var disk := _read_pending_history_receipts()
+	if not bool(disk.ok):
+		_history_persistence_error = str(disk.error)
+		input_error = _history_persistence_error
+		_history_retry_needed = true
+		return
+	var pending: Array = disk.rows
+	pending_history_receipts = [] # Every remaining item is now durably on disk.
+	var sources := {}
+	if not provider.log_path.is_empty(): sources[provider.log_path] = true
+	for segment: Dictionary in provider._validated_segments: sources[str(segment.path)] = true
+	_history_retry_needed = false
+	for item: Dictionary in pending:
+		if not sources.has(str(item.source)): continue # Never migrate an orphan to an unrelated session.
+		if not provider.has_history_receipt(str(item.id)):
+			# A disk record appearing after replay may already have committed its
+			# turn. Discover that through the same incremental reader, not a fresh
+			# empty deduplication state or synchronous transcript scan.
+			conversation_loaded = false
+			_history_retry_needed = true
+			_begin_history_restore()
+			return
+		if not provider.watch_history_receipt(item) or not _record_history_receipt(item.receipt,int(item.epoch),item.get("turn",{})):
+			_history_retry_needed = true
+			_history_persistence_error = "Art history remains safely pending. Restore archive/profile access, then retry. "+provider.log_warning
+			input_error = _history_persistence_error
+			return # Later receipts must not overtake this one.
+		var path := str(item.file)
+		if DirAccess.remove_absolute(path) != OK:
+			_history_retry_needed = true
+			_history_persistence_error = "History committed; journal cleanup failed. Retry will deduplicate this receipt."
+			input_error = _history_persistence_error
+			return
+		provider.forget_history_receipt(str(item.id))
+	_history_persistence_error = ""
+	if not _history_lost_receipt_error.is_empty(): input_error = _history_lost_receipt_error
+
 # Append a new human result; never rewrite the model's historical receipts or
 # use model_feedback(), which can schedule another request in an active run.
 func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
 	var epoch := captured_epoch if captured_epoch >= 0 else (int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch)
-	if not _ensure_history_loaded():
-		# A native Undo already in flight can finish while the user opens Art.
-		# Keep its confirmed result until replay finishes; never apply it twice.
-		if pending_history_receipts.size() < 64:
-			pending_history_receipts.append({"receipt":receipt.duplicate(true),"epoch":epoch})
-		else:
-			input_error = "History result was not saved: the pending conversation receipt queue is full."
-		return
+	# Capture once, stage first, and preserve its identity through every retry.
+	# Neither a hidden callback nor a failed append starts a transcript scan.
+	if not _queue_history_receipt(receipt,epoch): return
+	if conversation_loaded: _drain_pending_history_receipts()
+
+func _record_history_receipt(receipt: Dictionary, epoch: int, frozen_turn: Dictionary = {}) -> bool:
 	var recorded := receipt.duplicate(true)
-	provider.log_event("history_result",recorded)
+	var identity := str(recorded.get("_history_receipt_id",""))
+	var committed: Dictionary = provider.history_receipt_state(identity)
+	if not bool(committed.raw) and not provider.log_event("history_result",recorded):
+		input_error = "Confirmed history result could not be archived. "+provider.log_warning
+		return false
 	var action := str(recorded.get("action","undo"))
 	var status := str(recorded.get("status","unknown"))
 	var label := str(recorded.get("label","Workbench edit"))
-	last_result = "Human %s: %s" % [action,JSON.stringify(recorded)]
-	remember_turn("user","Canvas result (world epoch %d): %s" % [epoch,last_result])
+	var result := "Human %s: %s" % [action,JSON.stringify(recorded)]
+	var entry := frozen_turn.duplicate(true) if not frozen_turn.is_empty() else {"role":"user","content":provider.redact("Canvas result (world epoch %d): %s" % [epoch,result]),"_history_receipt_id":identity}
+	if not bool(committed.turn):
+		if not provider.log_event("conversation",entry): return false
+		_history_live_turns[identity] = entry
+	# A committed raw event is not a committed model turn. Conversely a model
+	# turn already on disk must not be appended again after checkpoint failure.
+	var checkpoint := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
+	if not _commit_traffic_path(checkpoint):
+		return false
+	# A turn found in authoritative replay may be older than the latest result
+	# (or intentionally cleared). Cleanup must not rewind compacted context.
+	if not _history_live_turns.has(identity): return true
+	conversation.append(_history_live_turns[identity])
+	_history_live_turns.erase(identity)
+	last_result = str(entry.content)
 	provider_message = "%s %s · %s · %d native cells confirmed" % [action.capitalize(),label,
 		status,int(recorded.get("applied",0))]
 	if bool(recorded.get("remaining_group",false)):
@@ -816,6 +1245,7 @@ func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
 	elif not str(recorded.get("reason","")).is_empty():
 		provider_message += " · "+str(recorded.reason)
 	input_error = provider_message
+	return true
 
 func model_context() -> Array:
 	if not _ensure_history_loaded(): return []
@@ -851,6 +1281,14 @@ func model_feedback(feedback: String) -> void:
 
 func remember_turn(role: String, content: String, image_offset: int = -1) -> bool:
 	if not _ensure_history_loaded(): return false
+	if not _history_lost_receipt_error.is_empty():
+		input_error = _history_lost_receipt_error
+		return false
+	if _history_retry_needed and not _history_draining:
+		_drain_pending_history_receipts()
+		if _history_retry_needed:
+			input_error = "Restore the pending native history receipts before adding a later conversation turn."
+			return false
 	var entry := {"role":role,"content":provider.redact(content)}
 	if image_offset >= 0:
 		entry.image_offset = image_offset
@@ -864,11 +1302,29 @@ func remember_turn(role: String, content: String, image_offset: int = -1) -> boo
 
 func _commit_traffic_path(path: String) -> bool:
 	var previous: Variant = settings.get_value("session","traffic_path","")
-	if previous == path: return true
+	var saved := read_history_session()
+	# The provider publishes a first complete segment before this callback.
+	# Only a panel which observed a genuinely virgin profile may create its
+	# initial pointer; a missing pre-existing profile remains a refusal.
+	if _profile_creation_allowed and str(previous).is_empty() and provider.parent_log_path.is_empty() \
+			and not FileAccess.file_exists("user://art-provider.cfg") and not DirAccess.dir_exists_absolute("user://art-provider.cfg"):
+		var directory := DirAccess.open("user://")
+		if directory != null and not directory.is_link("art-provider.cfg"):
+			saved = {"state":"no_session","source":"","error":"","absent":true}
+	if saved.state == "error" or (saved.state == "no_session" and bool(saved.get("absent",false)) and not str(previous).is_empty()):
+		input_error = "Could not checkpoint Art history; restore the original saved profile. "+str(saved.error)
+		return false
+	if str(saved.source) != str(previous) and str(saved.source) != path:
+		input_error = "Saved Art session changed; pending receipts remain bound to their original conversation."
+		return false
+	if str(saved.source) == path:
+		settings.set_value("session","traffic_path",path)
+		return true
 	settings.set_value("session","traffic_path",path)
 	if _save_settings() != OK:
 		settings.set_value("session","traffic_path",previous)
 		return false
+	_profile_creation_allowed = false
 	return true
 
 func persist_traffic_path() -> bool:
@@ -878,6 +1334,12 @@ func persist_traffic_path() -> bool:
 func send_prompt() -> void:
 	if executor.active or provider.active or capturing or remaining_turns != 0 or provider.export_active: return
 	if not _ensure_history_loaded(): return
+	if not _history_lost_receipt_error.is_empty():
+		input_error = _history_lost_receipt_error
+		return
+	if _history_retry_needed:
+		_drain_pending_history_receipts()
+		if _history_retry_needed: return
 	if wb.paint_editor != null and wb.paint_editor.busy():
 		input_error = "Wait for the shared edit to finish before sending another model request."
 		return

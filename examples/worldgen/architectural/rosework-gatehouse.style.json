@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "rosework-gatehouse",
+  "name": "Rosework Gatehouse",
+  "module": "rosework_gatehouse",
+  "module_version": 1,
+  "theme": "ruins",
+  "geometry": {
+    "room_size": 128,
+    "floor_height": 80,
+    "wall_thickness": 3,
+    "door_width": 10,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 100,
+    "floor": 119,
+    "window": 55
+  },
+  "apertures": {},
+  "deterioration": 0
+}

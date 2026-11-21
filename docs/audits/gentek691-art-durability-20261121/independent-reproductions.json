@@ -1,0 +1,91 @@
+{
+  "schema": "gentek691-independent-development-reproductions-v1",
+  "scope": "Original independent before/after development probes; separate from frozen-source Linux/Windows qualification.",
+  "reviewer_implemented_source": false,
+  "cases": [
+    {
+      "case": "redaction-seed",
+      "log": "independent-redaction-seed.log.txt",
+      "log_sha256": "42ee9f5c277c5c032b83a4861da861c1dc98009332291b0b1b2096ae66d492e0",
+      "returncode": 0
+    },
+    {
+      "case": "redaction-recover",
+      "log": "independent-redaction-recover.log.txt",
+      "log_sha256": "1a70ba0e5740da61d96a2002812dcd233d6cf6702b46753d44046f5117d2367b",
+      "returncode": 1
+    },
+    {
+      "case": "redaction-seed-fixed",
+      "log": "independent-redaction-seed-fixed.log.txt",
+      "log_sha256": "42ee9f5c277c5c032b83a4861da861c1dc98009332291b0b1b2096ae66d492e0",
+      "returncode": 0
+    },
+    {
+      "case": "redaction-recover-fixed",
+      "log": "independent-redaction-recover-fixed.log.txt",
+      "log_sha256": "ff946c03813bd822839e351b4e727e698929268a2ce80dbb61dc9ed8572b0cd4",
+      "returncode": 0
+    },
+    {
+      "case": "unreadable-storage-execute",
+      "log": "independent-unreadable-storage-execute.log.txt",
+      "log_sha256": "4874a6184a9f72a8703b9353a1230d4289e860af358cf9443815f8fae9f70647",
+      "returncode": 1
+    },
+    {
+      "case": "unreadable-storage-execute-fixed",
+      "log": "independent-unreadable-storage-execute-fixed.log.txt",
+      "log_sha256": "f2f02f2d46f9f7faee33cabb243335aaab20c1186b01e42a2c1aa5330d813e57",
+      "returncode": 0
+    },
+    {
+      "case": "checkpoint-growth-coherent",
+      "log": "independent-checkpoint-growth-coherent.log.txt",
+      "log_sha256": "5486cc6d5f12d42e54946b097b24791fead91d81482db6837f751c1af61235b0",
+      "returncode": 0
+    },
+    {
+      "case": "checkpoint-growth-fixed",
+      "log": "independent-checkpoint-growth-fixed.log.txt",
+      "log_sha256": "44f846ecbeb2d469a32c12d0ab29d873a476180e0811f795b92041a59b93092d",
+      "returncode": 0
+    },
+    {
+      "case": "listing-clock-seed",
+      "log": "independent-listing-clock-seed.log.txt",
+      "log_sha256": "d296cbaac51d52215f9a486db7209d5ff366d88b1674a22b948013e29b54c1c1",
+      "returncode": 0
+    },
+    {
+      "case": "listing-clock-recover",
+      "log": "independent-listing-clock-recover.log.txt",
+      "log_sha256": "82dee30f30ac1cdd2884fac4c725cb5a93cef3d6dae368018da26408e7197cbf",
+      "returncode": 1
+    },
+    {
+      "case": "listing-clock-seed-fixed",
+      "log": "independent-listing-clock-seed-fixed.log.txt",
+      "log_sha256": "d296cbaac51d52215f9a486db7209d5ff366d88b1674a22b948013e29b54c1c1",
+      "returncode": 0
+    },
+    {
+      "case": "listing-clock-recover-fixed",
+      "log": "independent-listing-clock-recover-fixed.log.txt",
+      "log_sha256": "baececd81401414aaa71c388c34e5eaeafb105a6a09525d17937e03173d3c778",
+      "returncode": 0
+    },
+    {
+      "case": "volatile-sequence-loaded",
+      "log": "independent-volatile-sequence-loaded.log.txt",
+      "log_sha256": "05501cd52df83c8c541e27cca506204c19524b25e1e981b773dab6c3c18c6c54",
+      "returncode": 0
+    },
+    {
+      "case": "volatile-sequence-unopened",
+      "log": "independent-volatile-sequence-unopened.log.txt",
+      "log_sha256": "c6daa7579bcb665ee352daf342b746c44d941d38e2c1294c5b9930912053e64f",
+      "returncode": 0
+    }
+  ]
+}

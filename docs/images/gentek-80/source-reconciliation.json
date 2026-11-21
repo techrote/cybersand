@@ -1,0 +1,3231 @@
+{
+  "schema_version": 1,
+  "mission": "GENTEK-80-INTEGRATION-001",
+  "status": "Draft/HOLD implementation candidate; source reconciliation only",
+  "captured_date": "2026-11-20",
+  "accepted_main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+  "authoritative_classic": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+  "principal_showcase_aggregation": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+  "showcase_parent_classic": "615828b28337f85e4663e03ba479616db4ddf764",
+  "catalogue_counts": {
+    "new_distinct_genteks": 80,
+    "classic": 72,
+    "showcases": 8,
+    "retained_builtin_presets": 13,
+    "total_builtin_presets": 93,
+    "native_module_version_entries": 91
+  },
+  "donor_matrix": [
+    {
+      "pr": 663,
+      "module": "megatruss_station",
+      "source_commit": "2d3da36566de5dfa60a82aa642525961c90a6672",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 50,
+      "added_paths_identical_in_671": 50,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 664,
+      "module": "cathedral_megaframe",
+      "source_commit": "f99583cde1db2abd8384cc89eb7bda3151bbe726",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 29,
+      "added_paths_identical_in_671": 29,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 665,
+      "module": "seeded_typology_megablock",
+      "source_commit": "d366894c005208887a6e5ae238d7cdb1983e0a02",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 86,
+      "added_paths_identical_in_671": 86,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 666,
+      "module": "metabolist_spine",
+      "source_commit": "ef42af3d2f4210b1b53cfdc0e7d7bf77ff863304",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 86,
+      "added_paths_identical_in_671": 86,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 667,
+      "module": "interlaced_viaduct",
+      "source_commit": "965729b5b2773587d0c40e836b8f2848b1026e8b",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 58,
+      "added_paths_identical_in_671": 58,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 668,
+      "module": "rosework_gatehouse",
+      "source_commit": "b01c300ac64993693e8b66f1b523e3f9dfa3baf1",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 57,
+      "added_paths_identical_in_671": 57,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 669,
+      "module": "interlock_brutalism",
+      "source_commit": "ca8aba9c638d1c63d79bd3335a55f9ca55d81d49",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 95,
+      "added_paths_identical_in_671": 95,
+      "needed_additional_donor_imports": []
+    },
+    {
+      "pr": 670,
+      "module": "suspended_arcology",
+      "source_commit": "01425a9a1aab6e01b88266a58b8b738ded38a28e",
+      "source_base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "added_paths": 94,
+      "added_paths_identical_in_671": 94,
+      "needed_additional_donor_imports": []
+    }
+  ],
+  "entries": [
+    {
+      "id": "a-frame-hall",
+      "name": "A-Frame Hall",
+      "module": "a_frame_hall",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "AFrameHall",
+      "preset_path": "examples/worldgen/architectural/a-frame-hall.style.json",
+      "preset_git_blob": "bda9a4cdfffebaa143d52690e8633abfc6de04f5",
+      "preset_sha256": "1c62851c7c1eff93e49bf5a5a3c1122ed0e788b73e6b5a4d1f42af966fe9524c",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "barrel-arcade",
+      "name": "Barrel Arcade",
+      "module": "barrel_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "BarrelArcade",
+      "preset_path": "examples/worldgen/architectural/barrel-arcade.style.json",
+      "preset_git_blob": "66a6982718730564f656fe5d2ebb32998ceecea0",
+      "preset_sha256": "b79eb401a19950b22f4b505d51888ef33dbea01a0b74b4bb0e737f52fc90edcf",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "basilica",
+      "name": "Basilica",
+      "module": "basilica",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "Basilica",
+      "preset_path": "examples/worldgen/architectural/basilica.style.json",
+      "preset_git_blob": "6b2a6c080525e20efc827be577efc33e2063587d",
+      "preset_sha256": "6622e20bd758a89eb9fe109ef9c97be643717653e0890b79d534b16a6971f5a5",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "bowstring-truss",
+      "name": "Bowstring Truss",
+      "module": "bowstring_truss",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "BowstringTruss",
+      "preset_path": "examples/worldgen/architectural/bowstring-truss.style.json",
+      "preset_git_blob": "19c4f26ed3ac30e4a44537243ccd32be4b3daf2b",
+      "preset_sha256": "7984e2be5aa499e942da29b86d8bf6e217543ac0bed025ca3a3f0161fb1ce9b3",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "bridgehouse",
+      "name": "Bridgehouse",
+      "module": "bridgehouse",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "Bridgehouse",
+      "preset_path": "examples/worldgen/architectural/bridgehouse.style.json",
+      "preset_git_blob": "82b7c4a64751bc47ec2971047ebd3d6fd770f38d",
+      "preset_sha256": "3664afbcc20d09506afff3559ebeb22eecd85dd405f186888852028bf5d3d2e3",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "butterfly-hall",
+      "name": "Butterfly Hall",
+      "module": "butterfly_hall",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ButterflyHall",
+      "preset_path": "examples/worldgen/architectural/butterfly-hall.style.json",
+      "preset_git_blob": "444bc8e3d11972055d0c368a30c5a4e63caca278",
+      "preset_sha256": "c8be8b5d54a58555d6b30d325dfa7cd25924461e0d00225033e458c6c127b458",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "buttress-crown",
+      "name": "Buttress Crown",
+      "module": "buttress_crown",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ButtressCrown",
+      "preset_path": "examples/worldgen/architectural/buttress-crown.style.json",
+      "preset_git_blob": "85a394fc57c1c4573d093c85bcb59f6e7b649851",
+      "preset_sha256": "63378ac00f460bb7b2b8c4e10e0b5a04f18a59a9ec22a30d6f307b5d0b93f9e0",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "buttress-wall",
+      "name": "Buttress Wall",
+      "module": "buttress_wall",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ButtressWall",
+      "preset_path": "examples/worldgen/architectural/buttress-wall.style.json",
+      "preset_git_blob": "77da6d7ca99940226ce950d13d57493ee076b592",
+      "preset_sha256": "c7c17fbf7c3d08eca2c682263218a6c9f6af592a50712e11a83f24390090e19b",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      },
+      "post_reconciliation_review_repair": {
+        "reason": "Thin exterior window frame and jambs to the base support the light slot without replacing any glass or original structure.",
+        "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "candidate_native_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+        "preset_changed": false
+      }
+    },
+    {
+      "id": "cable-gallery",
+      "name": "Cable Gallery",
+      "module": "cable_gallery",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CableGallery",
+      "preset_path": "examples/worldgen/architectural/cable-gallery.style.json",
+      "preset_git_blob": "5d779f50596a4789f3445773ba0a582404a52abc",
+      "preset_sha256": "3bdc4aaf9beaf264b9ef969768ef24b5bff718704747dbb374efa0cf09aa5ea1",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 72,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "cantilever-spine",
+      "name": "Cantilever Spine",
+      "module": "cantilever_spine",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CantileverSpine",
+      "preset_path": "examples/worldgen/architectural/cantilever-spine.style.json",
+      "preset_git_blob": "bb134f6890876901dbad7be6d2d9f59b42fdf2c9",
+      "preset_sha256": "6976d6caac7c3f100e457664bf296c43eab21d4b0fad067057320e0d27e44596",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "cascade-terrace",
+      "name": "Cascade Terrace",
+      "module": "cascade_terrace",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CascadeTerrace",
+      "preset_path": "examples/worldgen/architectural/cascade-terrace.style.json",
+      "preset_git_blob": "978960f0c532e386474f47cf01659b67ae03b3ff",
+      "preset_sha256": "ff5ac0f87c176056c15b8c937eaaa5a3f7133ac0c003750496e0b9c09826b181",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      },
+      "post_reconciliation_review_repair": {
+        "reason": "Additive rear core joins the terraces; original decks, downstands and leading edges remain byte-identical.",
+        "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "candidate_native_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+        "preset_changed": false
+      }
+    },
+    {
+      "id": "chain-vault",
+      "name": "Chain Vault",
+      "module": "chain_vault",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ChainVault",
+      "preset_path": "examples/worldgen/architectural/chain-vault.style.json",
+      "preset_git_blob": "bbd31ede05babee2ad92d171129752ee84389433",
+      "preset_sha256": "2b22c9714349d72c664a638d28ccf2ab642dca10adfd0f145168b7fa0e20d6da",
+      "materials": {
+        "wall": {
+          "id": 100,
+          "native_name": "BasaltColumns"
+        },
+        "floor": {
+          "id": 101,
+          "native_name": "Obsidian"
+        },
+        "window": {
+          "id": 123,
+          "native_name": "UraniumGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "chevron-hall",
+      "name": "Chevron Hall",
+      "module": "chevron_hall",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ChevronHall",
+      "preset_path": "examples/worldgen/architectural/chevron-hall.style.json",
+      "preset_git_blob": "bdb7029ef6c07e2cb5ecb4df64113fde26c688a2",
+      "preset_sha256": "2a1176fea07d55889ed2ca520fa0cd0f0f07e4e9bf12604ab44c2163772dde25",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "clerestory-hall",
+      "name": "Clerestory Hall",
+      "module": "clerestory_hall",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ClerestoryHall",
+      "preset_path": "examples/worldgen/architectural/clerestory-hall.style.json",
+      "preset_git_blob": "b5dd9a988792df31833a16aa1ae4ae4d4fda950c",
+      "preset_sha256": "e107b34706b9067fb7be0b0dee54eb6ce92e5db20faab9a20de54b1e2a33486e",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "colonnade",
+      "name": "Colonnade",
+      "module": "colonnade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "Colonnade",
+      "preset_path": "examples/worldgen/architectural/colonnade.style.json",
+      "preset_git_blob": "666c5c3b83afa51a14ab6cd485fa55bfa9cebe47",
+      "preset_sha256": "0ed356bd4413adf2e48dc07aa2c51faae0d535742533bad960264e37ec665853",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "corbel-arcade",
+      "name": "Corbel Arcade",
+      "module": "corbel_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CorbelArcade",
+      "preset_path": "examples/worldgen/architectural/corbel-arcade.style.json",
+      "preset_git_blob": "6e9ff2eb6d6834309009a4e8c96fa827c509424c",
+      "preset_sha256": "06c29ac145feb8420d19fe7eccb0423b9dbb741ab00d1c978439b20d0997f068",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "cranked-beam",
+      "name": "Cranked Beam",
+      "module": "cranked_beam",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CrankedBeam",
+      "preset_path": "examples/worldgen/architectural/cranked-beam.style.json",
+      "preset_git_blob": "abbe0e611d03ff1fa2f77fcea0704bf48cffe518",
+      "preset_sha256": "cc09fcf5cf0ae17aff511d20503e12399e6d5738113525eb81e2317752d8fde0",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "crenellated-bridge",
+      "name": "Crenellated Bridge",
+      "module": "crenellated_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CrenellatedBridge",
+      "preset_path": "examples/worldgen/architectural/crenellated-bridge.style.json",
+      "preset_git_blob": "232423666f93b2e2be8f00fd1a92e4d24f59b7cc",
+      "preset_sha256": "9e3fdd8c25ae461918ecf50274394ece8c66febacd699b337fea7813d50ebae3",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "crossbeam-stack",
+      "name": "Crossbeam Stack",
+      "module": "crossbeam_stack",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CrossbeamStack",
+      "preset_path": "examples/worldgen/architectural/crossbeam-stack.style.json",
+      "preset_git_blob": "8d97793d59bbc26294ae9100a0cdaacb0916bf60",
+      "preset_sha256": "f44dd2435dbdf24d237ad76ec14903e407c25bdfe7ebf27f5556fc9b620e0985",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "crown-bridge",
+      "name": "Crown Bridge",
+      "module": "crown_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CrownBridge",
+      "preset_path": "examples/worldgen/architectural/crown-bridge.style.json",
+      "preset_git_blob": "cb08c742edddf96673c0d3af4af9e8642c3610dc",
+      "preset_sha256": "3b6c364d5aead77b8c31b4f14ff6924708f8d11261d656a09e01f6505fb4df92",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "diamond-truss",
+      "name": "Diamond Truss",
+      "module": "diamond_truss",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "DiamondTruss",
+      "preset_path": "examples/worldgen/architectural/diamond-truss.style.json",
+      "preset_git_blob": "565b7b02e03fdff9d76e28fedc8a4af392677457",
+      "preset_sha256": "6a1d82c057f270d7fe0f07eb75be15fcac7f85c434d619220f024a5545da4e1a",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "double-cantilever",
+      "name": "Double Cantilever",
+      "module": "double_cantilever",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "DoubleCantilever",
+      "preset_path": "examples/worldgen/architectural/double-cantilever.style.json",
+      "preset_git_blob": "6a400279efecce5475885fdac0775063a71e9056",
+      "preset_sha256": "3e2b45960530bacc8db69504ce3229a47566ea2104332678ab162e2a3e736491",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "drum-vault",
+      "name": "Drum Vault",
+      "module": "drum_vault",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "DrumVault",
+      "preset_path": "examples/worldgen/architectural/drum-vault.style.json",
+      "preset_git_blob": "10f42b01a2ac1081975f0dd0577c412fb7241339",
+      "preset_sha256": "4a93e6e1dee754a6496f243fd10c32ae6cba73d170674197187e22bf2192083c",
+      "materials": {
+        "wall": {
+          "id": 100,
+          "native_name": "BasaltColumns"
+        },
+        "floor": {
+          "id": 101,
+          "native_name": "Obsidian"
+        },
+        "window": {
+          "id": 123,
+          "native_name": "UraniumGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "fan-truss",
+      "name": "Fan Truss",
+      "module": "fan_truss",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "FanTruss",
+      "preset_path": "examples/worldgen/architectural/fan-truss.style.json",
+      "preset_git_blob": "d49fd095817a78f593e592dadb9590af896377bc",
+      "preset_sha256": "5fe779eb53d69a55bca37a1f49774d7d84c86eed4352100ed5db87a173762382",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "flying-buttress",
+      "name": "Flying Buttress",
+      "module": "flying_buttress",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "FlyingButtress",
+      "preset_path": "examples/worldgen/architectural/flying-buttress.style.json",
+      "preset_git_blob": "74f2c11baf71fa6f06058439804c7a38811a859c",
+      "preset_sha256": "e2f594fbe9114fea6410a0db84d8a4899ddf12478ed81396ae4f8a19a0837574",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "folded-plate-hall",
+      "name": "Folded Plate Hall",
+      "module": "folded_plate_hall",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "FoldedPlateHall",
+      "preset_path": "examples/worldgen/architectural/folded-plate-hall.style.json",
+      "preset_git_blob": "7bf5ad0984d801ede815b4f0420f19800f90d6bc",
+      "preset_sha256": "dad59da9ff8a66974256d644c8f6377a8c3648ef8215e3e48ace63618e70c061",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "forked-gantry",
+      "name": "Forked Gantry",
+      "module": "forked_gantry",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ForkedGantry",
+      "preset_path": "examples/worldgen/architectural/forked-gantry.style.json",
+      "preset_git_blob": "499aa79e713ec664706c0c71b30ba7c86b3ba799",
+      "preset_sha256": "e97035791015b359b5473f584f27c441d1efa6a36c7cb9d790044a3af1a2b6b9",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "hanging-arcade",
+      "name": "Hanging Arcade",
+      "module": "hanging_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "HangingArcade",
+      "preset_path": "examples/worldgen/architectural/hanging-arcade.style.json",
+      "preset_git_blob": "3bb16a05adc570b57691618764b87f7a24b2197a",
+      "preset_sha256": "b614694b7eded9d88343fb524b045c8fee0f677a93115399cceb71b261d1474e",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "harp-bridge",
+      "name": "Harp Bridge",
+      "module": "harp_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "HarpBridge",
+      "preset_path": "examples/worldgen/architectural/harp-bridge.style.json",
+      "preset_git_blob": "d2d39d2e8abc9f8ca54e4d2626b8067e7fada839",
+      "preset_sha256": "9e0be9567f96e395f9eb8c6d453312c76e5dae86dccf77552cdf72d5832d93da",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 80,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "hourglass-pier",
+      "name": "Hourglass Pier",
+      "module": "hourglass_pier",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "HourglassPier",
+      "preset_path": "examples/worldgen/architectural/hourglass-pier.style.json",
+      "preset_git_blob": "20aec9d18fd254e7a5a23198568cb31f80798d32",
+      "preset_sha256": "ecfb0a4ee5483d90afb7c9cb5a6385155c0ff6dad1f34e7a106d9ede67872516",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "inverted-arch",
+      "name": "Inverted Arch",
+      "module": "inverted_arch",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "InvertedArch",
+      "preset_path": "examples/worldgen/architectural/inverted-arch.style.json",
+      "preset_git_blob": "b477359272685d338e2b9b4db7028b2752d812fb",
+      "preset_sha256": "d7a25289741abedaca3fa1fe4a1b785b662eb1a473c50c101f9204b869e0f481",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "inverted-trestle",
+      "name": "Inverted Trestle",
+      "module": "inverted_trestle",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "InvertedTrestle",
+      "preset_path": "examples/worldgen/architectural/inverted-trestle.style.json",
+      "preset_git_blob": "d280877286970102ac853aafc9b9d7877256a945",
+      "preset_sha256": "088839a229f32a6e0731df9dcb940ef96efe50f7963857ca7805f1f3e57b3837",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "kingpost-frame",
+      "name": "Kingpost Frame",
+      "module": "kingpost_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "KingpostFrame",
+      "preset_path": "examples/worldgen/architectural/kingpost-frame.style.json",
+      "preset_git_blob": "a94d36f59b9a3d9be84ee4b37866eca7eb2623f9",
+      "preset_sha256": "1fbd2e96480e79b53d02454ce0e2093c83a7374e94926b4c326a8b8830a6622c",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "ladder-bridge",
+      "name": "Ladder Bridge",
+      "module": "ladder_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "LadderBridge",
+      "preset_path": "examples/worldgen/architectural/ladder-bridge.style.json",
+      "preset_git_blob": "b7c2316a3b93ed506bd77b7e54ae909c2160c8e7",
+      "preset_sha256": "c61045106b40f88f068042077243dfc1dbe6317c051e1ea91ee8c3d651913e22",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 64,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "lantern-tower",
+      "name": "Lantern Tower",
+      "module": "lantern_tower",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "LanternTower",
+      "preset_path": "examples/worldgen/architectural/lantern-tower.style.json",
+      "preset_git_blob": "8784c398dcd4f1db5cf06f2a8248591a9e9c0e83",
+      "preset_sha256": "eeb207fbd6cbc7b5178a9db4195cf21538768fa8a69b6670cda802827353658e",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "lattice-tower",
+      "name": "Lattice Tower",
+      "module": "lattice_tower",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "LatticeTower",
+      "preset_path": "examples/worldgen/architectural/lattice-tower.style.json",
+      "preset_git_blob": "8b2d8f9772287f4b0b79653d0da80f5070a1ac7f",
+      "preset_sha256": "09a9820e7e96ee51f8dfba14d77eed2b851949bc890ff1e651de131699f1bd01",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 96,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "lenticular-bridge",
+      "name": "Lenticular Bridge",
+      "module": "lenticular_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "LenticularBridge",
+      "preset_path": "examples/worldgen/architectural/lenticular-bridge.style.json",
+      "preset_git_blob": "6b57e807fc05be9701782acee89208d2fbc5b1c5",
+      "preset_sha256": "0d690583cf755bf86e950e2145552c9f3e616264ea957b9e773a2cf706ba4da0",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 80,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "monopod-tower",
+      "name": "Monopod Tower",
+      "module": "monopod_tower",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "MonopodTower",
+      "preset_path": "examples/worldgen/architectural/monopod-tower.style.json",
+      "preset_git_blob": "81b3636bee960b949a6e39895e26b60e8b177e76",
+      "preset_sha256": "29abfe477198a066226298d34ce9746d1f0fc1403449f7e269a77a8859637298",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "mushroom-deck",
+      "name": "Mushroom Deck",
+      "module": "mushroom_deck",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "MushroomDeck",
+      "preset_path": "examples/worldgen/architectural/mushroom-deck.style.json",
+      "preset_git_blob": "1c83b3c77fcd750a4c906b2ef5f634b80495f924",
+      "preset_sha256": "2b26bd1f29c8c6a3cedbfe07026534205e0114af76ee1cf35a62e70620a39ccc",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "nested-arcade",
+      "name": "Nested Arcade",
+      "module": "nested_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "NestedArcade",
+      "preset_path": "examples/worldgen/architectural/nested-arcade.style.json",
+      "preset_git_blob": "9aec684e000700bd517e7859f32f69f703af5c27",
+      "preset_sha256": "dc57be34c1f7757dd6e037965f2c234793709a4d2148fe033c2ead0881b3a683",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "offset-arcade",
+      "name": "Offset Arcade",
+      "module": "offset_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "OffsetArcade",
+      "preset_path": "examples/worldgen/architectural/offset-arcade.style.json",
+      "preset_git_blob": "459dae9d305cbcb89a7790a92e06cde6a63938b1",
+      "preset_sha256": "93c958bcbdb90802491c032d7aa868151602d0c9f6663c7b283f811c4bdb6c9d",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "pointed-arcade",
+      "name": "Pointed Arcade",
+      "module": "pointed_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "PointedArcade",
+      "preset_path": "examples/worldgen/architectural/pointed-arcade.style.json",
+      "preset_git_blob": "12c023a01a48217a215cce71c127b0fd15d5ec0d",
+      "preset_sha256": "6c71ad908120af023a0e16a73822665833347975e6704d60074a7e00914798c8",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "portal-frame",
+      "name": "Portal Frame",
+      "module": "portal_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "PortalFrame",
+      "preset_path": "examples/worldgen/architectural/portal-frame.style.json",
+      "preset_git_blob": "dfcd25e92be0c101b562f26c7bdd499644731545",
+      "preset_sha256": "bd27a12451612bc32636f3ad31a06920f45d85f076fb32ee1aa0be98eeab9fa9",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "pratt-truss",
+      "name": "Pratt Truss",
+      "module": "pratt_truss",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "PrattTruss",
+      "preset_path": "examples/worldgen/architectural/pratt-truss.style.json",
+      "preset_git_blob": "4286020e160f8c873250782bb7e8f3913e3a6f76",
+      "preset_sha256": "521a01c1e343f0e8521398387eb9519c4d2c29990ed1f6c5f3020a049145ed76",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "pyramidal-frame",
+      "name": "Pyramidal Frame",
+      "module": "pyramidal_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "PyramidalFrame",
+      "preset_path": "examples/worldgen/architectural/pyramidal-frame.style.json",
+      "preset_git_blob": "1be75bc47a53fb2b2c7d781b55e3d744d8ab102a",
+      "preset_sha256": "fa699fd534b13b9a9ee02946f787845c567c138628c9258d23d26be21fe84df8",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "queenpost-frame",
+      "name": "Queenpost Frame",
+      "module": "queenpost_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "QueenpostFrame",
+      "preset_path": "examples/worldgen/architectural/queenpost-frame.style.json",
+      "preset_git_blob": "ea5c4cb59076e8950556f42b38de68c8dac23dd8",
+      "preset_sha256": "bd3ff70b8cceca97bb85668b9d3953d563664ab54974eed937f067d49ad044ca",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "radial-stay-bridge",
+      "name": "Radial Stay Bridge",
+      "module": "radial_stay_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "RadialStayBridge",
+      "preset_path": "examples/worldgen/architectural/radial-stay-bridge.style.json",
+      "preset_git_blob": "f378041d69f884d25fc2d404865a67d602643958",
+      "preset_sha256": "555039d613246e946080f9142fe61261eaccfd120563d7287ce9a7655b1b84af",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 88,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "rib-vault",
+      "name": "Rib Vault",
+      "module": "rib_vault",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "RibVault",
+      "preset_path": "examples/worldgen/architectural/rib-vault.style.json",
+      "preset_git_blob": "8a8ef8515e37da5b8f1963814e300f1c9cc402d2",
+      "preset_sha256": "da405f4ffe164a349cdf2cfd66baf55bf9942a8285bfd0999444a078a22984d2",
+      "materials": {
+        "wall": {
+          "id": 100,
+          "native_name": "BasaltColumns"
+        },
+        "floor": {
+          "id": 101,
+          "native_name": "Obsidian"
+        },
+        "window": {
+          "id": 123,
+          "native_name": "UraniumGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "ring-pier",
+      "name": "Ring Pier",
+      "module": "ring_pier",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "RingPier",
+      "preset_path": "examples/worldgen/architectural/ring-pier.style.json",
+      "preset_git_blob": "f19fcdf89dd142e385f7928b1b9503fefe024de5",
+      "preset_sha256": "959504cb2fd0862a4c1162957f0618321d8610d71535052faa9c831468328f85",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      },
+      "post_reconciliation_review_repair": {
+        "reason": "Centred structural stems outside the original diamond connect both decks while preserving every original accent cell and its central void.",
+        "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "candidate_native_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+        "preset_changed": false
+      }
+    },
+    {
+      "id": "sawtooth-gallery",
+      "name": "Sawtooth Gallery",
+      "module": "sawtooth_gallery",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SawtoothGallery",
+      "preset_path": "examples/worldgen/architectural/sawtooth-gallery.style.json",
+      "preset_git_blob": "7849521ee54753744462dabd5d3008f435f719f9",
+      "preset_sha256": "f77c35b12c555200b81fadf6a06900b2932c507b0b49840f097badb6fb5e33bf",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 64,
+        "floor_height": 56,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "scalloped-vault",
+      "name": "Scalloped Vault",
+      "module": "scalloped_vault",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ScallopedVault",
+      "preset_path": "examples/worldgen/architectural/scalloped-vault.style.json",
+      "preset_git_blob": "274b1b0614c08e8a950eb65848ed26a3b84e374f",
+      "preset_sha256": "a50052742dfe4de57e88374469122b94ad66e37547374c971048abace1b0acdc",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      },
+      "post_reconciliation_review_repair": {
+        "reason": "Local quadratic-rise stroke closes real scallop gaps while retaining all original occupied cells.",
+        "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "candidate_native_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+        "preset_changed": false
+      }
+    },
+    {
+      "id": "shelf-stack",
+      "name": "Shelf Stack",
+      "module": "shelf_stack",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ShelfStack",
+      "preset_path": "examples/worldgen/architectural/shelf-stack.style.json",
+      "preset_git_blob": "b7218d3eea02f00dd7ca2770bd521cc2f2f16103",
+      "preset_sha256": "49af13577686e6ea1f1365b14cd23ecd93eeaa511248b834d60ad7d6fd2dd0bb",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "space-frame",
+      "name": "Space Frame",
+      "module": "space_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SpaceFrame",
+      "preset_path": "examples/worldgen/architectural/space-frame.style.json",
+      "preset_git_blob": "1d3e6a4d3c3b64cfe5f3f27b6b560d66a7542360",
+      "preset_sha256": "9c9021f209124fb8684fcdc5bceca2fd2c80d3f90a0b090672e66a0796122ff1",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 2,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "spine-arcade",
+      "name": "Spine Arcade",
+      "module": "spine_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SpineArcade",
+      "preset_path": "examples/worldgen/architectural/spine-arcade.style.json",
+      "preset_git_blob": "2d5e1579f7b01570d965e7639b83f56f2c45a9aa",
+      "preset_sha256": "bee3d55836f0323b5452a7e56d7f3e6645a31c7af65a9804a19197ae69f46c89",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "split-pier",
+      "name": "Split Pier",
+      "module": "split_pier",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SplitPier",
+      "preset_path": "examples/worldgen/architectural/split-pier.style.json",
+      "preset_git_blob": "a47f6664f814f0ff0b88323f0edca1d788a5c89f",
+      "preset_sha256": "98eb3a51edfed50c97d8658fc72a4b71e55c49fa966544f32d40e1d5eba10b96",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "stacked-arcade",
+      "name": "Stacked Arcade",
+      "module": "stacked_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "StackedArcade",
+      "preset_path": "examples/worldgen/architectural/stacked-arcade.style.json",
+      "preset_git_blob": "912902a4f2b5f116793734c76cfc78f96eab44cc",
+      "preset_sha256": "c4740e19ded05f808a1c17e134ce46ada36737e4d50e2ba4d4f89b8ce551a4f2",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 111,
+          "native_name": "Terrazzo"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "staggered-balcony",
+      "name": "Staggered Balcony",
+      "module": "staggered_balcony",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "StaggeredBalcony",
+      "preset_path": "examples/worldgen/architectural/staggered-balcony.style.json",
+      "preset_git_blob": "f3939aed5860312965926420218a8d3a88a80167",
+      "preset_sha256": "f226d5627f06d99f74b164a1b1dc88d3810a4ddefccc76623bbb318e4a2fe855",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "steel-trestle",
+      "name": "Steel Trestle",
+      "module": "trestle",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "TrestleFrame",
+      "preset_path": "examples/worldgen/architectural/steel-trestle.style.json",
+      "preset_git_blob": "4f4bd42f77704d64ae0fc888e7866d6acfd960e2",
+      "preset_sha256": "07d03070bb9d03c8f83e69459321090d5e898f8e04280cefec1fe5ced39e69da",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 72,
+        "floor_height": 64,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "stepped-aqueduct",
+      "name": "Stepped Aqueduct",
+      "module": "stepped_aqueduct",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SteppedAqueduct",
+      "preset_path": "examples/worldgen/architectural/stepped-aqueduct.style.json",
+      "preset_git_blob": "6b6607daaa8f61f7081524d18cdb8bac0eb8a46c",
+      "preset_sha256": "cbc32329bffbde34721750fb410369f7f308ae4ce63a67803dc1a51cf21791b6",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "stepped-buttress",
+      "name": "Stepped Buttress",
+      "module": "stepped_buttress",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SteppedButtress",
+      "preset_path": "examples/worldgen/architectural/stepped-buttress.style.json",
+      "preset_git_blob": "e5630359495b8f0b47cbea5aad72cce78006bc1e",
+      "preset_sha256": "9ec9a1bff84ad01a256e84421cf1fd71a66c73f95fbde9473a041376aeef8d1a",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "suspended-deck",
+      "name": "Suspended Deck",
+      "module": "suspended_deck",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SuspendedDeck",
+      "preset_path": "examples/worldgen/architectural/suspended-deck.style.json",
+      "preset_git_blob": "c86a9eb1380053bbe88fd3354f918b5325fb301f",
+      "preset_sha256": "60a51620baa24352bbd033c0bb63d8c803d123a41260244370aa6b548b2e6d5a",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      },
+      "post_reconciliation_review_repair": {
+        "reason": "Thin exterior window frame joins the pane to the lower deck; every glass and original structural cell, including repaired e27 hanger contacts, remains exact.",
+        "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "candidate_native_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+        "preset_changed": false
+      }
+    },
+    {
+      "id": "suspension-pylon",
+      "name": "Suspension Pylon",
+      "module": "suspension_pylon",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "SuspensionPylon",
+      "preset_path": "examples/worldgen/architectural/suspension-pylon.style.json",
+      "preset_git_blob": "193d2ba181b3a18c9b32df289c57343ad328d649",
+      "preset_sha256": "9c829e9bb352bd38d0f594a3cbd2a1fe935f7dcc0dba048e40628a2f97ad6618",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "tripod-frame",
+      "name": "Tripod Frame",
+      "module": "tripod_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "TripodFrame",
+      "preset_path": "examples/worldgen/architectural/tripod-frame.style.json",
+      "preset_git_blob": "247aee040e44afad91da72eebe46df58261cc325",
+      "preset_sha256": "64a5c2f1be57f58e8cc8b77cd20e370f14c2a90c01c8404ef9b1ec64864bde37",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      },
+      "post_reconciliation_review_repair": {
+        "reason": "Lower transfer deck, short upper neck and slope-aware leg stroke join repeated tiers and steep legs; the original compact crown and three splayed legs remain.",
+        "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "candidate_native_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+        "preset_changed": false
+      }
+    },
+    {
+      "id": "triptych-arcade",
+      "name": "Triptych Arcade",
+      "module": "triptych_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "TriptychArcade",
+      "preset_path": "examples/worldgen/architectural/triptych-arcade.style.json",
+      "preset_git_blob": "b5af91d5ca194a09a1b9beefd1b2b2435807db5a",
+      "preset_sha256": "7d35102461185bc544d290edda11127b578229b032380e61f2c78b2371cda34a",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 108,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "twin-mast-bridge",
+      "name": "Twin Mast Bridge",
+      "module": "twin_mast_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "TwinMastBridge",
+      "preset_path": "examples/worldgen/architectural/twin-mast-bridge.style.json",
+      "preset_git_blob": "40ab3d76f9be8103a60a49c0a9fb1abf866f67e3",
+      "preset_sha256": "80059d77277faf474c21971fb8239ee5da4a4542fb71ea6b14990893dcaedb2f",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 112,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "vierendeel-frame",
+      "name": "Vierendeel Frame",
+      "module": "vierendeel_frame",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "VierendeelFrame",
+      "preset_path": "examples/worldgen/architectural/vierendeel-frame.style.json",
+      "preset_git_blob": "b1963e0890ee650beec2919a5d07b8be49999c35",
+      "preset_sha256": "74b442400609553d2c21ae5a87753c41d0f315cfd6d2ae0f013fb3a348a34030",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 66,
+          "native_name": "SteelGrating"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "warren-truss",
+      "name": "Warren Truss",
+      "module": "warren_truss",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "WarrenTruss",
+      "preset_path": "examples/worldgen/architectural/warren-truss.style.json",
+      "preset_git_blob": "031964848016eb68fb52021e417cc48304aa53d5",
+      "preset_sha256": "a00d6c9ef39d24e32cf2233466e96669e242eaf75a943e1ff903d74c447c5135",
+      "materials": {
+        "wall": {
+          "id": 130,
+          "native_name": "CarbonFibre"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "wedge-gallery",
+      "name": "Wedge Gallery",
+      "module": "wedge_gallery",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "WedgeGallery",
+      "preset_path": "examples/worldgen/architectural/wedge-gallery.style.json",
+      "preset_git_blob": "61dc20af77a172b847a21f1e34e9ca855d59be9b",
+      "preset_sha256": "9a73e6a52d9be71389528237b568c564ce1118e01239e1b2c7cfb0b564a15c6a",
+      "materials": {
+        "wall": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "yoke-bridge",
+      "name": "Yoke Bridge",
+      "module": "yoke_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "YokeBridge",
+      "preset_path": "examples/worldgen/architectural/yoke-bridge.style.json",
+      "preset_git_blob": "924a263ad1bf0a3f0a0c150642cdfee57f043475",
+      "preset_sha256": "b24471a544d77d6984194ac78ee73a1fbd764692ee048de9d063bc7bd31e4ae6",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "ziggurat-arcade",
+      "name": "Ziggurat Arcade",
+      "module": "ziggurat_arcade",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ZigguratArcade",
+      "preset_path": "examples/worldgen/architectural/ziggurat-arcade.style.json",
+      "preset_git_blob": "de69ef1e637943944a185b4fe8b0c6d3095183ca",
+      "preset_sha256": "ed6d05d52c4a0b8471c3ddc5adf6e51333621b58c2ff8e88495657235ef97da1",
+      "materials": {
+        "wall": {
+          "id": 104,
+          "native_name": "Firebrick"
+        },
+        "floor": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "window": {
+          "id": 120,
+          "native_name": "GlassBlock"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 96,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "zigzag-bridge",
+      "name": "Zigzag Bridge",
+      "module": "zigzag_bridge",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ZigzagBridge",
+      "preset_path": "examples/worldgen/architectural/zigzag-bridge.style.json",
+      "preset_git_blob": "fe26b4538d7b632457d9be9d6f8eef7d91c57571",
+      "preset_sha256": "8896b695cb960138832753ad12e9622dcf2a320105113ce39548f426dd4b6c70",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 113,
+          "native_name": "ZincSheet"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "zigzag-pier",
+      "name": "Zigzag Pier",
+      "module": "zigzag_pier",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "CLASSIC",
+      "authoritative_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "implementation_donor_pr": 624,
+      "implementation_donor_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "integration_source_pr": 624,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "ZigzagPier",
+      "preset_path": "examples/worldgen/architectural/zigzag-pier.style.json",
+      "preset_git_blob": "672d530eebafdffcffda2fa7ec34d7074feef46a",
+      "preset_sha256": "e03efeca0d791307c55336ef455419660693f3a9df53335765f630e3f36fa67c",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "cathedral-megaframe",
+      "name": "Cathedral Megaframe",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 664,
+      "implementation_donor_commit": "f99583cde1db2abd8384cc89eb7bda3151bbe726",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "CathedralMegaframe",
+      "preset_path": "examples/worldgen/architectural/cathedral-megaframe.style.json",
+      "preset_git_blob": "e18246d6654f32ed320ce88bd1426473969ee39f",
+      "preset_sha256": "79a0722afeee05c7399541ac4198965a83f8d2df07a286ac8b055bdc1769c874",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 72,
+        "floor_height": 96,
+        "wall_thickness": 5,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "interlaced-viaduct",
+      "name": "Interlaced Viaduct",
+      "module": "interlaced_viaduct",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 667,
+      "implementation_donor_commit": "965729b5b2773587d0c40e836b8f2848b1026e8b",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_interlaced_viaduct.inc",
+      "native_class": "InterlacedViaduct",
+      "preset_path": "examples/worldgen/architectural/interlaced-viaduct.style.json",
+      "preset_git_blob": "2bac7e4286389921f74119fc2c66d7fe78e85a09",
+      "preset_sha256": "e1424f5dae913ba047d6661ab73a3cdf067a8b0693868c61cd6cd435e42b21fe",
+      "materials": {
+        "wall": {
+          "id": 98,
+          "native_name": "Marble"
+        },
+        "floor": {
+          "id": 65,
+          "native_name": "RustedSteel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 64,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "interlock-brutalism",
+      "name": "Interlock Brutalism",
+      "module": "interlock_brutalism",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 669,
+      "implementation_donor_commit": "ca8aba9c638d1c63d79bd3335a55f9ca55d81d49",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_interlock_brutalism.inc",
+      "native_class": "InterlockBrutalism",
+      "preset_path": "examples/worldgen/architectural/interlock-brutalism.style.json",
+      "preset_git_blob": "d7c59e226556fe87f7aa25bb174cffd559a1aa58",
+      "preset_sha256": "5dfb60bab7c532691bd9c8688a5f5a619d956198cd49b76880700912cfd097f4",
+      "materials": {
+        "wall": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "floor": {
+          "id": 114,
+          "native_name": "AluminiumPanel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "megatruss-station",
+      "name": "Megatruss Station",
+      "module": "megatruss_station",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 663,
+      "implementation_donor_commit": "2d3da36566de5dfa60a82aa642525961c90a6672",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_architecture_classic.inc",
+      "native_class": "MegatrussStation",
+      "preset_path": "examples/worldgen/architectural/megatruss-station.style.json",
+      "preset_git_blob": "fb4983f66d9441cc5467ce9ec54d2a9ed4e11fb5",
+      "preset_sha256": "56f631a9f0dfe1f50c03ccd83ab1077a58f76552e313dbae7445308b50f7f97f",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 65,
+          "native_name": "RustedSteel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 64,
+        "floor_height": 96,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "metabolist-spine",
+      "name": "Metabolist Spine",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 666,
+      "implementation_donor_commit": "ef42af3d2f4210b1b53cfdc0e7d7bf77ff863304",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_architecture_metabolist.inc",
+      "native_class": "MetabolistSpine",
+      "preset_path": "examples/worldgen/architectural/metabolist-spine.style.json",
+      "preset_git_blob": "a561e3b7dfcfa1d1452b41d20d27b18aa2989709",
+      "preset_sha256": "21944fc25adc6cbe33ecf4f04fda8bab37d4945706cc0a8bf0023d62aa0e261d",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 65,
+          "native_name": "RustedSteel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 88,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "rosework-gatehouse",
+      "name": "Rosework Gatehouse",
+      "module": "rosework_gatehouse",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 668,
+      "implementation_donor_commit": "b01c300ac64993693e8b66f1b523e3f9dfa3baf1",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_architecture_rosework.inc",
+      "native_class": "RoseworkGatehouse",
+      "preset_path": "examples/worldgen/architectural/rosework-gatehouse.style.json",
+      "preset_git_blob": "76d85024c361e7b7c62d8664c9bd86059e11ec10",
+      "preset_sha256": "a822093c1c71b3bc5707c6af6260d5839c3933d443898108bbfc8b0b7e5f9903",
+      "materials": {
+        "wall": {
+          "id": 100,
+          "native_name": "BasaltColumns"
+        },
+        "floor": {
+          "id": 119,
+          "native_name": "BrassPanel"
+        },
+        "window": {
+          "id": 55,
+          "native_name": "StainedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 128,
+        "floor_height": 80,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "seeded-typology-megablock",
+      "name": "Seeded Typology Megablock",
+      "module": "seeded_typology_megablock",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 665,
+      "implementation_donor_commit": "d366894c005208887a6e5ae238d7cdb1983e0a02",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_architecture_megablock.inc",
+      "native_class": "SeededTypologyMegablock",
+      "preset_path": "examples/worldgen/architectural/seeded-typology-megablock.style.json",
+      "preset_git_blob": "6f68335b2000650222684be3be88dd9dd1bd2e9d",
+      "preset_sha256": "ac33f5b9f4cd7cdc616d31adaca213707d26baa8666498a645bb07454e7a9703",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 62,
+          "native_name": "SteelPlate"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 96,
+        "floor_height": 64,
+        "wall_thickness": 4,
+        "door_width": 12,
+        "shaft_width": 0
+      }
+    },
+    {
+      "id": "suspended-arcology",
+      "name": "Suspended Arcology",
+      "module": "suspended_arcology",
+      "module_version": 1,
+      "minimum_recipe_schema": 4,
+      "group": "showcase",
+      "authoritative_source_commit": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "implementation_donor_pr": 670,
+      "implementation_donor_commit": "01425a9a1aab6e01b88266a58b8b738ded38a28e",
+      "integration_source_pr": 671,
+      "native_path": "native/src/generation_suspended_arcology.inc",
+      "native_class": "SuspendedArcology",
+      "preset_path": "examples/worldgen/architectural/suspended-arcology.style.json",
+      "preset_git_blob": "815c1b7b8d49d7afff4f418ba74728cbcc085b27",
+      "preset_sha256": "2371205bd82359c7c0efef9d32fc5c307cdbc9f84b9416120e2b7e6b873d715c",
+      "materials": {
+        "wall": {
+          "id": 58,
+          "native_name": "ReinforcedConcrete"
+        },
+        "floor": {
+          "id": 65,
+          "native_name": "RustedSteel"
+        },
+        "window": {
+          "id": 121,
+          "native_name": "FrostedGlass"
+        }
+      },
+      "default_geometry": {
+        "room_size": 80,
+        "floor_height": 72,
+        "wall_thickness": 3,
+        "door_width": 10,
+        "shaft_width": 0
+      }
+    }
+  ],
+  "overlapping_delta_paths": [
+    "Makefile",
+    "docs/README.md",
+    "docs/reference/retrieval-corpus.json",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md",
+    "godot/tests/test_architectural_generator.gd",
+    "godot/tests/test_architectural_project_contract.gd",
+    "native/src/generation_architecture_classic.inc",
+    "native/tests/test_world_generation.cpp"
+  ],
+  "forbidden_paths_unchanged": [
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/main.gd",
+    "native/src/world.cpp",
+    "native/include/cybersand/material.hpp",
+    "native/src/material_rules.cpp"
+  ],
+  "material_catalogue": {
+    "path": "native/include/cybersand/material.hpp",
+    "accepted_main_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "showcase_parent_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "all_preset_material_ids_exist": true,
+    "source_unchanged": true
+  },
+  "swarm_imported": false,
+  "runtime_qualification": "not established by this source report",
+  "standalone_builtin_equivalence": {
+    "compared": 80,
+    "matching": 80,
+    "basis": "Exact parsed style dictionaries from builtin_presets() versus all eighty standalone .style.json files"
+  },
+  "post_reconciliation_review_repairs": {
+    "mission": "GENTEK-80-INTEGRATION-001",
+    "baseline_source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+    "modified_classic_modules": [
+      "buttress_wall",
+      "cascade_terrace",
+      "ring_pier",
+      "scalloped_vault",
+      "suspended_deck",
+      "tripod_frame"
+    ],
+    "unchanged_classic_classes": 66,
+    "current_classic_include_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+    "differential_oracle": "docs/images/gentek-80/classic-review-repair-oracle.json",
+    "complete_raw_captures": "docs/images/gentek-80/classic-review-repair-captures.zip",
+    "preserved_completed_624_repairs": [
+      "Suspended Deck hanger contacts",
+      "Rib Vault slope and glazing clearance",
+      "catalogue and CI contract registration",
+      "documentation registration"
+    ],
+    "authority_note": "Latest repaired #624 remains the donor authority; six intentional architectural fixes found in independent review are explicit candidate deltas, not stale showcase replacements."
+  }
+}

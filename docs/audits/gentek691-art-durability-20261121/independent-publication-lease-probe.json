@@ -1,0 +1,42 @@
+{
+  "workflow_sha256": "edb1c67b1e9d4f79ac40602faa4c9ce4f37edaa84ffeb87a38967958f7a3b374",
+  "source": "0dc5ebc3c77c226a40efa83f3232feeb1f198aa6",
+  "publication": "4b9a71d7f93be27d71b6f7f46022944714da6190",
+  "results": [
+    {
+      "case": "matching source",
+      "returncode": 0,
+      "remote": "4b9a71d7f93be27d71b6f7f46022944714da6190",
+      "passed": true,
+      "stderr": "To /workspace/scratch/80a85ca37e54/independent-review/publication-lease-probe/origin.git\n   0dc5ebc..4b9a71d  HEAD -> integration/gentek80-water-conflict-reconcile\n"
+    },
+    {
+      "case": "reset ancestor before advertisement",
+      "returncode": 1,
+      "remote": "d49cd52d938ba7b10cf6913c7cac0ead9885bec8",
+      "passed": true,
+      "stderr": "GENTEK publication refused: Advertised publication ref does not match the exact source lease\nerror: failed to push some refs to '/workspace/scratch/80a85ca37e54/independent-review/publication-lease-probe/origin.git'\n"
+    },
+    {
+      "case": "newer sibling",
+      "returncode": 1,
+      "remote": "01a5e98d2e2511a8def8e461885a65ae3b16a58b",
+      "passed": true,
+      "stderr": "GENTEK publication refused: Publication must update exactly one remote ref\nerror: failed to push some refs to '/workspace/scratch/80a85ca37e54/independent-review/publication-lease-probe/origin.git'\n"
+    },
+    {
+      "case": "deleted branch before advertisement",
+      "returncode": 1,
+      "passed": true,
+      "stderr": "GENTEK publication refused: Advertised publication ref does not match the exact source lease\nerror: failed to push some refs to '/workspace/scratch/80a85ca37e54/independent-review/publication-lease-probe/origin.git'\n"
+    },
+    {
+      "case": "remote changed after advertisement before receive",
+      "returncode": 1,
+      "remote": "01a5e98d2e2511a8def8e461885a65ae3b16a58b",
+      "passed": true,
+      "stderr": "remote: error: cannot lock ref 'refs/heads/integration/gentek80-water-conflict-reconcile': is at 01a5e98d2e2511a8def8e461885a65ae3b16a58b but expected 0dc5ebc3c77c226a40efa83f3232feeb1f198aa6        \nTo /workspace/scratch/80a85ca37e54/independent-review/publication-lease-probe/origin.git\n ! [remote rejected] HEAD -> integration/gentek80-water-conflict-reconcile (incorrect old value provided)\nerror: failed to push some refs to '/workspace/scratch/80a85ca37e54/independent-review/publication-lease-probe/origin.git'\n"
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,10 @@
+{
+  "exact_bytes_compared": 197062,
+  "material_cells": 98304,
+  "snapshot_sha256": "9ac6747cdbb984715038f91492fcf6104bd8c48bec8d729fe6d0d5a74cd53a96",
+  "status": "pass",
+  "versions": [
+    1,
+    2
+  ]
+}

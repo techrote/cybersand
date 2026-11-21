@@ -1,0 +1,17 @@
+{
+  "run_id": 43966787362,
+  "source_commit": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+  "job_id": 133648214365,
+  "contract_checks": 2756,
+  "contract_failures": 72,
+  "inherited_issue": "test_architectural_project_contract.gd metadata classifier treats every original CLASSIC module as legacy despite existing schema-4 metadata",
+  "new_issue": "megatruss_station omitted from cyber_world_generator.cpp get_catalogue schema4_only list",
+  "minimal_fix": "Add Megatruss schema-4 metadata and share explicit 73 CLASSIC IDs across project-contract geometry and catalogue checks",
+  "artifact_id": 14276758801,
+  "repair_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+  "repair_tree": "a0839f7bcad328770e522b5ddda3e45b91b5b222",
+  "geometry_changed": false,
+  "classic_identity_checks_added": 73,
+  "legacy_version_metadata_preserved": true,
+  "repaired_run_id": 43969089140
+}

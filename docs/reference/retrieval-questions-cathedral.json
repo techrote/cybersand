@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "purpose": "Focused additive Cathedral showcase questions; research scope is explicit.",
+  "questions": [
+    {
+      "id": "CATHEDRAL01",
+      "query": "How does Cathedral Megaframe coordinate four nested scales in one classic native Gentek?",
+      "canonical": ["research/gentek-showcase-cathedral-001.md"],
+      "facts": ["A four-bay by three-storey supercell anchors the primary frame, side arcades, galleries and clerestory details.", "It is schema-4 cathedral_megaframe v1, a Draft stacked sampler, not self-assembly."],
+      "sources": ["../../native/src/generation_architecture_classic.inc"]
+    },
+    {
+      "id": "CATHEDRAL02",
+      "query": "What do room size, floor height, wall thickness, automatic windows and doors change in Cathedral Megaframe?",
+      "canonical": ["research/gentek-showcase-cathedral-001.md"],
+      "facts": ["Room size sets nested horizontal spacing; floor height sets vertical rhythms; wall thickness changes structural mass.", "Windows off substitutes shell for glazing without changing occupied geometry; portals affect lower buttresses.", "Bay and floor must each be at least six wall thicknesses plus sixteen cells."],
+      "sources": ["../../native/src/generation_architecture_classic.inc", "../../godot/scripts/architectural_generator_project.gd"]
+    },
+    {
+      "id": "CATHEDRAL03",
+      "query": "Why are Cathedral Megaframe seed choices independent of chunk order and signed world origin?",
+      "canonical": ["research/gentek-showcase-cathedral-001.md"],
+      "facts": ["Fixed supercell and shared-boundary hash keys choose bounded architectural variants.", "Signed floor division and positive modulo produce local coordinates without mutable state."],
+      "sources": ["../../native/src/generation_architecture_classic.inc", "../../native/tests/test_world_generation.cpp"]
+    },
+    {
+      "id": "CATHEDRAL04",
+      "query": "Are the Cathedral showcase PNGs native material output and how is their source identity verified?",
+      "canonical": ["research/gentek-showcase-cathedral-001.md"],
+      "facts": ["CyberWorldGenerator material IDs use the existing preview LUT; each map retains material bytes, recipe, project and receipts.", "A before-build input ledger and after-execution comparison bind the executed extension and PNGs.", "The parent 72 classics and Viaduct hashes remain regression controls."],
+      "sources": ["../../godot/tests/test_gentek_cathedral_showcase.gd", "../../tools/ci/gentek_cathedral_evidence.py"]
+    }
+  ]
+}

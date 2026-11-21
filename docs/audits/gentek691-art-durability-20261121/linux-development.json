@@ -1,0 +1,219 @@
+{
+  "schema": "gentek691-art-durability-qualification-v1",
+  "passed": true,
+  "status": "passed",
+  "development_only": true,
+  "errors": [],
+  "positive_assertions": 704,
+  "source_base_commit": "c163f1af722e37f802eb0a89a7aff6fa76634e04",
+  "native_build_commit": "16dd1e225ed974789c8b1fbc46718a06b1f61fc8",
+  "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "full_report_sha256": "56bb0b02aa0fe4c647232f26b6c928d33289967e8aa93126ee532d5f6693b8d9",
+  "cases": [
+    {
+      "name": "import",
+      "status": "passed",
+      "returncode": 0,
+      "completion": null,
+      "elapsed_seconds": 9.762660446000154,
+      "log_sha256": "f7a5920838e95103b426cded1270692335594c3590089fae0bfe83d6f430ecc3",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_provider",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 54,
+        "failures": 0
+      },
+      "elapsed_seconds": 0.4157770869987871,
+      "log_sha256": "a94c05d761d2f8a2eea617ddc591c0dd86331254fdebece261d5c0ca633436a5",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_lazy_traffic",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 23,
+        "display": "headless",
+        "failures": [],
+        "original_bytes": 2097522
+      },
+      "elapsed_seconds": 6.76060538999991,
+      "log_sha256": "e59651ca45aed78049a57ed99f5cf479bf8185a31c5b625c3ebd7aebeef65bc8",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_traffic_integrity",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 148,
+        "failures": [],
+        "user_data": "/workspace/scratch/80a85ca37e54/evidence/combined-local-v1/test_art_traffic_integrity-userdata/godot/app_userdata/Cyber Sand Reference Sandbox"
+      },
+      "elapsed_seconds": 3.832618922999245,
+      "log_sha256": "f5ae782d8d292be4b17c76b1631d9524501bbb7b1ac8ab2776c16997089f83f3",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_traffic_panel_safety",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 55,
+        "display": "headless",
+        "failures": []
+      },
+      "elapsed_seconds": 14.370921210998858,
+      "log_sha256": "a69d3399539370f7543fa57017355c349462d48619a5612490042dab6a0bb013",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_history_receipt_identity",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 66,
+        "failures": []
+      },
+      "elapsed_seconds": 1.1717747839993535,
+      "log_sha256": "8f4c83f10519206ddac0def1f1fb8acf0f281b9bbe955aa92e4e224ef782857d",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_workbench_actor_equipment_extent",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 29,
+        "failures": 0
+      },
+      "elapsed_seconds": 2.3830135819989664,
+      "log_sha256": "f723968bcf26befb16a4257196a72394da1d2957f5f725d85c5ea070b77dcfa9",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-suite",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "suite",
+        "checks": 286,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "3ca2573ccf45541804cac50db8a256fdbbb5db8ed5b2205f58cf6969e482a2be"
+      },
+      "elapsed_seconds": 52.65870534399983,
+      "log_sha256": "a2e0dd7e2563c0acde7d991e336ea1fb7ac82edfc441a06ff22e89eaca43fb52",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-restart-seed",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "restart-seed",
+        "checks": 14,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "3ca2573ccf45541804cac50db8a256fdbbb5db8ed5b2205f58cf6969e482a2be"
+      },
+      "elapsed_seconds": 6.057065523000347,
+      "log_sha256": "eae099587a8c254c0d586c71b4ea5055b91d77fd78b418620f271f024a8f2034",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-restart-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "restart-recover",
+        "checks": 13,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "3ca2573ccf45541804cac50db8a256fdbbb5db8ed5b2205f58cf6969e482a2be"
+      },
+      "elapsed_seconds": 5.652285054000458,
+      "log_sha256": "69086326c822bdf1aeb2a5d4a0e85b72e7382564608ff4ea8780abb6ff5a895e",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-crash-seed",
+      "status": "passed",
+      "returncode": -9,
+      "completion": {
+        "boundary": "conversation-committed-before-journal-delete",
+        "case": "crash-seed",
+        "checks": 8,
+        "failures": [],
+        "journal": "user://art-pending-history/00001795270132885198-836628f5596144ebabdd6aae50cbef6a.json",
+        "original": "user://art-traffic/durability-crash.jsonl",
+        "original_sha256": "b5caf40a0bed043e1a4267a533abe7417b1d4091201d3d0d9afb8a2ea8e85de9",
+        "receipt_id": "00001795270132885198-836628f5596144ebabdd6aae50cbef6a",
+        "source": "user://art-traffic/d613a8fba4a6e423e44816c3fab92fdd.jsonl"
+      },
+      "elapsed_seconds": 3.855492613000024,
+      "log_sha256": "cbf4ea8d0be071c5dd1dafc4c898009d05c2c8e3378138560661c3ee4152a6b8",
+      "boundary_sha256": "6d8abac154e3652964a8c5ba1e037cc9cacb2bd598f4522b202e531248d8267c",
+      "pending_at_kill_sha256": "8dd503f0d97a25aa9ce96680fd48e231ae4a276d2153238d3838b659938abf45",
+      "interruption": "SIGKILL"
+    },
+    {
+      "name": "art-durability-crash-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "crash-recover",
+        "checks": 8,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "3ca2573ccf45541804cac50db8a256fdbbb5db8ed5b2205f58cf6969e482a2be"
+      },
+      "elapsed_seconds": 5.398163398000179,
+      "log_sha256": "8a8027c995a2ac4c2ef608a1b49aab7b1e23531c8ef2eb11b0f233becbe8bb4e",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    }
+  ],
+  "script_sha256": {
+    "scripts/art_batch_panel.gd": "c7cbb592a76de6f12a5c7533c1b8a2f0795ed5bb0533b28baebef1ee9834db3c",
+    "scripts/art_provider.gd": "b08516d3b26ea4716b7b86729b4b97cf87ddd392c484e5c427cf54f662054e90",
+    "scripts/shared_workbench.gd": "65f5710ef117ffdb54b2763cf6553202a46fb2c318a066898d75bbff6912ce6d",
+    "tests/test_art_history_durability.gd": "3ca2573ccf45541804cac50db8a256fdbbb5db8ed5b2205f58cf6969e482a2be",
+    "tests/test_art_history_receipt_identity.gd": "50e0ce0113bf0c27e3e624a69e82de85f6a248221e68b40b52b9326ea47c47bc"
+  },
+  "scope": "Local development evidence on recorded working source; hosted frozen-source Linux/Windows qualification remains mandatory."
+}

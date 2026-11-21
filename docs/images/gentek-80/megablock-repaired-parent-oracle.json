@@ -1,0 +1,689 @@
+{
+  "schema_version": 1,
+  "kind": "independent-repaired-classic-megablock-parent-oracle",
+  "source_commit": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+  "source_inputs": {
+    "native/include/cybersand/ballistic_water.hpp": "88a290c712b34d857c8b452f9c3127e2e546f00c7177a84383fe7109602cd01e",
+    "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+    "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+    "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+    "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+    "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+    "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+    "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+    "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+    "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+    "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+    "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+    "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+    "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+    "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+    "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+    "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+    "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+    "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+    "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+    "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+    "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+    "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+    "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+    "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+    "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+    "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+    "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+    "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+    "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+    "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+    "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+    "native/include/cybersand/wave_flow.hpp": "72ddc128734b2de76d745ef46b14dbe638921bec26dc97c0efa80f978c363e94",
+    "native/include/cybersand/world.hpp": "c97b761d650e8f9920f7e8eefc5eac25a113ac9aa992c91e6f7ac7854e0ce9b7",
+    "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+    "native/src/generation_architecture_classic.inc": "12a672be2e68f7fd57440d86ac3ae527d0544767fe1b75721eb594aa948dc88a",
+    "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+    "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+    "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+    "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+    "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+    "native/src/world_ballistic.inc": "e335b2811961569d769bc328e331275ff06e20bcdea43a8427897d618be612f8",
+    "native/src/world_generation.cpp": "01108f2cb6f05502fcb7c46dca3f1ed19f1a29712b8cee7bc2185d5eb76a9401",
+    "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+    "native/src/world_pressure.inc": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105",
+    "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+    "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+    "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+    "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+    "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+    "native/src/world_quantity.inc": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae",
+    "native/src/world_wave.inc": "4ddd4e268853f0409b50f901b50a344e2f0021adcbef4c5ff92ead68854468a3"
+  },
+  "original_showcase_parent": "615828b28337f85e4663e03ba479616db4ddf764",
+  "compiler": "g++-14 (Debian 14.2.0-19) 14.2.0",
+  "driver": "megablock-repaired-parent-oracle.cpp",
+  "driver_sha256": "59eb0696f556d5baa06a308daf56d8d590cd6c027c93e2302d066a01a3bfcda5",
+  "executable_sha256": "93b1094cc69f26a20c6def29bf5b7c0d0473b55090b302024b154ba7b196220a",
+  "profiles": 148,
+  "unchanged_profiles": 146,
+  "changed_profiles": [
+    {
+      "identity": "suspended_deck:1:0",
+      "repaired_fnv1a64": "0x795689b7e65d92d9",
+      "historical_fnv1a64": "0x2995e7ad66e73c99",
+      "reason": "Reviewed Suspended Deck carrier/hanger contact correction"
+    },
+    {
+      "identity": "suspended_deck:1:1",
+      "repaired_fnv1a64": "0x16a99ea301c8d325",
+      "historical_fnv1a64": "0x9326b68dbd596b25",
+      "reason": "Reviewed Suspended Deck carrier/hanger contact correction"
+    }
+  ],
+  "material_oracles": {
+    "trestle:1:0": {
+      "repaired_fnv1a64": "0xb9ec14b0225fb3f9",
+      "historical_fnv1a64": "0xb9ec14b0225fb3f9"
+    },
+    "trestle:1:1": {
+      "repaired_fnv1a64": "0xed9d03e112099d65",
+      "historical_fnv1a64": "0xed9d03e112099d65"
+    },
+    "stacked_arcade:1:0": {
+      "repaired_fnv1a64": "0x5028e7468b0f2703",
+      "historical_fnv1a64": "0x5028e7468b0f2703"
+    },
+    "stacked_arcade:1:1": {
+      "repaired_fnv1a64": "0x29781e117a747325",
+      "historical_fnv1a64": "0x29781e117a747325"
+    },
+    "flying_buttress:1:0": {
+      "repaired_fnv1a64": "0xf9c92515f8dcc1f9",
+      "historical_fnv1a64": "0xf9c92515f8dcc1f9"
+    },
+    "flying_buttress:1:1": {
+      "repaired_fnv1a64": "0x8101f49cbc8874e5",
+      "historical_fnv1a64": "0x8101f49cbc8874e5"
+    },
+    "sawtooth_gallery:1:0": {
+      "repaired_fnv1a64": "0x37b25a487cefd2ed",
+      "historical_fnv1a64": "0x37b25a487cefd2ed"
+    },
+    "sawtooth_gallery:1:1": {
+      "repaired_fnv1a64": "0xc1e4333c7ad04da5",
+      "historical_fnv1a64": "0xc1e4333c7ad04da5"
+    },
+    "cantilever_spine:1:0": {
+      "repaired_fnv1a64": "0x4fe00ab47f425de7",
+      "historical_fnv1a64": "0x4fe00ab47f425de7"
+    },
+    "cantilever_spine:1:1": {
+      "repaired_fnv1a64": "0x9696c2f0625681e5",
+      "historical_fnv1a64": "0x9696c2f0625681e5"
+    },
+    "rib_vault:1:0": {
+      "repaired_fnv1a64": "0x131072f0f5b2843c",
+      "historical_fnv1a64": "0x131072f0f5b2843c"
+    },
+    "rib_vault:1:1": {
+      "repaired_fnv1a64": "0x68d1dbdcee2d3225",
+      "historical_fnv1a64": "0x68d1dbdcee2d3225"
+    },
+    "nested_arcade:1:0": {
+      "repaired_fnv1a64": "0x487c16e1e1276e9b",
+      "historical_fnv1a64": "0x487c16e1e1276e9b"
+    },
+    "nested_arcade:1:1": {
+      "repaired_fnv1a64": "0xea44dcaf5abf2725",
+      "historical_fnv1a64": "0xea44dcaf5abf2725"
+    },
+    "suspended_deck:1:0": {
+      "repaired_fnv1a64": "0x795689b7e65d92d9",
+      "historical_fnv1a64": "0x2995e7ad66e73c99"
+    },
+    "suspended_deck:1:1": {
+      "repaired_fnv1a64": "0x16a99ea301c8d325",
+      "historical_fnv1a64": "0x9326b68dbd596b25"
+    },
+    "bowstring_truss:1:0": {
+      "repaired_fnv1a64": "0x4d68f507e6739ce9",
+      "historical_fnv1a64": "0x4d68f507e6739ce9"
+    },
+    "bowstring_truss:1:1": {
+      "repaired_fnv1a64": "0x145b08dbf81a1d25",
+      "historical_fnv1a64": "0x145b08dbf81a1d25"
+    },
+    "diamond_truss:1:0": {
+      "repaired_fnv1a64": "0xc4639ce6b2acd589",
+      "historical_fnv1a64": "0xc4639ce6b2acd589"
+    },
+    "diamond_truss:1:1": {
+      "repaired_fnv1a64": "0x2c75181934569125",
+      "historical_fnv1a64": "0x2c75181934569125"
+    },
+    "portal_frame:1:0": {
+      "repaired_fnv1a64": "0xb2702e224a83197",
+      "historical_fnv1a64": "0xb2702e224a83197"
+    },
+    "portal_frame:1:1": {
+      "repaired_fnv1a64": "0xb8987b1266f5f725",
+      "historical_fnv1a64": "0xb8987b1266f5f725"
+    },
+    "ladder_bridge:1:0": {
+      "repaired_fnv1a64": "0xc2894dbac4b090a5",
+      "historical_fnv1a64": "0xc2894dbac4b090a5"
+    },
+    "ladder_bridge:1:1": {
+      "repaired_fnv1a64": "0xb0ef453a35c54d25",
+      "historical_fnv1a64": "0xb0ef453a35c54d25"
+    },
+    "stepped_aqueduct:1:0": {
+      "repaired_fnv1a64": "0xf5b5b606e45374b5",
+      "historical_fnv1a64": "0xf5b5b606e45374b5"
+    },
+    "stepped_aqueduct:1:1": {
+      "repaired_fnv1a64": "0x7c4d305644dd96a5",
+      "historical_fnv1a64": "0x7c4d305644dd96a5"
+    },
+    "split_pier:1:0": {
+      "repaired_fnv1a64": "0xc20a7ff0a47857f5",
+      "historical_fnv1a64": "0xc20a7ff0a47857f5"
+    },
+    "split_pier:1:1": {
+      "repaired_fnv1a64": "0x48c0d29d9d8cde25",
+      "historical_fnv1a64": "0x48c0d29d9d8cde25"
+    },
+    "cable_gallery:1:0": {
+      "repaired_fnv1a64": "0x5b72110bb93c3c87",
+      "historical_fnv1a64": "0x5b72110bb93c3c87"
+    },
+    "cable_gallery:1:1": {
+      "repaired_fnv1a64": "0xc0b5d8b8c3af3325",
+      "historical_fnv1a64": "0xc0b5d8b8c3af3325"
+    },
+    "clerestory_hall:1:0": {
+      "repaired_fnv1a64": "0xcfa8b2073a9bd0d",
+      "historical_fnv1a64": "0xcfa8b2073a9bd0d"
+    },
+    "clerestory_hall:1:1": {
+      "repaired_fnv1a64": "0x950dd4c7e71a7325",
+      "historical_fnv1a64": "0x950dd4c7e71a7325"
+    },
+    "mushroom_deck:1:0": {
+      "repaired_fnv1a64": "0x59f463471c8b28c5",
+      "historical_fnv1a64": "0x59f463471c8b28c5"
+    },
+    "mushroom_deck:1:1": {
+      "repaired_fnv1a64": "0x2f81457df1fa4f25",
+      "historical_fnv1a64": "0x2f81457df1fa4f25"
+    },
+    "zigzag_bridge:1:0": {
+      "repaired_fnv1a64": "0x95b7b333831f941b",
+      "historical_fnv1a64": "0x95b7b333831f941b"
+    },
+    "zigzag_bridge:1:1": {
+      "repaired_fnv1a64": "0x220c7f6480f81aa5",
+      "historical_fnv1a64": "0x220c7f6480f81aa5"
+    },
+    "scalloped_vault:1:0": {
+      "repaired_fnv1a64": "0xb06f3b35106152a5",
+      "historical_fnv1a64": "0xb06f3b35106152a5"
+    },
+    "scalloped_vault:1:1": {
+      "repaired_fnv1a64": "0xf99be3082cb6c3a5",
+      "historical_fnv1a64": "0xf99be3082cb6c3a5"
+    },
+    "lattice_tower:1:0": {
+      "repaired_fnv1a64": "0x96072ab8404e8ec7",
+      "historical_fnv1a64": "0x96072ab8404e8ec7"
+    },
+    "lattice_tower:1:1": {
+      "repaired_fnv1a64": "0x1e50d1751ee0b225",
+      "historical_fnv1a64": "0x1e50d1751ee0b225"
+    },
+    "offset_arcade:1:0": {
+      "repaired_fnv1a64": "0xa70145fc1c2a4584",
+      "historical_fnv1a64": "0xa70145fc1c2a4584"
+    },
+    "offset_arcade:1:1": {
+      "repaired_fnv1a64": "0xcc79b7a268d8f25",
+      "historical_fnv1a64": "0xcc79b7a268d8f25"
+    },
+    "bridgehouse:1:0": {
+      "repaired_fnv1a64": "0x1df504616d17277d",
+      "historical_fnv1a64": "0x1df504616d17277d"
+    },
+    "bridgehouse:1:1": {
+      "repaired_fnv1a64": "0x829c7d93d6d51825",
+      "historical_fnv1a64": "0x829c7d93d6d51825"
+    },
+    "forked_gantry:1:0": {
+      "repaired_fnv1a64": "0x1090c844d29d0507",
+      "historical_fnv1a64": "0x1090c844d29d0507"
+    },
+    "forked_gantry:1:1": {
+      "repaired_fnv1a64": "0xd907d4dfb1ae1425",
+      "historical_fnv1a64": "0xd907d4dfb1ae1425"
+    },
+    "buttress_wall:1:0": {
+      "repaired_fnv1a64": "0x7d3a65d1716549fe",
+      "historical_fnv1a64": "0x7d3a65d1716549fe"
+    },
+    "buttress_wall:1:1": {
+      "repaired_fnv1a64": "0xd08f98d68ae780a5",
+      "historical_fnv1a64": "0xd08f98d68ae780a5"
+    },
+    "fan_truss:1:0": {
+      "repaired_fnv1a64": "0xbfc47be0c62a1b17",
+      "historical_fnv1a64": "0xbfc47be0c62a1b17"
+    },
+    "fan_truss:1:1": {
+      "repaired_fnv1a64": "0x63525c3b7ee23725",
+      "historical_fnv1a64": "0x63525c3b7ee23725"
+    },
+    "pratt_truss:1:0": {
+      "repaired_fnv1a64": "0xdf350706c287ba39",
+      "historical_fnv1a64": "0xdf350706c287ba39"
+    },
+    "pratt_truss:1:1": {
+      "repaired_fnv1a64": "0x7d25e067a3404925",
+      "historical_fnv1a64": "0x7d25e067a3404925"
+    },
+    "vierendeel_frame:1:0": {
+      "repaired_fnv1a64": "0x5d0672eb2b00fea5",
+      "historical_fnv1a64": "0x5d0672eb2b00fea5"
+    },
+    "vierendeel_frame:1:1": {
+      "repaired_fnv1a64": "0xdf5805d274d51b25",
+      "historical_fnv1a64": "0xdf5805d274d51b25"
+    },
+    "suspension_pylon:1:0": {
+      "repaired_fnv1a64": "0xc9ebe7b37168ef89",
+      "historical_fnv1a64": "0xc9ebe7b37168ef89"
+    },
+    "suspension_pylon:1:1": {
+      "repaired_fnv1a64": "0x57e04b8c9cc47325",
+      "historical_fnv1a64": "0x57e04b8c9cc47325"
+    },
+    "harp_bridge:1:0": {
+      "repaired_fnv1a64": "0xb907e8a162c4fd4b",
+      "historical_fnv1a64": "0xb907e8a162c4fd4b"
+    },
+    "harp_bridge:1:1": {
+      "repaired_fnv1a64": "0xca1cabb2ccc60525",
+      "historical_fnv1a64": "0xca1cabb2ccc60525"
+    },
+    "double_cantilever:1:0": {
+      "repaired_fnv1a64": "0x4a44da8792a30785",
+      "historical_fnv1a64": "0x4a44da8792a30785"
+    },
+    "double_cantilever:1:1": {
+      "repaired_fnv1a64": "0x707256a7d517b325",
+      "historical_fnv1a64": "0x707256a7d517b325"
+    },
+    "stepped_buttress:1:0": {
+      "repaired_fnv1a64": "0xab92aa62b65a16a9",
+      "historical_fnv1a64": "0xab92aa62b65a16a9"
+    },
+    "stepped_buttress:1:1": {
+      "repaired_fnv1a64": "0x34813c6080388a25",
+      "historical_fnv1a64": "0x34813c6080388a25"
+    },
+    "colonnade:1:0": {
+      "repaired_fnv1a64": "0x80d1df61319d08a5",
+      "historical_fnv1a64": "0x80d1df61319d08a5"
+    },
+    "colonnade:1:1": {
+      "repaired_fnv1a64": "0x3c70cd0a2fa46f25",
+      "historical_fnv1a64": "0x3c70cd0a2fa46f25"
+    },
+    "basilica:1:0": {
+      "repaired_fnv1a64": "0xcdd7f7f8804e2093",
+      "historical_fnv1a64": "0xcdd7f7f8804e2093"
+    },
+    "basilica:1:1": {
+      "repaired_fnv1a64": "0x2bafe6b3545a13a5",
+      "historical_fnv1a64": "0x2bafe6b3545a13a5"
+    },
+    "crenellated_bridge:1:0": {
+      "repaired_fnv1a64": "0x471c16ca5c071625",
+      "historical_fnv1a64": "0x471c16ca5c071625"
+    },
+    "crenellated_bridge:1:1": {
+      "repaired_fnv1a64": "0xf2499758a99e7c25",
+      "historical_fnv1a64": "0xf2499758a99e7c25"
+    },
+    "pointed_arcade:1:0": {
+      "repaired_fnv1a64": "0x6ef8cc3c6ac99055",
+      "historical_fnv1a64": "0x6ef8cc3c6ac99055"
+    },
+    "pointed_arcade:1:1": {
+      "repaired_fnv1a64": "0xad8645975939c325",
+      "historical_fnv1a64": "0xad8645975939c325"
+    },
+    "inverted_arch:1:0": {
+      "repaired_fnv1a64": "0x63e368f42cdec557",
+      "historical_fnv1a64": "0x63e368f42cdec557"
+    },
+    "inverted_arch:1:1": {
+      "repaired_fnv1a64": "0x11061449a14cb325",
+      "historical_fnv1a64": "0x11061449a14cb325"
+    },
+    "hourglass_pier:1:0": {
+      "repaired_fnv1a64": "0x1c151445b47eb229",
+      "historical_fnv1a64": "0x1c151445b47eb229"
+    },
+    "hourglass_pier:1:1": {
+      "repaired_fnv1a64": "0x5b6fe8e51bda7125",
+      "historical_fnv1a64": "0x5b6fe8e51bda7125"
+    },
+    "tripod_frame:1:0": {
+      "repaired_fnv1a64": "0xdc0b09a4f8e5d0a7",
+      "historical_fnv1a64": "0xdc0b09a4f8e5d0a7"
+    },
+    "tripod_frame:1:1": {
+      "repaired_fnv1a64": "0x926bed71a08aad25",
+      "historical_fnv1a64": "0x926bed71a08aad25"
+    },
+    "chevron_hall:1:0": {
+      "repaired_fnv1a64": "0xe5293f18d453c32b",
+      "historical_fnv1a64": "0xe5293f18d453c32b"
+    },
+    "chevron_hall:1:1": {
+      "repaired_fnv1a64": "0xb0dbd678f8f3b6a5",
+      "historical_fnv1a64": "0xb0dbd678f8f3b6a5"
+    },
+    "hanging_arcade:1:0": {
+      "repaired_fnv1a64": "0x7c1aca226f354d25",
+      "historical_fnv1a64": "0x7c1aca226f354d25"
+    },
+    "hanging_arcade:1:1": {
+      "repaired_fnv1a64": "0xdf51e212094ae325",
+      "historical_fnv1a64": "0xdf51e212094ae325"
+    },
+    "shelf_stack:1:0": {
+      "repaired_fnv1a64": "0xc5daf00c6da81e27",
+      "historical_fnv1a64": "0xc5daf00c6da81e27"
+    },
+    "shelf_stack:1:1": {
+      "repaired_fnv1a64": "0xe8fd075fc1b843a5",
+      "historical_fnv1a64": "0xe8fd075fc1b843a5"
+    },
+    "staggered_balcony:1:0": {
+      "repaired_fnv1a64": "0xf65765a04bcfc1e5",
+      "historical_fnv1a64": "0xf65765a04bcfc1e5"
+    },
+    "staggered_balcony:1:1": {
+      "repaired_fnv1a64": "0x891500cad734b925",
+      "historical_fnv1a64": "0x891500cad734b925"
+    },
+    "monopod_tower:1:0": {
+      "repaired_fnv1a64": "0xd61f8b0d27b06b7",
+      "historical_fnv1a64": "0xd61f8b0d27b06b7"
+    },
+    "monopod_tower:1:1": {
+      "repaired_fnv1a64": "0xb50954fdda8f2325",
+      "historical_fnv1a64": "0xb50954fdda8f2325"
+    },
+    "wedge_gallery:1:0": {
+      "repaired_fnv1a64": "0x9752f0d3f88744fb",
+      "historical_fnv1a64": "0x9752f0d3f88744fb"
+    },
+    "wedge_gallery:1:1": {
+      "repaired_fnv1a64": "0xb8d51667f65c48e5",
+      "historical_fnv1a64": "0xb8d51667f65c48e5"
+    },
+    "crown_bridge:1:0": {
+      "repaired_fnv1a64": "0x14fac8e0613b946b",
+      "historical_fnv1a64": "0x14fac8e0613b946b"
+    },
+    "crown_bridge:1:1": {
+      "repaired_fnv1a64": "0xa19c6b0aa2959225",
+      "historical_fnv1a64": "0xa19c6b0aa2959225"
+    },
+    "zigzag_pier:1:0": {
+      "repaired_fnv1a64": "0x75419822317fb205",
+      "historical_fnv1a64": "0x75419822317fb205"
+    },
+    "zigzag_pier:1:1": {
+      "repaired_fnv1a64": "0xe2c041932cb3f25",
+      "historical_fnv1a64": "0xe2c041932cb3f25"
+    },
+    "drum_vault:1:0": {
+      "repaired_fnv1a64": "0x6ba7d048ec9e80f9",
+      "historical_fnv1a64": "0x6ba7d048ec9e80f9"
+    },
+    "drum_vault:1:1": {
+      "repaired_fnv1a64": "0x996037605a21da5",
+      "historical_fnv1a64": "0x996037605a21da5"
+    },
+    "pyramidal_frame:1:0": {
+      "repaired_fnv1a64": "0x60b3f7003136b795",
+      "historical_fnv1a64": "0x60b3f7003136b795"
+    },
+    "pyramidal_frame:1:1": {
+      "repaired_fnv1a64": "0x4572f431441b4325",
+      "historical_fnv1a64": "0x4572f431441b4325"
+    },
+    "warren_truss:1:0": {
+      "repaired_fnv1a64": "0x292f6478af094d45",
+      "historical_fnv1a64": "0x292f6478af094d45"
+    },
+    "warren_truss:1:1": {
+      "repaired_fnv1a64": "0xf5664039bee09b25",
+      "historical_fnv1a64": "0xf5664039bee09b25"
+    },
+    "kingpost_frame:1:0": {
+      "repaired_fnv1a64": "0x498338252c915169",
+      "historical_fnv1a64": "0x498338252c915169"
+    },
+    "kingpost_frame:1:1": {
+      "repaired_fnv1a64": "0x316bf163f8144125",
+      "historical_fnv1a64": "0x316bf163f8144125"
+    },
+    "queenpost_frame:1:0": {
+      "repaired_fnv1a64": "0xc9cb666f7bd8a25",
+      "historical_fnv1a64": "0xc9cb666f7bd8a25"
+    },
+    "queenpost_frame:1:1": {
+      "repaired_fnv1a64": "0xf1605bfada499d65",
+      "historical_fnv1a64": "0xf1605bfada499d65"
+    },
+    "lenticular_bridge:1:0": {
+      "repaired_fnv1a64": "0x3f0a47ac15c3f64b",
+      "historical_fnv1a64": "0x3f0a47ac15c3f64b"
+    },
+    "lenticular_bridge:1:1": {
+      "repaired_fnv1a64": "0x8bac475d41c1db25",
+      "historical_fnv1a64": "0x8bac475d41c1db25"
+    },
+    "radial_stay_bridge:1:0": {
+      "repaired_fnv1a64": "0xfd695adf17277a3b",
+      "historical_fnv1a64": "0xfd695adf17277a3b"
+    },
+    "radial_stay_bridge:1:1": {
+      "repaired_fnv1a64": "0xd5b973ac8f218a5",
+      "historical_fnv1a64": "0xd5b973ac8f218a5"
+    },
+    "twin_mast_bridge:1:0": {
+      "repaired_fnv1a64": "0xc4ea84ff4aa885fb",
+      "historical_fnv1a64": "0xc4ea84ff4aa885fb"
+    },
+    "twin_mast_bridge:1:1": {
+      "repaired_fnv1a64": "0x4daf801ff6ab4525",
+      "historical_fnv1a64": "0x4daf801ff6ab4525"
+    },
+    "a_frame_hall:1:0": {
+      "repaired_fnv1a64": "0x80db7c15a0fc6f45",
+      "historical_fnv1a64": "0x80db7c15a0fc6f45"
+    },
+    "a_frame_hall:1:1": {
+      "repaired_fnv1a64": "0xe1974263f8632125",
+      "historical_fnv1a64": "0xe1974263f8632125"
+    },
+    "butterfly_hall:1:0": {
+      "repaired_fnv1a64": "0xf8764f5e25e481c5",
+      "historical_fnv1a64": "0xf8764f5e25e481c5"
+    },
+    "butterfly_hall:1:1": {
+      "repaired_fnv1a64": "0xe028f8b213d1f7a5",
+      "historical_fnv1a64": "0xe028f8b213d1f7a5"
+    },
+    "ziggurat_arcade:1:0": {
+      "repaired_fnv1a64": "0x983b79828be9eb99",
+      "historical_fnv1a64": "0x983b79828be9eb99"
+    },
+    "ziggurat_arcade:1:1": {
+      "repaired_fnv1a64": "0x9f2e5557fe64825",
+      "historical_fnv1a64": "0x9f2e5557fe64825"
+    },
+    "corbel_arcade:1:0": {
+      "repaired_fnv1a64": "0x7e2b5400d060bd27",
+      "historical_fnv1a64": "0x7e2b5400d060bd27"
+    },
+    "corbel_arcade:1:1": {
+      "repaired_fnv1a64": "0xe861d7d5b95e7725",
+      "historical_fnv1a64": "0xe861d7d5b95e7725"
+    },
+    "chain_vault:1:0": {
+      "repaired_fnv1a64": "0xd3e394f46f3d8267",
+      "historical_fnv1a64": "0xd3e394f46f3d8267"
+    },
+    "chain_vault:1:1": {
+      "repaired_fnv1a64": "0xbc160d7c99efe525",
+      "historical_fnv1a64": "0xbc160d7c99efe525"
+    },
+    "ring_pier:1:0": {
+      "repaired_fnv1a64": "0x3d8cb6479b221735",
+      "historical_fnv1a64": "0x3d8cb6479b221735"
+    },
+    "ring_pier:1:1": {
+      "repaired_fnv1a64": "0x2e82db621d81fc25",
+      "historical_fnv1a64": "0x2e82db621d81fc25"
+    },
+    "folded_plate_hall:1:0": {
+      "repaired_fnv1a64": "0x8184ae554d6ab1f5",
+      "historical_fnv1a64": "0x8184ae554d6ab1f5"
+    },
+    "folded_plate_hall:1:1": {
+      "repaired_fnv1a64": "0x45f1e48239d5bd25",
+      "historical_fnv1a64": "0x45f1e48239d5bd25"
+    },
+    "space_frame:1:0": {
+      "repaired_fnv1a64": "0xa6a89d6cdeee1b25",
+      "historical_fnv1a64": "0xa6a89d6cdeee1b25"
+    },
+    "space_frame:1:1": {
+      "repaired_fnv1a64": "0xf58172cff85d125",
+      "historical_fnv1a64": "0xf58172cff85d125"
+    },
+    "crossbeam_stack:1:0": {
+      "repaired_fnv1a64": "0xbde1119d0e668c97",
+      "historical_fnv1a64": "0xbde1119d0e668c97"
+    },
+    "crossbeam_stack:1:1": {
+      "repaired_fnv1a64": "0x919b2a7f181ec225",
+      "historical_fnv1a64": "0x919b2a7f181ec225"
+    },
+    "yoke_bridge:1:0": {
+      "repaired_fnv1a64": "0x52cce924096baddb",
+      "historical_fnv1a64": "0x52cce924096baddb"
+    },
+    "yoke_bridge:1:1": {
+      "repaired_fnv1a64": "0xcb1d69ae0a1e4325",
+      "historical_fnv1a64": "0xcb1d69ae0a1e4325"
+    },
+    "lantern_tower:1:0": {
+      "repaired_fnv1a64": "0xd58e5a78c9a7dab5",
+      "historical_fnv1a64": "0xd58e5a78c9a7dab5"
+    },
+    "lantern_tower:1:1": {
+      "repaired_fnv1a64": "0x91bfe251f2206d25",
+      "historical_fnv1a64": "0x91bfe251f2206d25"
+    },
+    "spine_arcade:1:0": {
+      "repaired_fnv1a64": "0x8a07559cf2cced25",
+      "historical_fnv1a64": "0x8a07559cf2cced25"
+    },
+    "spine_arcade:1:1": {
+      "repaired_fnv1a64": "0xf282cfa234205025",
+      "historical_fnv1a64": "0xf282cfa234205025"
+    },
+    "cascade_terrace:1:0": {
+      "repaired_fnv1a64": "0x6f7fa789fe3fa365",
+      "historical_fnv1a64": "0x6f7fa789fe3fa365"
+    },
+    "cascade_terrace:1:1": {
+      "repaired_fnv1a64": "0xe5ee8e279f2c0825",
+      "historical_fnv1a64": "0xe5ee8e279f2c0825"
+    },
+    "inverted_trestle:1:0": {
+      "repaired_fnv1a64": "0x9ad0cd0743777257",
+      "historical_fnv1a64": "0x9ad0cd0743777257"
+    },
+    "inverted_trestle:1:1": {
+      "repaired_fnv1a64": "0xd36f3491a6620725",
+      "historical_fnv1a64": "0xd36f3491a6620725"
+    },
+    "cranked_beam:1:0": {
+      "repaired_fnv1a64": "0x66bae88b5202bbb",
+      "historical_fnv1a64": "0x66bae88b5202bbb"
+    },
+    "cranked_beam:1:1": {
+      "repaired_fnv1a64": "0xb57d0e84c4dcc065",
+      "historical_fnv1a64": "0xb57d0e84c4dcc065"
+    },
+    "barrel_arcade:1:0": {
+      "repaired_fnv1a64": "0x8a205f323f4884d5",
+      "historical_fnv1a64": "0x8a205f323f4884d5"
+    },
+    "barrel_arcade:1:1": {
+      "repaired_fnv1a64": "0xbcc91ac4432a1b25",
+      "historical_fnv1a64": "0xbcc91ac4432a1b25"
+    },
+    "buttress_crown:1:0": {
+      "repaired_fnv1a64": "0xfeb49da32bf8aa09",
+      "historical_fnv1a64": "0xfeb49da32bf8aa09"
+    },
+    "buttress_crown:1:1": {
+      "repaired_fnv1a64": "0x8558bc4529bf94a5",
+      "historical_fnv1a64": "0x8558bc4529bf94a5"
+    },
+    "triptych_arcade:1:0": {
+      "repaired_fnv1a64": "0xb9532be2a9ef1b25",
+      "historical_fnv1a64": "0xb9532be2a9ef1b25"
+    },
+    "triptych_arcade:1:1": {
+      "repaired_fnv1a64": "0x4a2b36ddfe9d9965",
+      "historical_fnv1a64": "0x4a2b36ddfe9d9965"
+    },
+    "arcade:1:0": {
+      "repaired_fnv1a64": "0x5067d96b7ab90538",
+      "historical_fnv1a64": "0x5067d96b7ab90538"
+    },
+    "arcade:1:1": {
+      "repaired_fnv1a64": "0xe5efafadaea84d9b",
+      "historical_fnv1a64": "0xe5efafadaea84d9b"
+    },
+    "arcade:2:0": {
+      "repaired_fnv1a64": "0x44fb644f24b4d5a8",
+      "historical_fnv1a64": "0x44fb644f24b4d5a8"
+    },
+    "arcade:2:1": {
+      "repaired_fnv1a64": "0xe5efafadaea84d9b",
+      "historical_fnv1a64": "0xe5efafadaea84d9b"
+    }
+  }
+}

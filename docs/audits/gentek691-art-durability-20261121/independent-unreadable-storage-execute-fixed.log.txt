@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+INDEPENDENT_UNREADABLE_STORAGE {"deny_exit":0,"passed":true,"restore_exit":0,"session":{"error":"Art profile is missing and prior storage cannot be inspected; restore access and the original profile.","source":"","state":"error"}}
