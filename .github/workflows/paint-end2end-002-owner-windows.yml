@@ -145,3 +145,66 @@ jobs:
           path: build/build-timing/
           if-no-files-found: warn
           retention-days: 90
+
+  windows-smoke:
+    name: Validate source-bound Windows packet and native PAINT contracts
+    needs: [windows-build]
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Rapier pinned LFS and package download
+        shell: pwsh
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          if ($LASTEXITCODE -ne 0) { throw "LFS pull failed" }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: paint-end2end-002-owner-evaluator-${{ github.sha }}-${{ github.run_id }}
+          path: build/packet-download
+      - name: Verify artifact and restore exact experimental DLL
+        shell: pwsh
+        run: |
+          $packet = Get-ChildItem 'build/packet-download/*.zip' | Select-Object -First 1
+          if ($null -eq $packet) { throw "Missing owner evaluator" }
+          Expand-Archive -LiteralPath $packet.FullName -DestinationPath build/packet -Force
+          if ((Get-Content 'build/packet/source-sha.txt' -Raw).Trim() -ne $env:GITHUB_SHA) { throw "Source mismatch" }
+          python tools/ci/native_candidate_identity.py build/packet/windows-candidate
+          if ($LASTEXITCODE -ne 0) { throw "Native identity failed" }
+          Copy-Item -LiteralPath 'build/packet/windows-candidate/cybersand_native.windows.x86_64.dll' -Destination 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' -Force
+          python tools/ci/qualify_paint_end2end_002_owner_windows.py --self-test
+          if ($LASTEXITCODE -ne 0) { throw "Owner runner self-test failed" }
+      - name: Official pinned Godot 4.7 and full headless native contract
+        shell: pwsh
+        env:
+          CYBERSAND_PAINT_BULK_CAPTURE: '1'
+          CYBERSAND_PAINT_BURST_SLICES: '4'
+          CYBERSAND_PAINT_BURST_PROFILE: '1'
+          CYBERSAND_PAINT_TEST_GATES: '1'
+        run: |
+          New-Item -ItemType Directory -Force build/godot,build/owner-ci-smoke | Out-Null
+          curl.exe --fail --location --retry 3 --output "$env:RUNNER_TEMP/godot.zip" "$env:GODOT_WINDOWS_URL"
+          if ($LASTEXITCODE -ne 0) { throw "Godot download failed" }
+          $hash = (Get-FileHash "$env:RUNNER_TEMP/godot.zip" -Algorithm SHA512).Hash.ToLowerInvariant()
+          $pin = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ($hash -ne $pin) { throw "Godot archive pin mismatch" }
+          Expand-Archive -LiteralPath "$env:RUNNER_TEMP/godot.zip" -DestinationPath build/godot -Force
+          $godot = (Resolve-Path build/godot/Godot_v4.7-stable_win64_console.exe).Path
+          if ((& $godot --version).Trim() -ne '4.7.stable.official.5b4e0cb0f') { throw "Godot version mismatch" }
+          & $godot --headless --editor --path godot --import 2>&1 | Tee-Object build/owner-ci-smoke/import.log
+          if ($LASTEXITCODE -ne 0) { throw "Godot source import failed" }
+          & $godot --headless --path godot -s res://tests/test_paint_editor_native.gd 2>&1 | Tee-Object build/owner-ci-smoke/contracts.log
+          if ($LASTEXITCODE -ne 0) { throw "Native PAINT contracts failed" }
+          if (!(Select-String -Path build/owner-ci-smoke/contracts.log -Pattern 'PAINT_EDITOR_NATIVE {' -SimpleMatch -Quiet)) { throw "Missing contract receipt" }
+      - name: Retain Windows smoke evidence on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-002-owner-smoke-${{ github.sha }}-${{ github.run_id }}
+          path: build/owner-ci-smoke/
+          if-no-files-found: warn
+          retention-days: 90
