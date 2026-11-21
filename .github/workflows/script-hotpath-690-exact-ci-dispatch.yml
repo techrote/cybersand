@@ -1,0 +1,50 @@
+name: SCRIPT-HOTPATH-690 temporary exact-head full CI dispatcher
+
+# One-use CI dispatcher. Lives on an isolated branch, not PR #690 or main.
+# It invokes existing full GDExtension workflow on the qualified runtime PR
+# SHA without changing the PR to Ready for Review or changing source/manifest.
+on:
+  push:
+    branches: [ci/script-hotpath-690-exact-5cdf41b0]
+    paths: ['.github/workflows/script-hotpath-690-exact-ci-dispatch.yml']
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: script-hotpath-690-exact-ci-dispatch-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Launch full native/Godot exact-head standard CI
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/ci/script-hotpath-690-exact-5cdf41b0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Require exact, immutable published production candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected=5cdf41b0fcc88de647976e93049dec0460138748
+          actual="$(gh api repos/techrote/cybersand/git/ref/heads/exp/script-hotpath-001-native-fill --jq '.object.sha')"
+          echo "Published candidate: $actual"
+          test "$actual" = "$expected" || { echo "::error::PR #690 HEAD changed; refusing stale full-CI dispatch"; exit 1; }
+      - name: Dispatch existing full GDExtension CI on PR #690 SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected=5cdf41b0fcc88de647976e93049dec0460138748
+          test "$(gh api repos/techrote/cybersand/git/ref/heads/exp/script-hotpath-001-native-fill --jq '.object.sha')" = "$expected"
+          gh api --method POST repos/techrote/cybersand/actions/workflows/gdextension.yml/dispatches \
+            --field ref=exp/script-hotpath-001-native-fill
+          {
+            echo '### Exact-head full CI dispatched'
+            echo 'Target workflow: .github/workflows/gdextension.yml'
+            echo 'Target branch: exp/script-hotpath-001-native-fill'
+            echo 'Target production source: 5cdf41b0fcc88de647976e93049dec0460138748'
+            echo 'PR #690 stays Draft/HOLD, untouched.'
+          } >> "$GITHUB_STEP_SUMMARY"
