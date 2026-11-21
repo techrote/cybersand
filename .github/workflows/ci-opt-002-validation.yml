@@ -43,6 +43,14 @@ jobs:
           set -euo pipefail
           python3 -m py_compile tools/ci/ci_opt_runtime_preflight.py tools/ci/ci_opt_run_audit.py
           python3 -m unittest discover -s tools/ci -p 'test_ci_opt_*.py' -v
+      - name: Check bounded scheduling and source-bound workflow inventory
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/ci-opt-scheduling"
+          "$RUNNER_TEMP/ci-opt-scheduling/bin/python" -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          "$RUNNER_TEMP/ci-opt-scheduling/bin/python" tools/ci/test_ci_scheduling_policy.py
+          "$RUNNER_TEMP/ci-opt-scheduling/bin/python" tools/ci/check_ci_scheduling_policy.py --output build/ci-opt-002-scheduling.json
       - name: Validate all workflow YAML with independently pinned actionlint
         timeout-minutes: 5
         run: |
