@@ -14,11 +14,10 @@ permissions:
 concurrency:
   group: gentek691-history-${{ github.ref }}
   cancel-in-progress: false
-env:
-  # The old combined native binaries were built before the Art-only source
-  # fix. Compare the native input directories against that exact built HEAD.
-  NATIVE_PARENT: df31f133f533a71fb9364d35a3d7481541b2f20c
-  NATIVE_RUN: '44823742743'
+# The focused replay consumes the *committed, provenance-verified* native
+# runtime on this exact HEAD. It never downloads binaries from an obsolete run.
+# Both targets also assert native input directories are unchanged since the
+# recorded build commit; new native work requires a full requalification.
 jobs:
   linux:
     name: Linux X11 full native Flatten 512 + Art deferred-history
@@ -27,7 +26,6 @@ jobs:
     env:
       GODOT_URL: 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
       GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
-      NATIVE_SHA256: b09ae474560041c4845b0f82734f922c22f6fc7b9b1ca815aca7c2c772d7ccc8
       LIBGL_ALWAYS_SOFTWARE: '1'
       LP_NUM_THREADS: '2'
       GALLIVM_PERF: nopt
@@ -40,22 +38,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git diff --exit-code "$NATIVE_PARENT" HEAD -- native/include native/src godot/native_extension
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
           echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: architecture-linux-df31f133f533a71fb9364d35a3d7481541b2f20c-1
-          run-id: 44823742743
-          github-token: ${{ github.token }}
-          path: prior-native
-      - name: Install immutable compiled Water + Gentek extension and pinned Godot
+      - name: Verify committed Linux source-matched extension and pinned Godot
         shell: bash
         run: |
           set -euo pipefail
-          cp prior-native/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
-          echo "$NATIVE_SHA256  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
+          python3 - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+          manifest = json.loads(Path("godot/addons/cybersand_native/runtime-provenance.linux.json").read_text())
+          path = Path("godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")
+          assert manifest["platform"] == "linux" and manifest["status"] == "validated-development-runtime"
+          assert manifest["artifact"] == path.as_posix()
+          assert path.stat().st_size == manifest["size"]
+          assert hashlib.sha256(path.read_bytes()).hexdigest() == manifest["sha256"]
+          subprocess.run(["git", "merge-base", "--is-ancestor", manifest["source_commit"], "HEAD"], check=True)
+          subprocess.run(["git", "diff", "--exit-code", manifest["source_commit"], "HEAD",
+                          "--", "native/include", "native/src", "godot/native_extension"], check=True)
+          print("Verified Linux native: " + manifest["sha256"] + " built from " + manifest["source_commit"])
+          PY
           curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           mkdir -p "$RUNNER_TEMP/godot"
@@ -100,26 +103,23 @@ jobs:
       - name: Require unchanged compiled native inputs and pin Rapier
         shell: pwsh
         run: |
-          git diff --exit-code $env:NATIVE_PARENT HEAD -- native/include native/src godot/native_extension
-          if ($LASTEXITCODE -ne 0) { throw 'Native source differs from frozen compiled Water+Gentek baseline' }
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
           if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
           $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
           if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier pin mismatch' }
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: architecture-windows-runtime-44823742743
-          run-id: 44823742743
-          github-token: ${{ github.token }}
-          path: prior-native
-      - name: Install immutable compiled Water + Gentek DLL and pinned Godot
+      - name: Verify committed Windows source-matched DLL and pinned Godot
         shell: pwsh
         run: |
           $ErrorActionPreference='Stop'
-          $dll = 'prior-native/cybersand_native.windows.x86_64.dll'
-          if ((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant() -ne '3bfcad468a92c82674b5b947275a929803ab542ed146c2f2ef36039cc5870c3c') { throw 'Compiled DLL pin mismatch' }
-          Copy-Item $dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
+          $manifest = Get-Content 'godot/addons/cybersand_native/runtime-provenance.json' -Raw | ConvertFrom-Json
+          $dll = 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
+          if ($manifest.platform -ne 'windows' -or $manifest.status -ne 'validated-development-runtime' -or $manifest.artifact -ne $dll) { throw 'Windows runtime provenance is not a validated committed DLL' }
+          if ((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant() -ne $manifest.sha256 -or (Get-Item $dll).Length -ne $manifest.size) { throw 'Windows DLL does not match committed provenance' }
+          git merge-base --is-ancestor $manifest.source_commit HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime build commit is not an ancestor of HEAD' }
+          git diff --exit-code $manifest.source_commit HEAD -- native/include native/src godot/native_extension
+          if ($LASTEXITCODE -ne 0) { throw 'Native source differs from the provenance-attested compiled DLL' }
           $archive=Join-Path $env:RUNNER_TEMP 'godot47.zip'
           curl.exe -fL --retry 3 -o $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
