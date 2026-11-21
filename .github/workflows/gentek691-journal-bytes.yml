@@ -1,0 +1,97 @@
+name: GENTEK-691 supplemental Windows committed-journal byte recovery
+# Additional evidence only. Does not replace any original focused/graphical gate.
+# Fill BOTH immutable candidate pins after the guarded four-file publisher emits Q.
+# Keep the independently authored probe byte-identical; never copy it into candidate/.
+on:
+  push:
+    branches: [qualification/gentek691-journal-bytes]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: gentek691-journal-bytes-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  FINAL_CANDIDATE_SHA: 54e47c297a7610fc6a09cc3743d1860f2930d05e
+  FINAL_CANDIDATE_TREE: 00fb0b214b3accc6e1d91de3f618ba9c98b75bc9
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUTF8: '1'
+jobs:
+  windows:
+    name: Windows published-Q committed journal bytes (3 x 28 assertions)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/qualification/gentek691-journal-bytes'
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - name: Require fixed candidate commit and tree pins
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          foreach ($pin in @($env:FINAL_CANDIDATE_SHA, $env:FINAL_CANDIDATE_TREE)) {
+            if ($pin -cnotmatch '^[0-9a-f]{40}$') { throw 'Replace final Q commit/tree placeholders before publishing this auxiliary harness' }
+          }
+      - name: Check out exact auxiliary harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.sha }}
+          path: harness
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Check out exact final published candidate separately
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ env.FINAL_CANDIDATE_SHA }}
+          path: candidate
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Use the established pinned Python minor version
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize only pinned Windows runtime libraries
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git -C candidate lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate LFS installation failed' }
+          git -C candidate lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate Windows runtime materialization failed' }
+          $native = 'candidate/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
+          if ((Get-FileHash $native -Algorithm SHA256).Hash.ToLowerInvariant() -ne '668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e') { throw 'Published Windows DLL pin mismatch' }
+          $rapier = 'candidate/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier Windows DLL pin mismatch' }
+      - name: Download and verify official pinned Godot 4.7
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $archive = Join-Path $env:RUNNER_TEMP 'g691-bytes-godot.zip'
+          curl.exe -fL --retry 2 --connect-timeout 30 --max-time 180 --retry-max-time 240 -o $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          $pin = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $archive -Algorithm SHA512).Hash.ToLowerInvariant() -ne $pin) { throw 'Godot archive SHA512 mismatch' }
+          $engine = Join-Path $env:RUNNER_TEMP 'g691-bytes-engine'
+          Expand-Archive -LiteralPath $archive -DestinationPath $engine
+          'GODOT_EXE=' + (Join-Path $engine 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+          'GODOT_ARCHIVE=' + $archive | Out-File -Append $env:GITHUB_ENV
+      - name: Execute all three unchanged independent probes against Q
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path evidence -Force | Out-Null
+          $profiles = Join-Path $env:RUNNER_TEMP 'g691-bytes'
+          python harness/tools/ci/run_gentek691_journal_bytes.py --candidate candidate --candidate-sha $env:FINAL_CANDIDATE_SHA --candidate-tree $env:FINAL_CANDIDATE_TREE --harness harness --harness-sha $env:GITHUB_SHA --godot $env:GODOT_EXE --godot-archive $env:GODOT_ARCHIVE --profiles $profiles --evidence evidence/journal-bytes *> evidence/runner.log
+          $result = $LASTEXITCODE
+          Get-Content evidence/runner.log
+          if ($result -ne 0) { throw "Supplemental committed-journal byte recovery failed: $result" }
+      - name: Retain complete original logs, identities and isolated profiles
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek691-journal-bytes-windows-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
