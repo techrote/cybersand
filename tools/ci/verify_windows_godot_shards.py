@@ -14,6 +14,7 @@ from pathlib import Path
 import subprocess
 
 import execution_policy
+import run_godot_regressions as runner
 from verify_retained_play_readback import same_json
 
 
@@ -311,9 +312,9 @@ def verify(root: Path, source_sha: str, run_id: str, attempt: str,
             row = next(row for row in records if row["log"] == relative)
             require(row.get("log_sha256") == expected_digest, f"original Windows row log seal mismatch: {log_path}")
             log_text = log_path.read_text(encoding="utf-8", errors="replace")
-            require("ERROR:" not in log_text and not re.search(r"\bskipped\b|^\s*SKIP\b", log_text, re.I | re.M),
+            require(not runner.case_diagnostic_error(row["name"], log_text, row.get("returncode"))
+                    and not re.search(r"\bskipped\b|^\s*SKIP\b", log_text, re.I | re.M),
                     f"original Windows log contains an error or skipped check: {log_path}")
-        import run_godot_regressions as runner
         import verify_retained_play_readback
         for row, planned in zip(tests, expected["plans"][index]):
             case = runner.Case(planned["name"], tuple(planned["flags"]), planned["timeout_seconds"],

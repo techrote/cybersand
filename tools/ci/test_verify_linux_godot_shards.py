@@ -8,6 +8,7 @@ import unittest
 import execution_policy
 import run_godot_regressions as runner
 import verify_linux_godot_shards as subject
+from test_godot_regression_sharding import art_durability_output
 
 
 class LinuxCoverageTests(unittest.TestCase):
@@ -56,6 +57,44 @@ class LinuxCoverageTests(unittest.TestCase):
 
     def verify(self):
         return subject.verify(self.root, **self.options)
+
+    def test_art_negative_diagnostics_are_rechecked_from_original_logs(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            case = runner.Case("test_art_history_durability", ("--script", "res://tests/test_art_history_durability.gd"), 1200, 1)
+            options = {**self.options, "cases": [case], "shard_count": 1}
+            identity = {"source_sha": options["source"], "source_tree": options["tree"],
+                "execution_policy": execution_policy.identity(), "shard_index": 0, "shard_count": 1,
+                "run_id": "123", "run_attempt": "1", "tested_inputs": options["tested_inputs"],
+                "godot_version": "4.7.control", **options["runtime"]}
+            report = {"identity": identity, "status": "passed", "completed": True, "source_drift": [],
+                "assigned_cases": [case.name], "results": []}
+            for offset, item in enumerate([runner.Case("import", ("--editor", "--quit"), 1200, 1), case]):
+                log = root / (item.name + ".log")
+                log.write_text("import completed\n" if offset == 0 else art_durability_output())
+                report["results"].append({"name": item.name, "role": "preflight" if offset == 0 else "case",
+                    "timeout_seconds": item.timeout, "requires_display": False, "diagnostic_error": False,
+                    "execution_policy": execution_policy.identity(), "status": "passed", "returncode": 0,
+                    "natural_completion": True, "log": log.name, "log_sha256": subject.digest(log),
+                    "command": runner.case_command("/controlled/Godot", item, "linux")})
+            path = root / "timings.json"
+            path.write_text(json.dumps(report))
+            self.assertEqual(subject.verify(root, **options)["case_count"], 1)
+            original = art_durability_output()
+            for data in ("ERROR: unexpected native failure\n" + original,
+                         "SCRIPT ERROR: failure\n" + original,
+                         original.replace("controlled assertion 1 true", "controlled assertion 1 false"),
+                         original.replace("ERROR: ConfigFile parse error", "ConfigFile parse error"),
+                         original.replace('"checks": 345', '"checks": 344')):
+                with self.subTest(data=data[:60]):
+                    log = root / (case.name + ".log")
+                    log.write_text(data)
+                    # Even forged passed/diagnostic_error=false receipts with
+                    # recomputed seals cannot replace independent raw-log checks.
+                    report["results"][1]["log_sha256"] = subject.digest(log)
+                    path.write_text(json.dumps(report))
+                    with self.assertRaisesRegex(ValueError, "error or skipped"):
+                        subject.verify(root, **options)
 
     def test_complete_source_matched_originals_pass(self):
         self.assertEqual(self.verify()["case_count"], 2)
