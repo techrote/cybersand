@@ -21,6 +21,10 @@ var territory := Rect2i()
 var document: Dictionary = {}
 var prepared: Dictionary = {}
 var proposal: Dictionary = {}
+# Cancellation/control edits may clear the displayed proposal, but cannot turn
+# inspected saved evidence into transaction authority. Only fresh native decode
+# after a successful current-source child clears this latch.
+var _historical_only := false
 var last_receipt: Dictionary = {}
 var completed_applies := 0
 var completed_undos := 0
@@ -220,10 +224,13 @@ func _say(message: String) -> bool:
 func _refresh() -> void:
 	if _apply==null: return
 	_status.text=status
-	_apply.disabled=phase!="ready" or not document.get("can_apply",false)
+	_apply.disabled=_read_only_evidence() or phase!="ready" or not document.get("can_apply",false)
 	_generate.disabled=busy()
-	_undo_button.disabled=busy() or _undo.is_empty()
+	_undo_button.disabled=_read_only_evidence() or busy() or _undo.is_empty()
 	if _overlay!=null: _overlay.queue_redraw()
+
+func _read_only_evidence() -> bool:
+	return _historical_only or proposal.get("historical_only",false)
 
 func open_panel() -> void:
 	show();_paint.button_pressed=true;_refresh()
@@ -233,6 +240,7 @@ func inspect_saved_evidence() -> void:
 	invalidate("Loading bounded evidence from the named saved map…")
 	var path:=Setup._path(bench._name.text)
 	if path.is_empty(): _say("Choose the saved map name first.");return
+	_historical_only=true
 	_thread=Thread.new();_thread_kind="load_saved";_started=Time.get_ticks_msec()
 	var error:=_thread.start(func()->Dictionary:return Protocol.load_saved(path))
 	if error!=OK: _thread=null;phase="idle";_say("Could not read the saved evidence.");return
@@ -456,13 +464,18 @@ func _poll_thread() -> void:
 	if _thread_kind=="prepare": _launch(result);return
 	if not result.ok: phase="idle";_say(result.error);_cleanup_job();return
 	if _thread_kind=="load_saved":
+		if not result.get("historical_only",false):
+			phase="idle";_say("Saved evidence has no read-only inspection authority.");return
 		proposal=result;document=result.result;prepared=result.prepared;phase="historical"
 		_runtime={"source":result.receipt.native_source,"sha256":result.receipt.cli_sha256}
 		_populate_rounds();_render();status="Saved construction evidence · historical receipt · Apply requires a fresh native generation.";_refresh();return
+	if result.get("historical_only",false):
+		phase="idle";_say("Historical inspection cannot replace fresh native generation.");_cleanup_job();return
 	if _fence()!=_source_fence or _history()!=_source_history:
 		phase="idle";_say("Native source changed while generating; the preview is retired.");_cleanup_job();return
 	if _child_exit_code!=0 and result.result.get("can_apply",false):
 		phase="idle";_say("Failed native execution cannot authorize an Apply.");_cleanup_job();return
+	if _child_exit_code==0: _historical_only=false
 	proposal=result;document=result.result;phase="ready";completed_generations+=1
 	_populate_rounds()
 	_render()
@@ -533,6 +546,7 @@ func _inspect_cell(event: InputEvent) -> void:
 	_inspector.text+="\n"+"\n".join(Protocol.inspect_sockets(document,round_index,point))
 
 func apply_construction() -> bool:
+	if _read_only_evidence(): return _say("Saved evidence is read-only; Generate a fresh native proposal before Apply.")
 	if phase!="ready" or not document.get("can_apply",false): return _say("Apply requires an accepted native composition with all mandatory obligations resolved.")
 	if _fence()!=_source_fence or _history()!=_source_history: invalidate("Source changed; regenerate before Apply.");return false
 	var staged:=History.prepare(bench.applied,proposal.cells,bench._generated_active,bench._material_baseline)
@@ -547,6 +561,7 @@ func _patch(operation: String, cells: PackedInt32Array, before: PackedInt32Array
 		"proposal_sha256":_undo.proposal_sha256 if operation=="remove" else proposal.proposal_sha256}
 
 func _submit(candidate: Dictionary, patch: Dictionary, action: String) -> bool:
+	if _read_only_evidence(): return _say("Saved evidence cannot submit a native transaction; Generate first.")
 	# Controller cleanup must not clear a caller-owned staged history/patch.
 	_pending_setup=candidate.duplicate(true);_pending_patch=patch.duplicate(true);_pending_action=action;phase="submitting"
 	if not bench.apply(candidate,true,0,false,false,{},{},false,patch):
@@ -554,7 +569,7 @@ func _submit(candidate: Dictionary, patch: Dictionary, action: String) -> bool:
 	phase="installing";status="Preparing atomic native "+action+"; authored history awaits acknowledgement…";_refresh();return true
 
 func attests(candidate: Dictionary, patch: Dictionary) -> bool:
-	return phase=="submitting" and candidate==_pending_setup and patch==_pending_patch
+	return not _read_only_evidence() and phase=="submitting" and candidate==_pending_setup and patch==_pending_patch
 
 func native_installed(_candidate: Dictionary) -> void:
 	if phase=="installing": phase="acknowledging"
@@ -586,6 +601,7 @@ func _acknowledge() -> void:
 	_pending_patch.clear();_pending_setup.clear();_pending_before_edits.clear();_cleanup_job();phase="installed";_refresh()
 
 func undo_construction() -> bool:
+	if _read_only_evidence(): return _say("Saved evidence is read-only; it cannot authorize construction Undo.")
 	if _undo.is_empty() or busy() or bench.busy(): return _say("There is no settled construction to undo.")
 	if _fence()!=_undo.fence or _history()!=_undo.after_history:
 		_undo.clear();return _say("Native simulation or authoring changed after Apply; construction Undo is retired.")

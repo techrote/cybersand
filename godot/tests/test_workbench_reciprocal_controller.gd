@@ -95,6 +95,25 @@ func exercise()->void:
 	check((await capture()).cells==expected,"private seam installs exactly all three native cells")
 	check(bench.applied.edits==staged.setup.edits,"acknowledgement adopts the complete staged history once")
 	check(panel.document.can_apply==false,"native reciprocal Apply authority was never fabricated")
+	# A previous, genuine controller Undo receipt cannot be reused while a saved
+	# inspection owns the panel. This is a negative authority-seam check, not a
+	# fabricated native-positive composition.
+	panel._historical_only=true;panel.proposal["historical_only"]=true
+	panel._refresh()
+	check(panel._apply.disabled and panel._undo_button.disabled,"historical authority disables Apply and an otherwise available live Undo")
+	check(not panel.undo_construction() and not panel._submit(staged.setup,panel._patch("build",cells,panel.proposal.before),"build")
+		and panel.phase=="installed","historical authority refuses Undo and direct transaction submission before changing phase")
+	panel.phase="submitting";panel._pending_setup=staged.setup;panel._pending_patch={"operation":"build"}
+	check(not panel.attests(panel._pending_setup,panel._pending_patch),"matching pending fields cannot attest through historical authority")
+	panel.phase="installed";panel._pending_setup={};panel._pending_patch={}
+	panel.invalidate("mechanical historical invalidation")
+	check(panel._read_only_evidence() and panel.proposal.is_empty() and panel._undo_button.disabled,
+		"cancel and control invalidation cannot discard the historical authority latch")
+	check(not panel.undo_construction() and (await capture()).cells==expected and bench.applied.edits==staged.setup.edits,
+		"historical refusals retain the exact native plane and settled authored history")
+	# Restore this private mechanical fixture's original authority to finish its
+	# independent Undo seam test. Production clears the latch only after Generate.
+	panel._historical_only=false
 	# This fixture is not a native assembly receipt; do not attach it to a map.
 	panel._accepted.clear()
 	bench._name.text="swarm004-controller-fixture-%d" % OS.get_process_id()

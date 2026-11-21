@@ -399,9 +399,17 @@ func create_map()->void:
 	# Registered create/reopen recipes are immutable. A legacy global605 must
 	# never silently substitute for the independently selected reciprocal4099.
 	if mode!="create" and not request_seed.is_empty(): panel.controls.seed.value=int(request_seed)
+	if mode=="create":
+		# Seed only the negative controller latch. The following child must still
+		# produce its own current-source native evidence before gaining authority.
+		panel._historical_only=true;panel._refresh()
+		check(panel._apply.disabled,"historical controller latch begins read-only before fresh generation")
 	await click(panel._generate)
 	if not await until(func()->bool:return panel.phase in ["ready","idle"],"native child generation reaches terminal result"):return
 	if not check(panel.phase=="ready" and not panel.document.is_empty(),"source-matched native evidence produced: "+panel.status):return
+	if mode=="create":
+		check(not panel._read_only_evidence() and not panel.proposal.get("historical_only",true),
+			"successful current-source generation clears historical authority with a new live proposal")
 	check(panel._pid<0 and panel._thread==null,"completed native child and parsing worker are reaped")
 	var preview:=await capture()
 	native_planes["preview"]=Protocol.digest(preview.cells)
@@ -508,6 +516,18 @@ func reopen_map()->void:
 	check(panel._apply.disabled and panel._pid<0
 		and panel.prepared.recipe.layout==("left_right" if example=="swarm005_irregular" else "centered_frame_rectangle")
 		and panel.prepared.recipe.border==4,"saved ownership and revision evidence is inspection-only without child generation")
+	check(panel.proposal.get("historical_only",false) and panel._historical_only and panel._undo_button.disabled,
+		"saved inspection has explicit read-only authority and no construction Undo")
+	check(panel.document.get("can_apply",false),"inspection retains the original successful native result without rewriting its can_apply evidence")
+	var saved_history:Array=bench.applied.edits.duplicate(true)
+	var saved_proposal_sha:String=panel.proposal.proposal_sha256
+	check(not panel.apply_construction() and not panel.undo_construction()
+		and not panel._submit(bench.applied,{"operation":"build"},"build")
+		and not panel.attests(bench.applied,{"operation":"build"}),
+		"historical evidence refuses Apply, Undo, submission and attestation")
+	check(panel.phase=="historical" and panel._pid<0 and panel.proposal.proposal_sha256==saved_proposal_sha
+		and bench.applied.edits==saved_history and (await capture()).cells==expected,
+		"historical inspection and refused actions preserve exact native cells, authored history and evidence")
 	if example=="reciprocal":
 		var witness:=reciprocal_witness()
 		check(witness.both_footprints_changed and witness.joint_count>0 and witness.obligation_count>0 and witness.all_foreign_closed \
@@ -541,6 +561,8 @@ func run()->void:
 		"test_sha256":FileAccess.get_sha256("res://tests/swarm45_reciprocal_ui.gd"),
 		"startup":startup,"timeout_diagnostics":timeout_diagnostics}
 	if panel!=null:
+		report["historical_only"]=panel._read_only_evidence();report["controller_phase"]=panel.phase
+		report["apply_disabled"]=panel._apply.disabled;report["undo_disabled"]=panel._undo_button.disabled
 		report["native_receipt"]=panel.last_receipt;report["native_source"]=panel._runtime
 		if panel.phase=="historical":report["native_receipt"]=panel.proposal.get("receipt",{}).get("native_receipt",{})
 		report["native_status"]=panel.document.get("status","");report["native_reason"]=panel.document.get("reason","")

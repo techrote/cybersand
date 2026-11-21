@@ -21,6 +21,18 @@ VC_RUNTIME_FILES = {"vcruntime140.dll", "Microsoft-Visual-C-Runtime-LICENSE.docx
                     "Microsoft-Visual-Studio-2022-LICENSE.docx"}
 
 
+def committed_archive(names, root=ROOT):
+    """Archive canonical text while retaining explicit per-file eol attributes.
+
+    Windows autocrlf otherwise changes tracked Godot import metadata to CRLF;
+    the pinned editor rewrites it to LF on import, breaking the sealed payload
+    hash despite identical settings. These child-only defaults preserve every
+    sidecar and authored setting without changing Git configuration or checks.
+    """
+    return subprocess.check_output(["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf",
+                                    "archive", "HEAD", "--", *names], cwd=root, timeout=90)
+
+
 def verify_vc_runtime(directory):
     """Reject incomplete or changed output from the signed VS redist stager."""
     provenance = json.loads((directory / "vc-runtime-provenance.json").read_text(encoding="utf-8-sig"))
@@ -118,7 +130,7 @@ def main():
              "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
              "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md",
              args.readme.as_posix()]
-    payload = subprocess.check_output(["git", "archive", "HEAD", "--", *names], cwd=ROOT, timeout=60)
+    payload = committed_archive(names)
     args.output.mkdir(parents=True)
     stage_project_archive(payload, args.native_candidate, args.output)
     profiles = stage_generator_profiles(args.output)

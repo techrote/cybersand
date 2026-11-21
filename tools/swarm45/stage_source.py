@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import io
 from pathlib import Path, PurePosixPath
-import subprocess
 import tarfile
 
 import runtime_custody as custody
@@ -18,6 +17,8 @@ from install_runtime import install
 from shared import load, verify_project
 
 generic = load("swarm45_platform_source_stage", "tools/ci/run_workbench_qualification.py")
+from package_explore001_candidate import committed_archive
+
 RAPIERS = {
     "windows": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
     "linux": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
@@ -37,8 +38,7 @@ def stage(runtime: Path, destination: Path) -> dict:
     custody.require(platform in RAPIERS, "Source stage requires a source-matched Linux or Windows payload")
     rapier = RAPIERS[platform]
     pins = generic.committed_lfs_pins()
-    payload = subprocess.check_output(["git", "archive", "HEAD", "--", "godot", "examples/worldgen"],
-                                      cwd=custody.ROOT, timeout=90)
+    payload = committed_archive(["godot", "examples/worldgen"], custody.ROOT)
     destination.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
         for item in archive:

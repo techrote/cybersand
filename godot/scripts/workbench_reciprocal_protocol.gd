@@ -26,6 +26,12 @@ const NATIVE_IDENTITIES := {
 		"definition":"frameweaver.frontier-growth-v0."+NATIVE_DEFINITION},
 	"mosaic":{"gentek":"MOSAIC","version":0,"fixture":"workbench_territory",
 		"definition":"mosaic.prepared-regions-v0."+NATIVE_DEFINITION}}
+# Saved inspection only: these reviewed schema-5 Workbench definitions share
+# the identities/limits below. They never broaden live decode or Apply authority.
+const SAVED_SWARM004_DEFINITION := "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec"
+const SAVED_DEFINITIONS := [SAVED_SWARM004_DEFINITION,
+	"12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b",
+	"fe62e15412459c22c6f81e479fa1ff2917d7359d747581c9891b83fbf2f75618",NATIVE_DEFINITION]
 const NATIVE_LIMITS := {"instances":64,"frontier":256,"candidates":8192,"connectors_per_instance":8,
 	"affordances":256,"cohesion_patches":8,"cohesion_cells_per_patch":512,"work":2000000,"solver_work":4000000,"bytes":16777216}
 const NATIVE_SWITCHES := ["vocabulary","hierarchy","frame_adaptation","mosaic_adaptation","native_mosaic_bearing"]
@@ -237,6 +243,17 @@ static func decode(path: String, prepared: Dictionary, expected_source: String) 
 	return decode_document(parser.data,bytes,prepared,expected_source)
 
 static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared: Dictionary, expected_source: String) -> Dictionary:
+	return _decode_document(result,bytes,prepared,expected_source,"")
+
+static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepared: Dictionary, expected_source: String,
+		saved_definition: String) -> Dictionary:
+	if not saved_definition.is_empty() and saved_definition not in SAVED_DEFINITIONS:
+		return fail("Saved native definition is not qualified for historical inspection.")
+	var identities:Dictionary=NATIVE_IDENTITIES
+	if not saved_definition.is_empty():
+		identities=NATIVE_IDENTITIES.duplicate(true)
+		identities.frame.definition="frameweaver.frontier-growth-v0."+saved_definition
+		identities.mosaic.definition="mosaic.prepared-regions-v0."+saved_definition
 	if not scalar_same(result.get("schema"),5) or not scalar_same(result.get("type"),"reciprocal_assembly") \
 		or not scalar_same(result.get("source"),expected_source) or not result.get("can_apply") is bool:
 		return fail("Native output schema or source identity does not match this executable request.")
@@ -266,10 +283,15 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		or not scalar_same(options.get("shared_extent"),recipe.shared_extent) or not scalar_same(options.get("orientation_preference"),recipe.orientation) \
 		or not scalar_same(options.get("optional_negotiation"),recipe.optional) or not scalar_same(options.get("final_validation"),true) \
 		or not scalar_same(options.get("shared_ownership"),recipe.get("shared_ownership",true)) \
-		or not scalar_same(options.get("compact_native_termination"),recipe.get("compact_native_termination",false)) \
-		or not scalar_same(options.get("supported_native_receptors"),recipe.get("supported_native_receptors",false)) \
 		or not inputs.get("shared_zone") is Array or inputs.shared_zone.size()!=count:
 		return fail("Native evidence changed the negotiated controls or final-validation requirement.")
+	for key:String in ["compact_native_termination","supported_native_receptors"]:
+		# Only the frozen #693 format predates these fields. Its absent options
+		# mean false; it cannot acquire SWARM-005 capabilities retroactively.
+		var legacy:bool=saved_definition==SAVED_SWARM004_DEFINITION
+		var value:Variant=options.get(key,false if legacy else null)
+		if (legacy and not scalar_same(value,false)) or not scalar_same(value,recipe.get(key,false)):
+			return fail("Native evidence changed the negotiated native closure controls.")
 	for key: String in NATIVE_SWITCHES:
 		if not scalar_same(options.get(key),true):
 			return fail("Native evidence changed a qualified architectural rule switch.")
@@ -281,8 +303,8 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 			or not integer(input.origin[0],-1000000,1000000) or not integer(input.origin[1],-1000000,1000000) \
 			or int(input.origin[0])!=recipe.origin.x or int(input.origin[1])!=recipe.origin.y:
 			return fail("Native "+gentek+" evidence does not describe the requested source, seed, extent or origin.")
-		for key: String in NATIVE_IDENTITIES[gentek]:
-			if not scalar_same(input.get(key),NATIVE_IDENTITIES[gentek][key]):
+		for key: String in identities[gentek]:
+			if not scalar_same(input.get(key),identities[gentek][key]):
 				return fail("Native evidence changed the qualified Gentek identity, definition or authoring fixture.")
 		if not input.get("limits") is Dictionary or input.limits.size()!=NATIVE_LIMITS.size():
 			return fail("Native evidence omitted its qualified resource limits.")
@@ -406,7 +428,7 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 				return fail("Native Apply is inconsistent with an unresolved mandatory obligation.")
 	var pixels := raster(result,prepared,-1,"Materials")
 	return {"ok":true,"result":result,"proposal_sha256":digest(bytes),"cells":cells,"before":before,
-		"pixels":pixels,"file_bytes":bytes.size()}
+		"pixels":pixels,"file_bytes":bytes.size(),"historical_only":not saved_definition.is_empty()}
 
 static func load_saved(map_path: String) -> Dictionary:
 	var map_file:=FileAccess.open(map_path,FileAccess.READ)
@@ -467,7 +489,13 @@ static func load_saved(map_path: String) -> Dictionary:
 	var prepared: Dictionary={"recipe":recipe,"context":PackedInt32Array(input.context),"protected":PackedByteArray(input.protected),
 		"interface":PackedByteArray(input.transition),"shared":PackedByteArray(document.input.shared_zone),
 		"guards":guards,"request_sha256":receipt.get("request_sha256","")}
-	var result:=decode_document(document,bytes,prepared,str(receipt.get("native_source","")))
+	var saved_definition:=""
+	for definition:String in SAVED_DEFINITIONS:
+		if scalar_same(input.get("definition"),"frameweaver.frontier-growth-v0."+definition) \
+			and scalar_same(mosaic.get("definition"),"mosaic.prepared-regions-v0."+definition):
+			saved_definition=definition;break
+	if saved_definition.is_empty(): return fail("Saved Gentek definitions are unknown or do not share one reviewed native source.")
+	var result:=_decode_document(document,bytes,prepared,str(receipt.get("native_source","")),saved_definition)
 	if not result.ok: return result
 	result["prepared"]=prepared;result["receipt"]=receipt
 	return result

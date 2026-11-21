@@ -8,6 +8,10 @@ var failures:Array[String]=[]
 var path:="user://swarm004-protocol-test.json"
 var prepared:Dictionary
 var valid:Dictionary
+const HISTORICAL_DEFINITIONS := [
+	"57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec",
+	"12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b",
+	"fe62e15412459c22c6f81e479fa1ff2917d7359d747581c9891b83fbf2f75618"]
 
 func check(value:bool,label:String)->void:
 	checks+=1
@@ -20,6 +24,31 @@ func write(value:Dictionary)->void:
 func decode(value:Dictionary)->Dictionary:
 	write(value)
 	return Protocol.decode(path,prepared,"transport-fixture-no-assembly")
+
+func saved_fixture(map_path:String,value:Dictionary,receipt_changes:Dictionary={})->Dictionary:
+	var map_file:=FileAccess.open(map_path,FileAccess.WRITE)
+	map_file.store_string("transport fixture only");map_file.close()
+	var evidence_file:=FileAccess.open(map_path+".swarm004-evidence.json",FileAccess.WRITE)
+	evidence_file.store_string(JSON.stringify(value));evidence_file.close()
+	var evidence_sha:=FileAccess.get_sha256(map_path+".swarm004-evidence.json")
+	var receipt:Dictionary={"schema":1,"map_sha256":FileAccess.get_sha256(map_path),"evidence_sha256":evidence_sha,
+		"proposal_sha256":evidence_sha,"native_source":"transport-fixture-no-assembly","cli_sha256":"0".repeat(64)}
+	receipt.merge(receipt_changes,true)
+	var receipt_file:=FileAccess.open(map_path+".swarm004.json",FileAccess.WRITE)
+	receipt_file.store_string(JSON.stringify(receipt));receipt_file.close()
+	return Protocol.load_saved(map_path)
+
+func historical_fixture(definition:String)->Dictionary:
+	var value:Dictionary=valid.duplicate(true)
+	value.input.frame.definition="frameweaver.frontier-growth-v0."+definition
+	value.input.mosaic.definition="mosaic.prepared-regions-v0."+definition
+	return value
+
+func saved_hashes(map_path:String)->Array[String]:
+	var hashes:Array[String]=[]
+	for suffix:String in ["",".swarm004.json",".swarm004-evidence.json"]:
+		hashes.append(FileAccess.get_sha256(map_path+suffix))
+	return hashes
 
 func _initialize()->void:
 	var extent:=Vector2i(16,12)
@@ -83,7 +112,8 @@ func _initialize()->void:
 		"compact_native_termination":false,"supported_native_receptors":false}},"cells":[],"ledger":[],"ledger_columns":Protocol.LEDGER_COLUMNS,
 		"rules":[],"rounds":[],"joints":[],"obligations":[],"owner_names":["empty","FRAMEWEAVER","MOSAIC","immutable_environment"]}
 	for field:String in Protocol.NATIVE_SWITCHES:valid.input.options[field]=true
-	check(decode(valid).ok,"well-formed blocked evidence remains inspectable")
+	var current_live:=decode(valid)
+	check(current_live.ok and not current_live.historical_only,"well-formed current blocked evidence retains live decode semantics")
 	for option: String in ["compact_native_termination","supported_native_receptors"]:
 		var forged:Dictionary=valid.duplicate(true)
 		forged.input.options[option]=true
@@ -202,14 +232,58 @@ func _initialize()->void:
 	independent_request.gentek_parameters.frame.destruction=NAN
 	check(not Protocol.prepare(independent_request,{"extent":extent,"cells":bytes}).ok,"independent destruction remains finite and independently validated")
 	var map_path:="user://swarm004-protocol-map.json"
-	var map_file:=FileAccess.open(map_path,FileAccess.WRITE);map_file.store_string("transport fixture only");map_file.close()
-	write(valid)
-	DirAccess.copy_absolute(ProjectSettings.globalize_path(path),ProjectSettings.globalize_path(map_path+".swarm004-evidence.json"))
-	var receipt:Dictionary={"schema":1,"map_sha256":FileAccess.get_sha256(map_path),"evidence_sha256":FileAccess.get_sha256(path),
-		"proposal_sha256":FileAccess.get_sha256(path),"native_source":"transport-fixture-no-assembly","cli_sha256":"0".repeat(64)}
-	var receipt_file:=FileAccess.open(map_path+".swarm004.json",FileAccess.WRITE);receipt_file.store_string(JSON.stringify(receipt));receipt_file.close()
-	check(Protocol.load_saved(map_path).ok,"bounded saved evidence reloads for historical inspection")
-	map_file=FileAccess.open(map_path,FileAccess.WRITE);map_file.store_string("changed");map_file.close()
+	var current_saved:=saved_fixture(map_path,valid)
+	check(current_saved.ok and current_saved.historical_only,"current saved evidence has inspection authority only")
+	var before_hashes:=saved_hashes(map_path)
+	check(Protocol.load_saved(map_path).ok and saved_hashes(map_path)==before_hashes,"current inspection never rewrites any saved file")
+	for definition:String in HISTORICAL_DEFINITIONS:
+		var historical:=historical_fixture(definition)
+		if definition==HISTORICAL_DEFINITIONS[0]:
+			historical.input.options.erase("compact_native_termination")
+			historical.input.options.erase("supported_native_receptors")
+		var loaded:=saved_fixture(map_path,historical)
+		check(loaded.ok and loaded.historical_only,"reviewed saved definition "+definition.left(8)+" is read-only inspectable")
+		check(loaded.ok and loaded.result==JSON.parse_string(FileAccess.get_file_as_string(map_path+".swarm004-evidence.json")),
+			"historical native evidence is preserved without option or authority rewriting")
+		before_hashes=saved_hashes(map_path)
+		check(Protocol.load_saved(map_path).ok and saved_hashes(map_path)==before_hashes,"historical inspection preserves all three original file hashes")
+		check(not decode(historical).ok,"historical definition "+definition.left(8)+" cannot enter live decode")
+	for option:String in ["compact_native_termination","supported_native_receptors"]:
+		var legacy:=historical_fixture(HISTORICAL_DEFINITIONS[0])
+		legacy.input.options[option]=true
+		check(not saved_fixture(map_path,legacy).ok,"SWARM-004 historical evidence cannot acquire later "+option)
+		legacy.input.options[option]=0
+		check(not saved_fixture(map_path,legacy).ok,"legacy missing-field compatibility does not coerce malformed "+option)
+		for definition:String in [HISTORICAL_DEFINITIONS[1],HISTORICAL_DEFINITIONS[2],Protocol.NATIVE_DEFINITION]:
+			var missing:=historical_fixture(definition);missing.input.options.erase(option)
+			check(not saved_fixture(map_path,missing).ok,"later saved definitions require explicit "+option)
+		var missing_current:Dictionary=valid.duplicate(true);missing_current.input.options.erase(option)
+		check(not decode(missing_current).ok,"current live evidence still requires explicit "+option)
+	check(not saved_fixture(map_path,historical_fixture("a".repeat(64))).ok,"unknown native definition is refused despite matching receipt hashes")
+	var mixed:=historical_fixture(HISTORICAL_DEFINITIONS[1])
+	mixed.input.mosaic.definition="mosaic.prepared-regions-v0."+HISTORICAL_DEFINITIONS[2]
+	check(not saved_fixture(map_path,mixed).ok,"two reviewed but mixed definitions cannot share a saved receipt")
+	for revision:int in [4,6]:
+		var future:=historical_fixture(HISTORICAL_DEFINITIONS[2]);future.schema=revision
+		check(not saved_fixture(map_path,future).ok,"saved compatibility admits schema5 only, refusing schema"+str(revision))
+	var future_type:=historical_fixture(HISTORICAL_DEFINITIONS[2]);future_type.type="reciprocal_assembly_v4"
+	check(not saved_fixture(map_path,future_type).ok,"future protocol family cannot borrow a reviewed native identity")
+	for field:String in ["map_sha256","evidence_sha256","proposal_sha256","native_source","cli_sha256"]:
+		var tampered:Dictionary={};tampered[field]="changed"
+		check(not saved_fixture(map_path,historical_fixture(HISTORICAL_DEFINITIONS[2]),tampered).ok,
+			"historical receipt still rejects changed "+field)
+	for owner:String in ["frame","mosaic"]:
+		var limit:=historical_fixture(HISTORICAL_DEFINITIONS[2]);limit.input[owner].limits.work+=1
+		check(not saved_fixture(map_path,limit).ok,"historical "+owner+" limits remain exact even with rebound file hashes")
+	for mask:String in ["eligible","protected","transition","context"]:
+		var changed_mask:=historical_fixture(HISTORICAL_DEFINITIONS[2]);changed_mask.input.mosaic[mask][0]=42
+		check(not saved_fixture(map_path,changed_mask).ok,"historical "+mask+" remains validated even with rebound file hashes")
+	saved_fixture(map_path,valid)
+	var evidence_file:=FileAccess.open(map_path+".swarm004-evidence.json",FileAccess.READ_WRITE)
+	evidence_file.seek_end();evidence_file.store_string(" ");evidence_file.close()
+	check(not Protocol.load_saved(map_path).ok,"changed evidence bytes cannot borrow an earlier saved receipt")
+	saved_fixture(map_path,valid)
+	var map_file:=FileAccess.open(map_path,FileAccess.WRITE);map_file.store_string("changed");map_file.close()
 	check(not Protocol.load_saved(map_path).ok,"changed saved map cannot borrow an older construction receipt")
 	for name:String in [path,map_path,map_path+".swarm004.json",map_path+".swarm004-evidence.json"]:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(name))

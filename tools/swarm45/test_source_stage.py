@@ -68,7 +68,7 @@ class PlatformSourceStage(unittest.TestCase):
                                  names["cli"]: {"sha256": hashlib.sha256(cli).hexdigest(), "bytes": len(cli)}}}
             with patch.object(custody, "ROOT", root), patch.object(custody, "verify", return_value=receipt) as guard, \
                  patch.object(stage.generic, "committed_lfs_pins", return_value={rapier_name: (hashlib.sha256(rapier).hexdigest(), len(rapier))}), \
-                 patch.object(stage.subprocess, "check_output", return_value=payload.getvalue()), \
+                 patch.object(stage, "committed_archive", return_value=payload.getvalue()), \
                  patch.object(stage.generic, "stage_generator_profiles", return_value={}):
                 result = stage.stage(runtime, destination)
                 self.assertEqual(guard.call_count, 3)

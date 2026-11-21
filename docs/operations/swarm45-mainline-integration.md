@@ -111,6 +111,17 @@ authoritative. Ordinary Save/Load formats and historical recipe semantics are
 unchanged. Saved composition evidence is inspection-only, not reusable Apply
 authority. See the [transaction contract](../architecture/experimental-workbench-authoring-patch.md).
 
+Saved inspection recognizes matching FRAMEWEAVER/MOSAIC definition pairs from
+the frozen #693 and #697 Workbench sources, integration r1 (`fe62e154…`) and the
+current integration (`217bfa71…`). Unknown or mixed definitions remain refused.
+Only #693 may omit the two later SWARM-005 option fields; they mean false and
+cannot retroactively enable either capability. All original receipt, evidence,
+material and source checks still apply. Inspection preserves the native result's
+original `can_apply` value as historical evidence while separately disabling
+Apply, submission, attestation and construction Undo. Cancellation or control
+changes cannot remove that restriction; a successful fresh current-source
+generation is required. Live decoding admits only the current definition.
+
 ## Deliberate integration changes
 
 - Preserve accepted-main Workbench actor, Paint and Art integration while adding
@@ -135,6 +146,14 @@ authority. See the [transaction contract](../architecture/experimental-workbench
   existing Linux runtime compatibility floor. Native JSON serialization and
   generation semantics remain unchanged; the changed source receives a new
   native definition and explicit protocol pin.
+- Preserve bounded read-only inspection of reviewed historical Workbench
+  definitions across native-source updates, without restoring their transaction
+  authority or rewriting saved maps, receipts or evidence.
+- Archive canonical committed text when staging source installations and Windows
+  evaluators. Child-only Git line-ending defaults preserve explicit per-file
+  attributes, binary bytes and every import sidecar. This prevents Windows Git
+  settings from changing sealed metadata that Godot subsequently rewrites; exact
+  package hashes and source-clean checks remain mandatory.
 
 These choices are reversible as separate integration deltas, but reverting the
 authority or accounting repairs would restore demonstrated defects. No SWARM-006
