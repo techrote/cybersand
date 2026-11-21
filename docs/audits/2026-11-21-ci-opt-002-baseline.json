@@ -1,0 +1,58 @@
+{
+  "schema": "ci-opt-002-baseline-evidence-v1",
+  "observed_on": "2026-11-21",
+  "source": "Retained exact GitHub Actions jobs; rounded amounts are accumulated runner time, NOT wall-clock, and not vendor billing",
+  "runs": [
+    {
+      "run_id": 44855726801,
+      "source_sha": "2fc70e139f769d2a7437de7920b7957d72dab874",
+      "status": "success",
+      "runner_minutes_rounded": 245,
+      "linux_graphical_minutes_rounded": 89,
+      "windows_owner_minutes_rounded": 149,
+      "coverage": "80 Genteks, 520 captures, 240 invalid refusal cases, 80 independent replays, graphical Workbench, extracted Windows owner ZIP"
+    },
+    {
+      "run_id": 44889085978,
+      "source_sha": "748e686195b330c7dd33c79e303f2848aa94b8ab",
+      "status": "success",
+      "runner_minutes_rounded": 167,
+      "platform_shards": 47,
+      "platform_shard_runner_minutes_rounded": 149
+    },
+    {
+      "run_id": 44889085997,
+      "source_sha": "748e686195b330c7dd33c79e303f2848aa94b8ab",
+      "status": "success",
+      "runner_minutes_rounded": 98,
+      "native_families": 6,
+      "largest_family": "worldgen",
+      "largest_family_minutes_rounded": 36
+    }
+  ],
+  "superseded_runs": [
+    {
+      "run_id": 44892587970,
+      "source_sha": "01214fc286f8e53dcd3912b34d1d52bd6763db95",
+      "linux_failed_after_minutes_rounded": 76,
+      "reason": "branch advanced"
+    },
+    {
+      "run_id": 44892800651,
+      "source_sha": "b17b83bae65a6c782d1cf6ed7461a28c83eb5fd1",
+      "linux_failed_after_minutes_rounded": 76,
+      "reason": "branch advanced"
+    },
+    {
+      "run_id": 44893010398,
+      "source_sha": "d6ef45e9b2b8dc4354e237ea975aa52623f36879",
+      "linux_failed_after_minutes_rounded": 77,
+      "reason": "branch advanced"
+    }
+  ],
+  "limits": [
+    "No claims about unfinished Windows jobs",
+    "No billing prediction or post-change speedup claim",
+    "Exact source and platform evidence cannot be transferred across commits"
+  ]
+}
