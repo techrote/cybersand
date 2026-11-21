@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-004-005-MAINLINE",
+  "action": "dispatch-final-admission",
+  "request_id": "swarm45-final-admission-20261121-r3",
+  "expected_parent_sha": "395b93393adcc379dabeffeb75be9eb19557ad33",
+  "target_sha": "919134a39d31461947c410c233d59d1965c48414",
+  "qualification_source_sha": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "qualification_run_id": "44953582341",
+  "qualification_run_attempt": "1",
+  "publication_request_sha": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+  "publication_run_id": "44956855133",
+  "publication_run_attempt": "1"
+}
