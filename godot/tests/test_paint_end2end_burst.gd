@@ -14,8 +14,23 @@ var worker: RefCounted
 var failures: Array[String] = []
 var rows: Array = []
 var checks := 0
+var frame_gap_usec: Array[int] = []
+var last_frame_usec := 0
+var sampling_frames := false
 
 func _initialize() -> void: run.call_deferred()
+func _process(_delta: float) -> bool:
+	var now: int = Time.get_ticks_usec()
+	if sampling_frames and last_frame_usec > 0 and frame_gap_usec.size() < 100000:
+		frame_gap_usec.append(now-last_frame_usec)
+	last_frame_usec = now
+	return false
+
+func frame_quantile(fraction: float) -> int:
+	if frame_gap_usec.is_empty(): return -1
+	var ordered: Array[int] = frame_gap_usec.duplicate()
+	ordered.sort()
+	return ordered[clampi(ceili(float(ordered.size())*fraction)-1,0,ordered.size()-1)]
 func check(ok: bool, label: String) -> bool:
 	checks += 1
 	if not ok:
@@ -112,6 +127,9 @@ func run() -> void:
 	if not await fresh():
 		quit(1)
 		return
+	last_frame_usec=Time.get_ticks_usec()
+	frame_gap_usec.clear()
+	sampling_frames=true
 
 	var maximum: int = 512*512
 	var captured: Dictionary = await submit({"kind":"capture","region":Rect2i(0,0,512,512)})
@@ -166,12 +184,18 @@ func run() -> void:
 				values=after_recovery.get("materials",PackedInt32Array())
 				check(after_recovery.get("status","")=="completed" and values.size()==maximum and
 					values.count(0)==maximum,"recovery has no hidden native edits")
+	sampling_frames=false
+	check(frame_gap_usec.size()>12,"rendered Workbench frame gaps actually sampled")
 	if source_sha != FileAccess.get_sha256("res://scripts/simulation_worker.gd"):
 		check(false,"source changed during test")
 	print("PAINT_BURST_PILOT ",JSON.stringify({"schema":"paint-end2end-002-pilot-v1",
 		"source_sha256":source_sha,"mode_slices":configured,
 		"bulk_capture":OS.get_environment("CYBERSAND_PAINT_BULK_CAPTURE") == "1",
-		"checks":checks,"failures":failures,"profiles":rows}))
+		"checks":checks,"failures":failures,"profiles":rows,
+		"rendered_frame_samples":frame_gap_usec.size(),
+		"frame_gap_p95_usec":frame_quantile(0.95),
+		"frame_gap_p99_usec":frame_quantile(0.99),
+		"maximum_frame_gap_usec":frame_gap_usec.max() if not frame_gap_usec.is_empty() else -1}))
 	host.queue_free()
 	await process_frame
 	quit(int(not failures.is_empty()))
