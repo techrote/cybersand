@@ -1,0 +1,39 @@
+name: EQUIP-RECOVERY-001 focused qualification
+
+on:
+  push:
+    branches:
+      - recovery/equip-bs001-20261121
+    paths:
+      - 'native/**'
+      - 'Makefile'
+      - 'build_windows_msvc.bat'
+      - 'godot/native_extension/**'
+      - 'godot/scripts/usable_*.gd'
+      - 'godot/scripts/kinetic_usables.gd'
+      - 'godot/scripts/workbench_kinetic_mask.gd'
+      - '.github/workflows/equip-recovery-001-focused.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: equip-recovery-001-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-bounded:
+    name: BS-001 native and BW compatibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build exact-HEAD native test runner
+        run: make build/tests
+      - name: Recovered ballistic solid tests
+        run: ./build/tests BS-001
+      - name: Existing ballistic Water regression
+        run: ./build/tests BW-001
+      - name: Run production-default admission invariant
+        run: ./build/tests "ballistic Water defaults unchanged"
