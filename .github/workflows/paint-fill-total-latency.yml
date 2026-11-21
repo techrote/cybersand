@@ -49,6 +49,7 @@ jobs:
           git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
           echo "$CYBERSAND_SHA256  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
           echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          mkdir -p build
           python3 tools/ci/check_repository.py --json build/paint-latency-repository-check.json
       - name: Restore official Godot 4.7 with archive pin
         run: |
