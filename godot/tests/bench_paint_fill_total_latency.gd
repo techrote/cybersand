@@ -103,14 +103,29 @@ func interior_frame_samples(seed: Vector2i, side: int, screenshot: Image) -> Arr
 			locations.append({"cell":cell,"pixel":pixel,"before":screenshot.get_pixelv(pixel)})
 	return locations
 
-func changed_sample_count(locations: Array[Dictionary], screenshot: Image) -> int:
-	var count := 0
-	for sample: Dictionary in locations:
-		var prior: Color = sample.before
-		var after: Color = screenshot.get_pixelv(sample.pixel)
-		var delta: float = absf(prior.r-after.r)+absf(prior.g-after.g)+absf(prior.b-after.b)
-		if delta > 0.12: count += 1
-	return count
+# The Workbench shader uses an aspect-fit presentation path that is not
+# equivalent to the mouse's cell-to-screen conversion. Take the actual
+# rendered WorldView content bounds and compare pixels inside that region.
+func visible_world_screen_rect(screenshot: Image) -> Rect2i:
+	var local: Rect2 = host.view_content_rect()
+	var canvas: Transform2D = host.world_view.get_global_transform_with_canvas()
+	var a: Vector2 = canvas * local.position
+	var b: Vector2 = canvas * local.end
+	var low: Vector2i = Vector2i(a.min(b).floor())
+	var high: Vector2i = Vector2i(a.max(b).ceil())
+	return Rect2i(low,high-low).intersection(Rect2i(Vector2i.ZERO,screenshot.get_size()))
+
+func changed_world_screen_samples(before: Image, after: Image, region: Rect2i) -> Dictionary:
+	var checked := 0
+	var changed := 0
+	for y: int in range(region.position.y+3,region.end.y,6):
+		for x: int in range(region.position.x+3,region.end.x,6):
+			var prev: Color = before.get_pixel(x,y)
+			var drawn: Color = after.get_pixel(x,y)
+			var delta: float = absf(prev.r-drawn.r)+absf(prev.g-drawn.g)+absf(prev.b-drawn.b)
+			checked += 1
+			if delta > 0.12: changed += 1
+	return {"checked":checked,"changed":changed}
 
 func save_failure_frames(before: Image, after: Image) -> void:
 	var directory := OS.get_environment("FILL_TOTAL_CAPTURE_DIR")
@@ -180,7 +195,9 @@ func run() -> void:
 	await RenderingServer.frame_post_draw
 	var before_frame: Image = root.get_texture().get_image()
 	var pixels: Array[Dictionary] = interior_frame_samples(seed,side,before_frame)
-	if not check(pixels.size()>=9,"at least nine mapped interior viewport samples"):
+	var screen_world: Rect2i = visible_world_screen_rect(before_frame)
+	if not check(screen_world.size.x>=128 and screen_world.size.y>=128,
+			"actual framebuffer has sufficient WorldView content area"):
 		quit(1)
 		return
 	var raw_before: Color = host.image.get_pixelv(seed)
@@ -224,6 +241,7 @@ func run() -> void:
 	var first_post_draw_usec := -1
 	var visible_change_usec := -1
 	var changed_pixels := 0
+	var screen_samples := 0
 	var render_attempts := 0
 	var after_frame: Image
 	for attempt: int in range(12):
@@ -232,8 +250,10 @@ func run() -> void:
 		if first_post_draw_usec < 0: first_post_draw_usec = frame_usec
 		after_frame = root.get_texture().get_image()
 		render_attempts = attempt+1
-		changed_pixels = changed_sample_count(pixels,after_frame)
-		if changed_pixels >= 3:
+		var observed: Dictionary = changed_world_screen_samples(before_frame,after_frame,screen_world)
+		changed_pixels = int(observed.changed)
+		screen_samples = int(observed.checked)
+		if changed_pixels >= 32:
 			visible_change_usec = frame_usec
 			break
 	collect_frames = false
@@ -245,13 +265,14 @@ func run() -> void:
 			"seed":seed,"side":side,"screen_size":before_frame.get_size(),
 			"world_view_rect":Rect2(host.world_view.global_position,host.world_view.size),
 			"view_content":host.view_content_rect(),
-			"mapped_samples":pixels,"changed_pixels":changed_pixels,
+			"mapped_input_samples":pixels,"screen_world_rect":screen_world,
+			"screen_world_samples":screen_samples,"changed_pixels":changed_pixels,
 			"render_attempts":render_attempts,
 			"raw_before":raw_before,"raw_after":raw_after,
 			"last_uploaded_revision":host.last_uploaded_revision,
 			"receipt_revision":receipt.get("revision",-1)}))
 		save_failure_frames(before_frame,after_frame)
-	check(visible_change_usec >= 0,"rendered viewport material changed at three interior points")
+	check(visible_change_usec >= 0,"rendered WorldView changed at least 32 actual screen samples")
 	check(await native_readback(seed)==58,"independent native readback confirms painted material")
 	var captures: Array=trace.get("captures",[])
 	var capture: Dictionary=captures[0] if not captures.is_empty() else {}
@@ -289,8 +310,11 @@ func run() -> void:
 		"first_post_draw_usec":first_post_draw_usec,
 		"first_visible_post_draw_usec":visible_change_usec,
 		"render_attempts":render_attempts,
-		"mapped_interior_samples":pixels.size(),
-		"changed_interior_samples":changed_pixels,
+		"mapped_input_samples":pixels.size(),
+		"world_screen_sample_count":screen_samples,
+		"changed_world_screen_samples":changed_pixels,
+		"world_screen_sample_stride":6,
+		"screen_world_rect":screen_world,
 		"raw_material_pixel_changed":raw_material_changed,
 		"frame_gap_p95_usec":percentile(frame_gaps,0.95),
 		"frame_gap_p99_usec":percentile(frame_gaps,0.99),
@@ -299,7 +323,7 @@ func run() -> void:
 		"render_patch_count":host.last_render_patch_count,
 		"render_patch_bytes":host.last_render_patch_bytes,
 		"render_was_full_refresh":host.last_render_was_full_refresh,
-		"image_pixel_changed":visible_change_usec >= 0 and changed_pixels>=3,
+		"image_pixel_changed":visible_change_usec >= 0 and changed_pixels>=32,
 		"failures":failures,
 		"measurement_boundary":"UI request to first visibly changed post-draw screenshot after matching uploaded revision; GPU readback verification, not physical scanout",
 		"timing_note":"Stages run across threads/frames and are not assumed additive; native worker elapsed includes scheduling gaps."}
