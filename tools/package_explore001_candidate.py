@@ -65,6 +65,30 @@ def stage_generator_profiles(package_root):
     return {p.name: native.sha(p) for p in recipes}
 
 
+def stage_project_archive(payload, native_candidate, destination, root=ROOT):
+    """Stage committed Windows inputs; never require the Linux reciprocal LFS object."""
+    with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
+        for entry in archive:
+            if not entry.isfile() or entry.name.startswith("godot/.godot/"):
+                continue
+            if entry.name in {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}:
+                continue
+            if "/bin/" in entry.name and entry.name not in (native.NATIVE, RAPIER):
+                continue
+            stream = archive.extractfile(entry)
+            data = stream.read()
+            if entry.name == native.NATIVE:
+                data = (native_candidate / Path(native.NATIVE).name).read_bytes()
+            elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
+                match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
+                data = (root / entry.name).read_bytes()
+                if match is None or hashlib.sha256(data).hexdigest() != match[1].decode() or len(data) != int(match[2]):
+                    raise ValueError("Unmaterialized or changed LFS payload: " + entry.name)
+            target = destination / entry.name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", type=Path, required=True, help="official Godot Windows GUI executable")
@@ -96,24 +120,7 @@ def main():
              args.readme.as_posix()]
     payload = subprocess.check_output(["git", "archive", "HEAD", "--", *names], cwd=ROOT, timeout=60)
     args.output.mkdir(parents=True)
-    with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
-        for entry in archive:
-            if not entry.isfile() or entry.name.startswith("godot/.godot/"):
-                continue
-            if "/bin/" in entry.name and entry.name not in (native.NATIVE, RAPIER):
-                continue
-            stream = archive.extractfile(entry)
-            data = stream.read()
-            if entry.name == native.NATIVE:
-                data = (args.native_candidate / Path(native.NATIVE).name).read_bytes()
-            elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
-                match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
-                data = (ROOT / entry.name).read_bytes()
-                if match is None or hashlib.sha256(data).hexdigest() != match[1].decode() or len(data) != int(match[2]):
-                    raise ValueError("Unmaterialized or changed LFS payload: " + entry.name)
-            target = args.output / entry.name
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
+    stage_project_archive(payload, args.native_candidate, args.output)
     profiles = stage_generator_profiles(args.output)
     for engine in (args.engine, console):
         shutil.copyfile(engine, args.output / engine.name)

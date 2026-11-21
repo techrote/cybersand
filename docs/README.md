@@ -10,6 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**SWARM-004/005 mainline candidate:** [integration, exact donor custody, experimental controls and owner evaluation](operations/swarm45-mainline-integration.md). The registered negative holdout results remain intact; new-source platform/publication and physical-owner acceptance remain separate gates.
+
+SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
+covers the bounded native grammar, independent architectural revisions, honest
+closure and separately qualified experimental Workbench bridge. The full
+programme remains Draft/HOLD under #687. The [native recovery and policy freeze](audits/2026-11-20-swarm004-native-recovery.md)
+records the recovered known corpus, matched causal controls, fixed-territory
+selection and the distinction between unevaluated closure and zero obligations.
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
@@ -93,6 +102,13 @@ GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectur
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
+
+SWARM-004 adds a separate Draft/HOLD [reciprocal composition controller and
+atomic native patch](architecture/experimental-workbench-authoring-patch.md).
+Its [owner guide](operations/swarm004-workbench-playtest.md) covers the bounded
+brush, native proposal rounds, Apply/Undo and ordinary Save/reopen. Windows
+graphical acceptance remains a source-qualified evidence gate; the interface
+does not alter the existing generator catalogue or accepted Water authority.
 The [15 November runtime completion record](audits/2026-11-15-gen007-runtime-completion.md)
 binds source `6d6e2cd6` to the qualified Linux/Windows and packaged replay,
 four-file publication `99d7bd2b`, and verified Git LFS/runtime provenance.
