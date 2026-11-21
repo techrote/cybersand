@@ -7,6 +7,9 @@ on:
     paths:
       - ".github/workflows/paint-end2end-burst.yml"
       - "godot/scripts/simulation_worker.gd"
+      - "godot/scripts/workbench_paint_editor_executor.gd"
+      - "godot/native_extension/cyber_native_cell_world.cpp"
+      - "godot/native_extension/cyber_native_cell_world.hpp"
       - "godot/tests/test_paint_end2end_burst.gd"
   workflow_dispatch:
 
@@ -172,55 +175,74 @@ jobs:
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
           timeout 240 "$GODOT_BIN" --headless --editor --path godot --import
           bash tools/ci/prepare_linux_display.sh
-      - name: Execute source-matched bulk off/on tests with unchanged owner semantics
-        timeout-minutes: 25
+      - name: Test native material capture and time-budgeted bursts together
+        timeout-minutes: 35
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           set -euo pipefail
-          for bulk in 0 1; do
-            mkdir -p "build/paint-burst-native/user-${bulk}"
-            export XDG_DATA_HOME="$PWD/build/paint-burst-native/user-${bulk}"
+          # Control, native read-only bulk, then two combinations with 6ms
+          # bounded bursts. Every case runs the same actual Workbench pilot.
+          for variant in 0-1 1-1 1-4 1-8; do
+            bulk="${variant%-*}"
+            slices="${variant#*-}"
+            mkdir -p "build/paint-burst-native/user-${variant}"
+            export XDG_DATA_HOME="$PWD/build/paint-burst-native/user-${variant}"
             export CYBERSAND_PAINT_BULK_CAPTURE="$bulk"
+            export CYBERSAND_PAINT_BURST_SLICES="$slices"
             xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
               timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
               --display-driver x11 --audio-driver Dummy --path godot \
               -s res://tests/test_paint_end2end_burst.gd \
-              2>&1 | tee "build/paint-burst-native/burst-${bulk}.log"
-            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
-              timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
-              --display-driver x11 --audio-driver Dummy --path godot \
-              -s res://tests/test_paint_editor_native.gd \
-              2>&1 | tee "build/paint-burst-native/contracts-${bulk}.log"
+              2>&1 | tee "build/paint-burst-native/burst-${variant}.log"
+            if [ "$slices" = 1 ]; then
+              xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+                timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
+                --display-driver x11 --audio-driver Dummy --path godot \
+                -s res://tests/test_paint_editor_native.gd \
+                2>&1 | tee "build/paint-burst-native/contracts-${variant}.log"
+            fi
           done
           python3 - <<'PY'
           import json, pathlib
           root=pathlib.Path("build/paint-burst-native")
+          def parse(log,marker):
+              lines=(root/log).read_text(errors="replace").splitlines()
+              values=[json.loads(x.partition(marker)[2]) for x in lines if x.startswith(marker)]
+              assert len(values)==1,(log,len(values))
+              return values[0]
           summaries={}
-          for bulk in ("0","1"):
-              def parse(log,marker):
-                  text=(root/log).read_text(errors="replace").splitlines()
-                  values=[json.loads(x.partition(marker)[2]) for x in text if x.startswith(marker)]
-                  assert len(values)==1,(log,len(values))
-                  return values[0]
-              row=parse(f"burst-{bulk}.log","PAINT_BURST_PILOT ")
-              assert row["failures"]==[] and row["checks"]>=48,row
-              assert row["bulk_capture"] == (bulk=="1"),row
-              assert len(row["profiles"])>=2,row
-              native=parse(f"contracts-{bulk}.log","PAINT_EDITOR_NATIVE ")
-              assert native["failures"]==[] and native["checks"]>=25,native
-              assert len(native["measurements"])>=4,native
-              summaries[bulk]={"pilot":row,"native_contract_checks":native["checks"]}
-          off=summaries["0"]["pilot"]["profiles"][0]
-          on=summaries["1"]["pilot"]["profiles"][0]
-          assert off["kind"] == on["kind"] == "capture"
-          assert off["requested_cells"] == on["requested_cells"] == 262144
-          assert off["executor_steps"] == on["executor_steps"] == 64
+          for variant in ("0-1","1-1","1-4","1-8"):
+              bulk,slices=map(int,variant.split("-"))
+              pilot=parse(f"burst-{variant}.log","PAINT_BURST_PILOT ")
+              assert pilot["failures"]==[] and pilot["checks"]>=50,pilot
+              assert pilot["bulk_capture"] == bool(bulk) and pilot["mode_slices"]==slices,pilot
+              assert pilot["rendered_frame_samples"]>12 and pilot["frame_gap_p95_usec"]>0,pilot
+              assert pilot["frame_gap_p99_usec"]>=pilot["frame_gap_p95_usec"],pilot
+              assert len(pilot["profiles"])>=2,pilot
+              capture,edit=pilot["profiles"][:2]
+              assert capture["kind"]=="capture" and edit["kind"]=="edit",pilot
+              for profile in (capture,edit):
+                  assert profile["requested_cells"]==262144,profile
+                  assert profile["executor_steps"]>0 and profile["worker_cycles"]>0,profile
+                  assert profile["max_chunks_per_cycle"]<=slices,profile
+              summary={"pilot":pilot}
+              if slices==1:
+                  native=parse(f"contracts-{variant}.log","PAINT_EDITOR_NATIVE ")
+                  assert native["failures"]==[] and native["checks"]>=25,native
+                  assert len(native["measurements"])>=4,native
+                  summary["native_contract_checks"]=native["checks"]
+              summaries[variant]=summary
+          base=summaries["0-1"]["pilot"]["profiles"][0]
+          native=summaries["1-1"]["pilot"]["profiles"][0]
+          assert base["executor_steps"] == native["executor_steps"] == 64
           print("PAINT_BULK_CAPTURE_AB_PASS",json.dumps({
-              "baseline_elapsed_usec":off["executor_elapsed_usec"],
-              "native_bulk_elapsed_usec":on["executor_elapsed_usec"],
-              "baseline_cpu_wall_usec":off["worker_cpu_wall_usec"],
-              "native_bulk_cpu_wall_usec":on["worker_cpu_wall_usec"],
+              "bulk_off_capture_elapsed_usec":base["executor_elapsed_usec"],
+              "bulk_on_capture_elapsed_usec":native["executor_elapsed_usec"],
+              "bulk_off_inside_worker_usec":base["worker_cpu_wall_usec"],
+              "bulk_on_inside_worker_usec":native["worker_cpu_wall_usec"],
+              "bulk_4_capture_elapsed_usec":summaries["1-4"]["pilot"]["profiles"][0]["executor_elapsed_usec"],
+              "bulk_8_capture_elapsed_usec":summaries["1-8"]["pilot"]["profiles"][0]["executor_elapsed_usec"],
               "source_bound":True}))
           (root/"summary.json").write_text(json.dumps(summaries,indent=2)+"\n")
           PY
