@@ -29,6 +29,10 @@ var _last_key: int = -1
 var _revision: int = -1
 var _started_usec: int = 0
 var _slice_started_usec: int = 0
+# Experimental opt-in. Uses source-matched native bounded readback if present.
+# The default executor follows the exact legacy GDScript material/obstacle path.
+var _bulk_capture_requested: bool = false
+var _bulk_capture_native_calls: int = 0
 
 
 static func native_materials() -> PackedInt32Array:
@@ -90,6 +94,8 @@ static func request_error(request: Dictionary) -> String:
 
 
 func begin(request: Dictionary, extent: Vector2i, materials: PackedInt32Array) -> void:
+	_bulk_capture_requested = OS.get_environment("CYBERSAND_PAINT_BULK_CAPTURE") == "1"
+	_bulk_capture_native_calls = 0
 	command = request
 	_cells = request.get("cells", PackedInt32Array())
 	_region = request.get("region", Rect2i())
@@ -120,13 +126,13 @@ func _point(index: int) -> Vector2i:
 	return Vector2i(_cells[index * 3], _cells[index * 3 + 1])
 
 
-func _protection_error(world: Variant, point: Vector2i) -> String:
+func _protection_error(world: Variant, point: Vector2i, native_body_id: int = -1) -> String:
 	if not _bounds.has_point(point): return "Operation crosses the native canvas boundary."
 	for guard: Rect2i in _guards:
 		if guard.has_point(point): return "Operation intersects protected source cells."
 	# Stored identity does not remove body protection: copying and mutation both
 	# refuse the complete operation when a transient body covers any source cell.
-	if int(world.rigid_body_id_at(point.x, point.y)) != 0:
+	if (native_body_id if native_body_id >= 0 else int(world.rigid_body_id_at(point.x, point.y))) != 0:
 		return "Move or remove the body before editing or copying its covered cells."
 	return ""
 
@@ -156,9 +162,30 @@ func step(world: Variant, context: Dictionary) -> Dictionary:
 		return _finish("refused", "Capture crosses the native canvas boundary.", context)
 	var stop: int = mini(count, (applied if status == "executing" else checked) + SLICE_CELLS)
 	if status != "executing":
+		var bulk_materials := PackedInt32Array()
+		var bulk_bodies := PackedInt32Array()
+		var bulk_start: int = checked
+		if command.kind == "capture" and _bulk_capture_requested:
+			# No implicit fallback: an explicitly requested native experiment
+			# must not silently execute the slower old path or report a false win.
+			if not world.has_method("paint_read_stored_slice"):
+				return _finish("refused", "Requested native bulk capture is unavailable.", context)
+			var values: Dictionary = world.paint_read_stored_slice(
+				_region.position, _region.size, checked, stop-checked)
+			if not values.get("ok",false):
+				return _finish("refused", str(values.get("error","Native bulk readback refused.")), context)
+			bulk_materials = values.get("materials",PackedInt32Array())
+			bulk_bodies = values.get("body_ids",PackedInt32Array())
+			if bulk_materials.size() != stop-checked or bulk_bodies.size() != stop-checked:
+				return _finish("failed", "Native bulk readback length mismatch.", context)
+			if int(values.get("revision",-1)) != _revision or int(values.get("tick",-1)) != int(command.expected_tick):
+				return _finish("invalidated", "Native bulk readback source changed.", context)
+			_bulk_capture_native_calls += 1
 		while checked < stop:
 			var point: Vector2i = _point(checked)
-			failure = _protection_error(world, point)
+			var bulk_index: int = checked - bulk_start
+			failure = _protection_error(world, point,
+				int(bulk_bodies[bulk_index]) if not bulk_bodies.is_empty() else -1)
 			if not failure.is_empty(): return _finish("refused", failure, context)
 			if command.kind == "edit":
 				var key: int = point.y * _bounds.size.x + point.x
@@ -170,7 +197,8 @@ func step(world: Variant, context: Dictionary) -> Dictionary:
 					return _finish("refused", "The installed scenario does not allow this painting tool.", context)
 				if material < 0 or material >= 256 or _allowed[material] == 0:
 					return _finish("refused", "Material is not supported by the loaded native runtime.", context)
-			var before: int = int(world.stored_material_at(point.x, point.y))
+			var before: int = int(bulk_materials[bulk_index]) if not bulk_materials.is_empty() \
+				else int(world.stored_material_at(point.x, point.y))
 			if not _source_allowed.is_empty() and before not in _source_allowed:
 				return _finish("refused", "Source material is protected by this caller's policy.", context)
 			if not _expected.is_empty() and before != _expected[checked]:
@@ -218,6 +246,7 @@ func _finish(termination: String, reason: String, context: Dictionary) -> Dictio
 		"authoring_generation":int(context.get("authoring_generation",1)),
 		"tick": int(command.expected_tick), "observed_generation": int(context.generation),
 		"backend": "CyberNativeCellWorld", "slices": slices,
+		"bulk_capture_native_calls": _bulk_capture_native_calls,
 		"maximum_slice_usec": maximum_slice_usec, "elapsed_usec": Time.get_ticks_usec() - _started_usec,
 		"recovery_possible": int(context.generation) == int(command.expected_generation) \
 			and int(context.tick) == int(command.expected_tick) and int(context.revision) == _revision and bool(context.paused) \
