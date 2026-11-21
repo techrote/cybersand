@@ -141,7 +141,11 @@
     "systems/architectural-generator.md",
     "operations/architectural-generator-playtest.md",
     "decisions/2026-11-14-owner-authoring-intent.md",
-    "operations/gentek80-evaluation.md"
+    "operations/gentek80-evaluation.md",
+    "tools/art-pipeline-unification.md",
+    "tools/world-art-preview.md",
+    "tools/world-art-capture.md",
+    "tools/world-art-evaluation.md"
   ],
   "navigation": [
     "README.md",

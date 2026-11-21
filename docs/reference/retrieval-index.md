@@ -10,6 +10,18 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## World Art inspection, capture and Windows evaluation
+
+| Question | Canonical route |
+| --- | --- |
+| How do I open all fifteen collections and 120 features without a native build? | [Portable Windows evaluator](../tools/world-art-evaluation.md), [one-checkout viewer](../tools/world-art-preview.md) |
+| Can I inspect 512×8192 or 16384×1024 art, and does that change the native World limit? | [Independent art capacity and compatibility](../tools/art-pipeline-unification.md#compatibility-contract-independent-limits) |
+| How do I capture a 67M-pixel PNG, verify it and safely retry after interruption? | [Unattended capture](../tools/world-art-capture.md) |
+| What is qualified on Windows and what still needs a physical GPU observation? | [Evaluation evidence and boundaries](../tools/world-art-evaluation.md) |
+
+[Additive World Art retrieval questions](retrieval-questions-world-art.json)
+are separate from the frozen evaluation set.
+
 For the **Draft/HOLD Gentek research stack only**, including the 72 classic
 samplers, eight advanced showcase modules, exact parent/source identities,
 preserved independent PNG evidence, combined 80-way qualification and five-style

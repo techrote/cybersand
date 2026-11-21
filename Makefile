@@ -430,3 +430,11 @@ gentek-showcases-sanitize: $(GENTEK_SHOWCASE_SANITIZED_BINS)
 # Include every showcase-specific native test in the ordinary generation gate.
 worldgen-test: gentek-showcases-test
 worldgen-sanitize: gentek-showcases-sanitize
+
+# SCRIPT-HOTPATH-001: isolated pure-C++ kernel qualification (no Godot required).
+$(BUILD_DIR)/test_paint_fill_planner: native/tests/test_paint_fill_planner.cpp native/include/cybersand/paint_fill_planner.hpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $< -o $@
+
+.PHONY: script-hotpath-native-test
+script-hotpath-native-test: $(BUILD_DIR)/test_paint_fill_planner
+	./$(BUILD_DIR)/test_paint_fill_planner

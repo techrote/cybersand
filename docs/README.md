@@ -20,6 +20,15 @@ For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-
 
 For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
 
+## World Art pipeline
+
+[Architecture, capacity and native compatibility](tools/art-pipeline-unification.md),
+[interactive viewer and one-checkout launch](tools/world-art-preview.md),
+[unattended capture and publication](tools/world-art-capture.md), and
+[portable Windows evaluator with offline gallery](tools/world-art-evaluation.md)
+own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
+source-qualified graphical evidence and physical GPU acceptance remain distinct.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
