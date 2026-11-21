@@ -1,0 +1,8 @@
+utc_start,model,task,authorized_width,authorized_height,model_calls,applied_batches,proposed_primitives,wall_primitives,erase_primitives,input_tokens,output_tokens,stop_reason
+2026-11-09T21:52:30Z,gpt-5.6-terra,add robot,64,128,5,1,8,8,0,6581,689,model_final_not_native_proof
+2026-11-09T21:52:56Z,gpt-5.6-luna,add robot,64,128,5,1,7,7,0,6504,781,model_final_not_native_proof
+2026-11-09T21:53:29Z,gpt-6-astra,add robot,64,128,11,3,24,24,0,21746,1293,model_final_not_native_proof
+2026-11-09T21:57:52Z,gpt-5.6-terra,add robot,128,256,15,4,33,32,1,33310,4416,model_final_not_native_proof
+2026-11-09T21:59:49Z,gpt-6-astra,add robot,128,256,8,2,16,11,5,13723,1092,model_final_not_native_proof
+2026-11-09T22:01:35Z,gpt-6-astra,detailed gundam cyberpunk graphic,128,256,30,10,80,50,30,111896,4155,host_stop_requested
+2026-11-09T22:13:10Z,gpt-6-astra,gundam cyberpunk statue tower pixelart,256,512,27,8,64,38,26,92255,3427,host_stop_requested
