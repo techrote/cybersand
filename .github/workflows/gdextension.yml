@@ -171,6 +171,65 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
 
+  godot-linux-archive:
+    name: Pinned Linux Godot archive shared by same-run shards
+    needs: [ready_scope]
+    if: >-
+      always() && inputs.physical_actor_stress != true &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Download and verify official Linux engine once per exact run
+        run: |
+          set -euo pipefail
+          mkdir -p build/godot-linux-archive
+          curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 60 --max-time 1200 \
+            --output build/godot-linux-archive/godot.zip "$GODOT_URL"
+          echo "$GODOT_SHA256  build/godot-linux-archive/godot.zip" | sha256sum --check --strict
+          echo "$GITHUB_SHA" > build/godot-linux-archive/source-sha.txt
+      - name: Retain pinned source-bound Linux engine archive
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot-linux-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot-linux-archive/
+          if-no-files-found: error
+          retention-days: 1
+
+  godot-windows-archive:
+    name: Pinned Windows Godot archive shared by same-run shards
+    needs: [ready_scope]
+    if: >-
+      always() && inputs.physical_actor_stress != true &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      GODOT_WINDOWS_ARCHIVE_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      GODOT_WINDOWS_ARCHIVE_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+    steps:
+      - name: Download and verify official Windows engine once per exact run
+        run: |
+          set -euo pipefail
+          mkdir -p build/godot-windows-archive
+          curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 60 --max-time 1200 \
+            --output build/godot-windows-archive/godot-windows.zip "$GODOT_WINDOWS_ARCHIVE_URL"
+          echo "$GODOT_WINDOWS_ARCHIVE_SHA512  build/godot-windows-archive/godot-windows.zip" | sha512sum --check --strict
+          echo "$GITHUB_SHA" > build/godot-windows-archive/source-sha.txt
+      - name: Retain pinned source-bound Windows engine archive
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot-windows-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot-windows-archive/
+          if-no-files-found: error
+          retention-days: 1
+
   linux-build:
     name: linux build x86_64
     needs: [ready_scope]
@@ -398,10 +457,11 @@ jobs:
 
   windows-regression:
     name: windows headless regression shard ${{ matrix.shard }}
-    needs: [ready_scope, execution-plan, windows-build]
+    needs: [ready_scope, execution-plan, windows-build, godot-windows-archive]
     if: >-
       always() && inputs.physical_actor_stress != true &&
       needs.execution-plan.result == 'success' && needs.windows-build.result == 'success' &&
+      needs.godot-windows-archive.result == 'success' &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -474,11 +534,19 @@ jobs:
           python tools/ci/test_rapier_pair.py
           python tools/ci/test_rapier_same_host.py
 
-      - name: Download official Windows Godot archive
-        timeout-minutes: 20
+      - name: Restore verified same-run Windows engine archive
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: godot-windows-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot-windows-archive
+      - name: Independently validate Windows engine hash and source before execution
+        timeout-minutes: 5
         run: |
           set -euo pipefail
-          curl --fail --location --retry 3 --connect-timeout 60 --max-time 1200 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          test "$(cat build/godot-windows-archive/source-sha.txt)" = "$GITHUB_SHA"
+          echo "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9  build/godot-windows-archive/godot-windows.zip" | sha512sum --check --strict
+          cp build/godot-windows-archive/godot-windows.zip "$RUNNER_TEMP/godot-windows.zip"
 
       - name: Verify retained runtime and execute every applicable Windows case
         timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_execution_minutes) }}
@@ -561,10 +629,10 @@ jobs:
 
   art-graphical-smoke:
     name: art workbench graphical smoke
-    needs: [linux-build]
+    needs: [linux-build, godot-linux-archive]
     if: >-
       always() && inputs.physical_actor_stress != true &&
-      needs.linux-build.result == 'success'
+      needs.linux-build.result == 'success' && needs.godot-linux-archive.result == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
@@ -593,12 +661,18 @@ jobs:
           cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
 
+      - name: Restore verified same-run Linux engine archive for Art
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: godot-linux-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot-linux-archive
       - name: Prepare pinned Godot runtime
         timeout-minutes: 20
         run: |
           set -euo pipefail
-          godot_download_seconds="$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)"
-          timeout "$godot_download_seconds" curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time "$godot_download_seconds" --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          test "$(cat build/godot-linux-archive/source-sha.txt)" = "$GITHUB_SHA"
+          cp build/godot-linux-archive/godot.zip "$RUNNER_TEMP/godot.zip"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
@@ -633,10 +707,11 @@ jobs:
 
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
-    needs: [linux-build, execution-plan]
+    needs: [linux-build, execution-plan, godot-linux-archive]
     if: >-
       always() && inputs.physical_actor_stress != true &&
       needs.linux-build.result == 'success' && needs.execution-plan.result == 'success' &&
+      needs.godot-linux-archive.result == 'success' &&
       (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     # Every shard has >=2 logical CPUs so weighted planning may move the worker
     # parity case without disabling its parallel arm. All use GitHub-hosted CI.
@@ -670,11 +745,18 @@ jobs:
           cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
 
+      - name: Restore verified same-run Linux engine archive
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: godot-linux-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot-linux-archive
       - name: Prepare exact Godot runtime
         timeout-minutes: 20
         run: |
-          godot_download_seconds="$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)"
-          timeout "$godot_download_seconds" curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time "$godot_download_seconds" --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          set -euo pipefail
+          test "$(cat build/godot-linux-archive/source-sha.txt)" = "$GITHUB_SHA"
+          cp build/godot-linux-archive/godot.zip "$RUNNER_TEMP/godot.zip"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
