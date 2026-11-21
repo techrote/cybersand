@@ -27,6 +27,7 @@
     "architecture/ballistic-water-v1.md",
     "architecture/wave-flow-v1.md",
     "operations/wave-flow-evaluation.md",
+    "operations/workbench-water-lab.md",
     "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
     "architecture/shared-workbench-authoring-data.md",

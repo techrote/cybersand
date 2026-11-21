@@ -2,6 +2,7 @@
 // exposed-face spill and its hybrid ballistic release. Build targets:
 // make wave-spill-test / wave-spill-sanitize / wave-spill-thread-sanitize.
 #include "cybersand/world.hpp"
+#include "cybersand/prepared_world.hpp"
 
 #include <algorithm>
 #include <array>
@@ -43,11 +44,11 @@ void rect(World& world, int x, int y, int width, int height, Material material) 
         for (int xx = x; xx < x + width; ++xx) world.set(xx, yy, material);
 }
 
-void box(World& world, int width, int height) {
-    rect(world, 0, 0, width, 1, Material::Wall);
-    rect(world, 0, height - 1, width, 1, Material::Wall);
-    rect(world, 0, 0, 1, height, Material::Wall);
-    rect(world, width - 1, 0, 1, height, Material::Wall);
+void box(World& world, int width, int height, int x = 0, int y = 0) {
+    rect(world, x, y, width, 1, Material::Wall);
+    rect(world, x, y + height - 1, width, 1, Material::Wall);
+    rect(world, x, y, 1, height, Material::Wall);
+    rect(world, x + width - 1, y, 1, height, Material::Wall);
 }
 
 // Every unit has exactly one owner: stored cells or a live parcel. The stored
@@ -102,6 +103,14 @@ void spill_is_off_by_default_and_admission_is_typed() {
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_min = 0; }, "empty parcels");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_budget = 4097; }, "launch budget above bound");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_speed = 513; }, "launch speed above bound");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.sheet_rate = -1; }, "negative sheet rate");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.sheet_rate = 128; }, "sheet rate above bound");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = -1; }, "negative crest flight duration");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = 9; }, "crest flight duration above bound");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.full_face = -1; }, "negative full face");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.full_face = 2; }, "full face above one");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.deep_draw = -1; }, "negative deep draw");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.deep_draw = 128; }, "deep draw above 127");
     // Spill's hybrid release owns exposed faces: the per-cell face scan is
     // refused beside it, and admitted (generic Ballistic Water) without spill.
     expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; c.ballistic_water.face_release = true; },
@@ -145,7 +154,14 @@ constexpr Golden kBaseLaw[] = {
 void disabled_spill_reproduces_the_base_law() {
     for (const auto& golden : kBaseLaw) {
         auto cfg = config(Mode::Original, golden.workers, static_cast<std::uint8_t>(golden.substeps));
-        if (golden.workers == 4U) { cfg.wave_flow.spill.fall = 7; cfg.wave_flow.spill.launch_budget = 9; } // unused tuning
+        if (golden.workers == 4U) {
+            cfg.wave_flow.spill.fall = 7;
+            cfg.wave_flow.spill.launch_budget = 9;
+            cfg.wave_flow.spill.sheet_rate = 127;
+            cfg.wave_flow.spill.full_face = 1;
+            cfg.wave_flow.spill.deep_draw = 64;
+            cfg.wave_flow.spill.coyote_ticks = 8;
+        }
         World w(cfg);
         const int n = 300;
         box(w, n, n);
@@ -604,11 +620,11 @@ void full_parcel_pool_is_counted_and_clamped() {
     require_ledger_closes(world, all, before, "clamped budget");
 }
 
-void diagonal_one_cell_wall_holds() {
+void check_diagonal_wall(WorldConfig cfg) {
     // A 45-degree wall one cell thick: Water may neither land beyond it from
     // the deposit ring nor step through it diagonally in flight.
     const int n = 128;
-    World world(config(Mode::Hybrid, 1));
+    World world(cfg);
     box(world, n, n);
     for (int x = 1; x < n - 1; ++x) {
         const int y = 103 - x;
@@ -645,6 +661,16 @@ void diagonal_one_cell_wall_holds() {
             require((p.x >> 8) + (p.y >> 8) < 103, "a parcel flew through a one-cell diagonal wall");
     }
     require_ledger_closes(world, all, initial + 4000U, "diagonal wall parcels");
+}
+
+void diagonal_one_cell_wall_holds() {
+    auto cfg = config(Mode::Hybrid, 1);
+    check_diagonal_wall(cfg);
+    cfg.wave_flow.spill.sheet_rate = 127;
+    cfg.wave_flow.spill.coyote_ticks = 8;
+    check_diagonal_wall(cfg);
+    cfg.wave_flow.spill.full_face = 1;
+    check_diagonal_wall(cfg);
 }
 
 void wet_and_dry_corners_stop_ballistic_water() {
@@ -988,6 +1014,897 @@ void stream_draw_zero_is_the_earlier_spill_world() {
     }
 }
 
+void sheet_releases_deep_rows_and_keeps_crest_spray() {
+    auto cfg = config(Mode::Hybrid, 4);
+    std::uint64_t original_grid = 0, original_spray = 0;
+    for (int sheet : {0, 64}) {
+        cfg.wave_flow.spill.sheet_rate = sheet;
+        World world(cfg);
+        box(world, 256, 128);
+        rect(world, 1, 64, 127, 1, Material::Wall);
+        rect(world, 1, 40, 127, 24, Material::Water);
+        const RectI64 all{0, 0, 256, 128};
+        const auto before = owned(world, all);
+        (void)world.tick();
+        const auto grid = world.water_quantity({128, 40, 1, 24});
+        const auto spray = world.wave_flow_diagnostics().launched_parcels;
+        require_ledger_closes(world, all, before, "tall sheet");
+        if (sheet == 0) {
+            original_grid = grid;
+            original_spray = spray;
+        } else {
+            require(grid > original_grid + 16 * 100, "sheet failed to discharge the deep rows");
+            require(spray == 2 && spray < original_spray, "sheet failed to reserve spray for the top two rows");
+        }
+    }
+}
+
+void full_face_covers_dry_and_falling_receivers() {
+    // A full-height face crossing two 32-row active bands and a chunk edge.
+    // The second fixture has a full falling sheet in the spawn column.
+    constexpr int top = 32, height = 96, lip = 64;
+    for (const bool curtain : {false, true}) {
+        std::uint64_t reference = 0;
+        for (const unsigned workers : {1U, 6U}) {
+            auto cfg = config(Mode::Hybrid, workers);
+            cfg.wave_flow.spill.sheet_rate = 64;
+            cfg.wave_flow.spill.coyote_ticks = 4;
+            cfg.wave_flow.spill.stream = 255;
+            World original(cfg);
+            cfg.wave_flow.spill.full_face = 1;
+            World world(cfg);
+            require(original.physical_state_hash() != world.physical_state_hash() && original.state_hash() != world.state_hash(),
+                    "enabled full-face release is absent from identity");
+            for (auto* w : {&world, &original}) {
+                box(*w, 128, 192);
+                rect(*w, 1, top + height, lip - 1, 1, Material::Wall);
+                rect(*w, 1, top, lip - 1, height, Material::Water);
+                if (curtain) rect(*w, lip, top - 3, 1, height, Material::Water);
+                const auto initial = owned(*w, {0, 0, 128, 192});
+                (void)w->tick();
+                require_ledger_closes(*w, {0, 0, 128, 192}, initial, "96-row wall");
+            }
+            require(original.wave_flow_diagnostics().launched_parcels <= 2, "historical sheet exceeded its two-row spray");
+            std::vector<BallisticParcel> parcels(world.ballistic_parcel_count());
+            (void)world.copy_ballistic_parcels(parcels);
+            std::array<bool, height> seen{};
+            for (const auto& p : parcels) {
+                const auto y = static_cast<int>(p.y / BallisticWaterConfig::kQ);
+                require(p.x / BallisticWaterConfig::kQ == lip && p.vx > 0 && y >= top && y < top + height,
+                        "wall threw outside the exposed face");
+                require(p.quantity <= 127 && p.quantity != 0, "one row exceeded its parcel share");
+                require(p.coyote_left == (y == top ? 4 : 0), "submerged spray received crest grace");
+                seen[static_cast<std::size_t>(y - top)] = true;
+            }
+            require(std::all_of(seen.begin(), seen.end(), [](bool wet) { return wet; }),
+                    "a deep row of the full-height face failed to throw");
+            for (int y = top; y < top + height; ++y)
+                require(world.liquid_mass(lip, y) != 0, "full-face spray left a hole in the falling grid sheet");
+            const auto identity = world.physical_state_hash();
+            if (workers == 1) reference = identity;
+            else require(reference == identity, "full-face coverage changed with worker count");
+            std::printf("FULL_FACE curtain=%d workers=%u rows=%zu previous=%llu units=%llu grid=%llu\n",
+                        curtain, workers, parcels.size(), static_cast<unsigned long long>(original.wave_flow_diagnostics().launched_parcels),
+                        static_cast<unsigned long long>(world.wave_flow_diagnostics().launched_units),
+                        static_cast<unsigned long long>(world.water_quantity({lip, top, 1, height})));
+        }
+    }
+}
+
+void full_face_curtain_head_is_independent_of_parcel_slots() {
+    // No parcel can reach the launch threshold. Filling the pool with a
+    // distant jet must not reverse flow between a 64-unit lip and a passing
+    // 128-unit curtain. Both have exactly the same Water near the face.
+    auto cfg = config(Mode::Hybrid, 1);
+    cfg.ballistic_water.capacity = 1;
+    cfg.wave_flow.spill.full_face = 1;
+    cfg.wave_flow.spill.sheet_rate = 127;
+    cfg.wave_flow.spill.launch_min = 255;
+    std::uint64_t outward = 0;
+    for (const bool full : {false, true}) {
+        World w(cfg);
+        box(w, 128, 192);
+        w.set(62, 99, Material::Wall);
+        w.set(63, 100, Material::Wall);
+        require(w.set_cell_state(63, 99, Material::Water, 64, 0) &&
+                w.set_cell_state(64, 96, Material::Water, 128, 0), "small lip setup");
+        if (full) {
+            const auto jet = w.inject_ballistic_water(108 * 256, 20 * 256, 0, 0, 20);
+            require(jet.outcome == BallisticLaunchOutcome::Launched, "distant jet setup");
+        }
+        const auto initial = owned(w, {0, 0, 128, 192});
+        (void)w.tick();
+        const auto remaining = w.liquid_mass(63, 99);
+        require(remaining < 64, "falling curtain pushed into the resting lip");
+        if (full) require(remaining == outward && w.wave_flow_diagnostics().launch_capacity_skips == 1,
+                          "parcel capacity changed the curtain pressure");
+        else outward = remaining;
+        require_ledger_closes(w, {0, 0, 128, 192}, initial, "full-face curtain pressure");
+    }
+}
+
+void full_face_freezes_paused_receivers_and_bounds_max_overfill() {
+    auto cfg = config(Mode::Hybrid, 6);
+    auto& spill = cfg.wave_flow.spill;
+    spill.full_face = 1;
+    spill.sheet_rate = 64;
+    spill.stream_draw = 255;
+    World edge(cfg);
+    const RectI64 all{0, 0, 256, 192};
+    box(edge, 256, 192);
+    rect(edge, 1, 96, 127, 1, Material::Wall);
+    rect(edge, 1, 72, 127, 24, Material::Water);
+    const auto initial = owned(edge, all);
+    edge.set_simulation_region(RectI64{0, 0, 128, 192});
+    for (int tick = 0; tick < 8; ++tick) (void)edge.tick();
+    require(edge.ballistic_parcel_count() == 0 && edge.water_quantity({128, 0, 128, 192}) == 0,
+            "full-face discharge crossed an unselected core");
+    edge.set_simulation_region(std::nullopt);
+    (void)edge.tick();
+    require(edge.ballistic_parcel_count() == 24, "whole wall did not wake after re-entry");
+    require_ledger_closes(edge, all, initial, "full-face region re-entry");
+
+    World over(cfg);
+    box(over, 256, 192);
+    over.set(128, 63, Material::Wall);
+    rect(over, 128, 65, 1, 124, Material::Wall);
+    constexpr std::uint16_t mass = 65535;
+    require(over.set_cell_state(128, 64, Material::Water, mass, 0), "maximal ridge setup");
+    (void)over.tick();
+    std::array<BallisticParcel, 2> parcels{};
+    require(over.copy_ballistic_parcels(parcels) == 2, "maximal ridge did not throw on both sides");
+    for (const auto& p : parcels)
+        require(p.quantity <= 255 && over.liquid_mass(p.x / 256, p.y / 256) <= 127, "maximal ridge overflowed a receiver");
+    require_ledger_closes(over, all, mass, "maximal full-face ridge");
+}
+
+void full_face_shares_slots_across_tall_walls() {
+    constexpr int top = 24, height = 640, lip = 32;
+    std::uint64_t reference = 0;
+    for (const unsigned workers : {1U, 6U}) {
+        auto cfg = config(Mode::Hybrid, workers);
+        auto& spill = cfg.wave_flow.spill;
+        spill.full_face = 1;
+        spill.sheet_rate = 64;
+        spill.launch_budget = 128;
+        cfg.ballistic_water.capacity = 24;
+        World w(cfg);
+        const RectI64 all{0, 0, 64, 704};
+        box(w, 64, 704);
+        rect(w, 1, top + height, lip - 1, 1, Material::Wall);
+        rect(w, 1, top, lip - 1, height, Material::Water);
+        const auto initial = owned(w, all);
+        (void)w.tick();
+        const auto stats = w.wave_flow_diagnostics();
+        require(stats.launched_parcels == 24 && stats.launch_deferrals == height - 24,
+                "full face did not account for bounded candidates, pool slots and deferrals");
+        std::array<BallisticParcel, 24> parcels{};
+        (void)w.copy_ballistic_parcels(parcels);
+        std::array<bool, 4> quarter{};
+        for (const auto& p : parcels) quarter.at(static_cast<std::size_t>((p.y / 256 - top) * 4 / height)) = true;
+        require(std::all_of(quarter.begin(), quarter.end(), [](bool hit) { return hit; }),
+                "an entire quarter of the wall was starved by limited pool slots");
+        (void)w.tick(); (void)w.tick();
+        require(w.wave_flow_diagnostics().launch_capacity_skips > 0, "full pool did not remain explicit");
+        require_ledger_closes(w, all, initial, "oversubscribed wall");
+        if (workers == 1) reference = w.physical_state_hash();
+        else require(w.physical_state_hash() == reference, "oversubscribed wall differs by worker count");
+    }
+}
+
+void sheet_and_coyote_budget_each_side_of_a_ridge() {
+    const RectI64 all{0, 0, 256, 128};
+    for (const auto& mode : {std::array{127, 0, 0}, std::array{0, 8, 0}, std::array{127, 8, 0},
+                             std::array{0, 0, 1}, std::array{127, 8, 1}}) {
+        for (const int share : {0, 128, 255}) {
+            std::uint64_t reference = 0;
+            for (const unsigned workers : {1U, 2U, 4U, 6U}) {
+                auto cfg = config(Mode::Hybrid, workers);
+                auto& spill = cfg.wave_flow.spill;
+                spill.sheet_rate = mode[0];
+                spill.coyote_ticks = mode[1];
+                spill.full_face = mode[2];
+                spill.stream_share = share;
+                spill.stream_draw = 255;
+                spill.launch_min = 1;
+                spill.launch_budget = 4096;
+                cfg.ballistic_water.capacity = 2;
+                World world(cfg);
+                auto identity = cfg;
+                identity.wave_flow.spill.sheet_rate = identity.wave_flow.spill.coyote_ticks = identity.wave_flow.spill.full_face = 0;
+                World before(identity);
+                require(world.physical_state_hash() != before.physical_state_hash() && world.state_hash() != before.state_hash(),
+                        "an opt-in discharge control is missing from identity");
+                box(world, 256, 128);
+                rect(world, 128, 52, 1, 75, Material::Wall);
+                rect(world, 134, 1, 1, 126, Material::Wall);
+                constexpr std::uint16_t mass = 237;
+                require(world.set_cell_state(128, 51, Material::Water, mass, 0), "odd ridge setup refused");
+                (void)world.tick();
+                std::array<BallisticParcel, 2> parcels{};
+                require(world.copy_ballistic_parcels(parcels) == 2, "one face of the ridge failed to launch");
+                std::array<unsigned, 2> spent{world.liquid_mass(127, 51), world.liquid_mass(129, 51)};
+                for (const auto& p : parcels) spent[p.vx > 0 ? 1 : 0] += p.quantity;
+                for (auto side : spent) require(side > 0 && side <= mass / 2, "one ridge face exceeded its donor half");
+                require(spent[0] + spent[1] + world.liquid_mass(128, 51) == mass, "first round ridge ledger disagrees");
+                for (int t = 0; t < 160; ++t) (void)world.tick();
+                require(world.wave_flow_diagnostics().launch_capacity_skips > 0, "tiny pool never fell back to grid flow");
+                require(world.water_quantity({135, 0, 121, 128}) == 0, "sheet leaked through the straight wall");
+                require_ledger_closes(world, all, mass, "ridge and straight wall");
+                if (workers == 1) reference = world.physical_state_hash();
+                else require(world.physical_state_hash() == reference, "sheet/crest flight differs by worker count");
+            }
+        }
+    }
+}
+
+void retained_crest_adopts_replacement_flight_law() {
+    auto source_cfg = config(Mode::Hybrid);
+    source_cfg.ballistic_water.air_drag = 0;
+    source_cfg.wave_flow.spill.coyote_ticks = 4;
+    World source(source_cfg);
+    source.set(32, 32, Material::Wall);
+    source.set(32, 31, Material::Water);
+    (void)source.tick();
+    std::array<BallisticParcel, 2> born{}, copied{};
+    require(source.copy_ballistic_parcels(born) == 2 && born.front().coyote_left == 4, "need two live crests");
+    normalization::FinalSetupInput input;
+    input.setup.domain = {0, 0, 64, 64};
+    for (int grace : {-1, 0, 2}) {
+        auto cfg = source_cfg;
+        cfg.wave_flow.enabled = grace >= 0;
+        cfg.wave_flow.spill.enabled = grace > 0;
+        cfg.wave_flow.spill.coyote_ticks = std::max(0, grace);
+        auto prepared = PreparedWorldBuilder::prepare(cfg, input, normalization::NormalizationOptIn::None);
+        require(std::holds_alternative<PreparedWorld>(prepared), "replacement refused");
+        auto target = std::get<PreparedWorld>(prepared).take_world();
+        const auto receipt = target->inherit_workbench_liquid_state(source, {0, 0, 64, 64}, false, false);
+        require(receipt.discarded_in_flight_water == 0 && receipt.preserved_in_flight_water ==
+            born[0].quantity + born[1].quantity, "replacement lost crest mass");
+        require(target->copy_ballistic_parcels(copied) == born.size(), "missing inherited crests");
+        for (std::size_t i = 0; i < copied.size(); ++i) {
+            require(copied[i].coyote_left == std::max(grace, 0) && copied[i].vx == born[i].vx &&
+                copied[i].vy == born[i].vy, "inherited flight did not adopt new grace or preserve velocity");
+        }
+        // Generic Ballistic saves do not serialize Wave state. Its restored
+        // owner must follow exactly the same flight after conversion.
+        std::unique_ptr<World> restored;
+        if (grace < 0) restored = World::restore_physical_state(cfg, target->save_physical_state());
+        (void)target->tick();
+        require(target->copy_ballistic_parcels(copied) == born.size() &&
+            copied[0].vy == (grace > 0 ? 0 : cfg.ballistic_water.gravity_q), "wrong gravity after Apply");
+        if (restored) {
+            (void)restored->tick();
+            require(restored->physical_state_hash() == target->physical_state_hash(), "converted ballistic save diverged");
+        }
+    }
+}
+
+void sheet_starts_from_rest_without_wave_gain() {
+    auto cfg = config(Mode::Spill);
+    cfg.wave_flow.gain = 0;
+    cfg.wave_flow.spill.sheet_rate = 127;
+    World world(cfg);
+    rect(world, 30, 40, 8, 1, Material::Wall);
+    rect(world, 30, 20, 8, 20, Material::Water);
+    rect(world, 29, 19, 1, 22, Material::Wall);
+    (void)world.tick();
+    require(world.water_quantity({38, 20, 1, 20}) > 0, "positive sheet head failed to discharge from rest");
+    require(world.water_quantity({28, 19, 1, 22}) == 0, "sheet started through a wall");
+    require_ledger_closes(world, {0, 0, 64, 64}, 8 * 20 * 255, "zero-gain sheet");
+}
+
+void deep_draw_limits_opposing_pool_faces() {
+    const auto run = [](int height, int limit, int coast, unsigned workers, int draw = 127) {
+        auto cfg = config(Mode::Spill, workers);
+        cfg.wave_flow.gain = 512;
+        cfg.wave_flow.coast = coast;
+        cfg.wave_flow.spill.draw = draw;
+        cfg.wave_flow.spill.deep_draw = limit;
+        World w(cfg);
+        box(w, 256, 160);
+        rect(w, 126, 130, 5, 1, Material::Wall);
+        rect(w, 127, 129, 3, 1, Material::Water);
+        rect(w, 128, 130 - height, 1, height, Material::Water);
+        const RectI64 region{0, 0, 256, 160};
+        const auto before = owned(w, region);
+        (void)w.tick();
+        require(owned(w, region) == before, "two-sided deep draw lost Water");
+        const int left = -w.wave_flow_flux(127, 129), right = w.wave_flow_flux(128, 129);
+        require(left == right && right > 0, "opposing faces did not draw symmetrically");
+        return std::pair{right, w.state_hash()};
+    };
+    const auto unlimited = run(5, 0, 32, 1);
+    const auto limited = run(5, 64, 32, 1);
+    require(limited == run(5, 64, 32, 6), "deep draw worker parity");
+    require(unlimited.first > limited.first && limited.first == 64 * 4096, "five-row stack ignored deep draw");
+    require(run(4, 64, 32, 1).first == run(4, 0, 32, 1).first, "deep draw slowed a four-row front");
+    require(run(5, 64, 96, 1).first == 96 * 4096, "deep draw suppressed ordinary coast");
+    require(run(5, 64, 32, 1, 40).first == run(5, 0, 32, 1, 40).first, "deep draw raised ordinary draw");
+    auto a = config(Mode::Spill), b = a;
+    b.wave_flow.spill.deep_draw = 64;
+    World off(a), on(b);
+    require(off.state_hash() != on.state_hash() && off.physical_state_hash() != on.physical_state_hash(),
+            "active deep draw missing from identity");
+}
+
+void floor_gain_requires_a_level_solved_floor() {
+    constexpr int x = 127, y = 127;
+    const RectI64 all{0, -256, 256, 512};
+    auto run = [&](int gain, std::uint32_t workers, bool drop, bool paused, std::uint16_t mass) {
+        auto cfg = config(Mode::Hybrid, workers);
+        cfg.wave_flow.floor_gain = gain;
+        cfg.wave_flow.gain = 0;
+        cfg.wave_flow.empty_pour_shift = 1;
+        cfg.wave_flow.spill.launch_budget = 0;
+        World world(cfg);
+        rect(world, x-4, y+1, drop ? 5 : 9, 1, Material::Wall);
+        require(world.set_cell_state(x, y, Material::Water, mass, 0), "floor donor setup failed");
+        if (paused) world.set_simulation_region(RectI64{0, 0, 256, 128});
+        const auto before_state = world.state_hash(), before_physical = world.physical_state_hash();
+        (void)world.tick();
+        require_ledger_closes(world, all, mass, "floor donor " + std::to_string(mass) + " at four-chunk corner");
+        const auto left = world.water_quantity({x-4,y-6,4,8});
+        const auto right = world.water_quantity({x+1,y-6,4,8});
+        require(left + right <= mass, "two outgoing floor faces overdrew donor");
+        return std::array<std::uint64_t,6>{left, right, before_state, before_physical,
+                                            world.content_hash(), world.physical_state_hash()};
+    };
+    const auto plain = run(0, 1, false, false, 177);
+    const auto driven = run(4096, 1, false, false, 177);
+    require(plain[0] + plain[1] == 0 && driven[0] > 0 && driven[1] > 0,
+            "floor gain failed to drive both sides of a resting partial donor");
+    require(driven[2] != plain[2] && driven[3] != plain[3], "floor gain absent from identity");
+    require(driven == run(4096, 6, false, false, 177), "floor flow depends on worker count");
+    require(run(4096, 4, true, false, 177)[1] == 0, "floor acceleration crossed a descending step");
+    const auto paused = run(4096, 4, false, true, 177);
+    require(paused[0] + paused[1] == 0, "paused terrain supplied floor acceleration");
+    (void)run(4096, 6, false, false, 65535);
+    // Read the face shared by a three-cell column and its shallower neighbour.
+    // The whole supporting path must lead to the same floor elevation.
+    const auto top_flux = [](int donor_depth, int receiver_step) {
+        constexpr int left = 127, top = 127;
+        auto cfg = config(Mode::Hybrid, 4);
+        cfg.wave_flow.gain = 0;
+        cfg.wave_flow.floor_gain = 4096;
+        cfg.wave_flow.spill.launch_budget = 0;
+        World world(cfg);
+        rect(world, left-2, top+donor_depth, 3, 1, Material::Wall);
+        rect(world, left+1, top+donor_depth-receiver_step, 3, 1, Material::Wall);
+        for (int k = 0; k < donor_depth; ++k) world.set(left, top+k, Material::Water);
+        for (int k = 1; k < donor_depth-receiver_step; ++k) world.set(left+1, top+k, Material::Water);
+        (void)world.tick();
+        return world.wave_flow_flux(left, top);
+    };
+    require(top_flux(3, 0) > 0, "third supported row did not carry the surge");
+    require(top_flux(4, 0) == 0, "floor acceleration escaped the shallow band");
+    require(top_flux(3, 1) == 0, "floor acceleration climbed a riser");
+    for (int bad : {-1, 4097}) {
+        auto cfg = config(Mode::Hybrid);
+        cfg.wave_flow.floor_gain = bad;
+        bool refused = false;
+        try { World invalid(cfg); } catch (const std::invalid_argument&) { refused = true; }
+        require(refused, "invalid floor gain admitted");
+    }
+}
+
+void coyote_flight_pauses_expires_and_leaves_jets_alone() {
+    auto cfg = config(Mode::Hybrid, 4);
+    cfg.wave_flow.spill.coyote_ticks = 4;
+    cfg.wave_flow.spill.sheet_rate = 64;
+    cfg.wave_flow.spill.launch_speed = 512;
+    cfg.ballistic_water.capacity = 3;
+    cfg.ballistic_water.air_drag = 0;
+    World world(cfg);
+    const RectI64 all{0, 0, 256, 128};
+    box(world, 256, 128);
+    world.set(95, 40, Material::Wall);
+    world.set(95, 39, Material::Water);
+    require(world.inject_ballistic_water(40*256 + 128, 12*256 + 128, 0, 0, 17).outcome ==
+            BallisticLaunchOutcome::Launched, "generic jet refused");
+    const auto before = owned(world, all);
+    (void)world.tick();
+    std::array<BallisticParcel, 3> born{}, now{};
+    require(world.copy_ballistic_parcels(born) == 3, "expected a generic jet and two crest parcels");
+    require(born[0].coyote_left == 0 && born[0].vy == cfg.ballistic_water.gravity_q, "generic jet received crest grace");
+    require(born[1].vx * born[2].vx < 0 && born[1].vy == 0 && born[2].vy == 0, "lip did not launch horizontally");
+    require(born[1].coyote_left == 4 && born[2].coyote_left == 4, "crest received an incorrect initial duration");
+    world.set_simulation_region(RectI64{192, 0, 64, 128});
+    for (int t = 0; t < 6; ++t) (void)world.tick();
+    require(world.copy_ballistic_parcels(now) == 3 && now == born, "paused crest aged or moved");
+    world.set_simulation_region(std::nullopt);
+    for (int t = 1; t <= 5; ++t) {
+        (void)world.tick();
+        require(world.copy_ballistic_parcels(now) == 3, "flight fixture hit an unintended obstacle");
+        for (int i : {1, 2}) {
+            require(now[i].x == born[i].x + t * born[i].vx, "crest failed to carry horizontal momentum");
+            require(now[i].coyote_left == std::max(0, 4 - t), "crest grace expired early or late");
+            const auto expected_drop = t > 4 ? cfg.ballistic_water.gravity_q : 0;
+            require(now[i].vy == expected_drop && now[i].y == born[i].y + expected_drop, "wrong crest trajectory on expiry");
+        }
+    }
+    const auto flight = world.ballistic_water_snapshot();
+    require(flight.momentum_y == flight.ledger.launch_py + flight.ledger.gravity_py, "crest momentum ledger disagrees");
+    require_ledger_closes(world, all, before, "coyote flight");
+}
+
+// Match the Wave settings in the #678 Windows playtest where the owner
+// reported trapped Oil, including full-face spill and ballistic blobs.
+WorldConfig oil_tank_config(std::uint32_t workers) {
+    auto cfg = config(Mode::Hybrid, workers, 2);
+    auto& wave = cfg.wave_flow;
+    wave.gain = wave.deep_gain = 32;
+    wave.floor_gain = 1024;
+    wave.flux_smoothing = 16;
+    wave.coast = 32;
+    wave.empty_pour_shift = 2;
+    wave.damp_shift = 16;
+    wave.calm_damp_shift = 8;
+    wave.calm = wave.stick = 128;
+    wave.sleep_after = 90;
+    wave.body_push_by_mass = 1;
+    wave.spill.sheet_rate = 64;
+    wave.spill.coyote_ticks = 4;
+    wave.spill.full_face = 1;
+    wave.spill.fall = 3;
+    wave.spill.draw = 127;
+    wave.spill.draw_head = 255;
+    wave.spill.deep_draw = 64;
+    wave.spill.launch_budget = 128;
+    return cfg;
+}
+
+void buried_oil_surfaces_and_disturbed_tank_settles() {
+    constexpr std::uint64_t water = 48U * 31U * 255U;
+    // The final row uses the physical coordinates of the packaged tank. A
+    // different location samples different deterministic Oil/Sand motions.
+    struct Tank { bool sand; int x, y, gate_tick; };
+    const Tank tanks[] = {{false, 0, 0, 600}, {true, 0, 0, 600}, {true, 128, 192, 3600}};
+    for (const auto [sand, offset_x, offset_y, gate_tick] : tanks) {
+        const int left = offset_x + 104, right = left + 48;
+        const RectI64 all{offset_x, offset_y, 256, 128};
+        std::array<std::uint64_t, 3> reference{};
+        for (const auto workers : {1U, 6U}) {
+            if (gate_tick == 3600 && workers != 1) continue;
+            World world(oil_tank_config(workers));
+            world.configure_transient_obstacles(all, true);
+            world.enable_transient_granular_wrenches(true);
+            world.enable_granular_arrival_witness(true);
+            box(world, 256, 128, offset_x, offset_y);
+            rect(world, left - 1, offset_y + 1, 1, 95, Material::Wall);
+            rect(world, right, offset_y + 1, 1, 96, Material::Wall);
+            rect(world, left - 1, offset_y + 96, 49, 1, Material::Wall);
+            rect(world, left, offset_y + 64, 48, 32, Material::Water);
+            rect(world, left, offset_y + 74, 48, 1, Material::Oil);
+            if (sand) rect(world, left + 17, offset_y + 46, 14, 8, Material::Sand);
+            const auto deposited_sand = [&] {
+                std::vector<int> cells;
+                for (int y = offset_y + 65; y < offset_y + 96; ++y)
+                    for (int x = left; x < right; ++x)
+                        if (world.stored_material(x, y) == Material::Sand)
+                            cells.push_back(y * 48 + (x - left));
+                return cells;
+            };
+
+            std::array<std::uint64_t, 3> hashes{};
+            std::uint64_t before_quiet = 0;
+            std::vector<int> previous_deposit;
+            for (int tick = 1; tick <= gate_tick; ++tick) {
+                (void)world.tick();
+                if (tick == 30) hashes[0] = world.physical_state_hash();
+                if (tick == 540) {
+                    before_quiet = world.wave_flow_diagnostics().launched_units;
+                    if (sand) previous_deposit = deposited_sand();
+                }
+            }
+            int surfaced = 0, supported = 0, slick_columns = 0, run = 0, longest_run = 0;
+            for (int x = left; x < right; ++x) {
+                bool water_above = false, floating_oil = false;
+                for (int y = offset_y + 1; y < offset_y + 96; ++y) {
+                    const auto material = world.stored_material(x, y);
+                    if (material == Material::Water) water_above = true;
+                    if (material == Material::Oil && !water_above) {
+                        ++surfaced;
+                        floating_oil = true;
+                        const auto below = world.stored_material(x, y + 1);
+                        if (below == Material::Water || below == Material::Oil) ++supported;
+                    }
+                }
+                if (floating_oil) ++slick_columns;
+                run = floating_oil ? run + 1 : 0;
+                longest_run = std::max(longest_run, run);
+            }
+            const auto quiet = world.wave_flow_diagnostics().launched_units;
+            const auto ledger = world.quantity_ledger();
+            std::printf("Oil tank t=%d workers=%u sand=%d surfaced=%d supported=%d columns=%d longest_run=%d "
+                        "late_throw=%llu live=%u\n", gate_tick, workers, sand ? 112 : 0, surfaced, supported, slick_columns,
+                        longest_run, static_cast<unsigned long long>(quiet - before_quiet),
+                        world.ballistic_water_snapshot().live);
+            if (sand) require(previous_deposit.size() == 112 && previous_deposit == deposited_sand(),
+                              "Sand had not formed a stationary submerged deposit");
+            // The undisturbed strip should remain a single, tank-wide slick.
+            // Sand may stack Oil, but all of it should remain afloat and
+            // collectively cover at least three quarters of the tank surface.
+            require(surfaced == 48 && supported == 48 && slick_columns >= (sand ? 36 : 48),
+                    "Oil failed to form a broad floating slick");
+            require(ledger.material_cells[static_cast<std::size_t>(Material::Oil)] == 48 &&
+                    ledger.material_cells[static_cast<std::size_t>(Material::Sand)] == (sand ? 112U : 0U),
+                    "Oil or Sand inventory changed");
+            require(quiet == before_quiet && world.ballistic_water_snapshot().live == 0,
+                    "settled tank still sprayed after tick 540: " + std::to_string(quiet - before_quiet));
+            require_ledger_closes(world, all, water, "resting Oil tank");
+            hashes[1] = world.physical_state_hash();
+
+            // Opening the side gate starts a fresh dam-break wave into the
+            // catch basin. The only possible spray source is the tank Water.
+            rect(world, right, offset_y + 55, 1, 41, Material::Empty);
+            for (int tick = 0; tick < 24; ++tick) (void)world.tick();
+            const auto fresh = world.wave_flow_diagnostics().launched_units - quiet;
+            require(fresh > 0 && world.water_quantity({right + 1, offset_y, 103, 128}) > 0,
+                    "released wave did not travel into the basin and throw spray");
+            require_ledger_closes(world, all, water, "released Oil tank");
+            const auto released = world.quantity_ledger();
+            require(released.material_cells[static_cast<std::size_t>(Material::Oil)] == 48 &&
+                    released.material_cells[static_cast<std::size_t>(Material::Sand)] == (sand ? 112U : 0U),
+                    "gate release changed the Oil or Sand inventory");
+            hashes[2] = world.physical_state_hash();
+            if (workers == 1) reference = hashes;
+            else require(reference == hashes, "Oil tank physical states differed across worker counts");
+            std::printf("Oil tank gate t=%d workers=%u sand=%d fresh_throw=%llu\n",
+                        gate_tick, workers, sand ? 112 : 0, static_cast<unsigned long long>(fresh));
+        }
+    }
+}
+
+// The Workbench round Oil brush at radius 24 contains 1,793 cells. Paint
+// through the surface, so roughly half the disk initially sits under water.
+void thick_oil_brush_spreads_on_water() {
+    constexpr int width = 384, height = 160, surface = 64, radius = 24;
+    constexpr RectI64 bounds{0, 0, width + 2, height};
+    std::array<std::uint64_t, 3> reference{};
+    for (auto workers : {1U, 6U}) {
+        World world(oil_tank_config(workers));
+        box(world, width + 2, height);
+        rect(world, 1, surface, width, height - surface - 1, Material::Water);
+        for (int dy = -radius; dy <= radius; ++dy)
+            for (int dx = -radius; dx <= radius; ++dx)
+                if (dx * dx + dy * dy <= radius * radius)
+                    world.set(width / 2 + dx, surface + dy, Material::Oil);
+        const auto initial = owned(world, bounds);
+        std::array<std::uint64_t, 3> hashes{};
+        std::uint64_t initial_spray = 0;
+        for (int tick = 1; tick <= 900; ++tick) {
+            (void)world.tick();
+            if (tick != 300 && tick != 540 && tick != 900) continue;
+            int total = 0, columns = 0, deepest = 0, surfaced = 0;
+            for (int x = 1; x <= width; ++x) {
+                int depth = 0;
+                bool seen_water = false;
+                for (int y = 1; y < height - 1; ++y) {
+                    const auto material = world.stored_material(x, y);
+                    if (material == Material::Water) seen_water = true;
+                    if (material == Material::Oil) {
+                        ++depth;
+                        if (!seen_water) ++surfaced;
+                    }
+                }
+                total += depth;
+                if (depth > 0) ++columns;
+                deepest = std::max(deepest, depth);
+            }
+            require(total == 1793 && world.quantity_ledger().material_cells[
+                        static_cast<std::size_t>(Material::Oil)] == 1793, "brush Oil inventory drifted");
+            require_ledger_closes(world, bounds, initial, "thick Oil brush");
+            const auto launched = world.wave_flow_diagnostics().launched_units;
+            std::printf("thick Oil t=%d workers=%u columns=%d deepest=%d surfaced=%d spray=%llu live=%u\n",
+                        tick, workers, columns, deepest, surfaced,
+                        static_cast<unsigned long long>(launched), world.ballistic_water_snapshot().live);
+            if (tick == 300) require(columns >= 160 && deepest <= 23, "painted Oil still sits in a thick blob");
+            if (tick == 540) initial_spray = launched;
+            if (tick == 900) {
+                require(columns >= 270 && deepest <= 16 && surfaced == 1793, "thick brush failed to form a broad floating slick");
+                require(initial_spray == launched && world.ballistic_water_snapshot().live == 0,
+                        "thick slick kept spraying after settling");
+            }
+            hashes[tick == 300 ? 0U : tick == 540 ? 1U : 2U] = world.physical_state_hash();
+        }
+        if (workers == 1) reference = hashes;
+        else require(hashes == reference, "thick Oil brush changed with worker count");
+    }
+}
+
+void wave_crosses_a_floating_oil_blanket() {
+    // The step starts well to the left of the probe. Read Water connected
+    // to the floor so an isolated drop or parcel cannot count as a crest.
+    constexpr int width = 48, left = 100, floor = 84, probe = left + width - 3;
+    constexpr RectI64 bounds{left - 1, floor - 79, width + 2, 80};
+    for (const int coat : {1, 4}) {
+        std::array<std::uint64_t, 3> reference{};
+        for (const auto workers : {1U, 6U}) {
+            World world(oil_tank_config(workers));
+            box(world, width + 2, 80, left - 1, floor - 79);
+            for (int dx = 0; dx < width; ++dx) {
+                const int depth = dx < width / 2 ? 32 : 16;
+                rect(world, left + dx, floor - depth, 1, depth, Material::Water);
+                rect(world, left + dx, floor - depth - coat, 1, coat, Material::Oil);
+            }
+            const auto water = owned(world, bounds);
+            const auto surface = [&](int x) {
+                int y = floor;
+                while (world.stored_material(x, y - 1) == Material::Water) --y;
+                return y;
+            };
+            const int initial = surface(probe);
+            int crest = initial, return_level = initial;
+            std::array<std::uint64_t, 3> hashes{};
+            for (int tick = 1; tick <= 600; ++tick) {
+                (void)world.tick();
+                if (tick <= 60) crest = std::min(crest, surface(probe));
+                if (tick == 60) return_level = surface(probe);
+                if (tick > 60 && tick <= 150) return_level = std::max(return_level, surface(probe));
+                if (tick != 60 && tick != 150 && tick != 600) continue;
+                require_ledger_closes(world, bounds, water, "wave under floating Oil");
+                require(world.quantity_ledger().material_cells[static_cast<std::size_t>(Material::Oil)] ==
+                        static_cast<std::uint64_t>(width * coat), "wave changed the Oil inventory");
+                hashes[tick == 60 ? 0U : tick == 150 ? 1U : 2U] = world.physical_state_hash();
+            }
+            // Visible displacement on arrival and reversal distinguish a
+            // travelling wave from slow draining or levelling the Water once.
+            require(initial - crest >= 6 && return_level - crest >= 4,
+                    "Oil pinned the arriving or receding Water wave");
+            int excess = 0;
+            for (int x = left; x < left + width; ++x)
+                excess += std::max(0, static_cast<int>(world.liquid_mass(x, surface(x))) - 255);
+            require(excess <= width * 255, "more than a full row of Water still trapped under the slick");
+            if (workers == 1) reference = hashes;
+            else require(hashes == reference, "Oil-covered wave differed by worker count");
+        }
+    }
+}
+
+void mobile_oil_only_rises_into_accessible_headroom() {
+    // One-cell-wide shaft: two full cells of Water compressed beneath
+    // four Oil cells. The bottom Oil and upper Water straddle a chunk seam.
+    constexpr int x = 69, y = 128, coat = 4;
+    constexpr RectI64 bounds{64, 116, 12, 16};
+    enum class Block { Wall, MaskInOil, MaskHeadroom, PausedUpper };
+    for (const auto block : {Block::Wall, Block::MaskInOil, Block::MaskHeadroom, Block::PausedUpper}) {
+        World world(oil_tank_config(6));
+        rect(world, x - 1, y - coat - 2, 1, coat + 4, Material::Wall);
+        rect(world, x + 1, y - coat - 2, 1, coat + 4, Material::Wall);
+        world.set(x, y + 1, Material::Wall);
+        require(world.set_cell_state(x, y, Material::Water, 510, 0), "compressed Water setup");
+        for (int row = 1; row <= coat; ++row)
+            require(world.set_cell_state(x, y - row, Material::Oil, static_cast<std::uint16_t>(170 + row), 0), "Oil payload setup");
+        world.set_temperature(x, y - 1, 315);
+        if (block == Block::Wall) world.set(x, y - coat - 1, Material::Wall);
+        if (block == Block::MaskInOil || block == Block::MaskHeadroom) {
+            world.configure_transient_obstacles(bounds);
+            const int mask_y = block == Block::MaskInOil ? y - 2 : y - coat - 1;
+            require(world.set_transient_obstacle(x, mask_y, 1), "Oil roof mask setup");
+        }
+        if (block == Block::PausedUpper) world.set_simulation_region(RectI64{64, y, 64, 64});
+        for (int tick = 0; tick < 4; ++tick) (void)world.tick();
+        require(world.liquid_mass(x, y) == 510 && world.stored_material(x, y - 1) == Material::Oil,
+                "Oil rose through a blocked or paused interface");
+        if (block == Block::Wall) world.set(x, y - coat - 1, Material::Empty);
+        if (block == Block::MaskInOil || block == Block::MaskHeadroom) world.clear_transient_obstacles();
+        if (block == Block::PausedUpper) world.set_simulation_region(std::nullopt);
+        for (int tick = 0; tick < 8; ++tick) (void)world.tick();
+        require(world.liquid_mass(x, y) == 255 && world.liquid_mass(x, y - 1) == 255,
+                "released Oil cap kept a full Water cell compressed");
+        require_ledger_closes(world, bounds, 510, "Oil cap released");
+        std::array<bool, coat> seen{};
+        for (int row = 2; row <= coat + 1; ++row) {
+            const auto tag = world.stored_state_a(x, y - row);
+            require(world.stored_material(x, y - row) == Material::Oil && tag >= 171 && tag <= 174,
+                    "Oil lift lost a material or its payload");
+            require(!seen[tag - 171], "Oil lift duplicated a payload");
+            seen[tag - 171] = true;
+            require(world.stored_temperature(x, y - row) == (tag == 171 ? 315 : 200),
+                    "Oil lift separated the payload from its temperature");
+        }
+    }
+}
+
+void warm_oil_surface_move_carries_tuple_across_chunk() {
+    World world(oil_tank_config(6));
+    box(world, 256, 80);
+    rect(world, 1, 42, 254, 37, Material::Water);
+    rect(world, 100, 38, 28, 4, Material::Oil);
+    rect(world, 128, 38, 17, 4, Material::Water);
+    // Warm and identify only the last four columns of Oil in the left chunk.
+    for (int x = 124; x < 128; ++x) {
+        for (int y = 38; y < 42; ++y) {
+            require(world.set_cell_state(x, y, Material::Oil, 173, 0), "tagging warm Oil failed");
+            world.set_temperature(x, y, 315);
+        }
+    }
+    (void)world.tick();
+    int tagged = 0, across = 0;
+    for (int x = 1; x < 255; ++x) {
+        for (int y = 1; y < 79; ++y) {
+            if (world.stored_material(x, y) != Material::Oil || world.stored_state_a(x, y) != 173) continue;
+            require(world.stored_temperature(x, y) == 315, "Oil tuple lost its temperature");
+            ++tagged;
+            if (x >= 138) ++across;
+        }
+    }
+    require(tagged == 16 && across > 0, "warm Oil did not carry its state beyond the cell-job halo");
+}
+void oil_exchange_preserves_partial_overfull_and_paused_cells() {
+    // A pair straddling a scheduling core boundary, enclosed by a solid
+    // one-cell jacket. Saturated Water has nowhere to redistribute after
+    // the exchange; checking the exact tuple catches uint8 truncation.
+    for (const std::uint16_t mass : std::array<std::uint16_t, 2>{1, 65535}) {
+        for (const int active_y : {0, 64}) {
+            World world(config(Mode::Original));
+            rect(world, 68, 62, 3, 4, Material::Wall);
+            require(world.set_cell_state(69, 63, Material::Water, mass, 0) &&
+                    world.set_cell_state(69, 64, Material::Oil, 173, 0), "seam setup refused");
+            world.set_simulation_region(RectI64{64, active_y, 64, 64});
+            for (int n = 0; n < 100; ++n) (void)world.tick();
+            require(world.stored_material(69, 64) == Material::Oil && world.stored_state_a(69, 64) == 173 &&
+                    world.liquid_mass(69, 63) == mass, "Oil exchanged through a paused boundary");
+            world.set_simulation_region(std::nullopt);
+            for (int n = 0; n < 8; ++n) (void)world.tick();
+            require(world.stored_material(69, 63) == Material::Oil && world.stored_state_a(69, 63) == 173 &&
+                    world.liquid_mass(69, 64) == mass, "resumed Oil exchange lost a cell or its payload");
+        }
+    }
+    for (const int masked_y : {127, 128}) {
+        World world(config(Mode::Original, 6));
+        rect(world, 68, 126, 3, 4, Material::Wall);
+        world.set(69, 127, Material::Water);
+        world.set(69, 128, Material::Oil);
+        world.set_temperature(69, 128, 315);
+        world.configure_transient_obstacles({64, 120, 16, 16});
+        require(world.set_transient_obstacle(69, masked_y, 1), "Oil test mask refused");
+        for (int n = 0; n < 10; ++n) (void)world.tick();
+        require(world.stored_material(69, 127) == Material::Water &&
+                world.stored_material(69, 128) == Material::Oil, "Oil exchanged through a body");
+        world.clear_transient_obstacles();
+        for (int n = 0; n < 8; ++n) (void)world.tick();
+        require(world.stored_material(69, 127) == Material::Oil && world.stored_temperature(69, 127) == 315 &&
+                world.liquid_mass(69, 128) == 255 && world.stored_temperature(69, 128) == 200,
+                "unmasked Oil exchange across chunks lost Water or moved heat to the wrong cell");
+    }
+}
+
+void oil_exchange_moves_water_only_once_per_tick() {
+    // Upper and lower Oil belong to different scheduling cores. On a tick
+    // where the upper core runs first, the lower Oil sees newly displaced
+    // Water and must leave it alone until the next tick.
+    for (int phase_offset = 0; phase_offset < 4; ++phase_offset) {
+        World world(config(Mode::Original));
+        for (int tick = 0; tick < phase_offset; ++tick) (void)world.tick();
+        rect(world, 68, 61, 3, 5, Material::Wall);
+        world.set(69, 62, Material::Water);
+        rect(world, 69, 63, 1, 2, Material::Oil);
+        for (int tick = 1; tick <= 2; ++tick) {
+            (void)world.tick();
+            require(world.liquid_mass(69, 62 + tick) == 255 &&
+                    world.stored_material(69, 62) == Material::Oil,
+                    "same Water must displace one Oil each tick, phase offset " + std::to_string(phase_offset));
+        }
+    }
+    // The hot Water's chunk owns the only thermal field at setup. An Oil
+    // update in the next, cold chunk has to carry both temperatures safely.
+    World hot(config(Mode::Original));
+    rect(hot, 68, 126, 3, 4, Material::Wall);
+    hot.set(69, 127, Material::Water);
+    hot.set_temperature(69, 127, 300);
+    hot.set(69, 128, Material::Oil);
+    (void)hot.tick();
+    require(hot.liquid_mass(69, 128) == 255 && hot.stored_temperature(69, 128) == 300 &&
+            hot.stored_material(69, 127) == Material::Oil && hot.stored_temperature(69, 127) == 200,
+            "Oil exchange lost heat when only the adjacent Water chunk had thermal storage");
+}
+
+void oil_lid_pressure_respects_walls_and_masks() {
+    enum class Cover { Free, Mask, Wall, Paused };
+    const auto flux_under = [](Material roof, Cover cover) {
+        World world(config(Mode::Original, 6));
+        // Two communicating Water cells. Their roofs sit in the upper
+        // chunk; only the left cell has excess mass. Surrounding walls
+        // prevent sideways Oil movement and seal the sample from below.
+        rect(world, 67, 127, 4, 3, Material::Wall);
+        world.set(68, 127, roof);
+        if (cover == Cover::Wall) world.set(68, 126, Material::Wall);
+        world.set(68, 128, Material::Water);
+        world.set(69, 128, Material::Water);
+        // Prepare lid metadata while the upper core is visible before
+        // masking or pausing it; the stale mobile tag must not leak through.
+        (void)world.tick();
+        if (cover == Cover::Mask) {
+            world.configure_transient_obstacles({64, 120, 16, 16});
+            require(world.set_transient_obstacle(68, 127, 1), "Oil roof mask refused");
+        }
+        if (cover == Cover::Paused) world.set_simulation_region(RectI64{64, 128, 64, 64});
+        require(world.set_cell_state(68, 128, Material::Water, 287, 0), "excess Water refused");
+        (void)world.tick();
+        require_ledger_closes(world, {64, 120, 16, 16}, 542, "Oil roof");
+        require(world.stored_material(68, 127) == roof, "pressure replaced the roof");
+        return world.wave_flow_flux(68, 128);
+    };
+    const auto rigid = flux_under(Material::Wall, Cover::Free);
+    const auto mobile = flux_under(Material::Oil, Cover::Free);
+    require(rigid > mobile && mobile >= 0, "free Oil roof acted like a rigid ceiling on overfilled Water");
+    require(flux_under(Material::Oil, Cover::Mask) == rigid, "body-masked Oil weakened rigid pressure");
+    require(flux_under(Material::Oil, Cover::Wall) == rigid, "Oil trapped under Wall weakened rigid pressure");
+    require(flux_under(Material::Oil, Cover::Paused) == rigid, "paused Oil weakened rigid pressure");
+}
+
+void dry_oil_keeps_its_cellular_spread() {
+    const auto path = [](bool wave) {
+        auto cfg = config(Mode::Original);
+        cfg.wave_flow.enabled = wave;
+        World world(cfg);
+        // One Oil cell can shuffle along a flat bed of pure Oil. The
+        // underlying row fills its trough and has nowhere to drain.
+        rect(world, 47, 79, 18, 2, Material::Wall);
+        rect(world, 47, 78, 1, 1, Material::Wall);
+        rect(world, 64, 78, 1, 1, Material::Wall);
+        rect(world, 48, 79, 16, 1, Material::Oil);
+        world.set(56, 78, Material::Oil);
+        std::array<int, 32> trace{};
+        for (auto& position : trace) {
+            (void)world.tick();
+            for (int x = 48; x < 64; ++x)
+                if (world.stored_material(x, 78) == Material::Oil) position = x;
+            require(position != 0, "Oil left a closed dry trough");
+        }
+        return trace;
+    };
+    const auto dry = path(false);
+    require(std::any_of(dry.begin(), dry.end(), [](int x) { return x != 56; }), "dry control was motionless");
+    require(dry == path(true), "Wave changed a pure Oil cell's path on dry ground");
+}
+
+void floating_oil_preserves_paused_face_momentum() {
+    for (const auto workers : {1U, 6U}) {
+        for (const bool active_left : {true, false}) {
+            auto cfg = config(Mode::Hybrid, workers);
+            cfg.chunk_size = 64;
+            cfg.scheduling_core_size = 32;
+            cfg.activity_block_size = 16;
+            cfg.wave_flow.spill.fall = 3;
+            World world(cfg);
+            const auto x = [active_left](int column) { return active_left ? column : 127 - column; };
+            const auto put = [&](int column, int y, Material mat) { world.set(x(column), y, mat); };
+            rect(world, x(60), 42, 1, 15, Material::Wall);
+            rect(world, x(66), 42, 1, 15, Material::Wall);
+            for (int column = 61; column <= 65; ++column) {
+                put(column, 56, Material::Wall);
+                rect(world, x(column), 49, 1, 7, Material::Water);
+            }
+            require(world.set_cell_state(x(63), 48, Material::Water, 200, 0) &&
+                    world.set_cell_state(x(64), 48, Material::Water, 50, 0), "Oil seam setup");
+            (void)world.tick();
+            const auto held = world.wave_flow_flux(63, 48);
+            require(held != 0, "uneven Water failed to establish boundary momentum");
+            world.set_simulation_region(RectI64{active_left ? 0 : 64, 0, 64, 128});
+
+            // Drain the active endpoint vertically. Its now-empty cell still
+            // shares a retained face with the paused Water across the seam.
+            for (int column = 61; column <= 63; ++column)
+                rect(world, x(column), 49, 1, 7, Material::Empty);
+            for (int i = 0; i < 16; ++i) (void)world.tick();
+            require(world.stored_material(x(63), 48) == Material::Empty &&
+                    world.wave_flow_flux(63, 48) == held, "draining lost the held seam");
+            rect(world, x(61), 47, 1, 9, Material::Wall);
+            rect(world, x(63), 49, 1, 7, Material::Water);
+            rect(world, x(62), 52, 1, 4, Material::Water);
+            rect(world, x(62), 49, 1, 3, Material::Oil);
+            for (int i = 0; i < 8; ++i) {
+                (void)world.tick();
+                require(world.wave_flow_flux(63, 48) == held,
+                        "floating Oil retired the shared face across a paused boundary");
+            }
+        }
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -1002,6 +1919,27 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"wave crosses a floating Oil blanket", wave_crosses_a_floating_oil_blanket},
+        {"mobile Oil only rises into accessible headroom", mobile_oil_only_rises_into_accessible_headroom},
+        {"warm Oil surface move carries its tuple across chunks", warm_oil_surface_move_carries_tuple_across_chunk},
+        {"thick Oil brush spreads on Water", thick_oil_brush_spreads_on_water},
+        {"floating Oil preserves paused face momentum", floating_oil_preserves_paused_face_momentum},
+        {"buried Oil surfaces and disturbed tank settles", buried_oil_surfaces_and_disturbed_tank_settles},
+        {"Oil exchange preserves partial overfull and paused cells", oil_exchange_preserves_partial_overfull_and_paused_cells},
+        {"Oil exchange moves Water only once per tick", oil_exchange_moves_water_only_once_per_tick},
+        {"Oil lid pressure respects walls and masks", oil_lid_pressure_respects_walls_and_masks},
+        {"dry Oil keeps its cellular spread", dry_oil_keeps_its_cellular_spread},
+        {"deep draw limits opposing pool faces", deep_draw_limits_opposing_pool_faces},
+        {"floor gain requires real level terrain and conserves both shares", floor_gain_requires_a_level_solved_floor},
+        {"crest Apply adopts the replacement flight law", retained_crest_adopts_replacement_flight_law},
+        {"sheet starts with zero ordinary gain", sheet_starts_from_rest_without_wave_gain},
+        {"sheet releases deep rows and keeps crest spray", sheet_releases_deep_rows_and_keeps_crest_spray},
+        {"full face covers dry and falling receivers", full_face_covers_dry_and_falling_receivers},
+        {"full face curtain head is independent of slots", full_face_curtain_head_is_independent_of_parcel_slots},
+        {"full face respects paused receivers and maximal overfill", full_face_freezes_paused_receivers_and_bounds_max_overfill},
+        {"full face shares slots across tall walls", full_face_shares_slots_across_tall_walls},
+        {"sheet and coyote budget each side of a ridge", sheet_and_coyote_budget_each_side_of_a_ridge},
+        {"coyote flight pauses expires and leaves jets alone", coyote_flight_pauses_expires_and_leaves_jets_alone},
         {"spill is off by default and admission is typed", spill_is_off_by_default_and_admission_is_typed},
         {"disabled spill reproduces the base law", disabled_spill_reproduces_the_base_law},
         {"disabled spill preserves Wave identity", disabled_spill_preserves_wave_identity},

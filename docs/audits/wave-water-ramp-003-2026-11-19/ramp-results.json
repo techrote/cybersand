@@ -1,0 +1,1366 @@
+{
+  "date": "2026-11-19",
+  "environment": {
+    "cpu": "AMD Ryzen 5 5600X, 6 cores",
+    "kernel": "Linux 6.18.58.1-microsoft-standard-WSL2",
+    "compiler": "g++ 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)",
+    "compile": "g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O3 -DNDEBUG -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/bench/wave_waterwall.cpp -o build/wave_waterwall",
+    "sha256_binary": "2aeb6fe886553625aa13d1733d1ee30ded38fb1f7c0af38f33b231ab6d85383c",
+    "sha256_bench_file_on_build_host": "16d0e36f439189af54a65198f419046ba6120e0fb17919025ed81da29ae27f11",
+    "native_law_checkpoint": "1604b66b19705d79d2704e5119a25823caee0973",
+    "native_src_git_tree": "bd39d23004c9f3a5e7d1988847e50cb8f920e846",
+    "native_include_git_tree": "0b3e92980929dd6ea0558e229976e339fe69d061",
+    "timeout_seconds_per_process": 240,
+    "apparatus_checkpoint": "12b92c7862371dd56e1274b692926c66598057fb",
+    "single_row_experiment_wave_inc_sha256": "1789901272bd223dd071be5c6ebeee5d80b32ef5c5567082456e63ffec4709f8",
+    "single_row_experiment_binary_sha256": "d1e4a862682e2d16efec780b14f28acd5a8bcb719ca2611a5df74c7711ba2519"
+  },
+  "source_setup": {
+    "type": "ordinary Workbench v2, original owner file kept local",
+    "sha256": "7aba8a47c926cc1911bc4ee519179c595b686692d5c78db8f103b8b62d311acb",
+    "stamps_txt_sha256": "3370273ee723bf98facdde795f1e21b05418bc212a7c9dbbd04b9e001db760d5",
+    "extent": [
+      2048,
+      2048
+    ],
+    "edits": 635,
+    "Water_cells": 38329,
+    "Wall_cells": 24099,
+    "initial_Water_units": 9773895,
+    "actors": 0,
+    "sources": 0,
+    "simulation_region": [
+      0,
+      0,
+      2048,
+      2048
+    ],
+    "reservation": "full canvas plus one resident chunk halo, as in the prepared Workbench",
+    "initial_Water_x_bounds": [
+      152,
+      738
+    ]
+  },
+  "schema": "cybersand-authored-ramp-measurements-v2",
+  "definitions": {
+    "input": "The two suspended bodies share the receiving basin. The initial terrain and rectangle order come from the identical local Workbench file.",
+    "bulk_ramp": "Rightmost floor-bound eight adjacent columns with >=510 stored units each. Window x740..1008. The probe also counts floor-connected units in each downstream x band, a separate film front and airborne parcel mass.",
+    "bulk_surge": "32x32 full cells on y160 floor, mirrored initial block x240..271. Drop starts 32 rows above floor. Grounded mass requires continuous vertical Water to local floor. Bulk front requires eight adjacent columns >=255 units each. Mass-weighted travel sums grounded units times horizontal distance from the initial footprint divided by the total initial units. Probe time excluded.",
+    "slope_surge": "Floor rises one row per two columns after 16 initially dry columns; plateau 48 rows above the old floor, 16 above the initial free surface. High-grade Water includes only floor-attached stored units above the specified terrain elevation.",
+    "bank": "Flood-fill four-connected Water from trough x960..1008, clip x960..1055,y288..505, then measure x992..1055. Peak run-up is the highest five-column mean surface (>=64 stored units per visible cell) relative to the current median interior surface x968..983. Fixed-elevation fraction sums mass above y453 across all samples from t900..1500, divided by sampled connected mass over that same interval.",
+    "source_shape": "Five-column maximum mean grounded depth, left x140..350 and right x630..740. RMS adjacent second differences measure pointiness. The top-grid y includes detached cells, excluding parcels.",
+    "timing": "Fresh native processes in the recorded order. All agent builds, tests and graphical runs paused. An existing owner Workbench remained open. 900 timed World::tick calls each, probes outside the timer at t0/900. Includes startup ticks. Native host timing excludes Godot and Rapier. Values are individual run quantiles. No monotonic machine-frequency or OS load guarantee."
+  },
+  "shared_profile_options": "spill=1 ballistic=1 sheet_rate=64 draw=127 fall=8 launch_budget=128 coyote_ticks=4 level_shift=3 damp_shift=16 calm_damp_shift=8 calm=128 stick=128 sleep_after=90",
+  "profile_options": {
+    "Sloshy_1": "substeps=1 gain=32 deep_gain=16 flux_smoothing=16 coast=64 draw_head=65535",
+    "Sloshy_2": "substeps=2 gain=32 deep_gain=16 flux_smoothing=16 coast=64 draw_head=65535",
+    "Fast_Wave": "substeps=2 gain=32 deep_gain=32 flux_smoothing=16 coast=32 empty_pour_shift=2 floor_gain=1024 draw_head=255",
+    "Fast_Wave_1": "as Fast_Wave, with substeps=1",
+    "floor_draw128": "as Fast_Wave, with draw_head=128",
+    "floor_draw384": "as Fast_Wave, with draw_head=384",
+    "floor_draw512": "as Fast_Wave, with draw_head=512",
+    "no_floor_boost_draw512": "as floor_draw512, with floor_gain=0",
+    "no_floor_boost_draw255": "as Fast_Wave, with floor_gain=0",
+    "one_row_draw255": "as Fast_Wave; prototype supports only its bottom row",
+    "rejected_gain256": "substeps=2 gain=256 deep_gain=48 flux_smoothing=12 coast=127 empty_pour_shift=1 draw_head=65535"
+  },
+  "reproduction": {
+    "prepare": "python3 tools/wave_mt/ramp_profile.py prepare setup-water-ramp.json stamps.txt",
+    "build": "make build/wave_waterwall",
+    "ramp": "timeout 240 build/wave_waterwall ramp stamps=stamps.txt workers=6 ticks=1500 every=4 ramp_bank=1 ramp_shape=1 <shared and selected profile options>",
+    "surge": "timeout 240 build/wave_waterwall <flat_surge|drop_surge|uphill_surge> workers=6 ticks=600 every=4 <shared and selected profile options>",
+    "quiet": "timeout 120 build/wave_waterwall ramp stamps=stamps.txt workers=6 ticks=900 every=900 <shared and selected profile options>",
+    "parity": "As ramp, with workers=1 and 6 independently for ticks=0 and 900, every=4. Compare every physical CSV field and the final World hashes.",
+    "waterwall": "timeout 240 build/wave_waterwall map workers=6 terrain=terrain-wall.bin stamps=wall-stamps.txt probe0=440,540,192,102 source_box=440,540,192,102 stream_box=627,644,24,24 hydrograph=wall.csv ticks=1500 every=300 <shared and selected profile options>",
+    "read_trace": "python3 tools/wave_mt/ramp_profile.py summarize <ramp or surge log...>"
+  },
+  "ramp": {
+    "Sloshy_1": {
+      "last_tick": 1500,
+      "first_sample_front_900": 500,
+      "first_sample_front_960": 684,
+      "first_sample_128_cells_beyond_900": 520,
+      "first_sample_128_cells_beyond_960": 728,
+      "first_sample_parcel_900": 520,
+      "final_floor_units_900": 1244260,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 10.4,
+      "mean_bank_rise_above_interior_cells": 2.36,
+      "late_fraction_above_fixed_rise32": 0.28248714494028254,
+      "launched_units": 8187498,
+      "peak_parcels": 2803,
+      "launch_refusals": 352,
+      "launch_deferrals": 21978,
+      "capacity_skips": 0,
+      "world_hash": "2f9e553e540b4d9d",
+      "source_peak_depth_by_tick": {
+        "100": [
+          118.0,
+          215.2
+        ],
+        "300": [
+          102.2,
+          107.2
+        ],
+        "600": [
+          70.0,
+          59.4
+        ]
+      }
+    },
+    "Sloshy_2": {
+      "last_tick": 1500,
+      "first_sample_front_900": 244,
+      "first_sample_front_960": 340,
+      "first_sample_128_cells_beyond_900": 256,
+      "first_sample_128_cells_beyond_960": 356,
+      "first_sample_parcel_900": 240,
+      "final_floor_units_900": 2003482,
+      "final_airborne_units_900": 2175,
+      "bank_peak_above_interior_cells": 22.8,
+      "mean_bank_rise_above_interior_cells": 1.2014285714285713,
+      "late_fraction_above_fixed_rise32": 0.4755262381049929,
+      "launched_units": 8530431,
+      "peak_parcels": 2328,
+      "launch_refusals": 287,
+      "launch_deferrals": 11189,
+      "capacity_skips": 0,
+      "world_hash": "02a638ea055d08e9",
+      "source_peak_depth_by_tick": {
+        "100": [
+          107.8,
+          152.0
+        ],
+        "300": [
+          75.2,
+          58.2
+        ],
+        "600": [
+          32.0,
+          58.0
+        ]
+      }
+    },
+    "floor_draw128": {
+      "last_tick": 1500,
+      "first_sample_front_900": 288,
+      "first_sample_front_960": 404,
+      "first_sample_128_cells_beyond_900": 360,
+      "first_sample_128_cells_beyond_960": 484,
+      "first_sample_parcel_900": 284,
+      "final_floor_units_900": 1641831,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 4.4,
+      "mean_bank_rise_above_interior_cells": 0.6878571428571428,
+      "late_fraction_above_fixed_rise32": 0.4103645192994883,
+      "launched_units": 5559684,
+      "peak_parcels": 2076,
+      "launch_refusals": 754,
+      "launch_deferrals": 12547,
+      "capacity_skips": 0,
+      "world_hash": "1fd9e5d63eb94971",
+      "source_peak_depth_by_tick": {
+        "100": [
+          97.0,
+          180.8
+        ],
+        "300": [
+          55.2,
+          87.4
+        ],
+        "600": [
+          39.0,
+          69.4
+        ]
+      }
+    },
+    "Fast_Wave": {
+      "last_tick": 1500,
+      "first_sample_front_900": 268,
+      "first_sample_front_960": 360,
+      "first_sample_128_cells_beyond_900": 320,
+      "first_sample_128_cells_beyond_960": 412,
+      "first_sample_parcel_900": 248,
+      "final_floor_units_900": 1756082,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 8.0,
+      "mean_bank_rise_above_interior_cells": 1.0676056338028168,
+      "late_fraction_above_fixed_rise32": 0.44373624715794463,
+      "launched_units": 6375861,
+      "peak_parcels": 2121,
+      "launch_refusals": 609,
+      "launch_deferrals": 10281,
+      "capacity_skips": 0,
+      "world_hash": "7f35a8751323e0fe",
+      "source_peak_depth_by_tick": {
+        "100": [
+          97.0,
+          176.0
+        ],
+        "300": [
+          51.0,
+          79.6
+        ],
+        "600": [
+          36.0,
+          60.8
+        ]
+      }
+    },
+    "floor_draw384": {
+      "last_tick": 1500,
+      "first_sample_front_900": 264,
+      "first_sample_front_960": 352,
+      "first_sample_128_cells_beyond_900": 308,
+      "first_sample_128_cells_beyond_960": 404,
+      "first_sample_parcel_900": 240,
+      "final_floor_units_900": 1807249,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 12.6,
+      "mean_bank_rise_above_interior_cells": 1.05,
+      "late_fraction_above_fixed_rise32": 0.46257172683393055,
+      "launched_units": 6751501,
+      "peak_parcels": 2262,
+      "launch_refusals": 484,
+      "launch_deferrals": 9661,
+      "capacity_skips": 0,
+      "world_hash": "6e1a9c00e575b8b7",
+      "source_peak_depth_by_tick": {
+        "100": [
+          95.8,
+          174.0
+        ],
+        "300": [
+          50.8,
+          69.8
+        ],
+        "600": [
+          33.0,
+          59.4
+        ]
+      }
+    },
+    "floor_draw512": {
+      "last_tick": 1500,
+      "first_sample_front_900": 272,
+      "first_sample_front_960": 352,
+      "first_sample_128_cells_beyond_900": 308,
+      "first_sample_128_cells_beyond_960": 404,
+      "first_sample_parcel_900": 248,
+      "final_floor_units_900": 1904786,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 11.2,
+      "mean_bank_rise_above_interior_cells": 1.0950704225352113,
+      "late_fraction_above_fixed_rise32": 0.4836486230464138,
+      "launched_units": 7284233,
+      "peak_parcels": 2242,
+      "launch_refusals": 456,
+      "launch_deferrals": 7951,
+      "capacity_skips": 0,
+      "world_hash": "22b02b7222d915d2",
+      "source_peak_depth_by_tick": {
+        "100": [
+          97.2,
+          166.8
+        ],
+        "300": [
+          47.0,
+          74.2
+        ],
+        "600": [
+          31.4,
+          64.6
+        ]
+      }
+    },
+    "no_floor_boost_draw255": {
+      "last_tick": 1500,
+      "first_sample_front_900": 304,
+      "first_sample_front_960": 460,
+      "first_sample_128_cells_beyond_900": 344,
+      "first_sample_128_cells_beyond_960": 500,
+      "first_sample_parcel_900": 288,
+      "final_floor_units_900": 1785115,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 7.0,
+      "mean_bank_rise_above_interior_cells": 0.875609756097561,
+      "late_fraction_above_fixed_rise32": 0.4604845673401349,
+      "launched_units": 6352262,
+      "peak_parcels": 2195,
+      "launch_refusals": 522,
+      "launch_deferrals": 10147,
+      "capacity_skips": 0,
+      "world_hash": "8d299bca3511abe7",
+      "source_peak_depth_by_tick": {
+        "100": [
+          95.0,
+          171.2
+        ],
+        "300": [
+          49.2,
+          79.6
+        ],
+        "600": [
+          35.0,
+          62.4
+        ]
+      }
+    },
+    "rejected_gain256": {
+      "last_tick": 1500,
+      "first_sample_front_900": 224,
+      "first_sample_front_960": 304,
+      "first_sample_128_cells_beyond_900": 264,
+      "first_sample_128_cells_beyond_960": 340,
+      "first_sample_parcel_900": null,
+      "final_floor_units_900": 702633,
+      "final_airborne_units_900": 0,
+      "bank_peak_above_interior_cells": 29.8,
+      "mean_bank_rise_above_interior_cells": 1.4893470790378005,
+      "late_fraction_above_fixed_rise32": 0.06464622981392402,
+      "launched_units": 9440554,
+      "peak_parcels": 1870,
+      "launch_refusals": 26899,
+      "launch_deferrals": 418404,
+      "capacity_skips": 0,
+      "world_hash": "b48918b8fc8d2abd",
+      "source_peak_depth_by_tick": {
+        "100": [
+          224.8,
+          457.0
+        ],
+        "300": [
+          218.2,
+          378.0
+        ],
+        "600": [
+          202.8,
+          291.8
+        ]
+      }
+    },
+    "one_row_draw255": {
+      "last_tick": 1500,
+      "first_sample_front_900": 320,
+      "first_sample_front_960": 488,
+      "first_sample_128_cells_beyond_900": 360,
+      "first_sample_128_cells_beyond_960": 504,
+      "first_sample_parcel_900": 268,
+      "final_floor_units_900": 1756520,
+      "final_airborne_units_900": 26,
+      "bank_peak_above_interior_cells": 18.6,
+      "mean_bank_rise_above_interior_cells": 1.5554744525547446,
+      "late_fraction_above_fixed_rise32": 0.45110248078375226,
+      "launched_units": 6536988,
+      "peak_parcels": 2068,
+      "launch_refusals": 637,
+      "launch_deferrals": 11232,
+      "capacity_skips": 0,
+      "world_hash": "58c739a3660f0e35",
+      "source_peak_depth_by_tick": {
+        "100": [
+          97.0,
+          174.2
+        ],
+        "300": [
+          50.8,
+          80.2
+        ],
+        "600": [
+          37.0,
+          66.2
+        ]
+      }
+    }
+  },
+  "early_surge": {
+    "flat_surge": {
+      "Sloshy_1": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 5.0,
+            "right_bulk_distance": 4.0,
+            "grounded_units": 246186.0,
+            "mass_weighted_outward_cells": 0.17747
+          },
+          "16": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 6.0,
+            "grounded_units": 220859.0,
+            "mass_weighted_outward_cells": 0.30581
+          },
+          "32": {
+            "left_bulk_distance": 16.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 229473.0,
+            "mass_weighted_outward_cells": 1.70417
+          },
+          "64": {
+            "left_bulk_distance": 23.0,
+            "right_bulk_distance": 24.0,
+            "grounded_units": 249723.0,
+            "mass_weighted_outward_cells": 4.76496
+          }
+        },
+        "launched_units": 243181,
+        "peak_parcels": 480,
+        "launch_refusals": 4,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "68eba0cdadbeb689"
+      },
+      "Sloshy_2": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 240377.0,
+            "mass_weighted_outward_cells": 0.44128
+          },
+          "16": {
+            "left_bulk_distance": 11.0,
+            "right_bulk_distance": 11.0,
+            "grounded_units": 225886.0,
+            "mass_weighted_outward_cells": 1.07019
+          },
+          "32": {
+            "left_bulk_distance": 17.0,
+            "right_bulk_distance": 24.0,
+            "grounded_units": 239392.0,
+            "mass_weighted_outward_cells": 4.06732
+          },
+          "64": {
+            "left_bulk_distance": 36.0,
+            "right_bulk_distance": 37.0,
+            "grounded_units": 244518.0,
+            "mass_weighted_outward_cells": 13.49676
+          }
+        },
+        "launched_units": 259322,
+        "peak_parcels": 417,
+        "launch_refusals": 0,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "7cafcc2aff337b8f"
+      },
+      "Fast_Wave": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 8.0,
+            "right_bulk_distance": 8.0,
+            "grounded_units": 246066.0,
+            "mass_weighted_outward_cells": 0.5044
+          },
+          "16": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 238754.0,
+            "mass_weighted_outward_cells": 1.40337
+          },
+          "32": {
+            "left_bulk_distance": 30.0,
+            "right_bulk_distance": 31.0,
+            "grounded_units": 248853.0,
+            "mass_weighted_outward_cells": 5.79479
+          },
+          "64": {
+            "left_bulk_distance": 61.0,
+            "right_bulk_distance": 61.0,
+            "grounded_units": 257158.0,
+            "mass_weighted_outward_cells": 15.52394
+          }
+        },
+        "launched_units": 75024,
+        "peak_parcels": 267,
+        "launch_refusals": 6,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "8a978aa93433ca75"
+      },
+      "floor_draw512": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 8.0,
+            "right_bulk_distance": 8.0,
+            "grounded_units": 242496.0,
+            "mass_weighted_outward_cells": 0.5809
+          },
+          "16": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 237888.0,
+            "mass_weighted_outward_cells": 1.90779
+          },
+          "32": {
+            "left_bulk_distance": 30.0,
+            "right_bulk_distance": 31.0,
+            "grounded_units": 247128.0,
+            "mass_weighted_outward_cells": 7.41264
+          },
+          "64": {
+            "left_bulk_distance": 61.0,
+            "right_bulk_distance": 61.0,
+            "grounded_units": 254224.0,
+            "mass_weighted_outward_cells": 21.7818
+          }
+        },
+        "launched_units": 116137,
+        "peak_parcels": 274,
+        "launch_refusals": 3,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "1a323322271ee5b3"
+      },
+      "no_floor_boost_draw512": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 241655.0,
+            "mass_weighted_outward_cells": 0.53224
+          },
+          "16": {
+            "left_bulk_distance": 12.0,
+            "right_bulk_distance": 13.0,
+            "grounded_units": 238050.0,
+            "mass_weighted_outward_cells": 1.75806
+          },
+          "32": {
+            "left_bulk_distance": 24.0,
+            "right_bulk_distance": 25.0,
+            "grounded_units": 243967.0,
+            "mass_weighted_outward_cells": 6.56425
+          },
+          "64": {
+            "left_bulk_distance": 41.0,
+            "right_bulk_distance": 43.0,
+            "grounded_units": 252478.0,
+            "mass_weighted_outward_cells": 15.14808
+          }
+        },
+        "launched_units": 197130,
+        "peak_parcels": 292,
+        "launch_refusals": 2,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "0ca5159d4476ea58"
+      },
+      "no_floor_boost_draw255": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 243734.0,
+            "mass_weighted_outward_cells": 0.43368
+          },
+          "16": {
+            "left_bulk_distance": 11.0,
+            "right_bulk_distance": 10.0,
+            "grounded_units": 236861.0,
+            "mass_weighted_outward_cells": 1.17752
+          },
+          "32": {
+            "left_bulk_distance": 22.0,
+            "right_bulk_distance": 24.0,
+            "grounded_units": 242355.0,
+            "mass_weighted_outward_cells": 4.49764
+          },
+          "64": {
+            "left_bulk_distance": 37.0,
+            "right_bulk_distance": 37.0,
+            "grounded_units": 254675.0,
+            "mass_weighted_outward_cells": 12.16733
+          }
+        },
+        "launched_units": 194509,
+        "peak_parcels": 332,
+        "launch_refusals": 2,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "e0c1a0db57a6a6e2"
+      },
+      "one_row_draw255": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 8.0,
+            "right_bulk_distance": 8.0,
+            "grounded_units": 246031.0,
+            "mass_weighted_outward_cells": 0.49885
+          },
+          "16": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 240457.0,
+            "mass_weighted_outward_cells": 1.34244
+          },
+          "32": {
+            "left_bulk_distance": 30.0,
+            "right_bulk_distance": 30.0,
+            "grounded_units": 247208.0,
+            "mass_weighted_outward_cells": 5.89616
+          },
+          "64": {
+            "left_bulk_distance": 60.0,
+            "right_bulk_distance": 59.0,
+            "grounded_units": 256732.0,
+            "mass_weighted_outward_cells": 15.23403
+          }
+        },
+        "launched_units": 128479,
+        "peak_parcels": 246,
+        "launch_refusals": 5,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "df0554b27c9bbb74"
+      }
+    },
+    "drop_surge": {
+      "Sloshy_1": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 3.0,
+            "right_bulk_distance": 3.0,
+            "grounded_units": 256821.0,
+            "mass_weighted_outward_cells": 0.09581
+          },
+          "16": {
+            "left_bulk_distance": 5.0,
+            "right_bulk_distance": 5.0,
+            "grounded_units": 233255.0,
+            "mass_weighted_outward_cells": 0.25382
+          },
+          "32": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 15.0,
+            "grounded_units": 225245.0,
+            "mass_weighted_outward_cells": 1.38263
+          },
+          "64": {
+            "left_bulk_distance": 23.0,
+            "right_bulk_distance": 25.0,
+            "grounded_units": 250678.0,
+            "mass_weighted_outward_cells": 4.62034
+          }
+        },
+        "launched_units": 247743,
+        "peak_parcels": 466,
+        "launch_refusals": 5,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "11e92bae219d3c1e"
+      },
+      "Sloshy_2": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 6.0,
+            "grounded_units": 246260.0,
+            "mass_weighted_outward_cells": 0.35293
+          },
+          "16": {
+            "left_bulk_distance": 9.0,
+            "right_bulk_distance": 11.0,
+            "grounded_units": 230830.0,
+            "mass_weighted_outward_cells": 1.0463
+          },
+          "32": {
+            "left_bulk_distance": 17.0,
+            "right_bulk_distance": 18.0,
+            "grounded_units": 234621.0,
+            "mass_weighted_outward_cells": 3.58477
+          },
+          "64": {
+            "left_bulk_distance": 35.0,
+            "right_bulk_distance": 38.0,
+            "grounded_units": 243548.0,
+            "mass_weighted_outward_cells": 13.67787
+          }
+        },
+        "launched_units": 264768,
+        "peak_parcels": 402,
+        "launch_refusals": 0,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "827fa3c43d30256d"
+      },
+      "Fast_Wave": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 247179.0,
+            "mass_weighted_outward_cells": 0.40141
+          },
+          "16": {
+            "left_bulk_distance": 14.0,
+            "right_bulk_distance": 14.0,
+            "grounded_units": 241655.0,
+            "mass_weighted_outward_cells": 1.13612
+          },
+          "32": {
+            "left_bulk_distance": 29.0,
+            "right_bulk_distance": 29.0,
+            "grounded_units": 247749.0,
+            "mass_weighted_outward_cells": 5.59244
+          },
+          "64": {
+            "left_bulk_distance": 59.0,
+            "right_bulk_distance": 59.0,
+            "grounded_units": 255975.0,
+            "mass_weighted_outward_cells": 15.56998
+          }
+        },
+        "launched_units": 75903,
+        "peak_parcels": 254,
+        "launch_refusals": 3,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "9b40bf7ee883de31"
+      },
+      "floor_draw512": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 247840.0,
+            "mass_weighted_outward_cells": 0.44622
+          },
+          "16": {
+            "left_bulk_distance": 14.0,
+            "right_bulk_distance": 14.0,
+            "grounded_units": 238606.0,
+            "mass_weighted_outward_cells": 1.61752
+          },
+          "32": {
+            "left_bulk_distance": 29.0,
+            "right_bulk_distance": 29.0,
+            "grounded_units": 247033.0,
+            "mass_weighted_outward_cells": 6.81958
+          },
+          "64": {
+            "left_bulk_distance": 59.0,
+            "right_bulk_distance": 59.0,
+            "grounded_units": 259207.0,
+            "mass_weighted_outward_cells": 18.9188
+          }
+        },
+        "launched_units": 85337,
+        "peak_parcels": 270,
+        "launch_refusals": 3,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "aee6c604c07bd457"
+      },
+      "no_floor_boost_draw512": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 6.0,
+            "grounded_units": 250808.0,
+            "mass_weighted_outward_cells": 0.44918
+          },
+          "16": {
+            "left_bulk_distance": 10.0,
+            "right_bulk_distance": 12.0,
+            "grounded_units": 243484.0,
+            "mass_weighted_outward_cells": 1.46962
+          },
+          "32": {
+            "left_bulk_distance": 17.0,
+            "right_bulk_distance": 22.0,
+            "grounded_units": 242918.0,
+            "mass_weighted_outward_cells": 5.60095
+          },
+          "64": {
+            "left_bulk_distance": 40.0,
+            "right_bulk_distance": 42.0,
+            "grounded_units": 249751.0,
+            "mass_weighted_outward_cells": 16.54537
+          }
+        },
+        "launched_units": 238202,
+        "peak_parcels": 246,
+        "launch_refusals": 3,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "4766ebf298cf8848"
+      },
+      "no_floor_boost_draw255": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 253228.0,
+            "mass_weighted_outward_cells": 0.38701
+          },
+          "16": {
+            "left_bulk_distance": 10.0,
+            "right_bulk_distance": 10.0,
+            "grounded_units": 244734.0,
+            "mass_weighted_outward_cells": 1.09581
+          },
+          "32": {
+            "left_bulk_distance": 18.0,
+            "right_bulk_distance": 19.0,
+            "grounded_units": 241964.0,
+            "mass_weighted_outward_cells": 4.86152
+          },
+          "64": {
+            "left_bulk_distance": 39.0,
+            "right_bulk_distance": 41.0,
+            "grounded_units": 252721.0,
+            "mass_weighted_outward_cells": 13.31362
+          }
+        },
+        "launched_units": 187702,
+        "peak_parcels": 266,
+        "launch_refusals": 7,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "08e09fa768b69c31"
+      },
+      "one_row_draw255": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 0,
+        "max_grounded_units_at_rise16": 0,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 247485.0,
+            "mass_weighted_outward_cells": 0.40946
+          },
+          "16": {
+            "left_bulk_distance": 14.0,
+            "right_bulk_distance": 14.0,
+            "grounded_units": 241757.0,
+            "mass_weighted_outward_cells": 1.06715
+          },
+          "32": {
+            "left_bulk_distance": 28.0,
+            "right_bulk_distance": 29.0,
+            "grounded_units": 242671.0,
+            "mass_weighted_outward_cells": 4.83239
+          },
+          "64": {
+            "left_bulk_distance": 57.0,
+            "right_bulk_distance": 54.0,
+            "grounded_units": 257527.0,
+            "mass_weighted_outward_cells": 13.83157
+          }
+        },
+        "launched_units": 115784,
+        "peak_parcels": 241,
+        "launch_refusals": 6,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "97f646876ea9290d"
+      }
+    },
+    "uphill_surge": {
+      "Sloshy_1": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 25,
+        "max_grounded_units_at_rise16": 15838,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.018784618581343428,
+        "early": {
+          "8": {
+            "left_bulk_distance": 5.0,
+            "right_bulk_distance": 4.0,
+            "grounded_units": 246186.0,
+            "mass_weighted_outward_cells": 0.17747
+          },
+          "16": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 6.0,
+            "grounded_units": 220859.0,
+            "mass_weighted_outward_cells": 0.30581
+          },
+          "32": {
+            "left_bulk_distance": 16.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 229247.0,
+            "mass_weighted_outward_cells": 1.68905
+          },
+          "64": {
+            "left_bulk_distance": 23.0,
+            "right_bulk_distance": 22.0,
+            "grounded_units": 251303.0,
+            "mass_weighted_outward_cells": 4.7759
+          }
+        },
+        "launched_units": 203532,
+        "peak_parcels": 480,
+        "launch_refusals": 3,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "9b9de8b213686768"
+      },
+      "Sloshy_2": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 27,
+        "max_grounded_units_at_rise16": 19851,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.02169902537128713,
+        "early": {
+          "8": {
+            "left_bulk_distance": 6.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 240377.0,
+            "mass_weighted_outward_cells": 0.44128
+          },
+          "16": {
+            "left_bulk_distance": 11.0,
+            "right_bulk_distance": 11.0,
+            "grounded_units": 225886.0,
+            "mass_weighted_outward_cells": 1.07019
+          },
+          "32": {
+            "left_bulk_distance": 17.0,
+            "right_bulk_distance": 22.0,
+            "grounded_units": 242978.0,
+            "mass_weighted_outward_cells": 4.29744
+          },
+          "64": {
+            "left_bulk_distance": 36.0,
+            "right_bulk_distance": 34.0,
+            "grounded_units": 247052.0,
+            "mass_weighted_outward_cells": 12.93721
+          }
+        },
+        "launched_units": 200106,
+        "peak_parcels": 417,
+        "launch_refusals": 0,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "b90c6f8d72edc5b7"
+      },
+      "Fast_Wave": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 19,
+        "max_grounded_units_at_rise16": 4506,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0035021264074936906,
+        "early": {
+          "8": {
+            "left_bulk_distance": 8.0,
+            "right_bulk_distance": 8.0,
+            "grounded_units": 246066.0,
+            "mass_weighted_outward_cells": 0.5044
+          },
+          "16": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 238754.0,
+            "mass_weighted_outward_cells": 1.40216
+          },
+          "32": {
+            "left_bulk_distance": 30.0,
+            "right_bulk_distance": 22.0,
+            "grounded_units": 249425.0,
+            "mass_weighted_outward_cells": 5.41311
+          },
+          "64": {
+            "left_bulk_distance": 61.0,
+            "right_bulk_distance": 34.0,
+            "grounded_units": 257891.0,
+            "mass_weighted_outward_cells": 13.51559
+          }
+        },
+        "launched_units": 68064,
+        "peak_parcels": 267,
+        "launch_refusals": 9,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "c7eabe0bcea24797"
+      },
+      "floor_draw512": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 20,
+        "max_grounded_units_at_rise16": 6692,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.005357955372743157,
+        "early": {
+          "8": {
+            "left_bulk_distance": 8.0,
+            "right_bulk_distance": 8.0,
+            "grounded_units": 242496.0,
+            "mass_weighted_outward_cells": 0.5809
+          },
+          "16": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 237888.0,
+            "mass_weighted_outward_cells": 1.90618
+          },
+          "32": {
+            "left_bulk_distance": 30.0,
+            "right_bulk_distance": 24.0,
+            "grounded_units": 248297.0,
+            "mass_weighted_outward_cells": 7.13715
+          },
+          "64": {
+            "left_bulk_distance": 61.0,
+            "right_bulk_distance": 38.0,
+            "grounded_units": 258607.0,
+            "mass_weighted_outward_cells": 16.85387
+          }
+        },
+        "launched_units": 91962,
+        "peak_parcels": 274,
+        "launch_refusals": 2,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "5164c70c535eb498"
+      },
+      "no_floor_boost_draw512": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 19,
+        "max_grounded_units_at_rise16": 5328,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.005195668923509998,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 241655.0,
+            "mass_weighted_outward_cells": 0.53224
+          },
+          "16": {
+            "left_bulk_distance": 12.0,
+            "right_bulk_distance": 13.0,
+            "grounded_units": 238050.0,
+            "mass_weighted_outward_cells": 1.75806
+          },
+          "32": {
+            "left_bulk_distance": 24.0,
+            "right_bulk_distance": 24.0,
+            "grounded_units": 246480.0,
+            "mass_weighted_outward_cells": 6.70399
+          },
+          "64": {
+            "left_bulk_distance": 42.0,
+            "right_bulk_distance": 40.0,
+            "grounded_units": 257444.0,
+            "mass_weighted_outward_cells": 14.54165
+          }
+        },
+        "launched_units": 146649,
+        "peak_parcels": 289,
+        "launch_refusals": 1,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "d4b736470bb30630"
+      },
+      "no_floor_boost_draw255": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 17,
+        "max_grounded_units_at_rise16": 2497,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.0022343962337410214,
+        "early": {
+          "8": {
+            "left_bulk_distance": 7.0,
+            "right_bulk_distance": 7.0,
+            "grounded_units": 243734.0,
+            "mass_weighted_outward_cells": 0.43368
+          },
+          "16": {
+            "left_bulk_distance": 11.0,
+            "right_bulk_distance": 10.0,
+            "grounded_units": 236861.0,
+            "mass_weighted_outward_cells": 1.17752
+          },
+          "32": {
+            "left_bulk_distance": 21.0,
+            "right_bulk_distance": 22.0,
+            "grounded_units": 244361.0,
+            "mass_weighted_outward_cells": 4.58532
+          },
+          "64": {
+            "left_bulk_distance": 38.0,
+            "right_bulk_distance": 32.0,
+            "grounded_units": 255345.0,
+            "mass_weighted_outward_cells": 11.46127
+          }
+        },
+        "launched_units": 139520,
+        "peak_parcels": 310,
+        "launch_refusals": 3,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "924c5a4a039626e9"
+      },
+      "one_row_draw255": {
+        "last_tick": 600,
+        "max_bulk_floor_rise": 19,
+        "max_grounded_units_at_rise16": 4735,
+        "max_grounded_units_at_rise32": 0,
+        "mean_fraction_at_rise16_through_t400": 0.004339304564647642,
+        "early": {
+          "8": {
+            "left_bulk_distance": 8.0,
+            "right_bulk_distance": 8.0,
+            "grounded_units": 246031.0,
+            "mass_weighted_outward_cells": 0.49885
+          },
+          "16": {
+            "left_bulk_distance": 15.0,
+            "right_bulk_distance": 16.0,
+            "grounded_units": 240457.0,
+            "mass_weighted_outward_cells": 1.34125
+          },
+          "32": {
+            "left_bulk_distance": 30.0,
+            "right_bulk_distance": 22.0,
+            "grounded_units": 249106.0,
+            "mass_weighted_outward_cells": 5.84797
+          },
+          "64": {
+            "left_bulk_distance": 60.0,
+            "right_bulk_distance": 36.0,
+            "grounded_units": 256695.0,
+            "mass_weighted_outward_cells": 13.42636
+          }
+        },
+        "launched_units": 88217,
+        "peak_parcels": 245,
+        "launch_refusals": 6,
+        "launch_deferrals": 0,
+        "capacity_skips": 0,
+        "world_hash": "12041810a2cc7f19"
+      }
+    }
+  },
+  "cost_in_run_order": [
+    {
+      "profile": "Sloshy_1",
+      "median_us": 1837,
+      "p95_us": 3134,
+      "max_us": 19303,
+      "peak_parcels": 2803,
+      "refusals": 208,
+      "deferrals": 21978,
+      "capacity_skips": 0,
+      "hash": "6d70242fb07db980"
+    },
+    {
+      "profile": "Fast_Wave_1",
+      "median_us": 1893,
+      "p95_us": 3253,
+      "max_us": 19293,
+      "peak_parcels": 2554,
+      "refusals": 1120,
+      "deferrals": 26024,
+      "capacity_skips": 0,
+      "hash": "6e8aeed44c433089"
+    },
+    {
+      "profile": "Sloshy_2",
+      "median_us": 4342,
+      "p95_us": 11143,
+      "max_us": 21739,
+      "peak_parcels": 2328,
+      "refusals": 231,
+      "deferrals": 11189,
+      "capacity_skips": 0,
+      "hash": "1864e8ed22ec26b8"
+    },
+    {
+      "profile": "Fast_Wave",
+      "median_us": 4114,
+      "p95_us": 9304,
+      "max_us": 23387,
+      "peak_parcels": 2121,
+      "refusals": 488,
+      "deferrals": 10281,
+      "capacity_skips": 0,
+      "hash": "cac459b40b17725a"
+    },
+    {
+      "profile": "one_row_draw255",
+      "median_us": 3631,
+      "p95_us": 7526,
+      "max_us": 22447,
+      "peak_parcels": 2068,
+      "refusals": 561,
+      "deferrals": 11232,
+      "capacity_skips": 0,
+      "hash": "9e08308c6a117069"
+    },
+    {
+      "profile": "one_row_draw255",
+      "median_us": 3435,
+      "p95_us": 7076,
+      "max_us": 22817,
+      "peak_parcels": 2068,
+      "refusals": 561,
+      "deferrals": 11232,
+      "capacity_skips": 0,
+      "hash": "9e08308c6a117069"
+    },
+    {
+      "profile": "Fast_Wave",
+      "median_us": 3576,
+      "p95_us": 6221,
+      "max_us": 20982,
+      "peak_parcels": 2121,
+      "refusals": 488,
+      "deferrals": 10281,
+      "capacity_skips": 0,
+      "hash": "cac459b40b17725a"
+    },
+    {
+      "profile": "Sloshy_2",
+      "median_us": 3555,
+      "p95_us": 6041,
+      "max_us": 19182,
+      "peak_parcels": 2328,
+      "refusals": 231,
+      "deferrals": 11189,
+      "capacity_skips": 0,
+      "hash": "1864e8ed22ec26b8"
+    },
+    {
+      "profile": "Fast_Wave_1",
+      "median_us": 2005,
+      "p95_us": 3724,
+      "max_us": 18217,
+      "peak_parcels": 2554,
+      "refusals": 1120,
+      "deferrals": 26024,
+      "capacity_skips": 0,
+      "hash": "6e8aeed44c433089"
+    },
+    {
+      "profile": "Sloshy_1",
+      "median_us": 2652,
+      "p95_us": 5237,
+      "max_us": 17923,
+      "peak_parcels": 2803,
+      "refusals": 208,
+      "deferrals": 21978,
+      "capacity_skips": 0,
+      "hash": "6d70242fb07db980"
+    }
+  ],
+  "worker_parity": {
+    "total_units": 9773895,
+    "maximum_abs_drift": 0,
+    "t0": {
+      "matched_workers": [
+        1,
+        6
+      ],
+      "matched_sample_count": 1,
+      "hash": "3d25fa2808ba5965"
+    },
+    "t900": {
+      "matched_workers": [
+        1,
+        6
+      ],
+      "matched_sample_count": 226,
+      "hash": "cac459b40b17725a"
+    }
+  },
+  "inherited_waterwall": {
+    "source_setup_sha256": "925096d1e9984b855b5465309ef12869a47e29052e0cabd5a25788a051b77107",
+    "derived_terrain_sha256": "9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5",
+    "rectangle_input_sha256": "21c207b2e88fec28caaa73163d8435d909def67e067e9cb2ed4e287bf8a0ab76",
+    "initial_water_units": 3052350,
+    "Sloshy_1": {
+      "half_reservoir_tick": 388,
+      "peak_net_exports_per_tick": 3118,
+      "grid_cell_equivalents_t900": 236.0,
+      "launched_units_t1500": 8155835,
+      "peak_parcels": 2714,
+      "world_hash_t1500": "5bbbf951431d6770"
+    },
+    "Sloshy_2": {
+      "half_reservoir_tick": 200,
+      "peak_net_exports_per_tick": 5008,
+      "grid_cell_equivalents_t900": 112.8,
+      "launched_units_t1500": 8257070,
+      "peak_parcels": 2962,
+      "world_hash_t1500": "ee3bce9767c35e5f"
+    },
+    "Fast_Wave": {
+      "half_reservoir_tick": 188,
+      "peak_net_exports_per_tick": 5080,
+      "grid_cell_equivalents_t900": 93.0,
+      "launched_units_t1500": 8573039,
+      "peak_parcels": 3416,
+      "world_hash_t1500": "bd09ffeebb9cf982"
+    }
+  }
+}

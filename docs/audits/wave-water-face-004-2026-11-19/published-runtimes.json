@@ -1,0 +1,35 @@
+{
+  "publisher": 44618569058,
+  "source": "eb8298d689288bd3598540f03e4b258d4957c799",
+  "platforms": {
+    "linux": {
+      "sha256": "9b97042a81f87966a0d77174dd2e34f39f350e2efcebb8c96d7dfcc45ac08ef0",
+      "logs": 12,
+      "error_lines": 0,
+      "qualification": "graphical",
+      "cases": 2,
+      "checks": {
+        "test_workbench_wave": 1272,
+        "test_workbench_wave_spill": 797,
+        "test_workbench_failure_containment": 77,
+        "test_failed_world_status_survives": 215
+      }
+    },
+    "windows": {
+      "sha256": "855b6f07ad96ba716a4aacb91aaf725e6ac7b178000f88fafce24a4e5050760b",
+      "logs": 15,
+      "error_lines": 0,
+      "qualification": "package-execution",
+      "cases": 5,
+      "checks": {
+        "test_workbench_wave": 1272,
+        "test_workbench_wave_spill": 797,
+        "test_workbench_failure_containment": 77,
+        "test_failed_world_status_survives": 215
+      }
+    }
+  },
+  "native_inputs": 95,
+  "build_inputs": 867,
+  "git_blobs_verified": 962
+}

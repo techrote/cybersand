@@ -15,6 +15,7 @@ var demo_bridge: Variant
 var player: CyberSampledCharacter = CyberSampledCharacter.new()
 var ui: CyberWebDemoMenu
 var demo_id: String = "neon_works"
+var gameplay_water := true
 var quality: int = 1
 var ready_to_play: bool = false
 var rapier_available: bool = false
@@ -1083,7 +1084,7 @@ func select_demo(id: String, close: bool = true) -> void:
 		built = micro_host.install(native_world, CyberMicroScenarioCatalogue.tower(resolved.profile), microscenario_mode)
 		if built: tower_context = {"active":true,"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12),"water_active":false}
 	else:
-		built = demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id))
+		built = demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id), gameplay_water)
 	if not built:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
@@ -1365,6 +1366,8 @@ func _encode_current() -> Dictionary:
 	if water_controlled_run_active() or tower_context.get("micro_active", false):
 		return {"ok":false,"error":"Use scenario capture; level saves omit scenario lifecycle",
 			"binary":PackedByteArray(),"text":""}
+	if native_world.get_wave_flow_status().get("enabled",false):
+		return {"ok":false,"error":"CYSD1 cannot store Wave Water. Select FreeMass for a new save-compatible demo, or load an existing slot.","binary":PackedByteArray(),"text":""}
 	var world: PackedByteArray = demo_bridge.export_level(native_world)
 	return CyberDemoSaveCodec.encode(world, _metadata())
 
@@ -1404,6 +1407,8 @@ func _import_decoded(decoded: Dictionary) -> void:
 		last_save_error = str(demo_bridge.get_last_error())
 		ui.message(last_save_error)
 		return
+	gameplay_water = false
+	ui.next_water.select(1)
 	if _accepted_level != null or not _accepted_demo.is_empty() or not _accepted_physics_demo.is_empty():
 		microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
 		micro_host.clear();tower_context = {};tower_active = false
@@ -1493,11 +1498,15 @@ func _test_command(arguments: Array) -> void:
 		"set_text":
 			ui.save_text.text = str(command.get("text", ""))
 		"hash":
-			var bytes: PackedByteArray = demo_bridge.export_level(native_world)
-			var hasher: HashingContext = HashingContext.new()
-			hasher.start(HashingContext.HASH_SHA256)
-			hasher.update(bytes)
-			last_hash = hasher.finish().hex_encode()
+			if native_world.get_wave_flow_status().get("enabled",false):
+				# CYSD1 cannot encode Wave's conserved state or retained momentum.
+				last_hash = "wave:" + str(native_world.get_physical_state_hash())
+			else:
+				var bytes: PackedByteArray = demo_bridge.export_level(native_world)
+				var hasher := HashingContext.new()
+				hasher.start(HashingContext.HASH_SHA256)
+				hasher.update(bytes)
+				last_hash = hasher.finish().hex_encode()
 	_publish_test_state()
 
 func _publish_test_state() -> void:

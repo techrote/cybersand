@@ -4,11 +4,25 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-20
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Workbench Art traffic lifetime — 2026-11-20
+
+[Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the
+lazy conversation and immutable segment repair. Read the
+[provider contract](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
+for current lifetime, validation, Stop/export and capacity behavior; the
+[dated finisher record](../audits/2026-11-20-wb-art-traffic-lifetime.md) separates
+engineering measurements from exact-source final qualification in the PR ledger.
+All destructive and multi-gigabyte tests use isolated synthetic user data.
+Existing archives remain immutable, and missing history must retain its saved
+pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready,
+merge or enable auto-merge. Hosted Windows evidence does not establish acceptance
+on the owner's physical Windows installation.
 
 ## Workbench publication and progression repair — 2026-11-20
 
@@ -134,8 +148,7 @@ PR #631 ledger own final qualification. PR #617 and #618 remain read-only. The
 [canonical contract](../architecture/wave-flow-v1.md) and
 [evaluation guide](wave-flow-evaluation.md) describe the native solver,
 versioned mass/configuration APIs, Godot selection, comparison fixtures and
-real Rapier/Needle paths. Wave Flow stays opt-in and default off, outside the
-production policy catalogue. Complete state identity includes retained flux;
+real Rapier/Needle paths. The [water ramp branch](../audits/2026-11-19-wave-water-ramp-003.md) selects Wave, spill and ballistic release for new player sessions. Raw solver selection remains outside the production policy catalogue. Complete state identity includes retained flux;
 physical save and restore explicitly refuse Wave Worlds.
 
 The [completion record](../audits/2026-11-15-wave-mt-001-completion.md)

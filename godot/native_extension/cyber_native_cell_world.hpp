@@ -7,6 +7,7 @@
 #include <godot_cpp/variant/packed_float64_array.hpp>
 
 #include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
@@ -32,13 +33,15 @@ public:
     static constexpr std::int32_t kProtectedCurrentRuleRadius = 2;
     static constexpr std::int32_t kInputStride = 11;
     static constexpr std::int32_t kResultStride = 9;
-    CyberNativeCellWorld();
+    explicit CyberNativeCellWorld(bool gameplay_water = false);
+    [[nodiscard]] static Ref<CyberNativeCellWorld> create_gameplay_world();
     ~CyberNativeCellWorld() override;
 
     [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
     [[nodiscard]] static std::int64_t logical_processor_count();
 
-    bool reset_demo_world();
+    [[nodiscard]] static Dictionary gameplay_water_options();
+    bool reset_demo_world(bool gameplay_water = false);
     [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
     [[nodiscard]] bool has_failed() const;
@@ -371,6 +374,7 @@ private:
     bool render_snapshot_full_refresh_required_ = true;
 
     [[nodiscard]] static bool character_box_collides_in(const cybersand::World* world, Vector2i extent, Vector2 origin, Vector2 size, std::int64_t mode);
+    static void select_gameplay_water(cybersand::WorldConfig& config, bool enabled);
     void create_world();
     void retire_liquid_construction_identity();
     void reset_demo_coupling_parameters() noexcept;

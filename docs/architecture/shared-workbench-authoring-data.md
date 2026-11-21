@@ -4,8 +4,8 @@ status: Current
 document-kind: contract
 scope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation
 canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
-last-reviewed: 2026-11-13
-related-documents: [../systems/explore001-generated-playable-maps.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, data-ownership-and-lifetimes.md, ../operations/github-development-and-release.md]
+last-reviewed: 2026-11-20
+related-documents: [../systems/explore001-generated-playable-maps.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, data-ownership-and-lifetimes.md, liquid-prepared-setup-and-receipts.md, ../operations/github-development-and-release.md]
 ---
 
 # Shared workbench authoring data and convergence
@@ -89,6 +89,62 @@ Generation integers are not globally unique across processes. Remote identity
 must include its owner/session identity plus native generation/revision. A client
 reconnect to a live World is distinct from a fresh process or service restart.
 Persistent transport sessions do not imply persistence of evolved simulation.
+
+## Large Workbench starts and host-claim projection
+
+**WORKBENCH-HOST-CLAIMS-001 candidate, 20 November 2026; Draft/HOLD:**
+Workbench's source construction budget permits **32,768 rectangles**, while
+`liquid_host_evidence.gd::_claims` permits **32,768 values per Array** in an
+unverified host observation. A rectangle contributes five integer words
+`[x,y,width,height,material]`: 6,553 rectangles fit that observation Array,
+but 6,554 do not. These capacities govern different data and do not establish
+the installed native bridge's actual construction capability.
+
+The candidate keeps four authorities distinct:
+
+| Stage | Data and authority |
+|---|---|
+| Source validation | `workbench_setup.gd` validates the authored start and coalesces its ordered edits. `microscenario_contract.gd::validate` validates the complete resulting definition and computes its SHA-256 from canonical JSON, including every ordered rectangle. |
+| Native preparation | `microscenario_host.gd::install` passes the complete validated rectangle array, transport, Water semantics and options to `CyberDemoBridge.prepare_liquid_world`. The full source definition remains retained; native construction and material/body admission retain their own checks and receipts. |
+| Unverified observation | Only when the validated definition is Workbench and its rectangle Array exceeds 32,768 words, `host_definition_claim` copies the definition dictionary and removes `rectangles` from that observation copy. All other definition fields remain. |
+| Installation acknowledgement | The prepared token, native receipt and existing owner/physical commit fences determine whether the candidate is adopted. Creating an observation or its digest does not install a World or prove complete executed-host identity. |
+
+The observation's `definition_projection` identifies the omitted `rectangles`
+field, `flat_xywhm_integer_words` encoding, exact `integer_word_count` and
+`rectangle_count`, and `validated_complete_definition_sha256`. Its explicit
+status is `unverified_host_claim_projection`, schema version 1, with reason
+`per_container_host_claim_capacity`. That digest identifies the **complete
+validated definition**, not the smaller observation dictionary. It is source
+identity supplied alongside independently checked native preparation, not a
+substitute for native execution evidence. Projection consumes the validation
+result inside the host installation path; it is not an alternative validator
+for arbitrary or malformed geometry.
+
+At or below 6,553 Workbench rectangles the original full observation is unchanged.
+Non-Workbench definitions retain their complete claims and strict refusals.
+No global claim depth/value/text budget, native World size, material, response,
+liquid policy, body-mask or construction-work limit is widened. Unsupported
+input refuses rather than truncating the construction array. The installed
+`workbench_start_rectangle_capacity()` response must be checked separately;
+an older 4,096-rectangle runtime or the legacy fallback is not upgraded by this
+GDScript observation repair.
+
+Source validation precedes preparation. Observation failure discards the pending
+candidate before commit; native or final-owner refusal retains the valid old
+World, authored start, physical ownership and observation. This change preserves
+the existing prepared-World transaction, including its deferred readiness and
+post-commit fault classifications. See the
+[owner-bound observation contract](liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation).
+
+Ordinary Setup-v2 and generated-start-v1 Load/Restore still reconstruct their
+full authored geometry through that same host. Neither saved format gains a
+projection field, loses rectangles or becomes a save of evolved simulation.
+The existing material-baseline format is unchanged. The
+[qualification record](../audits/2026-11-20-workbench-host-claims-qualification.md)
+owns exact source/runtime identities, boundary and refusal controls, installed
+material/actor progression, and fresh-process saved-start results on each
+actually tested platform. Keep this candidate Draft/HOLD until owner approval;
+source capacity and static map checks alone do not qualify an installed build.
 
 ## Flatten and storage compatibility
 

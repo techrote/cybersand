@@ -1,0 +1,127 @@
+{
+  "base_commit": "d4df71fc6bc1bf6267270a4c1445207a02716317",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, -O3 -DNDEBUG -pthread",
+  "patch_sha256": "7bd6c2147d2cad6368eecc0982daa6578b24aae3228ff250e72e839a104e92c4",
+  "binary_sha256": "85053a0444a20a0e9c4db32ebf55618e575f6c4e1632a98f7113d269fc0d18fc",
+  "input_sha256": {
+    "terrain-1024.bin": "9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5",
+    "stamps.txt": "c2dee3e3562b1369fdab0f3874716539704e5eae5a29951f262a0efc599b2a4e"
+  },
+  "hashes": {
+    "grid-map-clean.log": "39a2e9f9e85cbbee7b1a405f293ab94f1cb9b87cffdf4609c06d8e307379736e",
+    "grid-map-frames.log": "df25f0f2c8ca976a766d3f15ed00423746c5be6053c0977208923ddc2ded577c",
+    "grid-map-w1.csv": "0dd0f3ee4ec8ec86149041d8ce812d549314a9358f2363ae3da93379bf9e6768",
+    "grid-map-w1.log": "e128ad4b29f9794f4e7e7c0ed3a1d53622022a4378c120b3d2f96704a370c929",
+    "grid-map-w6.csv": "0dd0f3ee4ec8ec86149041d8ce812d549314a9358f2363ae3da93379bf9e6768",
+    "grid-map-w6.log": "f56de43818f311071bcb70cd355514ae8ae2e9a404e7192bb2fbf044c3aab129",
+    "grid-tank-clean.log": "d4a6d19ceb0addffbdce6dc3ba10c8593b1dcfaff91bd6691a1bf84d8f9352e6",
+    "grid-tank-w1.csv": "36ca4c0af13c331b42b6b1bc88ae4356f23e1cefed9ee78c0f05e560131a676e",
+    "grid-tank-w1.log": "93fbed0cc86ad727218d87e622759faad340a334d0dd9134af53ac6ea00ff8e6",
+    "grid-tank-w6.csv": "36ca4c0af13c331b42b6b1bc88ae4356f23e1cefed9ee78c0f05e560131a676e",
+    "grid-tank-w6.log": "cff46bcb294e6ba17105b98fe51d65908cbb0f3050b25cfc81d2bd1fa4f4c261",
+    "grid-tank_open-frames.log": "9a46ceb423f501dc02d2a95032ea5e38286791cfcb4d214f51b7641b2f8464ea",
+    "ordinary-map-frames.log": "821fb57e972834763e67a625808759f9276214d71302677cdccb2454a9f47903",
+    "ordinary-map-w6.csv": "e60af55ce4204d866d6637b26da485e13de1982ea2ca57186eae88a188a71752",
+    "ordinary-map-w6.log": "2273a0354cea99d74e8066123bf82294ba4b28e43860ed5ced158869d5c243a8",
+    "ordinary-tank-w6.csv": "f9cc9aba610e208e9b701e8d4ae6fd940caaf3cec2640fd7a9bb59a6c5a9f683",
+    "ordinary-tank-w6.log": "5ec639c091fdb661a0a8c1eb2d88cd42c7657b70e28c68a35ecc45e478112c17",
+    "ordinary-tank_open-frames.log": "ef9ffc3e090f38d5f3b36e2f2e454e91b7cc017b7b513eb6622f46a4372c8cc2",
+    "parcel-map-clean.log": "577a500e519b12430deb82fc427a6e64884ac0ac40fb5cac3f88535310744a53",
+    "parcel-map-frames.log": "5d31444461539c93be9fc490b2b9157572e064414c9519662bb25cd84d42fed9",
+    "parcel-map-w6.csv": "b4b2d1465ae4004a628bee6a5f4599be622f4a6b537226e83ef9e42d88ecdcd3",
+    "parcel-map-w6.log": "e60ff4d337187bcf0986b09202f039dd13cb79a4a4b69c60178d5c78ef887ec0",
+    "parcel-tank-clean.log": "76bf1c8dedbe58007e8a5e9f27a2621c3e0127f34fb1b74e71109b6ed945fd39",
+    "parcel-tank-w6.csv": "54ce237b0555c7fbd73adac7cb56505148b8d35411e13b5d53d5df29a7053fd5",
+    "parcel-tank-w6.log": "bc2bd773b00ef9f99aa58458f78c9e9abb87167d97848996dcf83c3bb2b94f14",
+    "parcel-tank_open-frames.log": "0b07acf0c03cae72b68d636aec93321fbd5f47c4b8807f5e39fa7161d5277ca6",
+    "paused.log": "a7b7a20f2955b8cf947218df6f255c7ae37a53847b0db39068effc2374a9bfeb",
+    "wall-control.log": "080fcd43e1e7debab5d0cd1d76c19548c9341ae94c2d11b1abb1c2c94e184023",
+    "wall.log": "d9c257313e5e039e0ebf5a8a3d8f112abbe6d12f633fd133261d0394d1fddcaf"
+  },
+  "outputs": {
+    "grid-map-clean.log": [
+      "launched_parcels=26712 launched_units=3247140 launch_refusals=104 launch_deferrals=0 launch_ns_per_tick=4390 launch_capacity_skips=0 live=382 max_live=728 deposited_units=3202346 deferred_deposits=0 forced=0 advance_last_ns=34109",
+      "overall_median_us=3836 p95_us=4680 max_us=8288 storage_bytes=18690560 capacity_refusals=0 hash=8396202c8720d9ce"
+    ],
+    "grid-map-frames.log": [
+      "launched_parcels=5993 launched_units=749027 launch_refusals=60 launch_deferrals=0 launch_ns_per_tick=5108 launch_capacity_skips=0 live=695 max_live=695 deposited_units=663246 deferred_deposits=0 forced=0 advance_last_ns=51305",
+      "overall_median_us=4089 p95_us=5856 max_us=12534 storage_bytes=18690560 capacity_refusals=0 hash=d0cfbcf6b8941cfd"
+    ],
+    "grid-map-w1.log": [
+      "launched_parcels=16871 launched_units=2073977 launch_refusals=92 launch_deferrals=0 launch_ns_per_tick=5756 launch_capacity_skips=0 live=614 max_live=728 deposited_units=1999491 deferred_deposits=0 forced=0 advance_last_ns=42478",
+      "overall_median_us=12433 p95_us=17189 max_us=34859 storage_bytes=18690560 capacity_refusals=0 hash=b9d186b5c043084f"
+    ],
+    "grid-map-w6.log": [
+      "launched_parcels=16871 launched_units=2073977 launch_refusals=92 launch_deferrals=0 launch_ns_per_tick=5009 launch_capacity_skips=0 live=614 max_live=728 deposited_units=1999491 deferred_deposits=0 forced=0 advance_last_ns=48840",
+      "overall_median_us=4298 p95_us=5496 max_us=9267 storage_bytes=18690560 capacity_refusals=0 hash=b9d186b5c043084f"
+    ],
+    "grid-tank-clean.log": [
+      "launched_parcels=237 launched_units=27315 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=350 launch_capacity_skips=0 live=0 max_live=44 deposited_units=27315 deferred_deposits=0 forced=0 advance_last_ns=0",
+      "overall_median_us=529 p95_us=672 max_us=1013 storage_bytes=2378352 capacity_refusals=0 hash=25a738b8be04170d"
+    ],
+    "grid-tank-w1.log": [
+      "launched_parcels=237 launched_units=27315 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=230 launch_capacity_skips=0 live=0 max_live=44 deposited_units=27315 deferred_deposits=0 forced=0 advance_last_ns=0",
+      "overall_median_us=891 p95_us=1354 max_us=2156 storage_bytes=2378352 capacity_refusals=0 hash=25a738b8be04170d"
+    ],
+    "grid-tank-w6.log": [
+      "launched_parcels=237 launched_units=27315 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=416 launch_capacity_skips=0 live=0 max_live=44 deposited_units=27315 deferred_deposits=0 forced=0 advance_last_ns=0",
+      "overall_median_us=642 p95_us=817 max_us=1141 storage_bytes=2378352 capacity_refusals=0 hash=25a738b8be04170d"
+    ],
+    "grid-tank_open-frames.log": [
+      "launched_parcels=10 launched_units=1210 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=142 launch_capacity_skips=0 live=5 max_live=5 deposited_units=635 deferred_deposits=0 forced=0 advance_last_ns=321",
+      "overall_median_us=551 p95_us=843 max_us=1674 storage_bytes=2378352 capacity_refusals=0 hash=80c786a5aa0684d3"
+    ],
+    "ordinary-map-frames.log": [
+      "launched_parcels=21766 launched_units=1702031 launch_refusals=49 launch_deferrals=23 launch_ns_per_tick=12300 launch_capacity_skips=0 live=1790 max_live=1822 deposited_units=1546003 deferred_deposits=0 forced=0 advance_last_ns=121145",
+      "overall_median_us=3747 p95_us=4797 max_us=8838 storage_bytes=15413760 capacity_refusals=0 hash=c9f4da28029b4ff1"
+    ],
+    "ordinary-map-w6.log": [
+      "launched_parcels=57191 launched_units=4282531 launch_refusals=146 launch_deferrals=23 launch_ns_per_tick=11869 launch_capacity_skips=0 live=1686 max_live=1963 deposited_units=4147976 deferred_deposits=0 forced=0 advance_last_ns=133099",
+      "overall_median_us=3793 p95_us=5335 max_us=10125 storage_bytes=15413760 capacity_refusals=0 hash=f62744f58babf68b"
+    ],
+    "ordinary-tank-w6.log": [
+      "launched_parcels=570 launched_units=46236 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=640 launch_capacity_skips=0 live=0 max_live=92 deposited_units=46236 deferred_deposits=0 forced=0 advance_last_ns=0",
+      "overall_median_us=641 p95_us=904 max_us=2506 storage_bytes=2083440 capacity_refusals=0 hash=54832d60f2180576"
+    ],
+    "ordinary-tank_open-frames.log": [
+      "launched_parcels=61 launched_units=3685 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=211 launch_capacity_skips=0 live=41 max_live=41 deposited_units=1558 deferred_deposits=0 forced=0 advance_last_ns=1724",
+      "overall_median_us=413 p95_us=574 max_us=1192 storage_bytes=2083440 capacity_refusals=0 hash=23a3554dadb6f371"
+    ],
+    "parcel-map-clean.log": [
+      "launched_parcels=92079 launched_units=6265581 launch_refusals=170 launch_deferrals=22 launch_ns_per_tick=10954 launch_capacity_skips=0 live=1540 max_live=2324 deposited_units=6171532 deferred_deposits=0 forced=0 advance_last_ns=191590",
+      "overall_median_us=3856 p95_us=4649 max_us=12035 storage_bytes=15413760 capacity_refusals=0 hash=66baede9b5118a85"
+    ],
+    "parcel-map-frames.log": [
+      "launched_parcels=22171 launched_units=1660295 launch_refusals=40 launch_deferrals=22 launch_ns_per_tick=12532 launch_capacity_skips=0 live=2128 max_live=2187 deposited_units=1498163 deferred_deposits=0 forced=0 advance_last_ns=140248",
+      "overall_median_us=3677 p95_us=4720 max_us=8905 storage_bytes=15413760 capacity_refusals=0 hash=3490c496c4d809dc"
+    ],
+    "parcel-map-w6.log": [
+      "launched_parcels=60452 launched_units=4267150 launch_refusals=115 launch_deferrals=22 launch_ns_per_tick=12080 launch_capacity_skips=0 live=2005 max_live=2324 deposited_units=4131970 deferred_deposits=0 forced=0 advance_last_ns=132273",
+      "overall_median_us=3780 p95_us=4749 max_us=9779 storage_bytes=15413760 capacity_refusals=0 hash=4f968c0a00ee246e"
+    ],
+    "parcel-tank-clean.log": [
+      "launched_parcels=553 launched_units=44537 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=418 launch_capacity_skips=0 live=0 max_live=99 deposited_units=44537 deferred_deposits=0 forced=0 advance_last_ns=0",
+      "overall_median_us=488 p95_us=573 max_us=957 storage_bytes=2083440 capacity_refusals=0 hash=20136ad53e268cb5"
+    ],
+    "parcel-tank-w6.log": [
+      "launched_parcels=553 launched_units=44537 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=552 launch_capacity_skips=0 live=0 max_live=99 deposited_units=44537 deferred_deposits=0 forced=0 advance_last_ns=0",
+      "overall_median_us=572 p95_us=751 max_us=4374 storage_bytes=2083440 capacity_refusals=0 hash=20136ad53e268cb5"
+    ],
+    "parcel-tank_open-frames.log": [
+      "launched_parcels=61 launched_units=3500 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=248 launch_capacity_skips=0 live=39 max_live=39 deposited_units=1613 deferred_deposits=0 forced=0 advance_last_ns=1751",
+      "overall_median_us=415 p95_us=597 max_us=1122 storage_bytes=2083440 capacity_refusals=0 hash=cc86f78bc89eead2"
+    ],
+    "paused.log": [
+      "launched_parcels=201 launched_units=23187 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=334 launch_capacity_skips=0 live=2 max_live=5 deposited_units=22957 deferred_deposits=0 forced=0 advance_last_ns=650",
+      "overall_median_us=321 p95_us=358 max_us=446 storage_bytes=3526624 capacity_refusals=0 hash=a077ae8f59808d57"
+    ],
+    "wall-control.log": [
+      "launched_parcels=200 launched_units=23060 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=558 launch_capacity_skips=0 live=31 max_live=45 deposited_units=19495 deferred_deposits=0 forced=0 advance_last_ns=2704",
+      "overall_median_us=719 p95_us=903 max_us=1796 storage_bytes=3743456 capacity_refusals=0 hash=1d9132c6600c5df7"
+    ],
+    "wall.log": [
+      "launched_parcels=201 launched_units=23187 launch_refusals=0 launch_deferrals=0 launch_ns_per_tick=425 launch_capacity_skips=0 live=2 max_live=5 deposited_units=22957 deferred_deposits=0 forced=0 advance_last_ns=1164",
+      "overall_median_us=535 p95_us=641 max_us=1514 storage_bytes=3743456 capacity_refusals=0 hash=396aff342c6998bf"
+    ]
+  }
+}

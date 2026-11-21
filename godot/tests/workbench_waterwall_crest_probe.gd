@@ -91,11 +91,19 @@ func install() -> bool:
 	bench = host.shared_workbench
 	if not await until(installed,"ordinary Workbench installation"): return false
 	host.workbench_water_options.workbench_worker_threads = workers
+	# This historical Midge comparison starts each law at its original tuning.
+	var spray = bench.water_spray
+	spray._set_wave(true)
+	spray._reset_wave_defaults()
+	spray._ballistic.button_pressed = false
+	for spec: Array in spray.SPILL_SPINS:
+		host.workbench_water_options[spec[0]] = int(spec[5])
+		spray._spill_fields[spec[0]].set_value_no_signal(int(spec[5]))
+	spray._set_spill("workbench_wave_spill_full_face",false)
+	spray._set_spill("workbench_wave_spill",mode != "orig")
+	spray._set_spill("workbench_wave_spill_parcels",mode == "hybrid")
 	host.workbench_water_options.workbench_wave_body_push = 0
 	host.workbench_water_options.workbench_wave_body_push_by_mass = 0
-	bench.water_spray._set_wave(true)
-	bench.water_spray._set_spill("workbench_wave_spill",mode != "orig")
-	bench.water_spray._set_spill("workbench_wave_spill_parcels",mode == "hybrid")
 	var recipe: Dictionary = Setup.fresh(bench._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
 	recipe.actors = [Setup.instance("midge",1,Vector2(128,258))]
 	recipe.next_id = 2

@@ -573,6 +573,7 @@ private:
     std::unique_ptr<WaveState> wave_;
     void validate_wave_flow_config() const;
     void advance_wave_flow(TickStats& stats);
+    void advance_floating_oil();
     void wave_column_task(std::size_t task_index) noexcept;
     void wave_flux_task(std::size_t task_index) noexcept;
     void wave_apply_task(std::size_t task_index) noexcept;
@@ -602,7 +603,7 @@ private:
     [[nodiscard]] bool step_ballistic_parcel(BallisticParcel& parcel);
     [[nodiscard]] bool deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, std::int64_t cy,
                                                 const std::pair<std::int64_t, std::int64_t>* merge);
-    void ballistic_write_water(std::int64_t x, std::int64_t y, std::uint16_t visible);
+    void write_transferred_water(std::int64_t x, std::int64_t y, std::uint16_t visible);
     [[nodiscard]] BallisticCell classify_ballistic_cell(std::int64_t x, std::int64_t y,
         const BallisticParcel& parcel, std::uint16_t& body) const noexcept;
     [[nodiscard]] BallisticLaunchResult admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,

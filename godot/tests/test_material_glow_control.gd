@@ -57,6 +57,9 @@ func _run() -> void:
 	await process_frame
 	web.set_physics_process(false)
 	web.focused = true
+	# The glow round trip needs the CYSD1-compatible Water law.
+	web.ui.next_water.item_selected.emit(1)
+	web.select_demo("neon_works",false)
 	web.ui.close_menu()
 	expect(web.ready_to_play, "Web controller did not initialize")
 	agrees(web, true, "Web initialization")

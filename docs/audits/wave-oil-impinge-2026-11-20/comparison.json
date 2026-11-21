@@ -1,0 +1,178 @@
+{
+  "before": {
+    "control_source_commit": "04a2c36b8974f069f0ca3a16f0a8796a132168ac",
+    "dll_sha256": "f766bb901d954f9267f76523ed04fcfabcac12cf7f579be2e758e75409f3a01b",
+    "log_error_counts": {
+      "before": 0,
+      "before-control": 0,
+      "before-render": 0
+    },
+    "rendered_stages_matching_headless_planes": [
+      {
+        "tick": 1500,
+        "material_sha256": "8123f0d91cdf3317d6ba4b10b1d3bbe185dbc0b49a328450aee05030d699fd4d",
+        "uncropped_workbench_frame_sha256": "0daf8da87d4016e9f4e53a134cf57877cffca4922457b60366aa2b6ee6cf7c33"
+      },
+      {
+        "tick": 1532,
+        "material_sha256": "fe546c307caac8c94d9424d60b26a25b40cf196a30ab7263b8038ff77bb479cc",
+        "uncropped_workbench_frame_sha256": "24b679ce84dea2cf4312baa2f57ccff1b5adc458d1a40ad831a00b7596e31858"
+      }
+    ],
+    "far_gauge_pulse_minus_unperturbed": [
+      {
+        "tick": 1500,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1501,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1508,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1516,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1532,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1560,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1620,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1800,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 2100,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      }
+    ]
+  },
+  "after": {
+    "control_source_commit": "45a2eba2b765113dd35ba31a0e62d83c36b57d1a",
+    "dll_sha256": "229e9701816675adecadfe10ee612ad72e61f8d226aa4406c9c2beb33dbde03a",
+    "log_error_counts": {
+      "after": 0,
+      "after-control": 0,
+      "after-render": 0
+    },
+    "rendered_stages_matching_headless_planes": [
+      {
+        "tick": 1500,
+        "material_sha256": "6d26cd497ff0ce6215270b03c901c30367e9442d2573d369c696a4eecf71119c",
+        "uncropped_workbench_frame_sha256": "bfcb9425359ff4e4349addf47197315daa1a3e13973e1fcfc36004c8878499dc"
+      },
+      {
+        "tick": 1532,
+        "material_sha256": "c9de6d7ad1789ed320d062778b1288d7590ba01100711dce543d980539b0ed3e",
+        "uncropped_workbench_frame_sha256": "2fe643067218f769b4d66d341db9136373a382fcb19220bbc49e5c81550d5cc2"
+      }
+    ],
+    "far_gauge_pulse_minus_unperturbed": [
+      {
+        "tick": 1500,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1501,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1508,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1516,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1532,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1560,
+        "changed_far_columns": 0,
+        "max_abs_rows": 0,
+        "mean_abs_rows": 0.0
+      },
+      {
+        "tick": 1620,
+        "changed_far_columns": 19,
+        "max_abs_rows": 6,
+        "mean_abs_rows": 3.15
+      },
+      {
+        "tick": 1800,
+        "changed_far_columns": 20,
+        "max_abs_rows": 1,
+        "mean_abs_rows": 1.0
+      },
+      {
+        "tick": 2100,
+        "changed_far_columns": 20,
+        "max_abs_rows": 2,
+        "mean_abs_rows": 1.75
+      }
+    ]
+  },
+  "measurement": {
+    "extent": [
+      2048,
+      2048
+    ],
+    "far_x_columns_inclusive": [
+      127,
+      146
+    ],
+    "impact_brush": {
+      "center": [
+        75,
+        68
+      ],
+      "radius": 9,
+      "material": "Water",
+      "applied_after_tick": 1500
+    },
+    "capture_backend": "Godot 4.7 OpenGL 3.3.0 Compatibility, NVIDIA 581.80 TITAN RTX",
+    "interface": "Top row of contiguous Water supported by the basin floor at each x. Far gauge compares the pulse run and the same-tick no-brush control on the same DLL.",
+    "screenshot": "oil-impinge-workbench.png includes the same 460 by 205 crop of each 960 by 540 Workbench frame at tick 1500."
+  }
+}

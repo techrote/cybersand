@@ -233,8 +233,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"+",func() -> void: zoom_by(-1))
 	art_batches = preload("res://scripts/art_batch_panel.gd").new()
 	art_batches.wb = self
-	add_child(art_batches)
+	# Hide before entering the tree: visible signals must not restore Art history on startup.
 	art_batches.hide()
+	add_child(art_batches)
 	_button(row,"Art batches",func() -> void: art_batches.popup_centered())
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
@@ -336,6 +337,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_liquids = host.playable_session_panel.policy_editor
 	_liquids.reparent(water_lab.pages["advanced"])
 	_liquids.use_one_shot_normalization()
+	_liquids.water_family_selected.connect(water_spray.stage_advanced_water_family)
 	_button(_row(water_lab.pages["advanced"]),"Apply liquid selection",apply_liquids)
 	_detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_details.add_child(_detail_label)
@@ -675,6 +677,11 @@ func installed(candidate: Dictionary) -> void:
 		_liquids.geometry_picker.select(int(_pending_staged_liquid_selection.geometry))
 		_liquids.normalize_water.set_pressed_no_signal(bool(_pending_staged_liquid_selection.normalize))
 	_pending_staged_liquid_selection.clear()
+	if host.pending_microscenario_apply.get("workbench_adopt_authored_law",false):
+		host.workbench_water_options.workbench_wave_flow = false
+		water_spray._wave.set_pressed_no_signal(false)
+		water_spray._update_wave_controls()
+		water_spray._sync_studio_solver()
 	_liquids._refresh_choices()
 	if not _saved_view.is_empty():
 		host.camera_origin = _saved_view.origin
@@ -1105,8 +1112,6 @@ func load_equipment_start(label: String, ballistic: bool = true, preset_label: S
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 	if label not in Setup.EQUIPMENT_LABELS: return refuse("Unknown equipment start.")
 	if not host.simulation_worker.has_failed() and not _editable(): return false
-	if host.workbench_water_options.get("workbench_wave_flow",false) != false:
-		return refuse("Liquid equipment presets select Inertial or PressureFlow with Ballistic Water. Turn Wave Flow off before loading one.")
 	if preset_label.is_empty(): preset_label = EQUIPMENT_PRESETS[label]
 	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy()
 	var note := ""

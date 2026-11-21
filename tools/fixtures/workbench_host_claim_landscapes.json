@@ -1,0 +1,747 @@
+{
+  "schema_version": 1,
+  "discovered_at_utc": "2026-11-20T12:59:03.359090+00:00",
+  "repository": "techrote/sandmapsreference",
+  "repository_main_sha": "99a166e7fcae45eb22be1740e9f33f62faccbcc7",
+  "discovery": {
+    "open_pull_requests": 53,
+    "original_landscape_pull_requests": 45,
+    "current_original_landscapes": 46,
+    "retained_prior_revision_files": 1,
+    "maps_above_host_claim_boundary": 20,
+    "highest_source_rectangle_count": 13839,
+    "selection_rule": "Open Draft/HOLD original wide PRs; committed Setup dimensions verified 2048x1024; retained setup-r1.json excluded from current map count.",
+    "construction_count_authority": "Independent cell replay and workbench_setup.gd row-run coalescing; runtime qualification remains separate.",
+    "checks": "Every inventoried Setup has in-bounds integral xywhm rectangles, no source overlaps, and matching source/coalesced rectangle counts. No native execution claim.",
+    "excluded_scope": "Original portrait/square PRs and historical source-reference conversions.",
+    "count_9167_note": "No current open original landscape Setup has 9167 records; Nacre Spindle Court is the selected current 9084-record case."
+  },
+  "maps": [
+    {
+      "name": "graftloom-slipway",
+      "title": "Graftloom Slipway R6",
+      "pr": 22,
+      "pr_url": "https://github.com/techrote/sandmapsreference/pull/22",
+      "head_sha": "b0d1e5216aabb9b5e009e599ffbffcec6fd8a657",
+      "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-graftloom-slipway-261119/setup-graftloom-slipway.json",
+      "raw_url": "https://raw.githubusercontent.com/techrote/sandmapsreference/b0d1e5216aabb9b5e009e599ffbffcec6fd8a657/cybersand-canvases/2048x1024/original-scifi-biomech-wide-graftloom-slipway-261119/setup-graftloom-slipway.json",
+      "sha256": "1714c8ced71041e5036886bff62abcbfb38c08717fe4d2903ffc4d82b5016402",
+      "source_bytes": 258892,
+      "source_rectangle_count": 13839,
+      "construction_rectangle_count": 13839,
+      "grid_sha256": "9dd2cbc298d6e91ef71e5f1617ef41a516535c97112cc3ab4dfd030fc4098e38",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "grid_encoding": "one unsigned material-ID byte per cell, row-major y then x",
+      "occupied_cells": 750089,
+      "actor_count": 1,
+      "actors": [
+        {
+          "id": 1,
+          "model": "midge",
+          "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+          "spawn": [
+            122,
+            483
+          ],
+          "options": {
+            "budget": 20,
+            "mass_multiplier": 1,
+            "inertia_multiplier": 1,
+            "thrust_multiplier": 1,
+            "torque_multiplier": 1,
+            "boost_multiplier": 1.8
+          }
+        }
+      ],
+      "material_ids": [
+        49,
+        58,
+        62,
+        100,
+        101,
+        113,
+        117,
+        120,
+        128
+      ],
+      "fixture_file": "graftloom-slipway.json",
+      "grid_file": "graftloom-slipway.materials-u8.bin"
+    },
+    {
+      "name": "nacre-spindle-court",
+      "title": "Nacre Spindle Court",
+      "pr": 38,
+      "pr_url": "https://github.com/techrote/sandmapsreference/pull/38",
+      "head_sha": "46e047d46dc067f79da8907e5e91b224c9e8cc17",
+      "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-nacre-spindle-court-261120/setup-nacre-spindle-court.json",
+      "raw_url": "https://raw.githubusercontent.com/techrote/sandmapsreference/46e047d46dc067f79da8907e5e91b224c9e8cc17/cybersand-canvases/2048x1024/original-scifi-biomech-wide-nacre-spindle-court-261120/setup-nacre-spindle-court.json",
+      "sha256": "0f27067b1b62f466437882e8ef38e0de71c39628b292f88780e23e40cfcb3a31",
+      "source_bytes": 169237,
+      "source_rectangle_count": 9084,
+      "construction_rectangle_count": 9084,
+      "grid_sha256": "e9a17cd98734aa7e9b3fb16a2a524df590bc6db17057b065ee825cdc0d94b3ff",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "grid_encoding": "one unsigned material-ID byte per cell, row-major y then x",
+      "occupied_cells": 630245,
+      "actor_count": 1,
+      "actors": [
+        {
+          "id": 1,
+          "model": "midge",
+          "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+          "spawn": [
+            116,
+            600
+          ],
+          "options": {
+            "budget": 20,
+            "mass_multiplier": 1,
+            "inertia_multiplier": 1,
+            "thrust_multiplier": 1,
+            "torque_multiplier": 1,
+            "boost_multiplier": 1.8
+          }
+        }
+      ],
+      "material_ids": [
+        58,
+        62,
+        63,
+        66,
+        72,
+        77,
+        79,
+        100,
+        101,
+        117,
+        128,
+        130
+      ],
+      "fixture_file": "nacre-spindle-court.json",
+      "grid_file": "nacre-spindle-court.materials-u8.bin"
+    },
+    {
+      "name": "graven-keel",
+      "title": "Graven Keel Ship-Tipper Crossdock",
+      "pr": 45,
+      "pr_url": "https://github.com/techrote/sandmapsreference/pull/45",
+      "head_sha": "7ce39e6eb6d701b515bd4f6b1ccea551bf467a2f",
+      "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-graven-keel-ship-tipper-261120/setup-graven-keel.json",
+      "raw_url": "https://raw.githubusercontent.com/techrote/sandmapsreference/7ce39e6eb6d701b515bd4f6b1ccea551bf467a2f/cybersand-canvases/2048x1024/original-industrial-transit-wide-graven-keel-ship-tipper-261120/setup-graven-keel.json",
+      "sha256": "f8bc708b89aa81c19f20ea1e5ae8b0a91a6857103a499ee95fb57044318546a9",
+      "source_bytes": 119608,
+      "source_rectangle_count": 6572,
+      "construction_rectangle_count": 6572,
+      "grid_sha256": "682a97a20c8a90764ed7db488681c4032271e6a51117f2d8d00b01db327242d2",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "grid_encoding": "one unsigned material-ID byte per cell, row-major y then x",
+      "occupied_cells": 589992,
+      "actor_count": 1,
+      "actors": [
+        {
+          "id": 1,
+          "model": "midge",
+          "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+          "spawn": [
+            125,
+            425
+          ],
+          "options": {
+            "budget": 20,
+            "mass_multiplier": 1,
+            "inertia_multiplier": 1,
+            "thrust_multiplier": 1,
+            "torque_multiplier": 1,
+            "boost_multiplier": 1.8
+          }
+        }
+      ],
+      "material_ids": [
+        58,
+        62,
+        100
+      ],
+      "fixture_file": "graven-keel.json",
+      "grid_file": "graven-keel.materials-u8.bin"
+    },
+    {
+      "name": "kestrel-counterweight",
+      "title": "Kestrel Counterweight Works",
+      "pr": 53,
+      "pr_url": "https://github.com/techrote/sandmapsreference/pull/53",
+      "head_sha": "fc27754defff1f8501b256543d658a83f992da62",
+      "path": "cybersand-canvases/2048x1024/original-racing-wide-kestrel-counterweight-works-261120/setup-kestrel-counterweight-works.json",
+      "raw_url": "https://raw.githubusercontent.com/techrote/sandmapsreference/fc27754defff1f8501b256543d658a83f992da62/cybersand-canvases/2048x1024/original-racing-wide-kestrel-counterweight-works-261120/setup-kestrel-counterweight-works.json",
+      "sha256": "6536cbd79246f56d770897b619b5a14eb09527f6cbb264588c523b1c3c948edf",
+      "source_bytes": 120946,
+      "source_rectangle_count": 6455,
+      "construction_rectangle_count": 6455,
+      "grid_sha256": "5800f2231c42ab0618b37735d30fec3d76cccbe60a439d45794bab54d5b2285c",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "grid_encoding": "one unsigned material-ID byte per cell, row-major y then x",
+      "occupied_cells": 752164,
+      "actor_count": 1,
+      "actors": [
+        {
+          "id": 1,
+          "model": "midge",
+          "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+          "spawn": [
+            145,
+            372
+          ],
+          "options": {
+            "budget": 20,
+            "mass_multiplier": 1,
+            "inertia_multiplier": 1,
+            "thrust_multiplier": 1,
+            "torque_multiplier": 1,
+            "boost_multiplier": 1.8
+          }
+        }
+      ],
+      "material_ids": [
+        49,
+        58,
+        62,
+        100,
+        101,
+        113,
+        117,
+        122
+      ],
+      "fixture_file": "kestrel-counterweight.json",
+      "grid_file": "kestrel-counterweight.materials-u8.bin"
+    },
+    {
+      "name": "long-pour",
+      "title": "The Long Pour Steelworks",
+      "pr": 25,
+      "pr_url": "https://github.com/techrote/sandmapsreference/pull/25",
+      "head_sha": "9d38064137c1c3be1073d204967e658e8e2235a6",
+      "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-long-pour-steelworks/setup.json",
+      "raw_url": "https://raw.githubusercontent.com/techrote/sandmapsreference/9d38064137c1c3be1073d204967e658e8e2235a6/cybersand-canvases/2048x1024/original-industrial-foundry-wide-long-pour-steelworks/setup.json",
+      "sha256": "351d18c940dbc6e69588e1ef97384667912172e3a830709b6108c0f191add99b",
+      "source_bytes": 75868,
+      "source_rectangle_count": 4092,
+      "construction_rectangle_count": 4092,
+      "grid_sha256": "11219d6f909079aa35634b8bc6697766da3274396abec570721ab637bbe84e84",
+      "dimensions": [
+        2048,
+        1024
+      ],
+      "grid_encoding": "one unsigned material-ID byte per cell, row-major y then x",
+      "occupied_cells": 741066,
+      "actor_count": 1,
+      "actors": [
+        {
+          "id": 1,
+          "model": "midge",
+          "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+          "spawn": [
+            115,
+            448
+          ],
+          "options": {
+            "budget": 20,
+            "mass_multiplier": 1,
+            "inertia_multiplier": 1,
+            "thrust_multiplier": 1,
+            "torque_multiplier": 1,
+            "boost_multiplier": 2
+          }
+        }
+      ],
+      "material_ids": [
+        3,
+        8,
+        57,
+        58,
+        62,
+        63,
+        65,
+        66,
+        68,
+        69,
+        72,
+        76,
+        77,
+        79,
+        100,
+        104,
+        117,
+        131
+      ],
+      "fixture_file": "long-pour.json",
+      "grid_file": "long-pour.materials-u8.bin"
+    }
+  ],
+  "snapshot": [
+    {
+      "pr": 63,
+      "head_sha": "44c5cfb7abd7d34fd42f0700bf1300790fefa3ef",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-nacre-fault-biofoundry-cableway-261120/setup.json",
+          "source_rectangle_count": 4370
+        }
+      ]
+    },
+    {
+      "pr": 62,
+      "head_sha": "ab1a70b0f72cd83739ca4302a3f4c0db53a63823",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-lagrange-slipway-six-261120/setup-lagrange-slipway-six.json",
+          "source_rectangle_count": 4675
+        }
+      ]
+    },
+    {
+      "pr": 61,
+      "head_sha": "b3602ef5cbf5fbee3e1ddd729c4fc4b63fc970ea",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-kestrel-traverse-straddle-port-261120/setup-kestrel.json",
+          "source_rectangle_count": 5630
+        }
+      ]
+    },
+    {
+      "pr": 60,
+      "head_sha": "67d5266b632f36c08267ebd2b24f980248e8f621",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-kestrel-delta-thermal-spillway-261120/setup.json",
+          "source_rectangle_count": 2908
+        }
+      ]
+    },
+    {
+      "pr": 59,
+      "head_sha": "69ec6e7c4e92e2c5e59749ca862ffafef9ca7c3f",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-aster-drift-three-needle-refuge-261120/setup.json",
+          "source_rectangle_count": 5454
+        }
+      ]
+    },
+    {
+      "pr": 58,
+      "head_sha": "b4b025ecd22f9dfcbce2fa9fefbc077111d6c16d",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-thalassa-veil-ossuary-261120/setup-thalassa-veil-ossuary.json",
+          "source_rectangle_count": 10509
+        }
+      ]
+    },
+    {
+      "pr": 57,
+      "head_sha": "15257d3d0ec5b276ad88e1f9097516faecfcf5d9",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-megastructure-wide-pilgrim-gait-sixleg-civic-engine-261120/setup.json",
+          "source_rectangle_count": 6309
+        }
+      ]
+    },
+    {
+      "pr": 56,
+      "head_sha": "83554adf47a7d489b2864ff45bb932543c4c86a0",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-cobalt-narrows-pneumatic-261120/setup-cobalt-narrows.json",
+          "source_rectangle_count": 5891
+        }
+      ]
+    },
+    {
+      "pr": 55,
+      "head_sha": "de88589f02d7595a18b22a464968d8bc159351d4",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-crownstep-continuous-stripworks-261120/setup.json",
+          "source_rectangle_count": 3835
+        }
+      ]
+    },
+    {
+      "pr": 54,
+      "head_sha": "a4d96247778929479d3ec1982bb0eba83f4d8bc6",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-kestrel-hollow-mass-driver-261120/setup.json",
+          "source_rectangle_count": 6903
+        }
+      ]
+    },
+    {
+      "pr": 53,
+      "head_sha": "fc27754defff1f8501b256543d658a83f992da62",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-kestrel-counterweight-works-261120/setup-kestrel-counterweight-works.json",
+          "source_rectangle_count": 6455
+        }
+      ]
+    },
+    {
+      "pr": 52,
+      "head_sha": "8f4e27c722ba681a81bc1bdeae81c9787dcf3f0f",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-morrow-seven-inverse-furnace-261120/setup.json",
+          "source_rectangle_count": 2766
+        }
+      ]
+    },
+    {
+      "pr": 51,
+      "head_sha": "9a5600b434c5b23d71eb9a859f7e302f7f7f94e5",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-rivetfall-hanging-caster-gorge-261120/setup.json",
+          "source_rectangle_count": 2445
+        }
+      ]
+    },
+    {
+      "pr": 50,
+      "head_sha": "5175ef8b03add76cedbc63a62072b97d8d2d0674",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-mantlefall-slag-elevator-261120/setup.json",
+          "source_rectangle_count": 2082
+        }
+      ]
+    },
+    {
+      "pr": 49,
+      "head_sha": "03d93d0442c6be40c90eebb7670d6503a91e9692",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-orison-lamina-exchange-261120/setup-orison-lamina-exchange.json",
+          "source_rectangle_count": 7253
+        }
+      ]
+    },
+    {
+      "pr": 48,
+      "head_sha": "32c2efde1522210592043ed67795100484181dc7",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-eidolon-osteolith-recovery-261120/setup-eidolon-osteolith-recovery.json",
+          "source_rectangle_count": 11045
+        }
+      ]
+    },
+    {
+      "pr": 47,
+      "head_sha": "7fc6ed37850cd9df50006ac3ddd61f51ae945707",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-torsion-rift-cryoline-261120/setup-torsion-rift-cryoline.json",
+          "source_rectangle_count": 5283
+        }
+      ]
+    },
+    {
+      "pr": 46,
+      "head_sha": "4ab5e90b7c40c169dab5b52214e4cfd07a3635fc",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-vesper-lattice-nursery-261120/setup-vesper-lattice-nursery.json",
+          "source_rectangle_count": 9534
+        }
+      ]
+    },
+    {
+      "pr": 45,
+      "head_sha": "7ce39e6eb6d701b515bd4f6b1ccea551bf467a2f",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-graven-keel-ship-tipper-261120/setup-graven-keel.json",
+          "source_rectangle_count": 6572
+        }
+      ]
+    },
+    {
+      "pr": 44,
+      "head_sha": "4af86b16900d0c9cae3c9f5de223e45824e637c5",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-vesper-negative-pressure-lock-261119/setup.json",
+          "source_rectangle_count": 3396
+        }
+      ]
+    },
+    {
+      "pr": 43,
+      "head_sha": "43284081373a37fef264e2bc0bd76e2be7765be8",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-blackcap-vacuum-arcworks-261120/setup.json",
+          "source_rectangle_count": 1922
+        }
+      ]
+    },
+    {
+      "pr": 42,
+      "head_sha": "25cc5a2135c98118c0be598678fae7dedc755a90",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-razorback-phase-exchange-261120/setup-razorback-phase-exchange.json",
+          "source_rectangle_count": 5509
+        }
+      ]
+    },
+    {
+      "pr": 41,
+      "head_sha": "99309561201e6b5b3bce5269fed8affa339a0161",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-calder-step-trigrade-261120/setup-calder-step.json",
+          "source_rectangle_count": 4669
+        }
+      ]
+    },
+    {
+      "pr": 40,
+      "head_sha": "fd66228240641066e7b446f9c88a85c99769a97a",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-aureole-delta-xenolens-array-261120/setup.json",
+          "source_rectangle_count": 6919
+        }
+      ]
+    },
+    {
+      "pr": 39,
+      "head_sha": "99a54a6af0808f63758a15035065b11336f001f7",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-megastructure-wide-umbra-siphon-twin-horn-261120/setup-umbra-siphon.json",
+          "source_rectangle_count": 11681
+        }
+      ]
+    },
+    {
+      "pr": 38,
+      "head_sha": "46e047d46dc067f79da8907e5e91b224c9e8cc17",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-nacre-spindle-court-261120/setup-nacre-spindle-court.json",
+          "source_rectangle_count": 9084
+        }
+      ]
+    },
+    {
+      "pr": 37,
+      "head_sha": "e2b53fb95ea93576afdc15c114e29b853c4b2c05",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-silt-meridian-bascule-ferry-261120/setup-silt-meridian.json",
+          "source_rectangle_count": 7044
+        }
+      ]
+    },
+    {
+      "pr": 36,
+      "head_sha": "d0d710b8f31f688d1f48a8c50b0eb6eac0f6e1db",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-cinderlock-rotary-tiltworks-261120/setup.json",
+          "source_rectangle_count": 3473
+        }
+      ]
+    },
+    {
+      "pr": 35,
+      "head_sha": "2955af7b363daef0a40b145843540d4821f93b21",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-catenary-skyhook-shipyard/setup-catenary-skyhook-shipyard.json",
+          "source_rectangle_count": 7366
+        }
+      ]
+    },
+    {
+      "pr": 34,
+      "head_sha": "8d331905a2d1a68d4516d963b527abeb253a41c5",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-aperture-thirteen-flame-arrest-gallery/setup.json",
+          "source_rectangle_count": 2011
+        }
+      ]
+    },
+    {
+      "pr": 33,
+      "head_sha": "0e872ce0987be7e6df047152beac470ba362c7c5",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-peregrine-cleft-halcyon-drydock-261120/setup.json",
+          "source_rectangle_count": 10038
+        }
+      ]
+    },
+    {
+      "pr": 32,
+      "head_sha": "2e1ad5b3865338f11b70294a52a0930f9e6c4e8d",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-harrowglass-bloomworks/setup.json",
+          "source_rectangle_count": 2194
+        }
+      ]
+    },
+    {
+      "pr": 31,
+      "head_sha": "d57dd34198a62ad5f83790c25311418019cfe810",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-nadir-four-salt-quench-exchange/setup.json",
+          "source_rectangle_count": 2191
+        }
+      ]
+    },
+    {
+      "pr": 30,
+      "head_sha": "ff34003e9a64cca79886b616ca63841d3b6982d1",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-vesper-thermocline-horizon-harp-261119/setup.json",
+          "source_rectangle_count": 5543
+        }
+      ]
+    },
+    {
+      "pr": 29,
+      "head_sha": "1a3c4e52884566122269e2973bc855759fcc2b9b",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-faraday-returnworks-261119/setup-faraday-returnworks.json",
+          "source_rectangle_count": 10438
+        }
+      ]
+    },
+    {
+      "pr": 28,
+      "head_sha": "9516f4a79ce896e9ff8d4fe9ce3b41d3b5d2e939",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-calyx-severance-yard-261119/setup-calyx-severance-yard.json",
+          "source_rectangle_count": 8287
+        }
+      ]
+    },
+    {
+      "pr": 27,
+      "head_sha": "80a023ea182ac5aae89ae11d75aa31f90af96308",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-megastructure-wide-ion-parapet-stormbreaker-261119/setup-ion-parapet.json",
+          "source_rectangle_count": 10150
+        }
+      ]
+    },
+    {
+      "pr": 26,
+      "head_sha": "324cfdc631e77aae580fdbbbf5eac4565d44d29f",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-ternbreak-longspan-261119/setup-ternbreak.json",
+          "source_rectangle_count": 5703
+        }
+      ]
+    },
+    {
+      "pr": 25,
+      "head_sha": "9d38064137c1c3be1073d204967e658e8e2235a6",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-long-pour-steelworks/setup.json",
+          "source_rectangle_count": 4092
+        }
+      ]
+    },
+    {
+      "pr": 24,
+      "head_sha": "04d47c9ae0c0de6132aa1b96fb0c082b7ef2da95",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-megastructure-wide-meridian-scar-261119/setup-meridian-scar.json",
+          "source_rectangle_count": 12384
+        }
+      ]
+    },
+    {
+      "pr": 23,
+      "head_sha": "bb6f05ee4fbb52c536e01f69849a01c313eca42e",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-ashlight-counterflow-foundry/setup.json",
+          "source_rectangle_count": 3994
+        },
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-pyrewater-quarantine-ring/setup.json",
+          "source_rectangle_count": 2834
+        }
+      ]
+    },
+    {
+      "pr": 22,
+      "head_sha": "b0d1e5216aabb9b5e009e599ffbffcec6fd8a657",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-graftloom-slipway-261119/setup-graftloom-slipway.json",
+          "source_rectangle_count": 13839
+        }
+      ]
+    },
+    {
+      "pr": 21,
+      "head_sha": "6f5ffd5212710988c2b3defa83fb842cdf07ff36",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-cinderwake-dual-harbour-interchange-261119/setup-cinderwake.json",
+          "source_rectangle_count": 12166
+        }
+      ]
+    },
+    {
+      "pr": 20,
+      "head_sha": "47e019a299d8bec1c72301a8265ef3e99c0faaad",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-morrow-array-split-phasewell-261119/setup-morrow-array.json",
+          "source_rectangle_count": 11657
+        }
+      ]
+    },
+    {
+      "pr": 17,
+      "head_sha": "189722d05743e81a8c10fe686daa96499ed6c5ae",
+      "maps": [
+        {
+          "path": "cybersand-canvases/2048x1024/original-racing-wide-thunderclap-switchyard-261118/setup-thunderclap-switchyard.json",
+          "source_rectangle_count": 12609
+        }
+      ]
+    }
+  ]
+}

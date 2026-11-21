@@ -322,6 +322,9 @@ func run() -> void:
 	root.size=Vector2i(1920,1080)
 	set_meta("cybersand_feature","shared_workbench")
 	host=load("res://main.tscn").instantiate()
+	# This retained-edge conversion compares the original narrow FreeMass
+	# law with PressureFlow, including its exact pre-switch cell inventory.
+	host.workbench_water_options = {"workbench_wave_flow":false}
 	root.add_child(host)
 	panel=host.shared_workbench
 	if await until(func()->bool: return not panel.applied.is_empty(),"blank workbench"):

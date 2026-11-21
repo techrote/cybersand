@@ -2,21 +2,15 @@
 title: Wave flow Water solver (experimental)
 status: Current
 document-kind: reference
-scope: Experimental-branch WAVE-MT-001 wave_flow_v1 opt-in bulk strip-parallel Water law; mechanism, ownership, parallel execution, state and memory, admission and refusal, limits and the candidate comparison that selected it; not on main, no default changed, not a policy family yet
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-20
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
 # Wave flow Water solver (experimental)
 
-**Status:** experimental implementation completed through PR #618 and handed
-to [PR #631](https://github.com/techrote/cybersand/pull/631) on
-`astra/wave-mt-001-669-finisher`, **not on main**. The original PR #617 and
-inherited PR #618 remain separate. `WorldConfig::wave_flow` opts in; a World that
-does not enable it keeps its existing kernels, physical hashes and save formats,
-and allocates no Wave storage. This is not another `LiquidSolverPolicy` family
-and does not change the default Water solver.
+Wave Flow entered the shared Workbench through PR #631. New sandbox and Workbench sessions use the owner-approved gameplay profile with waterfall spill and ballistic release. Native callers opt in through `WorldConfig::wave_flow`; disabled Worlds keep their original kernels, physical hashes, save formats and memory use. Wave runs on the FreeMass carrier. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) records the default transition and the [Oil tank](../audits/2026-11-20-wave-oil-impinge.md) records the final playtest.
 
 The additive C API and Godot evaluator expose the experimental law, worker and
 substep selection, representative scenarios and copied native diagnostics.
@@ -232,7 +226,7 @@ no strip cells. This avoids overflow before a clamp could take effect.
 ## Waterwall spill (experimental, WAVE-WATERWALL-001)
 
 **Status:** Draft/HOLD branch `claude/wave-waterwall-001`, stacked on PR #661. It is
-opt-in through `WaveFlowConfig::spill.enabled` and off by default. With spill off,
+selected through `WaveFlowConfig::spill.enabled`. The Water Ramp player profile enables it. With spill off,
 the law is the qualified Wave law: `test_wave_spill` pins cells, `state_hash`,
 `physical_state_hash` and `content_hash` for 12 scenes (1/4 workers, 1/3
 substeps, a selected region) to values computed from the unmodified #661 source.
@@ -411,11 +405,28 @@ the World is quarantined as failed, rather than wrapping the value.
 | Area | Under wave flow |
 |---|---|
 | Water material identity, density, render coverage from `state_a` | Unchanged |
-| Other materials' kernels (Sand sinking, reactions seen from the other material) | Unchanged; they are woken where Water arrives or leaves |
+| Other materials | Sand keeps its sinking law. Water wakes other materials where it arrives or leaves. Oil can exchange with Water directly above it. |
 | Body masks | Solid to Water; Water under a mask is frozen, as today |
 | Body contacts | Recorded when Water rests on a body or leans on its side, through the existing `record_transient_contact` |
-| Water's own per-cell kernel | **Does not run**: Water-initiated pair chemistry and Water-initiated exchange through lighter fluids are unsupported. Nonzero coherence is explicitly refused |
-| Buoyancy | **None**, as in FreeMass: nothing pushes a body up |
+| Water's own per-cell kernel | Bulk Wave owns Water motion. Oil schedules the vertical Water–Oil density exchange. Water-initiated pair chemistry and other Water-initiated density exchanges remain unsupported. Nonzero coherence is explicitly refused. |
+| Floating rigid bodies | Wave supplies no upward body force. |
+
+### Oil floating on Wave Water
+
+When Oil touches Wave Water immediately above it, the heavier Water can sink one cell and lift the Oil into its place. This uses the existing density ordering and transports the full stored cells, including Water overfill, Oil state and temperature. Oil handles ignition and extinguishing first. Both endpoints must be visible to the simulation and eligible to move this tick. A solid obstruction or a body mask can shelter a pocket. The exchange requires neither spill nor ballistic release. An exposed Water edge still uses the configured release law.
+
+Only a scheduled Oil cell checks for this contact. The Water worker count, Wave rounds and parcel budget do not control the rise rate. The owner prepares temperature storage for a warm exchange across a chunk edge before workers run.
+
+Oil can flow into a lower opening. Once it rests on Water, or on one other Oil cell directly on Water, it stops taking random steps along the level surface. The second-row check uses the admitted two-cell rule radius. The column pass keeps floating Oil impermeable and omits the extra rigid-ceiling pressure response below it. A contiguous Oil layer pinned directly under a solid, body mask or paused region retains the rigid response. These rules allow surface spray to die out after a disturbance. [Tank measurements and Windows playtest](../audits/wave-oil-buoyancy-2026-11-19/evaluation.md) · [Source review](../audits/2026-11-19-wave-oil-buoyancy.md)
+
+A thick floating Oil patch can spread over the pool. On the last Wave round, the column workers mark rows with at least three Oil cells directly on Water. After all workers and parcel launches finish, the owner can move the top Oil cell to a thinner part of the connected surface. Each move preserves the complete Oil cell and its temperature. The search reaches 16 columns in either direction, follows a rise or fall of at most one row per column, and checks up to 64 cells of Oil thickness. It needs open air above a Water-backed surface along the route. Walls, body masks, steep breaks and dry ground stop the search. The receiving layer must be at least two cells thinner than the donor. A uniform layer can settle and ordinary Wave Water continues to throw spray. Very deep deposits spread from eligible edges. [Radius-24 Oil and Lava replay](../audits/2026-11-19-wave-oil-lava.md)
+
+An open Oil slick also follows the Water beneath it. In a rising column, once the top Water cell holds more than 1½ ordinary cells of volume, Water can lift the slick one row. As a wave recedes, less than ¼ cell of Water can drain into the full row below and lower the slick. The different thresholds prevent small fluctuations from repeatedly lifting and dropping a resting layer. The owner tests the actual Water quantities after the Wave and ballistic passes. It moves one complete Oil cell between the ends of the contiguous layer and accounts for the transferred Water. This applies to films one to 64 cells thick. A rigid cap, blocked path or paused boundary prevents the move. Consolidation on descent requires matching Water temperatures. [Saved impingement tank](../audits/2026-11-20-wave-oil-impinge.md)
+
+Lava can initiate a quench when it touches Wave Water. Its Steam and Stone
+products account for the full Water cell, including stored overfill. The
+Workbench can keep reading spray and stepping the World after this reaction.
+[Water quantity accounting](liquid-prepared-setup-and-receipts.md)
 
 ## Limits
 
@@ -468,7 +479,7 @@ and **Disturb pool** control the scenario. Native tick timing is reported
 separately from presentation rate. `get_wave_flow_status` returns copied
 selection, actual participants, timing, tasks, solved chunks, allocated storage
 and quantity; `inspect_wave_flow_cell` copies stored/visible uint16 mass and
-retained face flux. Returning to the ordinary demo retires the opt-in law.
+retained face flux. A replacement creates the Water law selected by its destination session.
 
 Moving-body and Needle scenes own actual Rapier objects on Godot's main thread;
 only their bounded transient masks/contact values cross into native simulation.
@@ -556,3 +567,40 @@ comparison scenes and the ordinary Windows launcher. The
 [dated finisher record](../audits/2026-11-16-wave-workbench-631-finisher.md)
 retains the original failures; final-source execution and independent review
 remain separate source-bound evidence.
+
+## Waterwall 002 sheet, crest and scale-selective damping
+
+The Draft/HOLD successor to #672 exposes four optional integers. Zero selects the preceding behavior for each control.
+
+| Control | Native setting and bounds | Effect |
+|---|---|---|
+| Deep gain | `deep_gain`, 0–512 | Separate restoring gain for connected deep Water. Dry and shallow fronts use ordinary Gain. Zero inherits Gain. |
+| Flux smoothing | `flux_smoothing`, 0–64 | Each connected neighboring wet face contributes its retained-flux difference multiplied by this value divided by 256. Missing neighbors contribute zero difference. |
+| Sheet rate | `spill.sheet_rate`, 0–127 | An exposed resting row can shed this many units per full cell of outward head each round. Deep rows pour through the grid. The top two cell-equivalents can throw parcels. |
+| Coyote ticks | `spill.coyote_ticks`, 0–8 | A launched top crest adds its outward face velocity to the throw and travels level for this many active flight ticks before gravity acts. |
+
+The column pass snapshots retained flux into four additional bytes per resident Wave cell only when smoothing is selected. The existing barrier separates writes from neighbor reads. Adjacent faces in a broad wave carry similar flux, so the correction is small. At strength 64 an alternating pattern of equal and opposite retained fluxes cancels in one round. Dry gaps, walls and selection boundaries end the stencil.
+
+Sheet discharge reuses falling Water, the active band and bounded parcel nominations. Two faces of a donor may each spend at most half of its starting mass. With either new spill control active, a face reserves its throw before spending the rest of its half-budget on a grid pour. Each receiving face also caps inflow to half the free space. Serial launch checks remaining Water, spawn path and pool capacity. A refused launch leaves its quantity in the grid. An active crest countdown is hashed as future physical state. See the [dated evidence](../audits/2026-11-19-wave-waterwall-002.md).
+
+## Shallow Water on level ground
+
+The shipping player profile sets `floor_gain` to 1024. In `World::wave_flux_task`, the extra restoring force acts only at a normal, shallow advancing face above a continuous level solid floor. The lower of the two heads must be less than one full cell. Each side must reach real solid material at the same depth within three rows. Every intervening cell must be full Water and included in the solved region. This allows the bottom of a breaking wave to spread as a low sheet. A floor step, an unsupported receiver or a solver boundary uses the ordinary flux law.
+
+The adjusted head contribution is limited to one cell of Water. Retained flux, the two-face donor bound, uint16 receiver room and the existing apply pass still account for every moved unit. The solver reads existing settled metadata and allocates no new state. Zero disables this law and omits it from both state hashes. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) compares a single active floor row, three active rows and raising gain throughout the pool.
+
+Normal desktop sandbox, new Shared Workbench and ordinary curated Web demo constructors request the gameplay Water bundle. The Play Session course and authored policy comparisons use their explicit experiment constructors. Plain native construction retains the historical baseline law. V2 Workbench starts save material assignments and the authored canvas. The Web CYSD1 format supports FreeMass new demos and legacy slots. Full physical persistence for a running Wave World remains unavailable.
+
+## Full-face Waterwall release
+
+With spill and ballistic release enabled, `spill.full_face=1` lets each exposed, supported Water row nominate an outward parcel, including through an adjacent falling curtain. Exposed means the adjacent cell is falling Water or unsupported Empty. Water against a solid or another resting column still uses its ordinary contact law. The raw configuration has `full_face=0`. The Water Face evaluation stages it on with fall speed 3. [Water Lab](../operations/workbench-water-lab.md#try-full-face-release-at-fall-speed-3)
+
+Each side derives its allowance from its own donor before the grid and parcel split. A grid transfer has a second limit of half the receiving room. A parcel can pass through a filled, falling receiver, as its quantity is carried by the ballistic pool. The larger of Sheet rate and Stream share, in 256ths of the face allowance, reserves a grid portion. Stream draw can use the remaining allowance. The owner still withdraws from the donor after the apply pass. Refusals keep their Water in the grid. The crest alone receives coyote flight.
+
+A strip can retain up to 512 nominations. On overflow, full-face mode uses deterministic reservoir sampling across visited heights. The serial owner distributes the remaining launch quota through the retained nominations. Both stages count capacity deferrals. The pool and per-tick launch limits still apply. Every exposed row can participate over time. The number of simultaneous jets depends on available slots, Water quantity and geometry. [Measured face coverage and capacity tests](../audits/2026-11-19-wave-water-face-004.md)
+
+## Deep pool feed and ramp crest direction
+
+Adjacent horizontal faces can draw Water away from the same donor in opposite directions. With strong pool feed this can leave a narrow, almost empty column flanked by Water, making the upstream side of a moving crest unusually abrupt. The visible crest and the net quantity passing a point can travel in different directions. The [ramp replay](../audits/2026-11-19-wave-water-face-004.md) measures both independently.
+
+The staged **Deep pool feed** control (`spill.deep_draw`, 0–127) limits the extra wet-to-wet pool feed when either connected stack has five or more responding rows. A zero value inherits ordinary Pool feed at all depths. In the evaluation profile the deep limit is 64 and ordinary Pool feed is 127. A face whose responding stacks stay below five rows still receives the selected shallow feed. Floor gain retains its existing level-ground rule. The limit does not reduce the ordinary Coast allowance or increase a lower Pool feed. Wall discharge and parcel flight use their separate existing budgets.

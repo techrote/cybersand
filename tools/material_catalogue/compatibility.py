@@ -460,6 +460,78 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
   'issue': 661,
   'pr': 661},)
 
+# Waterwall 002 opts into Wave scratch storage and configuration/flight identity.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83',
+  'to_lf_sha256': 'fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0',
+  'source_commit': 'd876bd57897dd421b720e73d15d7c89a830b4896',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105',
+  'to_lf_sha256': 'bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03',
+  'source_commit': 'd876bd57897dd421b720e73d15d7c89a830b4896',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676})
+
+# Apply bounds live crest grace to the destination's flight law.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03',
+  'to_lf_sha256': '0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f',
+  'source_commit': 'd4df71fc6bc1bf6267270a4c1445207a02716317',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676},)
+
+# Bind the optional level-floor Wave gain to physical identity on the ramp branch.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f',
+  'to_lf_sha256': 'fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1',
+  'source_commit': '1604b66b19705d79d2704e5119a25823caee0973',
+  'record': 'docs/audits/2026-11-19-wave-water-ramp-003.md',
+  'issue': 676,
+  'pr': 677},)
+
+# Wave Water uses the catalogue's existing Water/Oil density ordering.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0',
+  'to_lf_sha256': 'fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc',
+  'source_commit': 'b8db73ce7d0f37c1a38690ea34749d1ccba3474b',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc',
+  'to_lf_sha256': 'c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b',
+  'source_commit': '0b2a46cee3598ae8e6ce481167ff3f482f83580f',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b',
+  'to_lf_sha256': '9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf',
+  'source_commit': '932a811c474de7f2720719f258a9fd38d8aecdfd',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf',
+  'to_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'source_commit': '461b1c1485418bcd8f83f29efe1cccf7ef4a9928',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': '75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae',
+  'to_lf_sha256': '4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489',
+  'source_commit': 'baa5699083f5f668f9c03309aceaccd0f1fb80d9',
+  'record': 'docs/audits/2026-11-19-wave-oil-lava.md',
+  'issue': 679,
+  'pr': 679},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 
