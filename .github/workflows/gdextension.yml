@@ -196,6 +196,7 @@ jobs:
         with:
           name: godot-linux-archive-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/godot-linux-archive/
+          compression-level: 0
           if-no-files-found: error
           retention-days: 1
 
@@ -227,6 +228,7 @@ jobs:
         with:
           name: godot-windows-archive-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/godot-windows-archive/
+          compression-level: 0
           if-no-files-found: error
           retention-days: 1
 

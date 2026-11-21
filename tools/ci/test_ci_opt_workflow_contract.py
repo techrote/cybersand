@@ -53,6 +53,28 @@ class PublisherSafetyTests(unittest.TestCase):
         self.assertIn("lfs: false", self.docs)
         self.assertIn("check_repository.py --require-materialized", self.docs)
 
+    def test_one_pinned_engine_archive_per_platform_and_no_coverage_removed(self):
+        ext = (ROOT / ".github/workflows/gdextension.yml").read_text()
+        self.assertIn("godot-linux-archive:", ext)
+        self.assertIn("godot-windows-archive:", ext)
+        self.assertIn("needs: [linux-build, execution-plan, godot-linux-archive]", ext)
+        self.assertIn("needs: [ready_scope, execution-plan, windows-build, godot-windows-archive]", ext)
+        self.assertIn("needs: [linux-build, godot-linux-archive]", ext)
+        self.assertGreaterEqual(ext.count("source-sha.txt"), 5)
+        self.assertGreaterEqual(ext.count("sha256sum --check --strict"), 3)
+        self.assertGreaterEqual(ext.count("sha512sum --check --strict"), 2)
+        import ast
+        windows = ast.parse((ROOT / "tools/ci/run_windows_godot_regressions.py").read_text())
+        declared = [
+            ast.literal_eval(assignment.value)
+            for assignment in windows.body if isinstance(assignment, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == "GODOT_SHA512"
+                    for target in assignment.targets)
+        ]
+        self.assertEqual(len(declared), 1)
+        self.assertIn(declared[0], ext)
+        self.assertIn("complete execution budgets", ext)
+
     def test_original_native_and_godot_shards_stay_present(self):
         native = (ROOT / ".github/workflows/native.yml").read_text()
         ext = (ROOT / ".github/workflows/gdextension.yml").read_text()
