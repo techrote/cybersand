@@ -96,7 +96,7 @@ func run() -> void:
 	set_meta("cybersand_feature","shared_workbench")
 	var scenario := OS.get_environment("FILL_TOTAL_CASE")
 	if scenario.is_empty(): scenario = "65k"
-	var side := {"16k":128,"65k":256,"262k":512}.get(scenario,0)
+	var side: int = int({"16k":128,"65k":256,"262k":512}.get(scenario,0))
 	if not check(side>0,"supported requested benchmark size"):
 		quit(1)
 		return
@@ -133,7 +133,7 @@ func run() -> void:
 			quit(1)
 			return
 		region = Rect2i(lower,Vector2i(side+2,side+2))
-		seed = origin+Vector2i(side/2,side/2)
+		seed = origin+Vector2i(side >> 1,side >> 1)
 	editor.select_tool("Fill")
 	editor.select_material(58)
 	editor.selection = region
