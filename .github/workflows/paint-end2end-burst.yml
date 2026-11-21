@@ -11,6 +11,7 @@ on:
       - "godot/native_extension/cyber_native_cell_world.cpp"
       - "godot/native_extension/cyber_native_cell_world.hpp"
       - "godot/tests/test_paint_end2end_burst.gd"
+      - "godot/tests/test_paint_editor_native.gd"
   workflow_dispatch:
 
 permissions:
