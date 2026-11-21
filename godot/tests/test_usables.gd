@@ -60,7 +60,7 @@ func _count_material(material: int) -> int:
 	return count
 
 func _catalogue() -> void:
-	_expect(Catalog.count() == 32, "catalogue no longer contains 32 usables")
+	_expect(Catalog.count() == 45 and Catalog.KINETIC_IDS.size() == 13, "catalogue no longer contains 32 + 13 kinetic usables")
 	_expect(Catalog.TOOL_IDS.size() == 12, "tool count changed")
 	_expect(Catalog.PROJECTILE_IDS.size() == 10, "projectile count changed")
 	_expect(Catalog.OBJECT_IDS.size() == 10, "object count changed")

@@ -1,6 +1,9 @@
 class_name CyberUsableRuntime
 extends RefCounted
 
+const KineticUsables = preload("res://scripts/kinetic_usables.gd")
+var _kinetic_seed: int = 0
+
 const Catalog = preload("res://scripts/usable_catalog.gd")
 const MAX_ACTORS: int = 8
 const MAX_PROJECTILES: int = 64
@@ -209,8 +212,22 @@ func _alternate(owner: int, definition: Dictionary, world) -> String:
 		_projectiles.remove_at(candidate)
 	return "activated"
 
+# Kinetic usables: a shooter or wand from kinetic_usables.gd fired from the
+# muzzle along the aim. Every flung cell goes through the native ballistic
+# owners; a World without them refuses (nothing is painted instead).
+func _apply_kinetic(owner: int, definition: Dictionary, origin: Vector2, aim: Vector2, power: float, world) -> String:
+	if world == null or not world.has_method(&"inject_solid_parcel"): return "kinetic_unsupported"
+	_kinetic_seed += 1
+	var muzzle: Vector2 = origin + aim * 2.0
+	var result: Dictionary = KineticUsables.fire(world, Vector2i(1 << 20, 1 << 20), muzzle, aim,
+		str(definition.get("kinetic", "")), clampf(power, 0.1, 1.0), _kinetic_seed * 97 + owner)
+	write_count_last += int(result.launched)
+	return "applied" if int(result.launched) > 0 else ("kinetic_" + (str(result.refused.keys()[0]) if not result.refused.is_empty() else "nothing"))
+
 func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float, world) -> String:
 	var origin: Vector2 = _centres[owner] if owner < _centres.size() else Vector2.ZERO
+	if StringName(str(definition.operation)) == &"kinetic":
+		return _apply_kinetic(owner, definition, origin, aim, power, world)
 	var reach: float = float(definition.get("range", 20.0)) * lerpf(0.35, 1.0, power)
 	var operation: StringName = StringName(str(definition.operation))
 	var changed: int = 0
