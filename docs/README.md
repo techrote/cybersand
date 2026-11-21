@@ -36,6 +36,8 @@ for ordinary UI controls, policy testing and authored saves; the
 [dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
 separates actual platform evidence from owner playfeel acceptance.
 
+The [Workbench publication and progression evaluation](operations/pubpres-integration-evaluation.md) tracks PUBPRES-INTEGRATION-001 and its Draft/HOLD gates.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

@@ -281,6 +281,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why can the sampled player rapidly surface through enclosing material, and how does the barrel-player experiment differ? | [Granular policy](../systems/granular-interaction-policy.md), [rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md), [PCHAR-001 evidence](../audits/2026-09-25-pchar001-player-representation-experiment.md) |
 | Historical powder measurements, barrel sinking and reversible soliding | [Baseline tooling](../operations/physics-characterisation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
+| Workbench sparse publication, physical progression and timed presentation evaluation | [PUBPRES-INTEGRATION-001](../operations/pubpres-integration-evaluation.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Desktop gameplay-state recording, frame format, bounded drops and evidence limits | [Gameplay recording](../operations/gameplay-recording.md), [ownership](../architecture/data-ownership-and-lifetimes.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |

@@ -40,6 +40,18 @@ shipped launchers. An independent final review and exact-source graphical result
 belong in the PR ledger. Keep Draft/HOLD until explicit owner approval; software
 rendering does not establish physical Windows/NVIDIA acceptance.
 
+## Workbench publication and progression repair — 2026-11-20
+
+PR #682 remains **Draft/HOLD; no merge or Ready promotion**. Continue from the
+[PUBPRES integration evaluation](pubpres-integration-evaluation.md), which owns
+the source/runtime controls, preserved negative renderer results and actual
+three-source Windows comparison. Matched gameplay rejected the temporary
+automatic Windows software-ANGLE full-upload override; the repair removes it
+and preserves explicit full selection. It bounds idle timer debt after completed
+physical samples. Accepted main and the previous integration are preserved as
+complete executable references. Owner physical Windows/NVIDIA acceptance is
+separate from hosted WARP and Linux software-renderer qualification.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at

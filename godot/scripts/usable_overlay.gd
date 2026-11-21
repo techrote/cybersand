@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func present(context: Dictionary, origin: Vector2, view_size: Vector2i, content_rect: Rect2) -> void:
 	_context = context.duplicate(true)
-	_origin = origin.floor()
+	_origin = origin
 	_view_size = view_size
 	position = content_rect.position
 	size = content_rect.size
