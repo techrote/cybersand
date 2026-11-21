@@ -1,0 +1,73 @@
+name: GEN006 native semantic bundle partial-admission control (experimental)
+
+on:
+  push:
+    branches:
+      - experiment/gen006-native-bundle-partial-admission-20261105
+    paths:
+      - native/tests/test_gen006_bundle_partial_admission.cpp
+      - .github/workflows/gen006-native-bundle-admission.yml
+      - docs/audits/2026-11-05-gen006-native-bundle-admission.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-native-bundle-partial-admission
+  cancel-in-progress: false
+
+jobs:
+  linux-native-control:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Authenticate exact source and provider
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-bundle
+          git rev-parse HEAD | tee build/gen006-bundle/source-sha.txt
+          git rev-parse HEAD^{tree} | tee build/gen006-bundle/source-tree.txt
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          g++-13 --version | head -n 1 | tee build/gen006-bundle/compiler.txt
+          python3 tools/ci/check_ci_provider_policy.py 2>&1 | tee build/gen006-bundle/provider-policy.log
+      - name: Compile actual native World and independent bounded control
+        timeout-minutes: 16
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 840s g++-13 -std=c++20 -O0 -g1 -pthread -Wall -Wextra -Wpedantic \
+            -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_bundle_partial_admission.cpp \
+            -o build/gen006-bundle/probe 2>&1 | tee build/gen006-bundle/compile.log
+      - name: Run native negative and positive controls
+        timeout-minutes: 4
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 200s build/gen006-bundle/probe 2>&1 | tee build/gen006-bundle/observations.txt
+          grep -q '^GEN006_BUNDLE_NATIVE_PASS checks=' build/gen006-bundle/observations.txt
+          test "$(grep -c 'result=PASS' build/gen006-bundle/observations.txt)" = 2
+      - name: Retain raw evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-native-semantic-bundle-control
+          path: |
+            build/gen006-bundle/source-sha.txt
+            build/gen006-bundle/source-tree.txt
+            build/gen006-bundle/compiler.txt
+            build/gen006-bundle/provider-policy.log
+            build/gen006-bundle/compile.log
+            build/gen006-bundle/observations.txt
+          if-no-files-found: warn
+          retention-days: 45
