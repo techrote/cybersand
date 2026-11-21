@@ -529,6 +529,7 @@ public:
         if(adapter.is_null() || !adapter->world_) { error_="Native world unavailable"; return false; }
         try {
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, false);
             config.transport_policy = cybersand::TransportPolicy::unpack(
                 {profile.ptr(),static_cast<std::size_t>(profile.size())});
             config.physics_diagnostics = {}; config.physics_diagnostics.enabled = true;
@@ -888,6 +889,7 @@ private:
             }
 
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, false);
             config.transport_policy = cybersand::TransportPolicy::unpack(
                 {profile.ptr(), static_cast<std::size_t>(profile.size())});
             config.physics_diagnostics = {};
@@ -1045,8 +1047,9 @@ public:
             return false;
         }
         try {
-            // A CYSD1 level is a finite-level reconstruction on default families.
+            // CYSD1 encodes the legacy finite level, including its narrow Water carrier.
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, false);
             config.liquid_solver_policy = {};
             // A default-family rebuild cannot inherit a PF-only C2048 budget.
             config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
@@ -1061,7 +1064,7 @@ public:
         }
     }
 
-    [[nodiscard]] bool build_world(const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& rectangles) {
+    [[nodiscard]] bool build_world(const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& rectangles, bool gameplay_water = false) {
         error_ = String();
         if (adapter.is_null() || !adapter->world_) {
             error_ = "Native world unavailable";
@@ -1069,6 +1072,7 @@ public:
         }
         try {
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, gameplay_water);
             config.transport_policy = {}; // Ordinary demos retain production Baseline.
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             config.liquid_solver_policy = {};
@@ -1119,7 +1123,7 @@ protected:
         ClassDB::bind_method(D_METHOD("export_physical_state", "world"), &CyberDemoBridge::export_physical_state);
         ClassDB::bind_method(D_METHOD("import_physical_state", "world", "bytes"),
                              &CyberDemoBridge::import_physical_state);
-        ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);
+        ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles", "gameplay_water"), &CyberDemoBridge::build_world, DEFVAL(false));
         ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
         ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
                                      "profile", "policy", "water_fills"),

@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -44,6 +44,11 @@ the frozen evaluation and existing historical fixtures retain their original sco
 ## Direct native art batches without inference
 
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
+
+For duplicate Art archives, hidden Workbench startup, linked session identity,
+missing-history refusal, crash recovery and cancellable full JSONL export,
+retrieve [conversation lifetime](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
+and its [explicit capacities](../systems/workbench-art-providers.md#explicit-capacity-outcomes).
 
 
 ## Generated terrain in the playable workbench
@@ -254,7 +259,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Sampled-player gravity, terminal speed, effective mass, jetpack and step/knee/clamber tuning | [Player/environment tuning](../systems/player-environment-profiles-and-traversal.md); use [granular policy](../systems/granular-interaction-policy.md) for REM-003/PCHAR sampled-player response boundaries and [Water design](../systems/water-design.md) for the separate liquid semantic owner |
 | Which Runner, Skimmer and Crawler actions remain compatible with either player or policy input? | [SetA actor controls](../systems/actor-control-prototypes.md), [SetA limits](configuration-reference.md#actor-control-prototype-values) |
 | Which rigs belong to SetB/F/Y/U/V, how do aim/effort/trim/reel work, and are the model personas factual? | [Actor rigs and shared input](../systems/actor-rigs.md), [rig limits](configuration-reference.md#actor-rig-values); SetV is explicitly fictional interface design |
+| How do I stage Sloshy, increase Water over a ledge, and give a crest coyote time? | [Water Lab controls](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave sheet and crest mechanics](../architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping), [measurements](../audits/2026-11-19-wave-waterwall-002.md) |
 | What is experimental Wave Flow, how does it make waves without a pressure solve, how is it parallel, and what does it not do? | [Wave Flow contract (PR #631, opt-in/default off, retained flux, explicit persistence refusal)](../architecture/wave-flow-v1.md), [inherited completion evidence](../audits/2026-11-15-wave-mt-001-completion.md) |
+| How does a thick Oil drop spread on Wave Water, and what happens when Lava touches compressed Water? | [Wave Oil surface behavior](../architecture/wave-flow-v1.md#oil-floating-on-wave-water), [quantity accounting](../architecture/liquid-prepared-setup-and-receipts.md), [measured ramp replay](../audits/2026-11-19-wave-oil-lava.md) |
 | How do I select Wave in the Shared Workbench, apply tuning, verify actual native activation, and compare PressureFlow on editable Water scenes? | [Wave Flow Workbench and Windows launch guide](../operations/wave-flow-evaluation.md), [configuration contract](../architecture/wave-flow-v1.md#workbench-authoring-tuning) |
 | How do the workbench valve, drain and pumped nozzle move Water, and how is their quantity accounted? | [Workbench liquid equipment](../systems/workbench-liquid-equipment.md), [inertial reference](../architecture/inertial-cellular-v1.md), [ballistic Water](../architecture/ballistic-water-v1.md) |
 | Which actor tools, ballistic payloads and material processors exist, how do they activate, and what are their budgets? | [Actor usables](../systems/actor-usables.md), [usable limits](configuration-reference.md#actor-usable-values), [recording](../operations/gameplay-recording.md) |

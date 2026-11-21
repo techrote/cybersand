@@ -7,6 +7,10 @@ const Contract = preload("res://scripts/microscenario_contract.gd")
 const MAX_TIMINGS: int = 3600
 const Telemetry = preload("res://scripts/microscenario_telemetry.gd")
 const HostEvidence = preload("res://scripts/liquid_host_evidence.gd")
+# The independent host-claim envelope permits 32,768 entries per Array, while
+# native Workbench accepts 32,768 RECTANGLES (five flat integer words each).
+# Do not lower native construction capacity to satisfy host evidence serialization.
+const HOST_CLAIM_MAX_CONTAINER_WORDS: int = 32768
 var _host_observation: RefCounted
 var _host_observation_identity: Dictionary = {}
 var _inspection_bridge: Variant
@@ -134,12 +138,12 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 				if controlled_setup.has(key): options[key] = controlled_setup[key]
 			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height",
 					"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain","workbench_wave_gain_confined",
-					"workbench_wave_stiffness","workbench_wave_damp_shift","workbench_wave_coast","workbench_wave_level_shift",
+					"workbench_wave_deep_gain","workbench_wave_floor_gain","workbench_wave_flux_smoothing","workbench_wave_stiffness","workbench_wave_damp_shift","workbench_wave_coast","workbench_wave_level_shift",
 					"workbench_wave_sleep_after","workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
 					"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
 					"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",
-					"workbench_wave_body_push","workbench_wave_body_push_by_mass","workbench_wave_spill","workbench_wave_spill_parcels","workbench_wave_spill_fall","workbench_wave_spill_draw",
-					"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
+					"workbench_wave_body_push","workbench_wave_body_push_by_mass","workbench_wave_spill","workbench_wave_spill_parcels","workbench_wave_spill_full_face","workbench_wave_spill_fall","workbench_wave_spill_draw",
+					"workbench_wave_spill_deep_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks","workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
 					"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw"]:
 				if controlled_setup.has(key): options[key] = controlled_setup[key]
 		# Only the exclusive owner retains this opaque token between its two
@@ -268,6 +272,27 @@ func liquid_solver_policy() -> Dictionary:
 	if _world == null or not _world.has_method(&"get_liquid_solver_policy"): return {}
 	return _world.get_liquid_solver_policy()
 
+# Project ONLY the unverified observation claim for large validated Workbench
+# starts. The actual checked.definition, checked.hash and native preparation
+# remain unchanged. A complete-definition SHA-256 and rectangle count retain
+# source identity without overfilling the 32,768-value host claim container.
+# Other MicroScenarios keep full claims and the existing strict refusal contract.
+static func host_definition_claim(checked: Dictionary) -> Dictionary:
+	var definition: Dictionary = checked.definition
+	var rectangles: Variant = definition.get("rectangles",[])
+	if str(definition.get("id","")) != Contract.WORKBENCH_ID or not rectangles is Array \
+			or rectangles.size() <= HOST_CLAIM_MAX_CONTAINER_WORDS:
+		return {"definition":definition}
+	var projected: Dictionary = definition.duplicate(false)
+	projected.erase("rectangles")
+	return {"definition":projected,
+		"projection":{"schema_version":1,"status":"unverified_host_claim_projection",
+			"omitted_field":"rectangles","format":"flat_xywhm_integer_words",
+			"integer_word_count":int(rectangles.size()),
+			"rectangle_count":int(rectangles.size()/5),
+			"validated_complete_definition_sha256":str(checked.hash),
+			"reason":"per_container_host_claim_capacity"}}
+
 func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: int, checked: Dictionary,
 		mode: String, instrumentation: bool, options: Dictionary) -> Dictionary:
 	if not bridge.has_method(&"prepared_liquid_run_capture"):
@@ -276,8 +301,9 @@ func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: in
 	if captured.get("lifecycle","") != "prepared" or captured.get("token",0) != token:
 		return {"ok":false,"error":"Prepared host observation token was retired"}
 	var receipt: Dictionary = captured.native_run_encoding
+	var claim: Dictionary = host_definition_claim(checked)
 	var owner_inputs: Dictionary = {"scope":"prepared_recipe_and_owner_inputs_v1",
-		"input_owner":"exclusive_scenario_owner","definition":checked.definition,
+		"input_owner":"exclusive_scenario_owner","definition":claim.definition,
 		"definition_hash":checked.hash,"transport_hash":checked.transport.hash,
 		"mode":mode,"instrumentation":instrumentation,
 		"native_initial_execution":{"intent":receipt.run_intent,"pacing":receipt.pacing,
@@ -286,6 +312,8 @@ func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: in
 			"worker_threads":receipt.worker_threads,"maximum_rule_radius":receipt.maximum_rule_radius},
 		"native_initial_body_input":{"values":Array(options.get("initial_bodies",PackedFloat32Array())),
 			"sha256":receipt.initial_body_state_sha256,"body_count":receipt.initial_body_count}}
+	if claim.has("projection"):
+		owner_inputs["definition_projection"] = claim.projection
 	var result: Dictionary = HostEvidence.collect(bridge,receipt,owner_inputs)
 	if not result.ok: return result
 	var values: Dictionary = result.evidence.snapshot()

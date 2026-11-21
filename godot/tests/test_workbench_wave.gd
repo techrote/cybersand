@@ -548,7 +548,17 @@ func construction_status() -> bool:
 
 func activation() -> bool:
 	var start := failures.size()
-	require(not wave().get("enabled",true),"ordinary Workbench starts with Wave off")
+	require(wave().get("enabled") == true and wave().spill.enabled and wave().spill.parcels,
+		"ordinary Workbench starts with Wave, waterfall spill and real ballistic release")
+	# This suite evaluates switching on from the qualified FreeMass baseline.
+	var spray: RefCounted = panel.water_spray
+	spray._reset_wave_defaults()
+	spray._set_spill("workbench_wave_spill",false)
+	spray._ballistic.button_pressed = false
+	spray._choose_studio_solver(0)
+	var legacy_generation := generation()
+	if not require(spray._apply_wave(),"explicit FreeMass baseline requested") or not await installed_after(legacy_generation,"explicit FreeMass baseline"): return false
+	require(not wave().enabled,"explicit FreeMass disables the gameplay Wave overlay")
 	if not await construction_status(): return false
 	var recipe: Dictionary = Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
 	recipe.edits = [[0,220,256,4,Setup.WALL],[0,0,4,220,Setup.WALL],[252,0,4,220,Setup.WALL],

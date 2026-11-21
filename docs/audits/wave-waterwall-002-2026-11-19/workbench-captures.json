@@ -1,0 +1,773 @@
+{
+  "map_before": {
+    "fixture": "setup-water-wall.json",
+    "mode": "hybrid",
+    "terrain_sha256": "9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5",
+    "godot": "4.7-stable (official)",
+    "display": "Windows",
+    "rendering": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56",
+    "workers": 6,
+    "water_quantity": "3052350",
+    "parameters": {
+      "active_rows": 32,
+      "adhesion_shift": 1,
+      "body_push": 256,
+      "body_push_by_mass": 1,
+      "calm": 512,
+      "calm_damp_shift": 3,
+      "coast": 16,
+      "damp_shift": 7,
+      "deep_gain": 0,
+      "empty_pour_shift": 2,
+      "flow_share_shift": 1,
+      "flux_smoothing": 0,
+      "gain": 32,
+      "gain_confined": 4,
+      "level_shift": 3,
+      "maximum_mass": 32000,
+      "rest_head": 1,
+      "sleep_after": 30,
+      "stick": 512,
+      "stiffness": 256,
+      "wake_peak": 1
+    },
+    "spill": {
+      "enabled": true,
+      "parcels": true,
+      "fall": 3,
+      "draw": 64,
+      "draw_head": 255,
+      "launch_budget": 256,
+      "launch_speed": 256,
+      "sheet_rate": 0,
+      "coyote_ticks": 0,
+      "stream_draw": 0,
+      "stream_share": 0,
+      "blobs": 1
+    },
+    "frames": [
+      {
+        "file": "hybrid-v0-t0000.png",
+        "sha256": "7fbd246e370018c013870f03e6a3a864c74b2ffd72152bed69c49539e2a4ee22",
+        "view": [
+          414,
+          510,
+          270,
+          180
+        ],
+        "tick": 0
+      },
+      {
+        "file": "hybrid-v1-t0000.png",
+        "sha256": "41d445a4b2e84f5436bd0d9763161c20303dda5bd4816fb4d03e7ea4644ef163",
+        "view": [
+          600,
+          609,
+          90,
+          60
+        ],
+        "tick": 0
+      },
+      {
+        "file": "hybrid-v0-t0090.png",
+        "sha256": "00ae631c94f2c7bef4ae09ec9f8987d9005d70647d5975a842929d1aea6abe06",
+        "view": [
+          414,
+          510,
+          270,
+          180
+        ],
+        "tick": 90
+      },
+      {
+        "file": "hybrid-v1-t0090.png",
+        "sha256": "5cf98c3497f91912ca662dcf3930941e24207e88e9e7789802ef842f49b5c843",
+        "view": [
+          600,
+          609,
+          90,
+          60
+        ],
+        "tick": 90
+      },
+      {
+        "file": "hybrid-v0-t0300.png",
+        "sha256": "a7dde862b6b5d4251324823795b7669771985a7d6e3f14b580175f34f2bf80f5",
+        "view": [
+          414,
+          510,
+          270,
+          180
+        ],
+        "tick": 300
+      },
+      {
+        "file": "hybrid-v1-t0300.png",
+        "sha256": "8f4d2b70f460c8f8328b763c8285ca1a7cacef0017be63a1ec1ff94e1c201225",
+        "view": [
+          600,
+          609,
+          90,
+          60
+        ],
+        "tick": 300
+      }
+    ]
+  },
+  "map_after": {
+    "fixture": "setup-water-wall.json",
+    "mode": "max",
+    "terrain_sha256": "9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5",
+    "godot": "4.7-stable (official)",
+    "display": "Windows",
+    "rendering": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56",
+    "workers": 6,
+    "water_quantity": "3052350",
+    "parameters": {
+      "active_rows": 32,
+      "adhesion_shift": 1,
+      "body_push": 256,
+      "body_push_by_mass": 1,
+      "calm": 512,
+      "calm_damp_shift": 3,
+      "coast": 16,
+      "damp_shift": 7,
+      "deep_gain": 0,
+      "empty_pour_shift": 2,
+      "flow_share_shift": 1,
+      "flux_smoothing": 0,
+      "gain": 32,
+      "gain_confined": 4,
+      "level_shift": 3,
+      "maximum_mass": 32000,
+      "rest_head": 1,
+      "sleep_after": 30,
+      "stick": 512,
+      "stiffness": 256,
+      "wake_peak": 1
+    },
+    "spill": {
+      "enabled": true,
+      "parcels": true,
+      "fall": 8,
+      "draw": 127,
+      "draw_head": 65535,
+      "launch_budget": 128,
+      "launch_speed": 256,
+      "sheet_rate": 64,
+      "coyote_ticks": 4,
+      "stream_draw": 0,
+      "stream_share": 0,
+      "blobs": 1
+    },
+    "frames": [
+      {
+        "file": "max-v0-t0000.png",
+        "sha256": "0035fb9ed999379eb2d6738d60091d097cacd031945cf299ee5b499e88302f65",
+        "view": [
+          414,
+          510,
+          270,
+          180
+        ],
+        "tick": 0
+      },
+      {
+        "file": "max-v1-t0000.png",
+        "sha256": "f8b15ac7ef3f9e511a2b46e0f24c5a7995e9d6a826a5c4d1c9938d101ed4a3ee",
+        "view": [
+          600,
+          609,
+          90,
+          60
+        ],
+        "tick": 0
+      },
+      {
+        "file": "max-v0-t0090.png",
+        "sha256": "46fe879793a7aa4a9804872373756f786c7209efd5e5c9db76dcc28942a131a7",
+        "view": [
+          414,
+          510,
+          270,
+          180
+        ],
+        "tick": 90
+      },
+      {
+        "file": "max-v1-t0090.png",
+        "sha256": "d5342b25f5d8392db96d82618c7f23d4d02943c8bcd4ec9180a269569cb98227",
+        "view": [
+          600,
+          609,
+          90,
+          60
+        ],
+        "tick": 90
+      },
+      {
+        "file": "max-v0-t0300.png",
+        "sha256": "64e34d9f229674083a9de009432b557891b22959af7e155c6ba6b86509ea8952",
+        "view": [
+          414,
+          510,
+          270,
+          180
+        ],
+        "tick": 300
+      },
+      {
+        "file": "max-v1-t0300.png",
+        "sha256": "22533928e455c9979694379e2aaa8de10d6bec0926d7b246addf242b2e7d793c",
+        "view": [
+          600,
+          609,
+          90,
+          60
+        ],
+        "tick": 300
+      }
+    ]
+  },
+  "tank_before": {
+    "fixture": "tank",
+    "mode": "orig",
+    "terrain_sha256": "",
+    "godot": "4.7-stable (official)",
+    "display": "Windows",
+    "rendering": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56",
+    "workers": 6,
+    "water_quantity": "228480",
+    "parameters": {
+      "active_rows": 32,
+      "adhesion_shift": 1,
+      "body_push": 256,
+      "body_push_by_mass": 1,
+      "calm": 512,
+      "calm_damp_shift": 3,
+      "coast": 16,
+      "damp_shift": 7,
+      "deep_gain": 0,
+      "empty_pour_shift": 2,
+      "flow_share_shift": 1,
+      "flux_smoothing": 0,
+      "gain": 32,
+      "gain_confined": 4,
+      "level_shift": 3,
+      "maximum_mass": 32000,
+      "rest_head": 1,
+      "sleep_after": 30,
+      "stick": 512,
+      "stiffness": 256,
+      "wake_peak": 1
+    },
+    "spill": {
+      "enabled": false,
+      "parcels": false,
+      "fall": 3,
+      "draw": 64,
+      "draw_head": 255,
+      "launch_budget": 256,
+      "launch_speed": 256,
+      "sheet_rate": 0,
+      "coyote_ticks": 0,
+      "stream_draw": 0,
+      "stream_share": 0,
+      "blobs": 1
+    },
+    "frames": [
+      {
+        "file": "orig-v0-t0000.png",
+        "sha256": "ed2068fc97bc742c6b79eae41d785dfbb897a7f544781d1bc12c067c000a4640",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 0
+      },
+      {
+        "file": "orig-v0-t0130.png",
+        "sha256": "d5d08ab99bc406c7605ed5a950dbd4f19703a9d36efce34d038c3cb1b0e678e3",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 130
+      },
+      {
+        "file": "orig-v0-t0200.png",
+        "sha256": "a49900bbb10b1abf0e79eecefff4bdd87c0384e6aa4bfe0a8ad2945a68b62721",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 200
+      },
+      {
+        "file": "orig-v0-t0268.png",
+        "sha256": "91fb497ed596b5db774138414fe36dbb4782cba86577aea5e12f9d13348de1ec",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 268
+      },
+      {
+        "file": "orig-v0-t0536.png",
+        "sha256": "76d9d5ea4c7fcfb6ec34f621f9760f0298ed4edb967d6acdaeebae879d6e806b",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 536
+      }
+    ]
+  },
+  "tank_after": {
+    "fixture": "tank",
+    "mode": "sloshy",
+    "terrain_sha256": "",
+    "godot": "4.7-stable (official)",
+    "display": "Windows",
+    "rendering": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56",
+    "workers": 6,
+    "water_quantity": "228480",
+    "parameters": {
+      "active_rows": 32,
+      "adhesion_shift": 1,
+      "body_push": 256,
+      "body_push_by_mass": 1,
+      "calm": 128,
+      "calm_damp_shift": 8,
+      "coast": 64,
+      "damp_shift": 16,
+      "deep_gain": 16,
+      "empty_pour_shift": 2,
+      "flow_share_shift": 1,
+      "flux_smoothing": 16,
+      "gain": 32,
+      "gain_confined": 4,
+      "level_shift": 3,
+      "maximum_mass": 32000,
+      "rest_head": 1,
+      "sleep_after": 90,
+      "stick": 128,
+      "stiffness": 256,
+      "wake_peak": 1
+    },
+    "spill": {
+      "enabled": false,
+      "parcels": false,
+      "fall": 3,
+      "draw": 64,
+      "draw_head": 255,
+      "launch_budget": 256,
+      "launch_speed": 256,
+      "sheet_rate": 0,
+      "coyote_ticks": 0,
+      "stream_draw": 0,
+      "stream_share": 0,
+      "blobs": 1
+    },
+    "frames": [
+      {
+        "file": "sloshy-v0-t0000.png",
+        "sha256": "d93cb381a2da80641b832d00141ee74d862fdc1791254ec6565c34e5281a2bc7",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 0
+      },
+      {
+        "file": "sloshy-v0-t0130.png",
+        "sha256": "5188fbf78e776b23a52178bf7c8fbe555ebc21ae3eef60ee867cad7c2c8ea4bb",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 130
+      },
+      {
+        "file": "sloshy-v0-t0200.png",
+        "sha256": "db02a635e3f83d5ffc8e255d3674c6feb0bc0f0358067517e9a3057ce5bf7446",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 200
+      },
+      {
+        "file": "sloshy-v0-t0268.png",
+        "sha256": "435fa789aba6d6c16d5bf554e437e7c81b6f2099b986249195eed74380b73fa3",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 268
+      },
+      {
+        "file": "sloshy-v0-t0536.png",
+        "sha256": "805750b75b339d4e5415371ad0aef60994b0fa18d9f7ef399acb1d6777287b69",
+        "view": [
+          12,
+          26,
+          75,
+          36
+        ],
+        "tick": 536
+      }
+    ]
+  },
+  "lip_before": {
+    "fixture": "lip",
+    "mode": "combined-nograce",
+    "terrain_sha256": "",
+    "godot": "4.7-stable (official)",
+    "display": "Windows",
+    "rendering": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56",
+    "workers": 6,
+    "water_quantity": "228480",
+    "parameters": {
+      "active_rows": 32,
+      "adhesion_shift": 1,
+      "body_push": 256,
+      "body_push_by_mass": 1,
+      "calm": 128,
+      "calm_damp_shift": 8,
+      "coast": 64,
+      "damp_shift": 16,
+      "deep_gain": 16,
+      "empty_pour_shift": 2,
+      "flow_share_shift": 1,
+      "flux_smoothing": 16,
+      "gain": 32,
+      "gain_confined": 4,
+      "level_shift": 3,
+      "maximum_mass": 32000,
+      "rest_head": 1,
+      "sleep_after": 90,
+      "stick": 128,
+      "stiffness": 256,
+      "wake_peak": 1
+    },
+    "spill": {
+      "enabled": true,
+      "parcels": true,
+      "fall": 8,
+      "draw": 127,
+      "draw_head": 65535,
+      "launch_budget": 128,
+      "launch_speed": 256,
+      "sheet_rate": 64,
+      "coyote_ticks": 0,
+      "stream_draw": 0,
+      "stream_share": 0,
+      "blobs": 1
+    },
+    "frames": [
+      {
+        "file": "combined-nograce-v0-t0138.png",
+        "sha256": "b72502572e357743a723b199b6b696bd75d5b267729d8ffede3d33f062c53679",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 138
+      },
+      {
+        "file": "combined-nograce-v0-t0140.png",
+        "sha256": "fb850639c94cf9c574777a9fbe1184740bccb46a8c1a6ff2ef5f4c32e92c6187",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 140
+      },
+      {
+        "file": "combined-nograce-v0-t0142.png",
+        "sha256": "16d02a4ec03abf808d92a7d8b8b5f7c4305ab0c5acf4314010cd0a2a02400c0d",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 142
+      },
+      {
+        "file": "combined-nograce-v0-t0144.png",
+        "sha256": "05c5e0b47a545a1222354c8fb40258572666cedbf2413867e575d98127de1732",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 144
+      },
+      {
+        "file": "combined-nograce-v0-t0146.png",
+        "sha256": "7c3c8265a064c0eea5ee3482c61cfc7fc875e5bd775831a99950a5f3631e7c0a",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 146
+      },
+      {
+        "file": "combined-nograce-v0-t0148.png",
+        "sha256": "412d10e0c98503018cedfc240f7fc11681712ba4655f9b5636ea2de2c229ce06",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 148
+      },
+      {
+        "file": "combined-nograce-v0-t0152.png",
+        "sha256": "ab7dbbc16ba7f085ca24a5fb5c5c355595634c323a08e30264961e9abd254c80",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 152
+      },
+      {
+        "file": "combined-nograce-v0-t0160.png",
+        "sha256": "8592feba445db79d7d8937b35a1226739b281c9a7bb3c139db40a574336f640a",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 160
+      },
+      {
+        "file": "combined-nograce-v0-t0190.png",
+        "sha256": "5ffc95169b6390c880becd3648047e44fa8fa35e9c0f36f1b19905d47ee93724",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 190
+      }
+    ]
+  },
+  "lip_after": {
+    "fixture": "lip",
+    "mode": "combined",
+    "terrain_sha256": "",
+    "godot": "4.7-stable (official)",
+    "display": "Windows",
+    "rendering": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56",
+    "workers": 6,
+    "water_quantity": "228480",
+    "parameters": {
+      "active_rows": 32,
+      "adhesion_shift": 1,
+      "body_push": 256,
+      "body_push_by_mass": 1,
+      "calm": 128,
+      "calm_damp_shift": 8,
+      "coast": 64,
+      "damp_shift": 16,
+      "deep_gain": 16,
+      "empty_pour_shift": 2,
+      "flow_share_shift": 1,
+      "flux_smoothing": 16,
+      "gain": 32,
+      "gain_confined": 4,
+      "level_shift": 3,
+      "maximum_mass": 32000,
+      "rest_head": 1,
+      "sleep_after": 90,
+      "stick": 128,
+      "stiffness": 256,
+      "wake_peak": 1
+    },
+    "spill": {
+      "enabled": true,
+      "parcels": true,
+      "fall": 8,
+      "draw": 127,
+      "draw_head": 65535,
+      "launch_budget": 128,
+      "launch_speed": 256,
+      "sheet_rate": 64,
+      "coyote_ticks": 4,
+      "stream_draw": 0,
+      "stream_share": 0,
+      "blobs": 1
+    },
+    "frames": [
+      {
+        "file": "combined-v0-t0138.png",
+        "sha256": "834d7ae4522fb6cb453b25b073f6f04dc646f130cf74bc643968002d158fccc6",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 138
+      },
+      {
+        "file": "combined-v0-t0140.png",
+        "sha256": "f70a6d673c4add9b262f755062a4911614a22503db2b64720addc8d370eec767",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 140
+      },
+      {
+        "file": "combined-v0-t0142.png",
+        "sha256": "e1a315123e0f85285500f2767f819a5893ce86d837bf0b4a1d2e9df17e04f580",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 142
+      },
+      {
+        "file": "combined-v0-t0144.png",
+        "sha256": "45828392dc356f27b055546c6e05223cb6c276893589cec3b45177394490fe84",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 144
+      },
+      {
+        "file": "combined-v0-t0146.png",
+        "sha256": "abdf9437057199d4a6141864ecf8ed52f74acbae865e7c22e25377bae2ccd133",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 146
+      },
+      {
+        "file": "combined-v0-t0148.png",
+        "sha256": "96a64e3e8a77995fc22189410d65746f708a18aed2ed59267e07cef63cedb6c7",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 148
+      },
+      {
+        "file": "combined-v0-t0152.png",
+        "sha256": "1a7c7463870ecba602573fd4c7a52545a80b5b85959611e663577290cd3e76d0",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 152
+      },
+      {
+        "file": "combined-v0-t0160.png",
+        "sha256": "57b420d80a8470b5ba5affe52cfa5d1c3384e267415778f3aced9da91b79cb18",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 160
+      },
+      {
+        "file": "combined-v0-t0190.png",
+        "sha256": "29929a437bd3f386b5bf92a076302a1e0a907d893c43015a9e7cf3578d9278b5",
+        "view": [
+          76,
+          38,
+          16,
+          16
+        ],
+        "tick": 190
+      }
+    ]
+  },
+  "graphical_test": {
+    "render-hover": {
+      "assertions": 216,
+      "captures": 6,
+      "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56"
+    },
+    "render-repeat": {
+      "assertions": 216,
+      "captures": 6,
+      "native_sha256": "5e6f245dc286c7aea92f38aa19da36e4887b09711fe108861ffdf4d8a2c64a56"
+    }
+  },
+  "platform": {
+    "compiler": "LLVM-MinGW 20260826, Clang 23.1.0",
+    "build_input_fingerprint": "feec23a90521d9070425f356272687b88ce72d8ef6c6748e885388880ba89675",
+    "headless": {
+      "spill_checks": 669,
+      "wave_assertions": 1265,
+      "wave_ticks": 35,
+      "failure_containment_checks": 77,
+      "failed_world_checks": 215
+    },
+    "renderer": "Windows / OpenGL compatibility / ANGLE D3D11 / NVIDIA TITAN RTX",
+    "frame_units": "Tick numbers are exact paused native step targets. Frame hashes identify the original submitted framebuffer crops. Figures resize these crops with nearest-neighbour sampling."
+  },
+  "figures_sha256": {
+    "map-discharge.png": "df85be6f2540acb79e2120a368b894ba12b47eee8c85203ee0003a17235a3bfa",
+    "tank-surface.png": "f5be39a3a24827f8def1f9d13a3fcc1364951a11561614ca6fa8a83f91ed6ac6",
+    "lip-flight.png": "4447ea20fa9ab4178c0eb5af2d09bb033d87344701bbd6a337361a3c12500a63",
+    "lip-flight.gif": "c18039b5d15d71b663df8426ff85f821bc52896e6be05ac3b2e3dc43b580cd0c"
+  }
+}

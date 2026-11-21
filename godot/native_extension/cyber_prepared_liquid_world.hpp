@@ -403,6 +403,9 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         for (const WaveKnob knob : {
                 WaveKnob{"workbench_wave_active_rows", &cybersand::WaveFlowConfig::active_rows},
                 WaveKnob{"workbench_wave_gain", &cybersand::WaveFlowConfig::gain},
+                WaveKnob{"workbench_wave_deep_gain", &cybersand::WaveFlowConfig::deep_gain},
+                WaveKnob{"workbench_wave_floor_gain", &cybersand::WaveFlowConfig::floor_gain},
+                WaveKnob{"workbench_wave_flux_smoothing", &cybersand::WaveFlowConfig::flux_smoothing},
                 WaveKnob{"workbench_wave_gain_confined", &cybersand::WaveFlowConfig::gain_confined},
                 WaveKnob{"workbench_wave_stiffness", &cybersand::WaveFlowConfig::stiffness},
                 WaveKnob{"workbench_wave_damp_shift", &cybersand::WaveFlowConfig::damp_shift},
@@ -435,12 +438,16 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         // spill's hybrid release, which throws exposed faces through the same
         // parcel pool, so it turns Ballistic Water on. Without it a spill World's
         // release budget is zero: parcels fly, but faces spill through the grid.
-        for (const char* key : {"workbench_wave_spill", "workbench_wave_spill_parcels"}) {
+        for (const char* key : {"workbench_wave_spill", "workbench_wave_spill_parcels", "workbench_wave_spill_full_face"}) {
             if (!options.has(key)) continue;
             if (!workbench || !config->wave_flow.enabled || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Wave spill options require an enabled workbench Wave Flow and a boolean value");
         }
         config->wave_flow.spill.enabled = options.get("workbench_wave_spill", false);
+        const bool full_face = options.get("workbench_wave_spill_full_face", false);
+        if (full_face && !config->wave_flow.spill.enabled)
+            throw std::invalid_argument("Full-face release requires Waterwall spill");
+        config->wave_flow.spill.full_face = full_face ? 1 : 0;
         const bool spill_parcels = options.get("workbench_wave_spill_parcels", false);
         if (spill_parcels && !config->wave_flow.spill.enabled)
             throw std::invalid_argument("Wave spill ballistic release requires Waterwall spill");
@@ -455,6 +462,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 SpillKnob{"workbench_wave_spill_fall", &cybersand::WaveSpillConfig::fall},
                 SpillKnob{"workbench_wave_spill_share_shift", &cybersand::WaveSpillConfig::share_shift},
                 SpillKnob{"workbench_wave_spill_draw", &cybersand::WaveSpillConfig::draw},
+                SpillKnob{"workbench_wave_spill_deep_draw", &cybersand::WaveSpillConfig::deep_draw},
                 SpillKnob{"workbench_wave_spill_draw_head", &cybersand::WaveSpillConfig::draw_head},
                 SpillKnob{"workbench_wave_spill_stream", &cybersand::WaveSpillConfig::stream},
                 SpillKnob{"workbench_wave_spill_launch_min", &cybersand::WaveSpillConfig::launch_min},
@@ -462,6 +470,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 SpillKnob{"workbench_wave_spill_launch_speed", &cybersand::WaveSpillConfig::launch_speed},
                 SpillKnob{"workbench_wave_spill_stream_share", &cybersand::WaveSpillConfig::stream_share},
                 SpillKnob{"workbench_wave_spill_blobs", &cybersand::WaveSpillConfig::catch_falling},
+                SpillKnob{"workbench_wave_spill_sheet_rate", &cybersand::WaveSpillConfig::sheet_rate},
+                SpillKnob{"workbench_wave_spill_coyote_ticks", &cybersand::WaveSpillConfig::coyote_ticks},
                 SpillKnob{"workbench_wave_spill_stream_draw", &cybersand::WaveSpillConfig::stream_draw}}) {
             if (!options.has(knob.key)) continue;
             if (!workbench || !config->wave_flow.spill.enabled || options[knob.key].get_type() != Variant::INT)
@@ -977,6 +987,9 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         wave_flow["substeps"] = wave.substeps;
         wave_flow["active_rows"] = wave.active_rows;
         wave_flow["gain"] = wave.gain;
+        wave_flow["deep_gain"] = wave.deep_gain;
+        wave_flow["floor_gain"] = wave.floor_gain;
+        wave_flow["flux_smoothing"] = wave.flux_smoothing;
         wave_flow["gain_confined"] = wave.gain_confined;
         wave_flow["stiffness"] = wave.stiffness;
         wave_flow["damp_shift"] = wave.damp_shift;

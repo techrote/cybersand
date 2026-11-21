@@ -1,0 +1,544 @@
+{
+  "fixture": "48 columns, 32 cells deep, one 48-cell Oil row ten below still Water, 14x8 falling Sand",
+  "host": "Windows Godot 4.7 headless; real native Workbench LA-SELECTIVE constructor; gameplay defaults, six workers",
+  "view": "x98..201, y20..124. Oil and Sand counts in the view. Afloat means no stored Water above in this column.",
+  "before_dll_sha256": "7f3455daf35d004d64527ddb1967fb2a7a268d66b95fe8ab66c6c972115a1a66",
+  "candidate_dll_sha256": "2d31f8c7d732e1dad1973f2d6bc9dfbc6bed7c8150451269dfab601b886940e6",
+  "gate": "Side gate erased between ticks 600 and 601, fresh spray counted through 624. Long closed run keeps gate intact.",
+  "before": [
+    {
+      "afloat": 0,
+      "hash": "7460fb7b9a05123f",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 0,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "52d834fab2be5fed",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 5,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "1290c3a4730ca670",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 10,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "0f320fcca777f8c5",
+      "launched": 480,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 20,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "d9fd96779ac01ac0",
+      "launched": 601,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 30,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "c0828662e9a30e1b",
+      "launched": 967,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 60,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "1e38ba7de2147908",
+      "launched": 3000,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 120,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "8a83a22bd4a65fc0",
+      "launched": 163877,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 540,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "f4b76cdeeec315b8",
+      "launched": 216423,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 600,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "e6b088d6e30f4f2a",
+      "launched": 257462,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 612,
+      "water": "379440"
+    },
+    {
+      "afloat": 3,
+      "hash": "62c49a12fcdc4142",
+      "launched": 289905,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 3,
+      "tick": 624,
+      "water": "379440"
+    }
+  ],
+  "candidate": [
+    {
+      "afloat": 0,
+      "hash": "7460fb7b9a05123f",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 0,
+      "water": "379440"
+    },
+    {
+      "afloat": 0,
+      "hash": "73fb653b129d6d95",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 5,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "eaff360e62b90b18",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 48,
+      "tick": 10,
+      "water": "379440"
+    },
+    {
+      "afloat": 46,
+      "hash": "df62f812e16bca91",
+      "launched": 192,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 43,
+      "tick": 20,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "a209df5b193c7734",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 30,
+      "water": "379440"
+    },
+    {
+      "afloat": 45,
+      "hash": "121e8a75b589e8e4",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 38,
+      "tick": 60,
+      "water": "379440"
+    },
+    {
+      "afloat": 43,
+      "hash": "6aec069a282c3425",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 32,
+      "tick": 120,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "efc24fb003e41b3e",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 540,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "85f8787b50adcc9e",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 600,
+      "water": "379440"
+    },
+    {
+      "afloat": 41,
+      "hash": "6948f8430a57d7b5",
+      "launched": 30760,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 33,
+      "tick": 612,
+      "water": "379440"
+    },
+    {
+      "afloat": 44,
+      "hash": "5755822f13416b0c",
+      "launched": 54888,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 34,
+      "tick": 624,
+      "water": "379440"
+    }
+  ],
+  "closed_long_run": [
+    {
+      "afloat": 0,
+      "hash": "7460fb7b9a05123f",
+      "launched": 0,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 0,
+      "tick": 0,
+      "water": "379440"
+    },
+    {
+      "afloat": 43,
+      "hash": "6aec069a282c3425",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 32,
+      "tick": 120,
+      "water": "379440"
+    },
+    {
+      "afloat": 47,
+      "hash": "1467aa3c4d63c30c",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 36,
+      "tick": 240,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "9ee5acb9fe3321c2",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 360,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "3a1715a2693ed237",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 480,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "85f8787b50adcc9e",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 600,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "4c40d2000fe8e67e",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 720,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "742a6f91e2656288",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 840,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "c84ead55da3a47be",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 960,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "30cb7b35d5bd6422",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1080,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "337b987e211efed9",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1200,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "1ea736c91f605149",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1320,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "39c7bec1a28d710a",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1440,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "6b0da7b3d7fade3e",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1560,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "98feef27669b2606",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1680,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "4ea7e5248b693cd9",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1800,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "405b0cad84311546",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 1920,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "f3e715837adff81b",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2040,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "b7c83e09bdbb3a42",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2160,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "66ee7d62a0b86d06",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2280,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "9d736024cf079a14",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2400,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "c39da590b78a3ba7",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2520,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "ea4760095e6d6d5c",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2640,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "9f44197f8389d46b",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2760,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "f63196f555e76c6b",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 2880,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "c9f73eebffb74ede",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 3000,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "10c18c0441057226",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 3120,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "9b818dead050a0cf",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 3240,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "613301b8add89eca",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 3360,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "a8d6503335c5e1a2",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 3480,
+      "water": "379440"
+    },
+    {
+      "afloat": 48,
+      "hash": "01b6f00209041c59",
+      "launched": 1150,
+      "oil_in_view": 48,
+      "sand_in_view": 112,
+      "surface_columns": 39,
+      "tick": 3600,
+      "water": "379440"
+    }
+  ]
+}

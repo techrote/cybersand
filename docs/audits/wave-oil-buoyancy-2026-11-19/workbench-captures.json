@@ -1,0 +1,138 @@
+{
+  "schema": "wave-oil-workbench-frame-comparison-v1",
+  "environment": "Windows; Godot 4.7.stable.official.5b4e0cb0f; OpenGL 3.3 NVIDIA 581.80, TITAN RTX",
+  "fixture": "setup-oil-tank.json",
+  "map_sha256": "a74babb457c11d17b890b64745fe60438b256fa976b5563d3d67a9e5aaa11c7c",
+  "control": "Load start, Apply fresh gameplay Wave profile with six workers, step exact native ticks while paused and capture the submitted framebuffer via the Workbench capture driver. The fixture and Apply acknowledgements in this run use the published render_world_generation.",
+  "args": [
+    "named=oil-tank",
+    "OUT_DIR",
+    "fresh",
+    "0,10,600",
+    "6",
+    "224,234,64,60"
+  ],
+  "source_commits": {
+    "before": "eb8298d689288bd3598540f03e4b258d4957c799",
+    "after": "461b1c1485418bcd8f83f29efe1cccf7ef4a9928"
+  },
+  "rendered": {
+    "before": {
+      "native_sha256": "7f3455daf35d004d64527ddb1967fb2a7a268d66b95fe8ab66c6c972115a1a66",
+      "samples": [
+        {
+          "completed_tick": 0,
+          "water_quantity": "379440",
+          "launched_units": 0
+        },
+        {
+          "completed_tick": 10,
+          "water_quantity": "379440",
+          "launched_units": 0
+        },
+        {
+          "completed_tick": 600,
+          "water_quantity": "379440",
+          "launched_units": 67226
+        }
+      ],
+      "original_framebuffers": [
+        {
+          "file": "fresh-v0-t0000.png",
+          "sha256": "7f55e946c9cce1811537010c150d211e3d1f6bb36db3bcf0eaec67b7a8f69bad",
+          "view": [
+            224,
+            234,
+            64,
+            60
+          ]
+        },
+        {
+          "file": "fresh-v0-t0010.png",
+          "sha256": "ca91fba9d034aa9cbe780c1be8a55dde454090a9e73e36548ad35fb8dd24c557",
+          "view": [
+            224,
+            234,
+            64,
+            60
+          ]
+        },
+        {
+          "file": "fresh-v0-t0600.png",
+          "sha256": "e719271558deae91f9506c9859461c690dedb186714e404b54dcdb699a60ca86",
+          "view": [
+            224,
+            234,
+            64,
+            60
+          ]
+        }
+      ],
+      "log_sha256": "36d3b1ffeb4d036f740a1be6e0c83b74a3a71e064a0d595102e811628b3554d4"
+    },
+    "after": {
+      "native_sha256": "2d31f8c7d732e1dad1973f2d6bc9dfbc6bed7c8150451269dfab601b886940e6",
+      "samples": [
+        {
+          "completed_tick": 0,
+          "water_quantity": "379440",
+          "launched_units": 0
+        },
+        {
+          "completed_tick": 10,
+          "water_quantity": "379440",
+          "launched_units": 0
+        },
+        {
+          "completed_tick": 600,
+          "water_quantity": "379440",
+          "launched_units": 809
+        }
+      ],
+      "original_framebuffers": [
+        {
+          "file": "fresh-v0-t0000.png",
+          "sha256": "51b60bd1e7a338ae411b45c0c5214fd450ebc32ddae062b7e23be3c1b5eda33f",
+          "view": [
+            224,
+            234,
+            64,
+            60
+          ]
+        },
+        {
+          "file": "fresh-v0-t0010.png",
+          "sha256": "cb50c596729893eb979e745b384b969df4de103b025f5b1958be824b40fad6bf",
+          "view": [
+            224,
+            234,
+            64,
+            60
+          ]
+        },
+        {
+          "file": "fresh-v0-t0600.png",
+          "sha256": "6bd5f620d6e7bea4acd4eb42903235ae8774bb69a3b261e902e2956786276f66",
+          "view": [
+            224,
+            234,
+            64,
+            60
+          ]
+        }
+      ],
+      "log_sha256": "36d3b1ffeb4d036f740a1be6e0c83b74a3a71e064a0d595102e811628b3554d4"
+    }
+  },
+  "figures": {
+    "workbench-tick600.png": {
+      "sha256": "2480b12c548415cdf36ecdbb74fc0bddfaab468a4b2fe2c02534af9ddbf8efbc",
+      "composition": "Two same-size crops from the 876x822 submitted viewport; crop box x=64..811, y=120..799; labels outside image pixels."
+    },
+    "workbench-oil-rise.png": {
+      "sha256": "56b56532686507966a94682374257a8739acda0feafc235f872a395181ae71c8",
+      "composition": "Three whole after-build viewport crops at ticks 0, 10 and 600, scaled to 430x404 for display."
+    }
+  },
+  "earlier_attempt": "The cold Windows ANGLE run did not reach the ready Workbench within the shortened 90-second startup observation. Both accepted runs used native OpenGL, six workers and the same camera with zero ERROR lines."
+}
