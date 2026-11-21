@@ -3,6 +3,7 @@ extends SceneTree
 ## Accepted fixture responses still execute through the actual native owner.
 const Controller = preload("res://scripts/batch_lab/batch_lab_controller.gd")
 const Experiments = preload("res://scripts/batch_lab/batch_lab_experiments.gd")
+const ArtPanel = preload("res://scripts/art_batch_panel.gd")
 const SECRET := "batch-fixture-secret-opaque"
 var controller: Node
 var server := TCPServer.new()
@@ -15,6 +16,8 @@ var evidence := ""
 var fixture_thread := Thread.new()
 var fixture_mutex := Mutex.new()
 var fixture_stopping := false
+var ordinary_before: Dictionary = {}
+var history_before: Dictionary = {}
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
@@ -25,6 +28,19 @@ func check(ok: bool, label: String) -> bool:
 	print("BATCH_PROVIDER_CHECK ",checks," ",label," ",ok)
 	if not ok: failures.append(label); push_error(label)
 	return ok
+
+func _ordinary_fingerprint() -> Dictionary:
+	var profile := "user://art-provider.cfg"
+	var value := {"profile_file":FileAccess.file_exists(profile),"profile_directory":DirAccess.dir_exists_absolute(profile),
+		"profile_sha256":FileAccess.get_sha256(profile) if FileAccess.file_exists(profile) else ""}
+	for folder: String in ["user://art-traffic","user://art-pending-history"]:
+		var directory := DirAccess.open(folder)
+		var entry := {"exists":directory!=null,"files":{},"directories":[]}
+		if directory!=null:
+			for filename: String in directory.get_files(): entry.files[filename]=FileAccess.get_sha256(folder.path_join(filename))
+			entry.directories=Array(directory.get_directories()); entry.directories.sort()
+		value[folder]=entry
+	return value
 
 func _serve() -> void:
 	while server.is_connection_available():
@@ -123,6 +139,8 @@ func run_case(model: String) -> void:
 func run() -> void:
 	evidence = OS.get_environment("BATCH_LAB_EVIDENCE_DIR")
 	if not evidence.is_empty(): DirAccess.make_dir_recursive_absolute(evidence)
+	ordinary_before=_ordinary_fingerprint()
+	history_before=ArtPanel.read_history_session().duplicate(true)
 	controller = Controller.new(); root.add_child(controller)
 	await process_frame
 	for candidate: int in range(46000+OS.get_process_id()%1000,48000):
@@ -133,6 +151,15 @@ func run() -> void:
 	for endpoint: String in ["http://[::1]evil/v1","http://localhost:/v1","http://localhost:99999/v1","http://user:pass@localhost/v1","http://localhost/v1?api_key=test","https://api.openai.com/v1"]:
 		check(not Controller.local_endpoint(endpoint),"unsafe or public endpoint refused")
 	check(Controller.local_endpoint("http://[::1]:1234/v1") and Controller.local_endpoint("http://192.168.1.9:1234/v1"),"bounded literal local endpoints supported")
+	check(not Controller.Provider.valid_traffic_path("user://batch-lab-traffic/probe.jsonl") \
+		and Controller.Provider.Archive.valid_path("user://batch-lab-traffic/probe.jsonl"),"ordinary Art profile validator cannot bind a Batch trace")
+	var namespace_probe := Controller.Provider.new()
+	check(namespace_probe.begin_resume("user://batch-lab-traffic/probe.jsonl")!=OK,"ordinary provider refuses Batch resume namespace")
+	namespace_probe.traffic_directory="user://batch-lab-traffic"
+	check(namespace_probe.begin_resume("user://art-traffic/probe.jsonl")!=OK,"Batch provider refuses ordinary resume namespace")
+	namespace_probe.traffic_directory="user://unapproved-traffic"
+	check(namespace_probe.new_log_path().is_empty(),"writer refuses arbitrary archive directories")
+	namespace_probe.free()
 	check(not controller.configure_tile(0,{"endpoint":"http://localhost/v1?token=private"}).ok,"credential-bearing endpoint refused before persistence")
 	check(not controller.configure_tile(0,{"prompt":"contains "+SECRET}).ok,"configured secret cannot enter prompt provenance")
 	await run_case("protocol-malformed")
@@ -203,6 +230,18 @@ func run() -> void:
 	var count: int = controller.attempts.size()
 	var loaded: Dictionary = controller.load_session(path)
 	check(loaded.ok and controller.attempts.size()==count,"rejected returned programs remain safely reopenable / "+str(loaded.get("reason","")))
+	var verified_traces := 0
+	for record: Dictionary in controller.attempts:
+		var trace: Dictionary = record.provenance.get("provider_traffic",{})
+		if not trace.has("path"): continue
+		check(str(trace.path).get_base_dir()=="user://batch-lab-traffic" and FileAccess.file_exists(trace.path) \
+			and FileAccess.get_sha256(trace.path)==trace.sha256,"attempt retains its durable sanitized Batch trace identity")
+		var archive := Controller.Provider.Archive.new()
+		check(archive.resolve(trace.path),"existing bounded archive reader accepts a Batch-root trace")
+		verified_traces+=1
+	check(verified_traces==controller.attempts.size(),"all requested attempts retain independent Batch JSONL provenance")
+	check(_ordinary_fingerprint()==ordinary_before,"Batch HTTP requests leave ordinary Art profile, traffic and pending-history bytes unchanged")
+	check(ArtPanel.read_history_session()==history_before,"Batch HTTP requests leave ordinary Undo/Redo history association unchanged")
 	finish()
 
 func finish() -> void:

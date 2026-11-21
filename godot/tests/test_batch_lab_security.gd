@@ -87,7 +87,7 @@ func serve() -> void:
 					"choices":[{"message":{"content":content},"finish_reason":"stop"}]}
 				if int(reply.status)!=200: response["error"]={"message":"fixture "+secret}
 				var body := JSON.stringify(response).to_utf8_buffer()
-				var header := "HTTP/1.1 %d Fixture\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: %d\r\n\r\n" % [int(reply.status),body.size()]
+				var header := "HTTP/1.1 %d Fixture\r\nContent-Type: application/json\r\nX-Credential-Echo: %s\r\nConnection: close\r\nContent-Length: %d\r\n\r\n" % [int(reply.status),secret,body.size()]
 				var packet := header.to_utf8_buffer(); packet.append_array(body)
 				peer.put_data(packet); peer.disconnect_from_host()
 				peer=null; wire.clear(); admitted=0
@@ -110,8 +110,35 @@ func contains_secret(value: String) -> bool:
 		if not secret.is_empty() and value.contains(secret): return true
 	return false
 
-func credential_case(label: String, clear_key: bool, failed: bool) -> void:
-	var old_secret := "security-fixture-previous-opaque-"+label
+func tree_contains_secret(value: Variant) -> bool:
+	if value is String: return contains_secret(value)
+	if value is Dictionary:
+		for key: Variant in value:
+			if contains_secret(str(key)) or tree_contains_secret(value[key]): return true
+	if value is Array:
+		for item: Variant in value:
+			if tree_contains_secret(item): return true
+	return false
+
+func decoded_traffic_safe(path_name: String) -> bool:
+	var found_response := false
+	var found_echo_header := false
+	for line: String in FileAccess.get_file_as_string(path_name).split("\n",false):
+		var event: Variant = JSON.parse_string(line)
+		if not event is Dictionary or tree_contains_secret(event): return false
+		if event.get("kind")=="response":
+			# A raw provider response is JSON inside the outer JSONL string.
+			# Plain substring checks miss JSON-escaped opaque credentials.
+			var body: Variant = JSON.parse_string(str(event.data.body))
+			if not body is Dictionary or tree_contains_secret(body): return false
+			if not event.data.get("headers") is Array: return false
+			for header: Variant in event.data.headers:
+				if str(header).to_lower().begins_with("x-credential-echo:"): found_echo_header=true
+			found_response=true
+	return found_response and found_echo_header
+
+func credential_case(label: String, clear_key: bool, failed: bool, secret_override := "") -> void:
+	var old_secret := "security-fixture-previous-opaque-"+label if secret_override.is_empty() else secret_override
 	var new_secret := "" if clear_key else "security-fixture-current-opaque-"+label
 	secrets.append(old_secret)
 	if not new_secret.is_empty(): secrets.append(new_secret)
@@ -140,12 +167,14 @@ func credential_case(label: String, clear_key: bool, failed: bool) -> void:
 		check(record.state=="refused" and record.material_cells.is_empty(),label+" failure cannot become native edits")
 	else:
 		check(record.state=="completed" and int(record.metrics.get("changed",0))==1 and not record.receipts.is_empty(),label+" performs one acknowledged native cell change")
-	check(not contains_secret(JSON.stringify(record)),label+" retained metadata keys, values and failure text contain no credentials")
+	check(not tree_contains_secret(record),label+" retained metadata keys, values and failure text contain no credentials")
 	check(not traffic_path.is_empty() and not contains_secret(FileAccess.get_file_as_string(traffic_path)),label+" shared provider durable traffic contains no credential-bearing metadata keys")
+	check(not traffic_path.is_empty() and decoded_traffic_safe(traffic_path),label+" decoded raw HTTP body and actual echoed response header contain no credentials")
 	check(record.usage.get("cost_usd")==null and not record.usage.get("cost_known",true),label+" unknown cost remains explicit")
 	var exported := path(label+"-session.json")
 	check(controller.save_session(exported).ok,label+" session exports")
-	check(not contains_secret(FileAccess.get_file_as_string(exported)),label+" export contains no old or current credential")
+	var saved: Variant = JSON.parse_string(FileAccess.get_file_as_string(exported))
+	check(saved is Dictionary and not tree_contains_secret(saved),label+" export contains no old or current credential")
 
 func current_identity() -> String:
 	var records: Array = []
@@ -239,11 +268,12 @@ func run() -> void:
 	if not check(fixture_thread.start(serve)==OK,"fixture serves independently of cancellation callbacks"): finish(); return
 	await credential_case("rotation",false,false)
 	await credential_case("clear",true,false)
+	await credential_case("escaped-transport",true,false,"security-fixture-transport-\"quote\"-and-\\slash")
 	await credential_case("clear-failure",true,true)
 	close_server()
 	escaped_credential_case()
-	if controller.attempts.size()==3 and not controller.is_running(): await import_cases()
-	else: check(false,"all three credential outcomes retained before import probes")
+	if controller.attempts.size()==4 and not controller.is_running(): await import_cases()
+	else: check(false,"all four credential outcomes retained before import probes")
 	finish()
 
 func finish() -> void:

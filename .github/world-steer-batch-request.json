@@ -1,0 +1,13 @@
+{
+  "schema": "world-steer-batch-request-v1",
+  "mission": "WORLD-STEER-BATCH-001",
+  "scope": "M0-M2",
+  "request_id": "2026-11-21-reviewed-source-evaluator-1",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "review_checkpoint_parent": "b029eb14375b46cf3ebdb8af1a28607f6f9ea032",
+  "platforms": ["linux", "windows"],
+  "source_identity": "The executing workflow commit, tree and build ledger identify the frozen candidate.",
+  "disposition": "Draft/HOLD; no merge, Ready, auto-merge or production-default promotion",
+  "paid_model_dispatch": false,
+  "physical_windows_11_nvidia_acceptance": "pending owner device"
+}

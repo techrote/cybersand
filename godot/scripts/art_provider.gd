@@ -9,6 +9,7 @@ var secrets: Array[String] = []
 var traffic := ""
 var readable := ""
 var log_path := ""
+var traffic_directory := "user://art-traffic"
 var parent_log_path := "" # Previous immutable JSONL segment; never copied on reopen.
 var log_warning := ""
 var last_event_stored := false
@@ -142,6 +143,9 @@ func _redact_unmarked(value: String) -> String:
 		if not secret.is_empty():
 			clean = clean.replace(secret, "[redacted]")
 			if secret.uri_encode() != secret: clean = clean.replace(secret.uri_encode(), "[redacted]")
+			var quoted := JSON.stringify(secret)
+			var json_spelling := quoted.substr(1,quoted.length()-2)
+			if json_spelling!=secret: clean = clean.replace(json_spelling,"[redacted]")
 	for pattern: String in ['(?i)Bearer[ \t]+[A-Za-z0-9._~+/-]+=*','sk-[A-Za-z0-9_-]{12,}','nvapi-[A-Za-z0-9_-]+']:
 		var regex := RegEx.new()
 		regex.compile(pattern)
@@ -153,7 +157,7 @@ func _redact_unmarked(value: String) -> String:
 	userinfo.compile('(https?://)[^/@\\s]+:[^/@\\s]+@')
 	return userinfo.sub(clean,'$1[redacted]@',true)
 
-func _redacted_value(value: Variant) -> Variant:
+func _redacted_value(value: Variant, redact_keys: bool = true) -> Variant:
 	if value is String: return redact(value)
 	if value is Dictionary:
 		var clean := {}
@@ -163,18 +167,31 @@ func _redacted_value(value: Variant) -> Variant:
 			# Untrusted provider metadata can echo a request credential in a key as
 			# well as a value. Preserve other structural keys and use this request's
 			# retained secret set even after the host changes its current key.
-			clean[redact(str(key))] = "[redacted]" if credential and item is String else _redacted_value(item)
+			clean[redact(str(key)) if redact_keys else key] = "[redacted]" if credential and item is String else _redacted_value(item,redact_keys)
 		return clean
-	if value is Array:
+	if value is Array or value is PackedStringArray:
 		var clean: Array = []
-		for item: Variant in value: clean.append(_redacted_value(item))
+		for item: Variant in value: clean.append(_redacted_value(item,redact_keys))
 		return clean
 	return value
 
 func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	# Envelope IDs, roles, offsets and segment paths are structural, not free text.
+	if kind == "response" and data is Dictionary:
+		var clean: Dictionary = _redacted_value(data,false)
+		if data.get("body") is String:
+			# The HTTP body is already JSON-escaped text. Redact its decoded values
+			# and untrusted keys so quotes/backslashes cannot hide a request secret.
+			# Keep original wire spelling when no structured redaction is needed.
+			var parser := JSON.new()
+			if parser.parse(data.body)==OK:
+				var body: Variant = _redacted_value(parser.data)
+				if body!=parser.data: clean.body = JSON.stringify(body)
+		return clean
 	if kind == "history_result" and data is Dictionary:
-		var clean: Dictionary = _redacted_value(data)
+		# Native receipt field names are a trusted protocol, not provider metadata.
+		# A short local credential must not rename action/counter/source fields.
+		var clean: Dictionary = _redacted_value(data,false)
 		for field: String in ["_history_receipt_id","_history_world_epoch","_history_turn_sha256"]:
 			if data.has(field): clean[field] = data[field]
 		return clean
@@ -191,7 +208,8 @@ func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	return _redacted_value(data)
 
 func new_log_path() -> String:
-	var folder := "user://art-traffic"
+	var folder := traffic_directory
+	if not traffic_namespace_valid(): return ""
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
 	for _attempt in range(16):
 		var candidate := folder + "/" + Crypto.new().generate_random_bytes(16).hex_encode() + ".jsonl"
@@ -199,7 +217,14 @@ func new_log_path() -> String:
 	return ""
 
 static func valid_traffic_path(path: String) -> bool:
-	return Archive.valid_path(path)
+	# Ordinary Art profiles/receipts must never bind a Batch Lab transport trace.
+	return Archive.valid_path(path) and path.get_base_dir()=="user://art-traffic"
+
+func _valid_writer_path(path: String) -> bool:
+	return Archive.bound_path(path) and path.get_base_dir()==traffic_directory
+
+func traffic_namespace_valid() -> bool:
+	return Archive.valid_directory(traffic_directory)
 
 static func valid_history_receipt_id(identity: Variant) -> bool:
 	return identity is String and _history_id_pattern.search(identity) != null
@@ -325,6 +350,10 @@ func _active_history_segments() -> Array[Dictionary]:
 
 func prepare_resume(previous: String) -> void:
 	# No existence check, open, scan or write at startup. Keep unavailable pointers.
+	if not previous.is_empty() and not _valid_writer_path(previous):
+		resume_error = "Saved conversation belongs to another traffic namespace."
+		log_warning = resume_error; resume_ok = false
+		return
 	if not _pending_history_segment.is_empty() and previous != parent_log_path:
 		resume_error = "Cannot rebind a conversation while its native history checkpoint is pending."
 		resume_ok = false
@@ -342,6 +371,9 @@ func prepare_resume(previous: String) -> void:
 func traffic_chain(latest: String) -> Array[String]:
 	var archive := Archive.new()
 	var chain: Array[String] = []
+	if not _valid_writer_path(latest):
+		log_warning = "Saved conversation belongs to another traffic namespace."
+		return chain
 	if not archive.resolve(latest):
 		log_warning = archive.error
 		return chain
@@ -368,6 +400,10 @@ func begin_export(destination: String) -> Error:
 	if export_active or resume_active: return ERR_BUSY
 	export_message = ""; export_error = OK; _export_bytes = 0
 	var latest := log_path if not log_path.is_empty() else parent_log_path
+	if not _valid_writer_path(latest):
+		export_message = "Saved conversation belongs to another traffic namespace."
+		export_error = ERR_FILE_CORRUPT
+		return export_error
 	var archive := Archive.new()
 	if not archive.resolve(latest):
 		export_message = archive.error
@@ -527,6 +563,10 @@ func _validate_conversation_event(event: Dictionary, source: String, offset: int
 
 func begin_resume(previous: String) -> Error:
 	if resume_active or export_active: return ERR_BUSY
+	if not previous.is_empty() and not _valid_writer_path(previous):
+		resume_error = "Saved conversation belongs to another traffic namespace."
+		log_warning = resume_error; resume_ok = false
+		return ERR_FILE_CORRUPT
 	if not _pending_history_segment.is_empty() and previous != parent_log_path:
 		resume_error = "Cannot restore another conversation while its native history checkpoint is pending."
 		log_warning = resume_error
@@ -649,6 +689,7 @@ func _poll_images(budget: int) -> String:
 		# Defend the queued reader too: a negative seek must never fall back to0.
 		if int(item.offset) < 0 or int(item.limit) <= 0 or int(item.offset) >= int(item.limit): return problem
 		if _image_file == null:
+			if not _valid_writer_path(str(item.path)): return problem
 			_image_file = FileAccess.open(item.path, FileAccess.READ)
 			if _image_file == null or int(item.offset) >= mini(int(item.limit), _image_file.get_length()): return problem
 			if int(item.offset) > 0:
@@ -677,7 +718,7 @@ func _poll_images(budget: int) -> String:
 	return ""
 
 func _read_historical_image(offset: int, path: String, limit: int) -> String:
-	if offset < 0 or not valid_traffic_path(path): return ""
+	if offset < 0 or not _valid_writer_path(path): return ""
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null or offset >= mini(limit, file.get_length()): return ""
 	if offset > 0:
@@ -823,6 +864,9 @@ func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: D
 		log_warning = "Pending history segment's validated parent changed; original archive and receipt preserved."
 		return false
 	var destination: String = pending.destination
+	if not _valid_writer_path(destination):
+		log_warning = "Pending traffic checkpoint belongs to another namespace."
+		return false
 	var directory := DirAccess.open(destination.get_base_dir())
 	if directory == null or directory.is_link(destination.get_file()) \
 			or str(pending.canonical).is_empty() or Archive.canonical_path(destination) != str(pending.canonical):
@@ -849,6 +893,13 @@ func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: D
 	return true
 
 func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
+	if not traffic_namespace_valid() or (not parent_log_path.is_empty() and not _valid_writer_path(parent_log_path)):
+		log_warning = "Traffic namespace is invalid or differs from its parent."
+		return false
+	for ancestor: Dictionary in _validated_segments:
+		if not _valid_writer_path(str(ancestor.path)):
+			log_warning = "Traffic namespace differs from its validated ancestor."
+			return false
 	if kind in ["session_start", "session_parent"]:
 		log_warning = "Segment metadata cannot be appended as a conversation event."
 		return false
@@ -867,7 +918,7 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 		log_warning = "Conversation reached the 4096-segment limit; prior history preserved and nothing written."
 		return false
 	var destination := new_log_path() if new_segment else log_path
-	if destination.is_empty() or not valid_traffic_path(destination):
+	if destination.is_empty() or not _valid_writer_path(destination):
 		log_warning = "Cannot create traffic archive; live traffic remains available."
 		return false
 	var id := Crypto.new().generate_random_bytes(16).hex_encode() if new_segment else _segment_id

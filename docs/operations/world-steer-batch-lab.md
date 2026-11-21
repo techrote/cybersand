@@ -167,6 +167,14 @@ models in ChatGPT is not API entitlement. Missing endpoints, credentials,
 malformed responses and cancellation are failures to inspect, not sample filters.
 Never store credentials in configurations or exported evidence.
 
+Batch provider traffic uses the existing bounded writer in a separate fixed
+`user://batch-lab-traffic` directory. It cannot bind ordinary Art profiles or
+receipt chains. Starting a Batch attempt therefore does not create orphaned
+ordinary Art history or block manual Undo/Redo. The retained attempt identifies
+its sanitized transport trace by path, SHA-256 and byte count; copy that trace
+too when transferring transport-level failure evidence to another machine.
+Existing ordinary Art profiles, archives and recovery rules remain intact.
+
 Execution provenance identifies supplied programs, provider responses, history
 replays and captured baselines separately. Selecting a provider on a procedural
 example does not make that response a deterministic control. A provider response
@@ -199,7 +207,7 @@ read-only design reference, not a runtime dependency or imported training corpus
 | Area | Owned delta and accepted dependency |
 | --- | --- |
 | Native orchestration | New `scripts/batch_lab` adapter/controller; existing worker and Art executor unchanged |
-| Provider retention | Existing `ArtProvider` reused; narrow credential redaction also covers echoed JSON field names in its traffic archive |
+| Provider retention | Existing `ArtProvider` and archive writer reused; isolated Batch transport directory, bound archive paths and credential redaction preserve ordinary Art profile/history ownership |
 | UI | New Batch Lab panel/view; one lazy toolbar entry and source-capture method in `shared_workbench.gd` |
 | Experiments | New versioned prompts/cards/manifests, metrics and independent reducer; no #568/#569 data mutation |
 | Qualification | New Batch Lab tests, runner and one request-scoped workflow; accepted build/packaging helpers reused |
@@ -243,14 +251,16 @@ artifacts. The final campaign repeats the shipped regressions on exact source.
 
 | Review | Confirmed defects repaired and independently checked |
 | --- | --- |
-| Native ownership | Large partial-result replay uses the original program and confirmed prefix; JSON material permissions remain canonical; source-crop coordinates stay separate from local metrics; timeout recovery retains acknowledged material state |
-| Workbench UI | Reopened grid dimensions and selection caches remain coherent; pending source capture is fenced against Stop/close/reconfigure; blinding removes identifying fields; small tiles can reach true 1:1 scale; 68 lifecycle checks passed |
+| Native ownership | Large partial-result replay uses the original program and confirmed prefix; JSON material permissions remain canonical; source-crop coordinates stay separate from local metrics; timeout recovery retains acknowledged material state; the replacement regression validates the truthful retired prefix and every replacement cell instead of assuming cancellation timing |
+| Workbench UI | Reopened grid dimensions and selection caches remain coherent; pending source capture is fenced against Stop/close/reconfigure; blinding removes identifying fields; small tiles can reach true 1:1 scale; Batch traffic is isolated from ordinary Art history; 68 lifecycle checks passed |
 | Methodology | Common targets and seven-shape schema are disclosed to every variant; 60 context checks passed; 12 independent invalid-evidence mutations were rejected without losing their review cards; stale control labels cannot classify provider responses or replays |
-| Security and persistence | Request-owned redaction covers rotated/cleared keys and durable JSON field names; structured export handles escaped credentials; corrupt PNGs refuse before commit; prompt/config hashes and executed-versus-next configuration remain bound; 51 checks passed |
+| Security and persistence | Request-owned redaction covers rotated/cleared keys, JSON field names, escaped HTTP bodies and typed response headers; trusted receipt keys stay intact; corrupt PNGs refuse before commit; final security/persistence checks passed 64/64, namespace checks 43/43, and existing archive/receipt checks 293/293 |
 | Regression and release | The accepted Materials Lab completion format is recognized without accepting failures; qualification binds the executed project to its checkout or verified package; 22 guard checks, the actual launcher route and 54 existing provider checks passed |
 
-The narrow shared-provider repair preserves its transport, session stack and
-structural metadata. No native C++ input, worker ownership, physics default,
+The shared-provider repair preserves its transport, ordinary session stack and
+trusted native receipt keys. Canonical directory and file checks reject archive
+aliases crossing the two namespaces.
+No native C++ input, worker ownership, physics default,
 material identity or ordinary Workbench save format changed.
 
 ## Deferred M3–M7

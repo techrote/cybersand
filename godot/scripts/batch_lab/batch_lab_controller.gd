@@ -387,6 +387,7 @@ func stop(indices: Array = []) -> void:
 				work["stop_requested"] = true
 			elif work.has("provider"):
 				work.provider.cancel()
+				_record_provider_trace(tiles[index],work.provider)
 				work.provider.queue_free()
 				_active.erase(index)
 				_finish(index,"stopped","Inference stopped; no native commands were applied.")
@@ -561,6 +562,11 @@ func _begin(index: int) -> void:
 		tile.provenance["model_source_context_runs"] = source_context.runs
 		tile.provenance["model_source_context_scope"] = "complete immutable input material plane; native restoration must agree before editing"
 		var connection := Provider.new()
+		connection.traffic_directory = "user://batch-lab-traffic"
+		if not connection.traffic_namespace_valid():
+			connection.free()
+			_finish(index,"refused","Batch Lab traffic namespace is invalid or aliases ordinary Art history; no provider request was sent.")
+			return
 		add_child(connection)
 		var identity := str(tile.attempt_id)
 		_active[index] = {"provider":connection,"attempt_id":identity,"model_started_usec":Time.get_ticks_usec()}
@@ -576,6 +582,17 @@ func _begin(index: int) -> void:
 		_begin_native(index,0.0)
 	tile_changed.emit(index)
 	changed.emit()
+
+func _record_provider_trace(tile: Dictionary, connection: Node) -> void:
+	var path := str(connection.log_path)
+	if connection.traffic_directory=="user://batch-lab-traffic" and connection._valid_writer_path(path) and FileAccess.file_exists(path):
+		var file := FileAccess.open(path,FileAccess.READ)
+		if file!=null:
+			tile.provenance["provider_traffic"] = {"path":path,"sha256":FileAccess.get_sha256(path),
+				"bytes":file.get_length(),"scope":"sanitized Batch Lab transport JSONL; separate from ordinary Art history"}
+			file.close()
+	else:
+		tile.provenance["provider_traffic"] = {"available":false,"reason":str(connection.log_warning)}
 
 func _provider_done(index: int, identity: String, text: String, response: Dictionary, error: String) -> void:
 	if not _active.has(index) or str(_active[index].attempt_id)!=identity or str(tiles[index].attempt_id)!=identity: return
@@ -597,6 +614,7 @@ func _provider_done(index: int, identity: String, text: String, response: Dictio
 	tile.provenance["model_response_complete"] = not over_capacity
 	tile.usage = {} if over_capacity else _sanitize({"reported":response.get("usage",{}),"cost_usd":null,"cost_known":false,
 		"requested_model":tile._frozen_config.model,"returned_model":response.get("model","unknown")},work.provider)
+	_record_provider_trace(tile,work.provider)
 	work.provider.queue_free()
 	_active.erase(index)
 	if over_capacity: _finish(index,"refused","Local provider response exceeds the 1 MiB bounded response capacity; no native writes."); return

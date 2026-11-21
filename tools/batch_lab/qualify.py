@@ -28,7 +28,7 @@ def sha(path: Path) -> str:
 def identity(project: Path) -> dict:
     names = ["scripts/shared_workbench.gd", "scripts/simulation_worker.gd",
              "scripts/art_batch_plan.gd", "scripts/art_batch_executor.gd",
-             "scripts/art_provider.gd"]
+             "scripts/art_provider.gd", "scripts/art_traffic_archive.gd"]
     for directory in ("scripts/batch_lab", "batch_lab"):
         names.extend(p.relative_to(project).as_posix() for p in (project / directory).rglob("*")
                      if p.is_file() and p.suffix in {".gd", ".json", ".txt"})
@@ -79,6 +79,9 @@ def regression_cases(runner: Runner, project: Path) -> None:
     # all-Gentek research or provider-quality campaign.
     cases = [
         ("art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS"),
+        ("art-archive-integrity", "test_art_traffic_integrity", "ART_TRAFFIC_INTEGRITY"),
+        ("art-lazy-history", "test_art_lazy_traffic", "ART_LAZY_TRAFFIC"),
+        ("art-history-identity", "test_art_history_receipt_identity", "ART_HISTORY_RECEIPT_IDENTITY_RESULT"),
         ("art-native", "test_art_batch_native", "ART_STAGE1_RESULT"),
         ("edit-ordering", "test_workbench_edit_ordering", "EDIT_ORDER_RESULT"),
         ("manual-shapes", "test_paint_editor_shapes", "PAINT_EDITOR_SHAPES"),
@@ -88,7 +91,14 @@ def regression_cases(runner: Runner, project: Path) -> None:
         ("worldgen", "test_worldgen_workbench", "WORLDGEN_WORKBENCH:"),
     ]
     for label, script, marker in cases:
-        runner.godot(project, "regression-" + label, script, marker)
+        # These archive adversaries deliberately damage profiles and segments.
+        # Give each its own test profile; the Batch provider -> mounted editor
+        # sequence above deliberately shares a profile to detect interference.
+        environment = None
+        if label in {"art-archive-integrity", "art-lazy-history", "art-history-identity"}:
+            profile = str(runner.evidence / "archive-fixtures" / label)
+            environment = {"XDG_DATA_HOME": profile, "APPDATA": profile}
+        runner.godot(project, "regression-" + label, script, marker, env=environment)
     runner.execute("regression-materials", [str(runner.args.godot.resolve()), "--audio-driver", "Dummy",
                    "--headless", "--path", str(project), "--script", "res://tests/test_material_lab_catalogue.gd"],
                    validate=lambda: material_completion(runner.evidence / "regression-materials.log"))
@@ -141,6 +151,10 @@ def main() -> int:
                      env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "provider-protocol")})
         runner.godot(project, "independent-security", "test_batch_lab_security", "BATCH_SECURITY_RESULT",
                      env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "security")})
+        namespace_profile = str(args.evidence / "archive-fixtures" / "batch-namespace")
+        runner.godot(project, "independent-archive-namespace", "test_batch_lab_namespace", "BATCH_NAMESPACE_CONTRACT",
+                     env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "namespace"),
+                          "XDG_DATA_HOME": namespace_profile, "APPDATA": namespace_profile})
         runner.godot(project, "native-failure-recovery", "test_batch_lab_failure_recovery", "BATCH_RECOVERY_RESULT",
                      env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "failure-recovery")})
         runner.godot(project, "independent-ui-lifecycle", "test_batch_lab_ui_lifecycle", "BATCH_UI_LIFECYCLE",

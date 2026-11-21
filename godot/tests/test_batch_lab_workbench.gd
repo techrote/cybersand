@@ -5,6 +5,7 @@ extends SceneTree
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Controller = preload("res://scripts/batch_lab/batch_lab_controller.gd")
 const Experiments = preload("res://scripts/batch_lab/batch_lab_experiments.gd")
+const ArtPanel = preload("res://scripts/art_batch_panel.gd")
 var main: Control
 var bench: Control
 var editor: Control
@@ -80,6 +81,9 @@ func run() -> void:
 	editor = bench.paint_editor
 	worker = main.simulation_worker
 	if not await until(settled,"mounted native Workbench installed",180000): await finish(); return
+	if not check(ArtPanel.read_history_session().get("state")!="error",
+		"preceding Batch provider traffic preserves a readable ordinary Art history namespace"):
+		await finish(); return
 	check(bench.batch_lab==null,"Batch Lab is OFF and uninstantiated in ordinary Workbench")
 	if not main.paused: check(bench.toggle_pause(),"pause ordinary Workbench")
 	var blank := Setup.fresh(PackedInt32Array(bench.applied.liquid_policy),Vector2i(512,512))
@@ -103,10 +107,10 @@ func run() -> void:
 	var bad: Dictionary = await bench.capture_batch_source(Rect2i(500,500,64,64))
 	check(not bad.get("ok",false) and snapshot_state()==before,"out-of-bounds source capture refused without writes")
 	check(editor.history_available("undo"),"manual Undo remains available after source capture")
-	editor.undo()
+	check(editor.undo(),"ordinary Undo is admitted after source capture")
 	await until(settled,"ordinary Undo after source capture")
 	check(await capture(Rect2i(32,32,3,1))==PackedInt32Array([0,0,0]),"ordinary Undo restores exact pre-stroke materials")
-	editor.redo()
+	check(editor.redo(),"ordinary Redo is admitted after source capture: "+bench.art_history_guard())
 	await until(settled,"ordinary Redo after source capture")
 	check(await capture(Rect2i(32,32,3,1))==PackedInt32Array([58,28,3]),"ordinary Redo reapplies confirmed stroke")
 	bench.open_batch_lab()
@@ -145,10 +149,10 @@ func run() -> void:
 	await screenshot("mounted-source-comparison")
 	panel.hide()
 	check(editor.history_available("undo"),"ordinary manual history survives Batch opening and execution")
-	editor.undo()
+	check(editor.undo(),"ordinary Undo is admitted after Batch: "+bench.art_history_guard())
 	await until(settled,"ordinary Undo after Batch")
 	check(await capture(Rect2i(400,400,1,1))==PackedInt32Array([0]),"post-Batch Undo targets ordinary manual stroke")
-	editor.redo()
+	check(editor.redo(),"ordinary Redo is admitted after Batch: "+bench.art_history_guard())
 	await until(settled,"ordinary Redo after Batch")
 	check(await capture(Rect2i(400,400,1,1))==PackedInt32Array([58]),"post-Batch Redo remains native and accurate")
 	await screenshot("ordinary-workbench-after-batch")
