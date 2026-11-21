@@ -4,7 +4,7 @@ name: SWARM-006 bounded reciprocal recovery Windows graphical qualification
 # No Ready, merge or retained-runtime publication action.
 on:
   push:
-    branches: [experiment/gentek-swarm-006-workbench-recovery]
+    branches: [experiment/gentek-swarm-006-workbench-recovery, experiment/gentek-swarm-006-final-round-inspector-fix]
   workflow_dispatch:
 
 permissions:
