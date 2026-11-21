@@ -9,6 +9,7 @@ Printed passing assertions never override an actual process crash.
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import json
 import os
@@ -20,6 +21,7 @@ import sys
 import time
 
 from run_flatten_qualification import direct_engine
+from run_windows_godot_regressions import RAPIER_IMPORT_DESCRIPTORS
 
 ROOT = Path(__file__).resolve().parents[2]
 GODOT_VERSION = "4.7.stable.official.5b4e0cb0f"
@@ -55,7 +57,86 @@ def digest(path: Path, *, canonical: bool = False) -> str:
 
 
 def git(*arguments: str) -> str:
-    return subprocess.check_output(["git", "-C", str(ROOT), *arguments], text=True, timeout=60).strip()
+    return subprocess.check_output(["git", "-C", str(ROOT), *arguments], text=True, timeout=60).rstrip("\r\n")
+
+
+def import_descriptors(root: Path) -> dict[str, bytes]:
+    result = {}
+    for path in sorted(RAPIER_IMPORT_DESCRIPTORS):
+        source = root / path
+        if source.is_symlink():
+            raise ValueError("An import descriptor is unexpectedly a symbolic link: " + path)
+        result[path] = source.read_bytes()
+    return result
+
+
+def other_tracked_diff(root: Path) -> bytes:
+    """Keep every other tracked path strict, including pre-existing local edits."""
+    return subprocess.check_output(
+        ["git", "-C", str(root), "diff", "--binary", "HEAD", "--", ".",
+         *(":(exclude)" + path for path in sorted(RAPIER_IMPORT_DESCRIPTORS))], timeout=60)
+
+
+def qualify_import_transition(before: dict, after: dict, original: dict[str, bytes],
+                              imported: dict[str, bytes], original_diff: bytes,
+                              imported_diff: bytes, evidence: Path) -> dict:
+    """Permit only the established four-descriptor CRLF/LF import rewrite.
+
+    Full bytes and diffs remain evidence. The post-import identity becomes the
+    strict test baseline; even these descriptors may not change during tests.
+    """
+    folder = evidence / "editor-import"
+    folder.mkdir(exist_ok=True)
+    report = {"passed": False, "scope": "Exact four Rapier descriptors; line endings only",
+              "working_status_before": before["working_status"],
+              "working_status_after": after["working_status"], "descriptors": {},
+              "other_tracked_diff_sha256_before": hashlib.sha256(original_diff).hexdigest(),
+              "other_tracked_diff_sha256_after": hashlib.sha256(imported_diff).hexdigest()}
+    (folder / "other-tracked-before.diff").write_bytes(original_diff)
+    (folder / "other-tracked-after.diff").write_bytes(imported_diff)
+    try:
+        if set(original) != RAPIER_IMPORT_DESCRIPTORS or set(imported) != RAPIER_IMPORT_DESCRIPTORS:
+            raise ValueError("Editor import did not retain the exact declared descriptor inventory")
+        for path in sorted(RAPIER_IMPORT_DESCRIPTORS):
+            old, new = original[path], imported[path]
+            for phase, data in (("before", old), ("after", new)):
+                target = folder / phase / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+            diff = b"".join(difflib.diff_bytes(difflib.unified_diff, old.splitlines(keepends=True),
+                                             new.splitlines(keepends=True),
+                                             fromfile=("before/" + path).encode(),
+                                             tofile=("after/" + path).encode()))
+            target = folder / (Path(path).name + ".diff")
+            target.write_bytes(diff)
+            report["descriptors"][path] = {
+                "before_sha256": hashlib.sha256(old).hexdigest(),
+                "after_sha256": hashlib.sha256(new).hexdigest(),
+                "canonical_sha256_before": hashlib.sha256(old.replace(b"\r\n", b"\n")).hexdigest(),
+                "canonical_sha256_after": hashlib.sha256(new.replace(b"\r\n", b"\n")).hexdigest(),
+                "diff_sha256": hashlib.sha256(diff).hexdigest(),
+                "before_size": len(old), "after_size": len(new), "changed": old != new,
+            }
+        if any(original[path].replace(b"\r\n", b"\n") != imported[path].replace(b"\r\n", b"\n")
+               for path in RAPIER_IMPORT_DESCRIPTORS):
+            raise ValueError("Editor import changed descriptor content beyond permitted line endings")
+        if original_diff != imported_diff:
+            raise ValueError("Editor import changed another tracked input")
+        excluded = {"working_status", "rapier_import_metadata_sha256"}
+        if ({key: value for key, value in before.items() if key not in excluded}
+                != {key: value for key, value in after.items() if key not in excluded}):
+            raise ValueError("Editor import changed source, image, runtime or executable identity")
+        for snapshot, values in ((before, original), (after, imported)):
+            expected = {path: hashlib.sha256(data).hexdigest() for path, data in values.items()}
+            if snapshot.get("rapier_import_metadata_sha256") != expected:
+                raise ValueError("Descriptor evidence differs from its captured input identity")
+        report["passed"] = True
+        return report
+    except Exception as error:
+        report["error"] = str(error)
+        raise
+    finally:
+        (folder / "transition.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 
 
 def identity(project: Path, engine: Path) -> dict:
@@ -84,6 +165,9 @@ def identity(project: Path, engine: Path) -> dict:
             "native_build_commit": manifest["source_commit"],
             "native_provenance_sha256": digest(manifest_path),
             "native_source_inputs": native, "project_script_sha256": scripts,
+            "rapier_import_metadata_sha256": {path: digest(ROOT / path) for path in sorted(RAPIER_IMPORT_DESCRIPTORS)},
+            "rapier_import_source_sha256": {path.removesuffix(".import"): digest(ROOT / path.removesuffix(".import"))
+                                             for path in sorted(RAPIER_IMPORT_DESCRIPTORS)},
             "runner_sha256": digest(Path(__file__))}
 
 
@@ -249,15 +333,22 @@ def main() -> int:
         (evidence / "godot-version.log").write_text(version.stdout, encoding="utf-8")
         if version.returncode != 0 or version.stdout.strip() != GODOT_VERSION:
             raise ValueError("The focused suite requires the exact pinned Godot 4.7 engine")
-        report["identity_before"] = identity(project, engine)
-        if report["identity_before"]["working_status"] and not args.allow_dirty:
+        report["checkout_identity"] = identity(project, engine)
+        if report["checkout_identity"]["working_status"] and not args.allow_dirty:
             raise ValueError("Source has tracked working changes; commit first or record a development-only --allow-dirty run")
         report["development_only"] = bool(args.allow_dirty)
         save()
         base = [str(engine), "--audio-driver", "Dummy", "--headless", "--path", str(project)]
+        original_imports = import_descriptors(ROOT)
+        original_diff = other_tracked_diff(ROOT)
         run_case("import", [*base, "--editor", "--quit"])
         if report["errors"]:
             raise RuntimeError("Import failed; the original tests cannot be qualified")
+        report["identity_before"] = identity(project, engine)
+        report["editor_import"] = qualify_import_transition(
+            report["checkout_identity"], report["identity_before"], original_imports,
+            import_descriptors(ROOT), original_diff, other_tracked_diff(ROOT), evidence)
+        save()
         for name, marker, kind in CASES:
             run_case(name, [*base, "--script", "res://tests/" + name + ".gd"], marker, kind)
         for phase in phases:

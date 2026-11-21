@@ -1,0 +1,258 @@
+{
+  "schema": "gentek691-first-hosted-windows-failure-v1",
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/44914680994",
+  "job_id": 136877635097,
+  "artifact_id": 14711128397,
+  "artifact_sha256": "91e652fb8f8e3d24025b2e7df72424cac8b2f0e194dc7292a296db50b2d337b8",
+  "tested_source": "0d961464cf0afe20e8b8d5594faa901b1c7853f0",
+  "qualification_passed": false,
+  "original_graphical_flatten": "not run: prior step failed",
+  "errors": [
+    "RuntimeError: Source, runtime, Godot or test input identity changed during the focused suite"
+  ],
+  "assertions": 906,
+  "cases": [
+    {
+      "name": "import",
+      "status": "passed",
+      "returncode": 0,
+      "completion": null,
+      "log_sha256": "e1e461dc0d6eabd97246c9887af75afff83cd7a8d0251fdd4168c8dd804a76d9",
+      "interruption": null
+    },
+    {
+      "name": "test_art_provider",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 54,
+        "failures": 0
+      },
+      "log_sha256": "6a350c4eed710c8f1867b9f5f2a463a13469fb24434e19458308d50f02482d45",
+      "interruption": null
+    },
+    {
+      "name": "test_art_lazy_traffic",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 23,
+        "display": "headless",
+        "failures": [],
+        "original_bytes": 2097522
+      },
+      "log_sha256": "fd51bb4b703ebd9406cb4bdd76182306336da9d95fe3db27c64eb7d4dcc24e1b",
+      "interruption": null
+    },
+    {
+      "name": "test_art_traffic_integrity",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 148,
+        "failures": [],
+        "user_data": "D:/a/cybersand/cybersand/evidence/art-recovery/test_art_traffic_integrity-userdata/Godot/app_userdata/Cyber Sand Reference Sandbox"
+      },
+      "log_sha256": "ede7e8bc559382030fac19cc6bd25f1691cb25cc5778295a2702718aa8914533",
+      "interruption": null
+    },
+    {
+      "name": "test_art_traffic_panel_safety",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 55,
+        "display": "headless",
+        "failures": []
+      },
+      "log_sha256": "a089dce6b50034c0548aea0984fbd8996ec3aef99d0429f555b1abbfbb471390",
+      "interruption": null
+    },
+    {
+      "name": "test_art_history_receipt_identity",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 122,
+        "failures": []
+      },
+      "log_sha256": "ae21537c026d6deea04cacc53c629e3b72751486df6d555851e1ad04a64b999c",
+      "interruption": null
+    },
+    {
+      "name": "test_workbench_actor_equipment_extent",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 29,
+        "failures": 0
+      },
+      "log_sha256": "9684fd48fbe1d362489e657c2defd16ef6ce6016fec71bc10c96926bd00b10c8",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-suite",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "suite",
+        "checks": 345,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "e20aeb6d2586c63fc9502d96f2014e1329df27b0d38a0f52b6d994aea2f3f8ac",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-restart-seed",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "restart-seed",
+        "checks": 14,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "78bae396d9f79ceb024aa980ef2a1b2a09a3e38cfd80a8e4479d3a2535d33e30",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-restart-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "restart-recover",
+        "checks": 13,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "379db69c6a7ac862a6544583e733cd4c3f2500c22b51834ae799fd41fd4d2aae",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-crash-seed",
+      "status": "passed",
+      "returncode": 1,
+      "completion": {
+        "boundary": "conversation-committed-before-journal-delete",
+        "case": "crash-seed",
+        "checks": 8,
+        "failures": [],
+        "journal": "user://art-pending-history/00001795271832977000_00001795271832976000-ceff767cd705193517520d42f43a27eb.json",
+        "original": "user://art-traffic/durability-crash.jsonl",
+        "original_sha256": "b5caf40a0bed043e1a4267a533abe7417b1d4091201d3d0d9afb8a2ea8e85de9",
+        "receipt_id": "00001795271832976000-ceff767cd705193517520d42f43a27eb",
+        "source": "user://art-traffic/74f7e883e2b40b6fdba3995ba72260d7.jsonl"
+      },
+      "log_sha256": "c17d6d5c01d88f6fbe4f39a470c661860174ca7d2731b5678adb518d37d7ebd9",
+      "interruption": "TerminateProcess"
+    },
+    {
+      "name": "art-durability-crash-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "crash-recover",
+        "checks": 8,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "1b01c35b880a1148ef6030452c94e5a0fc88eda7a58f16928b4bbbb739956cf0",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-secret-turn-seed",
+      "status": "passed",
+      "returncode": 1,
+      "completion": {
+        "boundary": "secret-turn-committed-before-journal-delete",
+        "case": "secret-turn-seed",
+        "checks": 24,
+        "expected_content": "[redacted] result (world epoch 3): Human undo: {\"_history_receipt_id\":\"00001795271841577000-4de74f9b61c626a1ab7094f9275daf13\",\"_history_world_epoch\":3.0,\"action\":\"undo\",\"applied\":1.0,\"label\":\"secret-turn\",\"reason\":\"[redacted]\",\"status\":\"completed\"}",
+        "failures": [],
+        "journal": "user://art-pending-history/00001795271841578000_00001795271841577000-4de74f9b61c626a1ab7094f9275daf13.json",
+        "label": "secret-turn",
+        "original": "user://art-traffic/durability-secret-turn.jsonl",
+        "original_sha256": "3b1390dc4765c577e4b51c60b8c7c8940b3f1763d97c38fe0b4565164fbd1a35",
+        "receipt_id": "00001795271841577000-4de74f9b61c626a1ab7094f9275daf13",
+        "source": "user://art-traffic/05f73e91a104ea362d4231874333895f.jsonl",
+        "source_sha256": "de3cd820e3952ea6bbf75878264f9632af0285edb935f7bf105de6be0a783490"
+      },
+      "log_sha256": "1308d35c70ff28420988f265b6703d4a0ce3d6c0078524be1a31cf23c71b812d",
+      "interruption": "TerminateProcess"
+    },
+    {
+      "name": "art-durability-secret-turn-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "secret-turn-recover",
+        "checks": 15,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "c4c299335e0272c7e586ae63a925e1e49023d219f467b34f6a1f4393b3ff1afc",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-secret-raw-seed",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "secret-raw-seed",
+        "checks": 31,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "3aa3ad4b6fbce156b78b2f4944d451afac1b3d62599ecfca66f38d4567d259c6",
+      "interruption": null
+    },
+    {
+      "name": "art-durability-secret-raw-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "secret-raw-recover",
+        "checks": 17,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+        "os": "Windows",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "log_sha256": "4dd36c53e5af0d7dd4de6452226fd5035705184bea3c04701a7db95959cad014",
+      "interruption": null
+    }
+  ],
+  "identity_differences": {
+    "working_status": {
+      "before": "",
+      "after": "M godot/addons/godot-rapier2d/Radial2D.svg.import\n M godot/addons/godot-rapier2d/icons/Fluid2D.svg.import\n M godot/addons/godot-rapier2d/icons/StateManager2D.svg.import\n M godot/addons/godot-rapier2d/logo_square_2d.png.import"
+    }
+  },
+  "all_other_identity_fields_equal": true,
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+  "original_report_sha256": "b5182fb22f3c5a094c84e87c2e33f116f0710bc0fbb4f89c1858fdeb3c177688",
+  "original_runner_log_sha256": "f1cb72b4c78fa0fdee5c01b1510b6d46197535beef4e96eaaafe0aafdf4fd905",
+  "original_runner_log_base64": "UEFTUyBpbXBvcnQ6IGltcG9ydCBjaGVja3M7IGV4aXQ9MA0KUEFTUyB0ZXN0X2FydF9wcm92aWRlcjogNTQgY2hlY2tzOyBleGl0PTANClBBU1MgdGVzdF9hcnRfbGF6eV90cmFmZmljOiAyMyBjaGVja3M7IGV4aXQ9MA0KUEFTUyB0ZXN0X2FydF90cmFmZmljX2ludGVncml0eTogMTQ4IGNoZWNrczsgZXhpdD0wDQpQQVNTIHRlc3RfYXJ0X3RyYWZmaWNfcGFuZWxfc2FmZXR5OiA1NSBjaGVja3M7IGV4aXQ9MA0KUEFTUyB0ZXN0X2FydF9oaXN0b3J5X3JlY2VpcHRfaWRlbnRpdHk6IDEyMiBjaGVja3M7IGV4aXQ9MA0KUEFTUyB0ZXN0X3dvcmtiZW5jaF9hY3Rvcl9lcXVpcG1lbnRfZXh0ZW50OiAyOSBjaGVja3M7IGV4aXQ9MA0KUEFTUyBhcnQtZHVyYWJpbGl0eS1zdWl0ZTogMzQ1IGNoZWNrczsgZXhpdD0wDQpQQVNTIGFydC1kdXJhYmlsaXR5LXJlc3RhcnQtc2VlZDogMTQgY2hlY2tzOyBleGl0PTANClBBU1MgYXJ0LWR1cmFiaWxpdHktcmVzdGFydC1yZWNvdmVyOiAxMyBjaGVja3M7IGV4aXQ9MA0KUEFTUyBhcnQtZHVyYWJpbGl0eS1jcmFzaC1zZWVkOiA4IGNoZWNrczsgZXhpdD0xDQpQQVNTIGFydC1kdXJhYmlsaXR5LWNyYXNoLXJlY292ZXI6IDggY2hlY2tzOyBleGl0PTANClBBU1MgYXJ0LWR1cmFiaWxpdHktc2VjcmV0LXR1cm4tc2VlZDogMjQgY2hlY2tzOyBleGl0PTENClBBU1MgYXJ0LWR1cmFiaWxpdHktc2VjcmV0LXR1cm4tcmVjb3ZlcjogMTUgY2hlY2tzOyBleGl0PTANClBBU1MgYXJ0LWR1cmFiaWxpdHktc2VjcmV0LXJhdy1zZWVkOiAzMSBjaGVja3M7IGV4aXQ9MA0KUEFTUyBhcnQtZHVyYWJpbGl0eS1zZWNyZXQtcmF3LXJlY292ZXI6IDE3IGNoZWNrczsgZXhpdD0wDQp7InBhc3NlZCI6IGZhbHNlLCAic3RhdHVzIjogImZhaWxlZCIsICJlcnJvcnMiOiBbIlJ1bnRpbWVFcnJvcjogU291cmNlLCBydW50aW1lLCBHb2RvdCBvciB0ZXN0IGlucHV0IGlkZW50aXR5IGNoYW5nZWQgZHVyaW5nIHRoZSBmb2N1c2VkIHN1aXRlIl19DQo=",
+  "encoding_note": "Decode base64 to recover the exact original Windows runner log bytes including line endings; full original logs and report remain in the linked artifact."
+}

@@ -147,6 +147,31 @@ against accepted, rewound, advanced, deleted and concurrently changed refs.
 These are prequalification records; hosted target-OS and final-source CI remain
 separate acceptance gates.
 
+The first hosted [focused run 44914680994](https://github.com/techrote/cybersand/actions/runs/44914680994)
+tested frozen source `0d961464cf0afe20e8b8d5594faa901b1c7853f0`.
+Its [independently checked artifacts](gentek691-art-durability-20261121/first-hosted-artifact-audit.json)
+show Linux passed 964 Art assertions and the unchanged 439-assertion graphical
+Flatten/storage qualification, including all required framebuffers and full
+process exits.
+Its Windows Art processes passed 906 assertions, including actual exit codes,
+but the overall Windows gate correctly **failed**: the final checkout-status
+comparison found four changed Rapier import descriptors. The original graphical
+Flatten step was not reached and is not counted as passed. The
+[original failure record](gentek691-art-durability-20261121/windows-first-hosted-failure.json)
+retains the exact report/artifact hashes, process outcomes and original runner
+log bytes. The existing Windows regression runner already defines a narrowly
+scoped CRLF-to-LF normalization policy for these same four descriptors. The
+focused runner now records that import transition, permits only canonically
+identical descriptor bytes, verifies unchanged source images and all other
+inputs, and then requires exact post-import identity throughout the tests.
+A complete hosted rerun is required; the failed gate is not relabelled.
+The correction passed [13 real filesystem/Git transition checks](gentek691-art-durability-20261121/import-transition-negative-tests.json),
+[seven independent review checks](gentek691-art-durability-20261121/independent-import-transition-review.json)
+and an [actual pinned Linux editor-import smoke](gentek691-art-durability-20261121/import-transition-linux-smoke.json).
+Semantic descriptor changes, source-image changes, aliases and application drift
+remain refusals. The Windows owner guide now identifies accepted main correctly
+and points to the delivered manifest and current handoff for package identities.
+
 The focused workflow retains the complete original graphical 512×512 Flatten
 author/reopen and failed-owner/storage recovery commands on Linux X11 and Windows
 ANGLE. A narrowly scoped push trigger on
