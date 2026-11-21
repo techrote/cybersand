@@ -37,3 +37,78 @@ jobs:
         run: ./build/tests BW-001
       - name: Run production-default admission invariant
         run: ./build/tests "ballistic Water defaults unchanged"
+
+  linux-gdextension:
+    name: Exact-HEAD Godot 4.7 bridge and equipment dispatch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Checkout exact recovered source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Fetch trusted Rapier runtime for project import
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Install pinned build dependencies
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Compile from this HEAD and stage the native Linux extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 2400 tools/build_pinned_godot_cpp.sh linux
+          timeout 1500 tools/build_native_extension.sh
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          mkdir -p build/equip-recovery-linux
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/equip-recovery-linux/
+          printf '%s\\n' "$GITHUB_SHA" > build/equip-recovery-linux/source-sha.txt
+          (cd build/equip-recovery-linux && sha256sum libcybersand_native.linux.x86_64.so > runtime.sha256 && sha256sum --check --strict runtime.sha256)
+
+      - name: Fetch pinned Godot 4.7 runtime
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot-bin"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot-bin"
+          chmod +x "$RUNNER_TEMP/godot-bin/Godot_v4.7-stable_linux.x86_64"
+
+      - name: Import and exercise original catalogue and all 13 kinetic commands
+        run: |
+          GODOT="$RUNNER_TEMP/godot-bin/Godot_v4.7-stable_linux.x86_64"
+          timeout 180 "$GODOT" --headless --path godot --editor --import --quit
+          timeout 180 "$GODOT" --headless --path godot --script res://tests/test_usables.gd
+          timeout 180 "$GODOT" --headless --path godot --script res://tests/test_bs001_kinetic_dispatch.gd
+          timeout 180 "$GODOT" --headless --path godot --script res://tests/test_physical_usable_equipment.gd
+
+      - name: Keep exact-source Linux candidate for diagnostic review
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: equip-recovery-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/equip-recovery-linux/
+          if-no-files-found: warn
+          retention-days: 21
