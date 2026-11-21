@@ -159,28 +159,29 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Redistribution licence download failed' }
           $vc = Join-Path $env:RUNNER_TEMP 'swarm006-vc-runtime'
           & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
-          if ($LASTEXITCODE -ne 0) { throw 'Runtime staging failed' }
+          if (-not $?) { throw 'Runtime staging failed' }
           python tools/swarm006/package_owner.py --engine $env:GODOT_EXE.Replace('_console.exe','.exe') --engine-notices $notices --native-candidate build/swarm006-windows --vc-runtime $vc --output build/swarm006-owner
           if ($LASTEXITCODE -ne 0) { throw 'Owner packaging failed' }
           python tools/swarm006/seal_owner.py --package build/swarm006-owner --output build/swarm006-sealed --source $env:TARGET_SOURCE
           if ($LASTEXITCODE -ne 0) { throw 'Owner package seal failed' }
           python tools/swarm006/test_owner_launcher.py --sealed build/swarm006-sealed --output evidence/swarm006-launcher --source $env:TARGET_SOURCE
           if ($LASTEXITCODE -ne 0) { throw 'Actual Windows owner launcher qualification failed' }
-      - name: Qualify historical controls and SWARM006 recovery in source Windows graphics
-        shell: pwsh
-        run: |
-          python tools/swarm006/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm006-windows --output evidence/swarm006-source
-          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
       - name: Qualify pristine owner ZIP graphics and fresh-process material reopening
         shell: pwsh
         run: |
           $archive = "build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
           $launcher = 'build/swarm006-sealed/CyberSand-SWARM006-Windows-Owner-Acceptance.ps1'
           $validation = Join-Path $env:RUNNER_TEMP 'swarm006-pristine-package'
+          # VerifyOnly returns without setting the native LASTEXITCODE.
           & $launcher -Archive $archive -Destination $validation -VerifyOnly
-          if ($LASTEXITCODE -ne 0) { throw 'Source-bound owner launcher verification failed' }
+          if (-not $?) { throw 'Source-bound owner launcher verification failed' }
           python tools/swarm006/qualify_workbench.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --native-candidate build/swarm006-windows --package $validation --output evidence/swarm006-package
           if ($LASTEXITCODE -ne 0) { throw 'Pristine ZIP graphical reciprocal and transaction qualification failed' }
+      - name: Qualify historical controls and SWARM006 recovery in source Windows graphics
+        shell: pwsh
+        run: |
+          python tools/swarm006/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm006-windows --output evidence/swarm006-source
+          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
