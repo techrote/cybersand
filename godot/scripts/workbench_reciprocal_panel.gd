@@ -110,6 +110,16 @@ func mount(workbench: Control) -> void:
 	var sharing:=CheckButton.new();sharing.text="Allow negotiated territory sharing";sharing.button_pressed=false
 	row.add_child(sharing);controls.shared_ownership=sharing
 	sharing.toggled.connect(func(_value: bool) -> void: invalidate("Territory sharing changed; interface hints retain their exact width."))
+	row=_row(fields)
+	var compact:=CheckButton.new();compact.text="Source-feasible terminal parts (SWARM-005)";compact.button_pressed=false
+	compact.tooltip_text="Opt-in genuine source-time welded parts; cannot discharge existing foreign-required sockets."
+	row.add_child(compact);controls.compact_native_termination=compact
+	compact.toggled.connect(func(_value: bool) -> void: invalidate("SWARM-005 source-time feasibility changed; regenerate before Apply."))
+	row=_row(fields)
+	var supported:=CheckButton.new();supported.text="Source-bound MOSAIC receptors (SWARM-005)";supported.button_pressed=false
+	supported.tooltip_text="Opt-in real backed native masonry receptors; final foreign joint and material path are still mandatory."
+	row.add_child(supported);controls.supported_native_receptors=supported
+	supported.toggled.connect(func(_value: bool) -> void: invalidate("SWARM-005 native receptor negotiation changed; regenerate before Apply."))
 	for spec: Array in CONTROL_SPECS:
 		row=_row(fields);_spin(row,spec[0],spec[1],0,1,0.05,spec[2])
 	for key: String in Protocol.EXPRESSION_DEFAULTS[0]: controls[key].set_value_no_signal(Protocol.EXPRESSION_DEFAULTS[0][key])
@@ -276,6 +286,8 @@ func _recipe() -> Dictionary:
 		"orientation":controls.orientation.selected-1,"profile":Protocol.PROFILES[controls.profile.selected],
 		"layout":Protocol.LAYOUTS[controls.layout.selected],"border":int(controls.border.value),
 		"optional":controls.optional.button_pressed,"shared_ownership":controls.shared_ownership.button_pressed,
+		"compact_native_termination":controls.compact_native_termination.button_pressed,
+		"supported_native_receptors":controls.supported_native_receptors.button_pressed,
 		"parameters":parameters,"activation":points,
 		"protected":protected_points.duplicate()}
 	var profiles: Dictionary={}

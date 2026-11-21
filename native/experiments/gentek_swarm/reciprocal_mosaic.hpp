@@ -36,6 +36,11 @@ struct MosaicBearingReplacement {
     std::string rule = "swarm004/mosaic_native_bearing_v1";
 };
 
+struct SupportedNativeReceptor {
+    std::uint32_t slot{}, connector{}, source_instance{}, receiving_instance{}, port_id{};
+    Point root{}, contact{}, backing{}, facing{};
+};
+
 struct MosaicRevision {
     Request request; // exact immutable input used by the unchanged native donor
     MosaicPlan plan;
@@ -48,6 +53,8 @@ struct MosaicRevision {
     std::vector<MosaicCellRevision> provenance_changes;
     std::vector<MosaicCategoryRevision> category_changes;
     std::vector<MosaicBearingReplacement> bearing_replacements;
+    std::vector<SupportedNativeReceptor> supported_receptors;
+    std::uint64_t supported_receptor_work{};
     std::vector<std::string> bearing_rejections;
     std::uint64_t bearing_work{}; // included in wrapper_work; never double debit
     std::uint64_t wrapper_work{}, generator_work{}, solver_debit{};
@@ -70,6 +77,11 @@ MosaicRevision propose_mosaic_revision(
     MosaicBudget& budget, std::uint32_t round,
     const Result* previous = nullptr,
     const std::vector<int>* previous_categories = nullptr,
-    bool optional_negotiation = true, bool native_bearing = false);
+    bool optional_negotiation = true, bool native_bearing = false, bool supported_native_receptors = false);
+
+// Proposed MOSAIC native receiver authoring, opt-in only. Does not create
+// material or independently certify a joint. Source and native backing must exist.
+bool author_supported_native_receptors(MosaicRevision&, const Result& immutable_frame,
+    const std::vector<TransitionSlot>&, MosaicBudget&);
 
 } // namespace cybersand::gentek_swarm::assembly004

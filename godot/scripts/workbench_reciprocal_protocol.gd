@@ -20,7 +20,7 @@ const PARAMETERS := ["variation","irregularity","clutter","destruction","branchi
 # The suffix is Makefile.reciprocal's hash of its complete C++/header inputs.
 # A changed definition requires a separately qualified bridge; source labels or
 # a successful child exit do not authorize a different Gentek or larger budget.
-const NATIVE_DEFINITION := "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec"
+const NATIVE_DEFINITION := "12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b"
 const NATIVE_IDENTITIES := {
 	"frame":{"gentek":"FRAMEWEAVER","version":0,"fixture":"workbench_territory",
 		"definition":"frameweaver.frontier-growth-v0."+NATIVE_DEFINITION},
@@ -187,11 +187,18 @@ static func prepare(request: Dictionary, capture: Dictionary) -> Dictionary:
 	if not masks.ok: return masks
 	var sharing: Variant=request.get("shared_ownership",true)
 	if not sharing is bool: return fail("Negotiated territory sharing must be an explicit boolean.")
-	var independent: bool=parameter_line(frame_parameters)!=parameter_line(mosaic_parameters) or not sharing
-	var lines := PackedStringArray(["SWARM004 2" if independent else "SWARM004 1","%d %d %d %d %d %d %d %d" % [size.x,size.y,
+	var compact: Variant=request.get("compact_native_termination",false)
+	var supported: Variant=request.get("supported_native_receptors",false)
+	if not compact is bool or not supported is bool:
+		return fail("SWARM-005 source feasibility and native receptors must be explicit booleans.")
+	var experimental: bool=compact or supported
+	var independent: bool=parameter_line(frame_parameters)!=parameter_line(mosaic_parameters) or not sharing or experimental
+	var magic: String="SWARM005 3" if experimental else ("SWARM004 2" if independent else "SWARM004 1")
+	var lines := PackedStringArray([magic,"%d %d %d %d %d %d %d %d" % [size.x,size.y,
 		request.seed,origin.x,origin.y,request.rounds,request.shared_extent,request.orientation],request.profile])
 	lines.append(parameter_line(frame_parameters)+(" 1" if request.optional else " 0"))
 	if independent: lines.append(parameter_line(mosaic_parameters)+(" 1" if sharing else " 0"))
+	if experimental: lines.append("%d %d" % [int(compact),int(supported)])
 	lines.append(str(request.activation.size()))
 	for point: Vector2i in request.activation:
 		if not Rect2i(Vector2i.ZERO,size).has_point(point): return fail("Activation point is outside its territory.")
@@ -248,6 +255,8 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		or recipe.activation.is_empty() or recipe.activation.size()>16:
 		return fail("Native evidence has an invalid bounded authoring recipe.")
 	if not recipe.get("shared_ownership",true) is bool: return fail("Native evidence has invalid negotiated territory sharing.")
+	for key: String in ["compact_native_termination","supported_native_receptors"]:
+		if not recipe.get(key,false) is bool: return fail("SWARM-005 evidence has a nonboolean native closure control.")
 	for gentek: String in ["frame","mosaic"]:
 		if not normalized_parameters(parameters_for(recipe,gentek)): return fail("Native evidence has invalid independent Gentek controls.")
 	var inputs: Variant = result.get("input")
@@ -257,6 +266,8 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		or not scalar_same(options.get("shared_extent"),recipe.shared_extent) or not scalar_same(options.get("orientation_preference"),recipe.orientation) \
 		or not scalar_same(options.get("optional_negotiation"),recipe.optional) or not scalar_same(options.get("final_validation"),true) \
 		or not scalar_same(options.get("shared_ownership"),recipe.get("shared_ownership",true)) \
+		or not scalar_same(options.get("compact_native_termination"),recipe.get("compact_native_termination",false)) \
+		or not scalar_same(options.get("supported_native_receptors"),recipe.get("supported_native_receptors",false)) \
 		or not inputs.get("shared_zone") is Array or inputs.shared_zone.size()!=count:
 		return fail("Native evidence changed the negotiated controls or final-validation requirement.")
 	for key: String in NATIVE_SWITCHES:
@@ -441,7 +452,9 @@ static func load_saved(map_path: String) -> Dictionary:
 	var recipe: Dictionary={"size":size,"origin":origin,"seed":input.get("seed"),"profile":input.profile.get("name"),
 		"parameters":input.profile.duplicate(),"activation":activation,"protected":{},"rounds":options.get("rounds"),
 		"shared_extent":options.get("shared_extent"),"orientation":options.get("orientation_preference"),"optional":options.get("optional_negotiation"),
-		"shared_ownership":options.get("shared_ownership",true)}
+		"shared_ownership":options.get("shared_ownership",true),
+		"compact_native_termination":options.get("compact_native_termination",false),
+		"supported_native_receptors":options.get("supported_native_receptors",false)}
 	var mosaic: Variant=document.input.get("mosaic")
 	if not mosaic is Dictionary or not mosaic.get("profile") is Dictionary: return fail("Saved construction has no independent MOSAIC controls.")
 	recipe["gentek_parameters"]={"frame":input.profile.duplicate(),"mosaic":mosaic.profile.duplicate()}

@@ -715,7 +715,7 @@ Composition assemble(const Input& input,bool reverse) {
     if(cancelled(input))return fail(CompositionStatus::Cancelled,"cancelled before generation");
     // Intact proposals first. Damage is an independent final derivative.
     auto intact=input;intact.frame.profile.destruction=intact.mosaic.profile.destruction=0;
-    out.original_frame=plan_frameweaver(intact.frame,intact.mosaic);
+    out.original_frame=plan_frameweaver(intact.frame,intact.mosaic,input.options.compact_native_termination);
     if(!usable(out.original_frame.result))return fail(out.original_frame.result.status==Status::Exhausted?CompositionStatus::Exhausted:CompositionStatus::Invalid,out.original_frame.result.termination);
     Budget budget;budget.cancel=input.cancel;budget.limits.max_work=f.limits.max_work;
     budget.limits.max_instances=f.limits.max_instances;budget.limits.max_candidates=f.limits.max_candidates;
@@ -727,7 +727,7 @@ Composition assemble(const Input& input,bool reverse) {
     MosaicBudget mb;mb.generator_remaining=m.limits.max_work;mb.solver_remaining=m.limits.max_solver_work;
     mb.max_bytes=m.limits.max_bytes;mb.cancelled=input.cancel;
     const auto shared=input.options.shared_ownership?input.shared_zone:std::vector<std::uint8_t>(n,0);
-    auto initial=propose_mosaic_revision(intact.mosaic,base.result,{},shared,mb,0,nullptr,nullptr,input.options.optional_negotiation,input.options.native_mosaic_bearing);
+    auto initial=propose_mosaic_revision(intact.mosaic,base.result,{},shared,mb,0,nullptr,nullptr,input.options.optional_negotiation,input.options.native_mosaic_bearing,input.options.supported_native_receptors);
     auto sync_work=[&](){out.metrics["frame_work"]=budget.work;out.metrics["mosaic_work"]=m.limits.max_work-mb.generator_remaining;
         out.metrics["solver_work"]=m.limits.max_solver_work-mb.solver_remaining;out.metrics["frame_candidates"]=budget.candidates;
         out.metrics["total_charged_work"]=out.metrics["frame_work"]+out.metrics["mosaic_work"]+out.metrics["solver_work"]+out.metrics["shared_work"];};
@@ -737,6 +737,7 @@ Composition assemble(const Input& input,bool reverse) {
     first.mosaic_proposal_reason=initial.reason;first.mosaic_proposal_work=initial.generator_work+initial.wrapper_work;
     first.mosaic_proposal_solver_debit=initial.solver_debit;
     first.mosaic_bearing_replacements=initial.bearing_replacements;first.mosaic_bearing_rejections=initial.bearing_rejections;first.mosaic_bearing_work=initial.bearing_work;
+    first.mosaic_supported_receptors=initial.supported_receptors;first.mosaic_supported_receptor_work=initial.supported_receptor_work;
     first.frame_work=budget.work;first.mosaic_work=m.limits.max_work-mb.generator_remaining;first.solver_work=m.limits.max_solver_work-mb.solver_remaining;
     if(initial.status!=MosaicRevisionStatus::Complete&&initial.status!=MosaicRevisionStatus::Blocked) {
         first.frame_accepted=first.mosaic_accepted=false;out.rounds.push_back(first);sync_work();
@@ -776,9 +777,11 @@ Composition assemble(const Input& input,bool reverse) {
                 next_mosaic.plan=out.rounds[mosaic_cache_result].mosaic;next_mosaic.request=out.rounds[mosaic_cache_result].mosaic_request;
                 next_mosaic.bearing_replacements=out.rounds[mosaic_cache_result].mosaic_bearing_replacements;
                 next_mosaic.bearing_rejections=out.rounds[mosaic_cache_result].mosaic_bearing_rejections;
+                next_mosaic.supported_receptors=out.rounds[mosaic_cache_result].mosaic_supported_receptors;
+                next_mosaic.supported_receptor_work=out.rounds[mosaic_cache_result].mosaic_supported_receptor_work;
                 next_mosaic.reason="reused identical immutable input; original successful solve retained";reused_mosaic=true;
             }else next_mosaic=propose_mosaic_revision(request,old.frame.result,old.frame.slots,shared,mb,r,
-                &old.mosaic.result,&old.mosaic.categories,input.options.optional_negotiation,input.options.native_mosaic_bearing);}};
+                &old.mosaic.result,&old.mosaic.categories,input.options.optional_negotiation,input.options.native_mosaic_bearing,input.options.supported_native_receptors);}};
         if(reverse){make_mosaic();make_frame();}else{make_frame();make_mosaic();}
         Round next;next.number=r;next.frame=std::move(next_frame);next.mosaic=std::move(next_mosaic.plan);
         next.mosaic_request=input.options.mosaic_adaptation?next_mosaic.request:old.mosaic_request;
@@ -788,6 +791,8 @@ Composition assemble(const Input& input,bool reverse) {
         next.mosaic_proposal_solver_debit=next_mosaic.solver_debit;
         next.mosaic_bearing_replacements=next_mosaic.bearing_replacements;next.mosaic_bearing_rejections=next_mosaic.bearing_rejections;
         next.mosaic_bearing_work=next_mosaic.bearing_work;
+        next.mosaic_supported_receptors=next_mosaic.supported_receptors;
+        next.mosaic_supported_receptor_work=next_mosaic.supported_receptor_work;
         next.mosaic_reused=reused_mosaic;next.frame_reused=reused_frame;
         next.mosaic_reuse_round=mosaic_cache_result;next.frame_reuse_round=frame_cache_result;
         if(cancelled(input)||next_mosaic.status==MosaicRevisionStatus::Cancelled||
@@ -809,6 +814,7 @@ Composition assemble(const Input& input,bool reverse) {
                 next.frame=old.frame;next.frame_accepted=false;next.reason+="; retain complete previous FRAME";
             } else {next.frame=old.frame;next.mosaic=old.mosaic;next.mosaic_request=old.mosaic_request;next.frame_accepted=next.mosaic_accepted=false;next.reason+="; atomic rollback of both proposals";}
         } else next.reason="both immutable own proposals accepted under canonical complete-footprint claims";
+        if(!next.mosaic_accepted)next.mosaic_supported_receptors=old.mosaic_supported_receptors;
         if(next_mosaic.status==MosaicRevisionStatus::Unsat){out.rejections.push_back("round "+std::to_string(r)+": categorical UNSAT; previous masonry retained");out.metrics["categorical_unsat_rounds"]++;}
         if(next_mosaic.status==MosaicRevisionStatus::Invalid){out.rejections.push_back("round "+std::to_string(r)+": invalid MOSAIC proposal: "+next_mosaic.reason);out.metrics["invalid_proposal_rounds"]++;}
         next.frame_changed=changed(old.frame.result,next.frame.result);next.mosaic_changed=changed(old.mosaic.result,next.mosaic.result);
@@ -892,6 +898,85 @@ bool validate_composition(Composition& c) {
         for(const auto* result:{&round.frame.result,&round.mosaic.result}) {
             for(const auto& part:result->instances)if(part.id==0||part.id>256){c.status=CompositionStatus::Invalid;c.reason="invalid historical part identity";return false;}
             for(auto id:result->provenance)if(id>256){c.status=CompositionStatus::Invalid;c.reason="invalid historical cell identity";return false;}
+        }
+    }
+    // SWARM-005: every opt-in supported receptor is a replayable native fact,
+    // never an unverified interface annotation. Validate all retained rounds,
+    // not just a favourable final proposal, against their actual immutable
+    // preceding FRAME source and the accepted MOSAIC native motif footprint.
+    for(std::size_t ordinal=0;ordinal<c.rounds.size();++ordinal) {
+        const auto& round=c.rounds[ordinal];
+        const auto& receptors=round.mosaic_supported_receptors;
+        std::size_t tagged=0;
+        for(const auto& port:round.mosaic.result.boundary.hard)
+            tagged+=port.tag.starts_with("swarm005/source-slot=");
+        const auto reject=[&](const std::string& why) {
+            c.status=CompositionStatus::Invalid;
+            c.reason="unqualified SWARM005 source-bound native receptor: "+why;
+            ++c.metrics["rejected_joint_source_bindings"];
+            return false;
+        };
+        if(tagged!=receptors.size()||receptors.size()>8||
+           (tagged!=0&&(!c.input.options.supported_native_receptors||ordinal==0)))
+            return reject("incorrect round, opt-in authority, count or missing receipt");
+        if(receptors.empty())continue;
+        if(!charge_shared(c,receptors.size()*(count/8+256ULL))) {
+            c.status=CompositionStatus::Exhausted;c.reason="source-bound receptor audit budget";return false;
+        }
+        const auto& prior=c.rounds[ordinal-1].frame;
+        const auto& masonry=round.mosaic.result;
+        const auto& mrequest=round.mosaic_request;
+        if(mrequest.width!=fq.width||mrequest.height!=fq.height||
+           mrequest.source_identity!=fq.source_identity||mrequest.seed!=fq.seed)return reject("mismatched native request identity");
+        std::set<std::uint32_t> seen_ports;
+        std::set<Point> seen_contacts;
+        for(const auto& witness:receptors) {
+            if(!seen_ports.insert(witness.port_id).second||!seen_contacts.insert(witness.contact).second)
+                return reject("duplicate published receiver");
+            const auto it=std::find_if(prior.slots.begin(),prior.slots.end(),[&](const auto& slot){
+                return slot.id==witness.slot&&slot.connector==witness.connector&&
+                       slot.instance==witness.source_instance&&slot.required&&slot.hard&&slot.owner=="FRAMEWEAVER";
+            });
+            if(it==prior.slots.end())return reject("no original pre-declared source slot");
+            const auto source=std::find_if(prior.result.connectors.begin(),prior.result.connectors.end(),
+                [&](const Connector& conn){return conn.id==witness.connector&&conn.instance==witness.source_instance&&
+                    conn.required&&!conn.fulfilled&&conn.family==Family::Frame&&conn.facing==it->facing;});
+            const auto reserved_roots=line(it->a,it->b);
+            const auto real_roots=source==prior.result.connectors.end()?std::vector<Point>{}:line(source->a,source->b);
+            if(std::find(reserved_roots.begin(),reserved_roots.end(),witness.root)==reserved_roots.end()||
+               std::find(real_roots.begin(),real_roots.end(),witness.root)==real_roots.end())return reject("source slot/root declaration mismatch");
+            const Point towards=it->facing;
+            const Point contact=witness.contact,backing=witness.backing,root=witness.root;
+            const int distance=dist(root,contact);
+            if(source==prior.result.connectors.end())return reject("root is not on the original required source");
+            if(witness.facing!=neg(towards)||distance<1||distance>14||
+               contact!=Point{root.x+distance*towards.x,root.y+distance*towards.y}||
+               backing!=plus(contact,towards)||!in_box(contact,it->envelope)||
+               !inside(fq,root)||!inside(fq,contact)||!inside(fq,backing))return reject("face, reach, alignment or reservation envelope drift");
+            const auto port=std::find_if(masonry.boundary.hard.begin(),masonry.boundary.hard.end(),[&](const Affordance& a){
+                return a.id==witness.port_id&&a.instance==witness.receiving_instance&&a.a==contact&&a.b==contact&&
+                    a.facing==witness.facing&&a.family==Family::Frame&&!a.required&&
+                    a.tag==("swarm005/source-slot="+std::to_string(witness.slot)+";connector="+std::to_string(witness.connector));
+            });
+            if(port==masonry.boundary.hard.end())return reject("no exact source-tagged MOSAIC structural port");
+            const auto src=index(fq,root),a=index(fq,contact),b=index(fq,backing);
+            if(prior.result.provenance[src]!=witness.source_instance||
+               !native_bearing(prior.result.cells[src],prior.result.roles[src])||
+               !allowed(mrequest,contact)||!allowed(mrequest,backing)||
+               !native_bearing(masonry.cells[a],masonry.roles[a])||!native_bearing(masonry.cells[b],masonry.roles[b])||
+               masonry.provenance[a]!=witness.receiving_instance||masonry.provenance[b]!=witness.receiving_instance||
+               witness.receiving_instance==0)return reject("unsupported native material, protection, occupancy or ownership");
+            const auto owner=std::find_if(masonry.instances.begin(),masonry.instances.end(),[&](const Instance& x){
+                return x.id==witness.receiving_instance;});
+            if(owner==masonry.instances.end()||
+               std::find(owner->cells.begin(),owner->cells.end(),contact)==owner->cells.end()||
+               std::find(owner->cells.begin(),owner->cells.end(),backing)==owner->cells.end())
+                return reject("no native owning part backing the receptor");
+            for(int step=1;step<distance;++step) {
+                Point p{root.x+step*towards.x,root.y+step*towards.y};
+                if(!inside(fq,p)||!allowed(mrequest,p)||masonry.cells[index(fq,p)]!=Material::Empty)
+                    return reject("occupied, forbidden or out-of-bounds clearance to receptor");
+            }
         }
     }
     auto& last=c.rounds.back();std::string why;

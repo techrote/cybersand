@@ -12,7 +12,7 @@ CORE := $(addprefix $(BUILD)/,$(addsuffix .o,$(LEGACY) assembly reciprocal_mosai
 HEADERS := $(wildcard *.hpp) $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
 .PHONY: all tests test
 all: tests $(BUILD)/gentek_reciprocal $(BUILD)/audit_reciprocal_causality
-tests: $(BUILD)/test_assembly $(BUILD)/test_reciprocal_mosaic $(BUILD)/test_reciprocal
+tests: $(BUILD)/test_assembly $(BUILD)/test_reciprocal_mosaic $(BUILD)/test_reciprocal $(BUILD)/test_swarm005
 $(BUILD):
 	mkdir -p $@
 $(BUILD)/definition-$(DEFINITION_HASH): | $(BUILD)
@@ -25,6 +25,8 @@ $(BUILD)/test_assembly: $(BUILD)/assembly.o $(BUILD)/assembly_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 $(BUILD)/test_reciprocal_mosaic: $(CORE) $(BUILD)/reciprocal_mosaic_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm005: $(CORE) $(BUILD)/swarm005_research_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 $(BUILD)/test_reciprocal: $(CORE) $(BUILD)/reciprocal_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 $(BUILD)/gentek_reciprocal: $(CORE) $(BUILD)/reciprocal_io.o $(BUILD)/reciprocal_main.o
@@ -35,3 +37,4 @@ test: tests
 	$(BUILD)/test_assembly
 	$(BUILD)/test_reciprocal_mosaic
 	$(BUILD)/test_reciprocal
+	$(BUILD)/test_swarm005

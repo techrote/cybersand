@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <map>
 #include <set>
 #include <tuple>
 
@@ -228,6 +229,141 @@ bool author_native_bearings(MosaicRevision& revision, const std::vector<Transiti
 }
 } // namespace
 
+// SWARM-005 pilot: publish a MOSAIC-authored receiver only at an already
+// occupied, structurally backed, exact native motif footprint. The source is
+// a real unfulfilled required FRAME connector and an admitted transition slot.
+// This is a receptor offer, NOT a certified join; FRAME and the coordinator
+// still have to prove the complete construction and foreign material path.
+bool author_supported_native_receptors(MosaicRevision& revision, const Result& immutable_frame,
+    const std::vector<TransitionSlot>& slots, MosaicBudget& budget) {
+    if (slots.empty() || (revision.status != MosaicRevisionStatus::Complete &&
+                          revision.status != MosaicRevisionStatus::Blocked)) return true;
+    const auto& q = revision.request;
+    auto& m = revision.plan.result;
+    const std::size_t count = static_cast<std::size_t>(q.width) * static_cast<std::size_t>(q.height);
+    if (m.cells.size() != count || m.roles.size() != count || m.provenance.size() != count ||
+        immutable_frame.cells.size() != count || immutable_frame.roles.size() != count ||
+        immutable_frame.provenance.size() != count) {
+        revision.status = MosaicRevisionStatus::Invalid;
+        revision.reason = "supported receptor requires full immutable native source/motif planes";
+        return false;
+    }
+    // Conservative bounded scan and source-metadata accounting. One shared
+    // generator allowance; no budget refund after a failed architectural path.
+    const auto scan_work = UINT64_C(2048) + slots.size() * (UINT64_C(4096) +
+        immutable_frame.connectors.size() * 4U + m.instances.size() * 8U + m.boundary.hard.size() * 8U);
+    if (budget.generator_remaining < scan_work) {
+        revision.status = MosaicRevisionStatus::Exhausted;
+        revision.reason = "supported receptor scan exceeded aggregate native MOSAIC work";
+        return false;
+    }
+    budget.generator_remaining -= scan_work;
+    revision.supported_receptor_work += scan_work;
+    revision.wrapper_work += scan_work;
+    const auto structural_solid = [](Material material, Role role) {
+        return material != Material::Empty && material_definition(material).state == MaterialState::Solid &&
+            (role == Role::Structure || role == Role::Brace || role == Role::Transition);
+    };
+    const auto plus = [](Point a, Point b) { return Point{a.x+b.x, a.y+b.y}; };
+    const auto opposite = [](Point a) { return Point{-a.x, -a.y}; };
+    struct Candidate { SupportedNativeReceptor witness; };
+    std::vector<Candidate> accepted;
+    std::set<Point> occupied_targets;
+    auto ordered = slots;
+    std::sort(ordered.begin(), ordered.end(), [](const auto& a,const auto& b) { return a.id < b.id; });
+    std::map<std::uint32_t, unsigned> extra_per_instance;
+    for (const auto& slot : ordered) {
+        if (!slot.required || !slot.hard || (slot.a != slot.b &&
+            slot.a.x != slot.b.x && slot.a.y != slot.b.y) ||
+            std::abs(slot.facing.x)+std::abs(slot.facing.y)!=1 ||
+            slot.owner != "FRAMEWEAVER") continue;
+        const auto source = std::find_if(immutable_frame.connectors.begin(), immutable_frame.connectors.end(),
+            [&](const Connector& c) { return c.id == slot.connector && c.instance == slot.instance &&
+                c.required && !c.fulfilled && c.family == Family::Frame && c.facing == slot.facing; });
+        if (source == immutable_frame.connectors.end()) continue;
+        auto roots = line(slot.a, slot.b);
+        if (roots.size() > 33) continue;
+        bool found = false;
+        for (unsigned distance = 1; distance <= 14 && !found; ++distance) for (const auto root : roots) {
+            const auto source_roots=line(source->a,source->b);
+            if(!inside(q,root) || std::find(source_roots.begin(),source_roots.end(),root)==source_roots.end())continue;
+            const Point contact{root.x+static_cast<int>(distance)*slot.facing.x,
+                                root.y+static_cast<int>(distance)*slot.facing.y};
+            const Point backing=plus(contact,slot.facing), air=plus(contact,opposite(slot.facing));
+            if (!inside(q,root) || !inside(q,contact) || !inside(q,backing) ||
+                !inside(q,air) || occupied_targets.contains(contact)) continue;
+            const auto root_index=index(q,root), contact_index=index(q,contact), backing_index=index(q,backing);
+            if (immutable_frame.provenance[root_index]!=slot.instance ||
+                !structural_solid(immutable_frame.cells[root_index],immutable_frame.roles[root_index]) ||
+                !allowed(q,contact) || !allowed(q,backing) ||
+                m.cells[index(q,air)]!=Material::Empty ||
+                !structural_solid(m.cells[contact_index],m.roles[contact_index]) ||
+                !structural_solid(m.cells[backing_index],m.roles[backing_index]) ||
+                m.provenance[contact_index]==0 || m.provenance[contact_index]!=m.provenance[backing_index]) continue;
+            // No target can appear behind a gap obstructed by other material,
+            // including a frozen foreign source or a preserved passage.
+            bool clear=true;
+            for(unsigned step=1;step<distance;++step){
+                Point p{root.x+static_cast<int>(step)*slot.facing.x,
+                        root.y+static_cast<int>(step)*slot.facing.y};
+                if(!inside(q,p) || !allowed(q,p) || m.cells[index(q,p)]!=Material::Empty) {clear=false;break;}
+            }
+            if(!clear)continue;
+            if(contact.x<slot.envelope.x || contact.y<slot.envelope.y ||
+               contact.x>=slot.envelope.x+slot.envelope.w || contact.y>=slot.envelope.y+slot.envelope.h)continue;
+            const auto part=std::find_if(m.instances.begin(),m.instances.end(),[&](const Instance& item){
+                return item.id==m.provenance[contact_index];});
+            if(part==m.instances.end() ||
+               std::find(part->cells.begin(),part->cells.end(),contact)==part->cells.end() ||
+               std::find(part->cells.begin(),part->cells.end(),backing)==part->cells.end())continue;
+            const unsigned existing=static_cast<unsigned>(std::count_if(m.boundary.hard.begin(),m.boundary.hard.end(),
+                [&](const Affordance& a){return a.instance==part->id;}));
+            const bool already=std::any_of(m.boundary.hard.begin(),m.boundary.hard.end(),[&](const Affordance& a){
+                return a.a==contact && a.b==contact && a.facing==opposite(slot.facing) &&
+                    a.family==Family::Frame && a.instance==part->id;});
+            if(already || existing+extra_per_instance[part->id]>=q.limits.max_connectors_per_instance ||
+                m.boundary.hard.size()+accepted.size()>=q.limits.max_affordances ||
+                m.boundary.hard.size()+accepted.size()>=256)continue;
+            accepted.push_back({{slot.id,slot.connector,slot.instance,part->id,0,root,contact,backing,opposite(slot.facing)}});
+            occupied_targets.insert(contact);++extra_per_instance[part->id];found=true;break;
+        }
+    }
+    if(accepted.empty())return true;
+    const auto finalization_work=count*UINT64_C(12)+m.instances.size()*64U+
+        (m.boundary.hard.size()+accepted.size())*32U;
+    if(budget.generator_remaining<finalization_work) {
+        revision.status=MosaicRevisionStatus::Exhausted;
+        revision.reason="supported receptor native receipt finalization exceeded aggregate allowance";
+        return false; // entire set rejected atomically, no material or receptor published
+    }
+    budget.generator_remaining-=finalization_work;
+    revision.supported_receptor_work+=finalization_work;
+    revision.wrapper_work+=finalization_work;
+    if(cancellation_requested(budget)) {
+        revision.status=MosaicRevisionStatus::Cancelled;
+        revision.reason="cancelled before supported native receptor publication";
+        return false;
+    }
+    std::uint32_t next_id=0;
+    for(const auto& port:m.boundary.hard)next_id=std::max(next_id,port.id);
+    for(auto& candidate:accepted) {
+        auto& witness=candidate.witness;
+        witness.port_id=++next_id;
+        m.boundary.hard.push_back({witness.port_id,witness.receiving_instance,witness.contact,witness.contact,
+            witness.facing,Family::Frame,false,1.0,
+            "swarm005/source-slot="+std::to_string(witness.slot)+";connector="+std::to_string(witness.connector)});
+        revision.supported_receptors.push_back(witness);
+    }
+    m.implementation+="+swarm005-native-supported-receptors-v1";
+    m.metrics["swarm005_supported_native_receptors"]=accepted.size();
+    m.metrics["swarm005_supported_receptor_work"]=revision.supported_receptor_work;
+    m.notes.emplace_back("SWARM005 opt-in: native solid paired motif bearing supports a new exact source-bound FRAME receptor; this is not a joint until final path qualification.");
+    finish_result(q,m);
+    revision.status=revision_status(m.status);
+    revision.reason=m.termination;
+    return true;
+}
+
 const char* name(MosaicRevisionStatus status) noexcept {
     switch (status) {
     case MosaicRevisionStatus::Complete: return "complete";
@@ -244,7 +380,7 @@ MosaicRevision propose_mosaic_revision(
     const Request& base, const Result& peer, const std::vector<TransitionSlot>& slots,
     const std::vector<std::uint8_t>& shared_zone, MosaicBudget& budget,
     std::uint32_t round, const Result* previous,
-    const std::vector<int>* previous_categories, bool optional_negotiation, bool native_bearing) {
+    const std::vector<int>* previous_categories, bool optional_negotiation, bool native_bearing, bool supported_native_receptors) {
     MosaicRevision out;
     out.round = round;
     const auto fail = [&](MosaicRevisionStatus status, const std::string& why) {
@@ -399,6 +535,9 @@ MosaicRevision propose_mosaic_revision(
             out.trace = {};
             out.bearing_replacements.clear();
         }
+        return out;
+    }
+    if (supported_native_receptors && !author_supported_native_receptors(out, peer, ordered_slots, budget)) {
         return out;
     }
     if (cancellation_requested(budget)) {

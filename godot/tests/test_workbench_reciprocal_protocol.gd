@@ -36,6 +36,20 @@ func _initialize()->void:
 	check(lines[0]=="SWARM004 1" and lines[1]=="8 4 59 2 3 2 2 1","protocol seed geometry and bounds are exact")
 	check(lines[3]=="0.10000000 0.20000000 0.30000000 0.40000000 0.50000000 0.60000000 0.70000000 0",
 		"all seven controls and optional negotiation have independent exact fields")
+	var v3:Dictionary=request.duplicate(true)
+	v3["compact_native_termination"]=true
+	v3["supported_native_receptors"]=true
+	var trial:=Protocol.prepare(v3,{"extent":extent,"cells":bytes})
+	check(trial.ok and trial.text.begins_with("SWARM005 3\n") and "\n1 1\n" in trial.text,
+		"SWARM-005 V3 adds exact opt-in native switches without changing V1/V2")
+	var malformed_v3:Dictionary=v3.duplicate(true)
+	malformed_v3["compact_native_termination"]=1
+	check(not Protocol.prepare(malformed_v3,{"extent":extent,"cells":bytes}).ok,
+		"malformed SWARM-005 source-time switch fails closed")
+	malformed_v3=v3.duplicate(true)
+	malformed_v3["supported_native_receptors"]="true"
+	check(not Protocol.prepare(malformed_v3,{"extent":extent,"cells":bytes}).ok,
+		"malformed SWARM-005 receptor switch fails closed")
 	var frame:Array=[];var mosaic:Array=[]
 	for at:int in 32:
 		frame.append(int(at%8<4));mosaic.append(int(at%8>=4))
@@ -65,10 +79,15 @@ func _initialize()->void:
 	valid={"schema":5,"type":"reciprocal_assembly","source":"transport-fixture-no-assembly","can_apply":false,
 		"status":"blocked","reason":"transport test, no architecture","stop_reason":"fixture","input":{"frame":input,"mosaic":other,
 		"shared_zone":Array(prepared.shared),"options":{"rounds":2,"shared_extent":2,"orientation_preference":1,
-		"optional_negotiation":false,"shared_ownership":true,"final_validation":true}},"cells":[],"ledger":[],"ledger_columns":Protocol.LEDGER_COLUMNS,
+		"optional_negotiation":false,"shared_ownership":true,"final_validation":true,
+		"compact_native_termination":false,"supported_native_receptors":false}},"cells":[],"ledger":[],"ledger_columns":Protocol.LEDGER_COLUMNS,
 		"rules":[],"rounds":[],"joints":[],"obligations":[],"owner_names":["empty","FRAMEWEAVER","MOSAIC","immutable_environment"]}
 	for field:String in Protocol.NATIVE_SWITCHES:valid.input.options[field]=true
 	check(decode(valid).ok,"well-formed blocked evidence remains inspectable")
+	for option: String in ["compact_native_termination","supported_native_receptors"]:
+		var forged:Dictionary=valid.duplicate(true)
+		forged.input.options[option]=true
+		check(not decode(forged).ok,"unrequested SWARM-005 native option "+option+" is rejected")
 	for owner:String in ["frame","mosaic"]:
 		for field:String in Protocol.NATIVE_IDENTITIES[owner]:
 			var changed:Dictionary=valid.duplicate(true);changed.input[owner][field]=123

@@ -45,8 +45,10 @@ func exercise()->void:
 	if not await until(settled,"blank native source installed"): return
 	var before:=await capture()
 	bench.open_reciprocal();panel=bench.reciprocal_panel
-	check(not panel.controls.shared_ownership.button_pressed and panel.controls.rounds.value==2,
-		"new experimental dock uses the selected two-round fixed-territory default")
+	check(not panel.controls.shared_ownership.button_pressed and panel.controls.rounds.value==2 \
+		and not panel.controls.compact_native_termination.button_pressed \
+		and not panel.controls.supported_native_receptors.button_pressed,
+		"SWARM-005 source feasibility and source-bound native receptors remain opt-in")
 	panel.controls.profile.select(1);panel._select_expression(1)
 	panel.controls.width.value=128;panel.controls.height.value=96
 	panel.controls.layout.select(2);panel.controls.border.value=4
@@ -78,6 +80,21 @@ func exercise()->void:
 	check((await capture()).cells==before.cells and bench.applied.edits.is_empty(),"all native previews preserve the entire World and authoring history")
 	panel.gentek_controls.frame.values.branching.value=0.15
 	check(panel.document.is_empty() and panel.phase=="idle" and panel._apply.disabled,"changing an independent knob retires the old native Apply authority")
+	panel.gentek_controls.frame.values.branching.value=0.1
+	panel.controls.compact_native_termination.button_pressed=true
+	panel.controls.supported_native_receptors.button_pressed=true
+	check(panel.generate(),"SWARM-005 V3 real native transport admitted")
+	if not await until(func()->bool:return not panel.busy(),"SWARM-005 V3 native child settles"): return
+	if not check(panel.phase=="ready" and not panel.document.is_empty(),"V3 native evidence decoded: "+panel.status): return
+	check(panel.prepared.text.begins_with("SWARM005 3\n") and "\n1 1\n" in panel.prepared.text,
+		"SWARM-005 V3 request explicitly carries both opt-ins")
+	check(panel.document.input.options.compact_native_termination and panel.document.input.options.supported_native_receptors,
+		"native generator actually enabled and reported both new authored closure policies")
+	check((await capture()).cells==before.cells and bench.applied.edits.is_empty(),
+		"experimental opt-in native preview did not alter live cells or history")
+	panel.controls.supported_native_receptors.button_pressed=false
+	check(panel.document.is_empty() and panel._apply.disabled,
+		"changing opt-in receptor source retires previous Apply authority")
 	completed=true
 
 func run()->void:
