@@ -1,0 +1,46 @@
+name: SCRIPT-HOTPATH-690 temporary exact-head native and provenance dispatcher
+
+on:
+  push:
+    branches: [ci/script-hotpath-690-exact-5cdf41b0]
+    paths: ['.github/workflows/script-hotpath-690-native-docs-dispatch.yml']
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: script-hotpath-690-native-docs-dispatch-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Launch full native and documentation workflows on exact PR head
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/ci/script-hotpath-690-exact-5cdf41b0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Refuse any changed production commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected=5cdf41b0fcc88de647976e93049dec0460138748
+          actual="$(gh api repos/techrote/cybersand/git/ref/heads/exp/script-hotpath-001-native-fill --jq '.object.sha')"
+          test "$actual" = "$expected" || { echo "::error::PR head changed"; exit 1; }
+      - name: Dispatch ordinary full Native and documentation/provenance gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected=5cdf41b0fcc88de647976e93049dec0460138748
+          test "$(gh api repos/techrote/cybersand/git/ref/heads/exp/script-hotpath-001-native-fill --jq '.object.sha')" = "$expected"
+          gh api --method POST repos/techrote/cybersand/actions/workflows/native.yml/dispatches \
+            --field ref=exp/script-hotpath-001-native-fill
+          gh api --method POST repos/techrote/cybersand/actions/workflows/documentation.yml/dispatches \
+            --field ref=exp/script-hotpath-001-native-fill
+          {
+            echo '### Source-matched full standard Native and Documentation CI dispatched'
+            echo 'Candidate: 5cdf41b0fcc88de647976e93049dec0460138748'
+            echo 'PR #690 remains Draft/HOLD. No source or runtime changed.'
+          } >> "$GITHUB_STEP_SUMMARY"
