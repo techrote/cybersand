@@ -180,7 +180,11 @@ foreach ($variant in $variants) {
                 throw "Native output changed the common immutable crop or source: $stem"
             }
             $expectedRecovery=[bool]$recovery
-            if ([bool]$result.input.options.negotiated_recovery -ne $expectedRecovery) {
+            $nativeRecovery = $false
+            if ($null -ne $result.input.options.PSObject.Properties["negotiated_recovery"]) {
+                $nativeRecovery = [bool]$result.input.options.negotiated_recovery
+            }
+            if ($nativeRecovery -ne $expectedRecovery) {
                 throw "Native output does not attest the selected recovery flag: $stem"
             }
             $obligations=@($result.obligations)
@@ -191,13 +195,15 @@ foreach ($variant in $variants) {
             $knownFinal=($result.status -eq "complete" -or $result.status -eq "blocked")
             $cells=0
             foreach ($m in $result.cells) { if ([int]$m -ne 0) {$cells++} }
+            $foreignValue=$null;$requiredValue=$null
+            if ($knownFinal) { $foreignValue=$foreign;$requiredValue=$required }
             $row=[pscustomobject]@{
                 Style=$style;Swarm005Options=$variant;Recovery=$mode;
                 Status=[string]$result.status;CanApply=[bool]$result.can_apply;
                 ApplyValid=[bool]$apply;MaterialCells=$cells;
                 QualifiedJoints=$joints;
-                ForeignJoined=if($knownFinal){$foreign}else{$null};
-                StillRequired=if($knownFinal){$required}else{$null};
+                ForeignJoined=$foreignValue;
+                StillRequired=$requiredValue;
                 StopReason=[string]$result.stop_reason;
                 ChargedWork=[string]$result.metrics.total_charged_work;
                 RequestSHA256=(Get-FileHash -LiteralPath $request -Algorithm SHA256).Hash.ToLowerInvariant();
