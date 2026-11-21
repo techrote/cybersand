@@ -624,7 +624,7 @@ jobs:
           TARGET_SHA: ${{ env.GENTEK_FINAL_SHA }}
           TARGET_TREE: ${{ env.GENTEK_FINAL_TREE }}
           TARGET_BRANCH: integration/gentek80-water-conflict-reconcile
-          ACCEPTED_MAIN: de58bf1997ca75825cf3b29e046dc1c1022c45bf
+          ACCEPTED_MAIN: 69209acaffb34ebe18c45e19290b5976b7fb2c82
         run: |
           set -euo pipefail
           mkdir -p evidence/final-dispatch
@@ -643,7 +643,7 @@ jobs:
               'orchestration_commit': os.environ['GITHUB_SHA'],
               'orchestration_run': os.environ['GITHUB_RUN_ID'],
               'requested_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-              'requested_workflows': ['documentation.yml', 'native.yml', 'gdextension.yml', 'palette-shader-qualification.yml', 'wave-flow.yml', 'native-scope-advisory.yml'],
+              'requested_workflows': ['documentation.yml', 'native.yml', 'gdextension.yml', 'palette-shader-qualification.yml', 'wave-flow.yml', 'native-scope-advisory.yml', 'gentek691-art-history-repro.yml'],
               'commands': [],
               'errors': [],
               'scope': 'Dispatch requests only. Each resulting run must independently show the exact candidate head and retain its own results.',
