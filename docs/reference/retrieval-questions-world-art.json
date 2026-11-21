@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-20",
+  "purpose": "Additive World Art finisher questions; existing frozen fixtures are unchanged.",
+  "questions": [
+    {
+      "id": "WORLD-ART-OPEN",
+      "query": "How do I open the World Art viewer on Windows with all fifteen collections and 120 features?",
+      "canonical": [
+        "tools/world-art-evaluation.md"
+      ],
+      "facts": [
+        "Extract the portable ZIP and open Open World Art.cmd; Godot and Python are included.",
+        "Open Gallery.cmd opens verified real-Godot scene and feature captures.",
+        "No native extension, Rapier runtime, second atlas checkout or C++ build is required."
+      ],
+      "sources": [
+        "../tools/world_art_preview_launcher.py",
+        "../godot/tools/world_art_preview.gd"
+      ]
+    },
+    {
+      "id": "WORLD-ART-CAPACITY",
+      "query": "Can World Art preview 512x8192 and 16384x1024 art, and does that increase native playable World sizes?",
+      "canonical": [
+        "tools/art-pipeline-unification.md"
+      ],
+      "facts": [
+        "The art adapter accepts up to16384 cells per axis and16777216 source cells.",
+        "Those art-only dimensions grant no native simulation/import/save admission.",
+        "Ordinary full export is50M pixels; explicit streamed export is100M and65536 per output axis."
+      ],
+      "sources": [
+        "../tools/world_art_preview_launcher.py",
+        "../godot/tools/world_art_preview.gd"
+      ]
+    },
+    {
+      "id": "WORLD-ART-RETRY",
+      "query": "How do I retry interrupted unattended World Art captures without overwriting evidence?",
+      "canonical": [
+        "tools/world-art-capture.md"
+      ],
+      "facts": [
+        "Retain incomplete output and choose a new destination.",
+        "The tool refuses nonempty and retained-claim directories and does not take over uncertain writers.",
+        "Manifest, PNG, batch/child inventory and source integrity verification are required for completion."
+      ],
+      "sources": [
+        "../tools/world_art_preview_launcher.py",
+        "../godot/tools/world_art_preview.gd"
+      ]
+    },
+    {
+      "id": "WORLD-ART-COMPARE",
+      "query": "How does pinning World Art preserve source identity and settings for before and after comparison?",
+      "canonical": [
+        "tools/world-art-preview.md"
+      ],
+      "facts": [
+        "Pinning retains rendered pixels, source hash/path, scene or feature/variant, dimensions, camera and presentation.",
+        "Before viewport/detail exports use the pin original provenance; full exports render current source.",
+        "Use explicit reload on a writable copy; invalid input leaves the last good rendering."
+      ],
+      "sources": [
+        "../tools/world_art_preview_launcher.py",
+        "../godot/tools/world_art_preview.gd"
+      ]
+    },
+    {
+      "id": "WORLD-ART-HEADLESS",
+      "query": "Does headless Godot or Windows ANGLE qualification establish physical GPU acceptance for the art viewer?",
+      "canonical": [
+        "tools/world-art-evaluation.md"
+      ],
+      "facts": [
+        "Display-less Godot headless cannot provide framebuffer evidence; unattended Linux uses X11/Xvfb.",
+        "Windows hosted ANGLE is distinct from physical Windows/NVIDIA owner acceptance.",
+        "Cross-driver PNG hash equality is not required."
+      ],
+      "sources": [
+        "../tools/world_art_preview_launcher.py",
+        "../godot/tools/world_art_preview.gd"
+      ]
+    }
+  ]
+}

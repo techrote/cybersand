@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-15",
+  "reviewed": "2026-11-20",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
@@ -142,7 +142,11 @@
     "operations/architectural-generator-playtest.md",
     "decisions/2026-11-14-owner-authoring-intent.md",
     "systems/workbench-actor-composition.md",
-    "operations/workbench-actor-composition.md"
+    "operations/workbench-actor-composition.md",
+    "tools/art-pipeline-unification.md",
+    "tools/world-art-preview.md",
+    "tools/world-art-capture.md",
+    "tools/world-art-evaluation.md"
   ],
   "navigation": [
     "README.md",
