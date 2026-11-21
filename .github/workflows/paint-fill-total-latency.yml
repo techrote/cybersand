@@ -50,7 +50,33 @@ jobs:
           echo "$CYBERSAND_SHA256  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
           echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
           mkdir -p build
-          python3 tools/ci/check_repository.py --json build/paint-latency-repository-check.json
+          # Unlike the repository-wide Docs workflow this focused job has no
+          # companion docs workspace; prove exact native source and committed
+          # runtime identity without suppressing the full Docs CI elsewhere.
+          python3 - <<'PY'
+          import hashlib, json, sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools/ci')
+          from native_candidate_identity import source
+          root = Path.cwd()
+          head, tree, native_sources = source(root)
+          manifest = json.loads((root / 'godot/addons/cybersand_native/runtime-provenance.linux.json').read_text())
+          target = root / manifest['artifact']
+          runtime_sha = hashlib.sha256(target.read_bytes()).hexdigest()
+          assert manifest['platform'] == 'linux'
+          assert manifest['status'] == 'validated-development-runtime'
+          assert native_sources == manifest['source_inputs'], 'GDExtension native inputs differ from retained binary'
+          assert runtime_sha == manifest['sha256'] and target.stat().st_size == manifest['size']
+          report = {
+              'status': 'passed', 'head': head, 'tree': tree,
+              'native_source_count': len(native_sources),
+              'runtime_sha256': runtime_sha,
+              'retained_runtime_source_commit': manifest['source_commit'],
+              'scope': 'Exact GDExtension source hashes and Linux LFS identity; full Docs CI is independent',
+          }
+          (root/'build/paint-latency-repository-check.json').write_text(json.dumps(report, indent=2)+'\n')
+          print('PAINT_FILL_SOURCE_IDENTITY', json.dumps(report))
+          PY
       - name: Restore official Godot 4.7 with archive pin
         run: |
           set -euo pipefail
