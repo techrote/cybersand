@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-20
 ---
 
 # Interfaces and message contracts
@@ -1072,6 +1072,13 @@ Sources: [native command and result](../../native/include/cybersand/world.hpp),
 [scene owner](../../godot/scripts/player_playground_runtime.gd).
 
 ## Physical actor control and effects
+
+The [Shared Workbench composition adapter](../systems/workbench-actor-composition.md#producer-and-policy-interface)
+exposes these existing physical issued-observation and leased-command contracts
+by stable authored instance ID. It validates controller/equipment capabilities,
+keeps inspection separate from the human pilot, and preserves body identity
+during producer takeover. Sampled packets are refused at the physical boundary.
+The optional authored control-v1 extension does not serialize command authority.
 
 **Current experimental ACT-004 / ACT-005:**
 [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)

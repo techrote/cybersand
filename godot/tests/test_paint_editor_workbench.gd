@@ -16,6 +16,7 @@ var checks := 0
 var failures: Array[String] = []
 var maximum_frame_gap_usec := 0
 var last_frame_usec := 0
+var frame_gaps_usec: Array[int] = []
 const SAVE_NAME := "paint001-mounted-acceptance"
 # Initial-readiness evidence only. These observations neither extend a deadline
 # nor admit a late predicate. No image readback or additional worker API is used.
@@ -162,7 +163,10 @@ func _finish_startup(passed: bool) -> void:
 func _initialize() -> void: run.call_deferred()
 func _process(_delta: float) -> bool:
 	var now := Time.get_ticks_usec()
-	if last_frame_usec>0: maximum_frame_gap_usec=maxi(maximum_frame_gap_usec,now-last_frame_usec)
+	if last_frame_usec>0:
+		var gap_usec: int = now-last_frame_usec
+		maximum_frame_gap_usec=maxi(maximum_frame_gap_usec,gap_usec)
+		if frame_gaps_usec.size()<200000: frame_gaps_usec.append(gap_usec)
 	last_frame_usec=now
 	_startup_mark("scene_tree_process")
 	return false
@@ -424,11 +428,21 @@ func run() -> void:
 	var initial_ready: bool = await until(ready,"ordinary Workbench installed",60000)
 	_finish_startup(initial_ready)
 	if check(initial_ready,"ordinary Workbench ready"):
-		last_frame_usec=Time.get_ticks_usec(); maximum_frame_gap_usec=0
+		last_frame_usec=Time.get_ticks_usec(); maximum_frame_gap_usec=0; frame_gaps_usec.clear()
 		if OS.get_environment("PAINT_REOPEN")=="1": await reopen()
 		else: await author()
 	host.queue_free()
 	await process_frame
 	await process_frame
-	print("PAINT_EDITOR_WORKBENCH ",JSON.stringify({"checks":checks,"failures":failures,"maximum_frame_gap_usec":maximum_frame_gap_usec,"reopen":OS.get_environment("PAINT_REOPEN")}))
+	var sorted_gaps: Array[int] = frame_gaps_usec.duplicate()
+	sorted_gaps.sort()
+	var p95_usec := 0
+	var p99_usec := 0
+	if not sorted_gaps.is_empty():
+		p95_usec=sorted_gaps[ceili(float(sorted_gaps.size())*0.95)-1]
+		p99_usec=sorted_gaps[ceili(float(sorted_gaps.size())*0.99)-1]
+	print("PAINT_EDITOR_WORKBENCH ",JSON.stringify({"checks":checks,"failures":failures,
+		"maximum_frame_gap_usec":maximum_frame_gap_usec,"frame_gap_p95_usec":p95_usec,
+		"frame_gap_p99_usec":p99_usec,"frame_samples":sorted_gaps.size(),
+		"reopen":OS.get_environment("PAINT_REOPEN")}))
 	quit(int(not failures.is_empty()))

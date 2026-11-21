@@ -398,7 +398,7 @@ func run() -> void:
 	worker = host.simulation_worker
 	if bench != null:
 		editor = bench.paint_editor
-		panel = bench.art_batches
+		panel = bench._ensure_art_batches()
 		art = panel.executor
 	if check(bench != null and editor != null,"shared Workbench and PAINT history mounted") \
 		and await until(ready,"initial actual native Workbench ready",180000):

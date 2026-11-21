@@ -31,7 +31,7 @@ class PilotHost extends "res://scripts/main.gd":
 		return {}
 	func _publish_workbench_keyboard() -> void:
 		if pilot_action.is_empty() or paused or shared_workbench == null or physical_actor_session == null: return
-		physical_actor_session.submit_workbench_action(shared_workbench.selected_id(),pilot_action,pilot_ports,false)
+		physical_actor_session.submit_workbench_action(shared_workbench.pilot_id(),pilot_action,pilot_ports,false)
 
 var host: Control
 var ui: Control
@@ -340,7 +340,7 @@ func mixed_impact() -> void:
 	var lifted_barrel := session.workbench_actor_state(2)
 	s.barrel_lift = s.barrel_y-lifted_barrel.position.y
 	require(s.barrel_lift>1.0,"contacted passive barrel moves upward under flyer actuation")
-	require(ui.select_instance(3),"pilot handover")
+	require(ui.pilot_instance(3),"explicit pilot handover")
 	if not await phase(25,{"move":Vector2(0,-1),"primary":true,"effort":1.0},s): return
 	var needle: Dictionary = session.workbench_actor_state(3)
 	var scoop_state: Dictionary = session.workbench_actor_state(1)

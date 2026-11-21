@@ -191,5 +191,5 @@ static func read_named(label: String) -> Dictionary:
 	for index: int in setup.edits.size():
 		setup.edits[index] = Array(PackedInt32Array(setup.edits[index]))
 	for actor: Dictionary in setup.actors:
-		actor.id = int(actor.id)
+		Setup.canonical_actor_numbers(actor)
 	return {"generated":true,"setup":setup,"generation":generation}

@@ -20,6 +20,22 @@ For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-
 
 For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
 
+## World Art pipeline
+
+[Architecture, capacity and native compatibility](tools/art-pipeline-unification.md),
+[interactive viewer and one-checkout launch](tools/world-art-preview.md),
+[unattended capture and publication](tools/world-art-capture.md), and
+[portable Windows evaluator with offline gallery](tools/world-art-evaluation.md)
+own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
+source-qualified graphical evidence and physical GPU acceptance remain distinct.
+
+WB-ACTOR-COMPOSE-001 / #589 Draft/HOLD: [Shared Workbench actor composition](systems/workbench-actor-composition.md)
+integrates the existing physical catalogue, independent producers and live handoff.
+Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-composition.md)
+for ordinary UI controls, policy testing and authored saves; the
+[dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
+separates actual platform evidence from owner playfeel acceptance.
+
 The [Workbench publication and progression evaluation](operations/pubpres-integration-evaluation.md) tracks PUBPRES-INTEGRATION-001 and its Draft/HOLD gates.
 
 For deliberate historical research, use the isolated

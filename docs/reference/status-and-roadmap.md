@@ -30,6 +30,40 @@ The owner selected Wave Flow with spill and ballistic release for new player ses
 
 The [Waterwall 002 candidate](../audits/2026-11-19-wave-waterwall-002.md) adds optional Wave settings for ledge sheets, crest flight and deep-water slosh. The [Water Lab](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate) stages both bundles. The owner approved the combined gameplay profile after the [Oil impingement playtest](../audits/2026-11-20-wave-oil-impinge.md).
 
+## Unified World Art pipeline — 2026-11-20
+
+**Implementation candidate, Draft/HOLD:** the [unified art contract](../tools/art-pipeline-unification.md)
+provides one shared Godot RG8 renderer, interactive viewer, unattended capture,
+verified offline gallery and portable Windows evaluator for fifteen collections
+and 120 features. Art-only bounds are 16,384 cells per axis and 16,777,216 cells
+in total; ordinary full export is limited to 50M pixels and opt-in streamed
+export to 100M pixels / 65,536 per output axis. Native simulation/import limits
+are unchanged. The [capture guide](../tools/world-art-capture.md) owns explicit
+failure/no-takeover semantics; the [evaluation guide](../tools/world-art-evaluation.md)
+owns owner usage. Exact-source qualification and independent review are recorded
+in PR #685. Hosted ANGLE is separate from owner Windows/NVIDIA acceptance.
+
+## Shared Workbench actor composition / #589 — 2026-11-20
+
+**Implementation candidate, Draft/HOLD; no merge authorization.** The owner
+advanced #589's earlier planning boundary through WB-ACTOR-COMPOSE-001. The
+[composition contract](../systems/workbench-actor-composition.md) exposes 59 existing
+physical model identities through one prepared Workbench session: eight flyers,
+46 physical rigs, four 4LY profiles and the passive barrel. Per-instance Human,
+Scripted NPC, External Policy and Passive sources retain existing producer,
+issued-observation, lease and equipment admission. Live takeover preserves the
+body graph and resources. Inspection and painting do not take NPC control.
+
+The [Mixed Actor Workshop](../operations/workbench-actor-composition.md) uses six
+actors with different mechanisms, three compatible tools and an actual leased
+policy fixture in a material-cell canvas. Setup-v2 gains a strictly validated
+optional control-v1 extension; authored Save remains separate from live physics.
+Sampled arenas, oracle/tag combat, NCA training and model services remain outside
+this integration. A bounded adapter reuses Thunderbowl's pure local steering
+helper without importing its simulation owner. The
+[dated evidence](../audits/2026-11-20-workbench-actor-composition.md) owns exact
+source/runtime identities, platform results, failures and remaining owner checks.
+
 ## Workbench publication and progression candidate
 
 The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. Matched actual gameplay rejected the temporary automatic Windows software-ANGLE full-upload override; the repair removes it while retaining explicit full selection. The candidate also removes overdue non-progressing owner turns after a completed body sample. Native health fences and real physical admission remain intact. It remains Draft/HOLD pending fresh source-matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments and policies are retained separately.

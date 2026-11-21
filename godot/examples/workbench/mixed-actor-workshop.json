@@ -1,0 +1,311 @@
+{
+	"actors": [
+		{
+			"control": {
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "fixture",
+				"source": "human",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+			"id": 1,
+			"model": "midge",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				116.0,
+				232.0
+			]
+		},
+		{
+			"control": {
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "fixture",
+				"source": "scripted",
+				"usable_index": 3,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:a87408991457e9564d55fb535f1f1c727ad858a6bab89d7ec8346eb695cbe57d",
+			"id": 2,
+			"model": "runner",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				156.0,
+				354.0
+			]
+		},
+		{
+			"control": {
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "fixture",
+				"source": "scripted",
+				"usable_index": 8,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:d6d568b2ed7163dc056037d2080b0697537a6647088f967e1ba6d040937bfa86",
+			"id": 3,
+			"model": "crawler",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				300.0,
+				350.0
+			]
+		},
+		{
+			"control": {
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "fixture",
+				"source": "scripted",
+				"usable_index": 1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:b8042f6971417d653bf943d9f584231fc865ecf0fc31d73e78af79f9f318d754",
+			"id": 4,
+			"model": "skimmer",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				834.0,
+				278.0
+			]
+		},
+		{
+			"control": {
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "fixture",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:99047b01be030ac0ec322142ed32f10daf568e8ee602ffaf7b785bc2f3c40e87",
+			"id": 5,
+			"model": "stuntbuggy",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				510.0,
+				350.0
+			]
+		},
+		{
+			"control": {
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "fixture",
+				"source": "passive",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "reference-barrel-v1",
+			"id": 6,
+			"model": "reference_barrel",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				720.0,
+				350.0
+			]
+		}
+	],
+	"brush": 8,
+	"edits": [
+		[
+			0,
+			376,
+			1024,
+			12,
+			58
+		],
+		[
+			0,
+			80,
+			8,
+			296,
+			58
+		],
+		[
+			1016,
+			80,
+			8,
+			296,
+			58
+		],
+		[
+			180,
+			368,
+			16,
+			8,
+			7
+		],
+		[
+			202,
+			360,
+			16,
+			16,
+			7
+		],
+		[
+			322,
+			368,
+			60,
+			8,
+			2
+		],
+		[
+			366,
+			356,
+			16,
+			12,
+			2
+		],
+		[
+			536,
+			368,
+			16,
+			8,
+			58
+		],
+		[
+			562,
+			360,
+			16,
+			16,
+			58
+		],
+		[
+			800,
+			348,
+			96,
+			4,
+			7
+		],
+		[
+			790,
+			372,
+			10,
+			4,
+			58
+		],
+		[
+			896,
+			372,
+			10,
+			4,
+			58
+		]
+	],
+	"extent": [
+		1024,
+		512
+	],
+	"fire": false,
+	"liquid_policy": [
+		1279479895,
+		1,
+		1,
+		-2102023270,
+		1854385793,
+		1886533889,
+		84225930,
+		1522979054,
+		582168604,
+		-646713377,
+		-939672877,
+		868616440,
+		1977866421,
+		1930370363,
+		-2119873090,
+		-6981196,
+		870342995,
+		1443932351,
+		-1569267145,
+		11,
+		3,
+		1,
+		0,
+		8,
+		2,
+		0,
+		12,
+		2,
+		0,
+		16,
+		2,
+		0,
+		20,
+		2,
+		0,
+		21,
+		2,
+		0,
+		24,
+		2,
+		0,
+		30,
+		2,
+		0,
+		32,
+		2,
+		0,
+		33,
+		2,
+		0,
+		36,
+		2,
+		0,
+		0,
+		0
+	],
+	"material": 2,
+	"next_id": 7,
+	"normalize": false,
+	"response": "LA-SELECTIVE",
+	"rule_radius": 2,
+	"selected": 1,
+	"source": [],
+	"version": 2
+}

@@ -117,4 +117,5 @@ func select_tab(index: int) -> void:
 
 func open() -> void:
 	if window == null: return
+	if _workbench != null: _workbench._cancel()
 	window.popup_centered_clamped(Vector2i(1120,730),0.92)

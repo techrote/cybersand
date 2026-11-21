@@ -20,6 +20,7 @@ const MAX_ROPE_LENGTH: float = 96.0
 const MIN_ROPE_LENGTH: float = 6.0
 const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
+const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const ReviewFleetController = preload("res://scripts/gcr_review_fleet_controller.gd")
 const ReviewFleet = preload("res://scripts/gcr_review_fleet.gd")
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
@@ -313,7 +314,8 @@ static func valid_review_options(options: Dictionary) -> bool:
 
 
 func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1,
-		review_fleet_index: int = -1, review_options: Dictionary = {}) -> Error:
+		review_fleet_index: int = -1, review_options: Dictionary = {},
+		workbench_physical: bool = false) -> Error:
 	if configured:
 		return ERR_ALREADY_IN_USE
 	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= 8 or incarnation <= 0:
@@ -325,8 +327,18 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	# Developer overrides apply only to the exact retained single-hull fleet.
 	# Validate ordinary authored mass first; never widen catalogue admission.
 	var passive: bool = definition.get("id") == &"reference_barrel"
-	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive):
+	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive and not workbench_physical):
 		return ERR_INVALID_DATA
+	if workbench_physical:
+		# Only the exact prepared catalogue body may receive Workbench tuning.
+		# This flag does not admit arbitrary geometry or forge a compound hull.
+		var expected_physical: Dictionary = preload("res://scripts/physical_usable_equipment.gd").definition(
+			Catalog.entry(StringName(str(definition.get("id", "")))),
+			preload("res://scripts/physical_usable_loadouts.gd").entry(StringName(str(definition.get("id", "")))))
+		if expected_physical.is_empty() or definition != expected_physical: return ERR_INVALID_DATA
+		# 4LY's controller is qualified against its exact mass/inertia plant.
+		if definition.has("flight_profile") and (float(review_options.get("mass_multiplier", 1.0)) != 1.0 \
+			or float(review_options.get("inertia_multiplier", 1.0)) != 1.0): return ERR_INVALID_DATA
 	if review_fleet_index!=-1:
 		if not ReviewFleet.valid_index(review_fleet_index): return ERR_INVALID_DATA
 		var expected: Dictionary = ReviewFleet.definition(review_fleet_index)
@@ -409,7 +421,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		if not review_options.is_empty():
 			# Explicit positive inertia, including tiny developer masses, is set
 			# before all cached properties and the Rapier bridge are constructed.
-			body.inertia = (float(part.inertia)*float(review_options.get("mass_multiplier",1.0)) if compound else body.mass*Vector2(part.size).length_squared()/12.0)*float(review_options.inertia_multiplier)
+			body.inertia *= float(review_options.inertia_multiplier)
 		body.gravity_scale = _gravity / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
 		if _flight_controller != null:
 			body.gravity_scale = flight_gravity_scale

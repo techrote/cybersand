@@ -264,7 +264,9 @@ private:
     mutable std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
     Vector2i extent_{kWorldWidth, kWorldHeight};
-    static constexpr std::size_t kWorkbenchBodies = 8;
+    // Eight authored actors can own multiple real parts, including released
+    // equipment. Each physical body retains its own response and mask budget.
+    static constexpr std::size_t kWorkbenchBodies = cybersand::World::kMaximumTransientBodies;
     struct WorkbenchBody {
         std::int64_t instance = 0, generation = 0;
         std::int32_t first = 0, count = 0;

@@ -33,7 +33,7 @@ func run() -> void:
 	await scene_changed
 	host = current_scene
 	var wb = host.shared_workbench
-	panel = wb.art_batches
+	panel = wb._ensure_art_batches()
 	if not await until(func(): return not wb.applied.is_empty() and not wb.busy()):
 		quit(1)
 		return

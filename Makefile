@@ -372,3 +372,12 @@ $(BUILD_DIR)/test_generation_planes: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_H
 
 $(BUILD_DIR)/test_generation_planes_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@
+
+
+# SCRIPT-HOTPATH-001: isolated pure-C++ kernel qualification (no Godot required).
+$(BUILD_DIR)/test_paint_fill_planner: native/tests/test_paint_fill_planner.cpp native/include/cybersand/paint_fill_planner.hpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $< -o $@
+
+.PHONY: script-hotpath-native-test
+script-hotpath-native-test: $(BUILD_DIR)/test_paint_fill_planner
+	./$(BUILD_DIR)/test_paint_fill_planner

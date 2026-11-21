@@ -52,7 +52,13 @@ func owner_kind() -> String:
 
 func _capture_frozen_pose() -> bool:
 	PhysicsServer2D.space_set_active(viewport.world_2d.space,false)
-	for body: RigidBody2D in bodies(): body.freeze = true
+	for body: RigidBody2D in bodies():
+		# Restored articulated transforms still have pending Node2D notifications.
+		# Resolve those notifications before the immutable server-state capture;
+		# otherwise the next frame may round an angle by one float32 ULP while
+		# this space remains frozen. Exact post-capture pose checks stay required.
+		body.force_update_transform()
+		body.freeze = true
 	physics_bridge().refresh_all_states()
 	_initial_states = physics_bridge().pack_body_states()
 	_initial_pose = _pose_values(_initial_states)
@@ -85,15 +91,27 @@ func initial_workbench_sample() -> Dictionary:
 
 func pose_unchanged() -> bool:
 	var bridge: CyberRapierPhysicsBridge = physics_bridge()
-	if viewport == null or bridge == null or _adopted or not bridge.is_initialized(): return false
+	if viewport == null or bridge == null or _adopted or not bridge.is_initialized():
+		last_error = "Provisional physical owner is unavailable or already adopted"
+		return false
 	for body: RigidBody2D in bodies():
-		if not body.freeze: return false
+		if not body.freeze:
+			last_error = "Provisional physical body %s is not frozen" % body.name
+			return false
 	bridge.refresh_all_states()
-	return _pose_values(bridge.pack_body_states()) == _initial_pose
+	var current: PackedFloat32Array = _pose_values(bridge.pack_body_states())
+	if current.size() != _initial_pose.size():
+		last_error = "Provisional physical body-state size changed (%d -> %d)" % [_initial_pose.size(), current.size()]
+		return false
+	for offset: int in range(current.size()):
+		if current[offset] != _initial_pose[offset]:
+			last_error = "Provisional physical body %d component %d changed before commit (%.12f -> %.12f)" % [
+				1 + offset / Coupling.INPUT_STRIDE, offset % Coupling.INPUT_STRIDE, _initial_pose[offset], current[offset]]
+			return false
+	return true
 
 func verify_physics_frame() -> bool:
 	if not pose_unchanged():
-		last_error = "Provisional physical pose changed before commit"
 		return false
 	var frame: int = Engine.get_physics_frames()
 	if frame != _last_physics_frame:
@@ -102,16 +120,21 @@ func verify_physics_frame() -> bool:
 	return true
 
 func install_terrain(chunks: PackedInt32Array) -> bool:
-	if _terrain_installed or not pose_unchanged() or not physics_bridge().queue_hard_surface_chunk_snapshot(chunks):
+	if _terrain_installed:
+		last_error = "Provisional terrain was already installed"
+		return false
+	if not pose_unchanged(): return false
+	if not physics_bridge().queue_hard_surface_chunk_snapshot(chunks):
 		last_error = "Provisional terrain snapshot refused"
 		return false
 	_terrain_installed = true
 	return true
 
 func prepare_terrain_budget(chunks: int = 8, microseconds: int = 2000) -> bool:
-	if not _terrain_installed or not pose_unchanged():
-		last_error = "Provisional physical pose or terrain preparation is unavailable"
+	if not _terrain_installed:
+		last_error = "Provisional terrain preparation is unavailable"
 		return false
+	if not pose_unchanged(): return false
 	physics_bridge().process_hard_surface_collider_budget(chunks,microseconds)
 	_terrain_ready = physics_bridge().pending_hard_surface_chunks() == 0
 	return true
