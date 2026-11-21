@@ -1,0 +1,49 @@
+name: Cancel superseded paint-fill experimental benchmarks (one-time)
+
+on:
+  push:
+    branches: [ci/script-hotpath-latency-prune-20261121]
+    paths: ['.github/workflows/script-hotpath-latency-prune.yml']
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: script-hotpath-latency-prune-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    name: Cancel only obsolete named experimental benchmark runs
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/ci/script-hotpath-latency-prune-20261121'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Verify immutable live target and cancel only obsolete runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo=techrote/cybersand
+          benchmark=exp/script-hotpath-end-to-end-latency-001
+          latest=a9baf90a19e3b0b990c329bcd66cba0e00ae254f
+          live="$(gh api "repos/$repo/git/ref/heads/$benchmark" --jq '.object.sha')"
+          test "$live" = "$latest" || { echo "::error::Benchmark HEAD moved; aborting all cancellation"; exit 1; }
+          for id in 44855275800 44855336703 44855479267; do
+            json="$(gh api "repos/$repo/actions/runs/$id")"
+            name="$(jq -r '.name' <<< "$json")"
+            branch="$(jq -r '.head_branch' <<< "$json")"
+            sha="$(jq -r '.head_sha' <<< "$json")"
+            status="$(jq -r '.status' <<< "$json")"
+            test "$name" = "SCRIPT-HOTPATH-LATENCY-001 full source-to-rendered-fill A/B" || exit 1
+            test "$branch" = "$benchmark" || exit 1
+            test "$sha" != "$latest" || { echo "::error::Refusing to cancel current source"; exit 1; }
+            if [[ "$status" == queued || "$status" == in_progress || "$status" == waiting || "$status" == pending ]]; then
+              gh api --method POST "repos/$repo/actions/runs/$id/cancel" >/dev/null
+              echo "Cancelled stale run $id ($sha / $status)"
+            else
+              echo "Already terminal: $id / $status"
+            fi
+          done
+          echo "Only obsolete experimental benchmark runs were eligible for cancellation." >> "$GITHUB_STEP_SUMMARY"
