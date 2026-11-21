@@ -160,13 +160,16 @@ func run() -> void:
 		# Between admission and Stop the worker may already have entered a
 		# nonpreemptible chunk. Distinguish the valid outcomes, then prove that
 		# every actual acknowledged prefix is reversible with no hidden tail.
-		var stop_request: Dictionary = worker.paint_stop()
+		# The Stop admission flag is not a completion oracle: the last native
+		# step can finish before its complete receipt is published. Trust the
+		# terminal receipt plus complete inverse/readback evidence instead.
+		worker.paint_stop()
 		var stopped: Dictionary = await finished()
 		var early_applied: int = int(stopped.get("applied",-1))
 		var early_status: String = str(stopped.get("status",""))
 		check((early_status == "cancelled" and early_applied == 0) 			or (early_status == "partial" and early_applied > 0 and early_applied < maximum
 				and stopped.get("termination","") == "cancelled") 			or (early_status == "completed" and early_applied == maximum
-				and bool(stop_request.get("acknowledged",false))),
+				and stopped.get("termination","") == "completed"),
 			"early Stop reports a truthful completed/cancelled/partial outcome")
 		var early_cells: PackedInt32Array = stopped.get("cells",PackedInt32Array())
 		var early_before: PackedInt32Array = stopped.get("before",PackedInt32Array())
