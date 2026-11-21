@@ -55,6 +55,12 @@ var _pending_player_environment_profile: Dictionary = {}
 
 var _running: bool = false
 var _paused: bool = false
+# The main-thread pause intent is distinct from an incidental paused native
+# snapshot (sample de-duplication, reset or temporary coupling hold).
+# Only the exclusive worker can acknowledge a specific main-thread intent.
+var _frame_command_paused: bool = false # Mutex-owned; last submitted frame intent.
+var _workbench_pause_request_serial: int = 0 # Mutex-owned, monotonic.
+var _workbench_pause_ack_serial: int = 0 # Worker-exclusive, monotonic.
 var _simulation_failed: bool = false # Exclusive worker state; main reads status under mutex.
 var _horizontal_input: float = 0.0
 var _jetpack_active: bool = false
@@ -1242,6 +1248,9 @@ func set_frame_state(
 	_mutex.lock()
 	_horizontal_input = horizontal_input
 	_jetpack_active = jetpack_active
+	if paused and not _frame_command_paused:
+		_workbench_pause_request_serial += 1
+	_frame_command_paused = paused
 	if paused and not _paused:
 		_cancel_workbench_emission_locked()
 		_pending_physical_effects.clear()
@@ -1263,6 +1272,14 @@ func set_frame_state(
 		_cadence_lod_enabled = cadence_lod_enabled
 		_liquid_surface_adhesion_enabled = liquid_surface_adhesion_enabled
 	_mutex.unlock()
+
+
+func workbench_pause_request_serial() -> int:
+	# Main-thread readback of a requested transition, never an acknowledgement.
+	_mutex.lock()
+	var serial: int = _workbench_pause_request_serial
+	_mutex.unlock()
+	return serial
 
 
 func _workbench_sample_pending() -> bool:
@@ -2422,6 +2439,8 @@ func _worker_loop() -> void:
 		var lockstep_ticked: bool = false
 		var local_running: bool = false
 		var local_paused: bool = false
+		var pause_requested_at_entry: bool = false
+		var pause_request_serial_at_entry: int = 0
 		var local_horizontal_input: float = 0.0
 		var local_jetpack_active: bool = false
 		var local_interest_center: Vector2i = Vector2i.ZERO
@@ -2455,6 +2474,8 @@ func _worker_loop() -> void:
 		_mutex.lock()
 		local_running = _running
 		local_paused = _paused
+		pause_requested_at_entry = _frame_command_paused and _paused
+		pause_request_serial_at_entry = _workbench_pause_request_serial
 		local_horizontal_input = _horizontal_input
 		local_jetpack_active = _jetpack_active
 		local_interest_center = _interest_center
@@ -2762,6 +2783,11 @@ func _worker_loop() -> void:
 		_world_change_inflight = false
 		_mutex.unlock()
 		_consume_material_capture()
+		# A paused snapshot can arise from a stale body sample even during Play.
+		# Acknowledge the UI pause only after this worker turn actually consumed
+		# the corresponding command and did not execute a Step/native tick.
+		if pause_requested_at_entry and local_paused:
+			_workbench_pause_ack_serial = pause_request_serial_at_entry
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 		_publish_snapshot(
 			worker_step_time_ms,
@@ -3095,6 +3121,7 @@ func _publish_snapshot(
 		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
 		_mutex.unlock()
 		snapshot.lab_context["workbench_step_serial"] = _workbench_step_serial
+		snapshot.lab_context["workbench_pause_ack_serial"] = _workbench_pause_ack_serial
 		if _world.has_method(&"get_water_spray"):
 			var spray: Dictionary = _world.get_water_spray()
 			spray["receipt"] = _water_spray_receipt.duplicate(true)

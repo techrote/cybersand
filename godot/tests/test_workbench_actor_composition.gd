@@ -639,15 +639,19 @@ func external_policy() -> void:
 
 
 func paused_editor() -> void:
-	var before_serial: int = int(host.latest_snapshot.serial)
+	var prior_request: int = host.simulation_worker.workbench_pause_request_serial()
 	check(ui.toggle_pause(),"pause actual mixed workshop")
-	# A retained paused snapshot can predate this Pause request when rendering
-	# lags worker publication. Require a NEW worker acknowledgement, not only
-	# the previously cached paused bit plus immediate session suspension.
+	var requested_pause: int = host.simulation_worker.workbench_pause_request_serial()
+	check(requested_pause > prior_request,"Pause sends a new monotonic worker command")
+	# 'snapshot.paused' can be true during Play for a held Workbench body sample;
+	# an increased publication serial alone is not a pause acknowledgement.
+	# Require the worker-exclusive receipt for THIS requested pause before
+	# asserting zero subsequent native/Rapier progression.
 	var pause_acknowledged := func() -> bool:
-		return host.paused and int(host.latest_snapshot.serial) > before_serial \
-			and host.latest_snapshot.paused and bool(ui.actor_observation(2).suspended)
-	if not await until(pause_acknowledged,"both simulation owners acknowledged this pause"): return
+		return host.paused and host.latest_snapshot.paused \
+			and int(host.latest_snapshot.lab_context.get("workbench_pause_ack_serial",-1)) >= requested_pause \
+			and bool(ui.actor_observation(2).suspended)
+	if not await until(pause_acknowledged,"both simulation owners acknowledged this pause command"): return
 	var stopped_native := native_tick()
 	var stopped_physics := physical_tick()
 	for i: int in 6: await process_frame
@@ -655,7 +659,9 @@ func paused_editor() -> void:
 		print("WB_ACTOR_COMPOSE_PAUSE_DRIFT ",JSON.stringify({"native_before":stopped_native,
 			"native_after":native_tick(),"rapier_before":stopped_physics,"rapier_after":physical_tick(),
 			"host_paused":host.paused,"latest_paused":host.latest_snapshot.paused,
-			"latest_serial":host.latest_snapshot.serial,"worker_paused":host.simulation_worker._paused,
+			"latest_serial":host.latest_snapshot.serial,
+			"pause_requested":requested_pause,
+			"pause_acknowledged":int(host.latest_snapshot.lab_context.get("workbench_pause_ack_serial",-1)),
 			"session_suspended":host.physical_actor_session._suspended}))
 	check(native_tick()==stopped_native and physical_tick()==stopped_physics,"pause freezes native and Rapier progression")
 	var session = host.physical_actor_session
