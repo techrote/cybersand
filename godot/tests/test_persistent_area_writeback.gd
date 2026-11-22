@@ -100,6 +100,17 @@ func verify_reopened(store: RefCounted) -> void:
 		"native_tick":restored.completed_tick,"physical_hash":restored.physical_hash})
 
 
+func hold_for_process_death(phase: String, manifest: Dictionary, details: Dictionary = {}) -> void:
+	# Test-only explicit OS-death rendezvous. No artificial exception or cleanup
+	# substitutes for termination of the actual Godot/native storage process.
+	var marker := {"phase":phase,"pid":OS.get_process_id(),
+		"session_id":str(manifest.get("session_id","")),"revision":int(manifest.get("revision",-1))}
+	marker.merge(details)
+	print("GEN006_RAMCACHE_BARRIER ",JSON.stringify(marker))
+	var gate := Semaphore.new()
+	gate.wait()
+
+
 func run() -> void:
 	fixture = Fixture.create()
 	if not check(not fixture.has("error"),"real native fixture constructs"): finish(); return
@@ -108,6 +119,25 @@ func run() -> void:
 	authoring = {"setup":setup,"definition":fixture.checked.definition.duplicate(true),"generated_packet":{},"material_baseline":{},
 		"camera":{"origin":Vector2i(12,24),"view_size":Vector2i(256,256),"zoom":1.5,"mode":"overview"}}
 	var store := Store.new()
+	if mode == "crash" and barrier == "newer_dirty_after_durable":
+		# A previous independent process has already durably published tick 4.
+		# This process restores that real native World, mutates/advances in RAM,
+		# and dies before any new capture or Save can acknowledge the new work.
+		var opened := store.open_profile(profile,"writeback-test",COMPATIBILITY)
+		if not check(opened.get("ok",false) and not opened.get("fresh",true),"seeded durable native profile opens"): finish(); return
+		var loaded := store.read_area("a")
+		if not check(loaded.get("ok",false),"seeded native continuation validates"): finish(); return
+		var restored_token := Fixture.prepare(fixture,Fixture.restore_options(fixture,loaded.capture,Store.new_nonce()))
+		if not check(restored_token > 0 and fixture.bridge.commit_liquid_world(fixture.world,restored_token),
+				"seeded durable native World restores"): finish(); return
+		check(int(fixture.world.get_tick_index()) == 4,"seeded native game frontier is exact")
+		fixture.world.paint_disc(90,60,0,58)
+		for index: int in 2: check(fixture.world.simulation_tick(),"newer unsaved native work executes")
+		hold_for_process_death(barrier,opened.manifest,{"live_native_tick":int(fixture.world.get_tick_index()),
+			"durable_native_tick":int(opened.manifest.clock.areas.a.native_ticks),
+			"dirty_material":fixture.world.material_at(90,60)})
+		finish()
+		return
 	if mode == "verify":
 		verify_reopened(store)
 		store.close_profile()
@@ -118,12 +148,20 @@ func run() -> void:
 	fixture.world.paint_disc(65,60,0,0)
 	fixture.world.paint_disc(72,60,0,58)
 	for index: int in 4: check(fixture.world.simulation_tick(),"actual native tick before capture")
+	if mode == "crash" and barrier == "before_capture":
+		hold_for_process_death(barrier,manifest,{"live_native_tick":int(fixture.world.get_tick_index()),
+			"durable_native_tick":int(manifest.clock.areas.a.native_ticks)})
+		finish()
+		return
 	var captured := capture()
 	var expected := captured.duplicate(true)
 	var state := {"active_area":"a","clock":Clock.active(manifest.clock,"a",int(captured.completed_tick)).clock}
 	var updates := {"a":update(captured,manifest.areas.a.incarnation,1)}
 	var writer := Writer.new()
-	if mode == "crash": store.set_test_barrier(barrier,Semaphore.new())
+	if mode == "crash":
+		# This phase deliberately holds the I/O owner *before* publication
+		# while Main queues coalesced requests and makes newer native edits.
+		store.set_test_barrier("before_snapshot" if barrier == "queued_dirty" else barrier,Semaphore.new())
 	check(writer.start(store,state,updates,int(manifest.revision)).ok,"immutable batch starts on a real separate Thread")
 	check(not writer.start(store,state,updates,int(manifest.revision)).ok,"second concurrent writer refuses")
 	for index: int in 100: writer.request(index%4,"coalesced autosave")
@@ -136,6 +174,13 @@ func run() -> void:
 	updates.a.authoring.setup.edits.clear()
 	fixture.world.paint_disc(80,60,0,58)
 	for index: int in 2: check(fixture.world.simulation_tick(),"active native owner progresses during background publication")
+	if mode == "crash" and barrier == "queued_dirty":
+		check(writer.status().pending_requests == 1,"queued write-behind save remains pending during process death")
+		hold_for_process_death(barrier,manifest,{"live_native_tick":int(fixture.world.get_tick_index()),
+			"durable_native_tick":int(manifest.clock.areas.a.native_ticks),
+			"queued_requests":int(writer.status().pending_requests)})
+		finish()
+		return
 	var committed := await wait_writer(writer)
 	if not check(committed.get("ok",false),"asynchronous publication acknowledges a complete durable manifest: "+str(committed.get("error",""))):
 		store.close_profile(); finish(); return
