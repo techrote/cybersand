@@ -22,6 +22,8 @@ CASES = (
      "objectshard-m4-workbench-contract-v1"),
     ("m4_latency_value_contract", "test_object_shard_m4_latency_probe.gd",
      "objectshard-m4-workbench-probe-test-v1"),
+    ("m4_real_scene_pointer_refusal", "test_object_shard_m4_workbench_scene_refusal.gd",
+     "objectshard-m4-ordinary-scene-refusal-v1"),
     ("existing_native_mutable_refusal", "test_object_shard_workbench_contract.gd",
      "objectshard-workbench-boundary-test-v1"),
 )
@@ -45,6 +47,7 @@ PROTECTED_SOURCES = (
     "godot/scripts/object_shard_m4_latency_probe.gd",
     "godot/tests/test_object_shard_m4_workbench_port.gd",
     "godot/tests/test_object_shard_m4_latency_probe.gd",
+    "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd",
     "godot/tests/test_object_shard_workbench_contract.gd",
     "tools/objectshard/qualify_m4_workbench.py",
 )
@@ -97,6 +100,10 @@ def complete_receipt(text: str, schema: str) -> dict:
         if (receipt.get("same_world_mutation_integration") != "BLOCKED_UNTIL_NATIVE_ADAPTER"
                 or receipt.get("real_physics_assertions") != 0):
             raise ValueError("M4 negative boundary misrepresented as integrated physics")
+    if schema == "objectshard-m4-ordinary-scene-refusal-v1":
+        if (receipt.get("actual_ordinary_native_world_used") is not True
+                or receipt.get("same_world_mutation_integration") != "BLOCKED_UNTIL_NATIVE_ADAPTER"):
+            raise ValueError("Ordinary scene negative check misrepresented as integrated physics")
     return receipt
 
 
@@ -107,6 +114,8 @@ def run_case(godot: Path, output: Path, name: str, script: str,
         raise ValueError("Missing required Godot test: " + script)
     command = [str(godot), "--headless", "--path", str(PROJECT),
                "--script", "res://tests/" + script]
+    if script == "test_object_shard_m4_workbench_scene_refusal.gd":
+        command += ["--", "--objectshard-m4-workbench"]
     log = output / (name + ".log")
     result = {"name": name, "script": script, "expected_schema": schema,
               "raw_log": str(log), "command": command, "status": "failed",
