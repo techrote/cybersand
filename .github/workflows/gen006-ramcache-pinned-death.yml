@@ -77,8 +77,14 @@ jobs:
           d=pathlib.Path('build/pinned-faults-linux')
           v=json.loads((d/'workbench-faults.json').read_text())
           log=(d/'engine.log').read_text()
-          assert v['mode']=='faults' and not v['failures'] and v['checks']>=35
-          assert 'failed ACK retains exactly once all completed resident native ticks and their game-time debt' not in log or 'PERSISTENT_AREAS_WORKBENCH' in log
+          assert v['mode']=='faults' and not v['failures'] and v['assertions']>=35
+          entries=v['evidence']['metrics']['operation_records']
+          ahead=[e for e in entries if e.get('kind')=='ahead' and e.get('status')=='failed']
+          retry=[e for e in entries if e.get('kind')=='retry_storage' and e.get('status')=='completed']
+          assert len(ahead)==1 and len(retry)==1 and ahead[0]['native_ticks_executed']>0
+          assert ahead[0]['actual_completed_ticks']==ahead[0]['native_ticks_executed']
+          assert v['evidence']['clock']['game_ticks']==ahead[0]['actual_completed_ticks']
+          assert 'PERSISTENT_AREAS_WORKBENCH' in log
           print('PINNED_RESIDENT_LOST_ACK_LINUX: acknowledged native ticks retained exactly once')
           PY
       - name: Preserve original resident lost-ACK evidence
@@ -177,7 +183,7 @@ jobs:
           & $engine --headless --path godot --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- "--persistent-profile=$profile" "--persistent-evidence=$root" '--persistent-test-mode=faults' '--persistent-start-paused' *> (Join-Path $root 'engine.log')
           if ($LASTEXITCODE -ne 0) { throw 'Original Windows native lost-ACK regression failed' }
           $v = Get-Content (Join-Path $root 'workbench-faults.json') -Raw | ConvertFrom-Json
-          if ($v.mode -ne 'faults' -or $v.failures.Count -ne 0 -or $v.checks -lt 35) {
+          if ($v.mode -ne 'faults' -or $v.failures.Count -ne 0 -or $v.assertions -lt 35) {
             throw 'Original Windows native resident debt and lost-ACK regression failed'
           }
           'PINNED_RESIDENT_LOST_ACK_WINDOWS: actual completed native work credited exactly once'
