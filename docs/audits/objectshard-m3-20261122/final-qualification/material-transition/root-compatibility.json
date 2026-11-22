@@ -1,0 +1,511 @@
+{
+  "baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "capability_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+  "catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+  "fallback_slush_density": 1100,
+  "generated_native_consumer": {
+    "consumer": "native/src/material_rules.cpp",
+    "fields": [
+      "hard_surface",
+      "granular_support"
+    ],
+    "identity_transition": false,
+    "input_count": 4,
+    "issue": 353,
+    "pr": 563,
+    "record": "docs/audits/2026-11-11-material-native-capability-cutover.md",
+    "source_commit": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087"
+  },
+  "production_cutover": true,
+  "protected_sources": 27,
+  "reviewed_transitions": [
+    {
+      "from_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "issue": 201,
+      "path": "native/src/world_pressure.inc",
+      "pr": 382,
+      "record": "docs/audits/2026-11-04-lcb201-world-pressure-transition.md",
+      "source_commit": "e5416b81bebf7ce79ac9894f7f9edf88f63b58da",
+      "to_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874"
+    },
+    {
+      "from_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "issue": 391,
+      "path": "native/src/world.cpp",
+      "pr": 394,
+      "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+      "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+      "to_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7"
+    },
+    {
+      "from_lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "issue": 391,
+      "path": "native/src/world_inertial.inc",
+      "pr": 394,
+      "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+      "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+      "to_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5"
+    },
+    {
+      "from_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874",
+      "issue": 391,
+      "path": "native/src/world_pressure.inc",
+      "pr": 394,
+      "record": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+      "source_commit": "d04fe009c2d5ab45f49a1d02cd36bb377f5d9873",
+      "to_lf_sha256": "9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8"
+    },
+    {
+      "from_lf_sha256": "9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8",
+      "issue": 391,
+      "path": "native/src/world_pressure.inc",
+      "pr": 394,
+      "record": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+      "source_commit": "acce570e667c7e2cc3ef83ab451e7dff262006a9",
+      "to_lf_sha256": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5"
+    },
+    {
+      "from_lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "issue": 362,
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+      "to_lf_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79"
+    },
+    {
+      "from_lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "issue": 362,
+      "path": "native/src/world_quantity.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+      "to_lf_sha256": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e"
+    },
+    {
+      "from_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+      "to_lf_sha256": "93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85"
+    },
+    {
+      "from_lf_sha256": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5",
+      "issue": 362,
+      "path": "native/src/world_pressure.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+      "to_lf_sha256": "21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573"
+    },
+    {
+      "from_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+      "issue": 362,
+      "path": "native/src/world_inertial.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+      "to_lf_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491"
+    },
+    {
+      "from_lf_sha256": "21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573",
+      "issue": 362,
+      "path": "native/src/world_pressure.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_commit": "f666a6c6e4a4e5fd4091129df463b59ef79acebd",
+      "to_lf_sha256": "8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012"
+    },
+    {
+      "from_lf_sha256": "93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+      "source_commit": "6c69ba072f0507a3f6ee5966186fecb5070a45b2",
+      "to_lf_sha256": "09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5"
+    },
+    {
+      "from_lf_sha256": "8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012",
+      "issue": 362,
+      "path": "native/src/world_pressure.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+      "source_commit": "6c69ba072f0507a3f6ee5966186fecb5070a45b2",
+      "to_lf_sha256": "f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27"
+    },
+    {
+      "from_lf_sha256": "f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27",
+      "issue": 362,
+      "path": "native/src/world_pressure.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+      "source_commit": "b4e78e5d425023156f1b8ca4b2ca4e2f81a2505a",
+      "to_lf_sha256": "af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18"
+    },
+    {
+      "from_lf_sha256": "09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-whole-engine-bench.md",
+      "source_commit": "35c1373ef31c8ed96fd9752eecbc3f129b34c5ba",
+      "to_lf_sha256": "a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e"
+    },
+    {
+      "from_lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "issue": 362,
+      "path": "native/src/material_rules.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-whole-engine-bench.md",
+      "source_commit": "35c1373ef31c8ed96fd9752eecbc3f129b34c5ba",
+      "to_lf_sha256": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254"
+    },
+    {
+      "from_lf_sha256": "a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-stress-canvas.md",
+      "source_commit": "5fbf0a39c43a234fec2c092d52ea43066bf49335",
+      "to_lf_sha256": "3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654"
+    },
+    {
+      "from_lf_sha256": "3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+      "source_commit": "fd061dd098d2e4b277141b76ada7f4b340e02e97",
+      "to_lf_sha256": "97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00"
+    },
+    {
+      "from_lf_sha256": "af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18",
+      "issue": 362,
+      "path": "native/src/world_pressure.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+      "source_commit": "fd061dd098d2e4b277141b76ada7f4b340e02e97",
+      "to_lf_sha256": "894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738"
+    },
+    {
+      "from_lf_sha256": "97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+      "source_commit": "481011090a9a56fb06311144b5bfb26f8f1028a4",
+      "to_lf_sha256": "5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129"
+    },
+    {
+      "from_lf_sha256": "5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+      "source_commit": "0b408ae97c061d7263a3322022429aa32a0385a6",
+      "to_lf_sha256": "5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d"
+    },
+    {
+      "from_lf_sha256": "894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738",
+      "issue": 362,
+      "path": "native/src/world_pressure.inc",
+      "pr": 406,
+      "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+      "source_commit": "a2373e12fb87d8d5b28efcc6037316fb6f605a14",
+      "to_lf_sha256": "26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca"
+    },
+    {
+      "from_lf_sha256": "5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 470,
+      "record": "docs/audits/2026-11-06-hard-surface-packet-incremental.md",
+      "source_commit": "51d462537480324a4c11b3bf92f1ecb1882d8685",
+      "to_lf_sha256": "d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c"
+    },
+    {
+      "from_lf_sha256": "d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c",
+      "issue": 362,
+      "path": "native/src/world.cpp",
+      "pr": 470,
+      "record": "docs/audits/2026-11-06-hard-surface-packet-incremental.md",
+      "source_commit": "9ad76b21854b3e44fc9444f8293d3c36c619746b",
+      "to_lf_sha256": "8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb"
+    },
+    {
+      "from_lf_sha256": "8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb",
+      "issue": 492,
+      "path": "native/src/world.cpp",
+      "pr": 471,
+      "record": "docs/audits/2026-11-07-pf471-world-transition-proposal.md",
+      "source_commit": "484b48f67ba4db68b1b4c73cd63f1a187594523d",
+      "to_lf_sha256": "e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee"
+    },
+    {
+      "from_lf_sha256": "e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee",
+      "issue": 200,
+      "path": "native/src/world.cpp",
+      "pr": 491,
+      "record": "docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md",
+      "source_commit": "5f107db52a2c002e19f5f8ff284cf8f4ebeeb421",
+      "to_lf_sha256": "8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d"
+    },
+    {
+      "from_lf_sha256": "26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca",
+      "issue": 200,
+      "path": "native/src/world_pressure.inc",
+      "pr": 491,
+      "record": "docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md",
+      "source_commit": "5f107db52a2c002e19f5f8ff284cf8f4ebeeb421",
+      "to_lf_sha256": "71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a"
+    },
+    {
+      "from_lf_sha256": "8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d",
+      "issue": 201,
+      "path": "native/src/world.cpp",
+      "pr": 405,
+      "record": "docs/audits/2026-11-07-pr405-current-main-reconciliation.md",
+      "source_commit": "e77ca8475bbe5333d1af520e44b400e70ba8570c",
+      "to_lf_sha256": "b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a"
+    },
+    {
+      "from_lf_sha256": "71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a",
+      "issue": 504,
+      "path": "native/src/world_pressure.inc",
+      "pr": 504,
+      "record": "docs/audits/2026-11-07-pf-gas-c2048-merge-transition.md",
+      "source_commit": "d8b314deb8164f9641117a13fce286d23340936b",
+      "to_lf_sha256": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec"
+    },
+    {
+      "from_lf_sha256": "b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a",
+      "issue": 292,
+      "path": "native/src/world.cpp",
+      "pr": 538,
+      "record": "docs/audits/2026-11-07-native-copy292-mat-auth-transition.md",
+      "source_commit": "7a2bab58bfb193b3f10e55bf63cdeec2a17f549f",
+      "to_lf_sha256": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b"
+    },
+    {
+      "from_lf_sha256": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254",
+      "issue": 353,
+      "path": "native/src/material_rules.cpp",
+      "pr": 563,
+      "record": "docs/audits/2026-11-11-material-native-capability-cutover.md",
+      "source_commit": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087",
+      "to_lf_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+    },
+    {
+      "from_lf_sha256": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b",
+      "issue": 618,
+      "path": "native/src/world.cpp",
+      "pr": 618,
+      "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+      "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+      "to_lf_sha256": "9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384"
+    },
+    {
+      "from_lf_sha256": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec",
+      "issue": 618,
+      "path": "native/src/world_pressure.inc",
+      "pr": 618,
+      "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+      "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+      "to_lf_sha256": "a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9"
+    },
+    {
+      "from_lf_sha256": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e",
+      "issue": 618,
+      "path": "native/src/world_quantity.inc",
+      "pr": 618,
+      "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+      "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+      "to_lf_sha256": "1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d"
+    },
+    {
+      "from_lf_sha256": "9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384",
+      "issue": 618,
+      "path": "native/src/world.cpp",
+      "pr": 618,
+      "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+      "source_commit": "d3c2cacdf1c083b1c1bf0bfd0ed0e14690a48fe2",
+      "to_lf_sha256": "09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1"
+    },
+    {
+      "from_lf_sha256": "09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1",
+      "issue": 631,
+      "path": "native/src/world.cpp",
+      "pr": 631,
+      "record": "docs/audits/2026-11-15-wave-mt-001-astra-takeover.md",
+      "source_commit": "66b7107dca129b85f5bcb1099b4d60149f87f429",
+      "to_lf_sha256": "911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143"
+    },
+    {
+      "from_lf_sha256": "a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9",
+      "issue": 631,
+      "path": "native/src/world_pressure.inc",
+      "pr": 631,
+      "record": "docs/audits/2026-11-16-pr631-wave-workbench-transition.md",
+      "source_commit": "9bf39e70df4fbfdee87222cc8fa208a932729f72",
+      "to_lf_sha256": "ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4"
+    },
+    {
+      "from_lf_sha256": "ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4",
+      "issue": 631,
+      "path": "native/src/world_pressure.inc",
+      "pr": 631,
+      "record": "docs/audits/2026-11-16-wave-workbench-631-finisher.md",
+      "source_commit": "1ca6da11427291a87409f7583df8cb4831a03bca",
+      "to_lf_sha256": "9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067"
+    },
+    {
+      "from_lf_sha256": "1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d",
+      "issue": 631,
+      "path": "native/src/world_quantity.inc",
+      "pr": 631,
+      "record": "docs/audits/2026-11-16-wave-workbench-631-finisher.md",
+      "source_commit": "1ca6da11427291a87409f7583df8cb4831a03bca",
+      "to_lf_sha256": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae"
+    },
+    {
+      "from_lf_sha256": "911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143",
+      "issue": 661,
+      "path": "native/src/world.cpp",
+      "pr": 661,
+      "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+      "source_commit": "751c1a951a8f76c397dd3f903f378208119d29f1",
+      "to_lf_sha256": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83"
+    },
+    {
+      "from_lf_sha256": "9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067",
+      "issue": 661,
+      "path": "native/src/world_pressure.inc",
+      "pr": 661,
+      "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+      "source_commit": "26d032f14820d6d46272d487d56cacaee4544368",
+      "to_lf_sha256": "64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f"
+    },
+    {
+      "from_lf_sha256": "64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f",
+      "issue": 661,
+      "path": "native/src/world_pressure.inc",
+      "pr": 661,
+      "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+      "source_commit": "1d71202a35a7945e496b0cb83a2d639b2ad2b5bc",
+      "to_lf_sha256": "df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8"
+    },
+    {
+      "from_lf_sha256": "df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8",
+      "issue": 661,
+      "path": "native/src/world_pressure.inc",
+      "pr": 661,
+      "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+      "source_commit": "d07f24c89b88a95803602d4187bd71e7f8933ec6",
+      "to_lf_sha256": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105"
+    },
+    {
+      "from_lf_sha256": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83",
+      "issue": 672,
+      "path": "native/src/world.cpp",
+      "pr": 676,
+      "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+      "source_commit": "d876bd57897dd421b720e73d15d7c89a830b4896",
+      "to_lf_sha256": "fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0"
+    },
+    {
+      "from_lf_sha256": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105",
+      "issue": 672,
+      "path": "native/src/world_pressure.inc",
+      "pr": 676,
+      "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+      "source_commit": "d876bd57897dd421b720e73d15d7c89a830b4896",
+      "to_lf_sha256": "bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03"
+    },
+    {
+      "from_lf_sha256": "bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03",
+      "issue": 672,
+      "path": "native/src/world_pressure.inc",
+      "pr": 676,
+      "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+      "source_commit": "d4df71fc6bc1bf6267270a4c1445207a02716317",
+      "to_lf_sha256": "0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f"
+    },
+    {
+      "from_lf_sha256": "0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f",
+      "issue": 676,
+      "path": "native/src/world_pressure.inc",
+      "pr": 677,
+      "record": "docs/audits/2026-11-19-wave-water-ramp-003.md",
+      "source_commit": "1604b66b19705d79d2704e5119a25823caee0973",
+      "to_lf_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1"
+    },
+    {
+      "from_lf_sha256": "fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0",
+      "issue": 678,
+      "path": "native/src/world.cpp",
+      "pr": 679,
+      "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+      "source_commit": "b8db73ce7d0f37c1a38690ea34749d1ccba3474b",
+      "to_lf_sha256": "fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc"
+    },
+    {
+      "from_lf_sha256": "fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc",
+      "issue": 678,
+      "path": "native/src/world.cpp",
+      "pr": 679,
+      "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+      "source_commit": "0b2a46cee3598ae8e6ce481167ff3f482f83580f",
+      "to_lf_sha256": "c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b"
+    },
+    {
+      "from_lf_sha256": "c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b",
+      "issue": 678,
+      "path": "native/src/world.cpp",
+      "pr": 679,
+      "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+      "source_commit": "932a811c474de7f2720719f258a9fd38d8aecdfd",
+      "to_lf_sha256": "9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf"
+    },
+    {
+      "from_lf_sha256": "9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf",
+      "issue": 678,
+      "path": "native/src/world.cpp",
+      "pr": 679,
+      "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+      "source_commit": "461b1c1485418bcd8f83f29efe1cccf7ef4a9928",
+      "to_lf_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+    },
+    {
+      "from_lf_sha256": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae",
+      "issue": 679,
+      "path": "native/src/world_quantity.inc",
+      "pr": 679,
+      "record": "docs/audits/2026-11-19-wave-oil-lava.md",
+      "source_commit": "baa5699083f5f668f9c03309aceaccd0f1fb80d9",
+      "to_lf_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489"
+    },
+    {
+      "from_lf_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+      "issue": 281,
+      "path": "native/src/world.cpp",
+      "pr": 726,
+      "record": "docs/audits/2026-11-22-objectshard-world-transition.md",
+      "source_commit": "5afe5643097c543f7d8a6840ced9afac58dd053e",
+      "to_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214"
+    },
+    {
+      "from_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+      "issue": 281,
+      "path": "native/src/world.cpp",
+      "pr": 741,
+      "record": "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+      "source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+      "to_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1"
+    }
+  ],
+  "runtime_execution": false,
+  "status": "PASS"
+}

@@ -1,0 +1,1332 @@
+2026-11-22T08:34:37.4934866Z ##[group]Run timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check
+2026-11-22T08:34:37.4935686Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check[0m
+2026-11-22T08:34:37.4936419Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compiler.py --check[0m
+2026-11-22T08:34:37.4937248Z [36;1m# Aggregate suite compiles and executes multiple independent native Worlds.[0m
+2026-11-22T08:34:37.4937905Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'[0m
+2026-11-22T08:34:37.4938841Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json[0m
+2026-11-22T08:34:37.4956102Z shell: /usr/bin/bash -e {0}
+2026-11-22T08:34:37.4956323Z ##[endgroup]
+2026-11-22T08:34:38.4648986Z {
+2026-11-22T08:34:38.4649429Z   "baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+2026-11-22T08:34:38.4650086Z   "capability_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+2026-11-22T08:34:38.4650807Z   "catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+2026-11-22T08:34:38.4651324Z   "fallback_slush_density": 1100,
+2026-11-22T08:34:38.4651630Z   "generated_native_consumer": {
+2026-11-22T08:34:38.4651957Z     "consumer": "native/src/material_rules.cpp",
+2026-11-22T08:34:38.4652297Z     "fields": [
+2026-11-22T08:34:38.4652552Z       "hard_surface",
+2026-11-22T08:34:38.4652795Z       "granular_support"
+2026-11-22T08:34:38.4653049Z     ],
+2026-11-22T08:34:38.4653275Z     "identity_transition": false,
+2026-11-22T08:34:38.4653563Z     "input_count": 4,
+2026-11-22T08:34:38.4653917Z     "issue": 353,
+2026-11-22T08:34:38.4654142Z     "pr": 563,
+2026-11-22T08:34:38.4654523Z     "record": "docs/audits/2026-11-11-material-native-capability-cutover.md",
+2026-11-22T08:34:38.4655041Z     "source_commit": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087"
+2026-11-22T08:34:38.4655402Z   },
+2026-11-22T08:34:38.4655632Z   "production_cutover": true,
+2026-11-22T08:34:38.4655904Z   "protected_sources": 27,
+2026-11-22T08:34:38.4656178Z   "reviewed_transitions": [
+2026-11-22T08:34:38.4656429Z     {
+2026-11-22T08:34:38.4656989Z       "from_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+2026-11-22T08:34:38.4657475Z       "issue": 201,
+2026-11-22T08:34:38.4657737Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4658428Z       "pr": 382,
+2026-11-22T08:34:38.4658783Z       "record": "docs/audits/2026-11-04-lcb201-world-pressure-transition.md",
+2026-11-22T08:34:38.4659282Z       "source_commit": "e5416b81bebf7ce79ac9894f7f9edf88f63b58da",
+2026-11-22T08:34:38.4659824Z       "to_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874"
+2026-11-22T08:34:38.4660262Z     },
+2026-11-22T08:34:38.4660455Z     {
+2026-11-22T08:34:38.4660844Z       "from_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+2026-11-22T08:34:38.4661304Z       "issue": 391,
+2026-11-22T08:34:38.4661541Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4661828Z       "pr": 394,
+2026-11-22T08:34:38.4662217Z       "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+2026-11-22T08:34:38.4662774Z       "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+2026-11-22T08:34:38.4663335Z       "to_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7"
+2026-11-22T08:34:38.4663801Z     },
+2026-11-22T08:34:38.4664009Z     {
+2026-11-22T08:34:38.4664385Z       "from_lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+2026-11-22T08:34:38.4664861Z       "issue": 391,
+2026-11-22T08:34:38.4665405Z       "path": "native/src/world_inertial.inc",
+2026-11-22T08:34:38.4665711Z       "pr": 394,
+2026-11-22T08:34:38.4666088Z       "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+2026-11-22T08:34:38.4666624Z       "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+2026-11-22T08:34:38.4667300Z       "to_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5"
+2026-11-22T08:34:38.4667743Z     },
+2026-11-22T08:34:38.4667936Z     {
+2026-11-22T08:34:38.4668317Z       "from_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874",
+2026-11-22T08:34:38.4668785Z       "issue": 391,
+2026-11-22T08:34:38.4669034Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4669364Z       "pr": 394,
+2026-11-22T08:34:38.4669700Z       "record": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+2026-11-22T08:34:38.4670194Z       "source_commit": "d04fe009c2d5ab45f49a1d02cd36bb377f5d9873",
+2026-11-22T08:34:38.4670758Z       "to_lf_sha256": "9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8"
+2026-11-22T08:34:38.4671228Z     },
+2026-11-22T08:34:38.4671434Z     {
+2026-11-22T08:34:38.4671836Z       "from_lf_sha256": "9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8",
+2026-11-22T08:34:38.4672326Z       "issue": 391,
+2026-11-22T08:34:38.4672599Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4672921Z       "pr": 394,
+2026-11-22T08:34:38.4673247Z       "record": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+2026-11-22T08:34:38.4673729Z       "source_commit": "acce570e667c7e2cc3ef83ab451e7dff262006a9",
+2026-11-22T08:34:38.4674288Z       "to_lf_sha256": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5"
+2026-11-22T08:34:38.4674791Z     },
+2026-11-22T08:34:38.4674997Z     {
+2026-11-22T08:34:38.4675411Z       "from_lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+2026-11-22T08:34:38.4675916Z       "issue": 362,
+2026-11-22T08:34:38.4676258Z       "path": "native/include/cybersand/quantity_ledger.hpp",
+2026-11-22T08:34:38.4676645Z       "pr": 406,
+2026-11-22T08:34:38.4677111Z       "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:34:38.4677560Z       "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:34:38.4678110Z       "to_lf_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79"
+2026-11-22T08:34:38.4678572Z     },
+2026-11-22T08:34:38.4678784Z     {
+2026-11-22T08:34:38.4679170Z       "from_lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+2026-11-22T08:34:38.4679648Z       "issue": 362,
+2026-11-22T08:34:38.4679925Z       "path": "native/src/world_quantity.inc",
+2026-11-22T08:34:38.4680463Z       "pr": 406,
+2026-11-22T08:34:38.4680774Z       "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:34:38.4681255Z       "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:34:38.4681829Z       "to_lf_sha256": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e"
+2026-11-22T08:34:38.4682310Z     },
+2026-11-22T08:34:38.4682524Z     {
+2026-11-22T08:34:38.4682944Z       "from_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7",
+2026-11-22T08:34:38.4683461Z       "issue": 362,
+2026-11-22T08:34:38.4683730Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4684038Z       "pr": 406,
+2026-11-22T08:34:38.4684361Z       "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:34:38.4684846Z       "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:34:38.4685397Z       "to_lf_sha256": "93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85"
+2026-11-22T08:34:38.4685925Z     },
+2026-11-22T08:34:38.4686170Z     {
+2026-11-22T08:34:38.4686584Z       "from_lf_sha256": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5",
+2026-11-22T08:34:38.4687256Z       "issue": 362,
+2026-11-22T08:34:38.4687740Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4688087Z       "pr": 406,
+2026-11-22T08:34:38.4688403Z       "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:34:38.4688879Z       "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:34:38.4689440Z       "to_lf_sha256": "21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573"
+2026-11-22T08:34:38.4689912Z     },
+2026-11-22T08:34:38.4690150Z     {
+2026-11-22T08:34:38.4690568Z       "from_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+2026-11-22T08:34:38.4691068Z       "issue": 362,
+2026-11-22T08:34:38.4691355Z       "path": "native/src/world_inertial.inc",
+2026-11-22T08:34:38.4691685Z       "pr": 406,
+2026-11-22T08:34:38.4692018Z       "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:34:38.4692510Z       "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:34:38.4693078Z       "to_lf_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491"
+2026-11-22T08:34:38.4693577Z     },
+2026-11-22T08:34:38.4693792Z     {
+2026-11-22T08:34:38.4694203Z       "from_lf_sha256": "21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573",
+2026-11-22T08:34:38.4694709Z       "issue": 362,
+2026-11-22T08:34:38.4694996Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4695335Z       "pr": 406,
+2026-11-22T08:34:38.4695669Z       "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:34:38.4696141Z       "source_commit": "f666a6c6e4a4e5fd4091129df463b59ef79acebd",
+2026-11-22T08:34:38.4696711Z       "to_lf_sha256": "8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012"
+2026-11-22T08:34:38.4697361Z     },
+2026-11-22T08:34:38.4697574Z     {
+2026-11-22T08:34:38.4697986Z       "from_lf_sha256": "93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85",
+2026-11-22T08:34:38.4698479Z       "issue": 362,
+2026-11-22T08:34:38.4698742Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4699064Z       "pr": 406,
+2026-11-22T08:34:38.4699389Z       "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+2026-11-22T08:34:38.4699877Z       "source_commit": "6c69ba072f0507a3f6ee5966186fecb5070a45b2",
+2026-11-22T08:34:38.4700433Z       "to_lf_sha256": "09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5"
+2026-11-22T08:34:38.4700925Z     },
+2026-11-22T08:34:38.4701157Z     {
+2026-11-22T08:34:38.4701574Z       "from_lf_sha256": "8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012",
+2026-11-22T08:34:38.4702078Z       "issue": 362,
+2026-11-22T08:34:38.4702362Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4702709Z       "pr": 406,
+2026-11-22T08:34:38.4703253Z       "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+2026-11-22T08:34:38.4703733Z       "source_commit": "6c69ba072f0507a3f6ee5966186fecb5070a45b2",
+2026-11-22T08:34:38.4704354Z       "to_lf_sha256": "f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27"
+2026-11-22T08:34:38.4704881Z     },
+2026-11-22T08:34:38.4705102Z     {
+2026-11-22T08:34:38.4705522Z       "from_lf_sha256": "f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27",
+2026-11-22T08:34:38.4706052Z       "issue": 362,
+2026-11-22T08:34:38.4706331Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4706686Z       "pr": 406,
+2026-11-22T08:34:38.4707184Z       "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+2026-11-22T08:34:38.4707714Z       "source_commit": "b4e78e5d425023156f1b8ca4b2ca4e2f81a2505a",
+2026-11-22T08:34:38.4708301Z       "to_lf_sha256": "af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18"
+2026-11-22T08:34:38.4708830Z     },
+2026-11-22T08:34:38.4709070Z     {
+2026-11-22T08:34:38.4709514Z       "from_lf_sha256": "09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5",
+2026-11-22T08:34:38.4710035Z       "issue": 362,
+2026-11-22T08:34:38.4710327Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4710819Z       "pr": 406,
+2026-11-22T08:34:38.4711154Z       "record": "docs/audits/2026-11-06-whole-engine-bench.md",
+2026-11-22T08:34:38.4711644Z       "source_commit": "35c1373ef31c8ed96fd9752eecbc3f129b34c5ba",
+2026-11-22T08:34:38.4712221Z       "to_lf_sha256": "a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e"
+2026-11-22T08:34:38.4712712Z     },
+2026-11-22T08:34:38.4712923Z     {
+2026-11-22T08:34:38.4713320Z       "from_lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+2026-11-22T08:34:38.4713844Z       "issue": 362,
+2026-11-22T08:34:38.4714129Z       "path": "native/src/material_rules.cpp",
+2026-11-22T08:34:38.4714471Z       "pr": 406,
+2026-11-22T08:34:38.4714792Z       "record": "docs/audits/2026-11-06-whole-engine-bench.md",
+2026-11-22T08:34:38.4715270Z       "source_commit": "35c1373ef31c8ed96fd9752eecbc3f129b34c5ba",
+2026-11-22T08:34:38.4715858Z       "to_lf_sha256": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254"
+2026-11-22T08:34:38.4716365Z     },
+2026-11-22T08:34:38.4716578Z     {
+2026-11-22T08:34:38.4717223Z       "from_lf_sha256": "a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e",
+2026-11-22T08:34:38.4717687Z       "issue": 362,
+2026-11-22T08:34:38.4717935Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4718236Z       "pr": 406,
+2026-11-22T08:34:38.4718558Z       "record": "docs/audits/2026-11-06-stress-canvas.md",
+2026-11-22T08:34:38.4719034Z       "source_commit": "5fbf0a39c43a234fec2c092d52ea43066bf49335",
+2026-11-22T08:34:38.4719544Z       "to_lf_sha256": "3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654"
+2026-11-22T08:34:38.4720027Z     },
+2026-11-22T08:34:38.4720237Z     {
+2026-11-22T08:34:38.4720645Z       "from_lf_sha256": "3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654",
+2026-11-22T08:34:38.4721119Z       "issue": 362,
+2026-11-22T08:34:38.4721374Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4721659Z       "pr": 406,
+2026-11-22T08:34:38.4721974Z       "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:34:38.4722440Z       "source_commit": "fd061dd098d2e4b277141b76ada7f4b340e02e97",
+2026-11-22T08:34:38.4722988Z       "to_lf_sha256": "97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00"
+2026-11-22T08:34:38.4723465Z     },
+2026-11-22T08:34:38.4723681Z     {
+2026-11-22T08:34:38.4724104Z       "from_lf_sha256": "af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18",
+2026-11-22T08:34:38.4724622Z       "issue": 362,
+2026-11-22T08:34:38.4724904Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4725298Z       "pr": 406,
+2026-11-22T08:34:38.4725626Z       "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:34:38.4726327Z       "source_commit": "fd061dd098d2e4b277141b76ada7f4b340e02e97",
+2026-11-22T08:34:38.4727121Z       "to_lf_sha256": "894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738"
+2026-11-22T08:34:38.4727612Z     },
+2026-11-22T08:34:38.4727816Z     {
+2026-11-22T08:34:38.4728222Z       "from_lf_sha256": "97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00",
+2026-11-22T08:34:38.4728739Z       "issue": 362,
+2026-11-22T08:34:38.4729006Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4729326Z       "pr": 406,
+2026-11-22T08:34:38.4729656Z       "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:34:38.4730144Z       "source_commit": "481011090a9a56fb06311144b5bfb26f8f1028a4",
+2026-11-22T08:34:38.4730722Z       "to_lf_sha256": "5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129"
+2026-11-22T08:34:38.4731214Z     },
+2026-11-22T08:34:38.4731416Z     {
+2026-11-22T08:34:38.4731844Z       "from_lf_sha256": "5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129",
+2026-11-22T08:34:38.4732348Z       "issue": 362,
+2026-11-22T08:34:38.4732602Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4732882Z       "pr": 406,
+2026-11-22T08:34:38.4733167Z       "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:34:38.4733879Z       "source_commit": "0b408ae97c061d7263a3322022429aa32a0385a6",
+2026-11-22T08:34:38.4734470Z       "to_lf_sha256": "5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d"
+2026-11-22T08:34:38.4734954Z     },
+2026-11-22T08:34:38.4735170Z     {
+2026-11-22T08:34:38.4735580Z       "from_lf_sha256": "894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738",
+2026-11-22T08:34:38.4736090Z       "issue": 362,
+2026-11-22T08:34:38.4736336Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4736621Z       "pr": 406,
+2026-11-22T08:34:38.4737047Z       "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:34:38.4737473Z       "source_commit": "a2373e12fb87d8d5b28efcc6037316fb6f605a14",
+2026-11-22T08:34:38.4737980Z       "to_lf_sha256": "26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca"
+2026-11-22T08:34:38.4738445Z     },
+2026-11-22T08:34:38.4738650Z     {
+2026-11-22T08:34:38.4739066Z       "from_lf_sha256": "5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d",
+2026-11-22T08:34:38.4739576Z       "issue": 362,
+2026-11-22T08:34:38.4739829Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4740150Z       "pr": 470,
+2026-11-22T08:34:38.4740539Z       "record": "docs/audits/2026-11-06-hard-surface-packet-incremental.md",
+2026-11-22T08:34:38.4741012Z       "source_commit": "51d462537480324a4c11b3bf92f1ecb1882d8685",
+2026-11-22T08:34:38.4741510Z       "to_lf_sha256": "d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c"
+2026-11-22T08:34:38.4741925Z     },
+2026-11-22T08:34:38.4742129Z     {
+2026-11-22T08:34:38.4742489Z       "from_lf_sha256": "d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c",
+2026-11-22T08:34:38.4742956Z       "issue": 362,
+2026-11-22T08:34:38.4743219Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4743532Z       "pr": 470,
+2026-11-22T08:34:38.4743918Z       "record": "docs/audits/2026-11-06-hard-surface-packet-incremental.md",
+2026-11-22T08:34:38.4744456Z       "source_commit": "9ad76b21854b3e44fc9444f8293d3c36c619746b",
+2026-11-22T08:34:38.4744958Z       "to_lf_sha256": "8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb"
+2026-11-22T08:34:38.4745415Z     },
+2026-11-22T08:34:38.4745559Z     {
+2026-11-22T08:34:38.4745824Z       "from_lf_sha256": "8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb",
+2026-11-22T08:34:38.4746163Z       "issue": 492,
+2026-11-22T08:34:38.4746347Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4746559Z       "pr": 471,
+2026-11-22T08:34:38.4746971Z       "record": "docs/audits/2026-11-07-pf471-world-transition-proposal.md",
+2026-11-22T08:34:38.4747407Z       "source_commit": "484b48f67ba4db68b1b4c73cd63f1a187594523d",
+2026-11-22T08:34:38.4748212Z       "to_lf_sha256": "e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee"
+2026-11-22T08:34:38.4748661Z     },
+2026-11-22T08:34:38.4748872Z     {
+2026-11-22T08:34:38.4749269Z       "from_lf_sha256": "e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee",
+2026-11-22T08:34:38.4749763Z       "issue": 200,
+2026-11-22T08:34:38.4750126Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4750528Z       "pr": 491,
+2026-11-22T08:34:38.4750860Z       "record": "docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md",
+2026-11-22T08:34:38.4751198Z       "source_commit": "5f107db52a2c002e19f5f8ff284cf8f4ebeeb421",
+2026-11-22T08:34:38.4751586Z       "to_lf_sha256": "8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d"
+2026-11-22T08:34:38.4751902Z     },
+2026-11-22T08:34:38.4752053Z     {
+2026-11-22T08:34:38.4752320Z       "from_lf_sha256": "26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca",
+2026-11-22T08:34:38.4752642Z       "issue": 200,
+2026-11-22T08:34:38.4752843Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4753081Z       "pr": 491,
+2026-11-22T08:34:38.4753319Z       "record": "docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md",
+2026-11-22T08:34:38.4753803Z       "source_commit": "5f107db52a2c002e19f5f8ff284cf8f4ebeeb421",
+2026-11-22T08:34:38.4754191Z       "to_lf_sha256": "71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a"
+2026-11-22T08:34:38.4754514Z     },
+2026-11-22T08:34:38.4754664Z     {
+2026-11-22T08:34:38.4754943Z       "from_lf_sha256": "8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d",
+2026-11-22T08:34:38.4755277Z       "issue": 201,
+2026-11-22T08:34:38.4755472Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4755687Z       "pr": 405,
+2026-11-22T08:34:38.4755949Z       "record": "docs/audits/2026-11-07-pr405-current-main-reconciliation.md",
+2026-11-22T08:34:38.4756310Z       "source_commit": "e77ca8475bbe5333d1af520e44b400e70ba8570c",
+2026-11-22T08:34:38.4756678Z       "to_lf_sha256": "b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a"
+2026-11-22T08:34:38.4757176Z     },
+2026-11-22T08:34:38.4757323Z     {
+2026-11-22T08:34:38.4757596Z       "from_lf_sha256": "71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a",
+2026-11-22T08:34:38.4757929Z       "issue": 504,
+2026-11-22T08:34:38.4758121Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4758335Z       "pr": 504,
+2026-11-22T08:34:38.4758587Z       "record": "docs/audits/2026-11-07-pf-gas-c2048-merge-transition.md",
+2026-11-22T08:34:38.4758916Z       "source_commit": "d8b314deb8164f9641117a13fce286d23340936b",
+2026-11-22T08:34:38.4759276Z       "to_lf_sha256": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec"
+2026-11-22T08:34:38.4759585Z     },
+2026-11-22T08:34:38.4759731Z     {
+2026-11-22T08:34:38.4759999Z       "from_lf_sha256": "b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a",
+2026-11-22T08:34:38.4760315Z       "issue": 292,
+2026-11-22T08:34:38.4760494Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4760708Z       "pr": 538,
+2026-11-22T08:34:38.4760955Z       "record": "docs/audits/2026-11-07-native-copy292-mat-auth-transition.md",
+2026-11-22T08:34:38.4761310Z       "source_commit": "7a2bab58bfb193b3f10e55bf63cdeec2a17f549f",
+2026-11-22T08:34:38.4761667Z       "to_lf_sha256": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b"
+2026-11-22T08:34:38.4761967Z     },
+2026-11-22T08:34:38.4762113Z     {
+2026-11-22T08:34:38.4762373Z       "from_lf_sha256": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254",
+2026-11-22T08:34:38.4762688Z       "issue": 353,
+2026-11-22T08:34:38.4762878Z       "path": "native/src/material_rules.cpp",
+2026-11-22T08:34:38.4763091Z       "pr": 563,
+2026-11-22T08:34:38.4763347Z       "record": "docs/audits/2026-11-11-material-native-capability-cutover.md",
+2026-11-22T08:34:38.4763690Z       "source_commit": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087",
+2026-11-22T08:34:38.4764174Z       "to_lf_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+2026-11-22T08:34:38.4764481Z     },
+2026-11-22T08:34:38.4764627Z     {
+2026-11-22T08:34:38.4764889Z       "from_lf_sha256": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b",
+2026-11-22T08:34:38.4765200Z       "issue": 618,
+2026-11-22T08:34:38.4765368Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4765576Z       "pr": 618,
+2026-11-22T08:34:38.4765794Z       "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:34:38.4766104Z       "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+2026-11-22T08:34:38.4766445Z       "to_lf_sha256": "9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384"
+2026-11-22T08:34:38.4766901Z     },
+2026-11-22T08:34:38.4767069Z     {
+2026-11-22T08:34:38.4767326Z       "from_lf_sha256": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec",
+2026-11-22T08:34:38.4767638Z       "issue": 618,
+2026-11-22T08:34:38.4767841Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4768052Z       "pr": 618,
+2026-11-22T08:34:38.4768265Z       "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:34:38.4768675Z       "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+2026-11-22T08:34:38.4769021Z       "to_lf_sha256": "a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9"
+2026-11-22T08:34:38.4769324Z     },
+2026-11-22T08:34:38.4769467Z     {
+2026-11-22T08:34:38.4769726Z       "from_lf_sha256": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e",
+2026-11-22T08:34:38.4770031Z       "issue": 618,
+2026-11-22T08:34:38.4770211Z       "path": "native/src/world_quantity.inc",
+2026-11-22T08:34:38.4770428Z       "pr": 618,
+2026-11-22T08:34:38.4770634Z       "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:34:38.4770924Z       "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+2026-11-22T08:34:38.4771298Z       "to_lf_sha256": "1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d"
+2026-11-22T08:34:38.4771633Z     },
+2026-11-22T08:34:38.4771783Z     {
+2026-11-22T08:34:38.4772041Z       "from_lf_sha256": "9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384",
+2026-11-22T08:34:38.4772349Z       "issue": 618,
+2026-11-22T08:34:38.4772538Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4772752Z       "pr": 618,
+2026-11-22T08:34:38.4772977Z       "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:34:38.4773314Z       "source_commit": "d3c2cacdf1c083b1c1bf0bfd0ed0e14690a48fe2",
+2026-11-22T08:34:38.4773678Z       "to_lf_sha256": "09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1"
+2026-11-22T08:34:38.4773985Z     },
+2026-11-22T08:34:38.4774131Z     {
+2026-11-22T08:34:38.4774390Z       "from_lf_sha256": "09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1",
+2026-11-22T08:34:38.4774709Z       "issue": 631,
+2026-11-22T08:34:38.4774886Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4775095Z       "pr": 631,
+2026-11-22T08:34:38.4775323Z       "record": "docs/audits/2026-11-15-wave-mt-001-astra-takeover.md",
+2026-11-22T08:34:38.4775646Z       "source_commit": "66b7107dca129b85f5bcb1099b4d60149f87f429",
+2026-11-22T08:34:38.4776012Z       "to_lf_sha256": "911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143"
+2026-11-22T08:34:38.4776321Z     },
+2026-11-22T08:34:38.4776464Z     {
+2026-11-22T08:34:38.4776857Z       "from_lf_sha256": "a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9",
+2026-11-22T08:34:38.4777189Z       "issue": 631,
+2026-11-22T08:34:38.4777383Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4777609Z       "pr": 631,
+2026-11-22T08:34:38.4777856Z       "record": "docs/audits/2026-11-16-pr631-wave-workbench-transition.md",
+2026-11-22T08:34:38.4778205Z       "source_commit": "9bf39e70df4fbfdee87222cc8fa208a932729f72",
+2026-11-22T08:34:38.4778562Z       "to_lf_sha256": "ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4"
+2026-11-22T08:34:38.4779061Z     },
+2026-11-22T08:34:38.4779207Z     {
+2026-11-22T08:34:38.4779547Z       "from_lf_sha256": "ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4",
+2026-11-22T08:34:38.4780031Z       "issue": 631,
+2026-11-22T08:34:38.4780301Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4780584Z       "pr": 631,
+2026-11-22T08:34:38.4780898Z       "record": "docs/audits/2026-11-16-wave-workbench-631-finisher.md",
+2026-11-22T08:34:38.4781369Z       "source_commit": "1ca6da11427291a87409f7583df8cb4831a03bca",
+2026-11-22T08:34:38.4781889Z       "to_lf_sha256": "9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067"
+2026-11-22T08:34:38.4782330Z     },
+2026-11-22T08:34:38.4782520Z     {
+2026-11-22T08:34:38.4782923Z       "from_lf_sha256": "1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d",
+2026-11-22T08:34:38.4783448Z       "issue": 631,
+2026-11-22T08:34:38.4783731Z       "path": "native/src/world_quantity.inc",
+2026-11-22T08:34:38.4784067Z       "pr": 631,
+2026-11-22T08:34:38.4784428Z       "record": "docs/audits/2026-11-16-wave-workbench-631-finisher.md",
+2026-11-22T08:34:38.4784944Z       "source_commit": "1ca6da11427291a87409f7583df8cb4831a03bca",
+2026-11-22T08:34:38.4785470Z       "to_lf_sha256": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae"
+2026-11-22T08:34:38.4785793Z     },
+2026-11-22T08:34:38.4785952Z     {
+2026-11-22T08:34:38.4786232Z       "from_lf_sha256": "911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143",
+2026-11-22T08:34:38.4786563Z       "issue": 661,
+2026-11-22T08:34:38.4786919Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4787193Z       "pr": 661,
+2026-11-22T08:34:38.4787417Z       "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:34:38.4787724Z       "source_commit": "751c1a951a8f76c397dd3f903f378208119d29f1",
+2026-11-22T08:34:38.4788093Z       "to_lf_sha256": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83"
+2026-11-22T08:34:38.4788408Z     },
+2026-11-22T08:34:38.4788553Z     {
+2026-11-22T08:34:38.4788831Z       "from_lf_sha256": "9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067",
+2026-11-22T08:34:38.4789158Z       "issue": 661,
+2026-11-22T08:34:38.4789347Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4789579Z       "pr": 661,
+2026-11-22T08:34:38.4789791Z       "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:34:38.4790092Z       "source_commit": "26d032f14820d6d46272d487d56cacaee4544368",
+2026-11-22T08:34:38.4790449Z       "to_lf_sha256": "64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f"
+2026-11-22T08:34:38.4790900Z     },
+2026-11-22T08:34:38.4791104Z     {
+2026-11-22T08:34:38.4791528Z       "from_lf_sha256": "64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f",
+2026-11-22T08:34:38.4792051Z       "issue": 661,
+2026-11-22T08:34:38.4792281Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4792499Z       "pr": 661,
+2026-11-22T08:34:38.4792716Z       "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:34:38.4793014Z       "source_commit": "1d71202a35a7945e496b0cb83a2d639b2ad2b5bc",
+2026-11-22T08:34:38.4793367Z       "to_lf_sha256": "df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8"
+2026-11-22T08:34:38.4793674Z     },
+2026-11-22T08:34:38.4793824Z     {
+2026-11-22T08:34:38.4794086Z       "from_lf_sha256": "df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8",
+2026-11-22T08:34:38.4794425Z       "issue": 661,
+2026-11-22T08:34:38.4794623Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4794864Z       "pr": 661,
+2026-11-22T08:34:38.4795081Z       "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:34:38.4795384Z       "source_commit": "d07f24c89b88a95803602d4187bd71e7f8933ec6",
+2026-11-22T08:34:38.4795759Z       "to_lf_sha256": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105"
+2026-11-22T08:34:38.4796074Z     },
+2026-11-22T08:34:38.4796361Z     {
+2026-11-22T08:34:38.4796630Z       "from_lf_sha256": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83",
+2026-11-22T08:34:38.4797088Z       "issue": 672,
+2026-11-22T08:34:38.4797275Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4797485Z       "pr": 676,
+2026-11-22T08:34:38.4797691Z       "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+2026-11-22T08:34:38.4797993Z       "source_commit": "d876bd57897dd421b720e73d15d7c89a830b4896",
+2026-11-22T08:34:38.4798344Z       "to_lf_sha256": "fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0"
+2026-11-22T08:34:38.4798642Z     },
+2026-11-22T08:34:38.4798786Z     {
+2026-11-22T08:34:38.4799039Z       "from_lf_sha256": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105",
+2026-11-22T08:34:38.4799357Z       "issue": 672,
+2026-11-22T08:34:38.4799544Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4799766Z       "pr": 676,
+2026-11-22T08:34:38.4799968Z       "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+2026-11-22T08:34:38.4800259Z       "source_commit": "d876bd57897dd421b720e73d15d7c89a830b4896",
+2026-11-22T08:34:38.4800606Z       "to_lf_sha256": "bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03"
+2026-11-22T08:34:38.4801018Z     },
+2026-11-22T08:34:38.4801163Z     {
+2026-11-22T08:34:38.4801425Z       "from_lf_sha256": "bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03",
+2026-11-22T08:34:38.4801734Z       "issue": 672,
+2026-11-22T08:34:38.4801918Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4802130Z       "pr": 676,
+2026-11-22T08:34:38.4802327Z       "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+2026-11-22T08:34:38.4802629Z       "source_commit": "d4df71fc6bc1bf6267270a4c1445207a02716317",
+2026-11-22T08:34:38.4802980Z       "to_lf_sha256": "0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f"
+2026-11-22T08:34:38.4803287Z     },
+2026-11-22T08:34:38.4803431Z     {
+2026-11-22T08:34:38.4803696Z       "from_lf_sha256": "0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f",
+2026-11-22T08:34:38.4804010Z       "issue": 676,
+2026-11-22T08:34:38.4804190Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:34:38.4804404Z       "pr": 677,
+2026-11-22T08:34:38.4804626Z       "record": "docs/audits/2026-11-19-wave-water-ramp-003.md",
+2026-11-22T08:34:38.4804923Z       "source_commit": "1604b66b19705d79d2704e5119a25823caee0973",
+2026-11-22T08:34:38.4805274Z       "to_lf_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1"
+2026-11-22T08:34:38.4805577Z     },
+2026-11-22T08:34:38.4805728Z     {
+2026-11-22T08:34:38.4806010Z       "from_lf_sha256": "fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0",
+2026-11-22T08:34:38.4806338Z       "issue": 678,
+2026-11-22T08:34:38.4806531Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4806904Z       "pr": 679,
+2026-11-22T08:34:38.4807129Z       "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:34:38.4807450Z       "source_commit": "b8db73ce7d0f37c1a38690ea34749d1ccba3474b",
+2026-11-22T08:34:38.4807818Z       "to_lf_sha256": "fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc"
+2026-11-22T08:34:38.4808131Z     },
+2026-11-22T08:34:38.4808288Z     {
+2026-11-22T08:34:38.4808555Z       "from_lf_sha256": "fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc",
+2026-11-22T08:34:38.4808882Z       "issue": 678,
+2026-11-22T08:34:38.4809063Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4809266Z       "pr": 679,
+2026-11-22T08:34:38.4809479Z       "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:34:38.4809772Z       "source_commit": "0b2a46cee3598ae8e6ce481167ff3f482f83580f",
+2026-11-22T08:34:38.4810123Z       "to_lf_sha256": "c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b"
+2026-11-22T08:34:38.4810435Z     },
+2026-11-22T08:34:38.4810580Z     {
+2026-11-22T08:34:38.4810848Z       "from_lf_sha256": "c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b",
+2026-11-22T08:34:38.4811281Z       "issue": 678,
+2026-11-22T08:34:38.4811457Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4811676Z       "pr": 679,
+2026-11-22T08:34:38.4811888Z       "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:34:38.4812187Z       "source_commit": "932a811c474de7f2720719f258a9fd38d8aecdfd",
+2026-11-22T08:34:38.4812536Z       "to_lf_sha256": "9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf"
+2026-11-22T08:34:38.4812839Z     },
+2026-11-22T08:34:38.4812991Z     {
+2026-11-22T08:34:38.4813244Z       "from_lf_sha256": "9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf",
+2026-11-22T08:34:38.4813554Z       "issue": 678,
+2026-11-22T08:34:38.4813736Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4813932Z       "pr": 679,
+2026-11-22T08:34:38.4814140Z       "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:34:38.4814431Z       "source_commit": "461b1c1485418bcd8f83f29efe1cccf7ef4a9928",
+2026-11-22T08:34:38.4814789Z       "to_lf_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+2026-11-22T08:34:38.4815106Z     },
+2026-11-22T08:34:38.4815256Z     {
+2026-11-22T08:34:38.4815617Z       "from_lf_sha256": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae",
+2026-11-22T08:34:38.4815953Z       "issue": 679,
+2026-11-22T08:34:38.4816146Z       "path": "native/src/world_quantity.inc",
+2026-11-22T08:34:38.4816371Z       "pr": 679,
+2026-11-22T08:34:38.4816572Z       "record": "docs/audits/2026-11-19-wave-oil-lava.md",
+2026-11-22T08:34:38.4817002Z       "source_commit": "baa5699083f5f668f9c03309aceaccd0f1fb80d9",
+2026-11-22T08:34:38.4817372Z       "to_lf_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489"
+2026-11-22T08:34:38.4817676Z     },
+2026-11-22T08:34:38.4817824Z     {
+2026-11-22T08:34:38.4818087Z       "from_lf_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+2026-11-22T08:34:38.4818408Z       "issue": 281,
+2026-11-22T08:34:38.4818588Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4818791Z       "pr": 726,
+2026-11-22T08:34:38.4819033Z       "record": "docs/audits/2026-11-22-objectshard-world-transition.md",
+2026-11-22T08:34:38.4819373Z       "source_commit": "5afe5643097c543f7d8a6840ced9afac58dd053e",
+2026-11-22T08:34:38.4819730Z       "to_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214"
+2026-11-22T08:34:38.4820048Z     },
+2026-11-22T08:34:38.4820193Z     {
+2026-11-22T08:34:38.4820453Z       "from_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+2026-11-22T08:34:38.4820775Z       "issue": 281,
+2026-11-22T08:34:38.4820948Z       "path": "native/src/world.cpp",
+2026-11-22T08:34:38.4821151Z       "pr": 741,
+2026-11-22T08:34:38.4821439Z       "record": "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+2026-11-22T08:34:38.4821813Z       "source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+2026-11-22T08:34:38.4822185Z       "to_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1"
+2026-11-22T08:34:38.4822497Z     }
+2026-11-22T08:34:38.4822645Z   ],
+2026-11-22T08:34:38.4822815Z   "runtime_execution": false,
+2026-11-22T08:34:38.4823034Z   "status": "PASS"
+2026-11-22T08:34:38.4823218Z }
+2026-11-22T08:34:38.5697326Z shadow material catalogue matches authored source; production authority unchanged
+2026-11-22T08:41:57.3012442Z .......................................................................................................................................................................................................................................
+2026-11-22T08:41:57.3013055Z ----------------------------------------------------------------------
+2026-11-22T08:41:57.3013356Z Ran 231 tests in 438.570s
+2026-11-22T08:41:57.3013492Z 
+2026-11-22T08:41:57.3013566Z OK
+2026-11-22T08:42:03.5259890Z {
+2026-11-22T08:42:03.5260202Z   "commands": {
+2026-11-22T08:42:03.5260820Z     "candidate_compile": [
+2026-11-22T08:42:03.5261101Z       "c++",
+2026-11-22T08:42:03.5261323Z       "-std=c++20",
+2026-11-22T08:42:03.5261582Z       "-O2",
+2026-11-22T08:42:03.5261829Z       "-Wall",
+2026-11-22T08:42:03.5262070Z       "-Wextra",
+2026-11-22T08:42:03.5262324Z       "-Werror",
+2026-11-22T08:42:03.5262580Z       "-I",
+2026-11-22T08:42:03.5262841Z       "${REPO_ROOT}/native/include",
+2026-11-22T08:42:03.5263437Z       "-DCYBERSAND_MATERIAL_CANDIDATE_HEADER=\"${REPO_ROOT}/materials/catalogue/generated/catalogue.shadow.hpp\"",
+2026-11-22T08:42:03.5264068Z       "${REPO_ROOT}/tools/material_catalogue/native_oracle.cpp",
+2026-11-22T08:42:03.5264476Z       "${REPO_ROOT}/native/src/material_rules.cpp",
+2026-11-22T08:42:03.5264797Z       "-o",
+2026-11-22T08:42:03.5265043Z       "${BUILD_DIRECTORY}/candidate-parity"
+2026-11-22T08:42:03.5265341Z     ],
+2026-11-22T08:42:03.5265564Z     "candidate_snapshot": [
+2026-11-22T08:42:03.5265878Z       "${BUILD_DIRECTORY}/candidate-parity",
+2026-11-22T08:42:03.5266229Z       "--candidate-snapshot"
+2026-11-22T08:42:03.5266492Z     ],
+2026-11-22T08:42:03.5266708Z     "candidate_validation": [
+2026-11-22T08:42:03.5267546Z       "${BUILD_DIRECTORY}/candidate-parity",
+2026-11-22T08:42:03.5267838Z       "--parity"
+2026-11-22T08:42:03.5268286Z     ],
+2026-11-22T08:42:03.5268527Z     "native_compile": [
+2026-11-22T08:42:03.5268785Z       "c++",
+2026-11-22T08:42:03.5269021Z       "-std=c++20",
+2026-11-22T08:42:03.5269195Z       "-O2",
+2026-11-22T08:42:03.5269351Z       "-Wall",
+2026-11-22T08:42:03.5269517Z       "-Wextra",
+2026-11-22T08:42:03.5269677Z       "-Werror",
+2026-11-22T08:42:03.5269842Z       "-I",
+2026-11-22T08:42:03.5270026Z       "${REPO_ROOT}/native/include",
+2026-11-22T08:42:03.5270299Z       "${REPO_ROOT}/tools/material_catalogue/native_oracle.cpp",
+2026-11-22T08:42:03.5270588Z       "${REPO_ROOT}/native/src/material_rules.cpp",
+2026-11-22T08:42:03.5270848Z       "-o",
+2026-11-22T08:42:03.5271025Z       "${BUILD_DIRECTORY}/native-oracle"
+2026-11-22T08:42:03.5271248Z     ],
+2026-11-22T08:42:03.5271414Z     "native_snapshot": [
+2026-11-22T08:42:03.5271616Z       "${BUILD_DIRECTORY}/native-oracle",
+2026-11-22T08:42:03.5271833Z       "--snapshot"
+2026-11-22T08:42:03.5272007Z     ]
+2026-11-22T08:42:03.5272157Z   },
+2026-11-22T08:42:03.5272322Z   "compiled_queries": {
+2026-11-22T08:42:03.5272526Z     "appearance_projection_cases": 17170432,
+2026-11-22T08:42:03.5272759Z     "capability_byte_ids": 256,
+2026-11-22T08:42:03.5272977Z     "density_exchange_cases": 327680,
+2026-11-22T08:42:03.5273193Z     "descriptor_byte_ids": 256,
+2026-11-22T08:42:03.5273395Z     "family_membership_cases": 2048,
+2026-11-22T08:42:03.5273627Z     "lateral_rate_cases": 65536,
+2026-11-22T08:42:03.5273840Z     "layer_kind_byte_ids": 256,
+2026-11-22T08:42:03.5274055Z     "pair_roll_cases": 16777216,
+2026-11-22T08:42:03.5274263Z     "pair_wrapper_cases": 16777216,
+2026-11-22T08:42:03.5274487Z     "physics_qualification": false,
+2026-11-22T08:42:03.5274702Z     "status": "PASS",
+2026-11-22T08:42:03.5274895Z     "validity_uint16_inputs": 65536,
+2026-11-22T08:42:03.5275111Z     "viscosity_cases": 16777216,
+2026-11-22T08:42:03.5275312Z     "world_executed": false
+2026-11-22T08:42:03.5275497Z   },
+2026-11-22T08:42:03.5276239Z   "compiler_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+2026-11-22T08:42:03.5277554Z   "cost_qualification": "One local standalone metadata compile/probe run; not a simulation or performance benchmark. Timings vary by host and load.",
+2026-11-22T08:42:03.5278034Z   "fallback": {
+2026-11-22T08:42:03.5278216Z     "godot_executed": false,
+2026-11-22T08:42:03.5278424Z     "granular_support_ids_equal": 9,
+2026-11-22T08:42:03.5278659Z     "hard_surface_ids_equal": 101,
+2026-11-22T08:42:03.5278908Z     "other_fallback_density_equality_asserted": false,
+2026-11-22T08:42:03.5279374Z     "palette_rgba8_rows_equal": 132,
+2026-11-22T08:42:03.5279595Z     "retained_slush_density": {
+2026-11-22T08:42:03.5279794Z       "fallback": 1100,
+2026-11-22T08:42:03.5279983Z       "native": 1080
+2026-11-22T08:42:03.5280155Z     },
+2026-11-22T08:42:03.5280327Z     "source_qualified_only": true,
+2026-11-22T08:42:03.5280549Z     "valid_identity_id_set_equal": 131
+2026-11-22T08:42:03.5280752Z   },
+2026-11-22T08:42:03.5280907Z   "generated_mirrors": {
+2026-11-22T08:42:03.5281112Z     "gdscript_literal_facts_equal": true,
+2026-11-22T08:42:03.5281339Z     "godot_executed": false,
+2026-11-22T08:42:03.5281550Z     "inspection_facts_equal": true,
+2026-11-22T08:42:03.5282019Z     "qualification": "The generated GDScript literal is compared as JSON-compatible metadata; no Godot parser or fallback physics execution."
+2026-11-22T08:42:03.5282478Z   },
+2026-11-22T08:42:03.5282649Z   "godot_executed": false,
+2026-11-22T08:42:03.5282841Z   "inputs": [
+2026-11-22T08:42:03.5283009Z     {
+2026-11-22T08:42:03.5283176Z       "bytes": 195969,
+2026-11-22T08:42:03.5283387Z       "path": "materials/catalogue/catalogue.json",
+2026-11-22T08:42:03.5283736Z       "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+2026-11-22T08:42:03.5284051Z     },
+2026-11-22T08:42:03.5284203Z     {
+2026-11-22T08:42:03.5284487Z       "bytes": 53002,
+2026-11-22T08:42:03.5284737Z       "path": "materials/catalogue/generated/catalogue.shadow.hpp",
+2026-11-22T08:42:03.5285101Z       "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+2026-11-22T08:42:03.5285403Z     },
+2026-11-22T08:42:03.5285550Z     {
+2026-11-22T08:42:03.5285709Z       "bytes": 180360,
+2026-11-22T08:42:03.5285941Z       "path": "materials/catalogue/generated/catalogue_shadow.gd",
+2026-11-22T08:42:03.5286288Z       "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+2026-11-22T08:42:03.5286580Z     },
+2026-11-22T08:42:03.5287002Z     {
+2026-11-22T08:42:03.5287157Z       "bytes": 215517,
+2026-11-22T08:42:03.5287393Z       "path": "materials/catalogue/generated/inspection.json",
+2026-11-22T08:42:03.5287736Z       "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+2026-11-22T08:42:03.5288030Z     },
+2026-11-22T08:42:03.5288177Z     {
+2026-11-22T08:42:03.5288333Z       "bytes": 15569,
+2026-11-22T08:42:03.5288561Z       "path": "materials/catalogue/compatibility-lock.json",
+2026-11-22T08:42:03.5288899Z       "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+2026-11-22T08:42:03.5289185Z     }
+2026-11-22T08:42:03.5289331Z   ],
+2026-11-22T08:42:03.5289487Z   "measured_tool_costs": {
+2026-11-22T08:42:03.5289697Z     "candidate_compile_seconds": 1.646957,
+2026-11-22T08:42:03.5289936Z     "candidate_executable_bytes": 157640,
+2026-11-22T08:42:03.5290167Z     "candidate_snapshot_seconds": 0.005607,
+2026-11-22T08:42:03.5290410Z     "candidate_validation_seconds": 1.575006,
+2026-11-22T08:42:03.5290644Z     "native_compile_seconds": 1.126641,
+2026-11-22T08:42:03.5290865Z     "native_executable_bytes": 86736,
+2026-11-22T08:42:03.5291095Z     "native_snapshot_seconds": 0.004937
+2026-11-22T08:42:03.5291295Z   },
+2026-11-22T08:42:03.5291447Z   "metadata": {
+2026-11-22T08:42:03.5291617Z     "coverage_records": 10,
+2026-11-22T08:42:03.5291821Z     "descriptor_fields_per_slot": 15,
+2026-11-22T08:42:03.5292044Z     "granular_support_ids": 9,
+2026-11-22T08:42:03.5292247Z     "hard_surface_ids": 101,
+2026-11-22T08:42:03.5292439Z     "material_slots": 132,
+2026-11-22T08:42:03.5292632Z     "memberships": 33,
+2026-11-22T08:42:03.5292812Z     "pair_rules": 56,
+2026-11-22T08:42:03.5292999Z     "semantic_families": 7,
+2026-11-22T08:42:03.5293197Z     "specialized_mechanisms": 19,
+2026-11-22T08:42:03.5293413Z     "tuning_passes": 2,
+2026-11-22T08:42:03.5293612Z     "valid_ids": 131
+2026-11-22T08:42:03.5293784Z   },
+2026-11-22T08:42:03.5293980Z   "native_authored_compiled_shadow_facts_equal": true,
+2026-11-22T08:42:03.5294252Z   "physics_qualification": false,
+2026-11-22T08:42:03.5294472Z   "production_cutover": true,
+2026-11-22T08:42:03.5294808Z   "protected_sources": {
+2026-11-22T08:42:03.5295055Z     "baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+2026-11-22T08:42:03.5295447Z     "capability_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+2026-11-22T08:42:03.5295925Z     "catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+2026-11-22T08:42:03.5296271Z     "fallback_slush_density": 1100,
+2026-11-22T08:42:03.5296493Z     "generated_native_consumer": {
+2026-11-22T08:42:03.5296862Z       "consumer": "native/src/material_rules.cpp",
+2026-11-22T08:42:03.5297123Z       "fields": [
+2026-11-22T08:42:03.5297294Z         "hard_surface",
+2026-11-22T08:42:03.5297483Z         "granular_support"
+2026-11-22T08:42:03.5297670Z       ],
+2026-11-22T08:42:03.5297842Z       "identity_transition": false,
+2026-11-22T08:42:03.5298051Z       "input_count": 4,
+2026-11-22T08:42:03.5298223Z       "issue": 353,
+2026-11-22T08:42:03.5298397Z       "pr": 563,
+2026-11-22T08:42:03.5298676Z       "record": "docs/audits/2026-11-11-material-native-capability-cutover.md",
+2026-11-22T08:42:03.5299081Z       "source_commit": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087"
+2026-11-22T08:42:03.5299419Z     },
+2026-11-22T08:42:03.5299704Z     "production_cutover": true,
+2026-11-22T08:42:03.5300022Z     "protected_sources": 27,
+2026-11-22T08:42:03.5300231Z     "reviewed_transitions": [
+2026-11-22T08:42:03.5300431Z       {
+2026-11-22T08:42:03.5300717Z         "from_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+2026-11-22T08:42:03.5301046Z         "issue": 201,
+2026-11-22T08:42:03.5301249Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5301478Z         "pr": 382,
+2026-11-22T08:42:03.5301733Z         "record": "docs/audits/2026-11-04-lcb201-world-pressure-transition.md",
+2026-11-22T08:42:03.5302100Z         "source_commit": "e5416b81bebf7ce79ac9894f7f9edf88f63b58da",
+2026-11-22T08:42:03.5302470Z         "to_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874"
+2026-11-22T08:42:03.5302789Z       },
+2026-11-22T08:42:03.5302938Z       {
+2026-11-22T08:42:03.5303213Z         "from_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+2026-11-22T08:42:03.5303551Z         "issue": 391,
+2026-11-22T08:42:03.5303738Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5303951Z         "pr": 394,
+2026-11-22T08:42:03.5304230Z         "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+2026-11-22T08:42:03.5304600Z         "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+2026-11-22T08:42:03.5304975Z         "to_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7"
+2026-11-22T08:42:03.5305293Z       },
+2026-11-22T08:42:03.5305445Z       {
+2026-11-22T08:42:03.5305729Z         "from_lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+2026-11-22T08:42:03.5306051Z         "issue": 391,
+2026-11-22T08:42:03.5306256Z         "path": "native/src/world_inertial.inc",
+2026-11-22T08:42:03.5306478Z         "pr": 394,
+2026-11-22T08:42:03.5306888Z         "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+2026-11-22T08:42:03.5307286Z         "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+2026-11-22T08:42:03.5307650Z         "to_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5"
+2026-11-22T08:42:03.5307966Z       },
+2026-11-22T08:42:03.5308116Z       {
+2026-11-22T08:42:03.5308377Z         "from_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874",
+2026-11-22T08:42:03.5308694Z         "issue": 391,
+2026-11-22T08:42:03.5308879Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5309107Z         "pr": 394,
+2026-11-22T08:42:03.5309355Z         "record": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+2026-11-22T08:42:03.5309692Z         "source_commit": "d04fe009c2d5ab45f49a1d02cd36bb377f5d9873",
+2026-11-22T08:42:03.5310177Z         "to_lf_sha256": "9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8"
+2026-11-22T08:42:03.5310492Z       },
+2026-11-22T08:42:03.5310643Z       {
+2026-11-22T08:42:03.5310916Z         "from_lf_sha256": "9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8",
+2026-11-22T08:42:03.5311243Z         "issue": 391,
+2026-11-22T08:42:03.5311429Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5311649Z         "pr": 394,
+2026-11-22T08:42:03.5311885Z         "record": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+2026-11-22T08:42:03.5312220Z         "source_commit": "acce570e667c7e2cc3ef83ab451e7dff262006a9",
+2026-11-22T08:42:03.5312575Z         "to_lf_sha256": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5"
+2026-11-22T08:42:03.5312879Z       },
+2026-11-22T08:42:03.5313028Z       {
+2026-11-22T08:42:03.5313295Z         "from_lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+2026-11-22T08:42:03.5313638Z         "issue": 362,
+2026-11-22T08:42:03.5313865Z         "path": "native/include/cybersand/quantity_ledger.hpp",
+2026-11-22T08:42:03.5314117Z         "pr": 406,
+2026-11-22T08:42:03.5314344Z         "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:42:03.5314755Z         "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:42:03.5315147Z         "to_lf_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79"
+2026-11-22T08:42:03.5315463Z       },
+2026-11-22T08:42:03.5315613Z       {
+2026-11-22T08:42:03.5315891Z         "from_lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+2026-11-22T08:42:03.5316215Z         "issue": 362,
+2026-11-22T08:42:03.5316418Z         "path": "native/src/world_quantity.inc",
+2026-11-22T08:42:03.5316651Z         "pr": 406,
+2026-11-22T08:42:03.5317054Z         "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:42:03.5317374Z         "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:42:03.5317744Z         "to_lf_sha256": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e"
+2026-11-22T08:42:03.5318145Z       },
+2026-11-22T08:42:03.5318309Z       {
+2026-11-22T08:42:03.5318598Z         "from_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7",
+2026-11-22T08:42:03.5318937Z         "issue": 362,
+2026-11-22T08:42:03.5319128Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5319359Z         "pr": 406,
+2026-11-22T08:42:03.5319593Z         "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:42:03.5319904Z         "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:42:03.5320268Z         "to_lf_sha256": "93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85"
+2026-11-22T08:42:03.5320584Z       },
+2026-11-22T08:42:03.5320731Z       {
+2026-11-22T08:42:03.5321000Z         "from_lf_sha256": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5",
+2026-11-22T08:42:03.5321329Z         "issue": 362,
+2026-11-22T08:42:03.5321526Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5321752Z         "pr": 406,
+2026-11-22T08:42:03.5321966Z         "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:42:03.5322267Z         "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:42:03.5322628Z         "to_lf_sha256": "21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573"
+2026-11-22T08:42:03.5322939Z       },
+2026-11-22T08:42:03.5323095Z       {
+2026-11-22T08:42:03.5323370Z         "from_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+2026-11-22T08:42:03.5323687Z         "issue": 362,
+2026-11-22T08:42:03.5323882Z         "path": "native/src/world_inertial.inc",
+2026-11-22T08:42:03.5324098Z         "pr": 406,
+2026-11-22T08:42:03.5324307Z         "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:42:03.5324602Z         "source_commit": "30419bdac24902b47bab3756d3116008bec8f0ca",
+2026-11-22T08:42:03.5325119Z         "to_lf_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491"
+2026-11-22T08:42:03.5325441Z       },
+2026-11-22T08:42:03.5325590Z       {
+2026-11-22T08:42:03.5326013Z         "from_lf_sha256": "21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573",
+2026-11-22T08:42:03.5326539Z         "issue": 362,
+2026-11-22T08:42:03.5326938Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5327249Z         "pr": 406,
+2026-11-22T08:42:03.5327479Z         "record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+2026-11-22T08:42:03.5327802Z         "source_commit": "f666a6c6e4a4e5fd4091129df463b59ef79acebd",
+2026-11-22T08:42:03.5328183Z         "to_lf_sha256": "8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012"
+2026-11-22T08:42:03.5328500Z       },
+2026-11-22T08:42:03.5328661Z       {
+2026-11-22T08:42:03.5328943Z         "from_lf_sha256": "93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85",
+2026-11-22T08:42:03.5329280Z         "issue": 362,
+2026-11-22T08:42:03.5329476Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5329690Z         "pr": 406,
+2026-11-22T08:42:03.5330040Z         "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+2026-11-22T08:42:03.5330369Z         "source_commit": "6c69ba072f0507a3f6ee5966186fecb5070a45b2",
+2026-11-22T08:42:03.5330733Z         "to_lf_sha256": "09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5"
+2026-11-22T08:42:03.5331049Z       },
+2026-11-22T08:42:03.5331198Z       {
+2026-11-22T08:42:03.5331463Z         "from_lf_sha256": "8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012",
+2026-11-22T08:42:03.5331789Z         "issue": 362,
+2026-11-22T08:42:03.5331985Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5332218Z         "pr": 406,
+2026-11-22T08:42:03.5332459Z         "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+2026-11-22T08:42:03.5332804Z         "source_commit": "6c69ba072f0507a3f6ee5966186fecb5070a45b2",
+2026-11-22T08:42:03.5333187Z         "to_lf_sha256": "f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27"
+2026-11-22T08:42:03.5333514Z       },
+2026-11-22T08:42:03.5333670Z       {
+2026-11-22T08:42:03.5333962Z         "from_lf_sha256": "f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27",
+2026-11-22T08:42:03.5334300Z         "issue": 362,
+2026-11-22T08:42:03.5334508Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5334738Z         "pr": 406,
+2026-11-22T08:42:03.5334969Z         "record": "docs/audits/2026-11-06-workbench-pf-tick-cost.md",
+2026-11-22T08:42:03.5335297Z         "source_commit": "b4e78e5d425023156f1b8ca4b2ca4e2f81a2505a",
+2026-11-22T08:42:03.5335676Z         "to_lf_sha256": "af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18"
+2026-11-22T08:42:03.5335998Z       },
+2026-11-22T08:42:03.5336151Z       {
+2026-11-22T08:42:03.5336426Z         "from_lf_sha256": "09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5",
+2026-11-22T08:42:03.5336901Z         "issue": 362,
+2026-11-22T08:42:03.5337114Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5337329Z         "pr": 406,
+2026-11-22T08:42:03.5337570Z         "record": "docs/audits/2026-11-06-whole-engine-bench.md",
+2026-11-22T08:42:03.5337881Z         "source_commit": "35c1373ef31c8ed96fd9752eecbc3f129b34c5ba",
+2026-11-22T08:42:03.5338245Z         "to_lf_sha256": "a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e"
+2026-11-22T08:42:03.5338558Z       },
+2026-11-22T08:42:03.5338709Z       {
+2026-11-22T08:42:03.5338990Z         "from_lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+2026-11-22T08:42:03.5339320Z         "issue": 362,
+2026-11-22T08:42:03.5339525Z         "path": "native/src/material_rules.cpp",
+2026-11-22T08:42:03.5339754Z         "pr": 406,
+2026-11-22T08:42:03.5339971Z         "record": "docs/audits/2026-11-06-whole-engine-bench.md",
+2026-11-22T08:42:03.5340470Z         "source_commit": "35c1373ef31c8ed96fd9752eecbc3f129b34c5ba",
+2026-11-22T08:42:03.5340839Z         "to_lf_sha256": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254"
+2026-11-22T08:42:03.5341152Z       },
+2026-11-22T08:42:03.5341313Z       {
+2026-11-22T08:42:03.5341581Z         "from_lf_sha256": "a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e",
+2026-11-22T08:42:03.5341908Z         "issue": 362,
+2026-11-22T08:42:03.5342093Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5342300Z         "pr": 406,
+2026-11-22T08:42:03.5342514Z         "record": "docs/audits/2026-11-06-stress-canvas.md",
+2026-11-22T08:42:03.5342812Z         "source_commit": "5fbf0a39c43a234fec2c092d52ea43066bf49335",
+2026-11-22T08:42:03.5343232Z         "to_lf_sha256": "3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654"
+2026-11-22T08:42:03.5343683Z       },
+2026-11-22T08:42:03.5343888Z       {
+2026-11-22T08:42:03.5344303Z         "from_lf_sha256": "3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654",
+2026-11-22T08:42:03.5344831Z         "issue": 362,
+2026-11-22T08:42:03.5345134Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5345456Z         "pr": 406,
+2026-11-22T08:42:03.5345932Z         "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:42:03.5346262Z         "source_commit": "fd061dd098d2e4b277141b76ada7f4b340e02e97",
+2026-11-22T08:42:03.5346616Z         "to_lf_sha256": "97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00"
+2026-11-22T08:42:03.5347102Z       },
+2026-11-22T08:42:03.5347260Z       {
+2026-11-22T08:42:03.5347535Z         "from_lf_sha256": "af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18",
+2026-11-22T08:42:03.5347872Z         "issue": 362,
+2026-11-22T08:42:03.5348070Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5348297Z         "pr": 406,
+2026-11-22T08:42:03.5348637Z         "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:42:03.5349195Z         "source_commit": "fd061dd098d2e4b277141b76ada7f4b340e02e97",
+2026-11-22T08:42:03.5349798Z         "to_lf_sha256": "894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738"
+2026-11-22T08:42:03.5350252Z       },
+2026-11-22T08:42:03.5350412Z       {
+2026-11-22T08:42:03.5350699Z         "from_lf_sha256": "97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00",
+2026-11-22T08:42:03.5351029Z         "issue": 362,
+2026-11-22T08:42:03.5351222Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5351449Z         "pr": 406,
+2026-11-22T08:42:03.5351691Z         "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:42:03.5352011Z         "source_commit": "481011090a9a56fb06311144b5bfb26f8f1028a4",
+2026-11-22T08:42:03.5352390Z         "to_lf_sha256": "5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129"
+2026-11-22T08:42:03.5352707Z       },
+2026-11-22T08:42:03.5352870Z       {
+2026-11-22T08:42:03.5353152Z         "from_lf_sha256": "5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129",
+2026-11-22T08:42:03.5353484Z         "issue": 362,
+2026-11-22T08:42:03.5353676Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5353885Z         "pr": 406,
+2026-11-22T08:42:03.5354120Z         "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:42:03.5354435Z         "source_commit": "0b408ae97c061d7263a3322022429aa32a0385a6",
+2026-11-22T08:42:03.5354791Z         "to_lf_sha256": "5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d"
+2026-11-22T08:42:03.5355108Z       },
+2026-11-22T08:42:03.5355260Z       {
+2026-11-22T08:42:03.5355525Z         "from_lf_sha256": "894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738",
+2026-11-22T08:42:03.5355853Z         "issue": 362,
+2026-11-22T08:42:03.5356055Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5356291Z         "pr": 406,
+2026-11-22T08:42:03.5356513Z         "record": "docs/audits/2026-11-06-pf-ballistic-tick-cost.md",
+2026-11-22T08:42:03.5357313Z         "source_commit": "a2373e12fb87d8d5b28efcc6037316fb6f605a14",
+2026-11-22T08:42:03.5357769Z         "to_lf_sha256": "26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca"
+2026-11-22T08:42:03.5358182Z       },
+2026-11-22T08:42:03.5358351Z       {
+2026-11-22T08:42:03.5358629Z         "from_lf_sha256": "5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d",
+2026-11-22T08:42:03.5358958Z         "issue": 362,
+2026-11-22T08:42:03.5359154Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5359370Z         "pr": 470,
+2026-11-22T08:42:03.5359635Z         "record": "docs/audits/2026-11-06-hard-surface-packet-incremental.md",
+2026-11-22T08:42:03.5359991Z         "source_commit": "51d462537480324a4c11b3bf92f1ecb1882d8685",
+2026-11-22T08:42:03.5360352Z         "to_lf_sha256": "d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c"
+2026-11-22T08:42:03.5360668Z       },
+2026-11-22T08:42:03.5360822Z       {
+2026-11-22T08:42:03.5361084Z         "from_lf_sha256": "d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c",
+2026-11-22T08:42:03.5361428Z         "issue": 362,
+2026-11-22T08:42:03.5361621Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5361840Z         "pr": 470,
+2026-11-22T08:42:03.5362222Z         "record": "docs/audits/2026-11-06-hard-surface-packet-incremental.md",
+2026-11-22T08:42:03.5362585Z         "source_commit": "9ad76b21854b3e44fc9444f8293d3c36c619746b",
+2026-11-22T08:42:03.5362969Z         "to_lf_sha256": "8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb"
+2026-11-22T08:42:03.5363288Z       },
+2026-11-22T08:42:03.5363440Z       {
+2026-11-22T08:42:03.5363727Z         "from_lf_sha256": "8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb",
+2026-11-22T08:42:03.5364054Z         "issue": 492,
+2026-11-22T08:42:03.5364250Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5364463Z         "pr": 471,
+2026-11-22T08:42:03.5364718Z         "record": "docs/audits/2026-11-07-pf471-world-transition-proposal.md",
+2026-11-22T08:42:03.5365079Z         "source_commit": "484b48f67ba4db68b1b4c73cd63f1a187594523d",
+2026-11-22T08:42:03.5365442Z         "to_lf_sha256": "e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee"
+2026-11-22T08:42:03.5365751Z       },
+2026-11-22T08:42:03.5365908Z       {
+2026-11-22T08:42:03.5366173Z         "from_lf_sha256": "e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee",
+2026-11-22T08:42:03.5366503Z         "issue": 200,
+2026-11-22T08:42:03.5366688Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5367058Z         "pr": 491,
+2026-11-22T08:42:03.5367311Z         "record": "docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md",
+2026-11-22T08:42:03.5367650Z         "source_commit": "5f107db52a2c002e19f5f8ff284cf8f4ebeeb421",
+2026-11-22T08:42:03.5368027Z         "to_lf_sha256": "8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d"
+2026-11-22T08:42:03.5368344Z       },
+2026-11-22T08:42:03.5368497Z       {
+2026-11-22T08:42:03.5368776Z         "from_lf_sha256": "26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca",
+2026-11-22T08:42:03.5369094Z         "issue": 200,
+2026-11-22T08:42:03.5369297Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5369531Z         "pr": 491,
+2026-11-22T08:42:03.5369767Z         "record": "docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md",
+2026-11-22T08:42:03.5370104Z         "source_commit": "5f107db52a2c002e19f5f8ff284cf8f4ebeeb421",
+2026-11-22T08:42:03.5370477Z         "to_lf_sha256": "71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a"
+2026-11-22T08:42:03.5370799Z       },
+2026-11-22T08:42:03.5370950Z       {
+2026-11-22T08:42:03.5371221Z         "from_lf_sha256": "8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d",
+2026-11-22T08:42:03.5371550Z         "issue": 201,
+2026-11-22T08:42:03.5371732Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5371939Z         "pr": 405,
+2026-11-22T08:42:03.5372205Z         "record": "docs/audits/2026-11-07-pr405-current-main-reconciliation.md",
+2026-11-22T08:42:03.5372679Z         "source_commit": "e77ca8475bbe5333d1af520e44b400e70ba8570c",
+2026-11-22T08:42:03.5373061Z         "to_lf_sha256": "b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a"
+2026-11-22T08:42:03.5373383Z       },
+2026-11-22T08:42:03.5373535Z       {
+2026-11-22T08:42:03.5373817Z         "from_lf_sha256": "71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a",
+2026-11-22T08:42:03.5374144Z         "issue": 504,
+2026-11-22T08:42:03.5374343Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5374582Z         "pr": 504,
+2026-11-22T08:42:03.5374833Z         "record": "docs/audits/2026-11-07-pf-gas-c2048-merge-transition.md",
+2026-11-22T08:42:03.5375183Z         "source_commit": "d8b314deb8164f9641117a13fce286d23340936b",
+2026-11-22T08:42:03.5375548Z         "to_lf_sha256": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec"
+2026-11-22T08:42:03.5375858Z       },
+2026-11-22T08:42:03.5376023Z       {
+2026-11-22T08:42:03.5376300Z         "from_lf_sha256": "b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a",
+2026-11-22T08:42:03.5376628Z         "issue": 292,
+2026-11-22T08:42:03.5376978Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5377299Z         "pr": 538,
+2026-11-22T08:42:03.5377579Z         "record": "docs/audits/2026-11-07-native-copy292-mat-auth-transition.md",
+2026-11-22T08:42:03.5377934Z         "source_commit": "7a2bab58bfb193b3f10e55bf63cdeec2a17f549f",
+2026-11-22T08:42:03.5378308Z         "to_lf_sha256": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b"
+2026-11-22T08:42:03.5378612Z       },
+2026-11-22T08:42:03.5378764Z       {
+2026-11-22T08:42:03.5379039Z         "from_lf_sha256": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254",
+2026-11-22T08:42:03.5379363Z         "issue": 353,
+2026-11-22T08:42:03.5379556Z         "path": "native/src/material_rules.cpp",
+2026-11-22T08:42:03.5379790Z         "pr": 563,
+2026-11-22T08:42:03.5380051Z         "record": "docs/audits/2026-11-11-material-native-capability-cutover.md",
+2026-11-22T08:42:03.5380407Z         "source_commit": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087",
+2026-11-22T08:42:03.5380773Z         "to_lf_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+2026-11-22T08:42:03.5381095Z       },
+2026-11-22T08:42:03.5381259Z       {
+2026-11-22T08:42:03.5381541Z         "from_lf_sha256": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b",
+2026-11-22T08:42:03.5381877Z         "issue": 618,
+2026-11-22T08:42:03.5382073Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5382286Z         "pr": 618,
+2026-11-22T08:42:03.5382522Z         "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:42:03.5382852Z         "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+2026-11-22T08:42:03.5383217Z         "to_lf_sha256": "9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384"
+2026-11-22T08:42:03.5383539Z       },
+2026-11-22T08:42:03.5383691Z       {
+2026-11-22T08:42:03.5383966Z         "from_lf_sha256": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec",
+2026-11-22T08:42:03.5384293Z         "issue": 618,
+2026-11-22T08:42:03.5384496Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5384732Z         "pr": 618,
+2026-11-22T08:42:03.5384959Z         "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:42:03.5385273Z         "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+2026-11-22T08:42:03.5385644Z         "to_lf_sha256": "a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9"
+2026-11-22T08:42:03.5385957Z       },
+2026-11-22T08:42:03.5386121Z       {
+2026-11-22T08:42:03.5386385Z         "from_lf_sha256": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e",
+2026-11-22T08:42:03.5386701Z         "issue": 618,
+2026-11-22T08:42:03.5387070Z         "path": "native/src/world_quantity.inc",
+2026-11-22T08:42:03.5387415Z         "pr": 618,
+2026-11-22T08:42:03.5387658Z         "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:42:03.5387975Z         "source_commit": "1e7fac9eb909b982c961f34eefe7859430728de8",
+2026-11-22T08:42:03.5388352Z         "to_lf_sha256": "1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d"
+2026-11-22T08:42:03.5388680Z       },
+2026-11-22T08:42:03.5388833Z       {
+2026-11-22T08:42:03.5389091Z         "from_lf_sha256": "9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384",
+2026-11-22T08:42:03.5389411Z         "issue": 618,
+2026-11-22T08:42:03.5389594Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5389810Z         "pr": 618,
+2026-11-22T08:42:03.5390028Z         "record": "docs/audits/2026-11-15-wave-mt-001-completion.md",
+2026-11-22T08:42:03.5390341Z         "source_commit": "d3c2cacdf1c083b1c1bf0bfd0ed0e14690a48fe2",
+2026-11-22T08:42:03.5390706Z         "to_lf_sha256": "09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1"
+2026-11-22T08:42:03.5391010Z       },
+2026-11-22T08:42:03.5391166Z       {
+2026-11-22T08:42:03.5391422Z         "from_lf_sha256": "09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1",
+2026-11-22T08:42:03.5391730Z         "issue": 631,
+2026-11-22T08:42:03.5392020Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5392231Z         "pr": 631,
+2026-11-22T08:42:03.5392467Z         "record": "docs/audits/2026-11-15-wave-mt-001-astra-takeover.md",
+2026-11-22T08:42:03.5392803Z         "source_commit": "66b7107dca129b85f5bcb1099b4d60149f87f429",
+2026-11-22T08:42:03.5393167Z         "to_lf_sha256": "911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143"
+2026-11-22T08:42:03.5393482Z       },
+2026-11-22T08:42:03.5393636Z       {
+2026-11-22T08:42:03.5393896Z         "from_lf_sha256": "a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9",
+2026-11-22T08:42:03.5394221Z         "issue": 631,
+2026-11-22T08:42:03.5394411Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5394645Z         "pr": 631,
+2026-11-22T08:42:03.5394901Z         "record": "docs/audits/2026-11-16-pr631-wave-workbench-transition.md",
+2026-11-22T08:42:03.5395247Z         "source_commit": "9bf39e70df4fbfdee87222cc8fa208a932729f72",
+2026-11-22T08:42:03.5395627Z         "to_lf_sha256": "ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4"
+2026-11-22T08:42:03.5395935Z       },
+2026-11-22T08:42:03.5396083Z       {
+2026-11-22T08:42:03.5396356Z         "from_lf_sha256": "ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4",
+2026-11-22T08:42:03.5396675Z         "issue": 631,
+2026-11-22T08:42:03.5397025Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5397251Z         "pr": 631,
+2026-11-22T08:42:03.5397485Z         "record": "docs/audits/2026-11-16-wave-workbench-631-finisher.md",
+2026-11-22T08:42:03.5397821Z         "source_commit": "1ca6da11427291a87409f7583df8cb4831a03bca",
+2026-11-22T08:42:03.5398183Z         "to_lf_sha256": "9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067"
+2026-11-22T08:42:03.5398511Z       },
+2026-11-22T08:42:03.5398662Z       {
+2026-11-22T08:42:03.5398934Z         "from_lf_sha256": "1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d",
+2026-11-22T08:42:03.5399267Z         "issue": 631,
+2026-11-22T08:42:03.5399467Z         "path": "native/src/world_quantity.inc",
+2026-11-22T08:42:03.5399686Z         "pr": 631,
+2026-11-22T08:42:03.5399921Z         "record": "docs/audits/2026-11-16-wave-workbench-631-finisher.md",
+2026-11-22T08:42:03.5400238Z         "source_commit": "1ca6da11427291a87409f7583df8cb4831a03bca",
+2026-11-22T08:42:03.5400601Z         "to_lf_sha256": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae"
+2026-11-22T08:42:03.5400915Z       },
+2026-11-22T08:42:03.5401064Z       {
+2026-11-22T08:42:03.5401340Z         "from_lf_sha256": "911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143",
+2026-11-22T08:42:03.5401658Z         "issue": 661,
+2026-11-22T08:42:03.5415179Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5415594Z         "pr": 661,
+2026-11-22T08:42:03.5415840Z         "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:42:03.5416164Z         "source_commit": "751c1a951a8f76c397dd3f903f378208119d29f1",
+2026-11-22T08:42:03.5416689Z         "to_lf_sha256": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83"
+2026-11-22T08:42:03.5417240Z       },
+2026-11-22T08:42:03.5417396Z       {
+2026-11-22T08:42:03.5417688Z         "from_lf_sha256": "9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067",
+2026-11-22T08:42:03.5418031Z         "issue": 661,
+2026-11-22T08:42:03.5418237Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5418472Z         "pr": 661,
+2026-11-22T08:42:03.5418691Z         "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:42:03.5419009Z         "source_commit": "26d032f14820d6d46272d487d56cacaee4544368",
+2026-11-22T08:42:03.5419377Z         "to_lf_sha256": "64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f"
+2026-11-22T08:42:03.5419715Z       },
+2026-11-22T08:42:03.5419870Z       {
+2026-11-22T08:42:03.5420153Z         "from_lf_sha256": "64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f",
+2026-11-22T08:42:03.5420616Z         "issue": 661,
+2026-11-22T08:42:03.5420824Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5421059Z         "pr": 661,
+2026-11-22T08:42:03.5421280Z         "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:42:03.5421596Z         "source_commit": "1d71202a35a7945e496b0cb83a2d639b2ad2b5bc",
+2026-11-22T08:42:03.5421951Z         "to_lf_sha256": "df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8"
+2026-11-22T08:42:03.5422258Z       },
+2026-11-22T08:42:03.5422406Z       {
+2026-11-22T08:42:03.5422673Z         "from_lf_sha256": "df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8",
+2026-11-22T08:42:03.5422991Z         "issue": 661,
+2026-11-22T08:42:03.5423195Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5423425Z         "pr": 661,
+2026-11-22T08:42:03.5423638Z         "record": "docs/audits/2026-11-17-wave-waterwall-001.md",
+2026-11-22T08:42:03.5423951Z         "source_commit": "d07f24c89b88a95803602d4187bd71e7f8933ec6",
+2026-11-22T08:42:03.5424317Z         "to_lf_sha256": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105"
+2026-11-22T08:42:03.5424635Z       },
+2026-11-22T08:42:03.5424788Z       {
+2026-11-22T08:42:03.5425058Z         "from_lf_sha256": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83",
+2026-11-22T08:42:03.5425382Z         "issue": 672,
+2026-11-22T08:42:03.5425565Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5425775Z         "pr": 676,
+2026-11-22T08:42:03.5425993Z         "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+2026-11-22T08:42:03.5426292Z         "source_commit": "d876bd57897dd421b720e73d15d7c89a830b4896",
+2026-11-22T08:42:03.5426662Z         "to_lf_sha256": "fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0"
+2026-11-22T08:42:03.5427145Z       },
+2026-11-22T08:42:03.5427292Z       {
+2026-11-22T08:42:03.5427569Z         "from_lf_sha256": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105",
+2026-11-22T08:42:03.5427896Z         "issue": 672,
+2026-11-22T08:42:03.5428098Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5428315Z         "pr": 676,
+2026-11-22T08:42:03.5428529Z         "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+2026-11-22T08:42:03.5428835Z         "source_commit": "d876bd57897dd421b720e73d15d7c89a830b4896",
+2026-11-22T08:42:03.5429191Z         "to_lf_sha256": "bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03"
+2026-11-22T08:42:03.5429490Z       },
+2026-11-22T08:42:03.5429640Z       {
+2026-11-22T08:42:03.5429899Z         "from_lf_sha256": "bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03",
+2026-11-22T08:42:03.5430231Z         "issue": 672,
+2026-11-22T08:42:03.5430576Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5430800Z         "pr": 676,
+2026-11-22T08:42:03.5431020Z         "record": "docs/audits/2026-11-19-wave-waterwall-002.md",
+2026-11-22T08:42:03.5431339Z         "source_commit": "d4df71fc6bc1bf6267270a4c1445207a02716317",
+2026-11-22T08:42:03.5431715Z         "to_lf_sha256": "0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f"
+2026-11-22T08:42:03.5432026Z       },
+2026-11-22T08:42:03.5432172Z       {
+2026-11-22T08:42:03.5432454Z         "from_lf_sha256": "0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f",
+2026-11-22T08:42:03.5432786Z         "issue": 676,
+2026-11-22T08:42:03.5432987Z         "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5433222Z         "pr": 677,
+2026-11-22T08:42:03.5433443Z         "record": "docs/audits/2026-11-19-wave-water-ramp-003.md",
+2026-11-22T08:42:03.5433761Z         "source_commit": "1604b66b19705d79d2704e5119a25823caee0973",
+2026-11-22T08:42:03.5434128Z         "to_lf_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1"
+2026-11-22T08:42:03.5434450Z       },
+2026-11-22T08:42:03.5434605Z       {
+2026-11-22T08:42:03.5434872Z         "from_lf_sha256": "fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0",
+2026-11-22T08:42:03.5435291Z         "issue": 678,
+2026-11-22T08:42:03.5435480Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5435693Z         "pr": 679,
+2026-11-22T08:42:03.5435914Z         "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:42:03.5436224Z         "source_commit": "b8db73ce7d0f37c1a38690ea34749d1ccba3474b",
+2026-11-22T08:42:03.5436595Z         "to_lf_sha256": "fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc"
+2026-11-22T08:42:03.5437110Z       },
+2026-11-22T08:42:03.5437245Z       {
+2026-11-22T08:42:03.5437506Z         "from_lf_sha256": "fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc",
+2026-11-22T08:42:03.5437832Z         "issue": 678,
+2026-11-22T08:42:03.5438019Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5438225Z         "pr": 679,
+2026-11-22T08:42:03.5438428Z         "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:42:03.5438716Z         "source_commit": "0b2a46cee3598ae8e6ce481167ff3f482f83580f",
+2026-11-22T08:42:03.5439074Z         "to_lf_sha256": "c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b"
+2026-11-22T08:42:03.5439372Z       },
+2026-11-22T08:42:03.5439517Z       {
+2026-11-22T08:42:03.5439764Z         "from_lf_sha256": "c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b",
+2026-11-22T08:42:03.5440070Z         "issue": 678,
+2026-11-22T08:42:03.5440246Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5440435Z         "pr": 679,
+2026-11-22T08:42:03.5440636Z         "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:42:03.5440927Z         "source_commit": "932a811c474de7f2720719f258a9fd38d8aecdfd",
+2026-11-22T08:42:03.5441275Z         "to_lf_sha256": "9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf"
+2026-11-22T08:42:03.5441588Z       },
+2026-11-22T08:42:03.5441737Z       {
+2026-11-22T08:42:03.5441986Z         "from_lf_sha256": "9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf",
+2026-11-22T08:42:03.5442312Z         "issue": 678,
+2026-11-22T08:42:03.5442489Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5442692Z         "pr": 679,
+2026-11-22T08:42:03.5442923Z         "record": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+2026-11-22T08:42:03.5443217Z         "source_commit": "461b1c1485418bcd8f83f29efe1cccf7ef4a9928",
+2026-11-22T08:42:03.5443578Z         "to_lf_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+2026-11-22T08:42:03.5443881Z       },
+2026-11-22T08:42:03.5444033Z       {
+2026-11-22T08:42:03.5444289Z         "from_lf_sha256": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae",
+2026-11-22T08:42:03.5444601Z         "issue": 679,
+2026-11-22T08:42:03.5444795Z         "path": "native/src/world_quantity.inc",
+2026-11-22T08:42:03.5445133Z         "pr": 679,
+2026-11-22T08:42:03.5445348Z         "record": "docs/audits/2026-11-19-wave-oil-lava.md",
+2026-11-22T08:42:03.5445656Z         "source_commit": "baa5699083f5f668f9c03309aceaccd0f1fb80d9",
+2026-11-22T08:42:03.5446029Z         "to_lf_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489"
+2026-11-22T08:42:03.5446346Z       },
+2026-11-22T08:42:03.5446492Z       {
+2026-11-22T08:42:03.5446901Z         "from_lf_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+2026-11-22T08:42:03.5447240Z         "issue": 281,
+2026-11-22T08:42:03.5447434Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5447648Z         "pr": 726,
+2026-11-22T08:42:03.5447896Z         "record": "docs/audits/2026-11-22-objectshard-world-transition.md",
+2026-11-22T08:42:03.5448233Z         "source_commit": "5afe5643097c543f7d8a6840ced9afac58dd053e",
+2026-11-22T08:42:03.5448611Z         "to_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214"
+2026-11-22T08:42:03.5448927Z       },
+2026-11-22T08:42:03.5449067Z       {
+2026-11-22T08:42:03.5449333Z         "from_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+2026-11-22T08:42:03.5449755Z         "issue": 281,
+2026-11-22T08:42:03.5449932Z         "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5450130Z         "pr": 741,
+2026-11-22T08:42:03.5450406Z         "record": "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+2026-11-22T08:42:03.5450790Z         "source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+2026-11-22T08:42:03.5451164Z         "to_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1"
+2026-11-22T08:42:03.5451497Z       }
+2026-11-22T08:42:03.5451646Z     ],
+2026-11-22T08:42:03.5451806Z     "runtime_execution": false,
+2026-11-22T08:42:03.5452008Z     "status": "PASS"
+2026-11-22T08:42:03.5452172Z   },
+2026-11-22T08:42:03.5452386Z   "schema_id": "cybersand.material-catalogue.native-parity",
+2026-11-22T08:42:03.5452663Z   "schema_version": 1,
+2026-11-22T08:42:03.5452996Z   "scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
+2026-11-22T08:42:03.5453481Z   "snapshot_sha256": "58d22545a1f29e49a8c141cb1c5df84101e48ed457fbaaaec09937997c2ce802",
+2026-11-22T08:42:03.5453858Z   "source_commit": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+2026-11-22T08:42:03.5454109Z   "source_locks": [
+2026-11-22T08:42:03.5454270Z     {
+2026-11-22T08:42:03.5454530Z       "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+2026-11-22T08:42:03.5454902Z       "path": "docs/reference/liquid-policy-wire-vectors.json",
+2026-11-22T08:42:03.5455189Z       "role": "retained policy wire oracle"
+2026-11-22T08:42:03.5455402Z     },
+2026-11-22T08:42:03.5455556Z     {
+2026-11-22T08:42:03.5455814Z       "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+2026-11-22T08:42:03.5456174Z       "path": "docs/reference/liquid-run-receipt-vectors.json",
+2026-11-22T08:42:03.5456444Z       "role": "retained receipt oracle"
+2026-11-22T08:42:03.5456648Z     },
+2026-11-22T08:42:03.5456987Z     {
+2026-11-22T08:42:03.5457242Z       "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+2026-11-22T08:42:03.5457617Z       "path": "docs/reference/liquid-solver-capability-matrix.json",
+2026-11-22T08:42:03.5457909Z       "role": "capability identity bytes"
+2026-11-22T08:42:03.5458116Z     },
+2026-11-22T08:42:03.5458256Z     {
+2026-11-22T08:42:03.5458510Z       "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+2026-11-22T08:42:03.5458879Z       "path": "docs/reference/water-normalization-vectors.json",
+2026-11-22T08:42:03.5459164Z       "role": "retained normalization oracle"
+2026-11-22T08:42:03.5459380Z     },
+2026-11-22T08:42:03.5459521Z     {
+2026-11-22T08:42:03.5459770Z       "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+2026-11-22T08:42:03.5460225Z       "path": "godot/scripts/cell_world.gd",
+2026-11-22T08:42:03.5460505Z       "role": "fallback identity, capabilities and separate physics"
+2026-11-22T08:42:03.5460769Z     },
+2026-11-22T08:42:03.5460913Z     {
+2026-11-22T08:42:03.5461179Z       "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+2026-11-22T08:42:03.5461526Z       "path": "godot/scripts/interaction_policy.gd",
+2026-11-22T08:42:03.5461775Z       "role": "fallback granular support"
+2026-11-22T08:42:03.5461988Z     },
+2026-11-22T08:42:03.5462130Z     {
+2026-11-22T08:42:03.5462380Z       "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+2026-11-22T08:42:03.5462739Z       "path": "godot/scripts/material_appearance_lut.gd",
+2026-11-22T08:42:03.5463030Z       "role": "palette bytes and Godot appearance calculations"
+2026-11-22T08:42:03.5463286Z     },
+2026-11-22T08:42:03.5463426Z     {
+2026-11-22T08:42:03.5463667Z       "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+2026-11-22T08:42:03.5464004Z       "path": "godot/scripts/transport_profiles.gd",
+2026-11-22T08:42:03.5464281Z       "role": "transport ownership, precedence and validation"
+2026-11-22T08:42:03.5464531Z     },
+2026-11-22T08:42:03.5464785Z     {
+2026-11-22T08:42:03.5465037Z       "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+2026-11-22T08:42:03.5465392Z       "path": "godot/shaders/material_palette.gdshader",
+2026-11-22T08:42:03.5465660Z       "role": "hand-coded appearance programme"
+2026-11-22T08:42:03.5465883Z     },
+2026-11-22T08:42:03.5466029Z     {
+2026-11-22T08:42:03.5466283Z       "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+2026-11-22T08:42:03.5466650Z       "path": "native/include/cybersand/interaction_rules.hpp",
+2026-11-22T08:42:03.5467119Z       "role": "reaction, family and ordinal identity"
+2026-11-22T08:42:03.5467343Z     },
+2026-11-22T08:42:03.5467488Z     {
+2026-11-22T08:42:03.5467735Z       "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+2026-11-22T08:42:03.5468099Z       "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+2026-11-22T08:42:03.5468401Z       "role": "generated native policy identities"
+2026-11-22T08:42:03.5468631Z     },
+2026-11-22T08:42:03.5468777Z     {
+2026-11-22T08:42:03.5469019Z       "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+2026-11-22T08:42:03.5469377Z       "path": "native/include/cybersand/liquid_solver_policy.hpp",
+2026-11-22T08:42:03.5469661Z       "role": "native stale-identity refusal"
+2026-11-22T08:42:03.5469875Z     },
+2026-11-22T08:42:03.5470019Z     {
+2026-11-22T08:42:03.5470259Z       "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+2026-11-22T08:42:03.5470586Z       "path": "native/include/cybersand/material.hpp",
+2026-11-22T08:42:03.5470842Z       "role": "stable IDs and descriptor bytes"
+2026-11-22T08:42:03.5471059Z     },
+2026-11-22T08:42:03.5471203Z     {
+2026-11-22T08:42:03.5471458Z       "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+2026-11-22T08:42:03.5471817Z       "path": "native/include/cybersand/material_appearance.hpp",
+2026-11-22T08:42:03.5472094Z       "role": "visual state projection"
+2026-11-22T08:42:03.5472301Z     },
+2026-11-22T08:42:03.5472442Z     {
+2026-11-22T08:42:03.5472691Z       "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+2026-11-22T08:42:03.5473039Z       "path": "native/include/cybersand/material_rules.hpp",
+2026-11-22T08:42:03.5473300Z       "role": "material query interface"
+2026-11-22T08:42:03.5473509Z     },
+2026-11-22T08:42:03.5473647Z     {
+2026-11-22T08:42:03.5473903Z       "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+2026-11-22T08:42:03.5474259Z       "path": "native/include/cybersand/precision_storage.hpp",
+2026-11-22T08:42:03.5474526Z       "role": "Cell layout and state widths"
+2026-11-22T08:42:03.5474867Z     },
+2026-11-22T08:42:03.5475011Z     {
+2026-11-22T08:42:03.5475254Z       "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+2026-11-22T08:42:03.5475607Z       "path": "native/include/cybersand/quantity_ledger.hpp",
+2026-11-22T08:42:03.5475890Z       "role": "quantity schema and positional slots"
+2026-11-22T08:42:03.5476130Z     },
+2026-11-22T08:42:03.5476277Z     {
+2026-11-22T08:42:03.5476518Z       "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+2026-11-22T08:42:03.5477034Z       "path": "native/include/cybersand/transport_policy.hpp",
+2026-11-22T08:42:03.5477321Z       "role": "transport v1 dimensions and wire contract"
+2026-11-22T08:42:03.5477555Z     },
+2026-11-22T08:42:03.5477699Z     {
+2026-11-22T08:42:03.5477940Z       "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+2026-11-22T08:42:03.5478308Z       "path": "native/include/cybersand/water_experiment_policy.hpp",
+2026-11-22T08:42:03.5478601Z       "role": "Water quantity defaults and bounds"
+2026-11-22T08:42:03.5478822Z     },
+2026-11-22T08:42:03.5478979Z     {
+2026-11-22T08:42:03.5479237Z       "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+2026-11-22T08:42:03.5479692Z       "path": "native/src/material_rules.cpp",
+2026-11-22T08:42:03.5479951Z       "role": "capability and pair-query semantics"
+2026-11-22T08:42:03.5480173Z     },
+2026-11-22T08:42:03.5480323Z     {
+2026-11-22T08:42:03.5480577Z       "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+2026-11-22T08:42:03.5480906Z       "path": "native/src/world.cpp",
+2026-11-22T08:42:03.5481192Z       "role": "legacy movement, chemistry, thermal and scheduling authority"
+2026-11-22T08:42:03.5481467Z     },
+2026-11-22T08:42:03.5481616Z     {
+2026-11-22T08:42:03.5481860Z       "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+2026-11-22T08:42:03.5482192Z       "path": "native/src/world_inertial.inc",
+2026-11-22T08:42:03.5482454Z       "role": "IN sidecar and state authority"
+2026-11-22T08:42:03.5482665Z     },
+2026-11-22T08:42:03.5482818Z     {
+2026-11-22T08:42:03.5483070Z       "lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+2026-11-22T08:42:03.5483405Z       "path": "native/src/world_pressure.inc",
+2026-11-22T08:42:03.5483687Z       "role": "policy admission, physical hash and CYPS restoration"
+2026-11-22T08:42:03.5483948Z     },
+2026-11-22T08:42:03.5484093Z     {
+2026-11-22T08:42:03.5484349Z       "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+2026-11-22T08:42:03.5484669Z       "path": "native/src/world_quantity.inc",
+2026-11-22T08:42:03.5484966Z       "role": "quantity codec, endpoints and specialized ordinal mapping"
+2026-11-22T08:42:03.5485238Z     },
+2026-11-22T08:42:03.5485381Z     {
+2026-11-22T08:42:03.5485642Z       "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+2026-11-22T08:42:03.5485996Z       "path": "tools/lcb/derive_capability_matrix.py",
+2026-11-22T08:42:03.5486251Z       "role": "literal-source parser contract"
+2026-11-22T08:42:03.5486466Z     },
+2026-11-22T08:42:03.5486605Z     {
+2026-11-22T08:42:03.5487011Z       "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+2026-11-22T08:42:03.5487355Z       "path": "tools/lcb/native_policy_artifacts.py",
+2026-11-22T08:42:03.5487612Z       "role": "existing native identity generator"
+2026-11-22T08:42:03.5487848Z     },
+2026-11-22T08:42:03.5487988Z     {
+2026-11-22T08:42:03.5488231Z       "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+2026-11-22T08:42:03.5488547Z       "path": "tools/lcb/policy_contract.py",
+2026-11-22T08:42:03.5488818Z       "role": "catalogue, capability and policy digest contract"
+2026-11-22T08:42:03.5489072Z     }
+2026-11-22T08:42:03.5489212Z   ],
+2026-11-22T08:42:03.5489363Z   "status": "PASS",
+2026-11-22T08:42:03.5489536Z   "tool_sources": [
+2026-11-22T08:42:03.5489810Z     {
+2026-11-22T08:42:03.5489956Z       "bytes": 23316,
+2026-11-22T08:42:03.5490178Z       "path": "tools/material_catalogue/native_oracle.cpp",
+2026-11-22T08:42:03.5490522Z       "sha256": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256"
+2026-11-22T08:42:03.5490835Z     },
+2026-11-22T08:42:03.5490977Z     {
+2026-11-22T08:42:03.5491122Z       "bytes": 22888,
+2026-11-22T08:42:03.5491344Z       "path": "tools/material_catalogue/check_native_parity.py",
+2026-11-22T08:42:03.5491690Z       "sha256": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696"
+2026-11-22T08:42:03.5491988Z     },
+2026-11-22T08:42:03.5492128Z     {
+2026-11-22T08:42:03.5492270Z       "bytes": 52680,
+2026-11-22T08:42:03.5492486Z       "path": "tools/material_catalogue/compatibility.py",
+2026-11-22T08:42:03.5492826Z       "sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302"
+2026-11-22T08:42:03.5493113Z     }
+2026-11-22T08:42:03.5493260Z   ],
+2026-11-22T08:42:03.5493417Z   "world_executed": false
+2026-11-22T08:42:03.5493602Z }

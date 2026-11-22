@@ -1,0 +1,93 @@
+{
+  "checked_utc": "2026-11-22T08:52:26.861821+00:00",
+  "read_only": true,
+  "refs": [
+    {
+      "name": "main",
+      "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed"
+    },
+    {
+      "name": 738,
+      "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "draft": true,
+      "merged": false,
+      "base": "experiment/objectshard-001-m2-20261122"
+    },
+    {
+      "name": 740,
+      "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+      "draft": true,
+      "merged": false,
+      "base": "main"
+    },
+    {
+      "name": 719,
+      "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "draft": true,
+      "merged": false,
+      "base": "main"
+    },
+    {
+      "name": 682,
+      "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "draft": true,
+      "merged": false,
+      "base": "main"
+    },
+    {
+      "name": 734,
+      "head": "41208bb1ec0f2d56a9a375983f5d5c7c5193b36a",
+      "draft": true,
+      "merged": false,
+      "base": "exp/gen006-persistent-areas-001-20261121"
+    },
+    {
+      "name": 741,
+      "head": "73018218092e79fbe935aa60890e33bd9f4859ac",
+      "draft": true,
+      "merged": false,
+      "base": "experiment/objectshard-001r-20261122"
+    }
+  ],
+  "gen734_delta": {
+    "from": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+    "to": "41208bb1ec0f2d56a9a375983f5d5c7c5193b36a",
+    "tree": "88ed452bfb2e6fb1c78020b7ee8863a1fcabe85e",
+    "files": [
+      ".github/workflows/gen006-ramcache-qualification.yml",
+      "docs/audits/2026-11-22-gen006-ramcache.md",
+      "tools/ci/gen006_ramcache_publish_request.json",
+      "tools/ci/run_persistent_area_recovery.py",
+      "tools/ci/test_gen006_source_custody.py"
+    ],
+    "native_and_godot_delta_empty": true,
+    "verified_interfaces": {
+      "godot/native_extension/workbench_granular_coupling.inc": {
+        "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+        "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/workbench_physics_bridge.gd": {
+        "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+        "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/simulation_worker.gd": {
+        "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+        "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/persistent_areas_controller.gd": {
+        "git_blob": "21190ba3baddcaa41103bd94083fd7fc2f4dc1cd",
+        "sha256": "58c1252807995dcbf743e280c56a8067944ed8226d36aea6e8c05b52fe165b99",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/persistent_area_worker_protocol.gd": {
+        "git_blob": "26fe9e8aefa6c7f5128570883cb6f957fbe218c5",
+        "sha256": "784c919ff312a999bf2bfc22a3bfafa87816d2dd7e39272557767e8ddab77ca3",
+        "unchanged_since_prior_refresh": true
+      }
+    }
+  },
+  "scope": "Final closeout dependency refresh before evidence publication. New GEN delta is CI/evidence only; no external branch incorporated or modified."
+}

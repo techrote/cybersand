@@ -24,6 +24,12 @@ seconds; the separate-World rehearsal is not ordinary Workbench attachment.
 Production provenance and physical Windows 11/NVIDIA owner acceptance remain
 unpassed/unrecorded respectively.
 
+The missing inherited Fire consumer transition is now reviewed and admitted by
+`73018218`; its 231-test ordinary catalogue workflow passes. Native/Godot/package
+inputs remain at `e034f229`. Carry the reviewed entry and audit to the appropriate
+#738 head before a future authorized mergedown, preserving source ancestry. The
+six production runtime-provenance errors remain a separate unpassed condition.
+
 The separate OBJECTSHARD-001R finisher #738 has a
 [source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
 and a verified corrected Windows ZIP. Follow its exact native/platform/package

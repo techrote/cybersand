@@ -229,3 +229,26 @@ The final audit preserves the stage distributions, byte-identical core code,
 baseline comparisons and measurement limits. Ordinary Workbench attachment,
 production provenance and physical Windows 11/NVIDIA owner acceptance remain
 unimplemented, unpassed and unrecorded respectively.
+
+
+## Reviewed Fire consumer transition
+
+The final ordinary documentation check exposed an inherited missing successor
+in the material-catalogue guard for the finisher's two-line external Fire
+opportunity condition. The [reviewed transition](../audits/2026-11-22-objectshard-external-fire-world-transition.md)
+at `73018218092e79fbe935aa60890e33bd9f4859ac` appends the exact original
+`c06550371` source bytes through the existing authenticated mechanism. Its
+231-test catalogue workflow passes with the original lock and refusal logic
+unchanged. This is a compatibility-tool completion; the native/Godot/package
+source and Windows evaluator remain `e034f229`. The Draft workflow's production
+provenance skip does not clear the six separately observed native-input errors.
+Before a future #738 merge, carry this reviewed entry and committed audit onto
+that earliest dependent head and retain the original source ancestry. The donor
+branch remains untouched by this mission.
+
+The final closeout refresh observes GEN #734 at
+`41208bb1ec0f2d56a9a375983f5d5c7c5193b36a`. Its five-file delta from
+`a3b9ea96` changes CI/evidence only; the complete native/Godot delta is empty,
+and the same five inspected interfaces retain their hashes. Main, #740, #719,
+#682 and the #738 donor remain at the recorded identities. This remains a
+read-only compatibility assessment, not combined GEN/PUBPRES qualification.

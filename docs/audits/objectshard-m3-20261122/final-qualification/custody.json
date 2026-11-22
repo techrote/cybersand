@@ -96,6 +96,312 @@
       "sha256": "15f57846425bf402b8ea9f8249605be1df2d7ffe6a9562ac553cba03aa34e47a"
     },
     {
+      "path": "material-transition/closeout-continuity.json",
+      "origin": "build/m3-material-transition/closeout-continuity.json",
+      "bytes": 1579,
+      "sha256": "7a86ae3365e927858954a2fc978f9b0e330666d412d8386c1dacf247e0a89697"
+    },
+    {
+      "path": "material-transition/closeout-interface-refresh.json",
+      "origin": "build/m3-material-transition/closeout-interface-refresh.json",
+      "bytes": 3233,
+      "sha256": "004e08e69998670de3d2c3fd1c71c22a2b97b7f026d77eda4688f20ceabca164"
+    },
+    {
+      "path": "material-transition/curation.json",
+      "origin": "build/m3-material-transition/curation.json",
+      "bytes": 3359,
+      "sha256": "19f8ed047057e5fd26b91c5e231560bc221ff99c1ce818c06f7ef483fc4df95f"
+    },
+    {
+      "path": "material-transition/delivery/14745999101-custody.json",
+      "origin": "build/m3-material-transition/delivery/14745999101-custody.json",
+      "bytes": 1720,
+      "sha256": "2ac5b2d31d418b4a4578c4c491f6241ac707dd0d6b367a4ead52d73881c0e86a"
+    },
+    {
+      "path": "material-transition/delivery/14745999101/ci-workflow-inventory.json",
+      "origin": "build/m3-material-transition/delivery/14745999101/ci-workflow-inventory.json",
+      "bytes": 296801,
+      "sha256": "64d4fa19e87cf7778afb504554026a102769b767fbe81a1d8b8f41420de2f793"
+    },
+    {
+      "path": "material-transition/delivery/14746754332-custody.json",
+      "origin": "build/m3-material-transition/delivery/14746754332-custody.json",
+      "bytes": 1709,
+      "sha256": "6da8d096c629f9306bf3546898125879192fb7a619f8b4ae4d9039024fc5c3e6"
+    },
+    {
+      "path": "material-transition/delivery/14746754332/native-parity.json",
+      "origin": "build/m3-material-transition/delivery/14746754332/native-parity.json",
+      "bytes": 35115,
+      "sha256": "0681d19649f98dd514d83f7aeae439438da59e09fc15f7e8bd867611b4093573"
+    },
+    {
+      "path": "material-transition/delivery/14747025453-custody.json",
+      "origin": "build/m3-material-transition/delivery/14747025453-custody.json",
+      "bytes": 1719,
+      "sha256": "d9bd0d285f77eb3904308ecb3b2cdc7305e920801211ad45eec7b7f92f7a7795"
+    },
+    {
+      "path": "material-transition/delivery/14747025453/soliding-build-inventory.json",
+      "origin": "build/m3-material-transition/delivery/14747025453/soliding-build-inventory.json",
+      "bytes": 14290,
+      "sha256": "ffb80519f0f146780460cb4dc5b82d4705e89499e2359aeb06f7538789c64523"
+    },
+    {
+      "path": "material-transition/delivery/14747056801-custody.json",
+      "origin": "build/m3-material-transition/delivery/14747056801-custody.json",
+      "bytes": 2234,
+      "sha256": "bc2915ee678aec0f35c55f1206149429d9ea3703e17bbfc5f4cdc32ac65fbc5f"
+    },
+    {
+      "path": "material-transition/delivery/accepted-main-documentation-137039881988.log",
+      "origin": "build/m3-material-transition/delivery/accepted-main-documentation-137039881988.log",
+      "bytes": 278605,
+      "sha256": "d2b60e29d27ef086728cac4490951c4a738cefedcdefad2eceb3b0ab342a3fff"
+    },
+    {
+      "path": "material-transition/delivery/artifacts-final.json",
+      "origin": "build/m3-material-transition/delivery/artifacts-final.json",
+      "bytes": 3457,
+      "sha256": "c8f8147651a1507a1e41d537ea8da26f207d89f3b65f4bc9d63b759403d52b3c"
+    },
+    {
+      "path": "material-transition/delivery/assess_result.py",
+      "origin": "build/m3-material-transition/delivery/assess_result.py",
+      "bytes": 6807,
+      "sha256": "47f63842255e6fa273373714c0624830cf7d72984e273dbb9d08b461ae9921ae"
+    },
+    {
+      "path": "material-transition/delivery/catalogue-stage.log",
+      "origin": "build/m3-material-transition/delivery/catalogue-stage.log",
+      "bytes": 98064,
+      "sha256": "3d1e174ab16a1e0f29d1442318cc8f2010a21c7d87574c4f5e852d270a36d344"
+    },
+    {
+      "path": "material-transition/delivery/checkout-merge-commit.json",
+      "origin": "build/m3-material-transition/delivery/checkout-merge-commit.json",
+      "bytes": 2844,
+      "sha256": "07f5880a2c5abbb011e51898577a1be96db2a6541fd37fbc19ba657655f2023c"
+    },
+    {
+      "path": "material-transition/delivery/compatibility-receipt.json",
+      "origin": "build/m3-material-transition/delivery/compatibility-receipt.json",
+      "bytes": 22988,
+      "sha256": "68149335117260753dfcfd6fdb1b2f77cff9dd9473c86774e5dcc64e64b9dadf"
+    },
+    {
+      "path": "material-transition/delivery/delivery-assessment.json",
+      "origin": "build/m3-material-transition/delivery/delivery-assessment.json",
+      "bytes": 5794,
+      "sha256": "7b3f5ea79c73c62a73f4079377214d11a6081b5d4c827c3c1fcc1dd122fa2a3a"
+    },
+    {
+      "path": "material-transition/delivery/documentation-45003383402-137149569699.log",
+      "origin": "build/m3-material-transition/delivery/documentation-45003383402-137149569699.log",
+      "bytes": 283319,
+      "sha256": "4f86b4ca9e599d6255b9ce80f2dcc47faebb0f1fefeb78382f61627067a36b3c"
+    },
+    {
+      "path": "material-transition/delivery/download_artifact.py",
+      "origin": "build/m3-material-transition/delivery/download_artifact.py",
+      "bytes": 4093,
+      "sha256": "3d52c3fed8577cb043d4c8aa0b172ed09d9e696470a9e40c78c40d3e864f1a98"
+    },
+    {
+      "path": "material-transition/delivery/jobs-final.json",
+      "origin": "build/m3-material-transition/delivery/jobs-final.json",
+      "bytes": 5166,
+      "sha256": "848f4c6f9ef0ea2af66d4bae8e982f13a6f6ee7358b4e8a4311cb6a31cfe44b6"
+    },
+    {
+      "path": "material-transition/delivery/jobs-initial.json",
+      "origin": "build/m3-material-transition/delivery/jobs-initial.json",
+      "bytes": 4902,
+      "sha256": "09ca4d7a1e56763a75b636f9f435184364ffd13dc9dd1a82a8d0269fb44a1044"
+    },
+    {
+      "path": "material-transition/delivery/retention-manifest.json",
+      "origin": "build/m3-material-transition/delivery/retention-manifest.json",
+      "bytes": 5429,
+      "sha256": "dc7daa774f7f00bc9d2f61f01ca3585f6e33e4d94367e83602a07fdf68f55799"
+    },
+    {
+      "path": "material-transition/delivery/run-final.json",
+      "origin": "build/m3-material-transition/delivery/run-final.json",
+      "bytes": 14205,
+      "sha256": "96bc58ab3d5bce3b3d256da915e84ed50c53110eac0e3dc088b21dad02e0fde7"
+    },
+    {
+      "path": "material-transition/delivery/run-initial.json",
+      "origin": "build/m3-material-transition/delivery/run-initial.json",
+      "bytes": 14202,
+      "sha256": "96ed26cf34f07f3be50709bce5e6d434fa2a0e625443769ee636f80803adae87"
+    },
+    {
+      "path": "material-transition/delivery/runtime-preservation.json",
+      "origin": "build/m3-material-transition/delivery/runtime-preservation.json",
+      "bytes": 21915,
+      "sha256": "ac93977755d7fc27b930d4fd65cabcd1378d561db20bd7205bee3f673bc1735c"
+    },
+    {
+      "path": "material-transition/delivery/source-inputs.json",
+      "origin": "build/m3-material-transition/delivery/source-inputs.json",
+      "bytes": 2825,
+      "sha256": "d3764e0485b0795e9f1447a8038093f96724474a6dbcb501c83cac3081a4aca4"
+    },
+    {
+      "path": "material-transition/final-acceptance-ledger.json",
+      "origin": "build/final-handover-plan.json",
+      "bytes": 3987,
+      "sha256": "0c0b2d7b55fc6b2986ddbc43e2bfcbfe90b12b2eb0a521f05a77bf071759210a"
+    },
+    {
+      "path": "material-transition/final-repository-check.json",
+      "origin": "build/m3-material-transition/final-repository-check.json",
+      "bytes": 3240,
+      "sha256": "1d4f7506c385bc086bc6b3e24ac111d98c79ac4c579e6334ef1fe336584ebcf6"
+    },
+    {
+      "path": "material-transition/objectshard-retrieval.json",
+      "origin": "build/m3-material-transition/objectshard-retrieval.json",
+      "bytes": 153372,
+      "sha256": "bbadab23f1033b21c3dbce91de03b9ca6a10bd71980c1244041097c84bb4d524"
+    },
+    {
+      "path": "material-transition/reviews/custody/audit_transition.py",
+      "origin": "build/review-custody/material-transition/audit_transition.py",
+      "bytes": 12074,
+      "sha256": "bf57ea2a6aa5c21166718f0e77443e67b09ae1e0ee69f70e8d09e083a3bbe73d"
+    },
+    {
+      "path": "material-transition/reviews/custody/checkout-merge-commit.json",
+      "origin": "build/review-custody/material-transition/checkout-merge-commit.json",
+      "bytes": 2844,
+      "sha256": "07f5880a2c5abbb011e51898577a1be96db2a6541fd37fbc19ba657655f2023c"
+    },
+    {
+      "path": "material-transition/reviews/custody/completion-review.json",
+      "origin": "build/review-custody/material-transition/completion-review.json",
+      "bytes": 6717,
+      "sha256": "98ff3ac37bf20a6197993bf1e563c8a6bfd2b1c4ba16a428aa025f336c3d28f8"
+    },
+    {
+      "path": "material-transition/reviews/custody/documentation-44989675198-137107785492.log",
+      "origin": "build/review-custody/material-transition/documentation-44989675198-137107785492.log",
+      "bytes": 137961,
+      "sha256": "4db1ee70376724b683628819e42f92c812948e35a2eea3d8078827c0f1b95426"
+    },
+    {
+      "path": "material-transition/reviews/custody/documentation-44999120750-137136528058.log",
+      "origin": "build/review-custody/material-transition/documentation-44999120750-137136528058.log",
+      "bytes": 138373,
+      "sha256": "d8d39cc23d581b84196aed97fbd83524e2000a67c21066361faa5dc1dcd04fab"
+    },
+    {
+      "path": "material-transition/reviews/custody/documentation-45002794045-137147763392.log",
+      "origin": "build/review-custody/material-transition/documentation-45002794045-137147763392.log",
+      "bytes": 138459,
+      "sha256": "994cab767080c5af4ff5675013c1cdbd3863792d8a11cda380c70a6904ef03d4"
+    },
+    {
+      "path": "material-transition/reviews/custody/documentation-45003383402-137149569699.log",
+      "origin": "build/review-custody/material-transition/documentation-45003383402-137149569699.log",
+      "bytes": 283319,
+      "sha256": "4f86b4ca9e599d6255b9ce80f2dcc47faebb0f1fefeb78382f61627067a36b3c"
+    },
+    {
+      "path": "material-transition/reviews/custody/final-workflow-readback.json",
+      "origin": "build/review-custody/material-transition/final-workflow-readback.json",
+      "bytes": 8906,
+      "sha256": "431821b5e2a7f76126206b45c51a22005a25a002f6e527c9b610fe229e0fe3d1"
+    },
+    {
+      "path": "material-transition/reviews/custody/precision-and-local-guard-review.json",
+      "origin": "build/review-custody/material-transition/precision-and-local-guard-review.json",
+      "bytes": 2663,
+      "sha256": "54a1ced2ebaa40c099ae07c92d62fcb01143ea04ac64b9b8a039b5b78d0e4526"
+    },
+    {
+      "path": "material-transition/reviews/custody/published-source-review.json",
+      "origin": "build/review-custody/material-transition/published-source-review.json",
+      "bytes": 1332,
+      "sha256": "7576160a6e39c1e0bdd94c06d24c158f4c570e3622dc59c239608cfdd4a6d8ff"
+    },
+    {
+      "path": "material-transition/reviews/custody/retention-manifest.json",
+      "origin": "build/review-custody/material-transition/retention-manifest.json",
+      "bytes": 2751,
+      "sha256": "99948c016650c944c89545078c78ac8a41b8dc664170cc595eaabaf5034cfb93"
+    },
+    {
+      "path": "material-transition/reviews/custody/seal_completion.py",
+      "origin": "build/review-custody/material-transition/seal_completion.py",
+      "bytes": 9585,
+      "sha256": "1e776e95eea053a996020a8302c247e7c92868c475e48c618cabfe4c70e877f8"
+    },
+    {
+      "path": "material-transition/reviews/custody/source-review.json",
+      "origin": "build/review-custody/material-transition/source-review.json",
+      "bytes": 12193,
+      "sha256": "de1e48125bb56fe5117e900fae6b5095855b333b2e651c671f3f236d45132682"
+    },
+    {
+      "path": "material-transition/reviews/custody/workflow-readback.json",
+      "origin": "build/review-custody/material-transition/workflow-readback.json",
+      "bytes": 21715,
+      "sha256": "4f644b7fc73e9914843fa4f54f9f57edf71f57234b72c35a7727edf8b51008aa"
+    },
+    {
+      "path": "material-transition/reviews/physics/existing-native-evidence.json",
+      "origin": "build/review-physics/material-transition/existing-native-evidence.json",
+      "bytes": 9488,
+      "sha256": "27b0857b005540f3bc015d6e4537c3bf45ab48c1f4045f54efe7f959533388d6"
+    },
+    {
+      "path": "material-transition/reviews/physics/published-guard-check.json",
+      "origin": "build/review-physics/material-transition/published-guard-check.json",
+      "bytes": 22988,
+      "sha256": "073b52b62a8ca4ec387e46dbcddde61356fb937360f52d11195f109fc7bbba7f"
+    },
+    {
+      "path": "material-transition/reviews/physics/retention-manifest.json",
+      "origin": "build/review-physics/material-transition/retention-manifest.json",
+      "bytes": 1447,
+      "sha256": "a856bba4e5e91079b79973644b120b7e9b3dbb371c43fc0954b0072cbcd84372"
+    },
+    {
+      "path": "material-transition/reviews/physics/review.json",
+      "origin": "build/review-physics/material-transition/review.json",
+      "bytes": 6727,
+      "sha256": "86499e679e580cdbdbbdebf8f0abe3ca9d2c7dedd8705fbe1110e56285bcf444"
+    },
+    {
+      "path": "material-transition/reviews/physics/review.md",
+      "origin": "build/review-physics/material-transition/review.md",
+      "bytes": 7387,
+      "sha256": "ec2c576972762481897b532f814d06b596e6ce19e50facba30947a0d4664808c"
+    },
+    {
+      "path": "material-transition/reviews/physics/source-bindings.json",
+      "origin": "build/review-physics/material-transition/source-bindings.json",
+      "bytes": 10461,
+      "sha256": "cbc50803927d37001b4fea9ce919ec89190030d131cc445bef4c9668412a2eaa"
+    },
+    {
+      "path": "material-transition/reviews/physics/world.cpp-approved-to-current.diff",
+      "origin": "build/review-physics/material-transition/world.cpp-approved-to-current.diff",
+      "bytes": 756,
+      "sha256": "c3915cc0ab2142c2065a91096f008df765b645bae4f50f2d1699a7466e097265"
+    },
+    {
+      "path": "material-transition/root-compatibility.json",
+      "origin": "build/m3-material-transition/compatibility.json",
+      "bytes": 22988,
+      "sha256": "68149335117260753dfcfd6fdb1b2f77cff9dd9473c86774e5dcc64e64b9dadf"
+    },
+    {
       "path": "reviews/custody/audit_crossbuild.py",
       "origin": "build/review-custody/final-e034f229/audit_crossbuild.py",
       "bytes": 7564,
@@ -1091,5 +1397,11 @@
       "sha256": "b094252dd4973df701b5eeb2c6034ab3ba3928ef26b9df80fdd3d4fab3620929"
     }
   ],
-  "updated_utc": "2026-11-22T08:23:31.900207+00:00"
+  "updated_utc": "2026-11-22T08:53:57.302335+00:00",
+  "additional_guard_qualification": {
+    "source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+    "source_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+    "workflow_run": 45003383402,
+    "scope": "Later guard-only completion; native/Godot/package inputs and qualified runtime remain at e034. Individual review/CI records preserve this later source identity."
+  }
 }

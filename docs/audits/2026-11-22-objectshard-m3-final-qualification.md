@@ -35,11 +35,17 @@ gate remains unpassed.
 | Preserved superseded candidate | `68235b12d7f41f7b590456971f21dfc3f5c6d701`, tree `f533105e41b33e75c07c93aa0c8c40438e7bc112`, [campaign 44995374918](https://github.com/techrote/cybersand/actions/runs/44995374918) |
 | Native implementation identity | All 116 compilation inputs and five build-contract inputs match qualified 001R `514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c` |
 
-This audit is a documentation/evidence descendant of the qualified commit. The
+The initial evidence descendant `10d191bbf9223b7fbb9ddd30ba12e158ff6d60b9`
+changes only documentation/evidence. Its
 [input-continuity receipt](objectshard-m3-20261122/final-qualification/runtime-input-continuity.json)
 verifies 203 distinct native, runtime, test, qualifier, build, protected-gate and
-bundled-guide inputs and confirms only documentation/evidence changes. A documentation descendant is not described as a new native
-build. The [campaign receipt](objectshard-m3-20261122/final-qualification/final-campaign-receipt.json)
+bundled-guide inputs. A later, separately reviewed compatibility-tool completion
+at `73018218092e79fbe935aa60890e33bd9f4859ac` appends one existing per-file
+transition for the inherited Fire guard. The current branch is therefore a
+compatibility-tool/evidence descendant. Native, Godot, package and runtime
+qualification inputs remain frozen at `e034f229`; this is not a new native build.
+The final section records the additional ordinary gate and its validation.
+ The [campaign receipt](objectshard-m3-20261122/final-qualification/final-campaign-receipt.json)
 and [exact-byte evidence custody](objectshard-m3-20261122/final-qualification/custody.json)
 bind the source, original archives, reviews and retained rendered images.
 
@@ -57,6 +63,7 @@ bind the source, original archives, reviews and retained rendered images.
 | Existing Lab performance allowances | All 56 headless and 80 rendered limits passed on each source platform. Budgets were unchanged. These are elapsed standalone-Lab allowances, not target-hardware FPS. |
 | Native performance matrix | The retained source-identical local repeat passed 74/74 limits and 4,237,399 checks. It is a separate receipt, not a native matrix newly executed by campaign 44999117090. |
 | Package/receipt contracts | 50 Python tests passed, including incomplete or unbound navigation receipt refusals. |
+| Material-catalogue completion | Later guard-only source `73018218`: 231 catalogue tests and metadata parity pass in workflow 45003383402; frozen lock and refusal logic unchanged. |
 | Ordinary navigation compatibility | Actual native LIFE008 recovery/F2 control passed 62 checks, six host lifetimes and at most one native owner. |
 | Production documentation/provenance | **Unpassed:** the same six retained-native-source mismatches remain. Draft documentation skips do not clear this gate. |
 
@@ -529,3 +536,70 @@ keeps historical M2 failures distinct; lexical rank is not answer correctness.
 The [final API refresh](objectshard-m3-20261122/final-qualification/final-publication-refs.json)
 confirms accepted main and the frozen PUBPRES, Workbench and generation sources
 remain at the inspected identities before this documentation-only publication.
+
+## Post-publication material-catalogue completion
+
+The ordinary [documentation run 45002794045](https://github.com/techrote/cybersand/actions/runs/45002794045)
+passed documentation but failed the material-catalogue source guard. The guard
+still admitted the original M0 `world.cpp` hash, while the qualified finisher
+already contained its later two-line Fire opportunity correction. Independent
+review recovered the same inherited failure on #738 and the qualified M3
+source. This was a separate gate from the six native-runtime provenance errors.
+
+The [reviewed successor record](2026-11-22-objectshard-external-fire-world-transition.md)
+binds `native/src/world.cpp` from
+`bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214` to
+`5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1`
+at the original ancestor `c06550371ac5448642bff7e4ecb64fe9cd1df728`.
+The Fire condition suppresses one sampled World ignition when a recorded shard
+contact has already claimed that source opportunity; shard chemistry applies
+after World progression. Ordinary null-journal behavior, other Fire lifetime
+and transport work, material identities and the original compatibility lock
+remain unchanged.
+
+Commit `73018218092e79fbe935aa60890e33bd9f4859ac`, tree
+`ede95a3ad7102f4059f8b425167c7fa6c1948663`, appends the one authenticated
+transition and its audit record. The remainder of the guard AST, its 53 prior
+entries, all identity exclusions, ancestry checks and refusal rules are intact.
+The committed local checker returns PASS with 54 transitions. Independent
+review verified all 1,123 distinct packaged/native/runtime/test/qualifier and
+protected input blobs remain identical to `e034f229`. The added tool is absent
+from those executable package and qualification input sets, so the owner ZIP
+and source-bound platform campaign retain their original identities.
+
+The ordinary [documentation workflow 45003383402](https://github.com/techrote/cybersand/actions/runs/45003383402)
+passed: 231 catalogue tests completed in 438.570 seconds, with the complete
+catalogue stage taking 446.056 seconds. Compatibility, generated-shadow drift,
+compiled metadata parity and all subsequent executed checks passed. The actual
+synthetic PR checkout `bd8a9503507273c3348b2e711e6b3638860a9274` has exactly
+the published transition tree. The unchanged Draft condition skipped only the
+production-native-provenance step; this is not a full production gate pass.
+
+The [delivery assessment](objectshard-m3-20261122/final-qualification/material-transition/delivery/delivery-assessment.json),
+[independent completion review](objectshard-m3-20261122/final-qualification/material-transition/reviews/custody/completion-review.json)
+and [semantic review](objectshard-m3-20261122/final-qualification/material-transition/reviews/physics/review.json)
+bind the actual logs, source identities and retained negative controls. The
+[native-parity receipt](objectshard-m3-20261122/final-qualification/material-transition/delivery/14746754332/native-parity.json)
+is metadata/query execution and explicitly performs no World or Rapier
+execution. The aggregate catalogue suite separately builds and runs nine real
+World reference/candidate cases. The compatibility result's historical
+`production_cutover: true` field refers to the pre-existing #563 capability
+adoption, not ObjectShard promotion. Full generated retrieval corpora and
+authenticated archives remain bound by the
+[original delivery manifest](objectshard-m3-20261122/final-qualification/material-transition/delivery/retention-manifest.json);
+the [curation record](objectshard-m3-20261122/final-qualification/material-transition/curation.json)
+identifies the essential reports and raw logs mirrored here.
+
+Before any future owner-authorized #738 mergedown, carry the reviewed entry and
+its audit onto that earliest dependent head containing `c06550371`, and validate
+its exact resulting source. This mission leaves the #738 donor branch intact.
+Use merge commits to retain the authenticated source ancestry; squash/rebase
+requires a separately reviewed repointing. This additional source admission
+does not publish the two production native runtimes or satisfy their six
+provenance mismatches.
+
+The [closeout dependency refresh](objectshard-m3-20261122/final-qualification/material-transition/closeout-interface-refresh.json)
+subsequently observes GEN #734 at `41208bb1ec0f2d56a9a375983f5d5c7c5193b36a`.
+Its five changed files affect CI/evidence only. Native/Godot and the five frozen
+Workbench/persistent-worker interfaces remain unchanged. Main, PUBPRES heads
+and the #738 donor remain unchanged; no concurrent branch was incorporated.

@@ -1,0 +1,59 @@
+{
+  "schema": "objectshard-material-transition-curation-v1",
+  "qualified_runtime_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "guard_source": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "guard_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "run": 45003383402,
+  "selected_files": 45,
+  "archive_only_files": [
+    {
+      "origin": "build/m3-material-transition/delivery/14747056801/challenges.contexts.md",
+      "bytes": 2447600,
+      "sha256": "33f675996e5a3d602b905ecf09bca762b31ab51a5522003f2b0ad89814a9ea28",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/14747056801/challenges.json",
+      "bytes": 2809219,
+      "sha256": "bdf1bb2cc542f95f685867d505c45de4c9d4222ea4063747cd35ddb9a3de0099",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/14747056801/frozen.contexts.md",
+      "bytes": 351447,
+      "sha256": "7796ca96825cb963b0ee02b91f6a30b53abdc90ab8ba5cd7bccdc7c247ae3085",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/14747056801/frozen.json",
+      "bytes": 442650,
+      "sha256": "90f4c42027025075c984e2ebf613600e5a23d3d00502279d77a4d365ed8fdd03",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/m3-transition-artifact-14746754332.zip",
+      "bytes": 8648,
+      "sha256": "d2507004699fb765c49c6a6bcf3958925e78d8e87eefb208a63e9e2b921efda8",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/m3-transition-artifact-14747025453.zip",
+      "bytes": 1413,
+      "sha256": "707f355c51aa5d0bed16265fe90e820ae868dc13e5c31acf53e008b9326e4167",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/m3-transition-artifact-14747056801.zip",
+      "bytes": 1493499,
+      "sha256": "055728a18749efacefa875ead555649bb96071125e09a2ed55855180c74499fa",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    },
+    {
+      "origin": "build/m3-material-transition/delivery/m3-transition-ci-inventory-14745999101.zip",
+      "bytes": 20111,
+      "sha256": "6d83743fb83d859abac46112c6ca0e23314e90b96fc03034e9af97140706001a",
+      "reason": "Authenticated CI archive/large generated retrieval output; original delivery manifest and archive custody retained."
+    }
+  ],
+  "scope": "Exact selected independent reviews, raw failure/success logs, source input bindings and parity receipts. Individual records preserve their own source identities. All original authenticated archives remain separate from the Git evidence selection."
+}

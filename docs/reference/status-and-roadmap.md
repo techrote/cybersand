@@ -21,6 +21,11 @@ three independent final reviews. Continuous editing, real detachment/motion and
 bounded capture are executable. The slower hosted timing observations, 1.93-second
 burst tail and production runtime-provenance failure remain explicit.
 
+The inherited Fire consumer's missing compatibility transition is completed at
+`73018218`, with 231 catalogue tests passing and the original lock/refusal rules
+preserved. This guard-only completion leaves the `e034f229` executable and ZIP
+unchanged; production runtime provenance remains unpassed.
+
 The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md)
 is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native,
 actual Rapier rest/erosion, Linux/Windows and delivered-ZIP gates passed. Its

@@ -55,15 +55,16 @@ order are unchanged. Material IDs, descriptor bytes, capabilities, reaction
 ordinals, quantity schema, policy identities and the frozen lock are unchanged.
 
 The admitted experimental behavior is deliberately different only when a real
-external Fire opportunity has already been spent against shard-owned Wood.
+external Fire opportunity has already been claimed by a recorded contact with
+shard-owned Wood. The resulting shard chemistry is applied after `World::tick`.
 Mechanical displacement must not let that same opportunity also perform its
 sampled World ignition in the immediately following native tick. A claimed
 opportunity suppresses that one `ignite()` call for any target material the
 ordinary call supports. The coordinator lends its
 bounded, read-only per-cell claim span to the mutation journal around exactly
-that `World::tick` call. The query checks the exact tick, nonempty span, resident
-coordinate and claimed bit. The span is cleared on both normal completion and
-exception. No claim creates new Fire, changes the ordinary Wood burn law,
+that `World::tick` call. The query checks the exact tick, nonempty span,
+coordinate inside the watched bounds and claimed bit. The span is cleared on
+both normal completion and exception. No claim creates new Fire, changes the ordinary Wood burn law,
 prevents later unclaimed opportunities or freezes the Fire cell's lifetime or
 movement.
 
