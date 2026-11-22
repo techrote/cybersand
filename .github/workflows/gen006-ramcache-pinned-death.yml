@@ -1,0 +1,213 @@
+name: GEN-006 exact original native runtime — process-death supplement
+# Historical binary challenge only; no publication, release or production change.
+on:
+  push:
+    branches: [exp/gen006-ramcache-pinned-death-001-20261122]
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  linux-pinned:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Pin the exact historical Linux SO and Godot 4.7 bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "ff36100640e57909211a42482aa482b0f5a36c05095a9f152d9bbbfe2099ae60  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum -c --strict
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum -c --strict
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libgl1-mesa-dri libglx-mesa0
+          mkdir -p "$RUNNER_TEMP/godot-4.7" build
+          curl --fail --location --retry 4 --max-time 600 --output "$RUNNER_TEMP/godot-4.7.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot-4.7.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot-4.7.zip" -d "$RUNNER_TEMP/godot-4.7"
+          chmod +x "$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64"
+          echo "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75  $RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64" | sha256sum -c --strict
+          python3 -m py_compile tools/ci/run_persistent_area_writeback_faults.py
+      - name: Kill real original runtime at 9 barriers, reopen 18 times
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_persistent_area_writeback_faults.py --godot "$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64" --project godot --evidence build/pinned-lifecycle-linux --timeout 240
+          python3 - <<'PY'
+          import json,pathlib
+          v=json.loads(pathlib.Path("build/pinned-lifecycle-linux/results.json").read_text())
+          assert v["ok"] and v["source_unchanged"] and len(v["rows"])==27
+          assert v["native_sha256"]=="ff36100640e57909211a42482aa482b0f5a36c05095a9f152d9bbbfe2099ae60"
+          assert len({r["boundary"] for r in v["rows"]})==9
+          print("PINNED_NATIVE_LIFECYCLE_LINUX nine OS deaths, eighteen fresh reopens")
+          PY
+      - name: Real native Save failure during normal exit must refuse scene close
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pinned-exit-fault-linux
+          "$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64" --headless --path "$PWD/godot" --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd --             "--persistent-profile=$PWD/build/pinned-exit-fault-linux/profile"             "--persistent-evidence=$PWD/build/pinned-exit-fault-linux"             --persistent-test-mode=exit_fault --persistent-start-paused             >build/pinned-exit-fault-linux/engine.log 2>&1
+          python3 - <<'PY'
+          import json,pathlib
+          d=pathlib.Path('build/pinned-exit-fault-linux')
+          obj=json.loads((d/'workbench-exit_fault.json').read_text())
+          assert obj['mode']=='exit_fault' and obj['failures']==[] and obj['assertions']>=16
+          assert not obj['graphical']
+          text=(d/'engine.log').read_text()
+          assert 'failure of real native Save during normal Save & Menu exit' in text
+          assert 'PERSISTENT_AREAS_WORKBENCH' in text
+          print('PINNED_NATIVE_EXIT_FAILURE_LINUX: real failed Save & Menu refuses exit; later successful retry')
+          PY
+      - name: Resident lost-ACK qualification retains genuinely completed ticks exactly once
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pinned-faults-linux
+          "$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64" --headless --path "$PWD/godot" --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- \
+            "--persistent-profile=$PWD/build/pinned-faults-linux/profile" \
+            "--persistent-evidence=$PWD/build/pinned-faults-linux" \
+            --persistent-test-mode=faults --persistent-start-paused \
+            >build/pinned-faults-linux/engine.log 2>&1
+          python3 - <<'PY'
+          import json,pathlib
+          d=pathlib.Path('build/pinned-faults-linux')
+          v=json.loads((d/'workbench-faults.json').read_text())
+          log=(d/'engine.log').read_text()
+          assert v['mode']=='faults' and not v['failures'] and v['assertions']>=35
+          entries=v['evidence']['metrics']['operation_records']
+          ahead=[e for e in entries if e.get('kind')=='ahead' and e.get('status')=='failed']
+          retry=[e for e in entries if e.get('kind')=='retry_storage' and e.get('status')=='completed']
+          assert len(ahead)==1 and len(retry)==1 and ahead[0]['native_ticks_executed']>0
+          assert ahead[0]['actual_completed_ticks']==ahead[0]['native_ticks_executed']
+          assert v['evidence']['clock']['game_ticks']==ahead[0]['actual_completed_ticks']
+          assert 'PERSISTENT_AREAS_WORKBENCH' in log
+          print('PINNED_RESIDENT_LOST_ACK_LINUX: acknowledged native ticks retained exactly once')
+          PY
+      - name: Preserve original resident lost-ACK evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-resident-lost-ack-linux
+          path: build/pinned-faults-linux
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve normal-exit failure evidence including faults
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-exit-save-fault-linux
+          path: build/pinned-exit-fault-linux
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve original stdout and death receipts even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-lifecycle-linux
+          path: build/pinned-lifecycle-linux
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows-pinned:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Pin exact native Windows DLL and Rapier bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "471e0f955e3f46746eddf21763bbd3e1361cd71153e7755bbbedd5f8f53646ce  godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" | sha256sum -c --strict
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum -c --strict
+          mkdir -p build
+          python -m py_compile tools/ci/run_persistent_area_writeback_faults.py
+      - name: Download exact historical Godot Windows 4.7 executable pair
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:RUNNER_TEMP 'gen006-historical-Godot'
+          New-Item -ItemType Directory -Path $root -Force | Out-Null
+          $zip = Join-Path $env:RUNNER_TEMP 'gen006-Godot-4.7.zip'
+          Invoke-WebRequest 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip' -OutFile $zip
+          Expand-Archive $zip $root
+          $game = Join-Path $root 'Godot_v4.7-stable_win64.exe'
+          $console = Join-Path $root 'Godot_v4.7-stable_win64_console.exe'
+          if (!(Test-Path $game) -or !(Test-Path $console)) { throw 'Godot executables missing' }
+          if ((Get-FileHash $game -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8') { throw 'Windows Godot GUI SHA mismatch' }
+          if ((Get-FileHash $console -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'd8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c') { throw 'Windows Godot console SHA mismatch' }
+      - name: Kill real original runtime at 9 barriers, reopen 18 times
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $engine = Join-Path $env:RUNNER_TEMP 'gen006-historical-Godot/Godot_v4.7-stable_win64_console.exe'
+          python tools/ci/run_persistent_area_writeback_faults.py --godot "$engine" --project godot --evidence build/pinned-lifecycle-windows --timeout 240
+          if ($LASTEXITCODE -ne 0) { throw 'OS process-death supplement failed on original Windows DLL' }
+          $v = Get-Content build/pinned-lifecycle-windows/results.json -Raw | ConvertFrom-Json
+          if (!$v.ok -or !$v.source_unchanged -or $v.rows.Count -ne 27 -or $v.native_sha256 -ne '471e0f955e3f46746eddf21763bbd3e1361cd71153e7755bbbedd5f8f53646ce') { throw 'Original Windows native receipts incomplete' }
+          'PINNED_NATIVE_LIFECYCLE_WINDOWS nine OS deaths, eighteen fresh reopens'
+      - name: Real Windows native Save failure during normal exit must refuse scene close
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path (Get-Location) 'build/pinned-exit-fault-windows'
+          New-Item -ItemType Directory -Path $root -Force | Out-Null
+          $engine = Join-Path $env:RUNNER_TEMP 'gen006-historical-Godot/Godot_v4.7-stable_win64_console.exe'
+          $profile = Join-Path $root 'profile'
+          & $engine --headless --path godot --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- "--persistent-profile=$profile" "--persistent-evidence=$root" '--persistent-test-mode=exit_fault' '--persistent-start-paused' *> (Join-Path $root 'engine.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Real native Save & Menu failure qualification failed' }
+          $v = Get-Content (Join-Path $root 'workbench-exit_fault.json') -Raw | ConvertFrom-Json
+          $log = Get-Content (Join-Path $root 'engine.log') -Raw
+          if ($v.mode -ne 'exit_fault' -or $v.failures.Count -ne 0 -or $v.assertions -lt 16 -or $v.graphical -or !$log.Contains('failure of real native Save during normal Save & Menu exit')) {
+            throw 'Original Windows native Save & Menu did not prove failure/refusal and subsequent healthy retry'
+          }
+          'PINNED_NATIVE_EXIT_FAILURE_WINDOWS: real failed Save & Menu refuses exit; later successful retry'
+      - name: Resident lost-ACK qualification retains completed Windows native ticks once
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path (Get-Location) 'build/pinned-faults-windows'
+          New-Item -ItemType Directory -Path $root -Force | Out-Null
+          $engine = Join-Path $env:RUNNER_TEMP 'gen006-historical-Godot/Godot_v4.7-stable_win64_console.exe'
+          $profile = Join-Path $root 'profile'
+          & $engine --headless --path godot --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- "--persistent-profile=$profile" "--persistent-evidence=$root" '--persistent-test-mode=faults' '--persistent-start-paused' *> (Join-Path $root 'engine.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Original Windows native lost-ACK regression failed' }
+          $v = Get-Content (Join-Path $root 'workbench-faults.json') -Raw | ConvertFrom-Json
+          if ($v.mode -ne 'faults' -or $v.failures.Count -ne 0 -or $v.assertions -lt 35) {
+            throw 'Original Windows native resident debt and lost-ACK regression failed'
+          }
+          'PINNED_RESIDENT_LOST_ACK_WINDOWS: actual completed native work credited exactly once'
+      - name: Preserve Windows resident lost-ACK evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-resident-lost-ack-windows
+          path: build/pinned-faults-windows
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve Windows normal-exit failure evidence including faults
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-exit-save-fault-windows
+          path: build/pinned-exit-fault-windows
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve original stdout and death receipts even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-lifecycle-windows
+          path: build/pinned-lifecycle-windows
+          if-no-files-found: warn
+          retention-days: 90
