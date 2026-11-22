@@ -10,6 +10,28 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## CI-OPT-003 worldgen showcase execution — 2026-11-21
+
+The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
+runs seven independent worldgen showcases through the existing two-job Make
+budget. All seven remain required before the nine principal tests. The original
+compiler flags, scientific fixtures, sixteen executables and sanitizer coverage
+remain. Raw per-showcase output is retained before grouped replay, including
+flushed partial output from hung or cancelled peers; source/run/attempt checks
+reject stale or incomplete log inventories. The
+dedicated CI-only PR records source-matched execution, controlled performance
+and independent review before any merge or turnaround claim.
+
+## CI-OPT-003 soliding compilation reuse — 2026-11-21
+
+The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)
+removes 30 repeated translation-unit compilations per complete normal or
+sanitized target while retaining the original eight executables and test order.
+Compiler/configuration/source identity guards local object reuse; interrupted
+compilations cannot publish partial objects. Full Native and Windows/Linux
+regression admission remains required. The dedicated CI-only PR records exact
+source qualification and controlled timings before any merge or speed claim.
+
 ## Floating Oil in Wave Water
 
 The [impingement tank replay](../audits/2026-11-20-wave-oil-impinge.md) tests whether Water waves can lift and lower a floating Oil slick. In the previous build the Water–Oil boundary remained fixed through 900 ticks of observation.

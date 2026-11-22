@@ -37,8 +37,8 @@ COMMANDS = {
         ("physics-characterisation-sanitize", "native_case_seconds", [
             "env", "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
             "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1", "make", "physics-characterisation-sanitize"]),
-        ("worldgen-test", "native_case_seconds", ["/usr/bin/time", "-v", "make", "-j2", "worldgen-test"]),
-        ("worldgen-sanitize", "native_case_seconds", [*ASAN, "/usr/bin/time", "-v", "make", "-j2", "worldgen-sanitize"]),
+        ("worldgen-test", "native_case_seconds", ["/usr/bin/time", "-v", "make", "-j2", "--output-sync=target", "worldgen-test"]),
+        ("worldgen-sanitize", "native_case_seconds", [*ASAN, "/usr/bin/time", "-v", "make", "-j2", "--output-sync=target", "worldgen-sanitize"]),
     ],
     "soliding-normal": [
         (target, "native_case_seconds", ["make", target]) for target in (
