@@ -10,6 +10,15 @@ related-documents: [../operations/objectshard-lab-playtest.md, ../architecture/r
 
 # OBJECTSHARD-001 — compact moving material domains
 
+**001R finisher in progress, 22 November 2026:** owner Windows testing exposed
+component-admission starvation and late resting-body rotation. The
+[001R forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md)
+records verified original exports, controlled negative admission experiments and
+an actual Godot 4.7/Rapier reproduction of the owner's tick-970 hold. Its initial
+bridge repair is separately identified from the original M2 native runtime and
+from the later integrated candidate. M3 preparation and owner acceptance remain
+separate gates; the original native 10/74 timing-limit failure is retained.
+
 Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an
 exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
 distinguishes passing platform qualification, the retained native timing failure,

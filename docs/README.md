@@ -664,6 +664,11 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 ## ObjectShard M0–M2 candidate
 
+The [001R owner-evidence forensic checkpoint](audits/2026-11-22-objectshard-001r-forensics.md)
+records reproduced admission and resting-body defects, exact original runtime
+identities, and the first scoped Rapier repair. Final integrated Windows
+qualification and M3 preflight are subsequent Draft/HOLD work.
+
 The [compact native ObjectShard implementation](research/objectshard-001.md)
 is a separate Draft/HOLD branch candidate: exact material ownership, shared
 combustion, revisioned Rapier geometry, real Fire output, physical Sand lodging

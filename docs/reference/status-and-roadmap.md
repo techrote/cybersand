@@ -12,6 +12,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## ObjectShard M0–M2 research candidate — 2026-11-22
 
+The 001R finisher is now active on a separate M2 child. Its
+[forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md) reproduces
+owner-observed late rotation and independent admission starvation; the original
+M0–M2 results and native timing failures remain intact. Integration preparation
+does not authorize production Workbench changes or owner physical acceptance.
+
 The [implementation record](../research/objectshard-001.md) and
 [independent Lab procedure](../operations/objectshard-lab-playtest.md) describe
 the staged Draft/HOLD candidate, beginning with M0 #726 and M1 #728. The M2 child

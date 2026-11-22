@@ -8,6 +8,7 @@ const MAX_BODIES: int = 3
 const MAX_SHAPES_PER_BODY: int = 512
 const MAX_TERRAIN_CHUNKS: int = 64
 const FIXED_DELTA: float = 1.0 / 60.0
+const MAX_DIAGNOSTIC_EVENTS: int = 128
 
 var session: int = 0
 var space: RID
@@ -17,6 +18,7 @@ var pose_serial: int = 0
 var steps: int = 0
 var motion_refused: bool = false
 var last_error: String = ""
+var diagnostic_events: Array[Dictionary] = []
 var timings: Dictionary = {"geometry_install_usec": 0, "terrain_install_usec": 0,
 	"rapier_step_usec": 0, "rapier_flush_usec": 0, "pose_copy_usec": 0,
 	"geometry_install_max_usec": 0, "terrain_install_max_usec": 0}
@@ -105,6 +107,10 @@ func reserve_body(shard: Dictionary) -> Dictionary:
 	reserved["rotation"] = float(shard.get("rotation", 0.0))
 	reserved["wrapped_rotation"] = pose.get_rotation()
 	reserved["com"] = Vector2(float(shard.com_x), float(shard.com_y))
+	reserved["rectangles"] = PackedInt32Array(shard.rectangles)
+	reserved["last_geometry_step"] = steps
+	reserved["last_geometry_usec"] = 0
+	reserved["last_sleeping"] = false
 	if not _set_mass(reserved, shard):
 		_destroy_compound(reserved)
 		return _refuse("InvalidMass")
@@ -126,6 +132,8 @@ func activate(shard: Dictionary) -> Dictionary:
 	PhysicsServer2D.body_set_collision_mask(body.rid, 1)
 	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 	body["active"] = true
+	PhysicsServer2D.body_set_max_contacts_reported(body.rid, 32)
+	_event("BodyActivated", int(shard.id), {"geometry_revision": body.geometry_revision})
 	var result: Dictionary = _body_receipt(shard, body)
 	result["activated"] = PhysicsServer2D.body_get_mode(body.rid) == PhysicsServer2D.BODY_MODE_RIGID \
 		and _readback_mass(body.rid, float(shard.mass), Vector2(float(shard.com_x), float(shard.com_y)), float(shard.inertia))
@@ -154,37 +162,59 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 		bodies.erase(int(shard.id))
 		return {"ok": true, "retired_body": true, "session": session,
 			"id": int(shard.id), "generation": int(shard.generation), "geometry_revision": revision}
-	var fresh: Array[RID] = _reserve_shapes(shard.rectangles)
-	if fresh.size() != shard.rectangles.size() / 4:
-		return _refuse("ShapeReservationFailed")
+	# Cargo can change mass without changing rigid occupancy. Keep existing shape
+	# handles/contact manifolds when the exact rectangle publication is unchanged.
+	var shapes_changed: bool = PackedInt32Array(shard.rectangles) != body.rectangles
+	var mass_changed: bool = not _readback_mass(body.rid, float(shard.mass),
+		Vector2(float(shard.com_x), float(shard.com_y)), float(shard.inertia))
+	var fresh: Array[RID] = []
+	if shapes_changed:
+		fresh = _reserve_shapes(shard.rectangles)
+		if fresh.size() != shard.rectangles.size() / 4:
+			return _refuse("ShapeReservationFailed")
 	var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 	var velocity: Vector2 = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
 	var angular: float = float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
 	var sleeping: bool = bool(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING))
 	var old_com: Vector2 = body.com
 	var old_shapes: Array = body.shapes
-	PhysicsServer2D.body_clear_shapes(body.rid)
-	_add_shapes(body.rid, fresh, shard.rectangles)
-	body["shapes"] = fresh
-	if not _set_mass(body, shard) or not _readback_shapes(body.rid, shard.rectangles):
+	if shapes_changed:
+		PhysicsServer2D.body_clear_shapes(body.rid)
+		_add_shapes(body.rid, fresh, shard.rectangles)
+		body["shapes"] = fresh
+	if ((shapes_changed or mass_changed) and not _set_mass(body, shard)) or not _readback_shapes(body.rid, shard.rectangles):
 		# Invalid native mass is an integration fault after backend mutation;
 		# keep the material owner paused, never label this a harmless refusal.
-		for shape: RID in old_shapes:
-			PhysicsServer2D.free_rid(shape)
+		if shapes_changed:
+			for shape: RID in old_shapes:
+				PhysicsServer2D.free_rid(shape)
 		return {"ok": false, "quarantine": true, "outcome": "MassInstallationFailed"}
 	var new_com := Vector2(float(shard.com_x), float(shard.com_y))
 	var shift: Vector2 = pose.basis_xform(new_com - old_com)
-	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM, pose)
-	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
-		velocity + Vector2(-shift.y, shift.x) * angular)
-	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY, angular)
-	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING, sleeping)
-	for shape: RID in old_shapes:
-		PhysicsServer2D.free_rid(shape)
+	if shapes_changed or mass_changed:
+		PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM, pose)
+		PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
+			velocity + Vector2(-shift.y, shift.x) * angular)
+		PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY, angular)
+		# Sleep belongs to the old contact graph. Reapplying it after replacing
+		# colliders suppresses contact refresh in the selected Rapier runtime:
+		# settled bodies free-fall into their support before violent correction.
+		# Wake for the changed physics; Rapier decides when the new graph sleeps.
+		PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
+	if shapes_changed:
+		for shape: RID in old_shapes:
+			PhysicsServer2D.free_rid(shape)
 	body["geometry_revision"] = revision
 	body["geometry_digest"] = str(shard.geometry_digest)
 	body["com"] = new_com
-	_record("geometry_install", Time.get_ticks_usec() - started)
+	body["rectangles"] = PackedInt32Array(shard.rectangles)
+	body["last_geometry_step"] = steps
+	body["last_geometry_usec"] = Time.get_ticks_usec() - started
+	_event("GeometryInstalled", int(shard.id), {"geometry_revision": revision,
+		"shape_replacement": shapes_changed, "mass_changed": mass_changed,
+		"was_sleeping": sleeping, "wake_for_changed_physics": shapes_changed or mass_changed,
+		"install_usec": body.last_geometry_usec})
+	_record("geometry_install", int(body.last_geometry_usec))
 	return _body_receipt(shard, body)
 
 
@@ -245,6 +275,11 @@ func step() -> Dictionary:
 			return _refuse("RotationEnvelopeExceeded")
 		body["rotation"] = float(body.rotation) + delta
 		body["wrapped_rotation"] = wrapped
+		var sleeping: bool = bool(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING))
+		if sleeping != bool(body.last_sleeping):
+			_event("Sleeping" if sleeping else "Waking", _body_id(body.rid),
+				{"geometry_revision": body.geometry_revision, "angular_velocity": angular})
+		body["last_sleeping"] = sleeping
 	return {"ok": true}
 
 
@@ -268,6 +303,53 @@ func shutdown() -> void:
 	pose_serial = 0
 	steps = 0
 	motion_refused = false
+	last_error = ""
+	diagnostic_events.clear()
+
+
+func diagnostics() -> Dictionary:
+	# Inspection must not create a pose serial or an admission receipt. The last
+	# native-accepted serial remains the coordinator/session's separate authority.
+	var result: Array[Dictionary] = []
+	var ids: Array = bodies.keys()
+	ids.sort()
+	for id: int in ids:
+		var body: Dictionary = bodies[id]
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var velocity: Vector2 = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+		var angular: float = float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
+		var center: Vector2 = PhysicsServer2D.body_get_param(body.rid, PhysicsServer2D.BODY_PARAM_CENTER_OF_MASS)
+		var state: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(body.rid)
+		result.append({"id": id, "generation": body.generation, "body_generation": body.body_generation,
+			"active": body.active, "geometry_revision": body.geometry_revision,
+			"geometry_digest": body.geometry_digest, "x": pose.origin.x, "y": pose.origin.y,
+			"rotation": body.rotation, "backend_rotation": pose.get_rotation(),
+			"vx": velocity.x, "vy": velocity.y, "angular_velocity": angular,
+			"sleeping": PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING),
+			"mass": PhysicsServer2D.body_get_param(body.rid, PhysicsServer2D.BODY_PARAM_MASS),
+			"com_x": center.x, "com_y": center.y,
+			"inertia": PhysicsServer2D.body_get_param(body.rid, PhysicsServer2D.BODY_PARAM_INERTIA),
+			"reported_contacts": state.get_contact_count() if state != null else -1,
+			"shape_count": PhysicsServer2D.body_get_shape_count(body.rid),
+			"last_geometry_step": body.last_geometry_step, "last_geometry_usec": body.last_geometry_usec,
+			"nominal_rotation_headroom": 0.20 - absf(angular) * FIXED_DELTA,
+			"nominal_translation_headroom": 4.0 - velocity.length() * FIXED_DELTA})
+	return {"session": session, "physics_steps": steps, "last_sampled_pose_serial": pose_serial,
+		"motion_refused": motion_refused, "last_error": last_error,
+		"bodies": result, "events": diagnostic_events.duplicate(true)}
+
+
+func _body_id(rid: RID) -> int:
+	for id: int in bodies:
+		if bodies[id].rid == rid:
+			return id
+	return 0
+
+
+func _event(kind: String, id: int, detail: Dictionary) -> void:
+	if diagnostic_events.size() == MAX_DIAGNOSTIC_EVENTS:
+		diagnostic_events.pop_front()
+	diagnostic_events.append({"kind": kind, "id": id, "physics_step": steps, "detail": detail})
 
 
 func _matching(shard: Dictionary) -> Dictionary:

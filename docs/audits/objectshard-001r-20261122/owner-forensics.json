@@ -1,0 +1,524 @@
+{
+  "schema": "objectshard-owner-forensics-v1",
+  "source_runtime_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "supplied_summary_sha256": "6b3c0a45c8ea638c42473f6de0b1675f349473d8621db3d25d1f31ed66df6485",
+  "original_export_count": 6,
+  "unique_sessions": 5,
+  "verified": true,
+  "reports": [
+    {
+      "filename": "objectshard-1-1795318037.json",
+      "sha256": "90bdb406b8362560dc38a78f48aa6841b36fcbbc8c75beb16745e3503354a91b",
+      "size_bytes": 148536,
+      "session": 1,
+      "scenario": 1,
+      "tick": 119,
+      "failed": true,
+      "status": "Physics motion outside admitted envelope: { \"ok\": false, \"outcome\": \"RotationEnvelopeExceeded\", \"session\": 1 }",
+      "owners": [
+        {
+          "id": 1,
+          "generation": 1,
+          "session": 1,
+          "structural": 25,
+          "cargo": 0,
+          "products": 0,
+          "mass": 25.0,
+          "com_x": 4.58,
+          "com_y": 3.66,
+          "inertia": 135.366666666667,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 97.66978,
+            "y": 72.89137,
+            "rotation_radians": 0.14451646305353769
+          }
+        },
+        {
+          "id": 2,
+          "generation": 1,
+          "session": 1,
+          "structural": 61,
+          "cargo": 0,
+          "products": 0,
+          "mass": 61.0,
+          "com_x": 4.18852459016393,
+          "com_y": 8.05737704918033,
+          "inertia": 792.297814207651,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 110.3102,
+            "y": 60.55639,
+            "rotation_radians": 0.5042375777023033
+          }
+        },
+        {
+          "id": 4,
+          "generation": 2,
+          "session": 1,
+          "structural": 14,
+          "cargo": 0,
+          "products": 0,
+          "mass": 14.0,
+          "com_x": 4.14285714285714,
+          "com_y": 3.5,
+          "inertia": 43.547619047619,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 113.56,
+            "y": 112.7154,
+            "rotation_radians": -2.647334315147966
+          }
+        }
+      ],
+      "retained_event_counts": {
+        "Active": 3,
+        "CommittedInactive": 3,
+        "DiscoveryRefused": 115,
+        "Held": 1,
+        "MaskApplied": 3,
+        "OrdinaryEdit": 131
+      },
+      "retained_event_count": 256,
+      "ring_at_capacity": true,
+      "first_retained_event_tick": 1,
+      "last_retained_event_tick": 119,
+      "process_native_steps": 118,
+      "process_native_promotions": 3,
+      "process_native_refusals": 140,
+      "last_refusal": {
+        "detail": "component not admitted",
+        "generation": 0,
+        "id": 0,
+        "ok": false,
+        "outcome": "Capacity",
+        "phase": "Empty",
+        "session": 0,
+        "transaction": 0
+      },
+      "continuous_pose_velocity_sleep_history": false,
+      "complete_input_replay_available": false
+    },
+    {
+      "filename": "objectshard-2-1795318077.json",
+      "sha256": "ab41edcf76b4775d2506582edbf33503f787b754c79fe914d5843e586d61a602",
+      "size_bytes": 588085,
+      "session": 2,
+      "scenario": 2,
+      "tick": 1999,
+      "failed": false,
+      "status": "Tick 1999 \u00b7 3 moving owners \u00b7 running \u00b7 discovery Capacity: inventory stays with its current owner",
+      "owners": [
+        {
+          "id": 5,
+          "generation": 2,
+          "session": 2,
+          "structural": 4,
+          "cargo": 0,
+          "products": 0,
+          "mass": 4.0,
+          "com_x": 2.75,
+          "com_y": 2.25,
+          "inertia": 4.16666666666667,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 107.2794,
+            "y": 107.0086,
+            "rotation_radians": 0.0005159999542039753
+          }
+        },
+        {
+          "id": 6,
+          "generation": 2,
+          "session": 2,
+          "structural": 17,
+          "cargo": 0,
+          "products": 0,
+          "mass": 17.0,
+          "com_x": 4.32352941176471,
+          "com_y": 3.32352941176471,
+          "inertia": 71.7745098039216,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 104.3754,
+            "y": 103.9885,
+            "rotation_radians": 0.006040035269977078
+          }
+        },
+        {
+          "id": 7,
+          "generation": 3,
+          "session": 2,
+          "structural": 69,
+          "cargo": 0,
+          "products": 0,
+          "mass": 69.0,
+          "com_x": 4.03623188405797,
+          "com_y": 8.71739130434783,
+          "inertia": 1028.39855072464,
+          "geometry_revision": 2,
+          "applied_physics_revision": 2,
+          "pose": {
+            "x": 125.8764,
+            "y": 102.0013,
+            "rotation_radians": 1.5708903267946197
+          }
+        }
+      ],
+      "retained_event_counts": {
+        "DiscoveryRefused": 215,
+        "OrdinaryEdit": 41
+      },
+      "retained_event_count": 256,
+      "ring_at_capacity": true,
+      "first_retained_event_tick": 1785,
+      "last_retained_event_tick": 1999,
+      "process_native_steps": 2116,
+      "process_native_promotions": 6,
+      "process_native_refusals": 1935,
+      "last_refusal": {
+        "detail": "component not admitted",
+        "generation": 0,
+        "id": 0,
+        "ok": false,
+        "outcome": "Capacity",
+        "phase": "Empty",
+        "session": 0,
+        "transaction": 0
+      },
+      "continuous_pose_velocity_sleep_history": false,
+      "complete_input_replay_available": false
+    },
+    {
+      "filename": "objectshard-3-1795318096.json",
+      "sha256": "83883fb4cac219312f1286f01f99e9eb92e94802059ca6a43fb6f662ee10617a",
+      "size_bytes": 231132,
+      "session": 3,
+      "scenario": 2,
+      "tick": 776,
+      "failed": false,
+      "status": "Tick 776 \u00b7 1 moving owners \u00b7 running",
+      "owners": [
+        {
+          "id": 8,
+          "generation": 3,
+          "session": 3,
+          "structural": 498,
+          "cargo": 0,
+          "products": 0,
+          "mass": 498.0,
+          "com_x": 14.6265060240964,
+          "com_y": 12.1526104417671,
+          "inertia": 48162.9317269076,
+          "geometry_revision": 2,
+          "applied_physics_revision": 2,
+          "pose": {
+            "x": 163.639,
+            "y": 111.0011,
+            "rotation_radians": -3.1415576535898073
+          }
+        }
+      ],
+      "retained_event_counts": {
+        "Active": 1,
+        "CommittedInactive": 1,
+        "MaskApplied": 1,
+        "OrdinaryEdit": 43,
+        "SessionOpened": 1
+      },
+      "retained_event_count": 47,
+      "ring_at_capacity": false,
+      "first_retained_event_tick": 1,
+      "last_retained_event_tick": 345,
+      "process_native_steps": 3187,
+      "process_native_promotions": 7,
+      "process_native_refusals": 2232,
+      "last_refusal": {},
+      "continuous_pose_velocity_sleep_history": false,
+      "complete_input_replay_available": false
+    },
+    {
+      "filename": "objectshard-4-1795318112.json",
+      "sha256": "b32058cf8fedb8f26d1630f59d4ef5609bc631e2deabe10f5ab2b295bff39638",
+      "size_bytes": 160719,
+      "session": 4,
+      "scenario": 3,
+      "tick": 482,
+      "failed": false,
+      "status": "Tick 482 \u00b7 1 moving owners \u00b7 running",
+      "owners": [
+        {
+          "id": 9,
+          "generation": 4,
+          "session": 4,
+          "structural": 471,
+          "cargo": 1,
+          "products": 0,
+          "mass": 472.0,
+          "com_x": 14.2627118644068,
+          "com_y": 12.3983050847458,
+          "inertia": 46029.209039548,
+          "geometry_revision": 3,
+          "applied_physics_revision": 3,
+          "pose": {
+            "x": 163.8323,
+            "y": 111.2123,
+            "rotation_radians": -3.141556653589809
+          }
+        }
+      ],
+      "retained_event_counts": {
+        "Active": 1,
+        "CommittedInactive": 1,
+        "MaskApplied": 1,
+        "OrdinaryEdit": 40,
+        "SessionOpened": 1
+      },
+      "retained_event_count": 44,
+      "ring_at_capacity": false,
+      "first_retained_event_tick": 1,
+      "last_retained_event_tick": 191,
+      "process_native_steps": 3980,
+      "process_native_promotions": 8,
+      "process_native_refusals": 2240,
+      "last_refusal": {},
+      "continuous_pose_velocity_sleep_history": false,
+      "complete_input_replay_available": false
+    },
+    {
+      "filename": "objectshard-5-1795318130.json",
+      "sha256": "407e413aa149e54b3234203171a0c9b6b638fe3e4f41d2b97e9ef28967ae0465",
+      "size_bytes": 289649,
+      "session": 5,
+      "scenario": 4,
+      "tick": 754,
+      "failed": false,
+      "status": "Tick 754 \u00b7 3 moving owners \u00b7 running",
+      "owners": [
+        {
+          "id": 10,
+          "generation": 5,
+          "session": 5,
+          "structural": 510,
+          "cargo": 0,
+          "products": 3,
+          "mass": 510.0,
+          "com_x": 14.5823529411765,
+          "com_y": 12.6392156862745,
+          "inertia": 53248.6568627451,
+          "geometry_revision": 2,
+          "applied_physics_revision": 2,
+          "pose": {
+            "x": 98.65828,
+            "y": 95.89282,
+            "rotation_radians": 2.162662703489461
+          }
+        },
+        {
+          "id": 11,
+          "generation": 3,
+          "session": 5,
+          "structural": 521,
+          "cargo": 0,
+          "products": 3,
+          "mass": 521.0,
+          "com_x": 14.5748560460653,
+          "com_y": 13.0777351247601,
+          "inertia": 58716.015674984,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 141.3691,
+            "y": 81.00038,
+            "rotation_radians": 1.5708123267948952
+          }
+        },
+        {
+          "id": 12,
+          "generation": 4,
+          "session": 5,
+          "structural": 513,
+          "cargo": 0,
+          "products": 3,
+          "mass": 513.0,
+          "com_x": 14.5994152046784,
+          "com_y": 12.7202729044834,
+          "inertia": 54413.5389863548,
+          "geometry_revision": 1,
+          "applied_physics_revision": 1,
+          "pose": {
+            "x": 188.0148,
+            "y": 81.00041,
+            "rotation_radians": 1.570808326794896
+          }
+        }
+      ],
+      "retained_event_counts": {
+        "Active": 3,
+        "CommittedInactive": 3,
+        "MaskApplied": 3,
+        "OrdinaryEdit": 198,
+        "SessionOpened": 1
+      },
+      "retained_event_count": 208,
+      "ring_at_capacity": false,
+      "first_retained_event_tick": 1,
+      "last_retained_event_tick": 258,
+      "process_native_steps": 4956,
+      "process_native_promotions": 11,
+      "process_native_refusals": 2241,
+      "last_refusal": {},
+      "continuous_pose_velocity_sleep_history": false,
+      "complete_input_replay_available": false
+    },
+    {
+      "filename": "objectshard-5-1795318138.json",
+      "sha256": "6d4c408fe649069373c68bd94529963413ae581d915f800d1c3858dde8d5d845",
+      "size_bytes": 341225,
+      "session": 5,
+      "scenario": 4,
+      "tick": 970,
+      "failed": true,
+      "status": "Native tick refused: { \"ok\": false, \"outcome\": \"Unsupported\", \"detail\": \"pose outside admitted source/motion envelope\", \"session\": 0, \"id\": 0, \"generation\": 0, \"transaction\": 0, \"phase\": \"Suspended\" }",
+      "owners": [
+        {
+          "id": 10,
+          "generation": 5,
+          "session": 5,
+          "structural": 509,
+          "cargo": 0,
+          "products": 3,
+          "mass": 509.0,
+          "com_x": 14.5550098231827,
+          "com_y": 12.6453831041257,
+          "inertia": 53044.5347085789,
+          "geometry_revision": 3,
+          "applied_physics_revision": 3,
+          "pose": {
+            "x": 99.30882,
+            "y": 99.30539,
+            "rotation_radians": 2.219355656182667
+          }
+        },
+        {
+          "id": 11,
+          "generation": 3,
+          "session": 5,
+          "structural": 520,
+          "cargo": 0,
+          "products": 0,
+          "mass": 520.0,
+          "com_x": 14.5480769230769,
+          "com_y": 13.0826923076923,
+          "inertia": 58514.908974359,
+          "geometry_revision": 2,
+          "applied_physics_revision": 2,
+          "pose": {
+            "x": 132.0707,
+            "y": 77.29348,
+            "rotation_radians": 1.3295706683655615
+          }
+        },
+        {
+          "id": 12,
+          "generation": 4,
+          "session": 5,
+          "structural": 512,
+          "cargo": 0,
+          "products": 0,
+          "mass": 512.0,
+          "com_x": 14.572265625,
+          "com_y": 12.724609375,
+          "inertia": 54214.8294270832,
+          "geometry_revision": 2,
+          "applied_physics_revision": 2,
+          "pose": {
+            "x": 192.4988,
+            "y": 96.17501,
+            "rotation_radians": 2.2542838924985005
+          }
+        }
+      ],
+      "retained_event_counts": {
+        "Active": 3,
+        "CommittedInactive": 3,
+        "Held": 1,
+        "MaskApplied": 3,
+        "OrdinaryEdit": 198,
+        "SessionOpened": 1
+      },
+      "retained_event_count": 209,
+      "ring_at_capacity": false,
+      "first_retained_event_tick": 1,
+      "last_retained_event_tick": 970,
+      "process_native_steps": 5172,
+      "process_native_promotions": 11,
+      "process_native_refusals": 2241,
+      "last_refusal": {},
+      "continuous_pose_velocity_sleep_history": false,
+      "complete_input_replay_available": false
+    }
+  ],
+  "same_session_deltas": [
+    {
+      "session": 5,
+      "id": 10,
+      "from_tick": 754,
+      "to_tick": 970,
+      "wood_cell_loss": 1,
+      "geometry_revision_advance": 1,
+      "net_rotation_degrees": 3.2482669174555414,
+      "lattice_origin_displacement_cells": 3.474023070807102,
+      "causality": "Not established: no intermediate pose, velocity, sleep or geometry-install trace",
+      "inferred_removed_unit_mass_cell_center": [
+        28.50000000002092,
+        9.500000000013642
+      ],
+      "mass_inference_assumption": "Exactly one unit-mass structural cell removed; no other mass exchange between snapshots"
+    },
+    {
+      "session": 5,
+      "id": 11,
+      "from_tick": 754,
+      "to_tick": 970,
+      "wood_cell_loss": 1,
+      "geometry_revision_advance": 1,
+      "net_rotation_degrees": -13.822128870737425,
+      "lattice_origin_displacement_cells": 10.010062445859182,
+      "causality": "Not established: no intermediate pose, velocity, sleep or geometry-install trace",
+      "inferred_removed_unit_mass_cell_center": [
+        28.500000000032742,
+        10.500000000015461
+      ],
+      "mass_inference_assumption": "Exactly one unit-mass structural cell removed; no other mass exchange between snapshots"
+    },
+    {
+      "session": 5,
+      "id": 12,
+      "from_tick": 754,
+      "to_tick": 970,
+      "wood_cell_loss": 1,
+      "geometry_revision_advance": 1,
+      "net_rotation_degrees": 39.16026531513293,
+      "lattice_origin_displacement_cells": 15.823234219337074,
+      "causality": "Not established: no intermediate pose, velocity, sleep or geometry-install trace",
+      "inferred_removed_unit_mass_cell_center": [
+        28.5000000000191,
+        10.499999999983629
+      ],
+      "mass_inference_assumption": "Exactly one unit-mass structural cell removed; no other mass exchange between snapshots"
+    }
+  ],
+  "limits": [
+    "Six exports describe five sessions; the two D exports are successive observations.",
+    "Events are a bounded ring, and native metrics/accounting may span preceding resets.",
+    "Exports contain final poses and frame costs, not continuous physics or complete input history.",
+    "The World material raster and complete cut order are absent; the floating component cannot be reconstructed from these exports.",
+    "Correlated geometry changes and net movement do not identify a unique physical cause."
+  ]
+}

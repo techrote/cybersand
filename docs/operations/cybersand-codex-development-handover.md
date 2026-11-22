@@ -12,6 +12,12 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## ObjectShard M0–M2 — 2026-11-22
 
+The separate OBJECTSHARD-001R finisher is repairing issues found in owner Windows
+playtesting. Read the [dated forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md)
+for reproduced mechanisms and scoped source/runtime evidence. M3 Workbench
+preflight follows qualified repairs. Historical M0/M1/M2 heads and evidence are
+preserved; all successor work remains Draft/HOLD with no merge authority.
+
 Evaluate the dedicated staged Draft/HOLD ObjectShard stack M0 #726 → M1 #728 →
 M2 #730; use the [implementation and evidence record](../research/objectshard-001.md)
 and [Windows Lab procedure](objectshard-lab-playtest.md). Shared World changes
