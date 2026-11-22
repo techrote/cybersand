@@ -71,8 +71,12 @@ func _run() -> void:
 		"known over-budget motion is refused before physics advances")
 	_expect(float(result.motion.completed_delta) == 0.0 and int(result.motion.maximum_substeps) == 16,
 		"refusal exposes simulated time and the unchanged bounded resource ceiling")
+	# Each fixture represents an acknowledged fresh native session. Session IDs
+	# cannot be reused to clear the M3 motion clock/retirement watermark.
+	var fault_session: int = 806
 	for fault: String in ["missing-owner", "stale-serial", "wrong-tick", "duplicate-owner", "not-applied"]:
-		_setup(806, 2, 2)
+		_setup(fault_session, 2, 2)
+		fault_session += 1
 		receipt_fault = fault
 		result = bridge.step_motion(_accept, 42)
 		_expect(not result.get("ok", false) and str(result.outcome) == "NativeSegmentRefused",

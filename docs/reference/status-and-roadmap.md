@@ -12,6 +12,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## ObjectShard M0–M2 research candidate — 2026-11-22
 
+The [M3 continuous-play candidate](../research/objectshard-m3-preflight.md) reconstructs the recovered exclusive-worker rehearsal and retains a separate World/Rapier scene. Mutable geometry cannot enter the ordinary immutable Workbench GCR roster; the current PUBPRES successor remains a separately owned interface. Full ordinary Workbench binding, persistence and owner acceptance remain Planned.
+
 The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md)
 is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native,
 actual Rapier rest/erosion, Linux/Windows and delivered-ZIP gates passed. Its

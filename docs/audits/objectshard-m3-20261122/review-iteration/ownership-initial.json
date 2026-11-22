@@ -1,0 +1,95 @@
+{
+  "schema": "objectshard-m3-independent-ownership-initial-review-v1",
+  "source_binding": "initial-source-binding.json",
+  "source_base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "status": "changes_requested_pending_final_source",
+  "scope": "Standalone real World/native exclusive worker and main-thread Rapier rehearsal; no ordinary Workbench integration claim; native514 reused locally for iteration only",
+  "findings": [
+    {
+      "id": "OWN-01",
+      "severity": "P1",
+      "title": "A second precommit cancellation bypasses a failed receipt-deadline hold and advances actual Rapier",
+      "source": "godot/scripts/object_shard_worker_host.gd",
+      "lines": [
+        164,
+        165,
+        355,
+        366,
+        398,
+        399,
+        521,
+        531,
+        588,
+        613,
+        891,
+        899
+      ],
+      "repro": "Real active shard plus second PreparedForReview component; cancel, remove actual successful Cancelled receipt, queue one ordinary edit before timeout, expire only pending timestamp past15000000usec, poll(false), cancel_prepared again, poll actual receipts.",
+      "observed": "Held becomes Idle while failed remains true; Rapier steps4->8, bodyy39.0230178833->39.0893707275, vy2.5999999046->5.1999983788; completed1->2/publication19->21. Queued Action17 then executes after failed hold: World(30,20) Empty->Wood and native World Wood16->17.",
+      "expected": "Failed/Held is monotonic until explicit reset or close; all other mutation/continuation controls refuse without further native/physics or publication.",
+      "evidence": "initial-adversaries-v4.log",
+      "remaining": true
+    },
+    {
+      "id": "OWN-02",
+      "severity": "P2",
+      "title": "A lost reset receipt makes the advertised reset recovery use a retired native session",
+      "source": "godot/scripts/object_shard_worker_host.gd",
+      "lines": [
+        159,
+        160,
+        333,
+        335,
+        398,
+        399,
+        891,
+        899
+      ],
+      "repro": "Real Wood edit, reset, remove actual accepted reset receipt; expire pending timestamp and poll(false); retry reset and submit the late exact receipt.",
+      "observed": "Native session2 disposed prior Wood1; hostsession1 Held; retry reset StaleTransportIdentity; late receipt HeldUntilExplicitReset. close safely recovers.",
+      "expected": "An explicit recovery path reconciles unresolved reset identity or visibly requires close/reopen; never silently adopts uncertain state.",
+      "evidence": "initial-adversaries-v3.log",
+      "remaining": true
+    },
+    {
+      "id": "OWN-03",
+      "severity": "P2",
+      "title": "Admitted queued action identities are dropped by reset without terminal dispositions",
+      "source": "godot/scripts/object_shard_worker_host.gd",
+      "lines": [
+        340,
+        342,
+        446,
+        448,
+        814,
+        824
+      ],
+      "repro": "Queue three ordinary Wood edits and receive ActionQueued IDs1,2,3; reset before dispatch; await actual new-session receipt.",
+      "observed": "Action queue empty, action_results empty, last_action empty, no per-action terminal cancellation result; contract says every admitted action terminal.",
+      "expected": "Retain or capture a bounded per-action cancellation/retirement disposition, distinguishing queued from unresolved-inflight, or narrow the completion contract explicitly.",
+      "evidence": "initial-adversaries-v3.log",
+      "remaining": true
+    }
+  ],
+  "positive_controls": [
+    {
+      "test": "test_object_shard_native_worker.gd",
+      "checks": 31,
+      "failures": 0,
+      "log": "native-worker.log"
+    },
+    {
+      "test": "test_object_shard_worker_commands.gd",
+      "checks": 29,
+      "failures": 0,
+      "log": "worker-commands.log"
+    }
+  ],
+  "evidence_hashes": {
+    "initial-adversaries-v3.log": "ac61895f6804dfabde6d9da3be4de8a0896de905bc3bc57e1525d73dd58f32c9",
+    "native-worker.log": "757a0202e969bc7b393096b8a76332e5b0cc8090bf8deb4fdabc94ef3e968048",
+    "worker-commands.log": "a0ed4ce0fa39de1bebc903bc3874e2e74d7daf8fb497cbef26696b6fbf3a09f0",
+    "project/tests/review_ownership_adversaries.gd": "35f0b99f02b4b9c733d6ce62d6e6c480a65c648951aaaa89a0f503261831ed15",
+    "initial-adversaries-v4.log": "7cda7bb71ce6dc5f0447d3f4e0773eba0f69e2433e9ffc40346fe8bcb1d41d33"
+  }
+}

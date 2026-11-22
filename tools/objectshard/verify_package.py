@@ -19,7 +19,17 @@ REQUIRED = {NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_wi
             "godot/scripts/object_shard_lab_view.gd", "godot/scripts/object_shard_physics_bridge.gd",
             "godot/addons/godot-rapier2d/runtime-provenance.windows.json", "READ-ME.md",
             "Open ObjectShard Lab.cmd", "Verify ObjectShard Lab.cmd", "tools/objectshard/verify_package.ps1",
-            "godot/tests/test_object_shard_package_boot.gd"}
+            "godot/tests/probe_object_shard_package_boot.gd"}
+
+
+PREFLIGHT = {"schema": "objectshard-m3-preflight-v1", "host": "standalone-exclusive-worker-rehearsal",
+             "scene": "godot/object_shard_worker_rehearsal.tscn",
+             "launcher": "Open ObjectShard M3 Preflight.cmd", "production_workbench": False,
+             "replay_driver": "godot/tests/replay_object_shard_worker_trace.gd"}
+PREFLIGHT_REQUIRED = {PREFLIGHT["scene"], PREFLIGHT["launcher"], PREFLIGHT["replay_driver"],
+                      "godot/scripts/feature_launcher.gd", "godot/scripts/object_shard_native_worker.gd", "godot/scripts/object_shard_worker_host.gd",
+                      "godot/scripts/object_shard_worker_rehearsal.gd", "godot/tests/probe_object_shard_worker_package_boot.gd",
+                      "docs/operations/objectshard-m3-preflight-playtest.md"}
 
 
 def digest(path: Path, *, source: bool = False) -> str:
@@ -46,6 +56,9 @@ def verify(root: Path) -> dict:
     inventory = manifest.get("files_sha256", {})
     if not isinstance(inventory, dict) or not REQUIRED.issubset(inventory):
         raise ValueError("Incomplete package inventory")
+    if "preflight" in manifest or PREFLIGHT["scene"] in inventory:
+        if manifest.get("preflight") != PREFLIGHT or not PREFLIGHT_REQUIRED.issubset(inventory):
+            raise ValueError("Incomplete or misleading M3 preflight identity")
     for relative, expected in inventory.items():
         if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
             raise ValueError("Malformed digest: " + relative)

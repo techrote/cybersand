@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import contextlib
+import copy
 import hashlib
 import io
 import json
@@ -137,6 +138,47 @@ class ExecutedSourceCustody(unittest.TestCase):
             script.write_bytes(b"altered delivered Lab source\n")
             with self.assertRaises(ValueError):
                 qualify_lab.verify_scripts(root, expected)
+
+
+
+class WorkerSchedulingComparison(unittest.TestCase):
+    def profiles(self) -> tuple[dict, dict]:
+        control = {"schema": "objectshard-worker-scheduling-profile-v1", "failures": 0,
+                   "notifications": False, "pump_budget_usec": 0, "completed_intervals": 240,
+                   "actual_live_inputs": 60, "actual_physics_steps": 954,
+                   "identity": {"revision": "a" * 40, "files": {"script": "b" * 64}, "engine_sha256": "c" * 64},
+                   "publication_digests": ["d" * 64] * 240, "native_accounting": {"inventory": 123},
+                   "play_elapsed_usec": 30_000_000}
+        candidate = copy.deepcopy(control)
+        candidate.update(pump_budget_usec=4000, play_elapsed_usec=15_000_000)
+        return control, candidate
+
+    def test_identical_workload_qualifies_without_manufactured_speed_threshold(self) -> None:
+        control, candidate = self.profiles()
+        candidate["play_elapsed_usec"] = 60_000_000
+        result = qualify_lab.compare_worker_profiles(control, candidate, "a" * 40)
+        self.assertEqual(result["status"], "passed")
+        self.assertEqual(result["wall_progression_ratio"], 0.5)
+
+    def test_empty_or_incomplete_live_workload_is_refused(self) -> None:
+        for delta in ({"actual_live_inputs": 0}, {"actual_physics_steps": 0}, {"completed_intervals": 239},
+                      {"publication_digests": []}, {"notifications": True}, {"pump_budget_usec": 0}):
+            control, candidate = self.profiles()
+            candidate.update(delta)
+            with self.subTest(delta=delta), self.assertRaises(ValueError):
+                qualify_lab.compare_worker_profiles(control, candidate, "a" * 40)
+
+    def test_changed_pose_inventory_or_source_is_refused(self) -> None:
+        for key in ("publication_digests", "native_accounting", "identity"):
+            control, candidate = self.profiles()
+            if key == "publication_digests":
+                candidate[key][120] = "e" * 64
+            elif key == "native_accounting":
+                candidate[key]["inventory"] += 1
+            else:
+                candidate[key]["files"]["script"] = "e" * 64
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                qualify_lab.compare_worker_profiles(control, candidate, "a" * 40)
 
 
 if __name__ == "__main__":

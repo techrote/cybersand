@@ -65,6 +65,41 @@ def verify_scripts(project_root: Path, expected: dict[str, str]) -> dict[str, st
     return actual
 
 
+def compare_worker_profiles(control: dict, candidate: dict, source_commit: str) -> dict:
+    """Qualify an identical live workload; timing is evidence, not a new budget."""
+    schema = "objectshard-worker-scheduling-profile-v1"
+    for label, value, pump in (("control", control, 0), ("candidate", candidate, 4000)):
+        if value.get("schema") != schema or type(value.get("failures")) is not int or value["failures"] != 0:
+            raise ValueError("Unsuccessful worker scheduling profile: " + label)
+        if value.get("notifications") is not False or value.get("pump_budget_usec") != pump:
+            raise ValueError("Wrong worker scheduling profile mode: " + label)
+        required = {"completed_intervals": 240, "actual_live_inputs": 60, "actual_physics_steps": 954}
+        if any(type(value.get(key)) is not int or value[key] != expected for key, expected in required.items()):
+            raise ValueError("Incomplete actual worker scheduling workload: " + label)
+        identity = value.get("identity", {})
+        if identity.get("revision") != source_commit or not identity.get("files") or not identity.get("engine_sha256"):
+            raise ValueError("Unbound worker scheduling source: " + label)
+        digests = value.get("publication_digests")
+        if not isinstance(digests, list) or len(digests) != 240 or any(
+                not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest) for digest in digests):
+            raise ValueError("Incomplete worker publication comparison: " + label)
+        if not isinstance(value.get("native_accounting"), dict) or not value["native_accounting"]:
+            raise ValueError("Missing actual worker quantity ledger: " + label)
+        if type(value.get("play_elapsed_usec")) is not int or value["play_elapsed_usec"] <= 0:
+            raise ValueError("Missing actual worker wall interval: " + label)
+    matched = ["identity", "engine", "platform", "publication_digests", "native_accounting",
+               "completed_intervals", "actual_live_inputs", "actual_physics_steps"]
+    if any(control.get(key) != candidate.get(key) for key in matched):
+        raise ValueError("Worker scheduling modes changed source, publication or quantity accounting")
+    control_rate = 240_000_000.0 / control["play_elapsed_usec"]
+    candidate_rate = 240_000_000.0 / candidate["play_elapsed_usec"]
+    return {"status": "passed", "matched_fields": matched, "publication_count": 240,
+            "control_semantic_ticks_per_wall_second": control_rate,
+            "candidate_semantic_ticks_per_wall_second": candidate_rate,
+            "wall_progression_ratio": candidate_rate / control_rate,
+            "scope": "Same source/runtime and 240 per-interval material/pose publication digests. Timing is a paired hosted observation, not a new pass threshold or target GPU frame-rate claim."}
+
+
 def qualify(args: argparse.Namespace) -> dict:
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -79,7 +114,10 @@ def qualify(args: argparse.Namespace) -> dict:
         if commit != args.expected_source_sha:
             raise ValueError("Checked-out source differs from requested source")
         report.update(source_tree=tree, native_source_inputs=inputs)
-        lab_sources = ["godot/project.godot", "godot/object_shard_lab.tscn"]
+        lab_sources = ["godot/project.godot", "godot/scripts/feature_launcher.gd"]
+        lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot").glob("object_shard_*.tscn"))]
+        preflight = (ROOT / "godot/object_shard_worker_rehearsal.tscn").is_file()
+        report["m3_preflight"] = preflight
         lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot/scripts").glob("object_shard_*.gd"))]
         lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot/tests").glob("*object_shard*.gd"))]
         lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot/tests/fixtures").glob("objectshard_*.json"))]
@@ -126,6 +164,9 @@ def qualify(args: argparse.Namespace) -> dict:
                              "native_sha256": runner.sha256(native_path), "rapier_sha256": runner.sha256(rapier_path),
                              "platform": sys.platform}
         environment = dict(os.environ, CYBERSAND_SOURCE_REVISION=commit)
+        environment.pop("CYBERSAND_PACKAGE_MANIFEST", None)
+        if args.package:
+            environment["CYBERSAND_PACKAGE_MANIFEST"] = str((args.package / "objectshard-lab-manifest.json").resolve())
         cases = [(runner.Case("objectshard_import", ("--editor", "--quit"),
                     int(execution_policy.watchdog_seconds("godot_import_seconds")), 0), None),
                  (runner.Case("test_rapier_manual_step", ("--script", "res://tests/test_rapier_manual_step.gd"),
@@ -163,6 +204,47 @@ def qualify(args: argparse.Namespace) -> dict:
                 "--input=res://tests/fixtures/objectshard_owner_d_retained_actions.json", "--end-tick=3600",
                 "--output=" + str(output / "owner-d-result.json")),
                 int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-retained-action-probe-v1"))
+        if preflight:
+            if args.stage != "m2":
+                raise ValueError("M3 preflight requires the complete retained M2 suite")
+            for name, schema in (
+                    ("incremental_motion", "objectshard-incremental-motion-test-v1"),
+                    ("native_worker", "objectshard-native-worker-test-v1"),
+                    ("workbench_contract", "objectshard-workbench-boundary-test-v1"),
+                    ("worker_rehearsal", "objectshard-worker-rehearsal-test-v1"),
+                    ("worker_adverse", "objectshard-worker-adverse-test-v1"),
+                    ("worker_recovery", "objectshard-worker-recovery-test-v1"),
+                    ("worker_replay_admission", "objectshard-worker-replay-admission-test-v1"),
+                    ("worker_resources", "objectshard-worker-resource-test-v1"),
+                    ("worker_commands", "objectshard-worker-command-test-v1"),
+                    ("physics_identity", "objectshard-physics-identity-test-v1"),
+                    ("worker_input_fences", "objectshard-worker-input-fences-v1"),
+                    ("continuous_play", "objectshard-continuous-play-test-v1")):
+                command = ("--script", "res://tests/test_object_shard_" + name + ".gd")
+                if name == "continuous_play":
+                    command += ("--", "--report-copy=" + str(output / "continuous-play.json"))
+                elif name == "worker_replay_admission":
+                    command += ("--", "--output-dir=" + str(output / "worker-replay-admission"))
+                cases.append((runner.Case("objectshard_" + name, command,
+                    int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
+            cases.append((runner.Case("objectshard_continuous_replay",
+                ("--script", "res://tests/replay_object_shard_worker_trace.gd", "--",
+                 "--objectshard-replay=" + str(output / "continuous-play.json.jsonl"),
+                 "--objectshard-replay-report=" + str(output / "continuous-replay.json")),
+                int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-worker-action-replay-v1"))
+            cases.append((runner.Case("objectshard_continuous_physics",
+                ("--script", "res://tests/test_object_shard_continuous_physics.gd", "--",
+                 "--output=" + str(output / "continuous-physics.json"), "--trace=" + str(output / "continuous-physics.jsonl")),
+                int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-continuous-physics-test-v1"))
+            cases.append((runner.Case("objectshard_worker_scene",
+                ("--script", "res://tests/test_object_shard_worker_scene.gd", "--",
+                 "--report-copy=" + str(output / "worker-scene.json")),
+                int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-worker-scene-test-v1"))
+            cases.append((runner.Case("objectshard_worker_replay",
+                ("--script", "res://tests/replay_object_shard_worker_trace.gd", "--",
+                 "--objectshard-replay=" + str(output / "worker-scene.json.jsonl"),
+                 "--objectshard-replay-report=" + str(output / "worker-replay.json")),
+                int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-worker-action-replay-v1"))
         if args.render:
             driver = "opengl3_angle" if sys.platform == "win32" else "opengl3"
             cases.append((runner.Case("objectshard_render", ("--rendering-driver", driver, "--script",
@@ -173,6 +255,19 @@ def qualify(args: argparse.Namespace) -> dict:
                 cases.append((runner.Case("objectshard_finisher_render", ("--rendering-driver", driver, "--script",
                     "res://tests/capture_object_shard_finisher.gd", "--", "--objectshard-capture=" + str(output / "frames-finisher")),
                     int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), "objectshard-finisher-render-campaign-v1"))
+            if preflight:
+                cases.append((runner.Case("objectshard_continuous_play_rendered", ("--rendering-driver", driver, "--script",
+                    "res://tests/test_object_shard_continuous_play.gd", "--",
+                    "--report-copy=" + str(output / "continuous-play-rendered.json")),
+                    int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), "objectshard-continuous-play-test-v1"))
+                cases.append((runner.Case("objectshard_continuous_rendered_replay",
+                    ("--script", "res://tests/replay_object_shard_worker_trace.gd", "--",
+                     "--objectshard-replay=" + str(output / "continuous-play-rendered.json.jsonl"),
+                     "--objectshard-replay-report=" + str(output / "continuous-rendered-replay.json")),
+                    int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-worker-action-replay-v1"))
+                cases.append((runner.Case("objectshard_worker_render", ("--rendering-driver", driver, "--script",
+                    "res://tests/capture_object_shard_worker.gd", "--", "--objectshard-capture=" + str(output / "frames-worker")),
+                    int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), "objectshard-worker-render-campaign-v1"))
         if args.profile:
             if args.stage != "m2":
                 raise ValueError("Complete Lab performance qualification requires implemented M2")
@@ -186,6 +281,13 @@ def qualify(args: argparse.Namespace) -> dict:
                 cases.append((runner.Case(name, command,
                     int(execution_policy.watchdog_seconds("graphical_case_seconds" if rendered else "ordinary_case_seconds")), 0, rendered),
                     "objectshard-lab-profile-v1"))
+            if preflight:
+                for pump in (0, 4000):
+                    name = "objectshard_worker_profile_" + str(pump)
+                    cases.append((runner.Case(name,
+                        ("--script", "res://tests/profile_object_shard_worker.gd", "--", "--notifications=off",
+                         "--pump-usec=" + str(pump), "--output=" + str(output / (name + ".json"))),
+                        int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-worker-scheduling-profile-v1"))
         for case, schema in cases:
             record, failed = runner.run_case(str(engine), case, output, "ObjectShard scoped qualification", env=environment)
             report["cases"].append(record)
@@ -193,18 +295,41 @@ def qualify(args: argparse.Namespace) -> dict:
                 raise ValueError("Actual Godot process failed: " + case.name)
             if schema:
                 receipt = footer(output / record["log"], schema)
-                if schema.endswith("test-v1") and (type(receipt.get("checks")) is not int or receipt["checks"] < 20):
+                minimum_checks = {"objectshard-worker-adverse-test-v1": 23,
+                                  "objectshard-worker-recovery-test-v1": 63,
+                                  "objectshard-worker-replay-admission-test-v1": 57,
+                                  "objectshard-worker-input-fences-v1": 34,
+                                  "objectshard-worker-resource-test-v1": 19,
+                                  "objectshard-worker-scene-test-v1": 13,
+                                  "objectshard-continuous-play-test-v1": 75,
+                                  "objectshard-worker-command-test-v1": 29,
+                                  "objectshard-physics-identity-test-v1": 70}.get(schema, 20)
+                if (schema.endswith("test-v1") or schema == "objectshard-worker-input-fences-v1") and (type(receipt.get("checks")) is not int or receipt["checks"] < minimum_checks):
                     raise ValueError("Incomplete assertion inventory: " + case.name)
                 record["completion_receipt"] = receipt
+                if case.name == "objectshard_continuous_play_rendered":
+                    live = json.loads((output / "continuous-play-rendered.json").read_text(encoding="utf-8"))
+                    stages = live.get("timings_usec", {})
+                    ui_stages = live.get("presentation_timing", {}).get("stages", {})
+                    if stages.get("input_to_presented_usec", {}).get("count", 0) <= 0 or ui_stages.get("input_to_host_usec", {}).get("count", 0) <= 0:
+                        raise ValueError("Rendered live input lacks actual scene-queue and presentation observations")
+                    record["rendered_ui_timing"] = {"input_to_presented_usec": stages["input_to_presented_usec"],
+                        "host_admission_to_presented_usec": stages.get("host_admission_to_presented_usec", {}),
+                        "scene_input_to_host_usec": {key: value for key, value in ui_stages["input_to_host_usec"].items() if key != "retained_values_usec"},
+                        "scope": "Actual source-matched rendered scene observations, including the original scene-intent queue timestamp; not monitor scanout or target GPU performance"}
                 if schema == "objectshard-action-replay-v1" and (receipt.get("actions", 0) < 1 or receipt.get("steps", 0) < 1):
                     raise ValueError("Replay did not execute actual inputs and native steps")
+                if schema == "objectshard-worker-action-replay-v1" and (receipt.get("actions", 0) < 1 or receipt.get("semantic_steps", 0) < 1):
+                    raise ValueError("Worker replay did not execute actual inputs and completed semantic ticks")
                 if schema in ("objectshard-rest-stability-probe-v1", "objectshard-retained-action-probe-v1"):
                     minimum = 20 if schema == "objectshard-rest-stability-probe-v1" else 17
                     if type(receipt.get("checks")) is not int or receipt["checks"] < minimum:
                         raise ValueError("Incomplete physical-probe assertion inventory: " + case.name)
-                if schema in ("objectshard-render-campaign-v1", "objectshard-finisher-render-campaign-v1"):
-                    expected_captures = {"m0": 4, "m1": 6, "m2": 10}[args.stage] if schema == "objectshard-render-campaign-v1" else 5
-                    images_directory = output / ("frames" if schema == "objectshard-render-campaign-v1" else "frames-finisher")
+                if schema in ("objectshard-render-campaign-v1", "objectshard-finisher-render-campaign-v1", "objectshard-worker-render-campaign-v1"):
+                    expected_captures = {"m0": 4, "m1": 6, "m2": 10}[args.stage] if schema == "objectshard-render-campaign-v1" else (7 if schema == "objectshard-worker-render-campaign-v1" else 5)
+                    images_directory = output / ({"objectshard-render-campaign-v1": "frames",
+                                                  "objectshard-finisher-render-campaign-v1": "frames-finisher",
+                                                  "objectshard-worker-render-campaign-v1": "frames-worker"}[schema])
                     campaign = json.loads((images_directory / "render-campaign.json").read_text(encoding="utf-8"))
                     images = [row.get("image", "") for row in campaign.get("observations", [])]
                     if receipt.get("captures") != expected_captures or len(images) != expected_captures or len(set(images)) != expected_captures:
@@ -224,6 +349,10 @@ def qualify(args: argparse.Namespace) -> dict:
                     if record["budget_qualification"]["status"] != "passed":
                         raise ValueError("Registered Lab budget qualification failed: " + case.name)
             save(output / "qualification.json", report)
+        if args.profile and preflight:
+            control = json.loads((output / "objectshard_worker_profile_0.json").read_text(encoding="utf-8"))
+            candidate_profile = json.loads((output / "objectshard_worker_profile_4000.json").read_text(encoding="utf-8"))
+            report["worker_scheduling_comparison"] = compare_worker_profiles(control, candidate_profile, commit)
         lab = json.loads((output / "lab-result.json").read_text(encoding="utf-8"))
         required = {"m0": {1}, "m1": {1, 2}, "m2": {1, 2, 3, 4}}[args.stage]
         completed = {row.get("scenario") for row in lab.get("scenarios", []) if not row.get("failed", True)}

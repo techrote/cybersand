@@ -9,7 +9,7 @@ const SCHEMA: String = "objectshard-action-trace-v1"
 const MAX_BYTES: int = 32 * 1024 * 1024
 const MAX_RECORDS: int = 100000
 const MAX_ACTIONS: int = 8192
-const REPLAY_ACTIONS: Array[String] = ["edit", "ignite", "pause", "burner", "erase_shard"]
+const REPLAY_ACTIONS: Array[String] = ["edit", "ignite", "inspect", "pause", "burner", "erase_shard"]
 
 var path: String = ""
 var stream: FileAccess
@@ -171,7 +171,7 @@ static func _valid_action(detail: Dictionary) -> bool:
 	if name not in REPLAY_ACTIONS or not detail.get("parameters") is Dictionary or not detail.get("result") is Dictionary:
 		return false
 	var parameters: Dictionary = detail.parameters
-	if name in ["edit", "ignite", "erase_shard"] and not _position(parameters.get("position")):
+	if name in ["edit", "ignite", "inspect", "erase_shard"] and not _position(parameters.get("position")):
 		return false
 	if name == "edit":
 		return _integer(parameters.get("material"), 0, 255) and _integer(parameters.get("state_a"), 0, 65535) and _integer(parameters.get("state_b"), 0, 255) and _integer(parameters.get("temperature"), -32768, 32767)

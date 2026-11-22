@@ -95,6 +95,19 @@ def create_archive(package: Path, archive: Path) -> dict:
     return identity
 
 
+
+def validate_launch_receipt(launched: dict, identity: dict, *, preflight: bool = False) -> None:
+    schema = "objectshard-worker-package-launch-v1" if preflight else "objectshard-package-launch-v1"
+    minimum = 15 if preflight else 6
+    if (launched.get("schema") != schema or type(launched.get("failures")) is not int or launched["failures"] != 0
+            or type(launched.get("checks")) is not int or launched["checks"] < minimum
+            or launched.get("source_commit") != identity["source_commit"]):
+        raise ValueError("Missing or failed exact-source launch receipt")
+    if preflight and (launched.get("host") != "standalone-exclusive-worker-rehearsal"
+                      or launched.get("production_workbench") is not False):
+        raise ValueError("Preflight launch receipt misrepresents the executed host")
+
+
 def qualify(archive: Path, output: Path, timeout: int = 240, extract_root: Path | None = None) -> dict:
     if sys.platform != "win32":
         raise ValueError("Shipped CMD qualification requires actual Windows")
@@ -111,27 +124,29 @@ def qualify(archive: Path, output: Path, timeout: int = 240, extract_root: Path 
             target = extraction / relative
             extract(archive, target)
             identity = verify(target)
-            receipt = (output / (name + "-launch.json")).resolve()
-            environment = dict(os.environ, OBJECTSHARD_LAUNCH_RECEIPT=str(receipt))
             row = {"case": name, "root": str(target.resolve()), "root_characters": len(str(target.resolve())),
                    "source_commit": identity["source_commit"], "commands": []}
             report["cases"].append(row)
-            for script, flag in [("Verify ObjectShard Lab.cmd", "--noninteractive"),
-                                 ("Open ObjectShard Lab.cmd", "--self-test")]:
+            commands = [("Verify ObjectShard Lab.cmd", "--noninteractive", "verify"),
+                        ("Open ObjectShard Lab.cmd", "--self-test", "launch")]
+            if "preflight" in identity:
+                commands.append((identity["preflight"]["launcher"], "--self-test", "preflight"))
+            for script, flag, kind in commands:
+                receipt = (output / (name + "-" + kind + ".json")).resolve()
+                environment = dict(os.environ, OBJECTSHARD_LAUNCH_RECEIPT=str(receipt))
                 command = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", "call", script, flag]
                 started = time.monotonic()
                 result = subprocess.run(command, cwd=target, env=environment,
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
-                (output / (name + "-" + ("verify" if flag == "--noninteractive" else "launch") + ".log")).write_bytes(result.stdout)
+                (output / (name + "-" + kind + ".log")).write_bytes(result.stdout)
                 row["commands"].append({"script": script, "exit_code": result.returncode,
                                          "elapsed_seconds": time.monotonic() - started})
                 if result.returncode != 0:
                     raise ValueError(name + ": shipped launcher failed: " + script)
-            launched = json.loads(receipt.read_text(encoding="utf-8"))
-            if (launched.get("schema") != "objectshard-package-launch-v1" or launched.get("failures") != 0
-                    or launched.get("checks", 0) < 6 or launched.get("source_commit") != identity["source_commit"]):
-                raise ValueError(name + ": missing or failed exact-source launch receipt")
-            row["launch_receipt"] = launched
+                if kind != "verify":
+                    launched = json.loads(receipt.read_text(encoding="utf-8"))
+                    validate_launch_receipt(launched, identity, preflight=kind == "preflight")
+                    row["launch_receipt" if kind == "launch" else "preflight_launch_receipt"] = launched
             verify(target)
             if name == "spaces":
                 row["verifier_adversaries"] = qualify_verifier_adversaries(target, output, timeout)

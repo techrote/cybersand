@@ -1,0 +1,151 @@
+{
+  "schema": "objectshard-independent-custody-performance-checkpoint-v1",
+  "utc": "2026-11-22T06:30:13.878557+00:00",
+  "qualification": "prepublication iteration review; final source/package review pending",
+  "source_identity": "source-identity-initial.json",
+  "package_unit_tests": {
+    "checks": 46,
+    "failures": 0,
+    "log": "package-tests-initial.log",
+    "sha256": "1a39eb827b7e7bafa4b27e87a35aee87993c28e562efdda495cc0dc341e7e050"
+  },
+  "native_benchmark": {
+    "checks": 4237399,
+    "failures": 0,
+    "budget_recomputed": {
+      "status": "passed",
+      "limits_checked": 74,
+      "failures": []
+    },
+    "source_count": 94,
+    "source_mismatches": [],
+    "qualified514_source_mismatches": [],
+    "actual_binary_sha256": "7d1ddcf453349b2458031fe66bb641f80c1617931e053a302bc11fa98dddcac0",
+    "declared_binary_sha256": "7d1ddcf453349b2458031fe66bb641f80c1617931e053a302bc11fa98dddcac0",
+    "peak_accounted_cpp_bytes": 6277280,
+    "six_mib_margin_bytes": 14176,
+    "scope": "Native synthetic pose/receipt benchmark; excludes Godot/Rapier/renderer and copied-mailbox allocation. Existing World sanitizer was concurrent, so no speedup attribution."
+  },
+  "profile_pairs": {
+    "pump": {
+      "files_sha256": {
+        "pump-control.json": "4e62fca4090a30dcb5fa73dd070b069db5aceff6bfdf657543ac1543ee526d61",
+        "pump-candidate.json": "4875e884b05000b265e1002ad1c8367f5cf4e98e59f90bd75d3a8fd7c31b06f8",
+        "pump-profile-inputs.json": "f7815692cc8136eb86c46761bbe8c9bfef3b67fd5213a60f62a4875f274c500d"
+      },
+      "declared_hashes_match": true,
+      "identity_equal": true,
+      "publication_digests_equal": true,
+      "publication_count": 240,
+      "native_accounting_equal": true,
+      "control_elapsed_usec": 29572401,
+      "candidate_elapsed_usec": 18316070,
+      "wall_progression_ratio": 1.6145603833136695,
+      "control_live_inputs": 60,
+      "candidate_live_inputs": 60,
+      "control_actual_physics_steps": 954,
+      "candidate_actual_physics_steps": 954,
+      "control_max_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "candidate_max_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "scope": "One local pair, uncontrolled shared-host scheduling, no target GPU or monitor timing"
+    },
+    "notification": {
+      "files_sha256": {
+        "notification-control.json": "138d8443bd94636cdc45fb2d7d17069f47194a4025a8a8b4a5f475e4660fb125",
+        "notification-candidate.json": "94591750e661f666add1f11759be6403b840147aa1b455a27aac2f7a96ebd0f4",
+        "notification-profile-inputs.json": "377ac12c49271734b9c72e05e032ac0311cf7866d4ae0a9a18e2c63a6f759a85"
+      },
+      "declared_hashes_match": true,
+      "identity_equal": true,
+      "publication_digests_equal": true,
+      "publication_count": 240,
+      "native_accounting_equal": true,
+      "control_elapsed_usec": 29388406,
+      "candidate_elapsed_usec": 29669461,
+      "wall_progression_ratio": 0.990527128214429,
+      "control_live_inputs": 60,
+      "candidate_live_inputs": 60,
+      "control_actual_physics_steps": 954,
+      "candidate_actual_physics_steps": 954,
+      "control_max_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "candidate_max_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "scope": "One local pair, uncontrolled shared-host scheduling, no target GPU or monitor timing"
+    }
+  },
+  "findings": [
+    {
+      "id": "CUST-01",
+      "severity": "B measurement coverage",
+      "status": "repair implemented in host; UI wiring, rendered assertions and exact-source evidence pending",
+      "finding": "Pointer queue delay is measured separately but original UI input timestamp is not propagated to host latency rows. Current input_to_publication/presented begin at host admission, not actual pointer capture. Full end-to-end p95/p99 cannot be reconstructed by adding separate percentiles.",
+      "required_resolution": "Carry observational original input timestamp across host action and require actual rendered end-to-end samples, or report measurement gap unpassed."
+    },
+    {
+      "id": "CUST-02",
+      "severity": "B ordinary qualification blocker",
+      "status": "confirmed; sent to root",
+      "finding": "Ordinary source-derived test discovery includes both package-only test_object_shard_package_boot and test_object_shard_worker_package_boot, but ordinary runners do not supply their required package manifest/launch receipt variables. Preserve strict shipped-launcher probes while giving package-only entrypoints a scope that does not mis-enter ordinary test discovery; do not fake custody or silently skip an admitted case.",
+      "evidence": "ordinary-discovery-negative.json",
+      "actual_exit_codes": [
+        1,
+        1
+      ],
+      "required_resolution": "Preserve strict package probes and actual launcher execution while scoping package-only entrypoints outside automatic ordinary test discovery."
+    }
+  ],
+  "remaining": [
+    "Published exact source and final input hashes",
+    "New source-built Linux/Windows native runtime receipts",
+    "Actual Windows ZIP and four extraction/launch/tamper results",
+    "Full source-matched renderer/profile evidence including pointer-to-presented measurements",
+    "Final independent byte-level archive/hash verification"
+  ],
+  "reviewer": "independent /root/review_custody (not an implementation contributor)",
+  "methods": [
+    "Read source-build, qualification, package and verifier code against declared accepted scope",
+    "Recomputed all74 unchanged native budget checks from raw benchmark.json",
+    "Verified94 captured native benchmark inputs against both working source and exact514 Git objects",
+    "Verified raw comparison file SHA-256 and full240 digest arrays independently",
+    "Ran46 existing package/receipt negative tests without altering thresholds",
+    "Checked pinned CI provider and canonical execution policy unchanged",
+    "Prepared independent read-only ZIP byte/Git/source verifier for the final artifact"
+  ],
+  "custody_plan_verifier": {
+    "path": "verify_delivered_archive.py",
+    "sha256": "de3a24e32a1afa0c73ca6729644f48747f36b41cf23566d8c13743e0d4beb087",
+    "executed_on_final_artifact": false
+  },
+  "native_runtime_inputs": {
+    "recorded_checkout_head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+    "compared_exact_qualified_source": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+    "inputs": 116,
+    "mismatches": [],
+    "six_build_contract_inputs": [
+      "tools/build_native_extension.sh",
+      "tools/build_native_extension_windows.sh",
+      "tools/build_pinned_godot_cpp.sh",
+      "tools/toolchains/g++",
+      "third_party/native-toolchain.lock.json",
+      "tools/requirements-build.txt"
+    ],
+    "build_contract_mismatches": [],
+    "scope": "Input equivalence permits iteration control only; fresh same-run committed-source runtime build remains mandatory"
+  },
+  "repair_checkpoint": "repair-checkpoint.json"
+}

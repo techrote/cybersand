@@ -12,6 +12,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## ObjectShard M0–M2 — 2026-11-22
 
+The [M3 recovery ledger](../audits/2026-11-22-objectshard-m3-recovery.md) identifies the recovered 26-file staging handoff and fresh implementation. Use the [continuous-play guide](objectshard-m3-preflight-playtest.md) for the opt-in worker scene, and the [contract](../research/objectshard-m3-preflight.md) for exact target fences, copied receipts and the ordinary Workbench seam.
+
 The separate OBJECTSHARD-001R finisher #738 has a
 [source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
 and a verified corrected Windows ZIP. Follow its exact native/platform/package

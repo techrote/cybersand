@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "Additive questions for the Draft/HOLD ObjectShard M0–M2 branch candidate; no current-main or owner-acceptance implication.",
+  "purpose": "Additive questions for Draft/HOLD ObjectShard M0-M3 candidates; no current-main or owner-acceptance implication.",
   "questions": [
     {
       "id": "OBJECTSHARD01",
@@ -96,6 +96,38 @@
       "sources": [
         "../audits/2026-11-22-objectshard-final-acceptance.md",
         "../audits/2026-11-22-objectshard-portable-math-performance-delta.md"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD07",
+      "query": "Does ObjectShard M3 attach to the ordinary Workbench World and its existing physics roster?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "The executable rehearsal owns one real native World on one exclusive worker and real Rapier on main.",
+        "The ordinary GCR roster fixes geometry and mass; no attach_world API exists.",
+        "The feature launcher opens a separate experimental scene; production Workbench adoption is not claimed."
+      ],
+      "sources": [
+        "../../godot/scripts/object_shard_native_worker.gd",
+        "../../godot/scripts/object_shard_worker_host.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD08",
+      "query": "How does continuous ObjectShard editing prevent stale moving cuts and simulation starvation?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "Input retains session, body generation, local cell, incarnation, pose and material revisions.",
+        "Changed targets receive an explicit TargetChanged refusal; an old input is never re-hit on another cell.",
+        "At most four queued actions precede a requested semantic tick; bounded queues expose backpressure."
+      ],
+      "sources": [
+        "../../godot/scripts/object_shard_worker_host.gd",
+        "../../godot/tests/test_object_shard_worker_input_fences.gd"
       ]
     }
   ]
