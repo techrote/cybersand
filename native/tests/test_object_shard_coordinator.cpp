@@ -1329,6 +1329,15 @@ void m4_same_world_promotion_and_exact_motion() {
     CHECK(adapter.initially_bound());
     CHECK(&coordinator.world() == world);
     CHECK(adapter.registered_bodies() == 0);
+    const auto snapshot_time_before = coordinator.metrics().snapshot_ns;
+    for (unsigned repeat = 0; repeat < 20; ++repeat) {
+        const auto proof = coordinator.m4_owner_readback();
+        CHECK(proof.world_available && proof.session == initial.session);
+        CHECK(proof.tick == world->completed_tick_index());
+        CHECK(proof.active_count == 0 && !proof.truncated);
+    }
+    // The fixed-size M4 proof must never rebuild the presentation snapshot.
+    CHECK(coordinator.metrics().snapshot_ns == snapshot_time_before);
     gate::MotionTicket motion{};
     CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
     CHECK(adapter.grant_completed_tick(*world, coordinator, owner, world->completed_tick_index()) == gate::Verdict::Stale);
@@ -1505,6 +1514,9 @@ void m4_exclusive_mutable_capacity_refuses_fourth_real_owner() {
         CHECK(prepared.outcome == Outcome::Accepted);
         if (prepared.outcome != Outcome::Accepted) break;
         CHECK(activate(coordinator, prepared.shard));
+        const auto proof = coordinator.m4_owner_readback();
+        CHECK(proof.active_count == i + 1);
+        CHECK(proof.truncated == (i >= gate::kBodyLimit));
         gate::GeometryTicket ticket{};
         const auto outcome = adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
             coordinator, owner, prepared.shard, ticket);
