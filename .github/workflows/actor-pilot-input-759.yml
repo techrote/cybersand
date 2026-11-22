@@ -72,7 +72,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          timeout 1600 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_actor_configuration_native.gd > evidence/pilot-input-native.log 2>&1 || { tail -n 180 evidence/pilot-input-native.log; exit 1; }
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 1600 "$GODOT_BIN" --path godot --rendering-driver opengl3 --script res://tests/test_workbench_actor_configuration_native.gd > evidence/pilot-input-native.log 2>&1 || { tail -n 180 evidence/pilot-input-native.log; exit 1; }
           grep -F 'WB_ACTOR_CONFIGURATION_NATIVE ' evidence/pilot-input-native.log | tail -n 1
           if grep -E 'SCRIPT ERROR|Parse Error|ERROR:.*WB_ACTOR_CONFIGURATION_NATIVE' evidence/pilot-input-native.log; then
             echo 'Godot emitted regression error'; exit 1

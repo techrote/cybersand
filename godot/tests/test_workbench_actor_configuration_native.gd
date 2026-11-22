@@ -68,6 +68,9 @@ func keyboard_edge(key: Key, down: bool) -> void:
 	event.physical_keycode = key
 	event.pressed = down
 	Input.parse_input_event(event)
+	# Headless skips normal DisplayServer event pumping; the graphical
+	# regression still flushes to make the sampled key state deterministic.
+	Input.flush_buffered_events()
 
 
 func exercise_pilot_input() -> void:
