@@ -145,6 +145,16 @@ public:
                 candidate.pose_serial < slot->revision.pose_serial) return Verdict::Stale;
             // State-only material changes may increment material revision with
             // unchanged collider geometry: they still require a fresh ticket.
+            // But changed mass/COM/inertia/shape with an unchanged geometry
+            // revision could be smuggled past the installed-geometry witness.
+            if (candidate.geometry_revision == slot->revision.geometry_revision &&
+                (candidate.shape_count != slot->revision.shape_count ||
+                 candidate.mask_digest != slot->revision.mask_digest ||
+                 candidate.shape_digest != slot->revision.shape_digest ||
+                 candidate.mass != slot->revision.mass ||
+                 candidate.com_x != slot->revision.com_x ||
+                 candidate.com_y != slot->revision.com_y ||
+                 candidate.inertia != slot->revision.inertia)) return Verdict::Stale;
         }
         if (next_sequence_ == std::numeric_limits<std::uint64_t>::max())
             return Verdict::Capacity;
@@ -154,6 +164,9 @@ public:
         slot->ready = false;
         slot->revision = candidate;
         slot->ticket = ticket;
+        // A post-tick authoring change voids the former physical-time permit.
+        // It cannot be re-granted for the same semantic tick.
+        permit_armed_ = false;
         out = ticket;
         return Verdict::Accepted;
     }
@@ -214,6 +227,7 @@ public:
             slot.revision.pose_serial = body->pose.pose_serial;
         }
         permitted_tick_ = tick;
+        permit_armed_ = true;
         segments_ = 0;
         return Verdict::Accepted;
     }
@@ -226,7 +240,8 @@ public:
         const auto check = verify(world, coordinator, owner);
         if (check != Verdict::Accepted) return check;
         if (awaiting_motion_) return Verdict::Held;
-        if (!permitted_tick_ || world.completed_tick_index() != permitted_tick_ ||
+        if (!permit_armed_ || !permitted_tick_ ||
+            world.completed_tick_index() != permitted_tick_ ||
             coordinator.paused() || coordinator.snapshot().quarantined)
             return Verdict::Fenced;
         if (segments_ >= kSegmentLimit || next_sequence_ == std::numeric_limits<std::uint64_t>::max())
@@ -326,7 +341,7 @@ private:
     MotionTicket issued_{};
     std::uint64_t next_sequence_{}, permitted_tick_{}, baseline_tick_{};
     std::uint32_t segments_{};
-    bool valid_{}, awaiting_motion_{};
+    bool valid_{}, awaiting_motion_{}, permit_armed_{};
 
     [[nodiscard]] bool on_owner_thread() const noexcept {
         return owner_thread_ == std::this_thread::get_id();
