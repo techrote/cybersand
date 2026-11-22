@@ -72,7 +72,18 @@ func run() -> void:
 	var context: Array = panel.model_context()
 	check(context.size() == 1 and str(context[0].content) == "session marker A","model context includes only current-session turns")
 	panel.input_mode.select(0)
-	panel.input.text = '[{"shape":"pixels","points":[[10,10]],"material":58}]'
+	# Key-dialog confirmation must register arbitrary formats even before a
+	# model Send. Direct JSON can carry extra user-defined keys and values.
+	var canary := "art-audit::custom!secret?2026"
+	panel.key_field.text = canary
+	panel.key_dialog.confirmed.emit()
+	check(panel.provider.secrets.has(canary),"Key dialog registers secret immediately")
+	panel.keys["NVIDIA"] = "other-provider::secret!2026"
+	var nested := {}
+	nested["nested_" + canary] = "other-provider::secret!2026"
+	var request := {"shape":"pixels","points":[[10,10]],"material":58,"annotation":canary}
+	request["field_" + canary] = nested
+	panel.input.text = JSON.stringify([request])
 	panel.submit_text()
 	var deadline := Time.get_ticks_msec()+60000
 	while (panel.executor.active or panel._manual_log_pending) and Time.get_ticks_msec()<deadline:
@@ -80,6 +91,7 @@ func run() -> void:
 	check(not panel._manual_log_pending,"direct JSON write reaches terminal log event")
 	first_text = FileAccess.get_file_as_string(first)
 	check(first_text.contains("manual_program") and first_text.contains("manual_admission") and first_text.contains("manual_result"),"manual operation and native result share the same file")
+	check(not first_text.contains(canary) and not first_text.contains("other-provider::secret!2026"),"pre-Send Direct JSON audit redacts custom credential values and nested dictionary keys")
 	panel.change_provider(0) # Local LM Studio: never contact a paid cloud endpoint.
 	panel.endpoint.text = "http://127.0.0.1:1/v1"
 	panel.model.text = "offline-test-model"

@@ -68,6 +68,9 @@ var tools_button := Button.new()
 var provider_message := "Idle"
 var log_draw := false
 var _manual_log_pending := false
+var _manual_submission_sequence := 0
+var _manual_active_submission := -1
+var _manual_active_batch_sequence := -1
 var conversation: Array = []
 var _pending_traffic_path := ""
 var conversation_loaded := true
@@ -360,8 +363,41 @@ func add_rectangle(parent: Control, target: Array[SpinBox], values: Array) -> vo
 func rectangle(values: Array[SpinBox]) -> Rect2i:
 	return Rect2i(int(values[0].value),int(values[1].value),int(values[2].value),int(values[3].value))
 
+func _register_provider_keys_for_redaction() -> void:
+	# Keep earlier and currently selected credentials in memory for the entire
+	# session. Never write raw Key-dialog values to the audit.
+	for value: Variant in keys.values():
+		if value is String and not value.is_empty() and not provider.secrets.has(value):
+			provider.secrets.append(value)
+
+func _finish_manual_audit(on_shutdown: bool = false) -> void:
+	if not _manual_log_pending: return
+	if executor.active and not on_shutdown: return
+	# No native completion is invented when the scene is closing. The last
+	# acknowledged prefix is evidence; a queued suffix may remain unresolved.
+	var native_terminal := not executor.active
+	var record := {
+		"submission_id":_manual_active_submission,
+		"batch_sequence":_manual_active_batch_sequence,
+		"audit_state":"terminal" if native_terminal else "shutdown_cancel_requested_unconfirmed",
+		"native_terminal":native_terminal,
+		"result":executor.result.duplicate(true)}
+	if not native_terminal:
+		record["reason"] = "Workbench closed after Stop request; native suffix outcome is not confirmed."
+	_register_provider_keys_for_redaction()
+	if not provider.log_event("manual_result",record):
+		input_error = "Manual drawing audit could not be saved. "+provider.log_warning
+		# A live panel can retry when storage becomes available.
+		if not on_shutdown: return
+	_manual_log_pending = false
+	_manual_active_submission = -1
+	_manual_active_batch_sequence = -1
+
 func submit_text() -> void:
 	executor.wb = wb
+	_register_provider_keys_for_redaction()
+	executor.poll()
+	_finish_manual_audit()
 	input_error = ""
 	var parsed := JSON.new()
 	if parsed.parse(input.text) != OK:
@@ -377,14 +413,28 @@ func submit_text() -> void:
 	if erase.button_pressed: allowed.append(0)
 	var bounds := rectangle(fields)
 	var guards := [rectangle(protected_fields)] if protect.button_pressed else []
+	_manual_submission_sequence += 1
+	var submission_id := _manual_submission_sequence
 	provider.log_event("manual_program",{
+		"submission_id":submission_id,
 		"mode":"Direct JSON","program":parsed.data,"focus_xywh":[bounds.position.x,bounds.position.y,bounds.size.x,bounds.size.y],
 		"protected":[[guards[0].position.x,guards[0].position.y,guards[0].size.x,guards[0].size.y]] if not guards.is_empty() else [],
 		"materials":allowed,"shapes":enabled_shapes(),"pixel_limit":int(pixel_limit.value)})
-	var answer: Dictionary = executor.submit(parsed.data,bounds,guards,allowed)
-	provider.log_event("manual_admission",answer)
-	_manual_log_pending = answer.status == "queued"
-	if answer.status == "refused": input_error = answer.reason
+	# A rejected overlapping Draw cannot retire the existing native batch's
+	# pending terminal audit. Do not enter submit() while it remains active.
+	var answer: Dictionary
+	if _manual_log_pending:
+		answer = {"status":"refused","reason":"Finish or Stop the current manual batch first."}
+	else:
+		answer = executor.submit(parsed.data,bounds,guards,allowed)
+	var batch_id := int(executor.batch_sequence) if answer.status == "queued" else -1
+	provider.log_event("manual_admission",{"submission_id":submission_id,
+		"batch_sequence":batch_id,"result":answer})
+	if answer.status == "queued":
+		_manual_active_submission = submission_id
+		_manual_active_batch_sequence = batch_id
+		_manual_log_pending = true
+	if answer.status == "refused": input_error = str(answer.reason)
 
 func _process(_delta: float) -> void:
 	_poll_traffic_export()
@@ -392,9 +442,7 @@ func _process(_delta: float) -> void:
 	_bind_selection()
 	executor.wb = wb
 	executor.poll()
-	if _manual_log_pending and not executor.active:
-		_manual_log_pending = false
-		provider.log_event("manual_result",executor.result)
+	_finish_manual_audit()
 	_update_conversation_guard()
 	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
@@ -457,7 +505,11 @@ func _process(_delta: float) -> void:
 		state.tooltip_text = status_text
 
 func _exit_tree() -> void:
-	if wb != null: stop_all("Workbench closed")
+	if wb != null:
+		stop_all("Workbench closed")
+		# No additional _process tick is guaranteed during orderly shutdown.
+		# Record an explicitly unconfirmed cancellation if native work remains.
+		_finish_manual_audit(true)
 
 func mount_provider_controls(column: VBoxContainer) -> void:
 	# Provider preferences persist, but conversation turns and archive pointers do
@@ -611,6 +663,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	key_dialog.add_child(key_field)
 	key_dialog.confirmed.connect(func() -> void:
 		keys[current_provider] = key_field.text.strip_edges()
+		_register_provider_keys_for_redaction()
 		key_field.clear())
 	key_dialog.canceled.connect(key_field.clear)
 	add_child(key_dialog)
@@ -1330,11 +1383,10 @@ func send_next(expected_epoch: int) -> void:
 	request_url = endpoint.text.strip_edges()
 	sent_input_price = input_price.value
 	sent_output_price = output_price.value
-	# Register the currently selected secret BEFORE the reproducibility
-	# snapshot: guidance, prompts and even JSON field names can echo a key.
+	# Selected and previously entered credentials must already be known to the
+	# redactor before any request snapshot, including rotated keys.
+	_register_provider_keys_for_redaction()
 	var request_key: String = str(keys.get(current_provider,""))
-	if not request_key.is_empty() and not provider.secrets.has(request_key):
-		provider.secrets.append(request_key)
 	# The snapshot is sufficient to manually reproduce the request from this
 	# session's standalone JSONL, without an old chat transcript or profile link.
 	provider.log_event("request_parameters",{

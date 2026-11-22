@@ -5,6 +5,18 @@ on:
       - 'godot/scripts/art_batch_panel.gd'
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/tests/test_art_session_log.gd'
+      - 'godot/tests/test_art_manual_audit.gd'
+      - 'godot/tests/test_art_lazy_traffic.gd'
+      - 'godot/tests/test_art_traffic_panel_safety.gd'
+      - 'godot/tests/test_art_history_durability.gd'
+      - 'godot/tests/test_art_panel_ui.gd'
+      - 'godot/tests/test_art_traffic_integrity.gd'
+      - 'godot/tests/test_art_history_receipt_identity.gd'
+      - 'godot/tests/test_art_batch_native.gd'
+      - 'godot/scripts/art_provider.gd'
+      - 'godot/scripts/art_batch_executor.gd'
+      - 'godot/tools/qualify_gentek80_main_integration.gd'
+      - 'tools/ci/run_godot_regressions.py'
       - 'docs/systems/workbench-art-providers.md'
       - '.github/workflows/art-session-logging.yml'
   workflow_dispatch:
@@ -51,7 +63,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for case in test_art_session_log test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_traffic_integrity test_art_history_receipt_identity test_art_batch_native; do
+          for case in test_art_session_log test_art_manual_audit test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_traffic_integrity test_art_history_receipt_identity test_art_batch_native; do
             export XDG_DATA_HOME="$RUNNER_TEMP/session-$case"
             mkdir -p "$XDG_DATA_HOME"
             budget=240
@@ -119,7 +131,7 @@ jobs:
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-session-import'
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
           Invoke-CheckedGodot 'import' @('--headless','--path','godot','--editor','--import') 180
-          foreach ($case in @('test_art_session_log','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_traffic_integrity')) {
+          foreach ($case in @('test_art_session_log','test_art_manual_audit','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_traffic_integrity')) {
             $env:APPDATA = Join-Path $env:RUNNER_TEMP "art-session-$case"
             New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
             Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") 240
