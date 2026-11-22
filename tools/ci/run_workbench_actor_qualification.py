@@ -118,6 +118,7 @@ def project_inputs() -> dict:
         "tools/build_pinned_godot_cpp.sh", "tools/build_native_extension.sh",
         "tools/build_native_extension_windows.sh", "tools/check_linux_runtime_floor.sh",
         "tools/toolchains",
+        "native/tests", "Makefile",
         "materials/catalogue", "tools/material_catalogue", "tools/lcb",
         "docs/reference/liquid-solver-capability-matrix.json",
         "docs/reference/liquid-policy-wire-vectors.json",
