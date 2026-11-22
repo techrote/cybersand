@@ -70,7 +70,9 @@ class Workbench extends Control:
 		applied_controls.append(config.duplicate(true))
 	func actor_observation(_id: int,_issue: bool = false) -> Dictionary: return {}
 	func refuse(reason: String) -> bool:
-		message = reason
+		# Mirror the actual Shared Workbench refusal contract so the panel's
+		# rejected-Apply acknowledgements are exercised, not bypassed by a mock.
+		message = "Refused · " + reason.trim_prefix("MicroScenario rejected; ")
 		return false
 	func actor_placement_pose(_id: int) -> Dictionary: return placement_pose
 
