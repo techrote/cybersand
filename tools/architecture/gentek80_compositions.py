@@ -7,6 +7,7 @@ Hosted Windows/ANGLE does NOT qualify physical Windows 11/NVIDIA acceptance.
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 from pathlib import Path
@@ -16,6 +17,7 @@ import qualify
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = "res://tools/qualify_gentek80_compositions.gd"
+SHARES = [[30.0, 25.0, 20.0, 15.0, 10.0], [20.0] * 5]
 COMPOSITIONS = [
     ["cathedral_megaframe", "seeded_typology_megablock", "megatruss_station",
      "interlaced_viaduct", "suspended_arcology"],
@@ -36,6 +38,29 @@ def validate(phase: dict, label: str) -> dict[str, tuple]:
     for i, case in enumerate(cases):
         if case.get("modules") != COMPOSITIONS[i] or case.get("active_slots") != 5:
             raise ValueError("Not five exact active showcase modules")
+        if case.get("shares") != SHARES[i]:
+            raise ValueError("Equal/unequal requested shares not restored exactly")
+        controls = case.get("configurations", [])
+        if len(controls) != 5:
+            raise ValueError("Five style geometry/material/aperture/deterioration receipts missing")
+        edited = controls[0] if i == 0 else controls[2]
+        if i == 0 and not (
+            int(edited["geometry"]["room_size"]) == 88
+            and int(edited["geometry"]["floor_height"]) == 112
+            and edited["materials"] == {"wall": 130, "floor": 114, "window": 120}
+            and edited["apertures"]["automatic_doors"] is True
+            and edited["apertures"]["automatic_windows"] is True
+            and float(edited["deterioration"]) == 0.05
+        ):
+            raise ValueError("First showcase lacks nondefault geometry/material and deterioration")
+        if i == 1 and not (
+            int(edited["geometry"]["floor_height"]) == 80
+            and int(edited["materials"]["wall"]) == 58
+            and edited["apertures"]["automatic_doors"] is False
+            and edited["apertures"]["automatic_windows"] is False
+            and float(edited["deterioration"]) == 0.1
+        ):
+            raise ValueError("Second showcase lacks nondefault apertures/material/deterioration")
         if case.get("display") == "headless" or case.get("native_receipts", 0) < 1:
             raise ValueError("Native/graphical evidence is absent")
         if i == 1 and not all(float(x) < 0 for x in case.get("origin", [])):
@@ -48,6 +73,45 @@ def validate(phase: dict, label: str) -> dict[str, tuple]:
     if len(identity) != 2 or len(set(identity.values())) != 2:
         raise ValueError("Two source/project/material identities not distinct")
     return identity
+
+
+def inventory_packaged_godot(engine: Path) -> dict:
+    """Non-invasive process-path inventory for both Godot binaries.
+
+    Windows PowerShell 5.1 does not reliably accept trailing script arguments
+    after -Command. Encode each exact path separately as UTF-8/base64 and
+    decode within the script. Only inspect matching ExecutablePath: never kill.
+    """
+    if os.name != "nt":
+        return {"supported": False, "reason": "Windows pathname process check not applicable"}
+    paths = [str(engine), str(engine.with_name(engine.name.replace("_console.exe", ".exe")))]
+    console_encoded, gui_encoded = [
+        base64.b64encode(path.encode("utf-8")).decode("ascii") for path in paths
+    ]
+    script = (
+        "$ErrorActionPreference='Stop';"
+        "$console=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" + console_encoded + "'));"
+        "$gui=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" + gui_encoded + "'));"
+        "$targets=@($console,$gui);"
+        "if($targets.Count -ne 2 -or !$console -or !$gui){throw 'Two Godot paths required'};"
+        "$ids=@(Get-CimInstance Win32_Process | Where-Object "
+        "{ $_.ExecutablePath -and ($targets -contains $_.ExecutablePath) }"
+        " | ForEach-Object { $_.ProcessId });"
+        "[PSCustomObject]@{paths=$targets;pids=$ids} | ConvertTo-Json -Compress -Depth 4"
+    )
+    result = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive",
+                             "-Command", script], capture_output=True, text=True, timeout=90)
+    if result.returncode:
+        return {"supported": False, "error": result.stderr.strip(), "exit": result.returncode}
+    try:
+        value = json.loads(result.stdout.strip())
+        if not isinstance(value, dict) or not isinstance(value.get("pids"), list):
+            raise ValueError("Process inventory must contain a list of PIDs")
+        return {"supported": True, "pids": value["pids"], "paths": value.get("paths"),
+                "checked_console_and_gui": True}
+    except (ValueError, json.JSONDecodeError) as exc:
+        return {"supported": False, "error": str(exc), "stdout": result.stdout.strip()}
+
 
 
 def main() -> int:
@@ -85,8 +149,15 @@ def main() -> int:
     command = [str(engine), "--audio-driver", "Dummy", "--path", str(project)]
     results = [qualify.run("import", [*command, "--headless", "--editor", "--quit"], env, output, args.timeout)]
     phases = {}
+    process_boundaries = []
     if results[0]["passed"]:
         for phase in ("author", "reopen"):
+            pre = inventory_packaged_godot(engine)
+            process_boundaries.append({"phase": phase, "when": "before", **pre})
+            if os.name == "nt" and (not pre.get("supported") or pre.get("pids")):
+                results.append({"case": f"{phase}-preexisting-process", "passed": False,
+                                "inventory": pre})
+                break
             env["CYBERSAND_GENTEK80_COMPOSITION_PHASE"] = phase
             display = ["--headless"]
             if args.graphical:
@@ -98,6 +169,12 @@ def main() -> int:
             if receipt.is_file():
                 phases[phase] = json.loads(receipt.read_text(encoding="utf8"))
             results.append(result)
+            post = inventory_packaged_godot(engine)
+            process_boundaries.append({"phase": phase, "when": "after", **post})
+            if os.name == "nt" and (not post.get("supported") or post.get("pids")):
+                results.append({"case": f"{phase}-surviving-process", "passed": False,
+                                "inventory": post})
+                break
             if not result["passed"]:
                 break
     comparable = separate = False
@@ -123,7 +200,7 @@ def main() -> int:
     receipt = {"schema": "gentek80-five-showcase-source-exact-v1", "passed": passed,
                "source_commit": before["source_commit"], "source_tree": before["source_tree"],
                "runtime_sha256": before["runtime_sha256"], "graphical": args.graphical,
-               "independent_processes": separate, "matched_project_material_recipe": comparable,
+               "independent_processes": separate, "matching_engine_process_boundaries": process_boundaries, "matched_project_material_recipe": comparable,
                "original_frames": [{"name": p.name, "sha256": qualify.sha(p)} for p in frames],
                "results": results, "contract_errors": contract_errors, **phases}
     (output / "qualification.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf8")
