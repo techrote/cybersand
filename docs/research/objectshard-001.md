@@ -19,6 +19,14 @@ bridge repair is separately identified from the original M2 native runtime and
 from the later integrated candidate. M3 preparation and owner acceptance remain
 separate gates; the original native 10/74 timing-limit failure is retained.
 
+The [001R implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md)
+describes resumable component census and scarce-slot admission, source-owned
+moving cuts, actual bounded Rapier segments with native application receipts,
+one-opportunity external Fire contact, and prospective playtest capture. These
+are isolated Lab capabilities on the child branch, not ordinary Workbench
+defaults. The improved launcher and delivered-ZIP path matrix require their own
+exact-source Windows result; an earlier M2 package does not qualify these changes.
+
 Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an
 exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
 distinguishes passing platform qualification, the retained native timing failure,

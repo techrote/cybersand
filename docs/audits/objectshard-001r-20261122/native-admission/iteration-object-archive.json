@@ -1,0 +1,278 @@
+{
+  "schema": "objectshard-001r-lossless-iteration-object-archive-v1",
+  "scope": "Only completed specialistA iteration objects; source snapshots, logs, test binaries and matrix-control objects unchanged. No sibling mission files.",
+  "restore": "gzip -dk path/to/name.o.gz restores original .o; verify original_sha256.",
+  "records": [
+    {
+      "original_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/material_rules.o",
+      "archive_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/material_rules.o.gz",
+      "original_bytes": 207672,
+      "archive_bytes": 48150,
+      "original_sha256": "54ed38ed484ef3407d6b356096a8a95bf1ebb82a7aed5c554211d1bff63a6586",
+      "archive_sha256": "e93184ed7d7c3ea94fecd1641dc90cd2c026cab0f275fe34694fef5d263d78a5",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/object_shard.o",
+      "archive_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/object_shard.o.gz",
+      "original_bytes": 1070880,
+      "archive_bytes": 222169,
+      "original_sha256": "868efa89797aedcd3b19963d65c14a9d29e806c357b78a9ab7d6f8f1f7c16693",
+      "archive_sha256": "399ea946068cb2abd9fd203c66859278d1c9af4471ef962cd052cff7fac1b9d9",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/object_shard_coordinator.o",
+      "archive_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/object_shard_coordinator.o.gz",
+      "original_bytes": 4245984,
+      "archive_bytes": 918488,
+      "original_sha256": "20e14035e0c1f67f5a6b4e0745193a73056538c5b509b79d0110d582a2e8ec6c",
+      "archive_sha256": "a338aefbb0d14fb012739c81fe65b338cb105bff6d3ae1b6a2122b1dbbcfb533",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/scheduler_geometry.o",
+      "archive_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/scheduler_geometry.o.gz",
+      "original_bytes": 48808,
+      "archive_bytes": 16175,
+      "original_sha256": "d105f165c1ecbdef6432819e01caaa1281e3c0fdb1da7b5a36093608fd4bbe5c",
+      "archive_sha256": "0fe7c3551927c237a736bbbfe531161c5e0ce9fd89f2533d91120fe00734bea5",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/settled_world_discovery.o",
+      "archive_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/settled_world_discovery.o.gz",
+      "original_bytes": 3386752,
+      "archive_bytes": 658072,
+      "original_sha256": "da3278608016962d908d33e26dd6077598155d470b212c8ea3a67e79ecc0a2d0",
+      "archive_sha256": "0469552f126f4e879bf96cc20d5760591f5fbc82d55c8364a856ed1dce89a369",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/world.o",
+      "archive_path": "build/objectshard-001r-native/20261122T040000.571740Z-ffc785c1c6c8/objects/world.o.gz",
+      "original_bytes": 14749216,
+      "archive_bytes": 3115540,
+      "original_sha256": "0073859ea78128a593fd791ed1c0f271b026c1c99986e7a33736ad69f2745520",
+      "archive_sha256": "7925194928b60f1c3b756f12c7479ffb2b559cb04700d8d783d38bbb7ded9f88",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/material_rules.o",
+      "archive_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/material_rules.o.gz",
+      "original_bytes": 207704,
+      "archive_bytes": 48162,
+      "original_sha256": "1e78a8b9871893d960555ebc18df34a5f28160e1df12f1de8f635c5f2a40396f",
+      "archive_sha256": "c7f8561ef437fbd8080deb462a2cac4b55a293681f00b69d4548e0a18b30010d",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/object_shard.o",
+      "archive_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/object_shard.o.gz",
+      "original_bytes": 1070912,
+      "archive_bytes": 222172,
+      "original_sha256": "7773967285d49f6840cc928e815f1ccc51dcc7950207c65582bf7f79ac3cbb99",
+      "archive_sha256": "4f27a819e3dbe59062a6fb540dcdbb42e3cee1033290c87b6b07f4ed3ccd3639",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/object_shard_coordinator.o",
+      "archive_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/object_shard_coordinator.o.gz",
+      "original_bytes": 4248856,
+      "archive_bytes": 919363,
+      "original_sha256": "484d5abbf7c88cbf16793168d224f334e913b649b92bf601ee3ee91268481346",
+      "archive_sha256": "3fbfd0ab01d5e987569ef5df4e6747e94efd252a0aefe32a27192171001ed14c",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/scheduler_geometry.o",
+      "archive_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/scheduler_geometry.o.gz",
+      "original_bytes": 48832,
+      "archive_bytes": 16185,
+      "original_sha256": "e034a219c3584963ef974d7a886293222ea3d335ce14cfbf9001d1f5ea9cb4b4",
+      "archive_sha256": "6c7dd8d1b20dfc210bdb9d74494060aaa57201a6b511207f02732568fea950d6",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/settled_world_discovery.o",
+      "archive_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/settled_world_discovery.o.gz",
+      "original_bytes": 3386784,
+      "archive_bytes": 658087,
+      "original_sha256": "140083e84f00a68dea0ff77a2d4c0d3fe4a405698c6ec4c69175e8f01165df77",
+      "archive_sha256": "63b603c709aabda69da4c6435dcb8bbcb720a92b69d999d1b23f1fde54bc5767",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/world.o",
+      "archive_path": "build/objectshard-001r-native-admission/20261122T040109.643557Z-ec2ed9eac061/objects/world.o.gz",
+      "original_bytes": 14749248,
+      "archive_bytes": 3115550,
+      "original_sha256": "9827ef3e55d59e21a940cae43b1e469d27c45f57cfd6862380addbec9565784e",
+      "archive_sha256": "b4b5fda2c7648108854dcfcefde18e3ce9059ca3ec95a968fd2736edef540eed",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/material_rules.o",
+      "archive_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/material_rules.o.gz",
+      "original_bytes": 207704,
+      "archive_bytes": 48168,
+      "original_sha256": "8e75ccb93a329ed50ee1477e381e0617130748a53035b190b480bc70095438e1",
+      "archive_sha256": "04246f378220652a73cca20265f1e599b944d014913acbbb4db4fb5100d63986",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/object_shard.o",
+      "archive_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/object_shard.o.gz",
+      "original_bytes": 1070912,
+      "archive_bytes": 222167,
+      "original_sha256": "c971d7032e619a3164a1849752f14476da367f33ad1f1d25c03522ac1d4b47ae",
+      "archive_sha256": "f9f2fa8f262676ed000adf170f1eaae4cfa9b59c354be06aa20ca57bc3c3525b",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/object_shard_coordinator.o",
+      "archive_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/object_shard_coordinator.o.gz",
+      "original_bytes": 4351864,
+      "archive_bytes": 941687,
+      "original_sha256": "5219b01fec3ff4c507cdc7622827c0a8065a3d69e75a6d9518be784e38b25511",
+      "archive_sha256": "c38b1a051a7b962d719811805af67ab7b1ad66f9c62d245cf66829f9e79b79b8",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/scheduler_geometry.o",
+      "archive_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/scheduler_geometry.o.gz",
+      "original_bytes": 48840,
+      "archive_bytes": 16181,
+      "original_sha256": "140e96d9403ecffddfb29edccf017113e1180650afc506880ad26c1df0ce6eee",
+      "archive_sha256": "8fda4591d2c97fe3ea54689be187ad925d510d7b1c972d271a04ad42a63d34cf",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/settled_world_discovery.o",
+      "archive_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/settled_world_discovery.o.gz",
+      "original_bytes": 3386784,
+      "archive_bytes": 658082,
+      "original_sha256": "a3c1589c5b149043780358181feabbf54a3bf4ad6a45071db13737db3ccacbe3",
+      "archive_sha256": "d01bd6e8a158de035601a027b91e323e5f28100ac955fcc926885451560eb189",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/world.o",
+      "archive_path": "build/objectshard-001r-native-integrated/20261122T040333.552200Z-6e99069998b8/objects/world.o.gz",
+      "original_bytes": 14749248,
+      "archive_bytes": 3115541,
+      "original_sha256": "606492d8653aae9e9c7e5c4a839fe27717384eb970611362f89d14aa57b481d4",
+      "archive_sha256": "2403366153a8225b74eb1f24f0fe6c22b847df6ea4ab3c1b109581f91e5609e5",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/material_rules.o",
+      "archive_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/material_rules.o.gz",
+      "original_bytes": 366792,
+      "archive_bytes": 74186,
+      "original_sha256": "bbfe16c6f09d3981d44d14c22a5ed4bdef27661193e824ad1c4157c87de01281",
+      "archive_sha256": "26969d6ccc9435cb9d595773d5d015eead9c550b3b46469df147d6187d9b611b",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/object_shard.o",
+      "archive_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/object_shard.o.gz",
+      "original_bytes": 2875296,
+      "archive_bytes": 511817,
+      "original_sha256": "52c8184ef78d380a163bdcda8daae7d89fd585e06fa32d6b0311a5dafd1dcad6",
+      "archive_sha256": "26c4e1ec8e04d24e81aa9060bff0f413a2a9991e9e2a5b89da8dd60ef8783881",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/object_shard_coordinator.o",
+      "archive_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/object_shard_coordinator.o.gz",
+      "original_bytes": 13316608,
+      "archive_bytes": 2312166,
+      "original_sha256": "f98ab0aee94e06e84adac0df27d7724b46729f0d863b97cd962453321d375ab3",
+      "archive_sha256": "e8a7bbbd69ae88cc2da95fc2bc0c0e8eacc9ee9c9b0b49b06a7338aa88986761",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/scheduler_geometry.o",
+      "archive_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/scheduler_geometry.o.gz",
+      "original_bytes": 89512,
+      "archive_bytes": 24952,
+      "original_sha256": "040d5e865f42ed613b4b2cd73bb443b804d82a574a5696e0b27cfb70beff3894",
+      "archive_sha256": "e30f98c5c8bc729178b70feb09c8d3f6cb5cd214aba73158c148da372c41588f",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/settled_world_discovery.o",
+      "archive_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/settled_world_discovery.o.gz",
+      "original_bytes": 20872184,
+      "archive_bytes": 3093006,
+      "original_sha256": "3dfd866cbfab8c6902af961574f768edfa2c5bebf0781b47fb78de7fc727a5bc",
+      "archive_sha256": "5eb50899a1c03726690a0905b77967bdde37cb45e2ea63d44dd66af4f211b9ec",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/world.o",
+      "archive_path": "build/objectshard-001r-native-sanitized/20261122T040737.607797Z-7ad0cd16be19/objects/world.o.gz",
+      "original_bytes": 51271360,
+      "archive_bytes": 8645330,
+      "original_sha256": "74c133c30d1c5996c2c79a9e33f39f4c50a97a17c4ea943c289d01d02b45f25d",
+      "archive_sha256": "be47ff6a47505b06e0b5c7fcfed64c2af541c532c0e0864c767cea7915b2fb3c",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/material_rules.o",
+      "archive_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/material_rules.o.gz",
+      "original_bytes": 207704,
+      "archive_bytes": 48166,
+      "original_sha256": "353dcd407f15528378701b8e087fc79c37263fee59e3cb704f77ae94fd7f05b7",
+      "archive_sha256": "7beb1cccd9985f12567aacfbd61ff37c8c209b9f9716111e59bc53f177984a9d",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/object_shard.o",
+      "archive_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/object_shard.o.gz",
+      "original_bytes": 1070912,
+      "archive_bytes": 222173,
+      "original_sha256": "19acf1d6c5bd97e2ff4772fcbda9f54a0b6bc0af633bbfb085e82360e85bceac",
+      "archive_sha256": "aebacd21860106538a1aa54532a12b317ae977b5bd369c51fe82c6482b2642a4",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/object_shard_coordinator.o",
+      "archive_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/object_shard_coordinator.o.gz",
+      "original_bytes": 4358936,
+      "archive_bytes": 944088,
+      "original_sha256": "44c95f3ddd440d20b8e225eca0173a6ea8c0738912ff1884bd1db0979c222ab1",
+      "archive_sha256": "690f29c58a07d5ade9d6937877858c741f86299e7193b92a3789aeeaa645c1d3",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/scheduler_geometry.o",
+      "archive_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/scheduler_geometry.o.gz",
+      "original_bytes": 48840,
+      "archive_bytes": 16185,
+      "original_sha256": "a73dc19f6bed50cdab39e511d6ac6d5f9abb9164c2a53b95db1de8499f99bd44",
+      "archive_sha256": "92fe72cf40bd79999e79ea38a04590ae79757156d10361eabbe2eb12d7db692b",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/settled_world_discovery.o",
+      "archive_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/settled_world_discovery.o.gz",
+      "original_bytes": 3386792,
+      "archive_bytes": 658088,
+      "original_sha256": "0df74db1dbb67b3cff5e97d65f6d4927d3d9b754c35e11a315b7212ee49a1852",
+      "archive_sha256": "70dc7e691fc9bacba36133bd3686069074273c8020b7cd34166aaebe36380732",
+      "decompressed_hash_verified": true
+    },
+    {
+      "original_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/world.o",
+      "archive_path": "build/objectshard-001r-native-retry-delta/20261122T041147.103488Z-76f97638957c/objects/world.o.gz",
+      "original_bytes": 14749256,
+      "archive_bytes": 3115549,
+      "original_sha256": "147ae30951c49cddce6353dac50907e438c6e672c57af2e3d3b1615857637a4d",
+      "archive_sha256": "c79e1a05d1556dbdc51df6aa0431caaf2f5ac79d9b401d3eaca29dcf2a79ea8a",
+      "decompressed_hash_verified": true
+    }
+  ],
+  "saved_bytes": 149225547
+}

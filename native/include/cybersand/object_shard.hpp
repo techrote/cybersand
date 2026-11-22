@@ -147,6 +147,7 @@ private:
     Outcome prepare(Handle handle, std::uint64_t world, Bounds bounds,
         std::uint64_t captured_tick, const Limits& limits);
     Outcome rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) noexcept;
+    Outcome build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell) const noexcept;
     void clear_inventory() noexcept;
     void refresh_surface(std::size_t index) noexcept;
     void refresh_neighbor_surfaces(std::size_t index) noexcept;
@@ -199,6 +200,10 @@ public:
     [[nodiscard]] const Shard* find(Handle handle) const noexcept;
     [[nodiscard]] Outcome prepare(Bounds bounds, std::uint64_t captured_tick, Handle& result);
     [[nodiscard]] Outcome finish_preparation(Handle handle) noexcept;
+    // Preflight the exact post-erase cover before changing material inventory.
+    // Expected capacity refusal leaves payload, clocks and geometry unchanged.
+    [[nodiscard]] Outcome erase_structural(Handle handle, std::size_t cell,
+        std::uint64_t semantic_tick) noexcept;
     [[nodiscard]] Outcome reserve_physics(Handle handle) noexcept;
     [[nodiscard]] Outcome commit(Handle handle) noexcept;
     // Coordinator validates real installed terrain/mask/body receipts first.

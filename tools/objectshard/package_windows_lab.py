@@ -30,6 +30,41 @@ from verify_package import verify as verify_package
 MANIFEST = "objectshard-lab-manifest.json"
 
 
+def launchers(source: str) -> dict[str, str]:
+    """One permanent launch path, including the shipped diagnostic entry point.
+
+    %~dp0 ends in a backslash. Passing it immediately before a closing quote to
+    a Windows argv parser can escape that quote. Appending a dot keeps the path
+    equivalent without a dangling backslash. Delayed expansion stays disabled
+    so an extraction directory containing ! is also preserved.
+    """
+    if not re.fullmatch(r"[0-9a-f]{40}", source):
+        raise ValueError("Launcher requires an exact source commit")
+    common = ('@echo off\nsetlocal DisableDelayedExpansion\n'
+              'set "OBJECTSHARD_PACKAGE_ROOT=%~dp0."\n'
+              'cd /d "%OBJECTSHARD_PACKAGE_ROOT%"\n'
+              'if errorlevel 1 exit /b 1\n'
+              'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%OBJECTSHARD_PACKAGE_ROOT%\\tools\\objectshard\\verify_package.ps1" -Package "%OBJECTSHARD_PACKAGE_ROOT%"\n')
+    failure = ('\n:failed\necho ObjectShard Lab could not start. See the message above.\n'
+               'if /i not "%~1"=="--self-test" pause\nexit /b 1\n')
+    launcher = (common + 'if errorlevel 1 goto failed\n'
+                f'set "CYBERSAND_SOURCE_REVISION={source}"\n'
+                'set "CYBERSAND_PACKAGE_MANIFEST=%OBJECTSHARD_PACKAGE_ROOT%\\objectshard-lab-manifest.json"\n'
+                '"%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64_console.exe" --headless --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --editor --quit\n'
+                'if errorlevel 1 goto failed\n'
+                'if /i "%~1"=="--self-test" goto selftest\n'
+                'start "ObjectShard Lab" "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" res://object_shard_lab.tscn\n'
+                'exit /b %errorlevel%\n'
+                '\n:selftest\n'
+                'if not defined OBJECTSHARD_LAUNCH_RECEIPT goto failed\n'
+                'start "ObjectShard Lab launch qualification" /wait "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --rendering-driver opengl3_angle --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --script res://tests/test_object_shard_package_boot.gd\n'
+                'if errorlevel 1 goto failed\nexit /b 0\n' + failure)
+    verifier = (common + 'if errorlevel 1 goto failed\n'
+                'if /i not "%~1"=="--noninteractive" pause\nexit /b 0\n'
+                '\n:failed\nif /i not "%~1"=="--noninteractive" pause\nexit /b 1\n')
+    return {"Open ObjectShard Lab.cmd": launcher, "Verify ObjectShard Lab.cmd": verifier}
+
+
 def sha(path: Path) -> str:
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
@@ -92,19 +127,8 @@ def package(args: argparse.Namespace) -> dict:
     if not verifier.is_file():
         raise ValueError("Committed package verifier is absent")
     source = candidate["source_commit"]
-    launcher = (
-        '@echo off\nsetlocal\ncd /d "%~dp0"\n'
-        'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\\objectshard\\verify_package.ps1" -Package "%~dp0"\n'
-        'if errorlevel 1 (echo Package verification FAILED. & pause & exit /b 1)\n'
-        f'set CYBERSAND_SOURCE_REVISION={source}\n'
-        '"%~dp0Godot_v4.7-stable_win64_console.exe" --headless --path "%~dp0godot" --editor --quit\n'
-        'if errorlevel 1 (echo Godot import FAILED. & pause & exit /b 1)\n'
-        'start "ObjectShard Lab" "%~dp0Godot_v4.7-stable_win64.exe" --path "%~dp0godot" res://object_shard_lab.tscn\n'
-    )
-    (args.output / "Open ObjectShard Lab.cmd").write_text(launcher, encoding="utf-8", newline="\r\n")
-    (args.output / "Verify ObjectShard Lab.cmd").write_text(
-        '@echo off\ncd /d "%~dp0"\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\\objectshard\\verify_package.ps1" -Package "%~dp0"\npause\n',
-        encoding="utf-8", newline="\r\n")
+    for name, content in launchers(source).items():
+        (args.output / name).write_text(content, encoding="utf-8", newline="\r\n")
     identity = {"schema": "objectshard-lab-package-v1", "purpose": "Draft/HOLD owner evaluation; not a production release",
                 "source_commit": source, "source_tree": candidate["source_tree"],
                 "native": {"path": native.NATIVE, "sha256": candidate["sha256"], "source_inputs": candidate["source_inputs"]},

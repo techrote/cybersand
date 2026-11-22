@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""Qualify the immutable delivered ZIP through its shipped Windows launchers.
+
+Only an actual Windows run can pass. Each case extracts the same archive bytes;
+neither launchers nor manifest entries are repaired after packaging. This probe
+complements the full delivered-package test suite and is not physical acceptance.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import subprocess
+import sys
+import time
+import zipfile
+
+from verify_package import verify
+
+PATH_CASES = {
+    "spaces": "ObjectShard evaluation with spaces",
+    "parentheses": "ObjectShard Lab (1)",
+    "nested": "nested evaluation/another level/longer extraction directory/owner playtesting/candidate",
+    "unicode": "ObjectShard_日本語_é",
+}
+
+
+def extract(archive: Path, target: Path) -> None:
+    with zipfile.ZipFile(archive) as stream:
+        for item in stream.infolist():
+            path = PurePosixPath(item.filename)
+            if path.is_absolute() or ".." in path.parts or "\\" in item.filename or ":" in item.filename:
+                raise ValueError("Unsafe ZIP member: " + item.filename)
+            if item.external_attr >> 16 & 0o170000 == 0o120000:
+                raise ValueError("ZIP symlinks are not admitted")
+        stream.extractall(target)
+
+
+def create_archive(package: Path, archive: Path) -> dict:
+    identity = verify(package)
+    if archive.exists():
+        raise ValueError("Refusing to overwrite delivered ZIP")
+    archive.parent.mkdir(parents=True, exist_ok=True)
+    # Archive only the verified inventory and its manifest: no editor cache or
+    # first-run files created by previous package replay can enter the delivery.
+    members = sorted(identity["files_sha256"]) + ["objectshard-lab-manifest.json"]
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as stream:
+        for member in members:
+            stream.write(package / member, member)
+    return identity
+
+
+def qualify(archive: Path, output: Path, timeout: int = 240, extract_root: Path | None = None) -> dict:
+    if sys.platform != "win32":
+        raise ValueError("Shipped CMD qualification requires actual Windows")
+    output.mkdir(parents=True, exist_ok=False)
+    extraction = extract_root or output / "extracted"
+    if extraction.exists():
+        raise ValueError("Refusing to reuse ZIP extraction directories")
+    with archive.open("rb") as stream:
+        archive_hash = hashlib.file_digest(stream, "sha256").hexdigest()
+    report = {"schema": "objectshard-windows-zip-qualification-v1", "archive": str(archive.resolve()),
+              "zip_sha256": archive_hash, "cases": [], "failures": [], "status": "incomplete"}
+    try:
+        for name, relative in PATH_CASES.items():
+            target = extraction / relative
+            extract(archive, target)
+            identity = verify(target)
+            receipt = (output / (name + "-launch.json")).resolve()
+            environment = dict(os.environ, OBJECTSHARD_LAUNCH_RECEIPT=str(receipt))
+            row = {"case": name, "root": str(target.resolve()), "root_characters": len(str(target.resolve())),
+                   "source_commit": identity["source_commit"], "commands": []}
+            report["cases"].append(row)
+            for script, flag in [("Verify ObjectShard Lab.cmd", "--noninteractive"),
+                                 ("Open ObjectShard Lab.cmd", "--self-test")]:
+                command = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", "call", script, flag]
+                started = time.monotonic()
+                result = subprocess.run(command, cwd=target, env=environment,
+                                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+                (output / (name + "-" + ("verify" if flag == "--noninteractive" else "launch") + ".log")).write_bytes(result.stdout)
+                row["commands"].append({"script": script, "exit_code": result.returncode,
+                                         "elapsed_seconds": time.monotonic() - started})
+                if result.returncode != 0:
+                    raise ValueError(name + ": shipped launcher failed: " + script)
+            launched = json.loads(receipt.read_text(encoding="utf-8"))
+            if (launched.get("schema") != "objectshard-package-launch-v1" or launched.get("failures") != 0
+                    or launched.get("checks", 0) < 6 or launched.get("source_commit") != identity["source_commit"]):
+                raise ValueError(name + ": missing or failed exact-source launch receipt")
+            row["launch_receipt"] = launched
+            verify(target)
+        report["status"] = "passed"
+    except Exception as error:
+        report["failures"].append(str(error))
+        raise
+    finally:
+        (output / "result.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return report
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--package", type=Path, help="Create the immutable ZIP from this verified package first")
+    parser.add_argument("--zip", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--timeout", type=int, default=240)
+    parser.add_argument("--extract-root", type=Path, help="Separate temporary root; do not upload four runtime copies with the evidence")
+    args = parser.parse_args()
+    if args.package:
+        create_archive(args.package, args.zip)
+    print(json.dumps(qualify(args.zip.resolve(), args.output.resolve(), args.timeout,
+                             args.extract_root.resolve() if args.extract_root else None), indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <limits>
+#include <span>
 #include <stdexcept>
 #include <vector>
 
@@ -30,7 +31,14 @@ public:
         }
         revisions_[at] = ++revision_;
         if (materials_[at] != material) {
+            const auto previous = topology_class(materials_[at]);
             materials_[at] = material;
+            // Fire/Smoke/Sand motion is still payload-observed, but it cannot
+            // create a Wood bond or remove a scenery anchor. Such movement
+            // must not invalidate an otherwise unchanged structural census.
+            if (previous == topology_class(material)) return;
+            if (topology_revision_ == std::numeric_limits<std::uint64_t>::max()) { exhausted_ = true; return; }
+            ++topology_revision_;
             if (!queued_[at]) {
                 // One bit and one slot per admitted coordinate: no overflow
                 // can be hidden by dropping an invalidation.
@@ -64,6 +72,8 @@ public:
         // invalidate a prepared capture even when the new tuples are identical.
         if (incarnation_ == std::numeric_limits<std::uint64_t>::max()) exhausted_ = true;
         else ++incarnation_;
+        if (topology_revision_ == std::numeric_limits<std::uint64_t>::max()) exhausted_ = true;
+        else ++topology_revision_;
         for (std::size_t i = 0; i < revisions_.size(); ++i) {
             if (revision_ == std::numeric_limits<std::uint64_t>::max()) { exhausted_ = true; break; }
             revisions_[i] = ++revision_;
@@ -82,15 +92,35 @@ public:
         return contains(x, y) ? revisions_[index(x, y)] : 0;
     }
     [[nodiscard]] std::uint64_t revision() const noexcept { return revision_; }
+    [[nodiscard]] std::uint64_t topology_revision() const noexcept { return topology_revision_; }
     [[nodiscard]] std::uint64_t incarnation() const noexcept { return incarnation_; }
     [[nodiscard]] std::size_t pending() const noexcept { return count_; }
     [[nodiscard]] bool exhausted() const noexcept { return exhausted_; }
+    // Synchronous, opt-in coordinator seam. A real Fire opportunity already
+    // applied to shard Wood must not execute again against World Wood after
+    // mechanical displacement. The coordinator owns this bounded field and
+    // lends it only for the immediately following World tick.
+    void set_external_fire_claims(std::span<const std::uint32_t> claims,std::uint64_t tick) {
+        if (!claims.empty() && claims.size()!=revisions_.size())
+            throw std::invalid_argument("ObjectShard Fire claim bounds mismatch");
+        fire_claims_=claims;fire_claim_tick_=tick;
+    }
+    [[nodiscard]] bool external_fire_claimed(std::int64_t x,std::int64_t y,std::uint64_t tick) const noexcept {
+        return tick==fire_claim_tick_ && !fire_claims_.empty() && contains(x,y) &&
+            (fire_claims_[index(x,y)]&0x80000000U)!=0;
+    }
     [[nodiscard]] std::size_t storage_bytes() const noexcept {
         return revisions_.capacity() * sizeof(std::uint64_t) +
             materials_.capacity() * sizeof(Material) + queued_.capacity() +
             queue_.capacity() * sizeof(std::uint32_t);
     }
 private:
+    static std::uint8_t topology_class(Material material) noexcept {
+        if (material == Material::Wood) return 1;
+        if (material == Material::RedBrick) return 2;
+        if (material == Material::Wall) return 3;
+        return 0;
+    }
     static std::size_t checked_area(std::uint32_t width, std::uint32_t height) {
         if (width == 0 || height == 0 || width > 1024 || height > 1024 ||
             static_cast<std::uint64_t>(width) * height > 262144)
@@ -107,12 +137,14 @@ private:
     }
     std::int64_t x_{}, y_{};
     std::uint32_t width_{}, height_{};
-    std::uint64_t revision_{}, incarnation_{1};
+    std::uint64_t revision_{}, topology_revision_{}, incarnation_{1};
     bool exhausted_{};
     std::vector<std::uint64_t> revisions_;
     std::vector<Material> materials_;
     std::vector<std::uint8_t> queued_;
     std::vector<std::uint32_t> queue_;
+    std::span<const std::uint32_t> fire_claims_{};
+    std::uint64_t fire_claim_tick_{};
     std::size_t head_{}, count_{};
 };
 

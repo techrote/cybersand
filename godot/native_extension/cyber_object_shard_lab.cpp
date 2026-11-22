@@ -93,6 +93,34 @@ Dictionary terrain_identity(const os::TerrainReceipt& value) {
     return result;
 }
 
+Dictionary admission_value(const os::AdmissionStatus& value) {
+    Dictionary result;
+    result["census_complete"] = value.census_complete;
+    result["reason"] = os::admission_reason_name(value.reason);
+#define ADMISSION_COUNT(name) result[#name] = static_cast<std::int64_t>(value.name)
+    ADMISSION_COUNT(pending_mutations); ADMISSION_COUNT(pending_seeds); ADMISSION_COUNT(frontier_cells);
+    ADMISSION_COUNT(components); ADMISSION_COUNT(eligible); ADMISSION_COUNT(deferred);
+    ADMISSION_COUNT(anchored); ADMISSION_COUNT(unknown_boundary); ADMISSION_COUNT(refused_geometry);
+    ADMISSION_COUNT(slots_used); ADMISSION_COUNT(slot_limit); ADMISSION_COUNT(active_bodies);
+    ADMISSION_COUNT(largest_cells); ADMISSION_COUNT(work_last); ADMISSION_COUNT(work_peak);
+    ADMISSION_COUNT(completed_components); ADMISSION_COUNT(invalidations);
+    ADMISSION_COUNT(interrupted_searches); ADMISSION_COUNT(cached_capacity_calls);
+#undef ADMISSION_COUNT
+    Array candidates;
+    for (std::size_t i = 0; i < value.candidate_count && i < value.candidates.size(); ++i) {
+        const auto& candidate = value.candidates[i];
+        Dictionary row;
+        row["x"] = candidate.x; row["y"] = candidate.y;
+        row["cells"] = candidate.cells; row["bbox_area"] = candidate.bbox_area;
+        row["age"] = static_cast<std::int64_t>(candidate.age);
+        row["reason"] = os::admission_reason_name(candidate.reason);
+        candidates.push_back(row);
+    }
+    result["candidates"] = candidates;
+    result["age_scope"] = "completed admissions waited, independent of frame rate";
+    return result;
+}
+
 } // namespace
 
 CyberObjectShardLab::CyberObjectShardLab() : owner_(std::this_thread::get_id()) {}
@@ -135,16 +163,30 @@ Dictionary CyberObjectShardLab::configure(const Dictionary& configuration) {
     if (coordinator_) return refusal("AlreadyConfiguredUseReset");
     try {
         os::Config config;
-        const auto scenario = static_cast<std::int64_t>(configuration.get("scenario", 1));
-        const auto seed = static_cast<std::int64_t>(configuration.get("seed", 12));
+        const Variant scenario_value = configuration.get("scenario", 1);
+        const Variant seed_value = configuration.get("seed", 12);
+        if (scenario_value.get_type() != Variant::INT || seed_value.get_type() != Variant::INT)
+            return refusal("InvalidConfiguration");
+        const auto scenario = static_cast<std::int64_t>(scenario_value);
+        const auto seed = static_cast<std::int64_t>(seed_value);
         const Variant transfer_limit = configuration.get("transfer_budget", 64);
         if (transfer_limit.get_type() != Variant::INT) return refusal("InvalidConfiguration");
         const auto transfer_budget = static_cast<std::int64_t>(transfer_limit);
-        if (scenario < 0 || scenario > 4 || seed < 0) return refusal("InvalidConfiguration");
+        const Variant width_value = configuration.get("width", 192);
+        const Variant height_value = configuration.get("height", 128);
+        if (width_value.get_type() != Variant::INT || height_value.get_type() != Variant::INT)
+            return refusal("InvalidConfiguration");
+        const auto width = static_cast<std::int64_t>(width_value);
+        const auto height = static_cast<std::int64_t>(height_value);
+        if (width < 64 || width > 512 || height < 64 || height > 512 || width * height > 262144)
+            return refusal("InvalidConfiguration");
+        if (scenario < 0 || scenario > 6 || seed < 0) return refusal("InvalidConfiguration");
         if (transfer_budget < 0 || transfer_budget > 64) return refusal("InvalidConfiguration");
         config.scenario = static_cast<std::uint32_t>(scenario);
         config.seed = static_cast<std::uint64_t>(seed);
         config.transfer_budget = static_cast<std::uint32_t>(transfer_budget);
+        config.world_bounds.width = static_cast<std::uint16_t>(width);
+        config.world_bounds.height = static_cast<std::uint16_t>(height);
         coordinator_ = std::make_unique<os::Coordinator>(config);
         return snapshot();
     } catch (const std::exception& error) { return fail(error.what()); }
@@ -152,7 +194,7 @@ Dictionary CyberObjectShardLab::configure(const Dictionary& configuration) {
 
 Dictionary CyberObjectShardLab::reset(std::int64_t scenario, std::int64_t seed) {
     if (owner_ != std::this_thread::get_id() || !coordinator_) return refusal("ExclusiveOwnerRequired");
-    if (scenario < 0 || scenario > 4 || seed < 0) return refusal("InvalidConfiguration");
+    if (scenario < 0 || scenario > 6 || seed < 0) return refusal("InvalidConfiguration");
     try {
         const auto outcome = coordinator_->reset(static_cast<std::uint32_t>(scenario), static_cast<std::uint64_t>(seed));
         if (outcome.outcome == os::Outcome::Accepted) { failed_ = false; failure_ = String(); }
@@ -161,6 +203,14 @@ Dictionary CyberObjectShardLab::reset(std::int64_t scenario, std::int64_t seed) 
 }
 
 Dictionary CyberObjectShardLab::step(const Array& poses) {
+    return advance_native(poses, true);
+}
+
+Dictionary CyberObjectShardLab::accept_motion(const Array& poses) {
+    return advance_native(poses, false);
+}
+
+Dictionary CyberObjectShardLab::advance_native(const Array& poses, bool semantic_step) {
     if (!owned()) return refusal("Fenced");
     if (poses.size() > 3) return refusal("PoseCapacity");
     std::array<os::PoseSample, 3> copied{};
@@ -171,13 +221,41 @@ Dictionary CyberObjectShardLab::step(const Array& poses) {
         if (!identity(row, pose.shard) || !field(row, "body_generation", pose.body_generation) ||
             !field(row, "geometry_revision", pose.geometry_revision) || !field(row, "pose_serial", pose.pose_serial))
             return refusal("InvalidPoseIdentity");
+        for (const auto* key : {"x", "y", "rotation", "vx", "vy", "angular_velocity"}) {
+            if (!row.has(key)) return refusal("InvalidPose");
+            const auto type = row[key].get_type();
+            if (type != Variant::FLOAT && type != Variant::INT) return refusal("InvalidPose");
+        }
+        if (!row.has("sleeping") || row["sleeping"].get_type() != Variant::BOOL)
+            return refusal("InvalidPose");
         pose.x = row.get("x", 0.0); pose.y = row.get("y", 0.0); pose.rotation = row.get("rotation", 0.0);
         pose.vx = row.get("vx", 0.0); pose.vy = row.get("vy", 0.0);
         pose.angular_velocity = row.get("angular_velocity", 0.0); pose.sleeping = row.get("sleeping", false);
         if (!std::isfinite(pose.x) || !std::isfinite(pose.y) || !std::isfinite(pose.rotation) ||
             !std::isfinite(pose.vx) || !std::isfinite(pose.vy) || !std::isfinite(pose.angular_velocity)) return refusal("InvalidPose");
     }
-    try { return result(coordinator_->step(std::span(copied.data(), static_cast<std::size_t>(poses.size())))); }
+    try {
+        const auto samples = std::span(copied.data(), static_cast<std::size_t>(poses.size()));
+        const auto applied = semantic_step ? coordinator_->step(samples) : coordinator_->accept_motion(samples);
+        Dictionary receipt = result(applied);
+        if (!semantic_step) {
+            receipt["applied"] = applied.outcome == os::Outcome::Accepted;
+            receipt["semantic_tick"] = static_cast<std::int64_t>(coordinator_->world().completed_tick_index());
+            Array identities;
+            if (applied.outcome == os::Outcome::Accepted) for (const auto& pose : samples) {
+                Dictionary identity;
+                identity["session"] = static_cast<std::int64_t>(pose.shard.session);
+                identity["id"] = static_cast<std::int64_t>(pose.shard.id);
+                identity["generation"] = static_cast<std::int64_t>(pose.shard.generation);
+                identity["body_generation"] = static_cast<std::int64_t>(pose.body_generation);
+                identity["geometry_revision"] = static_cast<std::int64_t>(pose.geometry_revision);
+                identity["pose_serial"] = static_cast<std::int64_t>(pose.pose_serial);
+                identities.push_back(identity);
+            }
+            receipt["accepted_pose_serials"] = identities;
+        }
+        return receipt;
+    }
     catch (const std::exception& error) { return fail(error.what()); }
 }
 
@@ -197,6 +275,43 @@ Dictionary CyberObjectShardLab::edit_cell(Vector2i position, std::int64_t materi
 Dictionary CyberObjectShardLab::ignite(Vector2i position) {
     if (!owned()) return refusal("Fenced");
     try { return result(coordinator_->ignite(position.x, position.y)); }
+    catch (const std::exception& error) { return fail(error.what()); }
+}
+
+Dictionary CyberObjectShardLab::erase_shard(const Dictionary& request) {
+    if (!owned()) return refusal("Fenced");
+    os::ShardEditRequest copied;
+    std::uint64_t cell{}, incarnation{}, capability{};
+    if (!identity(request, copied.shard) || !field(request, "sequence", copied.sequence) ||
+        !field(request, "body_generation", copied.body_generation) ||
+        !field(request, "geometry_revision", copied.geometry_revision) ||
+        !field(request, "pose_serial", copied.pose_serial) ||
+        !field(request, "material_revision", copied.material_revision) ||
+        !field(request, "cell", cell) || !field(request, "incarnation", incarnation) ||
+        !field(request, "capability_version", capability) ||
+        cell > std::numeric_limits<std::uint32_t>::max() ||
+        incarnation > std::numeric_limits<std::uint32_t>::max() ||
+        capability > std::numeric_limits<std::uint32_t>::max()) return refusal("InvalidShardEditIdentity");
+    const Variant expected_value = request.get("expected", Variant());
+    if (expected_value.get_type() != Variant::DICTIONARY) return refusal("InvalidPayload");
+    const Dictionary expected = expected_value;
+    for (const auto* key : {"material", "state_a", "state_b", "temperature"})
+        if (!expected.has(key) || expected[key].get_type() != Variant::INT) return refusal("InvalidPayload");
+    const auto material = static_cast<std::int64_t>(expected["material"]);
+    const auto state_a = static_cast<std::int64_t>(expected["state_a"]);
+    const auto state_b = static_cast<std::int64_t>(expected["state_b"]);
+    const auto temperature = static_cast<std::int64_t>(expected["temperature"]);
+    if (material < 0 || material >= static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size()) ||
+        state_a < 0 || state_a > 65535 || state_b < 0 || state_b > 255 ||
+        temperature < -32768 || temperature > 32767 ||
+        !cybersand::material_definition(static_cast<cybersand::Material>(material)).valid)
+        return refusal("InvalidPayload");
+    copied.cell = static_cast<std::uint32_t>(cell);
+    copied.incarnation = static_cast<std::uint32_t>(incarnation);
+    copied.capability_version = static_cast<std::uint32_t>(capability);
+    copied.expected = {static_cast<cybersand::Material>(material), static_cast<std::uint16_t>(state_a),
+        static_cast<std::uint8_t>(state_b), static_cast<std::int16_t>(temperature)};
+    try { return result(coordinator_->erase_shard(copied)); }
     catch (const std::exception& error) { return fail(error.what()); }
 }
 
@@ -259,9 +374,11 @@ Dictionary CyberObjectShardLab::snapshot() {
         output["session"] = static_cast<std::int64_t>(source.session);
         output["world_incarnation"] = static_cast<std::int64_t>(source.world_incarnation);
         output["tick"] = static_cast<std::int64_t>(source.tick);
+        output["next_transaction"] = static_cast<std::int64_t>(source.next_transaction);
         output["width"] = source.bounds.width; output["height"] = source.bounds.height;
         output["paused"] = source.paused; output["quarantined"] = source.quarantined;
         output["last_result"] = result(source.last_result);
+        output["admission"] = admission_value(source.admission);
         PackedByteArray materials, pixels;
         materials.resize(source.world_materials.size()); pixels.resize(source.world_materials.size() * 4);
         for (std::size_t index = 0; index < source.world_materials.size(); ++index) {
@@ -313,6 +430,7 @@ Dictionary CyberObjectShardLab::snapshot() {
             row["origin_x"] = bounds.x; row["origin_y"] = bounds.y;
             row["width"] = bounds.width; row["height"] = bounds.height;
             row["body_generation"] = static_cast<std::int64_t>(body && body->body_generation ? body->body_generation : handle.generation);
+            row["pose_serial"] = static_cast<std::int64_t>(body ? body->pose.pose_serial : 0);
             // A draining domain keeps its last physical release anchor after
             // its RID retires. Capture coordinates never regain pose authority.
             row["position_x"] = body ? body->pose.x : static_cast<double>(bounds.x);
@@ -370,7 +488,11 @@ Dictionary CyberObjectShardLab::snapshot() {
         accounting["extinguished"] = static_cast<std::int64_t>(source.accounting.extinguished);
         accounting["accepted_exposures"] = static_cast<std::int64_t>(source.accounting.accepted_exposures);
         accounting["consumed_exposures"] = static_cast<std::int64_t>(source.accounting.consumed_exposures);
+        accounting["external_ignitions"] = static_cast<std::int64_t>(source.accounting.external_ignitions);
+        accounting["scope"] = "Lifetime ownership ledger, including explicit reset disposal; not session-only totals";
         output["accounting"] = accounting; output["metrics"] = metrics_value(source.metrics);
+        output["metrics_scope"] = "Current session counters and maxima, reset at native reset";
+        output["lifetime_metrics"] = metrics_value(source.lifetime_metrics);
         return output;
     } catch (const std::exception& error) { return fail(error.what()); }
 }
@@ -393,7 +515,7 @@ Dictionary CyberObjectShardLab::capabilities() const {
     value["implemented_milestone"] = 2;
     value["qualification"] = "M2 experimental source; exact platform/package receipts are separate from capability advertisement";
     value["surface_contact"] = true;
-    value["surface_contact_scope"] = "Historical non-consuming World Water exposure extinguishes the same Wood incarnation";
+    value["surface_contact_scope"] = "Historical non-consuming Water extinction; selected World Fire ignition opportunity bound to the same Wood incarnation";
     value["reaction"] = true;
     value["selected_lifecycle"] = "Wood combustion; retained Fire to Smoke; Smoke expiry; no internal transport";
     Dictionary rules;
@@ -413,7 +535,7 @@ Dictionary CyberObjectShardLab::capabilities() const {
     value["max_bodies"] = 3; value["max_shapes_per_body"] = 256;
     value["transfer_budget_per_tick"] = owner_ == std::this_thread::get_id() && coordinator_
         ? coordinator_->config().transfer_budget : 64;
-    value["motion_envelope"] = "At most 4 cells translation and 0.20 radians rotation per semantic step; unresolved complete rotations hold the Lab";
+    value["motion_envelope"] = "Each actual physics segment: at most 4 cells translation, 0.20 radians rotation and 8 cells corner travel; at most 16 segments per semantic step; unresolved complete rotations hold the Lab";
     value["world_solver"] = "Explicit isolated SerialInPlace baseline; production Water defaults unchanged";
     return value;
 }
@@ -422,7 +544,9 @@ void CyberObjectShardLab::_bind_methods() {
     ClassDB::bind_method(D_METHOD("configure", "configuration"), &CyberObjectShardLab::configure);
     ClassDB::bind_method(D_METHOD("reset", "scenario", "seed"), &CyberObjectShardLab::reset);
     ClassDB::bind_method(D_METHOD("step", "poses"), &CyberObjectShardLab::step);
+    ClassDB::bind_method(D_METHOD("accept_motion", "poses"), &CyberObjectShardLab::accept_motion);
     ClassDB::bind_method(D_METHOD("edit_cell", "position", "material", "state_a", "state_b", "temperature"), &CyberObjectShardLab::edit_cell);
+    ClassDB::bind_method(D_METHOD("erase_shard", "request"), &CyberObjectShardLab::erase_shard);
     ClassDB::bind_method(D_METHOD("ignite", "position"), &CyberObjectShardLab::ignite);
     ClassDB::bind_method(D_METHOD("ignite_shard", "id", "generation", "cell"), &CyberObjectShardLab::ignite_shard);
     ClassDB::bind_method(D_METHOD("prepare_next"), &CyberObjectShardLab::prepare_next);

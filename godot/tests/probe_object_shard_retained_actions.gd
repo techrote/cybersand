@@ -9,6 +9,10 @@ var output_path: String = "user://objectshard-retained-actions.json"
 var end_tick: int = 3600
 var trace: FileAccess
 var session: CyberObjectShardLabSession
+var expected_actions: int = 0
+var expected_owners: int = 0
+var checks: int = 0
+var failures: int = 0
 
 
 func _init() -> void:
@@ -45,6 +49,8 @@ func _run() -> void:
 			if position != null:
 				actions.append({"tick": int(event.tick), "position": Vector2i(int(position.get_string(1)), int(position.get_string(2))),
 					"material": int(event.detail.material), "historical_result": event.detail.result})
+	expected_actions = int(original.get("expected_retained_actions", actions.size()))
+	expected_owners = int(original.get("expected_moving_owners", 3))
 	_write({"schema": "objectshard-retained-action-probe-v1", "engine": Engine.get_version_info(),
 		"input_sha256": FileAccess.get_sha256(input_path), "input_session": original.session,
 		"retained_actions": actions.size(), "limitation": "Only retained OrdinaryEdit actions; not a complete deterministic replay."})
@@ -60,7 +66,10 @@ func _run() -> void:
 	while int(session.frame.tick) < end_tick and not session.failed:
 		while action_index < actions.size() and int(actions[action_index].tick) <= int(session.frame.tick):
 			var action: Dictionary = actions[action_index]
-			var edited: Dictionary = session.edit(action.position, int(action.material))
+			# Historical OrdinaryEdit was World-only. Do not reinterpret these old
+			# inputs as the new ownership-aware moving-shard editing capability.
+			var edited: Dictionary = session.native.edit_cell(action.position, int(action.material), 0, 0, 200)
+			session._refresh()
 			_write({"tick": session.frame.tick, "action_index": action_index, "action": action, "result": edited})
 			action_index += 1
 		var before: Array = _poses()
@@ -79,6 +88,19 @@ func _run() -> void:
 			"native_quarantined": session.frame.get("quarantined", false), "native_paused": session.frame.get("paused", false)})
 		if int(session.frame.tick) % 120 == 0:
 			await process_frame
+	_expect(action_index == expected_actions and expected_actions > 0, "all declared retained actions executed")
+	_expect(int(session.frame.tick) == end_tick, "long-duration semantic endpoint reached")
+	_expect(not session.failed, "native and physics clocks remain healthy")
+	_expect(session.bridge.bodies.size() == expected_owners, "expected independent physical owners retained")
+	for row: Dictionary in session.frame.get("shards", []):
+		if row.get("owns_inventory", false):
+			_expect(int(row.structural) > 0, "native structural inventory remains authoritative")
+			_expect(int(row.geometry_revision) == int(row.applied_physics_revision), "exact geometry revision applied")
+			_expect(not bool(row.geometry_pending), "no sustained geometry backlog")
+			if session.bridge.bodies.has(int(row.id)):
+				var rid: RID = session.bridge.bodies[int(row.id)].rid
+				_expect(bool(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING)), "body naturally resting at long endpoint")
+	_expect(int(session.frame.metrics.get("products_created", 0)) > 0, "native chemistry produced authentic material")
 	_finish({"last_result": final, "applied_retained_actions": action_index, "first_sleep_tick": first_sleep,
 		"diagnostics": session.bridge.diagnostics() if session.bridge.has_method("diagnostics") else {}})
 
@@ -109,12 +131,22 @@ func _finish(details: Dictionary) -> void:
 	result["probe"] = details
 	result["probe"]["limitation"] = "Only retained OrdinaryEdit actions; not a complete deterministic replay."
 	result["probe"]["input_sha256"] = FileAccess.get_sha256(input_path)
+	result["probe"]["checks"] = checks
+	result["probe"]["failures"] = failures
 	var output := FileAccess.open(output_path, FileAccess.WRITE)
 	output.store_string(JSON.stringify(result, "  ") + "\n")
 	output.close()
 	trace.close()
-	print(JSON.stringify({"output": output_path, "tick": session.frame.tick, "failed": session.failed,
-		"status": session.status, "owners": session.frame.shards.size()}))
-	var failed: bool = session.failed
+	print(JSON.stringify({"schema": "objectshard-retained-action-probe-v1", "output": output_path,
+		"tick": session.frame.tick, "failed": session.failed, "checks": checks,
+		"failures": failures + int(session.failed), "status": session.status, "owners": session.frame.shards.size()}))
+	var failed: bool = session.failed or failures > 0
 	session.close()
 	quit(1 if failed else 0)
+
+
+func _expect(condition: bool, message: String) -> void:
+	checks += 1
+	if not condition:
+		failures += 1
+		push_error(message)

@@ -86,8 +86,8 @@ func _ordinary() -> void:
 			for corner: Vector2 in [Vector2(x, y), Vector2(x + w, y), Vector2(x, y + h), Vector2(x + w, y + h)]:
 				deepest = maxf(deepest, (pose * corner).y)
 	_expect(deepest <= float(session.frame.height) - 16.0, "A: moving occupied geometry does not catastrophically cross the floor")
-	_expect(int(session.samples[-1].get("snapshot_copies", 0)) == 1,
-		"A: unchanged collision readback does not duplicate the native material publication")
+	_expect(int(session.samples[-1].get("snapshot_copies", 0)) == 2,
+		"A: native tick and accepted motion each publish once; unchanged terrain readback adds no copy")
 	var motion_report: Dictionary = session.export_result()
 	motion_report["evidence"] = {"starting_wood": original, "ordinary_erased_wood": erased,
 		"promoted_wood": int(row.structural), "phase_order": phases, "first_pose": first,

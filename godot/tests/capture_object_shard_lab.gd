@@ -34,6 +34,8 @@ func _run() -> void:
 		return
 	await _capture(lab, "objectshard-a-native-supported")
 	lab._erase_lower_band()
+	while not lab.session.pending_edits.is_empty():
+		lab.session.drain_edits()
 	for tick: int in range(8):
 		lab.session.advance(true)
 	lab._present()
@@ -51,6 +53,8 @@ func _run() -> void:
 		for tick: int in range(4):
 			lab.session.advance(true)
 		lab._erase_lower_band()
+		while not lab.session.pending_edits.is_empty():
+			lab.session.drain_edits()
 		for tick: int in range(8):
 			lab.session.advance(true)
 		var brush_ignitions: int = _ignite_exposed_wood(lab.session, 24)
@@ -66,6 +70,8 @@ func _run() -> void:
 	if stage == "m2":
 		lab._open(3)
 		lab._erase_lower_band()
+		while not lab.session.pending_edits.is_empty():
+			lab.session.drain_edits()
 		var cargo: int = 0
 		for tick: int in range(150):
 			lab.session.advance(true)
@@ -110,6 +116,8 @@ func _run() -> void:
 		await _capture(lab, "objectshard-c-water-extinction", {"water_contact": water, "same_wood_extinguished": extinguished})
 		lab._open(4)
 		lab._erase_lower_band()
+		while not lab.session.pending_edits.is_empty():
+			lab.session.drain_edits()
 		for tick: int in range(100):
 			lab.session.advance(true)
 		lab.canvas.overlays = false

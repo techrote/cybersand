@@ -1,0 +1,3579 @@
+{
+  "schema": "objectshard-owner-retained-actions-fixture-v1",
+  "source_export_sha256": "6d4c408fe649069373c68bd94529963413ae581d915f800d1c3858dde8d5d845",
+  "source_export_filename": "objectshard-5-1795318138.json",
+  "historical_runtime_source": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "limitation": "Derived retained OrdinaryEdit events only. This is not a complete input/process replay; historical operations target stationary World inventory.",
+  "scenario": 4,
+  "seed": 12,
+  "session": 5,
+  "expected_retained_actions": 198,
+  "expected_moving_owners": 3,
+  "reference_failure_tick": 970,
+  "events": [
+    {
+      "detail": {
+        "material": 0,
+        "position": "(38, 90)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 42
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(38, 90)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 46
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(39, 90)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 47
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(39, 90)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 48
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(40, 91)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 49
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(42, 91)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 50
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(43, 92)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 51
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(44, 93)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 52
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(44, 93)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 53
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(45, 93)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 54
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(46, 94)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 55
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(46, 94)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 56
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(47, 94)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 57
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(48, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 58
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(48, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 59
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(48, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 60
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(49, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 61
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(49, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 62
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(49, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 63
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(49, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 64
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(50, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 65
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(50, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 66
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(50, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 67
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(50, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 68
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(51, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 69
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(51, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 70
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(51, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 71
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(52, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 72
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(52, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 73
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(52, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 74
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(53, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 75
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(53, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 76
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(54, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 77
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(54, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 78
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(54, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 79
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(55, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 80
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(55, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 81
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(56, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 82
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(56, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 83
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(57, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 84
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(57, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 85
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(57, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 86
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(58, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 87
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(58, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 88
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(58, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 90
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(59, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 91
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(59, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 92
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(60, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 93
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(61, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 94
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(63, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 95
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(64, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 96
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(65, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 97
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(66, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 98
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(67, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 99
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(68, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 100
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(69, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 101
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(70, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 102
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(71, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 103
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(72, 103)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 104
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(74, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 105
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(75, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 106
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(76, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 107
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(77, 102)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 108
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(79, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 109
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(80, 101)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 110
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(81, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 111
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(83, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 112
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(84, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 113
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(85, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 114
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(86, 100)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 115
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(87, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 116
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(87, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 117
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(88, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 118
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(89, 99)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 119
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(89, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 120
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(90, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 121
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(90, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 122
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(90, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 123
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(91, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 124
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(92, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 125
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(93, 98)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 126
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(93, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 127
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(94, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 128
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(94, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 129
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(95, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 130
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(95, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 131
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(95, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 132
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(96, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 133
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(96, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 134
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(96, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 135
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(97, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 136
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(97, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 137
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(97, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": false,
+          "outcome": "DestinationUnavailable",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 138
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(98, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 140
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(98, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 141
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(98, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 142
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(98, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 143
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(99, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 144
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(99, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 145
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(99, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 148
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(99, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 151
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(100, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 152
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(100, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 153
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(100, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 154
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(101, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 155
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(101, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 156
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(102, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 157
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(103, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 158
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(103, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 159
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(104, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 160
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(105, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 161
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(106, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 162
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(107, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 163
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(107, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 164
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(108, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 165
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(109, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 166
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(110, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 167
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(111, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 168
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(112, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 169
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(114, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 170
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(115, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 171
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(116, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 172
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(117, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 173
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(118, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 174
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(119, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 175
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(121, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 176
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(122, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 177
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(123, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 178
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(124, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 179
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(125, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 180
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(126, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 181
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(127, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 182
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(128, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 183
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(128, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 184
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(129, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 185
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(130, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 186
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(130, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 187
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(130, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 188
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(131, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 189
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(131, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 190
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(131, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 191
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(132, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 192
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(132, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 193
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(132, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 194
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(132, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 195
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(133, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 196
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(133, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 197
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(134, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 198
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(134, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 199
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(135, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 200
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(135, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 201
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(136, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 202
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(136, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 203
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(137, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 204
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(137, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 205
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(138, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 206
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(138, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 207
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(138, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 208
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(139, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 209
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(139, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 211
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(139, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 214
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(140, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 215
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(140, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 216
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(140, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 217
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(141, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 219
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(141, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 223
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(141, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 224
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(142, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 225
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(142, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 226
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(143, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 227
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(143, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 228
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(144, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 229
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(144, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 230
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(145, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 231
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(145, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 232
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(146, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 233
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(146, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 234
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(146, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 235
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(147, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 237
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(147, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 238
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(147, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 239
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(148, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 240
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(148, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 241
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(149, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 242
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(149, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 243
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(149, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 244
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(150, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 245
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(150, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 246
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(151, 95)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 247
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(152, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 248
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(152, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 249
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(153, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 250
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(154, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 251
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(154, 96)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 252
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(155, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 254
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(155, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 256
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(155, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 257
+    },
+    {
+      "detail": {
+        "material": 0,
+        "position": "(156, 97)",
+        "result": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        }
+      },
+      "kind": "OrdinaryEdit",
+      "tick": 258
+    }
+  ]
+}

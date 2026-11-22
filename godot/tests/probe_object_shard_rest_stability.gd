@@ -255,5 +255,6 @@ func _finish(held: Dictionary) -> void:
 	output.close()
 	trace.close()
 	bridge.shutdown()
-	print(JSON.stringify({"probe": output_path, "variant": variant, "bodies": count, "checks": checks, "failures": failures}))
+	print(JSON.stringify({"schema": "objectshard-rest-stability-probe-v1", "probe": output_path,
+		"variant": variant, "bodies": count, "checks": checks, "failures": failures}))
 	quit(0 if failures == 0 else 1)

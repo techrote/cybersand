@@ -1,0 +1,131 @@
+{
+  "schema": "objectshard-larger-preset-native-probe-v1",
+  "cases": [
+    {
+      "id": 7,
+      "width": 192,
+      "height": 128,
+      "ordinary_edits": 1995,
+      "cut_y": 90,
+      "wood_cells_erased": 29,
+      "initial_components": 9,
+      "initial_eligible": 0,
+      "cut_eligible": 9,
+      "after_promotions_deferred": 6,
+      "after_promotions_reason": "BodySlots",
+      "promoted_cells": [
+        777,
+        48,
+        48
+      ],
+      "promoted_bbox_areas": [
+        1520,
+        126,
+        126
+      ],
+      "discovery_calls": 7,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 701400,
+      "construction_ns": 2880923,
+      "authoring_ns": 982036699,
+      "reported_retained_bytes": 5751028,
+      "registry_structural": 873,
+      "world_wood": 839
+    },
+    {
+      "id": 8,
+      "width": 256,
+      "height": 160,
+      "ordinary_edits": 1519,
+      "cut_y": 130,
+      "wood_cells_erased": 5,
+      "initial_components": 3,
+      "initial_eligible": 2,
+      "cut_eligible": 3,
+      "after_promotions_deferred": 0,
+      "after_promotions_reason": "Anchored",
+      "promoted_cells": [
+        584,
+        250,
+        68
+      ],
+      "promoted_bbox_areas": [
+        1736,
+        500,
+        114
+      ],
+      "discovery_calls": 6,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 515897,
+      "construction_ns": 4419608,
+      "authoring_ns": 1128906328,
+      "reported_retained_bytes": 7637114,
+      "registry_structural": 902,
+      "world_wood": 55
+    },
+    {
+      "id": 9,
+      "width": 256,
+      "height": 160,
+      "ordinary_edits": 1370,
+      "cut_y": 130,
+      "wood_cells_erased": 10,
+      "initial_components": 1,
+      "initial_eligible": 0,
+      "cut_eligible": 1,
+      "after_promotions_deferred": 0,
+      "after_promotions_reason": "Anchored",
+      "promoted_cells": [
+        896
+      ],
+      "promoted_bbox_areas": [
+        2640
+      ],
+      "discovery_calls": 5,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 595806,
+      "construction_ns": 2354860,
+      "authoring_ns": 1114606122,
+      "reported_retained_bytes": 7643264,
+      "registry_structural": 896,
+      "world_wood": 110
+    },
+    {
+      "id": 11,
+      "width": 320,
+      "height": 192,
+      "ordinary_edits": 3028,
+      "cut_y": 162,
+      "wood_cells_erased": 15,
+      "initial_components": 3,
+      "initial_eligible": 0,
+      "cut_eligible": 3,
+      "after_promotions_deferred": 0,
+      "after_promotions_reason": "Anchored",
+      "promoted_cells": [
+        775,
+        775,
+        775
+      ],
+      "promoted_bbox_areas": [
+        1728,
+        1728,
+        1728
+      ],
+      "discovery_calls": 8,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 715839,
+      "construction_ns": 3853076,
+      "authoring_ns": 3124092432,
+      "reported_retained_bytes": 9906048,
+      "registry_structural": 2325,
+      "world_wood": 159
+    }
+  ],
+  "qualification_scope": "Native exact production-preset edits and synthetic handoff receipts; no Rapier, GUI or Windows claim",
+  "preset_manifest_sha256": "dc5ca2916ea6722915e638696bab9e8c8fa8d90c72f39122433b71c2abd03d8b",
+  "preset_source_sha256": "f643d5e57ea1e3cb308501d629193ede19d665d69339b9fefcff244e8a18b76d",
+  "native_frozen_input": "76f97638957c09ba3ba3551096c89945e5f3de1ee2c76667b37907ad64de71ca",
+  "probe_source_sha256": "ac8d052939d5e2e0ee9acddccbbce8f6306501f13a8cb0f0a079c38d1d629ae8",
+  "native_receipts_are_physics_execution": false
+}

@@ -1,6 +1,6 @@
 param([Parameter(Mandatory=$true)][string]$Package)
 $ErrorActionPreference = "Stop"
-$root = [IO.Path]::GetFullPath($Package).TrimEnd('\','/')
+$root = [IO.Path]::GetFullPath($Package)
 $manifest = Get-Content -LiteralPath (Join-Path $root 'objectshard-lab-manifest.json') -Raw | ConvertFrom-Json
 if ($manifest.schema -ne 'objectshard-lab-package-v1') { throw 'Unsupported ObjectShard package manifest' }
 if ($manifest.source_commit -notmatch '^[0-9a-f]{40}$' -or $manifest.source_tree -notmatch '^[0-9a-f]{40}$') { throw 'Missing exact source identity' }
@@ -13,7 +13,8 @@ $required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', '
     'godot/scripts/object_shard_lab.gd', 'godot/scripts/object_shard_lab_session.gd',
     'godot/scripts/object_shard_lab_view.gd', 'godot/scripts/object_shard_physics_bridge.gd',
     'godot/addons/godot-rapier2d/runtime-provenance.windows.json', 'READ-ME.md',
-    'Open ObjectShard Lab.cmd', 'tools/objectshard/verify_package.ps1')
+    'Open ObjectShard Lab.cmd', 'Verify ObjectShard Lab.cmd', 'tools/objectshard/verify_package.ps1',
+    'godot/tests/test_object_shard_package_boot.gd')
 foreach ($relative in $required) {
     if ($null -eq $manifest.files_sha256.PSObject.Properties[$relative]) { throw "Incomplete package inventory: $relative" }
 }
