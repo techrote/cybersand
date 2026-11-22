@@ -2,7 +2,8 @@ extends RefCounted
 ## Three-area desktop continuation store. Native CYPS is authoritative; the
 ## Workbench envelope preserves authoring identity and camera state separately.
 ## One controller serializes this object's I/O calls on its private I/O thread.
-## The native owner remains frozen until commit_prepared returns a durable ACK.
+## Strict publication retains the frozen owner fence. Deferred publication owns
+## an immutable captured batch; its ACK describes durable state, never newer RAM.
 
 const Clock = preload("res://scripts/persistent_area_clock.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
@@ -37,6 +38,8 @@ var _pending: Dictionary = {}
 var _last_commit: Dictionary = {}
 var _quarantined := false
 var _test_fault := ""
+var _test_barrier_phase := ""
+var _test_barrier_gate: Semaphore
 
 
 static func new_nonce() -> String:
@@ -117,6 +120,15 @@ func current_manifest() -> Dictionary:
 	return _detached(_manifest)
 
 
+func io_telemetry() -> Dictionary:
+	## Read through the same serialized I/O owner as all other Store methods.
+	if _io == null: return {"available":false,"error":"Persistent storage is closed"}
+	if not _io.has_method("telemetry"): return {"available":false,"error":"Runtime has no profile I/O instrumentation"}
+	var result: Dictionary = _io.call("telemetry")
+	result["available"] = true
+	return result
+
+
 func open_profile(absolute_path: String, profile_id: String, compatibility: String) -> Dictionary:
 	if _io != null: return _fail("This persistent profile owner is already open")
 	if not _identifier(profile_id) or compatibility.is_empty() or compatibility.length() > 256:
@@ -188,7 +200,25 @@ func set_test_fault(phase: String) -> void:
 	_test_fault = phase if phase in ["", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish"] else ""
 
 
+func set_test_barrier(phase: String, gate: Semaphore) -> void:
+	## Process-death qualification only. No interactive setting enables this.
+	## The external harness waits for the marker then terminates the process;
+	## callers may instead post the gate to let this exact boundary continue.
+	_test_barrier_phase = phase if phase in ["before_snapshot","after_checkpoint","after_stage","after_previous","before_publish","after_publish"] else ""
+	_test_barrier_gate = gate if not _test_barrier_phase.is_empty() else null
+
+
+func _test_barrier(phase: String) -> void:
+	if phase != _test_barrier_phase or _test_barrier_gate == null: return
+	print("GEN006_RAMCACHE_BARRIER ",JSON.stringify({"phase":phase,"session_id":_manifest.get("session_id",""),
+		"revision":_manifest.get("revision",0),"pid":OS.get_process_id()}))
+	_test_barrier_gate.wait()
+	_test_barrier_phase = ""
+	_test_barrier_gate = null
+
+
 func _fault(phase: String) -> bool:
+	_test_barrier(phase)
 	if _test_fault != phase: return false
 	_test_fault = ""
 	return true
@@ -537,6 +567,69 @@ func commit_prepared(receipt: Dictionary, current_owner_fence: Dictionary) -> Di
 	var collected := _collect_garbage()
 	return {"ok":true, "idempotent":false, "manifest":current_manifest(),
 		"cleanup_warning":"" if collected.get("ok", false) else str(collected.error)}
+
+
+static func snapshot_fence(manifest: Dictionary, next_state: Dictionary, updates: Dictionary, snapshot_id: String) -> Dictionary:
+	## The caller has acquired capture authority and detached the complete batch.
+	## A later active edit does not revoke ownership of these immutable bytes. It
+	## makes RAM newer than this durable snapshot and must remain visibly dirty.
+	if not _hex(snapshot_id,32) or not _hex(manifest.get("session_id"),32) \
+		or not manifest.get("compatibility") is String or not manifest.get("areas") is Dictionary \
+		or not _keys(manifest.areas,Clock.AREA_IDS) or not _keys(next_state,["active_area","clock"]) \
+		or not next_state.active_area in Clock.AREA_IDS or not Clock.validate(next_state.clock).is_empty():
+		return _fail("Immutable capture batch has an invalid session, clock or snapshot identity")
+	var areas := {}
+	for id: String in Clock.AREA_IDS:
+		var record: Dictionary = manifest.areas[id]
+		if updates.has(id):
+			var value: Variant = updates[id]
+			if not value is Dictionary or not _keys(value,["capture","authoring","mutation_generation","incarnation"]):
+				return _fail("Immutable capture batch has an unsupported area update")
+			var error := _capture_error(value.capture)
+			if error.is_empty(): error = _authoring_error(value.authoring)
+			if not error.is_empty(): return _fail(error)
+			if not _hex(value.incarnation,32) or not Clock._integer(value.mutation_generation):
+				return _fail("Immutable capture batch has an invalid area mutation/incarnation")
+			areas[id] = {"area_id":id,"incarnation":value.incarnation,"mutation_generation":int(value.mutation_generation),
+				"completed_tick":int(value.capture.completed_tick),"native_sha256":value.capture.sha256,
+				"authoring_sha256":digest(var_to_bytes(value.authoring)),"authored_source_sha256":value.capture.authored_source_sha256,
+				"physics_profile_sha256":value.capture.physics_profile_sha256,"policy_sha256":value.capture.policy_sha256}
+		else:
+			areas[id] = {}
+			for key: String in ["area_id","incarnation","mutation_generation","completed_tick","native_sha256",
+				"authoring_sha256","authored_source_sha256","physics_profile_sha256","policy_sha256"]:
+				if not record.has(key): return _fail("Immutable capture batch has an incomplete unchanged durable area")
+				areas[id][key] = record[key]
+		if int(areas[id].completed_tick) != int(next_state.clock.areas[id].native_ticks):
+			return _fail("Immutable snapshot clock requires a matching capture for every changed area")
+	for key: Variant in updates:
+		if not key is String or not key in Clock.AREA_IDS: return _fail("Immutable capture batch identifies an unknown area")
+	return {"ok":true,"fence":{"schema":"gen006-immutable-capture-v1","session_id":manifest.session_id,
+		"compatibility":manifest.compatibility,"snapshot_id":snapshot_id,"clock_sha256":Clock.identity(next_state.clock),
+		"active_area":next_state.active_area,"areas":areas}}
+
+
+func publish_snapshot(next_state: Dictionary, updates: Dictionary, expected_revision: int,
+		operation_nonce: String, immutable_fence: Dictionary) -> Dictionary:
+	## Single store-owner thread only. The immutable batch is the authority for
+	## this publication; it does not assert equality with a subsequently edited
+	## live World. Existing revision/CAS/generation/full-byte checks remain intact.
+	if _io == null or _quarantined: return _fail("Persistent profile is unavailable or quarantined")
+	_test_barrier("before_snapshot")
+	if expected_revision != int(_manifest.revision): return _fail("Immutable publication rejected a stale durable revision")
+	var rebuilt := snapshot_fence(_manifest,next_state,updates,operation_nonce)
+	if not rebuilt.get("ok",false): return rebuilt
+	if rebuilt.fence != immutable_fence: return _fail("Immutable publication rejected a changed capture/session/clock fence")
+	var prepared := prepare_commit(next_state,updates,expected_revision,operation_nonce,immutable_fence)
+	if not prepared.get("ok",false): return prepared
+	var committed := commit_prepared(prepared.receipt,immutable_fence)
+	if not committed.get("ok",false):
+		if not _quarantined and not bool(committed.get("published",false)):
+			var aborted := abort_prepared(prepared.receipt)
+			if not aborted.get("ok",false): committed["cleanup_warning"] = str(aborted.get("error",""))
+		return committed
+	committed["snapshot_fence"] = _detached(immutable_fence)
+	return committed
 
 
 func abort_prepared(receipt: Dictionary) -> Dictionary:

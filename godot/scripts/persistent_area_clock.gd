@@ -146,3 +146,53 @@ static func rebase(clock: Dictionary, area_id: String) -> Dictionary:
 	var result := canonical(clock)
 	result.areas[area_id] = {"accounted_ticks":int(clock.game_ticks), "native_ticks":0, "origin_game_tick":int(clock.game_ticks)}
 	return {"ok":true, "clock":result}
+
+
+static func plan_background(clock: Dictionary, area_id: String, max_work_ticks: int, operation_id: String) -> Dictionary:
+	## Background work owns a fixed interval of one inactive area. Other areas
+	## may keep advancing G while this interval executes; that is not staleness.
+	var error := validate(clock)
+	if not error.is_empty(): return {"ok":false, "error":error}
+	if not area_id in AREA_IDS or max_work_ticks < 1 or max_work_ticks > MAX_SLICE_TICKS \
+		or operation_id.length() != 32:
+		return {"ok":false, "error":"Background catch-up has an invalid area, operation or work bound"}
+	for character: String in operation_id:
+		if not character in "0123456789abcdef": return {"ok":false, "error":"Background catch-up operation identity is malformed"}
+	var source: Dictionary = canonical(clock).areas[area_id]
+	return {"ok":true, "plan":{"version":VERSION, "protocol":"area-debt-interval-v1", "area_id":area_id,
+		"operation_id":operation_id, "source_game_tick":int(clock.game_ticks), "source_area_clock":source,
+		"max_work_ticks":max_work_ticks, "work_ticks":mini(debt(clock,area_id),max_work_ticks)}}
+
+
+static func complete_background(clock: Dictionary, proposal: Dictionary, actual_ticks: int) -> Dictionary:
+	var error := validate(clock)
+	if not error.is_empty(): return {"ok":false, "error":error}
+	if not _keys(proposal,["version","protocol","area_id","operation_id","source_game_tick","source_area_clock","max_work_ticks","work_ticks"]) \
+		or proposal.get("protocol") != "area-debt-interval-v1" or proposal.get("version") != VERSION \
+		or not proposal.get("area_id") is String or not proposal.area_id in AREA_IDS \
+		or not proposal.get("operation_id") is String or proposal.operation_id.length() != 32 \
+		or not proposal.get("source_area_clock") is Dictionary:
+		return {"ok":false,"error":"Background completion has an unsupported interval identity"}
+	for character: String in proposal.operation_id:
+		if not character in "0123456789abcdef": return {"ok":false,"error":"Background completion operation identity is malformed"}
+	for key: String in ["source_game_tick","max_work_ticks","work_ticks"]:
+		if not _integer(proposal[key]): return {"ok":false,"error":"Background completion contains an invalid work bound"}
+	var source: Dictionary = proposal.source_area_clock
+	if not _keys(source,["accounted_ticks","native_ticks","origin_game_tick"]):
+		return {"ok":false,"error":"Background completion area clock is malformed"}
+	for key: String in ["accounted_ticks","native_ticks","origin_game_tick"]:
+		if not _integer(source[key]): return {"ok":false,"error":"Background completion area tick is invalid"}
+	if int(source.accounted_ticks) > int(proposal.source_game_tick) \
+		or int(source.accounted_ticks) - int(source.origin_game_tick) != int(source.native_ticks) \
+		or int(proposal.max_work_ticks) < 1 or int(proposal.max_work_ticks) > MAX_SLICE_TICKS \
+		or int(proposal.work_ticks) != mini(int(proposal.source_game_tick)-int(source.accounted_ticks),int(proposal.max_work_ticks)) \
+		or actual_ticks < 0 or actual_ticks > int(proposal.work_ticks):
+		return {"ok":false,"error":"Background completion exceeds its admitted debt interval"}
+	var area_id: String = proposal.area_id
+	if clock.areas[area_id] != source or int(clock.game_ticks) < int(proposal.source_game_tick):
+		return {"ok":false,"error":"Background completion is stale for this area's native/accounted frontier"}
+	var result := canonical(clock)
+	result.areas[area_id].native_ticks += actual_ticks
+	result.areas[area_id].accounted_ticks += actual_ticks
+	return {"ok":true,"clock":result,"completed_ticks":actual_ticks,"paid_debt_ticks":actual_ticks,
+		"game_advanced_ticks":0,"debt_ticks":debt(result,area_id),"operation_id":proposal.operation_id}
