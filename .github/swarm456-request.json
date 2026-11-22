@@ -2,8 +2,8 @@
   "schema": 1,
   "programme": "GENTEK-SWARM-004-005-MAINLINE",
   "action": "qualify-mainline",
-  "source_sha": "9be08b1d98101dae77ff153bb6d9906232b32c84",
-  "request_id": "swarm456-unified-20261122-01",
+  "source_sha": "8fee0c1eec8a0c6a9d2d5146e6f70a2cc137c83e",
+  "request_id": "swarm456-unified-20261122-02",
   "accepted_main": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
   "frozen_donors": {
     "692": "2c4b8061ef5315de6a31df933e9f84c31865284e",
@@ -14,5 +14,5 @@
     "715": "919134a39d31461947c410c233d59d1965c48414",
     "716": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
   },
-  "native_definition_sha256": "74e24ee632902655e1f5cb230300f430251b545cbec700df3b90d77537eb8438"
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf"
 }
