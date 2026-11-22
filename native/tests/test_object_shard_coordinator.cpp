@@ -1,4 +1,5 @@
 #include "cybersand/object_shard_coordinator.hpp"
+#include "cybersand/object_shard_m4_mutable_adapter.hpp"
 #include "cybersand/object_shard_contact.hpp"
 #include "cybersand/material_lifecycle.hpp"
 
@@ -9,6 +10,7 @@
 #include <limits>
 #include <stdexcept>
 #include <vector>
+#include <thread>
 
 // Test-only friend seam. These mutations execute real World APIs while command
 // admission is paused, modelling an erroneous/stale external owner. Production
@@ -1316,9 +1318,261 @@ void population_accounting_covers_world_ticks_edits_transfers_and_resets() {
     CHECK(coordinator.accounting().reset_water_quanta >= disposed_before + water);
     check_population_balance(coordinator);
 }
+
+void m4_same_world_promotion_and_exact_motion() {
+    namespace gate = cybersand::object_shard::m4;
+    Coordinator coordinator(small_config());
+    World* const world = &cybersand::object_shard::CoordinatorTestAccess::world(coordinator);
+    const auto initial = coordinator.snapshot();
+    const gate::OwnerIdentity owner{11, 22, 33, initial.session, initial.world_incarnation};
+    gate::MutableBodyGate adapter(*world, coordinator, owner);
+    CHECK(adapter.initially_bound());
+    CHECK(&coordinator.world() == world);
+    CHECK(adapter.registered_bodies() == 0);
+    const auto snapshot_time_before = coordinator.metrics().snapshot_ns;
+    for (unsigned repeat = 0; repeat < 20; ++repeat) {
+        const auto proof = coordinator.m4_owner_readback();
+        CHECK(proof.world_available && proof.session == initial.session);
+        CHECK(proof.tick == world->completed_tick_index());
+        CHECK(proof.active_count == 0 && !proof.truncated);
+    }
+    // The fixed-size M4 proof must never rebuild the presentation snapshot.
+    CHECK(coordinator.metrics().snapshot_ns == snapshot_time_before);
+    gate::MotionTicket motion{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, world->completed_tick_index()) == gate::Verdict::Stale);
+
+    make_supported(coordinator);
+    erase_support(coordinator);
+    const auto before = owned_population(coordinator, Material::Wood);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(adapter.registered_bodies() == 0); // Preparation never owns a physical body.
+    CHECK(activate(coordinator, prepared.shard));
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(&coordinator.world() == world);
+
+    gate::GeometryTicket installation{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, installation) == gate::Verdict::Accepted);
+    CHECK(adapter.registered_bodies() == 1);
+    auto forged = installation;
+    forged.body.mass += 1.;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    forged = installation;
+    forged.body.inertia += 1.;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    forged = installation;
+    ++forged.body.material_revision;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    forged = installation;
+    ++forged.body.geometry_revision;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, installation) == gate::Verdict::Accepted);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, installation) == gate::Verdict::Stale);
+    gate::GeometryTicket duplicate{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, duplicate) == gate::Verdict::Busy);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
+
+    // The real coordinator advances exactly one semantic native tick.
+    const auto before_tick = world->completed_tick_index();
+    CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Accepted);
+    CHECK(world->completed_tick_index() == before_tick + 1);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick) == gate::Verdict::Stale);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Accepted);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Stale);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Accepted);
+    CHECK(motion.count == 1);
+    CHECK(motion.completed_tick == before_tick + 1);
+    CHECK(adapter.motion_outstanding());
+    gate::MotionTicket second{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, second) == gate::Verdict::Held);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Held);
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, motion) == gate::Verdict::Stale);
+    auto altered = motion;
+    ++altered.bodies[0].pose_serial;
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, altered) == gate::Verdict::Stale);
+    CHECK(adapter.motion_outstanding());
+    // Only the real M3 native application changes the accepted serial.
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, motion) == gate::Verdict::Accepted);
+    CHECK(!adapter.motion_outstanding());
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, motion) == gate::Verdict::Stale);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, second) == gate::Verdict::Accepted);
+    CHECK(second.sequence > motion.sequence);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, second) == gate::Verdict::Accepted);
+    // The M3 bridge retains its original 16-segment physical interval cap.
+    for (std::uint32_t segment = 2; segment < gate::kSegmentLimit; ++segment) {
+        gate::MotionTicket accepted_segment{};
+        CHECK(adapter.issue_motion(*world, coordinator, owner, accepted_segment) == gate::Verdict::Accepted);
+        CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+        CHECK(adapter.accept_applied_motion(*world, coordinator, owner, accepted_segment) == gate::Verdict::Accepted);
+    }
+    gate::MotionTicket over_budget{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Capacity);
+    CHECK(world->completed_tick_index() == before_tick + 1);
+
+    // A real state-only Wood ignition increments material identity while
+    // preserving collider geometry. It must re-ticket the material and
+    // invalidate the old completed-tick motion permit.
+    const auto* physical = coordinator.registry().find(prepared.shard);
+    CHECK(physical != nullptr);
+    if (!physical) return;
+    std::uint32_t structural_cell = 0;
+    for (; structural_cell < physical->area(); ++structural_cell)
+        if (physical->structural(structural_cell)) break;
+    CHECK(structural_cell < physical->area());
+    if (structural_cell >= physical->area()) return;
+    const auto geometry_before = physical->geometry().revision;
+    const auto material_before = physical->material_revision();
+    CHECK(coordinator.ignite_shard(prepared.shard, structural_cell).outcome == Outcome::Accepted);
+    const auto* ignited = coordinator.registry().find(prepared.shard);
+    CHECK(ignited && ignited->geometry().revision == geometry_before);
+    CHECK(ignited && ignited->material_revision() > material_before);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Fenced);
+    gate::GeometryTicket state_only{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, state_only) == gate::Verdict::Accepted);
+    CHECK(state_only.body.geometry_revision == geometry_before);
+    CHECK(state_only.body.material_revision > material_before);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, state_only) == gate::Verdict::Accepted);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Fenced);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Stale);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(adapter.release_when_empty(*world, coordinator, owner) == gate::Verdict::Held);
+    CHECK(&coordinator.world() == world);
+}
+
+void m4_cancel_does_not_consume_world_and_replacement_fences() {
+    namespace gate = cybersand::object_shard::m4;
+    Coordinator coordinator(small_config());
+    const auto initial = coordinator.snapshot();
+    const gate::OwnerIdentity owner{10, 4, 9, initial.session, initial.world_incarnation};
+    gate::MutableBodyGate adapter(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator, owner);
+    make_supported(coordinator);
+    erase_support(coordinator);
+    const auto before = owned_population(coordinator, Material::Wood);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    gate::GeometryTicket staged_not_active{};
+    CHECK(adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator,
+              owner, prepared.shard, staged_not_active) == gate::Verdict::Fenced);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Cancelled);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(adapter.registered_bodies() == 0);
+    CHECK(adapter.release_when_empty(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator,
+              owner) == gate::Verdict::Accepted);
+    CHECK(!adapter.initially_bound());
+    gate::GeometryTicket stale{};
+    CHECK(adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator,
+              owner, prepared.shard, stale) == gate::Verdict::Retired);
+
+    Coordinator another(small_config());
+    const auto other_stamp = another.snapshot();
+    const gate::OwnerIdentity other{10, 4, 10, other_stamp.session, other_stamp.world_incarnation};
+    gate::MutableBodyGate isolated(cybersand::object_shard::CoordinatorTestAccess::world(another), another, other);
+    CHECK(isolated.initially_bound());
+    CHECK(isolated.grant_completed_tick(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+              coordinator, other, 1) == gate::Verdict::WrongWorld);
+    gate::Verdict foreign = gate::Verdict::Accepted;
+    std::size_t foreign_count = 99;
+    bool foreign_bound = true;
+    World& live_other_world = cybersand::object_shard::CoordinatorTestAccess::world(another);
+    std::thread hostile([&] {
+        gate::MotionTicket ignored{};
+        foreign = isolated.issue_motion(live_other_world, another, other, ignored);
+        foreign_count = isolated.registered_bodies();
+        foreign_bound = isolated.initially_bound();
+    });
+    hostile.join();
+    CHECK(foreign == gate::Verdict::WrongOwner);
+    CHECK(foreign_count == 0 && !foreign_bound);
+    CHECK(another.reset(0, 888).outcome == Outcome::Accepted);
+    gate::MotionTicket after_reset{};
+    CHECK(isolated.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(another), another,
+              other, after_reset) == gate::Verdict::WrongWorld);
+}
+
+void m4_exclusive_mutable_capacity_refuses_fourth_real_owner() {
+    namespace gate = cybersand::object_shard::m4;
+    Config config = small_config();
+    config.limits.max_shards = 4;
+    Coordinator coordinator(config);
+    const auto native_stamp = coordinator.snapshot();
+    const gate::OwnerIdentity owner{17, 21, 31, native_stamp.session, native_stamp.world_incarnation};
+    gate::MutableBodyGate adapter(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator, owner);
+    CHECK(adapter.initially_bound());
+    constexpr std::array<std::int64_t, 4> columns{{16, 42, 68, 94}};
+    for (auto x : columns) {
+        make_supported(coordinator, x, 30);
+        erase_support(coordinator, x, 30);
+    }
+    for (std::size_t i = 0; i < columns.size(); ++i) {
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) break;
+        CHECK(activate(coordinator, prepared.shard));
+        const auto proof = coordinator.m4_owner_readback();
+        CHECK(proof.active_count == i + 1);
+        CHECK(proof.truncated == (i >= gate::kBodyLimit));
+        gate::GeometryTicket ticket{};
+        const auto outcome = adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+            coordinator, owner, prepared.shard, ticket);
+        CHECK(outcome == (i < gate::kBodyLimit ? gate::Verdict::Accepted : gate::Verdict::Capacity));
+        if (outcome == gate::Verdict::Accepted)
+            CHECK(adapter.acknowledge_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+                coordinator, owner, ticket) == gate::Verdict::Accepted);
+    }
+    CHECK(adapter.registered_bodies() == gate::kBodyLimit);
+    gate::MotionTicket denied{};
+    CHECK(adapter.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner, denied) == gate::Verdict::Fenced);
+}
+
+
+void m4_partial_physics_commit_is_still_exclusive_material() {
+    namespace gate = cybersand::object_shard::m4;
+    Coordinator coordinator(small_config());
+    const auto initial = coordinator.snapshot();
+    const gate::OwnerIdentity owner{31, 37, 41, initial.session, initial.world_incarnation};
+    gate::MutableBodyGate adapter(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator, owner);
+    make_supported(coordinator);
+    erase_support(coordinator);
+    const auto before = owned_population(coordinator, Material::Wood);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    const auto reserve_receipt = ack_for(coordinator, AckKind::PhysicsReserved);
+    CHECK(coordinator.acknowledge(reserve_receipt).outcome == Outcome::Accepted);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    const auto* captured = coordinator.registry().find(prepared.shard);
+    CHECK(captured && captured->owns_inventory());
+    CHECK(captured && captured->phase() == Phase::CommittedInactive);
+    gate::GeometryTicket blocked{};
+    CHECK(adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner, prepared.shard, blocked) == gate::Verdict::Fenced);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Quarantined);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(adapter.release_when_empty(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner) == gate::Verdict::Held);
+    CHECK(coordinator.reset(0, 426).outcome == Outcome::Accepted);
+    CHECK(coordinator.accounting().reset_disposed[static_cast<std::uint8_t>(Material::Wood)] >= before);
+    CHECK(owned_population(coordinator, Material::Wood) == 0);
+    gate::MotionTicket old{};
+    CHECK(adapter.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner, old) == gate::Verdict::WrongWorld);
+    CHECK(adapter.registered_bodies() == 0);
+}
+
 } // namespace
 
 int main() {
+    m4_same_world_promotion_and_exact_motion();
+    m4_cancel_does_not_consume_world_and_replacement_fences();
+    m4_exclusive_mutable_capacity_refuses_fourth_real_owner();
+    m4_partial_physics_commit_is_still_exclusive_material();
     finite_coordinate_configuration();
     ordinary_support_loss_and_exact_capture();
     state_temperature_and_aba_refuse();

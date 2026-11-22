@@ -73,6 +73,16 @@ struct BodyView {
     bool has_body{}, geometry_pending{}, pocket_open{},ingress_fenced{};
     std::uint32_t pocket_cell{};
 };
+// Bounded owner-local M4 readback: copied body values, not a published World
+// snapshot, borrowed storage span, RID or permission to tick. Ordinary M3
+// snapshot semantics and mutable storage remain unchanged.
+struct OwnerReadback {
+    static constexpr std::size_t kBodySlots = 3;
+    std::uint64_t session{}, world_incarnation{}, tick{};
+    std::uint32_t active_count{}, copied_count{};
+    bool world_available{}, paused{}, quarantined{}, promotion_pending{}, truncated{};
+    std::array<BodyView, kBodySlots> bodies{};
+};
 struct Accounting {
     std::array<std::uint64_t, kQuantityMaterialSlots> promoted{}, ingested{}, emitted{};
     std::array<std::uint64_t, kQuantityMaterialSlots> created{}, destroyed{}, expired{}, reset_disposed{};
@@ -141,7 +151,11 @@ public:
     Coordinator& operator=(const Coordinator&) = delete;
     [[nodiscard]] const Config& config() const noexcept { return config_; }
     [[nodiscard]] const World& world() const noexcept { return *world_; }
+    // M4 failure-safe identity preflight: an exceptional reset may leave no World.
+    // Never return a borrowable native pointer to an outside controller.
+    [[nodiscard]] bool world_available() const noexcept { return world_ != nullptr; }
     [[nodiscard]] const Registry& registry() const noexcept { return registry_; }
+    [[nodiscard]] OwnerReadback m4_owner_readback() const noexcept;
     [[nodiscard]] Result reset(std::uint32_t scenario, std::uint64_t seed);
     [[nodiscard]] Result step(std::span<const PoseSample> poses = {});
     // A real Rapier substep is admitted before another physical segment runs.
