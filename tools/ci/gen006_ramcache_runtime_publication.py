@@ -19,7 +19,7 @@ donor = module_from_spec(_spec)
 _spec.loader.exec_module(donor)
 engine = donor.engine
 old_workflow, old_request = engine.WORKFLOW, engine.REQUEST
-engine.BRANCH = "exp/gen006-ramcache-001-20261122"
+engine.BRANCH = "exp/gen006-ramcache-finisher-001-20261122"
 engine.WORKFLOW = ".github/workflows/gen006-ramcache-qualification.yml"
 engine.REQUEST = "tools/ci/gen006_ramcache_publish_request.json"
 engine.EVIDENCE = "docs/audits/2026-11-22-gen006-ramcache.md"
