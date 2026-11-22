@@ -54,7 +54,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for case in test_art_session_log test_art_traffic_integrity test_art_batch_native; do
+          for case in test_art_session_log test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_traffic_integrity test_art_history_receipt_identity test_art_batch_native; do
             export XDG_DATA_HOME="$RUNNER_TEMP/session-$case"
             mkdir -p "$XDG_DATA_HOME"
             timeout 600 "$GODOT" --headless --path godot -s "res://tests/$case.gd" 2>&1 | tee "evidence/$case.log"
@@ -102,8 +102,10 @@ jobs:
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
           & $env:GODOT_EXE --headless --path godot --editor --import *> evidence/import.log
           if ($LASTEXITCODE -ne 0) { throw 'Godot import failed' }
-          & $env:GODOT_EXE --headless --path godot -s res://tests/test_art_session_log.gd 2>&1 | Tee-Object evidence/test_art_session_log.log
-          if ($LASTEXITCODE -ne 0) { throw 'Art session regression failed' }
+          foreach ($case in @('test_art_session_log','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_traffic_integrity')) {
+            & $env:GODOT_EXE --headless --path godot -s "res://tests/$case.gd" 2>&1 | Tee-Object "evidence/$case.log"
+            if ($LASTEXITCODE -ne 0) { throw "Art regression failed: $case" }
+          }
           if ((Get-Content evidence/test_art_session_log.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing test receipt' }
       - name: Retain evidence
         if: always()
