@@ -46,12 +46,15 @@ def processes_using_engine(exe: Path) -> dict:
         return {"supported": False, "reason": "Windows process-path inventory unavailable"}
     gui = exe.with_name(exe.name.replace("_console.exe", ".exe"))
     target_paths = [str(exe), str(gui)]
-    encoded = base64.b64encode(json.dumps(target_paths, ensure_ascii=False).encode("utf-8")).decode("ascii")
+    console_encoded, gui_encoded = [
+        base64.b64encode(value.encode("utf-8")).decode("ascii") for value in target_paths
+    ]
     script = (
         "$ErrorActionPreference='Stop';"
-        "$raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" + encoded + "'));"
-        "$targets=@(ConvertFrom-Json -InputObject $raw);"
-        "if($targets.Count -ne 2){throw 'Two process paths required'};"
+        "$console=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" + console_encoded + "'));"
+        "$gui=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" + gui_encoded + "'));"
+        "$targets=@($console,$gui);"
+        "if($targets.Count -ne 2 -or !$console -or !$gui){throw 'Two process paths required'};"
         "$ids=@(Get-CimInstance Win32_Process | Where-Object "
         "{ $_.ExecutablePath -and ($targets -contains $_.ExecutablePath) }"
         " | ForEach-Object { $_.ProcessId });"
