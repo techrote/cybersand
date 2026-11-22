@@ -520,7 +520,14 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'source_commit': 'baa5699083f5f668f9c03309aceaccd0f1fb80d9',
   'record': 'docs/audits/2026-11-19-wave-oil-lava.md',
   'issue': 679,
-  'pr': 679},)
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'to_lf_sha256': '1da6932fa412c1543cfc3827c69f89b9264359fce93b502d938952d5d48b181d',
+  'source_commit': 'b832e442656e33d2158797b40a11f66570fd338e',
+  'record': 'docs/audits/2026-11-22-gen006-ramcache.md',
+  'issue': 591,
+  'pr': 734},)
 
 
 def lf(data: bytes) -> bytes:

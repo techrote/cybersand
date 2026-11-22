@@ -239,7 +239,13 @@ try {
                 $ledgerValid = $ledgerFiles.Count -eq 0
             } else {
                 if ($ledgerFiles.Count -ne 1) { throw 'Missing or ambiguous original process ledger.' }
-                $ledgerRows = @(Get-Content -Raw -LiteralPath $ledgerFiles[0].FullName | ConvertFrom-Json)
+                # Windows PowerShell 5 emits a decoded JSON array as one pipeline
+                # object. Enumerate the decoded value explicitly so @() cannot
+                # wrap the entire process ledger inside an extra array layer.
+                $decodedLedger = Get-Content -Raw -LiteralPath $ledgerFiles[0].FullName | ConvertFrom-Json
+                if (-not ($decodedLedger -is [Array])) { throw 'The original process ledger is not a JSON array.' }
+                $ledgerRows = @()
+                foreach ($entry in $decodedLedger) { $ledgerRows += $entry }
                 if ($ledgerRows.Count -ne $traceRows.Count) { throw 'Ledger omitted a directly observed engine process.' }
                 for ($index = 0; $index -lt $traceRows.Count; $index++) {
                     $observedMode = ($traceRows[$index] -split ' ')[0]

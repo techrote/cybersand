@@ -23,7 +23,9 @@ def valid_guard_fixture() -> dict:
     io = dict(profile_read_calls=4, native_deserializations=3, source_constructions=6, synchronous_publications=0)
     hot = dict(residency="HOT", status="completed", debt_before_ticks=0, native_ticks_executed=0,
         elapsed_ms=20, io_before=io, io_after=io, game_tick_before=0, game_tick_after=0,
-        target_native_tick_before=0, target_native_tick_after=0)
+        target_native_tick_before=0, target_native_tick_after=0, max_main_frame_ms=5,
+        start_usec=100000, end_usec=120000, worst_frame_start_usec=105000, worst_frame_end_usec=110000,
+        frame_observations=4)
     warm = dict(hot, residency="WARM", io_after=dict(io, native_deserializations=4))
     native = dict(native_restorations=3, source_constructions=6, captures=1, hot_activations=3)
     filesystem = {key: 2 for key in ("checkpoint_read_requests", "checkpoint_read_bytes", "read_system_calls",
@@ -43,7 +45,7 @@ def valid_guard_fixture() -> dict:
         "local_delta": [], "missing_source_inputs": [], "source_inputs_sha256": {
             "tools/ci/run_persistent_area_residency_memory.py": "e"*64,
             "godot/tests/test_persistent_area_residency_memory.gd": "f"*64},
-        "ramcache": {}, "ramcache_memory": {}}
+        "ramcache": {}, "ramcache_memory": {}, "ramcache_performance": {}}
     before = {key:copy.deepcopy(value[key]) for key in ("source_commit", "source_tree", "local_delta", "missing_source_inputs", "source_inputs_sha256")}
     proof = dict(ok=True, qualified_source=True, diagnostic=False, source_unchanged=True,
         source_before=before, source_after=copy.deepcopy(before), rows=[],
@@ -62,6 +64,9 @@ def valid_guard_fixture() -> dict:
     for workers in (1, 4):
         value["ramcache"][f"ramcache-write-w{workers}"] = copy.deepcopy(receipt)
         value["ramcache"][f"ramcache-reopen-w{workers}"] = dict(copy.deepcopy(receipt), process_id=11)
+        value["ramcache_performance"][str(workers)] = {
+            "hot_zero_debt": profile.timing_statistics(receipt["hot_samples"]),
+            "warm_zero_debt": profile.timing_statistics(receipt["warm_samples"])}
         names = ["one_hot_world", "two_hot_worlds", "three_hot_worlds", "two_hot_one_warm",
                  "two_hot_after_180_handoffs", "one_hot_buffers_released"] + ["other"+str(index) for index in range(9)]
         value["ramcache_memory"][str(workers)] = dict(ok=True, native_sha256="a"*64, godot_sha256="b"*64,
@@ -125,6 +130,18 @@ class QualificationGuards(unittest.TestCase):
                 value["ramcache"]["ramcache-write-w1"][kind+"_samples"][0][key] = changed_value
                 with self.subTest(kind=kind, key=key), self.assertRaises(RuntimeError):
                     profile.verify_ramcache(value)
+
+    def test_correlated_timings_and_summaries_are_finite_and_derived_from_samples(self):
+        for key, invalid in (("elapsed_ms", float("inf")), ("elapsed_ms", True),
+                ("max_main_frame_ms", -1), ("max_main_frame_ms", float("nan")),
+                ("worst_frame_start_usec", 0), ("end_usec", 105000), ("frame_observations", 0)):
+            value = valid_guard_fixture()
+            value["ramcache"]["ramcache-write-w1"]["hot_samples"][0][key] = invalid
+            with self.subTest(key=key, invalid=invalid), self.assertRaises(RuntimeError):
+                profile.verify_ramcache(value)
+        value = valid_guard_fixture()
+        value["ramcache_performance"]["1"]["hot_zero_debt"]["p95_ms"] = 0.1
+        with self.assertRaises(RuntimeError): profile.verify_ramcache(value)
 
     def test_healthy_rescue_requires_two_source_bound_native_processes(self):
         parent=valid_guard_fixture()

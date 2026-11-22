@@ -68,6 +68,31 @@ verify_files, safe_relative = donor.verify_files, donor.safe_relative
 _verify_donor_qualification = donor.verify_qualification
 
 
+def finite_nonnegative(value) -> bool:
+    return type(value) in (int, float) and math.isfinite(value) and value >= 0
+
+
+def timing_statistics(samples: list[dict]) -> dict:
+    values = sorted(float(row["elapsed_ms"]) for row in samples)
+    n = len(values)
+    return {"samples": n, "p50_ms": (values[(n-1)//2]+values[n//2])/2,
+        "p95_ms": values[math.ceil(n*0.95)-1], "worst_ms": values[-1],
+        "maximum_correlated_main_frame_ms": max(float(row["max_main_frame_ms"]) for row in samples),
+        "native_ticks": sum(int(row["native_ticks_executed"]) for row in samples)}
+
+
+def verify_operation_timing(sample: dict) -> None:
+    require(finite_nonnegative(sample.get("elapsed_ms")) and finite_nonnegative(sample.get("max_main_frame_ms"))
+        and all(type(sample.get(key)) is int and sample[key] >= 0
+            for key in ("start_usec", "end_usec", "worst_frame_start_usec", "worst_frame_end_usec", "frame_observations"))
+        and sample["frame_observations"] > 0
+        and sample["start_usec"] <= sample["worst_frame_start_usec"] <= sample["worst_frame_end_usec"] <= sample["end_usec"]
+        and abs(sample["elapsed_ms"]-(sample["end_usec"]-sample["start_usec"])/1000.0) < 2
+        and math.isclose(sample["max_main_frame_ms"]*1000,
+            sample["worst_frame_end_usec"]-sample["worst_frame_start_usec"], abs_tol=0.000001, rel_tol=1e-12),
+        "Operation timing is nonfinite, inconsistent or outside its correlated interval")
+
+
 def verify_healthy_recovery(parent: dict, proof: dict) -> None:
     before = proof.get("source_before", {})
     require(proof.get("passed") is True and proof.get("qualified_source") is True and proof.get("diagnostic") is False
@@ -159,7 +184,8 @@ def verify_cold_benchmark(parent: dict, proof: dict, label: str) -> None:
     require(len(rows) == 30 and all(row.get("native_tick") == 0 and row.get("game_tick") == 0
         and row.get("source") == ("a", "b", "c")[index % 3]
         and row.get("target") == ("b", "c", "a")[index % 3]
-        and row.get("elapsed_ms", -1) >= 0 for index, row in enumerate(rows)),
+        and finite_nonnegative(row.get("elapsed_ms")) and finite_nonnegative(row.get("max_frame_gap_ms"))
+        for index, row in enumerate(rows)),
         "Cold comparison performed a different workload or area mix")
     times = sorted(row["elapsed_ms"] for row in rows)
     expected = {"samples": 30, "p50_ms": (times[14]+times[15])/2, "p95_ms": times[math.ceil(30*0.95)-1],
@@ -195,13 +221,14 @@ def verify_ramcache(value: dict) -> None:
             samples = first.get(kind+"_samples", [])
             require(isinstance(samples, list) and len(samples) == 30, "Exactly thirty qualified "+kind+" samples are required")
             for index, sample in enumerate(samples):
+                verify_operation_timing(sample)
                 require(sample.get("residency") == kind.upper() and sample.get("status") == "completed"
                     and sample.get("debt_before_ticks") == 0 and sample.get("native_ticks_executed") == 0
                     and sample.get("source_area") == ("a", "b", "c")[index % 3]
                     and sample.get("target_area") == ("b", "c", "a")[index % 3]
                     and sample.get("game_tick_before") == 0 and sample.get("game_tick_after") == 0
                     and sample.get("target_native_tick_before") == 0 and sample.get("target_native_tick_after") == 0
-                    and isinstance(sample.get("elapsed_ms"), (int, float)) and sample["elapsed_ms"] >= 0,
+                    and finite_nonnegative(sample.get("elapsed_ms")),
                     "Residency benchmark contains a failed or incomparable workload or area mix")
                 before, after = sample.get("io_before", {}), sample.get("io_after", {})
                 keys = ("profile_read_calls", "native_deserializations", "source_constructions", "synchronous_publications") \
@@ -219,6 +246,8 @@ def verify_ramcache(value: dict) -> None:
                     require(sample.get("native_after", {}).get("native_restorations") ==
                         sample.get("native_before", {}).get("native_restorations", -2)+1,
                         "WARM sample omitted its actual native restoration")
+            reported = value.get("ramcache_performance", {}).get(str(workers), {}).get(kind+"_zero_debt")
+            require(reported == timing_statistics(samples), "Reported "+kind+" statistics differ from original qualified samples")
         before, after = first.get("native_before", {}), first.get("native_after", {})
         require(all(type(before.get(key)) is int and before[key] == after.get(key)
             for key in ("native_restorations", "source_constructions", "captures")),
