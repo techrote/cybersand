@@ -83,6 +83,7 @@ public:
     MutableBodyGate(World& world, Coordinator& coordinator, OwnerIdentity owner)
         : identity_(owner), world_address_(std::addressof(world)),
           owner_thread_(std::this_thread::get_id()) {
+        if (!coordinator.world_available()) return;
         const auto& snapshot = coordinator.snapshot();
         valid_ = owner.session != 0 && owner.epoch != 0 &&
             owner.world_generation != 0 && owner.shard_session != 0 &&
@@ -99,13 +100,19 @@ public:
     MutableBodyGate(MutableBodyGate&&) = delete;
     MutableBodyGate& operator=(MutableBodyGate&&) = delete;
 
-    [[nodiscard]] bool initially_bound() const noexcept { return valid_; }
+    [[nodiscard]] bool initially_bound() const noexcept {
+        return on_owner_thread() && valid_;
+    }
     [[nodiscard]] std::size_t registered_bodies() const noexcept {
+        // Even diagnostics must not race with an exclusive owner mutation.
+        if (!on_owner_thread()) return 0;
         std::size_t count = 0;
         for (const auto& slot : slots_) if (slot.used) ++count;
         return count;
     }
-    [[nodiscard]] bool motion_outstanding() const noexcept { return awaiting_motion_; }
+    [[nodiscard]] bool motion_outstanding() const noexcept {
+        return on_owner_thread() && awaiting_motion_;
+    }
 
     // A new version must be explicitly proposed and installed. Native-owned
     // material remains exclusively in Registry; this ticket owns no cells.
@@ -131,9 +138,13 @@ public:
         } else {
             if (!slot->ready) return Verdict::Held; // Never replace an unacknowledged install.
             if (candidate == slot->revision) return Verdict::Busy;
-            if (candidate.geometry_revision <= slot->revision.geometry_revision ||
+            if (candidate.geometry_revision < slot->revision.geometry_revision ||
                 candidate.material_revision < slot->revision.material_revision ||
+                (candidate.geometry_revision == slot->revision.geometry_revision &&
+                 candidate.material_revision == slot->revision.material_revision) ||
                 candidate.pose_serial < slot->revision.pose_serial) return Verdict::Stale;
+            // State-only material changes may increment material revision with
+            // unchanged collider geometry: they still require a fresh ticket.
         }
         if (next_sequence_ == std::numeric_limits<std::uint64_t>::max())
             return Verdict::Capacity;
@@ -291,6 +302,10 @@ public:
         if (awaiting_motion_) return Verdict::Held;
         for (const auto& shard : coordinator.registry().shards())
             if (shard.owns_inventory()) return Verdict::Held;
+        // Native body retirement acknowledgement must precede release; the
+        // absence of material alone is not proof of RID/collider disposal.
+        for (const auto& body : coordinator.snapshot().bodies)
+            if (body.has_body) return Verdict::Held;
         slots_ = {};
         valid_ = false;
         world_address_ = nullptr;
@@ -313,11 +328,15 @@ private:
     std::uint32_t segments_{};
     bool valid_{}, awaiting_motion_{};
 
+    [[nodiscard]] bool on_owner_thread() const noexcept {
+        return owner_thread_ == std::this_thread::get_id();
+    }
     [[nodiscard]] Verdict verify(World& world, Coordinator& coordinator,
                                  OwnerIdentity owner) const {
         // Thread check must precede ANY native World/coordinator observation.
-        if (owner_thread_ != std::this_thread::get_id()) return Verdict::WrongOwner;
+        if (!on_owner_thread()) return Verdict::WrongOwner;
         if (!valid_) return Verdict::Retired;
+        if (!coordinator.world_available()) return Verdict::WrongWorld;
         if (owner != identity_ || std::addressof(world) != world_address_ ||
             std::addressof(coordinator.world()) != world_address_)
             return Verdict::WrongWorld;
