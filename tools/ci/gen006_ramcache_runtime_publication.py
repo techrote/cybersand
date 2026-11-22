@@ -400,8 +400,8 @@ def verify_recovery(parent: dict, proof: dict) -> None:
                 and clock.get("game_ticks") == expected and set(area) == {"a","b","c"}
                 and all(area[id].get("completed_tick") == (expected if id == "a" else 0)
                     and area[id].get("mutation_generation") == (1 if id == "a" and expected == 4 else 0)
-                    and area[id].get("native_sha256") == child["native_sha256"] if id == "a" else
-                    area[id].get("native_sha256") is not None for id in ("a","b","c")),
+                    and (id != "a" or area[id].get("native_sha256") == child["native_sha256"])
+                    for id in ("a","b","c")),
                 "Fresh recovery lacks the exact independent durable-area/native/clock oracle")
         require(all(first.get(key) == repeat.get(key) for key in
             ("session_id", "native_sha256", "physical_hash", "expected_tick", "durable_oracle")),
