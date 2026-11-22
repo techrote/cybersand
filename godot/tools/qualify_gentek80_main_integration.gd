@@ -31,9 +31,9 @@ func lazy_art(label: String) -> bool:
 	var panel: Window = wb.art_batches
 	var names := DirAccess.get_files_at("user://art-traffic")
 	names.sort()
-	var ok: bool = not panel.visible and not panel.conversation_loaded \
+	var ok: bool = not panel.visible and panel.conversation_loaded and panel.conversation.is_empty() \
 		and not panel.provider.resume_active and panel.provider.log_path.is_empty() \
-		and panel.provider.parent_log_path == "user://art-traffic/legacy.jsonl" \
+		and panel.provider.parent_log_path.is_empty() \
 		and names == archive_files \
 		and FileAccess.get_sha256("user://art-traffic/legacy.jsonl") == archive_hash
 	return check(ok, label + ": unopened Art stays deferred and historical traffic stays exact")
