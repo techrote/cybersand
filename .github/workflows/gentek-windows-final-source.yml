@@ -7,6 +7,7 @@ on:
       - 'tools/package_explore001_candidate.py'
       - '.github/workflows/gentek-windows-final-source.yml'
       - 'docs/operations/gentek80-physical-owner-acceptance.md'
+      - 'docs/reference/retrieval-corpus.json'
   workflow_dispatch:
 permissions:
   contents: read
