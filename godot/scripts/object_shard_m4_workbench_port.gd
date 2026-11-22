@@ -73,7 +73,8 @@ func interface_status(worker: Object, snapshot: CyberSimulationSnapshot) -> Dict
 			or capabilities.get("worker_exclusive") != true:
 		return _refusal("CompetingOrUnattachedWorld")
 	for key: String in ["worker_instance_id", "native_instance_id", "world_generation",
-			"session", "transport_generation"]:
+			"session", "owner_epoch", "shard_session", "world_incarnation",
+			"transport_generation"]:
 		if not capabilities.get(key) is int or int(capabilities[key]) <= 0:
 			return _refusal("IncompleteWorldIdentity")
 	if int(capabilities.worker_instance_id) != worker.get_instance_id():
@@ -87,7 +88,8 @@ func interface_status(worker: Object, snapshot: CyberSimulationSnapshot) -> Dict
 			return _refusal("IncompleteActionCapabilities")
 	var candidate_owner: Dictionary = {}
 	for key: String in ["worker_instance_id", "native_instance_id", "world_generation",
-			"session", "transport_generation"]:
+			"session", "owner_epoch", "shard_session", "world_incarnation",
+			"transport_generation"]:
 		candidate_owner[key] = capabilities[key]
 	if not _pinned_owner.is_empty() and _pinned_owner != candidate_owner:
 		_held_reason = "OwnerChangedWithoutRetirement"
@@ -98,7 +100,9 @@ func interface_status(worker: Object, snapshot: CyberSimulationSnapshot) -> Dict
 		"world_generation": capabilities.world_generation,
 		"native_instance_id": capabilities.native_instance_id,
 		"worker_instance_id": capabilities.worker_instance_id,
-		"session": capabilities.session,
+		"session": capabilities.session, "owner_epoch": capabilities.owner_epoch,
+		"shard_session": capabilities.shard_session,
+		"world_incarnation": capabilities.world_incarnation,
 		"transport_generation": capabilities.transport_generation}
 	return last_status.duplicate()
 
@@ -113,7 +117,8 @@ static func visible_error(observation: Dictionary, uploaded: Dictionary) -> Stri
 			return "VisiblePublicationRequired"
 		if int(observation[key]) != int(uploaded[key]):
 			return "VisiblePublicationChanged"
-	for key: String in ["session", "transport_generation", "publication_sequence"]:
+	for key: String in ["session", "owner_epoch", "shard_session",
+			"world_incarnation", "transport_generation", "publication_sequence"]:
 		if not observation.get(key) is int or int(observation[key]) <= 0:
 			return "MissingObservationIdentity"
 	return ""
@@ -122,6 +127,9 @@ static func visible_error(observation: Dictionary, uploaded: Dictionary) -> Stri
 static func target_error(target: Dictionary, position: Vector2i, observation: Dictionary) -> String:
 	if target.get("position") != position \
 			or target.get("session") != observation.get("session") \
+			or target.get("owner_epoch") != observation.get("owner_epoch") \
+			or target.get("shard_session") != observation.get("shard_session") \
+			or target.get("world_incarnation") != observation.get("world_incarnation") \
 			or target.get("transport_generation") != observation.get("transport_generation") \
 			or target.get("publication_sequence") != observation.get("publication_sequence"):
 		return "TargetObservationChanged"
@@ -157,6 +165,9 @@ func queue_intent(worker: Object, snapshot: CyberSimulationSnapshot, uploaded: D
 		return {"ok": false, "outcome": visible_reason}
 	if int(observation.world_generation) != int(status.world_generation) \
 			or int(observation.session) != int(status.session) \
+			or int(observation.owner_epoch) != int(status.owner_epoch) \
+			or int(observation.shard_session) != int(status.shard_session) \
+			or int(observation.world_incarnation) != int(status.world_incarnation) \
 			or int(observation.transport_generation) != int(status.transport_generation):
 		return {"ok": false, "outcome": "WorldIdentityChanged"}
 	var target_reason: String = target_error(target, position, observation)
@@ -170,6 +181,8 @@ func queue_intent(worker: Object, snapshot: CyberSimulationSnapshot, uploaded: D
 		"operation": action, "position": position, "target": target.duplicate(true),
 		"observation": observation.duplicate(true), "world_generation": status.world_generation,
 		"native_instance_id": status.native_instance_id, "session": status.session,
+		"owner_epoch": status.owner_epoch, "shard_session": status.shard_session,
+		"world_incarnation": status.world_incarnation,
 		"transport_generation": status.transport_generation,
 		"captured_usec": captured_usec if captured_usec > 0 else now_usec,
 		"admitted_usec": now_usec}
@@ -200,6 +213,9 @@ func consume_receipt(receipt: Dictionary) -> Dictionary:
 	if receipt.get("port_generation") != generation \
 			or receipt.get("world_generation") != request.world_generation \
 			or receipt.get("session") != request.session \
+			or receipt.get("owner_epoch") != request.owner_epoch \
+			or receipt.get("shard_session") != request.shard_session \
+			or receipt.get("world_incarnation") != request.world_incarnation \
 			or receipt.get("transport_generation") != request.transport_generation \
 			or receipt.get("native_instance_id") != request.native_instance_id:
 		return {"ok": false, "outcome": "StaleOrForeignReceipt"}
@@ -229,7 +245,8 @@ static func _applied_receipt_error(receipt: Dictionary, request: Dictionary) -> 
 	if native.get("accepted") != true or native.get("same_world") != true:
 		return "NotAcceptedSameWorld"
 	for key: String in ["native_instance_id", "session", "world_generation",
-			"transport_generation", "action_id", "port_generation"]:
+			"transport_generation", "owner_epoch", "shard_session",
+			"world_incarnation", "action_id", "port_generation"]:
 		if native.get(key) != request.get(key):
 			return "NativeIdentityMismatch"
 	if native.get("operation") != request.operation or native.get("position") != request.position:

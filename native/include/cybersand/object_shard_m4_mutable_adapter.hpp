@@ -84,7 +84,7 @@ public:
         : identity_(owner), world_address_(std::addressof(world)),
           owner_thread_(std::this_thread::get_id()) {
         if (!coordinator.world_available()) return;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         valid_ = owner.session != 0 && owner.epoch != 0 &&
             owner.world_generation != 0 && owner.shard_session != 0 &&
             owner.world_incarnation != 0 &&
@@ -121,10 +121,11 @@ public:
         const auto check = verify(world, coordinator, owner);
         if (check != Verdict::Accepted) return check;
         if (awaiting_motion_) return Verdict::Held;
-        const auto& snap = coordinator.snapshot();
-        if (snap.quarantined || snap.promotion.present) return Verdict::Fenced;
+        const auto& snap = coordinator.m4_owner_readback();
+        if (snap.quarantined || snap.promotion_pending) return Verdict::Fenced;
         const auto* shard = coordinator.registry().find(handle);
         const BodyView* body = view(snap, handle);
+        if (!body && snap.truncated) return Verdict::Capacity;
         if (!shard || !body || !body->has_body || !shard->owns_inventory() ||
             shard->phase() != Phase::Active) return Verdict::Fenced;
         const auto candidate = revision(*shard, *body);
@@ -181,7 +182,7 @@ public:
         Slot* slot = locate(ticket.body.shard);
         if (!slot || slot->ready || ticket != slot->ticket || awaiting_motion_)
             return Verdict::Stale;
-        const auto& snap = coordinator.snapshot();
+        const auto& snap = coordinator.m4_owner_readback();
         const auto* shard = coordinator.registry().find(ticket.body.shard);
         const BodyView* body = view(snap, ticket.body.shard);
         if (!shard || !body || !body->has_body || !shard->owns_inventory() ||
@@ -206,7 +207,7 @@ public:
         if (awaiting_motion_) return Verdict::Held;
         if (!tick || tick <= baseline_tick_ || tick <= permitted_tick_ ||
             tick != world.completed_tick_index()) return Verdict::Stale;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         if (snapshot.tick != tick || snapshot.quarantined) return Verdict::Fenced;
         // Native semantic-step pose application is not a Rapier substep.
         // Refresh only serials proven by the *one* completed World tick.
@@ -242,11 +243,9 @@ public:
         if (awaiting_motion_) return Verdict::Held;
         if (!permit_armed_ || !permitted_tick_ ||
             world.completed_tick_index() != permitted_tick_ ||
-            coordinator.paused() || coordinator.snapshot().quarantined)
+            coordinator.paused() || coordinator.m4_owner_readback().quarantined)
             return Verdict::Fenced;
-        if (segments_ >= kSegmentLimit || next_sequence_ == std::numeric_limits<std::uint64_t>::max())
-            return Verdict::Capacity;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         std::size_t actual = 0;
         for (const auto& b : snapshot.bodies) if (b.has_body) {
             ++actual;
@@ -257,7 +256,14 @@ public:
                 shard->applied_physics_revision() != s->revision.geometry_revision ||
                 revision(*shard, b) != s->revision) return Verdict::Fenced;
         }
-        if (!actual || actual != registered_bodies() || actual > kBodyLimit) return Verdict::Capacity;
+        if (!actual || actual != registered_bodies() || actual > kBodyLimit ||
+            actual != snapshot.active_count || snapshot.truncated)
+            return Verdict::Capacity;
+        // Report mutated native material/geometry before ordinary quota
+        // exhaustion. A stale body remains fenced regardless of headroom.
+        if (segments_ >= kSegmentLimit ||
+            next_sequence_ == std::numeric_limits<std::uint64_t>::max())
+            return Verdict::Capacity;
         MotionTicket candidate{};
         candidate.owner = identity_;
         candidate.completed_tick = permitted_tick_;
@@ -282,7 +288,7 @@ public:
         if (!awaiting_motion_ || !(ticket == issued_) ||
             ticket.completed_tick != world.completed_tick_index())
             return Verdict::Stale;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         if (snapshot.quarantined || coordinator.paused()) return Verdict::Fenced;
         std::array<BodyRevision, kBodyLimit> latest{};
         for (std::uint32_t i = 0; i < ticket.count; ++i) {
@@ -319,8 +325,7 @@ public:
             if (shard.owns_inventory()) return Verdict::Held;
         // Native body retirement acknowledgement must precede release; the
         // absence of material alone is not proof of RID/collider disposal.
-        for (const auto& body : coordinator.snapshot().bodies)
-            if (body.has_body) return Verdict::Held;
+        if (coordinator.m4_owner_readback().active_count != 0) return Verdict::Held;
         slots_ = {};
         valid_ = false;
         world_address_ = nullptr;
@@ -357,13 +362,13 @@ private:
             return Verdict::WrongWorld;
         if (world.has_failed() || world.is_tick_in_progress())
             return Verdict::Fenced;
-        const auto& snap = coordinator.snapshot();
+        const auto& snap = coordinator.m4_owner_readback();
         if (snap.session != identity_.shard_session ||
             snap.world_incarnation != identity_.world_incarnation)
             return Verdict::WrongWorld;
         return Verdict::Accepted;
     }
-    [[nodiscard]] static const BodyView* view(const Snapshot& snap, Handle h) {
+    [[nodiscard]] static const BodyView* view(const OwnerReadback& snap, Handle h) {
         for (const auto& body : snap.bodies) if (body.shard == h) return &body;
         return nullptr;
     }

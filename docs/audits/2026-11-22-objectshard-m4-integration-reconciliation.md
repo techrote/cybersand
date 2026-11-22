@@ -46,3 +46,9 @@ The integration lead incorporated later native and Workbench donor corrections w
 - Workbench follow-up f1ffbf89894ec0a3421108e63b5a52086a38cb5a adds owner-identity pinning in the M4 port, explicit pointer-state reset on unavailable Workbench, and corresponding refusal tests/audit wording.
 - Changed donor files were imported by exact source Git blob identities; shared_workbench.gd received only the frozen additive B continuation patch on top of the previously verified Art-session reconciliation.
 - Execution results must be evaluated against the new exact integration SHA. Donor ordinary CI success is a source-specific scope result, not proof of positive same-World attachment.
+
+## Owner-native identity reconciliation checkpoint
+
+Native donor a06537555002c12ffde231bfa051575a64bc16ca tightens stale geometry/motion admission ordering.
+Workbench donor 351c5a78ebf7a6f71650ecc6b092ef36123badbe adds owner epoch, shard session and World incarnation to capability, observed target and native applied receipt witnesses. The existing ordinary Worker still does not expose an attachment, so these are fail-closed value guards, not positive integrated physics.
+These changes are incorporated as exact donor blobs with both donor commits retained in merge ancestry. Legacy Art session-only settings from main remain intact.
