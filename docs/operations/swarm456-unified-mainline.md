@@ -58,6 +58,7 @@ independent reviews are retained in consolidated qualification evidence.
 | Native receptor work | Keep #715 charged record/cell visits, finite bounds, cancellation and atomic publication alongside #716 recovery. No budget increase or rejected-work refund. | Strict suites, sanitizers, known controls and all registered recovery policies. |
 | Recovery obligations/history | Keep #716 reserve-before-mutation and funded rejected-proposal finalization. Do not certify blocked/exhausted results. | Admission, source/hash and recovery suites; all failed histories retained. |
 | Native build/CLI | Keep all #716 native/test inputs and V4 parser with #715 `CPPFLAGS`, external control replay and C stdio compatibility. | Eight native suites, Linux ABI floor and V1/V2/V3/V4 transport. |
+| Portable admission fixture | Express the over-16-MiB reserved-vector test in bytes using its actual element size, and assert that premise. Retain production admission and its fixed allowance unchanged. | Strict and sanitizer tests with the distributed Linux ABI; actual Windows strict execution. Recompute the native definition because the test is a definition input. |
 | Final/provisional inspector | Keep #716 selector index zero as native final round `-1`; other indices select their corresponding provisional round. Reset every overlay. | Actual Final/Joints/Unresolved/Clearance/Revisions and every provisional round. |
 | Historical authority | Keep #715 persistent historical-only latch with explicit reviewed definition/schema pairs. Only successful fresh current-source generation clears it. | Edit/Cancel/reset/failure, direct Apply/attestation/Undo negatives and fresh-generation recovery. |
 | Protocol identity | Preserve V1/V2, independent V3 SWARM-005 controls and opt-in V4 recovery. Only original reviewed SWARM-004 schema5 may omit the two later option fields. | Current strict decode, exact historical schema whitelist and malformed/forged evidence. |
@@ -112,6 +113,20 @@ Publish actual qualified bytes through #715's eight-path leased transaction,
 then check the published source and obtain independent final-source reviews.
 Draft skips, source-only repairs and donor passes cannot qualify the new build.
 Retain original failures and identify each repaired successor in the PR.
+
+The first combined hosted run,
+[44976065682](https://github.com/techrote/cybersand/actions/runs/44976065682),
+executed source `e8784e835635cce16bce8b480e0238b64f815f84`. Its scientific
+1,920-case execution completed, but Linux and Windows native admission did not
+pass. The reserved-vector test assumed 600,000 strings exceeded 16 MiB; the actual
+Windows executable allocates 14,400,000 bytes for those strings, and the supported
+Linux string ABI uses smaller elements too. The production guard charges actual
+capacity bytes. Correcting the fixture preserves the byte ceiling and requires a
+new definition-bound candidate. Both native jobs also lacked the Pillow dependency
+imported by the existing V1/V2 custody tests; the successor explicitly installs
+the pinned dependency. Original failed receipts remain evidence and cannot
+authorize runtime publication. No algorithm, research policy, child timeout or
+scientific denominator changes to accommodate these qualification repairs.
 
 ## Physical owner acceptance
 

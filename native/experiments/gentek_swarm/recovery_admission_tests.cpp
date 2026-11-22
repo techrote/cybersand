@@ -227,7 +227,14 @@ int main() {
         for(const auto& mutate:mutations){auto c=nested_specimen(); mutate(c); rejected(c,"enum or scalar");}
     });
     test("capacity and aggregate memory are checked without raising the 16 MiB envelope", [] {
-        auto c=specimen(); c.original_frame.core.notes.reserve(600'000); rejected(c,"empty large reserved vector");
+        auto c=specimen();
+        using Note = decltype(c.original_frame.core.notes)::value_type;
+        constexpr std::size_t allowance = 16ULL * 1024 * 1024;
+        c.original_frame.core.notes.reserve(allowance / sizeof(Note) + 1);
+        require(c.original_frame.core.notes.empty() &&
+                c.original_frame.core.notes.capacity() > allowance / sizeof(Note),
+                "empty reserved-vector fixture must exceed the 16 MiB byte allowance");
+        rejected(c,"empty large reserved vector");
         c=specimen(); c.reason.reserve(17ULL*1024*1024); rejected(c,"empty large reserved string");
         c=specimen(); c.input.frame.limits.max_bytes=1; rejected(c,"lower request memory allowance");
         c=specimen(); c.input.frame.limits.max_bytes=17ULL*1024*1024; rejected(c,"raised memory allowance");

@@ -20,7 +20,7 @@ const PARAMETERS := ["variation","irregularity","clutter","destruction","branchi
 # The suffix is Makefile.reciprocal's hash of its complete C++/header inputs.
 # A changed definition requires a separately qualified bridge; source labels or
 # a successful child exit do not authorize a different Gentek or larger budget.
-const NATIVE_DEFINITION := "74e24ee632902655e1f5cb230300f430251b545cbec700df3b90d77537eb8438"
+const NATIVE_DEFINITION := "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf"
 # Saved evidence admits only the exact definition/schema pairs emitted by
 # these reviewed serializers. It never authorizes current transport or Apply.
 const SAVED_SWARM004_DEFINITION := "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec"

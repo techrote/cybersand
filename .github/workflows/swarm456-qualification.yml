@@ -92,6 +92,13 @@ jobs:
           bash tools/swarm45/prepare_build.sh linux
       - name: Build source-matched native payload once
         run: python3 tools/swarm45/build_runtime.py --platform linux --output build/swarm45-linux --evidence evidence/linux-build
+      - name: Pin Python for native transport tests
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install pinned native transport dependency
+        run: |
+          python3 -m pip install --require-hashes --only-binary=:all: --no-deps 'https://files.pythonhosted.org/packages/e6/99/fdf65cc539e266ab93546c261bdf98411fe165c6e4e13f9dbf597097192b/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl#sha256=42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca'
       - name: Execute all eight reciprocal suites authoring patch ASan UBSan and V1-V4
         run: python3 tools/swarm45/native_checks.py --runtime build/swarm45-linux --output evidence/linux-native
       - name: Replay all360 revealed controls with full native JSON
@@ -181,6 +188,15 @@ jobs:
           python tools/swarm45/run_request.py --output evidence/windows-source-request.json
           if ($LASTEXITCODE -ne 0) { throw 'Request validation failed' }
           & tools/swarm45/prepare_windows.ps1
+      - name: Pin Python for native transport tests
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install pinned native transport dependency
+        shell: pwsh
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: --no-deps 'https://files.pythonhosted.org/packages/ff/cd/73a79ecdc822076002eb24b5e1e4a530b0bb5310fcb6d239abbec877110b/pillow-13.0.0-cp312-cp312-win_amd64.whl#sha256=ff3fe9eb621fbb9db4c4be33ab946f6bac5f98ab50ca8d3260503653656c961b'
+          if ($LASTEXITCODE -ne 0) { throw 'Native transport dependency installation failed' }
       - name: Execute all strict native tests on actual Windows
         shell: pwsh
         run: |
