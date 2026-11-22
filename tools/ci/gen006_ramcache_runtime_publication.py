@@ -130,7 +130,7 @@ EXTRA_INPUTS = {
     "docs/operations/persistent-area-ramcache-evaluation.md",
 }
 engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {old_workflow, old_request}) | EXTRA_INPUTS
-BOUNDARIES = ("before_snapshot", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish")
+BOUNDARIES = ("before_capture", "before_snapshot", "queued_dirty", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish", "newer_dirty_after_durable")
 RAMCACHE_LABELS = frozenset({"ramcache-native", "ramcache-clock", "ramcache-ledger", "ramcache-writeback", "ramcache-owner-review", "ramcache-prefetch-concurrency", "donor-cold", "successor-cold"}
     | {"ramcache-hot-recovery", "ramcache-healthy-seed", "ramcache-healthy-verify", "ramcache-metadata-bounds"}
     | {"ramcache-resident-storage-write", "ramcache-resident-storage-reopen"}
@@ -358,28 +358,67 @@ def verify_recovery(parent: dict, proof: dict) -> None:
     require(all(proof.get(key) == parent.get(key) for key in ("source_commit", "source_tree", "engine_sha256", "native_sha256")),
         "Recovery top-level source/runtime identity differs")
     rows = proof.get("rows", [])
-    require(isinstance(rows, list) and len(rows) == 18, "Six deaths and twelve fresh restores are mandatory")
+    require(isinstance(rows, list) and len(rows) == len(BOUNDARIES)*3,
+        "Nine actual OS deaths and eighteen independent native restores are mandatory")
     for index, phase in enumerate(BOUNDARIES):
         death, first, repeat = rows[3*index:3*index+3]
         require(all(isinstance(row, dict) and row.get("ok") is True and type(row.get("pid")) is int
             and row["pid"] > 0 and type(row.get("exit_code")) is int and row.get("boundary") == phase
             for row in (death, first, repeat)), "Recovery child process did not complete its declared boundary")
         barrier = death.get("observed_barrier", {})
-        require(death.get("kind") == "intentional_process_death" and death.get("forced_termination") is True
+        witnesses = death.get("barrier_witnesses", [])
+        phases = {"before_snapshot", "queued_dirty"} if phase == "queued_dirty" else {phase}
+        require(isinstance(witnesses, list) and len(witnesses) == len(phases)
+            and {w.get("phase") for w in witnesses if isinstance(w, dict)} == phases
+            and all(w.get("pid") == death["pid"] and w.get("session_id") == barrier.get("session_id")
+                for w in witnesses if isinstance(w, dict))
+            and death.get("kind") == "intentional_process_death" and death.get("forced_termination") is True
             and death["exit_code"] != 0 and barrier.get("phase") == phase and barrier.get("pid") == death["pid"]
             and re.fullmatch(r"[0-9a-f]{32}", str(barrier.get("session_id", ""))) is not None,
-            "Write-behind death lacks an actual matching native process barrier")
-        expected = 4 if phase == "after_publish" else 0
+            "Write-behind death lacks its matching real native/Main process barriers")
+        expected = 4 if phase in ("after_publish", "newer_dirty_after_durable") else 0
+        revision = 2 if expected == 4 else 1
+        require(barrier.get("revision") == (2 if phase in ("after_publish","newer_dirty_after_durable") else 1),
+            "Death marker disagrees with the actual pre-/post-publication manifest frontier")
+        if phase in ("before_capture", "queued_dirty", "newer_dirty_after_durable"):
+            require(barrier.get("live_native_tick") == (4 if phase == "before_capture" else 6)
+                and barrier.get("durable_native_tick") == (4 if phase == "newer_dirty_after_durable" else 0),
+                "Crash marker does not witness real newer dirty native work")
+        if phase == "queued_dirty":
+            require(barrier.get("queued_requests") == 1, "Write-behind process death lost pending coalesced work")
         require(len({death["pid"], first["pid"], repeat["pid"]}) == 3, "Recovery reused a process identity")
         for child in (first, repeat):
+            oracle = child.get("durable_oracle", {})
+            clock = oracle.get("clock", {}) if isinstance(oracle, dict) else {}
+            area = oracle.get("areas", {}) if isinstance(oracle, dict) else {}
             require(child.get("kind") == "fresh_process_recovery" and child["exit_code"] == 0
-                and child.get("observed_pid") == child["pid"] and child.get("expected_tick") == expected and child.get("checks", 0) >= 8
-                and child.get("session_id") == barrier["session_id"]
+                and child.get("observed_pid") == child["pid"] and child.get("expected_tick") == expected
+                and child.get("checks", 0) >= 8 and child.get("session_id") == barrier["session_id"]
                 and re.fullmatch(r"[0-9a-f]{64}", str(child.get("native_sha256", ""))) is not None
-                and re.fullmatch(r"[0-9a-f]{16}", str(child.get("physical_hash", ""))) is not None,
-                "Fresh recovery did not verify the expected exact native frontier")
-        require(all(first.get(key) == repeat.get(key) for key in ("session_id", "native_sha256", "physical_hash", "expected_tick")),
-            "Repeated reopening changed retained native authority")
+                and re.fullmatch(r"[0-9a-f]{16}", str(child.get("physical_hash", ""))) is not None
+                and oracle.get("revision") == revision and oracle.get("game_ticks") == expected
+                and clock.get("game_ticks") == expected and set(area) == {"a","b","c"}
+                and all(area[id].get("completed_tick") == (expected if id == "a" else 0)
+                    and area[id].get("mutation_generation") == (1 if id == "a" and expected == 4 else 0)
+                    and area[id].get("native_sha256") == child["native_sha256"] if id == "a" else
+                    area[id].get("native_sha256") is not None for id in ("a","b","c")),
+                "Fresh recovery lacks the exact independent durable-area/native/clock oracle")
+        require(all(first.get(key) == repeat.get(key) for key in
+            ("session_id", "native_sha256", "physical_hash", "expected_tick", "durable_oracle")),
+            "Repeated reopening changed authored, native, or accounted durable authority")
+        if phase == "newer_dirty_after_durable":
+            seed = death.get("seed", {})
+            baseline = seed.get("baseline", {}) if isinstance(seed, dict) else {}
+            require(seed.get("ok") is True and seed.get("exit_code") == 0
+                and type(seed.get("pid")) is int and seed.get("pid") > 0
+                and len({seed["pid"], baseline.get("pid"), death["pid"], first["pid"], repeat["pid"]}) == 5
+                and baseline.get("kind") == "fresh_process_recovery"
+                and baseline.get("session_id") == barrier["session_id"]
+                and baseline.get("durable_oracle") == first.get("durable_oracle")
+                and baseline.get("native_sha256") == first.get("native_sha256"),
+                "Older acknowledged durable state did not survive newer unsaved mutations")
+        else:
+            require("seed" not in death, "Unexpected seed process in an unseeded death case")
 
 
 def verify_cold_benchmark(parent: dict, proof: dict, label: str) -> None:
@@ -1237,7 +1276,20 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
         if position == 0:
             lines = (directory/record["log"]).read_text(encoding="utf-8").splitlines()
             barriers = [json.loads(line.partition(" ")[2]) for line in lines if line.startswith("GEN006_RAMCACHE_BARRIER ")]
-            require(barriers == [child["observed_barrier"]], "Original process-death barrier differs from the report")
+            require(barriers == child.get("barrier_witnesses")
+                and child["observed_barrier"] in barriers,
+                "Original native/Main process-death barriers differ from the report")
+            if phase == "newer_dirty_after_durable":
+                seed = child["seed"]
+                for name, digest in (("seed.log", seed["log_sha256"]),
+                                     ("reopen.log",seed["baseline"]["log_sha256"])):
+                    path = "ramcache-writeback-faults/" + phase + "/seed/" + name
+                    require(value["files_sha256"].get(path) == digest,
+                        "Original durable seed or baseline-reopen process log is missing or changed")
+                path = "ramcache-writeback-faults/" + phase + "/seed/recovered.json"
+                require(value["files_sha256"].get(path) == seed["baseline"]["evidence_sha256"]
+                    and json.loads((directory/path).read_text(encoding="utf-8"))["pid"] == seed["baseline"]["pid"],
+                    "Original seeded recovery receipt differs from source-bound durable baseline")
         else:
             receipt_path = str(Path(record["log"]).with_name("recovered.json")).replace("\\", "/")
             require(value["files_sha256"].get(receipt_path) == child.get("evidence_sha256"),
@@ -1248,7 +1300,11 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
                 and receipt.get("checks") == child["checks"] and native.get("native_tick") == child["expected_tick"]
                 and native.get("native_sha256") == child["native_sha256"] and native.get("physical_hash") == child["physical_hash"]
                 and native.get("fresh_owner_manifest", {}).get("session_id") == child["session_id"]
-                and native.get("fresh_owner_manifest", {}).get("clock", {}).get("game_ticks") == child["expected_tick"],
+                and native.get("fresh_owner_manifest", {}).get("clock", {}).get("game_ticks") == child["expected_tick"]
+                and native.get("fresh_owner_manifest", {}).get("revision") == child["durable_oracle"]["revision"]
+                and native.get("fresh_owner_manifest", {}).get("clock") == child["durable_oracle"]["clock"]
+                and all(native["fresh_owner_manifest"]["areas"][id][key] == data
+                    for id,fields in child["durable_oracle"]["areas"].items() for key,data in fields.items()),
                 "Original fresh recovery failed or restored a different native/game-time frontier")
     for label in ("donor-cold", "successor-cold"):
         proof = value.get("ramcache_cold_comparison", {}).get(label, {})
