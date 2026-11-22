@@ -8,6 +8,7 @@ const Store = preload("res://scripts/persistent_area_store.gd")
 const Clock = preload("res://scripts/persistent_area_clock.gd")
 const Fixture = preload("res://tests/fixtures/persistent_area_native_fixture.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
+const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 var checks := 0
 var failures := 0
 var fixture: Dictionary
@@ -169,6 +170,7 @@ func run() -> void:
 	check(not staged.retain_warm("c",capture,authoring,0,manifest.areas.c.incarnation,"",false,true).ok,
 		"preserving an absent candidate reservation refuses")
 	exercise_authoring_refresh()
+	exercise_admitted_authoring()
 	finish()
 
 
@@ -242,6 +244,108 @@ func exercise_authoring_refresh() -> void:
 	active.active = "true"
 	check(not cache.refresh_hot("a",active,3,edited).ok,
 		"active growth exception requires a boolean native active receipt")
+
+
+func exercise_admitted_authoring() -> void:
+	var cache := Cache.new()
+	check(cache.open(manifest,64*1024*1024).ok,"already-admitted source reuse fixture opens")
+	var active := receipt("a",4001)
+	active.active = true
+	var encoded_before := int(cache.status().counters.authoring_admission_encodes)
+	check(cache.admit_hot("a",active,authoring,0).ok and cache.set_active("a").ok,
+		"normalized original source admits the real native fixture authoring")
+	check(int(cache.status().counters.authoring_admission_encodes)==encoded_before+1,
+		"HOT admission uses one bounded authoring encoding for size and digest")
+	encoded_before = int(cache.status().counters.authoring_admission_encodes)
+	check(cache.retain_warm("b",capture,authoring,0,manifest.areas.b.incarnation).ok,
+		"complete validated native checkpoint reuses its normalized original source")
+	check(int(cache.status().counters.authoring_admission_encodes)==encoded_before+1,
+		"WARM admission uses one bounded authoring encoding for size and digest")
+	var unchanged_a := cache.entry("a")
+	var unchanged_b := cache.entry("b")
+	var shared := PackedByteArray()
+	shared.resize(5*1024*1024)
+	for label: String in ["geometry","rectangle_count","transport","unknown_definition_field","unknown_nested_field",
+			"unsupported_schema","packed_tools","packed_position","packed_rectangles","integral_float","nil_source",
+			"unknown_envelope_field","wrong_envelope_shape","aliased_metadata"]:
+		var forged := authoring.duplicate(true)
+		match label:
+			"geometry": forged.definition.rectangles[15] += 1
+			"rectangle_count": forged.definition.rectangles.pop_back()
+			"transport": forged.definition.transport_profile.families.powder.pickup = 63
+			"unknown_definition_field": forged.definition["unverified_extra"] = false
+			"unknown_nested_field": forged.definition.transport_profile.families.liquid["unverified_extra"] = 1
+			"unsupported_schema": forged.definition.schema_version = 3
+			"packed_tools": forged.definition.tools = PackedStringArray(forged.definition.tools)
+			"packed_position": forged.definition.player_start = PackedInt32Array(forged.definition.player_start)
+			"packed_rectangles": forged.definition.rectangles = PackedInt32Array(forged.definition.rectangles)
+			"integral_float": forged.definition.recipe_version = float(forged.definition.recipe_version)
+			"nil_source": forged.definition.source_recipe = null
+			"unknown_envelope_field": forged["unverified_extra"] = false
+			"wrong_envelope_shape": forged.camera = []
+			"aliased_metadata": forged.camera["aliases"] = [shared,shared]
+		if label.begins_with("packed_"):
+			check(JSON.stringify(forged.definition,"",true).sha256_text()==capture.authored_source_sha256 \
+				and not Store.Contract.validate(forged.definition).get("ok",false),
+				"canonical JSON alone aliases a source type refused by the full validator: "+label)
+		encoded_before = int(cache.status().counters.authoring_admission_encodes)
+		check(not cache.admit_hot("b",receipt("b",4002),forged,0).ok,
+			"HOT admission refuses changed or unsupported complete source: "+label)
+		check(not cache.retain_warm("b",capture,forged,0,manifest.areas.b.incarnation).ok,
+			"WARM admission refuses changed or unsupported complete source: "+label)
+		check(not cache.mark_dirty("a",0,1,forged).ok,
+			"authoring mutation refuses changed or unsupported complete source: "+label)
+		check(cache.entry("a")==unchanged_a and cache.entry("b")==unchanged_b,
+			"refused source preserves native handle, warm checkpoint and host authority: "+label)
+		check(int(cache.status().counters.authoring_admission_encodes)==encoded_before,
+			"invalid or oversized envelope refuses before full authoring encoding: "+label)
+	var wrong_source := receipt("b",4002)
+	wrong_source.identity.authored_source_sha256 = "f".repeat(64)
+	check(not cache.admit_hot("b",wrong_source,authoring,0).ok,
+		"unknown native source identity cannot reuse an admitted cache entry")
+	var wrong_capture := capture.duplicate(true)
+	wrong_capture.authored_source_sha256 = "f".repeat(64)
+	check(not cache.retain_warm("b",wrong_capture,authoring,0,manifest.areas.b.incarnation).ok,
+		"unknown captured source identity cannot reuse the admitted native geometry")
+	wrong_capture = capture.duplicate(true)
+	wrong_capture.native_chunks = 129
+	check(not cache.retain_warm("b",wrong_capture,authoring,0,manifest.areas.b.incarnation).ok,
+		"native capture capacity count remains fully validated before envelope reuse")
+	check(not cache.admit_hot("unknown",receipt("b",4002),authoring,0).ok,
+		"unopened area identity cannot enter the normalized-source reuse path")
+	var parsed: Variant = JSON.parse_string(JSON.stringify(authoring.definition,"",true))
+	var normalized: Dictionary = Store.Contract.validate(parsed)
+	check(normalized.get("ok",false) and normalized.get("hash","")==capture.authored_source_sha256,
+		"full source validator establishes normalized identity after JSON number parsing")
+	if normalized.get("ok",false):
+		var reconstructed := authoring.duplicate(true)
+		reconstructed.definition = normalized.definition
+		check(cache.admit_hot("c",receipt("c",4003),reconstructed,0).ok,
+			"normalized JSON reconstruction is admitted without changing its complete source identity")
+	var changed := authoring.duplicate(true)
+	changed.camera.origin = Vector2i(31,47)
+	changed.setup.edits.append([71,80,0,0])
+	encoded_before = int(cache.status().counters.authoring_admission_encodes)
+	check(cache.mark_dirty("a",0,1,changed).ok and cache.entry("a").authoring.setup.edits.back()==[71,80,0,0],
+		"supported camera values and explicit Empty authoring edits retain their original construction")
+	check(int(cache.status().counters.authoring_admission_encodes)==encoded_before+1,
+		"authoring mutation uses one bounded encoding for accounting and identity")
+	var plane: Dictionary = fixture.bridge.capture_material_baseline(fixture.world)
+	var flattened: Dictionary = MaterialBaseline.stage(plane,Vector2i(512,512))
+	check(not flattened.has("error"),"real native material baseline is validated for Flatten compatibility")
+	if not flattened.has("error"):
+		var flattened_authoring := changed.duplicate(true)
+		flattened_authoring.material_baseline = flattened.baseline
+		flattened_authoring.setup.edits = []
+		check(cache.mark_dirty("a",0,2,flattened_authoring).ok \
+			and cache.retain_warm("a",capture,flattened_authoring,2,manifest.areas.a.incarnation).ok,
+			"native flattened starting plane and full dynamic continuation coexist in the cache")
+		check(cache.entry("a").authoring.material_baseline.sha256==plane.sha256 \
+			and cache.entry("a").authored_source_sha256==capture.authored_source_sha256 \
+			and cache.entry("a").capture.sha256==capture.sha256,
+			"Flatten changes the authored baseline without replacing original geometry or dynamic state")
+	check(fixture.bridge.capture_workbench_continuation(fixture.world).sha256==capture.sha256,
+		"cache source checks and material capture never mutate the real native World")
 
 
 func finish() -> void:

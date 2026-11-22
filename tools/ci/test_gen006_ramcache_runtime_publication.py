@@ -143,6 +143,91 @@ class QualificationGuards(unittest.TestCase):
         value["ramcache_performance"]["1"]["hot_zero_debt"]["p95_ms"] = 0.1
         with self.assertRaises(RuntimeError): profile.verify_ramcache(value)
 
+    def test_responsiveness_requires_matched_processes_and_preparation_inside_measured_window(self):
+        # Deliberately synthetic guard inputs; these are never execution evidence.
+        parent = valid_guard_fixture()
+        parent["platform"] = "linux"
+        graphics = {method:dict(available=True, value=value) for method,value in (
+            ("get_current_rendering_driver_name", "opengl3"), ("get_current_rendering_method", "gl_compatibility"),
+            ("get_video_adapter_name", "fixture"), ("get_video_adapter_vendor", "fixture"),
+            ("get_video_adapter_api_version", "fixture"))}
+        graphics["display_server"] = "X11"
+        initial = dict(area_id="b", extent=[512,512], native_tick=0, game_tick=0, worker_threads=1,
+            target_residency="COLD", active_handle=1, world_generation=2,
+            **{key:"f"*64 for key in ("native_sha256","authoring_sha256","authored_source_sha256",
+                "physics_profile_sha256","target_native_sha256","target_source_sha256")})
+        frames = [dict(start_usec=200000+i*1000000, end_usec=200000+(i+1)*1000000, interval_usec=1000000,
+            native_tick_before=i, native_tick_after=i+1, area_id="b", world_generation=2) for i in range(10)]
+        group = {}
+        for i, variant in enumerate(("control", "prefetch", "reversal")):
+            group[variant] = dict(schema="gen006-ramcache-responsiveness-v1", completed=True, variant=variant,
+                graphical=True, failures=[], process_id=100+i, checks=20, initial=copy.deepcopy(initial),
+                comparison_valid=variant!="reversal", prefetch_busy_at_window_end=False, prefetch_records=[],
+                identity=dict(native_runtime_sha256=parent["native_sha256"], source_revision=parent["source_commit"],
+                    os_name="Linux", os_version="fixture", processor_name="fixture", logical_processors=4,
+                    engine=dict(major=4,minor=7,hash="fixture"), graphics=copy.deepcopy(graphics)),
+                apparatus=dict(requested_window_msec=10000, automatic_prediction_suppressed=True,
+                    background_checkpointing=False, arrival_outside_window=True, active_area="b", prefetch_target="c"),
+                window_start_usec=200000, window_end_usec=10200000, actual_window_usec=10000000,
+                frame_intervals=copy.deepcopy(frames), native_ticks_observed_in_window=10,
+                frame_statistics=dict(count=10,p50_ms=1000.0,p95_ms=1000.0,worst_ms=1000.0),
+                io_at_window_end=dict(prefetch_requests=0 if i==0 else 1,prefetch_completed=1,prefetch_cancelled=1),
+                target_hot_at_window_end=i==1,reversal_usec=2200000,
+                arrival=dict(status="completed",residency="HOT",target_area="c" if i==1 else "a",start_usec=11000000,
+                    prefetch_hit=True,prefetch_operation_id=str(i)*32,target_native_tick_before=1,
+                    io_before=dict(profile_read_calls=1,profile_read_bytes=100,native_deserializations=1,
+                        source_constructions=1,synchronous_publications=1,hot_handoffs=0,prefetch_hits=0),
+                    io_after=dict(profile_read_calls=1,profile_read_bytes=100,native_deserializations=1,
+                        source_constructions=1,synchronous_publications=1,hot_handoffs=1,prefetch_hits=1)),
+                prepared_receipt=dict(identity=dict(area_id="c" if i==1 else "a",session_id="a"*32,
+                    incarnation="b"*32,runtime_sha256=parent["native_sha256"],authored_source_sha256="f"*64),
+                    active=False,failed=False,handle=3,resident_generation=1,physics_profile_sha256="f"*64,
+                    worker_threads=1,schema=1,completed_tick=1,mutation_generation=2))
+        group["prefetch"]["prefetch_records"] = [dict(area_id="c",source_residency="COLD",status="completed",
+            start_usec=2200000,end_usec=3500000,operation_id="1"*32,
+            phase_timestamps=dict(checkpoint_load_started_usec=2210000,checkpoint_load_finished_usec=2300000,
+                cache_admission_started_usec=3400000,cache_admission_finished_usec=3450000),
+            native_work=dict(prepare_started_usec=2400000,prepare_completed_usec=3000000,
+                import_started_usec=3100000,import_completed_usec=3300000,prepared_before_activation=True,
+                receipt=copy.deepcopy(group["prefetch"]["prepared_receipt"])))]
+        group["reversal"]["prefetch_records"] = [
+            dict(area_id="c",source_residency="COLD",status="cancelled",start_usec=2100000,end_usec=2400000,operation_id="3"*32),
+            dict(area_id="a",source_residency="HOT",status="completed",start_usec=2500000,end_usec=2800000,operation_id="2"*32,
+                native_work=dict(receipt=copy.deepcopy(group["reversal"]["prepared_receipt"])))]
+        profile.verify_responsiveness(parent,1,group)
+        for fault in ("late_admission","missing_phase","wrong_initial","reused_pid","frame_gap","fake_statistics",
+                "no_progress","cold_at_deadline","invalid_comparison","headless_identity","different_renderer",
+                "different_os","pending_prefetch","tick_jump","missing_generation","arrival_miss","arrival_restore",
+                "prepared_handle","prepared_runtime","wrong_operation","missing_reversal","late_cancel"):
+            changed=copy.deepcopy(group)
+            if fault=="late_admission": changed["prefetch"]["prefetch_records"][0]["phase_timestamps"]["cache_admission_finished_usec"]=11200000
+            elif fault=="missing_phase": del changed["prefetch"]["prefetch_records"][0]["native_work"]["import_started_usec"]
+            elif fault=="wrong_initial": changed["prefetch"]["initial"]["native_sha256"]="e"*64
+            elif fault=="reused_pid": changed["prefetch"]["process_id"]=100
+            elif fault=="frame_gap": changed["control"]["frame_intervals"][1]["start_usec"]+=1
+            elif fault=="fake_statistics": changed["prefetch"]["frame_statistics"]["worst_ms"]=1
+            elif fault=="no_progress": changed["control"]["native_ticks_observed_in_window"]=0
+            elif fault=="cold_at_deadline": changed["prefetch"]["target_hot_at_window_end"]=False
+            elif fault=="invalid_comparison": changed["prefetch"]["comparison_valid"]=False
+            elif fault=="headless_identity": changed["prefetch"]["identity"]["graphics"]["display_server"]="headless"
+            elif fault=="different_renderer": changed["prefetch"]["identity"]["graphics"]["get_video_adapter_name"]["value"]="different"
+            elif fault=="different_os": changed["prefetch"]["identity"]["os_name"]="Windows"
+            elif fault=="pending_prefetch": changed["prefetch"]["prefetch_busy_at_window_end"]=True
+            elif fault=="tick_jump": changed["prefetch"]["frame_intervals"][1]["native_tick_before"]=2
+            elif fault=="missing_generation":
+                for proof in changed.values():
+                    del proof["initial"]["world_generation"]
+                    for frame in proof["frame_intervals"]: del frame["world_generation"]
+            elif fault=="arrival_miss": changed["prefetch"]["arrival"]["prefetch_hit"]=False
+            elif fault=="arrival_restore": changed["prefetch"]["arrival"]["io_after"]["native_deserializations"]+=1
+            elif fault=="prepared_handle": changed["prefetch"]["prepared_receipt"]["handle"]=99
+            elif fault=="prepared_runtime": changed["prefetch"]["prepared_receipt"]["identity"]["runtime_sha256"]="0"*64
+            elif fault=="wrong_operation": changed["prefetch"]["arrival"]["prefetch_operation_id"]="9"*32
+            elif fault=="missing_reversal": changed["reversal"]["prefetch_records"]=[]
+            else: changed["reversal"]["prefetch_records"][0]["end_usec"]=11200000
+            with self.subTest(fault=fault), self.assertRaises(RuntimeError):
+                profile.verify_responsiveness(parent,1,changed)
+
     def test_healthy_rescue_requires_two_source_bound_native_processes(self):
         parent=valid_guard_fixture()
         before={key:copy.deepcopy(parent[key]) for key in ("source_commit","source_tree","local_delta","missing_source_inputs","source_inputs_sha256")}

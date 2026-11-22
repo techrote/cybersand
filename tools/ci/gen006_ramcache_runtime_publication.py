@@ -60,6 +60,7 @@ RAMCACHE_LABELS = frozenset({"ramcache-native", "ramcache-clock", "ramcache-ledg
             "short_transient_reservation", "wrong_incarnation", "oversized_metadata")}
     | {f"ramcache-recoverable-{case}-{mode}" for case in ("deferred", "strict", "first") for mode in ("write", "reopen")}
     | {f"ramcache-{mode}-w{workers}" for mode in ("write", "reopen", "memory") for workers in (1, 4)}
+    | {f"ramcache-responsiveness-{variant}-w{workers}" for variant in ("control", "prefetch", "reversal") for workers in (1, 4)}
     | {"ramcache-crash-"+phase for phase in BOUNDARIES}
     | {f"ramcache-recover-{phase}-{index}" for phase in BOUNDARIES for index in (1, 2)})
 donor.REQUIRED_LABELS = donor.REQUIRED_LABELS | RAMCACHE_LABELS
@@ -91,6 +92,150 @@ def verify_operation_timing(sample: dict) -> None:
         and math.isclose(sample["max_main_frame_ms"]*1000,
             sample["worst_frame_end_usec"]-sample["worst_frame_start_usec"], abs_tol=0.000001, rel_tol=1e-12),
         "Operation timing is nonfinite, inconsistent or outside its correlated interval")
+
+
+def verify_responsiveness(parent: dict, workers: int, group: dict, expected_window_msec: int = 10000) -> None:
+    require(isinstance(group, dict) and set(group) == {"control", "prefetch", "reversal"},
+        "Matched active-control, preparation and reversal evidence is incomplete")
+    identities, environments, pids = [], [], []
+    for variant, proof in group.items():
+        initial, apparatus = proof.get("initial", {}), proof.get("apparatus", {})
+        identity = proof.get("identity", {})
+        graphics = identity.get("graphics", {})
+        require(proof.get("schema") == "gen006-ramcache-responsiveness-v1" and proof.get("completed") is True
+            and proof.get("variant") == variant and proof.get("graphical") is True and proof.get("failures") == []
+            and proof.get("comparison_valid") is (variant != "reversal")
+            and proof.get("prefetch_busy_at_window_end") is False
+            and type(proof.get("process_id")) is int and proof["process_id"] > 0
+            and type(proof.get("checks")) is int and proof["checks"] > 0
+            and proof.get("identity", {}).get("native_runtime_sha256") == parent.get("native_sha256")
+            and proof.get("identity", {}).get("source_revision") == parent.get("source_commit"),
+            "Responsiveness requires source-bound real graphical process evidence")
+        require(identity.get("os_name") == {"linux":"Linux", "windows":"Windows"}.get(parent.get("platform"))
+            and isinstance(identity.get("os_version"), str) and identity["os_version"]
+            and isinstance(identity.get("processor_name"), str) and identity["processor_name"]
+            and type(identity.get("logical_processors")) is int and identity["logical_processors"] > 0
+            and identity.get("engine", {}).get("major") == 4 and identity["engine"].get("minor") == 7
+            and identity["engine"].get("hash") and graphics.get("display_server") not in (None, "", "headless")
+            and all(graphics.get(method, {}).get("available") is True
+                and isinstance(graphics[method].get("value"), str) and graphics[method]["value"]
+                for method in ("get_current_rendering_driver_name", "get_current_rendering_method",
+                    "get_video_adapter_name", "get_video_adapter_vendor", "get_video_adapter_api_version"))
+            and graphics["get_current_rendering_method"]["value"] == "gl_compatibility",
+            "Responsiveness lacks observed graphical, engine or machine identity")
+        environments.append({key:identity[key] for key in
+            ("engine", "graphics", "os_name", "os_version", "processor_name", "logical_processors")})
+        require(initial.get("area_id") == "b" and initial.get("extent") == [512, 512]
+            and initial.get("native_tick") == 0 and initial.get("game_tick") == 0
+            and initial.get("worker_threads") == workers and initial.get("target_residency") == "COLD"
+            and all(type(initial.get(key)) is int and initial[key] > 0 for key in ("active_handle", "world_generation"))
+            and all(re.fullmatch(r"[0-9a-f]{64}", str(initial.get(key, ""))) is not None for key in (
+                "native_sha256", "authoring_sha256", "authored_source_sha256", "physics_profile_sha256",
+                "target_native_sha256", "target_source_sha256")), "Active comparison initial native state is unbound")
+        require(apparatus.get("requested_window_msec") == expected_window_msec
+            and apparatus.get("automatic_prediction_suppressed") is True
+            and apparatus.get("background_checkpointing") is False and apparatus.get("arrival_outside_window") is True
+            and apparatus.get("active_area") == "b" and apparatus.get("prefetch_target") == "c",
+            "Responsiveness comparison changed its declared workload")
+        pids.append(proof["process_id"])
+        identities.append({key:value for key,value in initial.items() if key not in ("active_handle", "world_generation")})
+        begin, end = proof.get("window_start_usec"), proof.get("window_end_usec")
+        require(type(begin) is int and type(end) is int and begin > 0
+            and expected_window_msec*1000 <= end-begin <= expected_window_msec*1000+3000000
+            and proof.get("actual_window_usec") == end-begin, "Active comparison window was skipped or unbounded")
+        frames = proof.get("frame_intervals", [])
+        require(isinstance(frames, list) and len(frames) >= 10, "Active comparison omitted original frame intervals")
+        last, tick, values = begin, 0, []
+        for frame in frames:
+            require(all(type(frame.get(key)) is int for key in (
+                "start_usec", "end_usec", "interval_usec", "native_tick_before", "native_tick_after"))
+                and frame["start_usec"] == last and frame["end_usec"] > last and frame["end_usec"] <= end
+                and frame["interval_usec"] == frame["end_usec"]-last
+                and frame["native_tick_before"] == tick and frame["native_tick_after"] >= frame["native_tick_before"]
+                and frame.get("area_id") == "b" and frame.get("world_generation") == initial.get("world_generation"),
+                "Frame series is discontinuous, unmeasured or changes active World authority")
+            last, tick = frame["end_usec"], frame["native_tick_after"]
+            values.append(frame["interval_usec"]/1000.0)
+        require(last == end and tick > 0 and proof.get("native_ticks_observed_in_window") == tick,
+            "Active interval does not establish actual completed native progression")
+        values.sort()
+        measured = {"count":len(values), "p50_ms":values[math.ceil(len(values)*0.5)-1],
+            "p95_ms":values[math.ceil(len(values)*0.95)-1], "worst_ms":values[-1]}
+        require(all(proof.get("frame_statistics", {}).get(key) == value for key,value in measured.items()),
+            "Active-play frame statistics differ from their original intervals")
+        if variant == "control":
+            require(proof.get("io_at_window_end", {}).get("prefetch_requests") == 0
+                and proof.get("target_hot_at_window_end") is False and proof.get("prefetch_records") == [],
+                "Active control executed speculative preparation")
+            continue
+        all_records = proof.get("prefetch_records", [])
+        require(isinstance(all_records, list) and all(isinstance(row, dict) for row in all_records),
+            "Original speculative operation records are absent")
+        if variant == "prefetch":
+            require(proof.get("target_hot_at_window_end") is True
+                and proof.get("io_at_window_end", {}).get("prefetch_requests") == 1
+                and proof.get("io_at_window_end", {}).get("prefetch_completed") == 1,
+                "Cold preparation did not complete inside the measured active window")
+            records = [row for row in all_records if row.get("area_id") == "c"
+                and row.get("source_residency") == "COLD" and row.get("status") == "completed"]
+            require(len(records) == 1, "Missing or ambiguous actual cold preparation record")
+            record = records[0]
+            phases, native = record.get("phase_timestamps", {}), record.get("native_work", {})
+            times = [record.get("start_usec"), phases.get("checkpoint_load_started_usec"),
+                phases.get("checkpoint_load_finished_usec"), native.get("prepare_started_usec"),
+                native.get("prepare_completed_usec"), native.get("import_started_usec"), native.get("import_completed_usec"),
+                phases.get("cache_admission_started_usec"), phases.get("cache_admission_finished_usec"), record.get("end_usec")]
+            require(all(type(value) is int and begin <= value <= end for value in times)
+                and times == sorted(times) and native.get("prepared_before_activation") is True,
+                "Preparation/import/cache admission is absent or outside the active comparison")
+        else:
+            require(proof.get("io_at_window_end", {}).get("prefetch_cancelled", 0) >= 1
+                and type(proof.get("reversal_usec")) is int and begin <= proof["reversal_usec"] <= end,
+                "Reversal evidence did not cancel actual outstanding preparation")
+            cancelled = [row for row in all_records if row.get("area_id") == "c"
+                and row.get("source_residency") == "COLD" and row.get("status") == "cancelled"]
+            require(len(cancelled) == 1 and all(type(cancelled[0].get(key)) is int for key in ("start_usec", "end_usec"))
+                and begin <= cancelled[0]["start_usec"] <= proof["reversal_usec"] <= cancelled[0]["end_usec"] <= end,
+                "Reversal lacks actual cold preparation cancellation inside the measured window")
+        arrival, prepared = proof.get("arrival", {}), proof.get("prepared_receipt", {})
+        target = "c" if variant == "prefetch" else "a"
+        require(arrival.get("status") == "completed" and arrival.get("residency") == "HOT"
+            and arrival.get("prefetch_hit") is True
+            and arrival.get("target_area") == target and arrival.get("start_usec", 0) >= end
+            and prepared.get("identity", {}).get("area_id") == target and prepared.get("active") is False
+            and type(prepared.get("handle")) is int and prepared["handle"] > 0,
+            "Prepared native destination was not reused by an admitted arrival after measurement")
+        matched = [row for row in all_records if row.get("operation_id") == arrival.get("prefetch_operation_id")]
+        require(isinstance(arrival.get("prefetch_operation_id"), str) and arrival["prefetch_operation_id"]
+            and len(matched) == 1 and matched[0].get("status") == "completed"
+            and matched[0].get("area_id") == target
+            and all(type(matched[0].get(key)) is int for key in ("start_usec", "end_usec"))
+            and begin <= matched[0]["start_usec"] <= matched[0]["end_usec"] <= end
+            and (variant != "reversal" or cancelled[0]["end_usec"] <= matched[0]["start_usec"]),
+            "Arrival does not identify the actual destination prepared inside the measured window")
+        native_receipt = matched[0].get("native_work", {}).get("receipt", {})
+        stable_keys = ("handle", "identity", "resident_generation", "physics_profile_sha256", "worker_threads", "schema")
+        require(all(key in prepared and prepared[key] == native_receipt.get(key) for key in stable_keys)
+            and prepared.get("failed") is False and native_receipt.get("active") is False
+            and native_receipt.get("failed") is False and prepared.get("worker_threads") == workers
+            and prepared["identity"].get("runtime_sha256") == parent["native_sha256"]
+            and all(re.fullmatch(r"[0-9a-f]{32}", str(prepared["identity"].get(key, ""))) for key in ("session_id", "incarnation"))
+            and all(re.fullmatch(r"[0-9a-f]{64}", str(value)) for value in
+                (prepared["identity"].get("authored_source_sha256", ""), prepared.get("physics_profile_sha256", "")))
+            and all(type(prepared.get(key)) is int and type(native_receipt.get(key)) is int
+                and prepared[key] >= native_receipt[key] >= 0 for key in ("completed_tick", "mutation_generation"))
+            and arrival.get("target_native_tick_before") == prepared["completed_tick"],
+            "Prepared receipt differs from the admitted native owner or completed tick frontier")
+        before_io, after_io = arrival.get("io_before", {}), arrival.get("io_after", {})
+        require(all(type(before_io.get(key)) is int and before_io[key] >= 0 and after_io.get(key) == before_io[key]
+            for key in ("profile_read_calls", "profile_read_bytes", "native_deserializations", "source_constructions", "synchronous_publications"))
+            and all(type(before_io.get(key)) is int and before_io[key] >= 0 and after_io.get(key) == before_io[key]+1
+                for key in ("hot_handoffs", "prefetch_hits")),
+            "Prefetched arrival reconstructed, reread, republished or did not transfer the resident owner")
+    require(len(set(pids)) == 3 and identities[0] == identities[1] == identities[2],
+        "Responsiveness comparison reused a process or changed initial native/authoring/physics state")
+    require(environments[0] == environments[1] == environments[2],
+        "Responsiveness comparison changed engine, operating system, CPU or observed graphics identity")
 
 
 def verify_healthy_recovery(parent: dict, proof: dict) -> None:
@@ -320,6 +465,20 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
             done = completion(logs[label], "GEN006_INDEPENDENT_NATIVE_REVIEW")
             require(done == row.get("completion") and done.get("mode") == label.removeprefix("ramcache-independent-")
                 and done.get("script_errors") == [], "Independent worker mode or original completion differs: "+label)
+    for workers in (1, 4):
+        group = value.get("ramcache_responsiveness", {}).get(str(workers), {})
+        verify_responsiveness(value, workers, group)
+        for variant, proof in group.items():
+            label = f"ramcache-responsiveness-{variant}-w{workers}"
+            relative = label+"/responsiveness-"+variant+".json"
+            require(relative in value["files_sha256"]
+                and json.loads((directory/relative).read_text(encoding="utf-8")) == proof
+                and proof["process_id"] == rows[label]["pid"], "Active-play comparison is unbound to its original process/receipt")
+            done = completion(logs[label], "GEN006_RAMCACHE_RESPONSIVENESS")
+            require(done == rows[label].get("completion") and done.get("pid") == rows[label]["pid"]
+                and done.get("variant") == variant and done.get("graphical") is True
+                and done.get("checks") == proof["checks"]+1,
+                "Responsiveness original completion contradicts its process/receipt")
     native = [json.loads(line.partition(" ")[2]) for line in logs["ramcache-native"].splitlines()
         if line.startswith("GEN006_NATIVE_RESIDENCY_RESULT ")]
     require(native == [rows["ramcache-native"].get("completion")] and native[0].get("failures") == []
@@ -394,6 +553,14 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
                 and done.get("hot_samples") == len(receipt.get("hot_samples", []))
                 and done.get("warm_samples") == len(receipt.get("warm_samples", [])),
                 "RAM-cache original completion differs from its native/receipt sample evidence")
+        performance = value["ramcache_performance"][str(workers)]
+        measured_process = rows[f"ramcache-write-w{workers}"]
+        require(type(performance.get("whole_process_peak_rss_bytes")) is int
+            and performance["whole_process_peak_rss_bytes"] > 0
+            and performance["whole_process_peak_rss_bytes"] == measured_process.get("os_peak_rss_bytes")
+            and finite_nonnegative(performance.get("whole_process_cpu_seconds"))
+            and performance["whole_process_cpu_seconds"] == measured_process.get("sampled_cpu_seconds"),
+            "Reported RAM-cache process memory/CPU differs from actual process observations")
         relative = f"ramcache-memory/native-memory-w{workers}.json"
         require(relative in value["files_sha256"]
             and json.loads((directory/relative).read_text(encoding="utf-8")) == value["ramcache_memory"][str(workers)]

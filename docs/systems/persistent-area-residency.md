@@ -52,6 +52,16 @@ it never owns a native pointer. Residency, dirty state, catch-up readiness and e
 The configured admission budget is bounded to 8 GiB, with at most four reservations and bounded pins.
 The native registry has a defensive 64-entry limit; the current product graph still has only three areas.
 
+Cache reuse accepts an authoring envelope only after its native receipt or complete checkpoint matches
+the admitted session, area, incarnation, source and physics identity. It bounds the complete envelope before
+encoding, requires the original definition to remain in the validator's normalized JSON type domain, and
+checks every canonical definition field against the already admitted source SHA-256. This includes all
+geometry and transport fields; no source is projected, normalized again, truncated or reconstructed.
+Store/native/worker validators remain authoritative for initial construction and persisted-state admission.
+Cache reuse encodes the bounded authoring envelope once for memory accounting and identity, retaining
+Setup, camera, generated starts and Flatten planes separately from native continuation. Packed-array or
+numeric type aliases cannot impersonate an admitted normalized definition with the same JSON spelling.
+
 Accounted use includes actual native container capacities, conservative growth allowance, warm payloads,
 authoring envelopes and reserved preparation work. OS stacks, allocator overhead, Godot scene/UI objects,
 presentation textures/GPU allocations and RSS

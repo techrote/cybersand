@@ -58,6 +58,10 @@ def statistics(rows: list[dict]) -> dict:
 
 
 class Campaign(donor.Campaign):
+    def __init__(self, args: argparse.Namespace):
+        super().__init__(args)
+        self.env["CYBERSAND_SOURCE_REVISION"] = self.identity["source_commit"]
+
     def command(self, script: str, arguments: list[str] = [], graphical: bool = False) -> list[str]:
         if script == "test_persistent_area_owner_timeout.gd":
             arguments = [*arguments, "--persistent-cache-off"]
@@ -96,7 +100,33 @@ class Campaign(donor.Campaign):
         for workers in (1, 4):
             self.ramcache_workbench("write", workers)
             self.ramcache_workbench("reopen", workers)
+        self.responsiveness()
         self.cold_comparison()
+
+    def responsiveness(self) -> None:
+        self.report["ramcache_responsiveness"] = {}
+        for workers in (1, 4):
+            group = {}
+            for variant in ("control", "prefetch", "reversal"):
+                label = f"ramcache-responsiveness-{variant}-w{workers}"
+                folder = self.output/label
+                arguments = [f"--persistent-profile={folder/'profile'}", f"--persistent-evidence={folder}",
+                    "--persistent-start-paused", "--persistent-test-mode=write", f"--persistent-test-workers={workers}",
+                    "--responsiveness-variant="+variant, "--responsiveness-window-ms=10000"]
+                if not self.args.headless: arguments.append("--persistent-require-graphics")
+                row = self.run(label, self.command("test_persistent_area_responsiveness.gd", arguments,
+                    not self.args.headless), marker="GEN006_RAMCACHE_RESPONSIVENESS", timeout=300)
+                proof = json.loads((folder/("responsiveness-"+variant+".json")).read_text())
+                if proof.get("failures") != [] or proof.get("process_id") != row["pid"] \
+                        or proof.get("variant") != variant or proof.get("completed") is not True:
+                    raise RuntimeError("Responsiveness receipt differs from actual completed graphical process")
+                group[variant] = proof
+            comparable = lambda proof: {key:value for key,value in proof["initial"].items()
+                if key not in ("active_handle", "world_generation")}
+            if comparable(group["control"]) != comparable(group["prefetch"]) \
+                    or comparable(group["control"]) != comparable(group["reversal"]):
+                raise RuntimeError("Active-play control and speculation did not start from identical native/authoring state")
+            self.report["ramcache_responsiveness"][str(workers)] = group
 
     def healthy_recovery(self) -> None:
         folder = self.output/"ramcache-healthy-recovery"

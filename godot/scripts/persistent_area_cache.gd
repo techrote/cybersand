@@ -24,7 +24,8 @@ var _reservations: Dictionary = {}
 var _publication: Dictionary = {}
 var _sequence := 0
 var _counters := {"hot_hits":0,"warm_hits":0,"cold_misses":0,"reservation_refusals":0,
-	"hot_admissions":0,"warm_admissions":0,"evictions":0,"stale_acks":0,"hot_refresh_encodes":0}
+	"hot_admissions":0,"warm_admissions":0,"evictions":0,"stale_acks":0,"hot_refresh_encodes":0,
+	"authoring_admission_encodes":0}
 
 
 static func _fail(reason: String) -> Dictionary:
@@ -184,6 +185,48 @@ func _admission(area_id: String, additional_bytes: int, reservation_id: String, 
 	return ""
 
 
+static func _normalized_definition_value(value: Variant) -> bool:
+	# Contract.validate returns this exact JSON value domain. Packed arrays can
+	# stringify to the same JSON as Array while failing the source contract, so
+	# the digest alone cannot establish that the supplied host value is admitted.
+	# The caller first bounds recursion, items and aggregate bytes with metadata_size.
+	match typeof(value):
+		TYPE_BOOL, TYPE_INT, TYPE_STRING: return true
+		TYPE_ARRAY:
+			for entry: Variant in value:
+				if not _normalized_definition_value(entry): return false
+			return true
+		TYPE_DICTIONARY:
+			for key: Variant in value:
+				if not key is String or not _normalized_definition_value(value[key]): return false
+			return true
+	return false
+
+
+func _admitted_authoring(authoring: Dictionary, source_sha256: String) -> Dictionary:
+	# This is a cache reuse check against the original definition already fully
+	# validated by Store/native admission, never a new construction validator.
+	# Preserve all source fields in the canonical identity; no projection,
+	# coercion, geometry truncation or transport-table reconstruction occurs here.
+	if not Store._keys(authoring,["setup","definition","generated_packet","material_baseline","camera"]) \
+		or not authoring.setup is Dictionary or not authoring.definition is Dictionary \
+		or not authoring.generated_packet is Dictionary or not authoring.material_baseline is Dictionary \
+		or not authoring.camera is Dictionary:
+		return _fail("Persistent authoring envelope is unsupported")
+	if not Store.metadata_size(authoring).get("ok",false):
+		return _fail("Persistent authoring envelope exceeds its bounded metadata capacity")
+	if not _normalized_definition_value(authoring.definition):
+		return _fail("Persistent original source is not the admitted normalized definition")
+	var canonical := JSON.stringify(authoring.definition,"",true)
+	if canonical.to_utf8_buffer().size()>Store.Contract.MAX_JSON_BYTES or canonical.sha256_text()!=source_sha256:
+		return _fail("Persistent original definition differs from its complete admitted source identity")
+	_counters.authoring_admission_encodes += 1
+	var encoded := var_to_bytes(authoring)
+	if encoded.size()>Store.MAX_METADATA_BYTES:
+		return _fail("Persistent authoring envelope exceeds its encoded metadata capacity")
+	return {"ok":true,"bytes":encoded.size(),"sha256":Store.digest(encoded)}
+
+
 func admit_hot(area_id: String, receipt: Dictionary, authoring: Dictionary, mutation_generation: int,
 		reservation_id: String = "", mandatory_active: bool = false) -> Dictionary:
 	if not _entries.has(area_id): return _fail("Unknown cache area")
@@ -214,13 +257,11 @@ func admit_hot(area_id: String, receipt: Dictionary, authoring: Dictionary, muta
 		return _fail("A released native handle cannot be readmitted by a stale receipt")
 	if not item.hot.is_empty() and int(receipt.handle) != int(item.hot.handle):
 		return _fail("A native resident handle must be released before another replaces it")
-	var error := Store._authoring_error(authoring)
-	if not error.is_empty(): return _fail(error)
-	if Store.Contract.validate(authoring.definition).hash != item.authored_source_sha256:
-		return _fail("Hot authoring envelope differs from the original native source")
-	var authoring_bytes := var_to_bytes(authoring).size()
+	var admitted := _admitted_authoring(authoring,str(item.authored_source_sha256))
+	if not admitted.get("ok",false): return admitted
+	var authoring_bytes := int(admitted.bytes)
 	var additional := int(native_reservation)-int(item.native_bytes)-int(item.native_headroom_bytes)+authoring_bytes-int(item.authoring_bytes)
-	error = _admission(area_id,additional,reservation_id,mandatory_active)
+	var error := _admission(area_id,additional,reservation_id,mandatory_active)
 	if not error.is_empty(): return _fail(error)
 	item.hot = receipt.duplicate(true)
 	item.last_handle = int(receipt.handle)
@@ -231,7 +272,7 @@ func admit_hot(area_id: String, receipt: Dictionary, authoring: Dictionary, muta
 	item.completed_tick = int(receipt.completed_tick)
 	item.authoring = authoring.duplicate(true)
 	item.authoring_bytes = authoring_bytes
-	item.authoring_sha256 = Store.digest(var_to_bytes(authoring))
+	item.authoring_sha256 = admitted.sha256
 	if not item.warm.is_empty() and (int(item.warm.completed_tick) != int(item.completed_tick) \
 		or int(item.warm_mutation_generation) != mutation_generation):
 		item.warm = {}
@@ -309,16 +350,16 @@ func retain_warm(area_id: String, capture: Dictionary, authoring: Dictionary, mu
 	if preserve_reservation and reservation_id.is_empty(): return _fail("A prepared warm admission must retain its matching resource reservation")
 	var item: Dictionary = _entries[area_id]
 	var error := Store._capture_error(capture)
-	if error.is_empty(): error = Store._authoring_error(authoring)
 	if not error.is_empty(): return _fail(error)
 	if incarnation != item.incarnation or capture.authored_source_sha256 != item.authored_source_sha256 \
-		or capture.physics_profile_sha256 != item.physics_profile_sha256 \
-		or Store.Contract.validate(authoring.definition).hash != item.authored_source_sha256:
+		or capture.physics_profile_sha256 != item.physics_profile_sha256:
 		return _fail("Warm state differs from the admitted source or area incarnation")
 	if mutation_generation < int(item.mutation_generation) or int(capture.completed_tick) < int(item.completed_tick):
 		return _fail("Warm state cannot supersede newer resident edits or native time")
+	var admitted := _admitted_authoring(authoring,str(item.authored_source_sha256))
+	if not admitted.get("ok",false): return admitted
 	var warm_bytes := var_to_bytes(capture).size()
-	var authoring_bytes := var_to_bytes(authoring).size()
+	var authoring_bytes := int(admitted.bytes)
 	var additional := warm_bytes-int(item.warm_bytes)+authoring_bytes-int(item.authoring_bytes)
 	error = _admission(area_id,additional,reservation_id)
 	if not error.is_empty(): return _fail(error)
@@ -327,7 +368,7 @@ func retain_warm(area_id: String, capture: Dictionary, authoring: Dictionary, mu
 	item.warm_mutation_generation = mutation_generation
 	item.authoring = authoring.duplicate(true)
 	item.authoring_bytes = authoring_bytes
-	item.authoring_sha256 = Store.digest(var_to_bytes(authoring))
+	item.authoring_sha256 = admitted.sha256
 	item.mutation_generation = mutation_generation
 	item.completed_tick = int(capture.completed_tick)
 	item.dirty = _is_dirty(item)
@@ -350,18 +391,15 @@ func mark_dirty(area_id: String, native_tick: int, mutation_generation: int, aut
 		return _fail("Resident mutation/time cannot move backwards")
 	if item.hot.is_empty(): return _fail("Only a retained native owner may mutate resident authority")
 	if not authoring.is_empty():
-		var error := Store._authoring_error(authoring)
-		if not error.is_empty(): return _fail(error)
-		if Store.Contract.validate(authoring.definition).hash != item.authored_source_sha256:
-			return _fail("An authoring update cannot replace the original construction identity")
-		var encoded := var_to_bytes(authoring)
-		var additional := encoded.size()-int(item.authoring_bytes)
+		var admitted := _admitted_authoring(authoring,str(item.authored_source_sha256))
+		if not admitted.get("ok",false): return admitted
+		var additional := int(admitted.bytes)-int(item.authoring_bytes)
 		if additional>0:
-			error = _admission(area_id,additional,"",area_id==active_area and bool(item.hot.get("active",false)))
+			var error := _admission(area_id,additional,"",area_id==active_area and bool(item.hot.get("active",false)))
 			if not error.is_empty(): return _fail(error)
 		item.authoring = authoring.duplicate(true)
-		item.authoring_bytes = encoded.size()
-		item.authoring_sha256 = Store.digest(encoded)
+		item.authoring_bytes = admitted.bytes
+		item.authoring_sha256 = admitted.sha256
 	item.completed_tick = native_tick
 	item.mutation_generation = mutation_generation
 	item.dirty = _is_dirty(item)
