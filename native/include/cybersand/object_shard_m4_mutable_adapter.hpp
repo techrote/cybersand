@@ -245,8 +245,6 @@ public:
             world.completed_tick_index() != permitted_tick_ ||
             coordinator.paused() || coordinator.m4_owner_readback().quarantined)
             return Verdict::Fenced;
-        if (segments_ >= kSegmentLimit || next_sequence_ == std::numeric_limits<std::uint64_t>::max())
-            return Verdict::Capacity;
         const auto& snapshot = coordinator.m4_owner_readback();
         std::size_t actual = 0;
         for (const auto& b : snapshot.bodies) if (b.has_body) {
@@ -260,6 +258,11 @@ public:
         }
         if (!actual || actual != registered_bodies() || actual > kBodyLimit ||
             actual != snapshot.active_count || snapshot.truncated)
+            return Verdict::Capacity;
+        // Report mutated native material/geometry before ordinary quota
+        // exhaustion. A stale body remains fenced regardless of headroom.
+        if (segments_ >= kSegmentLimit ||
+            next_sequence_ == std::numeric_limits<std::uint64_t>::max())
             return Verdict::Capacity;
         MotionTicket candidate{};
         candidate.owner = identity_;
