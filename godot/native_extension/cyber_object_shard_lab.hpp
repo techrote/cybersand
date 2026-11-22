@@ -20,8 +20,10 @@ public:
     [[nodiscard]] Dictionary configure(const Dictionary& configuration);
     [[nodiscard]] Dictionary reset(std::int64_t scenario, std::int64_t seed);
     [[nodiscard]] Dictionary step(const Array& poses);
+    [[nodiscard]] Dictionary accept_motion(const Array& poses);
     [[nodiscard]] Dictionary edit_cell(Vector2i position, std::int64_t material,
         std::int64_t state_a, std::int64_t state_b, std::int64_t temperature);
+    [[nodiscard]] Dictionary erase_shard(const Dictionary& request);
     [[nodiscard]] Dictionary ignite(Vector2i position);
     [[nodiscard]] Dictionary ignite_shard(std::int64_t id, std::int64_t generation, std::int64_t cell);
     [[nodiscard]] Dictionary prepare_next();
@@ -44,6 +46,7 @@ private:
     [[nodiscard]] Dictionary refusal(const char* reason) const;
     [[nodiscard]] Dictionary result(const cybersand::object_shard::Result& value) const;
     [[nodiscard]] Dictionary fail(const char* reason);
+    [[nodiscard]] Dictionary advance_native(const Array& poses, bool semantic_step);
 };
 
 } // namespace godot

@@ -2,7 +2,9 @@ extends Control
 
 const Session = preload("res://scripts/object_shard_lab_session.gd")
 const View = preload("res://scripts/object_shard_lab_view.gd")
-const SCENARIOS: Array[String] = ["A · Ordinary detachment", "B · Burning Wood tree", "C · Water and Sand exchange", "D · Three independent shards"]
+const Presets = preload("res://scripts/object_shard_lab_presets.gd")
+const Capture = preload("res://scripts/object_shard_capture.gd")
+const SCENARIOS: Array[String] = Presets.TITLES
 const BRUSHES: Array[String] = ["Erase", "Ignite", "Sand", "Water", "Wood", "Inspect"]
 const MATERIALS: Array[int] = [0, 6, 2, 3, 7, -1]
 const ADMITTED_MATERIAL_NAMES: Dictionary = {0: "Empty", 1: "Wall", 2: "Sand", 3: "Water", 4: "Smoke", 6: "Fire", 7: "Wood"}
@@ -14,6 +16,13 @@ var scenario_select: OptionButton
 var brush_select: OptionButton
 var pause_button: Button
 var overlay_toggle: CheckButton
+var burner_toggle: CheckButton
+var capture_label: Label
+var preset_number: int = 1
+var automatically_reported_failure: bool = false
+var loading_scene: bool = false
+var load_serial: int = 0
+var load_progress: Dictionary = {}
 var status_label: Label
 var subtitle_label: Label
 var inventory_label: RichTextLabel
@@ -31,6 +40,7 @@ func _ready() -> void:
 	get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	_build_interface()
 	session = Session.new()
+	session.capture_enabled = true
 	_open(1)
 	set_physics_process(true)
 
@@ -76,8 +86,7 @@ func _build_interface() -> void:
 	pause_button = _button(toolbar, "Resume", _toggle_pause)
 	_button(toolbar, "Single step", _single_step)
 	_button(toolbar, "Reset", func() -> void: _open(scenario_select.selected + 1))
-	_button(toolbar, "Erase lower Wood band", _erase_lower_band)
-	_button(toolbar, "Export result", _export)
+	_button(toolbar, "Export bug report / trace", _export)
 	var tools := HBoxContainer.new()
 	tools.add_theme_constant_override("separation", 10)
 	layout.add_child(tools)
@@ -96,6 +105,22 @@ func _build_interface() -> void:
 	overlay_toggle.text = "Shapes / centre of mass / pocket"
 	overlay_toggle.toggled.connect(func(value: bool) -> void: canvas.overlays = value; canvas.queue_redraw())
 	tools.add_child(overlay_toggle)
+	var experiments := HBoxContainer.new()
+	experiments.add_theme_constant_override("separation", 10)
+	layout.add_child(experiments)
+	_button(experiments, "Erase lower Wood band", _erase_lower_band)
+	_button(experiments, "Erode resting cell", _erode_resting_cell)
+	burner_toggle = CheckButton.new()
+	burner_toggle.text = "External Fire burner"
+	burner_toggle.toggled.connect(func(value: bool) -> void:
+		if session != null and not loading_scene:
+			session.set_burner(Presets.burner_band(session.frame), value)
+			_present())
+	experiments.add_child(burner_toggle)
+	capture_label = Label.new()
+	capture_label.add_theme_font_size_override("font_size", 12)
+	capture_label.add_theme_color_override("font_color", Color("a5b5c5"))
+	experiments.add_child(capture_label)
 	var body := HBoxContainer.new()
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_theme_constant_override("separation", 14)
@@ -105,6 +130,7 @@ func _build_interface() -> void:
 	canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	canvas.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	canvas.cell_pressed.connect(_cell_pressed)
+	canvas.stroke_requested.connect(_stroke_requested)
 	body.add_child(canvas)
 	var side := VBoxContainer.new()
 	side.custom_minimum_size.x = 285
@@ -155,7 +181,33 @@ func _button(parent: Control, text: String, action: Callable) -> Button:
 func _open(scenario: int) -> void:
 	if session == null:
 		return
-	var result: Dictionary = session.open(scenario, 12)
+	load_serial += 1
+	var request: int = load_serial
+	loading_scene = true
+	preset_number = scenario
+	var preset: Dictionary = Presets.definition(scenario)
+	var result: Dictionary = session.open(int(preset.scenario), int(preset.seed), {"width": preset.width, "height": preset.height})
+	if result.get("ok", false):
+		var operations: Array[Dictionary] = Presets.edits(preset)
+		load_progress = {"completed": 0, "total": operations.size(), "per_frame_limit": 32}
+		for offset: int in range(0, operations.size(), 32):
+			var authored: Dictionary = session.author_cells(operations.slice(offset, offset + 32))
+			if not authored.get("ok", false):
+				session.status = "Scenario authoring refused: " + str(authored)
+				result = authored
+				break
+			load_progress.completed = mini(offset + 32, operations.size())
+			session.status = "Authoring native material %d / %d · paused · choose Reset or another scene to cancel" % [int(load_progress.completed), operations.size()]
+			_present()
+			await get_tree().process_frame
+			if request != load_serial:
+				return
+		if bool(preset.burner):
+			session.set_burner(Presets.burner_band(session.frame), true)
+	loading_scene = false
+	if result.get("ok", false):
+		session.status = "Paused · native material ready · cut, inspect or Resume"
+	automatically_reported_failure = false
 	if session.native != null:
 		var milestone: int = int(session.native.capabilities().get("implemented_milestone", 0))
 		var summaries: Array[String] = ["M0 · native ownership transfer and Rapier motion",
@@ -172,42 +224,42 @@ func _open(scenario: int) -> void:
 	inspection_label.text = INSPECTION_HINT
 	inspection_label.scroll_to_line(0)
 	inventory_label.scroll_to_line(0)
-	var hints: Array[String] = [
-		"A · Erase through a Wood support, then Resume. Discovery uses ordinary committed material changes. The freed inventory becomes one Rapier body.",
-		"B · The genuine Wood tree begins burning. Resume, then remove its lower support. Inspect Wood state_b before and after promotion; emitted Fire remains native material.",
-		"C · Detach the pocket structure. Place Sand over the green pocket and Water against burning Wood. Cargo and Water exposure are separate ownership operations.",
-		"D · Three Wood structures have independent native identities. Remove their supports, ignite them and compare motion, products, geometry and accounting."
-	]
-	help_label.text = hints[scenario - 1]
+	help_label.text = Presets.hint(scenario)
 	_present()
 
 
 func _physics_process(_delta: float) -> void:
-	if session == null or session.paused:
+	if session == null or loading_scene:
 		return
-	session.advance()
-	_present()
+	var edits: int = session.drain_edits()
+	if not session.paused:
+		session.advance()
+	if edits > 0 or not session.paused or session.failed:
+		_present()
+	if session.failed and not automatically_reported_failure:
+		automatically_reported_failure = true
+		_save_report(false)
 
 
 func _toggle_pause() -> void:
-	if session == null or session.failed:
+	if session == null or session.failed or loading_scene:
 		return
-	session.paused = not session.paused
+	session.set_paused(not session.paused)
 	pause_button.text = "Resume" if session.paused else "Pause"
 	_present()
 
 
 func _single_step() -> void:
-	if session == null:
+	if session == null or loading_scene:
 		return
-	session.paused = true
+	session.set_paused(true)
 	pause_button.text = "Resume"
 	session.advance(true)
 	_present()
 
 
 func _erase_lower_band() -> void:
-	if session == null or session.frame.is_empty():
+	if session == null or session.frame.is_empty() or loading_scene:
 		return
 	# Discover the authored bottom Wood row from the actual native picture.
 	# Each removal uses the ordinary edit API; this is not a cut/physics command.
@@ -228,29 +280,73 @@ func _erase_lower_band() -> void:
 			for x: int in range(width):
 				if cells[y * width + x] == 7:
 					edits.append(Vector2i(x, y))
+		var refused: int = 0
 		for position: Vector2i in edits:
-			session.edit(position, 0)
+			if not session.queue_edit(position, 0).get("ok", false):
+				refused += 1
+		if refused > 0:
+			help_label.text = "Lower-band input: %d queued, %d refused by the bounded queue. Let it drain, then repeat; unqueued cells were not edited." % [edits.size() - refused, refused]
+			session._event("BulkInputCapacity", {"requested": edits.size(), "queued": edits.size() - refused, "refused": refused})
 	_present()
 
 
 func _cell_pressed(position: Vector2i, button: int) -> void:
-	if session == null:
+	if session == null or loading_scene:
 		return
 	if button == MOUSE_BUTTON_RIGHT or brush_select.selected == 5:
 		inspection_label.text = _inspection_text(session.inspect(position))
 		inspection_label.scroll_to_line(0)
 		return
 	if brush_select.selected == 1:
-		var result: Dictionary = session.ignite(position)
+		var result: Dictionary = session.queue_edit(position, -2)
 		if not result.get("ok", false):
 			inspection_label.text = "[b]Ignition refused[/b]\n" + str(result.get("outcome", "unknown"))
 	else:
 		var material: int = MATERIALS[brush_select.selected]
-		var result: Dictionary = session.edit(position, material, 255 if material == 3 else 0)
+		var result: Dictionary = session.queue_edit(position, material, 255 if material == 3 else 0)
 		if not result.get("ok", false):
-			inspection_label.text = "[b]World edit refused[/b]\n" + str(result.get("outcome", "unknown")) \
-				+ "\nMoving inventory has its own native owner. Inspect or ignite that material."
+			inspection_label.text = "[b]Edit not queued[/b]\n" + str(result.get("outcome", "unknown")) + "\n" + str(result.get("detail", ""))
 	_present()
+
+
+func _stroke_requested(cells: Array[Vector2i], button: int) -> void:
+	if session == null or button != MOUSE_BUTTON_LEFT or loading_scene:
+		return
+	if brush_select.selected == 5:
+		if not cells.is_empty():
+			inspection_label.text = _inspection_text(session.inspect(cells[-1]))
+		return
+	var material: int = -2 if brush_select.selected == 1 else MATERIALS[brush_select.selected]
+	for position: Vector2i in cells:
+		var result: Dictionary = session.queue_edit(position, material, 255 if material == 3 else 0)
+		if not result.get("ok", false):
+			inspection_label.text = "[b]Stroke admission[/b]\n" + str(result.get("outcome", "unknown"))
+			break
+	_present()
+
+
+func _erode_resting_cell() -> void:
+	if session == null or session.bridge == null or loading_scene:
+		return
+	for shard: Dictionary in session.frame.get("shards", []):
+		if not session.bridge.bodies.has(int(shard.id)):
+			continue
+		var body: Dictionary = session.bridge.bodies[int(shard.id)]
+		var sleeping: bool = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING)
+		if not sleeping:
+			continue
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+		for at: int in range(shard.materials.size()):
+			if int(shard.roles[at]) != 1:
+				continue
+			var point: Vector2 = pose * Vector2(float(at % int(shard.width)) + 0.5, float(at / int(shard.width)) + 0.5)
+			var position := Vector2i(floori(point.x), floori(point.y))
+			var actual: Dictionary = session.inspect(position)
+			if int(actual.get("id", 0)) == int(shard.id) and int(actual.get("cell", -1)) == at:
+				session.queue_edit(position, 0)
+				inspection_label.text = "[b]Resting erosion queued[/b]\nShard %d · cell %d\nOne actual structural cell; Rapier remains authoritative." % [int(shard.id), at]
+				return
+	inspection_label.text = "[b]No sleeping body[/b]\nAllow a detached structure to settle naturally before this controlled erosion."
 
 
 func _inspection_text(cell: Dictionary) -> String:
@@ -272,6 +368,9 @@ func _present() -> void:
 	var started: int = Time.get_ticks_usec()
 	var poses: Array = session.bridge.sample_poses() if session.bridge != null else []
 	canvas.present(session.frame, poses)
+	canvas.fixture_cells = session.burner_cells
+	canvas.fixture_enabled = session.burner_enabled
+	burner_toggle.set_pressed_no_signal(session.burner_enabled)
 	overlay_toggle.set_pressed_no_signal(canvas.overlays)
 	status_label.text = session.status
 	if session.failed:
@@ -282,16 +381,41 @@ func _present() -> void:
 	var text: String = "Session %d · tick %d\n" % [int(session.frame.session), int(session.frame.tick)]
 	var capabilities: Dictionary = session.native.capabilities()
 	text += "M%d · capability v%d\n" % [int(capabilities.get("implemented_milestone", 0)), int(capabilities.get("version", 0))]
+	var admission: Dictionary = session.frame.get("admission", {})
+	text += "Canvas %d×%d · slots %d/%d\nEligible %d · deferred %d\n" % [int(session.frame.width), int(session.frame.height),
+		int(admission.get("slots_used", session.bridge.bodies.size())), int(admission.get("slot_limit", 3)),
+		int(admission.get("eligible", 0)), int(admission.get("deferred", 0))]
+	if not str(admission.get("reason", "")).is_empty():
+		text += "[color=#ffcf66]%s[/color]\n" % str(admission.reason)
+	text += "Discovery %d cells · pending %d\nQueued edits %d/%d · %d/frame\n" % [int(admission.get("work_last", 0)),
+		int(admission.get("pending_seeds", 0)), session.pending_edits.size(), session.MAX_PENDING_EDITS, session.MAX_EDITS_PER_FRAME]
+	var shown_candidates: int = 0
+	for candidate: Dictionary in admission.get("candidates", []):
+		if str(candidate.get("reason", "")) == "Anchored":
+			continue
+		text += "Candidate %d cells · %s\n" % [int(candidate.get("cells", 0)), str(candidate.get("reason", "unknown"))]
+		shown_candidates += 1
+		if shown_candidates >= 3:
+			break
+	if not session.last_edit_result.is_empty() and not session.last_edit_result.get("ok", true):
+		text += "[color=#ffcf66]Edit: %s[/color]\n" % str(session.last_edit_result.get("outcome", "unknown"))
 	text += "Chemistry %s · output %s\nSand lodging %s · Water contact %s\n" % [
 		"yes" if capabilities.get("reaction", false) else "no", "yes" if capabilities.get("emission", false) else "no",
 		"yes" if capabilities.get("ingestion", false) else "no", "yes" if capabilities.get("surface_contact", false) else "no"]
 	if int(capabilities.get("transfer_budget_per_tick", 64)) == 0:
 		text += "[color=#ffcf66]Transfer capacity zero · retain products[/color]\n"
+	var physics_observation: Dictionary = session.bridge.diagnostics()
 	for shard: Dictionary in session.frame.get("shards", []):
 		text += "\n[b]Shard %d[/b]  %s\n" % [int(shard.id), str(shard.lifecycle)]
 		text += "Wood/structure %d · products %d\nSand cargo %d · shapes %d\n" % [
 			int(shard.structural), int(shard.products), int(shard.cargo), shard.rectangles.size() / 4]
 		text += "Material r%d · geometry r%d\n" % [int(shard.material_revision), int(shard.geometry_revision)]
+		for physical: Dictionary in physics_observation.get("bodies", []):
+			if int(physical.id) == int(shard.id):
+				text += "%s · ω %.3f rad/s\nMass %.0f · COM %.1f, %.1f\nContacts %d · installed r%d\n" % [
+					"Sleeping" if physical.get("sleeping", false) else "Awake", float(physical.get("angular_velocity", 0)),
+					float(physical.get("mass", 0)), float(physical.get("com_x", 0)), float(physical.get("com_y", 0)),
+					int(physical.get("reported_contacts", 0)), int(physical.get("geometry_revision", 0))]
 		if shard.split_pending:
 			text += "[color=#ffcf66]split_pending · one compound[/color]\n"
 		if shard.get("ingress_fenced", false):
@@ -300,21 +424,31 @@ func _present() -> void:
 	text += "\n[b]Native events[/b]\nPromotions %d · products born %d\nSand ingested %d · output waits %d\n" % [
 		int(metrics.get("promotions", 0)), int(metrics.get("products_created", 0)),
 		int(metrics.get("sand_ingested", 0)), int(metrics.get("output_blocked", 0))]
-	text += "Water extinctions %d\n" % int(session.frame.get("accounting", {}).get("extinguished", 0))
+	text += "Water extinctions %d (owner accounting)\nFixture Fire authored %d\n" % [int(session.frame.get("accounting", {}).get("extinguished", 0)), session.authored_fixture_fire]
 	text += "\nStep %.2f ms · peak %.2f ms\nPromotion max %.2f ms\n" % [
 		float(session.last_frame_usec) / 1000.0, float(session.frame_max_usec) / 1000.0,
 		float(session.promotion_max_usec) / 1000.0]
 	inventory_label.text = text
+	var capture_state: Dictionary = session.capture.metadata()
+	capture_label.text = "Trace %.1f / 32 MiB" % (float(capture_state.bytes) / 1048576.0)
+	if not capture_state.complete_prefix:
+		capture_label.text = "Trace incomplete · export details"
 	last_presentation_usec = Time.get_ticks_usec() - started
 	_frame_counter += 1
 
 
 func _export() -> void:
+	_save_report(true)
+
+
+func _save_report(open_folder: bool) -> void:
 	if session == null:
 		return
 	var report: Dictionary = session.export_result()
 	report["presentation_usec"] = last_presentation_usec
 	report["render_upload_usec"] = canvas.upload_usec
+	report["preset"] = Presets.definition(preset_number)
+	report["scene_setup"] = {"in_progress": loading_scene, "progress": load_progress}
 	var directory: String = "user://objectshard-results"
 	DirAccess.make_dir_recursive_absolute(directory)
 	var name: String = "objectshard-%d-%d.json" % [int(session.frame.get("session", 0)), Time.get_unix_time_from_system()]
@@ -323,7 +457,8 @@ func _export() -> void:
 	if file == null:
 		status_label.text = "Result export failed: " + error_string(FileAccess.get_open_error())
 		return
-	file.store_string(JSON.stringify(report, "  ") + "\n")
+	file.store_string(JSON.stringify(Capture.json_value(report), "  ") + "\n")
 	file.close()
 	status_label.text = "Saved " + ProjectSettings.globalize_path(path)
-	OS.shell_open(ProjectSettings.globalize_path(directory))
+	if open_folder:
+		OS.shell_open(ProjectSettings.globalize_path(directory))

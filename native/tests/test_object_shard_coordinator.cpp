@@ -19,9 +19,20 @@ struct CoordinatorTestAccess {
     static Registry& registry(Coordinator& coordinator) { return coordinator.registry_; }
     static std::span<const Exposure> exposures(const Coordinator& coordinator) { return coordinator.exposures_; }
     static std::size_t ingress_fences(const Coordinator& coordinator) { return coordinator.ingress_fences_.size(); }
+    static bool pocket_fenced(const Coordinator& coordinator,Handle handle,std::uint32_t cell) {
+        return coordinator.pocket_fenced(handle,cell);
+    }
     static void remove_ingress_history_capacity(Coordinator& coordinator) {
         decltype(coordinator.ingress_fences_) empty;
         coordinator.ingress_fences_.swap(empty);
+    }
+    static auto remove_relocation_capacity(Coordinator& coordinator) {
+        decltype(coordinator.relocations_) previous;
+        previous.swap(coordinator.relocations_);
+        return previous;
+    }
+    template<class T> static void restore_relocation_capacity(Coordinator& coordinator, T& previous) {
+        coordinator.relocations_.swap(previous);
     }
 };
 }
@@ -58,9 +69,9 @@ void erase_support(Coordinator& coordinator, std::int64_t x = 30, std::int64_t y
 }
 Result discover(Coordinator& coordinator) {
     Result result;
-    // Initial residency invalidates the bounded window; a deliberately tiny
-    // discovery budget legitimately needs several calls to drain empty seeds.
-    const auto maximum_attempts = coordinator.config().world_bounds.area() /
+    // Initial discovery and a deliberately tiny budget can span many calls.
+    // This is a work limit per call, never an implicit component-size limit.
+    const auto maximum_attempts = 3 * coordinator.config().world_bounds.area() /
         coordinator.config().discovery_budget + 128;
     for (unsigned attempt = 0; attempt < maximum_attempts; ++attempt) {
         result = coordinator.prepare_next();
@@ -437,9 +448,12 @@ void capacities_epoch_wrap_and_three_owners() {
     auto small_discovery = small_config(); small_discovery.discovery_budget = 4;
     Coordinator incomplete(small_discovery);
     make_supported(incomplete); erase_support(incomplete);
-    CHECK(discover(incomplete).outcome == Outcome::Capacity);
+    const auto resumed=discover(incomplete);
+    CHECK(resumed.outcome == Outcome::Accepted);
+    CHECK(incomplete.snapshot().admission.work_peak<=small_discovery.discovery_budget);
     CHECK(world_population(incomplete, Material::Wood) == 9);
     CHECK(incomplete.registry().inventory_counts().total() == 0);
+    if (resumed.outcome==Outcome::Accepted) CHECK(incomplete.cancel(resumed.transaction).outcome==Outcome::Cancelled);
 
     Coordinator coordinator(small_config());
     for (unsigned i = 0; i < 255; ++i) CHECK(coordinator.step().outcome == Outcome::Accepted);
@@ -927,10 +941,19 @@ void side_entry_refusal_cannot_be_laundered_by_a_stationary_pose() {
         CHECK(world_population(coordinator, Material::Sand) + shard->counts().cargo == 1);
         check_population_balance(coordinator);
         if (reset) {
+            const auto retired_handle=handle;
             CHECK(coordinator.reset(0, 18).outcome == Outcome::Accepted);
             CHECK(CoordinatorTestAccess::ingress_fences(coordinator) == 0);
             handle = open_pocket(coordinator);
             shard = coordinator.registry().find(handle);
+            CHECK(handle.id>retired_handle.id && handle.session>retired_handle.session);
+            const auto pocket=static_cast<std::uint32_t>((31-shard->bounds().y)*shard->bounds().width+31-shard->bounds().x);
+            CHECK(!CoordinatorTestAccess::pocket_fenced(coordinator,handle,pocket));
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,retired_handle,pocket));
+            auto stale=handle;++stale.generation;
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,stale,pocket));
+            stale=handle;++stale.session;
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,stale,pocket));
         } else {
             CHECK(coordinator.edit(31, 31, empty()).outcome == Outcome::Accepted);
             sleeping_step(coordinator); // An actually empty aperture clears its history.
@@ -941,6 +964,80 @@ void side_entry_refusal_cannot_be_laundered_by_a_stationary_pose() {
         CHECK(shard->counts().cargo == 1 && world_population(coordinator, Material::Sand) == 0);
         check_population_balance(coordinator);
     }
+}
+
+void segmented_motion_preserves_invalid_pocket_entry_until_semantic_ingress() {
+    Coordinator coordinator(small_config());
+    const auto handle=open_pocket(coordinator);
+    const auto* shard=coordinator.registry().find(handle);CHECK(shard!=nullptr);
+    if (!shard) return;
+    const auto tick=coordinator.world().completed_tick_index();
+    auto right=next_poses(coordinator);right[0].x+=2;
+    CHECK(coordinator.accept_motion(right).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(31,31,{Material::Sand,213,217,-470}).outcome==Outcome::Accepted);
+    const auto source=coordinator.world_witness(31,31);
+    auto left=next_poses(coordinator);left[0].x-=2;
+    const auto contact_ns_before=coordinator.metrics().contact_ns;
+    CHECK(coordinator.accept_motion(left).outcome==Outcome::Accepted);
+    CHECK(coordinator.metrics().contact_ns>contact_ns_before);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    CHECK(shard->counts().cargo==0);
+    CHECK(coordinator.inspect_world(31,31).material==Material::Sand);
+    CHECK(coordinator.world_witness(31,31)==source);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    // Several accepted no-advance pose segments cannot relabel a known side
+    // entry as a legitimate stationary "already inside" carrier on next tick.
+    for (unsigned segment=0;segment<3;++segment) {
+        CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+        CHECK(coordinator.world().completed_tick_index()==tick);
+        CHECK(shard->counts().cargo==0);
+        CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    }
+    sleeping_step(coordinator);
+    CHECK(shard->counts().cargo==0);
+    CHECK(world_population(coordinator,Material::Sand)==1);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(31,31,empty()).outcome==Outcome::Accepted);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==0);
+}
+
+void refused_motion_preserves_existing_invalid_entry_history() {
+    Coordinator coordinator(small_config());
+    const auto handle=open_pocket(coordinator);
+    const auto* shard=coordinator.registry().find(handle);
+    CHECK(shard!=nullptr);
+    if (!shard) return;
+    auto right=next_poses(coordinator);right[0].x+=2;
+    CHECK(coordinator.accept_motion(right).outcome==Outcome::Accepted);
+    const Payload sand{Material::Sand,213,217,-470};
+    CHECK(coordinator.edit(31,31,sand).outcome==Outcome::Accepted);
+    auto left=next_poses(coordinator);left[0].x-=2;
+    CHECK(coordinator.accept_motion(left).outcome==Outcome::Accepted);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    const auto witness=coordinator.world_witness(31,31);
+    const auto original=coordinator.snapshot().bodies[0].pose;
+    const auto tick=coordinator.world().completed_tick_index();
+    CHECK(coordinator.edit(34,31,{Material::Sand,71,0,200}).outcome==Outcome::Accepted);
+    auto capacity=CoordinatorTestAccess::remove_relocation_capacity(coordinator);
+    right=next_poses(coordinator);right[0].x+=2;
+    // The proposed aperture is clear, but another grain blocks the proposed
+    // collider and forces precommit refusal. A discarded pose cannot erase
+    // the old aperture's still-applicable side-entry history.
+    CHECK(coordinator.accept_motion(right).outcome==Outcome::Capacity);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    CHECK(coordinator.snapshot().bodies[0].pose.x==original.x);
+    CHECK(coordinator.snapshot().bodies[0].pose.pose_serial==original.pose_serial);
+    CHECK(coordinator.inspect_world(31,31)==sand && coordinator.world_witness(31,31)==witness);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    CoordinatorTestAccess::restore_relocation_capacity(coordinator,capacity);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(coordinator.step(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(shard->counts().cargo==0);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    CHECK(world_population(coordinator,Material::Sand)==2);
+    check_population_balance(coordinator);
 }
 
 void injected_ingress_history_capacity_keeps_inventory_and_reset_live() {
@@ -1187,6 +1284,13 @@ void three_independent_burning_owners() {
 void population_accounting_covers_world_ticks_edits_transfers_and_resets() {
     Coordinator coordinator(small_config());
     check_population_balance(coordinator);
+    CHECK(coordinator.edit(12,14,{Material::Water,0,0,200}).outcome==Outcome::Unsupported);
+    CHECK(coordinator.inspect_world(12,14).material==Material::Empty);
+    CHECK(coordinator.edit(12,14,{Material::Wood,17,0,410}).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(12,14,{Material::Water,0,0,200}).outcome==Outcome::Unsupported);
+    CHECK(coordinator.inspect_world(12,14)==(Payload{Material::Wood,17,0,410}));
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(12,14,empty()).outcome==Outcome::Accepted);
     CHECK(coordinator.edit(12, 15, {Material::Sand, 73, 14, -370}).outcome == Outcome::Accepted);
     CHECK(coordinator.edit(17, 15, {Material::Water, 255, 0, 200}).outcome == Outcome::Accepted);
     CHECK(coordinator.edit(40, 20, {Material::Wood, 55, 8, 510}).outcome == Outcome::Accepted);
@@ -1233,6 +1337,8 @@ int main() {
     wide_rotated_pocket_admits_real_falling_sand();
     overlap_relocation_cannot_create_a_pocket_entry_witness();
     side_entry_refusal_cannot_be_laundered_by_a_stationary_pose();
+    segmented_motion_preserves_invalid_pocket_entry_until_semantic_ingress();
+    refused_motion_preserves_existing_invalid_entry_history();
     injected_ingress_history_capacity_keeps_inventory_and_reset_live();
     zero_automatic_budget_cannot_bypass_history_through_public_ingress();
     exhausted_transfer_budget_still_records_later_body_entry_history();

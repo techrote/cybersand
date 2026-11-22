@@ -4,13 +4,21 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-22
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
 ## ObjectShard M0–M2 research candidate — 2026-11-22
+
+The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md)
+is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native,
+actual Rapier rest/erosion, Linux/Windows and delivered-ZIP gates passed. Its
+size/age admission, wake-safe geometry, bounded motion and owner capture remain
+isolated Lab capabilities. Original M2 timing failures are retained. M3 preflight
+is a separate child; it does not authorize production Workbench changes or claim
+owner physical acceptance.
 
 The [implementation record](../research/objectshard-001.md) and
 [independent Lab procedure](../operations/objectshard-lab-playtest.md) describe

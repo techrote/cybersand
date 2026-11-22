@@ -10,6 +10,25 @@ related-documents: [../operations/objectshard-lab-playtest.md, ../architecture/r
 
 # OBJECTSHARD-001 — compact moving material domains
 
+**001R finisher qualified as a Draft/HOLD evaluation candidate, 22 November 2026.**
+The [final finisher record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
+binds native/host source `514d76fb...`, corrected Windows package source
+`28be5a4a...`, actual Linux/Windows qualification, independent review and the
+verified delivered ZIP. It repairs component-admission starvation, late
+resting-body rotation, repeated-edit ownership, bounded motion progression and
+diagnostic/capture deficiencies. Ordinary Workbench defaults are unchanged.
+
+The [forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md)
+preserves the original owner exports and controlled negative results. The
+[implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md)
+explains resumable component census, size/age admission, source-owned moving
+cuts, native-applied Rapier segments and one-opportunity external Fire contact.
+The [native performance record](../audits/2026-11-22-objectshard-001r-native-performance.md)
+retains the original M2 10/74 timing failures and the repaired finisher's earlier
+14/74 memory failures. Final same-host source passes 74/74; no general frame-rate
+improvement is claimed. M3 executable preparation and owner physical acceptance
+remain separately qualified gates.
+
 Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an
 exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
 distinguishes passing platform qualification, the retained native timing failure,

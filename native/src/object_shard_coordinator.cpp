@@ -48,7 +48,6 @@ bool coherent_payload(Payload p) noexcept {
         (p.material == Material::Water || p.state_a <= 255);
 }
 constexpr std::array<std::pair<int, int>, 4> kCardinal{{{-1,0},{1,0},{0,-1},{0,1}}};
-bool promotable(Material m) noexcept { return m==Material::Wood || m==Material::RedBrick; }
 std::uint64_t transfer_fingerprint(const TransferRequest& r,bool incoming) noexcept {
     std::uint64_t hash=1469598103934665603ULL;
     for (auto value:{r.shard.session,r.shard.id,r.shard.generation,r.sequence,r.body_generation,
@@ -58,6 +57,16 @@ std::uint64_t transfer_fingerprint(const TransferRequest& r,bool incoming) noexc
     hash_word(hash,static_cast<std::uint8_t>(r.expected.material));hash_word(hash,r.expected.state_a);
     hash_word(hash,r.expected.state_b);hash_word(hash,static_cast<std::uint16_t>(r.expected.temperature));
     hash_word(hash,incoming);return hash;
+}
+std::uint64_t edit_fingerprint(const ShardEditRequest& r) noexcept {
+    std::uint64_t hash=1469598103934665603ULL;
+    hash_word(hash,0x4552415345ULL); // A distinct operation domain from transfers.
+    for (const auto value:{r.shard.session,r.shard.id,r.shard.generation,r.sequence,r.body_generation,
+        r.geometry_revision,r.pose_serial,r.material_revision}) hash_word(hash,value);
+    hash_word(hash,r.cell);hash_word(hash,r.incarnation);hash_word(hash,r.capability_version);
+    hash_word(hash,static_cast<std::uint8_t>(r.expected.material));hash_word(hash,r.expected.state_a);
+    hash_word(hash,r.expected.state_b);hash_word(hash,static_cast<std::uint16_t>(r.expected.temperature));
+    return hash;
 }
 contact::Pose contact_pose(const PoseSample& p) noexcept {return {p.x,p.y,p.rotation};}
 }
@@ -87,7 +96,7 @@ Coordinator::Coordinator(Config config)
     if (!valid_bounds(bounds) || bounds.x < -262144 || bounds.y < -262144 ||
         bounds.x > 262144-static_cast<std::int64_t>(bounds.width) ||
         bounds.y > 262144-static_cast<std::int64_t>(bounds.height) || bounds.width < 64 ||
-        config_.world_bounds.height < 64 || area > 262144 || config_.limits.max_shapes > 512 ||
+        config_.world_bounds.height < 64 || area > 262144 || config_.scenario > 6 || config_.limits.max_shapes > 512 ||
         config_.limits.max_shards > World::kMaximumTransientBodies || config_.discovery_budget == 0 ||
         config_.exposure_capacity == 0 || config_.exposure_capacity > 65536 || config_.transfer_budget > 1024 ||
         config_.max_pause_calls == 0 || !std::isfinite(config_.max_translation_per_step) ||
@@ -95,12 +104,15 @@ Coordinator::Coordinator(Config config)
         !std::isfinite(config_.max_rotation_per_step) || config_.max_rotation_per_step <= 0 ||
         config_.max_rotation_per_step > .25)
         throw std::invalid_argument("ObjectShard Lab configuration outside bounded M0-M2 envelope");
-    discovery_queue_.reserve(area); component_.reserve(config_.limits.max_area);
-    seen_.resize(area); discovery_skip_.resize(area); proposed_mask_.resize(area); materials_.resize(area);
+    discovery_ = std::make_unique<ComponentDiscovery>(config_.world_bounds, config_.limits);
+    component_.reserve(config_.limits.max_area);
+    proposed_mask_.resize(area); materials_.resize(area);
     reserved_destinations_.resize(area);ingress_exclusion_.resize(area);
     relocations_.reserve(config_.limits.max_total_area*4U);
     exposures_.reserve(config_.exposure_capacity); receipts_.resize(64);
+    fire_opportunities_.resize(area);
     ingress_fences_.reserve(config_.limits.max_total_area);
+    ingress_fences_backup_.reserve(config_.limits.max_total_area);
     ingress_proposals_.reserve(config_.transfer_budget);
     bodies_.resize(config_.limits.max_shards); body_backup_.resize(config_.limits.max_shards);
     pending_->cells.reserve(config_.limits.max_area);
@@ -148,7 +160,7 @@ void Coordinator::author_scenario(std::uint32_t scenario) {
     if (scenario == 0) return;
     const auto floor = b.y + b.height - 18;
     for (std::int64_t x = b.x + 1; x < b.x + b.width - 1; ++x) world_->set(x, floor, Material::Wall);
-    const unsigned count = scenario == 4 ? std::min(3U, config_.limits.max_shards) : 1U;
+    const unsigned count = scenario == 4 || scenario == 6 ? std::min(3U, config_.limits.max_shards) : 1U;
     for (unsigned body_index = 0; body_index < count; ++body_index) {
         const auto trunk_x = b.x + (count == 1 ? b.width / 2 : (body_index + 1U) * b.width / 4U);
         // Deliberately asymmetric native Wood crown, trunk and open lodging
@@ -203,6 +215,21 @@ Result Coordinator::finish(Result r) noexcept {
     if (r.outcome != Outcome::Accepted && r.outcome != Outcome::Anchored && r.outcome != Outcome::Busy) ++metrics_.refusals;
     return r;
 }
+Metrics Coordinator::lifetime_metrics() const noexcept {
+    auto total=metrics_;
+#define CS_ADD_METRIC(field) total.field+=historical_metrics_.field
+    CS_ADD_METRIC(steps);CS_ADD_METRIC(paused_calls);CS_ADD_METRIC(discovered_cells);CS_ADD_METRIC(promotions);CS_ADD_METRIC(refusals);
+    CS_ADD_METRIC(chemistry_cells);CS_ADD_METRIC(products_created);CS_ADD_METRIC(output_blocked);CS_ADD_METRIC(sand_ingested);
+    CS_ADD_METRIC(exposure_overflows);CS_ADD_METRIC(stale_messages);CS_ADD_METRIC(mask_cells);CS_ADD_METRIC(sweep_samples);CS_ADD_METRIC(ingress_blocked);
+    CS_ADD_METRIC(world_ns);CS_ADD_METRIC(chemistry_ns);CS_ADD_METRIC(contact_ns);CS_ADD_METRIC(occupancy_ns);CS_ADD_METRIC(geometry_ns);CS_ADD_METRIC(snapshot_ns);
+    CS_ADD_METRIC(discovery_ns);CS_ADD_METRIC(terrain_ns);CS_ADD_METRIC(exchange_ns);CS_ADD_METRIC(relocation_ns);
+#undef CS_ADD_METRIC
+#define CS_MAX_METRIC(field) total.field=std::max(total.field,historical_metrics_.field)
+    CS_MAX_METRIC(maximum_pause_ns);CS_MAX_METRIC(maximum_geometry_age);CS_MAX_METRIC(maximum_geometry_wait_ns);CS_MAX_METRIC(maximum_product_age);
+    CS_MAX_METRIC(peak_bytes);
+#undef CS_MAX_METRIC
+    return total;
+}
 BodyView* Coordinator::body(Handle h) noexcept {
     for (auto& b : bodies_) if (b.shard == h) return &b;
     return nullptr;
@@ -220,14 +247,19 @@ Result Coordinator::edit(std::int64_t x, std::int64_t y, Payload value) {
     if (paused()) return finish({Outcome::Fenced, {}, 0, Phase::Empty, "Lab promotion/geometry barrier"});
     if (!resident(x,y)) return finish({Outcome::NotResident});
     if (!coherent_payload(value) || (value.material==Material::Water &&
-        (value.state_a>world_->config().water_experiment_policy.maximum() ||
+        (value.state_a==0 || value.state_a>world_->config().water_experiment_policy.maximum() ||
          value.state_b>world_->config().water_experiment_policy.coherence_ticks()))) return finish({Outcome::Unsupported});
     if (world_->transient_obstacle_at(x,y)) return finish({Outcome::DestinationUnavailable});
+    if (inspect_world(x,y) == value) return finish({Outcome::Accepted,{},0,Phase::Empty,"unchanged World cell"});
     // All cell/temperature storage is reserved at construction.
     const auto before=world_->stored_material(x,y);
     (void)world_->set_cell_state(x,y,value.material,value.state_a,value.state_b);
     world_->set_temperature(x,y,value.temperature);
     if (before!=value.material) {
+        // Authored replacement is a new inventory identity. Same-Fire state
+        // edits retain the existing opportunity; erase/recreate does not.
+        fire_opportunities_[static_cast<std::size_t>(y-config_.world_bounds.y)*config_.world_bounds.width+
+            static_cast<std::size_t>(x-config_.world_bounds.x)]=0;
         if (before!=Material::Empty) ++accounting_.authored_destroyed[static_cast<std::uint8_t>(before)];
         if (value.material!=Material::Empty) ++accounting_.authored_created[static_cast<std::uint8_t>(value.material)];
     }
@@ -251,48 +283,70 @@ Result Coordinator::ignite_shard(Handle h, std::uint32_t cell) {
     return finish({result,h});
 }
 
-Outcome Coordinator::capture_component(std::int64_t sx, std::int64_t sy) {
-    const auto material = world_->stored_material(sx,sy);
-    if (!promotable(material)) return Outcome::Unsupported;
+Result Coordinator::erase_shard(const ShardEditRequest& r) {
+    const auto fingerprint=edit_fingerprint(r);
+    if (r.shard.session!=session_) return finish({Outcome::Retired,r.shard,r.sequence});
+    if (const auto* previous=prior(r.sequence)) return previous->fingerprint==fingerprint ? previous->result
+        : finish({Outcome::Stale,r.shard,r.sequence});
+    if (r.sequence!=next_transaction_) return finish({r.sequence<next_transaction_ ? Outcome::Expired : Outcome::Stale,r.shard,r.sequence});
+    if (next_transaction_==std::numeric_limits<std::uint64_t>::max()) return finish({Outcome::GenerationExhausted,r.shard,r.sequence});
+    ++next_transaction_;
+    const auto done=[&](Outcome result,const char* detail) {
+        const auto* current=registry_.find(r.shard);
+        return remember({result,r.shard,r.sequence,current ? current->phase() : Phase::Empty,detail},fingerprint);
+    };
+    if (paused()) return done(Outcome::Fenced,"material/physics installation barrier");
+    auto* shard=registry_.find(r.shard);auto* b=body(r.shard);
+    if (!shard || !b || !b->has_body || shard->phase()!=Phase::Active || r.cell>=shard->area() ||
+        r.body_generation!=b->body_generation || r.geometry_revision!=shard->geometry().revision ||
+        r.geometry_revision!=shard->applied_physics_revision() || r.pose_serial!=b->pose.pose_serial ||
+        r.material_revision!=shard->material_revision() || r.incarnation!=shard->schedule(r.cell).incarnation ||
+        r.expected!=shard->payload(r.cell)) return done(Outcome::Stale,"shard erase identity/payload changed");
+    if (r.capability_version!=kCapabilityVersion || shard->role(r.cell)!=Role::Structural)
+        return done(Outcome::Unsupported,"only explicitly owned structural cells admit erase");
+    const auto tick=world_->completed_tick_index();
+    const auto result=registry_.erase_structural(r.shard,r.cell,tick);
+    if (result==Outcome::Capacity) return done(result,"ShapeLimit: exact post-cut geometry refused before material debit");
+    if (result!=Outcome::Accepted) {
+        if (result==Outcome::Quarantined) {
+            if (shard->payload(r.cell).material==Material::Empty)
+                ++accounting_.authored_destroyed[static_cast<std::uint8_t>(r.expected.material)];
+            quarantined_=true;
+        }
+        return done(result,"structural erase preflight/commit refused");
+    }
+    ++accounting_.authored_destroyed[static_cast<std::uint8_t>(r.expected.material)];
+    b->geometry_pending=true;b->geometry_pending_tick=tick;b->geometry_pending_ns=now_ns();
+    return done(Outcome::Accepted,"owned structural cell erased; exact geometry awaits physics acknowledgement");
+}
+
+bool Coordinator::pending_conflict(Bounds bounds) const noexcept {
+    for (const auto& explosion:world_->pending_explosions_)
+        if (explosion.x+explosion.radius>=bounds.x && explosion.x-explosion.radius<bounds.x+bounds.width &&
+            explosion.y+explosion.radius>=bounds.y && explosion.y-explosion.radius<bounds.y+bounds.height) return true;
+    return false;
+}
+
+Outcome Coordinator::capture_component(std::uint32_t root) {
+    const auto& candidate = discovery_->candidate(root);
+    if (!candidate.valid || candidate.reason != AdmissionReason::Ready ||
+        !discovery_->members(root,component_)) return Outcome::Stale;
     const auto w = config_.world_bounds.width;
     const auto b = config_.world_bounds;
-    const auto index = [&](std::int64_t x, std::int64_t y) { return static_cast<std::uint32_t>((y-b.y)*w + (x-b.x)); };
-    if (++discovery_serial_ == 0) { std::fill(seen_.begin(),seen_.end(),0); discovery_serial_ = 1; }
-    discovery_queue_.clear(); component_.clear(); discovery_queue_.push_back(index(sx,sy)); seen_[index(sx,sy)] = discovery_serial_;
-    auto min_x = sx, max_x = sx, min_y = sy, max_y = sy;
-    bool anchored = false;
-    std::size_t cursor = 0;
-    while (cursor < discovery_queue_.size()) {
-        if (discovery_remaining_==0 || component_.size() >= config_.limits.max_area)
-            return Outcome::Capacity; // incomplete membership is never promoted
-        const auto at = discovery_queue_[cursor++];
-        const auto x = b.x + at % w, y = b.y + at / w;
-        component_.push_back(at); ++metrics_.discovered_cells; --discovery_remaining_;
-        min_x = std::min(min_x,x); max_x = std::max(max_x,x); min_y = std::min(min_y,y); max_y = std::max(max_y,y);
-        for (const auto& [dx,dy] : kCardinal) {
-            const auto nx = x + dx, ny = y + dy;
-            if (!resident(nx,ny)) return Outcome::UnknownBoundary;
-            const auto neighbor = world_->stored_material(nx,ny);
-            // Explicit v1 anchoring: Wall is scenery. Only like admitted
-            // structural materials cohere; loose Sand never creates a bond.
-            if (neighbor == Material::Wall) anchored = true;
-            if (neighbor != material) continue;
-            const auto ni = index(nx,ny);
-            if (seen_[ni] == discovery_serial_) continue;
-            seen_[ni] = discovery_serial_; discovery_queue_.push_back(ni);
-        }
-    }
-    if (anchored) return Outcome::Anchored;
-    if (min_x <= b.x || min_y <= b.y || max_x >= b.x+b.width-1 || max_y >= b.y+b.height-1)
-        return Outcome::UnknownBoundary;
     // One Empty ring provides spatial product carriers without changing the
     // stable lattice origin as structural edges erode.
-    Bounds bounds{min_x-1,min_y-1,static_cast<std::uint16_t>(max_x-min_x+3),static_cast<std::uint16_t>(max_y-min_y+3)};
-    if (bounds.area() > config_.limits.max_area) return Outcome::Capacity;
-    for (const auto& explosion : world_->pending_explosions_)
-        if (explosion.x + explosion.radius >= bounds.x && explosion.x - explosion.radius < bounds.x+bounds.width &&
-            explosion.y + explosion.radius >= bounds.y && explosion.y - explosion.radius < bounds.y+bounds.height)
-            return Outcome::PendingEvent;
+    Bounds bounds{b.x+candidate.min_x-1,b.y+candidate.min_y-1,
+        static_cast<std::uint16_t>(candidate.max_x-candidate.min_x+3),
+        static_cast<std::uint16_t>(candidate.max_y-candidate.min_y+3)};
+    if (pending_conflict(bounds)) return Outcome::PendingEvent;
+    // Transient occupancy and payload can change without a connectivity edit.
+    // Refuse before acquiring staging so repeated live admission never churns
+    // carrier allocations; other complete candidates remain selectable.
+    for (const auto at:component_) {
+        const auto x=b.x+at%w,y=b.y+at/w;const auto p=inspect_world(x,y);
+        if (p.material!=candidate.material || !coherent_payload(p) || world_->transient_obstacle_at(x,y))
+            return Outcome::Unsupported;
+    }
     Handle handle;
     const auto prepared = registry_.prepare(bounds,world_->completed_tick_index(),handle);
     if (prepared != Outcome::Accepted) return prepared;
@@ -301,7 +355,7 @@ Outcome Coordinator::capture_component(std::int64_t sx, std::int64_t sy) {
     for (const auto at : component_) {
         const auto x = b.x + at % w, y = b.y + at / w;
         const auto p = inspect_world(x,y);
-        if (!coherent_payload(p) || world_->transient_obstacle_at(x,y)) {
+        if (p.material != candidate.material || !coherent_payload(p) || world_->transient_obstacle_at(x,y)) {
             (void)registry_.cancel_precommit(handle); return Outcome::Unsupported;
         }
         const auto local = static_cast<std::uint32_t>((y-bounds.y)*bounds.width + x-bounds.x);
@@ -311,7 +365,11 @@ Outcome Coordinator::capture_component(std::int64_t sx, std::int64_t sy) {
         pending_->cells.push_back({x,y,local,p,world_->object_shard_mutations_->witness(x,y)});
     }
     const auto ready = registry_.finish_preparation(handle);
-    if (ready != Outcome::Accepted) { (void)registry_.cancel_precommit(handle); return ready; }
+    if (ready != Outcome::Accepted) {
+        (void)registry_.cancel_precommit(handle);
+        if (ready == Outcome::Capacity) discovery_->refuse(root,AdmissionReason::ShapeLimit);
+        return ready;
+    }
     pending_->present = true; pending_->shard = handle; pending_->transaction = next_transaction_++;
     pending_->payload_digest = shard->payload_digest(); pending_->captured_tick = world_->completed_tick_index();
     pending_->watch_incarnation = world_->object_shard_mutations_->incarnation();
@@ -325,6 +383,68 @@ Outcome Coordinator::capture_component(std::int64_t sx, std::int64_t sy) {
     return Outcome::Accepted;
 }
 
+void Coordinator::refresh_admission(std::uint32_t work) {
+    std::uint32_t used_slots=0,used_area=0,active_bodies=0;
+    for (const auto& shard:registry_.shards())
+        if (shard.phase()!=Phase::Empty && shard.phase()!=Phase::Retired) {
+            ++used_slots; used_area+=static_cast<std::uint32_t>(shard.area());
+        }
+    for (const auto& b:bodies_) active_bodies+=b.has_body ? 1U : 0U;
+    const auto available=config_.limits.max_total_area-used_area;
+    const bool changed=!admission_resource_valid_ || used_slots!=admission_slots_ || available!=admission_area_ || discovery_->dirty();
+    admission_slots_=used_slots;admission_area_=available;admission_resource_valid_=true;
+    admission_.pending_mutations=static_cast<std::uint32_t>(world_->object_shard_mutations_->pending());
+    admission_.pending_seeds=discovery_->pending();admission_.frontier_cells=discovery_->frontier_pending();
+    admission_.census_complete=admission_.pending_mutations==0 && discovery_->complete();
+    admission_.work_last=work;admission_.work_peak=std::max(admission_.work_peak,work);
+    admission_.completed_components=discovery_->completed_components();
+    admission_.invalidations=discovery_->invalidations();admission_.interrupted_searches=discovery_->interrupted_searches();
+    admission_.slots_used=used_slots;admission_.slot_limit=config_.limits.max_shards;admission_.active_bodies=active_bodies;
+    if (!changed) {
+        if (!admission_.census_complete) admission_.reason=AdmissionReason::Discovering;
+        return;
+    }
+    admission_.components=admission_.eligible=admission_.deferred=admission_.anchored=0;
+    admission_.unknown_boundary=admission_.refused_geometry=admission_.largest_cells=admission_.candidate_count=0;
+    admission_.reason=AdmissionReason::None;
+    std::uint32_t available_ready=0,area_deferred=0;
+    for (const auto root:discovery_->roots()) {
+        const auto& c=discovery_->candidate(root);++admission_.components;
+        admission_.anchored+=c.anchored ? 1U : 0U;
+        admission_.unknown_boundary+=c.unknown_boundary ? 1U : 0U;
+        admission_.refused_geometry+=(c.reason==AdmissionReason::ComponentCells || c.reason==AdmissionReason::BoundingBox ||
+            c.reason==AdmissionReason::ShapeLimit) ? 1U : 0U;
+        auto reason=c.reason;
+        if (reason==AdmissionReason::Ready) {
+            ++admission_.eligible;admission_.largest_cells=std::max(admission_.largest_cells,c.cells);
+            if (used_slots==config_.limits.max_shards) reason=AdmissionReason::BodySlots;
+            else if (c.bbox_area()>available) {reason=AdmissionReason::TotalArea;++area_deferred;}
+            else if (c.retry_after>admission_calls_) reason=c.blocked_reason;
+            else ++available_ready;
+            if (reason!=AdmissionReason::Ready) ++admission_.deferred;
+        }
+        AdmissionCandidate view{config_.world_bounds.x+c.min_x,config_.world_bounds.y+c.min_y,c.cells,c.bbox_area(),
+            c.first_eligible ? metrics_.promotions+1-c.first_eligible : 0,reason};
+        std::size_t position=0;
+        while (position<admission_.candidate_count &&
+            (admission_.candidates[position].cells>view.cells ||
+             (admission_.candidates[position].cells==view.cells &&
+              std::pair{admission_.candidates[position].y,admission_.candidates[position].x}<std::pair{view.y,view.x}))) ++position;
+        if (position<admission_.candidates.size()) {
+            const auto end=std::min<std::size_t>(admission_.candidate_count,admission_.candidates.size()-1);
+            for (auto i=end;i>position;--i) admission_.candidates[i]=admission_.candidates[i-1];
+            admission_.candidates[position]=view;
+            admission_.candidate_count=std::min<std::uint32_t>(admission_.candidate_count+1,admission_.candidates.size());
+        }
+    }
+    if (!admission_.census_complete) admission_.reason=AdmissionReason::Discovering;
+    else if (admission_.eligible) admission_.reason=used_slots==config_.limits.max_shards ? AdmissionReason::BodySlots :
+        available_ready ? AdmissionReason::Ready : area_deferred==admission_.eligible ? AdmissionReason::TotalArea :
+        admission_.candidate_count ? admission_.candidates[0].reason : AdmissionReason::None;
+    else if (admission_.candidate_count) admission_.reason=admission_.candidates[0].reason;
+    discovery_->clear_dirty();
+}
+
 Result Coordinator::prepare_next() {
     ScopedTime timing{metrics_.discovery_ns};
     if (next_transaction_==std::numeric_limits<std::uint64_t>::max()) return finish({Outcome::GenerationExhausted});
@@ -332,45 +452,74 @@ Result Coordinator::prepare_next() {
         pending_->present ? registry_.find(pending_->shard)->phase() : Phase::Suspended, "barrier already pending"});
     if (world_->has_failed() || world_->is_tick_in_progress() || world_->completed_tick_index()==0 ||
         world_->object_shard_mutations_->exhausted()) return finish({Outcome::Quarantined});
-    std::int64_t x{},y{};
-    std::uint32_t seeds=0;
-    discovery_remaining_=config_.discovery_budget;
-    std::fill(discovery_skip_.begin(),discovery_skip_.end(),0);
-    while (seeds++ < config_.discovery_budget && world_->object_shard_mutations_->pop(x,y)) {
-        // A removed support is itself Empty. Its four live neighbours are the
-        // seeds, so fire and ordinary erasing share this exact path.
-        for (const auto& [dx,dy] : std::array<std::pair<int,int>,5>{{{0,0},{-1,0},{1,0},{0,-1},{0,1}}}) {
-            const auto nx=x+dx,ny=y+dy;
-            if (!resident(nx,ny) || !promotable(world_->stored_material(nx,ny))) continue;
-            const auto b=config_.world_bounds;
-            const auto at=static_cast<std::size_t>(ny-b.y)*b.width+static_cast<std::size_t>(nx-b.x);
-            if (discovery_skip_[at]) continue;
-            if (discovery_remaining_==0) {
-                world_->object_shard_mutations_->requeue(x,y);
-                return finish({Outcome::Capacity,{},0,Phase::Empty,"discovery budget; no partial promotion"});
-            }
-            const auto result=capture_component(nx,ny);
-            for (const auto member:component_) discovery_skip_[member]=1;
-            if (result==Outcome::Accepted) {
-                // One erase can sever several independent arms. Preserve the
-                // original seed until every neighbouring component is seen.
-                world_->object_shard_mutations_->requeue(x,y);
-                return finish({result,pending_->shard,pending_->transaction,Phase::Prepared});
-            }
-            if (result!=Outcome::Anchored && result!=Outcome::Unsupported) {
-                world_->object_shard_mutations_->requeue(x,y);
-                return finish({result,{},0,Phase::Empty,"component not admitted"});
-            }
-        }
+    if (admission_calls_>std::numeric_limits<std::uint64_t>::max()-9) return finish({Outcome::GenerationExhausted});
+    ++admission_calls_;
+    const bool cached=admission_.census_complete && !discovery_->dirty() &&
+        world_->object_shard_mutations_->pending()==0;
+    const auto old_slots=admission_slots_,old_area=admission_area_;
+    std::uint32_t work=0;std::int64_t x{},y{};
+    const auto b=config_.world_bounds;
+    while (work<config_.discovery_budget && world_->object_shard_mutations_->pop(x,y)) {
+        discovery_->invalidate(static_cast<std::uint32_t>((y-b.y)*b.width+x-b.x));++work;
     }
-    return finish({Outcome::Busy,{},0,Phase::Empty,"no unsupported complete component pending"});
+    if (world_->object_shard_mutations_->pending()==0) {
+        const auto before=discovery_->visited_cells();
+        work+=discovery_->advance(config_.discovery_budget-work,metrics_.promotions,[&](std::uint32_t at) {
+            return world_->stored_material(b.x+at%b.width,b.y+at/b.width);
+        });
+        metrics_.discovered_cells+=discovery_->visited_cells()-before;
+    }
+    refresh_admission(work);
+    if (discovery_->exhausted()) return finish({Outcome::GenerationExhausted});
+    if (!admission_.census_complete) return finish({Outcome::Busy,{},0,Phase::Empty,"Discovering: bounded complete-component census in progress"});
+    if (admission_.reason==AdmissionReason::BodySlots || admission_.reason==AdmissionReason::TotalArea) {
+        const bool unchanged=cached && old_slots==admission_slots_ && old_area==admission_area_;
+        if (unchanged) ++admission_.cached_capacity_calls;
+        return finish({unchanged ? Outcome::Busy : Outcome::Capacity,{},0,Phase::Empty,
+            admission_.reason==AdmissionReason::BodySlots ? "BodySlots: eligible inventory deferred in World; all owner slots occupied" :
+                "TotalArea: eligible inventory deferred in World; retained bounding-box budget occupied"});
+    }
+    if (admission_.eligible==0) {
+        const bool unchanged=cached && old_slots==admission_slots_ && old_area==admission_area_;
+        if (admission_.reason==AdmissionReason::UnknownBoundary) return finish({unchanged ? Outcome::Busy : Outcome::UnknownBoundary,{},0,Phase::Empty,"UnknownBoundary: complete component touches the resident boundary"});
+        if (admission_.refused_geometry) return finish({unchanged ? Outcome::Busy : Outcome::Capacity,{},0,Phase::Empty,admission_reason_name(admission_.reason)});
+        return finish({Outcome::Busy,{},0,Phase::Empty,"no eligible detached component"});
+    }
+    // Three size-priority admissions followed by one oldest eligible admission.
+    // A stable small candidate cannot be starved by an endless stream of larger
+    // arrivals, and no frame-rate-dependent timing decides the priority.
+    const auto root=discovery_->select((metrics_.promotions+1)%4==0,admission_area_,admission_calls_);
+    if (root==ComponentDiscovery::kNone) {
+        return finish({Outcome::Busy,{},0,Phase::Empty,"complete candidates await bounded live-admission retry"});
+    }
+    discovery_->retry(root);
+    const auto result=capture_component(root);
+    if (result==Outcome::Accepted) {
+        refresh_admission(work);
+        return finish({result,pending_->shard,pending_->transaction,Phase::Prepared,"complete priority-selected component"});
+    }
+    if (result==Outcome::Stale) discovery_->invalidate(root);
+    const auto reason=result==Outcome::PendingEvent ? AdmissionReason::PendingEvent :
+        result==Outcome::Unsupported ? AdmissionReason::Obstructed :
+        result==Outcome::Capacity && discovery_->candidate(root).reason==AdmissionReason::Ready ? AdmissionReason::StorageCapacity :
+        discovery_->candidate(root).reason;
+    if (result==Outcome::PendingEvent || result==Outcome::Unsupported ||
+        (result==Outcome::Capacity && reason==AdmissionReason::StorageCapacity))
+        discovery_->defer(root,reason,admission_calls_+8);
+    refresh_admission(work);
+    // Payload/obstacle refusals can change without a topology mutation. Keep
+    // their complete membership cached, but reconsider the live admission.
+    admission_.reason=reason;
+    return finish({result,{},0,Phase::Empty,admission_reason_name(reason)});
 }
 
 bool Coordinator::validate_prepared() const noexcept {
     if (!pending_->present || world_->has_failed() || world_->is_tick_in_progress() ||
-        world_->completed_tick_index()!=pending_->captured_tick || !world_->pending_explosions_.empty() ||
+        world_->completed_tick_index()!=pending_->captured_tick ||
         world_->object_shard_mutations_->incarnation()!=pending_->watch_incarnation ||
         world_->object_shard_mutations_->revision()!=pending_->watch_revision) return false;
+    const auto* shard=registry_.find(pending_->shard);
+    if (!shard || pending_conflict(shard->bounds())) return false;
     for (const auto& c : pending_->cells)
         if (inspect_world(c.x,c.y)!=c.payload || world_->transient_obstacle_at(c.x,c.y) ||
             world_->object_shard_mutations_->witness(c.x,c.y)!=c.witness) return false;
@@ -588,18 +737,37 @@ Outcome Coordinator::rebuild_mask(bool capture_contact) {
     }
     const auto exposure_start=exposures_.size();
     const auto accepted_start=accounting_.accepted_exposures;
+    ingress_fences_backup_.assign(ingress_fences_.begin(),ingress_fences_.end());
+    const auto rollback_contact=[&]() {
+        for (std::size_t at=exposure_start;at<exposures_.size();++at) {
+            const auto& e=exposures_[at];
+            if (e.kind==ExposureKind::FireIgnition) fire_opportunity(e.source_x,e.source_y)&=0x7fffffffU;
+        }
+        exposures_.resize(exposure_start);accounting_.accepted_exposures=accepted_start;
+        ingress_fences_.assign(ingress_fences_backup_.begin(),ingress_fences_backup_.end());
+    };
     if (capture_contact) for (const auto& b:bodies_) {
         auto* shard=registry_.find(b.shard);
         if (!shard || !b.has_body || !shard->chemistry_allowed()) continue;
-        const auto result=capture_water(*shard,b);
+        auto result=capture_fire_ignition(*shard,b);
+        if (result==Outcome::Accepted) result=capture_water(*shard,b);
         if (result!=Outcome::Accepted) {
-            exposures_.resize(exposure_start);accounting_.accepted_exposures=accepted_start;
+            rollback_contact();
             return result;
         }
     }
+    // The next semantic tick may supply an already-applied zero-length pose.
+    // Preserve illegal aperture-entry history from every real motion segment
+    // before relocation, so that zero-length sample cannot authorize a grain
+    // that crossed solid material. Ownership/mass transfer still waits for
+    // semantic ingress, where exact current inventory is validated again.
+    if (capture_contact) {
+        automatic_ingress(false);
+        if (quarantined_) return Outcome::Quarantined;
+    }
     const auto result=reconcile_overlap();
     if (result!=Outcome::Accepted && result!=Outcome::Quarantined) {
-        exposures_.resize(exposure_start);accounting_.accepted_exposures=accepted_start;
+        rollback_contact();
     }
     metrics_.occupancy_ns+=now_ns()-start;
     return result;
@@ -661,9 +829,16 @@ Outcome Coordinator::reconcile_overlap() {
     }
     try {
         for (const auto& move:relocations_) {
+            const auto fire_token=move.payload.material==Material::Fire ? fire_opportunity(move.from_x,move.from_y) : 0U;
             if (inspect_world(move.from_x,move.from_y)!=move.payload ||
                 !world_->relocate_stored_cell(move.from_x,move.from_y,move.to_x,move.to_y) ||
                 inspect_world(move.to_x,move.to_y)!=move.payload) return Outcome::Quarantined;
+            if (move.payload.material==Material::Fire) {
+                // Mechanical movement preserves both cadence anchor and claim.
+                // The next real World tick starts a new opportunity inventory.
+                fire_opportunity(move.to_x,move.to_y)=fire_token;
+                fire_opportunity(move.from_x,move.from_y)=0;
+            }
         }
     } catch (...) {return Outcome::Quarantined;}
     return Outcome::Accepted;
@@ -695,6 +870,19 @@ Outcome Coordinator::apply_poses(std::span<const PoseSample> poses) {
     return result;
 }
 
+Result Coordinator::accept_motion(std::span<const PoseSample> poses) {
+    if (quarantined_) return finish({Outcome::Quarantined});
+    if (paused()) return finish({Outcome::Fenced, {}, 0, Phase::Suspended,
+        "motion awaits installed geometry or promotion acknowledgement"});
+    const auto accepted = apply_poses(poses);
+    if (accepted == Outcome::Quarantined)
+        return quarantine({}, "partial substep occupancy application; clocks held");
+    if (accepted != Outcome::Accepted) return finish({accepted, {}, 0, Phase::Suspended,
+        "actual motion segment refused; no semantic tick advanced"});
+    return finish({Outcome::Accepted, {}, 0, Phase::Active,
+        "motion segment occupancy and contact applied; semantic tick unchanged"});
+}
+
 Result Coordinator::step(std::span<const PoseSample> poses) {
     if (quarantined_) return finish({Outcome::Quarantined});
     if (paused()) {
@@ -715,7 +903,12 @@ Result Coordinator::step(std::span<const PoseSample> poses) {
         if (metrics_.sand_ingested!=before_ingress && rebuild_mask(false)!=Outcome::Accepted)
             return quarantine({},"cargo mask application failed after exact transfer");
         const auto before_tick=world_->quantity_ledger();
-        const auto start=now_ns(); (void)world_->tick(); metrics_.world_ns+=now_ns()-start;
+        const auto start=now_ns();
+        world_->object_shard_mutations_->set_external_fire_claims(fire_opportunities_,fire_opportunity_tick_);
+        try { (void)world_->tick(); }
+        catch (...) {world_->object_shard_mutations_->set_external_fire_claims({},0);throw;}
+        world_->object_shard_mutations_->set_external_fire_claims({},0);
+        metrics_.world_ns+=now_ns()-start;
         const auto after_tick=world_->quantity_ledger();
         for (std::size_t m=1;m<kQuantityMaterialSlots;++m)
             accounting_.world_tick_delta[m]+=static_cast<std::int64_t>(after_tick.material_cells[m])-
@@ -737,6 +930,8 @@ Result Coordinator::step(std::span<const PoseSample> poses) {
 }
 
 Outcome Coordinator::capture_water(Shard& shard,const BodyView& body) {
+    if (world_->quantity_ledger().material_cells[static_cast<std::uint8_t>(Material::Water)]==0)
+        return Outcome::Accepted;
     const auto started=now_ns();
     const auto bounds=shard.bounds();
     contact::Envelope envelope;envelope.max_translation=config_.max_translation_per_step;
@@ -746,9 +941,14 @@ Outcome Coordinator::capture_water(Shard& shard,const BodyView& body) {
     if (sweep.outcome!=Outcome::Accepted) return sweep.outcome;
     for (std::size_t at=0;at<shard.area();++at) {
         const auto payload=shard.payload(at);
-        if (payload.material!=Material::Wood || payload.state_b==0) continue;
+        if (payload.material!=Material::Wood) continue;
+        const bool ignition_pending=std::any_of(exposures_.begin(),exposures_.end(),[&](const auto& e){
+            return !e.consumed && e.kind==ExposureKind::FireIgnition && e.shard==shard.handle() && e.cell==at &&
+                e.incarnation==shard.schedule(at).incarnation && e.expiry_tick>=world_->completed_tick_index()+1;
+        });
+        if (payload.state_b==0 && !ignition_pending) continue;
         const auto incarnation=shard.schedule(at).incarnation;
-        if (std::any_of(exposures_.begin(),exposures_.end(),[&](const auto& e){return !e.consumed &&
+        if (std::any_of(exposures_.begin(),exposures_.end(),[&](const auto& e){return !e.consumed && e.kind==ExposureKind::WaterExtinction &&
             e.shard==shard.handle() && e.cell==at && e.incarnation==incarnation &&
             e.expiry_tick>=world_->completed_tick_index()+1;})) continue;
         bool touched=false;
@@ -784,6 +984,8 @@ Outcome Coordinator::capture_water(Shard& shard,const BodyView& body) {
     metrics_.contact_ns+=now_ns()-started;
     return Outcome::Accepted;
 }
+#include "object_shard_fire.inc"
+
 void Coordinator::advance_chemistry() {
     const auto start=now_ns();
     const auto tick=world_->completed_tick_index();
@@ -795,6 +997,23 @@ void Coordinator::advance_chemistry() {
         auto* shard=registry_.find(view.handle());
         if (!shard || !shard->chemistry_allowed()) continue;
         const auto bounds=shard->bounds();
+        // A recorded external Fire opportunity affects this surviving Wood
+        // incarnation once. It neither consumes nor copies World Fire. Waking
+        // a dormant cell runs the existing combustion lane on this tick.
+        for (auto& exposure:exposures_) {
+            if (exposure.consumed || exposure.kind!=ExposureKind::FireIgnition ||
+                exposure.shard!=shard->handle() || exposure.first_tick>tick || exposure.expiry_tick<tick ||
+                exposure.cell>=shard->area() || exposure.incarnation!=shard->schedule(exposure.cell).incarnation)
+                continue;
+            exposure.consumed=true;
+            ++accounting_.consumed_exposures;
+            auto wood=shard->payload(exposure.cell);
+            if (wood.material!=Material::Wood || !shard->structural(exposure.cell)) continue;
+            wood.state_b=std::max<std::uint8_t>(wood.state_b,240);
+            require(shard->set_cell(exposure.cell,wood,Role::Structural,tick));
+            if (shard->schedule(exposure.cell).birth_tick<tick) require(shard->set_due(exposure.cell,tick));
+            ++accounting_.external_ignitions;
+        }
         const auto neighbor=[&](std::size_t at,chemistry::NeighbourOffset offset) -> std::size_t {
             const auto x=static_cast<int>(at%bounds.width)+offset.x;
             const auto y=static_cast<int>(at/bounds.width)+offset.y;
@@ -829,7 +1048,8 @@ void Coordinator::advance_chemistry() {
                 const bool due=chemistry::lane_due(tick,x,y,period,static_cast<std::uint32_t>(stream));
                 bool water=false;
                 if (due) for (auto& exposure:exposures_) {
-                    if (!exposure.consumed && exposure.shard==shard->handle() && exposure.cell==at &&
+                    if (!exposure.consumed && exposure.kind==ExposureKind::WaterExtinction &&
+                        exposure.shard==shard->handle() && exposure.cell==at &&
                         exposure.incarnation==shard->schedule(at).incarnation &&
                         exposure.first_tick<=tick && exposure.expiry_tick>=tick) {
                         exposure.consumed=true;water=true;++accounting_.consumed_exposures;
@@ -894,7 +1114,7 @@ bool Coordinator::pocket_fenced(Handle handle,std::uint32_t cell) const noexcept
     if (!shard || cell>=shard->area()) return true;
     const auto x=cell%shard->bounds().width;
     return std::any_of(ingress_fences_.begin(),ingress_fences_.end(),[&](const auto& fence){
-        return fence.shard==handle && x>=fence.min_x && x<fence.max_x;
+        return fence.shard_id==handle.id && x>=fence.min_x && x<fence.max_x;
     });
 }
 Outcome Coordinator::fence_invalid_entry(Handle handle,std::uint32_t cell) {
@@ -902,13 +1122,13 @@ Outcome Coordinator::fence_invalid_entry(Handle handle,std::uint32_t cell) {
     if (!shard) return Outcome::Stale;
     const auto opening=contact::pocket_opening(*shard,cell);
     if (opening.outcome!=Outcome::Accepted) return opening.outcome;
-    for (auto& fence:ingress_fences_) if (fence.shard==handle &&
+    for (auto& fence:ingress_fences_) if (fence.shard_id==handle.id &&
         fence.min_x<opening.max_x && opening.min_x<fence.max_x) {
         fence.min_x=std::min(fence.min_x,opening.min_x);fence.max_x=std::max(fence.max_x,opening.max_x);
         fence.row=std::max(fence.row,opening.row);return Outcome::Accepted;
     }
     if (ingress_fences_.size()==ingress_fences_.capacity()) return Outcome::Capacity;
-    ingress_fences_.push_back({handle,opening.min_x,opening.max_x,opening.row});return Outcome::Accepted;
+    ingress_fences_.push_back({handle.id,opening.min_x,opening.max_x,opening.row});return Outcome::Accepted;
 }
 void Coordinator::refresh_ingress_fences() {
     // A failed swept entry must not become "already inside" on the next pose.
@@ -916,7 +1136,9 @@ void Coordinator::refresh_ingress_fences() {
     // World Sand, or its owner is retired. This conservative historical guard
     // stores no duplicate material and follows the stable local lattice.
     std::erase_if(ingress_fences_,[&](const PocketFence& fence) {
-        const auto* shard=registry_.find(fence.shard);const auto* b=body(fence.shard);
+        const BodyView* b=nullptr;
+        for (const auto& current:bodies_) if (current.shard.id==fence.shard_id) { b=&current;break; }
+        const auto* shard=b ? registry_.find(b->shard) : nullptr;
         if (!shard || !shard->owns_inventory() || !b || !b->has_body) return true;
         const auto frame=contact::frame(contact_pose(b->pose));
         const auto origin=contact::to_world(frame,{static_cast<double>(fence.min_x),0});
@@ -932,10 +1154,14 @@ void Coordinator::refresh_ingress_fences() {
     });
 }
 
-void Coordinator::automatic_ingress() {
+void Coordinator::automatic_ingress(bool transfer) {
+    ScopedTime timing{metrics_.contact_ns};
+    if (!transfer && world_->quantity_ledger().material_cells[static_cast<std::uint8_t>(Material::Sand)]==0) {
+        ingress_fences_.clear();
+        return;
+    }
     refresh_ingress_fences();
     ingress_proposals_.clear();
-    const auto started=now_ns();
     // Stable registry order resolves two-shard source contention. Native
     // ownership, not a transient raster ID, decides who can debit Sand.
     for (auto& b:bodies_) {
@@ -977,11 +1203,11 @@ void Coordinator::automatic_ingress() {
     // Contact/history capacity is independent of material-transfer capacity.
     // Capture every admitted pocket's history before any Cargo write can dirty
     // geometry or exhaust the transfer budget for a later body.
+    if (!transfer) return;
     for (auto& request:ingress_proposals_) {
         request.sequence=next_transaction_;(void)ingest(request);
         if (quarantined_) return;
     }
-    metrics_.contact_ns+=now_ns()-started;
 }
 
 void Coordinator::advance_products_and_exchange() {
@@ -1164,6 +1390,10 @@ Result Coordinator::reset(std::uint32_t scenario,std::uint64_t seed) {
     for (auto& r:receipts_) r={};
     for (auto& t:terrain_) {t.identity={};t.rectangles.clear();}
     exposures_.clear();ingress_fences_.clear();ingress_proposals_.clear();quarantined_=false;pause_calls_=0;
+    std::fill(fire_opportunities_.begin(),fire_opportunities_.end(),0);fire_opportunity_tick_=0;
+    ingress_fences_backup_.clear();
+    discovery_->reset();admission_={};admission_resource_valid_=false;admission_calls_=0;
+    historical_metrics_=lifetime_metrics();metrics_={};
     // Cancellation takes a transaction sequence, so sequences may never be
     // reused by a new session even after detailed receipts have been retired.
     retired_transaction_=next_transaction_-1;
@@ -1173,18 +1403,22 @@ Result Coordinator::reset(std::uint32_t scenario,std::uint64_t seed) {
 
 const Snapshot& Coordinator::snapshot() {
     const auto start=now_ns();const auto b=config_.world_bounds;
+    // Edits can precede the next discovery pass. Never label an old catalogue
+    // complete while new topology invalidations are waiting in World.
+    refresh_admission(admission_.work_last);
     for (std::size_t at=0;at<materials_.size();++at)
         materials_[at]=static_cast<std::uint8_t>(world_->stored_material(b.x+static_cast<std::int64_t>(at%b.width),
             b.y+static_cast<std::int64_t>(at/b.width)));
     const auto memory=registry_.memory_usage();
     metrics_.world_bytes=world_->resident_cell_bytes();
     metrics_.coordinator_bytes=sizeof(Coordinator)+sizeof(Pending)+materials_.capacity()+proposed_mask_.capacity()*sizeof(std::uint16_t)+
-        seen_.capacity()*sizeof(std::uint32_t)+discovery_queue_.capacity()*sizeof(std::uint32_t)+
+        discovery_->storage_bytes()+
         component_.capacity()*sizeof(std::uint32_t)+exposures_.capacity()*sizeof(Exposure)+
-        ingress_fences_.capacity()*sizeof(PocketFence)+
+        (ingress_fences_.capacity()+ingress_fences_backup_.capacity())*sizeof(PocketFence)+
+        fire_opportunities_.capacity()*sizeof(std::uint32_t)+
         ingress_proposals_.capacity()*sizeof(TransferRequest)+
         receipts_.capacity()*sizeof(Receipt)+pending_->cells.capacity()*sizeof(Pending::Captured)+
-        pending_->terrain.capacity()*sizeof(TerrainReceipt)+terrain_scratch_.capacity()+discovery_skip_.capacity()+
+        pending_->terrain.capacity()*sizeof(TerrainReceipt)+terrain_scratch_.capacity()+
         reserved_destinations_.capacity()+ingress_exclusion_.capacity()+relocations_.capacity()*sizeof(Relocation)+
         (bodies_.capacity()+body_backup_.capacity())*sizeof(BodyView)+terrain_.capacity()*sizeof(TerrainChunk)+
         world_->object_shard_mutations_->storage_bytes();
@@ -1196,10 +1430,10 @@ const Snapshot& Coordinator::snapshot() {
     snapshot_.next_transaction=next_transaction_;
     snapshot_.tick=world_->completed_tick_index();snapshot_.bounds=b;snapshot_.paused=paused();snapshot_.quarantined=quarantined_;
     snapshot_.last_result=last_result_;snapshot_.world_materials=materials_;snapshot_.terrain_chunks=terrain_;
-    snapshot_.shards=registry_.shards();snapshot_.bodies=bodies_;snapshot_.accounting=accounting_;
+    snapshot_.shards=registry_.shards();snapshot_.bodies=bodies_;snapshot_.accounting=accounting_;snapshot_.admission=admission_;
     if (pending_->present) snapshot_.promotion={true,pending_->shard,pending_->transaction,pending_->payload_digest,
         pending_->captured_tick,registry_.find(pending_->shard)->phase(),pending_->terrain};
-    metrics_.snapshot_ns+=now_ns()-start;snapshot_.metrics=metrics_;
+    metrics_.snapshot_ns+=now_ns()-start;snapshot_.metrics=metrics_;snapshot_.lifetime_metrics=lifetime_metrics();
     return snapshot_;
 }
 

@@ -1,0 +1,8 @@
+FAIL 114: admitted.size() == 3 && admitted.front() == 400
+FAIL 116: std::none_of(remaining.begin(), remaining.end(), [](const auto& c) { return c.cells.size() == 400; })
+FAIL 122: repeated == 0
+FAIL 130: prepared.outcome == Outcome::Accepted
+Admission ordering: [1,4,9], expected first=400
+Unchanged full-slot rediscovery over 128 calls: 51200 cells
+400-cell component with 32-work budget: Capacity (component not admitted)
+ObjectShard admission: 826 checks, 4 failures

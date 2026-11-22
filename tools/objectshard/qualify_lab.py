@@ -81,9 +81,9 @@ def qualify(args: argparse.Namespace) -> dict:
         report.update(source_tree=tree, native_source_inputs=inputs)
         lab_sources = ["godot/project.godot", "godot/object_shard_lab.tscn"]
         lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot/scripts").glob("object_shard_*.gd"))]
-        lab_sources += ["godot/tests/" + name for name in ("test_object_shard_lab.gd", "test_object_shard_physics_bridge.gd",
-                        "capture_object_shard_lab.gd", "profile_object_shard_lab.gd",
-                        "test_rapier_manual_step.gd", "test_material_lab_experiment.gd")]
+        lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot/tests").glob("*object_shard*.gd"))]
+        lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot/tests/fixtures").glob("objectshard_*.json"))]
+        lab_sources += ["godot/tests/test_rapier_manual_step.gd", "godot/tests/test_material_lab_experiment.gd"]
         lab_sources += ["tools/objectshard/lab_budgets.json"]
         subprocess.run(["git", "-C", str(ROOT), "diff", "--exit-code", "HEAD", "--", *lab_sources], check=True, timeout=120)
         script_inputs = {path: runner.sha256(ROOT / path) for path in lab_sources}
@@ -136,13 +136,43 @@ def qualify(args: argparse.Namespace) -> dict:
                     int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-physics-bridge-test-v1"),
                  (runner.Case("objectshard_lab", ("--script", "res://tests/test_object_shard_lab.gd", "--",
                     "--objectshard-stage=" + args.stage, "--objectshard-report=" + str(output / "lab-result.json")),
-                    int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-lab-integration-test-v1")]
+                    int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-lab-integration-test-v1"),
+                 (runner.Case("objectshard_capture", ("--script", "res://tests/test_object_shard_capture.gd"),
+                    int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-capture-contract-test-v1")]
+        if args.stage == "m2":
+            cases += [(runner.Case("objectshard_motion_segments", ("--script", "res://tests/test_object_shard_motion_segments.gd"),
+                        int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-motion-segment-test-v1"),
+                      (runner.Case("objectshard_rest_contacts", ("--script", "res://tests/test_object_shard_rest_contacts.gd"),
+                        int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-rest-contact-test-v1"),
+                      (runner.Case("objectshard_boundary", ("--script", "res://tests/test_object_shard_boundary.gd"),
+                        int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-boundary-contract-test-v1"),
+                      (runner.Case("objectshard_playability", ("--script", "res://tests/test_object_shard_playability.gd", "--",
+                        "--objectshard-playability-report=" + str(output / "playability-result.json"),
+                        "--objectshard-playability-trace=" + str(output / "reproduction.trace.jsonl")),
+                        int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-playability-contract-test-v1"),
+                      (runner.Case("objectshard_action_replay", ("--script", "res://tests/replay_object_shard_trace.gd", "--",
+                        "--objectshard-replay=" + str(output / "reproduction.trace.jsonl"),
+                        "--objectshard-replay-report=" + str(output / "replay-result.json")),
+                        int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-action-replay-v1")]
+            for variant in ("erode", "replace-identical", "mass-only"):
+                name = "objectshard_rest_" + variant.replace("-", "_")
+                cases.append((runner.Case(name, ("--script", "res://tests/probe_object_shard_rest_stability.gd", "--",
+                    "--variant=" + variant, "--bodies=3", "--output=" + str(output / (name + ".json"))),
+                    int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-rest-stability-probe-v1"))
+            cases.append((runner.Case("objectshard_owner_d", ("--script", "res://tests/probe_object_shard_retained_actions.gd", "--",
+                "--input=res://tests/fixtures/objectshard_owner_d_retained_actions.json", "--end-tick=3600",
+                "--output=" + str(output / "owner-d-result.json")),
+                int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-retained-action-probe-v1"))
         if args.render:
             driver = "opengl3_angle" if sys.platform == "win32" else "opengl3"
             cases.append((runner.Case("objectshard_render", ("--rendering-driver", driver, "--script",
                 "res://tests/capture_object_shard_lab.gd", "--", "--objectshard-stage=" + args.stage,
                 "--objectshard-capture=" + str(output / "frames")),
                 int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), "objectshard-render-campaign-v1"))
+            if args.stage == "m2":
+                cases.append((runner.Case("objectshard_finisher_render", ("--rendering-driver", driver, "--script",
+                    "res://tests/capture_object_shard_finisher.gd", "--", "--objectshard-capture=" + str(output / "frames-finisher")),
+                    int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), "objectshard-finisher-render-campaign-v1"))
         if args.profile:
             if args.stage != "m2":
                 raise ValueError("Complete Lab performance qualification requires implemented M2")
@@ -166,9 +196,16 @@ def qualify(args: argparse.Namespace) -> dict:
                 if schema.endswith("test-v1") and (type(receipt.get("checks")) is not int or receipt["checks"] < 20):
                     raise ValueError("Incomplete assertion inventory: " + case.name)
                 record["completion_receipt"] = receipt
-                if schema == "objectshard-render-campaign-v1":
-                    expected_captures = {"m0": 4, "m1": 6, "m2": 10}[args.stage]
-                    campaign = json.loads((output / "frames/render-campaign.json").read_text(encoding="utf-8"))
+                if schema == "objectshard-action-replay-v1" and (receipt.get("actions", 0) < 1 or receipt.get("steps", 0) < 1):
+                    raise ValueError("Replay did not execute actual inputs and native steps")
+                if schema in ("objectshard-rest-stability-probe-v1", "objectshard-retained-action-probe-v1"):
+                    minimum = 20 if schema == "objectshard-rest-stability-probe-v1" else 17
+                    if type(receipt.get("checks")) is not int or receipt["checks"] < minimum:
+                        raise ValueError("Incomplete physical-probe assertion inventory: " + case.name)
+                if schema in ("objectshard-render-campaign-v1", "objectshard-finisher-render-campaign-v1"):
+                    expected_captures = {"m0": 4, "m1": 6, "m2": 10}[args.stage] if schema == "objectshard-render-campaign-v1" else 5
+                    images_directory = output / ("frames" if schema == "objectshard-render-campaign-v1" else "frames-finisher")
+                    campaign = json.loads((images_directory / "render-campaign.json").read_text(encoding="utf-8"))
                     images = [row.get("image", "") for row in campaign.get("observations", [])]
                     if receipt.get("captures") != expected_captures or len(images) != expected_captures or len(set(images)) != expected_captures:
                         raise ValueError("Incomplete actual-render inventory")
@@ -176,7 +213,7 @@ def qualify(args: argparse.Namespace) -> dict:
                     for name in images:
                         if Path(name).name != name or not name.endswith(".png"):
                             raise ValueError("Invalid rendered image path")
-                        picture = output / "frames" / name
+                        picture = images_directory / name
                         if picture.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
                             raise ValueError("Missing actual PNG evidence")
                         record["rendered_images"][name] = runner.sha256(picture)

@@ -1,0 +1,12 @@
+[
+  {
+    "file": "package-artifact.zip",
+    "sha256": "44a16df9822ede1a2fa76552afba7194790d9f39c73de3a1d32b5fb4293ab63d",
+    "artifact": 14740363854
+  },
+  {
+    "file": "evidence-artifact.zip",
+    "sha256": "9738a2dd8560e008d85f37b89bc758d90c9d5c3a6d9c87d6cd9e097d4c499ed2",
+    "artifact": 14740069324
+  }
+]

@@ -1,0 +1,84 @@
+# Independent ObjectShard 001R performance, resource and package-delta review
+
+## Verdict and source boundary
+
+**The native performance evidence is internally consistent, source-bound and honestly scoped. No unresolved Class A/B finding was identified in the reviewed resource implementation, native measurement apparatus or package-source delta.** Final delivered-Windows-ZIP acceptance remains pending. This review does not authorize merge, Ready promotion, release, production defaults or owner physical acceptance.
+
+Native code reviewed: **`514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c`**, tree **`e2b0753b82650734b5738ff000be62a2c7db2abe`**. The subsequent package-only commit **`f4801ac6675631fcecad5926fc0cac5cce5fe778`**, tree **`0a44828f23d6d879c6079a7826fea34eeb3b751f`**, was independently checked: its native and Godot trees are byte-identical to 514d, and its only four changed paths are the ObjectShard workflow, shipped PowerShell verifier, delivered-ZIP qualifier and qualifier unit tests.
+
+The reviewer authored none of the implementation. Work was confined to `build/osr-performance-review/`. Independent source review by another reviewer was read as supporting evidence, not substituted for this review's recomputation.
+
+## Independent checks and reproduced measurements
+
+The reviewer independently recomputed **660 native evidence checks with zero discrepancies**, without importing the production budget-checker function. These covered:
+
+- Every hash in the retained native evidence custody manifest.
+- All source hashes against Git objects for final matrix, final focused sanitizer, historical control and negative f11 cohorts: 94, 94, 92 and 94 captured files respectively.
+- Input-digest reconstruction, actual retained executable hashes, raw executable JSON against summaries and focused sanitizer log counts.
+- Every one of the unchanged 74 numerical gates in each full matrix, including preserved failures.
+- The exact six-process alternating comparison order, preceding registration timestamp, all cohorts and recomputed median/minimum/maximum frame statistics.
+
+`native_budgets.json`, `run_benchmarks.py` and `benchmark_object_shard.cpp` are byte-identical between historical M2 documentation HEAD `dc4282e...` and 514d. No threshold, workload or allocation probe was weakened.
+
+| Cohort | Functional result | Independently recomputed gate result |
+| --- | --- | --- |
+| Original final M2 portable-math record | 4,237,384 assertions, zero failures | **10/74 timing limits failed** |
+| Fresh same-host historical M2 control | 4,237,384 assertions, zero failures | 74/74 passed |
+| First integrated 001R f11 | 4,237,399 assertions, zero failures | **14/74 memory limits failed** |
+| Compacted pre-telemetry iteration | 4,237,399 assertions, zero failures | 74/74 passed |
+| Final native source 514d | 4,237,399 assertions, zero failures | **74/74 passed** |
+
+These assertion counts are repeated fixture observations, including exact tuple comparisons; they are not millions of independent test scenarios. They remain separate from the focused correctness-suite counts. The final ASan/UBSan receipt contains coordinator 3,120, admission 28,092 and external Fire 3,683 checks: **34,895 checks, zero failures**, with actual executable hashes independently verified. LeakSanitizer was disabled; no leak-check pass is implied.
+
+The final matrix input digest is `1aab8c0f4ca49e4981697571e108e3bbf86ff2b0156416a5b737322702628ece`. The executable hash is `7d1ddcf453349b2458031fe66bb641f80c1617931e053a302bc11fa98dddcac0`. All 94 captured files match 514d exactly.
+
+## Memory accounting and compact fence review
+
+The negative f11 matrix reached **6,670,496 requested C++ bytes**, above the unchanged 6,291,456-byte ceiling. Seven workloads each failed live and peak limits. The memory repair changes only a private ingress-history key from a 24-byte full Handle to an eight-byte monotonic shard ID. The complete record falls from 32 to 16 bytes; two reserved arrays of 12,288 records therefore save exactly **393,216 bytes**. Their capacities are unchanged.
+
+The compact key is not an authority token. Public material/pose/ingress paths still validate complete session, ID and generation. `Registry::reset` retires existing entries but does not reset `next_id_`; `prepare` refuses identity exhaustion. Fence refresh resolves the ID through the bounded current body roster, then uses the body's full Handle in `Registry::find`. `pocket_fenced` first validates its full supplied Handle. The reset, retired-session and wrong-generation checks protect that separation. This inspection found no recycled-slot or RID path able to revive an old fence as a different material owner.
+
+Final observed peak is **6,277,280 bytes**, only **14,176 bytes below** the default-canvas ceiling. This narrow margin must remain visible. It is not a universal upper bound for larger scenarios, arbitrary maximum-area payloads or future features. The three-body peak is 1,608,008 bytes above the fresh historical control; complete discovery and contact-history storage have a real cost.
+
+The allocation probe intercepts ordinary and over-aligned C++ `new`/`delete`, tracks requested bytes and excludes pre-reserved measurement arrays from the coordinator interval. Construction and steady-state windows are distinct. Zero recurring C++ allocations is supported in the measured workloads. This does **not** measure process RSS, allocator metadata, direct C allocations, thread stacks, Godot, Rapier or GPU memory. Snapshot native counters are an accounted lower bound and cannot replace that global allocation measurement.
+
+The constructor bounds the resident canvas, registry count/area, exposure capacity, transfer budget, shape capacity and coordinate envelope. Discovery and geometry buffers remain finite. This supports bounded resources, without claiming that every maximum-capacity configuration meets the default-canvas timing ceiling.
+
+## Timing interpretation and focused falsification
+
+The retained paired experiment contains all three registered alternating pairs. Its representative three-body p50 increased **3.28%**, and wake-burst p50 increased **4.43%**. One-body p95 increased **35.24%**; wake-burst p95 increased **12.82%**. These tails are visible, and all corresponding ceilings passed. The comparison supports no general frame-rate improvement claim. The separate admission-refusal speedup measures repeated unchanged component queries and must not be substituted for overall frame timing.
+
+The reviewer challenged a selective difference in the final matrix: dormant/wake p50 was 601.697/634.585 µs, versus 340.266/349.521 µs in the paired repaired iteration. A bounded, preregistered eight-process probe compared those same frozen pre-timer and final executables, two observations per source/workload, with every result retained:
+
+| Workload | Pre-timer p50 observations, µs | Final p50 observations, µs |
+| --- | ---: | ---: |
+| Dormant twelve | 604.255; 596.196 | 620.912; 592.876 |
+| Wake twelve | 648.553; 627.423 | 630.729; 658.646 |
+
+Both binaries reproduced the slower cohort. The earlier-to-later increase is therefore **not demonstrated as a final timer-delta regression**. The probe does not establish a unique cause, CPU exclusivity, statistical equivalence or a new full qualification result. The original slower final measurements remain unchanged. The raw probe and its declared sequence are retained under `targeted-timing/`.
+
+The final contact timer correctly includes historical-only ingress/fence work that f11 omitted. Overall frame wall time already included that work. Occupancy, contact and relocation scopes overlap; their percentiles cannot be added as disjoint costs. Native geometry age zero follows immediate synthetic acknowledgements. It does not establish actual main-thread installation latency, and the benchmark explicitly has no Rapier stepping or rendered presentation. Three construction/promotion samples are descriptive, not qualified p99 bounds.
+
+## Supplemental actual Windows evidence and package repair
+
+The reviewer independently checked the downloaded **f11** Windows evidence against its exact commit: 26 Lab inputs, 116 native inputs and 18 qualification-tool inputs all matched Git, with zero mismatches. Another **454 independent checks** verified complete retained profile samples, declared percentiles, workload inventories and all limits. The headless 56-limit and rendered 80-limit profile matrices passed. Each of eight workloads retained 1,200 samples.
+
+Representative f11 Windows owner-thread p95 was **3.932 ms** for three reacting bodies headless and **7.130 ms** rendered. The largest rendered owner-thread frame was **13.582 ms**; the largest retained presentation interval was **32.023 ms**. These are hosted Windows observations of f11, not final native-514d execution, a GPU benchmark or physical Windows 11/NVIDIA acceptance.
+
+The old delivered-ZIP qualification failed because the shipped Windows PowerShell path could not resolve `Get-FileHash`. That is a real delivery failure and remains distinct from the passing unpackaged Lab. The f480 package-only repair uses streaming `[Security.Cryptography.SHA256]` over exact file bytes, retains the native/Rapier/source identity checks, and disposes streams and hash objects. It does not suppress verification failures or alter manifest values after packaging.
+
+The new actual-Windows negative probe shadows `Get-FileHash`, then deliberately alters a verified extraction's `READ-ME.md`. Passing requires the specific changed-file hash failure; an unrelated nonzero exit cannot satisfy the gate. The extraction is restored byte-for-byte in `finally` and fully reverified. The delivered ZIP itself remains immutable. The reviewer independently ran all **36 Python tooling tests**, including expected refusal, timeout restoration and unrelated-failure rejection. These tests are not Windows command execution.
+
+The workflow's new explicit `[objectshard-windows]` marker only selects the existing Windows build, actual Lab and delivered-ZIP jobs on existing ObjectShard experiment branch families. Linux remains visibly skipped for that request; ordinary markers and required-check contexts are unchanged. It is safe only to describe the skipped Linux lane as unexecuted and reuse its existing evidence through exact native-input equivalence. This review verified that equivalence for f480 against 514d.
+
+**Final package verdict remains pending the repaired archive's actual four-path verification, boot and full extracted-package replay.** Until those receipts and the delivered ZIP SHA-256 exist, this review approves the source correction, not a complete Windows delivery. All PRs remain Draft/HOLD and owner physical acceptance remains unrecorded.
+
+## Review artifacts
+
+- `recompute.py` and `recomputed-evidence.json`: independent native source, custody, cohort and statistics checks.
+- `targeted-timing/`: registered narrow comparison and every result.
+- `hosted-f11-recomputed.json`: independent Windows input/profile reconstruction.
+- `package-delta-binding.json`: exact f480 changed-path hashes and scope.
+- `review-manifest.json`: hashes of this review and its supporting outputs.
+
+No additional expensive full qualification campaign was run for this review. No implementation, branch, production setting or external record was modified by the reviewer.

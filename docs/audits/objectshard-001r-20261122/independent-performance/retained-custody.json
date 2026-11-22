@@ -1,0 +1,101 @@
+{
+  "files": [
+    {
+      "retained": "hosted-f11-recomputed.json",
+      "original": "hosted-f11-recomputed.json",
+      "sha256": "99feaad46ca83dbb7bb048ac312e330382d5e151dd201e446ed452b48d27b91e",
+      "bytes": 5453
+    },
+    {
+      "retained": "independent-performance-review.txt",
+      "original": "independent-performance-review.md",
+      "sha256": "574dc7750d3d92bf37af31a1a3019e6acec2ef28ce62ea011efe57e55b0999d3",
+      "bytes": 11387
+    },
+    {
+      "retained": "package-delta-binding.json",
+      "original": "package-delta-binding.json",
+      "sha256": "e3551fb2f83ba569b444b6aa011befa16d94652621a6fba60efa284755aeb944",
+      "bytes": 896
+    },
+    {
+      "retained": "recompute.py",
+      "original": "recompute.py",
+      "sha256": "f83ff6e4f3ed660ab840d58944a4870ae942422b3522b92a448f1f4503af4938",
+      "bytes": 9649
+    },
+    {
+      "retained": "recomputed-evidence.json",
+      "original": "recomputed-evidence.json",
+      "sha256": "ee319c5dddd14cd0f62874fc21a5a23a4c3d701be701248d7b01902a9254968f",
+      "bytes": 23445
+    },
+    {
+      "retained": "review-manifest.json",
+      "original": "review-manifest.json",
+      "sha256": "58bb07dd847055e6f2dd967699b29daba16654f7fc5a6b9ba72803840a19aa53",
+      "bytes": 2860
+    },
+    {
+      "retained": "targeted-timing/01-dormant_twelve-pre_timer.json",
+      "original": "targeted-timing/01-dormant_twelve-pre_timer.json",
+      "sha256": "c66f536d2700676b5c3fc861d0494c53420ce10b35ab6415184a659347d60358",
+      "bytes": 2988
+    },
+    {
+      "retained": "targeted-timing/02-dormant_twelve-final.json",
+      "original": "targeted-timing/02-dormant_twelve-final.json",
+      "sha256": "bddcce4c6f6a139378a3716ccba38b2079ccb1854ad9e0551b28abc96922eb0e",
+      "bytes": 2980
+    },
+    {
+      "retained": "targeted-timing/03-wake_burst_twelve-final.json",
+      "original": "targeted-timing/03-wake_burst_twelve-final.json",
+      "sha256": "e054a924ca3f9b191c573ef2c331c5043a6493da464d1c89c76d483433242e52",
+      "bytes": 2997
+    },
+    {
+      "retained": "targeted-timing/04-wake_burst_twelve-pre_timer.json",
+      "original": "targeted-timing/04-wake_burst_twelve-pre_timer.json",
+      "sha256": "163d02c2652764464e5b72ab6b82852796f74ca8bb0190fc9d7707ac03eef3bc",
+      "bytes": 3000
+    },
+    {
+      "retained": "targeted-timing/05-dormant_twelve-final.json",
+      "original": "targeted-timing/05-dormant_twelve-final.json",
+      "sha256": "8f7302b0177f666fbed659697cf1897adcebaf3d154a93d52793d016390661d6",
+      "bytes": 2980
+    },
+    {
+      "retained": "targeted-timing/06-dormant_twelve-pre_timer.json",
+      "original": "targeted-timing/06-dormant_twelve-pre_timer.json",
+      "sha256": "14decd5bca3d20f7338fbc37787f1619692fa582741bbc538a3255886e7478ed",
+      "bytes": 2979
+    },
+    {
+      "retained": "targeted-timing/07-wake_burst_twelve-pre_timer.json",
+      "original": "targeted-timing/07-wake_burst_twelve-pre_timer.json",
+      "sha256": "f3aa13353299e42963980678fba2fca1cc1398afc1b4994efea83d1b9f54d55d",
+      "bytes": 2995
+    },
+    {
+      "retained": "targeted-timing/08-wake_burst_twelve-final.json",
+      "original": "targeted-timing/08-wake_burst_twelve-final.json",
+      "sha256": "ebb024f37fb0bb679cca9f1a861d28c82a268e36297dc80ec4ca9bc17052ccb6",
+      "bytes": 3009
+    },
+    {
+      "retained": "targeted-timing/plan.json",
+      "original": "targeted-timing/plan.json",
+      "sha256": "a3d8d7d46bbf9eae861789b5b243963033e372c30cb79a04a3847efed734fc01",
+      "bytes": 1493
+    },
+    {
+      "retained": "targeted-timing/results.json",
+      "original": "targeted-timing/results.json",
+      "sha256": "4aac088fcfaa2fe3ac57682afacf0b2404677cbe9440708f0a26dcaa87f7a805",
+      "bytes": 10568
+    }
+  ],
+  "scope": "Exact independent native resource/performance and packaging-source review, actual final Windows ZIP approval pending"
+}

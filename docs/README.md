@@ -664,6 +664,14 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 ## ObjectShard M0–M2 candidate
 
+The [001R final qualification](audits/2026-11-22-objectshard-001r-final-qualification.md)
+binds repaired component admission and Rapier rest stability to source-matched
+Linux/Windows tests and the corrected delivered ZIP. Its
+[forensic checkpoint](audits/2026-11-22-objectshard-001r-forensics.md) and
+[full native performance record](audits/2026-11-22-objectshard-001r-native-performance.md)
+preserve original failures and scope measured results. M3 preflight remains a
+separate Draft/HOLD integration-preparation gate.
+
 The [compact native ObjectShard implementation](research/objectshard-001.md)
 is a separate Draft/HOLD branch candidate: exact material ownership, shared
 combustion, revisioned Rapier geometry, real Fire output, physical Sand lodging

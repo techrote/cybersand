@@ -29,10 +29,12 @@ SUITES = {
     "storage": ("object_shard",),
     "contact": ("object_shard",),
     "coordinator": (*WORLD, "object_shard", "object_shard_coordinator"),
+    "admission": (*WORLD, "object_shard", "object_shard_coordinator"),
+    "external_fire": (*WORLD, "object_shard", "object_shard_coordinator"),
     "chemistry": WORLD,
     "world": (*WORLD, "render_snapshot", "c_api"),
 }
-DEFAULT_SUITES = ("storage", "contact", "coordinator", "chemistry")
+DEFAULT_SUITES = ("storage", "contact", "coordinator", "admission", "external_fire", "chemistry")
 
 
 def sha256(data: bytes) -> str:
@@ -129,7 +131,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, default=ROOT / "build/objectshard-native",
                         help="Evidence directory; each invocation retains a separate timestamped run.")
     parser.add_argument("--suite", action="append", choices=(*SUITES, "all"),
-                        help="Select a suite; repeat to combine. Default/all: four ObjectShard suites; world is explicit.")
+                        help="Select a suite; repeat to combine. Default/all: six ObjectShard suites; world is explicit.")
     parser.add_argument("--world-filter", default="",
                         help="Optional existing test_world name substring; empty runs its complete unchanged inventory.")
     parser.add_argument("--compiler", default=os.environ.get("CXX", "g++"),

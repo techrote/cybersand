@@ -1,0 +1,44 @@
+[
+  {
+    "test": "fire_relocation_probe_repaired_finaldelta",
+    "exit": 0,
+    "test_sha256": "ae00d0f2d6b37789ad6580c5d3e09fc3d659b5925bae9f57e8eb670241efcf9a",
+    "binary_sha256": "55195693cbb1e629c552dce07951735e6543300f93c8313bcdb3ec94b8137339",
+    "output": "first exposures=1\nafter relocation exposures=1 fire(47,11)=6\nafter second opportunity exposures=1\nevent source=(48,12) tick=213 cell=4\n225 checks, 0 failures\n"
+  },
+  {
+    "test": "fire_relocation_two_shards_repaired_finaldelta",
+    "exit": 0,
+    "test_sha256": "2523bcf2b63eb892fcf4a9c95cd5409a862375ec8354dd926f3a8bcb931e86d1",
+    "binary_sha256": "ddae8651fbfb27ae387490bf2d08c27d7febd696c1726a8d11caec2c5a21c96e",
+    "output": "event source=(48,12) tick=213 shard=1 cell=4\nexternal_ignitions=1 burnA=239 burnB=0\n493 checks, 0 failures\n"
+  },
+  {
+    "test": "sand_refusal_probe_v2_repaired_finaldelta",
+    "exit": 0,
+    "test_sha256": "74f7738f769acdd39290da8c0cf39146d2bcfcdb5f30c8ddc8c867d06402df43",
+    "binary_sha256": "b6b8cefe578c0ef0d992094c59b768dc513c167d9ecaa6bcc3bf8893dc9279c3",
+    "output": "refusal=Capacity fences=1 pose_x=29.000 original_x=29.000\ncargo=0 fences=1\n32 checks, 0 failures\n"
+  },
+  {
+    "test": "fire_crossdomain_probe_finaldelta",
+    "exit": 0,
+    "test_sha256": "fcc3286444fb792e68fdbf08b4416e202cc9ca3ec07e5937a35276a3f5fb10bc",
+    "binary_sha256": "8c52172c7c0c8a0806f37d5c3892ccd57758f3a4abc079e6fc45a9790b82413c",
+    "output": "external=1 shard_burn=239 World_burn=0 WorldFire_population=2\n485 checks, 0 failures\n"
+  },
+  {
+    "test": "fire_refusal_retry_probe",
+    "exit": 0,
+    "test_sha256": "602bed50ff83e0a4d29f7a6df846b13f9db3cfab9475f04fc655823f5c8a35a2",
+    "binary_sha256": "f90fa8d45f8fb36422b87d3dbe9e6e7a2128cf35241ea9ab42392e55ab7a81a7",
+    "output": "485 checks, 0 failures\n"
+  },
+  {
+    "test": "water_fastpath_probe",
+    "exit": 0,
+    "test_sha256": "71604059a7fc488a756dda3aefcdbeb8863263ad8bec4c48b58ce273e58352de",
+    "binary_sha256": "2e9e4da18ca94111fcd2df16c90a6a1b10c5a3875a3fd7ab8d7205a680e816a4",
+    "output": "489 checks, 0 failures\n"
+  }
+]

@@ -1,7 +1,7 @@
 name: ObjectShard requested source-bound Lab qualification
 on:
   push:
-    branches: ['experiment/objectshard-001-*']
+    branches: ['experiment/objectshard-001-*', 'experiment/objectshard-001r-*', 'experiment/objectshard-m3-preflight-*']
   workflow_dispatch:
     inputs:
       source_sha:
@@ -35,7 +35,9 @@ jobs:
     # A marker requests one expensive campaign on this exact source. An ordinary
     # push does not pretend to have executed these non-required research checks.
     if: >-
-      startsWith(github.ref_name, 'experiment/objectshard-001-') &&
+      (startsWith(github.ref_name, 'experiment/objectshard-001-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-001r-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-m3-preflight-')) &&
       (github.event_name == 'workflow_dispatch' ||
        contains(github.event.head_commit.message, '[objectshard-m0]') ||
        contains(github.event.head_commit.message, '[objectshard-m1]') ||
@@ -66,7 +68,7 @@ jobs:
       - name: Focused native and package adversarial tests
         run: |
           set -euo pipefail
-          python tools/objectshard/run_native_tests.py --output evidence/native --compiler g++-13 --sanitize --timeout "$(python tools/ci/execution_policy.py seconds native_case_seconds)" --build-timeout "$(python tools/ci/execution_policy.py seconds native_compile_seconds)"
+          python tools/objectshard/run_native_tests.py --output evidence/native --compiler g++-13 --sanitize --suite all --suite world --timeout "$(python tools/ci/execution_policy.py seconds native_case_seconds)" --build-timeout "$(python tools/ci/execution_policy.py seconds native_compile_seconds)"
           python -m unittest discover -s tools/objectshard -p 'test_*.py' -v > evidence/package-contracts.log 2>&1
       - name: Prepare exact pinned bindings
         run: |
@@ -120,12 +122,18 @@ jobs:
           if-no-files-found: error
           retention-days: 90
   windows-build:
+    # Package-only repairs may explicitly request fresh Windows compilation,
+    # actual-host tests and delivered-ZIP replay without rerunning an unchanged
+    # Linux native campaign. The skipped Linux job is not a qualification pass.
     if: >-
-      startsWith(github.ref_name, 'experiment/objectshard-001-') &&
+      (startsWith(github.ref_name, 'experiment/objectshard-001-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-001r-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-m3-preflight-')) &&
       (github.event_name == 'workflow_dispatch' ||
        contains(github.event.head_commit.message, '[objectshard-m0]') ||
        contains(github.event.head_commit.message, '[objectshard-m1]') ||
-       contains(github.event.head_commit.message, '[objectshard-m2]'))
+       contains(github.event.head_commit.message, '[objectshard-m2]') ||
+       contains(github.event.head_commit.message, '[objectshard-windows]'))
     name: Pinned Windows candidate from identical source
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -253,8 +261,10 @@ jobs:
           python tools/objectshard/package_windows_lab.py --native-candidate build/objectshard-windows --godot-archive $env:GODOT_ARCHIVE --engine-notices $notices --vc-runtime $vc --output build/objectshard-desktop
           if ($LASTEXITCODE -ne 0) { throw 'Source-bound packaging refused' }
           & tools/objectshard/verify_package.ps1 -Package build/objectshard-desktop
-          $copy = Join-Path $env:RUNNER_TEMP 'objectshard-package-replay'
-          Copy-Item build/objectshard-desktop $copy -Recurse
+          $extractions = Join-Path $env:RUNNER_TEMP 'objectshard-delivered-zip'
+          python tools/objectshard/qualify_windows_zip.py --package build/objectshard-desktop --zip build/objectshard-windows-evaluator.zip --extract-root $extractions --output evidence/launcher-matrix --timeout (python tools/ci/execution_policy.py seconds graphical_case_seconds)
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP or shipped launcher path matrix failed' }
+          $copy = Join-Path $extractions 'ObjectShard Lab (1)'
           $bundledEngine = Join-Path $copy 'Godot_v4.7-stable_win64_console.exe'
           python tools/objectshard/qualify_lab.py --godot $bundledEngine --expected-source-sha $env:SOURCE_SHA --stage $env:OBJECTSHARD_STAGE --package $copy --output evidence/package-replay
           if ($LASTEXITCODE -ne 0) { throw 'Delivered package replay failed' }
@@ -262,7 +272,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: objectshard-windows-lab-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: build/objectshard-desktop/
+          path: build/objectshard-windows-evaluator.zip
           if-no-files-found: error
           retention-days: 90
       - name: Retain all Windows process, render and package-replay evidence

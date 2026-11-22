@@ -2,6 +2,7 @@ class_name CyberObjectShardLabView
 extends Control
 
 signal cell_pressed(position: Vector2i, button: int)
+signal stroke_requested(cells: Array[Vector2i], button: int)
 
 var frame: Dictionary = {}
 var poses: Dictionary = {}
@@ -11,6 +12,9 @@ var shard_textures: Dictionary = {}
 var zoom: float = 1.0
 var offset: Vector2 = Vector2.ZERO
 var upload_usec: int = 0
+var last_drag_cell := Vector2i(-1, -1)
+var fixture_cells: Array[Vector2i] = []
+var fixture_enabled: bool = false
 
 
 func present(snapshot: Dictionary, body_poses: Array) -> void:
@@ -59,6 +63,9 @@ func _draw() -> void:
 	offset = (size - canvas * zoom) * 0.5
 	draw_set_transform(offset, 0.0, Vector2.ONE * zoom)
 	draw_texture(world_texture, Vector2.ZERO)
+	if fixture_enabled:
+		for point: Vector2i in fixture_cells:
+			draw_rect(Rect2(Vector2(point), Vector2.ONE), Color("ffcf66"), false, 1.0 / zoom)
 	for shard: Dictionary in frame.get("shards", []):
 		var id: int = int(shard.id)
 		if not shard_textures.has(id):
@@ -95,6 +102,10 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		button = event.button_index
 		point = event.position
+		last_drag_cell = Vector2i(-1, -1)
+	elif event is InputEventMouseButton and not event.pressed:
+		last_drag_cell = Vector2i(-1, -1)
+		return
 	elif event is InputEventMouseMotion:
 		point = event.position
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT:
@@ -105,5 +116,32 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	var cell := Vector2i(floori((point.x - offset.x) / zoom), floori((point.y - offset.y) / zoom))
 	if cell.x >= 0 and cell.y >= 0 and cell.x < int(frame.width) and cell.y < int(frame.height):
-		cell_pressed.emit(cell, button)
+		if last_drag_cell.x >= 0 and event is InputEventMouseMotion and button == MOUSE_BUTTON_LEFT:
+			stroke_requested.emit(stroke_cells(last_drag_cell, cell), button)
+		else:
+			cell_pressed.emit(cell, button)
+		last_drag_cell = cell
 		accept_event()
+	else:
+		last_drag_cell = Vector2i(-1, -1)
+
+
+static func stroke_cells(first: Vector2i, last: Vector2i) -> Array[Vector2i]:
+	# A four-connected supercover prevents fast diagonal mouse events leaving
+	# diagonal bonds behind. Each event is bounded; the session owns queue limits.
+	var cells: Array[Vector2i] = []
+	var point: Vector2i = first
+	var delta: Vector2i = (last - first).abs()
+	var direction := Vector2i(1 if last.x > first.x else -1, 1 if last.y > first.y else -1)
+	var error: int = delta.x - delta.y
+	while point != last and cells.size() < 256:
+		var twice: int = error * 2
+		if twice > -delta.y:
+			error -= delta.y
+			point.x += direction.x
+			cells.append(point)
+		if twice < delta.x and cells.size() < 256:
+			error += delta.x
+			point.y += direction.y
+			cells.append(point)
+	return cells

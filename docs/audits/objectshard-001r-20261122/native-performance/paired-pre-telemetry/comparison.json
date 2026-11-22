@@ -1,0 +1,1257 @@
+{
+  "cases": {
+    "dormant_twelve": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 1869.358,
+            "median": 1223.943,
+            "minimum": 753.4
+          },
+          "p50": {
+            "maximum": 390.118,
+            "median": 340.266,
+            "minimum": 340.202
+          },
+          "p95": {
+            "maximum": 466.058,
+            "median": 410.226,
+            "minimum": 402.666
+          },
+          "p99": {
+            "maximum": 593.477,
+            "median": 568.825,
+            "minimum": 487.591
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 3742430,
+          "cpp_peak_max_bytes": 3742430,
+          "registry_retained_max_bytes": 22940,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 1.295,
+          "construction": 1229.487,
+          "contact": 2.514,
+          "coordinator_step": 229.688,
+          "discovery": 134.107,
+          "native_frame_including_snapshot_receipt": 340.266,
+          "native_snapshot": 99.756,
+          "occupancy_inclusive": 50.403,
+          "overlap_relocation": 33.906,
+          "product_exchange": 1.224,
+          "promotion_and_fixture_admission": 32212.918,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.04,
+          "terrain_geometry": 132.935,
+          "wake_burst": 0.0,
+          "world": 35.066
+        },
+        "stages_p95_us": {
+          "chemistry": 1.363,
+          "construction": 1760.231,
+          "contact": 2.579,
+          "coordinator_step": 285.469,
+          "discovery": 177.991,
+          "native_frame_including_snapshot_receipt": 410.226,
+          "native_snapshot": 129.719,
+          "occupancy_inclusive": 69.762,
+          "overlap_relocation": 51.642,
+          "product_exchange": 1.248,
+          "promotion_and_fixture_admission": 33263.892,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.07,
+          "terrain_geometry": 171.545,
+          "wake_burst": 0.0,
+          "world": 54.619
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 9311.006,
+            "median": 3277.213,
+            "minimum": 1456.456
+          },
+          "p50": {
+            "maximum": 331.561,
+            "median": 328.993,
+            "minimum": 318.995
+          },
+          "p95": {
+            "maximum": 447.235,
+            "median": 426.168,
+            "minimum": 404.012
+          },
+          "p99": {
+            "maximum": 701.358,
+            "median": 636.704,
+            "minimum": 539.843
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 2134422,
+          "cpp_peak_max_bytes": 2134422,
+          "registry_retained_max_bytes": 22940,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 1.267,
+          "construction": 655.831,
+          "contact": 4.302,
+          "coordinator_step": 218.151,
+          "discovery": 95.59,
+          "native_frame_including_snapshot_receipt": 328.993,
+          "native_snapshot": 99.667,
+          "occupancy_inclusive": 39.181,
+          "overlap_relocation": 33.949,
+          "product_exchange": 1.204,
+          "promotion_and_fixture_admission": 33556.298,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.041,
+          "terrain_geometry": 131.436,
+          "wake_burst": 0.0,
+          "world": 34.971
+        },
+        "stages_p95_us": {
+          "chemistry": 1.355,
+          "construction": 1282.529,
+          "contact": 4.702,
+          "coordinator_step": 296.713,
+          "discovery": 107.289,
+          "native_frame_including_snapshot_receipt": 426.168,
+          "native_snapshot": 143.482,
+          "occupancy_inclusive": 59.102,
+          "overlap_relocation": 52.459,
+          "product_exchange": 1.258,
+          "promotion_and_fixture_admission": 40408.03,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.073,
+          "terrain_geometry": 192.377,
+          "wake_burst": 0.0,
+          "world": 57.703
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": 3.4265166736070496,
+        "p95": -3.74077828462015,
+        "p99": -10.660997889128998
+      }
+    },
+    "empty_lab": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 13220.326,
+            "median": 12835.768,
+            "minimum": 1878.803
+          },
+          "p50": {
+            "maximum": 276.502,
+            "median": 267.094,
+            "minimum": 266.452
+          },
+          "p95": {
+            "maximum": 382.631,
+            "median": 377.583,
+            "minimum": 338.118
+          },
+          "p99": {
+            "maximum": 528.588,
+            "median": 490.731,
+            "minimum": 435.355
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6128252,
+          "cpp_peak_max_bytes": 6128318,
+          "registry_retained_max_bytes": 23960,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 0.036,
+          "construction": 1878.068,
+          "contact": 0.036,
+          "coordinator_step": 162.495,
+          "discovery": 0.0,
+          "native_frame_including_snapshot_receipt": 267.094,
+          "native_snapshot": 99.647,
+          "occupancy_inclusive": 26.929,
+          "overlap_relocation": 25.563,
+          "product_exchange": 0.035,
+          "promotion_and_fixture_admission": 0.156,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 132.836,
+          "wake_burst": 0.0,
+          "world": 0.827
+        },
+        "stages_p95_us": {
+          "chemistry": 0.061,
+          "construction": 2766.394,
+          "contact": 0.044,
+          "coordinator_step": 247.141,
+          "discovery": 0.0,
+          "native_frame_including_snapshot_receipt": 377.583,
+          "native_snapshot": 152.746,
+          "occupancy_inclusive": 42.634,
+          "overlap_relocation": 41.022,
+          "product_exchange": 0.055,
+          "promotion_and_fixture_admission": 0.163,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.035,
+          "terrain_geometry": 201.383,
+          "wake_burst": 0.0,
+          "world": 0.971
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 5706.526,
+            "median": 2926.007,
+            "minimum": 607.151
+          },
+          "p50": {
+            "maximum": 270.346,
+            "median": 265.943,
+            "minimum": 261.465
+          },
+          "p95": {
+            "maximum": 385.203,
+            "median": 382.79,
+            "minimum": 296.472
+          },
+          "p99": {
+            "maximum": 871.413,
+            "median": 476.897,
+            "minimum": 367.26
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4520244,
+          "cpp_peak_max_bytes": 4520310,
+          "registry_retained_max_bytes": 23960,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 0.037,
+          "construction": 951.217,
+          "contact": 0.036,
+          "coordinator_step": 160.411,
+          "discovery": 0.0,
+          "native_frame_including_snapshot_receipt": 265.943,
+          "native_snapshot": 99.595,
+          "occupancy_inclusive": 26.494,
+          "overlap_relocation": 25.83,
+          "product_exchange": 0.035,
+          "promotion_and_fixture_admission": 0.087,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.036,
+          "terrain_geometry": 131.383,
+          "wake_burst": 0.0,
+          "world": 0.823
+        },
+        "stages_p95_us": {
+          "chemistry": 0.059,
+          "construction": 1597.609,
+          "contact": 0.065,
+          "coordinator_step": 239.756,
+          "discovery": 0.0,
+          "native_frame_including_snapshot_receipt": 382.79,
+          "native_snapshot": 148.526,
+          "occupancy_inclusive": 43.121,
+          "overlap_relocation": 41.816,
+          "product_exchange": 0.054,
+          "promotion_and_fixture_admission": 0.154,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.057,
+          "terrain_geometry": 194.959,
+          "wake_burst": 0.0,
+          "world": 1.195
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": 0.4327995096693682,
+        "p95": -1.3602758692755845,
+        "p99": 2.9008360295829094
+      }
+    },
+    "inert_moving": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 2778.451,
+            "median": 1716.542,
+            "minimum": 1231.039
+          },
+          "p50": {
+            "maximum": 432.019,
+            "median": 402.695,
+            "minimum": 401.169
+          },
+          "p95": {
+            "maximum": 540.574,
+            "median": 462.733,
+            "minimum": 461.203
+          },
+          "p99": {
+            "maximum": 827.842,
+            "median": 736.632,
+            "minimum": 566.4
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6177628,
+          "cpp_peak_max_bytes": 6177628,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.12,
+          "construction": 1159.429,
+          "contact": 17.772,
+          "coordinator_step": 297.765,
+          "discovery": 231.629,
+          "native_frame_including_snapshot_receipt": 402.695,
+          "native_snapshot": 99.702,
+          "occupancy_inclusive": 100.873,
+          "overlap_relocation": 79.879,
+          "product_exchange": 4.592,
+          "promotion_and_fixture_admission": 1429.216,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 133.248,
+          "wake_burst": 0.0,
+          "world": 21.411
+        },
+        "stages_p95_us": {
+          "chemistry": 5.315,
+          "construction": 1659.03,
+          "contact": 18.121,
+          "coordinator_step": 353.677,
+          "discovery": 262.983,
+          "native_frame_including_snapshot_receipt": 462.733,
+          "native_snapshot": 128.853,
+          "occupancy_inclusive": 133.204,
+          "overlap_relocation": 106.994,
+          "product_exchange": 4.646,
+          "promotion_and_fixture_admission": 1472.194,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.037,
+          "terrain_geometry": 174.218,
+          "wake_burst": 0.0,
+          "world": 31.58
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 2100.537,
+            "median": 1143.447,
+            "minimum": 919.293
+          },
+          "p50": {
+            "maximum": 405.631,
+            "median": 405.286,
+            "minimum": 402.267
+          },
+          "p95": {
+            "maximum": 487.912,
+            "median": 452.867,
+            "minimum": 452.207
+          },
+          "p99": {
+            "maximum": 721.73,
+            "median": 518.96,
+            "minimum": 516.31
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4569620,
+          "cpp_peak_max_bytes": 4569620,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.143,
+          "construction": 621.951,
+          "contact": 24.626,
+          "coordinator_step": 292.965,
+          "discovery": 175.892,
+          "native_frame_including_snapshot_receipt": 405.286,
+          "native_snapshot": 99.553,
+          "occupancy_inclusive": 102.747,
+          "overlap_relocation": 79.722,
+          "product_exchange": 4.58,
+          "promotion_and_fixture_admission": 1314.749,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.035,
+          "terrain_geometry": 131.691,
+          "wake_burst": 0.0,
+          "world": 21.33
+        },
+        "stages_p95_us": {
+          "chemistry": 5.294,
+          "construction": 627.962,
+          "contact": 26.784,
+          "coordinator_step": 341.624,
+          "discovery": 209.928,
+          "native_frame_including_snapshot_receipt": 452.867,
+          "native_snapshot": 126.127,
+          "occupancy_inclusive": 127.21,
+          "overlap_relocation": 101.611,
+          "product_exchange": 4.616,
+          "promotion_and_fixture_admission": 1424.298,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.039,
+          "terrain_geometry": 162.681,
+          "wake_burst": 0.0,
+          "world": 28.024
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": -0.6393016289731213,
+        "p95": 2.1785645675220344,
+        "p99": 41.94388777555109
+      }
+    },
+    "inert_stationary": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 3340.735,
+            "median": 2461.505,
+            "minimum": 1770.197
+          },
+          "p50": {
+            "maximum": 419.515,
+            "median": 389.474,
+            "minimum": 389.161
+          },
+          "p95": {
+            "maximum": 590.925,
+            "median": 454.664,
+            "minimum": 442.655
+          },
+          "p99": {
+            "maximum": 827.011,
+            "median": 819.299,
+            "minimum": 595.338
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6177628,
+          "cpp_peak_max_bytes": 6177628,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.107,
+          "construction": 1112.64,
+          "contact": 17.778,
+          "coordinator_step": 276.907,
+          "discovery": 278.282,
+          "native_frame_including_snapshot_receipt": 389.474,
+          "native_snapshot": 99.706,
+          "occupancy_inclusive": 89.0,
+          "overlap_relocation": 74.523,
+          "product_exchange": 4.585,
+          "promotion_and_fixture_admission": 1440.457,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 133.081,
+          "wake_burst": 0.0,
+          "world": 21.399
+        },
+        "stages_p95_us": {
+          "chemistry": 5.308,
+          "construction": 1421.89,
+          "contact": 19.302,
+          "coordinator_step": 342.821,
+          "discovery": 307.251,
+          "native_frame_including_snapshot_receipt": 454.664,
+          "native_snapshot": 130.5,
+          "occupancy_inclusive": 114.718,
+          "overlap_relocation": 97.891,
+          "product_exchange": 4.628,
+          "promotion_and_fixture_admission": 1592.181,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.038,
+          "terrain_geometry": 176.562,
+          "wake_burst": 0.0,
+          "world": 31.031
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 6611.823,
+            "median": 3223.305,
+            "minimum": 2404.213
+          },
+          "p50": {
+            "maximum": 393.883,
+            "median": 393.263,
+            "minimum": 391.812
+          },
+          "p95": {
+            "maximum": 498.364,
+            "median": 476.918,
+            "minimum": 472.052
+          },
+          "p99": {
+            "maximum": 874.245,
+            "median": 710.769,
+            "minimum": 690.379
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4569620,
+          "cpp_peak_max_bytes": 4569620,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.148,
+          "construction": 591.112,
+          "contact": 24.649,
+          "coordinator_step": 281.321,
+          "discovery": 168.456,
+          "native_frame_including_snapshot_receipt": 393.263,
+          "native_snapshot": 99.555,
+          "occupancy_inclusive": 90.992,
+          "overlap_relocation": 74.588,
+          "product_exchange": 4.576,
+          "promotion_and_fixture_admission": 1386.862,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.036,
+          "terrain_geometry": 131.845,
+          "wake_burst": 0.0,
+          "world": 21.316
+        },
+        "stages_p95_us": {
+          "chemistry": 5.319,
+          "construction": 936.603,
+          "contact": 33.674,
+          "coordinator_step": 350.578,
+          "discovery": 222.385,
+          "native_frame_including_snapshot_receipt": 476.918,
+          "native_snapshot": 133.845,
+          "occupancy_inclusive": 121.482,
+          "overlap_relocation": 102.429,
+          "product_exchange": 4.643,
+          "promotion_and_fixture_admission": 1419.907,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.045,
+          "terrain_geometry": 174.207,
+          "wake_burst": 0.0,
+          "world": 36.718
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": -0.9634773675631814,
+        "p95": -4.666210962890904,
+        "p99": 15.269377251962313
+      }
+    },
+    "perforated_reacting": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 1300.44,
+            "median": 767.408,
+            "minimum": 750.731
+          },
+          "p50": {
+            "maximum": 442.209,
+            "median": 405.656,
+            "minimum": 405.098
+          },
+          "p95": {
+            "maximum": 471.723,
+            "median": 463.753,
+            "minimum": 461.196
+          },
+          "p99": {
+            "maximum": 602.651,
+            "median": 555.117,
+            "minimum": 554.381
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6177628,
+          "cpp_peak_max_bytes": 6177628,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.058,
+          "construction": 869.673,
+          "contact": 30.022,
+          "coordinator_step": 298.973,
+          "discovery": 228.347,
+          "native_frame_including_snapshot_receipt": 405.656,
+          "native_snapshot": 99.66,
+          "occupancy_inclusive": 96.57,
+          "overlap_relocation": 71.866,
+          "product_exchange": 4.586,
+          "promotion_and_fixture_admission": 1418.119,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 133.086,
+          "wake_burst": 0.0,
+          "world": 31.983
+        },
+        "stages_p95_us": {
+          "chemistry": 5.269,
+          "construction": 985.446,
+          "contact": 34.006,
+          "coordinator_step": 351.161,
+          "discovery": 239.482,
+          "native_frame_including_snapshot_receipt": 463.753,
+          "native_snapshot": 125.389,
+          "occupancy_inclusive": 119.611,
+          "overlap_relocation": 92.508,
+          "product_exchange": 5.234,
+          "promotion_and_fixture_admission": 1429.697,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.035,
+          "terrain_geometry": 159.972,
+          "wake_burst": 0.0,
+          "world": 50.48
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 4451.034,
+            "median": 789.187,
+            "minimum": 702.875
+          },
+          "p50": {
+            "maximum": 402.368,
+            "median": 399.982,
+            "minimum": 394.765
+          },
+          "p95": {
+            "maximum": 471.521,
+            "median": 463.031,
+            "minimum": 442.987
+          },
+          "p99": {
+            "maximum": 668.156,
+            "median": 658.492,
+            "minimum": 493.726
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4569620,
+          "cpp_peak_max_bytes": 4569620,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.068,
+          "construction": 571.019,
+          "contact": 26.708,
+          "coordinator_step": 292.013,
+          "discovery": 166.2,
+          "native_frame_including_snapshot_receipt": 399.982,
+          "native_snapshot": 99.568,
+          "occupancy_inclusive": 88.213,
+          "overlap_relocation": 72.027,
+          "product_exchange": 4.578,
+          "promotion_and_fixture_admission": 1346.911,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 131.743,
+          "wake_burst": 0.0,
+          "world": 32.312
+        },
+        "stages_p95_us": {
+          "chemistry": 5.288,
+          "construction": 597.313,
+          "contact": 37.013,
+          "coordinator_step": 349.817,
+          "discovery": 191.579,
+          "native_frame_including_snapshot_receipt": 463.031,
+          "native_snapshot": 129.015,
+          "occupancy_inclusive": 113.848,
+          "overlap_relocation": 94.982,
+          "product_exchange": 5.146,
+          "promotion_and_fixture_admission": 1358.2,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.04,
+          "terrain_geometry": 168.692,
+          "wake_burst": 0.0,
+          "world": 48.289
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": 1.4185638353725771,
+        "p95": 0.15592908466171007,
+        "p99": -15.698748048571588
+      }
+    },
+    "reacting_one": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 3531.45,
+            "median": 2446.857,
+            "minimum": 1374.905
+          },
+          "p50": {
+            "maximum": 441.972,
+            "median": 404.278,
+            "minimum": 399.743
+          },
+          "p95": {
+            "maximum": 691.838,
+            "median": 620.223,
+            "minimum": 482.103
+          },
+          "p99": {
+            "maximum": 1540.681,
+            "median": 799.723,
+            "minimum": 726.025
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6177628,
+          "cpp_peak_max_bytes": 6177628,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.156,
+          "construction": 879.756,
+          "contact": 28.796,
+          "coordinator_step": 297.801,
+          "discovery": 234.591,
+          "native_frame_including_snapshot_receipt": 404.278,
+          "native_snapshot": 99.721,
+          "occupancy_inclusive": 101.94,
+          "overlap_relocation": 75.026,
+          "product_exchange": 4.588,
+          "promotion_and_fixture_admission": 1413.104,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 133.112,
+          "wake_burst": 0.0,
+          "world": 29.954
+        },
+        "stages_p95_us": {
+          "chemistry": 5.642,
+          "construction": 1085.722,
+          "contact": 35.881,
+          "coordinator_step": 477.124,
+          "discovery": 243.59,
+          "native_frame_including_snapshot_receipt": 620.223,
+          "native_snapshot": 164.13,
+          "occupancy_inclusive": 148.175,
+          "overlap_relocation": 110.942,
+          "product_exchange": 4.732,
+          "promotion_and_fixture_admission": 1597.561,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.052,
+          "terrain_geometry": 215.578,
+          "wake_burst": 0.0,
+          "world": 59.52
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 1570.303,
+            "median": 1510.882,
+            "minimum": 1373.99
+          },
+          "p50": {
+            "maximum": 401.151,
+            "median": 399.183,
+            "minimum": 395.667
+          },
+          "p95": {
+            "maximum": 499.335,
+            "median": 458.624,
+            "minimum": 448.648
+          },
+          "p99": {
+            "maximum": 718.386,
+            "median": 617.27,
+            "minimum": 536.717
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4569620,
+          "cpp_peak_max_bytes": 4569620,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.164,
+          "construction": 571.87,
+          "contact": 25.181,
+          "coordinator_step": 290.13,
+          "discovery": 163.173,
+          "native_frame_including_snapshot_receipt": 399.183,
+          "native_snapshot": 99.58,
+          "occupancy_inclusive": 91.718,
+          "overlap_relocation": 74.999,
+          "product_exchange": 4.572,
+          "promotion_and_fixture_admission": 1333.068,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.036,
+          "terrain_geometry": 131.769,
+          "wake_burst": 0.0,
+          "world": 29.784
+        },
+        "stages_p95_us": {
+          "chemistry": 5.371,
+          "construction": 600.39,
+          "contact": 26.897,
+          "coordinator_step": 339.872,
+          "discovery": 178.401,
+          "native_frame_including_snapshot_receipt": 458.624,
+          "native_snapshot": 126.224,
+          "occupancy_inclusive": 113.974,
+          "overlap_relocation": 95.571,
+          "product_exchange": 4.627,
+          "promotion_and_fixture_admission": 1628.485,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.05,
+          "terrain_geometry": 165.711,
+          "wake_burst": 0.0,
+          "world": 44.096
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": 1.2763569590889423,
+        "p95": 35.235617848171906,
+        "p99": 29.558054012020673
+      }
+    },
+    "reacting_three": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 6078.566,
+            "median": 4482.131,
+            "minimum": 3112.646
+          },
+          "p50": {
+            "maximum": 752.663,
+            "median": 660.341,
+            "minimum": 659.498
+          },
+          "p95": {
+            "maximum": 1080.849,
+            "median": 775.019,
+            "minimum": 766.069
+          },
+          "p99": {
+            "maximum": 2734.698,
+            "median": 1237.117,
+            "minimum": 1072.812
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6277280,
+          "cpp_peak_max_bytes": 6277280,
+          "registry_retained_max_bytes": 173438,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 15.192,
+          "construction": 1585.115,
+          "contact": 87.732,
+          "coordinator_step": 557.166,
+          "discovery": 638.827,
+          "native_frame_including_snapshot_receipt": 660.341,
+          "native_snapshot": 99.717,
+          "occupancy_inclusive": 249.979,
+          "overlap_relocation": 174.543,
+          "product_exchange": 13.671,
+          "promotion_and_fixture_admission": 4615.796,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 133.358,
+          "wake_burst": 0.0,
+          "world": 71.192
+        },
+        "stages_p95_us": {
+          "chemistry": 19.272,
+          "construction": 1899.952,
+          "contact": 111.909,
+          "coordinator_step": 649.956,
+          "discovery": 995.448,
+          "native_frame_including_snapshot_receipt": 775.019,
+          "native_snapshot": 132.161,
+          "occupancy_inclusive": 301.061,
+          "overlap_relocation": 214.511,
+          "product_exchange": 15.483,
+          "promotion_and_fixture_admission": 5635.658,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.051,
+          "terrain_geometry": 174.437,
+          "wake_burst": 0.0,
+          "world": 97.117
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 10518.873,
+            "median": 2697.99,
+            "minimum": 2142.259
+          },
+          "p50": {
+            "maximum": 639.462,
+            "median": 639.393,
+            "minimum": 637.608
+          },
+          "p95": {
+            "maximum": 910.505,
+            "median": 828.199,
+            "minimum": 762.483
+          },
+          "p99": {
+            "maximum": 1469.287,
+            "median": 1302.738,
+            "minimum": 949.98
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4669272,
+          "cpp_peak_max_bytes": 4669272,
+          "registry_retained_max_bytes": 173438,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 15.175,
+          "construction": 884.506,
+          "contact": 74.801,
+          "coordinator_step": 536.074,
+          "discovery": 501.154,
+          "native_frame_including_snapshot_receipt": 639.393,
+          "native_snapshot": 99.646,
+          "occupancy_inclusive": 222.324,
+          "overlap_relocation": 173.848,
+          "product_exchange": 13.662,
+          "promotion_and_fixture_admission": 4335.051,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 131.994,
+          "wake_burst": 0.0,
+          "world": 71.477
+        },
+        "stages_p95_us": {
+          "chemistry": 19.156,
+          "construction": 1326.071,
+          "contact": 101.045,
+          "coordinator_step": 672.721,
+          "discovery": 815.508,
+          "native_frame_including_snapshot_receipt": 828.199,
+          "native_snapshot": 133.402,
+          "occupancy_inclusive": 297.801,
+          "overlap_relocation": 235.022,
+          "product_exchange": 15.633,
+          "promotion_and_fixture_admission": 4520.653,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.064,
+          "terrain_geometry": 175.198,
+          "wake_burst": 0.0,
+          "world": 98.688
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": 3.276232301573523,
+        "p95": -6.421162063706909,
+        "p99": -5.0371601964477986
+      }
+    },
+    "saturated_world_destinations": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 3157.876,
+            "median": 2936.041,
+            "minimum": 2646.671
+          },
+          "p50": {
+            "maximum": 417.777,
+            "median": 394.834,
+            "minimum": 394.413
+          },
+          "p95": {
+            "maximum": 541.389,
+            "median": 484.199,
+            "minimum": 478.549
+          },
+          "p99": {
+            "maximum": 708.635,
+            "median": 700.54,
+            "minimum": 631.435
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 6177628,
+          "cpp_peak_max_bytes": 6177628,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.251,
+          "construction": 802.442,
+          "contact": 17.846,
+          "coordinator_step": 289.141,
+          "discovery": 229.385,
+          "native_frame_including_snapshot_receipt": 394.834,
+          "native_snapshot": 99.758,
+          "occupancy_inclusive": 89.869,
+          "overlap_relocation": 75.278,
+          "product_exchange": 4.659,
+          "promotion_and_fixture_admission": 117945.966,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.033,
+          "terrain_geometry": 136.058,
+          "wake_burst": 0.0,
+          "world": 21.414
+        },
+        "stages_p95_us": {
+          "chemistry": 5.583,
+          "construction": 1446.485,
+          "contact": 21.574,
+          "coordinator_step": 351.954,
+          "discovery": 230.499,
+          "native_frame_including_snapshot_receipt": 484.199,
+          "native_snapshot": 132.66,
+          "occupancy_inclusive": 116.73,
+          "overlap_relocation": 99.376,
+          "product_exchange": 4.752,
+          "promotion_and_fixture_admission": 128133.889,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.053,
+          "terrain_geometry": 181.228,
+          "wake_burst": 0.0,
+          "world": 34.222
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 9967.811,
+            "median": 3086.992,
+            "minimum": 882.449
+          },
+          "p50": {
+            "maximum": 399.541,
+            "median": 398.513,
+            "minimum": 390.545
+          },
+          "p95": {
+            "maximum": 565.945,
+            "median": 519.89,
+            "minimum": 455.197
+          },
+          "p99": {
+            "maximum": 930.052,
+            "median": 729.636,
+            "minimum": 608.526
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 4569620,
+          "cpp_peak_max_bytes": 4569620,
+          "registry_retained_max_bytes": 73786,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 5.255,
+          "construction": 604.03,
+          "contact": 25.198,
+          "coordinator_step": 287.719,
+          "discovery": 167.331,
+          "native_frame_including_snapshot_receipt": 398.513,
+          "native_snapshot": 99.622,
+          "occupancy_inclusive": 92.193,
+          "overlap_relocation": 75.359,
+          "product_exchange": 4.644,
+          "promotion_and_fixture_admission": 117285.464,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.036,
+          "terrain_geometry": 134.836,
+          "wake_burst": 0.0,
+          "world": 21.373
+        },
+        "stages_p95_us": {
+          "chemistry": 5.685,
+          "construction": 652.445,
+          "contact": 39.08,
+          "coordinator_step": 378.376,
+          "discovery": 180.014,
+          "native_frame_including_snapshot_receipt": 519.89,
+          "native_snapshot": 142.822,
+          "occupancy_inclusive": 126.024,
+          "overlap_relocation": 102.719,
+          "product_exchange": 4.812,
+          "promotion_and_fixture_admission": 122704.514,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.055,
+          "terrain_geometry": 184.141,
+          "wake_burst": 0.0,
+          "world": 36.19
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": -0.9231819288203824,
+        "p95": -6.865106080132333,
+        "p99": -3.987741832913949
+      }
+    },
+    "wake_burst_twelve": {
+      "candidate": {
+        "frame_us": {
+          "max": {
+            "maximum": 1316.495,
+            "median": 841.453,
+            "minimum": 793.12
+          },
+          "p50": {
+            "maximum": 402.439,
+            "median": 349.521,
+            "minimum": 349.443
+          },
+          "p95": {
+            "maximum": 536.775,
+            "median": 441.929,
+            "minimum": 423.409
+          },
+          "p99": {
+            "maximum": 781.485,
+            "median": 666.738,
+            "minimum": 512.518
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 3742430,
+          "cpp_peak_max_bytes": 3742430,
+          "registry_retained_max_bytes": 22940,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 1.471,
+          "construction": 863.985,
+          "contact": 9.218,
+          "coordinator_step": 246.511,
+          "discovery": 126.365,
+          "native_frame_including_snapshot_receipt": 349.521,
+          "native_snapshot": 99.787,
+          "occupancy_inclusive": 57.351,
+          "overlap_relocation": 33.948,
+          "product_exchange": 1.226,
+          "promotion_and_fixture_admission": 32567.695,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.039,
+          "terrain_geometry": 132.875,
+          "wake_burst": 2.043,
+          "world": 40.356
+        },
+        "stages_p95_us": {
+          "chemistry": 2.015,
+          "construction": 1074.418,
+          "contact": 11.746,
+          "coordinator_step": 324.091,
+          "discovery": 137.974,
+          "native_frame_including_snapshot_receipt": 441.929,
+          "native_snapshot": 136.607,
+          "occupancy_inclusive": 79.378,
+          "overlap_relocation": 51.555,
+          "product_exchange": 2.254,
+          "promotion_and_fixture_admission": 36333.224,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.048,
+          "terrain_geometry": 179.736,
+          "wake_burst": 2.096,
+          "world": 72.359
+        }
+      },
+      "control": {
+        "frame_us": {
+          "max": {
+            "maximum": 1760.574,
+            "median": 1400.565,
+            "minimum": 765.529
+          },
+          "p50": {
+            "maximum": 337.682,
+            "median": 334.7,
+            "minimum": 334.137
+          },
+          "p95": {
+            "maximum": 414.964,
+            "median": 391.714,
+            "minimum": 391.037
+          },
+          "p99": {
+            "maximum": 559.024,
+            "median": 545.913,
+            "minimum": 456.821
+          }
+        },
+        "memory": {
+          "cpp_live_max_bytes": 2134422,
+          "cpp_peak_max_bytes": 2134422,
+          "registry_retained_max_bytes": 22940,
+          "steady_allocations": 0
+        },
+        "stages_p50_us": {
+          "chemistry": 1.416,
+          "construction": 508.029,
+          "contact": 9.296,
+          "coordinator_step": 231.262,
+          "discovery": 85.586,
+          "native_frame_including_snapshot_receipt": 334.7,
+          "native_snapshot": 99.702,
+          "occupancy_inclusive": 44.19,
+          "overlap_relocation": 33.907,
+          "product_exchange": 1.209,
+          "promotion_and_fixture_admission": 31655.244,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.04,
+          "terrain_geometry": 131.474,
+          "wake_burst": 1.577,
+          "world": 40.526
+        },
+        "stages_p95_us": {
+          "chemistry": 1.736,
+          "construction": 564.756,
+          "contact": 9.618,
+          "coordinator_step": 278.186,
+          "discovery": 89.54,
+          "native_frame_including_snapshot_receipt": 391.714,
+          "native_snapshot": 133.176,
+          "occupancy_inclusive": 59.321,
+          "overlap_relocation": 48.823,
+          "product_exchange": 2.215,
+          "promotion_and_fixture_admission": 33700.279,
+          "shard_geometry": 0.0,
+          "synthetic_geometry_receipt": 0.063,
+          "terrain_geometry": 172.28,
+          "wake_burst": 1.699,
+          "world": 61.511
+        }
+      },
+      "relative_median_frame_percent": {
+        "p50": 4.428144607110851,
+        "p95": 12.819301837565167,
+        "p99": 22.132647509768045
+      }
+    }
+  },
+  "schema": 1,
+  "scope": "Pre-telemetry native iteration comparison. Medians across three process results; no percentile pooling and no selection of favourable runs. Maximum field retains every observed maximum."
+}

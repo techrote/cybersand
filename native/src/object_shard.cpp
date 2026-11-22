@@ -246,26 +246,25 @@ GeometryScratch::GeometryScratch(const Limits& limits) {
     shapes_.reserve(limits.max_shapes);
 }
 
-Outcome Shard::rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) noexcept {
-    if (!geometry_dirty_) return Outcome::Accepted;
-    if (geometry_.revision == kNever) return Outcome::GenerationExhausted;
+Outcome Shard::build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell) const noexcept {
     if (area() > scratch.queue_.size() || area() > scratch.seen_.size()) return Outcome::Capacity;
     scratch.shapes_.clear();
     const auto width = static_cast<std::size_t>(bounds_.width);
     std::fill_n(scratch.queue_.begin(), width, kNoShape);
+    const auto included = [&](std::size_t at) { return at != erased_cell && structural(at); };
 
     // Exact horizontal runs; merge only matching spans in the previous row.
     // queue_[x] temporarily holds that row's rectangle, making the cover linear
     // in bounding-box area rather than searching every earlier rectangle.
     for (std::size_t y = 0; y < bounds_.height; ++y) {
         for (std::size_t x = 0; x < width;) {
-            if (!structural(y * width + x)) { scratch.queue_[x++] = kNoShape; continue; }
+            if (!included(y * width + x)) { scratch.queue_[x++] = kNoShape; continue; }
             const auto first = x;
             const auto previous = scratch.queue_[x];
             do {
                 scratch.queue_[x] = kNoShape;
                 ++x;
-            } while (x < width && structural(y * width + x));
+            } while (x < width && included(y * width + x));
             const auto span = static_cast<std::uint16_t>(x - first);
             std::uint32_t chosen = previous;
             if (previous < scratch.shapes_.size() && scratch.shapes_[previous].x == first &&
@@ -274,7 +273,6 @@ Outcome Shard::rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) no
                 ++scratch.shapes_[previous].height;
             } else {
                 if (scratch.shapes_.size() == max_shapes_) {
-                    if (authoritative_) phase_ = Phase::Suspended;
                     return Outcome::Capacity;
                 }
                 chosen = static_cast<std::uint32_t>(scratch.shapes_.size());
@@ -284,6 +282,18 @@ Outcome Shard::rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) no
             scratch.queue_[first] = chosen;
         }
     }
+    return Outcome::Accepted;
+}
+
+Outcome Shard::rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) noexcept {
+    if (!geometry_dirty_) return Outcome::Accepted;
+    if (geometry_.revision == kNever) return Outcome::GenerationExhausted;
+    const auto cover = build_shape_cover(scratch,area());
+    if (cover != Outcome::Accepted) {
+        if (authoritative_ && cover == Outcome::Capacity) phase_ = Phase::Suspended;
+        return cover;
+    }
+    const auto width = static_cast<std::size_t>(bounds_.width);
 
     std::fill_n(scratch.seen_.begin(), area(), std::uint8_t{0});
     std::uint32_t islands = 0;
@@ -451,6 +461,27 @@ Outcome Registry::finish_preparation(Handle handle) noexcept {
     if (shard->counts_.structural == 0 || shard->counts_.products != 0 || shard->counts_.cargo != 0)
         return Outcome::Unsupported;
     return shard->rebuild_geometry(scratch_, shard->captured_tick_);
+}
+Outcome Registry::erase_structural(Handle handle, std::size_t cell, std::uint64_t tick) noexcept {
+    auto* shard=find(handle);
+    if (!shard) return Outcome::Stale;
+    if (shard->phase_!=Phase::Active || !shard->authoritative_ || shard->geometry_dirty_ ||
+        shard->applied_physics_revision_!=shard->geometry_.revision) return Outcome::Fenced;
+    if (cell>=shard->area() || !shard->structural(cell)) return Outcome::Unsupported;
+    const Payload empty{Material::Empty,0,0,limits_.ambient_temperature};
+    const auto admitted=shard->validate_cell_write(cell,empty,Role::Empty,tick);
+    if (admitted!=Outcome::Accepted) return admitted;
+    if (shard->geometry_.revision==kNever) return Outcome::GenerationExhausted;
+    const auto cover=shard->build_shape_cover(scratch_,cell);
+    if (cover!=Outcome::Accepted) return cover;
+    // All geometry/storage capacities are reserved and the coordinator is the
+    // exclusive owner. No writer or physics step can interleave this commit.
+    if (shard->set_cell(cell,empty,Role::Empty,tick)!=Outcome::Accepted ||
+        shard->rebuild_geometry(scratch_,tick)!=Outcome::Accepted) {
+        shard->phase_=Phase::Quarantined;
+        return Outcome::Quarantined;
+    }
+    return Outcome::Accepted;
 }
 Outcome Registry::reserve_physics(Handle handle) noexcept {
     auto* shard = find(handle);

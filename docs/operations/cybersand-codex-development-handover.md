@@ -4,13 +4,21 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-22
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
 ## ObjectShard M0–M2 — 2026-11-22
+
+The separate OBJECTSHARD-001R finisher #738 has a
+[source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
+and a verified corrected Windows ZIP. Follow its exact native/platform/package
+identities rather than substituting the historical M2 evaluator. M3 Workbench
+preflight follows as a separate executable preparation child. Historical M0/M1/M2
+heads and failures are preserved; all successor work remains Draft/HOLD with no
+merge authority.
 
 Evaluate the dedicated staged Draft/HOLD ObjectShard stack M0 #726 → M1 #728 →
 M2 #730; use the [implementation and evidence record](../research/objectshard-001.md)

@@ -18,7 +18,8 @@ REQUIRED = {NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_wi
             "godot/scripts/object_shard_lab.gd", "godot/scripts/object_shard_lab_session.gd",
             "godot/scripts/object_shard_lab_view.gd", "godot/scripts/object_shard_physics_bridge.gd",
             "godot/addons/godot-rapier2d/runtime-provenance.windows.json", "READ-ME.md",
-            "Open ObjectShard Lab.cmd", "tools/objectshard/verify_package.ps1"}
+            "Open ObjectShard Lab.cmd", "Verify ObjectShard Lab.cmd", "tools/objectshard/verify_package.ps1",
+            "godot/tests/test_object_shard_package_boot.gd"}
 
 
 def digest(path: Path, *, source: bool = False) -> str:

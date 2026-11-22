@@ -1,0 +1,227 @@
+{
+  "schema": "objectshard-001r-rest-forensic-source-binding-v1",
+  "historical_native_source": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "scope": "Same frozen native runtime and session; bridge-only candidate differs. Retained198OrdinaryEdit actions are diagnostic evidence, not a claim of complete process/input replay.",
+  "candidate_bridge_snapshot": "build/physics-candidate/scripts/object_shard_physics_bridge.gd",
+  "baseline_bridge_snapshot": "build/physics-reference/scripts/object_shard_physics_bridge.gd",
+  "original_termination_tick": 970,
+  "reference_termination_tick": 970,
+  "all_three_original_final_pose_strings_equal": true,
+  "candidate_end_tick": 3600,
+  "candidate_failed": false,
+  "candidate_owners": [
+    {
+      "actual_pose": "[X: (0.000015, 1.0), Y: (-1.0, 0.000015), O: (92.90616, 80.99993)]",
+      "applied_physics_revision": 4,
+      "body_generation": 1,
+      "cargo": 0,
+      "com_x": 14.5275590551181,
+      "com_y": 12.6555118110236,
+      "generation": 1,
+      "geometry_pending": false,
+      "geometry_revision": 4,
+      "height": 36,
+      "id": 1,
+      "inertia": 52822.9954068242,
+      "islands": 1,
+      "lifecycle": "Active",
+      "mask_digest": "2419988981837348408",
+      "mass": 508.0,
+      "material_populations": {
+        "7": 508
+      },
+      "material_revision": 3152,
+      "origin_x": 35,
+      "origin_y": 60,
+      "owns_inventory": true,
+      "products": 0,
+      "session": 1,
+      "shape_digest": "18401796488201684411",
+      "split_pending": false,
+      "structural": 508,
+      "topology_revision": 515,
+      "width": 30
+    },
+    {
+      "actual_pose": "[X: (0.000004, 1.0), Y: (-1.0, 0.000004), O: (141.3697, 81.00004)]",
+      "applied_physics_revision": 2,
+      "body_generation": 1,
+      "cargo": 0,
+      "com_x": 14.5480769230769,
+      "com_y": 13.0826923076923,
+      "generation": 1,
+      "geometry_pending": false,
+      "geometry_revision": 2,
+      "height": 38,
+      "id": 2,
+      "inertia": 58514.908974359,
+      "islands": 1,
+      "lifecycle": "Active",
+      "mask_digest": "11161303545502630022",
+      "mass": 520.0,
+      "material_populations": {
+        "7": 520
+      },
+      "material_revision": 1738,
+      "origin_x": 83,
+      "origin_y": 60,
+      "owns_inventory": true,
+      "products": 0,
+      "session": 1,
+      "shape_digest": "11494218323665475198",
+      "split_pending": false,
+      "structural": 520,
+      "topology_revision": 523,
+      "width": 30
+    },
+    {
+      "actual_pose": "[X: (0.000003, 1.0), Y: (-1.0, 0.000003), O: (188.0147, 81.00012)]",
+      "applied_physics_revision": 2,
+      "body_generation": 1,
+      "cargo": 0,
+      "com_x": 14.572265625,
+      "com_y": 12.724609375,
+      "generation": 1,
+      "geometry_pending": false,
+      "geometry_revision": 2,
+      "height": 36,
+      "id": 3,
+      "inertia": 54214.8294270832,
+      "islands": 1,
+      "lifecycle": "Active",
+      "mask_digest": "12743152281413542527",
+      "mass": 512.0,
+      "material_populations": {
+        "7": 512
+      },
+      "material_revision": 1717,
+      "origin_x": 131,
+      "origin_y": 60,
+      "owns_inventory": true,
+      "products": 0,
+      "session": 1,
+      "shape_digest": "11843533063466273072",
+      "split_pending": false,
+      "structural": 512,
+      "topology_revision": 515,
+      "width": 30
+    }
+  ],
+  "files": [
+    {
+      "path": "build/physics-reference/scripts/object_shard_physics_bridge.gd",
+      "sha256": "5f59f4729e2459fa168e7d79728d18b4090712f662a052725444169d0472affd",
+      "bytes": 17847
+    },
+    {
+      "path": "build/physics-candidate/scripts/object_shard_physics_bridge.gd",
+      "sha256": "a55722127876c02b702ecd6efd12ffff6dd8d9c712b7130abfc992cdb7351c3d",
+      "bytes": 22448
+    },
+    {
+      "path": "build/physics-reference/scripts/object_shard_lab_session.gd",
+      "sha256": "dffd7511def21e93dc2fa05f5c6ef29c92b4bd44deab1c1531a64f27b2d46eed",
+      "bytes": 13766
+    },
+    {
+      "path": "build/physics-reference/tests/probe_object_shard_rest_stability.gd",
+      "sha256": "d40079dbb8be153c41099bb4c71b108927926c194bc8486b1d596c9e412ed772",
+      "bytes": 12532
+    },
+    {
+      "path": "build/physics-reference/tests/probe_object_shard_retained_actions.gd",
+      "sha256": "ddbcc3570dd34684bd267a7e8c5d9d160253e90d107a600181c7688b90d896a8",
+      "bytes": 5850
+    },
+    {
+      "path": "build/physics-reference/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "dac291dfe1cebbe03859e2405afb028e187aa9a2dccd40b06d27735c368e974b",
+      "bytes": 5520632
+    },
+    {
+      "path": "build/physics-reference/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "bytes": 117275416
+    },
+    {
+      "path": "build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "bytes": 144186224
+    },
+    {
+      "path": "build/owner-evidence/original_exports/objectshard-5-1795318138.json",
+      "sha256": "6d4c408fe649069373c68bd94529963413ae581d915f800d1c3858dde8d5d845",
+      "bytes": 341225
+    },
+    {
+      "path": "build/physics-reference/evidence/owner-d-retained-actions.log",
+      "sha256": "548def2c273edddecf41b60514c51c5ef3b26e216be17f2945522977f2e1070f",
+      "bytes": 626
+    },
+    {
+      "path": "build/physics-reference/evidence/owner-d-retained-actions.json",
+      "sha256": "8734162f7f2bbcd10bbfb33a0e5483324d951fc35e8d1f817d815906e4538ce2",
+      "bytes": 342789
+    },
+    {
+      "path": "build/physics-reference/evidence/owner-d-retained-actions.json.jsonl.gz",
+      "sha256": "2615df19b48f45f4c7c6b23131b2c7831d3716a83141a05b790bcc6fd01b3fa2",
+      "bytes": 101443
+    },
+    {
+      "path": "build/physics-candidate/evidence/owner-d-retained-actions.log",
+      "sha256": "38218639e79c043e6b50d4048c61bfad94a44698668d1296b76edcec1e0abfe3",
+      "bytes": 444
+    },
+    {
+      "path": "build/physics-candidate/evidence/owner-d-retained-actions.json",
+      "sha256": "77d02644e34d4921dd11c3cf4e353f6df3b1a0b8e06debb89fda3cbcef40d1db",
+      "bytes": 976440
+    },
+    {
+      "path": "build/physics-candidate/evidence/owner-d-retained-actions.json.jsonl.gz",
+      "sha256": "530ef1ca70b736138cf355e4e897683f68fd7e036397036aad92399345a38853",
+      "bytes": 150734
+    }
+  ],
+  "reference_measurements": [
+    {
+      "id": 1,
+      "rotation_at754_degrees": 123.91147509205193,
+      "max_excursion_since754_degrees": 3.2482057428264874,
+      "max_origin_excursion_since754_cells": 3.474019433068555
+    },
+    {
+      "id": 2,
+      "rotation_at754_degrees": 90.00089725925956,
+      "max_excursion_since754_degrees": 14.913424354588518,
+      "max_origin_excursion_since754_cells": 10.010063836380091
+    },
+    {
+      "id": 3,
+      "rotation_at754_degrees": 90.00069235358426,
+      "max_excursion_since754_degrees": 45.29333397142926,
+      "max_origin_excursion_since754_cells": 18.90105311581465
+    }
+  ],
+  "candidate_measurements": [
+    {
+      "id": 1,
+      "rotation_at754_degrees": 89.9999410327756,
+      "max_excursion_since754_degrees": 0.0008127925114350729,
+      "max_origin_excursion_since754_cells": 0.00027645371906801766
+    },
+    {
+      "id": 2,
+      "rotation_at754_degrees": 90.00089725925956,
+      "max_excursion_since754_degrees": 0.0016870567250440384,
+      "max_origin_excursion_since754_cells": 0.0007080143897673831
+    },
+    {
+      "id": 3,
+      "rotation_at754_degrees": 90.00096556115095,
+      "max_excursion_since754_degrees": 0.00153679256331648,
+      "max_origin_excursion_since754_cells": 0.000692259830320435
+    }
+  ]
+}
