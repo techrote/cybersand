@@ -12,7 +12,7 @@ permissions:
   contents: read
 concurrency:
   group: art-session-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   linux:
@@ -54,8 +54,12 @@ jobs:
           for case in test_art_session_log test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_traffic_integrity test_art_history_receipt_identity test_art_batch_native; do
             export XDG_DATA_HOME="$RUNNER_TEMP/session-$case"
             mkdir -p "$XDG_DATA_HOME"
-            timeout 600 "$GODOT" --headless --path godot -s "res://tests/$case.gd" 2>&1 | tee "evidence/$case.log"
+            budget=240
+            if [ "$case" = test_art_batch_native ]; then budget=600; fi
+            echo "BEGIN $case timeout=${budget}s"
+            timeout "$budget" "$GODOT" --headless --path godot -s "res://tests/$case.gd" 2>&1 | tee "evidence/$case.log"
             if grep -E 'SCRIPT ERROR:|Parse Error:' "evidence/$case.log"; then exit 1; fi
+            echo "PASS $case"
           done
           grep -F 'ART_SESSION_RESULT ' evidence/test_art_session_log.log
           grep -F 'ART_STAGE1_RESULT ' evidence/test_art_batch_native.log
@@ -91,19 +95,36 @@ jobs:
           if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot checksum mismatch' }
           Expand-Archive -Path $zip -DestinationPath (Join-Path $env:RUNNER_TEMP 'godot-win47')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot-win47/Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
-      - name: Import and execute fresh user-data Workbench test
+      - name: Import and execute fresh user-data Workbench tests
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
-          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-session-isolated-appdata'
-          New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
-          & $env:GODOT_EXE --headless --path godot --editor --import *> evidence/import.log
-          if ($LASTEXITCODE -ne 0) { throw 'Godot import failed' }
-          foreach ($case in @('test_art_session_log','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_traffic_integrity')) {
-            & $env:GODOT_EXE --headless --path godot -s "res://tests/$case.gd" 2>&1 | Tee-Object "evidence/$case.log"
-            if ($LASTEXITCODE -ne 0) { throw "Art regression failed: $case" }
+          function Invoke-CheckedGodot([string]$label, [string[]]$argv, [int]$limit) {
+            $stdout = "evidence/$label.stdout.log"
+            $stderr = "evidence/$label.stderr.log"
+            $proc = Start-Process -FilePath $env:GODOT_EXE -ArgumentList $argv -PassThru -NoNewWindow -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+            try {
+              if (-not $proc.WaitForExit($limit * 1000)) {
+                Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+                throw "Godot timed out: $label after $limit seconds"
+              }
+              $proc.Refresh()
+              $output = (Get-Content $stdout -Raw -ErrorAction SilentlyContinue) + (Get-Content $stderr -Raw -ErrorAction SilentlyContinue)
+              Write-Output $output
+              if ($proc.ExitCode -ne 0 -or $output -match 'SCRIPT ERROR:|Parse Error:') { throw "Godot failed: $label (exit $($proc.ExitCode))" }
+            } finally {
+              $proc.Dispose()
+            }
           }
-          if ((Get-Content evidence/test_art_session_log.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing test receipt' }
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-session-import'
+          New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+          Invoke-CheckedGodot 'import' @('--headless','--path','godot','--editor','--import') 180
+          foreach ($case in @('test_art_session_log','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_traffic_integrity')) {
+            $env:APPDATA = Join-Path $env:RUNNER_TEMP "art-session-$case"
+            New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+            Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") 240
+          }
+          if ((Get-Content evidence/test_art_session_log.stdout.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing session test receipt' }
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
