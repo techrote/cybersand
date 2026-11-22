@@ -591,14 +591,14 @@ class PublicationGuards(unittest.TestCase):
                      "runtime_identity", "record_build", "stage", "verify_bundle"):
             self.assertEqual(inspect.getsource(getattr(profile.engine, name)), inspect.getsource(getattr(original.engine, name)))
         self.assertTrue(original.REQUIRED_LABELS <= profile.REQUIRED_LABELS)
-        self.assertEqual(profile.engine.BRANCH, "exp/gen006-ramcache-001-20261122")
+        self.assertEqual(profile.engine.BRANCH, "exp/gen006-ramcache-finisher-001-20261122")
         self.assertEqual(profile.donor.CAMPAIGN_SCRIPT, "tools/ci/run_persistent_area_ramcache_qualification.py")
 
     def test_explicit_standard_host_stacked_routing(self):
         text = (ROOT/profile.engine.WORKFLOW).read_text()
         self.assertNotIn("workflow_dispatch:", text)
         self.assertNotIn("pull_request_target:", text)
-        self.assertIn("github.base_ref == 'exp/gen006-persistent-areas-001-20261121'", text)
+        self.assertIn("github.base_ref == 'main'", text)
         self.assertIn("needs: [linux, windows-execution]", text)
         self.assertEqual(text.count("contents: write"), 1)
         self.assertIn('git push --force-with-lease="refs/heads/'+profile.engine.BRANCH+':$GITHUB_SHA"', text)
