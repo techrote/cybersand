@@ -349,7 +349,7 @@ jobs:
     needs: windows-build
     name: actual Windows graphical recovery and extracted owner evaluator
     runs-on: windows-2022
-    timeout-minutes: 90
+    timeout-minutes: 150
     outputs:
       artifact_attempt: ${{ steps.artifact.outputs.attempt }}
     env:

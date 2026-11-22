@@ -4,13 +4,19 @@ from __future__ import annotations
 
 import ast
 import copy
+from contextlib import ExitStack
 import hashlib
 import inspect
 import json
+import os
 from pathlib import Path
 import re
 import sys
+import subprocess
+import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 import gen006_ramcache_runtime_publication as profile
 import gen006_persistent_runtime_publication as original
@@ -363,6 +369,83 @@ class QualificationGuards(unittest.TestCase):
 
 
 class PublicationGuards(unittest.TestCase):
+    def _execute_campaign_probe(self, selected, outcome):
+        # Orchestration-only probe: native/runtime/custody checks are mocked here,
+        # never reported as application qualification. Exercise the actual execute
+        # function so timeout selection and publication refusal are behavioral.
+        with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
+            root = Path(directory)
+            engine = selected.engine
+            manifest = {"source_inputs": {"native": "c"*64}, "build_inputs": {"runner": "d"*64}}
+            args = SimpleNamespace(platform="windows", source_sha="a"*40,
+                bundle=root/"bundle", godot_archive=root/"godot.zip")
+            stack.enter_context(patch.object(engine, "ROOT", root))
+            stack.enter_context(patch.object(selected.sys, "platform", "win32"))
+            stack.enter_context(patch.dict(os.environ, {"GITHUB_RUN_ATTEMPT":"1", "GITHUB_RUN_ID":"123"}))
+            verify = stack.enter_context(patch.object(engine, "verify_bundle", return_value=manifest))
+            stack.enter_context(patch.object(selected.shutil, "copyfile"))
+            stack.enter_context(patch.object(selected, "sha", return_value=engine.RAPIER["windows"][1]))
+            stack.enter_context(patch.object(selected, "prepare_godot", return_value=(root/"godot.exe", {})))
+            stack.enter_context(patch.object(engine, "runtime_identity", return_value={"sha256":"e"*64}))
+            stack.enter_context(patch.object(selected, "verify_build_ledger"))
+            stack.enter_context(patch.object(engine, "input_ledgers", return_value=copy.deepcopy(manifest)))
+            stack.enter_context(patch.object(engine, "manifest_path", return_value=root/"manifest.json"))
+            checked = stack.enter_context(patch.object(selected, "verify_case_results"))
+            writes = []
+            stack.enter_context(patch.object(engine, "write_json", side_effect=lambda path, value:
+                writes.append((path, copy.deepcopy(value)))))
+            run = stack.enter_context(patch.object(selected.subprocess, "run",
+                **({"side_effect":outcome} if isinstance(outcome, Exception) else {"return_value":outcome})))
+            if isinstance(outcome, Exception):
+                with self.assertRaises(type(outcome)): selected.execute(args)
+            elif outcome.returncode:
+                with self.assertRaisesRegex(RuntimeError, "no validated runtime published"): selected.execute(args)
+            else:
+                selected.execute(args)
+            run.assert_called_once()
+            command = run.call_args.args[0]
+            self.assertEqual(command[:2], [sys.executable, str(root/selected.CAMPAIGN_SCRIPT)])
+            self.assertIn("--require-clean-source", command)
+            timeout = selected.CAMPAIGN_TIMEOUT_SECONDS[args.platform]
+            self.assertEqual(run.call_args.kwargs, {"cwd":root, "timeout":timeout})
+            self.assertEqual(writes[0][1]["campaign_timeout_seconds"], timeout)
+            if isinstance(outcome, Exception) or outcome.returncode:
+                checked.assert_not_called()
+                self.assertEqual(len(writes), 1)
+                self.assertEqual(writes[0][1]["status"], "running")
+                self.assertIs(writes[0][1]["completed"], False)
+                verify.assert_called_once_with(args.bundle, "windows", args.source_sha, validated=False)
+                self.assertNotIn("status", manifest)
+            else:
+                checked.assert_called_once()
+                self.assertEqual(writes[-1][1]["status"], "validated-development-runtime")
+                self.assertEqual(verify.call_args.kwargs, {"validated":True})
+
+    def test_bounded_private_campaign_timeout_preserves_donor_policy(self):
+        self.assertIsNot(profile.donor, original)
+        self.assertIs(profile.donor.execute.__globals__, profile.donor.__dict__)
+        self.assertIsNot(profile.donor.CAMPAIGN_TIMEOUT_SECONDS, original.CAMPAIGN_TIMEOUT_SECONDS)
+        self.assertEqual(original.CAMPAIGN_TIMEOUT_SECONDS, {"linux":3600,"windows":3600})
+        self.assertEqual(profile.donor.CAMPAIGN_TIMEOUT_SECONDS, {"linux":3600,"windows":7200})
+        for selected in (original, profile.donor):
+            with self.subTest(profile=selected.CAMPAIGN_SCRIPT):
+                self._execute_campaign_probe(selected, subprocess.CompletedProcess([], 0))
+        workflow = (ROOT/profile.engine.WORKFLOW).read_text()
+        windows = workflow.split("  windows-execution:\n", 1)[1].split("\n  publish:", 1)[0]
+        minutes = int(re.search(r"(?m)^    timeout-minutes: ([0-9]+)$", windows).group(1))
+        self.assertEqual(minutes, 150)
+        self.assertGreaterEqual(minutes*60-profile.donor.CAMPAIGN_TIMEOUT_SECONDS["windows"], 1800)
+        # A longer watchdog is not permission to omit native or portable gates.
+        self.assertTrue(original.REQUIRED_LABELS <= profile.REQUIRED_LABELS)
+        for marker in ("Run Automated Smoke.ps1", "Run RAM Cache Smoke.ps1", "Open Workbench.cmd",
+                "Original package files mutated during smoke", "Retain Windows runtime and complete original evidence"):
+            self.assertIn(marker, windows)
+
+    def test_timeout_and_nonzero_campaign_never_validate_a_runtime(self):
+        for outcome in (subprocess.TimeoutExpired(["campaign"], 7200), subprocess.CompletedProcess([], 7)):
+            with self.subTest(outcome=type(outcome).__name__):
+                self._execute_campaign_probe(profile.donor, outcome)
+
     def test_inherited_portable_smoke_explicitly_qualifies_only_the_cold_path(self):
         source = ast.parse((ROOT/"tools/package_gen006_persistent_areas.py").read_text())
         values = [ast.literal_eval(node.value) for node in source.body if isinstance(node, ast.Assign)

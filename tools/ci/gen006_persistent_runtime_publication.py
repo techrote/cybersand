@@ -98,6 +98,7 @@ NATIVE_MARKERS = (
 require = engine.require
 sha = engine.runner.sha256
 CAMPAIGN_SCRIPT = "tools/ci/run_persistent_areas_qualification.py"
+CAMPAIGN_TIMEOUT_SECONDS = {"linux": 3600, "windows": 3600}
 
 
 def safe_relative(value: object) -> str:
@@ -265,6 +266,7 @@ def execute(args: argparse.Namespace) -> None:
     require((args.platform == "windows" and sys.platform == "win32") or
             (args.platform == "linux" and sys.platform.startswith("linux")),
             "Actual target-OS execution is required")
+    campaign_timeout = CAMPAIGN_TIMEOUT_SECONDS[args.platform]
     manifest = engine.verify_bundle(args.bundle, args.platform, args.source_sha, validated=False)
     shutil.copyfile(args.bundle / Path(engine.RUNTIMES[args.platform]).name,
                     engine.ROOT / engine.RUNTIMES[args.platform])
@@ -279,14 +281,15 @@ def execute(args: argparse.Namespace) -> None:
     report = {"schema_version": 1, "source_commit": args.source_sha, "platform": args.platform,
         "runtime": runtime, "godot": identity, "rapier_sha256": engine.RAPIER[args.platform][1],
         "status": "running", "completed": False, "scope": engine.EXECUTION_SCOPE,
-        "native_build_ledger_sha256": sha(ledger_path)}
+        "native_build_ledger_sha256": sha(ledger_path),
+        "campaign_timeout_seconds": campaign_timeout}
     report_path = args.bundle / "validation.json"
     engine.write_json(report_path, report)
     campaign = [sys.executable, str(engine.ROOT / CAMPAIGN_SCRIPT),
         "--godot", str(godot.resolve()), "--project", str(engine.ROOT / "godot"),
         "--evidence", str((args.bundle / "qualification").resolve()),
         "--require-clean-source", "--native-build-ledger", str(ledger_path.resolve())]
-    result = subprocess.run(campaign, cwd=engine.ROOT, timeout=3600)
+    result = subprocess.run(campaign, cwd=engine.ROOT, timeout=campaign_timeout)
     require(result.returncode == 0, "Persistent-area campaign failed; no validated runtime published")
     qpath = args.bundle / "qualification" / "qualification.json"
     report.update({"qualification_sha256": sha(qpath), "status": "passed", "completed": True})

@@ -38,6 +38,11 @@ engine.EXECUTION_SCOPE = (
     "No general streaming, arbitrary actor/Rapier or unsupported solver claim."
 )
 donor.CAMPAIGN_SCRIPT = "tools/ci/run_persistent_area_ramcache_qualification.py"
+# This private profile adds native residency, fault recovery and 30-sample route
+# comparisons to the donor campaign. Windows requires a larger finite aggregate
+# watchdog; every child deadline and the production native owner timeout remain.
+# The ordinarily imported donor and successor Linux retain 3600-second limits.
+donor.CAMPAIGN_TIMEOUT_SECONDS["windows"] = 7200
 EXTRA_INPUTS = {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE, donor.CAMPAIGN_SCRIPT,
     "tools/ci/test_gen006_ramcache_packaged_smoke.ps1",
