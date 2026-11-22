@@ -23,7 +23,10 @@ Its delta from the brief's `0f0161af337d6d0cee8fa961a9667aff570a75b0` is accepte
 #714's documentation-only CI admission change. During final qualification, accepted
 main advanced to `30e1cddd3d678456df10f52f7a2fb2210a9daaad` through #722
 (CI-OPT-003 soliding compilation reuse). Its nine-path CI/Makefile/documentation
-delta was integrated mechanically after qualified runtime publication. Both
+delta was integrated mechanically after qualified runtime publication. Main
+then advanced to `662df51cd8409a52332fa7ef15d06d8ab8945aed` through accepted #723
+(CI-OPT-003 bounded worldgen showcase scheduling). Its thirteen-path
+CI/Makefile/documentation delta was also integrated mechanically. All three
 roadmap additions were retained. Other active missions' branches and historical
 evidence were not modified.
 
@@ -80,10 +83,13 @@ hashes are external references, not independently recomputed binary evidence.
 
 Independent accepted-main integration review verified that no product GDScript,
 native source, extension build script, compiler/toolchain/dependency pin or
-actual extension compiler command changed. The merged Makefile SHA-256 is
-`31639c4d3e5e4962f059e3a1cb0ea9d029b3758f2de618a9d5b7a8e1992419df`.
-All four persistent-area normal/sanitizer build/run dry-run commands are
-byte-identical. The extension builders do not consume this Makefile.
+actual extension compiler command changed. After #722, the merged Makefile
+SHA-256 was `31639c4d3e5e4962f059e3a1cb0ea9d029b3758f2de618a9d5b7a8e1992419df`.
+After #723 it is `2e44322f7ea2ed0d56a8a280f2dca77699d56ce613c32c3f95a15ec7194f8490`.
+All four persistent-area normal/sanitizer build/run dry-run commands remain
+byte-identical to the executed source. The extension builders do not consume
+this Makefile. Focused soliding and worldgen scheduling/inventory/custody
+checks are separate from the product's retained native and graphical execution.
 
 The Makefile nevertheless belongs to the broader qualification custody ledger.
 Receipts and the unchanged evaluator therefore remain bound to `1ceac7e3`, not
