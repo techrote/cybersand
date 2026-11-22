@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pubpres_playabilit
 import dependency_custody
 
 SCHEMA = "pubpres-playability-windows-v2"
+MISSIONS = ("PUBPRES-PLAYABILITY-001", "PUBPRES-PLAYABILITY-003")
 MANIFEST = "PUBPRES-PLAYABILITY-MANIFEST.json"
 RUNTIME_RECEIPT = "PUBPRES-RUNTIME.json"
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
@@ -173,7 +174,7 @@ def archive_source(root, source, destination, names):
                 target.write_bytes(data)
 
 
-def stage_project(root, source, key, runtime_dir, output):
+def stage_project(root, source, key, runtime_dir, output, mission=MISSIONS[0]):
     need(COMMIT.fullmatch(source) and git(root, "rev-parse", "HEAD") == source, "Supply the exact checked-out " + key + " source")
     runtime = verify_runtime(root, source, runtime_dir)
     rapier = json.loads(committed(root, source, RAPIER_RECEIPT))
@@ -203,7 +204,7 @@ def stage_project(root, source, key, runtime_dir, output):
     # host-observation readers never describe its bytes using the old receipt.
     historical = target / NATIVE_RECEIPT
     historical.rename(historical.with_name("retained-runtime-provenance.reference.json"))
-    derived = {"schema_version": 1, "status": "PUBPRES-PLAYABILITY-001 experiment; production and owner acceptance HOLD",
+    derived = {"schema_version": 1, "status": mission + " experiment; production and owner acceptance HOLD",
                "artifact": NATIVE, "source_commit": source, "source_tree": runtime["source_tree"],
                "sha256": runtime["runtime_sha256"], "size": runtime["runtime_bytes"],
                "source_inputs": runtime["source_inputs_sha256"], "build_commit": source,
@@ -283,6 +284,7 @@ def verify(output, candidate):
     manifest_path = output / MANIFEST
     record = json.loads(manifest_path.read_text(encoding="utf-8"))
     need(record.get("schema") == SCHEMA and record.get("candidate_commit") == candidate and COMMIT.fullmatch(candidate), "Package candidate/schema differs")
+    need(record.get("mission") in MISSIONS, "Unknown or missing evaluator mission profile")
     need((output / (MANIFEST + ".sha256")).read_text(encoding="ascii") == f"{digest(manifest_path)}  {MANIFEST}\n", "Manifest checksum differs")
     names = record.get("files_sha256", {})
     need(names and len(names) == record.get("file_count") and len(names) <= 30000
@@ -350,7 +352,7 @@ def verify(output, candidate):
          and record["production_defaults_changed"] is False
          and record["experimental_defaults"] == {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
          "Candidate source, defaults or owner hold differs")
-    need(record["package_filename"] == "CyberSand-PUBPRES-PLAYABILITY-001-" + candidate[:12] + "-Windows.zip",
+    need(record["package_filename"] == "CyberSand-" + record["mission"] + "-" + candidate[:12] + "-Windows.zip",
          "Incorrect evaluator filename")
     engine = record["engine"]
     need(engine["version"] == GODOT_VERSION and engine["archive_sha512"] == GODOT_SHA512
@@ -380,6 +382,8 @@ def main():
     parser.add_argument("--candidate-sha", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--verify", action="store_true")
+    parser.add_argument("--mission", choices=MISSIONS,
+                        help="Package identity (build default: PUBPRES-PLAYABILITY-001); verify checks it when supplied")
     for key in ("candidate", "main", "integration"):
         parser.add_argument("--" + key + "-root", type=Path)
         if key != "candidate":
@@ -393,13 +397,15 @@ def main():
     output = args.output_dir.resolve()
     if args.verify:
         result = verify(output, args.candidate_sha)
+        need(args.mission is None or result["mission"] == args.mission, "Verified package mission differs from the requested profile")
         print(json.dumps({"verified_files": result["file_count"], "candidate": args.candidate_sha, "physical_acceptance": "HOLD"}))
         return
+    args.mission = args.mission or MISSIONS[0]
     need(os.name == "nt", "Build the Windows evaluator on actual Windows; metadata tests can run elsewhere")
     need(all(getattr(args, name) for name in ("candidate_root", "main_root", "integration_root", "candidate_runtime", "main_runtime",
          "integration_runtime", "main_sha", "integration_sha", "godot_zip", "vc_runtime", "notices", "archive")), "All independent sources/builds and dependencies are required")
     archive_path = args.archive.resolve()
-    expected_name = "CyberSand-PUBPRES-PLAYABILITY-001-" + args.candidate_sha[:12] + "-Windows.zip"
+    expected_name = "CyberSand-" + args.mission + "-" + args.candidate_sha[:12] + "-Windows.zip"
     need(COMMIT.fullmatch(args.candidate_sha) and archive_path.name == expected_name, "Use the exact source-bound package filename: " + expected_name)
     need(not output.exists() and not archive_path.exists() and not archive_path.with_suffix(".zip.sha256").exists()
          and not archive_path.with_suffix(".zip.json").exists()
@@ -412,7 +418,7 @@ def main():
     sources = {}
     for key, label in (("M", "main"), ("I", "integration"), ("C", "candidate")):
         sources[key] = stage_project(getattr(args, label + "_root"), getattr(args, label + "_sha"), key,
-                                     getattr(args, label + "_runtime"), output)
+                                     getattr(args, label + "_runtime"), output, args.mission)
     archive_source(root, args.candidate_sha, output, [TOOLS, "tools/pubpres_playability", "tools/pubpres_playability_build"])
     engine = stage_dependencies(output, args.godot_zip, args.vc_runtime, args.notices)
     campaign = json.loads((output / "tools/pubpres_playability/campaign.json").read_text())
@@ -421,7 +427,7 @@ def main():
     for name, expected in campaign["overlay_sha256"].items():
         need(digest(output / sources["C"]["project"] / safe_name(name)) == expected, "Frozen observer overlay differs")
     shutil.copyfile(output / TOOLS / "README.md", output / "READ-ME.md")
-    record = {"schema": SCHEMA, "mission": "PUBPRES-PLAYABILITY-001", "candidate_commit": args.candidate_sha,
+    record = {"schema": SCHEMA, "mission": args.mission, "candidate_commit": args.candidate_sha,
               "package_filename": expected_name, "sources": sources, "engine": engine,
               "campaign": "tools/pubpres_playability/campaign.json", "campaign_sha256": digest(output / "tools/pubpres_playability/campaign.json"),
               "owner_launcher": TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": TOOLS + "/owner_start.gd",
@@ -441,7 +447,7 @@ def main():
         need(archive.testzip() is None, "Fresh evaluator ZIP integrity failed")
     checksum = digest(archive_path)
     archive_path.with_suffix(".zip.sha256").write_text(f"{checksum}  {archive_path.name}\n", encoding="ascii")
-    write_json(archive_path.with_suffix(".zip.json"), {"schema": SCHEMA, "candidate_commit": args.candidate_sha,
+    write_json(archive_path.with_suffix(".zip.json"), {"schema": SCHEMA, "mission": args.mission, "candidate_commit": args.candidate_sha,
                "archive_sha256": checksum, "archive_bytes": archive_path.stat().st_size,
                "manifest_sha256": digest(output / MANIFEST), "physical_acceptance": "HOLD"})
     print(f"{checksum}  {archive_path.name}")

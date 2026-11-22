@@ -1,10 +1,20 @@
-# PUBPRES-PLAYABILITY-001 Windows evaluator
+# PUBPRES Windows evaluator profiles
 
 **Draft/HOLD.** This is a newly assembled source-matched evaluator. It contains
-accepted `main` (M), the qualified PUBPRES integration reference (I), and this
+the registered historical accepted-main control (M), the historical PUBPRES
+integration reference (I), and this
 experimental candidate (C), with a separately built native DLL for each exact
 source. A hosted Windows software-renderer result does not establish physical
 Windows/NVIDIA acceptance or a playable-progression improvement.
+
+The default package profile remains `PUBPRES-PLAYABILITY-001`. New successor
+builds may explicitly select `PUBPRES-PLAYABILITY-003`; that profile has its own
+mission field and exact filename, and retains the original 001 comparison
+registration unchanged. M identifies that frozen control, not the current live
+`main` branch. A 003 profile identifies newly built source; its name is not a
+performance or acceptance claim. Use the source identities and qualification
+gates in the accompanying handoff. Earlier ZIPs, receipts and launchers remain
+immutable evidence and must not be renamed into a new profile.
 
 The package has no installer and does not use your ordinary CyberSand profile.
 Keep the verified `Payload` directory pristine. The launcher makes a fresh
@@ -23,6 +33,11 @@ The inner package name is exactly:
 CyberSand-PUBPRES-PLAYABILITY-001-<first 12 candidate SHA characters>-Windows.zip
 CyberSand-PUBPRES-PLAYABILITY-001-<first 12 candidate SHA characters>-Windows.zip.sha256
 ```
+
+For an explicitly built 003 profile, both names instead contain
+`PUBPRES-PLAYABILITY-003`. The launcher verifies the filename against the
+checksum-verified package manifest. A nested artifact containing both profiles
+for one candidate is ambiguous and refused.
 
 GitHub may wrap those two files inside an outer artifact ZIP with a different
 name. The standalone launcher accepts either the outer artifact ZIP or the
@@ -72,7 +87,7 @@ timing acceptance test.
 
 | Selector | Meaning | Default |
 |---|---|---|
-| `-Source Main` | Accepted-main source, its own native runtime and ordinary source policies | — |
+| `-Source Main` | Frozen historical accepted-main control, its own native runtime and ordinary source policies | — |
 | `-Source Integration` | Historical PUBPRES source with its registered blit/early/coherent/repaired policies | — |
 | `-Source Candidate` | Current candidate with those same integration policies | Candidate |
 | `-StagingPools Eager` | Existing eager staging-pool allocation | Eager |
@@ -210,6 +225,7 @@ the candidate source and observation policy:
 
 ```text
 python tools/pubpres_playability_windows/package_windows.py
+  --mission PUBPRES-PLAYABILITY-003
   --candidate-root <C checkout> --candidate-sha <C full SHA>
   --main-root <M checkout> --main-sha <M full SHA>
   --integration-root <I checkout> --integration-sha <I full SHA>
@@ -221,6 +237,10 @@ python tools/pubpres_playability_windows/package_windows.py
   --archive <exact source-bound evaluator ZIP filename>
 ```
 
+Omit `--mission` only when intentionally producing the original 001 profile.
+Verification infers the profile from the authenticated manifest; add
+`--verify --mission PUBPRES-PLAYABILITY-003` to require that exact profile.
+
 The builder must run on actual Windows, using the pinned Godot4.7 binaries and
 source-matched native receipts. Pure metadata unit tests are available on any
 platform; they use synthetic PE headers and are explicitly not Windows/runtime
@@ -228,3 +248,13 @@ qualification. Run `Test-Package.ps1` on the actual new pristine Windows payload
 to retain negative verification and process-failure evidence. Actual graphical
 Safe/Separate material tests and pristine-package startup must also run there.
 Local headless parsing alone cannot qualify graphics.
+
+For the narrow 003 import repair gate, run `Test-PristineReplay.ps1` with
+`-PackageRoot`, `-ExpectedCandidate` and a fresh `-Output` directory. It creates
+one fresh Candidate/Safe/Eager run, starts and closes the real Workbench, then
+opens that same run in a fresh process. Both launches retain independently
+verified startup receipts; the complete source inventory and exact committed
+import descriptor must remain valid. Its default driver is hosted ANGLE.
+This gate does not perform Save. Run
+`tools/pubpres_playability_build/run_installed_authoring.py` separately for the
+graphical author/Save/fresh-process native-material reconstruction contract.

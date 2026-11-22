@@ -123,7 +123,7 @@ def fixture(root):
     put(root, package.TOOLS + "/Start-PUBPRES-Playability.ps1", "# synthetic owner launcher\n")
     put(root, package.TOOLS + "/owner_start.gd", "extends SceneTree\n")
     candidate = sources["C"]["source_commit"]
-    record = {"schema": package.SCHEMA, "candidate_commit": candidate, "sources": sources, "engine": engine,
+    record = {"schema": package.SCHEMA, "mission": package.MISSIONS[0], "candidate_commit": candidate, "sources": sources, "engine": engine,
               "package_filename": "CyberSand-PUBPRES-PLAYABILITY-001-" + candidate[:12] + "-Windows.zip",
               "campaign": campaign, "campaign_sha256": package.digest(root / campaign),
               "owner_launcher": package.TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": package.TOOLS + "/owner_start.gd",
@@ -142,6 +142,26 @@ class PackageTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_explicit_003_profile_uses_its_own_filename(self):
+        self.manifest["mission"] = "PUBPRES-PLAYABILITY-003"
+        self.manifest["package_filename"] = "CyberSand-PUBPRES-PLAYABILITY-003-" + self.candidate[:12] + "-Windows.zip"
+        save(self.root, self.manifest)
+        self.assertEqual(package.verify(self.root, self.candidate)["mission"], "PUBPRES-PLAYABILITY-003")
+
+    def test_profile_cannot_relabel_a_001_filename(self):
+        self.manifest["mission"] = "PUBPRES-PLAYABILITY-003"
+        save(self.root, self.manifest)
+        with self.assertRaisesRegex(ValueError, "filename"):
+            package.verify(self.root, self.candidate)
+
+    def test_unregistered_and_missing_profiles_are_refused(self):
+        for profile in (None, "PUBPRES-PLAYABILITY-002", "pubpres-playability-003"):
+            with self.subTest(profile=profile):
+                self.manifest["mission"] = profile
+                save(self.root, self.manifest)
+                with self.assertRaisesRegex(ValueError, "mission profile"):
+                    package.verify(self.root, self.candidate)
 
     def check_bad(self, pattern):
         with self.assertRaisesRegex(ValueError, pattern):

@@ -61,3 +61,53 @@ The diagnostic must perform no additional mailbox reads, install work, physics
 callbacks or solver work. No failed or unavailable boundary becomes a zero-time
 success. Measurement is enabled explicitly and compared with the same-source
 diagnostic OFF path to expose observer overhead.
+
+## Focused hosted captures
+
+`run_focus.py` stages a single exact committed source with its exact native build
+and committed Rapier identity. It reuses the original strict v3 gameplay oracle
+and fixed fixture/input/capture rules. The new observer is a separately hashed
+derived script. Its primary trace retains the v3 contract; causal events live in
+another bounded JSONL with source, fixture and primary-trace bindings. A native
+and terrain gate observation is called `transaction_entry`; only a separately
+validated genuine `rapier_step` supplies completed-step credit.
+
+Run these sequentially in one hosted job. Each timed arm uses a new project and
+profile; no simultaneous heavy CI job belongs in a paired comparison.
+
+```sh
+python tools/pubpres003/run_focus.py \
+  --source /path/to/exact/source --runtime /path/to/native-build \
+  --engine /path/to/Godot_v4.7-stable_linux.x86_64 \
+  --rapier-runtime /path/to/source-matched-rapier.so \
+  --display-wrapper tools/pubpres_playability_build/owned_xvfb.py \
+  --mode baseline --case wave_512_follow --case wave_2048_follow \
+  --case wave_gameplay_2048_follow --output /path/to/new-baseline
+```
+
+On Windows, use the pinned GUI executable and source-bound Rapier DLL; omit the
+display wrapper. Compatibility/OpenGL, Safe, eager staging, four workers,
+1600×900, VSync OFF, 60 requested callbacks/s and 60 presentation cap remain
+fixed. Each capture retains at least ten wall-clock seconds **and** 144 real
+Rapier steps, with a 90-second capture ceiling and 240-second setup deadline.
+
+Then run `--mode causal --case wave_gameplay_2048_follow` into a new output
+directory. It explicitly enables both causal observations and the native stage
+probe; that single diagnostic arm is not an OFF/ON speed comparison. Mode
+`native-probe-abba` isolates native probe overhead, including the separately
+registered current-gameplay case; `causal-overhead-abba` isolates the additive
+observer. `same-frame-abba` retains the old continuation experiment as a control.
+Each ABBA order is OFF/ON/ON/OFF with all other selectors fixed. Equal-step
+physical trajectories and admitted moves must match before causal attribution.
+
+All modes are development captures and report physical acceptance HOLD. The
+default native validator rejects compiler drift. A local diagnosis can opt in
+explicitly with `--allow-development-toolchain-drift`; it still verifies exact
+source/tree, complete native inputs, actual binary, build log and dependency
+custody, and labels the result `DEVELOPMENT_TOOLCHAIN_DRIFT`. Such a capture
+cannot replace the final pinned hosted builds or Windows/NVIDIA owner trial.
+
+The independent causal reducer refuses altered sidecars, wrong owner/sample or
+terrain joins, duplicated completion credit, fabricated admission authority and
+overflow. Unknown producer identities at early boundaries remain `-1`; missing
+edge observations remain unavailable rather than becoming zero-age packets.

@@ -24,6 +24,7 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $script:PPManifestName = 'PUBPRES-PLAYABILITY-MANIFEST.json'
+$script:PPMissions = @('PUBPRES-PLAYABILITY-001','PUBPRES-PLAYABILITY-003')
 $script:PPUtf8 = [Text.UTF8Encoding]::new($false)
 $script:PPProcessOwnerPath = Join-Path $PSScriptRoot 'process_owner.cs'
 
@@ -105,7 +106,8 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     $Manifest = Read-PPJson $ManifestPath
     Assert-PP ($Manifest.schema -ceq 'pubpres-playability-windows-v2' -and $Manifest.candidate_commit -ceq $Candidate -and
         $Manifest.physical_acceptance -ceq 'HOLD' -and $Manifest.production_defaults_changed -eq $false) 'Package identity or HOLD status differs'
-    $ExpectedName = 'CyberSand-PUBPRES-PLAYABILITY-001-'+$Candidate.Substring(0,12)+'-Windows.zip'
+    Assert-PP ($script:PPMissions -ccontains $Manifest.mission) 'Unknown or missing evaluator mission profile'
+    $ExpectedName = 'CyberSand-'+$Manifest.mission+'-'+$Candidate.Substring(0,12)+'-Windows.zip'
     Assert-PP ($Manifest.package_filename -ceq $ExpectedName) 'Package uses an incorrect historical or renamed evaluator filename'
     $Inventory = @($Manifest.files_sha256.PSObject.Properties)
     Assert-PP ($Inventory.Count -eq $Manifest.file_count -and $Inventory.Count -gt 0 -and $Inventory.Count -le 30000) 'Payload inventory count differs'
@@ -266,20 +268,23 @@ function Copy-PPZipEntry($Entry,[string]$Path) {
 }
 function Expand-PPEvaluator([string]$ArchivePath,[string]$Sidecar,[string]$KnownHash,[string]$Target,[string]$Candidate) {
     Assert-PP (-not (Test-Path -LiteralPath $Target)) 'Destination already exists; choose a new folder and preserve earlier evidence'
-    $ExpectedName = 'CyberSand-PUBPRES-PLAYABILITY-001-'+$Candidate.Substring(0,12)+'-Windows.zip'
+    $AllowedNames = @($script:PPMissions | ForEach-Object { 'CyberSand-'+$_+'-'+$Candidate.Substring(0,12)+'-Windows.zip' })
+    $ExpectedName = ''
     $Archive = [IO.Compression.ZipFile]::OpenRead([IO.Path]::GetFullPath($ArchivePath))
     try {
         Get-PPZipEntries $Archive
         [IO.Directory]::CreateDirectory($Target) | Out-Null
         $IsInner = @($Archive.Entries | Where-Object { $_.FullName -ceq $script:PPManifestName }).Count -eq 1
         if ($IsInner) {
-            Assert-PP ([IO.Path]::GetFileName($ArchivePath) -ceq $ExpectedName) 'Inner evaluator ZIP has a wrong or renamed filename'
+            $ExpectedName = [IO.Path]::GetFileName($ArchivePath)
+            Assert-PP ($AllowedNames -ccontains $ExpectedName) 'Inner evaluator ZIP has a wrong or renamed filename'
             if (-not $Sidecar) { $Sidecar = $ArchivePath+'.sha256' }
             $InnerPath = [IO.Path]::GetFullPath($ArchivePath)
         } else {
             Assert-PP (-not $Sidecar) 'An outer GitHub artifact uses its exact nested sidecar'
-            $Candidates = @($Archive.Entries | Where-Object { [IO.Path]::GetFileName($_.FullName) -ceq $ExpectedName })
+            $Candidates = @($Archive.Entries | Where-Object { $AllowedNames -ccontains [IO.Path]::GetFileName($_.FullName) })
             Assert-PP ($Candidates.Count -eq 1) 'Expected exactly one correctly named nested PUBPRES-PLAYABILITY package'
+            $ExpectedName = [IO.Path]::GetFileName($Candidates[0].FullName)
             $Checksums = @($Archive.Entries | Where-Object { $_.FullName -ceq ($Candidates[0].FullName+'.sha256') })
             Assert-PP ($Checksums.Count -eq 1) 'Exact nested evaluator SHA-256 sidecar is missing or ambiguous'
             $InnerPath = Join-Path $Target $ExpectedName; $Sidecar = $InnerPath+'.sha256'
@@ -298,8 +303,9 @@ function Expand-PPEvaluator([string]$ArchivePath,[string]$Sidecar,[string]$Known
             if (-not $Entry.FullName.EndsWith('/')) { Copy-PPZipEntry $Entry (Join-PPSafe $Payload $Entry.FullName) }
         }
     } finally { $Archive.Dispose() }
-    Test-PPPackage $Payload $Candidate | Out-Null
-    Write-PPJson (Join-Path $Target 'verified-download.json') ([ordered]@{schema='pubpres-playability-download-v1'; candidate_commit=$Candidate;
+    $Verified = Test-PPPackage $Payload $Candidate
+    Assert-PP ($Verified.package_filename -ceq $ExpectedName) 'Archive filename differs from its authenticated mission profile'
+    Write-PPJson (Join-Path $Target 'verified-download.json') ([ordered]@{schema='pubpres-playability-download-v1'; candidate_commit=$Candidate; mission=$Verified.mission;
         archive_sha256=$Expected; package_filename=$ExpectedName; source_archive=[IO.Path]::GetFullPath($ArchivePath); physical_acceptance='HOLD'})
     return $Payload
 }
