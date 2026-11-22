@@ -125,21 +125,18 @@ func mixed_style_authoring(reopening: bool) -> void:
 			check(saved.generation.recipe_sha256 == recipe_sha and
 				wb._generated_active.recipe_sha256 == recipe_sha,
 				label + " saved and live native recipe hashes survive restart")
-			if not await until(func() -> bool: return host.image.get_width() == 512
-				and host.image.get_pixel(101, 99).r8 == 58
-				and host.image.get_pixel(111, 99).r8 == 0,
+			if not await until(func() -> bool: return host.image.get_width() == 512 and host.image.get_pixel(101, 99).r8 == 58 and host.image.get_pixel(111, 99).r8 == 0,
 				label + " actual native material restored from saved ordered edits"): return
 		else:
 			wb._brush.value = 1
 			if not check(wb.paint(Vector2i(101, 99), 58),
 				label + " real native paint accepted"): return
-			if not await until(func() -> bool: return host.image.get_width() == 512
-				and host.image.get_pixel(101, 99).r8 == 58,
+			if not await until(func() -> bool: return host.image.get_width() == 512 and host.image.get_pixel(101, 99).r8 == 58,
 				label + " real native paint visible"): return
 			if not check(wb.paint(Vector2i(111, 99), 0),
 				label + " real native erase accepted"): return
-			if not await until(func() -> bool: return host.image.get_pixel(111, 99).r8 == 0
-				and paint_completed(), label + " native erase acknowledged"): return
+			if not await until(func() -> bool: return host.image.get_pixel(111, 99).r8 == 0 and paint_completed(),
+				label + " native erase acknowledged"): return
 			wb._name.text = label
 			if not check(wb.save_setup(), label + " named starting map saved"): return
 			saved = AdvancedStore.read_named(label)
