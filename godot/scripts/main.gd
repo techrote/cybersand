@@ -1849,7 +1849,7 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 func _ready() -> void:
 	object_shard_m4_probe.configure("--objectshard-m4-workbench" in OS.get_cmdline_user_args())
 	if object_shard_m4_probe.enabled:
-		RenderingServer.frame_post_draw.connect(_object_shard_m4_post_draw)
+		RenderingServer.frame_post_draw.connect(_object_shard_m4_post_draw, CONNECT_DEFERRED)
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
