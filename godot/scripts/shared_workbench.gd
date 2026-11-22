@@ -5,6 +5,7 @@ const WaterComparisonScenes = preload("res://scripts/workbench_water_comparison_
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
+const ObjectShardM4Port = preload("res://scripts/object_shard_m4_workbench_port.gd")
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
@@ -36,6 +37,8 @@ var _unopened_history_error := ""
 var _unopened_history_retry_ms := 0
 var art_history_persistence: Dictionary = {}
 var host: Control
+# Experimental same-World interface only. Default-off and never creates a World.
+var object_shard_m4_port = ObjectShardM4Port.new()
 var applied: Dictionary = {}
 var pilot_slot := -1
 var _pilot_instance_id := 0
@@ -196,6 +199,7 @@ func _spin(row: Control, caption: String, field: SpinBox, low: float, high: floa
 
 func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host = controller
+	object_shard_m4_port.enabled = "--objectshard-m4-workbench" in OS.get_cmdline_user_args()
 	_art_history_session = ArtBatchPanel.read_history_session()
 	host.tower_panel.refresh(false,0,{})
 	var layout: Control = host.get_node("Layout")
@@ -231,6 +235,11 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
 	_picker(row,_tool,TOOL_NAMES)
+	if object_shard_m4_port.enabled:
+		# These tools require an exact already-displayed native target witness.
+		# Until the same-World adapter and overlay exist, they visibly refuse.
+		_tool.add_item("M4 erase moving cell")
+		_tool.add_item("M4 ignite moving cell")
 	var names: Array = []
 	_model_ids = _compact_model_ids()
 	for id: String in _model_ids: names.append(ActorCatalog.entry(id).get("name",id))
@@ -695,6 +704,7 @@ func _poll_flatten() -> void:
 		str(_material_baseline.extent),_material_baseline.cells.size()]
 
 func _exit_tree() -> void:
+	object_shard_m4_port.retire("WorkbenchExit")
 	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
 
 # On edits, build other actors at their actual positions while leaving the
@@ -776,6 +786,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
 		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water)
 	if not ok: return refuse(host.microscenario_error)
+	object_shard_m4_port.retire("WorldReplacement")
+	if host.has_method("object_shard_m4_latency_report") and host.object_shard_m4_probe.enabled:
+		host.object_shard_m4_probe.retire("WorkbenchReplacement")
 	_pending_staged_liquid_selection = retained_selection
 	_pending_generated = generated_packet.duplicate(true)
 	_pending_material_baseline = material_baseline.duplicate(false)
@@ -1375,6 +1388,12 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
+	# Existing Save/paint-editor tests also use a minimal Control host without
+	# Main's instrumentation property. It must remain a valid Workbench client.
+	var m4_probe_enabled: bool = host != null and host.has_method("object_shard_m4_latency_report") \
+		and host.object_shard_m4_probe.enabled
+	if m4_probe_enabled:
+		host.object_shard_m4_probe.mark_input(pos, "ordinary_brush")
 	if paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before painting.")
 	if art_batches != null:
@@ -1403,7 +1422,13 @@ func paint(pos: Vector2i, material: int) -> bool:
 		var recipe := Setup.rectangles(applied)
 		applied.edits.pop_back()
 		if recipe.has("error"): return refuse(recipe.error)
-	if not host.queue_brush_mutation(pos.x,pos.y,int(applied.brush),material): return refuse("Worker refused brush.")
+	var m4_queue_started_usec: int = Time.get_ticks_usec() if m4_probe_enabled else -1
+	var admitted_brush: bool = host.queue_brush_mutation(pos.x,pos.y,int(applied.brush),material)
+	if m4_queue_started_usec >= 0:
+		host.object_shard_m4_probe.record_duration("queue_admission", m4_queue_started_usec,
+			Time.get_ticks_usec(), {"accepted": admitted_brush, "operation": "ordinary_brush",
+				"scope": "ordinary_worker_queue_no_native_causal_receipt"})
+	if not admitted_brush: return refuse("Worker refused brush.")
 	if new_stamp: applied.edits.append(stamp)
 	return true
 
@@ -1487,6 +1512,29 @@ func _input(event: InputEvent) -> void:
 	else: return
 	get_viewport().set_input_as_handled()
 
+func object_shard_m4_status() -> Dictionary:
+	if host == null or not host.has_method("object_shard_m4_latency_report"):
+		return {"ok": false, "ready": false, "outcome": "OrdinaryWorkerRequired"}
+	return object_shard_m4_port.interface_status(host.simulation_worker, host.latest_snapshot)
+
+
+func object_shard_m4_action(pos: Vector2i, action: String,
+		observed: Dictionary = {}, witness: Dictionary = {}) -> Dictionary:
+	if host == null or not host.has_method("object_shard_m4_latency_report") \
+			or applied.is_empty() or busy():
+		refuse("ObjectShard M4: no installed or available ordinary Workbench.")
+		return {"ok": false, "outcome": "WorkbenchUnavailable"}
+	var uploaded: Dictionary = {"world_generation": host.last_uploaded_world_generation,
+		"world_revision": host.last_uploaded_revision,
+		"render_serial": host.last_uploaded_render_snapshot_serial}
+	var result: Dictionary = object_shard_m4_port.queue_intent(host.simulation_worker,
+		host.latest_snapshot, uploaded, observed, action, pos, witness,
+		Time.get_ticks_usec())
+	if not result.get("ok", false):
+		refuse("ObjectShard M4: " + str(result.get("outcome", "UnknownRefusal")))
+	return result
+
+
 func _pick(pos: Vector2i) -> void:
 	for a: Dictionary in applied.actors:
 		var state := body_state(int(a.id))
@@ -1498,8 +1546,20 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
-	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
-	if applied.is_empty() or busy(): return
+	# An M4 moving-body operation can never route through the ordinary terrain
+	# painter, including right drag or an active paint-editor interception.
+	var m4_moving_tool: bool = object_shard_m4_port.enabled and _tool.selected in [5, 6]
+	if not m4_moving_tool and not applied.is_empty() and paint_editor != null \
+			and paint_editor.world_input(event): return
+	if applied.is_empty() or busy():
+		if m4_moving_tool:
+			# A blocked or aborted pointer stroke cannot resume after Apply/F2.
+			_drag_button = 0
+			_last_cell = Vector2i(-1, -1)
+			if event is InputEventMouseButton and event.pressed \
+					and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+				refuse("ObjectShard M4: WorkbenchUnavailable")
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			_pan = event.pressed
@@ -1523,6 +1583,9 @@ func _world_input(event: InputEvent) -> void:
 	var pos := Vector2i(host.camera_origin.floor()) + pixel
 	if _drag_button == 0 or pos == _last_cell: return
 	_last_cell = pos
+	if m4_moving_tool:
+		object_shard_m4_action(pos, "erase" if _tool.selected == 5 else "ignite")
+		return
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
 		paint(pos,0 if _drag_button == MOUSE_BUTTON_RIGHT else int(applied.material))
 		return
@@ -1538,6 +1601,8 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	if object_shard_m4_port.enabled and object_shard_m4_port.pending_count() > 0:
+		object_shard_m4_port.poll_results(host.simulation_worker)
 	if art_batches == null and not _unopened_history_pending.is_empty() and Time.get_ticks_msec() >= _unopened_history_retry_ms:
 		_unopened_history_retry_ms = Time.get_ticks_msec()+1000
 		while not _unopened_history_pending.is_empty():
@@ -1607,6 +1672,9 @@ func _process(_delta: float) -> void:
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · pilot " + pilot_description()
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	if object_shard_m4_port.enabled:
+		var m4_status: Dictionary = object_shard_m4_status()
+		_status.text += " · M4 %s" % ("same-World candidate" if m4_status.get("ready",false) else "refused: " + str(m4_status.get("outcome","unavailable")))
 	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
 	equipment.refresh(context)
