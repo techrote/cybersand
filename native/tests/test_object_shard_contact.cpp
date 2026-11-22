@@ -83,12 +83,16 @@ void sat_matches_polygon_oracle() {
     CHECK(!cell_overlap(frame({std::numeric_limits<double>::quiet_NaN(), 0, 0}), 0, 0, 0, 0));
 }
 
-Handle pocket(Registry& registry) {
+Handle pocket(Registry& registry, unsigned opening_width = 1) {
     Handle handle;
-    CHECK(registry.prepare({-3, -4, 7, 7}, 10, handle) == Outcome::Accepted);
+    const auto width = static_cast<std::uint16_t>(opening_width + 6);
+    CHECK(registry.prepare({-3, -4, width, 7}, 10, handle) == Outcome::Accepted);
     auto* shard = registry.find(handle);
-    for (const auto index : {3 * 7 + 2, 3 * 7 + 4, 4 * 7 + 2, 4 * 7 + 3, 4 * 7 + 4})
-        CHECK(shard->set_cell(static_cast<std::size_t>(index), {Material::Wood, 0, 0, 200},
+    for (const auto x : {2U, 3U + opening_width})
+        CHECK(shard->set_cell(static_cast<std::size_t>(3 * width + x), {Material::Wood, 0, 0, 200},
+            Role::Structural, 10) == Outcome::Accepted);
+    for (unsigned x = 2; x <= 3 + opening_width; ++x)
+        CHECK(shard->set_cell(static_cast<std::size_t>(4 * width + x), {Material::Wood, 0, 0, 200},
             Role::Structural, 10) == Outcome::Accepted);
     CHECK(registry.finish_preparation(handle) == Outcome::Accepted);
     CHECK(registry.reserve_physics(handle) == Outcome::Accepted);
@@ -100,6 +104,83 @@ Handle pocket(Registry& registry) {
     CHECK(shard->acknowledge_geometry(geometry.revision, geometry.mask_digest, geometry.shape_digest) == Outcome::Accepted);
     CHECK(registry.advance(handle, Phase::ReadyToActivate, Phase::Active) == Outcome::Accepted);
     return handle;
+}
+
+void bounded_wide_aperture_and_rotated_world_carriers() {
+    Registry registry;
+    const auto handle = pocket(registry, 3);
+    auto* shard = registry.find(handle);
+    const Pose pose{10, 20, 0};
+    for (std::size_t x = 3; x <= 5; ++x) {
+        const auto opening = pocket_opening(*shard, 3 * 9 + x);
+        CHECK(opening.outcome == Outcome::Accepted && opening.min_x == 3 && opening.max_x == 6 && opening.row == 3);
+        const auto witness = sand_pocket_witness(*shard, pose, pose, {10 + x + .5, 23.5});
+        CHECK(witness.outcome == Outcome::Accepted && witness.slot == 3 * 9 + x);
+        CHECK(witness.aperture_world.x == 14.5 && witness.aperture_world.y == 23.0);
+    }
+    // Internal local-cell boundaries are deterministic slots, not artificial
+    // side walls. A point on the outer opening boundary remains inadmissible.
+    CHECK(sand_pocket_witness(*shard, pose, pose, {14.0, 23.5}).outcome == Outcome::Accepted);
+    CHECK(sand_pocket_witness(*shard, pose, pose, {13.0, 23.5}).outcome == Outcome::DestinationUnavailable);
+    CHECK(sand_pocket_witness(*shard, {11, 20, 0}, pose, {14.5, 23.5}).outcome == Outcome::Accepted);
+    const auto diagonal_top = sand_pocket_witness(*shard, {12, 21, 0}, pose, {15.5, 23.5});
+    CHECK(diagonal_top.outcome == Outcome::Accepted && !diagonal_top.already_inside && diagonal_top.slot == 32);
+    CHECK(sand_pocket_witness(*shard, {13, 20, 0}, pose, {14.5, 23.5}).outcome == Outcome::DestinationUnavailable);
+    CHECK(sand_pocket_witness(*shard, {7, 20, 0}, pose, {14.5, 23.5}).outcome == Outcome::DestinationUnavailable);
+    CHECK(sand_pocket_witness(*shard, {10, 19, 0}, pose, {14.5, 23.5}).outcome == Outcome::DestinationUnavailable);
+    CHECK(sand_pocket_witness(*shard, {11.4, 21, 0}, pose, {13.2, 23.8}).outcome == Outcome::DestinationUnavailable);
+
+    // This is the actual World raster constraint that exposed the one-cell
+    // channel: an admitted carrier must have no positive-area structural
+    // overlap. Check real half-integer World centres, not only synthetic local
+    // points. Keep the floor at a declared clear raster height; this does not
+    // promise ingress at every subcell floor placement. The independent
+    // polygon oracle validates every clear carrier.
+    for (double angle : {-0.10, -0.01, 0.01, 0.10}) {
+        const Pose tilted{10.13, 20.13 - 4.5 * std::sin(angle), angle};
+        const auto value = frame(tilted);
+        unsigned clear_carriers = 0;
+        for (int wy = 21; wy <= 25; ++wy) for (int wx = 11; wx <= 17; ++wx) {
+            const auto witness = sand_pocket_witness(*shard, tilted, tilted, {wx + .5, wy + .5});
+            if (witness.outcome != Outcome::Accepted) continue;
+            bool blocked = false;
+            for (std::size_t at = 0; at < shard->area(); ++at) if (shard->structural(at))
+                blocked = blocked || clipped_area(value, static_cast<int>(at % 9), static_cast<int>(at / 9), wx, wy) > 1e-10;
+            if (blocked) continue;
+            ++clear_carriers;
+            CHECK(pocket_opening(*shard, witness.slot).outcome == Outcome::Accepted);
+            CHECK(witness.already_inside);
+        }
+        CHECK(clear_carriers != 0);
+    }
+    const auto broad = pocket(registry, 4);
+    CHECK(pocket_opening(*registry.find(broad), 3 * 10 + 4).outcome == Outcome::DestinationUnavailable);
+    CHECK(pocket_opening(*shard, shard->area()).outcome == Outcome::Invalid);
+    // One missing floor segment invalidates the complete pocket, even when the
+    // selected slot itself still has support.
+    CHECK(shard->set_cell(4 * 9 + 3, {Material::Empty, 0, 0, 200}, Role::Empty, 11) == Outcome::Accepted);
+    CHECK(pocket_opening(*shard, 3 * 9 + 5).outcome == Outcome::DestinationUnavailable);
+    CHECK(shard->set_cell(4 * 9 + 3, {Material::Wood, 0, 0, 200}, Role::Structural, 11) == Outcome::Accepted);
+    CHECK(shard->set_cell(1 * 9 + 3, {Material::Fire, 32, 0, 200}, Role::Product, 11) == Outcome::Accepted);
+    CHECK(pocket_opening(*shard, 3 * 9 + 5).outcome == Outcome::DestinationUnavailable);
+    // Mechanical relocation must still see the physical aperture while it
+    // contains real products/cargo. This geometry-only result cannot authorize
+    // transfer into the occupied carrier or through an occupied column.
+    CHECK(shard->set_cell(3 * 9 + 4, {Material::Sand, 1234, 7, 410}, Role::Cargo, 11) == Outcome::Accepted);
+    for (std::size_t x = 3; x <= 5; ++x) {
+        CHECK(pocket_opening(*shard, 3 * 9 + x).outcome == Outcome::DestinationUnavailable);
+        const auto geometry_only = pocket_opening(*shard, 3 * 9 + x, false);
+        CHECK(geometry_only.outcome == Outcome::Accepted && geometry_only.min_x == 3 &&
+            geometry_only.max_x == 6 && geometry_only.row == 3);
+    }
+    CHECK(pocket_opening(*shard, 3 * 9 + 2, false).outcome == Outcome::DestinationUnavailable);
+    CHECK(pocket_opening(*shard, shard->area(), false).outcome == Outcome::Invalid);
+    CHECK(pocket_opening(*registry.find(broad), 3 * 10 + 4, false).outcome == Outcome::DestinationUnavailable);
+    CHECK(shard->set_cell(0 * 9 + 5, {Material::Wood, 0, 0, 200}, Role::Structural, 12) == Outcome::Accepted);
+    CHECK(pocket_opening(*shard, 3 * 9 + 4, false).outcome == Outcome::DestinationUnavailable);
+    CHECK(shard->set_cell(0 * 9 + 5, {Material::Empty, 0, 0, 200}, Role::Empty, 12) == Outcome::Accepted);
+    CHECK(shard->set_cell(4 * 9 + 3, {Material::Empty, 0, 0, 200}, Role::Empty, 12) == Outcome::Accepted);
+    CHECK(pocket_opening(*shard, 3 * 9 + 4, false).outcome == Outcome::DestinationUnavailable);
 }
 
 void aperture_and_motion_contract() {
@@ -183,6 +264,7 @@ void curved_trajectory_has_no_hidden_wall_crossing() {
 int main() {
     sat_matches_polygon_oracle();
     aperture_and_motion_contract();
+    bounded_wide_aperture_and_rotated_world_carriers();
     curved_trajectory_has_no_hidden_wall_crossing();
     std::printf("ObjectShard contact: %llu checks, %llu failures\n",
         static_cast<unsigned long long>(checks), static_cast<unsigned long long>(failures));

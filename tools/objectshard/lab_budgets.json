@@ -1,0 +1,40 @@
+{
+  "schema": "objectshard-lab-budgets-v1",
+  "registered_utc": "2026-11-22T01:23:25Z",
+  "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+  "baseline": {
+    "native_sha256": "adb5fb9b90cbed1c2a688e75d0566cdebca5964a6cf570aa616f2766dfcc779a",
+    "engine": "Godot 4.7.2 local iteration; final qualification requires pinned Godot 4.7",
+    "compiler": "GCC 14.2 -O1 local iteration; final qualification uses repository pinned toolchains",
+    "evidence": "build/objectshard-iteration-m2b/profile-baseline.json, profile-copy-delta.json and snapshot-copy-comparison.json",
+    "samples_per_workload": 1200,
+    "empty_frame_p95_usec_after_copy_reduction": 2800,
+    "three_reacting_frame_p95_usec_after_copy_reduction": 4356,
+    "largest_measured_frame_usec_before_copy_reduction": 99436,
+    "largest_measured_frame_usec_after_copy_reduction": 48497,
+    "largest_promotion_pause_usec_after_copy_reduction": 7812,
+    "note": "Both cohorts use the identical native DLL and fixed-step workload. All material accounting and semantic native counters agree. Host scheduling variance is uncontrolled. The earlier 99.436 ms frame, including 84.974 ms inside native snapshot work, remains retained."
+  },
+  "minimum_samples_per_workload": 1000,
+  "required_workloads": ["empty_lab", "inert_moving", "reacting_one", "reacting_three", "perforated", "saturated_output", "dormant_three", "wake_burst_three"],
+  "limits": {
+    "frame_p95_usec": 16667,
+    "frame_p99_usec": 33334,
+    "frame_max_usec": 150000,
+    "promotion_pause_max_usec": 100000,
+    "geometry_install_max_usec": 50000,
+    "geometry_age_max_ticks": 1,
+    "geometry_wait_max_usec": 100000,
+    "rendered_present_interval_p95_usec": 50000,
+    "rendered_present_interval_p99_usec": 100000,
+    "rendered_present_interval_max_usec": 250000
+  },
+  "interpretation": [
+    "A 60 Hz owner playability target motivates the 16.667 ms p95 owner-thread allowance; presentation still requires physical evaluation on the target PC.",
+    "Hosted software-renderer intervals have a separate conservative diagnostic allowance. Passing them does not establish 60 Hz NVIDIA playability.",
+    "Every maximum is retained; percentiles never suppress a visible-stall report.",
+    "Construction and ordinary editing are separate from steady-frame timings. Promotion pause has its own limit.",
+    "Render submission elapsed time is nested inside presentation; occupancy includes contact and relocation. Do not sum nested counters.",
+    "World, compact storage and C++ allocation qualification are separately covered by native_budgets.json. Godot/Rapier/GPU allocation churn is not measured by this harness."
+  ]
+}

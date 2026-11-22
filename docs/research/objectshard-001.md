@@ -1,3 +1,13 @@
+---
+title: ObjectShard M0–M2 implementation and qualification
+status: Planned
+document-kind: research
+scope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance
+canonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]
+last-reviewed: 2026-11-22
+related-documents: [../operations/objectshard-lab-playtest.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md]
+---
+
 # OBJECTSHARD-001 — compact moving material domains
 
 Status: implementation in progress; staged Draft/HOLD research. No production
@@ -25,13 +35,23 @@ or persistence implementations. Ordinary native Water remains opt-in for
 Wave/ballistic; ordinary Godot gameplay keeps its existing Wave/spill/ballistic
 selection. This independent bounded Lab explicitly selects SerialInPlace.
 
+Accepted CI-only main `662df51cd8409a52332fa7ef15d06d8ab8945aed` was reconciled
+into the M0 branch without changing the production material inputs. The staged
+ancestry is [M0 #726](https://github.com/techrote/cybersand/pull/726), head
+`28fa42a5ad05d49fee96d1bba7252aaf36abf331`, then
+[M1 #728](https://github.com/techrote/cybersand/pull/728), head
+`1b85782a15565bad7e4dae28755b17d630daaf46`, then the M2 child branch
+`experiment/objectshard-001-m2-20261122`. Each stage is Draft/HOLD. No branch
+has been merged or promoted Ready. The final M2 qualification receipt must name
+its own exact commit; the earlier stage hashes do not qualify later changes.
+
 ## Executable stage boundaries
 
-| Stage | Behavior | Qualification at the M0 checkpoint |
+| Stage | Behavior | Recorded qualification boundary |
 | --- | --- | --- |
 | M0 | Compact inventory, ordinary-mutation discovery, exact promotion, actual collider switch and Rapier motion | Native and actual Linux iteration executed; independent scoped review passed |
 | M1 | Shared combustion, material products, mutable geometry and sleeping-body chemistry | Native scheduler and actual Linux Rapier Lab executed; exact results below |
-| M2 | Authentic output, physical Sand lodging, historical Water exposure, Windows evaluator | Subsequent work; not advertised by M0 capabilities |
+| M2 | Authentic output, physical Sand lodging, historical Water exposure, Windows evaluator | Implemented in the M2 child; final source-bound Linux/Windows campaign recorded separately from local iteration |
 
 ## Native contract
 
@@ -169,3 +189,161 @@ before transfer is not evidence of shard emission.
 
 These checkpoints are intentionally distinct from the later M2 candidate,
 whose outgoing/incoming transfers and Windows package require fresh execution.
+
+## M2 ownership and exchange
+
+The M2 coordinator owns World and all registry inventories under one exclusive
+Lab owner. The public bridge copies observations and explicit receipts; it never
+exposes mutable cell storage. The ordinary Workbench worker and immutable
+Workbench compound adapter are unchanged. The new revisioned adapter replaces
+complete exact geometry between manual Rapier steps, binds material/geometry
+revision, generation, mass, COM and inertia, and acknowledges actual installation.
+One native owner identity is independent of the number of compound rectangles.
+
+Every conservative exchange validates a monotonic transaction, session, shard
+generation, cell incarnation, body generation, applied geometry, pose serial,
+capability version and exact accepted tuple. It reserves local/World capacity
+before debiting inventory. A bounded receipt ring returns prior outcomes, while
+the retired sequence watermark prevents evicted transactions from executing
+again. Unexpected partial progress retains the actual sole owner in quarantine;
+expected stale, capacity, unsupported and destination refusals are nonmutating.
+
+**Authentic output:** Wood creates Fire32 in a real local product carrier. The
+outbox is a proposal referencing that carrier, not another material copy. At an
+admitted transformed destination the coordinator transfers the exact Fire tuple
+into a resident Empty World cell. World then executes its ordinary Fire→Smoke
+lifecycle and world-up movement. Blocked products remain occupied and execute
+only their supported retained lifecycle; no failed delivery deletes inventory.
+The declaration does not promise internal gas transport.
+
+**Physical Sand ingress:** baseline whole-cell Sand may lodge through an open
+one-to-three-cell-wide pocket. Structural side walls, the full supporting floor
+and a clear column to the local top define the aperture. Current pose and the
+bounded actual pose sweep must admit entry through that aperture. State and
+temperature transfer once; carried Sand is inspectable and visible, contributes
+declared unit-cell mass and occupancy, and does not create a structural bond.
+The Lab's C fixture uses a three-cell opening so ordinary small rigid-body
+rotation does not make the demonstration depend on perfect lattice alignment.
+
+Invalid side-entry history is retained until the complete aperture column is
+observably clear. History sampling runs before any cargo mutation and even when
+the transfer budget is zero or exhausted. Mechanical overlap relocation excludes
+all pocket capture columns, including temporarily occupied ones; it cannot
+manufacture a later valid-looking ingress by moving Sand through a solid wall.
+This is distinct from ordinary World material movement through a real opening.
+
+**External Water exposure:** before overlap relocation, a bounded pose sweep
+captures actual World-owned Water adjacent to a shard Wood cell. The historical
+fact binds incarnation, geometry/sample identity, semantic interval and expiry.
+It is consumed once at that Wood's next admitted two-tick opportunity, even if
+Water has departed. It grants no World debit or write. Wave flux, Water quantity,
+pressure/gas and inertial state remain World-owned. Replaced Wood cannot inherit
+another cell's accepted exposure.
+
+The admitted per-step motion envelope is at most four cells of translation and
+0.20 radians, with bounded contact sampling at half-cell spacing, maximum corner
+travel eight cells and at most32 samples. Unsupported movement or contact-history
+overflow is visible and fails safely. This is not arbitrary-speed chemical CCD.
+
+## Capability and lifecycle boundary
+
+| Capability | M2 declaration |
+| --- | --- |
+| Structural admission | Wood and separately admitted inert RedBrick; like-material cohesion; explicit Wall anchors |
+| Surface chemical contact | Selected non-consuming World Water extinction of burning shard Wood |
+| Selected reactions/lifecycle | Canonical pair resolver; shared Wood combustion, Fire expiry, Smoke lifetime/crowding; no arbitrary Plant admission |
+| Emission | Exact whole-cell Fire/Smoke; retained cargo release when draining and physically admitted |
+| Ingestion | Baseline whole-cell Sand through a validated bounded lodging pocket |
+| Momentum/state | Exact material tuple and temperature; declared carried-mass policy, not general solver momentum transfer |
+| Fractional quantity / solver sidecars | Unsupported; Wave, PressureFlow, Inertial Cellular and ballistic sidecars remain World-owned |
+| Internal transport | Unsupported; retained products have selected lifecycle, not a rotating gas or granular solver |
+| Persistence / fracture | Unsupported; controlled in-session reset and draining are implemented |
+
+The local lattice origin and random-coordinate anchor remain stable under
+motion and erosion. Disconnected structural islands set `split_pending` and
+continue reacting as one explicitly nonfracturing compound. Losing the last
+structural cell retires the body without deleting products or cargo. The draining
+owner retains its last validated pose as a release/inspection anchor; a retired
+RID is not an inventory destructor. Bounded blocked inventory remains visible.
+
+Per-material population accounting separates initial/authored creation and
+destruction, World tick changes, shard chemical transitions, conservative
+promotions/transfers and explicit whole-session reset disposal. Water quanta are
+reported separately. This is not universal stoichiometric mass conservation.
+
+## Qualification, measurement and retained failures
+
+The first local M2 Godot4.7.2 attempt retained three failures: the one-cell Sand
+opening did not admit real grains under ordinary small rotation, and Fire
+re-ignition delayed the chosen geometry observation. The fixture changed to a
+three-cell opening and includes one genuinely near-consumed Wood cell alongside
+the long-burning cell. No chemistry rule or unsupported decorative effect was
+introduced to make the test pass.
+
+The repaired local M2 iteration passed359 checks. At tick34, five World Sand
+grains became four World grains plus one carried grain with its tuple and
+temperature. Water extinguished the same Wood incarnation224→0 without a Water
+debit. Sleeping Wood progressed237→227, geometry changed, five real products
+were created and two Fire deliveries reached World. Three independent bodies
+created eight products and delivered four Fire carriers by tick94. This iteration
+used extension SHA256
+`adb5fb9b90cbed1c2a688e75d0566cdebca5964a6cf570aa616f2766dfcc779a`.
+It predates the final ingress hardening and is not final-source Windows evidence.
+
+After those repairs, the source-matched local M2c Godot4.7.2 iteration passed
+**373 checks, zero failures**, including moved→consumed→body-retired domains
+whose retained products remain at the actual final pose for both rendering and
+inspection. Its extension SHA256 is
+`36c04d20a1ae713466342b26454eb73f13e79f93ac9ec29c20df4d62c67584ef`.
+The corrected native catalogue has60,432 applicable checks with zero failures,
+plus192 unchanged World test cases. The separate final review executed350
+adversarial checks with zero failures. Exact inputs, sanitizer scope and remaining
+hosted gates are recorded in the [local qualification checkpoint](../audits/2026-11-22-objectshard-m2-local-qualification.md).
+
+Independent review subsequently reproduced side-entry laundering, transfer-
+budget history loss and overlap-relocation laundering. The failed probes and
+their source identities remain retained; focused repairs added persistent
+aperture history, a two-pass history/proposal schedule and relocation exclusions.
+Final evidence must execute those probes against the repaired source. Separate
+before/after-debit fault injection covers exact ownership, tuple, temperature,
+receipt replay and reset after exceptional partial progress.
+
+A fresh reviewer rebuilt the immutable original World wrapper and the extracted
+wrapper independently: all20 JSON fixture records were byte-identical, including
+the author's16 fixtures and four new serial/phased, signed-origin burn/expiry/
+epoch-wrap fixtures. The unchanged full World suite passed192 test cases with
+zero failures. Neither result is a claim about Windows or full-game acceptance.
+
+`tools/objectshard/run_native_tests.py` retains immutable input snapshots,
+compiler commands, bounded process logs and summaries. Its normal and sanitizer
+results are distinct; LeakSanitizer is explicitly disabled where unavailable.
+`run_benchmarks.py` records construction separately from steady state, exact
+allocation counters, p50/p95/p99/max and every failure. The fair serial miniature-
+World probe shares the same admitted payload, semantic clock, actual output and
+external World. Its reported scope must not be extrapolated to untested payloads.
+
+Native and actual-Godot budgets were registered before final qualification in
+`tools/objectshard/native_budgets.json` and `lab_budgets.json`. Native p95≤2ms,
+p99≤10ms and max≤50ms apply to the recorded development host, with no steady
+C++ allocation and bounded retained bytes. The Lab targets owner-thread p95≤
+16.667ms, with separate tail, promotion, geometry and software-renderer allowances.
+Elapsed owner-thread time is not process CPU time; requested C++ bytes are not
+RSS. Occupancy includes contact/relocation, and presentation includes submission;
+nested counters must not be added as disjoint work. Target Windows11/NVIDIA
+physical acceptance remains an owner action.
+
+## Reproduce the source-bound candidate
+
+The dedicated `ObjectShard requested source-bound Lab qualification` workflow
+runs only for an explicit ObjectShard milestone marker or dispatch on an
+ObjectShard branch. It uses hosted Linux and Windows runners, exact checked-out
+SHA, pinned engine/toolchains, selected Rapier hashes and immutable input ledgers.
+It neither publishes production runtimes nor cancels another campaign. Its
+scoped results do not replace mandatory merge gates.
+
+Linux builds and seals the exact extension before actual Godot tests and renders.
+Windows consumes a source-verified DLL candidate, executes the Lab, packages the
+exact project/runtime/dependencies, then replays that delivered package. Missing
+native receipts, ambiguous custody or modified delivered scripts are refusals.
+Partial failure logs remain artifacts. See the [owner procedure](../operations/objectshard-lab-playtest.md)
+for the verified launcher, scenarios, inspection and result export.

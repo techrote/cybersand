@@ -10,6 +10,18 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## ObjectShard moving materials — Draft/HOLD candidate
+
+| Question | Canonical route |
+| --- | --- |
+| How does native material ownership transfer into a moving, burning ObjectShard? | [Promotion, shared chemistry and M2 contract](../research/objectshard-001.md) |
+| What prevents duplicate Fire, stale Sand capture or lost Water contact? | [M2 ownership and exchange](../research/objectshard-001.md#m2-ownership-and-exchange) |
+| Are fracture, arbitrary liquids, internal gas transport and durable saves supported? | [Capability and lifecycle boundary](../research/objectshard-001.md#capability-and-lifecycle-boundary) |
+| How do I launch the exact Windows evaluator and record physical PASS/FAIL? | [ObjectShard Lab owner evaluation](../operations/objectshard-lab-playtest.md) |
+
+[Additive ObjectShard questions](retrieval-questions-objectshard.json) distinguish
+this implemented branch candidate from accepted-main behavior and owner acceptance.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |

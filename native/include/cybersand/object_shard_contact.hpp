@@ -36,6 +36,10 @@ struct Sweep {
     std::uint16_t samples{}; // Includes both endpoints; never less than two.
     double corner_motion{}, translation{}, rotation{};
 };
+struct PocketOpening {
+    Outcome outcome{Outcome::DestinationUnavailable};
+    std::uint16_t min_x{}, max_x{}, row{}; // Clear floor span [min_x, max_x), width 1–3.
+};
 struct PocketWitness {
     Outcome outcome{Outcome::DestinationUnavailable};
     std::size_t slot{};
@@ -134,11 +138,11 @@ struct PocketWitness {
 }
 
 namespace detail {
-[[nodiscard]] inline bool inside(Vec point, std::size_t x, std::size_t y) noexcept {
-    return point.x > static_cast<double>(x) + kEpsilon &&
-        point.x < static_cast<double>(x + 1) - kEpsilon &&
-        point.y > static_cast<double>(y) + kEpsilon &&
-        point.y < static_cast<double>(y + 1) - kEpsilon;
+[[nodiscard]] inline bool inside_opening(Vec point, PocketOpening opening) noexcept {
+    return point.x > static_cast<double>(opening.min_x) + kEpsilon &&
+        point.x < static_cast<double>(opening.max_x) - kEpsilon &&
+        point.y > static_cast<double>(opening.row) + kEpsilon &&
+        point.y < static_cast<double>(opening.row + 1) - kEpsilon;
 }
 [[nodiscard]] inline bool segment_hits_box(Vec first, Vec last, Aabb box) noexcept {
     double entry = 0.0, exit = 1.0;
@@ -171,9 +175,46 @@ namespace detail {
 }
 } // namespace detail
 
-// A real, currently empty lodging slot. World Sand's centre must be inside this
-// physical capture volume; left/right/bottom are structural retainers and the
-// local-up column is open. This does not turn cargo into structural cohesion.
+// Geometry query only, not an inventory reservation. A clear one-to-three-cell
+// floor span has structural side retainers and a complete floor, with an open
+// local-up column above every slot. Existing cargo/products close the opening
+// by default. The geometry-only query ignores nonstructural occupancy so the
+// coordinator can protect the entire aperture from mechanical relocation even
+// while a carrier is full; it never grants material-transfer admission.
+[[nodiscard]] inline PocketOpening pocket_opening(const Shard& shard,
+        std::size_t local_index, bool require_available = true) noexcept {
+    PocketOpening result;
+    if (local_index >= shard.area()) { result.outcome = Outcome::Invalid; return result; }
+    const auto bounds = shard.bounds();
+    const auto y = local_index / bounds.width;
+    const auto x = local_index % bounds.width;
+    const auto closed = [&](std::size_t index) noexcept {
+        return shard.structural(index) || (require_available && shard.occupied(index));
+    };
+    if (closed(local_index) || x == 0 || x + 1 >= bounds.width || y + 1 >= bounds.height)
+        return result;
+    auto left = x, right = x + 1;
+    while (left > 0 && !shard.structural(y * bounds.width + left - 1)) {
+        if (right - left == 3 || closed(y * bounds.width + left - 1)) return result;
+        --left;
+    }
+    while (right < bounds.width && !shard.structural(y * bounds.width + right)) {
+        if (right - left == 3 || closed(y * bounds.width + right)) return result;
+        ++right;
+    }
+    if (left == 0 || right == bounds.width) return result;
+    for (auto column = left; column < right; ++column) {
+        if (!shard.structural((y + 1) * bounds.width + column)) return result;
+        for (std::size_t above = 0; above <= y; ++above)
+            if (closed(above * bounds.width + column)) return result;
+    }
+    return {Outcome::Accepted, static_cast<std::uint16_t>(left),
+        static_cast<std::uint16_t>(right), static_cast<std::uint16_t>(y)};
+}
+
+// World Sand's centre must lie inside a real open pocket; its local slot is the
+// sole destination carrier. A wider aperture tolerates ordinary rotated raster
+// clearance without accepting trajectories through a side or retaining floor.
 [[nodiscard]] inline PocketWitness sand_pocket_witness(const Shard& shard,
         Pose before, Pose after, Vec world_sand_center, Envelope envelope = {}) noexcept {
     PocketWitness result;
@@ -192,15 +233,10 @@ namespace detail {
     const auto x = static_cast<std::size_t>(std::floor(center.x));
     const auto y = static_cast<std::size_t>(std::floor(center.y));
     const auto index = y * bounds.width + x;
-    if (!detail::inside(center, x, y) || shard.occupied(index) ||
-        !shard.structural(index - 1) || !shard.structural(index + 1) ||
-        !shard.structural(index + bounds.width)) return result;
-    for (std::size_t above = 0; above < y; ++above) {
-        const auto port = above * bounds.width + x;
-        if (shard.structural(port) || shard.role(port) == Role::Cargo) return result;
-    }
+    const auto opening = pocket_opening(shard, index);
+    if (opening.outcome != Outcome::Accepted || !detail::inside_opening(center, opening)) return result;
     const auto old_local = to_local(frame(before), world_sand_center);
-    const bool already_inside = detail::inside(old_local, x, y);
+    const bool already_inside = detail::inside_opening(old_local, opening);
     // A newly enclosing body must carry its opening over the grain. Entering
     // through a side or the retaining bottom is never accepted as ingestion.
     if (!already_inside && old_local.y > static_cast<double>(y) + kEpsilon) return result;
@@ -224,8 +260,8 @@ namespace detail {
         if (!crossed_aperture && previous.y <= static_cast<double>(y) && next.y > static_cast<double>(y)) {
             const auto crossing = previous.x + (next.x - previous.x) *
                 ((static_cast<double>(y) - previous.y) / (next.y - previous.y));
-            if (crossing <= static_cast<double>(x) + chord_error + kEpsilon ||
-                crossing >= static_cast<double>(x + 1) - chord_error - kEpsilon) return result;
+            if (crossing <= static_cast<double>(opening.min_x) + chord_error + kEpsilon ||
+                crossing >= static_cast<double>(opening.max_x) - chord_error - kEpsilon) return result;
             crossed_aperture = true;
         }
         previous = next;
@@ -237,7 +273,7 @@ namespace detail {
     result.material_revision = shard.material_revision();
     result.geometry_revision = shard.geometry().revision;
     result.local_center = center;
-    result.aperture_world = to_world(current, {static_cast<double>(x) + 0.5, static_cast<double>(y)});
+    result.aperture_world = to_world(current, {(opening.min_x + opening.max_x) * 0.5, static_cast<double>(y)});
     result.sweep_samples = sweep.samples;
     result.already_inside = already_inside;
     return result;

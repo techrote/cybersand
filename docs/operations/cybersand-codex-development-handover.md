@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## ObjectShard M0–M2 — 2026-11-22
+
+Continue the dedicated staged Draft/HOLD ObjectShard branches from M0 #726 and
+M1 #728; use the [implementation and evidence record](../research/objectshard-001.md)
+and [Windows Lab procedure](objectshard-lab-playtest.md). Shared World changes
+are limited to the opt-in mutation journal and behavior-preserving lifecycle
+seam; the Lab has a separate native facade and revisioned Rapier adapter.
+Preserve PUBPRES, GEN-006, SWARM and CI mission ownership. The owner authorized
+M0–M2 implementation and qualification, not Ready, merge, production defaults or
+release. Source-bound Windows automation does not establish physical acceptance.
+
 ## Workbench Art traffic lifetime — 2026-11-20
 
 [Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the

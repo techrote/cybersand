@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "purpose": "Additive questions for the Draft/HOLD ObjectShard M0–M2 branch candidate; no current-main or owner-acceptance implication.",
+  "questions": [
+    {
+      "id": "OBJECTSHARD01",
+      "query": "How does ObjectShard promotion transfer native material ownership and activate Rapier without duplicate collision?",
+      "canonical": ["research/objectshard-001.md"],
+      "facts": ["One exclusive Lab owner preflights and transfers exact inventory while both clocks are paused.", "Actual terrain installation and occupancy application precede BodyActivated; queued receipts are insufficient.", "This is a Draft/HOLD candidate, not ordinary production behavior."],
+      "sources": ["../../native/src/object_shard_coordinator.cpp", "../../godot/scripts/object_shard_physics_bridge.gd"]
+    },
+    {
+      "id": "OBJECTSHARD02",
+      "query": "Does a burning ObjectShard emit real Fire, and can external Water extinguish Wood after contact has ended?",
+      "canonical": ["research/objectshard-001.md"],
+      "facts": ["Wood uses its shared two-tick state_b lifecycle and creates Fire32 in a sole occupied product carrier.", "Exact output transfers into World, where ordinary Fire becomes Smoke.", "Historical non-consuming Water exposure is incarnation-bound, expiring and consumed once; Water remains World-owned."],
+      "sources": ["../../native/include/cybersand/material_lifecycle.hpp", "../../native/src/object_shard_coordinator.cpp"]
+    },
+    {
+      "id": "OBJECTSHARD03",
+      "query": "What makes ObjectShard Sand lodging physical and prevents side entry or overlap relocation from laundering a transfer?",
+      "canonical": ["research/objectshard-001.md"],
+      "facts": ["Whole-cell Sand requires an open one-to-three-cell pocket and valid bounded pose sweep.", "Invalid ingress history survives budget exhaustion and stationary frames until the aperture clears.", "Mechanical relocation excludes pocket columns; cargo retains exact state and temperature separately from structural bonds."],
+      "sources": ["../../native/include/cybersand/object_shard_contact.hpp", "../../native/src/object_shard_coordinator.cpp"]
+    },
+    {
+      "id": "OBJECTSHARD04",
+      "query": "How do I launch and verify the ObjectShard Windows Lab and record scenarios A through D?",
+      "canonical": ["operations/objectshard-lab-playtest.md"],
+      "facts": ["Extract the complete source-bound evaluator and use Open ObjectShard Lab.cmd.", "The manifest binds source, DLL, pinned engine, selected Rapier and complete file inventory.", "Windows automation and rendered evidence do not establish the owner's physical Windows11/NVIDIA acceptance."],
+      "sources": ["../../tools/objectshard/package_windows_lab.py", "../../tools/objectshard/qualify_lab.py"]
+    },
+    {
+      "id": "OBJECTSHARD05",
+      "query": "Does ObjectShard M2 implement fracture, arbitrary fluid solver transfer, internal transport or durable persistence?",
+      "canonical": ["research/objectshard-001.md"],
+      "facts": ["These capabilities are unsupported; advanced solver sidecars remain World-owned.", "Disconnected islands continue chemistry in one declared split_pending compound.", "Products and cargo retain a draining owner after the last rigid cell disappears; reset disposal is explicit."],
+      "sources": ["../../native/include/cybersand/object_shard.hpp", "../../native/src/object_shard_coordinator.cpp"]
+    }
+  ]
+}

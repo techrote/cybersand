@@ -68,24 +68,30 @@ struct BodyView {
     std::uint64_t transaction{}, body_generation{};
     PoseSample pose{};
     PoseSample previous_pose{};
-    bool has_body{}, geometry_pending{}, pocket_open{};
+    std::uint64_t geometry_pending_tick{},geometry_pending_ns{};
+    bool has_body{}, geometry_pending{}, pocket_open{},ingress_fenced{};
     std::uint32_t pocket_cell{};
 };
 struct Accounting {
     std::array<std::uint64_t, kQuantityMaterialSlots> promoted{}, ingested{}, emitted{};
     std::array<std::uint64_t, kQuantityMaterialSlots> created{}, destroyed{}, expired{}, reset_disposed{};
+    std::array<std::uint64_t, kQuantityMaterialSlots> setup_created{}, authored_created{}, authored_destroyed{};
+    std::array<std::int64_t, kQuantityMaterialSlots> world_tick_delta{};
+    std::uint64_t reset_water_quanta{};
     std::uint64_t extinguished{}, accepted_exposures{}, consumed_exposures{};
 };
 struct Metrics {
     std::uint64_t steps{}, paused_calls{}, discovered_cells{}, promotions{}, refusals{};
     std::uint64_t chemistry_cells{}, products_created{}, output_blocked{}, sand_ingested{};
-    std::uint64_t exposure_overflows{}, stale_messages{}, mask_cells{}, sweep_samples{};
+    std::uint64_t exposure_overflows{}, stale_messages{}, mask_cells{}, sweep_samples{},ingress_blocked{};
     std::uint64_t world_ns{}, chemistry_ns{}, contact_ns{}, occupancy_ns{}, geometry_ns{}, snapshot_ns{};
-    std::uint64_t maximum_pause_ns{}, maximum_geometry_age{}, maximum_product_age{};
+    std::uint64_t discovery_ns{},terrain_ns{},exchange_ns{},relocation_ns{};
+    std::uint64_t maximum_pause_ns{}, maximum_geometry_age{}, maximum_geometry_wait_ns{},maximum_product_age{};
     std::size_t coordinator_bytes{}, world_bytes{}, live_bytes{}, retained_bytes{}, peak_bytes{};
 };
 struct Snapshot {
     std::uint64_t session{}, world_incarnation{}, tick{};
+    std::uint64_t next_transaction{};
     Bounds bounds{};
     bool paused{}, quarantined{};
     Result last_result{};
@@ -110,6 +116,8 @@ struct TransferRequest {
     std::uint32_t cell{}, incarnation{};
     std::int64_t world_x{}, world_y{};
     Payload expected{};
+    std::uint64_t world_witness{};
+    std::uint32_t capability_version{kCapabilityVersion};
 };
 
 class Coordinator {
@@ -135,6 +143,8 @@ public:
     [[nodiscard]] Payload inspect_world(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] const Metrics& metrics() const noexcept { return metrics_; }
     [[nodiscard]] const Accounting& accounting() const noexcept { return accounting_; }
+    [[nodiscard]] std::uint64_t next_transaction() const noexcept { return next_transaction_; }
+    [[nodiscard]] std::uint64_t world_witness(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool paused() const noexcept;
 
 private:
@@ -153,7 +163,14 @@ private:
     std::uint32_t discovery_serial_{1};
     std::uint32_t discovery_remaining_{};
     std::vector<std::uint16_t> proposed_mask_;
+    struct Relocation { std::int64_t from_x{},from_y{},to_x{},to_y{}; Payload payload{}; };
+    std::vector<Relocation> relocations_;
+    std::vector<std::uint8_t> reserved_destinations_;
+    std::vector<std::uint8_t> ingress_exclusion_;
     std::vector<Exposure> exposures_;
+    struct PocketFence { Handle shard{};std::uint16_t min_x{},max_x{},row{}; };
+    std::vector<PocketFence> ingress_fences_;
+    std::vector<TransferRequest> ingress_proposals_;
     std::uint64_t next_exposure_{1};
     std::vector<Receipt> receipts_;
     std::uint64_t retired_transaction_{};
@@ -180,7 +197,12 @@ private:
     void rebuild_terrain();
     [[nodiscard]] Outcome apply_poses(std::span<const PoseSample> poses);
     [[nodiscard]] Outcome rebuild_mask(bool capture_contact);
-    void capture_water(Shard& shard, const BodyView& body, const PoseSample& pose);
+    [[nodiscard]] Outcome capture_water(Shard& shard, const BodyView& body);
+    [[nodiscard]] Outcome reconcile_overlap();
+    void automatic_ingress();
+    void refresh_ingress_fences();
+    [[nodiscard]] bool pocket_fenced(Handle shard,std::uint32_t cell) const noexcept;
+    [[nodiscard]] Outcome fence_invalid_entry(Handle shard,std::uint32_t cell);
     void advance_chemistry();
     void advance_products_and_exchange();
     void record_transition(Payload before, Payload after, bool expiry = false) noexcept;

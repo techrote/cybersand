@@ -12,6 +12,7 @@ var scenario_select: OptionButton
 var brush_select: OptionButton
 var pause_button: Button
 var status_label: Label
+var subtitle_label: Label
 var inventory_label: RichTextLabel
 var inspection_label: RichTextLabel
 var help_label: Label
@@ -55,11 +56,11 @@ func _build_interface() -> void:
 	title.add_theme_font_size_override("font_size", 27)
 	title.add_theme_color_override("font_color", Color("b2e2e8"))
 	layout.add_child(title)
-	var subtitle := Label.new()
-	subtitle.text = "Moving native material · continuing chemistry · bounded exchange     /     Experimental M0–M2 · Draft / HOLD"
-	subtitle.add_theme_font_size_override("font_size", 14)
-	subtitle.add_theme_color_override("font_color", Color("a5b5c5"))
-	layout.add_child(subtitle)
+	subtitle_label = Label.new()
+	subtitle_label.text = "Source-bound experimental material runtime · Draft / HOLD"
+	subtitle_label.add_theme_font_size_override("font_size", 14)
+	subtitle_label.add_theme_color_override("font_color", Color("a5b5c5"))
+	layout.add_child(subtitle_label)
 	var toolbar := HBoxContainer.new()
 	toolbar.add_theme_constant_override("separation", 8)
 	layout.add_child(toolbar)
@@ -112,14 +113,15 @@ func _build_interface() -> void:
 	side.add_child(side_title)
 	inventory_label = RichTextLabel.new()
 	inventory_label.bbcode_enabled = true
-	inventory_label.fit_content = true
+	inventory_label.fit_content = false
+	inventory_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	inventory_label.custom_minimum_size = Vector2(285, 220)
 	inventory_label.add_theme_font_size_override("normal_font_size", 14)
 	side.add_child(inventory_label)
 	inspection_label = RichTextLabel.new()
 	inspection_label.bbcode_enabled = true
-	inspection_label.fit_content = true
-	inspection_label.custom_minimum_size = Vector2(285, 150)
+	inspection_label.fit_content = false
+	inspection_label.custom_minimum_size = Vector2(285, 110)
 	inspection_label.add_theme_font_size_override("normal_font_size", 13)
 	inspection_label.text = "Inspect a cell to see its actual owner, material, burn state and temperature."
 	side.add_child(inspection_label)
@@ -153,6 +155,10 @@ func _open(scenario: int) -> void:
 	var result: Dictionary = session.open(scenario, 12)
 	if session.native != null:
 		var milestone: int = int(session.native.capabilities().get("implemented_milestone", 0))
+		var summaries: Array[String] = ["M0 · native ownership transfer and Rapier motion",
+			"M1 · native ownership, motion and continuing selected chemistry",
+			"M2 · moving native material, continuing chemistry and bounded real exchange"]
+		subtitle_label.text = summaries[clampi(milestone, 0, 2)] + "     /     Draft / HOLD"
 		for index: int in range(1, SCENARIOS.size()):
 			scenario_select.set_item_disabled(index, milestone < (1 if index == 1 else 2))
 	pause_button.text = "Resume"
@@ -227,10 +233,15 @@ func _cell_pressed(position: Vector2i, button: int) -> void:
 		inspection_label.text = "[b]Exact cell[/b]\n" + JSON.stringify(session.inspect(position), "  ")
 		return
 	if brush_select.selected == 1:
-		session.ignite(position)
+		var result: Dictionary = session.ignite(position)
+		if not result.get("ok", false):
+			inspection_label.text = "[b]Ignition refused[/b]\n" + str(result.get("outcome", "unknown"))
 	else:
 		var material: int = MATERIALS[brush_select.selected]
-		session.edit(position, material, 255 if material == 3 else 0)
+		var result: Dictionary = session.edit(position, material, 255 if material == 3 else 0)
+		if not result.get("ok", false):
+			inspection_label.text = "[b]World edit refused[/b]\n" + str(result.get("outcome", "unknown")) \
+				+ "\nMoving inventory has its own native owner. Inspect or ignite that material."
 	_present()
 
 
@@ -247,6 +258,13 @@ func _present() -> void:
 	else:
 		status_label.add_theme_color_override("font_color", Color("7fd4b0"))
 	var text: String = "Session %d · tick %d\n" % [int(session.frame.session), int(session.frame.tick)]
+	var capabilities: Dictionary = session.native.capabilities()
+	text += "M%d · capability v%d\n" % [int(capabilities.get("implemented_milestone", 0)), int(capabilities.get("version", 0))]
+	text += "Chemistry %s · output %s\nSand lodging %s · Water contact %s\n" % [
+		"yes" if capabilities.get("reaction", false) else "no", "yes" if capabilities.get("emission", false) else "no",
+		"yes" if capabilities.get("ingestion", false) else "no", "yes" if capabilities.get("surface_contact", false) else "no"]
+	if int(capabilities.get("transfer_budget_per_tick", 64)) == 0:
+		text += "[color=#ffcf66]Transfer capacity zero · retain products[/color]\n"
 	for shard: Dictionary in session.frame.get("shards", []):
 		text += "\n[b]Shard %d[/b]  %s\n" % [int(shard.id), str(shard.lifecycle)]
 		text += "Wood/structure %d · products %d\nSand cargo %d · shapes %d\n" % [
@@ -254,6 +272,8 @@ func _present() -> void:
 		text += "Material r%d · geometry r%d\n" % [int(shard.material_revision), int(shard.geometry_revision)]
 		if shard.split_pending:
 			text += "[color=#ffcf66]split_pending · one compound[/color]\n"
+		if shard.get("ingress_fenced", false):
+			text += "[color=#ffcf66]Pocket admission held until clear[/color]\n"
 	var metrics: Dictionary = session.frame.get("metrics", {})
 	text += "\n[b]Native events[/b]\nPromotions %d · products born %d\nSand ingested %d · output waits %d\n" % [
 		int(metrics.get("promotions", 0)), int(metrics.get("products_created", 0)),

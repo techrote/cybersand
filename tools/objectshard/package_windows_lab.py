@@ -70,7 +70,8 @@ def package(args: argparse.Namespace) -> dict:
         raise ValueError("Refusing to overwrite an evaluation directory")
     candidate = native.verify(ROOT, args.native_candidate)
     # Packaging also binds scripts/scenarios/launchers, beyond the native ledger.
-    git("diff", "--exit-code", "HEAD", "--", "godot", "tools/objectshard", args.guide)
+    git("diff", "--exit-code", "HEAD", "--", "godot", "tools/objectshard", args.guide,
+        ":!godot/addons/*/bin/*", ":!godot/.godot/*")
     engine, engine_identity = windows.prepare_godot(args.godot_archive)
     verify_vc_runtime(args.vc_runtime)
     rapier = ROOT / windows.RAPIER

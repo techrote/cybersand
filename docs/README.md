@@ -662,6 +662,17 @@ separate bounded/versioned work. Kinetic/contact anomalies are captured/reduced
 and routed to their real physics owner instead of being hidden in interaction rules.
 
 
+## ObjectShard M0–M2 candidate
+
+The [compact native ObjectShard implementation](research/objectshard-001.md)
+is a separate Draft/HOLD branch candidate: exact material ownership, shared
+combustion, revisioned Rapier geometry, real Fire output, physical Sand lodging
+and historical Water exposure. The [Lab owner procedure](operations/objectshard-lab-playtest.md)
+explains the source-bound Windows package and explicit physical acceptance.
+This does not promote the older soliding programme, change ordinary defaults,
+or establish fracture/persistence. [Focused retrieval questions](reference/retrieval-questions-objectshard.json)
+keep this candidate's capabilities and evidence limits explicit.
+
 ## Scalable reversible soliding
 
 The [current #12 programme](operations/soliding-programme.md) supersedes the bounded

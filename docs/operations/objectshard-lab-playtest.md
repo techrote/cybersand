@@ -52,6 +52,10 @@ The optional **Shapes / centre of mass / pocket** overlay shows exact collision
 rectangles in cyan, centre of mass in gold and the admitted pocket in green.
 Empty holes remain empty. The side panel records structural inventory, products,
 cargo, revisions, native events and measured frame/promotion costs.
+The ownership and inspection panes scroll when their diagnostics exceed the
+available window height. World brushes edit stationary material; moving Wood
+has its own owner and supports inspection and ignition, with erosion supplied
+by its native chemistry.
 
 ## Scenario A — ordinary detachment
 
@@ -93,6 +97,9 @@ Ignite Wood, then place Water against an exposed burning surface. Water remains
 owned by World while the accepted contact extinguishes that Wood incarnation.
 Pause, inspect and single-step to see the change. Contact and ingestion are
 separate capabilities; Water is not silently copied into a private liquid solver.
+The admitted opening is one to three cells wide. A suspicious sideways entry
+holds ingestion until that local opening is clear again; it must not become a
+valid capture merely because the body subsequently stops moving.
 
 **PASS:** real Sand is removed from World exactly once and becomes inspectable
 cargo; genuine Water contact changes burning Wood; failed delivery retains its
@@ -115,6 +122,12 @@ directory. It includes the package-provided source revision, engine/platform,
 scenario, session, accounting, metrics, recent events and frame samples. Include
 that file with a short description of what you saw. A screenshot or short video
 is particularly useful for visible stalls or contact problems.
+The export includes separate owner identities, material populations, geometry
+revisions and the last physical pose of a draining domain after its body retires.
+Timing values are elapsed time on the owner thread and include operating-system
+preemption; they are not process CPU utilization. Native memory counters are an
+accounted lower bound, with separate allocator measurements in the qualification
+report.
 
 The export is an observation record, not a durable gameplay save. Reset explicitly
 disposes the entire experimental session and invalidates its old handles.
@@ -135,3 +148,10 @@ or liquid transport, fractional liquid ingestion, solver-sidecar transfer,
 durable save/restore or streaming. Wave, PressureFlow, inertial and ballistic
 state remain with their existing World owner. Production Water defaults are
 unchanged.
+
+The initial motion envelope admits up to four cells of translation and 0.20
+radians of rotation per semantic step. An unsupported motion interval holds the
+Lab with exact inventory retained; arbitrary high-speed chemical collision
+coverage is not claimed. The diagnostic native `transfer_budget` can be set to
+0–64 during construction for resource-pressure tests; the owner launcher uses
+the ordinary Lab default of 64 and provides no new Workbench control.
