@@ -1,8 +1,6 @@
 # OBJECTSHARD-001 native performance qualification
 
-The historical candidate `1bb6185...` passed all **74 registered performance limits**.
-The later portable-math source has a separate [delta report](2026-11-22-objectshard-portable-math-performance-delta.md)
-with ten retained timing failures; this earlier pass does not qualify that later source.
+The repaired M2 native source passes all **74 registered performance limits**.
 Every measured source input matches commit
 `1bb6185be05f5ef838543a0e13c81428b751d969` (Draft/HOLD PR #730).
 These measurements cover native C++ execution with synthetic pose inputs and
