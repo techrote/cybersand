@@ -1388,7 +1388,11 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
-	if host != null and host.object_shard_m4_probe.enabled:
+	# Existing Save/paint-editor tests also use a minimal Control host without
+	# Main's instrumentation property. It must remain a valid Workbench client.
+	var m4_probe_enabled: bool = host != null and host.has_method("object_shard_m4_latency_report") \
+		and host.object_shard_m4_probe.enabled
+	if m4_probe_enabled:
 		host.object_shard_m4_probe.mark_input(pos, "ordinary_brush")
 	if paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before painting.")
@@ -1418,7 +1422,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 		var recipe := Setup.rectangles(applied)
 		applied.edits.pop_back()
 		if recipe.has("error"): return refuse(recipe.error)
-	var m4_queue_started_usec: int = Time.get_ticks_usec() if host.object_shard_m4_probe.enabled else -1
+	var m4_queue_started_usec: int = Time.get_ticks_usec() if m4_probe_enabled else -1
 	var admitted_brush: bool = host.queue_brush_mutation(pos.x,pos.y,int(applied.brush),material)
 	if m4_queue_started_usec >= 0:
 		host.object_shard_m4_probe.record_duration("queue_admission", m4_queue_started_usec,
