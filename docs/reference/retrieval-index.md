@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -356,6 +356,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
+| Can worldgen showcases run concurrently without losing sanitizer coverage or accepting partial work? | [Parallel worldgen showcase execution](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution); seven required independent showcases precede nine ordered principal tests within the existing two-job Make limit. |
 | How does soliding avoid repeated compilation without reusing stale objects or skipping tests? | [Soliding compilation reuse](../operations/ci-execution-and-performance.md#soliding-compilation-reuse), [local validation](../operations/local-build-and-validation.md#soliding-successor-validation); hosted timings and admission remain source-bound CI-OPT-003 PR evidence. |
 | How do six Native families and four Windows shards preserve CI coverage and deadlines, and may scope advice skip Native? | [Parallel validation contract](../operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31), [exact coverage](../operations/testing-validation-and-replay.md#parallel-native-and-four-way-windows-admission), and [source-bound integration audit](../audits/2026-10-31-ci-parallel-production-integration.md). Scope advice grants no exemption; predecessor timing is not resulting-head qualification. |
 | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |

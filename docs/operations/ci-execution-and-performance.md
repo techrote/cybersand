@@ -71,8 +71,9 @@ records estimator inputs, selected counts, original results and limitations.
 The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains
 six hours; an individual case that cannot fit or an oversized matrix is rejected.
 
-The six Native families retain the exact original 20 commands and scientific
-inputs. [Their planner](../../tools/ci/native_execution_policy.py) derives
+The six Native families retain the same 20 command obligations and scientific
+inputs; the two worldgen commands add output grouping as described below.
+[Their planner](../../tools/ci/native_execution_policy.py) derives
 180/350/180/333/284/223-minute parents for TSan, normal, ASan, worldgen,
 soliding-normal and soliding-ASan respectively. The physics CLI inventory still
 contains all 154 original invocations, each with a 300-second operation budget;
@@ -104,6 +105,43 @@ Invalid documentation or stale runtime inputs fail sooner, while a successful
 candidate still executes the complete original inventory. This ordering change
 targets time to actionable failure, not a claimed reduction in successful-run
 wall time. It changes neither publication ownership nor runtime provenance.
+
+## Parallel worldgen showcase execution
+
+The complete normal and ASan/UBSan worldgen targets each retain 28 original
+compiler/link commands, 12 objects, 16 executables and 16 test executions. Seven
+independent showcase executables are individual required Make targets. Hosted
+execution uses the existing two-job Make limit for both compilation and tests;
+it adds no worker pool or extra family. Each ordinary showcase invocation uses
+its original deterministic fixtures and no shared output files. Optional export
+and benchmark modes remain outside these invocations.
+
+All seven showcases must succeed before the nine principal test recipes run in
+their original order. The showcase completion order is intentionally independent.
+`--output-sync=target` keeps each target's diagnostic output together. Before
+replaying output to Make, each showcase writes its combined raw stdout/stderr to
+`build/worldgen-showcase-logs/<binary>.log`. This preserves flushed diagnostics
+when a watchdog or cancellation terminates Make before its grouped buffer is
+printed. Native artifacts retain these files on success and failure. Each file
+has a source/run/attempt/binary header; the reducer requires all fourteen normal
+and sanitized logs with the current context and original hashes. Missing, stale,
+unexpected or header-only logs cannot qualify. Local executions without GitHub
+identity are explicitly marked unqualified.
+
+A failed prerequisite prevents successful aggregate completion; an already-running
+peer may finish while Make unwinds. The original outer watchdog and descendant
+cleanup remain responsible for a hung or cancelled peer. The original test exit
+takes precedence over an output replay failure, and incomplete work cannot pass
+the Native evidence reducer.
+
+The [worldgen build inventory](../../tools/ci/check_worldgen_build_inventory.py)
+records the seven mandatory showcase executions and nine ordered principal
+executions separately. [Actual Make regressions](../../tools/ci/test_worldgen_build_inventory.py)
+check coverage, the two-job limit and failure behavior. The two worldgen outer
+commands gain only the output-grouping option; compiler flags, sanitizer
+environments, assertions, inputs and command watchdogs remain unchanged.
+Exact-source hosted comparisons and final required checks determine admission;
+the source-level concurrency change alone is not a measured CI speedup.
 
 ## Soliding compilation reuse
 
