@@ -141,6 +141,9 @@ public:
     Coordinator& operator=(const Coordinator&) = delete;
     [[nodiscard]] const Config& config() const noexcept { return config_; }
     [[nodiscard]] const World& world() const noexcept { return *world_; }
+    // M4 failure-safe identity preflight: an exceptional reset may leave no World.
+    // Never return a borrowable native pointer to an outside controller.
+    [[nodiscard]] bool world_available() const noexcept { return world_ != nullptr; }
     [[nodiscard]] const Registry& registry() const noexcept { return registry_; }
     [[nodiscard]] Result reset(std::uint32_t scenario, std::uint64_t seed);
     [[nodiscard]] Result step(std::span<const PoseSample> poses = {});
