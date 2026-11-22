@@ -65,8 +65,8 @@ competing source owners and **does not satisfy M4**.
 - godot/scripts/object_shard_m4_latency_probe.gd: bounded opt-in 512-event
   and 256-per-stage rings, worker reports labelled as potentially nested,
   actual Rapier step, texture submission, callback and post-draw timing.
-  No synthetic native execution time, additive total, inferred scanout or
-  auto-written disk log.
+  No synthetic native execution time, additive total, exact drawn-serial
+  inference, GPU scanout claim or auto-written disk log.
 - godot/scripts/main.gd: flag --objectshard-m4-workbench enables only
   observational sampling and lifecycle-safe post-draw registration. Existing
   Water and Rapier algorithms remain unchanged.
@@ -143,11 +143,12 @@ uploaded-frame pose are still the publication authority.
 | Physics | Actual main-thread rapier_bridge.step wall time | May include off-CPU wait |
 | Texture upload | Actual upload_texture_patches submission interval and acceptance | No GPU completion timestamp |
 | Main scene callback | Full Main._process duration | Encloses upload, not additional pipeline time |
-| Post-draw | Accepted upload to Godot frame_post_draw callback | Not monitor scanout |
+| Post-draw | Accepted upload to deferred Godot frame_post_draw callback | Signal carries no render serial; callback need not display that exact upload; not monitor scanout |
 | Input to presented | Requires the SAME action ID and material+pose publication all the way to displayed callback | **UNMEASURED** until native integration |
 
 The opt-in report explicitly sets no_additive_stage_total=true and
-input_to_post_draw_causally_proven=false. Bounded trace export must be
+input_to_post_draw_causally_proven=false and
+frame_serial_coherence_proven=false. Bounded trace export must be
 explicit and uses user:// only. The separate historical full-image GPU
 publication stalls remain a significant independent risk.
 
