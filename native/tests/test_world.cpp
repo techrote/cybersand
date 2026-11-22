@@ -42,6 +42,12 @@ using cybersand::World;
 using cybersand::WorldConfig;
 using cybersand::WaterExperimentPolicy;
 
+// Windows MSVC tests intentionally construct several Worlds on the stack.
+// The expanded actor/proxy identity budget must not embed large per-body arrays
+// in each World object. Catch a repeat of the 4,097-lane stack regression.
+static_assert(sizeof(World) < 64U * 1024U,
+    "World stack footprint exceeds 64 KiB; heap-own bounded response lanes");
+
 void require(bool condition, std::string_view message) {
     if (!condition) throw std::runtime_error(std::string(message));
 }
