@@ -149,7 +149,7 @@ func _desktop_surface() -> void:
 	root.add_child(desktop)
 	await process_frame
 	_expect(desktop.actor_prototype_panel != null, "actor panel missing")
-	_expect(desktop.actor_prototype_panel.usable_choice.item_count == 33, "F5 equipment picker does not expose None + 32 usables")
+	_expect(desktop.actor_prototype_panel.usable_choice.item_count == 46, "F5 equipment picker does not expose None + 45 usables")
 	_expect(desktop.usable_overlay != null, "usable overlay missing")
 	desktop.paused = true
 	_expect(not desktop.apply_actor_equipment_configuration(0,1.0), "paused desktop accepted equip-only command")

@@ -165,7 +165,7 @@ static func valid_definitions(definitions: Array) -> bool:
 			if value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0: return false
 			prepared = Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
 		var selected: Variant = value.get("usable_index", Loadouts.entry(model).get("usable_index", -1))
-		if prepared.is_empty() or not _integer(selected, -1, 31): return false
+		if prepared.is_empty() or not _integer(selected, -1, CyberUsableCatalog.count() - 1): return false
 		if str(prepared.get("equipment_preparation", "mounted")) == "none" and int(selected) != -1: return false
 		var count: int = prepared.parts.size()
 		if count < 1 or count > MAX_PARTS: return false

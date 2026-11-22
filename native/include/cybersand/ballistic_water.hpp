@@ -91,6 +91,7 @@ enum class BallisticLaunchOutcome : std::uint8_t {
     NonResident,
     InsufficientQuantity,
     Paused,   // wave_flow_v1 only: the spawn or source cell is outside the selected simulation region
+    NotAdmitted,  // BS-001: cell cannot be transported by the whole-cell ballistic owner
 };
 
 struct BallisticLaunchResult {

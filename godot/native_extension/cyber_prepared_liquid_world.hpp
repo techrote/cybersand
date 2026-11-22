@@ -369,15 +369,18 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         // WCX/BW-001 experimental construction options: workbench only, explicit,
         // never inherited from the replaced World. Absent keeps every default.
         config->ballistic_water = {};
+        // EQUIP-RECOVERY-001: disabled unless explicitly requested for a Workbench World.
+        config->ballistic_solids = {};
         config->inertial_signed_vertical = false;
         config->wave_flow = {};
         for (const char* key : {"workbench_ballistic", "workbench_inertial_signed", "workbench_face_release",
-                                "workbench_wave_flow"}) {
+                                "workbench_wave_flow", "workbench_ballistic_solids"}) {
             if (!options.has(key)) continue;
             if (!workbench || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Experimental Water options require the workbench and a boolean value");
         }
         config->ballistic_water.enabled = options.get("workbench_ballistic", false);
+        config->ballistic_solids.enabled = options.get("workbench_ballistic_solids", false);
         config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
@@ -483,6 +486,23 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             config->wave_flow.spill.*(knob.member) = static_cast<std::int32_t>(value);
         }
         if (config->wave_flow.spill.enabled && !spill_parcels) config->wave_flow.spill.launch_budget = 0;
+
+        // The Wave Flow spill adapter may have enabled Water later than the
+        // ordinary Workbench ballistic option. Verify the final configuration.
+        if (config->ballistic_solids.enabled && !config->ballistic_water.enabled)
+            throw std::invalid_argument("Ballistic solids require ballistic Water");
+        for (const char* key : {"workbench_ballistic_capacity", "workbench_solids_capacity"}) {
+            if (!options.has(key)) continue;
+            const bool solids_key = std::string_view(key) == "workbench_solids_capacity";
+            if (!workbench || options[key].get_type() != Variant::INT ||
+                !(solids_key ? config->ballistic_solids.enabled : config->ballistic_water.enabled))
+                throw std::invalid_argument("Ballistic capacity requires its enabled workbench owner and an integer");
+            const std::int64_t value = options[key];
+            if (value < 1 || value > 65'536)
+                throw std::invalid_argument("Ballistic capacity outside 1..65536");
+            if (solids_key) config->ballistic_solids.capacity = static_cast<std::uint32_t>(value);
+            else config->ballistic_water.capacity = static_cast<std::uint32_t>(value);
+        }
         // WCX-FR workbench tuning: explicit integers inside the native admission
         // bounds; absent keys keep the ballistic_water_v1 defaults.
         struct FaceKnob { const char* key; std::int64_t low, high; };

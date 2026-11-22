@@ -120,6 +120,15 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inject_water_parcel", "position", "velocity_cells_per_tick", "quantity"),
                          &CyberNativeCellWorld::inject_water_parcel);
     ClassDB::bind_method(D_METHOD("inspect_ballistic_parcels", "maximum"), &CyberNativeCellWorld::inspect_ballistic_parcels);
+    ClassDB::bind_method(D_METHOD("inject_solid_parcel", "position", "velocity_cells_per_tick", "material"),
+                         &CyberNativeCellWorld::inject_solid_parcel);
+    ClassDB::bind_method(D_METHOD("launch_solid_parcel", "cell", "position", "velocity_cells_per_tick"),
+                         &CyberNativeCellWorld::launch_solid_parcel);
+    ClassDB::bind_method(D_METHOD("launch_water_parcel", "cell", "position", "velocity_cells_per_tick"),
+                         &CyberNativeCellWorld::launch_water_parcel);
+    ClassDB::bind_method(D_METHOD("get_ballistic_solids"), &CyberNativeCellWorld::get_ballistic_solids);
+    ClassDB::bind_method(D_METHOD("inspect_ballistic_solids", "maximum"), &CyberNativeCellWorld::inspect_ballistic_solids);
+    ClassDB::bind_method(D_METHOD("get_material_population", "material"), &CyberNativeCellWorld::get_material_population);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_wave_flow_status"), &CyberNativeCellWorld::get_wave_flow_status);
@@ -496,8 +505,12 @@ bool CyberNativeCellWorld::simulation_tick() {
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
     try {
+        // Owned in-flight material changes presentation even while the terrain rests.
+        const bool ballistic_before = world_->ballistic_parcel_count() != 0U || world_->ballistic_solid_count() != 0U;
         last_stats_ = world_->tick();
-        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U) ++revision_;
+        const bool ballistic_after = world_->ballistic_parcel_count() != 0U || world_->ballistic_solid_count() != 0U;
+        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U ||
+            ballistic_before || ballistic_after) ++revision_;
         succeeded = true;
     } catch (const std::exception& error) {
         record_native_failure("simulation_tick", error.what());
