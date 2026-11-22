@@ -1,0 +1,181 @@
+name: CI-RAMDISK-001 four-shard Linux Godot controlled comparison
+
+# Deliberately isolated: this one research branch's workflow addition launches
+# exactly one experiment. It is not part of normal production/PR validation.
+on:
+  push:
+    branches: [ci/ramdisk-four-shards-20261122]
+    paths:
+      - '.github/workflows/ci-ramdisk-four-shards.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ci-ramdisk-four-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  source-built-runtime:
+    name: Build exact-source Linux native runtime once
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+      - name: Fetch and validate pinned Rapier runtime
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+      - name: Prepare exact pinned compiler and dependency source
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build original pinned Linux godot-cpp and CyberSand extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label ramdisk-godotcpp --output-dir build/ramdisk-build/godotcpp -- tools/build_pinned_godot_cpp.sh linux
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label ramdisk-extension --output-dir build/ramdisk-build/extension -- tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | grep 'ELF 64-bit.*x86-64'
+      - name: Publish exact-source binary for all four matched hosts
+        run: |
+          set -euo pipefail
+          mkdir -p build/ramdisk-exact-runtime
+          cp "$RUNNER_TEMP/libcybersand_native.linux.x86_64.so" build/ramdisk-exact-runtime/
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/ramdisk-exact-runtime/
+          git rev-parse HEAD > build/ramdisk-exact-runtime/source-sha.txt
+          (cd build/ramdisk-exact-runtime && sha256sum libcybersand_native.linux.x86_64.so libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > runtime.sha256 && sha256sum --check --strict runtime.sha256)
+      - name: Upload unchanged original binaries and build evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramdisk-four-source-built-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/ramdisk-exact-runtime/
+            build/ramdisk-build/
+          if-no-files-found: warn
+          retention-days: 90
+
+  four-shards:
+    name: Stock x3 / RAM x3 — Linux shard ${{ matrix.shard }}
+    needs: [source-built-runtime]
+    if: needs.source-built-runtime.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - shard: 2
+          - shard: 6
+          - shard: 12
+          - shard: 19
+    steps:
+      - name: Check out exact source and complete Git history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Download source-matched Linux native runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ramdisk-four-source-built-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/ramdisk-source-built
+      - name: Verify and install candidate runtime, preserve source identity
+        run: |
+          set -euo pipefail
+          test "$(cat build/ramdisk-source-built/ramdisk-exact-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/ramdisk-source-built/ramdisk-exact-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/ramdisk-source-built/ramdisk-exact-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/ramdisk-source-built/ramdisk-exact-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
+      - name: Fetch and verify the same official Godot binary used by routine CI
+        run: |
+          set -euo pipefail
+          godot_download_seconds="$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)"
+          timeout "$godot_download_seconds" curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time "$godot_download_seconds" --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Confirm software-rendered Linux display dependencies
+        run: bash tools/ci/prepare_linux_display.sh
+      - name: Run six controlled source-matched full-shard trials
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          python3 tools/ci/experiments/ramdisk_four_shards.py \
+            --shard "${{ matrix.shard }}" --source "$GITHUB_WORKSPACE" \
+            --godot "$GODOT_BIN" --output "build/ramdisk-four-shards/${{ matrix.shard }}"
+      - name: Retain all 6 raw trial outputs, diagnostics and JSONL receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramdisk-four-shard-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/ramdisk-four-shards/${{ matrix.shard }}/
+          if-no-files-found: warn
+          retention-days: 90
+
+  audit-results:
+    name: Independently reduce all four six-trial artifacts
+    if: always()
+    needs: [source-built-runtime, four-shards]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out original trusted reducer
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+      - name: Download all actual per-shard artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: ramdisk-four-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/ramdisk-collected
+      - name: Fail closed on any missing/failed original trial and publish accounting
+        run: |
+          python3 tools/ci/experiments/summarize_ramdisk_four.py --root build/ramdisk-collected --output build/ramdisk-final
+          cat build/ramdisk-final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain complete machine-readable and readable final report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramdisk-four-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/ramdisk-final/
+          if-no-files-found: warn
+          retention-days: 90
