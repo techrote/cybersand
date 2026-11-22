@@ -32,10 +32,24 @@ func until(predicate:Callable,label:String,seconds:int=40)->bool:
 func settled()->bool:
 	return bench!=null and not bench.applied.is_empty() and not bench.busy() and host.pending_microscenario_apply.is_empty()
 
-func mouse(point:Vector2,down:bool)->void:
+func dispatch_mouse(point:Vector2,down:bool)->void:
 	var motion:=InputEventMouseMotion.new();motion.position=point;Input.parse_input_event(motion)
 	var event:=InputEventMouseButton.new();event.position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=down
-	Input.parse_input_event(event);await process_frame
+	Input.parse_input_event(event)
+	# Godot accumulates synthetic input. Deliver it before a frame can retire
+	# the actual native child or preparation thread whose guard is under test.
+	Input.flush_buffered_events()
+
+func mouse(point:Vector2,down:bool)->void:
+	dispatch_mouse(point,down);await process_frame
+
+func input_dispatch_state()->Dictionary:
+	return {"phase":panel.phase,"busy":panel.busy(),"visible":panel.visible,
+		"territory_mode":panel._paint.button_pressed,"thread_pending":panel._thread!=null,
+		"thread_started":panel._thread!=null and panel._thread.is_started(),
+		"thread_alive":panel._thread!=null and panel._thread.is_alive(),"child_pid":panel._pid,
+		"child_alive":panel._pid>0 and OS.is_process_running(panel._pid),
+		"paint_dragging_at_dispatch":bench.paint_editor.dragging}
 
 func click(button:Control)->void:
 	var point:=button.get_global_rect().get_center()
@@ -183,7 +197,27 @@ func busy_case(kind:String)->void:
 		item["job_observed"]=panel.phase=="running" and item.child_alive_before_input
 	item["phase_before_input"]=panel.phase;item["visible_before_input"]=panel.visible;item["territory_mode_before_input"]=panel._paint.button_pressed
 	require(item.job_observed,label+" uses real pending work rather than a fabricated phase")
-	await mouse(point_for(Vector2i(300,250)),true)
+	var dispatch:Dictionary={"press_count":0}
+	var observe:Callable=func(event:InputEvent)->void:
+		if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+			dispatch["press_count"]+=1
+			dispatch.merge(input_dispatch_state(),true)
+	# Read the actual canvas signal without consuming the event or changing
+	# production state. No frame is yielded before the dispatch witness closes.
+	host.world_view.gui_input.connect(observe)
+	dispatch_mouse(point_for(Vector2i(300,250)),true)
+	host.world_view.gui_input.disconnect(observe)
+	dispatch["paint_dragging_after_dispatch"]=bench.paint_editor.dragging
+	item["input_dispatch"]=dispatch
+	var live_work:bool=dispatch.get("thread_pending",false) and dispatch.get("thread_started",false) \
+		if kind=="hidden" else dispatch.get("child_alive",false) and int(dispatch.get("child_pid",-1))>0
+	require(dispatch.press_count==1 and dispatch.get("busy",false) and live_work
+		and dispatch.get("phase","")==("cancelling" if kind=="hidden" else "running")
+		and dispatch.get("visible",null)==(kind!="hidden") and dispatch.get("territory_mode",null)==(kind!="off"),
+		label+" actual canvas press observes the required busy owner")
+	require(dispatch.get("paint_dragging_at_dispatch",true)==false and not dispatch.paint_dragging_after_dispatch,
+		label+" synchronous input dispatch cannot enter Paint")
+	await process_frame
 	item["paint_dragging_after_press"]=bench.paint_editor.dragging
 	require(not item.paint_dragging_after_press,label+" input cannot enter Paint")
 	await mouse(point_for(Vector2i(300,250)),false)

@@ -57,17 +57,20 @@ independent reviews are retained in consolidated qualification evidence.
 | --- | --- | --- |
 | Native receptor work | Keep #715 charged record/cell visits, finite bounds, cancellation and atomic publication alongside #716 recovery. No budget increase or rejected-work refund. | Strict suites, sanitizers, known controls and all registered recovery policies. |
 | Recovery obligations/history | Keep #716 reserve-before-mutation and funded rejected-proposal finalization. Do not certify blocked/exhausted results. | Admission, source/hash and recovery suites; all failed histories retained. |
-| Native build/CLI | Keep all #716 native/test inputs and V4 parser with #715 `CPPFLAGS`, external control replay and C stdio compatibility. | Eight native suites, Linux ABI floor and V1/V2/V3/V4 transport. |
+| Native build/CLI | Keep all #716 native/test inputs and V4 parser with #715 `CPPFLAGS`, external control replay and C stdio compatibility. | Nine native suites, Linux ABI floor and V1/V2/V3/V4 transport. |
 | Portable admission fixture | Express the over-16-MiB reserved-vector test in bytes using its actual element size, and assert that premise. Retain production admission and its fixed allowance unchanged. | Strict and sanitizer tests with the distributed Linux ABI; actual Windows strict execution. Recompute the native definition because the test is a definition input. |
 | Final/provisional inspector | Keep #716 selector index zero as native final round `-1`; other indices select their corresponding provisional round. Reset every overlay. | Actual Final/Joints/Unresolved/Clearance/Revisions and every provisional round. |
 | Historical authority | Keep #715 persistent historical-only latch with explicit reviewed definition/schema pairs. Only successful fresh current-source generation clears it. | Edit/Cancel/reset/failure, direct Apply/attestation/Undo negatives and fresh-generation recovery. |
 | Protocol identity | Preserve V1/V2, independent V3 SWARM-005 controls and opt-in V4 recovery. Only original reviewed SWARM-004 schema5 may omit the two later option fields. | Current strict decode, exact historical schema whitelist and malformed/forged evidence. |
 | Territory/numeric input | Keep #715 coherent press/release/global-release and numeric commitment with #716 immutable captured requests and stale-authority retirement. | Actual pending typing, buttons, outside-canvas release, source changes and cancellation. |
 | Busy World | Keep #716 guard before Paint and shared history guard, including hidden/OFF preparation. | Paint/Undo exclusion while busy and ordinary authoring after retirement. |
+| Actual input dispatch | Flush synthetic input before yielding; observe the real canvas signal and retained native owner at dispatch. Do not fabricate a busy phase or freeze the worker. | Live child or unjoined preparation thread, Paint exclusion and complete unchanged material planes; idle Paint/Undo/Redo still work. |
 | Runtime lookup | Keep #715 platform-first fail-closed loader. Refresh every advertised package binding with the new CLI. | Ordinary startup without developer overrides; source/pristine equality and stale-binding refusals. |
 | Scoped fixtures | Route controls to `swarm45_reciprocal_controls.gd` and all nine graphical examples to `swarm456_reciprocal_ui.gd`. Retain `SWARM004_CONTROLS` and #716 inspector evidence. Refuse missing explicit graphical mode/example/evidence before World creation. | Exact mandatory graphical inventory; both donors' assertions; no unconfigured fixture in ordinary headless discovery. |
 | Package custody | Keep canonical committed archive text and explicit Windows attributes with #716 raw asset/import byte inventories and before/after checks. | Source stage, pristine extraction, executable hashes, sidecars and terminal recheck. |
 | Qualification reduction | Require original named process/log joins, native requests/results, material planes and complete corpus inventories; recompute outcomes with the unchanged scientific readers. Summary flags alone cannot authorize publication. | Rehashed contradictory evidence refusals and genuine retained execution positives. The new aggregation job budgets 20 minutes for all raw verification; native and graphical child deadlines are unchanged. |
+| Saved inspection receipts | Recognize the four positive recovery evaluations' final saved-evidence inspection only after acknowledged Apply and a corrupted-save refusal. Keep historical Apply/Undo disabled. | Byte-original failed-run reports and adverse mutations; a separate fresh-process Reopen remains mandatory for every positive. |
+| Windows evidence paths | Resolve the compressor root once, consistently with each evidence file, including Windows short-path aliases. Preserve containment and verified compression before deletion. | Real directory-alias compression and readback on Linux and Windows; original raw/compressed hashes and relative storage paths. |
 | Accepted #722/#723 | Preserve compilation reuse, source/configuration guards and bounded showcase concurrency. Add scoped Swarm qualification only. | Existing CI helpers and complete Native/Godot coverage. |
 | Documentation | Combine additive donor routes and main's CI sections; retain frozen registrations, negatives and reviews. | Documentation/provenance, integrity and additive retrieval questions. |
 
@@ -127,6 +130,30 @@ imported by the existing V1/V2 custody tests; the successor explicitly installs
 the pinned dependency. Original failed receipts remain evidence and cannot
 authorize runtime publication. No algorithm, research policy, child timeout or
 scientific denominator changes to accommodate these qualification repairs.
+
+The first run's pristine Windows processes also exposed an overly narrow receipt
+reader: four successful recovery evaluations deliberately ended in historical
+inspection after the saved-evidence corruption challenge. Their original native
+Apply, Undo and Save receipts remain intact, but the reader rejected that safe
+terminal state and the four subsequent fresh-process Reopens did not execute.
+Six byte-original reports are retained as reader regression fixtures with their
+Actions archive and raw-file hashes. Correcting this reader does not qualify the
+old run or remove any required Reopen.
+
+The second run,
+[44978257952](https://github.com/techrote/cybersand/actions/runs/44978257952),
+executed source `aa13cf832aecd28799b5b5bdcabc9228134f4e11`. All nine actual
+Windows strict native suites passed, including the repaired admission premise.
+Its V1/V2 evidence compression then failed because a Windows short-path root and
+the resolved long-path file were compared directly. The pristine graphical input
+fixture also yielded with a synthetic click still buffered; its hidden-worker
+case recorded 641 painted cells without proving whether ownership remained at
+actual dispatch. The successor flushes input synchronously and requires an actual
+dispatch-time ownership witness, retaining every no-write assertion. A full local
+graphical preflight passed 102 assertions with the real hidden cancellation thread,
+live child cases and ordinary idle Paint/Undo/Redo. These are qualification-harness
+repairs, not production input or solver changes. Both failed hosted runs remain
+failed evidence; a complete new source-matched run is required.
 
 ## Physical owner acceptance
 

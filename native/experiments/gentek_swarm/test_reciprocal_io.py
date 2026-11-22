@@ -45,6 +45,35 @@ class CompressionTests(unittest.TestCase):
         self.assertEqual(restored, json.loads(raw))
         self.assertEqual(digest, hashlib.sha256(raw).hexdigest())
 
+    def test_directory_alias_preserves_relative_storage_and_verified_bytes(self):
+        raw = self.completed()
+        with tempfile.TemporaryDirectory(prefix="sw4-evidence-alias-") as directory:
+            alias = Path(directory) / "evidence"
+            if sys.platform == "win32":
+                subprocess.run(["cmd", "/d", "/c", "mklink", "/J", str(alias), str(self.root.resolve())],
+                               check=True, capture_output=True, text=True)
+            else:
+                alias.symlink_to(self.root.resolve(), target_is_directory=True)
+            self.assertNotEqual(alias, self.root.resolve())
+            self.assertEqual(alias.resolve(), self.root.resolve())
+            worker = CompressionWorker(alias)
+            worker.start()
+            worker.finish()
+            self.assertFalse(worker.thread.is_alive())
+            self.assertFalse((self.root / "case.json").exists())
+            packed = self.root / "case.json.gz"
+            self.assertEqual(gzip.decompress(packed.read_bytes()), raw)
+            receipt = json.loads((self.root / "storage.json").read_text())
+            self.assertIsNone(receipt["error"])
+            self.assertEqual(len(receipt["records"]), 1)
+            record = receipt["records"]["case.json"]
+            self.assertEqual(record["file"], "case.json.gz")
+            self.assertEqual(record["raw_bytes"], len(raw))
+            self.assertEqual(record["compressed_sha256"], hashlib.sha256(packed.read_bytes()).hexdigest())
+            restored, digest = read_record(alias, "case.json", receipt["records"])
+            self.assertEqual(restored, json.loads(raw))
+            self.assertEqual(digest, hashlib.sha256(raw).hexdigest())
+
     def test_storage_hash_detects_tampered_native_arrays(self):
         raw = self.completed()
         with gzip.open(self.root / "case.json.gz", "wb") as stream:

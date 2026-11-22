@@ -66,7 +66,7 @@ class CompressionWorker:
     """Keep campaign disk use bounded without changing any native evidence bytes."""
 
     def __init__(self, root):
-        self.root = Path(root)
+        self.root = Path(root).resolve()
         self.stop = threading.Event()
         self.drain_on_stop = True
         self.records = {}

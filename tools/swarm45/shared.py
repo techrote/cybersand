@@ -73,6 +73,27 @@ def input_report_errors(directory: Path, report: dict, source: str, cli_sha: str
         errors.append("Input integrity did not execute graphically on the actual target OS")
     errors.extend("Missing original input screenshot: " + name for name in legacy.INPUT_CAPTURES
                   if not legacy.original_png(directory / name))
+    cases = legacy.object_dict(report.get("cases"))
+    for kind in ("active", "off", "hidden"):
+        dispatch = legacy.object_dict(legacy.object_dict(cases.get("busy-" + kind)).get("input_dispatch"))
+        if (type(dispatch.get("press_count")) is not int or dispatch["press_count"] != 1
+                or dispatch.get("busy") is not True
+                or dispatch.get("phase") != ("cancelling" if kind == "hidden" else "running")
+                or dispatch.get("visible") is not (kind != "hidden")
+                or dispatch.get("territory_mode") is not (kind != "off")):
+            errors.append("Busy input lacks its actual canvas dispatch witness: " + kind)
+        if (any(type(dispatch.get(key)) is not bool for key in ("thread_pending", "thread_started", "thread_alive", "child_alive"))
+                or type(dispatch.get("child_pid")) is not int or dispatch["child_pid"] < -1):
+            errors.append("Busy input dispatch omits native work state: " + kind)
+        if kind == "hidden":
+            # Finished but unjoined preparation is still genuinely owned work.
+            if dispatch.get("thread_pending") is not True or dispatch.get("thread_started") is not True:
+                errors.append("Hidden input was not dispatched with a retained preparation thread")
+        elif dispatch.get("child_alive") is not True or not legacy.positive_integer(dispatch.get("child_pid")):
+            errors.append("Busy input was not dispatched with a live native child: " + kind)
+        if (dispatch.get("paint_dragging_at_dispatch") is not False
+                or dispatch.get("paint_dragging_after_dispatch") is not False):
+            errors.append("Busy input dispatch entered Paint: " + kind)
     return errors
 
 
@@ -88,12 +109,21 @@ def ui_report_errors(report: dict, mode: str, example: str, source: str, cli_sha
     if report.get("display") in (None, "", "headless"):
         errors.append("UI report did not use an actual graphical display")
     if mode != "lifecycle":
-        historical = mode == "reopen"
+        # Positive recovery evaluations finish their saved-evidence corruption
+        # challenge by restoring the original bytes and inspecting that save.
+        # This deliberately leaves the dock historical before the separately
+        # required fresh-process Reopen; no transaction authority is restored.
+        saved_evaluation = (mode == "evaluate" and bool(legacy.EXAMPLES[example].get("evaluate"))
+                            and report.get("native_can_apply") is True)
+        historical = mode == "reopen" or saved_evaluation
         if report.get("historical_only") is not historical:
             errors.append("UI transaction authority differs from fresh versus saved inspection scope")
         if historical and (report.get("controller_phase") != "historical" or report.get("apply_disabled") is not True
                            or report.get("undo_disabled") is not True):
             errors.append("Saved inspection restored transaction authority")
+        if saved_evaluation and (report.get("applied") is not True
+                                 or report.get("transport_refusals", {}).get("corrupted_saved_evidence") is not True):
+            errors.append("Recovery saved inspection lacks acknowledged Apply and the saved-evidence refusal")
         if example == "transaction" and mode in ("create", "reopen"):
             required = ("pending_shared_text", "gesture_lifecycle") if mode == "create" else (
                 "historical_cancel_latched", "historical_edit_latched", "historical_failed_generation_latched",
