@@ -1,3 +1,13 @@
+---
+title: PUBPRES Completion engineering handover
+status: Current
+document-kind: guide
+scope: PUBPRES-COMPLETION-001 Draft/HOLD integration, bounded repairs, exact-source qualification and pending owner acceptance
+canonical-for: [pubpres-completion-001]
+last-reviewed: 2026-11-22
+related-documents: [pubpres-playability-evaluation.md, pubpres-integration-evaluation.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md]
+---
+
 # PUBPRES-COMPLETION-001 — engineering handover
 
 **Status: active engineering; Draft/HOLD.** This file records the new integration,
@@ -22,10 +32,14 @@ been performed by this mission.
 | Protected archive | `archive/pubpres-integration-001-4302ba20-20261122` at the same `4302ba20` | Read only; no rewrite. |
 | Measured original integration I | `8503ec19e4d620e125dc6df2c5c6571b1256cb92` | Historical physical comparison source, only with its own native runtime. |
 | Playability D [#719](https://github.com/techrote/cybersand/pull/719) | `d316c281e0abb575eb6302afc12ec44f211460ba`, tree `7a57dc0873dd161abe165f3a60e14e64886d04a8` | Common implementation donor, integrated once. Its failed final campaign remains negative. |
-| Later recovered [#740](https://github.com/techrote/cybersand/pull/740) | `adedb2761bad6cce91002ffe50c50c39b5f63645`, tree `3eb5c0490aa29b4569ceebef48ccd338079b63b6` | Selective salvage: source custody, import fix, causal traces, mounted camera fixture and measured native correction. No wholesale second integration. |
+| Later recovered [#740](https://github.com/techrote/cybersand/pull/740) | `adedb2761bad6cce91002ffe50c50c39b5f63645`, tree `3eb5c0490aa29b4569ceebef48ccd338079b63b6` | Selective salvage: source custody, import fix, causal traces and mounted camera fixture. Its conditional-store native optimization was requalified and left out after a negative current-source comparison. No wholesale second integration. |
 | New candidate C | `codex/pubpres-completion-001-20261122` | Dedicated branch. Read exact commit/tree from each build/qualification receipt. |
 
-The first local integration is a two-parent merge of accepted main and D:
+The dedicated [Draft/HOLD PR is #757](https://github.com/techrote/cybersand/pull/757).
+Its first published checkpoint is `a784215ea46a8726b53af19ff0f38986ed1c5253`,
+tree `a0d690486c5b275ea80bf87f5c57016767e00a2e`, identical to local development
+source `1f2cccb9dd64b29410100d2082944ab625d5a729`. Published parents are accepted
+main and D. The first local integration was a two-parent merge of accepted main and D:
 `5ecdc3ca97aaa862e842cee767b81c52927a24da`, tree
 `75c5899aecdf06812dc5f4b4a365366b97652554`. A connector-published commit may
 have different commit metadata; any such mapping must prove identical tree and
@@ -103,8 +117,26 @@ install extra terrain, accumulate time credits or create callbacks.
   first-read failures. Same-frame continuation did not establish Wave2048 gain.
 - Dense/sparse and fresh-storage experiments that moved work downstream remain
   negative unless a new controlled experiment supplies contrary evidence.
+- Current-source native conditional-store A/B/B/A measurements preserved all 144
+  physical outcomes and material quantities but did not reproduce the historical
+  gain. Large current Wave column means were 45.849/45.999/46.206/42.216 ms;
+  the candidate run mean was 4.70% slower. The optimization is not selected.
+  See the [physics evidence review](../audits/2026-11-22-pubpres-completion/physics-review.md).
+- The Linux software-renderer full/stage/target/target/stage/full transition
+  sequence gave frame p95 values 8.613/15.536/13.992/14.747/12.836/7.368 ms.
+  Target retirement fixes the first-read correctness defect but establishes no
+  speed gain. Full publication remains the conservative default. These results
+  do not qualify Windows graphics or owner NVIDIA hardware.
 
 ### Reproduced in this mission
+
+The default requested-rate blend could briefly weight the old material plane
+after a same-size World replacement, despite accepting the new generation and
+ACK correctly. Main now requires a qualified same-World predecessor for either
+timing policy. The exact old/current histories remain intact; this only removes
+invalid visual contribution. The focused production-intake regression originally
+failed one of ten checks and now passes all ten, including the next valid
+same-World blend. This is a presentation correctness repair, not a timing gain.
 
 The pinned Godot 4.7 timer implementation subtracts the iteration's precomputed
 delta from timers created later in that iteration. A controlled reproduction
@@ -125,6 +157,15 @@ an acceptable repair.
 The recovered Radial2D descriptor issue is a specific CRLF-to-LF conversion,
 not permission to ignore source changes. Pinning canonical descriptor bytes must
 retain unexpected-change and tamper rejection.
+
+Independent cross-review identified two diagnostic-only scope defects in Main:
+assuming every physical bridge has a Workbench session, and labelling ordinary
+non-Workbench transactions as having passed Workbench terrain/sample gates.
+The repair keeps unknown session identity at `-1`, restricts the gate claim to
+the actual Workbench path, and adds a real Godot regression. The additive v2
+causal reducer separately binds response application to the packet's snapshot
+and transaction exit to the genuine completed-step counter; it never treats an
+entry, accepted flag from another snapshot or callback as a completion.
 
 ## 4. Qualification protocol
 

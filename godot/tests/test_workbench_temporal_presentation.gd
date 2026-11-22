@@ -27,11 +27,13 @@ func _initialize() -> void:
 		if arg=="--temporal-expect-legacy": expect_legacy=true
 		if arg.begins_with("--temporal-evidence="):
 			output=arg.trim_prefix("--temporal-evidence=")
-	for key: String in ["CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_FLYER_POSE","CYBERSAND_DIAG_RENDER_CADENCE"]:
+	for key: String in ["CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_FLYER_POSE","CYBERSAND_DIAG_RENDER_CADENCE",
+			"CYBERSAND_DIAG_MATERIAL_TIMING"]:
 		saved_environment[key]=OS.get_environment(key)
 	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","legacy" if expect_legacy else "coherent")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE","")
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_TIMING","")
 	_run.call_deferred()
 
 func check(ok: bool, label: String) -> bool:
@@ -461,19 +463,13 @@ func _paced_recovery_after_contact() -> void:
 
 func _expire_blend() -> void:
 	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
-	if host.get("material_presentation_timeline") != null:
-		host.material_presentation_timeline.reset()
 
 func _activate_blend() -> void:
-	var now: int=Time.get_ticks_usec()
-	host.snapshot_blend_start_usec=now
+	host.snapshot_blend_start_usec=Time.get_ticks_usec()
 	if host.get("material_presentation_timeline") != null:
-		var timeline=host.material_presentation_timeline
-		timeline.reset()
-		timeline.accept_upload(host.last_uploaded_world_generation,host.last_uploaded_revision,
-			host.last_uploaded_render_snapshot_serial-1,host.latest_snapshot.tick_index,now-100000,now-100000,now-100000)
-		timeline.accept_upload(host.last_uploaded_world_generation,host.last_uploaded_revision,
-			host.last_uploaded_render_snapshot_serial,host.latest_snapshot.tick_index,now,now,now)
+		var previous: Dictionary = host.material_presentation_timeline.frame(Time.get_ticks_usec()).previous
+		check(previous.get("generation",-1) == host.last_uploaded_world_generation,
+			"active blend uses the actual native same-World predecessor")
 
 func _real_unknown_previous() -> void:
 	if not await _install("follow"): return

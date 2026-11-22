@@ -407,6 +407,7 @@ class ObservedMain extends "res://scripts/main.gd":
 var host: ObservedMain
 var output := ""
 var fixture_name := "reference2048"
+var minimum_capture_usec: int = MIN_CAPTURE_USEC
 var camera := "follow"
 var workers := 4
 var wave := true
@@ -434,6 +435,7 @@ func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--receipt="): output = arg.trim_prefix("--receipt=")
 		if arg.begins_with("--fixture="): fixture_name = arg.trim_prefix("--fixture=")
+		if arg == "--sustained": minimum_capture_usec = 60000000
 		if arg.begins_with("--camera="): camera = arg.trim_prefix("--camera=")
 		if arg.begins_with("--workers="): workers = int(arg.trim_prefix("--workers="))
 		if arg.begins_with("--water-law="): water_law = arg.trim_prefix("--water-law=")
@@ -447,7 +449,7 @@ func _initialize() -> void:
 		push_error("PUBPRES_PLAYABILITY: four-column experiment is retired; preserve its separate negative evidence")
 		quit(2)
 		return
-	if output.is_empty() or fixture_name not in ["reference2048","landscape2048x1024","basin512"] \
+	if output.is_empty() or fixture_name not in ["reference2048","landscape2048x1024","basin512","basin1024"] \
 			or camera not in ["free","follow"] or workers not in [1,4] \
 			or water_law not in ["wave_flow_v1","freemass_v1","pressure_flow_v1","cellular_yield_v1"] \
 			or water_profile not in ["historical_reference_one_round_no_spill_no_ballistic","gameplay_main846f"] \
@@ -512,7 +514,8 @@ func effective_selectors() -> Dictionary:
 	for key: String in ["CYBERSAND_MATERIAL_PUBLICATION","CYBERSAND_DIAG_PHYSICS_PUBLICATION",
 		"CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_MATERIAL_TIMING","CYBERSAND_DIAG_RENDER_CADENCE",
 		"CYBERSAND_DIAG_NATIVE_RENDEZVOUS","CYBERSAND_DIAG_MATERIAL_POOL_POLICY",
-		"CYBERSAND_DIAG_SAME_FRAME_CONTINUATION",
+		"CYBERSAND_DIAG_SAME_FRAME_CONTINUATION","CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE",
+		"CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE",
 		"CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE"]:
 		requested[key] = OS.get_environment(key)
 	var properties := {}
@@ -648,14 +651,18 @@ func _run() -> void:
 			[768,816,16,192,58],[1296,872,16,136,58],[256,320,320,8,58]]
 		fixture_identity = {"name":fixture_name,"source":"authored_setup_v2","extent":[2048,1024]}
 	else:
-		setup = Setup.fresh(carrier,Vector2i(512,512))
-		setup.actors = [Setup.instance("needle",1,Vector2(200,160))]
+		var scale: int = 2 if fixture_name == "basin1024" else 1
+		setup = Setup.fresh(carrier,Vector2i(512,512)*scale)
+		setup.actors = [Setup.instance("needle",1,Vector2(200,160)*scale)]
 		setup.next_id = 2
 		setup.selected = 1
 		setup.edits = [[0,496,512,16,58],[0,0,16,512,58],[496,0,16,512,58],
 			[32,272,112,224,3],[160,432,144,64,3],[320,464,176,32,3],
 			[256,400,8,96,58],[112,240,112,8,58]]
-		fixture_identity = {"name":fixture_name,"source":"authored_setup_v2","extent":[512,512]}
+		if scale == 2:
+			for edit: Array in setup.edits:
+				for index in range(4): edit[index] = int(edit[index])*scale
+		fixture_identity = {"name":fixture_name,"source":"authored_setup_v2","extent":[512*scale,512*scale]}
 	setup.liquid_policy = Array(carrier)
 	setup.rule_radius = 2
 	fixture_identity["setup_sha256"] = JSON.stringify(setup).sha256_text()
@@ -760,10 +767,11 @@ func _run() -> void:
 	check(ui.toggle_pause(),"native and Rapier unpaused through ordinary control")
 	while Time.get_ticks_usec()-capture_start < MAX_CAPTURE_USEC:
 		var elapsed := Time.get_ticks_usec()-capture_start
-		if elapsed >= MIN_CAPTURE_USEC and host.physical_actor_session.tick-host.common_tick_zero >= TARGET_STEPS: break
+		if elapsed >= minimum_capture_usec and host.physical_actor_session.tick-host.common_tick_zero >= TARGET_STEPS: break
 		if host.simulation_worker.has_failed() or not host.common_input_error.is_empty(): break
 		await process_frame
 	capture_end = Time.get_ticks_usec()
+	check(capture_end-capture_start >= minimum_capture_usec,"registered minimum capture duration reached")
 	check(capture_end-capture_start <= MAX_CAPTURE_USEC,"registered 90-second capture cap not exceeded")
 	command_counts = {"attempted":host.common_command_events.size(),
 		"accepted":host.physical_actor_session.accepted_commands-host.common_accepted_zero,
@@ -805,7 +813,7 @@ func finish() -> void:
 			# The exact owner reference also contains Lava and Acid, whose
 			# registered native reactions consume Water. Its quantity ledger
 			# above still must balance every native source and sink exactly.
-			if fixture_name in ["landscape2048x1024","basin512"]:
+			if fixture_name in ["landscape2048x1024","basin512","basin1024"]:
 				check(after.get("water_quantity") == before.get("water_quantity"),"Closed Wave Water quantity conserved")
 			check(int(after.get("ticks",0)) > int(before.get("ticks",0))
 				and int(after.get("rounds",0))-int(before.get("rounds",0))
@@ -883,7 +891,7 @@ func finish() -> void:
 		"command_lease_scope":"Ordinary six-completed-physical-tick lease; no wall-clock expiry. Repeated callback mode preserves historical submission cadence. Once-per-step is a separate diagnostic until equivalence is proven.",
 		"observer_scope":"Full: bounded existing-seam events. Reduced: detailed Main/worker events and participation sampling disabled; completed-step/body and command oracle remains, so not zero instrumentation.",
 		"capture_physical_tick_start":host.common_tick_zero if host != null else -1,
-		"target_physical_steps":TARGET_STEPS,"minimum_capture_usec":MIN_CAPTURE_USEC,
+		"target_physical_steps":TARGET_STEPS,"minimum_capture_usec":minimum_capture_usec,
 		"maximum_capture_usec":MAX_CAPTURE_USEC,"setup_timeout_msec":SETUP_MSEC,
 		"maximum_events_per_owner":MAX_EVENTS,
 		"input_events":host.common_tape_events if host != null else [],"source_identity":source_before,

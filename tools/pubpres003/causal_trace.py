@@ -40,6 +40,73 @@ def healthy_packet(row):
             and row.get("packet_hard_revision") == row.get("required_hard_revision"))
 
 
+LEGACY_MAIN_EVENTS = {"mailbox_observation", "terrain_install", "transaction_entry"}
+COMPLETION_MAIN_EVENTS = {"main_process_entry", "main_process_exit", "material_consumption",
+                          "physics_callback_entry", "native_response_application", "transaction_exit"}
+
+
+def validate_main_event(row):
+    event = row.get("event")
+    require(event in LEGACY_MAIN_EVENTS | COMPLETION_MAIN_EVENTS, "Unknown Main causal event")
+    require(type(row.get("trace_version", 1)) is int and row.get("trace_version", 1) in (1, 2),
+            "Unknown Main causal version")
+    if event not in COMPLETION_MAIN_EVENTS:
+        return
+    require(row.get("trace_version") == 2, "Completion event needs explicit version 2")
+    if event in {"main_process_entry", "main_process_exit", "physics_callback_entry"}:
+        require(row.get("packet_present") is False, "Callback boundary cannot claim a packet read")
+    if event == "physics_callback_entry":
+        require(integer(row.get("manual_steps")) and type(row.get("paused")) is bool,
+                "Invalid callback counters")
+    if event == "material_consumption":
+        require(integer(row.get("uploaded_serial")) and integer(row.get("ack_serial"))
+                and row["ack_serial"] <= row["uploaded_serial"], "ACK exceeds accepted material upload")
+    if event == "native_response_application":
+        require(type(row.get("accepted")) is bool and isinstance(row.get("refusal"), str)
+                and integer(row.get("application_snapshot"), -1), "Invalid native application result")
+        if row["accepted"]:
+            require(integer(row.get("snapshot_serial"), 1)
+                    and row["application_snapshot"] == row["snapshot_serial"],
+                    "Accepted response belongs to another snapshot")
+    if event == "transaction_exit":
+        require(integer(row.get("manual_steps_after")) and integer(row.get("next_requested_sample"), -1),
+                "Invalid transaction exit counters")
+
+
+def validate_completion_joins(main, steps, entries):
+    """Additional observations never replace the independent real-step oracle."""
+    applications = [row for row in main if row["event"] == "native_response_application"]
+    exits = [row for row in main if row["event"] == "transaction_exit"]
+    joined = {}
+    for step in steps:
+        entry = entries[step["step"]]
+        if entry.get("trace_version", 1) == 1:
+            continue  # Historical evidence did not capture these boundaries.
+        common = lambda row: (healthy_packet(row) and main_key(row) == step_key(step)
+                              and integer(row.get("snapshot_serial"), 1)
+                              and row["snapshot_serial"] == step["native_snapshot_serial"]
+                              and row["origin_callback_id"] == step["origin_callback_id"])
+        matches = [row for row in applications if common(row)
+                   and row["physical_tick"] == step["step"] - 1
+                   and entry["time_usec"] <= row["time_usec"] <= step["time_usec"]]
+        require(len(matches) == 1, "Completion lacks one exact native application observation")
+        ends = [row for row in exits if common(row) and row["physical_tick"] == step["step"]
+                and row["manual_steps_after"] == step["manual_steps"]
+                and row["time_usec"] >= step["time_usec"]]
+        require(len(ends) == 1, "Completion lacks one exact transaction exit")
+        application = matches[0]
+        require(type(step.get("response_accepted")) is bool
+                and isinstance(step.get("response_refusal"), str)
+                and application["accepted"] == step["response_accepted"]
+                and application["refusal"] == step["response_refusal"],
+                "Native application result differs from actual completed step")
+        joined[step["step"]] = {"accepted": application["accepted"],
+            "refusal": application["refusal"],
+            "snapshot_matches": application["application_snapshot"] == application["snapshot_serial"],
+            "application_usec": application["time_usec"], "exit_usec": ends[0]["time_usec"]}
+    return joined
+
+
 def validate_transaction_joins(main, steps):
     entries = [r for r in main if r["event"] == "transaction_entry"]
     for row in entries:
@@ -58,6 +125,11 @@ def validate_transaction_joins(main, steps):
                       and row["time_usec"] <= step["time_usec"]]
         require(len(candidates) == 1, "Real Rapier completion lacks one exact transaction-entry observation")
         index, entry = candidates[0]
+        if entry.get("trace_version", 1) == 2:
+            require(integer(entry.get("snapshot_serial"), 1)
+                    and integer(step.get("native_snapshot_serial"), 1)
+                    and entry["snapshot_serial"] == step["native_snapshot_serial"],
+                    "Transaction entry snapshot differs from actual completed step")
         require(index not in used, "Transaction entry reused for multiple completed steps")
         used.add(index)
         matched[step["step"]] = entry
@@ -79,10 +151,14 @@ def analyze(identity, events, receipt, base_events):
         return {"schema": "pubpres003-causal-analysis-v1", "enabled": False,
                 "physical_acceptance": "HOLD", "causal_events": 0}
     require(main and worker, "Enabled causal capture is missing an owner channel")
+    versions = [row.get("trace_version", 1) for row in main]
+    require(all(type(version) is int and version in (1, 2) for version in versions),
+            "Unknown Main causal version")
+    require(len(set(versions)) == 1,
+            "Mixed Main causal versions cannot omit completion evidence")
     owner = receipt["physical_owner_before"]
     for row in main:
-        require(row.get("event") in ("mailbox_observation", "terrain_install", "transaction_entry"),
-                "Unknown Main causal event")
+        validate_main_event(row)
         require(integer(row.get("start_usec"), 1) and integer(row.get("time_usec"), 1)
                 and row["start_usec"] <= row["time_usec"], "Invalid Main causal chronology")
         require(row["current_epoch"] == owner["epoch"] and row["current_session"] == owner["session"],
@@ -95,6 +171,7 @@ def analyze(identity, events, receipt, base_events):
     steps = sorted((r for r in base_events if r["event"] == "rapier_step"), key=lambda r: r["step"])
     require(steps, "Causal observations cannot substitute for real Rapier completions")
     entries, uncompleted_entries = validate_transaction_joins(main, steps)
+    completion_joins = validate_completion_joins(main, steps, entries)
     publications, observations, native_ticks, terrain = defaultdict(list), defaultdict(list), {}, defaultdict(list)
     for row in worker:
         if row["kind"] == "physics_publication":
@@ -139,6 +216,7 @@ def analyze(identity, events, receipt, base_events):
             "native_completed_usec": complete, "first_healthy_publication_usec": publish,
             "first_matching_observation_usec": observe, "first_matching_terrain_ready_usec": ready_usec,
             "transaction_entry_usec": entry["time_usec"], "rapier_completed_usec": step["time_usec"],
+            "native_response_application": completion_joins.get(step["step"]),
             "origin_callback_id": step["origin_callback_id"], "process_frame": step["process_frame"],
             "native_compute_ms": (complete - native["start_usec"]) / 1000,
             "native_complete_to_publish_ms": (publish - complete) / 1000,
@@ -154,6 +232,10 @@ def analyze(identity, events, receipt, base_events):
     for row in worker:
         if "start_usec" in row and "completed_usec" in row:
             phase_spans[row["kind"]].append((row["completed_usec"] - row["start_usec"]) / 1000)
+    main_spans = defaultdict(list)
+    for row in main:
+        if row["event"] in {"main_process_exit", "material_consumption"}:
+            main_spans[row["event"]].append((row["time_usec"] - row["start_usec"]) / 1000)
     mailbox = [r for r in main if r["event"] == "mailbox_observation"]
     outcomes = Counter()
     for row in mailbox:
@@ -176,6 +258,11 @@ def analyze(identity, events, receipt, base_events):
         "worker_event_counts": dict(Counter(r["kind"] for r in worker)),
         "mailbox_observation_outcomes": dict(outcomes),
         "worker_phase_wall_ms": {k: distribution(v) for k, v in phase_spans.items()},
+        "main_phase_wall_ms": {k: distribution(v) for k, v in main_spans.items()},
+        "exact_application_and_exit_joins": len(completion_joins),
+        "native_response_application_outcomes": dict(Counter(
+            "accepted" if row["accepted"] else "refused:" + row["refusal"]
+            for row in completion_joins.values())),
         "transaction_latency_ms": {key: distribution(r[key] for r in joined if r[key] is not None)
             for key in ("native_compute_ms", "native_complete_to_publish_ms", "published_to_observed_ms",
                         "observed_to_transaction_ms", "observed_until_terrain_ready_ms", "transaction_to_completion_ms")},

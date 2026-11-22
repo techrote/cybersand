@@ -42,6 +42,14 @@ rendering does not establish physical Windows/NVIDIA acceptance.
 
 ## Workbench publication and progression repair — 2026-11-20
 
+**Completion successor, 2026-11-22:** [Draft/HOLD #757](https://github.com/techrote/cybersand/pull/757)
+is the current-main integration candidate for PUBPRES-COMPLETION-001. Use its
+[canonical handover](pubpres-completion-001.md) for current source, bounded
+repairs, qualification and the Windows evaluator. The #682 archive and #719
+remain intact as source and evidence donors. Their historical results below
+do not qualify the successor; no production default, merge or Ready promotion
+is authorized, and physical owner NVIDIA acceptance remains separate.
+
 PR #682 remains **Draft/HOLD; no merge or Ready promotion**. Continue from the
 [PUBPRES integration evaluation](pubpres-integration-evaluation.md), which owns
 the source/runtime controls, preserved negative renderer results and actual

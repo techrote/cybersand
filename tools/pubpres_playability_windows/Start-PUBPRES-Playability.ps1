@@ -4,15 +4,17 @@ param(
     [string]$ChecksumFile = '',
     [string]$ExpectedArchiveSha256 = '',
     [string]$ExpectedCandidate = '',
+    [ValidateSet('PUBPRES-PLAYABILITY-001','PUBPRES-COMPLETION-001')][string]$ExpectedMission = 'PUBPRES-PLAYABILITY-001',
     [string]$Destination = '',
     [string]$PackageRoot = '',
     [ValidateSet('Verify','Open')][string]$Action = 'Verify',
-    [ValidateSet('Candidate','Integration','Main')][string]$Source = 'Candidate',
+    [ValidateSet('Candidate','Integration','Main','Donor')][string]$Source = 'Candidate',
     [ValidateSet('Eager','Reachable')][string]$StagingPools = 'Eager',
     [ValidateSet('Safe','Separate')][string]$RenderThread = 'Safe',
     [ValidateSet('Off','On')][string]$SameFrameContinuation = 'Off',
     [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver = 'opengl3',
     [string]$ReopenRun = '',
+    [switch]$OwnerProfile,
     [switch]$QuitAfterReady,
     [switch]$Library
 )
@@ -26,6 +28,11 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 $script:PPManifestName = 'PUBPRES-PLAYABILITY-MANIFEST.json'
 $script:PPUtf8 = [Text.UTF8Encoding]::new($false)
 $script:PPProcessOwnerPath = Join-Path $PSScriptRoot 'process_owner.cs'
+$script:PPReferencePins = @{
+    M=@('00cdb02f103265b6dc5224c68283e9a0c8cb449f','06b62d73138028d1f7615b83edc9810491bf6287')
+    I=@('8503ec19e4d620e125dc6df2c5c6571b1256cb92','ece848ad77c06fafb60d597d87f9f53f7bc211f1')
+    D=@('d316c281e0abb575eb6302afc12ec44f211460ba','7a57dc0873dd161abe165f3a60e14e64886d04a8')
+}
 
 function Assert-PP([bool]$Condition,[string]$Message) {
     if (-not $Condition) { throw $Message }
@@ -103,9 +110,12 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     $Expected = Read-PPChecksum ($ManifestPath+'.sha256') $script:PPManifestName
     Assert-PP ((Get-PPHash $ManifestPath) -ceq $Expected) 'Package manifest checksum differs'
     $Manifest = Read-PPJson $ManifestPath
-    Assert-PP ($Manifest.schema -ceq 'pubpres-playability-windows-v2' -and $Manifest.candidate_commit -ceq $Candidate -and
+    $Completion = $Manifest.schema -ceq 'pubpres-completion-windows-v1'
+    $Mission = if ($Completion) { 'PUBPRES-COMPLETION-001' } else { 'PUBPRES-PLAYABILITY-001' }
+    Assert-PP (($Completion -or $Manifest.schema -ceq 'pubpres-playability-windows-v2') -and $Manifest.mission -ceq $Mission -and
+        $Manifest.candidate_commit -ceq $Candidate -and
         $Manifest.physical_acceptance -ceq 'HOLD' -and $Manifest.production_defaults_changed -eq $false) 'Package identity or HOLD status differs'
-    $ExpectedName = 'CyberSand-PUBPRES-PLAYABILITY-001-'+$Candidate.Substring(0,12)+'-Windows.zip'
+    $ExpectedName = 'CyberSand-'+$Mission+'-'+$Candidate.Substring(0,12)+'-Windows.zip'
     Assert-PP ($Manifest.package_filename -ceq $ExpectedName) 'Package uses an incorrect historical or renamed evaluator filename'
     $Inventory = @($Manifest.files_sha256.PSObject.Properties)
     Assert-PP ($Inventory.Count -eq $Manifest.file_count -and $Inventory.Count -gt 0 -and $Inventory.Count -le 30000) 'Payload inventory count differs'
@@ -122,12 +132,17 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         Assert-PP ($Names.Contains($Relative)) ('Unexpected file in stale/modified package: '+$Relative)
     }
     $SourceKeys = @($Manifest.sources.PSObject.Properties.Name | Sort-Object)
-    Assert-PP (($SourceKeys -join ',') -ceq 'C,I,M') 'Missing independent M/I/C projects'
+    $ExpectedKeys = if ($Completion) { 'C,D,I,M' } else { 'C,I,M' }
+    Assert-PP (($SourceKeys -join ',') -ceq $ExpectedKeys) 'Missing independent source projects'
     $Toolchain = $null
-    foreach ($Key in @('M','I','C')) {
+    foreach ($Key in $SourceKeys) {
         $Item = $Manifest.sources.$Key
         Assert-PP ($Item.source_commit -cmatch '^[0-9a-f]{40}$' -and $Item.source_tree -cmatch '^[0-9a-f]{40}$' -and
             $Item.root -ceq ('sources/'+$Key) -and $Item.project -ceq ('sources/'+$Key+'/godot')) 'Source project identity differs'
+        if ($Completion -and $script:PPReferencePins.ContainsKey($Key)) {
+            $Pin = $script:PPReferencePins[$Key]
+            Assert-PP ($Item.source_commit -ceq $Pin[0] -and $Item.source_tree -ceq $Pin[1]) ('Wrong exact Completion reference: '+$Key)
+        }
         Assert-PP ($Item.native.path -ceq ($Item.root+'/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll') -and
             $Item.native.receipt -ceq ($Item.root+'/provenance/PUBPRES-RUNTIME.json') -and
             $Item.rapier.path -ceq ($Item.root+'/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll') -and
@@ -196,10 +211,11 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         Assert-PP ($Build.godot_cpp_commit -cmatch '^[0-9a-f]{40}$' -and $Build.godot_cpp_library_sha256 -cmatch '^[0-9a-f]{64}$' -and
             $Build.compiler_command -and $Build.compiler_version) 'Incomplete toolchain identity'
         $Current = @($Build.godot_cpp_commit,$Build.godot_cpp_library_sha256,$Build.godot_cpp_dependency_sha256,$Build.compiler_command,$Build.compiler_version) -join "`n"
-        if ($null -eq $Toolchain) { $Toolchain = $Current } else { Assert-PP ($Toolchain -ceq $Current) 'M/I/C toolchains are unmatched' }
+        if ($null -eq $Toolchain) { $Toolchain = $Current } else { Assert-PP ($Toolchain -ceq $Current) 'Source toolchains are unmatched' }
+        $Experimental = $Key -cin @('C','D')
         Assert-PP ($Item.features.wave_column_tiles -eq $false -and $Item.features.wave_column_slots -eq 1 -and
-            $Item.features.reachable_staging_pools -eq ($Key -ceq 'C') -and $Item.features.wave_stage_probe -eq ($Key -ceq 'C') -and
-            $Item.features.same_frame_continuation -eq ($Key -ceq 'C')) 'Unsupported experimental feature advertisement'
+            $Item.features.reachable_staging_pools -eq $Experimental -and $Item.features.wave_stage_probe -eq $Experimental -and
+            $Item.features.same_frame_continuation -eq $Experimental) 'Unsupported experimental feature advertisement'
         $Rapier = Read-PPJson (Join-PPSafe $Root $Item.rapier.receipt)
         Assert-PP ($Rapier.artifact -ceq 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -and
             $Rapier.sha256 -ceq $Item.rapier.sha256 -and $Rapier.size -eq $Item.rapier.bytes -and
@@ -223,11 +239,19 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     }
     Assert-PP ($Manifest.engine.version -ceq '4.7.stable.official.5b4e0cb0f' -and
         (Get-PPHash (Join-PPSafe $Root 'vcruntime140.dll')) -ceq $Manifest.engine.vc_runtime_sha256) 'Pinned engine/VC runtime differs'
+    if ($Completion) {
+        Assert-PP ($Manifest.engine.gui.sha256 -ceq 'b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8' -and
+            $Manifest.engine.console.sha256 -ceq 'd8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c') 'Completion Godot executable pin differs'
+        Assert-PP ($Manifest.owner_command -ceq 'Open Workbench.cmd' -and $Names.Contains($Manifest.owner_command) -and
+            $Manifest.owner_material -ceq 'full') 'Completion owner launcher or publication default differs'
+    }
     $VC = Read-PPJson (Join-PPSafe $Root 'vc-runtime-provenance.json')
     Assert-PP ($VC.schema -eq 1 -and $VC.authenticode.status -ceq 'Valid' -and
         (@($VC.files_sha256.PSObject.Properties.Name | Sort-Object) -join ',') -ceq 'Microsoft-Visual-C-Runtime-LICENSE.docx,Microsoft-Visual-Studio-2022-LICENSE.docx,vcruntime140.dll') 'VC runtime stage differs'
     foreach ($Entry in $VC.files_sha256.PSObject.Properties) { Assert-PP ((Get-PPHash (Join-PPSafe $Root $Entry.Name)) -ceq $Entry.Value) 'VC runtime or license differs' }
-    Assert-PP ($Manifest.campaign -ceq 'tools/pubpres_playability/campaign.json' -and
+    $LegacyRegistration = 'tools/pubpres_playability/campaign.json'
+    $Registration = if ($Completion) { 'tools/pubpres_completion/registration.json' } else { $LegacyRegistration }
+    Assert-PP ($Manifest.campaign -ceq $Registration -and
         $Manifest.owner_launcher -ceq 'tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1' -and
         $Manifest.owner_observer -ceq 'tools/pubpres_playability_windows/owner_start.gd' -and
         $Manifest.experimental_defaults.staging_pools -ceq 'eager' -and $Manifest.experimental_defaults.render_thread -ceq 'safe' -and
@@ -235,8 +259,22 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Manifest.experimental_defaults.same_frame_continuation -ceq 'off') 'Entrypoint or experimental default differs'
     Assert-PP ((Get-PPHash (Join-PPSafe $Root $Manifest.campaign)) -ceq $Manifest.campaign_sha256) 'Registered comparison corpus changed'
     $Campaign = Read-PPJson (Join-PPSafe $Root $Manifest.campaign)
-    Assert-PP ($Campaign.schema -ceq 'pubpres-playability-campaign-v3' -and $Campaign.source_commits.main -ceq $Manifest.sources.M.source_commit -and
-        $Campaign.source_commits.integration -ceq $Manifest.sources.I.source_commit) 'Comparison source registration differs'
+    if ($Completion) {
+        Assert-PP ($Campaign.schema -ceq 'pubpres-completion-campaign-v1' -and $Campaign.ordinary_defaults.material_publication -ceq 'full' -and
+            $Campaign.predecessor_registration.path -ceq $LegacyRegistration -and
+            $Campaign.predecessor_registration.sha256 -ceq '42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef' -and
+            (Get-PPHash (Join-PPSafe $Root $LegacyRegistration)) -ceq $Campaign.predecessor_registration.sha256) 'Completion or predecessor registration differs'
+        foreach ($Key in @('M','I','D')) {
+            $Item = $Manifest.sources.$Key
+            $Registered = $Campaign.reference_sources.$Key
+            Assert-PP ($Registered.source_commit -ceq $Item.source_commit -and $Registered.source_tree -ceq $Item.source_tree) 'Registered control source differs'
+        }
+        $Campaign = Read-PPJson (Join-PPSafe $Root $LegacyRegistration)
+    } else {
+        Assert-PP ($Campaign.source_commits.main -ceq $Manifest.sources.M.source_commit -and
+            $Campaign.source_commits.integration -ceq $Manifest.sources.I.source_commit) 'Comparison source registration differs'
+    }
+    Assert-PP ($Campaign.schema -ceq 'pubpres-playability-campaign-v3') 'Frozen apparatus schema differs'
     foreach ($Entry in $Campaign.overlay_sha256.PSObject.Properties) {
         Assert-PP ((Get-PPHash (Join-PPSafe (Join-PPSafe $Root $Manifest.sources.C.project) $Entry.Name)) -ceq $Entry.Value) 'Frozen observer overlay differs'
     }
@@ -264,9 +302,11 @@ function Copy-PPZipEntry($Entry,[string]$Path) {
     $From = $Entry.Open(); $To = [IO.File]::Open($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write)
     try { $From.CopyTo($To) } finally { $To.Dispose(); $From.Dispose() }
 }
-function Expand-PPEvaluator([string]$ArchivePath,[string]$Sidecar,[string]$KnownHash,[string]$Target,[string]$Candidate) {
+function Expand-PPEvaluator([string]$ArchivePath,[string]$Sidecar,[string]$KnownHash,[string]$Target,[string]$Candidate,
+        [string]$Mission='PUBPRES-PLAYABILITY-001') {
     Assert-PP (-not (Test-Path -LiteralPath $Target)) 'Destination already exists; choose a new folder and preserve earlier evidence'
-    $ExpectedName = 'CyberSand-PUBPRES-PLAYABILITY-001-'+$Candidate.Substring(0,12)+'-Windows.zip'
+    Assert-PP ($Mission -cin @('PUBPRES-PLAYABILITY-001','PUBPRES-COMPLETION-001')) 'Unknown evaluator mission'
+    $ExpectedName = 'CyberSand-'+$Mission+'-'+$Candidate.Substring(0,12)+'-Windows.zip'
     $Archive = [IO.Compression.ZipFile]::OpenRead([IO.Path]::GetFullPath($ArchivePath))
     try {
         Get-PPZipEntries $Archive
@@ -298,7 +338,8 @@ function Expand-PPEvaluator([string]$ArchivePath,[string]$Sidecar,[string]$Known
             if (-not $Entry.FullName.EndsWith('/')) { Copy-PPZipEntry $Entry (Join-PPSafe $Payload $Entry.FullName) }
         }
     } finally { $Archive.Dispose() }
-    Test-PPPackage $Payload $Candidate | Out-Null
+    $Manifest = Test-PPPackage $Payload $Candidate
+    Assert-PP ($Manifest.mission -ceq $Mission) 'Archive contains a mismatched mission'
     Write-PPJson (Join-Path $Target 'verified-download.json') ([ordered]@{schema='pubpres-playability-download-v1'; candidate_commit=$Candidate;
         archive_sha256=$Expected; package_filename=$ExpectedName; source_archive=[IO.Path]::GetFullPath($ArchivePath); physical_acceptance='HOLD'})
     return $Payload
@@ -408,10 +449,11 @@ function Invoke-PPProcess([string]$Engine,[string[]]$Arguments,[string]$Folder,[
     return Read-PPJson (Join-Path $Folder 'process.json')
 }
 
-function Get-PPSettings([string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off') {
-    Assert-PP ($Key -cin @('M','I','C') -and $Pools -cin @('eager','reachable') -and $Thread -cin @('safe','separate') -and
-        $Driver -cin @('opengl3','opengl3_angle') -and ($Pools -ceq 'eager' -or $Key -ceq 'C') -and
-        $Continuation -cin @('off','on') -and ($Continuation -ceq 'off' -or ($Key -ceq 'C' -and $Thread -ceq 'safe'))) 'Unsupported run selectors'
+function Get-PPSettings([string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off',[bool]$Completion=$false) {
+    $Experimental = $Key -cin @('C','D')
+    Assert-PP ($Key -cin @('M','I','D','C') -and $Pools -cin @('eager','reachable') -and $Thread -cin @('safe','separate') -and
+        $Driver -cin @('opengl3','opengl3_angle') -and ($Pools -ceq 'eager' -or $Experimental) -and
+        $Continuation -cin @('off','on') -and ($Continuation -ceq 'off' -or ($Experimental -and $Thread -ceq 'safe'))) 'Unsupported run selectors'
     $Settings = [ordered]@{CYBERSAND_PLAYABILITY_RENDER_THREAD=$Thread;CYBERSAND_DIAG_NATIVE_RENDEZVOUS='0';
         CYBERSAND_DIAG_SAME_FRAME_CONTINUATION=$(if ($Continuation -ceq 'on') {'1'} else {'0'})}
     if ($Key -cne 'M') {
@@ -419,7 +461,11 @@ function Get-PPSettings([string]$Key,[string]$Pools,[string]$Thread,[string]$Dri
         $Settings['CYBERSAND_DIAG_PRESENTATION']='coherent'; $Settings['CYBERSAND_DIAG_MATERIAL_TIMING']='measured'
         $Settings['CYBERSAND_DIAG_RENDER_CADENCE']='repaired'
     }
-    if ($Key -ceq 'C') { $Settings['CYBERSAND_DIAG_MATERIAL_POOL_POLICY']=$Pools }
+    if ($Experimental) { $Settings['CYBERSAND_DIAG_MATERIAL_POOL_POLICY']=$Pools }
+    if ($Completion -and $Key -ceq 'C') {
+        if ($Pools -ceq 'eager') { $Settings['CYBERSAND_MATERIAL_PUBLICATION']='full' }
+        else { $Settings['CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE']='target' }
+    }
     return $Settings
 }
 function Get-PPOverride { return "[cybersand]`nexperimental_wave_column_tiles=false`npubpres_wave_column_probe=false`n" }
@@ -438,12 +484,15 @@ function Get-PPExpectedRunFiles([string]$Root,$Manifest,[string]$Key) {
     finally { $Hash.Dispose() }
     return $Files
 }
-function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off') {
-    $Settings = Get-PPSettings $Key $Pools $Thread $Driver $Continuation
+function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,
+        [string]$Continuation='off',[string]$Run='') {
+    $Settings = Get-PPSettings $Key $Pools $Thread $Driver $Continuation ($Manifest.schema -ceq 'pubpres-completion-windows-v1')
     $Item = $Manifest.sources.$Key
     Assert-PP ($Continuation -ceq 'off' -or $Item.features.same_frame_continuation) 'This historical source does not support same-frame continuation'
     Assert-PP ($Pools -ceq 'eager' -or $Item.features.reachable_staging_pools) 'This historical source does not support reachable staging pools'
-    $Run = Join-Path ([IO.Path]::GetDirectoryName($Root)) ('Runs\'+(Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,12))
+    if (-not $Run) {
+        $Run = Join-Path ([IO.Path]::GetDirectoryName($Root)) ('Runs\'+(Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,12))
+    }
     Assert-PP (-not (Test-Path -LiteralPath $Run)) 'Refusing stale run folder'
     [IO.Directory]::CreateDirectory($Run) | Out-Null
     $CopyRoot = Join-Path $Run 'source'; [IO.Directory]::CreateDirectory($CopyRoot) | Out-Null
@@ -469,12 +518,13 @@ function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$
 }
 
 function Test-PPRun([string]$Run,[string]$Root,$Manifest) {
+    Assert-PP (((Get-Item -LiteralPath $Run).Attributes -band [IO.FileAttributes]::ReparsePoint) -eq 0) 'Run root cannot be a reparse point'
     $Record = Read-PPJson (Join-Path $Run 'run.json')
     Assert-PP ($Record.schema -ceq 'pubpres-playability-owner-run-v2' -and $Record.candidate_commit -ceq $Manifest.candidate_commit -and
         $Record.package_manifest_sha256 -ceq (Get-PPHash (Join-Path $Root $script:PPManifestName)) -and
-        $Record.source -cin @('M','I','C') -and $Record.source_commit -ceq $Manifest.sources.($Record.source).source_commit -and
+        $Record.source -cin @($Manifest.sources.PSObject.Properties.Name) -and $Record.source_commit -ceq $Manifest.sources.($Record.source).source_commit -and
         $Record.wave_column_tiles -eq $false -and $Record.project -ceq 'source/godot' -and $Record.profile -ceq 'profile') 'Reopen source/package identity differs'
-    $Settings = Get-PPSettings $Record.source $Record.staging_pools $Record.render_thread $Record.render_driver $Record.same_frame_continuation
+    $Settings = Get-PPSettings $Record.source $Record.staging_pools $Record.render_thread $Record.render_driver $Record.same_frame_continuation ($Manifest.schema -ceq 'pubpres-completion-windows-v1')
     Assert-PP (@($Record.settings.PSObject.Properties).Count -eq $Settings.Count) 'Unexpected run selector'
     foreach ($Name in $Settings.Keys) { Assert-PP ($Record.settings.$Name -ceq $Settings[$Name]) 'Requested run selectors changed' }
     $Expected = Get-PPExpectedRunFiles $Root $Manifest $Record.source
@@ -500,24 +550,52 @@ Assert-PP ($ExpectedCandidate -cmatch '^[0-9a-f]{40}$') 'Supply -ExpectedCandida
 Assert-PP ([Environment]::GetEnvironmentVariable('CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES') -in @($null,'','0')) 'Wave-column On is a retained rejected experiment and cannot be enabled in this evaluator'
 if ($ArtifactZip) {
     Assert-PP (-not $PackageRoot -and $Destination -and -not $ReopenRun) 'Artifact extraction needs a new Destination; choose PackageRoot for reopening'
-    $PackageRoot = Expand-PPEvaluator $ArtifactZip $ChecksumFile $ExpectedArchiveSha256 ([IO.Path]::GetFullPath($Destination)) $ExpectedCandidate
+    $PackageRoot = Expand-PPEvaluator $ArtifactZip $ChecksumFile $ExpectedArchiveSha256 ([IO.Path]::GetFullPath($Destination)) $ExpectedCandidate $ExpectedMission
 } else { Assert-PP ($PackageRoot -and -not $Destination -and -not $ChecksumFile -and -not $ExpectedArchiveSha256) 'Supply either ArtifactZip/Destination or a pristine PackageRoot' }
-$PackageRoot = [IO.Path]::GetFullPath($PackageRoot)
+$PackageRoot = [IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]'\/')
 $Manifest = Test-PPPackage $PackageRoot $ExpectedCandidate
+if ($PSBoundParameters.ContainsKey('ExpectedMission')) { Assert-PP ($Manifest.mission -ceq $ExpectedMission) 'Package mission differs' }
 $script:PPProcessOwnerPath = Join-PPSafe $PackageRoot 'tools/pubpres_playability_windows/process_owner.cs'
-Write-Host ('Verified '+$Manifest.file_count+' files and independent M/I/C native builds at '+$ExpectedCandidate)
+Write-Host ('Verified '+$Manifest.file_count+' files and independent native builds at '+$ExpectedCandidate)
 Write-Host 'Physical Windows/NVIDIA acceptance remains HOLD.'
+Assert-PP (-not $OwnerProfile -or ($Action -ceq 'Open' -and $Manifest.schema -ceq 'pubpres-completion-windows-v1' -and
+    -not $ReopenRun -and $Source -ceq 'Candidate' -and $RenderThread -ceq 'Safe' -and
+    $StagingPools -ceq 'Eager' -and $SameFrameContinuation -ceq 'Off')) 'Owner profile requires the ordinary Completion candidate selectors'
 if ($Action -eq 'Verify') { return }
+$OwnerRun = ''
+$OwnerLock = $null
+try {
+if ($OwnerProfile) {
+    $Runs = Join-Path ([IO.Path]::GetDirectoryName($PackageRoot)) 'Runs'
+    [IO.Directory]::CreateDirectory($Runs) | Out-Null
+    Assert-PP (((Get-Item -LiteralPath $Runs).Attributes -band [IO.FileAttributes]::ReparsePoint) -eq 0) 'Runs location cannot be a reparse point'
+    $ManifestHash = Get-PPHash (Join-Path $PackageRoot $script:PPManifestName)
+    $Name = 'Workbench-'+$ExpectedCandidate.Substring(0,12)+'-'+$ManifestHash.Substring(0,12)+'-'+$RenderingDriver
+    $OwnerRun = Join-PPSafe $Runs $Name
+    $LockPath = Join-PPSafe $Runs ($Name+'.lock')
+    if (Test-Path -LiteralPath $LockPath) {
+        Assert-PP (((Get-Item -LiteralPath $LockPath).Attributes -band [IO.FileAttributes]::ReparsePoint) -eq 0) 'Owner lock cannot be a reparse point'
+    }
+    try { $OwnerLock = [IO.File]::Open($LockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None) }
+    catch { throw ('Cannot lock the owner profile. Close any Workbench using it. '+$_.Exception.Message) }
+    if (Test-Path -LiteralPath $OwnerRun) { $ReopenRun = $OwnerRun }
+}
 if ($ReopenRun) {
     $Run = [IO.Path]::GetFullPath($ReopenRun)
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
-    if ($PSBoundParameters.ContainsKey('Source')) { Assert-PP (@{Candidate='C';Integration='I';Main='M'}[$Source] -ceq $RunRecord.source) 'Explicit reopen source differs' }
+    if ($OwnerProfile) {
+        Assert-PP ($RunRecord.source -ceq 'C' -and $RunRecord.render_thread -ceq 'safe' -and
+            $RunRecord.staging_pools -ceq 'eager' -and $RunRecord.same_frame_continuation -ceq 'off' -and
+            $RunRecord.render_driver -ceq $RenderingDriver) 'Owner profile selectors changed'
+    }
+    if ($PSBoundParameters.ContainsKey('Source')) { Assert-PP (@{Candidate='C';Integration='I';Main='M';Donor='D'}[$Source] -ceq $RunRecord.source) 'Explicit reopen source differs' }
     foreach ($Choice in @(@('StagingPools','staging_pools'),@('RenderThread','render_thread'),@('RenderingDriver','render_driver'),@('SameFrameContinuation','same_frame_continuation'))) {
         if ($PSBoundParameters.ContainsKey($Choice[0])) { Assert-PP ((Get-Variable -Name $Choice[0] -ValueOnly).ToLowerInvariant() -ceq $RunRecord.($Choice[1])) 'Explicit reopen selector differs from saved run' }
     }
 } else {
-    $Key = @{Candidate='C';Integration='I';Main='M'}[$Source]
-    $Run = New-PPRun $PackageRoot $Manifest $Key ($StagingPools.ToLowerInvariant()) ($RenderThread.ToLowerInvariant()) $RenderingDriver ($SameFrameContinuation.ToLowerInvariant())
+    $Key = @{Candidate='C';Integration='I';Main='M';Donor='D'}[$Source]
+    Assert-PP ($Key -cin @($Manifest.sources.PSObject.Properties.Name)) 'Source is unavailable in this package'
+    $Run = New-PPRun $PackageRoot $Manifest $Key ($StagingPools.ToLowerInvariant()) ($RenderThread.ToLowerInvariant()) $RenderingDriver ($SameFrameContinuation.ToLowerInvariant()) $OwnerRun
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
 }
 $Item = $Manifest.sources.($RunRecord.source)
@@ -545,8 +623,13 @@ Assert-PP ($Ready.schema -ceq 'pubpres-playability-owner-start-v2' -and $Ready.r
     $Ready.project_sha256 -ceq $RunRecord.files_sha256.'godot/project.godot' -and
     $Ready.observer_sha256 -ceq $RunRecord.files_sha256.'godot/tests/pubpres_playability_owner_start.gd' -and
     $Ready.override_sha256 -ceq $RunRecord.files_sha256.'godot/override.cfg') 'Actual process/source/runtime/thread receipt differs'
-if ($RunRecord.source -eq 'C') {
-    Assert-PP ($Ready.material_publication.staging_pool_policy -ceq $RunRecord.staging_pools) 'Requested staging policy did not reach actual native-pixel publisher'
+if ($RunRecord.source -cin @('C','D')) {
+    if ($RunRecord.settings.CYBERSAND_MATERIAL_PUBLICATION -ceq 'full') {
+        Assert-PP ($Ready.material_publication.requested_mode -ceq 'full' -and
+            $Ready.material_publication.backend -ceq 'full') 'Requested full publication did not reach actual native-pixel publisher'
+    } else {
+        Assert-PP ($Ready.material_publication.staging_pool_policy -ceq $RunRecord.staging_pools) 'Requested staging policy did not reach actual native-pixel publisher'
+    }
     $Continuation = $Ready.same_frame_continuation
     $ExpectedOn = $RunRecord.same_frame_continuation -ceq 'on'
     $ExpectedMode = if ($ExpectedOn) { 'same_frame_once' } else { 'off' }
@@ -558,3 +641,4 @@ if ($RunRecord.source -eq 'C') {
 Test-PPRun $Run $PackageRoot $Manifest | Out-Null
 Write-PPJson (Join-Path $Launch 'verified-startup.json') $Ready
 Write-Host ('Closed verified owner session; evidence retained at '+$Run)
+} finally { if ($null -ne $OwnerLock) { $OwnerLock.Dispose() } }

@@ -18,6 +18,7 @@ var source_frame: Dictionary = {}
 var bridge
 var rid: RID
 var original_environment: String = ""
+var original_timing: String = ""
 
 
 func _initialize() -> void:
@@ -41,6 +42,17 @@ func until(predicate: Callable) -> bool:
 		if host.simulation_worker.has_failed(): return false
 		await process_frame
 	return false
+
+
+func _refresh_same_world_history() -> bool:
+	var prior: int = host.last_uploaded_render_snapshot_serial
+	var generation: int = host.last_uploaded_world_generation
+	host.simulation_worker.request_render_full_refresh()
+	return await until(func() -> bool:
+		var previous: Dictionary = host.material_presentation_timeline.frame(Time.get_ticks_usec()).previous
+		return host.last_uploaded_render_snapshot_serial > prior and host.last_uploaded_world_generation == generation \
+			and previous.get("serial",-1) == prior and previous.get("generation",-1) == generation \
+			and host._valid_workbench_mask_frame(host.workbench_display_frame()))
 
 
 func _set_actual_rapier_pose(pose: Transform2D) -> bool:
@@ -100,7 +112,9 @@ func _render_scene(label: String, expected: Transform2D,
 
 func _run() -> void:
 	original_environment = OS.get_environment("CYBERSAND_DIAG_FLYER_POSE")
+	original_timing = OS.get_environment("CYBERSAND_DIAG_MATERIAL_TIMING")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_TIMING","")
 	set_meta("cybersand_feature","shared_workbench")
 	host = load("res://main.tscn").instantiate()
 	root.add_child(host)
@@ -123,7 +137,8 @@ func _run() -> void:
 					"actual Rapier actor and native World adopted"):
 				var ready: bool = await until(func() -> bool:
 					return host.image != null and host.latest_snapshot != null and host.last_uploaded_world_generation==host.latest_snapshot.render_world_generation and host.last_uploaded_revision==host.latest_snapshot.world_revision and host.image.get_pixel(260,345).r8==58 and host.image.get_pixel(237,355).r8==58 and not host.workbench_display_frame().is_empty())
-				if require(ready,"real native Wall cells acknowledged in uploaded material texture"):
+				if require(ready,"real native Wall cells acknowledged in uploaded material texture") \
+						and require(await _refresh_same_world_history(),"native refresh supplies a real same-World predecessor"):
 					bridge = host.physical_actor_session.bridge
 					rid = bridge._body_rids[0]
 					source_frame = host.workbench_display_frame().duplicate(true)
@@ -236,6 +251,7 @@ func _run() -> void:
 					_set_actual_rapier_pose(bound)
 	host.queue_free()
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",original_environment)
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_TIMING",original_timing)
 	await process_frame
 	await process_frame
 	print("PR593_PRODUCTION_POSE_RESULT ",JSON.stringify({

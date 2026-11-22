@@ -184,7 +184,8 @@ class HelperContracts(unittest.TestCase):
                     (payload / "C/godot").mkdir(parents=True)
                     (payload / "godot.exe").write_bytes(b"mock-engine")
                     (payload / run_installed_authoring.package_windows.MANIFEST).write_text("{}\n")
-                    manifest = {"sources": {"C": {"root": "C", "native": {"sha256": "a" * 64}}},
+                    manifest = {"schema": run_installed_authoring.package_windows.COMPLETION_SCHEMA,
+                                "sources": {"C": {"root": "C", "native": {"sha256": "a" * 64}}},
                                 "engine": {"gui": {"path": "godot.exe"}}}
                     args = SimpleNamespace(package=payload, candidate="c" * 40, output=root / "output", same_frame=mode)
                     calls = []
@@ -219,6 +220,7 @@ class HelperContracts(unittest.TestCase):
                         for name, value in continuation_policy(mode)["selectors"].items():
                             self.assertEqual(environment[name], value)
                         self.assertEqual(environment["WB_COMBINED_SAME_FRAME"], mode)
+                        self.assertEqual(environment["CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE"], "target")
                     self.assertEqual(calls[1][1]["WB_COMBINED_REOPEN"], "0")
                     self.assertEqual(calls[2][1]["WB_COMBINED_REOPEN"], "1")
                     self.assertEqual(calls[1][1]["APPDATA"], calls[2][1]["APPDATA"])

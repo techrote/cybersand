@@ -98,7 +98,7 @@ try {
     }
     # Source-derived import metadata remains immutable and hash checked.
     # Canonical archive export must prevent Godot's LF rewrite on every source.
-    foreach ($SourceKey in @('M','I','C')) {
+    foreach ($SourceKey in $Manifest.sources.PSObject.Properties.Name) {
         $DescriptorPath = Join-PPSafe $PackageRoot ($Manifest.sources.$SourceKey.root+'/godot/addons/godot-rapier2d/Radial2D.svg.import')
         $DescriptorBytes = [IO.File]::ReadAllBytes($DescriptorPath)
         Assert-PP (-not ($script:PPUtf8.GetString($DescriptorBytes).Contains("`r"))) 'Committed import descriptor must be canonical LF'
@@ -172,19 +172,19 @@ try {
             Add-PPZipFile $Zip ('evaluator/'+$ExpectedName) $ArtifactZip
             Add-PPZipFile $Zip ('evaluator/'+$ExpectedName+'.sha256') ($ArtifactZip+'.sha256')
         } finally { $Zip.Dispose() }
-        $Extracted = Expand-PPEvaluator $OuterPath '' (Get-PPHash $ArtifactZip) (Join-Path $Output 'nested-extraction') $ExpectedCandidate
+        $Extracted = Expand-PPEvaluator $OuterPath '' (Get-PPHash $ArtifactZip) (Join-Path $Output 'nested-extraction') $ExpectedCandidate $Manifest.mission
         Test-PPPackage $Extracted $ExpectedCandidate | Out-Null
         $Checks.Add([ordered]@{name='exact-nested-artifact-and-sidecar';passed=$true;payload=$Extracted})
         Expect-PPRefusal 'stale-extraction-destination' {
-            Expand-PPEvaluator $OuterPath '' '' (Join-Path $Output 'nested-extraction') $ExpectedCandidate
+            Expand-PPEvaluator $OuterPath '' '' (Join-Path $Output 'nested-extraction') $ExpectedCandidate $Manifest.mission
         } 'Destination already exists'
         Expect-PPRefusal 'wrong-independent-archive-digest' {
-            Expand-PPEvaluator $ArtifactZip '' ('0'*64) (Join-Path $Output 'bad-known-hash') $ExpectedCandidate
+            Expand-PPEvaluator $ArtifactZip '' ('0'*64) (Join-Path $Output 'bad-known-hash') $ExpectedCandidate $Manifest.mission
         } 'expected archive SHA differs'
         $WrongSidecar = Join-Path $Output 'wrong.sha256'
         [IO.File]::WriteAllText($WrongSidecar,('0'*64)+'  '+$ExpectedName+"`n",$script:PPUtf8)
         Expect-PPRefusal 'corrupted-archive-sidecar' {
-            Expand-PPEvaluator $ArtifactZip $WrongSidecar '' (Join-Path $Output 'bad-sidecar') $ExpectedCandidate
+            Expand-PPEvaluator $ArtifactZip $WrongSidecar '' (Join-Path $Output 'bad-sidecar') $ExpectedCandidate $Manifest.mission
         } 'ZIP is corrupt|differs from its sidecar'
         $Ambiguous = Join-Path $Output 'ambiguous-outer.zip'
         $Zip = [IO.Compression.ZipFile]::Open($Ambiguous,[IO.Compression.ZipArchiveMode]::Create)
@@ -192,7 +192,7 @@ try {
             Add-PPZipText $Zip ('a/'+$ExpectedName) 'a'; Add-PPZipText $Zip ('b/'+$ExpectedName) 'b'
         } finally { $Zip.Dispose() }
         Expect-PPRefusal 'ambiguous-nested-evaluators' {
-            Expand-PPEvaluator $Ambiguous '' '' (Join-Path $Output 'bad-ambiguous') $ExpectedCandidate
+            Expand-PPEvaluator $Ambiguous '' '' (Join-Path $Output 'bad-ambiguous') $ExpectedCandidate $Manifest.mission
         } 'exactly one correctly named'
     }
 

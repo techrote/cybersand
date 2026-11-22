@@ -49,6 +49,8 @@ def main():
         WB_COMBINED_SIDE="512", WB_COMBINED_WORKERS="1", WB_COMBINED_REQUIRE_GRAPHICS="1",
         WB_COMBINED_SAME_FRAME=args.same_frame)
     environment.update(policy["selectors"])
+    if manifest["schema"] == package_windows.COMPLETION_SCHEMA:
+        environment["CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE"] = "target"
     prefix = [str(engine), "--path", str(project), "--audio-driver", "Dummy"]
     outcomes, failure = [], None
     try:
@@ -85,6 +87,7 @@ def main():
             "engine_sha256": package_windows.digest(engine), "native_sha256": source["native"]["sha256"],
             "complete": failure is None and len(outcomes) == 3, "failure": failure, "outcomes": outcomes,
             "same_frame_continuation_policy": policy,
+            "material_retirement_source": environment.get("CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE"),
             "scope": "512-square graphical native author/Save/fresh-process reopen; continuation configuration/status only; software renderer; owner NVIDIA HOLD"}
         (output / "SUMMARY.json").write_text(json.dumps(summary, indent=2) + "\n")
         # Preserve actual logs, framebuffer images, saved profile and receipts.

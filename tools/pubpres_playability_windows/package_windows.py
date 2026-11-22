@@ -27,6 +27,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pubpres_playabilit
 import dependency_custody
 
 SCHEMA = "pubpres-playability-windows-v2"
+COMPLETION_SCHEMA = "pubpres-completion-windows-v1"
+LEGACY_MISSION = "PUBPRES-PLAYABILITY-001"
+COMPLETION_MISSION = "PUBPRES-COMPLETION-001"
+LEGACY_REGISTRATION = "tools/pubpres_playability/campaign.json"
+COMPLETION_REGISTRATION = "tools/pubpres_completion/registration.json"
+COMPLETION_REFERENCES = {
+    "M": {"source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "source_tree": "06b62d73138028d1f7615b83edc9810491bf6287"},
+    "I": {"source_commit": "8503ec19e4d620e125dc6df2c5c6571b1256cb92",
+          "source_tree": "ece848ad77c06fafb60d597d87f9f53f7bc211f1"},
+    "D": {"source_commit": "d316c281e0abb575eb6302afc12ec44f211460ba",
+          "source_tree": "7a57dc0873dd161abe165f3a60e14e64886d04a8"},
+}
+OWNER_COMMAND = "Open Workbench.cmd"
 MANIFEST = "PUBPRES-PLAYABILITY-MANIFEST.json"
 RUNTIME_RECEIPT = "PUBPRES-RUNTIME.json"
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
@@ -38,6 +52,10 @@ CONSOLE = "Godot_v4.7-stable_win64_console.exe"
 GODOT_VERSION = "4.7.stable.official.5b4e0cb0f"
 GODOT_SHA512 = ("41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e"
                 "6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9")
+GODOT_EXECUTABLE_SHA256 = {
+    GUI: "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    CONSOLE: "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+}
 NOTICE_HASHES = {"LICENSE.txt": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
                  "COPYRIGHT.txt": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"}
 VC_FILES = {"vcruntime140.dll", "Microsoft-Visual-C-Runtime-LICENSE.docx", "Microsoft-Visual-Studio-2022-LICENSE.docx"}
@@ -62,6 +80,30 @@ def digest(path, algorithm="sha256"):
 
 def canonical_digest(data):
     return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
+
+
+def owner_command(candidate):
+    need(COMMIT.fullmatch(candidate), "Owner launcher requires the exact candidate source")
+    lines = [
+        "@echo off",
+        "setlocal",
+        "set \"adapter=\"",
+        'if /i "%~1"=="--hosted-smoke" set "adapter=-RenderingDriver opengl3_angle -QuitAfterReady"',
+        '"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -ExecutionPolicy Bypass '
+        '-File "%~dp0tools\\pubpres_playability_windows\\Start-PUBPRES-Playability.ps1" '
+        '-PackageRoot "%~dp0." -ExpectedCandidate ' + candidate + ' -Action Open -OwnerProfile %adapter%',
+        'set "result=%errorlevel%"',
+        'if not "%result%"=="0" if "%adapter%"=="" pause',
+        'exit /b %result%',
+        "",
+    ]
+    return "\r\n".join(lines).encode("ascii")
+
+
+def source_features(key):
+    experimental = key in ("C", "D")
+    return {"reachable_staging_pools": experimental, "wave_column_tiles": False,
+            "wave_column_slots": 1, "wave_stage_probe": experimental, "same_frame_continuation": experimental}
 
 
 def safe_name(name):
@@ -173,7 +215,7 @@ def archive_source(root, source, destination, names):
                 target.write_bytes(data)
 
 
-def stage_project(root, source, key, runtime_dir, output):
+def stage_project(root, source, key, runtime_dir, output, mission=LEGACY_MISSION):
     need(COMMIT.fullmatch(source) and git(root, "rev-parse", "HEAD") == source, "Supply the exact checked-out " + key + " source")
     runtime = verify_runtime(root, source, runtime_dir)
     rapier = json.loads(committed(root, source, RAPIER_RECEIPT))
@@ -203,7 +245,7 @@ def stage_project(root, source, key, runtime_dir, output):
     # host-observation readers never describe its bytes using the old receipt.
     historical = target / NATIVE_RECEIPT
     historical.rename(historical.with_name("retained-runtime-provenance.reference.json"))
-    derived = {"schema_version": 1, "status": "PUBPRES-PLAYABILITY-001 experiment; production and owner acceptance HOLD",
+    derived = {"schema_version": 1, "status": mission + " experiment; production and owner acceptance HOLD",
                "artifact": NATIVE, "source_commit": source, "source_tree": runtime["source_tree"],
                "sha256": runtime["runtime_sha256"], "size": runtime["runtime_bytes"],
                "source_inputs": runtime["source_inputs_sha256"], "build_commit": source,
@@ -226,8 +268,7 @@ def stage_project(root, source, key, runtime_dir, output):
             "rapier": {"path": prefix + "/" + RAPIER, "sha256": rapier["sha256"], "bytes": rapier["size"],
                 "receipt": prefix + "/" + RAPIER_RECEIPT},
             "toolchain": {name: runtime[name] for name in ("godot_cpp_commit", "godot_cpp_library_sha256", "godot_cpp_dependency_sha256", "compiler_command", "compiler_version", "toolchain_drift_allowed")},
-            "features": {"reachable_staging_pools": key == "C", "wave_column_tiles": False,
-                         "wave_column_slots": 1, "wave_stage_probe": key == "C", "same_frame_continuation": key == "C"},
+            "features": source_features(key),
             "source_projection": "Exact committed project and closure; new source-matched DLL/provenance and canonical recipe copies are explicit package additions."}
 
 
@@ -239,6 +280,7 @@ def stage_dependencies(output, engine_zip, vc, notices):
             need(archive.namelist().count(name) == 1, "Missing or duplicate official engine entry")
             (output / name).write_bytes(archive.read(name))
             pe_x64(output / name)
+            need(digest(output / name) == GODOT_EXECUTABLE_SHA256[name], "Official engine entry bytes differ")
     version = subprocess.check_output([str(output / CONSOLE), "--version"], text=True, timeout=45).strip()
     need(version == GODOT_VERSION, "Packaged engine version differs")
     for name, expected in NOTICE_HASHES.items():
@@ -278,11 +320,42 @@ def file_hashes(output):
     return dict(sorted(result.items()))
 
 
+def verify_registration(output, record, completion):
+    registration = COMPLETION_REGISTRATION if completion else LEGACY_REGISTRATION
+    need(record["campaign"] == registration, "Owner comparison registration path differs")
+    need(digest(output / registration) == record["campaign_sha256"], "Frozen comparison corpus differs")
+    campaign = json.loads((output / registration).read_text(encoding="utf-8"))
+    if completion:
+        need(campaign["schema"] == "pubpres-completion-campaign-v1"
+             and campaign["reference_sources"] == COMPLETION_REFERENCES
+             and campaign["ordinary_defaults"]["material_publication"] == "full", "Completion reference registration differs")
+        for key, expected in COMPLETION_REFERENCES.items():
+            need({field: record["sources"][key][field] for field in expected} == expected,
+                 "Completion source identity differs: " + key)
+        need(campaign["predecessor_registration"]["path"] == LEGACY_REGISTRATION
+             and campaign["predecessor_registration"]["sha256"] == "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef"
+             and digest(output / LEGACY_REGISTRATION) == campaign["predecessor_registration"]["sha256"],
+             "Frozen predecessor registration changed")
+        need(record["owner_command"] == OWNER_COMMAND and (output / OWNER_COMMAND).read_bytes()
+             == owner_command(record["candidate_commit"]), "Owner Windows command differs")
+        need(record["owner_material"] == "full", "Owner material publication default differs")
+        campaign = json.loads((output / LEGACY_REGISTRATION).read_text(encoding="utf-8"))
+    else:
+        need(campaign["source_commits"] == {label: record["sources"][key]["source_commit"]
+             for key, label in (("M", "main"), ("I", "integration"))}, "Comparison source registration differs")
+    need(campaign["schema"] == "pubpres-playability-campaign-v3", "Frozen apparatus schema differs")
+    for name, expected in campaign["overlay_sha256"].items():
+        need(digest(output / "sources/C/godot" / safe_name(name)) == expected, "Frozen observer overlay differs")
+
+
 def verify(output, candidate):
     output = Path(output)
     manifest_path = output / MANIFEST
     record = json.loads(manifest_path.read_text(encoding="utf-8"))
-    need(record.get("schema") == SCHEMA and record.get("candidate_commit") == candidate and COMMIT.fullmatch(candidate), "Package candidate/schema differs")
+    completion = record.get("schema") == COMPLETION_SCHEMA
+    mission = COMPLETION_MISSION if completion else LEGACY_MISSION
+    need(record.get("schema") in (SCHEMA, COMPLETION_SCHEMA) and record.get("candidate_commit") == candidate
+         and COMMIT.fullmatch(candidate) and record.get("mission", LEGACY_MISSION) == mission, "Package candidate/schema differs")
     need((output / (MANIFEST + ".sha256")).read_text(encoding="ascii") == f"{digest(manifest_path)}  {MANIFEST}\n", "Manifest checksum differs")
     names = record.get("files_sha256", {})
     need(names and len(names) == record.get("file_count") and len(names) <= 30000
@@ -292,7 +365,8 @@ def verify(output, candidate):
     for name, expected in names.items():
         safe_name(name)
         need(not (output / name).is_symlink() and SHA.fullmatch(expected) and observed[name] == expected, "Changed package file: " + name)
-    need(set(record.get("sources", {})) == {"M", "I", "C"}, "Missing independent source projects")
+    need(set(record.get("sources", {})) == ({"M", "I", "D", "C"} if completion else {"M", "I", "C"}),
+         "Missing independent source projects")
     toolchains = []
     for key, source in record["sources"].items():
         need(COMMIT.fullmatch(source["source_commit"]) and COMMIT.fullmatch(source["source_tree"]), "Incomplete source identity")
@@ -342,15 +416,14 @@ def verify(output, candidate):
              and derived["source_inputs"] == native["source_inputs_sha256"] and derived["build_receipt"] == source["native"]["receipt"]
              and derived["build_receipt_sha256"] == source["native"]["receipt_sha256"] and derived["production_runtime_promotion"] is False,
              "Runtime observation would read stale or misleading provenance")
-        need(source["features"] == {"reachable_staging_pools": key == "C", "wave_column_tiles": False,
-                                   "wave_column_slots": 1, "wave_stage_probe": key == "C", "same_frame_continuation": key == "C"}, "Unsupported experimental feature advertisement")
+        need(source["features"] == source_features(key), "Unsupported experimental feature advertisement")
         toolchains.append(source["toolchain"])
-    need(toolchains[0] == toolchains[1] == toolchains[2], "Comparison runtimes use unmatched toolchains")
+    need(all(toolchain == toolchains[0] for toolchain in toolchains), "Comparison runtimes use unmatched toolchains")
     need(record["sources"]["C"]["source_commit"] == candidate and record["physical_acceptance"] == "HOLD"
          and record["production_defaults_changed"] is False
          and record["experimental_defaults"] == {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
          "Candidate source, defaults or owner hold differs")
-    need(record["package_filename"] == "CyberSand-PUBPRES-PLAYABILITY-001-" + candidate[:12] + "-Windows.zip",
+    need(record["package_filename"] == "CyberSand-" + mission + "-" + candidate[:12] + "-Windows.zip",
          "Incorrect evaluator filename")
     engine = record["engine"]
     need(engine["version"] == GODOT_VERSION and engine["archive_sha512"] == GODOT_SHA512
@@ -358,20 +431,16 @@ def verify(output, candidate):
     for entry in (engine["gui"], engine["console"]):
         pe_x64(output / entry["path"])
         need(digest(output / entry["path"]) == entry["sha256"], "Packaged engine differs")
+        if completion:
+            need(entry["sha256"] == GODOT_EXECUTABLE_SHA256[entry["path"]], "Completion engine bytes differ from pin")
     vc = json.loads((output / "vc-runtime-provenance.json").read_text(encoding="utf-8-sig"))
     need(vc["schema"] == 1 and set(vc["files_sha256"]) == VC_FILES and vc["authenticode"]["status"] == "Valid", "VC runtime provenance differs")
     for name, expected in vc["files_sha256"].items():
         need(digest(output / name) == expected, "VC runtime or license differs")
     need(engine["vc_runtime_sha256"] == digest(output / "vcruntime140.dll"), "VC runtime engine binding differs")
-    need(record["campaign"] == "tools/pubpres_playability/campaign.json" and record["owner_launcher"] == TOOLS + "/Start-PUBPRES-Playability.ps1"
+    need(record["owner_launcher"] == TOOLS + "/Start-PUBPRES-Playability.ps1"
          and record["owner_observer"] == TOOLS + "/owner_start.gd", "Owner entrypoint changed")
-    need(digest(output / record["campaign"]) == record["campaign_sha256"], "Frozen comparison corpus differs")
-    campaign = json.loads((output / record["campaign"]).read_text(encoding="utf-8"))
-    need(campaign["schema"] == "pubpres-playability-campaign-v3"
-         and campaign["source_commits"] == {"main": record["sources"]["M"]["source_commit"], "integration": record["sources"]["I"]["source_commit"]},
-         "Comparison source registration differs")
-    for name, expected in campaign["overlay_sha256"].items():
-        need(digest(output / "sources/C/godot" / safe_name(name)) == expected, "Frozen observer overlay differs")
+    verify_registration(output, record, completion)
     return record
 
 
@@ -380,7 +449,8 @@ def main():
     parser.add_argument("--candidate-sha", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--verify", action="store_true")
-    for key in ("candidate", "main", "integration"):
+    parser.add_argument("--mission", choices=(LEGACY_MISSION, COMPLETION_MISSION))
+    for key in ("candidate", "main", "integration", "donor"):
         parser.add_argument("--" + key + "-root", type=Path)
         if key != "candidate":
             parser.add_argument("--" + key + "-sha")
@@ -393,41 +463,65 @@ def main():
     output = args.output_dir.resolve()
     if args.verify:
         result = verify(output, args.candidate_sha)
+        need(args.mission is None or result.get("mission", LEGACY_MISSION) == args.mission,
+             "Verified package mission differs")
         print(json.dumps({"verified_files": result["file_count"], "candidate": args.candidate_sha, "physical_acceptance": "HOLD"}))
         return
     need(os.name == "nt", "Build the Windows evaluator on actual Windows; metadata tests can run elsewhere")
-    need(all(getattr(args, name) for name in ("candidate_root", "main_root", "integration_root", "candidate_runtime", "main_runtime",
-         "integration_runtime", "main_sha", "integration_sha", "godot_zip", "vc_runtime", "notices", "archive")), "All independent sources/builds and dependencies are required")
+    mission = args.mission or LEGACY_MISSION
+    completion = mission == COMPLETION_MISSION
+    source_order = {"M": "main", "I": "integration", "C": "candidate"}
+    if completion:
+        source_order["D"] = "donor"
+    source_shas = {"C": args.candidate_sha, "M": args.main_sha, "I": args.integration_sha, "D": args.donor_sha}
+    need(all(getattr(args, name) for name in ("godot_zip", "vc_runtime", "notices", "archive")),
+         "Godot archive, signed VC stage, notices and output archive are required")
     archive_path = args.archive.resolve()
-    expected_name = "CyberSand-PUBPRES-PLAYABILITY-001-" + args.candidate_sha[:12] + "-Windows.zip"
+    need(all(getattr(args, label + "_runtime") and getattr(args, label + "_root")
+             and source_shas[key] for key, label in source_order.items()), "Supply every independent source/runtime")
+    need(completion or not any((args.donor_sha, args.donor_root, args.donor_runtime)),
+         "Use the Completion package profile for the independent donor")
+    expected_name = "CyberSand-" + mission + "-" + args.candidate_sha[:12] + "-Windows.zip"
     need(COMMIT.fullmatch(args.candidate_sha) and archive_path.name == expected_name, "Use the exact source-bound package filename: " + expected_name)
     need(not output.exists() and not archive_path.exists() and not archive_path.with_suffix(".zip.sha256").exists()
          and not archive_path.with_suffix(".zip.json").exists()
          and output not in archive_path.parents, "Output, ZIP and sidecar must be new; archive stays outside payload")
     root = args.candidate_root.resolve()
     need(canonical_digest(Path(__file__).read_bytes()) == canonical_digest(committed(root, args.candidate_sha, TOOLS + "/package_windows.py")), "Packaging script differs from candidate commit")
-    git(root, "merge-base", "--is-ancestor", args.main_sha, args.candidate_sha)
-    git(root, "merge-base", "--is-ancestor", args.integration_sha, args.candidate_sha)
+    for key, label in source_order.items():
+        if key == "C":
+            continue
+        source = source_shas[key]
+        git(root, "merge-base", "--is-ancestor", source, args.candidate_sha)
+        if completion:
+            need(COMPLETION_REFERENCES[key] == {"source_commit": source,
+                 "source_tree": git(getattr(args, label + "_root"), "rev-parse", source + "^{tree}")},
+                 "Wrong independent Completion source: " + key)
     output.mkdir(parents=True)
     sources = {}
-    for key, label in (("M", "main"), ("I", "integration"), ("C", "candidate")):
-        sources[key] = stage_project(getattr(args, label + "_root"), getattr(args, label + "_sha"), key,
-                                     getattr(args, label + "_runtime"), output)
-    archive_source(root, args.candidate_sha, output, [TOOLS, "tools/pubpres_playability", "tools/pubpres_playability_build"])
+    for key, label in source_order.items():
+        sources[key] = stage_project(getattr(args, label + "_root"), source_shas[key], key,
+                                     getattr(args, label + "_runtime"), output, mission)
+    packaged_tools = [TOOLS, "tools/pubpres_playability", "tools/pubpres_playability_build"]
+    readme = TOOLS + "/README.md"
+    if completion:
+        readme = "tools/pubpres_completion/README.md"
+        packaged_tools.extend((COMPLETION_REGISTRATION, readme))
+        (output / OWNER_COMMAND).write_bytes(owner_command(args.candidate_sha))
+    archive_source(root, args.candidate_sha, output, packaged_tools)
     engine = stage_dependencies(output, args.godot_zip, args.vc_runtime, args.notices)
-    campaign = json.loads((output / "tools/pubpres_playability/campaign.json").read_text())
-    need(campaign["schema"] == "pubpres-playability-campaign-v3" and campaign["source_commits"]["main"] == args.main_sha
-         and campaign["source_commits"]["integration"] == args.integration_sha, "V3 corpus sources differ")
-    for name, expected in campaign["overlay_sha256"].items():
-        need(digest(output / sources["C"]["project"] / safe_name(name)) == expected, "Frozen observer overlay differs")
-    shutil.copyfile(output / TOOLS / "README.md", output / "READ-ME.md")
-    record = {"schema": SCHEMA, "mission": "PUBPRES-PLAYABILITY-001", "candidate_commit": args.candidate_sha,
+    shutil.copyfile(output / readme, output / "READ-ME.md")
+    registration = COMPLETION_REGISTRATION if completion else LEGACY_REGISTRATION
+    record = {"schema": COMPLETION_SCHEMA if completion else SCHEMA, "mission": mission, "candidate_commit": args.candidate_sha,
               "package_filename": expected_name, "sources": sources, "engine": engine,
-              "campaign": "tools/pubpres_playability/campaign.json", "campaign_sha256": digest(output / "tools/pubpres_playability/campaign.json"),
+              "campaign": registration, "campaign_sha256": digest(output / registration),
               "owner_launcher": TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": TOOLS + "/owner_start.gd",
               "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "qualification_scope": "Fresh source-matched Windows evaluator. Hosted software-renderer results and owner physical NVIDIA acceptance are distinct."}
+    if completion:
+        record["owner_command"] = OWNER_COMMAND
+        record["owner_material"] = "full"
     record["files_sha256"] = file_hashes(output)
     record["file_count"] = len(record["files_sha256"])
     write_json(output / MANIFEST, record)
@@ -441,7 +535,7 @@ def main():
         need(archive.testzip() is None, "Fresh evaluator ZIP integrity failed")
     checksum = digest(archive_path)
     archive_path.with_suffix(".zip.sha256").write_text(f"{checksum}  {archive_path.name}\n", encoding="ascii")
-    write_json(archive_path.with_suffix(".zip.json"), {"schema": SCHEMA, "candidate_commit": args.candidate_sha,
+    write_json(archive_path.with_suffix(".zip.json"), {"schema": record["schema"], "mission": mission, "candidate_commit": args.candidate_sha,
                "archive_sha256": checksum, "archive_bytes": archive_path.stat().st_size,
                "manifest_sha256": digest(output / MANIFEST), "physical_acceptance": "HOLD"})
     print(f"{checksum}  {archive_path.name}")

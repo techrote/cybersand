@@ -70,6 +70,14 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 
 ## Does a small dirty patch mean a small GPU upload?
 
+The [Completion candidate](../operations/pubpres-completion-001.md) also fences
+material blending by the accepted World generation. A same-size replacement may
+retain the old physical texture in the dual-history pair, but neither requested
+nor measured timing may give it visual weight without a qualified same-World
+predecessor. This does not change the accepted revision sequence, upload ACK or
+history bytes. The focused production-intake regression is
+[`test_workbench_material_world_blend.gd`](../../godot/tests/test_workbench_material_world_blend.gd).
+
 The [desktop evaluation candidate](../operations/pubpres-integration-evaluation.md) adds opt-in tile staging and persistent drawable history. Large transitions that first copy the accepted history use dedicated bounded staging rings. The ordinary full-only path continues to submit the complete backing image.
 
 **PUBPRES candidate:** `auto` and `blit` use the existing checked sparse

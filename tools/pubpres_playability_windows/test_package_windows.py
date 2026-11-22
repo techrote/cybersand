@@ -6,10 +6,12 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import shutil
 import struct
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 SPEC = importlib.util.spec_from_file_location("playability_package", HERE / "package_windows.py")
@@ -40,8 +42,8 @@ def save(root, record):
     put(root, package.MANIFEST + ".sha256", f"{package.digest(root / package.MANIFEST)}  {package.MANIFEST}\n")
 
 
-def fixture(root):
-    """Three distinct source closures/DLLs, even when toolchain agrees."""
+def fixture(root, completion=False):
+    """Distinct source closures/DLLs with one shared synthetic toolchain."""
     put(root, package.BUILD_DRIVER, "synthetic build driver\n")
     for name in package.dependency_custody.DRIVER_FILES[1:]:
         put(root, str(Path(package.BUILD_DRIVER).parent / name), "synthetic driver module " + name + "\n")
@@ -51,7 +53,8 @@ def fixture(root):
                  "compiler_command": "synthetic-c++", "compiler_version": "fixture-only",
                  "toolchain_drift_allowed": False}
     sources = {}
-    for index, key in enumerate(("M", "I", "C"), 1):
+    source_keys = ("M", "I", "C", "D") if completion else ("M", "I", "C")
+    for index, key in enumerate(source_keys, 1):
         prefix = "sources/" + key
         put(root, prefix + "/godot/addons/godot-rapier2d/Radial2D.svg.import",
             '[remap]\nimporter="texture"\n[params]\ncompress/mode=0\n')
@@ -67,6 +70,9 @@ def fixture(root):
         dll = put(root, prefix + "/" + package.NATIVE, pe(key))
         log = put(root, prefix + "/provenance/build.log", "synthetic complete " + key + "\n")
         source, tree = str(index)*40, str(index+3)*40
+        if completion and key in package.COMPLETION_REFERENCES:
+            pinned = package.COMPLETION_REFERENCES[key]
+            source, tree = pinned["source_commit"], pinned["source_tree"]
         dependency_log = put(root, prefix + "/provenance/GODOT-CPP-BUILD.log", "synthetic dependency build\n")
         dependency_script = put(root, prefix + "/provenance/GODOT-CPP-BUILD.sh", "synthetic dependency builder\n")
         dependency_helper = put(root, prefix + "/provenance/GODOT-CPP-CXX.sh", "synthetic dependency helper\n")
@@ -106,8 +112,7 @@ def fixture(root):
                                    "receipt_sha256": package.digest(root / receipt), "source_input_count": len(inputs)},
                         "rapier": {"path": prefix + "/" + package.RAPIER, "sha256": package.digest(rapier_dll),
                                    "bytes": rapier_dll.stat().st_size, "receipt": prefix + "/" + package.RAPIER_RECEIPT},
-                        "toolchain": copy.deepcopy(toolchain), "features": {"reachable_staging_pools": key == "C",
-                        "wave_stage_probe": key == "C", "wave_column_tiles": False, "wave_column_slots": 1, "same_frame_continuation": key == "C"}}
+                        "toolchain": copy.deepcopy(toolchain), "features": package.source_features(key)}
     engine = {"version": package.GODOT_VERSION, "archive_sha512": package.GODOT_SHA512}
     for label, name in (("gui", package.GUI), ("console", package.CONSOLE)):
         engine[label] = {"path": name, "sha256": package.digest(put(root, name, pe(label)))}
@@ -115,7 +120,7 @@ def fixture(root):
     package.write_json(root / "vc-runtime-provenance.json", {"schema": 1, "files_sha256": vc, "authenticode": {"status": "Valid"}})
     engine["vc_runtime_sha256"] = vc["vcruntime140.dll"]
     observer = put(root, "sources/C/godot/tests/observer.gd", "extends SceneTree\n")
-    campaign = "tools/pubpres_playability/campaign.json"
+    campaign = package.LEGACY_REGISTRATION
     (root / campaign).parent.mkdir(parents=True)
     package.write_json(root / campaign, {"schema": "pubpres-playability-campaign-v3",
                       "source_commits": {"main": sources["M"]["source_commit"], "integration": sources["I"]["source_commit"]},
@@ -123,12 +128,26 @@ def fixture(root):
     put(root, package.TOOLS + "/Start-PUBPRES-Playability.ps1", "# synthetic owner launcher\n")
     put(root, package.TOOLS + "/owner_start.gd", "extends SceneTree\n")
     candidate = sources["C"]["source_commit"]
-    record = {"schema": package.SCHEMA, "candidate_commit": candidate, "sources": sources, "engine": engine,
-              "package_filename": "CyberSand-PUBPRES-PLAYABILITY-001-" + candidate[:12] + "-Windows.zip",
+    mission = package.COMPLETION_MISSION if completion else package.LEGACY_MISSION
+    if completion:
+        source_root = HERE.parents[1]
+        predecessor = source_root / package.LEGACY_REGISTRATION
+        put(root, package.LEGACY_REGISTRATION, predecessor.read_bytes())
+        for name in json.loads(predecessor.read_bytes())["overlay_sha256"]:
+            put(root, "sources/C/godot/" + name, (source_root / "godot" / name).read_bytes())
+        campaign = package.COMPLETION_REGISTRATION
+        put(root, campaign, (source_root / campaign).read_bytes())
+        put(root, package.OWNER_COMMAND, package.owner_command(candidate))
+    record = {"schema": package.COMPLETION_SCHEMA if completion else package.SCHEMA,
+              "mission": mission, "candidate_commit": candidate, "sources": sources, "engine": engine,
+              "package_filename": "CyberSand-" + mission + "-" + candidate[:12] + "-Windows.zip",
               "campaign": campaign, "campaign_sha256": package.digest(root / campaign),
               "owner_launcher": package.TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": package.TOOLS + "/owner_start.gd",
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"}}
+    if completion:
+        record["owner_command"] = package.OWNER_COMMAND
+        record["owner_material"] = "full"
     save(root, record)
     return record
 
@@ -338,6 +357,50 @@ class SourceArchiveTests(unittest.TestCase):
                 self.assertEqual((output / name).read_bytes(), descriptor)
                 self.assertEqual((output / "launch.ps1").read_bytes(), b"# explicit source attribute\r\n")
                 self.assertEqual((output / "asset.bin").read_bytes(), binary)
+
+
+class CompletionPackageTests(unittest.TestCase):
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        self.manifest = fixture(self.root, completion=True)
+        self.candidate = self.manifest["candidate_commit"]
+        mock_engine_pins = {record["path"]: record["sha256"]
+                            for record in (self.manifest["engine"]["gui"], self.manifest["engine"]["console"])}
+        patch = mock.patch.object(package, "GODOT_EXECUTABLE_SHA256", mock_engine_pins)
+        patch.start()
+        self.addCleanup(patch.stop)
+
+    def verify(self):
+        return package.verify(self.root, self.candidate)
+
+    def test_all_four_sources_and_the_exact_owner_command(self):
+        record = self.verify()
+        self.assertEqual(set(record["sources"]), {"M", "I", "D", "C"})
+        command = (self.root / package.OWNER_COMMAND).read_bytes()
+        self.assertIn(b"-Action Open -OwnerProfile", command)
+        self.assertIn(self.candidate.encode("ascii"), command)
+
+    def test_missing_donor_fails_even_with_valid_file_inventory(self):
+        shutil.rmtree(self.root / "sources/D")
+        self.manifest["sources"].pop("D")
+        save(self.root, self.manifest)
+        with self.assertRaisesRegex(ValueError, "Missing independent source projects"):
+            self.verify()
+
+    def test_changed_owner_command_fails_after_rehash(self):
+        put(self.root, package.OWNER_COMMAND, "@echo off\r\nexit /b 0\r\n")
+        save(self.root, self.manifest)
+        with self.assertRaisesRegex(ValueError, "Owner Windows command differs"):
+            self.verify()
+
+    def test_changed_pinned_engine_fails_after_rehash(self):
+        path = put(self.root, package.GUI, pe("another engine"))
+        self.manifest["engine"]["gui"]["sha256"] = package.digest(path)
+        save(self.root, self.manifest)
+        with self.assertRaisesRegex(ValueError, "engine bytes differ from pin"):
+            self.verify()
 
 
 if __name__ == "__main__":

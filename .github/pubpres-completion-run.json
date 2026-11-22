@@ -1,0 +1,7 @@
+{
+  "schema": "pubpres-completion-run-v1",
+  "phase": "targeted",
+  "purpose": "Source-frozen Windows delivery, material history, actual Wave2048 progression and serious-stall qualification",
+  "registration_sha256": "8ced8f3eeae8b56ed663285cf565528ac94101b3ebf50d9aa8ab8086294f7782",
+  "frozen_payload_tree_sha256": "8452c0c1741b87476af641478abfd42963cb8170d5d68fb00bb423228174a8c6"
+}

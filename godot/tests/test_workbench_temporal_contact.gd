@@ -33,7 +33,8 @@ func _initialize() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--temporal-contact-evidence="):
 			output = argument.trim_prefix("--temporal-contact-evidence=")
-	for key: String in ["CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_RENDER_CADENCE","CYBERSAND_DIAG_FLYER_POSE"]:
+	for key: String in ["CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_RENDER_CADENCE","CYBERSAND_DIAG_FLYER_POSE",
+			"CYBERSAND_DIAG_MATERIAL_TIMING"]:
 		saved_environment[key] = OS.get_environment(key)
 		OS.set_environment(key,"")
 	_run.call_deferred()
@@ -116,7 +117,6 @@ func install(setup: Dictionary, preserve: bool=false) -> bool:
 	host.engine_lab_wait_native_sample = false
 	host.simulation_worker.set_engine_lab_pixel_pacing(1,false)
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
-	host.material_presentation_timeline.reset()
 	ui._camera.select(1)
 	ui._set_view(Vector2(80,155),Vector2i(240,135))
 	return true
@@ -282,7 +282,6 @@ func changed_material_controls() -> void:
 	check(not current.safe and current.reason=="material_in_swept_mask",
 		"refinement rejects newly painted actual Marble in true footprint")
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
-	host.material_presentation_timeline.reset()
 	var occupied: Dictionary = capture("actual-current-obstruction")
 	check(occupied.source=="hidden","Main withholds visually obstructed or invalidated native receipt")
 	place_exact(away)
@@ -297,12 +296,9 @@ func changed_material_controls() -> void:
 		check(gpu!=null and gpu.get_pixel(cell.x,cell.y).r8==98,"actual old GPU texture contains erased Marble")
 	host.render_snapshot_hz = 1
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()
-	var now: int = Time.get_ticks_usec()
-	host.material_presentation_timeline.reset()
-	host.material_presentation_timeline.accept_upload(host.last_uploaded_world_generation,host.last_uploaded_revision,
-		host.last_uploaded_render_snapshot_serial-1,host.latest_snapshot.tick_index,now-100000,now-100000,now-100000)
-	host.material_presentation_timeline.accept_upload(host.last_uploaded_world_generation,host.last_uploaded_revision,
-		host.last_uploaded_render_snapshot_serial,host.latest_snapshot.tick_index,now,now,now)
+	var previous_receipt: Dictionary = host.material_presentation_timeline.frame(Time.get_ticks_usec()).previous
+	check(previous_receipt.get("generation",-1) == host.last_uploaded_world_generation,
+		"actual previous-texture obstruction has a native same-World receipt")
 	var old: Dictionary = oracle(before,after,true,previous)
 	check(not old.safe and old.reason=="material_in_swept_mask",
 		"refinement rejects genuine previous-texture obstruction despite current clearance")
@@ -341,7 +337,6 @@ func frozen_original_blend_control(bound: Transform2D, cell: Vector2i) -> void:
 	var desired := Transform2D(bound.get_rotation(),bound.origin+Vector2(0.02,0))
 	place_exact(desired)
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
-	host.material_presentation_timeline.reset()
 	var wall_clock_active: bool = host.cadence_lod_enabled and host.render_snapshot_hz>0 \
 		and float(Time.get_ticks_usec()-host.snapshot_blend_start_usec)<1000000.0/float(host.render_snapshot_hz)
 	host.paused = false # The original guard's ordinary admission condition.

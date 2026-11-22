@@ -5,6 +5,8 @@ extends SceneTree
 ## inferred from a rendered colour. No provider request is made.
 const Camera = preload("res://scripts/pixel_camera_transform.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
+const ROTATING_FOLLOW_INITIAL_SPEED: float = 28.0
+const ROTATING_FOLLOW_MIN_SPEED: float = 14.0
 
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
@@ -23,6 +25,9 @@ var moving_follow_receipts: Array[Dictionary] = []
 var root_stretch_receipts: Array[Dictionary] = []
 var mounted_bounds_receipt: Dictionary = {}
 var moving_follow_invalid := false
+var rotating_follow_enabled: bool = OS.get_environment("CYBERSAND_TEST_ROTATING_FOLLOW") == "1"
+var fast_rotation_samples: int = 0
+var verified_rotating_overlay_samples: int = 0
 
 
 func _initialize() -> void:
@@ -703,6 +708,8 @@ func observe_moving_follow(first_step: int) -> void:
 		moving_follow_invalid = true
 		return
 	var position: Vector2 = state.position
+	var fast_rotation: bool = rotating_follow_enabled and absf(float(state.angular_velocity)) > ROTATING_FOLLOW_MIN_SPEED
+	if fast_rotation: fast_rotation_samples += 1
 	var selected: Vector2 = host.workbench_presentation_frame.follow_target
 	var desired: Vector2 = host.clamped_camera_origin(selected-Vector2(host.current_view_size)*0.5) \
 		if selected.is_finite() else host.camera_origin
@@ -713,6 +720,15 @@ func observe_moving_follow(first_step: int) -> void:
 	var poses: Dictionary = host.workbench_presentation_frame.poses
 	if poses.has(0):
 		check(near(selected,poses[0].origin),label+" Follow target equals the submitted actor pose")
+		if fast_rotation:
+			var parts: Array = host.physical_actor_overlay._parts
+			if check(not parts.is_empty(),label+" rotating Follow pose has a submitted overlay"):
+				var actual: Transform2D = parts[0].transform
+				var chosen: Transform2D = poses[0]
+				var angle_error: float = absf(wrapf(actual.get_rotation()-chosen.get_rotation(),-PI,PI))
+				if check(near(actual.origin,chosen.origin) and angle_error < 0.001,
+						label+" overlay uses the same selected rotating pose as terrain and Follow"):
+					verified_rotating_overlay_samples += 1
 	check(near(terrain,presented),label+" terrain contains this frame's presented origin")
 	for overlay: Control in [host.physical_actor_overlay,host.actor_prototype_overlay,host.usable_overlay]:
 		check(near(overlay._origin,presented),label+" overlay shares the terrain origin: "+overlay.get_class())
@@ -721,6 +737,9 @@ func observe_moving_follow(first_step: int) -> void:
 		"source":host.workbench_presentation_frame.sources.get(0,"hidden"),
 		"camera_origin":[host.camera_origin.x,host.camera_origin.y],
 		"presented_origin":[presented.x,presented.y],"terrain_origin":[terrain.x,terrain.y]})
+	if rotating_follow_enabled:
+		moving_follow_receipts[-1]["rapier_angle_radians"] = state.rotation
+		moving_follow_receipts[-1]["rapier_angular_velocity_radians_per_second"] = state.angular_velocity
 
 
 func follow_moving_actor() -> void:
@@ -731,6 +750,13 @@ func follow_moving_actor() -> void:
 	var state: Dictionary = bench.body_state(1)
 	if not check(host.paused and not state.is_empty(),"moving follow begins with the paused installed actor"): return
 	var initial_position: Vector2 = state.position
+	if rotating_follow_enabled:
+		# Set one starting velocity on the sole fixture body. Every sampled
+		# rotation after this point comes from a normal completed Rapier step.
+		var bodies: Array[RID] = host.rapier_bridge._body_rids
+		if not check(bodies.size() == 1 and bodies[0].is_valid(),"rotating Follow has one owned body"): return
+		PhysicsServer2D.body_set_state(bodies[0],PhysicsServer2D.BODY_STATE_SLEEPING,false)
+		PhysicsServer2D.body_set_state(bodies[0],PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,ROTATING_FOLLOW_INITIAL_SPEED)
 	var first_step: int = host.rapier_bridge.manual_step_count()
 	bench._camera.select(1)
 	var probe := FollowFrameProbe.new()
@@ -765,6 +791,9 @@ func run() -> void:
 	# footer after only the early camera algebra/paint assertions executed.
 	check(root_stretch_receipts.size() == 6,"all root-stretch and stationary-hover phases completed")
 	check(moving_follow_receipts.size() == 12,"all genuine moving-Follow observations completed")
+	if rotating_follow_enabled:
+		check(fast_rotation_samples >= 3,"Follow observed at least three fast completed Rapier rotations")
+		check(verified_rotating_overlay_samples >= 3,"Follow verified at least three rapidly rotating overlays")
 	if host != null:
 		host.queue_free()
 		await process_frame
@@ -785,6 +814,10 @@ func run() -> void:
 		"source_hashes":source_hashes,"native_runtime_sha256":FileAccess.get_sha256(native_path),
 		"native_receipts":native_receipts,"moving_follow_receipts":moving_follow_receipts,
 		"root_stretch_receipts":root_stretch_receipts,"mounted_bounds_receipt":mounted_bounds_receipt}
+	if rotating_follow_enabled:
+		result["rotating_follow"] = {"initial_speed_radians_per_second":ROTATING_FOLLOW_INITIAL_SPEED,
+			"threshold_radians_per_second":ROTATING_FOLLOW_MIN_SPEED,"fast_steps":fast_rotation_samples,
+			"verified_overlay_steps":verified_rotating_overlay_samples}
 	var folder := OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	if not folder.is_empty() and DirAccess.make_dir_recursive_absolute(folder) == OK:
 		var receipt := FileAccess.open(folder.path_join("native-pixel-camera.json"),FileAccess.WRITE)

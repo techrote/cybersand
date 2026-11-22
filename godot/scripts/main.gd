@@ -2410,7 +2410,7 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot
 		var cadence_step_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active else 0
-		if _pubpres_trace_enabled:
+		if _pubpres_trace_enabled and shared_workbench != null and physical_actor_session != null:
 			_pubpres_packet_observed("transaction_entry", Time.get_ticks_usec(), physics_snapshot,
 				{"native_and_terrain_gate_passed":true, "manual_steps_before":rapier_bridge.manual_step_count(),
 				"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks()})
@@ -2535,10 +2535,11 @@ func _pubpres_transaction_observed(_event: String, _evidence: Dictionary) -> voi
 
 func _pubpres_packet_observed(event: String, started_usec: int,
 		snapshot: CyberSimulationSnapshot, extra: Dictionary) -> void:
-	var evidence := {"start_usec":started_usec, "time_usec":Time.get_ticks_usec(),
+	var evidence := {"trace_version":2, "start_usec":started_usec, "time_usec":Time.get_ticks_usec(),
 		"process_frame":Engine.get_process_frames(), "physics_frame":Engine.get_physics_frames(),
 		"requested_sample":_workbench_wait_sample, "current_epoch":_body_owner_epoch(),
-		"current_session":physical_actor_session.bridge._session if physical_actor_session != null else -1,
+		"current_session":physical_actor_session.bridge._session if physical_actor_session != null \
+			and physical_actor_session.bridge is WorkbenchBridge else -1,
 		"physical_tick":physical_actor_session.tick if physical_actor_session != null else -1,
 		"queued_hard_revision":last_hard_surface_revision, "packet_present":snapshot != null}
 	if snapshot != null:
@@ -3697,6 +3698,12 @@ func _workbench_presentation_mode() -> String:
 
 func _material_presentation_state(now_usec: int) -> Dictionary:
 	var timing: Dictionary = material_presentation_timeline.frame(now_usec,cadence_lod_enabled)
+	if shared_workbench != null and timing.previous.is_empty():
+		# A recycled GPU plane may still contain another World (or an
+		# unqualified upload). Requested cadence cannot authorize its colour
+		# contribution. Both timing policies require an actual same-World
+		# predecessor; keep the accepted upload, history bytes and ACK intact.
+		return timing
 	if shared_workbench == null or OS.get_environment("CYBERSAND_DIAG_MATERIAL_TIMING") != "measured":
 		# Independent diagnostic control; it never changes upload ACK, texture
 		# history, the native scheduler or Rapier's physical timestep.

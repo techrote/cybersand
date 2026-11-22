@@ -2003,7 +2003,7 @@ func _workbench_phase_event(kind: String, started_usec: int, completed_usec: int
 	var states: Variant = sample.get("states")
 	var session: Variant = sample.get("session")
 	var epoch: Variant = sample.get("epoch")
-	var has_sample: bool = states is PackedFloat32Array and states.size() > 10 and is_finite(states[10])
+	var has_sample: bool = states is PackedFloat64Array and states.size() > 10 and is_finite(states[10])
 	return {"kind":kind,"start_usec":started_usec,"completed_usec":completed_usec,
 		"session":session if session is int else -1,"rigid_body_epoch":epoch if epoch is int else -1,
 		"body_sample":int(states[10]) if has_sample else -1,

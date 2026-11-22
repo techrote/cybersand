@@ -134,24 +134,31 @@ def planned_arms(mode):
     if mode == "causal-overhead-abba":
         return [{"same_frame_continuation": False, "wave_column_probe": False, "causal": value}
                 for value in (False, True, True, False)]
+    if mode == "renderer-abba":
+        return [{"same_frame_continuation": False, "wave_column_probe": False, "causal": False, "material": value}
+                for value in ("full", "blit", "blit", "full")]
     key = "wave_column_probe" if mode == "native-probe-abba" else "same_frame_continuation"
     return [{"same_frame_continuation": False, "wave_column_probe": False, "causal": False, key: value}
             for value in (False, True, True, False)]
 
 
-def selectors(arm, nonce):
-    return {"CYBERSAND_MATERIAL_PUBLICATION": "blit", "CYBERSAND_DIAG_PHYSICS_PUBLICATION": "early",
+def selectors(arm, nonce, retirement_source="stage"):
+    material = arm.get("material", "blit")
+    return {"CYBERSAND_MATERIAL_PUBLICATION": material, "CYBERSAND_DIAG_PHYSICS_PUBLICATION": "early",
             "CYBERSAND_DIAG_PRESENTATION": "coherent", "CYBERSAND_DIAG_MATERIAL_TIMING": "measured",
             "CYBERSAND_DIAG_RENDER_CADENCE": "repaired", "CYBERSAND_DIAG_NATIVE_RENDEZVOUS": "0",
             "CYBERSAND_DIAG_COMMON_OBSERVER": "0", "CYBERSAND_PLAYABILITY_RENDER_THREAD": "safe",
-            "CYBERSAND_DIAG_MATERIAL_POOL_POLICY": "eager", "CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES": "0",
+            "CYBERSAND_DIAG_MATERIAL_POOL_POLICY": "eager" if material == "blit" else "",
+            "CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES": "0",
             "CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE": "1" if arm["wave_column_probe"] else "0",
             "CYBERSAND_DIAG_SAME_FRAME_CONTINUATION": "1" if arm["same_frame_continuation"] else "0",
             "CYBERSAND_DIAG_PUBPRES_CAUSAL": "1" if arm["causal"] else "0",
+            "CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE": "1" if arm["causal"] else "0",
+            "CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE": retirement_source,
             "CYBERSAND_SHADER_NONCE": nonce, "CYBERSAND_SHADER_CACHE_STATE": "isolated-project-and-profile"}
 
 
-def validate_requested_capture(data, case, campaign, source_commit, nonce, driver):
+def validate_requested_capture(data, case, campaign, source_commit, nonce, driver, retirement_source="stage"):
     """A valid registered receipt must also be the particular requested arm."""
     need(data["source_identity"]["source_sha"] == source_commit and data["case_nonce"] == nonce,
          "Captured source/nonce differs")
@@ -164,6 +171,12 @@ def validate_requested_capture(data, case, campaign, source_commit, nonce, drive
     need(data["fixture"]["name"] == case["fixture"], "Requested fixture differs")
     for key, wanted in expected.items():
         need(data[key] == wanted, "Requested capture differs: " + key)
+    if retirement_source == "target":
+        for phase in ("selectors_before", "selectors_after"):
+            need(data[phase]["requested"].get("CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE") == "target",
+                 "Requested retirement source differs")
+        need(data["selectors_after"]["material"].get("retirement_source") == "target",
+             "Target retirement did not reach the live material publisher")
 
 
 def validate_complete_comparison(arms, count):
@@ -175,6 +188,18 @@ def validate_complete_comparison(arms, count):
          "Unmatched hardware, rendering owner, fixture or workload")
 
 
+def observed_gap_counts(trace: Path, windows: dict, thresholds: list[int]) -> dict:
+    with trace.open(encoding="utf-8") as stream:
+        rows = (json.loads(line) for line in stream)
+        times = sorted(row["time_usec"] for row in rows if row["event"] == "rapier_step")
+    result = {}
+    for name, window in windows.items():
+        selected = [time for time in times if window["start_usec"] <= time <= window["end_usec"]]
+        gaps = [b - a for a, b in zip(selected, selected[1:])]
+        result[name] = {str(ms): sum(gap > ms * 1000 for gap in gaps) for ms in thresholds}
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("source", "runtime", "engine", "output"):
@@ -182,8 +207,13 @@ def main():
     parser.add_argument("--rapier-runtime", type=Path, help="Optional materialized binary; must match committed source receipt")
     parser.add_argument("--display-wrapper", type=Path)
     parser.add_argument("--case", action="append", required=True)
-    parser.add_argument("--mode", choices=("baseline", "causal", "native-probe-abba", "same-frame-abba", "causal-overhead-abba"), default="baseline")
+    parser.add_argument("--mode", choices=("baseline", "causal", "native-probe-abba", "same-frame-abba", "causal-overhead-abba", "renderer-abba"), default="baseline")
     parser.add_argument("--allow-development-toolchain-drift", action="store_true")
+    parser.add_argument("--completion-role", choices=("C", "D"),
+                        help="Bind to the registered Completion candidate or exact frozen donor")
+    parser.add_argument("--retirement-source", choices=("stage", "target"), default="stage")
+    parser.add_argument("--material", choices=("blit", "full"), default="blit")
+    parser.add_argument("--sustained", action="store_true", help="Require a separate 60-second C gameplay capture")
     args = parser.parse_args()
     driver_identity = verify_driver()
     root, runtime, output, engine = (getattr(args, name).resolve() for name in ("source", "runtime", "output", "engine"))
@@ -196,7 +226,37 @@ def main():
     need(digest(campaign_path) == FROZEN_REGISTRATION, "Frozen predecessor registration changed")
     campaign = json.loads(campaign_path.read_text())
     choices = {c["id"]: c for c in campaign["cases"]}
+    registration = None
+    if args.completion_role:
+        relative = "tools/pubpres_completion/registration.json"
+        registration_path = ROOT / relative
+        actual = registration_path.read_bytes()
+        committed = subprocess.check_output(["git", "-C", str(ROOT), "show", "HEAD:" + relative])
+        need(committed == actual, "Completion registration differs from the driver commit")
+        registration = json.loads(actual)
+        need(registration["schema"] == "pubpres-completion-campaign-v1"
+             and set(args.case) <= set(registration["final_cases"]), "Case absent from Completion registration")
+        for definition in registration["additional_cases"]:
+            inherited = choices[definition["base"]]
+            additions = {key: value for key, value in definition.items() if key != "base"}
+            need(set(additions) <= {"id", "camera", "workers", "fixture"}
+                 and additions["id"] not in choices, "Unexpected new workload registration")
+            choices[additions["id"]] = {**inherited, **additions}
+        campaign["cases"] = list(choices.values())
+        campaign["fixtures"]["basin1024"] = {"extent": [1024, 1024], "kind": "authored_setup_v2"}
+        expected_source = registration["reference_sources"]["D"] if args.completion_role == "D" else {
+            "source_commit": driver_identity["source_commit"], "source_tree": driver_identity["source_tree"]}
+        need(all(source[field] == expected for field, expected in expected_source.items()),
+             "Workload is bound to a different registered Completion source")
+        need(args.completion_role == "C" or args.retirement_source == "stage",
+             "Frozen donor cannot use a candidate renderer mode")
+        driver_identity["files_sha256"][relative] = digest(registration_path)
     need(len(set(args.case)) == len(args.case) and set(args.case) <= set(choices), "Unknown or repeated workload")
+    if args.sustained:
+        need(registration and registration["sustained_minimum_usec"] == 60000000
+             and args.completion_role == "C" and args.mode == "baseline" and args.material == "full"
+             and args.case == registration["development_cases"], "Sustained capture requires the registered C gameplay workload")
+        campaign["measurement"]["minimum_capture_usec"] = registration["sustained_minimum_usec"]
     need(not args.mode.startswith("native-probe") or all(choices[c]["water_law"] == "wave_flow_v1" for c in args.case),
          "Native Wave-stage probe requires Wave workloads")
     rapier_receipt = "godot/addons/godot-rapier2d/runtime-provenance." + platform + ".json"
@@ -213,11 +273,20 @@ def main():
         "frozen_predecessor_sha256": FROZEN_REGISTRATION, "observer_sha256": digest(observer),
         "scope": "Explicit development comparison. Original v3 native/actor/terrain/input/Water/GPU/callback oracles unchanged; separate bounded causal sidecar."}
     treatment_order = planned_arms(args.mode)
+    if registration and args.mode == "same-frame-abba":
+        need(["on" if arm["same_frame_continuation"] else "off" for arm in treatment_order]
+             == registration["continuation_order"], "Continuation order differs from the registration")
+    if registration and args.mode == "renderer-abba":
+        need([arm["material"] for arm in treatment_order] == registration["renderer_order"],
+             "Renderer order differs from the registration")
     output.mkdir(parents=True)
     write_json(output / "campaign.json", campaign)
     request = {"schema": "pubpres003-focused-request-v1", "source": source, "engine_sha256": digest(engine),
                "rapier_sha256": digest(rapier_binary), "mode": args.mode, "cases": [choices[c] for c in args.case],
                "order": treatment_order, "physical_acceptance": "HOLD", "development": True,
+               "completion_role": args.completion_role, "material": args.material,
+               "material_retirement_source": args.retirement_source,
+               "sustained_minimum_usec": campaign["measurement"]["minimum_capture_usec"] if args.sustained else None,
                "toolchain_drift_opt_in": args.allow_development_toolchain_drift,
                "runner_sha256": digest(__file__), "observer_sha256": digest(observer),
                "measurement_driver": driver_identity,
@@ -249,6 +318,7 @@ def main():
         case = choices[case_name]
         arms = []
         for index, treatment in enumerate(treatment_order):
+            treatment = {"material": args.material, **treatment}
             folder = output / case_name / f"{index}-C"
             project = output / "projects" / f"{case_name}-{index}"
             project.parent.mkdir(parents=True, exist_ok=True)
@@ -256,8 +326,11 @@ def main():
             folder.mkdir(parents=True)
             receipt = folder / "receipt.json"
             nonce = uuid.uuid4().hex
-            setting = selectors(treatment, nonce)
+            retirement = args.retirement_source if treatment["material"] == "blit" else "stage"
+            setting = selectors(treatment, nonce, retirement)
             arm = {**campaign["arms"]["C"], **{k: v for k, v in treatment.items() if k != "causal"}}
+            if treatment["material"] == "full":
+                arm["material_pool_policy"] = None
             arguments = ["--path", str(project), "--rendering-method", "gl_compatibility", "--rendering-driver", driver,
                 "--render-thread", "safe", "--audio-driver", "Dummy", "--log-file", str(folder / "godot.log"),
                 "--script", "res://" + OBSERVER_TARGET, "--", "--receipt=" + str(receipt),
@@ -265,18 +338,33 @@ def main():
                 "--water-law=" + case["water_law"], "--water-variant=" + case.get("water_variant", "reference"),
                 "--water-profile=" + case.get("water_profile", campaign["measurement"]["water_profile"]),
                 "--input-mode=" + case.get("input_mode", "tape"), "--command-mode=repeated_callback", "--observer-mode=full"]
+            if args.sustained:
+                arguments.append("--sustained")
             write_json(folder / "arm.json", {"source": source, "scenario": case, "arm": arm, "causal": treatment["causal"],
                        "order_index": index, "nonce": nonce, "selectors": setting, "arguments": arguments})
             print(case_name, index, treatment, flush=True)
             try:
                 process = execute(engine, arguments, folder, source["source_commit"], setting, 420, args.display_wrapper)
                 data = json.loads(receipt.read_text())
-                validate_requested_capture(data, case, campaign, source["source_commit"], nonce, driver)
+                validate_requested_capture(data, case, campaign, source["source_commit"], nonce, driver, retirement)
                 effective = copy.deepcopy(campaign)
                 effective["arms"]["C"] = arm
                 analysis = reduce_receipt(receipt, effective, project=project, engine=engine, arm_letter="C")
+                if registration:
+                    if case["fixture"] == "basin1024":
+                        need(data["fixture"]["extent"] == [1024, 1024]
+                             and analysis["water_quantity_before"] == analysis["water_quantity_after"],
+                             "Closed 1024-square basin did not preserve registered extent and Water conservation")
+                    analysis["physical_gap_counts_above_ms"] = observed_gap_counts(
+                        receipt.with_name(receipt.stem + "-events.jsonl"), analysis["windows"],
+                        registration["source_gain_criteria"]["reported_gap_thresholds_ms"])
                 from causal_trace import reduce_causal
                 causal = reduce_causal(receipt, expected_enabled=treatment["causal"])
+                if args.completion_role == "C" and treatment["causal"]:
+                    completed = analysis["windows"]["whole_capture"]["completed_rapier_steps"]
+                    need(causal["actual_completed_rapier_steps"] == completed
+                         and causal["exact_application_and_exit_joins"] == completed,
+                         "Completion causal capture requires a versioned exact application and exit for every real step")
                 write_json(folder / "analysis.json", analysis)
                 write_json(folder / "causal-analysis.json", causal)
                 process["app_sampler_pid_matched"] = process["observed_application_pid"] == data["process_id"]
@@ -301,6 +389,9 @@ def main():
         results.append({"case": case_name, "arms": arms, "physical_outcome_parity": parity})
     summary = {"schema": "pubpres003-focused-result-v1", "complete": not failures,
                "source": source, "mode": args.mode, "cases": results, "failures": failures,
+               "completion_role": args.completion_role, "material": args.material,
+               "material_retirement_source": args.retirement_source,
+               "sustained_minimum_usec": campaign["measurement"]["minimum_capture_usec"] if args.sustained else None,
                "physical_acceptance": "HOLD", "development": True}
     write_json(output / "summary.json", summary)
     print(json.dumps({"output": str(output), "complete": not failures, "failures": failures, "physical_acceptance": "HOLD"}))

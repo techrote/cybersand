@@ -54,7 +54,8 @@ func _initialize() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--temporal-dense-evidence="):
 			output = argument.trim_prefix("--temporal-dense-evidence=")
-	for key: String in ["CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_FLYER_POSE","CYBERSAND_DIAG_RENDER_CADENCE"]:
+	for key: String in ["CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_FLYER_POSE","CYBERSAND_DIAG_RENDER_CADENCE",
+			"CYBERSAND_DIAG_MATERIAL_TIMING"]:
 		saved_environment[key] = OS.get_environment(key)
 		OS.set_environment(key,"")
 	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","coherent")
@@ -108,7 +109,6 @@ func install(setup: Dictionary) -> bool:
 	host.engine_lab_wait_native_sample = false
 	host.simulation_worker.set_engine_lab_pixel_pacing(1,false)
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
-	host.material_presentation_timeline.reset()
 	ui._camera.select(1)
 	ui._set_view(Vector2.ZERO,Vector2i(512,512))
 	last_steps.clear()
@@ -153,6 +153,9 @@ func refresh_receipt() -> bool:
 		return host.last_uploaded_render_snapshot_serial>serial)
 	if not check(completed and host.last_render_was_full_refresh,"genuine native full refresh uploaded"): return false
 	check(not host._presentation_previous_unknown,"exact previous texture remains bounded after full refresh")
+	var previous: Dictionary = host.material_presentation_timeline.frame(Time.get_ticks_usec()).previous
+	check(previous.get("serial",-1) == serial and previous.get("generation",-1) == host.last_uploaded_world_generation,
+		"full refresh retains a real same-World predecessor for active blend controls")
 	return true
 
 # Independent cell-centre occupancy assertion, with no swept oracle call. This
