@@ -1,0 +1,214 @@
+{
+  "schema": "swarm006-final-publication-snapshot/v1",
+  "software_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "software_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "qualified_foundation": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "live_main_incorporation_pending": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+  "actual_accepted_swarm004_005_merge": null,
+  "draft_hold": true,
+  "qualification_run": 44959721570,
+  "qualification_conclusion": "success",
+  "full_raw_evidence_delivery": "CyberSand-SWARM006-Finisher-428f842034a1-Evidence.zip",
+  "files": [
+    {
+      "path": "evidence/swarm006-finisher-428f8420/Qualification-Report.md",
+      "bytes": 42679,
+      "sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/Owner-Acceptance.md",
+      "bytes": 8773,
+      "sha256": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/owner-package-custody.json",
+      "bytes": 6201,
+      "sha256": "f7bc0e29c1e4a899ea357145b5e724dacb6fffbe128be3d6c67220605d2fafb5"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/source-state.json",
+      "bytes": 10361,
+      "sha256": "42b8d169d442e81a568eadd2388afcc788b755435073c58eb0f57584ea58ceef"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/report-render-receipt.json",
+      "bytes": 1819,
+      "sha256": "cb6391880362611ef73ac1139ae6614165f5ccbcee293018a6b95064a405cb40"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/report-custody-wording-delta.json",
+      "bytes": 1087,
+      "sha256": "6179b008b4bc992b654481c5bd0ada8545ea139f69c8e8b6cdac42081d7c4bf7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/README.md",
+      "bytes": 4117,
+      "sha256": "2cfada686d1eb0d69918210945d323687976d9d873eecf7596db0581bcef33a8"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-runtime-build-sanitizer-review.json",
+      "bytes": 7322,
+      "sha256": "d21863b992f45e11b5aa1a0ccfd52e26be6e4fded047ded2bb5d80d7b9f224f7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-linux-preservation-review.json",
+      "bytes": 12746,
+      "sha256": "26c2738e2d3c33ddd65a194b2e7041a317e8929d8fd5ae16e699cd348c5549ea"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-owner-package-custody-review.json",
+      "bytes": 66987,
+      "sha256": "af13bd67da789b1a8f2acfedfb5ff195e0dad337a639cfbbabe81e68770df4f1"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-windows-platform-review.json",
+      "bytes": 23172,
+      "sha256": "c657d3fe94e238c4af10627790326a185e701e4a434d6369d7c61a2bc88491c9"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-owner-dispatch-visual-review.json",
+      "bytes": 1035,
+      "sha256": "657e8afda611325bd030c51d22bd7b24ee751c703a9b034fe686ead7abdf3023"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/native-carry-forward-checker-peer-review.json",
+      "bytes": 2350,
+      "sha256": "d9f64aa6efcfee167206a394352b8eb174e25826c2e8216480c0fc48a3e28101"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/native-carry-forward-actual-boundary-review.json",
+      "bytes": 1290,
+      "sha256": "cd2326e6f4c11d0d2942f5b75a4a81f99cb3bc6871042b915e18587403cbd0a7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/Qualification-Report-Platform-Text-Review.json",
+      "bytes": 4702,
+      "sha256": "c1be0cc586d74e5555a4c4991179914cb50bda86d849c32a785ba25e1f73d367"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-windows-workbench-independent-review.json",
+      "bytes": 15588,
+      "sha256": "9b9d11b2f6afdf1ef356fe53011cdf482560c061d819ea465d452a57d8706ce1"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-publication-workbench-text-review.json",
+      "bytes": 1719,
+      "sha256": "5be9deacf0c03dce5697ab311c74df3fdc8613eae888be60a69b95a2f391c5d6"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/428-publication-custody-wording-projection.json",
+      "bytes": 1361,
+      "sha256": "02ddbc2c7f9b16f4ede606d8d0d326427978d0476afbf3366536347c9cdc590b"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/owner-acceptance-instructions-independent-review.json",
+      "bytes": 4589,
+      "sha256": "2d7963b560ad624ec4e5b53915cfce343928dd2ffc2fa692b10bb3781ee7d70e"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/reviews/Qualification-Report-Science-Text-Review.json",
+      "bytes": 6480,
+      "sha256": "522f19b02976e683596674e88af6113704928001079987f516514a59d3f69b44"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/accepted-846fe053-to-30e1cddd.patch",
+      "bytes": 48004,
+      "sha256": "9d07d9a96b74f7964e76e263e4c3a419aa79015cf94d4e196e6b3532d1d294e6"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/accepted-main-preflight.json",
+      "bytes": 186393,
+      "sha256": "be716071847a77f07ef958c6e326d4ea734b4cc8d672e399e4be08c8fc2d98d7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/artifact-index.json",
+      "bytes": 742,
+      "sha256": "9b356017a7d02266f3d5e5395cd30c91cc33786e1aa7d084dcd6d5d7518f1e44"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/merge-tree.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/merge-tree.stdout.txt",
+      "bytes": 556,
+      "sha256": "f0a87fef578d5094d31eb4449250cff9231af0bf398f8625f506834302696953"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/preflight-review.md",
+      "bytes": 10660,
+      "sha256": "889ecadff39e16e3006ffbacdc25a636cb85796b9eb0f3815a19161cbb8017bb"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/preflight.py",
+      "bytes": 11969,
+      "sha256": "825f2be9e1d70a2976b3b75284eb672d0a29588fb5925232791045fa46837c26"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/accepted-main-30e/qualified-to-preflight-tree.diff",
+      "bytes": 47656,
+      "sha256": "ab44ac99840dd3592835ab745007b9c1efee753a7532815c9a4534703b1e5f68"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/README.md",
+      "bytes": 2924,
+      "sha256": "f8eeb90fbbc3115e726109434a7d63220c38360cebc8c104d8531d0580c151e1"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/manifest.json",
+      "bytes": 4374,
+      "sha256": "233ba2884300cce94f00a890fcfe58d6cb8f5eaf1a5501a4392988693f644bd7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/package-industrial-off-blocked.png",
+      "bytes": 168316,
+      "sha256": "56d6143a0e74e8631403c290f312eb46b69d66d9ea1d505e8c0bc57e4c2d835e"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/package-industrial-on-clearance.png",
+      "bytes": 165994,
+      "sha256": "bd963a9dd456b4dd1147c90b3e17fe970ccd61d624f71ac69889725a800d6e5f"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/package-industrial-on-joints.png",
+      "bytes": 165631,
+      "sha256": "eefa2c4109cb49e4e9fcd606e1b06d407c04abc7eac3d963e8245a6425c6843d"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/package-industrial-on-reopened.png",
+      "bytes": 182216,
+      "sha256": "cd47c239bffa394224d4fb0facb880b24febd532a759fcecc9f7f0d03af2d8dc"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/package-industrial-on-revisions.png",
+      "bytes": 165354,
+      "sha256": "c930e630e8a5704de54774288c5fc777a119fc4bd251a1aabb1f144379319924"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/package-industrial-on-unresolved.png",
+      "bytes": 166158,
+      "sha256": "ed2157735c2b27f270235bb29db0469a607c49e1bb25baeeea80a5a654d0372a"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/gallery/source-shared-pending.png",
+      "bytes": 140406,
+      "sha256": "bdab16cde5d74f55875d1688528260c8ca42471dc76ccff5d46b7e1cec3a31aa"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/science/original-obligation-accounting.json",
+      "bytes": 142224,
+      "sha256": "1b3911997b376ad4d05bd13fab1c075d416660f00b446e3a862049a9b87f89b7"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/successor-history-vs-8cf-ca634458/complete-history-change-inventory.json",
+      "bytes": 147480,
+      "sha256": "b215dacd42de13910e1cb90f84556983477fc2a4ad8d56b0cb7dbcfc9c8854e5"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/successor-history-vs-a757-ca634458/complete-history-change-inventory.json",
+      "bytes": 337157,
+      "sha256": "111321183d77f08d9290607a611131e4a1b4d6923459ca5a02a7c89ae00fefcd"
+    }
+  ]
+}

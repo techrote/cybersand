@@ -1,23 +1,40 @@
-# SWARM-006 successor evidence — final source 428f8420
+# SWARM-006 — qualified provisional successor and owner handoff
 
-This evidence branch is separate from the Draft/HOLD implementation PR [#716](https://github.com/techrote/cybersand/pull/716). Software source remains `428f842034a1f80d593bcc6bb32af2dd99cd0105`, tree `cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300`. Adding review files here does not relabel binaries as built at the evidence commit.
+**Exact software source428 is qualified; Draft/HOLD remains.** This evidence branch does not advance the implementation branch or relabel any binary. [PR #716](https://github.com/techrote/cybersand/pull/716) retains the subsequent owner decision.
 
-## Completed native/scientific scope
+## Start here
 
-The independent [scientific review](science/final-scientific-review.md) passes 1,920 new candidate executions actually performed at `ca63445888d818ed868f71869abb37ae4d00975e` plus 480 retained original references. Its [summary](science/final-scientific-summary.json) and the independently reviewed [native equivalence mapping](native-carry-forward-428f8420.json) retain the actual source separately from final 428. Zero corpus executions have the final commit label. Fresh final native bytes are identical; final UI/Windows/package evidence must execute at 428 separately.
+- [Complete qualification report](Qualification-Report.md).
+- [Owner acceptance instructions](Owner-Acceptance.md).
+- [Original Windows PNG gallery](gallery/README.md).
+- [Actual source and workflow state](source-state.json).
+- [Owner package custody](owner-package-custody.json).
+- [Independent scientific review](science/final-scientific-review.md).
+- [Pending accepted SWARM-004/005 contract](pending-integration/pending-reconciliation-contract.md).
+- [Late accepted CI-only main preflight](accepted-main-30e/preflight-review.md).
 
-The native primary remains 82/96 Complete+Apply+zero unresolved and 81/96 with a qualified foreign joint. Apply cases close 34 original obligations across 22 cases, distinct from 78 new exports and 363 joint witnesses. The 12 Exhausted, two Blocked and paired regressions remain. No registration, policy, denominator, resource ceiling or default is changed.
+## Exact identities
 
-The review is copied byte-for-byte. Its relative raw-artifact links refer to the complete evidence packet, not this compact publication subset. The final packet retains all raw data, checkers, original negative outputs and separate archive identities.
+| Role | Identity |
+| --- | --- |
+| Qualified implementation | 428f842034a1f80d593bcc6bb32af2dd99cd0105 |
+| Qualified tree | cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300 |
+| Qualified accepted foundation | 846fe0533b3170e7b01f690518da49fc40cc24d1 |
+| Live main at final observation | 30e1cddd3d678456df10f52f7a2fb2210a9daaad — accepted CI-only #722, incorporation pending |
+| Actual new scientific execution source | ca63445888d818ed868f71869abb37ae4d00975e |
+| Source-matched qualification | [44959721570](https://github.com/techrote/cybersand/actions/runs/44959721570), all four jobs passed |
+| New owner archive SHA-256 | 2462275ad0093097b3c80b6bfe6fb543780b2b53cf3ee2ec56829c4341c7f015 |
 
-## Pending accepted main
+The [qualified owner Actions artifact](https://github.com/techrote/cybersand/actions/runs/44959721570/artifacts/14730879629) contains the exact inner ZIP, matching sidecar, launcher and seal. The final PR handoff provides persistent downloads of those files and the complete evidence packet.
 
-The full [reconciliation contract](pending-integration/pending-reconciliation-contract.md), [230-path source inventory](pending-integration/source-custody.json) and retained simulation records describe the unmerged SWARM-004/005 candidate `919134a39d31461947c410c233d59d1965c48414`. Accepted main is still `846fe0533b3170e7b01f690518da49fc40cc24d1`. The [final test-only projection](pending-integration/final-test-only-source-projection-428f8420.json) carries the Ca preflight to unchanged implementation bytes at 428.
+The qualified source remains based on846. Accepted main30e changes nine CI/build/documentation paths; its exact patch, blob map and one additive roadmap conflict are retained. All qualified native, Godot, package and scoped qualification inputs remain unchanged in that accepted-only projection. Incorporation is nevertheless an open source objective, to be completed with the eventual actual accepted SWARM-004/005 merge and renewed affected source-sensitive qualification. PR715 remains Draft/unmerged; no accepted donor-to-main identity is invented.
 
-There are ten content conflicts plus clean-merge hazards: renamed control-test routes, overlapping gesture/input guards and the preferred platform runtime binding. Only an actual accepted-main merge triggers reconciliation. The simulated combined definition is not qualified. The other mission's branches, binaries, workflows and evidence remain untouched.
+## Review and evidence scope
 
-## Qualification in progress at this evidence checkpoint
+Independent native/scientific, Workbench and platform reviews close the demonstrated defects and qualify the exact428 scope. Windows includes source and pristine-package graphics, native transport, fourteen preservation processes, actual input guards, Apply/Undo/Save/fresh reopen, seven launcher exercises and terminal source/runtime custody. The owner ZIP was independently extracted and all1,089 files verified.
 
-[Final campaign 44959721570](https://github.com/techrote/cybersand/actions/runs/44959721570) has passed source-matched builds, strict native, sanitizers, Linux and Windows ordinary preservation, V3/V4 transport and seven launcher exercises. Windows pristine/source graphics and the terminal identity recheck remain pending. No owner evaluator is certified by this checkpoint. Physical NVIDIA/original-owner-World acceptance and a later explicit owner decision remain separate gates.
+Science comprises1,920 new Ca executions plus480 retained historical references. A separate reviewed native-input/build equivalence applies observations to identical final native code; zero corpus executions are labelled428. Primary A82/96 and R81/96 retain12 Exhausted and2 Blocked cases. Original requirements, new exports and joint witnesses remain distinct. Physical NVIDIA, the unavailable original owner World, source incorporation and explicit owner acceptance remain open.
 
-Draft/HOLD. No merge, Ready promotion, auto-merge or production-runtime publication.
+This is a compact publication of source maps, review receipts, reports and seven original PNGs. The complete evidence ZIP retains the large raw/reviewer ledgers, all source/pristine captures, original Actions archives, both native build directories and failure history. Scientific narratives preserve their original relative evidence references; raw ledgers not mirrored here are available in that complete packet. Original reference and superseded failure archives remain separate and linked by their exact durable identity in the report.
+
+The earlier EVIDENCE-SNAPSHOT.json is the preserved scientific/pending-contract checkpoint. FINAL-SNAPSHOT.json identifies this later completed qualification publication. No prior raw evidence or donor branch was rewritten.

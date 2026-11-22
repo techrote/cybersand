@@ -1,0 +1,87 @@
+{
+  "schema": "swarm006-publication-scientific-text-review/v1",
+  "reviewed_utc": "2026-11-22T00:07:04.799743+00:00",
+  "reviewer": "/root/swarm006_science",
+  "result": "PASS_SCIENTIFIC_TEXT_REVIEW",
+  "scope": "Bounded publication-text review against sealed scientific receipts; no new native execution, corpus audit, implementation work or broad tests.",
+  "template": {
+    "path": "swarm006-delivery/Qualification-Report.template.md",
+    "bytes": 28404,
+    "sha256_at_admission": "798b0fad8967301233bc9db684a284b27a03493f41a512381dcd540e2dfefdaa",
+    "sha256_at_completion": "798b0fad8967301233bc9db684a284b27a03493f41a512381dcd540e2dfefdaa"
+  },
+  "reviewed_section_sha256": {
+    "Source and accepted foundation": "9761e96ae709d25e29e5547059513da464c1e4d22a14051c86456f9d2ec2a814",
+    "Native corrections and authority": "d773057aff9dd07e76d08640991a64b541456650449761e4db54f8e08349f838",
+    "Completed frozen scientific comparison": "43fb0cf024589827955a076d17afe4221cfa2e10f58b51c6d240a7a8c3216886",
+    "Remaining gates and practical limits": "3462e97f5c8542272cfb3ac824deae9ec51983fe7071ba81fd05f3a49ea7adb8",
+    "Retained evidence": "2f3bae20431ea5db36c7fd751e0970b8d8b5d949d43cb3035e58a70b44c5331e"
+  },
+  "evidence_basis": {
+    "scientific_narrative": {
+      "path": "swarm006-science-custody/successor-final-ca634458/final-scientific-review.md",
+      "sha256": "0047b75030881459d1475337fdc630d1179328d26e25f8981df246a0b9d1e3ee"
+    },
+    "scientific_summary": {
+      "path": "swarm006-science-custody/successor-final-ca634458/final-scientific-summary.json",
+      "sha256": "a2744cf3335784c128853cdae5c6a3b0948decd14dc9b991eba738950478be7e"
+    },
+    "raw_review": {
+      "path": "swarm006-science-custody/successor-final-ca634458/independent-replay-review.json",
+      "sha256": "14ee8871c0fd6c060a7f03460eda1cec02ffa37837c9b85d82a7297374f9b6d8"
+    },
+    "native_mapping": {
+      "path": "swarm006-science-custody/native-carry-forward-428f8420.json",
+      "sha256": "a1033d4876f2fd71c42c031c0eafcadb1f0f66d222972f8ff8c3de584c7d1041"
+    },
+    "history_vs_8cf": {
+      "path": "swarm006-science-custody/successor-history-vs-8cf-ca634458/complete-history-change-inventory.json",
+      "sha256": "b215dacd42de13910e1cb90f84556983477fc2a4ad8d56b0cb7dbcfc9c8854e5"
+    },
+    "history_vs_a757": {
+      "path": "swarm006-science-custody/successor-history-vs-a757-ca634458/complete-history-change-inventory.json",
+      "sha256": "111321183d77f08d9290607a611131e4a1b4d6923459ca5a02a7c89ae00fefcd"
+    },
+    "original_obligations": {
+      "path": "swarm006-science-custody/successor-final-ca634458/original-obligation-accounting.json",
+      "sha256": "1b3911997b376ad4d05bd13fab1c075d416660f00b446e3a862049a9b87f89b7"
+    }
+  },
+  "checks": [
+    "Actual1920 new candidate executions are attributed to Ca;480 original reference executions are explicitly retained controls, with2400 reviewed records and no additional unseen sample claim.",
+    "Final428 native evidence is a separately verified mapping; final-source-labelled corpus executions remain explicitly zero; final UI/Windows qualification is separate.",
+    "A and registered-primary R definitions preserve complete authorization, zero unresolved requirements and a qualified foreign joint.",
+    "All20 policy rows, their96-case denominators, A/R/status counts and charged work values exactly match the sealed scientific summary.",
+    "Primary82Complete/12Exhausted/2Blocked and A/R paired rescues/regression counts match; favorable one-round counts do not replace the registered two-round allowance.",
+    "442raw witnesses are correctly partitioned into363Apply,10Blocked and69Exhausted;34 original closures across22cases remain separate from78 new exports and363 joints.",
+    "63candidate and223reference initial obligation inventories preserve unavailable closure, separate the evaluated36 subset and distinguish reference joins inside versus outside Apply.",
+    "Matched no-offer/MOSAIC-frozen22rescues close34 unchanged originals plus16 new exports, with2 regressions each; bilateral18 and FRAME-frozen82Apply claims match.",
+    "Ca versus8cf1920unchanged and Ca versusa7571847unchanged/73diagnostic histories match, including40empty-to-empty and33copied-nonempty-to-empty refusals, no endpoint/material/selected-plan/top-level-work changes.",
+    "480normalized historical compatibility and96byte-exact reverse comparisons are supported by the raw review.",
+    "Earlier SWARM00536cases\u00d710policies=360executions and1Complete/14Blocked/21Exhausted primary negatives remain separate from the96-case corpus; the unsupported specific SWARM004 zero claim is absent.",
+    "Historical owner crop is explicitly blank with zero originalFOREIGN_JOINED and is not promoted into original-socket repair evidence.",
+    "Original stale-history and first-repair orphan-receipt failures remain failures; the corrected successor does not claim retroactive repair of archived evidence.",
+    "Committed source comparison independently confirms52native-definition inputs,50unchanged froma757, with changes confined to mosaic_recovery.cpp and swarm006_recovery_tests.cpp."
+  ],
+  "findings": [],
+  "required_scientific_corrections": [],
+  "execution_identity": {
+    "actual_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+    "new_candidate_executions": 1920,
+    "retained_reference_executions": 480,
+    "final_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "final_source_labelled_corpus_executions": 0
+  },
+  "ignored_pending_placeholders": [
+    "@@DELIVERY_STATUS@@",
+    "@@FINAL_GATE_TABLE@@",
+    "@@FINAL_WORKBENCH_DETAIL@@",
+    "@@OWNER_PACKAGE_TABLE@@",
+    "@@INDEPENDENT_REVIEW_TABLE@@",
+    "@@LIVE_BASELINE_STATUS@@",
+    "@@EVIDENCE_LINKS@@"
+  ],
+  "not_assessed": "Pending delivery status, live main/PR state, platform/Windows/package results, future placeholder contents and owner acceptance. Source/foundation and retained-evidence sections are bound here for their scientific identity/custody claims only.",
+  "publication_boundary": "This receipt binds the exact reviewed template and science-section bytes. Filling explicitly pending fields must not relabel Ca executions, turn retained references into new runs, change the registered denominator/endpoints or promote this science review into platform/owner acceptance. Later changes to scientific prose require a separately attributable text review.",
+  "old_reports_and_repository_modified": false
+}

@@ -1,0 +1,265 @@
+{
+  "schema": "swarm006-final-source-state/v1",
+  "created_at": "2026-11-22T00:27:25.660330+00:00",
+  "github_observed_at": "2026-11-22 00:19:46 UTC",
+  "classification": "Completed exact-source provisional successor; Draft/HOLD; current-main incorporation and actual SWARM004/005 accepted merge remain pending",
+  "repository": "techrote/cybersand",
+  "branch": "integration/gentek-swarm-006-finisher-20261121",
+  "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "source_clean": true,
+  "pr": 716,
+  "pr_base_branch": "main",
+  "draft": true,
+  "merged": false,
+  "auto_merge_action_performed": false,
+  "ready_action_performed": false,
+  "qualified_accepted_foundation": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "live_accepted_main": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+  "live_main_incorporated": false,
+  "latest_main_source_objective": "open; accepted CI-only nine-path increment has an independent exact patch/blob map and one additive roadmap conflict, retained alongside the mandatory future004/005 reconciliation",
+  "swarm004_005": {
+    "pr": 715,
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "draft": true,
+    "merged": false,
+    "actual_accepted_merge": null
+  },
+  "qualification": {
+    "run": 44959721570,
+    "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-21T23:01:45Z",
+    "updated_at": "2026-11-22T00:15:59Z",
+    "url": "https://github.com/techrote/cybersand/actions/runs/44959721570"
+  },
+  "workflow_observations": [
+    {
+      "id": 44959725523,
+      "name": "Issue 49 Water apparatus v2",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725523"
+    },
+    {
+      "id": 44959725547,
+      "name": "GDExtension build and current Godot regression",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725547"
+    },
+    {
+      "id": 44959725537,
+      "name": "Documentation and provenance",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725537"
+    },
+    {
+      "id": 44959725456,
+      "name": "Wave Flow native qualification",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725456"
+    },
+    {
+      "id": 44959725395,
+      "name": "Native source-scope advisory (report only)",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725395"
+    },
+    {
+      "id": 44959725431,
+      "name": "Native",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725431"
+    },
+    {
+      "id": 44959725444,
+      "name": "Architectural Generator A+B source qualification",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725444"
+    },
+    {
+      "id": 44959725366,
+      "name": "Palette shader actual backend qualification",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725366"
+    },
+    {
+      "id": 44959725394,
+      "name": "Native C++ validation",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959725394"
+    },
+    {
+      "id": 44959721570,
+      "name": "SWARM-006 integration finisher source and Windows qualification",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44959721570"
+    }
+  ],
+  "unchanged_frozen_donors": {
+    "schema": "swarm006-final-donor-observation/v1",
+    "observed_at": "2026-11-22 00:03:41 UTC",
+    "all_original_heads_unchanged": true,
+    "donors": [
+      {
+        "number": 692,
+        "url": "https://github.com/techrote/cybersand/pull/692",
+        "head": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+        "branch": "experiment/gentek-swarm-004-reciprocal-assembly",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T00:16:52Z"
+      },
+      {
+        "number": 693,
+        "url": "https://github.com/techrote/cybersand/pull/693",
+        "head": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+        "branch": "experiment/gentek-swarm-004-workbench",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T00:16:22Z"
+      },
+      {
+        "number": 696,
+        "url": "https://github.com/techrote/cybersand/pull/696",
+        "head": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+        "branch": "experiment/gentek-swarm-005-native-closure",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T02:16:48Z"
+      },
+      {
+        "number": 697,
+        "url": "https://github.com/techrote/cybersand/pull/697",
+        "head": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+        "branch": "experiment/gentek-swarm-005-workbench-closure",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T02:10:58Z"
+      },
+      {
+        "number": 700,
+        "url": "https://github.com/techrote/cybersand/pull/700",
+        "head": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+        "branch": "experiment/gentek-swarm-005-doc-gate",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T02:21:21Z"
+      },
+      {
+        "number": 705,
+        "url": "https://github.com/techrote/cybersand/pull/705",
+        "head": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+        "branch": "experiment/gentek-swarm-006-native-recovery",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T12:53:33Z"
+      },
+      {
+        "number": 707,
+        "url": "https://github.com/techrote/cybersand/pull/707",
+        "head": "4e8ff0b01043d9e1bed336559b17e37283094add",
+        "branch": "experiment/gentek-swarm-006-workbench-recovery",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T15:56:28Z"
+      },
+      {
+        "number": 709,
+        "url": "https://github.com/techrote/cybersand/pull/709",
+        "head": "9daceee82b5f06b1c32867a1f274f4bebf9f91ff",
+        "branch": "experiment/gentek-swarm-006-exact-crop-compare",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T16:46:06Z"
+      },
+      {
+        "number": 710,
+        "url": "https://github.com/techrote/cybersand/pull/710",
+        "head": "8fad90c78c7c0edb111a27fb21b69f94eadb629a",
+        "branch": "experiment/gentek-swarm-006-final-round-inspector-fix",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "updated_at": "2026-11-21T17:07:19Z"
+      }
+    ]
+  },
+  "review_records": [
+    {
+      "path": "swarm006-evidence/platform-final/428-runtime-build-sanitizer-review.json",
+      "sha256": "d21863b992f45e11b5aa1a0ccfd52e26be6e4fded047ded2bb5d80d7b9f224f7"
+    },
+    {
+      "path": "swarm006-evidence/platform-final/428-linux-preservation-review.json",
+      "sha256": "26c2738e2d3c33ddd65a194b2e7041a317e8929d8fd5ae16e699cd348c5549ea"
+    },
+    {
+      "path": "swarm006-evidence/platform-final/428-owner-package-custody-review.json",
+      "sha256": "af13bd67da789b1a8f2acfedfb5ff195e0dad337a639cfbbabe81e68770df4f1"
+    },
+    {
+      "path": "swarm006-evidence/platform-final/428-windows-platform-review.json",
+      "sha256": "c657d3fe94e238c4af10627790326a185e701e4a434d6369d7c61a2bc88491c9"
+    },
+    {
+      "path": "swarm006-evidence/review-final/428-windows-workbench-independent-review.json",
+      "sha256": "9b9d11b2f6afdf1ef356fe53011cdf482560c061d819ea465d452a57d8706ce1"
+    },
+    {
+      "path": "swarm006-science-custody/successor-final-ca634458/final-scientific-review.md",
+      "sha256": "0047b75030881459d1475337fdc630d1179328d26e25f8981df246a0b9d1e3ee"
+    },
+    {
+      "path": "swarm006-science-custody/native-carry-forward-428f8420.json",
+      "sha256": "a1033d4876f2fd71c42c031c0eafcadb1f0f66d222972f8ff8c3de584c7d1041"
+    },
+    {
+      "path": "swarm006-evidence/workbench-dev/accepted-main-30e1cddd-preflight-428f8420/accepted-main-preflight.json",
+      "sha256": "be716071847a77f07ef958c6e326d4ea734b4cc8d672e399e4be08c8fc2d98d7"
+    }
+  ],
+  "scientific_execution": {
+    "actual_new_candidate_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+    "new_candidate_executions": 1920,
+    "retained_reference_executions": 480,
+    "executions_labelled_final_source": 0,
+    "mapping": "PASS_NATIVE_EVIDENCE_EQUIVALENCE",
+    "mapping_sha256": "a1033d4876f2fd71c42c031c0eafcadb1f0f66d222972f8ff8c3de584c7d1041"
+  },
+  "remaining_gates": [
+    "Incorporate accepted CI-only30e and the eventual actual acceptedSWARM004/005 merge, preserve donor-to-main mapping and renew affected source-sensitive qualification",
+    "Physical owner Windows/NVIDIA acceptance",
+    "Exact existing owner-World reproduction if the input is made available",
+    "Explicit subsequent owner merge decision"
+  ],
+  "protected_work": "No other mission branch, PR, commits, evidence, runtime binaries or CI workflows were modified. No frozen donor was edited. No production defaults or retained production runtimes were changed."
+}

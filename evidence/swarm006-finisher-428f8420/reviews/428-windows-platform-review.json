@@ -1,0 +1,588 @@
+{
+  "graphical_identity_and_completion_cross_binding": [
+    {
+      "graphical_input_assertions": 96,
+      "input_report_sha256": "4f969ab1a4b0847e0e76d1628440a9c93d4ee4761064f0576ff622b84e548022",
+      "processes": 23,
+      "qualification_sha256": "3a9a0c9c5921eff7c92d31af36b328db1b598791c6046b1acbf62a4a6d1c3778",
+      "scenarios": 9,
+      "scope": "swarm006-package",
+      "source_runtime_identity_sha256": "6ccae4964f80a5a33a7db17918ee7f0bd2e82e37633fd8fb3944b69065e4e3e2"
+    },
+    {
+      "graphical_input_assertions": 96,
+      "input_report_sha256": "c57ea7ac5507ed7e8786564f1dba3bcdcda3f251ecf551141bc36a3e53b573e4",
+      "processes": 23,
+      "qualification_sha256": "64a5115d105fa7e5ef521002db90eb6d796cf8f8c0da68774d91516297040d16",
+      "scenarios": 9,
+      "scope": "swarm006-source",
+      "source_runtime_identity_sha256": "34d0c058b48dcea8ff052a22954d40f41220ecc64896006791ba5ce3ca93bdef"
+    }
+  ],
+  "helper_tests": {
+    "count": 12,
+    "log_sha256": "b50d6318b20e52b50f656f2472fb972d38549bd32617b03b6a39f2b28a619c6e"
+  },
+  "hosted_job_log_sha256": "1a8da11edfb28f3039f3847b198c8bd8f69582acaeabc417ea9fb591a102ef70",
+  "launchers": {
+    "dispatch_report_sha256": "731d4ff7ab8afb69074f430919cb67ec3d74ba088a0355ee95b9d878f19665e3",
+    "exercises": 7,
+    "pending_audio_diagnostics": [],
+    "private_process_tree_retired": true,
+    "recovered_audio_diagnostics_retained": [
+      {
+        "engine": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+        "raw_lines": [
+          "ERROR: Condition \"hr != ((HRESULT)0x00000000)\" is true. Returning: ERR_CANT_OPEN",
+          "   at: audio_device_init (drivers/wasapi/audio_driver_wasapi.cpp:275)",
+          "ERROR: WASAPI: init_output_device error.",
+          "   at: init (drivers/wasapi/audio_driver_wasapi.cpp:600)",
+          "WARNING: All audio drivers failed, falling back to the dummy driver.",
+          "   at: initialize (servers/audio/audio_server.cpp:258)"
+        ],
+        "reason": "pinned engine explicitly recovered unavailable WASAPI output through Dummy audio",
+        "source_log": "D:\\a\\cybersand\\cybersand\\evidence\\swarm006-launcher\\dispatch\\isolated profile with spaces\\roaming\\Godot\\app_userdata\\Cyber Sand Reference Sandbox\\logs\\godot.log",
+        "start_line": 5
+      }
+    ],
+    "report_sha256": "efd3696c9f38b3656309d2d5519b27bbe9dc59d0607320f92ce65e71a20d3b2d",
+    "results": [
+      {
+        "case": "direct-inner-archive",
+        "expected_success": true,
+        "log_sha256": "39cb2b1b055c36b32c20fff7169702aa0a3f43cc14705ea75128ed00df70d175",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "github-nested-artifact",
+        "expected_success": true,
+        "log_sha256": "fd5829fb5882fc4faac35bce95105e669d325277eb82dc0fabfce25cc4eb88b2",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "case": "stale-destination",
+        "expected_success": false,
+        "log_sha256": "040c0d1a0be3133b609f5a17057bb2395defca56345090bd11a25d3e953c21fe",
+        "passed": true,
+        "returncode": 1
+      },
+      {
+        "case": "corrupted-archive",
+        "expected_success": false,
+        "log_sha256": "cb5f061b981e9a9e9cce45707bae861d803f5c9fd8bb114b43e27e86243af617",
+        "passed": true,
+        "returncode": 1
+      },
+      {
+        "case": "wrong-sidecar-name",
+        "expected_success": false,
+        "log_sha256": "5f6c8c6cfd9a37f7430317257c8ca97e74b230b83756f9c679cc5c1df3c12dd3",
+        "passed": true,
+        "returncode": 1
+      },
+      {
+        "case": "missing-sidecar",
+        "expected_success": false,
+        "log_sha256": "77b087607f98d70d88ee1563252e408b3b0794cfe5a73305ef6aa2bf8b1a29a9",
+        "passed": true,
+        "returncode": 1
+      },
+      {
+        "case": "actual-owner-graphical-dispatch",
+        "evidence": "dispatch/owner-dispatch-qualification.json",
+        "evidence_sha256": "731d4ff7ab8afb69074f430919cb67ec3d74ba088a0355ee95b9d878f19665e3",
+        "expected_success": true,
+        "passed": true
+      }
+    ],
+    "screenshot": {
+      "distinct_sampled_colors": 334,
+      "file": "owner-workbench-window.png",
+      "height": 688,
+      "sha256": "c76365fa36c5420aa06d60d65320a1535cc388ed2dc5c64fa0a10595e0a04cf6",
+      "width": 984
+    },
+    "stable_seconds": 10.280999999999949,
+    "visible_responsive_window": {
+      "created_filetime": 134397764340165950,
+      "height": 688,
+      "hwnd": 1835452,
+      "image": "D:\\a\\cybersand\\cybersand\\evidence\\swarm006-launcher\\actual owner package with spaces\\Godot_v4.7-stable_win64.exe",
+      "job_member": true,
+      "left": 20,
+      "pid": 5168,
+      "responsive": true,
+      "title": "CyberSand \u00b7 Development workbench",
+      "top": 20,
+      "visible": true,
+      "width": 984
+    }
+  },
+  "limitations": [
+    "Separate independent native reviewer owns the detailed source/pristine graphical transaction, inspector,96-assertion input and raw plane review.",
+    "No runtime reruns by this reviewer. Twelve Windows helper tests and all recorded processes executed in the hosted job.",
+    "Final GUI count96 includes93 core input assertions plus three original screenshot saves; preservation remains93 core assertions.",
+    "Qualified source428/foundation846 is distinct from later live accepted main30e1cddd3d678456df10f52f7a2fb2210a9daaad; no donor-to-main or new foundation inclusion is implied.",
+    "Physical NVIDIA, private owner-world reproduction, reciprocal programme acceptance, merge and Ready remain pending."
+  ],
+  "native_v4_transport": {
+    "five_malformed_request_refusals": true,
+    "four_exact_v3_off_pairs": true,
+    "four_exact_v4_replays": true,
+    "retained_outcomes": [
+      {
+        "can_apply": false,
+        "case": "industrial",
+        "joints": 0,
+        "material_sha256": "da5b20620d5663f16785775789dd5fba4a94876ea0652d708c219c71981b1e1f",
+        "native_cells": 6051,
+        "obligations": 2,
+        "recovery": "off",
+        "status": "blocked",
+        "unresolved": 2
+      },
+      {
+        "can_apply": true,
+        "case": "industrial",
+        "joints": 5,
+        "material_sha256": "2655e811d9cd61dfc8329b39dc5c9aea104cfaf79e6f1ea7b7baeb069970cd96",
+        "native_cells": 5832,
+        "obligations": 1,
+        "recovery": "on",
+        "status": "complete",
+        "unresolved": 0
+      },
+      {
+        "can_apply": false,
+        "case": "viaduct_like",
+        "joints": 0,
+        "material_sha256": "16d265254d71afcd52444956e6e682ba995e2d7e614b548d8d1ad3a14b8a249f",
+        "native_cells": 6035,
+        "obligations": 1,
+        "recovery": "off",
+        "status": "blocked",
+        "unresolved": 1
+      },
+      {
+        "can_apply": true,
+        "case": "viaduct_like",
+        "joints": 5,
+        "material_sha256": "a1908b8ea7fbba0a515d2b6356e3705d085b570a0c33f9348c8b81a089b3ba29",
+        "native_cells": 5839,
+        "obligations": 1,
+        "recovery": "on",
+        "status": "complete",
+        "unresolved": 0
+      },
+      {
+        "can_apply": true,
+        "case": "irregular_megastructure",
+        "joints": 0,
+        "material_sha256": "c81255e6a63c2fb6dccd4ae015582a61ac1788262f0486c3143250ed1105698a",
+        "native_cells": 6026,
+        "obligations": 0,
+        "recovery": "off",
+        "status": "complete",
+        "unresolved": 0
+      },
+      {
+        "can_apply": true,
+        "case": "irregular_megastructure",
+        "joints": 8,
+        "material_sha256": "03ac464d2b3f2e2fb2882d6ed0ac46cb3fc3b146964ce72f539b84778d200f73",
+        "native_cells": 5875,
+        "obligations": 0,
+        "recovery": "on",
+        "status": "complete",
+        "unresolved": 0
+      },
+      {
+        "can_apply": false,
+        "case": "irregular_square",
+        "joints": 0,
+        "material_sha256": "4c057997785e75e889130f5313b7e44128fff4ac7da71d72d44903fc631ee0cb",
+        "native_cells": 4751,
+        "obligations": 1,
+        "recovery": "off",
+        "status": "blocked",
+        "unresolved": 1
+      },
+      {
+        "can_apply": true,
+        "case": "irregular_square",
+        "joints": 6,
+        "material_sha256": "1f99f89b64806fca55e893a56fcec77b0e461e88a43b1af117cee80e79565b23",
+        "native_cells": 4737,
+        "obligations": 0,
+        "recovery": "on",
+        "status": "complete",
+        "unresolved": 0
+      }
+    ],
+    "summary_sha256": "4b986cb14253bbf692ce7a6e37e87fdc70b176504250f85604853a70a55dbcd7"
+  },
+  "owner_package_review_sha256": "af13bd67da789b1a8f2acfedfb5ff195e0dad337a639cfbbabe81e68770df4f1",
+  "preservation": {
+    "assertions": {
+      "architecture": 2730,
+      "art": 260,
+      "controller": 33,
+      "controls-inspector": 280,
+      "flatten-author": 194,
+      "flatten-reopen": 43,
+      "input-integrity": 93,
+      "native-authoring": 126,
+      "paint-author": 64,
+      "paint-reopen": 12,
+      "protocol": 212,
+      "rapier-actors": 323,
+      "water": 1272
+    },
+    "declared_Windows_EOL_paths": [
+      ".gitattributes",
+      "godot/.godot/.gdignore",
+      "godot/addons/cybersand_native/cybersand_native.gdextension.uid",
+      "godot/addons/godot-rapier2d/LICENSE",
+      "godot/addons/godot-rapier2d/Radial2D.svg",
+      "godot/addons/godot-rapier2d/THIRDPARTY.txt",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid",
+      "godot/addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid",
+      "godot/addons/godot-rapier2d/faucet_2d.gd.uid",
+      "godot/addons/godot-rapier2d/fluid_2d_circle.gd.uid",
+      "godot/addons/godot-rapier2d/fluid_2d_rectangle.gd.uid",
+      "godot/addons/godot-rapier2d/fluid_2d_renderer.gd.uid",
+      "godot/addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid",
+      "godot/addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+      "godot/addons/godot-rapier2d/icons/Fluid2D.svg",
+      "godot/addons/godot-rapier2d/icons/StateManager2D.svg",
+      "godot/addons/godot-rapier2d/water_shader.gdshader.uid",
+      "godot/scripts/cell_world.gd.uid",
+      "godot/scripts/demo_save_codec.gd.uid",
+      "godot/scripts/demo_worlds.gd.uid",
+      "godot/scripts/experiment_tower.gd.uid",
+      "godot/scripts/industrial_underswamp.gd.uid",
+      "godot/scripts/interaction_policy.gd.uid",
+      "godot/scripts/interaction_policy_probe.gd.uid",
+      "godot/scripts/main.gd.uid",
+      "godot/scripts/material_appearance_lut.gd.uid",
+      "godot/scripts/microscenario_catalogue.gd.uid",
+      "godot/scripts/microscenario_comparison.gd.uid",
+      "godot/scripts/microscenario_contract.gd.uid",
+      "godot/scripts/microscenario_host.gd.uid",
+      "godot/scripts/microscenario_identity.gd.uid",
+      "godot/scripts/microscenario_panel.gd.uid",
+      "godot/scripts/microscenario_reference_pack.gd.uid",
+      "godot/scripts/microscenario_telemetry.gd.uid",
+      "godot/scripts/microscenario_workbench.gd.uid",
+      "godot/scripts/middle_cyberberbia.gd.uid",
+      "godot/scripts/neon_reliquary.gd.uid",
+      "godot/scripts/physics_characterisation.gd.uid",
+      "godot/scripts/rapier_physics_bridge.gd.uid",
+      "godot/scripts/rigid_body_coupling.gd.uid",
+      "godot/scripts/sampled_character.gd.uid",
+      "godot/scripts/sewertech_alley.gd.uid",
+      "godot/scripts/showcase_presentation.gd.uid",
+      "godot/scripts/showcase_tiles.gd.uid",
+      "godot/scripts/simulation_snapshot.gd.uid",
+      "godot/scripts/simulation_worker.gd.uid",
+      "godot/scripts/tick_failure_probe.gd.uid",
+      "godot/scripts/tower_panel.gd.uid",
+      "godot/scripts/transport_probe.gd.uid",
+      "godot/scripts/transport_profile_panel.gd.uid",
+      "godot/scripts/transport_profiles.gd.uid",
+      "godot/scripts/web_capabilities.gd.uid",
+      "godot/scripts/web_demo_controller.gd.uid",
+      "godot/scripts/web_demo_menu.gd.uid",
+      "godot/scripts/web_rapier_probe.gd.uid",
+      "godot/scripts/web_worker_probe.gd.uid",
+      "godot/scripts/worker_benchmark.gd.uid",
+      "godot/shaders/glow_composite.gdshader.uid",
+      "godot/shaders/material_emission.gdshader.uid",
+      "godot/shaders/material_palette.gdshader.uid",
+      "godot/shaders/neon_reliquary_backdrop.gdshader.uid",
+      "godot/tests/export_transport_profiles.gd.uid",
+      "godot/tests/interaction_async_worker.gd.uid",
+      "godot/tests/physics_async_worker.gd.uid",
+      "godot/tests/profile_native_world.gd.uid",
+      "godot/tests/profile_scheduler.gd.uid",
+      "godot/tests/run_microscenario.gd.uid",
+      "godot/tests/run_worker_benchmark.gd.uid",
+      "godot/tests/test_auto_worker_policy.gd.uid",
+      "godot/tests/test_cell_world.gd.uid",
+      "godot/tests/test_experiment_tower.gd.uid",
+      "godot/tests/test_interaction_async.gd.uid",
+      "godot/tests/test_interaction_policy.gd.uid",
+      "godot/tests/test_material_appearance_lut.gd.uid",
+      "godot/tests/test_microscenario_controllers.gd.uid",
+      "godot/tests/test_microscenarios.gd.uid",
+      "godot/tests/test_native_edge_contact_regression.gd.uid",
+      "godot/tests/test_native_fire_presentation_regression.gd.uid",
+      "godot/tests/test_native_render_bridge_regression.gd.uid",
+      "godot/tests/test_neon_reliquary.gd.uid",
+      "godot/tests/test_physics_async.gd.uid",
+      "godot/tests/test_physics_characterisation.gd.uid",
+      "godot/tests/test_physics_instrumentation.gd.uid",
+      "godot/tests/test_presentation_controls.gd.uid",
+      "godot/tests/test_rapier_backend_preflight.gd.uid",
+      "godot/tests/test_rapier_drop_in.gd.uid",
+      "godot/tests/test_rapier_manual_step.gd.uid",
+      "godot/tests/test_render_patch_handoff_regression.gd.uid",
+      "godot/tests/test_showcase_backdrop_render.gd.uid",
+      "godot/tests/test_tick_failure_regression.gd.uid",
+      "godot/tests/test_transport_probe.gd.uid",
+      "godot/tests/test_transport_profiles.gd.uid",
+      "godot/tests/test_web_demo_setup.gd.uid",
+      "godot/tests/test_web_rapier.gd.uid",
+      "godot/tests/test_web_worker_parity.gd.uid",
+      "godot/tests/test_worker_benchmark.gd.uid",
+      "godot/tools/activate_rapier_2d.gd.uid",
+      "godot/tools/capture_neon_reliquary.gd.uid",
+      "native/experiments/gentek_swarm/Makefile",
+      "native/experiments/gentek_swarm/Makefile.reciprocal",
+      "tools/swarm006/compare_saved_setup.ps1",
+      "tools/swarm006/owner_launcher.ps1.in",
+      "tools/swarm006/publish_source.exec.js"
+    ],
+    "identity": {
+      "cli_sha256": "f3f26a6c76238fb3cef37701f25d76eff709b5f77ddb71a09ee58a72a4c5257d",
+      "development": false,
+      "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "native_sha256": "944ba3563653a0e774478bb6e1b1a9f7beedfb45111124dde885335e7f024d88",
+      "platform": "win32",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "source_delta": "",
+      "tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300"
+    },
+    "identity_sha256": "566dee5b3ec270a476d20386ec1182469c6768f4f63d6dc002bdd0c778601cd8",
+    "idle_paint_changed_cells": 197,
+    "idle_undo_redo_exact": true,
+    "input_checks": 93,
+    "input_native_request_response_pairs": 5,
+    "input_raw_planes": 20,
+    "input_report_sha256": "8720e53fcd57de98e53104b8dcc4bd1e53e36080ce9ac3ddfe662bad2a992b52",
+    "processes": [
+      {
+        "elapsed_seconds": 12.234999999999957,
+        "log_sha256": "49df5406db11552e8551606ce5216f8b55f8f26fc00f61defbee77def0dd7292",
+        "name": "import",
+        "pid": 7420,
+        "script": ""
+      },
+      {
+        "elapsed_seconds": 2.75,
+        "log_sha256": "8b8cfbe542a0eb5fc268bb8192c613e943e24efd3c974ef0226cb2958418905b",
+        "name": "native-authoring",
+        "pid": 3696,
+        "script": "test_workbench_authoring_patch.gd"
+      },
+      {
+        "elapsed_seconds": 0.625,
+        "log_sha256": "3203bb8043cd57cf72f42704ec6a64af9a52af118815db3b50ad80c867827fb4",
+        "name": "protocol",
+        "pid": 7468,
+        "script": "test_workbench_reciprocal_protocol.gd"
+      },
+      {
+        "elapsed_seconds": 9.984999999999957,
+        "log_sha256": "ca12f34471d2e207a78af8ed1c875bdcea95542b46f470fbf398acc31ebb7b3d",
+        "name": "controller",
+        "pid": 644,
+        "script": "test_workbench_reciprocal_controller.gd"
+      },
+      {
+        "elapsed_seconds": 11.953000000000031,
+        "log_sha256": "42b4f1b5681dbfd8d774e336369c61a37abe89e2cbc3982960f0a3cd49a4cace",
+        "name": "controls-inspector",
+        "pid": 3160,
+        "script": "test_workbench_reciprocal_controls.gd"
+      },
+      {
+        "elapsed_seconds": 25.25,
+        "log_sha256": "9e4843db0067bac824dd170e23f33826fdd56c7433f20997a2b74bb0813d6572",
+        "name": "input-integrity",
+        "pid": 2712,
+        "script": "swarm006_reciprocal_input.gd"
+      },
+      {
+        "elapsed_seconds": 39.70400000000001,
+        "log_sha256": "9b94b9a60a976248fdb8b504c01a15d32473b7cd11dbbc5b2da709f3a4a44771",
+        "name": "art",
+        "pid": 6800,
+        "script": "test_art_undo.gd"
+      },
+      {
+        "elapsed_seconds": 10.014999999999986,
+        "log_sha256": "bbe9ab00cdc71853b61f615ed98f1b6134ccd9f4f7128080502d360eccc6d50d",
+        "name": "paint-author",
+        "pid": 6592,
+        "script": "test_paint_editor_workbench.gd"
+      },
+      {
+        "elapsed_seconds": 6.9220000000000255,
+        "log_sha256": "5b7dc2d723428949728e7fefb0934363405d13c0b32e807ab1b1bef7d9f12f36",
+        "name": "paint-reopen",
+        "pid": 1792,
+        "script": "test_paint_editor_workbench.gd"
+      },
+      {
+        "elapsed_seconds": 70.67199999999997,
+        "log_sha256": "d76d8aff44802e42182ce333ee1e0bd95c7c7751c617391d6eb6f3ba44a5abd5",
+        "name": "water",
+        "pid": 4784,
+        "script": "test_workbench_wave.gd"
+      },
+      {
+        "elapsed_seconds": 3.2180000000000177,
+        "log_sha256": "bec9939742cfdfe9bc396cfc8668d6c396e84cb1d3d735cd1156b26cd8a4ee3a",
+        "name": "rapier-actors",
+        "pid": 2864,
+        "script": "test_workbench_actor_composition_native.gd"
+      },
+      {
+        "elapsed_seconds": 59.78199999999998,
+        "log_sha256": "1c83f150ff030f31a33eceddc6ae7eb2d291080825c0d18bb5ea5d44613052df",
+        "name": "architecture",
+        "pid": 7996,
+        "script": "test_architectural_generator.gd"
+      },
+      {
+        "elapsed_seconds": 14.077999999999975,
+        "log_sha256": "eb252f06d3b91a152167eeb0937cfc729af9a21e49b3c6aae052cf43347f1331",
+        "name": "flatten-author",
+        "pid": 1852,
+        "script": "test_workbench_flatten.gd"
+      },
+      {
+        "elapsed_seconds": 9.078000000000088,
+        "log_sha256": "68a2a86db99ba798c3b783ea443d71359f861014f7b1a1ffe96cbe182944f4c0",
+        "name": "flatten-reopen",
+        "pid": 4780,
+        "script": "test_workbench_flatten.gd"
+      }
+    ],
+    "qualification_sha256": "b4f90137c3bb08e5973d98e1589e86507515383440dda60e0585359ff662e9fb",
+    "source_inventory_matches_committed_source_and_declared_EOL": true,
+    "source_inventory_paths": 1121,
+    "source_runtime_unchanged": true,
+    "total_assertions": 5642,
+    "unchanged_full_before_after_pairs": [
+      "shared",
+      "independent",
+      "gesture",
+      "busy-active",
+      "busy-off",
+      "busy-hidden",
+      "keyboard-undo",
+      "keyboard-redo"
+    ],
+    "v1_v2_v3_v4_inspector": {
+      "V1": {
+        "default_final": true,
+        "final_only_layers": true,
+        "letterbox_refusal": true,
+        "native_cell_picks": true,
+        "native_pixels": true,
+        "restored_final": true,
+        "round_count": 3,
+        "round_indices": [
+          -1,
+          0,
+          1,
+          2,
+          -1
+        ],
+        "schema": 1,
+        "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+      },
+      "V2": {
+        "default_final": true,
+        "final_only_layers": true,
+        "letterbox_refusal": true,
+        "native_cell_picks": true,
+        "native_pixels": true,
+        "restored_final": true,
+        "round_count": 3,
+        "round_indices": [
+          -1,
+          0,
+          1,
+          2,
+          -1
+        ],
+        "schema": 1,
+        "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+      },
+      "V3": {
+        "default_final": true,
+        "final_only_layers": true,
+        "letterbox_refusal": true,
+        "native_cell_picks": true,
+        "native_pixels": true,
+        "restored_final": true,
+        "round_count": 3,
+        "round_indices": [
+          -1,
+          0,
+          1,
+          2,
+          -1
+        ],
+        "schema": 1,
+        "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+      },
+      "V4": {
+        "default_final": true,
+        "final_only_layers": true,
+        "letterbox_refusal": true,
+        "native_cell_picks": true,
+        "native_pixels": true,
+        "restored_final": true,
+        "round_count": 3,
+        "round_indices": [
+          -1,
+          0,
+          1,
+          2,
+          -1
+        ],
+        "schema": 1,
+        "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+      }
+    },
+    "water_all_twelve_sections": true
+  },
+  "qualification_run": 44959721570,
+  "qualified_foundation": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "review_script_sha256": "91935fd4d7266e816ce85ddcedfbcc4bfad89c046f55f8e2d7b228c66e73fbaf",
+  "reviewed_utc": "2026-11-22T00:23:13.569767+00:00",
+  "reviewer": "independent platform/publication reviewer",
+  "schema": 1,
+  "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "status": "PASS retained actual hosted Windows platform/publication scope",
+  "terminal_post_GUI_identity_recheck": {
+    "errors": [],
+    "passed": true,
+    "prior_directory": "D:\\a\\cybersand\\cybersand\\evidence\\swarm006-preservation",
+    "prior_identity_sha256": "566dee5b3ec270a476d20386ec1182469c6768f4f63d6dc002bdd0c778601cd8",
+    "prior_qualification_sha256": "b4f90137c3bb08e5973d98e1589e86507515383440dda60e0585359ff662e9fb",
+    "prior_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "schema": 1,
+    "scope": "Exact source/runtime and completed preservation evidence recheck; no tests rerun",
+    "stage": "post-consumer-identity"
+  },
+  "terminal_receipt_sha256": "eed063ba28bce60e416240dc49dd43ecf1d5c63b515391d015a17143e0d84642",
+  "tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "windows_job": 137017067339
+}

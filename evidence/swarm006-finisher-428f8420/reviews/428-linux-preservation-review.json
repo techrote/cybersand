@@ -1,0 +1,397 @@
+{
+  "actual_input": {
+    "before_after_pairs_unchanged": [
+      "shared",
+      "independent",
+      "gesture",
+      "busy-active",
+      "busy-off",
+      "busy-hidden",
+      "keyboard-undo",
+      "keyboard-redo"
+    ],
+    "cases": {
+      "busy-active": {
+        "apply_delta": 0,
+        "child_alive_before_input": true,
+        "child_pid": 7406,
+        "history_unchanged": true,
+        "job_observed": true,
+        "paint_dragging_after_press": false,
+        "phase_before_input": "running",
+        "territory_mode_before_input": true,
+        "visible_before_input": true,
+        "world_unchanged": true
+      },
+      "busy-hidden": {
+        "apply_delta": 0,
+        "history_unchanged": true,
+        "job_observed": true,
+        "paint_dragging_after_press": false,
+        "phase_before_input": "cancelling",
+        "territory_mode_before_input": true,
+        "thread_pending_before_hide": true,
+        "visible_before_input": false,
+        "world_unchanged": true
+      },
+      "busy-off": {
+        "apply_delta": 0,
+        "child_alive_before_input": true,
+        "child_pid": 7409,
+        "history_unchanged": true,
+        "job_observed": true,
+        "paint_dragging_after_press": false,
+        "phase_before_input": "running",
+        "territory_mode_before_input": false,
+        "visible_before_input": true,
+        "world_unchanged": true
+      },
+      "gesture": {
+        "apply_delta": 0,
+        "dragging_on_press": true,
+        "history_unchanged": true,
+        "new_protected_count": 49,
+        "retired_on_press": true,
+        "world_unchanged": true
+      },
+      "independent": {
+        "apply_delta": 0,
+        "committed_value": 0.2,
+        "history_unchanged": true,
+        "native_value": 0.2,
+        "old_value": 0.15,
+        "pending_value": 0.15,
+        "retired_before_apply": true,
+        "typed_generate_matches": true,
+        "typed_text": "0.2",
+        "world_unchanged": true
+      },
+      "keyboard": {
+        "idle_paint_changes_world": true,
+        "idle_paint_history": true,
+        "idle_redo_works": true,
+        "idle_undo_works": true,
+        "redo_blocked": true,
+        "redo_button_disabled": true,
+        "redo_callback_refused": true,
+        "redo_child_live": true,
+        "redo_child_live_before_shortcut": true,
+        "redo_child_pid": 7418,
+        "undo_blocked": true,
+        "undo_button_disabled": true,
+        "undo_callback_refused": true,
+        "undo_child_live": true,
+        "undo_child_live_before_shortcut": true,
+        "undo_child_pid": 7414
+      },
+      "shared": {
+        "apply_delta": 0,
+        "committed_value": 606.0,
+        "history_unchanged": true,
+        "native_value": 606.0,
+        "old_value": 605.0,
+        "pending_value": 605.0,
+        "retired_before_apply": true,
+        "typed_generate_matches": true,
+        "typed_text": "606",
+        "world_unchanged": true
+      }
+    },
+    "checks": 93,
+    "consumer_semantic_errors": [],
+    "idle_paint_changed_cells": 197,
+    "idle_undo_and_redo_exact": true,
+    "native_planes": 20,
+    "native_records": [
+      {
+        "can_apply": true,
+        "cohesion": 0.15,
+        "joints": 5,
+        "label": "gesture-initial",
+        "request_sha256": "e6b4c568c097c7fa8d61a529cc474dd0a1017a96964d109285194f0a63722cf8",
+        "response_sha256": "79ff4869288fb839df647f8d5b7812622c557494b0f24478b3366bd3c2d79568",
+        "seed": 605,
+        "status": "complete"
+      },
+      {
+        "can_apply": true,
+        "cohesion": 0.15,
+        "joints": 5,
+        "label": "independent-initial",
+        "request_sha256": "e6b4c568c097c7fa8d61a529cc474dd0a1017a96964d109285194f0a63722cf8",
+        "response_sha256": "79ff4869288fb839df647f8d5b7812622c557494b0f24478b3366bd3c2d79568",
+        "seed": 605,
+        "status": "complete"
+      },
+      {
+        "can_apply": true,
+        "cohesion": 0.2,
+        "joints": 5,
+        "label": "independent-typed",
+        "request_sha256": "264767ed68f3ca640189746e7c12be1d08ea457daac341565920ab6fa3e726ff",
+        "response_sha256": "cb907f3e69a70d70722e40f1b762a350b93bdaaca8dcccf8fdce5758ed5f5570",
+        "seed": 605,
+        "status": "complete"
+      },
+      {
+        "can_apply": true,
+        "cohesion": 0.15,
+        "joints": 5,
+        "label": "shared-initial",
+        "request_sha256": "e6b4c568c097c7fa8d61a529cc474dd0a1017a96964d109285194f0a63722cf8",
+        "response_sha256": "79ff4869288fb839df647f8d5b7812622c557494b0f24478b3366bd3c2d79568",
+        "seed": 605,
+        "status": "complete"
+      },
+      {
+        "can_apply": true,
+        "cohesion": 0.15,
+        "joints": 4,
+        "label": "shared-typed",
+        "request_sha256": "6fc04529a8364613b1a1b7e933ee90e3acafab9980f39d620c449a38a84e890f",
+        "response_sha256": "9539c0ec3c574384c5fcbafdbf33b19a0b24dce38a0bd8ddbf114afeb5864998",
+        "seed": 606,
+        "status": "complete"
+      }
+    ],
+    "plane_bytes_each": 524288,
+    "report_sha256": "11e5e6397d990e49f9aa3999110961eaf3e105713dfb9c3a4a12b3b58e0dd9be"
+  },
+  "artifact": {
+    "all_extracted_files_verified": 220,
+    "bytes": 5116038,
+    "id": 14728998753,
+    "sha256": "482409f1822b4d4808b1efc2022e17949726e25e5a00bf13db83abf41d9cf454"
+  },
+  "assertions": {
+    "architecture": 2730,
+    "art": 260,
+    "controller": 33,
+    "controls-inspector": 280,
+    "flatten-author": 194,
+    "flatten-reopen": 43,
+    "input-integrity": 93,
+    "native-authoring": 126,
+    "paint-author": 64,
+    "paint-reopen": 12,
+    "protocol": 212,
+    "rapier-actors": 323,
+    "water": 1272
+  },
+  "created_utc": "2026-11-21T23:23:57.757791+00:00",
+  "declared_crlf_materializations": [
+    "tools/swarm006/compare_saved_setup.ps1"
+  ],
+  "flatten_distinct_processes": [
+    7865,
+    7904
+  ],
+  "hosted_job_log_sha256": "d80c5a24c6f4cd290d10b8df93e7ddf61c10f1c11accfaafedfe1066379edb53",
+  "identity": {
+    "cli_sha256": "db71149119a368c695fe1193999ef904378c255a4fc4ce1b8618d06ca66a96c7",
+    "development": false,
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+    "platform": "linux",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "source_delta": "",
+    "tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300"
+  },
+  "identity_sha256": "eedea2c9a8579b69e42e1140bbda5745e84a03f38b0a5d616df6868cdd6bd2e6",
+  "job": 137015634502,
+  "limitations": [
+    "Linux headless actual Workbench execution; final graphical Windows review is separate.",
+    "No scientific primary-endpoint or physical NVIDIA acceptance is implied by these UI regressions.",
+    "Busy-hidden tests a live retiring preparation thread, not an already-running native process.",
+    "Existing Art/Water/Flatten assertions are retained scoped tests; this audit did not rerun them."
+  ],
+  "process_count": 14,
+  "processes": [
+    {
+      "elapsed_seconds": 7.12830339300001,
+      "log_sha256": "1774dc9271fd0b138ff515b5bc25640fc1d69943195fdae2af7adc050310984d",
+      "name": "import",
+      "pid": 7253,
+      "script": ""
+    },
+    {
+      "elapsed_seconds": 1.8674098009998943,
+      "log_sha256": "3d840d5394b326b33090649f12f347bd5392ca5ef598d72e82a9f403efd18b7d",
+      "name": "native-authoring",
+      "pid": 7301,
+      "script": "test_workbench_authoring_patch.gd"
+    },
+    {
+      "elapsed_seconds": 0.26406249200010734,
+      "log_sha256": "337060729759fa1a39b449701dcbf54b47cd9670abfb0777f66fb9551964014b",
+      "name": "protocol",
+      "pid": 7319,
+      "script": "test_workbench_reciprocal_protocol.gd"
+    },
+    {
+      "elapsed_seconds": 5.2226074989999915,
+      "log_sha256": "86c7376c0d6f4726274ba87dbe82a1c8a0682ba8081fd39485b3645824fc4dd4",
+      "name": "controller",
+      "pid": 7329,
+      "script": "test_workbench_reciprocal_controller.gd"
+    },
+    {
+      "elapsed_seconds": 6.5245922429999155,
+      "log_sha256": "2da3d3f77fafc31e55d85db467cc61cd00578ba5d1768e3ecc85a71233e2b21b",
+      "name": "controls-inspector",
+      "pid": 7346,
+      "script": "test_workbench_reciprocal_controls.gd"
+    },
+    {
+      "elapsed_seconds": 14.440965974999926,
+      "log_sha256": "f45bbae739ba27cb07bfc362bbdcf43418305a26a427c931c9b8f6e9a6901dc9",
+      "name": "input-integrity",
+      "pid": 7373,
+      "script": "swarm006_reciprocal_input.gd"
+    },
+    {
+      "elapsed_seconds": 32.73115808900002,
+      "log_sha256": "892f2362c4c0b0ae3fc8c4caf8109d5f15235fc10477af2746c8d663a4c36a6e",
+      "name": "art",
+      "pid": 7423,
+      "script": "test_art_undo.gd"
+    },
+    {
+      "elapsed_seconds": 6.426752996000005,
+      "log_sha256": "80dc9614b277b1a4ddf06be12c011203397e007902d1092e07f2dc813dac039f",
+      "name": "paint-author",
+      "pid": 7492,
+      "script": "test_paint_editor_workbench.gd"
+    },
+    {
+      "elapsed_seconds": 3.7219051520000903,
+      "log_sha256": "c0c53b325c70480acff9c5de7a1a6db8fe677043261fe712550eff13d94cca55",
+      "name": "paint-reopen",
+      "pid": 7559,
+      "script": "test_paint_editor_workbench.gd"
+    },
+    {
+      "elapsed_seconds": 41.399036836999926,
+      "log_sha256": "6f30ed1647b25b089ec43775d11de81188438d78a04360209e898ae73322514f",
+      "name": "water",
+      "pid": 7599,
+      "script": "test_workbench_wave.gd"
+    },
+    {
+      "elapsed_seconds": 2.0683519340000203,
+      "log_sha256": "85cee1d547ad70bb372a3dadd2bdb05922000aa1703bc0f62926c5aac485b114",
+      "name": "rapier-actors",
+      "pid": 7829,
+      "script": "test_workbench_actor_composition_native.gd"
+    },
+    {
+      "elapsed_seconds": 50.77341208300004,
+      "log_sha256": "cae803d53c56590d63103d70b4d9faf8b29a3eecb26e3fcd890c0037d8578a6f",
+      "name": "architecture",
+      "pid": 7851,
+      "script": "test_architectural_generator.gd"
+    },
+    {
+      "elapsed_seconds": 9.684968299999923,
+      "log_sha256": "4b5aa8fb0f11bcd3c765f101bc488361d6fb64a142bcfe77f113c4bfda4104fb",
+      "name": "flatten-author",
+      "pid": 7865,
+      "script": "test_workbench_flatten.gd"
+    },
+    {
+      "elapsed_seconds": 5.024728577000019,
+      "log_sha256": "a3d7394843765ed94bc1e2bb1e9fe28e31c58146470c7d5d5ed859dd4268cb0e",
+      "name": "flatten-reopen",
+      "pid": 7904,
+      "script": "test_workbench_flatten.gd"
+    }
+  ],
+  "qualification_run": 44959721570,
+  "qualification_sha256": "8d1234a15e05e20060b5241928d578742068d0f1d7204a301486db0d5a9c86b4",
+  "review_script_sha256": "2695510260b118262e1f739a174295f56648bb899d3e90c1a4edfc2e500fc32f",
+  "reviewer": "independent platform/publication reviewer",
+  "schema": 1,
+  "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_and_runtime_unchanged_at_suite_completion": true,
+  "source_inventory_independently_matches_git": true,
+  "source_inventory_paths": 1121,
+  "status": "PASS within retained final Linux scope",
+  "total_assertions": 5642,
+  "tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "v1_v2_v3_v4_inspector_native_round_binding": {
+    "V1": {
+      "default_final": true,
+      "final_only_layers": true,
+      "letterbox_refusal": true,
+      "native_cell_picks": true,
+      "native_pixels": true,
+      "restored_final": true,
+      "round_count": 3,
+      "round_indices": [
+        -1,
+        0,
+        1,
+        2,
+        -1
+      ],
+      "schema": 1,
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    },
+    "V2": {
+      "default_final": true,
+      "final_only_layers": true,
+      "letterbox_refusal": true,
+      "native_cell_picks": true,
+      "native_pixels": true,
+      "restored_final": true,
+      "round_count": 3,
+      "round_indices": [
+        -1,
+        0,
+        1,
+        2,
+        -1
+      ],
+      "schema": 1,
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    },
+    "V3": {
+      "default_final": true,
+      "final_only_layers": true,
+      "letterbox_refusal": true,
+      "native_cell_picks": true,
+      "native_pixels": true,
+      "restored_final": true,
+      "round_count": 3,
+      "round_indices": [
+        -1,
+        0,
+        1,
+        2,
+        -1
+      ],
+      "schema": 1,
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    },
+    "V4": {
+      "default_final": true,
+      "final_only_layers": true,
+      "letterbox_refusal": true,
+      "native_cell_picks": true,
+      "native_pixels": true,
+      "restored_final": true,
+      "round_count": 3,
+      "round_indices": [
+        -1,
+        0,
+        1,
+        2,
+        -1
+      ],
+      "schema": 1,
+      "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    }
+  },
+  "water_all_twelve_sections": true
+}

@@ -1,0 +1,21 @@
+{
+  "corrections": [],
+  "current_report_sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7",
+  "delta_record_sha256": "6179b008b4bc992b654481c5bd0ada8545ea139f69c8e8b6cdac42081d7c4bf7",
+  "disposition": "GO_SINGLE_CUSTODY_WORDING_PROJECTION",
+  "exact_one_replacement_and_all_other_bytes_identical": true,
+  "findings": [
+    "The only change replaces the inaccurate transport-JSON executable-identity attribution with the platform-reviewed same-job verified-payload/command binding.",
+    "Previously reviewed Workbench counts/outcomes/limits, scientific section, late-main text and all other report bytes are unchanged.",
+    "The owner guide remains exactly the previously reviewed final file."
+  ],
+  "owner_guide_sha256": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a",
+  "prior_report_sha256": "2c6fe3316d3545bba074638131faac65603414c4c6b669af2462a80c71334eb2",
+  "prior_text_review_sha256": "5be9deacf0c03dce5697ab311c74df3fdc8613eae888be60a69b95a2f391c5d6",
+  "reviewed_at_utc": "2026-11-22T00:32:53.687841+00:00",
+  "reviewer": "swarm006_native; independent Workbench publication reviewer",
+  "runtime_or_test_executions": 0,
+  "schema": 1,
+  "scope": "One textual substitution and hash-bound projection of prior review only; no broader platform, source or runtime requalification.",
+  "source_edits": []
+}

@@ -1,0 +1,127 @@
+{
+  "artifacts": [
+    {
+      "bytes": 5537573,
+      "extracted_files_verified": 97,
+      "id": 14728908283,
+      "name": "swarm006-finisher-build-evidence-44959721570",
+      "sha256": "005eb88c0bd32939b065d6567e8e358767aa633ad9ab893bd7bdcfb03fda6ee3"
+    },
+    {
+      "bytes": 3638107,
+      "extracted_files_verified": 6,
+      "id": 14728803920,
+      "name": "swarm006-finisher-windows-runtime-44959721570",
+      "sha256": "69a48647d34a563b4ef84e9696e675d7feed2f92299de578cbdc633ba59e2791"
+    },
+    {
+      "bytes": 2945,
+      "extracted_files_verified": 2,
+      "id": 14728553987,
+      "name": "swarm006-finisher-sanitized-428f842034a1f80d593bcc6bb32af2dd99cd0105-1",
+      "sha256": "eaaceb408d177d974d7761cb52239167af7111ae1093395e72b26a91366f3c04"
+    }
+  ],
+  "assertions_per_native_eight_suite_run": 642402,
+  "created_utc": "2026-11-21T23:20:36.204391+00:00",
+  "delta_from_parent": [
+    ".github/swarm006-finisher-request.json",
+    "tools/swarm006/test_qualify_preserved_workbench.py"
+  ],
+  "direct_parent": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "dll_source_inputs": 106,
+  "focused_python_test_counts": {
+    "native-refusal-runner.log": 21,
+    "owner-dispatch-admission-tests.log": 14,
+    "owner-package-tests.log": 4,
+    "preservation-gate-tests.log": 12,
+    "qualification-gate-tests.log": 25,
+    "registered-reference-tests.log": 8,
+    "revealed-replay-contract.log": 4,
+    "source-publication-tests.log": 4
+  },
+  "independent_source_inputs_match_git_and_worktree": true,
+  "limitations": [
+    "Cross-built Windows PE files are source-bound; actual Windows execution is a separate pending review.",
+    "Eight-suite assertion counts are not independent test-case counts.",
+    "The reciprocal suite retained complete=0; expected negative outputs are not generation success.",
+    "No physical NVIDIA, private owner-world, merge or Ready acceptance claim."
+  ],
+  "native_runs": [
+    "strict optimized Linux",
+    "ASan UBSan and leak detection Linux"
+  ],
+  "native_suite_assertion_counts": {
+    "assembly": 99729,
+    "custody_hash": 13,
+    "reciprocal": 263015,
+    "reciprocal_mosaic": 274661,
+    "recovery": 870,
+    "recovery_admission": 913,
+    "source_opportunities": 3166,
+    "swarm005_pilot": 35
+  },
+  "qualification_run": 44959721570,
+  "reciprocal_source_inputs": 132,
+  "retained_log_hashes": {
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/adapter.log": "206e81dcac0092ec9df81f7e2763187a214f9e3998fdd344f30af15b494ff288",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/godot-cpp.log": "1149970d8286b2177955a71969000d3887ef1f6058b176cd55a22e69a89f375f",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/linux-native-cli.log": "2ccfb7064dd02631d292bee8cb7aad92e4f60d15aa4e894293b6937a4bf429a4",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/linux-native-tests.log": "5e25ddb43ca42d12873b704567adbcd02f31f5c52b94ec7678291f0754c3ab8a",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/linux-v3-assertions.log": "28533d52d2550c18047a8272934e57b55670ce699573937097289d1d62c22c32",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/linux-v4-assertions.log": "7d60291ecdb7b78e8478921e5bceaf6b8cc9b81c0296577c65255801c19611a7",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/native-refusal-runner.log": "d4c0ddc1aebc571f86626e231c957fd10259fcfac3fe05b0fe5842962e5e70a2",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/owner-dispatch-admission-tests.log": "d847daafad16236b9335cadaf58e5b57d630326fef6ab21990654ad568504088",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/owner-package-tests.log": "3c86ec8f19eb455ac4624641cab6390ec4a05bf7af4597d866ecc898536181e8",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/preservation-gate-tests.log": "167b9eef441118b4c9ab134814eb307dd43b1cf60e747db44ed4bf024aea834b",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/qualification-gate-tests.log": "e2d8b40210094ddbb9308bf9c7cf72f30a102234866c57c61699cd04af75b9a8",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/reciprocal.log": "8b53b54f749f00c7673c007b302f21b9a09c62cb5dc1b1658ccc4cbec22ed3e0",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/registered-reference-tests.log": "6c3d745f82d65e4f7b4b2feb16c22ad9724427f63913359b6ea97b2fccdc7cdc",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/revealed-replay-contract.log": "e73c3805f810fdcf3d0167ced7085c48306c9482a952ffb710551d230cdb3e51",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/scons.log": "f4f9527756835fc5ed70e8ee0fa2f466fe925e93a53c67aef7def1d0f6f7aadd",
+    "swarm006-finisher-build-evidence-44959721570/swarm006-build/source-publication-tests.log": "0ab22f08dc746317773a4f52da95271898880ae5d081bb068f8753f9bfa44f27",
+    "swarm006-finisher-sanitized-428f842034a1f80d593bcc6bb32af2dd99cd0105-1/source.txt": "f03066fc3d9d4c625a2744ff6348e00a6851a20e58ea19a99d400cf02101725b",
+    "swarm006-finisher-sanitized-428f842034a1f80d593bcc6bb32af2dd99cd0105-1/tests.log": "7bce2b3a70dca405738f6d9ca42c3e8be3958e4a4c00f2d91bd1a2e98bb4cb10"
+  },
+  "reviewer": "independent platform/publication reviewer",
+  "runtime_custody_helper_pass": true,
+  "runtime_files": {
+    "cybersand_native.windows.x86_64.dll": {
+      "bytes": 5844992,
+      "pe_machine": "AMD64",
+      "sha256": "944ba3563653a0e774478bb6e1b1a9f7beedfb45111124dde885335e7f024d88"
+    },
+    "gentek_reciprocal.exe": {
+      "bytes": 3298816,
+      "pe_machine": "AMD64",
+      "sha256": "f3f26a6c76238fb3cef37701f25d76eff709b5f77ddb71a09ee58a72a4c5257d"
+    },
+    "toolchain.txt": {
+      "bytes": 876,
+      "sha256": "13272d876125f816fb3e4f4d89702310833994851a66a5d9b21fcad8ad528011"
+    },
+    "workbench_process_fixture.exe": {
+      "bytes": 775168,
+      "pe_machine": "AMD64",
+      "sha256": "a22ed737c178163a5789f70d9f4346abeae7fd5386d654d143d952b9ef48b72c"
+    }
+  },
+  "same_run_producer_job": 137015634271,
+  "same_run_producer_log_sha256": "47091bde42893b42a009bdeb01522e326a3ea77337ecd6496eede6b239b40d8e",
+  "sanitizer_findings": [],
+  "sanitizer_job": 137015634465,
+  "sanitizer_job_log_sha256": "15e8cf3b5e95107dd50e222023e68648592b13e73a1ea15982adac7aedf295c0",
+  "schema": 1,
+  "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_hashes": {
+    ".gitattributes": "4a2778f918a6a7672e322f34e425b2a7eddba3eafc9bdda8066a3487c30a53e3",
+    ".github/swarm006-finisher-request.json": "5ba06708707f74cdcae8e3e22aed20ec499991250c8e6cbd52c54cbb6a77dcf7",
+    ".github/workflows/swarm006-finisher-qualification.yml": "058ebcc68b0da2c573de41703b6d35dd6213db2e9fc40b2c1d3486d61969ffcc",
+    "tools/swarm006/qualify_preserved_workbench.py": "0125b4fbbd174e83dee7cd83144356f45134e4ef59a0bf4a46ebb14fdc659882",
+    "tools/swarm006/qualify_workbench.py": "890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d",
+    "tools/swarm006/test_qualify_preserved_workbench.py": "02bab18e7d4e470e7788435bcf7337c97856a440228a5b3777fcc6e12c13a9a6"
+  },
+  "source_worktree_clean_at_admission_and_completion": true,
+  "status": "PASS for final source/runtime/build/sanitizer scope; graphical owner acceptance pending",
+  "tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300"
+}

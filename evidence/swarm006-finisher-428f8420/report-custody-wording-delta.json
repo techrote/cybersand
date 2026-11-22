@@ -1,0 +1,11 @@
+{
+  "schema": "swarm006-publication-wording-delta/v1",
+  "old_report_sha256": "2c6fe3316d3545bba074638131faac65603414c4c6b669af2462a80c71334eb2",
+  "old_report_path": "/workspace/scratch/d425b9146667/swarm006-delivery/Qualification-Report-2c6fe331-checkpoint.md",
+  "new_report_sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7",
+  "old_sentence": "The final Windows build, native transport, source GUI, pristine extracted package and preservation receipts each record their own actual executable identity.",
+  "new_sentences": "The final runtime receipt records the Windows CLI and adapter identities, and the hosted job binds the native transport commands to those verified payloads. Source GUI, pristine-package and preservation receipts record and recheck their actual executable identities.",
+  "reason": "Independent platform review: transport JSON summaries record source but not an executable SHA; same-job runtime verification and exact CLI commands supply that binding.",
+  "source_or_runtime_modified": false,
+  "other_report_bytes_unchanged": true
+}

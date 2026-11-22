@@ -1,0 +1,67 @@
+{
+  "schema": "swarm006-source-matched-gallery/v1",
+  "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "run": 44959721570,
+  "artifact_id": 14731542453,
+  "artifact_sha256": "52db97856e2478e0af74e9a50dcd3dd9d8568cb79e8a8acecd1d33360ba131ad",
+  "classification": "Actual hosted Windows source/pristine-package captures; synthetic Worlds; no physical NVIDIA or private owner-World acceptance.",
+  "limits": "Industrial ON starts with zero original foreign-required obligations, while its OFF control starts with two. These pictures do not establish closure of the same original sockets. Qualified witness and closure claims come from raw native proofs, not imagery alone.",
+  "files": [
+    {
+      "file": "package-industrial-on-joints.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-package/swarm006_industrial_on/inspector-final-joints.png",
+      "bytes": 165631,
+      "sha256": "eefa2c4109cb49e4e9fcd606e1b06d407c04abc7eac3d963e8245a6425c6843d",
+      "caption": "Final Joints: native-authorized Industrial605 Recovery ON; five qualified joint witnesses.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    },
+    {
+      "file": "package-industrial-on-unresolved.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-package/swarm006_industrial_on/inspector-final-unresolved.png",
+      "bytes": 166158,
+      "sha256": "ed2157735c2b27f270235bb29db0469a607c49e1bb25baeeea80a5a654d0372a",
+      "caption": "Final Unresolved: the complete composed result has zero unresolved obligations.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    },
+    {
+      "file": "package-industrial-on-clearance.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-package/swarm006_industrial_on/inspector-final-clearance.png",
+      "bytes": 165994,
+      "sha256": "bd963a9dd456b4dd1147c90b3e17fe970ccd61d624f71ac69889725a800d6e5f",
+      "caption": "Final Clearance layer selected and enabled.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    },
+    {
+      "file": "package-industrial-on-revisions.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-package/swarm006_industrial_on/inspector-final-revisions.png",
+      "bytes": 165354,
+      "sha256": "c930e630e8a5704de54774288c5fc777a119fc4bd251a1aabb1f144379319924",
+      "caption": "Final Revisions layer selected and enabled; actual native revision overlay.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    },
+    {
+      "file": "package-industrial-off-blocked.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-package/swarm006_industrial_off/native-unresolved.png",
+      "bytes": 168316,
+      "sha256": "56d6143a0e74e8631403c290f312eb46b69d66d9ea1d505e8c0bc57e4c2d835e",
+      "caption": "Recovery OFF: Blocked with two unresolved original obligations; Apply is disabled and World remains unchanged.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    },
+    {
+      "file": "package-industrial-on-reopened.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-package/swarm006_industrial_on/native-reopened.png",
+      "bytes": 182216,
+      "sha256": "cd47c239bffa394224d4fb0facb880b24febd532a759fcecc9f7f0d03af2d8dc",
+      "caption": "Fresh process after Save/exit: restored native materials and read-only saved evidence; Apply requires fresh generation.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    },
+    {
+      "file": "source-shared-pending.png",
+      "original_path": "swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-source/input-integrity/shared-pending.png",
+      "bytes": 140406,
+      "sha256": "bdab16cde5d74f55875d1688528260c8ca42471dc76ccff5d46b7e1cec3a31aa",
+      "caption": "Actual uncommitted seed605 to606: prior preview and Apply authority retire before the field is committed.",
+      "visual_review": "Viewed in full by root; copied without editing."
+    }
+  ]
+}

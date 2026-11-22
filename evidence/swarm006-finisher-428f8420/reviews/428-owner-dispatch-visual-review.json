@@ -1,0 +1,16 @@
+{
+  "dimensions": [
+    984,
+    688
+  ],
+  "observation": "Viewed the retained original hosted Windows window capture. The CyberSand Development workbench window and its controls are visibly present. The initial World is largely blank. This supports actual application boot only; it does not depict a completed reciprocal composition or establish owner/NVIDIA acceptance.",
+  "original_screenshot": "/workspace/scratch/d425b9146667/swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570/swarm006-launcher/dispatch/owner-workbench-window.png",
+  "receipt": "428-windows-platform-review.json",
+  "receipt_sha256": "c657d3fe94e238c4af10627790326a185e701e4a434d6369d7c61a2bc88491c9",
+  "reviewed_utc": "2026-11-22T00:25:19.785719+00:00",
+  "reviewer": "independent platform/publication reviewer",
+  "schema": 1,
+  "sha256": "c76365fa36c5420aa06d60d65320a1535cc388ed2dc5c64fa0a10595e0a04cf6",
+  "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "status": "PASS limited visible Workbench boot observation"
+}

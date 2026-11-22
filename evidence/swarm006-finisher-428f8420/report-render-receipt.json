@@ -1,0 +1,26 @@
+{
+  "schema": "swarm006-final-handoff-render/v1",
+  "template_sha256": "798b0fad8967301233bc9db684a284b27a03493f41a512381dcd540e2dfefdaa",
+  "final_report_sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7",
+  "owner_guide_sha256": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a",
+  "placeholder_blocks": {
+    "DELIVERY_STATUS": "cfb7eae1772df3fa7b55f36c86be5cc9381bb5ab3772040da29ae2848417ced8",
+    "FINAL_GATE_TABLE": "390b051f27e1126a8d88922a7fd466a39f11b1476bad2ef7fde084509d5bace9",
+    "FINAL_WORKBENCH_DETAIL": "243e913de2001a5acec81c22e6d5019c927781482a44e94bb3ef51ec68624d93",
+    "OWNER_PACKAGE_TABLE": "f0cc0a8b18738ebf87ad11e6fb84f729e915368e73c7d338169b476ad582b0f3",
+    "INDEPENDENT_REVIEW_TABLE": "c52250d3ad5c69f1ad56607f209b25edb933f3b45e500efc8250c928eb4b3ad4",
+    "LIVE_BASELINE_STATUS": "5d28c8c66ea1882f1dfe0088b6aa3a4be6f010e5e67efa30c2cf5c988eb32486",
+    "EVIDENCE_LINKS": "49e3e9b3ff3905bef174c6f6efb8d4011b79dfd01f73d87b2c2b7752feea711a"
+  },
+  "additional_source_status_changes": [
+    "Qualified foundation table label plus separately identified live accepted main30e",
+    "Source foundation paragraph replaced with verbatim independently reviewed late-main paragraph",
+    "Remaining accepted-baseline gate explicitly includes CI-only30e"
+  ],
+  "late_main_review_sha256": "889ecadff39e16e3006ffbacdc25a636cb85796b9eb0f3815a19161cbb8017bb",
+  "scientific_section_unchanged": true,
+  "scientific_text_review_sha256": "522f19b02976e683596674e88af6113704928001079987f516514a59d3f69b44",
+  "all_final_fields_filled": true,
+  "pre_wording_review_report_sha256": "2c6fe3316d3545bba074638131faac65603414c4c6b669af2462a80c71334eb2",
+  "platform_wording_correction_receipt_sha256": "6179b008b4bc992b654481c5bd0ada8545ea139f69c8e8b6cdac42081d7c4bf7"
+}

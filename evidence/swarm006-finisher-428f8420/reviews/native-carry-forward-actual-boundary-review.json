@@ -1,0 +1,20 @@
+{
+  "actual_execution_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "actual_new_candidate_executions": 1920,
+  "all_mapping_admitted_files_rehashed_independently": true,
+  "final_labelled_scientific_executions": 0,
+  "final_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "limitation": "This is explicit native build/code equivalence for the retained Ca campaign. The final-labelled Windows/UI/package/CI evidence is independent; physical NVIDIA and private owner-world acceptance remain pending.",
+  "mapping_result": "PASS_NATIVE_EVIDENCE_EQUIVALENCE",
+  "native_binary_sha256": "c6fc32eb164c79e472b6531bc1a5e0e006a8581229144b700b4a16ac67b5c14b",
+  "native_definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
+  "retained_reference_executions": 480,
+  "reviewed_utc": "2026-11-21T23:26:44.304685+00:00",
+  "reviewer": "independent platform/publication reviewer",
+  "schema": 1,
+  "scientific_files_unchanged": 9,
+  "scientific_mapping_path": "/workspace/scratch/d425b9146667/swarm006-science-custody/native-carry-forward-428f8420.json",
+  "scientific_mapping_sha256": "a1033d4876f2fd71c42c031c0eafcadb1f0f66d222972f8ff8c3de584c7d1041",
+  "source_input_paths": 100,
+  "status": "PASS publication boundary and retained identity binding"
+}

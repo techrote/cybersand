@@ -1,0 +1,282 @@
+{
+  "actual_counts_both_scopes": {
+    "blocked_scenarios": 4,
+    "graphical_processes": 36,
+    "independent_predicates": 7967,
+    "input_full_planes": 40,
+    "input_native_pairs": 10,
+    "inspector_round_selections": 270,
+    "inspector_stages": 54,
+    "pngs_verified": 188,
+    "positive_transaction_reopen_pairs": 14,
+    "runtime_assertions": 5924,
+    "scenario_full_planes": 120,
+    "scenario_native_pairs": 32
+  },
+  "artifact_root": "/workspace/scratch/d425b9146667/swarm006-evidence/hosted-428f8420/swarm006-finisher-windows-evidence-44959721570",
+  "campaign_run": 44959721570,
+  "counts_scope_notes": {
+    "inspector": "54 completed inspector stages across both lanes, including V1/V2/V3/V4 controls and generated/regenerated/reopened scenario stages;270 native-round selections, each with Final(-1), rounds0/1/2, then Final(-1). Runtime source compares all material pixels, representative native provenance picks, all native joint/unresolved markers, final-only layers and fractional/outside/nonprimary refusal.",
+    "planes": "40 input full512 planes plus120 scenario full512/2048 planes; two lifecycle baseline planes are also hashed. Native crop material32 planes are additionally compared directly to JSON cells.",
+    "pngs": "188 decoded original PNGs:156 full-window captures plus32 native-crop captures. Every crop RGBA pixel independently equals the published palette applied to raw native material IDs. Eight full-window originals were visually inspected.",
+    "processes": "23 successful process receipts per lane: five headless preflights and 18 graphical processes. Every log/receipt/summary hash and result in both lanes was compared. Detailed reviewed runtime assertions total2,962 per lane (280controls +96input +2,545scenario create/evaluate/blocked/reopen +41lifecycle). Other headless assertions are outside that subtotal."
+  },
+  "disposition": "GO_FOR_ACTUAL_428_WINDOWS_WORKBENCH_EVIDENCE",
+  "downloaded_artifact_id": 14731542453,
+  "findings": [
+    "Both actual Windows graphical input suites completed96 assertions/seven cases. Each retains20 full planes/five native pairs. All eight prohibited-edit before/after pairs are byte-equal; idle Paint changes exactly197 cells and idleUndo/Redo return exact baseline/painted planes.",
+    "Typed shared seed605\u2192606 and independent FRAMEcohesion0.15\u21920.2 retire old Apply authority before commit. New request text and raw native outputs contain the typed values; MOSAICcohesion remains0.15. Initial Protect press creates49 marks and retires authority; subsequent attempted old Apply has delta0.",
+    "Busy active/off canvas and Undo/Redo cases record actual live CLI PIDs, with liveness checked immediately before keyboard shortcuts. Direct history callbacks refuse, buttons disable, and complete World/history remain unchanged. Hidden input case separately observes a genuine cancelling preparation thread.",
+    "Nine exact declared synthetic scenarios in each lane preserve raw native status/reason/stop/work, request profiles/options and derived occupancy/joint/obligation witnesses. Source and pristine results are byte-identical for all scenario native responses and all five input native pairs.",
+    "Seven native-authorized scenarios per lane actually Apply/Undo/regenerate/Save/reopen. Independently reconstructed raw saved-map edit rectangles equal the entire expected World; original baseline/preview/Undo are byte-identical; Apply/regenerate/Save/reopen equal the raw native composition over the full World.",
+    "Fresh reopen uses a distinct completed actual engine process for every positive case. Saved proposal bytes, map/receipt/request/native-source identities agree. Historical inspection is read-only, with disabled Apply/no generation checked by source-bound runtime assertions; saved native_can_apply remains historical metadata.",
+    "V3 Viaduct and Industrial recoveryOFF remain honest blocked negatives with one and two unresolved requirements respectively, no receipt, no Apply and no fabricated Save/reopen success.",
+    "Each graphical lifecycle suite completes41 assertions covering actual fixture-child Cancel, Close/hide,30-second timeout and Workbench tree teardown, including independent native OS absence probes. This is process-lifecycle evidence separate from actual reciprocal CLI results.",
+    "All reviewed process logs are clean of the qualifier error classes and record Godot4.7 with Windows ANGLE/Microsoft Basic Render Driver. Source-bound script hashes match published428 source; package/terminal whole-input custody belongs to the platform review."
+  ],
+  "limits": [
+    "Owner physical Windows/NVIDIA and explicit owner acceptance remain pending. Observed hosted renderer is Microsoft Basic Render Driver through ANGLE.",
+    "Hidden input case observes a cancelling real preparation thread, not a live hidden native CLI. Other busy mouse/history cases observe real live CLI PIDs.",
+    "Controls 280 is a combined native controls/inspector/source-immutability suite, not 280 Apply assertions. All material pixels and a representative provenance pick per selected round are checked by source-bound runtime assertions.",
+    "These are fixed synthetic blank Worlds (input512; SWARM006 transaction2048), not an existing owner World or unseen scientific holdout.",
+    "Native true can_apply in reopened saved documents records historical native authority; the runtime test separately requires historical phase and disabled Apply/no child.",
+    "Package transport/publication/ordinary preservation/final whole-source custody are independently owned by the platform reviewer.",
+    "Lifecycle JSON aggregates completed assertions and does not serialize individual fixture-child PIDs; no separate per-child ledger is claimed.",
+    "Provisional round pixels/picks are source-bound runtime assertions against native arrays; separate retained per-provisional screenshot exports are not claimed.",
+    "The additional live-main CI-only advancement to30e is outside this qualified428 tree and its846 foundation. Pending SWARM004/005 reconciliation remains a separate gate.",
+    "Draft/HOLD, physical owner NVIDIA acceptance, unavailable original owner World reproduction and explicit later merge authority remain unchanged."
+  ],
+  "outer_artifact_sha256_from_root_platform_custody": "52db97856e2478e0af74e9a50dcd3dd9d8568cb79e8a8acecd1d33360ba131ad",
+  "raw_review": {
+    "audit_final_windows_workbench.py": "a58456f21a70cde288c2fa0a2ea42589a97875acdb58b945c99b0a1fc320a182",
+    "final-windows-workbench-raw-audit.json": "689afe80057fc83678c5390261b0f22a7eec840fffe3c3cd865f167ef944e2bd",
+    "final-windows-workbench-reviewed-files.json": "93c251fe94ae86f8b4b5a57e9129a27b85f326501f2b9f912365737948340354"
+  },
+  "repository_clean_after_review": true,
+  "repository_edits": [],
+  "review_checker_development_notes": [
+    "Initial stdout marker spelling was corrected to the exact SWARM006_INPUT_INTEGRITY source marker before the full audit.",
+    "Retained first full audit flagged six live-vs-historical runtime dictionary differences: live has ok/path, historical intentionally persists source/sha256 only. Corrected the reviewer assertion to compare that exact authority pair; proposal, native receipt, recipe, work and witness remain fully compared. This did not change production code, evidence or acceptance."
+  ],
+  "reviewed_at_utc": "2026-11-22T00:25:48.628144+00:00",
+  "reviewed_distinct_artifact_files": 640,
+  "reviewer": "swarm006_native; independently reviewed Workbench, did not author its source, tests or qualifier",
+  "runtime_reruns": 0,
+  "scenario_outcomes_identical_in_both_lanes": {
+    "reciprocal": {
+      "can_apply": true,
+      "checks": {
+        "create": 243,
+        "reopen": 70
+      },
+      "inspector_round_count": 3,
+      "joints": 8,
+      "material_cells": 4001,
+      "obligations": 8,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 171,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        512,
+        512
+      ]
+    },
+    "swarm005_irregular": {
+      "can_apply": true,
+      "checks": {
+        "create": 242,
+        "reopen": 69
+      },
+      "inspector_round_count": 3,
+      "joints": 0,
+      "material_cells": 6026,
+      "obligations": 0,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 324,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        512,
+        512
+      ]
+    },
+    "swarm005_viaduct": {
+      "can_apply": false,
+      "checks": {
+        "blocked": 105
+      },
+      "inspector_round_count": 3,
+      "joints": 0,
+      "material_cells": 6035,
+      "obligations": 1,
+      "original_foreign_joined": 0,
+      "original_required": 1,
+      "status": "blocked",
+      "unresolved": 1,
+      "world_extent": [
+        512,
+        512
+      ]
+    },
+    "swarm006_industrial_off": {
+      "can_apply": false,
+      "checks": {
+        "evaluate": 110
+      },
+      "inspector_round_count": 3,
+      "joints": 0,
+      "material_cells": 6051,
+      "obligations": 2,
+      "original_foreign_joined": 0,
+      "original_required": 2,
+      "status": "blocked",
+      "unresolved": 2,
+      "world_extent": [
+        2048,
+        2048
+      ]
+    },
+    "swarm006_industrial_on": {
+      "can_apply": true,
+      "checks": {
+        "evaluate": 280,
+        "reopen": 69
+      },
+      "inspector_round_count": 3,
+      "joints": 5,
+      "material_cells": 5832,
+      "obligations": 1,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 281,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        2048,
+        2048
+      ]
+    },
+    "swarm006_irregular_on": {
+      "can_apply": true,
+      "checks": {
+        "evaluate": 280,
+        "reopen": 69
+      },
+      "inspector_round_count": 3,
+      "joints": 8,
+      "material_cells": 5875,
+      "obligations": 0,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 316,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        2048,
+        2048
+      ]
+    },
+    "swarm006_irregular_square_on": {
+      "can_apply": true,
+      "checks": {
+        "evaluate": 280,
+        "reopen": 69
+      },
+      "inspector_round_count": 3,
+      "joints": 6,
+      "material_cells": 4737,
+      "obligations": 0,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 300,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        2048,
+        2048
+      ]
+    },
+    "swarm006_viaduct_on": {
+      "can_apply": true,
+      "checks": {
+        "evaluate": 280,
+        "reopen": 69
+      },
+      "inspector_round_count": 3,
+      "joints": 5,
+      "material_cells": 5839,
+      "obligations": 1,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 278,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        2048,
+        2048
+      ]
+    },
+    "transaction": {
+      "can_apply": true,
+      "checks": {
+        "create": 241,
+        "reopen": 69
+      },
+      "inspector_round_count": 3,
+      "joints": 0,
+      "material_cells": 4834,
+      "obligations": 0,
+      "original_foreign_joined": 0,
+      "original_required": 0,
+      "saved_edit_rows": 257,
+      "status": "complete",
+      "unresolved": 0,
+      "world_extent": [
+        512,
+        512
+      ]
+    }
+  },
+  "schema": 1,
+  "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_files_sha256": {
+    "godot/scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+    "godot/scripts/shared_workbench.gd": "7dc1047f40a40f2347d8167f60a8ac9547ffc62077a8a8637f460f9c9d22bc74",
+    "godot/scripts/workbench_paint_editor_controller.gd": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+    "godot/scripts/workbench_reciprocal_panel.gd": "cadf5a0835ce7332e5b0923664341903fb8b11f683e2c04a929f75962b49cb7a",
+    "godot/scripts/workbench_reciprocal_protocol.gd": "2681ddbc986c3728b8a0ff670c39a20affe00d6ad3104409a391fa0e35d5e186",
+    "godot/scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+    "godot/tests/support/workbench_reciprocal_inspector_checks.gd": "fc5d552399d4283192b5c213f83806aff371c950afedff5aa7f56a5bf910ea7b",
+    "godot/tests/swarm006_reciprocal_input.gd": "ed9f8ccd38a015833cceb6fca4cb9103d00d9df0aff8f6b0185d30570ffce518",
+    "godot/tests/test_workbench_reciprocal_controls.gd": "79d871ae0fb07774e9a3e5d0683ec83288a88864ebc1f48aa7f3ea7cd1f0f834",
+    "godot/tests/test_workbench_swarm006_ui.gd": "33c1da1ec4eae8509cc5042cab8c726c9e82eb6ec4df59f74cf85ba0758823b5",
+    "tools/swarm006/qualify_workbench.py": "890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d"
+  },
+  "source_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "text_review": {
+    "owner_hash_placeholders": "Root must fill final actual ZIP/launcher/CLI/DLL hashes from the independently checked package receipt.",
+    "owner_instruction_review_sha256": "2d7963b560ad624ec4e5b53915cfce343928dd2ffc2fa692b10bb3781ee7d70e",
+    "owner_template_sha256": "d98d0bd27417f4f176bc53e83042123ff1d350efd67a71206057ebbbf9cf7e85",
+    "qualification_template_sha256": "798b0fad8967301233bc9db684a284b27a03493f41a512381dcd540e2dfefdaa",
+    "workbench_text_disposition": "No correction needed for the reviewed template; final gate/detail placeholders must use these actual scopes and counts."
+  },
+  "visual_observations": [
+    "Source pending seed606 visibly clears inspector and disables Apply; status requires regeneration.",
+    "IndustrialOFF screenshot shows recovery disabled, blocked native status and disabled Apply; IndustrialON Joints screenshot selects Final composition, shows native joint markers and enabled Apply.",
+    "Package independent-field and first-Protect captures show cleared authority/status. The independent numeric field is below the visible scroll area; its exact value is established by input records/raw native data rather than claimed visible text.",
+    "Source Apply and Undo captures show construction installed then removed from the World with the matching transaction status. Package fresh-reopen capture shows restored construction, historical cell provenance and disabled Apply."
+  ],
+  "visual_samples": {
+    "swarm006-package/input-integrity/independent-pending.png": "3feb89b2644b270a3b7d0aa20d066bb8cbf5a72293ffe4ede11546f9c2ec0211",
+    "swarm006-package/input-integrity/territory-pressed.png": "52db0a1c3c0f613f311e45028f43a81208bf7391154513abbbf1bcabc98f8e54",
+    "swarm006-package/swarm006_industrial_on/native-reopened.png": "cd47c239bffa394224d4fb0facb880b24febd532a759fcecc9f7f0d03af2d8dc",
+    "swarm006-source/input-integrity/shared-pending.png": "bdab16cde5d74f55875d1688528260c8ca42471dc76ccff5d46b7e1cec3a31aa",
+    "swarm006-source/swarm006_industrial_off/native-unresolved.png": "56d6143a0e74e8631403c290f312eb46b69d66d9ea1d505e8c0bc57e4c2d835e",
+    "swarm006-source/swarm006_industrial_on/inspector-final-joints.png": "eefa2c4109cb49e4e9fcd606e1b06d407c04abc7eac3d963e8245a6425c6843d",
+    "swarm006-source/swarm006_industrial_on/native-applied.png": "c89e56bd8cd72c4c1658e761e42e2f587018769c07c93c5761d1727487b4d072",
+    "swarm006-source/swarm006_industrial_on/native-undone.png": "b805b7a03d8fbda597305861366f485971c9e1fae62bd3b6f904620cc50cd00e"
+  }
+}

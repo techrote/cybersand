@@ -1,0 +1,24 @@
+{
+  "checker": "/workspace/scratch/d425b9146667/swarm006-science-custody/audit_native_carry_forward.py",
+  "checker_sha256": "c3589b9d40b4b2d4551fb532a46eac3d65ed1407eb4b4764b1a2739792496212",
+  "limitations": [
+    "This is a read-only narrow platform/custody peer review of the independent scientific mapping checker, not a new scientific replay or a completed mapping result.",
+    "The fresh final build and actual independent raw review must satisfy the checker before equivalence is claimed."
+  ],
+  "resolved_finding": "Final build proof originally lacked sufficient retained build-log and target-path binding. The reviewed version admits/rechecks both core/driver logs, binds command log hashes, requires distinct actual/final build directories, exact harness/output/object locations, and core source cwd and BUILD target.",
+  "reviewed_predicates": [
+    "All actual scientific evidence retains its Ca source label and immutable candidate manifest/replay-plan/build receipt hashes.",
+    "Independent raw review must already pass over 1920 candidate executions and 480 retained reference executions with completed end custody.",
+    "The final native input inventory is exactly 100 committed paths/hashes equal to Ca; native definition is independently recomputed.",
+    "Fresh final experiment executable and generated harness must be byte-identical to the executed Ca versions; platform/capabilities and exact command custody are bound.",
+    "The retained final checkout is clean with exact HEAD/tree/full native input hashes at admission and completion.",
+    "Final change is exactly the declared test-only fixture and request marker, with direct Ca parent; runner/orchestrator/seven registration files stay unchanged.",
+    "All admitted evidence, build logs, binaries and harnesses are rehashed at completion.",
+    "Output explicitly records zero scientific executions under the final source label and no native executions by the reviewer.",
+    "Final Windows CLI/adapter/UI/package/CI have their own exact-final-source qualification; the mapping grants no physical NVIDIA or private-owner-world acceptance."
+  ],
+  "reviewed_utc": "2026-11-21T23:25:55.110478+00:00",
+  "reviewer": "independent platform/publication reviewer",
+  "schema": 1,
+  "status": "NO SOURCE-REVIEW BLOCKER; actual final equivalence receipt still required"
+}

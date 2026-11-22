@@ -1,0 +1,45 @@
+{
+  "broad_tests_run": false,
+  "confirmed": [
+    "Source/tree, source-bound ZIP naming, launcher parameters, fresh extraction, VerifyOnly and bundled generator manifest instructions match the package source. Actual ZIP/launcher/CLI/DLL hashes intentionally remain placeholders.",
+    "Industrial recipe matches expected_recipe(): blank synthetic2048 World, crop192x112 at0,0, one activation64,48, seed605/rounds2, left-right shared ownership, reach13/border4, Balanced/optional, both SWARM005 controls enabled, shared parameters0.65/0.15/0/0/0.75/1/0.15, recoveryOFF versusON on unchanged World.",
+    "Manual launcher profile is correctly identified as shared with ordinary saves; unique review name and untouched originals are required. Details/New width/height/New blank and paused transaction sequence use the actual UI.",
+    "Final/provisional round inspection, final-only layers, pending text retirement, independent-toggle/regeneration ordering, initial protection press and World history shortcuts with text fields unfocused match implemented behavior.",
+    "Before transaction testing, the guide now resets the blank World, restores the declared recipe with independent controlsOFF, clears marks, repaints the single activation, enables recovery and stays paused. This removes changes made by the earlier input challenges.",
+    "Apply construction/Undo construction are correctly distinguished from ordinary World Undo/Redo. Fresh-process reopening uses the named Load start followed by Reciprocal assembly/Inspect saved evidence.",
+    "Historical inspection remains read-only and does not restore editable controls/marks; new generation requires a current recipe and activation. Save start and Flatten/Bake History remain separate.",
+    "The text preserves synthetic-scope limits, the distinction from original owner-created foreign-required sockets, physical NVIDIA/driver acceptance, pending accepted-main reconciliation and explicit later owner merge authority."
+  ],
+  "disposition": "GO_FOR_OWNER_INSTRUCTION_TEXT_WITH_ARTIFACT_HASHES_PENDING",
+  "immutable_review_copy": "owner-acceptance-reviewed-template.md",
+  "initial_reviewed_template_sha256": "6ced80cd13c00fe6a895870b13087e1866a94a7ecfa85c6dd510bfd82cc161af",
+  "owner_qualification": false,
+  "repository_files_edited_by_reviewer": [],
+  "reviewed_at_utc": "2026-11-21T23:19:57.506400+00:00",
+  "reviewed_source_sha256": {
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    "godot/scripts/shared_workbench.gd": "7dc1047f40a40f2347d8167f60a8ac9547ffc62077a8a8637f460f9c9d22bc74",
+    "godot/scripts/workbench_reciprocal_panel.gd": "cadf5a0835ce7332e5b0923664341903fb8b11f683e2c04a929f75962b49cb7a",
+    "godot/scripts/workbench_reciprocal_protocol.gd": "2681ddbc986c3728b8a0ff670c39a20affe00d6ad3104409a391fa0e35d5e186",
+    "godot/scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+    "godot/tests/swarm006_reciprocal_input.gd": "ed9f8ccd38a015833cceb6fca4cb9103d00d9df0aff8f6b0185d30570ffce518",
+    "godot/tests/test_workbench_swarm006_ui.gd": "33c1da1ec4eae8509cc5042cab8c726c9e82eb6ec4df59f74cf85ba0758823b5",
+    "tools/package_explore001_candidate.py": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+    "tools/swarm006/owner_launcher.ps1.in": "56c2f374a13c858269cd0f1d544591ae77b7ad98c9b1ac86b2323b10c185a579",
+    "tools/swarm006/package_owner.py": "b73d1a6e52c7541b909860f033692e1f401d5f144146629da24d83e0f1d7cc6f",
+    "tools/swarm006/qualify_workbench.py": "890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d"
+  },
+  "reviewer": "swarm006_native; not author of owner instructions",
+  "schema": 1,
+  "scope_limits": [
+    "Instruction/source review only; no new runtime, scientific or physical-hardware acceptance.",
+    "The numerical previous-owner comparison is retained as historical evidence supplied by root; this documentation review did not rerun that comparison.",
+    "Final actual Windows source/pristine/transaction evidence and owner-package custody remain pending.",
+    "Replace the four hash placeholders only with independently checked final artifacts before delivering the finished owner document."
+  ],
+  "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "template_path": "/workspace/scratch/d425b9146667/swarm006-delivery/Owner-Acceptance.template.md",
+  "template_sha256": "d98d0bd27417f4f176bc53e83042123ff1d350efd67a71206057ebbbf9cf7e85",
+  "working_tree_clean": true
+}

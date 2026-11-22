@@ -1,0 +1,139 @@
+{
+  "schema": "swarm006-owner-delivery-custody/v1",
+  "created_at": "2026-11-22T00:24:19.429045+00:00",
+  "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "qualified_foundation": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "live_main_observation": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+  "live_main_included": false,
+  "pending_swarm004_005_merge": true,
+  "draft": true,
+  "hold": true,
+  "qualification_run": 44959721570,
+  "qualification_url": "https://github.com/techrote/cybersand/actions/runs/44959721570",
+  "owner_artifact_id": 14730879629,
+  "owner_artifact_url": "https://github.com/techrote/cybersand/actions/runs/44959721570/artifacts/14730879629",
+  "outer_artifacts": [
+    {
+      "all_extracted_files_verified": 1797,
+      "bytes": 71786764,
+      "id": 14731542453,
+      "name": "swarm006-finisher-windows-evidence-44959721570",
+      "sha256": "52db97856e2478e0af74e9a50dcd3dd9d8568cb79e8a8acecd1d33360ba131ad"
+    },
+    {
+      "all_extracted_files_verified": 4,
+      "bytes": 93400345,
+      "id": 14730879629,
+      "name": "swarm006-finisher-owner-windows-428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "sha256": "962df89128fd4df59a0da9e27c3da7ba1e025a20750a3c8da663dd930da778fb"
+    }
+  ],
+  "delivery_files": {
+    "CyberSand-SWARM006-Draft-HOLD-Windows-428f842034a1.zip": {
+      "bytes": 93736036,
+      "sha256": "2462275ad0093097b3c80b6bfe6fb543780b2b53cf3ee2ec56829c4341c7f015"
+    },
+    "CyberSand-SWARM006-Draft-HOLD-Windows-428f842034a1.zip.sha256": {
+      "bytes": 122,
+      "sha256": "37b7491b41a4a2bad1e4718a4f70a6cd77532d75c4b9fc6d7d71cc857dc46ab3"
+    },
+    "CyberSand-SWARM006-Windows-Owner-Acceptance.ps1": {
+      "bytes": 8910,
+      "sha256": "66934e384542531747e9d8d0e9fd1f6e2d971c5a96ac05b4ec3c2e273a21f4fe"
+    }
+  },
+  "inner_files": 1089,
+  "inner_uncompressed_bytes": 208564750,
+  "manifest_entries_verified": 1088,
+  "committed_source_paths_verified": 1057,
+  "declared_windows_EOL_materializations": 105,
+  "exact_LF_import_files": [
+    {
+      "bytes": 1074,
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg.import",
+      "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82"
+    },
+    {
+      "bytes": 1077,
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e"
+    },
+    {
+      "bytes": 1070,
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0"
+    },
+    {
+      "bytes": 968,
+      "path": "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+      "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+    }
+  ],
+  "seal": {
+    "archive": "CyberSand-SWARM006-Draft-HOLD-Windows-428f842034a1.zip",
+    "archive_sha256": "2462275ad0093097b3c80b6bfe6fb543780b2b53cf3ee2ec56829c4341c7f015",
+    "launcher_sha256": "66934e384542531747e9d8d0e9fd1f6e2d971c5a96ac05b4ec3c2e273a21f4fe",
+    "manifest_sha256": "b8472addf401278658d2a83c5e08c735d4b40cf89e88e70c6aed9a809006fd79",
+    "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+  },
+  "seal_sha256": "a2a020b6e838ec8c7d285167a13710c784ff72e7430f6dbbde20bda65edd91dc",
+  "sidecar_sha256": "37b7491b41a4a2bad1e4718a4f70a6cd77532d75c4b9fc6d7d71cc857dc46ab3",
+  "runtime_files": {
+    "Godot_v4.7-stable_win64.exe": {
+      "bytes": 178485256,
+      "machine": "AMD64",
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    "Godot_v4.7-stable_win64_console.exe": {
+      "bytes": 198152,
+      "machine": "AMD64",
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+      "bytes": 5844992,
+      "machine": "AMD64",
+      "sha256": "944ba3563653a0e774478bb6e1b1a9f7beedfb45111124dde885335e7f024d88"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+      "bytes": 9987072,
+      "machine": "AMD64",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "godot/tools/gentek_reciprocal.exe": {
+      "bytes": 3298816,
+      "machine": "AMD64",
+      "sha256": "f3f26a6c76238fb3cef37701f25d76eff709b5f77ddb71a09ee58a72a4c5257d"
+    },
+    "vcruntime140.dll": {
+      "bytes": 124544,
+      "machine": "AMD64",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    }
+  },
+  "owner_guide": {
+    "filename": "Owner-Acceptance.md",
+    "sha256": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a",
+    "reviewed_template_sha256": "d98d0bd27417f4f176bc53e83042123ff1d350efd67a71206057ebbbf9cf7e85",
+    "independent_instructions_review_sha256": "2d7963b560ad624ec4e5b53915cfce343928dd2ffc2fa692b10bb3781ee7d70e",
+    "rendering_change": "Only the four reviewed hash placeholders were substituted with independently verified actual package/runtime identities."
+  },
+  "independent_reviews": [
+    {
+      "path": "swarm006-evidence/platform-final/428-owner-package-custody-review.json",
+      "sha256": "af13bd67da789b1a8f2acfedfb5ff195e0dad337a639cfbbabe81e68770df4f1"
+    },
+    {
+      "path": "swarm006-evidence/platform-final/428-windows-platform-review.json",
+      "sha256": "c657d3fe94e238c4af10627790326a185e701e4a434d6369d7c61a2bc88491c9"
+    }
+  ],
+  "qualified_scope": "Actual Windows source/pristine evaluator, transport, source/runtime admission, ordinary preservation, launcher and post-GUI terminal custody. Detailed raw Workbench review is separately retained.",
+  "remaining_acceptance": [
+    "Actual accepted SWARM004/005 integration and current-main reconciliation; source-sensitive renewed qualification",
+    "Physical owner Windows/NVIDIA acceptance",
+    "Exact private owner-world reproduction if the input becomes available",
+    "Subsequent explicit owner merge decision"
+  ],
+  "no_relabeling": "This package executes source428. It is not labelled as built from later live main30e or a future combined baseline."
+}

@@ -1,0 +1,25 @@
+{
+  "basis_review_sha256": "9b9d11b2f6afdf1ef356fe53011cdf482560c061d819ea465d452a57d8706ce1",
+  "corrections": [],
+  "disposition": "GO_BOUNDED_WORKBENCH_PUBLICATION_TEXT",
+  "files": {
+    "Owner-Acceptance.md": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a",
+    "Qualification-Report.md": "2c6fe3316d3545bba074638131faac65603414c4c6b669af2462a80c71334eb2"
+  },
+  "out_of_scope": [
+    "No new audit of other native/scientific/platform totals, external link availability or live-main preflight; those remain covered by the named peer receipts."
+  ],
+  "qualification_reruns": 0,
+  "repository_edits": [],
+  "reviewed_at_utc": "2026-11-22T00:31:07.034065+00:00",
+  "reviewer": "swarm006_native; independent Workbench reviewer, not publication author",
+  "schema": 1,
+  "scope": [
+    "Filled Windows Workbench gate/detail paragraphs and all nine scenario rows match the independently reviewed actual source/pristine evidence.",
+    "2962 target-scope assertions per lane,54 inspector stages/270 selections,188 PNGs,14 reconstructed saved maps and raw-file counts are correct, with other headless preflight assertions excluded.",
+    "Industrial OFF/ON original-obligation asymmetry, live CLI versus retiring preparation thread, fixture lifecycle, historical read-only authority and physical owner acceptance limits remain explicit.",
+    "Owner guide is byte-for-byte the previously reviewed template after exactly four hash replacements; ZIP and launcher match the independent package seal; CLI/DLL match final actual runtime identities.",
+    "Frozen scientific section is byte-identical to the previously reviewed template."
+  ],
+  "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+}

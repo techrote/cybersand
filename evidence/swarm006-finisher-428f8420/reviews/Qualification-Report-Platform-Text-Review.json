@@ -1,0 +1,75 @@
+{
+  "checks": [
+    "All published package/runtime/manifest hashes and artifact counts agree with the independently verified actual delivery.",
+    "Four exact V3/Recovery-OFF comparisons, four exact ON replays and five malformed-request refusals are correctly scoped.",
+    "Fourteen preservation processes and5642 assertions on each host are reported accurately;93 core input assertions are distinguished from96 graphical assertions.",
+    "Terminal identity recheck is accurately placed after both source and pristine graphical campaigns.",
+    "The owner guide is exactly the independently reviewed template with four verified hash substitutions.",
+    "The transport identity sentence now describes the same-job custody chain accurately; it does not claim a per-transport-summary CLI hash that the JSON does not contain.",
+    "Qualified source428/foundation846 and live accepted main30e are explicitly distinct; incorporation remains an open objective and no accepted004/005 merge is invented.",
+    "Draft/HOLD, production-default preservation and pending physical-owner/NVIDIA/private-world gates remain explicit."
+  ],
+  "disposition": "GO_FOR_BOUNDED_PUBLICATION_TEXT",
+  "files": {
+    "owner_guide": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/Owner-Acceptance.md",
+      "sha256": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a"
+    },
+    "package_custody": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/owner-package-custody.json",
+      "sha256": "f7bc0e29c1e4a899ea357145b5e724dacb6fffbe128be3d6c67220605d2fafb5"
+    },
+    "prior_report": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/Qualification-Report-2c6fe331-checkpoint.md",
+      "sha256": "2c6fe3316d3545bba074638131faac65603414c4c6b669af2462a80c71334eb2"
+    },
+    "report": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/Qualification-Report.md",
+      "sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7"
+    },
+    "reviewed_owner_template": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/Owner-Acceptance.template.md",
+      "sha256": "d98d0bd27417f4f176bc53e83042123ff1d350efd67a71206057ebbbf9cf7e85"
+    },
+    "source_state": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/source-state.json",
+      "sha256": "42b8d169d442e81a568eadd2388afcc788b755435073c58eb0f57584ea58ceef"
+    },
+    "wording_delta": {
+      "path": "/workspace/scratch/d425b9146667/swarm006-delivery/report-custody-wording-delta.json",
+      "sha256": "6179b008b4bc992b654481c5bd0ada8545ea139f69c8e8b6cdac42081d7c4bf7"
+    }
+  },
+  "resolved_correction": {
+    "corrected_report_sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7",
+    "old_sentence": "The final Windows build, native transport, source GUI, pristine extracted package and preservation receipts each record their own actual executable identity.",
+    "only_this_text_delta": true,
+    "original_report_sha256": "2c6fe3316d3545bba074638131faac65603414c4c6b669af2462a80c71334eb2",
+    "replacement": "The final runtime receipt records the Windows CLI and adapter identities, and the hosted job binds the native transport commands to those verified payloads. Source GUI, pristine-package and preservation receipts record and recheck their actual executable identities."
+  },
+  "reviewed_at_utc": "2026-11-22T00:33:11.919686+00:00",
+  "reviewer": "independent platform/publication reviewer",
+  "runtime_tests_performed": 0,
+  "schema": 1,
+  "scope": "Bounded publication consistency only. This GO is not approval to merge, promote Ready, claim live-main incorporation or claim physical owner acceptance.",
+  "source_commit": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "source_edits": 0,
+  "supporting_independent_receipts": [
+    {
+      "path": "/workspace/scratch/d425b9146667/swarm006-evidence/platform-final/428-owner-package-custody-review.json",
+      "sha256": "af13bd67da789b1a8f2acfedfb5ff195e0dad337a639cfbbabe81e68770df4f1"
+    },
+    {
+      "path": "/workspace/scratch/d425b9146667/swarm006-evidence/platform-final/428-windows-platform-review.json",
+      "sha256": "c657d3fe94e238c4af10627790326a185e701e4a434d6369d7c61a2bc88491c9"
+    },
+    {
+      "path": "/workspace/scratch/d425b9146667/swarm006-evidence/platform-final/428-linux-preservation-review.json",
+      "sha256": "26c2738e2d3c33ddd65a194b2e7041a317e8929d8fd5ae16e699cd348c5549ea"
+    },
+    {
+      "path": "/workspace/scratch/d425b9146667/swarm006-evidence/platform-final/428-runtime-build-sanitizer-review.json",
+      "sha256": "d21863b992f45e11b5aa1a0ccfd52e26be6e4fded047ded2bb5d80d7b9f224f7"
+    }
+  ]
+}
