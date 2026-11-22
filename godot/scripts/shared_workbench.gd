@@ -1541,7 +1541,11 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
-	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
+	# An M4 moving-body operation can never route through the ordinary terrain
+	# painter, including right drag or an active paint-editor interception.
+	var m4_moving_tool: bool = object_shard_m4_port.enabled and _tool.selected in [5, 6]
+	if not m4_moving_tool and not applied.is_empty() and paint_editor != null \
+			and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -1566,6 +1570,9 @@ func _world_input(event: InputEvent) -> void:
 	var pos := Vector2i(host.camera_origin.floor()) + pixel
 	if _drag_button == 0 or pos == _last_cell: return
 	_last_cell = pos
+	if m4_moving_tool:
+		object_shard_m4_action(pos, "erase" if _tool.selected == 5 else "ignite")
+		return
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
 		paint(pos,0 if _drag_button == MOUSE_BUTTON_RIGHT else int(applied.material))
 		return
@@ -1578,10 +1585,6 @@ func _world_input(event: InputEvent) -> void:
 			_position[1].value = pos.y
 			move_selected()
 		4: place_source(pos)
-		5, 6:
-			# The current ordinary renderer has no mutable-shard target overlay.
-			# Never silently reinterpret this intent as terrain painting.
-			object_shard_m4_action(pos, "erase" if _tool.selected == 5 else "ignite")
 
 func _process(_delta: float) -> void:
 	if host == null: return
