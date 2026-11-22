@@ -280,7 +280,10 @@ jobs:
     name: Verify every scoped gate and stage eight reviewable runtime paths
     needs: [linux, windows_source, windows_package, recovery]
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # Full original1920 revalidation measured467s locally, before downloads,
+    # known360 and graphical/native reducers. Budget this new aggregation work;
+    # no native90s, graphical child or accepted-main deadline is changed.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:

@@ -47,8 +47,11 @@ def transport_fixture(root: Path, receipt: dict) -> dict[str, str]:
 
         def native(label, text, apply, compact=True, supported=True, recovery=False, valid=True):
             (folder / (label + ".txt")).write_text(text)
-            if version == "v4": (folder / (label + ".log")).write_text("")
-            if not valid: return None
+            if not valid:
+                if version == "v4":
+                    refusal = "unexpected trailing reciprocal request tokens" if label == "trailing" else "reciprocal integer outside its declared range"
+                    (folder / (label + ".log")).write_text(refusal + "\n")
+                return None
             lines = text.splitlines()
             width, height = map(int, lines[1].split()[:2])
             parameters = dict(zip(("variation", "irregularity", "clutter", "destruction", "branching", "environment_affinity", "cohesion"),
@@ -66,6 +69,8 @@ def transport_fixture(root: Path, receipt: dict) -> dict[str, str]:
                 "metrics": {"still_required": 0 if apply else 1, "frame_work": 1, "mosaic_work": 1, "solver_work": 1, "shared_work": 1},
                 "rounds": [{"recovery_frontier": [], "mosaic_recovery_receipts": [], "recovery_attempts": [], "recovery_work": 0}]}
             custody.write_json(folder / (label + ".json"), value)
+            if version == "v4":
+                (folder / (label + ".log")).write_text(f"RECIPROCAL_REQUEST status={value['status']} joints=0 apply={int(apply)}\n")
             return value
 
         if version == "v3":
@@ -252,6 +257,40 @@ class NativeOriginalEvidence(unittest.TestCase):
         save_native(self.root, self.value)
         with self.assertRaisesRegex(ValueError, "Malformed transport request"):
             publication.report(self.root, "native.json", self.receipt, "native")
+
+    def test_rehashed_transport_child_logs_must_match_native_completion_or_exact_refusal(self):
+        success = "RECIPROCAL_REQUEST status=complete joints=0 apply=1\n"
+        refusal = "reciprocal integer outside its declared range\n"
+        for name, text in (
+            ("industrial-v4-on", "FATAL: original transport child failed; no successful completion\n"),
+            ("industrial-v4-on", "RECIPROCAL_REQUEST status=blocked joints=0 apply=1\n"),
+            ("industrial-v4-on", "RECIPROCAL_REQUEST status=complete joints=5 apply=1\n"),
+            ("industrial-v4-on", "RECIPROCAL_REQUEST status=complete joints=0 apply=0\n"),
+            ("industrial-v4-on", success + success),
+            ("industrial-v4-on", success + "FATAL: child failed after output\n"),
+            ("industrial-v3", success),
+            ("industrial-v4-off", success),
+            ("industrial-v4-replay", refusal),
+            ("bad_bool", success),
+            ("missing_bool", refusal + success),
+            ("wrong_version", ""),
+            ("wrong_family", "unrelated failure\n"),
+            ("trailing", refusal),
+        ):
+            with self.subTest(name=name, text=text):
+                path = self.root / "v4" / (name + ".log")
+                original = path.read_bytes()
+                path.write_text(text)
+                save_native(self.root, self.value)
+                with self.assertRaisesRegex(ValueError, "Original transport child log"):
+                    publication.report(self.root, "native.json", self.receipt, "native")
+                path.write_bytes(original)
+
+    def test_transport_child_logs_allow_raw_windows_line_endings(self):
+        for path in (self.root / "v4").glob("*.log"):
+            path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))
+        save_native(self.root, self.value)
+        publication.report(self.root, "native.json", self.receipt, "native")
 
     def test_actual_process_helper_receipt_is_accepted_and_failure_is_refused(self):
         child = shared.legacy.execute("actual-process", [sys.executable, "-c", "print('original process output')"], os.environ.copy(), self.root, 180)

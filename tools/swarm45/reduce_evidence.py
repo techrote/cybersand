@@ -127,15 +127,23 @@ def validate_transport(directory: Path, records: dict, receipt: dict, version: s
         path = evidence_file(directory, records, version + "/" + label + ".txt")
         custody.require(path.read_text(encoding="utf-8") == request, "Original fixed transport request changed: " + label)
         expected_files.add(label + ".txt")
+        child_log = None
         if version == "v4":
-            evidence_file(directory, records, version + "/" + label + ".log")
+            child_log = evidence_file(directory, records, version + "/" + label + ".log").read_text(encoding="utf-8")
             expected_files.add(label + ".log")
         if not valid:
             custody.require(not (folder / (label + ".json")).exists(), "Malformed transport request produced native output: " + label)
+            if child_log is not None:
+                refusal = ("unexpected trailing reciprocal request tokens" if label == "trailing"
+                           else "reciprocal integer outside its declared range")
+                custody.require(child_log == refusal + "\n", "Original transport child log lacks the exact request refusal: " + label)
             return {}
         value = document(directory, records, version + "/" + label + ".json")
         expected_files.add(label + ".json")
         transport_native(value, source, receipt["native_definition_sha256"], width, height, request)
+        if child_log is not None:
+            completion = f"RECIPROCAL_REQUEST status={value['status']} joints={len(value['joints'])} apply={int(value['can_apply'])}\n"
+            custody.require(child_log == completion, "Original transport child log differs from native completion: " + label)
         return value
 
     if version == "v3":
