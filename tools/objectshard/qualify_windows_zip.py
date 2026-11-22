@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import subprocess
 import sys
 import time
@@ -25,6 +26,48 @@ PATH_CASES = {
     "nested": "nested evaluation/another level/longer extraction directory/owner playtesting/candidate",
     "unicode": "ObjectShard_日本語_é",
 }
+
+
+def qualify_verifier_adversaries(target: Path, output: Path, timeout: int) -> dict:
+    """Exercise strict verification without relying on Get-FileHash autoload.
+
+    The delivered archive never changes. One already-qualified extraction is
+    deliberately corrupted only for the negative test, restored byte-for-byte
+    in finally, and verified again before any success can be reported.
+    """
+    environment = dict(os.environ, OBJECTSHARD_QUALIFICATION_ROOT=str(target.resolve()))
+    shadow = ("function global:Get-FileHash { throw 'Get-FileHash dependency forbidden by qualification' }; "
+              "& (Join-Path $env:OBJECTSHARD_QUALIFICATION_ROOT 'tools/objectshard/verify_package.ps1') "
+              "-Package $env:OBJECTSHARD_QUALIFICATION_ROOT")
+    independent = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", shadow],
+                                 cwd=target, env=environment, stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, timeout=timeout)
+    (output / "verifier-without-get-file-hash.log").write_bytes(independent.stdout)
+    if independent.returncode != 0:
+        raise ValueError("Shipped verifier depends on unavailable Get-FileHash module loading")
+    document = target / "READ-ME.md"
+    original = document.read_bytes()
+    original_sha = hashlib.sha256(original).hexdigest()
+    corrupted: subprocess.CompletedProcess | None = None
+    try:
+        document.write_bytes(original + b"\nDeliberate delivered-package tamper qualification.\n")
+        command = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", "call", "Verify ObjectShard Lab.cmd", "--noninteractive"]
+        corrupted = subprocess.run(command, cwd=target, env=environment, stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT, timeout=timeout)
+        (output / "verifier-tamper-refusal.log").write_bytes(corrupted.stdout)
+        if corrupted.returncode == 0 or not re.search(rb"Package file changed:\s*READ-ME\.md", corrupted.stdout):
+            raise ValueError("Shipped verifier did not specifically reject the changed READ-ME.md hash")
+    finally:
+        document.write_bytes(original)
+        if hashlib.sha256(document.read_bytes()).hexdigest() != original_sha:
+            raise ValueError("Deliberate verifier tamper could not be restored exactly")
+        verify(target)
+    assert corrupted is not None
+    return {"get_file_hash_shadow_exit_code": independent.returncode,
+            "tamper_exit_code": corrupted.returncode, "tamper_path": "READ-ME.md",
+            "specific_hash_failure_observed": True, "restored_sha256": original_sha,
+            "after_restoration_inventory_verified": True,
+            "scope": "Unchanged delivered ZIP; explicit adversarial extraction restored and fully reverified"}
 
 
 def extract(archive: Path, target: Path) -> None:
@@ -90,6 +133,8 @@ def qualify(archive: Path, output: Path, timeout: int = 240, extract_root: Path 
                 raise ValueError(name + ": missing or failed exact-source launch receipt")
             row["launch_receipt"] = launched
             verify(target)
+            if name == "spaces":
+                row["verifier_adversaries"] = qualify_verifier_adversaries(target, output, timeout)
         report["status"] = "passed"
     except Exception as error:
         report["failures"].append(str(error))
