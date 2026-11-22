@@ -101,6 +101,7 @@ class Campaign(donor.Campaign):
         self.healthy_recovery()
         self.recovery_workbench()
         self.resident_storage_recovery()
+        self.resident_advance_recovery()
         self.native_memory()
         for workers in (1, 4):
             self.ramcache_workbench("write", workers)
@@ -148,13 +149,14 @@ class Campaign(donor.Campaign):
 
     def recovery_workbench(self) -> None:
         self.report["ramcache_recoverable_workbench"] = {}
-        for case in ("deferred", "strict", "first"):
+        for case in ("deferred", "strict", "first", "ahead"):
             folder = self.output/("ramcache-recoverable-"+case)
             for mode in ("write", "reopen"):
                 arguments = [f"--persistent-profile={folder/'profile'}", f"--persistent-evidence={folder}",
                     "--persistent-start-paused", "--persistent-test-mode="+mode]
                 if case == "strict": arguments.append("--recoverable-strict-exit")
                 if case == "first": arguments.append("--recoverable-first-area")
+                if case == "ahead": arguments.append("--recoverable-during-ahead")
                 if not self.args.headless: arguments.append("--persistent-require-graphics")
                 label = "ramcache-recoverable-"+case+"-"+mode
                 row = self.run(label, self.command("test_persistent_area_recoverable_workbench.gd", arguments,
@@ -194,6 +196,27 @@ class Campaign(donor.Campaign):
             pids.append(row["pid"])
         if pids[0] == pids[1]:
             raise RuntimeError("Resident storage recovery did not reopen in a genuinely new process")
+
+    def resident_advance_recovery(self) -> None:
+        self.report["ramcache_advance_recovery"] = {}
+        folder = self.output/"ramcache-advance-recovery"
+        pids = []
+        for mode in ("write", "reopen"):
+            arguments = [f"--persistent-profile={folder/'profile'}", f"--persistent-evidence={folder}",
+                "--persistent-start-paused", "--persistent-test-mode="+mode, "--persistent-test-workers=1"]
+            if not self.args.headless: arguments.append("--persistent-require-graphics")
+            label = "ramcache-advance-recovery-"+mode
+            row = self.run(label, self.command("test_persistent_area_advance_recovery.gd", arguments,
+                not self.args.headless), marker="GEN006_RAMCACHE_ADVANCE_RECOVERY", timeout=420)
+            proof = json.loads((folder/("advance-recovery-"+mode+".json")).read_text())
+            if proof.get("schema") != "gen006-resident-advance-recovery-v1" or proof.get("failures") != [] \
+                    or proof.get("mode") != mode or proof.get("process_id") != row["pid"] \
+                    or proof.get("graphical") != (not self.args.headless) or proof.get("completed") is not True:
+                raise RuntimeError("Late resident advancement recovery differs from its actual application process")
+            self.report["ramcache_advance_recovery"][mode] = proof
+            pids.append(row["pid"])
+        if pids[0] == pids[1]:
+            raise RuntimeError("Resident advancement recovery did not reopen in a genuinely new process")
 
     def cold_comparison(self) -> None:
         donor_project = Path(os.environ.get("CYBERSAND_GEN006_DONOR", ""))/"godot"

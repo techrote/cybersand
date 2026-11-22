@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import copy
+import hashlib
 import inspect
 import json
 from pathlib import Path
@@ -80,6 +81,49 @@ def valid_guard_fixture() -> dict:
 
 
 class QualificationGuards(unittest.TestCase):
+    def test_late_native_prefix_preserves_debt_and_credits_only_completed_future(self):
+        # Publication arithmetic only; real native/process receipts are a separate gate.
+        clock = dict(version=1, game_ticks=160, areas={
+            "a":dict(accounted_ticks=160,native_ticks=160,origin_game_tick=0),
+            "b":dict(accounted_ticks=159,native_ticks=159,origin_game_tick=0),
+            "c":dict(accounted_ticks=0,native_ticks=0,origin_game_tick=0)})
+        plan = dict(version=1, area_id="b", mode="ahead",
+            source_clock_sha256=hashlib.sha256(json.dumps(clock,sort_keys=True,separators=(",", ":")).encode()).hexdigest(),
+            source_native_tick=159,source_debt_ticks=1,requested_future_ticks=64,max_work_ticks=600,
+            work_ticks=65,debt_work_ticks=1,future_work_ticks=64)
+        original = copy.deepcopy(clock)
+        first = profile._advance_clock_completion(clock,plan,5)
+        self.assertEqual((first["clock"]["game_ticks"],first["paid_debt_ticks"],first["game_advanced_ticks"]),(164,1,4))
+        final = profile._advance_clock_completion(clock,plan,11)
+        self.assertEqual((final["clock"]["game_ticks"],final["clock"]["areas"]["b"]["native_ticks"]),(170,170))
+        self.assertEqual((final["paid_debt_ticks"],final["game_advanced_ticks"],final["remaining_future_ticks"]),(1,10,54))
+        self.assertEqual(clock,original)
+        self.assertEqual(profile._advance_clock_completion(clock,plan,0)["clock"],clock)
+        # Reusing the original plan against the already-accounted prefix must refuse.
+        with self.assertRaises(RuntimeError): profile._advance_clock_completion(first["clock"],plan,6)
+        for fault in ("wrong_digest","native_gap","native_bool","wrong_debt","double_future","extra_field",
+                "future_catchup","work_limit","requested_limit","unexecuted","negative","bool_ticks","origin"):
+            changed_clock, changed_plan, actual = copy.deepcopy(clock),copy.deepcopy(plan),11
+            if fault=="wrong_digest": changed_plan["source_clock_sha256"]="0"*64
+            elif fault=="native_gap": changed_plan["source_native_tick"]+=1
+            elif fault=="native_bool": changed_plan["source_native_tick"]=True
+            elif fault=="wrong_debt": changed_plan["source_debt_ticks"]=0
+            elif fault=="double_future": changed_plan["future_work_ticks"]=65
+            elif fault=="extra_field": changed_plan["recovered"]=True
+            elif fault=="future_catchup": changed_plan["mode"]="catch_up"
+            elif fault=="work_limit": changed_plan["max_work_ticks"]=601
+            elif fault=="requested_limit": changed_plan["requested_future_ticks"]=36001
+            elif fault=="unexecuted": actual=66
+            elif fault=="negative": actual=-1
+            elif fault=="bool_ticks": actual=True
+            else: changed_clock["areas"]["b"]["origin_game_tick"]=1
+            with self.subTest(fault=fault), self.assertRaises(RuntimeError):
+                profile._advance_clock_completion(changed_clock,changed_plan,actual)
+        debt_plan = dict(plan,area_id="c",mode="catch_up",source_native_tick=0,source_debt_ticks=160,
+            requested_future_ticks=0,work_ticks=160,debt_work_ticks=160,future_work_ticks=0)
+        debt = profile._advance_clock_completion(clock,debt_plan,9)
+        self.assertEqual((debt["clock"]["game_ticks"],debt["clock"]["areas"]["c"]["native_ticks"],debt["debt_ticks"]),(160,9,151))
+
     def test_valid_metadata_shape_only(self):
         profile.verify_ramcache(valid_guard_fixture())
 

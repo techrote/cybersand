@@ -5,6 +5,7 @@ var previous_capacity: Variant
 var rescue_report := {}
 var strict_exit_case := false
 var first_area_case := false
+var during_ahead_case := false
 
 
 func _initialize() -> void:
@@ -16,6 +17,7 @@ func _initialize() -> void:
 	ProjectSettings.set_setting(CAPACITY_SETTING,1)
 	strict_exit_case = "--recoverable-strict-exit" in OS.get_cmdline_user_args()
 	first_area_case = "--recoverable-first-area" in OS.get_cmdline_user_args()
+	during_ahead_case = "--recoverable-during-ahead" in OS.get_cmdline_user_args()
 	super._initialize()
 
 
@@ -63,9 +65,35 @@ func exercise_write() -> void:
 		if not await until(func() -> bool:return controller.status().areas.a.dirty and not worker.paint_state().get("legacy_busy",false),
 			"strict active edit is visibly unsaved without resetting candidate durability"): return
 	var before: Dictionary = await native_residents()
-	if not check(bench.toggle_pause(),"actual capacity-limited native area enters play"): return
-	if not await until(func() -> bool:return worker.has_failed() and not controller.active_ready,
-		"actual native failure produces the visible persistent quarantine",15000): return
+	var failed_advancement := {}
+	if during_ahead_case:
+		var before_clock: Dictionary = controller.clock.duplicate(true)
+		if not check(controller.request_ahead(1),"actual capacity-limited native Simulate Ahead admitted"): return
+		if not await until(func() -> bool:return worker.has_failed() and not controller.busy \
+			and not controller.active_ready,"actual native failure during an admitted Ahead slice",15000): return
+		var pending: Dictionary = controller._resident_advancement.duplicate(true)
+		if not check(not pending.get("pending",{}).is_empty(),"failed native slice retains its exact request and game-time plan"): return
+		var terminal: Dictionary = worker.persistent_poll(int(pending.pending.token))
+		check(terminal.get("status","")=="failed" and terminal.result.get("receipt",{}).get("failed",false),
+			"real terminal native failure carries the failed owner receipt")
+		check(not controller.request_save_recoverable() and not controller.request_exit("launcher"),
+			"unacknowledged failed slice cannot bypass its owner cleanup")
+		if not check(controller.request_retry(),"Retry admits known failed interval and owner release acknowledgement"): return
+		if not await until(func() -> bool:return not controller.busy,"failed interval owner cleanup acknowledges",15000): return
+		var completed: Dictionary = AreaClock.complete(before_clock,pending.plan,int(terminal.result.completed_ticks))
+		check(completed.get("ok",false) and controller.clock==completed.clock,
+			"only proven completed ticks before failure are credited; failing tick is never simulated time")
+		check(controller._resident_advancement.is_empty() and controller._unresolved_worker.is_empty() \
+			and not controller._owner_cleanup_required and not controller._lease_held,
+			"known failed request guard retires only after actual owner release ACK")
+		check(not controller.active_ready and controller._quarantined and host.paused and worker.has_failed(),
+			"acknowledging native failure never resumes, resets or captures the failed World")
+		failed_advancement = {"before_clock":before_clock,"pending":pending,"terminal":terminal,
+			"completed":completed,"after_cleanup":controller.status()}
+	else:
+		if not check(bench.toggle_pause(),"actual capacity-limited native area enters play"): return
+		if not await until(func() -> bool:return worker.has_failed() and not controller.active_ready,
+			"actual native failure produces the visible persistent quarantine",15000): return
 	check(host.latest_snapshot.last_tick_error.contains("active scheduling-core capacity exhausted"),
 		"failure is the intended real native capacity fault")
 	check(not controller.request_save() and not controller.request_exit("launcher"),
@@ -103,10 +131,15 @@ func exercise_write() -> void:
 	check(int(controller._cache.status().essential_publication_reserved_bytes)==0,
 		"recovery publication releases its bounded immutable working headroom")
 	rescue_report = {"state":controller.status(),"evidence":controller.evidence(),"native_before":before,"native_after":after,
-		"strict_exit_case":strict_exit_case,"lost_ack_recovered":true}
+		"strict_exit_case":strict_exit_case,"during_ahead_case":during_ahead_case,
+		"failed_advancement":failed_advancement,"lost_ack_recovered":true}
 	var expected := {"session_id":controller.manifest.session_id,"clock":controller.manifest.clock.duplicate(true),"areas":{}}
 	for id: String in Fixtures.IDS: expected.areas[id] = controller.manifest.areas[id].duplicate(true)
+	if during_ahead_case: expected["originating_write_process_id"] = OS.get_process_id()
 	write_json(output.path_join("recovery-expected.json"),expected)
+	if during_ahead_case:
+		rescue_report["expected_reopen"] = expected.duplicate(true)
+		rescue_report["expected_reopen_sha256"] = FileAccess.get_sha256(output.path_join("recovery-expected.json"))
 	await confirm_recovery_close()
 
 
@@ -157,12 +190,23 @@ func exercise_reopen() -> void:
 	ProjectSettings.set_setting(CAPACITY_SETTING,previous_capacity)
 	var saved: Variant = JSON.parse_string(FileAccess.get_file_as_string(output.path_join("recovery-expected.json")))
 	if not check(saved is Dictionary and saved.session_id==controller.manifest.session_id,"new process opens the exact recovery session"): return
+	var actual_areas := {}
+	if during_ahead_case:
+		check(int(saved.get("originating_write_process_id",0))>0 and int(saved.originating_write_process_id)!=OS.get_process_id(),
+			"failed-Ahead recovery reopens in a genuinely different process")
 	for id: String in Fixtures.IDS:
 		if controller.active_area!=id and not await travel(id): return
 		var capsule := await capture_reference()
 		if not check(not capsule.is_empty() and capsule.sha256==saved.areas[id].native_sha256 \
 			and capsule.physical_hash==saved.areas[id].physical_hash and int(capsule.completed_tick)==int(saved.areas[id].completed_tick),
 			"fresh process reconstructs exact recovery continuation in "+id): return
+		actual_areas[id] = {"native_sha256":capsule.sha256,"physical_hash":capsule.physical_hash,
+			"completed_tick":capsule.completed_tick,"authored_source_sha256":capsule.authored_source_sha256,
+			"authoring_sha256":controller._cache.entry(id).authoring_sha256}
+		if during_ahead_case:
+			check(str(actual_areas[id].authoring_sha256)==str(saved.areas[id].authoring_sha256) \
+				and str(actual_areas[id].authored_source_sha256)==str(saved.areas[id].authored_source_sha256),
+				"failed-Ahead recovery restores the matching authored envelope and source in "+id)
 		if id!="a" and not first_area_case and not await verify_edits(id): return
 	if not await travel("a"): return
 	var point: Array = Fixtures.description("a").empty_edit
@@ -170,7 +214,12 @@ func exercise_reopen() -> void:
 		"failed A explicitly reopens its prior durable authored material, as disclosed before close")
 	if strict_exit_case:
 		check(await native_cell(Vector2i(480,72))==0,"strict-mode failure's final unsaved edit is omitted only after explicit close confirmation")
-	rescue_report = {"fresh_process":true,"state":controller.status(),"evidence":controller.evidence()}
+	rescue_report = {"fresh_process":true,"state":controller.status(),"evidence":controller.evidence(),
+		"during_ahead_case":during_ahead_case,"actual_areas":actual_areas}
+	if during_ahead_case:
+		rescue_report["expected_reopen"] = saved.duplicate(true)
+		rescue_report["expected_reopen_sha256"] = FileAccess.get_sha256(output.path_join("recovery-expected.json"))
+		rescue_report["originating_write_process_id"] = int(saved.originating_write_process_id)
 
 
 func _finish() -> void:

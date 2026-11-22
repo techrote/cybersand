@@ -69,6 +69,12 @@ lose newer RAM-only work; a lost ACK after publication is resolved by manifest v
 never regenerates an edited seed. A failed native tick remains quarantined, not a checkpoint or successful Save.
 Ordinary **Save start** keeps its authored-start meaning, distinct from the persistent profile.
 
+If an advancement times out, use **Retry** to resolve its exact native completion. Verified partial work stays
+accounted even if cancellation or a later release acknowledgement takes time. Existing debt does not become
+new game time. An unresolved interval blocks another Save/travel/exit; do not interpret that refusal as lost
+progress. A known failed active result can release its request while the World remains quarantined. Use the
+explicit recoverable-area Save and disclosed recovery close controls to preserve healthy areas in that case.
+
 ## Automated smoke and evidence
 
 **Run RAM Cache Smoke.cmd** executes real graphical hot/warm travel, edits, fire, pressure, prefetch,

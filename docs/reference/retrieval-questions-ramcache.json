@@ -80,7 +80,9 @@
       ],
       "facts": [
         "Late native, Main and release acknowledgements reconcile the exact pending transaction and retained receipts; retry cannot silently restore an older durable World over newer RAM state.",
+        "Resident advancement retains its original clock, debt/future plan, accounted prefix and exact pending request through timeout and release. Retry admits only the proven contiguous native interval once, without turning debt into new global time.",
         "A failed active owner stays quarantined. Save recoverable areas preserves healthy inactive captures with a bounded honest recovery clock; it never claims an ordinary Save all.",
+        "A known terminal active failure retires its request only after exact receipt reconciliation and native release. The failing tick receives no credit; ambiguous or failed inactive results remain pinned.",
         "Lost publication ACK recovery reopens storage and validates the exact published rescue manifest. Explicit recovery close warns about the failed area’s unsaved RAM loss; ordinary exit cannot silently discard it."
       ],
       "sources": [

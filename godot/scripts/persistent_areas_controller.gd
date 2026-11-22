@@ -98,6 +98,7 @@ var _last_dirty_authoring_generation := -1
 var _last_camera_stamp: Array = []
 var _publication_reservation_id := ""
 var _resident_handoff: Dictionary = {}
+var _resident_advancement: Dictionary = {}
 var _resident_publication_pending: Dictionary = {}
 var _resident_storage_recovery_required := false
 var _recovery_save_summary: Dictionary = {}
@@ -232,7 +233,7 @@ func status() -> Dictionary:
 	for id: String in Fixtures.IDS:
 		areas[id] = {"accounted_tick":int(clock.areas[id].accounted_ticks),
 			"debt_ticks":AreaClock.debt(clock,id),
-			"state":"Active" if id == active_area and active_ready else ("Inactive / durable" if manifest.get("areas",{}).has(id) else "Not initialized")}
+			"state":"Active" if id == active_area and active_ready else ("Inactive" if manifest.get("areas",{}).has(id) else "Not initialized")}
 		if cache_status.get("areas",{}).has(id):
 			areas[id].merge(cache_status.areas[id],true)
 		areas[id]["active"] = id==active_area and active_ready
@@ -254,6 +255,7 @@ func status() -> Dictionary:
 		"quarantined":_quarantined,"publication_uncertain":_publication_uncertain,
 		"owner_cleanup_required":_owner_cleanup_required,"unresolved_worker":_unresolved_worker.duplicate(true),
 		"resident_handoff":_resident_handoff.duplicate(true),
+		"resident_advancement":_resident_advancement.duplicate(true),
 		"resident_storage_recovery_required":_resident_storage_recovery_required,
 		"resident_publication_pending":_resident_publication_pending.duplicate(true),
 		"recoverable_save_available":native_failed and healthy_retained and _recovery_save_summary.is_empty() and _recovery_save_pending.is_empty(),
@@ -371,7 +373,8 @@ func request_save() -> bool:
 func request_exit(destination: String) -> bool:
 	if not destination in ["launcher","quit"]: return false
 	if busy: return _refuse("Finish or cancel the current operation before leaving the persistent profile.")
-	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty():
+	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty() \
+			or not _resident_advancement.is_empty():
 		return _refuse("The native owner has an unresolved completion. Retry its acknowledgement before leaving; the World remains paused.")
 	if host.simulation_worker.has_failed():
 		return _refuse("The failed native World may contain unsaved state. Use the available recovery controls and explicit close confirmation; ordinary Save & Menu cannot discard it.")
@@ -403,7 +406,8 @@ func request_cancel() -> void:
 
 func request_retry() -> bool:
 	if busy or active_ready: return false
-	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty():
+	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty() \
+			or not _resident_advancement.is_empty():
 		# Keep the old identity until its exact request has completed and its
 		# lease has been retired. A new operation cannot clean up an old owner.
 		busy = true
@@ -429,7 +433,8 @@ func request_retry() -> bool:
 
 func request_recovery() -> bool:
 	if busy or active_ready or not _recovery_available: return false
-	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty():
+	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty() \
+			or not _resident_advancement.is_empty():
 		return _refuse("Retry the unresolved native owner before selecting a different durable checkpoint.")
 	_begin("recover",str(manifest.get("active_area","a")))
 	_recover_profile.call_deferred()
@@ -438,7 +443,8 @@ func request_recovery() -> bool:
 
 func request_save_recoverable() -> bool:
 	if busy or not _cache_open or not host.simulation_worker.has_failed() \
-			or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty() or _owner_cleanup_required:
+			or not _unresolved_worker.is_empty() or not _resident_handoff.is_empty() \
+			or not _resident_advancement.is_empty() or _owner_cleanup_required:
 		return _refuse("Healthy-area recovery requires an acknowledged failed owner with no unresolved native transfer.")
 	if not _recovery_save_summary.is_empty(): return _refuse("The healthy areas already have an acknowledged recovery save.")
 	if not _recovery_save_pending.is_empty(): return _refuse("Retry the pending recovery publication acknowledgement before capturing another snapshot.")
@@ -606,7 +612,7 @@ func _recovery_close_state() -> Dictionary:
 			or int(manifest.get("revision",0))<1 or not active_area in Fixtures.IDS \
 			or _publication_uncertain or _force_profile_reopen or _writeback.busy() \
 			or not _recovery_save_pending.is_empty() or not _unresolved_worker.is_empty() \
-			or not _resident_handoff.is_empty() or _owner_cleanup_required:
+			or not _resident_handoff.is_empty() or not _resident_advancement.is_empty() or _owner_cleanup_required:
 		return {}
 	for id: String in Fixtures.IDS:
 		if _cache_open and id!=active_area and bool(_cache.entry(id).dirty): return {}
@@ -928,6 +934,8 @@ func _run_cached_operation(requested_future_ticks: int) -> void:
 
 
 func _advance_resident(target: String, future_ticks: int) -> Dictionary:
+	if not _resident_advancement.is_empty():
+		return _error("The previous resident advancement still owns its native completion and game-time plan.")
 	var planned := AreaClock.plan(clock,target,"ahead" if operation.kind=="ahead" else "catch_up",future_ticks,MAX_OPERATION_TICKS)
 	if not planned.get("ok",false): return planned
 	var plan: Dictionary = planned.plan
@@ -936,6 +944,15 @@ func _advance_resident(target: String, future_ticks: int) -> Dictionary:
 	operation.requested_future_ticks = future_ticks
 	operation.requested_ticks = int(plan.work_ticks)
 	operation.remaining_future_ticks = future_ticks
+	if int(plan.work_ticks)==0:
+		_record_metric("completed_ticks",0)
+		return {"ok":true,"completed_ticks":0}
+	# Native work survives a host deadline. Keep its original debt/future split
+	# and admit every completed prefix before submitting another slice. A late
+	# result must never be reclassified as ordinary active gameplay time.
+	_resident_advancement = {"operation_id":str(operation.operation_id),"session_id":str(manifest.session_id),
+		"source_area":active_area,"target_area":target,"source_clock":AreaClock.canonical(clock),
+		"plan":plan.duplicate(true),"accounted_ticks":0,"pending":{},"metrics_recorded":false}
 	var completed := 0
 	var started := Time.get_ticks_msec()
 	while completed<int(plan.work_ticks) and not _cancel_requested and Time.get_ticks_msec()-started<MAX_CATCH_UP_MSEC:
@@ -944,37 +961,109 @@ func _advance_resident(target: String, future_ticks: int) -> Dictionary:
 		var request := {"kind":"advance_active" if target==active_area else "resident_advance",
 			"operation_id":operation.operation_id,"receipt":entry.hot,
 			"max_ticks":mini(MAX_NATIVE_SLICE_TICKS,int(plan.work_ticks)-completed),"max_us":MAX_NATIVE_SLICE_USEC}
+		_resident_advancement.pending = {"kind":str(request.kind),"receipt":entry.hot.duplicate(true),
+			"max_ticks":int(request.max_ticks),"start_tick":int(plan.source_native_tick)+completed,"token":0}
 		var stepped := await _worker(request)
-		if not stepped.get("ok",false): return stepped
-		var actual := int(stepped.result.get("completed_ticks",-1))
-		if actual<0 or actual>int(request.max_ticks) \
-				or int(stepped.result.get("current_tick",-1))!=int(plan.source_native_tick)+completed+actual:
-			return _error("Resident catch-up returned an invalid native completed-tick interval.")
-		completed += actual
-		operation.completed_ticks = completed
-		operation.native_ticks_executed = int(operation.native_ticks_executed)+actual
-		operation.native_slice_count = int(operation.native_slice_count)+1
-		var elapsed := int(stepped.result.get("elapsed_us",stepped.result.get("native_step_us",0)))
-		_record_metric("native_step_us",float(elapsed))
-		_measurement_slice_sequence += 1
-		_record_metric("native_slices",{"sequence":_measurement_slice_sequence,"operation_id":operation.operation_id,
-			"kind":operation.kind,"source_area":operation.source_area,"target_area":target,
-			"measurement_tag":operation.measurement_tag,"ticks":actual,"elapsed_us":elapsed,
-			"observed_workers":int(stepped.result.get("observed_workers",0)),
-			"start_completed_tick":int(plan.source_native_tick)+completed-actual,
-			"end_completed_tick":int(plan.source_native_tick)+completed})
-		var receipt: Dictionary = stepped.result.get("receipt",{})
-		if receipt.is_empty(): return _error("Resident catch-up returned no fresh native owner receipt.")
-		var refreshed := _refresh_resident(target,receipt)
-		if not refreshed.get("ok",false): return refreshed
-		if actual==0: break
-	var accounted := AreaClock.complete(clock,plan,completed)
-	if not accounted.get("ok",false): return accounted
-	clock = accounted.clock
-	_resident_clock_dirty = _resident_clock_dirty or completed>0
-	operation.remaining_future_ticks = int(accounted.remaining_future_ticks)
-	_record_metric("completed_ticks",completed)
+		if not stepped.get("ok",false):
+			if int(_resident_advancement.pending.token)==0:
+				# Admission refusal performed no native work. Earlier admitted
+				# prefixes remain authoritative and still guard owner release.
+				_resident_advancement.pending = {}
+			return stepped
+		var admitted := _accept_resident_step(stepped.get("result",{}))
+		if not admitted.get("ok",false): return admitted
+		completed = int(_resident_advancement.accounted_ticks)
+		if int(admitted.completed_ticks)==0: break
+	_record_resident_advancement_completion()
 	return {"ok":true,"completed_ticks":completed}
+
+
+func _accept_resident_step(result: Dictionary, known_failed_active: bool = false) -> Dictionary:
+	if _resident_advancement.is_empty() or str(_resident_advancement.operation_id)!=str(operation.operation_id) \
+			or str(_resident_advancement.session_id)!=str(manifest.session_id):
+		return _error("Resident completion no longer has its original operation and session.")
+	var pending: Dictionary = _resident_advancement.get("pending",{})
+	if pending.is_empty() or int(pending.get("token",0))<=0:
+		return _error("Resident completion has no exact admitted native request.")
+	var target := str(_resident_advancement.target_area)
+	var plan: Dictionary = _resident_advancement.plan
+	var prefix := int(_resident_advancement.accounted_ticks)
+	var previous := AreaClock.complete(_resident_advancement.source_clock,plan,prefix)
+	if not previous.get("ok",false) or AreaClock.canonical(clock)!=previous.clock:
+		return _error("Resident completion is stale for its admitted game-time prefix.")
+	if not result.get("completed_ticks") is int or not result.get("current_tick") is int \
+			or not result.get("receipt") is Dictionary:
+		return _error("Resident completion has no verified native tick interval and owner receipt.")
+	var actual := int(result.completed_ticks)
+	var receipt: Dictionary = result.receipt
+	var expected: Dictionary = pending.receipt
+	for field: String in ["resident_generation","mutation_generation","worker_threads"]:
+		if not receipt.get(field) is int or not expected.get(field) is int \
+				or int(receipt[field])<0 or int(expected[field])<0:
+			return _error("Resident completion has an invalid native generation or execution fence.")
+	if not result.get("ok") is bool or not receipt.get("failed") is bool \
+			or bool(expected.get("failed",true)) \
+			or (known_failed_active and (str(pending.kind)!="advance_active" or result.ok or not receipt.failed)) \
+			or (not known_failed_active and (not result.ok or receipt.failed)):
+		return _error("Resident completion does not prove the expected healthy or explicitly failed native outcome.")
+	if actual<0 or actual>int(pending.max_ticks) \
+			or int(pending.start_tick)!=int(plan.source_native_tick)+prefix \
+			or int(result.current_tick)!=int(pending.start_tick)+actual \
+			or int(receipt.get("completed_tick",-1))!=int(result.current_tick) \
+			or int(receipt.get("handle",0))!=int(expected.get("handle",-1)) \
+			or receipt.get("identity",{})!=expected.get("identity",{}) \
+			or str(receipt.get("physics_profile_sha256",""))!=str(expected.get("physics_profile_sha256","")) \
+			or int(receipt.resident_generation)!=int(expected.resident_generation) \
+			or int(receipt.worker_threads)!=int(expected.worker_threads) \
+			or int(receipt.mutation_generation)<int(expected.mutation_generation) \
+			or bool(receipt.get("active",false))!=(str(pending.kind)=="advance_active"):
+		return _error("Resident completion differs from its exact target and native completed-tick interval.")
+	var accounted := AreaClock.complete(_resident_advancement.source_clock,plan,prefix+actual)
+	if not accounted.get("ok",false): return accounted
+	var refreshed := _refresh_resident(target,receipt)
+	if not refreshed.get("ok",false): return refreshed
+	# No await occurs between admitting the completed native receipt and its
+	# corresponding accounted frontier. The original plan supplies both debt
+	# repayment and any genuinely completed future ticks, including late work.
+	clock = accounted.clock
+	_resident_advancement.accounted_ticks = prefix+actual
+	_resident_advancement.pending = {}
+	_resident_clock_dirty = _resident_clock_dirty or actual>0
+	operation.completed_ticks = prefix+actual
+	operation.remaining_future_ticks = int(accounted.remaining_future_ticks)
+	operation.native_ticks_executed = int(operation.native_ticks_executed)+actual
+	operation.native_slice_count = int(operation.native_slice_count)+1
+	var elapsed := int(result.get("elapsed_us",result.get("native_step_us",0)))
+	_record_metric("native_step_us",float(elapsed))
+	_measurement_slice_sequence += 1
+	_record_metric("native_slices",{"sequence":_measurement_slice_sequence,"operation_id":operation.operation_id,
+		"kind":operation.kind,"source_area":operation.source_area,"target_area":target,
+		"measurement_tag":operation.measurement_tag,"ticks":actual,"elapsed_us":elapsed,
+		"observed_workers":int(result.get("observed_workers",0)),
+		"start_completed_tick":int(pending.start_tick),"end_completed_tick":int(result.current_tick)})
+	return {"ok":true,"completed_ticks":actual,"native_failed":known_failed_active}
+
+
+func _accept_resident_terminal(observed: Dictionary) -> Dictionary:
+	var phase := str(observed.get("status",""))
+	var failed_active: bool = phase=="failed" and not bool(observed.get("ok",true)) \
+		and str(_resident_advancement.get("pending",{}).get("kind",""))=="advance_active" \
+		and host.simulation_worker.has_failed()
+	if not failed_active and (phase!="complete" or not observed.get("ok",false)):
+		return _error("The resident interval has no verified terminal native outcome; its owner remains quarantined.")
+	var accepted := _accept_resident_step(observed.get("result",{}),failed_active)
+	if accepted.get("ok",false) and failed_active:
+		# The receipt proves only completed ticks before the failure. The failing
+		# tick is not credited or captured, and this World will never be resumed.
+		_resident_advancement["terminal_failure"] = true
+		_resident_advancement["native_error"] = str(observed.get("error","Native continuation failed."))
+	return accepted
+
+
+func _record_resident_advancement_completion() -> void:
+	if not _resident_advancement.is_empty() and not bool(_resident_advancement.get("metrics_recorded",false)):
+		_record_metric("completed_ticks",int(_resident_advancement.accounted_ticks))
+		_resident_advancement.metrics_recorded = true
 
 
 func _activate_hot(target: String) -> Dictionary:
@@ -2116,6 +2205,10 @@ func _worker(command: Dictionary) -> Dictionary:
 			"retryable":bool(admitted.get("retryable",false))}
 	var token := int(admitted.get("token",0))
 	if token <= 0: return _error("Native persistent request returned no operation token.")
+	if command.kind in ["advance_active","resident_advance"] and not _resident_advancement.is_empty() \
+			and str(_resident_advancement.operation_id)==str(command.operation_id) \
+			and not _resident_advancement.get("pending",{}).is_empty():
+		_resident_advancement.pending.token = token
 	_current_worker_token = token
 	var deadline := Time.get_ticks_msec()+OWNER_WAIT_MSEC
 	while Time.get_ticks_msec() < deadline:
@@ -2208,6 +2301,9 @@ func _finish(detail: String) -> void:
 	if _owner_cleanup_required or not _unresolved_worker.is_empty():
 		await _fail("The native operation still needs an acknowledged owner cleanup.",false,false)
 		return
+	if not _resident_advancement.get("pending",{}).is_empty():
+		await _fail("The resident native tick interval still needs its original completion acknowledgement.",true,false)
+		return
 	if _lease_held:
 		if _cache_open: _cache.release_reservation(str(operation.operation_id))
 		var released := await _worker({"kind":"release","operation_id":operation.operation_id})
@@ -2220,6 +2316,7 @@ func _finish(detail: String) -> void:
 			await _fail("Native release did not acknowledge retirement of its resident owner lease.",true,false)
 			return
 	_retire_acknowledged_handoff()
+	_resident_advancement = {}
 	_resident_publication_pending = {}
 	_resident_storage_recovery_required = false
 	active_ready = true
@@ -2270,6 +2367,9 @@ func _close_without_save() -> void:
 
 
 func _retry_profile() -> void:
+	if not _resident_advancement.is_empty():
+		await _fail("The retained resident advancement must reconcile its original game-time plan before any disk restore.",true,false)
+		return
 	if _resident_storage_recovery_required:
 		await _fail("The retained resident publication must reconcile its storage and native release acknowledgements before any disk restore.",true,false)
 		return
@@ -2287,6 +2387,7 @@ func _retry_profile() -> void:
 
 
 func _retry_owner() -> void:
+	var resident_recovery := not _resident_advancement.is_empty()
 	if not _unresolved_worker.is_empty():
 		var retained: Dictionary = _unresolved_worker.duplicate()
 		var observed: Dictionary = host.simulation_worker.persistent_poll(int(retained.token))
@@ -2300,10 +2401,33 @@ func _retry_owner() -> void:
 		if str(observed.get("status","")) not in ["complete","failed"]:
 			await _fail("The retained native request returned no terminal completion; its owner is still unresolved.",false,false)
 			return
+		if retained.kind in ["advance_active","resident_advance"]:
+			var pending: Dictionary = _resident_advancement.get("pending",{})
+			if pending.is_empty() or int(pending.get("token",0))!=int(retained.token) \
+					or str(pending.get("kind",""))!=str(retained.kind):
+				await _fail("The late resident completion has lost its exact game-time request; its World remains quarantined.",true,false)
+				return
+			var accepted := _accept_resident_terminal(observed)
+			if not accepted.get("ok",false):
+				await _fail(str(accepted.error),true,false)
+				return
 		if retained.kind in ["commit","activate_resident"] and observed.get("result",{}).get("committed",false):
 			_candidate_committed = true
 		_unresolved_worker = {}
 		_current_worker_token = 0
+	# A terminal response can itself fail host validation. Keep its request
+	# token and plan rather than allowing another request to replace authority.
+	if not _resident_advancement.get("pending",{}).is_empty():
+		var pending: Dictionary = _resident_advancement.pending
+		var observed: Dictionary = host.simulation_worker.persistent_poll(int(pending.token))
+		var ownership_error := _observe_worker_owner(observed,str(_resident_advancement.operation_id))
+		if not ownership_error.is_empty():
+			await _fail(ownership_error,true,false)
+			return
+		var accepted := _accept_resident_terminal(observed)
+		if not accepted.get("ok",false):
+			await _fail(str(accepted.error),true,false)
+			return
 	var hot_recovery := false
 	if not _resident_handoff.is_empty():
 		var reconciled := await _reconcile_hot_handoff()
@@ -2316,6 +2440,12 @@ func _retry_owner() -> void:
 		await _fail(str(cleaned.error),false,false)
 		return
 	_owner_cleanup_required = false
+	if resident_recovery and bool(_resident_advancement.get("terminal_failure",false)):
+		_record_resident_advancement_completion()
+		var native_error := str(_resident_advancement.get("native_error","Native continuation failed."))
+		_resident_advancement = {}
+		await _fail("The failed native interval and owner release were acknowledged. Its completed prefix remains accounted, the failed World stays quarantined, and healthy-area recovery is available. "+native_error,true,false)
+		return
 	if _resident_storage_recovery_required:
 		_owner_recovery_requires_restore = false
 		_begin("retry_storage",active_area)
@@ -2329,6 +2459,16 @@ func _retry_owner() -> void:
 			return
 		operation["measurement_outcome"] = "owner_recovered"
 		await _finish("The exact resident handoff and Main serial were acknowledged. Both areas retain their unsaved RAM state; no checkpoint was loaded or simulation time repeated.")
+		return
+	if resident_recovery:
+		_owner_recovery_requires_restore = false
+		if _publication_uncertain or _force_profile_reopen:
+			_begin("retry_storage",active_area)
+			await _retry_resident_storage()
+			return
+		_record_resident_advancement_completion()
+		operation["measurement_outcome"] = "owner_recovered"
+		await _finish("The exact resident native interval was acknowledged once against its original debt and future-time plan. Completed work remains in RAM; unfinished work is still debt or unfulfilled Simulate Ahead time.")
 		return
 	# A late capture only froze the same source; its unsaved edits remain the
 	# authoritative state. Reloading an older checkpoint here would lose them.
@@ -2357,6 +2497,8 @@ func _retry_owner() -> void:
 func _cleanup_owner() -> Dictionary:
 	if not _unresolved_worker.is_empty():
 		return _error("A native request remains outstanding; its owner cannot yet be released.")
+	if not _resident_advancement.get("pending",{}).is_empty():
+		return _error("The resident advancement still owns an unaccounted native interval; reconcile its exact completion before release.")
 	if not _resident_handoff.is_empty() and not _candidate_committed \
 			and not bool(_resident_handoff.get("main_acknowledged",false)):
 		return _error("The resident handoff requires its exact native receipt reconciliation before owner cleanup.")
@@ -2423,7 +2565,7 @@ func _fail(reason: String, quarantine: bool = false, clean_owner: bool = true) -
 		if not cleaned.get("ok",false):
 			_owner_cleanup_required = true
 			reason += " Owner cleanup remains pending: " + str(cleaned.error)
-	if _owner_cleanup_required or not _unresolved_worker.is_empty(): quarantine = true
+	if _owner_cleanup_required or not _unresolved_worker.is_empty() or not _resident_advancement.is_empty(): quarantine = true
 	busy = false
 	_quarantined = quarantine
 	active_ready = not quarantine and not active_area.is_empty() and not host.simulation_worker.has_failed()

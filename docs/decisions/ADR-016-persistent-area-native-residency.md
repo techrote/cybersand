@@ -41,6 +41,12 @@ Predict the A/B/C graph from destination intent and editor/camera signals. One p
 its adapter and returns unique ownership only after joining. Inactive HOT slices use the existing owner.
 Area-local fences allow useful work to commit while unrelated global time advances. No skipped-time credit is added.
 
+Retain the original clock/plan and exact pending request across resident-advancement timeouts. Admit each proven
+native prefix together with its receipt, and keep the recovery record through lease release. Debt and future
+time keep their original meanings after Retry. A known failed active result can retire that request after
+acknowledged release without resuming the failed World or crediting its failing tick; healthy-area rescue
+remains a separate explicit operation. Unknown or contradictory outcomes stay pinned.
+
 ## Alternatives and reversibility
 
 | Alternative | Decision |

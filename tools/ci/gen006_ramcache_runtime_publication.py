@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from importlib.util import module_from_spec, spec_from_file_location
+import hashlib
 import json
 import math
 import os
@@ -55,11 +56,12 @@ BOUNDARIES = ("before_snapshot", "after_checkpoint", "after_stage", "after_previ
 RAMCACHE_LABELS = frozenset({"ramcache-native", "ramcache-clock", "ramcache-ledger", "ramcache-writeback", "ramcache-owner-review", "ramcache-prefetch-concurrency", "donor-cold", "successor-cold"}
     | {"ramcache-hot-recovery", "ramcache-healthy-seed", "ramcache-healthy-verify", "ramcache-metadata-bounds"}
     | {"ramcache-resident-storage-write", "ramcache-resident-storage-reopen"}
+    | {"ramcache-advance-recovery-write", "ramcache-advance-recovery-reopen"}
     | {"ramcache-independent-"+mode for mode in ("healthy", "missing_setup", "wrong_setup_types", "wrong_execution_type", "missing_worker_type", "stop",
             "runtime_mismatch", "session_mismatch", "source_identity_mismatch", "physics_mismatch", "policy_mismatch",
             "authoring_changed", "warm_corruption", "warm_wrong_tick", "short_native_reservation",
             "short_transient_reservation", "wrong_incarnation", "oversized_metadata")}
-    | {f"ramcache-recoverable-{case}-{mode}" for case in ("deferred", "strict", "first") for mode in ("write", "reopen")}
+    | {f"ramcache-recoverable-{case}-{mode}" for case in ("deferred", "strict", "first", "ahead") for mode in ("write", "reopen")}
     | {f"ramcache-{mode}-w{workers}" for mode in ("write", "reopen", "memory") for workers in (1, 4)}
     | {f"ramcache-responsiveness-{variant}-w{workers}" for variant in ("control", "prefetch", "reversal") for workers in (1, 4)}
     | {"ramcache-crash-"+phase for phase in BOUNDARIES}
@@ -606,6 +608,287 @@ def verify_resident_storage_recovery(parent: dict, pair: dict) -> None:
             "Later WARM activation repeated the already retained native interval")
 
 
+def _validate_advance_clock(clock: dict) -> None:
+    integer = lambda value: type(value) is int and 0 <= value <= 9007199254740991
+    require(isinstance(clock, dict) and set(clock) == {"version", "game_ticks", "areas"}
+        and type(clock.get("version")) is int and clock["version"] == 1 and integer(clock.get("game_ticks"))
+        and isinstance(clock.get("areas"), dict) and set(clock["areas"]) == {"a", "b", "c"},
+        "Advancement clock has an invalid shape or global frontier")
+    for frontier in clock["areas"].values():
+        require(isinstance(frontier, dict) and set(frontier) == {"accounted_ticks", "native_ticks", "origin_game_tick"}
+            and all(integer(value) for value in frontier.values())
+            and frontier["accounted_ticks"] <= clock["game_ticks"]
+            and frontier["origin_game_tick"]+frontier["native_ticks"] == frontier["accounted_ticks"],
+            "Advancement native, origin and accounted time disagree")
+
+
+def _advance_clock_completion(clock: dict, plan: dict, actual: int) -> dict:
+    """Independently recompute one bounded, debt-first native prefix."""
+    _validate_advance_clock(clock)
+    integer = lambda value: type(value) is int and 0 <= value <= 9007199254740991
+    fields = {"version", "area_id", "mode", "source_clock_sha256", "source_native_tick", "source_debt_ticks",
+        "requested_future_ticks", "max_work_ticks", "work_ticks", "debt_work_ticks", "future_work_ticks"}
+    require(isinstance(plan, dict) and set(plan) == fields and plan.get("area_id") in ("a", "b", "c")
+        and plan.get("mode") in ("ahead", "catch_up")
+        and all(integer(plan[key]) for key in fields-{"area_id", "mode", "source_clock_sha256"})
+        and plan["version"] == 1 and 1 <= plan["max_work_ticks"] <= 600
+        and plan["requested_future_ticks"] <= 36000
+        and (plan["mode"] == "ahead" or plan["requested_future_ticks"] == 0),
+        "Advancement plan is malformed or exceeds its fixed work domain")
+    area = plan["area_id"]
+    debt = clock["game_ticks"]-clock["areas"][area]["accounted_ticks"]
+    paid = min(debt, plan["max_work_ticks"])
+    future = min(plan["requested_future_ticks"], plan["max_work_ticks"]-paid,
+        9007199254740991-clock["game_ticks"]) if plan["mode"] == "ahead" else 0
+    require(plan["source_native_tick"] == clock["areas"][area]["native_ticks"] and plan["source_debt_ticks"] == debt
+        and plan["debt_work_ticks"] == paid and plan["future_work_ticks"] == future and plan["work_ticks"] == paid+future
+        and plan["source_clock_sha256"] == hashlib.sha256(json.dumps(clock, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        and integer(actual) and actual <= plan["work_ticks"],
+        "Advancement plan or actual interval differs from its original clock")
+    result = json.loads(json.dumps(clock))
+    debt_paid = min(actual, paid)
+    advanced = actual-debt_paid
+    result["game_ticks"] += advanced
+    result["areas"][area]["accounted_ticks"] += actual
+    result["areas"][area]["native_ticks"] += actual
+    return {"ok": True, "clock": result, "completed_ticks": actual, "paid_debt_ticks": debt_paid,
+        "game_advanced_ticks": advanced, "remaining_future_ticks": plan["requested_future_ticks"]-advanced,
+        "debt_ticks": result["game_ticks"]-result["areas"][area]["accounted_ticks"]}
+
+
+def verify_resident_advance_recovery(parent: dict, pair: dict) -> None:
+    """Bind late native work, accounted prefixes, owner cleanup and restart."""
+    require(isinstance(pair, dict) and set(pair) == {"write", "reopen"}, "Late advancement needs two original processes")
+    writer, reopened = pair["write"], pair["reopen"]
+    integer = lambda value: type(value) is int and 0 <= value <= 9007199254740991
+    digest = lambda value, size=64: isinstance(value, str) and re.fullmatch(r"[0-9a-f]{%d}" % size, value)
+    pid = writer.get("process_id")
+    require(integer(pid) and pid > 0 and integer(reopened.get("process_id")) and reopened["process_id"] > 0
+        and reopened["process_id"] != pid, "Late advancement reopening reused its originating process")
+    for mode, proof in pair.items():
+        require(proof.get("schema") == "gen006-resident-advance-recovery-v1" and proof.get("mode") == mode
+            and proof.get("graphical") is True and proof.get("completed") is True and proof.get("failures") == []
+            and integer(proof.get("checks")) and proof["checks"] > 0
+            and proof.get("originating_write_process_id") == pid and digest(proof.get("session_id"), 32)
+            and digest(proof.get("expected_reopen_sha256")), "Late advancement lacks a complete original graphical receipt")
+    oracle = writer.get("expected_reopen", {})
+    require(oracle == reopened.get("expected_reopen") and oracle.get("originating_write_process_id") == pid
+        and oracle.get("session_id") == writer["session_id"] == reopened["session_id"]
+        and writer["expected_reopen_sha256"] == reopened["expected_reopen_sha256"]
+        and set(oracle.get("areas", {})) == set(reopened.get("actual_areas", {})) == {"a", "b", "c"},
+        "Late advancement restart differs from its acknowledged three-area oracle")
+    final_clock = oracle.get("clock", {})
+    _validate_advance_clock(final_clock)
+    for proof in pair.values():
+        evidence = proof.get("evidence", {})
+        manifest = evidence.get("manifest", {})
+        require(evidence.get("process_id") == proof["process_id"] and evidence.get("clock") == final_clock
+            and manifest.get("clock") == final_clock and manifest.get("session_id") == writer["session_id"],
+            "Late advancement oracle differs from actual durable process state")
+        for area in ("a", "b", "c"):
+            wanted, actual = oracle["areas"][area], reopened["actual_areas"][area]
+            for key, size in (("native_sha256", 64), ("physical_hash", 16), ("authoring_sha256", 64), ("authored_source_sha256", 64)):
+                require(digest(wanted.get(key), size) and actual.get(key) == wanted[key]
+                    and manifest.get("areas", {}).get(area, {}).get(key) == wanted[key],
+                    "Late advancement restart lost full native or authored identity")
+            require(integer(wanted.get("completed_tick")) and actual.get("completed_tick") == wanted["completed_tick"]
+                == final_clock.get("areas", {}).get(area, {}).get("native_ticks")
+                and manifest["areas"][area].get("completed_tick") == wanted["completed_tick"]
+                and final_clock["areas"][area].get("accounted_ticks") == final_clock.get("game_ticks"),
+                "Late advancement restart lost completed native or accounted time")
+
+    def registry(snapshot: dict, clock: dict, source: str, free_owner: bool = True) -> dict:
+        entries = snapshot.get("entries", [])
+        require(snapshot.get("ok") is True and isinstance(entries, list) and len(entries) == 3
+            and snapshot.get("active") in entries and sum(entry.get("active") is True for entry in entries) == 1
+            and snapshot.get("inactive") == [entry for entry in entries if entry.get("active") is False]
+            and len({entry.get("handle") for entry in entries}) == 3,
+            "Late advancement native registry is incomplete or duplicates ownership")
+        by_area = {entry.get("identity", {}).get("area_id"): entry for entry in entries}
+        require(set(by_area) == {"a", "b", "c"} and snapshot["active"] == by_area[source],
+            "Late advancement changed the active source or area identity")
+        for area, entry in by_area.items():
+            identity = entry.get("identity", {})
+            saved = writer["evidence"]["manifest"]["areas"][area]
+            require(type(entry.get("schema")) is int and entry["schema"] == 1 and entry.get("failed") is False
+                and type(entry.get("active")) is bool and entry["active"] == (area == source)
+                and all(integer(entry.get(key)) for key in ("handle", "resident_generation", "mutation_generation", "completed_tick", "native_bytes", "native_reservation_bytes"))
+                and entry["handle"] > 0 and entry["resident_generation"] > 0 and entry["native_bytes"] > 0
+                and entry["native_reservation_bytes"] >= entry["native_bytes"]
+                and type(entry.get("worker_threads")) is int and entry["worker_threads"] == 1
+                and entry["completed_tick"] == clock["areas"][area]["native_ticks"]
+                and identity.get("session_id") == writer["session_id"] and identity.get("runtime_sha256") == parent.get("native_sha256")
+                and identity.get("authored_source_sha256") == oracle["areas"][area]["authored_source_sha256"]
+                and identity.get("incarnation") == saved.get("incarnation")
+                and entry.get("physics_profile_sha256") == saved.get("physics_profile_sha256"),
+                "Late advancement registry contradicts native state, source, runtime or execution identity")
+        require(snapshot.get("native_bytes") == sum(entry["native_bytes"] for entry in entries),
+            "Late advancement registry memory contradicts its retained owners")
+        if free_owner:
+            fence = snapshot.get("owner_fence", {})
+            require(fence.get("operation_id") == "" and integer(fence.get("world_generation")) and fence["world_generation"] > 0
+                and fence.get("completed_tick") == by_area[source]["completed_tick"]
+                and fence.get("mutation_generation") == by_area[source]["mutation_generation"],
+                "Late advancement has no actual released owner acknowledgement")
+        return by_area
+
+    def status_clock(status: dict, clock: dict) -> None:
+        require(status.get("session_id") == writer["session_id"] and status.get("game_tick") == clock["game_ticks"]
+            and set(status.get("areas", {})) == {"a", "b", "c"}, "Resident status has the wrong session or global time")
+        for area in ("a", "b", "c"):
+            value = status["areas"][area]
+            require(value.get("accounted_tick") == clock["areas"][area]["accounted_ticks"]
+                and value.get("completed_tick") == clock["areas"][area]["native_ticks"]
+                and value.get("debt_ticks") == clock["game_ticks"]-clock["areas"][area]["accounted_ticks"],
+                "Resident status disagrees with its admitted per-area prefix")
+
+    cases = writer.get("cases", [])
+    require(isinstance(cases, list) and [row.get("kind") for row in cases] == ["inactive_debt", "active_debt", "ahead_debt_future"],
+        "Late advancement cases are missing, duplicated or reordered")
+    for index, case in enumerate(cases):
+        source, target = case.get("source_area"), case.get("target_area")
+        base, plan = case.get("base_clock", {}), case.get("plan", {})
+        prefix, late = case.get("acknowledged_prefix_ticks"), case.get("late_ticks")
+        require(source == ("a" if index == 0 else "b") and target == "b" and plan.get("area_id") == target
+            and integer(prefix) and integer(late) and 0 < prefix <= 32 and 0 < late <= 32
+            and integer(case.get("timeout_elapsed_msec")) and case["timeout_elapsed_msec"] >= 30000,
+            "Late advancement did not exercise a positive prefix and late bounded native slice")
+        prefix_completion = _advance_clock_completion(base, plan, prefix)
+        completed = _advance_clock_completion(base, plan, prefix+late)
+        require(case.get("expected_completion") == completed and plan["max_work_ticks"] == 600
+            and plan["requested_future_ticks"] == (64 if index == 2 else 0)
+            and (plan["source_debt_ticks"] == 1 and completed["game_advanced_ticks"] == prefix+late-1 if index == 2
+                else completed["game_advanced_ticks"] == 0), "Late work was reclassified as active time or credited twice")
+        before = registry(case.get("before_native", {}), base, source)
+        after = registry(case.get("after_native", {}), completed["clock"], source)
+        require(case.get("before_cache", {}).get("hot") == before[target]
+            and case.get("before_source", {}).get("hot") == before[source]
+            and case.get("after_cache", {}).get("hot") == after[target]
+            and case.get("after_source", {}).get("hot") == after[source]
+            and case["after_cache"].get("completed_tick") == after[target]["completed_tick"],
+            "Late native work and cache receipt do not describe the same retained owner")
+        slices = case.get("slices", [])
+        require(isinstance(slices, list) and len(slices) == 2 and all(integer(s.get("token")) and s["token"] > 0 for s in slices)
+            and slices[0]["token"] != slices[1]["token"]
+            and all(integer(s.get("native_completed_usec")) and s["native_completed_usec"] > 0 for s in slices)
+            and slices[0]["native_completed_usec"] <= slices[1]["native_completed_usec"],
+            "Late advancement has no distinct original positive native completions")
+        previous = before[target]
+        for position, ticks in enumerate((prefix, late)):
+            result = slices[position].get("result", {})
+            receipt = result.get("receipt", {})
+            require(result.get("ok") is True and result.get("completed_ticks") == ticks
+                and result.get("current_tick") == previous["completed_tick"]+ticks
+                and receipt.get("completed_tick") == result["current_tick"] and receipt.get("failed") is False
+                and all(receipt.get(key) == previous[key] for key in ("handle", "identity", "resident_generation", "worker_threads", "physics_profile_sha256", "active"))
+                and integer(receipt.get("mutation_generation")) and receipt["mutation_generation"] >= previous["mutation_generation"],
+                "Late native completion contradicts its exact original target and interval")
+            previous = receipt
+        terminal, pending = case.get("terminal", {}), case.get("pending_at_timeout", {})
+        operation = case.get("operation", {})
+        token = pending.get("pending", {})
+        require(terminal.get("ok") is True and terminal.get("status") == "complete" and terminal.get("lease_held") is True
+            and terminal.get("result") == slices[1]["result"] and terminal.get("operation_id") == operation.get("operation_id")
+            and digest(operation.get("operation_id"), 32) and pending.get("operation_id") == operation["operation_id"]
+            and pending.get("session_id") == writer["session_id"] and pending.get("source_area") == source
+            and pending.get("target_area") == target and pending.get("source_clock") == base and pending.get("plan") == plan
+            and pending.get("accounted_ticks") == prefix and token.get("token") == slices[1]["token"]
+            and token.get("kind") == ("resident_advance" if index == 0 else "advance_active")
+            and token.get("start_tick") == plan["source_native_tick"]+prefix
+            and token.get("max_ticks") == min(32, plan["work_ticks"]-prefix)
+            and token.get("receipt") == slices[0]["result"]["receipt"],
+            "Timeout lost its original plan, cumulative prefix or exact native request")
+        before_retry, after_retry = case.get("before_retry", {}), case.get("after_retry", {})
+        status_clock(before_retry, prefix_completion["clock"])
+        status_clock(after_retry, completed["clock"])
+        require(before_retry.get("resident_advancement") == pending and before_retry.get("ready") is False
+            and before_retry.get("busy") is False and before_retry.get("active_area") == source
+            and before_retry.get("quarantined") is True and before_retry.get("owner_cleanup_required") is True
+            and before_retry.get("unresolved_worker") == {"token":slices[1]["token"], "operation_id":operation["operation_id"], "kind":token["kind"]}
+            and after_retry.get("ready") is True and after_retry.get("busy") is False and after_retry.get("quarantined") is False
+            and after_retry.get("active_area") == source and after_retry.get("resident_advancement") == {}
+            and after_retry.get("unresolved_worker") == {} and after_retry.get("owner_cleanup_required") is False
+            and after_retry.get("cache", {}).get("pending_reservations") == 0,
+            "Late advancement did not retain then safely retire its exact native owner")
+        require(operation.get("source_area") == source and operation.get("target_area") == target
+            and operation.get("completed_ticks") == operation.get("native_ticks_executed") == prefix+late
+            and operation.get("native_slice_count") == 2 and operation.get("remaining_future_ticks") == completed["remaining_future_ticks"]
+            and operation.get("measurement_outcome") == "owner_recovered", "Late advancement metrics duplicate or omit verified native work")
+        late_native = slices[1].get("native_status", {})
+        observed_late = registry(late_native, completed["clock"], source, False)
+        require(slices[1]["result"]["receipt"] == observed_late[target],
+            "Late completion receipt differs from its actual retained native owner")
+        for area in ("a", "b", "c"):
+            require(all(after[area][key] == observed_late[area][key] for key in ("handle", "identity", "resident_generation", "mutation_generation", "completed_tick", "worker_threads", "physics_profile_sha256", "active", "failed")),
+                "Retry changed native authority after the already completed late interval")
+        require(case["after_native"].get("counters") == late_native.get("counters")
+            and set(late_native.get("counters", {})) == {"admissions", "captures", "hot_activations", "imports", "native_restorations", "private_ticks", "releases", "source_constructions"}
+            and all(integer(value) for value in late_native["counters"].values()), "Retry reconstructed, recaptured, advanced or released native state")
+        native_identity = case.get("actual_native_identity", {})
+        require(native_identity == slices[1].get("native_identity") and digest(native_identity.get("native_sha256"))
+            and digest(native_identity.get("physical_hash"), 16) and native_identity.get("completed_tick") == after[target]["completed_tick"]
+            and native_identity.get("authored_source_sha256") == oracle["areas"][target]["authored_source_sha256"],
+            "Late Retry changed complete native continuation or authored source identity")
+        for key in ("profile_read_calls", "native_deserializations", "source_constructions", "synchronous_publications"):
+            require(integer(case.get("io_before", {}).get(key)) and case["io_before"][key] == case.get("io_after", {}).get(key),
+                "Late Retry repeated source loading, native restoration or publication")
+        filesystem = case.get("filesystem_before", {})
+        require(filesystem == case.get("filesystem_after") and filesystem.get("available") is True
+            and filesystem.get("acquired") is True and type(filesystem.get("schema")) is int and filesystem["schema"] == 1
+            and type(filesystem.get("storage_owner_id")) is int and filesystem["storage_owner_id"] != 0
+            and isinstance(filesystem.get("profile_directory"), str) and bool(filesystem["profile_directory"]),
+            "Late recovery filesystem observations lack the same acquired profile owner or available counters")
+        for key in ("read_requests", "read_system_calls", "read_bytes", "write_requests", "write_system_calls", "write_bytes", "publication_requests"):
+            require(integer(case.get("filesystem_before", {}).get(key)) and case["filesystem_before"][key] == case.get("filesystem_after", {}).get(key),
+                "Late resident recovery performed actual profile filesystem work")
+        release = case.get("release_timeout", {})
+        if index == 0:
+            status_clock(release.get("status", {}), completed["clock"])
+            guard = release["status"].get("resident_advancement", {})
+            require(operation.get("cancel_requested") is True and release["status"].get("ready") is False
+                and release["status"].get("quarantined") is True and release["status"].get("busy") is False
+                and release["status"].get("active_area") == source
+                and release["status"].get("owner_cleanup_required") is True and guard.get("pending") == {}
+                and all(guard.get(key) == pending[key] for key in ("operation_id", "session_id", "source_area", "target_area", "source_clock", "plan"))
+                and guard.get("accounted_ticks") == prefix+late
+                and release["status"].get("unresolved_worker") == release.get("unresolved")
+                and all(release.get("operation", {}).get(key) == operation.get(key) for key in (
+                    "operation_id", "source_area", "target_area", "kind", "completed_ticks", "native_ticks_executed", "native_slice_count",
+                    "game_tick_before", "debt_before_ticks", "requested_future_ticks", "remaining_future_ticks"))
+                and release.get("unresolved", {}).get("kind") == "release"
+                and release["unresolved"].get("operation_id") == operation["operation_id"]
+                and integer(release["unresolved"].get("token")) and release["unresolved"]["token"] > slices[1]["token"],
+                "Cancellation or delayed release discarded the already accounted native interval")
+        else:
+            require(release == {} and operation.get("cancel_requested") is False, "Unexpected release/cancellation case shape")
+    require(cases[1]["base_clock"] == cases[0]["expected_completion"]["clock"], "Active-debt setup changed time during its pure ownership handoff")
+    setup = writer.get("debt_setup", {})
+    require(setup.get("target_area") == "b" and setup.get("base_clock") == cases[1]["expected_completion"]["clock"]
+        and setup.get("clock") == cases[2]["base_clock"] and isinstance(setup.get("slices"), list) and setup["slices"],
+        "Debt/future boundary has no actual independent native setup")
+    total = 0
+    previous = cases[1]["after_native"]["active"]
+    for step in setup["slices"]:
+        result = step.get("result", {})
+        receipt = result.get("receipt", {})
+        ticks = result.get("completed_ticks")
+        require(step.get("before_receipt") == previous and integer(ticks) and 0 < ticks <= 32
+            and result.get("ok") is True and result.get("current_tick") == previous["completed_tick"]+ticks
+            and receipt.get("completed_tick") == result["current_tick"] and receipt.get("failed") is False
+            and all(receipt.get(key) == previous[key] for key in ("handle", "identity", "resident_generation", "worker_threads", "physics_profile_sha256", "active"))
+            and integer(receipt.get("mutation_generation")) and receipt["mutation_generation"] >= previous["mutation_generation"],
+            "Debt setup fabricated or replayed native ticks or changed native authority")
+        total += ticks
+        require(step.get("accounted") == _advance_clock_completion(setup["base_clock"], setup.get("plan", {}), total),
+            "Debt setup credited a different interval than actual native work")
+        previous = result["receipt"]
+    finished = _advance_clock_completion(setup["base_clock"], setup["plan"], total)
+    require(setup.get("completed_ticks") == total and setup["clock"] == finished["clock"]
+        and finished["debt_ticks"] == 1 and finished["game_advanced_ticks"] == 0
+        and previous == cases[2]["before_native"]["active"],
+        "Debt setup skipped time or failed to leave the real debt/future boundary")
+
+
 def verify_qualification(*args, **kwargs) -> None:
     _verify_donor_qualification(*args, **kwargs)
     value = args[1] if len(args) > 1 else kwargs["value"]
@@ -696,7 +979,25 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
             and done.get("graphical") is True and done.get("pid") == proof["process_id"]
             and done.get("failures") == 0 and done.get("checks") == proof["checks"]+1,
             "Resident storage recovery completion differs from original process and receipt")
-    for case in ("deferred", "strict", "first"):
+    advance_pair = value.get("ramcache_advance_recovery", {})
+    verify_resident_advance_recovery(value, advance_pair)
+    oracle_path = "ramcache-advance-recovery/expected-reopen.json"
+    require(value["files_sha256"].get(oracle_path) == advance_pair["write"]["expected_reopen_sha256"]
+        and json.loads((directory/oracle_path).read_text(encoding="utf-8")) == advance_pair["write"]["expected_reopen"],
+        "Late advancement oracle is not bound to the original acknowledged writer file")
+    for mode, proof in advance_pair.items():
+        label = "ramcache-advance-recovery-"+mode
+        relative = "ramcache-advance-recovery/advance-recovery-"+mode+".json"
+        require(relative in value["files_sha256"]
+            and json.loads((directory/relative).read_text(encoding="utf-8")) == proof
+            and proof["process_id"] == rows[label]["pid"] and rows[label].get("exit_code") == 0,
+            "Late advancement receipt differs from its original successful process")
+        done = completion(logs[label], "GEN006_RAMCACHE_ADVANCE_RECOVERY")
+        require(done == rows[label].get("completion") and done.get("mode") == mode and done.get("graphical") is True
+            and done.get("pid") == proof["process_id"] and done.get("failures") == 0
+            and done.get("checks") == proof["checks"]+1,
+            "Late advancement completion differs from its original process and receipt")
+    for case in ("deferred", "strict", "first", "ahead"):
         pair = []
         for mode in ("write", "reopen"):
             label = f"ramcache-recoverable-{case}-{mode}"
@@ -718,9 +1019,85 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
                     and receipt.get("native_after", {}).get("active", {}).get("failed") is True
                     and receipt["native_after"]["active"].get("handle") == receipt.get("native_before", {}).get("active", {}).get("handle"),
                     "Recovery did not preserve the failed native owner through a lost publication ACK")
+                require(receipt.get("during_ahead_case", False) == (case == "ahead"),
+                    "Failed-owner recovery selected the wrong native failure boundary")
+                if case == "ahead":
+                    failed = receipt.get("failed_advancement", {})
+                    pending, terminal = failed.get("pending", {}), failed.get("terminal", {})
+                    request, native = pending.get("pending", {}), terminal.get("result", {})
+                    original, after = request.get("receipt", {}), native.get("receipt", {})
+                    ticks = native.get("completed_ticks")
+                    planned = pending.get("plan", {})
+                    require(type(ticks) is int and 0 <= ticks <= request.get("max_ticks", -1)
+                        and pending.get("target_area") == pending.get("source_area") == "a"
+                        and pending.get("source_clock") == failed.get("before_clock") and pending.get("accounted_ticks") == 0
+                        and pending.get("session_id") == receipt.get("expected_reopen", {}).get("session_id")
+                        and planned.get("mode") == "ahead" and planned.get("area_id") == "a"
+                        and planned.get("requested_future_ticks") == 1
+                        and request.get("start_tick") == planned.get("source_native_tick") == original.get("completed_tick")
+                        and request.get("max_ticks") == min(32, planned.get("work_ticks", -1))
+                        and request.get("kind") == "advance_active" and type(request.get("token")) is int and request["token"] > 0
+                        and original == receipt.get("native_before", {}).get("active")
+                        and after == receipt.get("native_after", {}).get("active")
+                        and original.get("identity", {}).get("runtime_sha256") == value.get("native_sha256")
+                        and original.get("identity", {}).get("session_id") == pending.get("session_id")
+                        and original.get("identity", {}).get("area_id") == "a"
+                        and terminal.get("status") == "failed" and terminal.get("ok") is False and terminal.get("lease_held") is True
+                        and terminal.get("operation_id") == pending.get("operation_id")
+                        and native.get("ok") is False and original.get("failed") is False and after.get("failed") is True
+                        and native.get("current_tick") == request.get("start_tick", -1)+ticks
+                        and after.get("completed_tick") == native["current_tick"]
+                        and all(after.get(key) == original.get(key) for key in ("handle", "identity", "resident_generation", "worker_threads", "physics_profile_sha256", "active"))
+                        and after.get("active") is True and type(after.get("mutation_generation")) is int
+                        and after["mutation_generation"] >= original.get("mutation_generation", 0),
+                        "Failed Ahead did not retain a real bounded terminal native failure and its original owner")
+                    accounted = _advance_clock_completion(failed["before_clock"], pending["plan"], ticks)
+                    clean = failed.get("after_cleanup", {})
+                    require(failed.get("completed") == accounted and clean.get("game_tick") == accounted["clock"]["game_ticks"]
+                        and clean.get("areas", {}).get("a", {}).get("accounted_tick") == accounted["clock"]["areas"]["a"]["accounted_ticks"]
+                        and clean.get("areas", {}).get("a", {}).get("completed_tick") == native["current_tick"]
+                        and clean.get("active_area") == "a" and clean.get("session_id") == pending["session_id"]
+                        and clean.get("ready") is False and clean.get("quarantined") is True and clean.get("busy") is False
+                        and clean.get("resident_advancement") == {} and clean.get("unresolved_worker") == {}
+                        and clean.get("owner_cleanup_required") is False and clean.get("recoverable_save_available") is True,
+                        "Known failed native completion resumed its World, credited its failed tick or blocked healthy recovery")
+                    for area in ("a", "b", "c"):
+                        current = clean.get("areas", {}).get(area, {})
+                        frontier = accounted["clock"]["areas"][area]
+                        require(current.get("completed_tick") == frontier["native_ticks"]
+                            and current.get("accounted_tick") == frontier["accounted_ticks"]
+                            and current.get("debt_ticks") == accounted["clock"]["game_ticks"]-frontier["accounted_ticks"],
+                            "Failed active cleanup changed another area's native or accounted clock")
             else: require(receipt.get("fresh_process") is True, "Recovery did not reopen in a new process")
             pair.append(receipt["process_id"])
         require(pair[0] != pair[1], "Failed-owner recovery reused its process")
+        if case == "ahead":
+            writer = value["ramcache_recoverable_workbench"]["ahead-write"]
+            reopened = value["ramcache_recoverable_workbench"]["ahead-reopen"]
+            oracle = writer.get("expected_reopen", {})
+            _validate_advance_clock(oracle.get("clock", {}))
+            oracle_path = "ramcache-recoverable-ahead/recovery-expected.json"
+            require(oracle == reopened.get("expected_reopen")
+                and oracle.get("originating_write_process_id") == writer["process_id"]
+                and reopened.get("originating_write_process_id") == writer["process_id"]
+                and writer.get("expected_reopen_sha256") == reopened.get("expected_reopen_sha256")
+                == value["files_sha256"].get(oracle_path)
+                and json.loads((directory/oracle_path).read_text(encoding="utf-8")) == oracle
+                and set(oracle.get("areas", {})) == set(reopened.get("actual_areas", {})) == {"a", "b", "c"},
+                "Failed Ahead rescue is not bound to its original acknowledged three-area restart oracle")
+            for proof in (writer, reopened):
+                evidence = proof.get("evidence", {})
+                manifest = evidence.get("manifest", {})
+                require(evidence.get("process_id") == proof["process_id"]
+                    and manifest.get("session_id") == oracle.get("session_id")
+                    and evidence.get("clock") == manifest.get("clock") == oracle.get("clock"),
+                    "Failed Ahead rescue changed its durable session or game-time authority on reopen")
+                for area in ("a", "b", "c"):
+                    saved, actual = oracle["areas"][area], reopened["actual_areas"][area]
+                    for key in ("native_sha256", "physical_hash", "authoring_sha256", "authored_source_sha256", "completed_tick"):
+                        require(key in saved and actual.get(key) == saved[key]
+                            and manifest.get("areas", {}).get(area, {}).get(key) == saved[key],
+                            "Failed Ahead rescue lost the exact native or authored state of a saved area")
     relative = "ramcache-hot-recovery/hot-recovery.json"
     late = value.get("ramcache_late_handoff", {})
     require(late.get("failures") == [] and late.get("graphical") is True and late.get("checks", 0) > 0

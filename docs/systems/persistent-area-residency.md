@@ -141,6 +141,14 @@ increases do not invalidate useful work. Completion credits only the actual delt
 replay refuses. Prefetch never increases G or credits unexecuted ticks. Partial progress/new debt remain visible.
 Simulate Ahead pays debt before crediting actual future active ticks. No coarse time-skipping was added.
 
+Foreground resident advancement retains its original canonical clock, bounded debt/future plan, admitted
+prefix and exact pending native token outside the coroutine. Each successful slice admits the complete
+native/cache receipt and its accounted prefix together, with no asynchronous boundary between them.
+After an owner timeout, Retry consumes only that original request's proven contiguous interval. It does not
+reclassify debt as ordinary active time or repeat work. The recovery record remains until native release
+acknowledges, including cancellation followed by a second release timeout. Unexecuted requested future time
+remains unfulfilled. Save, exit and another recovery operation refuse an unresolved interval.
+
 ## Failure and review boundary
 
 Pending native/Main handoffs are retained through ownership and lease-retirement acknowledgement. Recovery must
@@ -151,6 +159,13 @@ An actually failed active tick remains quarantined. The explicit recovery planne
 captures while retaining the failed area's prior durable record. Recovery time is bounded by observed time and
 captured native work. Omitted RAM-only time is reported; partial rescue is not Save all. It neither certifies a
 partial failed tick nor silently resets/discards the failed active World.
+
+A known terminal failure during active resident advancement can retire its pending request only after an
+exact failed receipt identifies the same native owner, original start tick and actual successful prefix.
+Only that prefix is accounted; the failing tick is never credited. Native release must acknowledge before
+the request guard clears. The active World stays quarantined, allowing the existing explicit healthy-area
+rescue and disclosed recovery close. Ambiguous outcomes and failed inactive targets remain pinned; this
+narrow active-failure rule does not admit a general failed-World continuation or inactive rescue path.
 
 `run_persistent_area_ramcache_qualification.py` extends donor gates with actual native residency, value-boundary,
 clock/replay, write-behind death/reopen, Main cache/prefetch, memory and controlled cold/HOT/WARM tests. The isolated
