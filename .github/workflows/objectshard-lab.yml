@@ -114,6 +114,19 @@ jobs:
           objectshard_profile_args=()
           if test "$OBJECTSHARD_STAGE" = m2; then objectshard_profile_args=(--profile); fi
           xvfb-run --auto-servernum --server-args='-screen 0 1280x840x24 -nolisten tcp' python tools/objectshard/qualify_lab.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --expected-source-sha "$SOURCE_SHA" --stage "$OBJECTSHARD_STAGE" --native-receipt evidence/linux-native-provenance.json --render "${objectshard_profile_args[@]}" --output evidence/lab
+      - name: Source-bound M4 ordinary Workbench refusal and compatibility qualifier
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          # Exact-source Godot 4.7/Rapier exercise; this does NOT establish
+          # native same-World ObjectShard attachment. Never relax old M2 cases.
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x840x24 -nolisten tcp' python tools/objectshard/qualify_m4_workbench.py \
+            --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" \
+            --expected-source-sha "$SOURCE_SHA" --output evidence/m4-workbench \
+            --regressions --m3-controls
       - name: Retain all Linux evidence including first failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
