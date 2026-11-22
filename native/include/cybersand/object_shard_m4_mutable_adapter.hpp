@@ -163,7 +163,7 @@ public:
         if (!shard || !body || !body->has_body || !shard->owns_inventory() ||
             shard->phase() != Phase::Active || body->geometry_pending)
             return Verdict::Fenced;
-        if (ticket.completed_tick > world.completed_tick_index() ||
+        if (ticket.completed_tick != world.completed_tick_index() ||
             revision(*shard, *body) != ticket.body ||
             shard->applied_physics_revision() != ticket.body.geometry_revision ||
             body->pose.geometry_revision != ticket.body.geometry_revision)
