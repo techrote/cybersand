@@ -1,8 +1,11 @@
 # CyberSand: temporary interactive Windows acceptance via GitHub Actions
 
 **Status:** implementation candidate, Draft/HOLD. No Windows desktop was provisioned
-or tested by creating this document. Do not merge or promote it without an
-operator's live authenticated RDP trial and review of costs/security.
+or tested by creating this document. Before any merge, the owner must review the
+security model and explicitly authorize activation. Because the manual Actions UI
+requires the workflow on the default branch, the first live RDP trial ordinarily
+happens **after** an owner-authorized infrastructure merge. Do not call it
+qualified or production-ready until that trial succeeds.
 
 ## Purpose
 
@@ -40,7 +43,8 @@ access controls must be configured to restrict it to the owner's devices.
    GitHub Actions UI. It cannot be launched in this chat because the GitHub
    integration here exposes repository/Actions reads and writes but no
    interactive Windows RDP connection, tailnet identity or live desktop.
-   **Owner controls merging/activation.**
+   **Owner controls merging/activation.** The Draft PR itself does not run an
+   acceptance job, and its first hosted desktop cannot be validated here.
 
 ## Each acceptance pass
 
@@ -97,6 +101,9 @@ reliably—download it manually during the session if it matters.
   on **one fresh actual Windows hosted runner**. None of these have run yet.
 - Independent Windows 11/physical GTX or RTX hardware acceptance remains
   essential for your renderer/presentation/performance defects.
+
+Activation is not proof. Do not claim that RDP, feedback uploads or network
+isolation succeeded until the owner runs and records a real test.
 
 See https://docs.github.com/en/actions/reference/limits and
 https://tailscale.com/docs/integrations/github/github-action .
