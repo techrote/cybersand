@@ -26,7 +26,7 @@ jobs:
           root.mkdir(exist_ok=False)
           helper_path = 'tools/ci/gen006_windows_write_denial_probe.ps1'
           helper = subprocess.check_output(['git', 'show', os.environ['GITHUB_SHA'] + ':' + helper_path])
-          expected = '86e3fd6190d31dbd52d26af065675595470ed787f31e2da78753c9021a038fc1'
+          expected = '8c3c193d11688739a5c02bd75b1d25e7c9720a1c48313d2870d444ba1d2d9bce'
           assert hashlib.sha256(helper).hexdigest() == expected
           (root / 'profile_write_denial.ps1').write_bytes(helper)
           metadata = {'schema': 'gen006-windows-acl-probe-source-v1', 'source_commit': os.environ['GITHUB_SHA'], 'source_tree': subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip(), 'base_commit': '41208bb1ec0f2d56a9a375983f5d5c7c5193b36a', 'helper_path': helper_path, 'helper_sha256': expected, 'helper_bytes': len(helper), 'checkout_helper_sha256': hashlib.sha256(pathlib.Path(helper_path).read_bytes()).hexdigest(), 'workflow_sha256': hashlib.sha256(pathlib.Path('.github/workflows/gen006-ramcache-filesystem-probe.yml').read_bytes()).hexdigest(), 'scope': 'Actual Windows PowerShell 5 directory permission apparatus only; no native or application qualification'}

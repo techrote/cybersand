@@ -25,6 +25,7 @@ $receipt = [ordered]@{
     mode = $Mode; nonce = $Nonce; helper_pid = $PID; sid = $currentSid
     ok = $false; phase = 'starting'; error = ''; cleanup_error = ''; backup_sha256 = ''
     rights = 278; inheritance = 'None'; propagation = 'None'
+    acl_writer = 'SetFileSecurityW DACL_SECURITY_INFORMATION only'
     scope = 'Directory-only CREATE_NEW refusal; not disk-full or read-only-volume evidence'
 }
 
@@ -49,8 +50,35 @@ function Write-FinalReceipt {
     Assert-That ((Get-Sha256 $ReceiptPath) -ceq $preparedReceiptSha256) 'Prepared control receipt changed.'
     $temporary = $ReceiptPath + '.terminal-' + $Nonce + '.tmp'
     Write-NewJson $temporary $receipt
-    # Same-directory atomic replacement; the backup anchor remains unchanged.
-    [IO.File]::Replace($temporary, $ReceiptPath, $null, $true)
+    # Windows PowerShell 5/.NET Framework coerces a null string argument to an
+    # illegal empty backup path. Retain the exact prepared receipt separately;
+    # this is never the immutable ACL backup and must not overwrite anything.
+    $preparedBackup = $ReceiptPath + '.prepared-' + $Nonce + '.bak'
+    Assert-That (!(Test-Path -LiteralPath $preparedBackup)) 'Prepared receipt backup already exists.'
+    [IO.File]::Replace($temporary, $ReceiptPath, $preparedBackup, $true)
+    Assert-That ((Get-Sha256 $preparedBackup) -ceq $preparedReceiptSha256) 'Prepared receipt backup differs.'
+}
+function Set-ProfileDacl([Security.AccessControl.DirectorySecurity]$Value) {
+    if ($null -eq ('Gen006DirectoryOnlyAcl' -as [type])) {
+        Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class Gen006DirectoryOnlyAcl {
+    [DllImport("advapi32.dll", EntryPoint="SetFileSecurityW", CharSet=CharSet.Unicode, SetLastError=true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool Set(string path, uint information, byte[] descriptor);
+}
+'@
+    }
+    # Set-Acl/SetNamedSecurityInfo automatically propagate inheritance metadata
+    # to children, even for this non-inheritable ACE. The documented legacy
+    # SetFileSecurityW function deliberately operates on this directory only.
+    # https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-setfilesecurityw
+    # Only DACL_SECURITY_INFORMATION is requested: never owner, group or SACL.
+    $binary = $Value.GetSecurityDescriptorBinaryForm()
+    if (![Gen006DirectoryOnlyAcl]::Set($ProfilePath, [uint32]4, $binary)) {
+        throw [ComponentModel.Win32Exception]::new([Runtime.InteropServices.Marshal]::GetLastWin32Error())
+    }
 }
 function Assert-NoReparseAncestors([string]$Path) {
     $item = Get-Item -LiteralPath $Path -Force
@@ -134,7 +162,7 @@ function Restore-OriginalAcl {
     Assert-That ($current.owner -ceq $backupState.original.owner) 'Profile owner changed; restore refused.'
     $value = Get-Acl -LiteralPath $ProfilePath
     $value.SetSecurityDescriptorSddlForm([string]$backupState.original.access_sddl, $accessSection)
-    Set-Acl -LiteralPath $ProfilePath -AclObject $value
+    Set-ProfileDacl $value
     $restored = Get-ProfileAcl
     Assert-That (Same-Json $restored $backupState.original) 'Exact original DACL/owner was not restored.'
     return $restored
@@ -165,6 +193,7 @@ try {
         Assert-PositiveProbe $receipt.baseline_probe
         $value = Get-Acl -LiteralPath $ProfilePath
         Assert-That $value.AreAccessRulesCanonical 'Noncanonical original DACL refused.'
+        Assert-That (!$value.AreAccessRulesProtected -and $receipt.acl_before.access_sddl.StartsWith('D:(')) 'Only a fresh, unprotected, non-auto-inherited profile DACL is admitted.'
         $rule = [Security.AccessControl.FileSystemAccessRule]::new(
             [Security.Principal.SecurityIdentifier]::new($currentSid),
             [Security.AccessControl.FileSystemRights]::Write,
@@ -182,9 +211,9 @@ try {
         Write-NewJson $ReceiptPath $receipt
         $preparedReceiptSha256 = Get-Sha256 $ReceiptPath
         # The outer runner can recover this immutable backup hash even if this
-        # process dies during Set-Acl, before a successful final receipt exists.
+        # process dies during the DACL write, before a final receipt exists.
         $applied = $true
-        Set-Acl -LiteralPath $ProfilePath -AclObject $value
+        Set-ProfileDacl $value
         $receipt['acl_after'] = Get-ProfileAcl
         Assert-That ($receipt.acl_after.owner -ceq $backupState.original.owner -and
             $receipt.acl_after.access_sddl -ceq $backupState.denied_access_sddl) 'Applied directory ACL differs from the exact rule.'
