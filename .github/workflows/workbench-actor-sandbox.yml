@@ -1,7 +1,7 @@
-name: WB-ACTOR-COMPOSE-002R sandbox evaluation
+name: ACTOR-RECOVERY-FINAL source-matched sandbox evaluation
 on:
   push:
-    branches: [experiment/wb-actor-compose-002r-20261122]
+    branches: [recovery/actor-compose-002r-final-20261122]
     paths:
       - '.github/workflows/workbench-actor-sandbox.yml'
       - 'tools/ci/**'
@@ -47,7 +47,7 @@ env:
 jobs:
   linux:
     name: Pinned native builds and Linux coupled Workbench
-    if: github.ref == 'refs/heads/experiment/wb-actor-compose-002r-20261122'
+    if: github.ref == 'refs/heads/recovery/actor-compose-002r-final-20261122'
     runs-on: ubuntu-24.04
     timeout-minutes: 110
     env:
@@ -274,7 +274,7 @@ jobs:
   publish:
     name: Append the fully qualified sandbox runtime pair to the unchanged Draft branch
     needs: [linux, windows]
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/experiment/wb-actor-compose-002r-20261122' && needs.linux.result == 'success' && needs.windows.result == 'success'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/recovery/actor-compose-002r-final-20261122' && needs.linux.result == 'success' && needs.windows.result == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -302,8 +302,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git ls-remote --exit-code origin refs/heads/experiment/wb-actor-compose-002r-20261122 | cut -f1)" = "$GITHUB_SHA"
-          git switch -c experiment/wb-actor-compose-002r-20261122 "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin refs/heads/recovery/actor-compose-002r-final-20261122 | cut -f1)" = "$GITHUB_SHA"
+          git switch -c recovery/actor-compose-002r-final-20261122 "$GITHUB_SHA"
           git lfs install --local
           python3 tools/ci/check_ci_provider_policy.py
       - name: Restore same-run Linux candidate and complete receipts
@@ -357,7 +357,7 @@ jobs:
               match = re.fullmatch(rb'version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n',pointer)
               if (not match or match[1].decode()!=value['sha256'] or int(match[2])!=value['size']
                   or value['source_commit']!=os.environ['GITHUB_SHA']
-                  or value['publication_branch']!='experiment/wb-actor-compose-002r-20261122'
+                  or value['publication_branch']!='recovery/actor-compose-002r-final-20261122'
                   or value['qualification']['status']!='passed' or value['status']!='evaluation-candidate-passed'
                   or hashlib.sha256(Path(value['artifact']).read_bytes()).hexdigest()!=value['sha256']):
                   raise SystemExit('Staged sandbox LFS/runtime/provenance identity mismatch')
@@ -368,7 +368,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git ls-remote --exit-code origin refs/heads/experiment/wb-actor-compose-002r-20261122 | cut -f1)" = "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin refs/heads/recovery/actor-compose-002r-final-20261122 | cut -f1)" = "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'build(native): publish qualified Draft sandbox runtimes'
@@ -376,7 +376,7 @@ jobs:
           python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
           # A single child commit and exact expected-parent lease cannot replace
           # concurrent source work. The LFS hook uploads only the two new objects.
-          git push --force-with-lease="refs/heads/experiment/wb-actor-compose-002r-20261122:$GITHUB_SHA" origin HEAD:refs/heads/experiment/wb-actor-compose-002r-20261122
+          git push --force-with-lease="refs/heads/recovery/actor-compose-002r-final-20261122:$GITHUB_SHA" origin HEAD:refs/heads/recovery/actor-compose-002r-final-20261122
           {
             echo '### Draft/HOLD sandbox runtime publication'
             echo "Qualified source: $GITHUB_SHA"
