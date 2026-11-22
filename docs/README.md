@@ -10,7 +10,19 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Current SWARM-004/005/006 consolidated delivery:** [unified integration, reconciliation ledger and physical owner acceptance](operations/swarm456-unified-mainline.md). One new candidate supersedes the two earlier mergedown operations; their source/evidence remains intact. Draft/HOLD until exact-source qualification and physical Windows/NVIDIA acceptance.
+
 **SWARM-004/005 mainline candidate:** [integration, exact donor custody, experimental controls and owner evaluation](operations/swarm45-mainline-integration.md). The registered negative holdout results remain intact; new-source platform/publication and physical-owner acceptance remain separate gates.
+
+SWARM-006 Draft/HOLD: [integration successor, qualification boundaries and owner
+acceptance](operations/swarm006-integration-finisher.md). The original frozen
+holdout remains historical evidence; corrected-source replay is explicitly
+revealed-corpus regression, and the separate SWARM-004/005 merge owns its baseline.
+
+SWARM-006 [source feasibility and bounded reciprocal recovery](systems/gentek-negotiated-recovery.md)
+continues verified SWARM-005 under [#704](https://github.com/techrote/cybersand/issues/704).
+Native and Workbench stages remain separate Draft/HOLD candidates; original
+controls, budgets and owner acceptance boundaries are preserved.
 
 SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
 covers the bounded native grammar, independent architectural revisions, honest
@@ -705,3 +717,13 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+## SWARM-006 experimental owner evaluator
+
+The [SWARM-006 Workbench owner guide](operations/swarm006-workbench-playtest.md)
+covers the default-OFF bounded recovery control, native V4 semantics, declared
+finite synthetic controls, full Apply/Undo/Save/reopen exercises, and the
+source-bound Windows ZIP, sidecar and PowerShell launcher. Native feasibility,
+a qualified foreign joint, Windows graphical qualification and physical owner
+NVIDIA acceptance are separate results. Programme #704 remains Draft/HOLD;
+SWARM-004/005 historical receipts and controls retain their original scope.

@@ -1,0 +1,127 @@
+name: SWARM006 exact native qualification
+
+on:
+  push:
+    branches: [experiment/gentek-swarm-006-native-recovery]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swarm006-native-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  strict-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact candidate, including Draft source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Record source and run strict native suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/swarm006-strict"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/swarm006-strict/source.txt"
+          git merge-base --is-ancestor c178feeb39899fd155b7deb9d5bde3f50ee28548 HEAD
+          make -C native/experiments/gentek_swarm -f Makefile.reciprocal CXX=g++-13 BUILD="$RUNNER_TEMP/swarm006-strict" -j2 test 2>&1 | tee "$RUNNER_TEMP/swarm006-strict/tests.log"
+          python3 -m unittest discover -s native/experiments/gentek_swarm -p 'test_swarm006_runner.py' 2>&1 | tee "$RUNNER_TEMP/swarm006-strict/runner.log"
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --exit-code
+      - name: Retain exact native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-native-strict-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/swarm006-strict/*.txt
+            ${{ runner.temp }}/swarm006-strict/*.log
+          retention-days: 90
+
+  sanitized-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout the same source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: ASan and UBSan exact-source suites
+        shell: bash
+        env:
+          ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/swarm006-sanitized"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/swarm006-sanitized/source.txt"
+          make -C native/experiments/gentek_swarm -f Makefile.reciprocal CXX=g++-13 BUILD="$RUNNER_TEMP/swarm006-sanitized" SANITIZE=1 -j2 test 2>&1 | tee "$RUNNER_TEMP/swarm006-sanitized/tests.log"
+      - name: Retain sanitizer evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-native-sanitized-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/swarm006-sanitized/*.txt
+            ${{ runner.temp }}/swarm006-sanitized/*.log
+          retention-days: 90
+
+  native-comparisons:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact source with frozen predecessor ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Build frozen controls and exact candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git worktree add --detach "$RUNNER_TEMP/swarm004-source" 2c4b8061ef5315de6a31df933e9f84c31865284e
+          git worktree add --detach "$RUNNER_TEMP/swarm005-source" c178feeb39899fd155b7deb9d5bde3f50ee28548
+          runner=native/experiments/gentek_swarm/run_swarm006.py
+          python3 "$runner" build --source-root "$RUNNER_TEMP/swarm004-source" --build "$RUNNER_TEMP/swarm004-build" --variant swarm004 --cxx g++-13
+          python3 "$runner" build --source-root "$RUNNER_TEMP/swarm005-source" --build "$RUNNER_TEMP/swarm005-build" --variant swarm005 --cxx g++-13
+          python3 "$runner" build --source-root "$GITHUB_WORKSPACE" --build "$RUNNER_TEMP/swarm006-build" --variant swarm006 --cxx g++-13
+      - name: Preserve developmental controls, matched causality and every negative
+        shell: bash
+        run: |
+          set -euo pipefail
+          runner=native/experiments/gentek_swarm/run_swarm006.py
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm004-build" --out "$RUNNER_TEMP/swarm006-evidence/swarm004" --suite development --policy off@2 --controls
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm005-build" --out "$RUNNER_TEMP/swarm006-evidence/swarm005" --suite development --controls
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/candidate" --suite development --policy off@2 --policy terminal_only@2 --policy receptor_only@2 --policy both@2 --policy recovery@0 --policy recovery@1 --policy recovery@2 --policy recovery@3 --policy recovery@4 --policy recovery+no_offers@2 --policy recovery+frame_frozen@2 --policy recovery+mosaic_frozen@2 --policy recovery+hard_only@2 --policy recovery+fixed@2 --controls
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/reverse" --suite development --policy recovery+reverse@2
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/stress" --suite stress
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/stress-zero-round" --suite stress --policy recovery@0 --policy recovery+cancel@0 --policy recovery+frame_budget@0 --policy recovery+mosaic_budget@0 --policy recovery+solver_budget@0 --policy recovery+memory_budget@0
+          python3 "$runner" run --build "$RUNNER_TEMP/swarm006-build" --out "$RUNNER_TEMP/swarm006-evidence/owner-resource-refusals" --suite owner --policy recovery+cancel@2 --policy recovery+frame_budget@2 --policy recovery+mosaic_budget@2 --policy recovery+solver_budget@2 --policy recovery+memory_budget@2
+          python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/swarm004" --after "$RUNNER_TEMP/swarm006-evidence/swarm005" --before-policy off@2 --after-policy off@2 --out "$RUNNER_TEMP/swarm006-evidence/swarm004-sw005-off.json"
+          python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/swarm005" --after "$RUNNER_TEMP/swarm006-evidence/candidate" --before-policy off@2 --after-policy off@2 --out "$RUNNER_TEMP/swarm006-evidence/swarm005-sw006-off.json"
+          for policy in terminal_only receptor_only both; do
+            python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/swarm005" --after "$RUNNER_TEMP/swarm006-evidence/candidate" --before-policy "$policy@2" --after-policy "$policy@2" --out "$RUNNER_TEMP/swarm006-evidence/swarm005-sw006-$policy.json"
+          done
+          python3 "$runner" compare --before "$RUNNER_TEMP/swarm006-evidence/candidate" --after "$RUNNER_TEMP/swarm006-evidence/reverse" --before-policy recovery@2 --after-policy recovery+reverse@2 --exact --out "$RUNNER_TEMP/swarm006-evidence/reversal.json"
+      - name: Retain full native requests, responses, source and work receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-native-comparisons-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/swarm006-evidence
+            ${{ runner.temp }}/swarm004-build/*.json
+            ${{ runner.temp }}/swarm004-build/*.log
+            ${{ runner.temp }}/swarm005-build/*.json
+            ${{ runner.temp }}/swarm005-build/*.log
+            ${{ runner.temp }}/swarm006-build/*.json
+            ${{ runner.temp }}/swarm006-build/*.log
+          retention-days: 90

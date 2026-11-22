@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Unified SWARM-004/005/006 candidate — 2026-11-22
+
+The [consolidated runbook](../operations/swarm456-unified-mainline.md) reconciles current accepted main with #715 and #716 in one branch. It preserves source-feasible parts, source-bound receptors, bounded reciprocal recovery, final/provisional inspection, historical read-only authority and ordinary Workbench features. Recovery and both SWARM-005 controls remain OFF. Exact-source platform/scientific qualification and physical owner acceptance are required; predecessor results remain historical. Draft/HOLD, with one eventual manual merge only after all gates pass.
+
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
 The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
@@ -35,6 +39,25 @@ source qualification and controlled timings before any merge or speed claim.
 ## SWARM-004/005 mainline candidate — 2026-11-21
 
 The [integration runbook](../operations/swarm45-mainline-integration.md) owns current source custody and acceptance. A dedicated main-based branch imports both native/Workbench donors, keeps the visible Experimental dock inactive until explicit use and both SWARM-005 controls OFF, and repairs demonstrated stale-authority and receptor-work accounting defects. Original registered holdouts are already complete with negative primary results; new exact-source regression/platform/publication and owner physical acceptance remain separate. This candidate is Draft/HOLD, not an accepted-main or SWARM-006 baseline claim.
+
+## SWARM-006 integration repair — 2026-11-21
+
+The [dedicated successor](../operations/swarm006-integration-finisher.md) adds
+funded rejected-proposal finalization, clean empty-refusal metadata, exact native
+round inspection and stale-preview invalidation. Its evidence distinguishes the
+frozen historical study from corrected-source revealed replay and binds a newly
+built Windows evaluator to its actual source. The SWARM-004/005 accepted-main
+mapping and subsequent owner acceptance remain explicit gates. No frozen donor,
+ordinary default, Ready state or merge authority changes.
+
+## SWARM-006 feasible reciprocal construction — 2026-11-21
+
+**Experimental implementation, Draft/HOLD:** [#704](https://github.com/techrote/cybersand/issues/704)
+adds prospective connector screening, native receptor/corbel negotiation and
+bounded recovery on verified SWARM-005. The [focused contract](../systems/gentek-negotiated-recovery.md)
+preserves original foreign obligations and authoritative material-path validation.
+Published exact-head qualification, fresh preregistered comparisons and Windows
+owner acceptance have separate gates. No Ready, merge or default promotion is authorized.
 
 ## SWARM-004 reciprocal Gentek construction — 2026-11-20
 

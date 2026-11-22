@@ -10,9 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Unified SWARM-004/005/006 delivery
+
+For combined source, conflict decisions, V1–V4/schema-5/6 compatibility, final inspector, scientific distinctions, source-matched evaluator and owner admission, read the [unified runbook](../operations/swarm456-unified-mainline.md). [Focused questions](retrieval-questions-swarm456.json) supplement the unchanged frozen set. Predecessor runbooks retain their original evidence scope.
+
 ## SWARM-004/005 mainline integration
 
 For the current donor map, source-identity correction, default-OFF Experimental controls, V1/V2/V3 compatibility, known-matrix replay and the reconstructed package's physical-owner gate, read the [integration runbook](../operations/swarm45-mainline-integration.md). [Focused questions](retrieval-questions-swarm45.json) are additive to the unchanged frozen set.
+
+For the repaired SWARM-006 successor, final-composition inspector, preserved
+negative holdout, new Windows evaluator and accepted-main dependency, see the
+[integration finisher](../operations/swarm006-integration-finisher.md).
 
 ## World Art inspection, capture and Windows evaluation
 
@@ -44,6 +52,11 @@ native preview co-existence, read the
 [integration research record](../operations/gentek-showcase-integration-001.md).
 This is an explicit research route, **not** a current-main architectural
 generator behaviour claim.
+
+
+For SWARM-006 feasibility, source-bound receiver negotiation, bounded recovery,
+native custody and distinct Windows acceptance gates, read the
+[experimental recovery contract](../systems/gentek-negotiated-recovery.md).
 
 ## Reciprocal FRAMEWEAVER × MOSAIC construction
 
@@ -555,3 +568,15 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+## SWARM-006 experimental Workbench recovery
+
+For the default-OFF recovery control, V4 native transport, unchanged V1/V2/V3
+controls, exact Windows package naming and SHA verification, use the
+[SWARM-006 owner guide](../operations/swarm006-workbench-playtest.md). It separates
+native attempts/reservations from qualified foreign joints, synthetic blank
+World comparisons from the owner's actual World, and source/pristine automated
+Windows qualification from owner NVIDIA acceptance. The
+[SWARM-005 owner guide](../operations/swarm005-workbench-playtest.md) preserves
+its historical two-switch scope. Neither guide authorizes Ready, merge or
+production-default promotion.

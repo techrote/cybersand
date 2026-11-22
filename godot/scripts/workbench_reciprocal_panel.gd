@@ -7,6 +7,7 @@ const History = preload("res://scripts/workbench_paint_editor_history.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const TIMEOUT_MSEC := 30000
 const LAYERS := ["Materials","Owners","Parts","Revisions","Changed cells","Joints","Clearance","Shared zone","Unresolved","Sockets / receptors","Interface band"]
+const FINAL_ONLY_LAYERS := ["Revisions","Joints","Clearance","Unresolved"]
 const CONTROL_SPECS := [["Complexity / variation","variation",0.5],["Branching","branching",0.5],
 	["Irregularity","irregularity",0.2],["Environment affinity","environment_affinity",0.5],
 	["Cohesion","cohesion",0.75],["Decoration","clutter",0.0],["Destruction","destruction",0.0]]
@@ -74,7 +75,7 @@ func mount(workbench: Control) -> void:
 	add_child(margin)
 	var column := VBoxContainer.new();margin.add_child(column)
 	var title := HBoxContainer.new();column.add_child(title)
-	_label(title,"Experimental · FRAMEWEAVER × MOSAIC").size_flags_horizontal = SIZE_EXPAND_FILL
+	_label(title,"Experimental · FRAMEWEAVER × MOSAIC · Draft/HOLD").size_flags_horizontal = SIZE_EXPAND_FILL
 	_button(title,"Inspect saved evidence",inspect_saved_evidence)
 	_button(title,"Close",close_panel)
 	var body := HBoxContainer.new();column.add_child(body)
@@ -124,6 +125,11 @@ func mount(workbench: Control) -> void:
 	supported.tooltip_text="Opt-in real backed native masonry receptors; final foreign joint and material path are still mandatory."
 	row.add_child(supported);controls.supported_native_receptors=supported
 	supported.toggled.connect(func(_value: bool) -> void: invalidate("SWARM-005 native receptor negotiation changed; regenerate before Apply."))
+	row=_row(fields)
+	var recovery:=CheckButton.new();recovery.text="Bounded reciprocal recovery (SWARM-006)";recovery.button_pressed=false
+	recovery.tooltip_text="Search finite native structural and receiver alternatives. Bids and reservations require genuine material-path proof before Apply."
+	row.add_child(recovery);controls.negotiated_recovery=recovery
+	recovery.toggled.connect(func(_value: bool) -> void: invalidate("SWARM-006 recovery changed; regenerate before Apply."))
 	for spec: Array in CONTROL_SPECS:
 		row=_row(fields);_spin(row,spec[0],spec[1],0,1,0.05,spec[2])
 	for key: String in Protocol.EXPRESSION_DEFAULTS[0]: controls[key].set_value_no_signal(Protocol.EXPRESSION_DEFAULTS[0][key])
@@ -144,7 +150,7 @@ func mount(workbench: Control) -> void:
 	row=_row(right);_label(row,"Inspect")
 	for text: String in LAYERS: _layer.add_item(text)
 	row.add_child(_layer);_layer.item_selected.connect(func(_index: int) -> void: _render())
-	_round.add_item("Final composition",-1);row.add_child(_round)
+	row.add_child(_round)
 	_round.item_selected.connect(func(_index: int) -> void: _render())
 	_preview.custom_minimum_size=Vector2(384,176);_preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
 	_preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;_preview.texture_filter=TEXTURE_FILTER_NEAREST
@@ -158,6 +164,7 @@ func mount(workbench: Control) -> void:
 	bench.host.world_view.add_child(_overlay)
 	visibility_changed.connect(func() -> void:
 		if not visible: cancel("Panel closed; provisional work cancelled."))
+	_reset_preview()
 	_refresh()
 
 func _row(parent: Control) -> HFlowContainer:
@@ -169,22 +176,16 @@ func _label(parent: Control, text: String) -> Label:
 func _button(parent: Control, text: String, action: Callable) -> Button:
 	var value:=Button.new();value.text=text;value.focus_mode=FOCUS_NONE
 	value.pressed.connect(func() -> void:
-		bench._commit_field(value.get_viewport())
+		bench._commit_field(get_viewport())
 		action.call())
 	parent.add_child(value);return value
-
-func _watch_numeric(field: SpinBox, reason: String) -> void:
-	field.value_changed.connect(func(_number: float) -> void: invalidate(reason))
-	# SpinBox keeps typed text pending until Apply/Enter/focus loss. The visible
-	# recipe has already changed at that point, so old native Apply authority
-	# must retire before any button can commit the edited number.
-	field.get_line_edit().text_changed.connect(func(_text: String) -> void: invalidate(reason))
 
 func _spin(parent: Control, text: String, key: String, low: float, high: float, step: float, value: float) -> void:
 	_label(parent,text)
 	var spin:=SpinBox.new();spin.min_value=low;spin.max_value=high;spin.step=step;spin.value=value
 	spin.custom_minimum_size.x=80;parent.add_child(spin);controls[key]=spin
-	_watch_numeric(spin,"Recipe changed; regenerate before Apply.")
+	spin.value_changed.connect(func(_number: float) -> void: invalidate("Recipe changed."))
+	spin.get_line_edit().text_changed.connect(func(_text: String) -> void: invalidate("Recipe text changed; Generate to use the edited value."))
 
 func _mount_gentek_controls(parent: Control, gentek: String, title: String) -> void:
 	var enabled:=CheckButton.new();enabled.text="Independent "+title+" controls";parent.add_child(enabled)
@@ -194,7 +195,8 @@ func _mount_gentek_controls(parent: Control, gentek: String, title: String) -> v
 		var row:=_row(fields);_label(row,spec[0])
 		var spin:=SpinBox.new();spin.min_value=0;spin.max_value=1;spin.step=0.05;spin.value=controls[spec[1]].value
 		spin.custom_minimum_size.x=80;row.add_child(spin);values[spec[1]]=spin
-		_watch_numeric(spin,title+" controls changed; regenerate before Apply.")
+		spin.value_changed.connect(func(_value: float) -> void: invalidate(title+" controls changed."))
+		spin.get_line_edit().text_changed.connect(func(_text: String) -> void: invalidate(title+" control text changed; regenerate before Apply."))
 	gentek_controls[gentek]={"enabled":enabled,"fields":fields,"values":values,"initialized":false}
 	enabled.toggled.connect(func(active: bool) -> void:
 		if active and not gentek_controls[gentek].initialized:
@@ -255,8 +257,16 @@ func clear_marks() -> void:
 func invalidate(reason: String = "Preview changed.") -> void:
 	if phase in ["installing","acknowledging"]: return
 	cancel(reason)
-	proposal.clear();document.clear();prepared.clear();_preview.texture=null
+	_reset_preview()
 	_update_territory();_refresh()
+
+func _reset_preview() -> void:
+	# Replace references: a retiring decoder may still own its captured request.
+	proposal={};document={};prepared={};_preview.texture=null
+	_round.clear();_round.add_item("Final composition");_round.select(0);_round.disabled=true
+	_layer.select(0);_layer.disabled=true
+	for layer: String in FINAL_ONLY_LAYERS: _layer.set_item_disabled(LAYERS.find(layer),false)
+	_inspector.text="Generate or inspect saved evidence to see native cells, ownership, revisions and physical path witnesses."
 
 func _update_territory() -> void:
 	if activation.is_empty() or bench.applied.is_empty(): return
@@ -335,6 +345,7 @@ func _recipe() -> Dictionary:
 		"optional":controls.optional.button_pressed,"shared_ownership":controls.shared_ownership.button_pressed,
 		"compact_native_termination":controls.compact_native_termination.button_pressed,
 		"supported_native_receptors":controls.supported_native_receptors.button_pressed,
+		"negotiated_recovery":controls.negotiated_recovery.button_pressed,
 		"parameters":parameters,"activation":points,
 		"protected":protected_points.duplicate()}
 	var profiles: Dictionary={}
@@ -393,11 +404,10 @@ static func _checked_runtime(path: String, manifest: Variant, platform: String) 
 	return {"ok":true,"path":path,"source":str(manifest.source),"sha256":str(manifest.sha256)}
 
 func generate() -> bool:
+	bench._commit_field(get_viewport())
 	if busy() or bench.busy(): return _say("Wait for the active native transaction.")
 	if activation.is_empty(): return _say("Paint an activation stroke on the native canvas first.")
-	# A failed replacement runtime admission must not leave an older preview
-	# applicable under a now-missing/invalid source manifest.
-	invalidate("Checking the source-matched native generator…")
+	invalidate("Checking the native generator source…")
 	_runtime=_runtime_info()
 	if not _runtime.ok: return _say(_runtime.error)
 	return _request_capture("generate")
@@ -462,19 +472,30 @@ func _poll_thread() -> void:
 	if _thread_cancelled:
 		_thread_cancelled=false;phase="idle";_cleanup_job();_refresh();return
 	if _thread_kind=="prepare": _launch(result);return
-	if not result.ok: phase="idle";_say(result.error);_cleanup_job();return
+	if not result.ok:
+		phase="idle";_reset_preview()
+		if result.get("diagnostic_refusal",false) and _thread_kind=="decode" and not _job_dir.is_empty():
+			# Keep the exact rejected request and response as evidence. No proposal,
+			# material preview, acceptance receipt or native World action is created.
+			var retained:=_job_dir
+			_job_dir=""
+			_inspector.text=result.error+"\nRaw native request/response: "+retained+"\nResponse SHA-256: "+str(result.response_sha256)
+			_say(result.error+" Evidence retained: "+retained)
+		else:
+			_say(result.error);_cleanup_job()
+		return
 	if _thread_kind=="load_saved":
 		if not result.get("historical_only",false):
-			phase="idle";_say("Saved evidence has no read-only inspection authority.");return
+			phase="idle";_reset_preview();_say("Saved evidence has no read-only inspection authority.");return
 		proposal=result;document=result.result;prepared=result.prepared;phase="historical"
 		_runtime={"source":result.receipt.native_source,"sha256":result.receipt.cli_sha256}
 		_populate_rounds();_render();status="Saved construction evidence · historical receipt · Apply requires a fresh native generation.";_refresh();return
 	if result.get("historical_only",false):
-		phase="idle";_say("Historical inspection cannot replace fresh native generation.");_cleanup_job();return
+		phase="idle";_reset_preview();_say("Historical inspection cannot replace fresh native generation.");_cleanup_job();return
 	if _fence()!=_source_fence or _history()!=_source_history:
-		phase="idle";_say("Native source changed while generating; the preview is retired.");_cleanup_job();return
+		phase="idle";_reset_preview();_say("Native source changed while generating; the preview is retired.");_cleanup_job();return
 	if _child_exit_code!=0 and result.result.get("can_apply",false):
-		phase="idle";_say("Failed native execution cannot authorize an Apply.");_cleanup_job();return
+		phase="idle";_reset_preview();_say("Failed native execution cannot authorize an Apply.");_cleanup_job();return
 	if _child_exit_code==0: _historical_only=false
 	proposal=result;document=result.result;phase="ready";completed_generations+=1
 	_populate_rounds()
@@ -484,13 +505,21 @@ func _poll_thread() -> void:
 	_refresh()
 
 func _populate_rounds() -> void:
-	_round.clear();_round.add_item("Final composition",-1)
-	for i: int in document.rounds.size(): _round.add_item("Proposal round %d" % int(document.rounds[i].number),i)
+	# OptionButton uses -1 to request an automatic ID. Use the selected INDEX
+	# instead: index 0 is the final composition, indices 1..N are proposals.
+	_round.clear();_round.add_item("Final composition")
+	for i: int in document.rounds.size(): _round.add_item("Proposal round %d" % int(document.rounds[i].number))
+	_round.select(0)
+	_round.disabled=false;_layer.disabled=false
+
+func _selected_proposal_round_index() -> int:
+	# Native raster/inspector use -1 for final; provisional round zero is UI item one.
+	return _round.selected - 1
 
 func _render() -> void:
 	if document.is_empty() or prepared.is_empty(): return
-	var round_index:=_round.get_selected_id()
-	for i: int in [3,5,6,8]: _layer.set_item_disabled(i,round_index>=0)
+	var round_index:=_selected_proposal_round_index()
+	for layer: String in FINAL_ONLY_LAYERS: _layer.set_item_disabled(LAYERS.find(layer),round_index>=0)
 	if _layer.is_item_disabled(_layer.selected): _layer.select(0)
 	var bytes:=Protocol.raster(document,prepared,round_index,LAYERS[_layer.selected])
 	var size:Vector2i=prepared.recipe.size
@@ -516,18 +545,37 @@ func _render() -> void:
 			damage.get("mosaic_changed",0),damage.get("work",0),damage.get("reason","")])
 	if 13.0 in document.cells or 13 in document.cells:
 		rows.append("Stone keeps its native powder behavior. Solver acceptance does not certify physical stability.")
+	if prepared.recipe.get("negotiated_recovery",false):
+		rows.append("SWARM-006 recovery · %s · Apply %s. Offers and reservations require qualified native foreign joints." % [document.stop_reason,"authorized" if document.can_apply else "blocked"])
+		var metrics: Dictionary=document.get("metrics",{})
+		rows.append("Charged native work · FRAME %s / MOSAIC %s / categorical %s / coordinator %s" % [
+			metrics.get("frame_work",0),metrics.get("mosaic_work",0),metrics.get("solver_work",0),metrics.get("shared_work",0)])
+		var detail_count:=0
+		for record: Dictionary in document.rounds:
+			var attempts: Array=record.get("recovery_attempts",[])
+			rows.append("Round %s recovery · %d candidate attempts · %d native receptor receipts · frontier exhausted %s" % [
+				record.number,attempts.size(),record.get("mosaic_recovery_receipts",[]).size(),record.get("recovery_frontier_exhausted",false)])
+			for attempt: Dictionary in attempts:
+				if detail_count>=128: break
+				rows.append("Native alternative · "+JSON.stringify(attempt).left(1200));detail_count+=1
+		if detail_count>=128: rows.append("Additional alternative receipts remain in the retained native evidence.")
 	for obligation: Dictionary in document.obligations:
 		if obligation.get("state")=="STILL_REQUIRED": rows.append("Required socket %s · %s" % [obligation.connector,obligation.reason])
 	_inspector.text="\n".join(rows)
 
 func _inspect_cell(event: InputEvent) -> void:
-	if not event is InputEventMouseButton or not event.pressed or document.is_empty(): return
+	if not event is InputEventMouseButton or event.button_index!=MOUSE_BUTTON_LEFT or not event.pressed \
+		or document.is_empty() or prepared.is_empty() or _preview.texture==null: return
 	var size:Vector2i=prepared.recipe.size
 	var scale:=minf(_preview.size.x/size.x,_preview.size.y/size.y)
-	var point:=Vector2i((event.position-(_preview.size-Vector2(size)*scale)/2)/scale)
-	if not Rect2i(Vector2i.ZERO,size).has_point(point): return
+	if scale<=0: return
+	var local:Vector2=(event.position-(_preview.size-Vector2(size)*scale)/2)/scale
+	# Integer conversion truncates negative fractions to zero. Reject the
+	# letterbox before conversion so it cannot select a neighboring edge cell.
+	if not Rect2(Vector2.ZERO,Vector2(size)).has_point(local): return
+	var point:=Vector2i(local.floor())
 	var at:=point.y*size.x+point.x
-	var round_index:=_round.get_selected_id()
+	var round_index:=_selected_proposal_round_index()
 	if round_index>=0:
 		var record: Dictionary=document.rounds[round_index]
 		var frame: Dictionary=record.proposed_frame;var mosaic: Dictionary=record.proposed_mosaic
@@ -546,6 +594,7 @@ func _inspect_cell(event: InputEvent) -> void:
 	_inspector.text+="\n"+"\n".join(Protocol.inspect_sockets(document,round_index,point))
 
 func apply_construction() -> bool:
+	bench._commit_field(get_viewport())
 	if _read_only_evidence(): return _say("Saved evidence is read-only; Generate a fresh native proposal before Apply.")
 	if phase!="ready" or not document.get("can_apply",false): return _say("Apply requires an accepted native composition with all mandatory obligations resolved.")
 	if _fence()!=_source_fence or _history()!=_source_history: invalidate("Source changed; regenerate before Apply.");return false
@@ -575,7 +624,7 @@ func native_installed(_candidate: Dictionary) -> void:
 	if phase=="installing": phase="acknowledging"
 	else:
 		cancel("Native World replaced; previous preview and construction Undo retired.")
-		_undo.clear();_accepted.clear();proposal.clear();document.clear();_preview.texture=null
+		_undo.clear();_accepted.clear();_reset_preview();_refresh()
 
 func _acknowledge() -> void:
 	if not bench.host.pending_microscenario_apply.is_empty(): return

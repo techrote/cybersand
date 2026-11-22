@@ -1,0 +1,105 @@
+{
+  "schema": "swarm006-four-revealed-cases-independent-review/v1",
+  "reviewed_utc": "2026-11-21T20:22:55.273636+00:00",
+  "scope": "Read-only independent check of four intermediate successor development executions; not unseen or final-source qualification.",
+  "classification": "revealed robustness replay",
+  "definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
+  "producer_receipt_sha256": "70d98d6c2f9a1516844cdefa2b225c523e27be5325b42b60630707980f2d43c7",
+  "native_execution_performed": false,
+  "rows": [
+    {
+      "id": "foreign_solid--industrial_gui--s1376230570--recovery--r3",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-v2",
+      "raw_sha256": "c5dc6a9cd5e5d03373bce16680587a4b9a7e5c7a1073891793bc1d1d144f1186",
+      "digest_checks": 17,
+      "receiver_receipt_instances_checked": 6,
+      "physical_checks": {
+        "empty composition cannot Apply": 1,
+        "negotiated reservation ceiling": 4,
+        "native categorical assignment preserved": 4,
+        "current receiver host remains solid and owned": 24,
+        "receiver authored footprint, real host, category and edit history": 12
+      },
+      "invariants": {
+        "fail_closed": true,
+        "nested_refusal_explicit": true,
+        "empty_proposal_has_no_receipts": true,
+        "selected_mosaic_unchanged": true,
+        "selected_frame_unchanged": true,
+        "four_work_accounts_sum": true
+      },
+      "failures": []
+    },
+    {
+      "id": "foreign_solid--industrial_gui--s1376230570--recovery--r4",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-v2",
+      "raw_sha256": "3de9108b53ccf987ac5fced5be1b3d9522ca44b4414026ca228969a1e0abd695",
+      "digest_checks": 17,
+      "receiver_receipt_instances_checked": 6,
+      "physical_checks": {
+        "empty composition cannot Apply": 1,
+        "negotiated reservation ceiling": 4,
+        "native categorical assignment preserved": 4,
+        "current receiver host remains solid and owned": 24,
+        "receiver authored footprint, real host, category and edit history": 12
+      },
+      "invariants": {
+        "fail_closed": true,
+        "nested_refusal_explicit": true,
+        "empty_proposal_has_no_receipts": true,
+        "selected_mosaic_unchanged": true,
+        "selected_frame_unchanged": true,
+        "four_work_accounts_sum": true
+      },
+      "failures": []
+    },
+    {
+      "id": "foreign_solid--industrial_gui--s1997581108--recovery--r3",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-v2",
+      "raw_sha256": "c79dd0839b0c6d7467415cb0d0984adda3be1c634e7b8a6bffb847dbe2856f15",
+      "digest_checks": 17,
+      "receiver_receipt_instances_checked": 6,
+      "physical_checks": {
+        "empty composition cannot Apply": 1,
+        "negotiated reservation ceiling": 4,
+        "native categorical assignment preserved": 4,
+        "current receiver host remains solid and owned": 24,
+        "receiver authored footprint, real host, category and edit history": 12
+      },
+      "invariants": {
+        "fail_closed": true,
+        "nested_refusal_explicit": true,
+        "empty_proposal_has_no_receipts": true,
+        "selected_mosaic_unchanged": true,
+        "selected_frame_unchanged": true,
+        "four_work_accounts_sum": true
+      },
+      "failures": []
+    },
+    {
+      "id": "foreign_solid--industrial_gui--s1997581108--recovery--r4",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-v2",
+      "raw_sha256": "d8dc3bab95afb980c1a922640a14fbc32df24fc59ba7edfcc8b2b1b92d44b246",
+      "digest_checks": 17,
+      "receiver_receipt_instances_checked": 6,
+      "physical_checks": {
+        "empty composition cannot Apply": 1,
+        "negotiated reservation ceiling": 4,
+        "native categorical assignment preserved": 4,
+        "current receiver host remains solid and owned": 24,
+        "receiver authored footprint, real host, category and edit history": 12
+      },
+      "invariants": {
+        "fail_closed": true,
+        "nested_refusal_explicit": true,
+        "empty_proposal_has_no_receipts": true,
+        "selected_mosaic_unchanged": true,
+        "selected_frame_unchanged": true,
+        "four_work_accounts_sum": true
+      },
+      "failures": []
+    }
+  ],
+  "result": "PASS",
+  "historical_caveat": "Frozen original four histories and first successor repair failure remain preserved as failures."
+}

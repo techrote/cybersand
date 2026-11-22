@@ -41,6 +41,42 @@ struct SupportedNativeReceptor {
     Point root{}, contact{}, backing{}, facing{};
 };
 
+// SWARM-006 receipts describe actual MOSAIC-authored, source-bound native
+// bearing variants. A proposal is never a joint. The original connector and
+// categorical assignment remain immutable; every transition is replayed before
+// final material-path validation. No candidate or debit is refunded on failure.
+struct RecoveryAttempt {
+    std::uint32_t slot{}, connector{}, ordinal{}, round{}, source_instance{}, host_instance{};
+    Point root{}, contact{}, axis{};
+    unsigned length{}, variant{};
+    std::uint64_t work{};
+    std::string phase = "receiver_bid", outcome, reason;
+    bool operator==(const RecoveryAttempt&) const = default;
+};
+struct RecoveryCursor {
+    std::uint32_t slot{}, next{};
+    std::uint64_t observation{};
+    bool exhausted = false;
+    bool operator==(const RecoveryCursor&) const = default;
+};
+struct RecoveryEdit {
+    Point point{};
+    Material before = Material::Empty, after = Material::LimestoneBlock;
+    Role before_role = Role::Empty, after_role = Role::Structure;
+    std::uint32_t before_owner{}, after_owner{};
+    bool operator==(const RecoveryEdit&) const = default;
+};
+struct MosaicRecoveryReceipt {
+    std::uint32_t slot{}, connector{}, source_instance{}, host_instance{}, receiving_instance{}, port_id{};
+    std::uint32_t round{}, candidate{};
+    Point root{}, contact{}, backing{}, axis{}, cross{}, host{};
+    unsigned length{}, variant{};
+    Family source_family = Family::Frame, receiving_family = Family::Frame;
+    std::uint64_t source_digest{}, prior_digest{}, work{};
+    std::vector<RecoveryEdit> edits;
+    bool operator==(const MosaicRecoveryReceipt&) const = default;
+};
+
 struct MosaicRevision {
     Request request; // exact immutable input used by the unchanged native donor
     MosaicPlan plan;
@@ -54,6 +90,12 @@ struct MosaicRevision {
     std::vector<MosaicCategoryRevision> category_changes;
     std::vector<MosaicBearingReplacement> bearing_replacements;
     std::vector<SupportedNativeReceptor> supported_receptors;
+    std::vector<RecoveryAttempt> recovery_attempts;
+    std::vector<MosaicRecoveryReceipt> recovery_receipts;
+    std::vector<RecoveryCursor> recovery_frontier;
+    std::uint64_t recovery_work{};
+    std::uint64_t recovery_raster_work{}; // actual native finalization debit, included in recovery_work
+    bool recovery_frontier_exhausted = false;
     std::uint64_t supported_receptor_work{};
     std::vector<std::string> bearing_rejections;
     std::uint64_t bearing_work{}; // included in wrapper_work; never double debit
@@ -83,5 +125,18 @@ MosaicRevision propose_mosaic_revision(
 // material or independently certify a joint. Source and native backing must exist.
 bool author_supported_native_receptors(MosaicRevision&, const Result& immutable_frame,
     const std::vector<TransitionSlot>&, MosaicBudget&);
+
+// Retains the solved native masonry/categories and searches finite authored
+// bearing/corbel alternatives. Only MOSAIC writes its own provisional cells.
+// Original source slots, current peer occupancy and immutable World masks are
+// distinct inputs. Limits: <=8 reservations, <=64 candidates per slot per round,
+// <=2 source-face endpoints, 14 forward positions, 10 authored alternatives.
+MosaicRevision propose_mosaic_recovery(
+    const Request& base, const Request& frame_request, const Result& peer,
+    const Result& original_source, const std::vector<TransitionSlot>& original_slots,
+    const std::vector<std::uint8_t>& shared_zone, const MosaicPlan& previous,
+    const std::vector<MosaicRecoveryReceipt>& receipts,
+    const std::vector<RecoveryCursor>& frontier,
+    MosaicBudget&, unsigned round, bool optional_negotiation = true);
 
 } // namespace cybersand::gentek_swarm::assembly004

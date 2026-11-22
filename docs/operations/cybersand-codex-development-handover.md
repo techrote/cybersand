@@ -4,15 +4,41 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
+## Unified SWARM-004/005/006 mergedown — 2026-11-22
+
+The owner authorized a [single consolidated integration](swarm456-unified-mainline.md) from accepted main `662df51c`, preserving reviewed #715 and #716 histories. This supersedes separate later-merge instructions in the 21 November entries below. Retain historical evidence and defaults. New source, actual Linux/Windows runtimes, full qualification, independent final-source review and physical NVIDIA acceptance remain required. Keep Draft/HOLD until all gates permit one manual merge. No Swarm brush implementation belongs to this mission.
+
 ## SWARM-004/005 mainline reconciliation — 2026-11-21
 
 The [dedicated integration runbook](swarm45-mainline-integration.md) binds accepted main `0f0161af` to frozen donors #692/#693/#696/#697/#700. The donor graph is imported through #700, preserving main's current authoring, actor and Water behavior. Original 004/005 holdouts are complete and negative; previously unopened wording below retains its 20 November checkpoint scope. New-source native, graphical, package, provenance, independent review and physical-owner acceptance are separate admission gates. Keep Draft/HOLD until all pass. The concurrent SWARM-006 source and evidence remain untouched.
+
+## SWARM-006 integration successor — 2026-11-21
+
+The separate [integration finisher](swarm006-integration-finisher.md) repairs
+rejected native histories and the actual final-composition inspector on accepted
+main `0f0161af337d6d0cee8fa961a9667aff570a75b0`. Its new branch preserves all
+frozen donors and original 2,400-execution evidence, including negative results.
+Corrected-source replay is a revealed-corpus regression. The independently owned
+SWARM-004/005 accepted merge remains a precise later integration gate until its
+actual commit is published; do not substitute an unaccepted branch. Exact
+Windows source/pristine package, source custody and independent final reviews
+are recorded in the successor PR ledger. Retain Draft/HOLD and recovery OFF.
+
+## SWARM-006 native recovery — 2026-11-21
+
+Programme [#704](https://github.com/techrote/cybersand/issues/704) continues verified
+SWARM-005 on new native and Workbench branches, all Draft/HOLD. Read the
+[bounded recovery contract](../systems/gentek-negotiated-recovery.md) and
+[baseline custody audit](../audits/2026-11-21-swarm006-baseline-custody.md).
+Retain negative/exhausted development evidence and exact source identities; a
+preregistered corpus may be opened only after source and policy freeze.
+Do not import current main into this historical candidate or relabel old packages.
 
 ## SWARM-004 reciprocal assembly — 2026-11-20
 

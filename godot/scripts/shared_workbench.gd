@@ -1325,6 +1325,8 @@ func finish_art_history() -> void:
 	if paint_editor != null: paint_editor.finish_agent_history()
 
 func art_history_guard() -> String:
+	if reciprocal_panel != null and reciprocal_panel.busy():
+		return "Wait for reciprocal generation before changing World history."
 	return art_batches.history_block_reason() if art_batches != null else _unopened_history_error
 
 # Built-in #361 equipment starts. Each asks the native validator for one of
@@ -1519,6 +1521,10 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
+	# An external reciprocal job owns this source until it settles, including
+	# when its dock is hidden or territory painting is switched off. PAINT's
+	# own gesture routing remains unchanged when that separate job is idle.
+	if reciprocal_panel != null and reciprocal_panel.busy(): return
 	if reciprocal_panel != null and reciprocal_panel.world_input(event): return
 	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return

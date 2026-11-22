@@ -10,6 +10,8 @@ related-documents: [swarm004-workbench-playtest.md, swarm005-workbench-playtest.
 
 # SWARM-004 and SWARM-005 mainline integration
 
+**22 November successor:** the [unified SWARM-004/005/006 runbook](swarm456-unified-mainline.md) owns the single consolidated mergedown. This page preserves its predecessor checkpoint and evidence; earlier separate sequencing is historical.
+
 **Dedicated integration candidate; Draft/HOLD pending admission.** The owner
 authorized reconciliation, qualification and a manual merge after every admission
 gate passes on 21 November 2026. This is not an automatic merge authorization.

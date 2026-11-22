@@ -249,9 +249,10 @@ Input read_request(const std::filesystem::path& path, const std::string& source)
     if (source.empty() || source.size() > 128) throw std::invalid_argument("invalid request source identity");
     RequestTokens tokens(path);
     const auto protocol_magic = tokens.token();
-    if (protocol_magic != "SWARM004" && protocol_magic != "SWARM005")
+    if (protocol_magic != "SWARM004" && protocol_magic != "SWARM005" && protocol_magic != "SWARM006")
         throw std::invalid_argument("unknown reciprocal request protocol or version");
-    const auto protocol_version = protocol_magic == "SWARM005" ? tokens.integer(3, 3) : tokens.integer(1, 2);
+    const auto protocol_version = protocol_magic == "SWARM006" ? tokens.integer(4,4) :
+        protocol_magic == "SWARM005" ? tokens.integer(3, 3) : tokens.integer(1, 2);
     Input input;
     input.frame.gentek = Kind::Frameweaver;
     input.mosaic.gentek = Kind::Mosaic;
@@ -285,10 +286,11 @@ Input read_request(const std::filesystem::path& path, const std::string& source)
         input.mosaic.profile = parameters();
         input.options.shared_ownership = tokens.integer(0, 1) != 0;
     }
-    if (protocol_version == 3) {
+    if (protocol_version >= 3) {
         input.options.compact_native_termination = tokens.integer(0, 1) != 0;
         input.options.supported_native_receptors = tokens.integer(0, 1) != 0;
     }
+    if(protocol_version==4)input.options.negotiated_recovery=tokens.integer(0,1)!=0;
     const auto activation_count = tokens.integer(0, 16);
     for (int i = 0; i < activation_count; ++i) {
         const Point point{tokens.integer(0, input.frame.width - 1), tokens.integer(0, input.frame.height - 1)};

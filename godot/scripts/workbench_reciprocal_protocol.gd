@@ -20,18 +20,22 @@ const PARAMETERS := ["variation","irregularity","clutter","destruction","branchi
 # The suffix is Makefile.reciprocal's hash of its complete C++/header inputs.
 # A changed definition requires a separately qualified bridge; source labels or
 # a successful child exit do not authorize a different Gentek or larger budget.
-const NATIVE_DEFINITION := "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7"
+const NATIVE_DEFINITION := "74e24ee632902655e1f5cb230300f430251b545cbec700df3b90d77537eb8438"
+# Saved evidence admits only the exact definition/schema pairs emitted by
+# these reviewed serializers. It never authorizes current transport or Apply.
+const SAVED_SWARM004_DEFINITION := "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec"
+const HISTORICAL_DEFINITION_SCHEMAS := {
+	SAVED_SWARM004_DEFINITION:[5],
+	"12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b":[5],
+	"fe62e15412459c22c6f81e479fa1ff2917d7359d747581c9891b83fbf2f75618":[5],
+	"217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7":[5],
+	"afbae85af2c44f1e539a154fbee622a3ee7533a6caab9ad1f9c5190a8e5803e4":[5,6],
+	"72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0":[5,6]}
 const NATIVE_IDENTITIES := {
 	"frame":{"gentek":"FRAMEWEAVER","version":0,"fixture":"workbench_territory",
 		"definition":"frameweaver.frontier-growth-v0."+NATIVE_DEFINITION},
 	"mosaic":{"gentek":"MOSAIC","version":0,"fixture":"workbench_territory",
 		"definition":"mosaic.prepared-regions-v0."+NATIVE_DEFINITION}}
-# Saved inspection only: these reviewed schema-5 Workbench definitions share
-# the identities/limits below. They never broaden live decode or Apply authority.
-const SAVED_SWARM004_DEFINITION := "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec"
-const SAVED_DEFINITIONS := [SAVED_SWARM004_DEFINITION,
-	"12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b",
-	"fe62e15412459c22c6f81e479fa1ff2917d7359d747581c9891b83fbf2f75618",NATIVE_DEFINITION]
 const NATIVE_LIMITS := {"instances":64,"frontier":256,"candidates":8192,"connectors_per_instance":8,
 	"affordances":256,"cohesion_patches":8,"cohesion_cells_per_patch":512,"work":2000000,"solver_work":4000000,"bytes":16777216}
 const NATIVE_SWITCHES := ["vocabulary","hierarchy","frame_adaptation","mosaic_adaptation","native_mosaic_bearing"]
@@ -83,6 +87,52 @@ static func point_list(value: Variant, size: Vector2i) -> bool:
 	if not value is Array or value.size()>size.x*size.y: return false
 	for point: Variant in value:
 		if not point is Array or point.size()!=2 or not integer(point[0],0,size.x-1) or not integer(point[1],0,size.y-1): return false
+	return true
+
+static func bounded_vector(value: Variant, bound: int) -> bool:
+	return value is Array and value.size()==2 and integer(value[0],-bound,bound) and integer(value[1],-bound,bound)
+
+static func recovery_record(record: Dictionary, size: Vector2i) -> bool:
+	# Admission bounds protect the inspector. Native replay and the unchanged
+	# material-path validator remain authoritative for reservation/joint truth.
+	if not integer(record.get("recovery_work"),0,2000000) or not record.get("recovery_frontier_exhausted") is bool: return false
+	for key: String in ["recovery_attempts","mosaic_recovery_receipts","recovery_frontier"]:
+		if not record.get(key) is Array: return false
+	if record.recovery_attempts.size()>520 or record.mosaic_recovery_receipts.size()>8 or record.recovery_frontier.size()>8: return false
+	var attempted_work:=0
+	for attempt: Variant in record.recovery_attempts:
+		if not attempt is Dictionary: return false
+		for key: String in ["slot","connector","source_instance","host_instance"]:
+			if not integer(attempt.get(key),0,4294967295): return false
+		if not integer(attempt.get("round"),1,4) or not scalar_same(attempt.round,record.number) \
+			or not integer(attempt.get("ordinal"),0,261) or not integer(attempt.get("length"),0,6) \
+			or not integer(attempt.get("variant"),0,3) or not integer(attempt.get("work"),0,2000000) \
+			or not point_list([attempt.get("root")],size) or not bounded_vector(attempt.get("contact"),384) \
+			or not bounded_vector(attempt.get("axis"),1): return false
+		for key: String in ["phase","outcome","reason"]:
+			if not attempt.get(key) is String or attempt[key].length()>1024: return false
+		attempted_work+=int(attempt.work)
+	if attempted_work>int(record.recovery_work): return false
+	for cursor: Variant in record.recovery_frontier:
+		if not cursor is Dictionary or not integer(cursor.get("slot"),0,4294967295) or not integer(cursor.get("next"),0,262) \
+			or not cursor.get("exhausted") is bool or not cursor.get("observation") is String or cursor.observation.length()!=16: return false
+	for receipt: Variant in record.mosaic_recovery_receipts:
+		if not receipt is Dictionary: return false
+		for key: String in ["slot","connector","source_instance","host_instance","receiving_instance","port_id"]:
+			if not integer(receipt.get(key),0,4294967295): return false
+		if not integer(receipt.get("round"),1,int(record.number)) or not integer(receipt.get("candidate"),0,261) \
+			or not integer(receipt.get("length"),0,6) or not integer(receipt.get("variant"),0,3) \
+			or not integer(receipt.get("work"),0,2000000) or not receipt.get("edits") is Array or receipt.edits.size()>14 \
+			or not point_list([receipt.get("root"),receipt.get("contact"),receipt.get("backing"),receipt.get("host")],size) \
+			or not bounded_vector(receipt.get("axis"),1) or not bounded_vector(receipt.get("cross"),1): return false
+		for key: String in ["source_family","receiving_family"]:
+			if not receipt.get(key) is String or receipt[key].length()>96: return false
+		for key: String in ["source_digest","prior_digest"]:
+			if not receipt.get(key) is String or receipt[key].length()!=16: return false
+		for edit: Variant in receipt.edits:
+			if not edit is Dictionary or not point_list([edit.get("point")],size) or not material(edit.get("before")) or not material(edit.get("after")): return false
+			for key: String in ["before_role","after_role","before_owner","after_owner"]:
+				if not integer(edit.get(key),0,4294967295): return false
 	return true
 
 static func native_preview(value: Variant, size: Vector2i, allow_empty: bool) -> bool:
@@ -197,14 +247,17 @@ static func prepare(request: Dictionary, capture: Dictionary) -> Dictionary:
 	var supported: Variant=request.get("supported_native_receptors",false)
 	if not compact is bool or not supported is bool:
 		return fail("SWARM-005 source feasibility and native receptors must be explicit booleans.")
-	var experimental: bool=compact or supported
+	var recovery: Variant=request.get("negotiated_recovery",false)
+	if not recovery is bool: return fail("Bounded reciprocal recovery must be an explicit boolean.")
+	var experimental: bool=compact or supported or recovery
 	var independent: bool=parameter_line(frame_parameters)!=parameter_line(mosaic_parameters) or not sharing or experimental
-	var magic: String="SWARM005 3" if experimental else ("SWARM004 2" if independent else "SWARM004 1")
+	var magic: String="SWARM006 4" if recovery else ("SWARM005 3" if experimental else ("SWARM004 2" if independent else "SWARM004 1"))
 	var lines := PackedStringArray([magic,"%d %d %d %d %d %d %d %d" % [size.x,size.y,
 		request.seed,origin.x,origin.y,request.rounds,request.shared_extent,request.orientation],request.profile])
 	lines.append(parameter_line(frame_parameters)+(" 1" if request.optional else " 0"))
 	if independent: lines.append(parameter_line(mosaic_parameters)+(" 1" if sharing else " 0"))
-	if experimental: lines.append("%d %d" % [int(compact),int(supported)])
+	if recovery: lines.append("%d %d 1" % [int(compact),int(supported)])
+	elif experimental: lines.append("%d %d" % [int(compact),int(supported)])
 	lines.append(str(request.activation.size()))
 	for point: Vector2i in request.activation:
 		if not Rect2i(Vector2i.ZERO,size).has_point(point): return fail("Activation point is outside its territory.")
@@ -242,21 +295,76 @@ static func decode(path: String, prepared: Dictionary, expected_source: String) 
 		return fail("Native output is not a complete evidence document.")
 	return decode_document(parser.data,bytes,prepared,expected_source)
 
-static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared: Dictionary, expected_source: String) -> Dictionary:
-	return _decode_document(result,bytes,prepared,expected_source,"")
+static func receipt_same(value: Variant, expected: Variant) -> bool:
+	# JSON numbers are floats in Godot. Compare exact integral values while
+	# retaining strict boolean/string and bounded expected-container types.
+	if expected is Dictionary:
+		if not value is Dictionary or value.size()!=expected.size(): return false
+		for key: Variant in expected:
+			if not value.has(key) or not receipt_same(value[key],expected[key]): return false
+		return true
+	if expected is Array:
+		if not value is Array or value.size()!=expected.size(): return false
+		for at: int in expected.size():
+			if not receipt_same(value[at],expected[at]): return false
+		return true
+	if expected==null: return value==null
+	return scalar_same(value,expected)
 
-static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepared: Dictionary, expected_source: String,
-		saved_definition: String) -> Dictionary:
-	if not saved_definition.is_empty() and saved_definition not in SAVED_DEFINITIONS:
-		return fail("Saved native definition is not qualified for historical inspection.")
-	var identities:Dictionary=NATIVE_IDENTITIES
-	if not saved_definition.is_empty():
-		identities=NATIVE_IDENTITIES.duplicate(true)
-		identities.frame.definition="frameweaver.frontier-growth-v0."+saved_definition
-		identities.mosaic.definition="mosaic.prepared-regions-v0."+saved_definition
-	if not scalar_same(result.get("schema"),5) or not scalar_same(result.get("type"),"reciprocal_assembly") \
+static func empty_admission_refusal(result: Dictionary) -> bool:
+	# Only the frozen preflight empty state can omit generation work counters or
+	# source vectors. It carries no geometry, accepted history or Apply authority.
+	if result.get("can_apply")!=false or result.get("status") not in ["exhausted","invalid"] \
+		or result.get("digest")!="0000000000000000" or not result.has("damage_derivative") or result.damage_derivative!=null: return false
+	if result.get("stop_reason")!=("budget_exhaustion" if result.status=="exhausted" else "invalid_native_proposal"): return false
+	for key: String in ["rounds","cells","ledger","rules","obligations","joints","rejections"]:
+		if not result.get(key) is Array or not result[key].is_empty(): return false
+	var empty: Dictionary={"gentek":"FRAMEWEAVER","implementation":"","definition":"","source":"","seed":0,
+		"status":"complete","termination":"complete","request_digest":"0000000000000000",
+		"material_digest":"0000000000000000","digest":"0000000000000000","width":0,"height":0,
+		"work":0,"candidates":0,"solver_work":0,"backtracks":-1,"protected_violations":0,"illegal_overlaps":0,
+		"unresolved_joints":0,"metrics":{},"rejected":{},"notes":[],"cells":[],"roles":[],"provenance":[],
+		"instances":[],"connectors":[],"attachments":[],"boundary":{"hard":[],"soft":[],"protected":[],"transition":[]}}
+	return receipt_same(result.get("original_frame"),{"core":empty,"result":empty,"slots":[],"reservation_rejections":[],"source_feasibility":[]})
+
+static func saved_definition(result: Dictionary) -> String:
+	var inputs: Variant=result.get("input")
+	if not inputs is Dictionary or not inputs.get("frame") is Dictionary or not inputs.get("mosaic") is Dictionary: return ""
+	var definitions: Array=HISTORICAL_DEFINITION_SCHEMAS.keys()
+	if NATIVE_DEFINITION not in definitions: definitions.append(NATIVE_DEFINITION)
+	for definition: String in definitions:
+		if not scalar_same(inputs.frame.get("definition"),"frameweaver.frontier-growth-v0."+definition) \
+			or not scalar_same(inputs.mosaic.get("definition"),"mosaic.prepared-regions-v0."+definition): continue
+		var schemas: Array=[5,6] if definition==NATIVE_DEFINITION else HISTORICAL_DEFINITION_SCHEMAS[definition]
+		for schema: int in schemas:
+			if scalar_same(result.get("schema"),schema): return definition
+	return ""
+
+static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared: Dictionary, expected_source: String, historical: bool = false) -> Dictionary:
+	var qualified_definition:=saved_definition(result) if historical else NATIVE_DEFINITION
+	if qualified_definition.is_empty(): return fail("Saved Gentek definitions or schema are unknown or do not share one reviewed native source.")
+	var recovery: bool=prepared.recipe.get("negotiated_recovery",false)==true
+	if not scalar_same(result.get("schema"),6 if recovery else 5) or not scalar_same(result.get("type"),"reciprocal_assembly") \
 		or not scalar_same(result.get("source"),expected_source) or not result.get("can_apply") is bool:
 		return fail("Native output schema or source identity does not match this executable request.")
+	if recovery and (not scalar_same(result.get("programme"),"GENTEK-SWARM-006") \
+		or not scalar_same(result.get("identity"),"gentek_swarm_006_negotiated_recovery_v1")):
+		return fail("Native recovery evidence changed the qualified SWARM-006 protocol.")
+	var header_only:=false
+	var admission_refusal: bool=recovery and empty_admission_refusal(result)
+	if recovery:
+		var metrics: Variant=result.get("metrics")
+		if not metrics is Dictionary or metrics.size()>512: return fail("Native recovery evidence has malformed work diagnostics.")
+		for key: Variant in metrics:
+			if not key is String or key.length()>128 or not integer(metrics[key],0,9007199254740991):
+				return fail("Native recovery evidence has malformed work counters.")
+		if not integer(metrics.get("input_header_only",0),0,1): return fail("Native input-header receipt is malformed.")
+		header_only=int(metrics.get("input_header_only",0))==1
+		if header_only and (not admission_refusal or not receipt_same(metrics,{"frame_work":0,"input_header_only":1,"total_charged_work":0})):
+			return fail("Native header refusal supplied geometry, work, history or Apply authority.")
+		for key: String in ["frame_work","mosaic_work","solver_work","shared_work"]:
+			if not integer(metrics.get(key,0 if admission_refusal else null),0,4000000 if key=="solver_work" else 2000000):
+				return fail("Native recovery evidence exceeds a qualified aggregate work allowance.")
 	for key: String in ["status","reason","stop_reason"]:
 		if not result.get(key) is String or result[key].length()>8192: return fail("Native status or reason is malformed.")
 	var recipe: Dictionary = prepared.recipe
@@ -272,8 +380,8 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 		or recipe.activation.is_empty() or recipe.activation.size()>16:
 		return fail("Native evidence has an invalid bounded authoring recipe.")
 	if not recipe.get("shared_ownership",true) is bool: return fail("Native evidence has invalid negotiated territory sharing.")
-	for key: String in ["compact_native_termination","supported_native_receptors"]:
-		if not recipe.get(key,false) is bool: return fail("SWARM-005 evidence has a nonboolean native closure control.")
+	for key: String in ["compact_native_termination","supported_native_receptors","negotiated_recovery"]:
+		if not recipe.get(key,false) is bool: return fail("Experimental evidence has a nonboolean native closure control.")
 	for gentek: String in ["frame","mosaic"]:
 		if not normalized_parameters(parameters_for(recipe,gentek)): return fail("Native evidence has invalid independent Gentek controls.")
 	var inputs: Variant = result.get("input")
@@ -283,15 +391,18 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 		or not scalar_same(options.get("shared_extent"),recipe.shared_extent) or not scalar_same(options.get("orientation_preference"),recipe.orientation) \
 		or not scalar_same(options.get("optional_negotiation"),recipe.optional) or not scalar_same(options.get("final_validation"),true) \
 		or not scalar_same(options.get("shared_ownership"),recipe.get("shared_ownership",true)) \
-		or not inputs.get("shared_zone") is Array or inputs.shared_zone.size()!=count:
+		or not scalar_same(options.get("negotiated_recovery",false),recipe.get("negotiated_recovery",false)) \
+		or not inputs.get("shared_zone") is Array or inputs.shared_zone.size()!=(0 if header_only else count):
 		return fail("Native evidence changed the negotiated controls or final-validation requirement.")
-	for key:String in ["compact_native_termination","supported_native_receptors"]:
-		# Only the frozen #693 format predates these fields. Its absent options
-		# mean false; it cannot acquire SWARM-005 capabilities retroactively.
-		var legacy:bool=saved_definition==SAVED_SWARM004_DEFINITION
-		var value:Variant=options.get(key,false if legacy else null)
+	for key: String in ["compact_native_termination","supported_native_receptors"]:
+		# Only the original SWARM004 saved format predates these controls.
+		# Later serializers always emit them, including when both are OFF.
+		var legacy: bool=historical and qualified_definition==SAVED_SWARM004_DEFINITION
+		var value: Variant=options.get(key,false if legacy else null)
 		if (legacy and not scalar_same(value,false)) or not scalar_same(value,recipe.get(key,false)):
 			return fail("Native evidence changed the negotiated native closure controls.")
+	if recovery and not scalar_same(options.get("recovery_offers"),true):
+		return fail("Recovery preview requires the declared native offer policy.")
 	for key: String in NATIVE_SWITCHES:
 		if not scalar_same(options.get(key),true):
 			return fail("Native evidence changed a qualified architectural rule switch.")
@@ -303,8 +414,10 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 			or not integer(input.origin[0],-1000000,1000000) or not integer(input.origin[1],-1000000,1000000) \
 			or int(input.origin[0])!=recipe.origin.x or int(input.origin[1])!=recipe.origin.y:
 			return fail("Native "+gentek+" evidence does not describe the requested source, seed, extent or origin.")
-		for key: String in identities[gentek]:
-			if not scalar_same(input.get(key),identities[gentek][key]):
+		for key: String in NATIVE_IDENTITIES[gentek]:
+			var identity: Variant=NATIVE_IDENTITIES[gentek][key]
+			if key=="definition": identity=str(identity).trim_suffix(NATIVE_DEFINITION)+qualified_definition
+			if not scalar_same(input.get(key),identity):
 				return fail("Native evidence changed the qualified Gentek identity, definition or authoring fixture.")
 		if not input.get("limits") is Dictionary or input.limits.size()!=NATIVE_LIMITS.size():
 			return fail("Native evidence omitted its qualified resource limits.")
@@ -318,23 +431,23 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 		for key: String in ["hard","soft","protected","transition"]:
 			if not input.neighbors.get(key) is Array or not input.neighbors[key].is_empty():
 				return fail("Native evidence introduced an unauthored initial neighbor obligation.")
-		if not input.get("context") is Array or input.context.size()!=count:
+		if not input.get("context") is Array or input.context.size()!=(0 if header_only else count):
 			return fail("Native "+gentek+" evidence has an incomplete immutable source context.")
 		if not input.get("profile") is Dictionary or not scalar_same(input.profile.get("name"),recipe.profile) \
-			or not input.get("activation") is Array or input.activation.size()!=recipe.activation.size():
+			or not input.get("activation") is Array or input.activation.size()!=(0 if header_only else recipe.activation.size()):
 			return fail("Native evidence changed the authored expression or activation distribution.")
 		for key: String in PARAMETERS:
 			var value: Variant=input.profile.get(key)
 			if not (value is int or value is float) or not is_finite(value) \
 				or absf(float(value)-float(parameters_for(recipe,gentek)[key]))>0.00000001:
 				return fail("Native evidence changed the requested control "+key+".")
-		for index: int in recipe.activation.size():
+		for index: int in (0 if header_only else recipe.activation.size()):
 			var point: Variant=input.activation[index]
 			if not point is Array or point.size()!=2 or not scalar_same(point[0],recipe.activation[index].x) or not scalar_same(point[1],recipe.activation[index].y):
 				return fail("Native evidence changed the sampled activation stroke.")
 		for mask: String in ["eligible","protected","transition"]:
-			if not input.get(mask) is Array or input[mask].size()!=count: return fail("Native evidence has an incomplete "+mask+" mask.")
-		for at: int in count:
+			if not input.get(mask) is Array or input[mask].size()!=(0 if header_only else count): return fail("Native evidence has an incomplete "+mask+" mask.")
+		for at: int in (0 if header_only else count):
 			if not material(input.context[at]) or int(input.context[at])!=int(prepared.context[at]):
 				return fail("Native "+gentek+" evidence changed the captured source material context.")
 			var eligible: int=masks.frame[at] if gentek=="frame" else masks.mosaic[at]
@@ -343,6 +456,13 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 				or not scalar_same(input.transition[at],int(masks.shared[at])) or not scalar_same(inputs.shared_zone[at],shared) \
 				or int(prepared.shared[at])!=shared:
 				return fail("Native evidence changed exclusive ownership, protected space or the bounded shared zone.")
+	if admission_refusal:
+		if not receipt_same(result.get("ledger_columns"),LEDGER_COLUMNS) \
+			or not receipt_same(result.get("owner_names"),["empty","FRAMEWEAVER","MOSAIC","immutable_environment"]):
+			return fail("Native admission refusal changed ownership or ledger semantics.")
+		# Return a nonauthorizing diagnostic, never a proposal with substituted masks.
+		return {"ok":false,"diagnostic_refusal":true,"native_status":result.status,"response_sha256":digest(bytes),
+			"error":"Native %s · %s · %s. Apply remains disabled." % [result.status,result.stop_reason,result.reason]}
 	if not result.get("cells") is Array or not result.get("ledger") is Array: return fail("Native composition has no material and ownership arrays.")
 	var empty_failure: bool = not result.can_apply and result.cells.is_empty() and result.ledger.is_empty()
 	if (result.cells.size() != count and not empty_failure) or (result.ledger.size() != count and not empty_failure) \
@@ -399,6 +519,7 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 			if not integer(round_value.get(counter),0,9007199254740991): return fail("Invalid native round counter.")
 		for proposal: Variant in [round_value.get("proposed_frame"),round_value.get("proposed_mosaic")]:
 			if not native_preview(proposal,size,not result.can_apply): return fail("Native round has incomplete provisional cells, sockets or part provenance.")
+		if recovery and not recovery_record(round_value,size): return fail("Native recovery search, work or reservation evidence exceeds its bounded protocol.")
 	var damage: Variant=result.get("damage_derivative")
 	if damage!=null:
 		if not damage is Dictionary or not frame_preview(damage.get("frame"),size,not result.can_apply) \
@@ -428,7 +549,7 @@ static func _decode_document(result: Dictionary, bytes: PackedByteArray, prepare
 				return fail("Native Apply is inconsistent with an unresolved mandatory obligation.")
 	var pixels := raster(result,prepared,-1,"Materials")
 	return {"ok":true,"result":result,"proposal_sha256":digest(bytes),"cells":cells,"before":before,
-		"pixels":pixels,"file_bytes":bytes.size(),"historical_only":not saved_definition.is_empty()}
+		"pixels":pixels,"file_bytes":bytes.size(),"historical_only":historical}
 
 static func load_saved(map_path: String) -> Dictionary:
 	var map_file:=FileAccess.open(map_path,FileAccess.READ)
@@ -476,7 +597,8 @@ static func load_saved(map_path: String) -> Dictionary:
 		"shared_extent":options.get("shared_extent"),"orientation":options.get("orientation_preference"),"optional":options.get("optional_negotiation"),
 		"shared_ownership":options.get("shared_ownership",true),
 		"compact_native_termination":options.get("compact_native_termination",false),
-		"supported_native_receptors":options.get("supported_native_receptors",false)}
+		"supported_native_receptors":options.get("supported_native_receptors",false),
+		"negotiated_recovery":options.get("negotiated_recovery",false)}
 	var mosaic: Variant=document.input.get("mosaic")
 	if not mosaic is Dictionary or not mosaic.get("profile") is Dictionary: return fail("Saved construction has no independent MOSAIC controls.")
 	recipe["gentek_parameters"]={"frame":input.profile.duplicate(),"mosaic":mosaic.profile.duplicate()}
@@ -489,13 +611,7 @@ static func load_saved(map_path: String) -> Dictionary:
 	var prepared: Dictionary={"recipe":recipe,"context":PackedInt32Array(input.context),"protected":PackedByteArray(input.protected),
 		"interface":PackedByteArray(input.transition),"shared":PackedByteArray(document.input.shared_zone),
 		"guards":guards,"request_sha256":receipt.get("request_sha256","")}
-	var saved_definition:=""
-	for definition:String in SAVED_DEFINITIONS:
-		if scalar_same(input.get("definition"),"frameweaver.frontier-growth-v0."+definition) \
-			and scalar_same(mosaic.get("definition"),"mosaic.prepared-regions-v0."+definition):
-			saved_definition=definition;break
-	if saved_definition.is_empty(): return fail("Saved Gentek definitions are unknown or do not share one reviewed native source.")
-	var result:=_decode_document(document,bytes,prepared,str(receipt.get("native_source","")),saved_definition)
+	var result:=decode_document(document,bytes,prepared,str(receipt.get("native_source","")),true)
 	if not result.ok: return result
 	result["prepared"]=prepared;result["receipt"]=receipt
 	return result
