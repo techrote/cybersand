@@ -125,17 +125,18 @@ def main():
     # delivered DLL its own manifest rather than presenting the old one.
     runtime_manifest = args.output / "godot/addons/cybersand_native/runtime-provenance.json"
     runtime_manifest.rename(runtime_manifest.with_name("retained-runtime-provenance.reference.json"))
+    # The historical entry name is preserved, but no longer bypasses the
+    # source-pinned offline verification gate: both batch entry points check
+    # every immutable delivered file before invoking the bundled Godot.
     (args.output / "Open Workbench.cmd").write_text(
-        '@echo off\ncd /d "%~dp0"\n'
-        f'set CYBERSAND_SOURCE_REVISION={manifest["source_commit"]}\n'
-        f'"%~dp0{console.name}" --headless --path "%~dp0godot" --editor --quit\n'
-        'if errorlevel 1 (pause & exit /b 1)\n'
-        f'start "" "%~dp0{args.engine.name}" --path "%~dp0godot" -- --workbench\n',
+        '@echo off\nsetlocal\ncd /d "%~dp0"\n'
+        'call "%~dp0Verify and Open Workbench.cmd"\n'
+        'exit /b %errorlevel%\n',
         encoding="utf-8", newline="\r\n")
     # The guide follows the same committed source as the application payload;
     # a working-tree documentation edit must not enter a source-matched package.
     shutil.copyfile(args.output / args.readme, args.output / "READ-ME.md")
-    # The original legacy launcher is retained for historical compatibility.
+    # The original entry point now delegates to this checked launcher.
     # New packages expose a fail-closed owner launcher: pin source and check
     # every immutable package file before importing or starting the GUI.
     (args.output / "Verify and Open Workbench.cmd").write_text(

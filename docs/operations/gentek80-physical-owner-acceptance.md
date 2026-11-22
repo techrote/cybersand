@@ -18,7 +18,7 @@ The verifier is committed at tools/acceptance/gentek80_owner.ps1; its companion 
 
 **Always obtain the 64-digit expected ZIP SHA-256 from a separate trusted handoff.** A hash embedded inside the same untrusted ZIP cannot authenticate that ZIP. Provide the exact 40-digit Git commit in -ExpectedSource. The owner verifier compares original ZIP hash, archive member safety, complete extracted SHA-256 inventory, source/build identity, Godot executable hashes, native GDExtension, Rapier, Visual C++ runtime and unexpected files. It refuses changed manifests, missing payload, ZipSlip, ZIP case collisions and manifest source mismatches.
 
-The project can regenerate cache files inside godot/.godot/; this is the only expected unlisted mutable project subtree. Capture results **outside** the package. The existing Open Workbench.cmd is retained for backwards compatibility, but new owner deliveries should use **Verify and Open Workbench.cmd** to fail closed before import or GUI startup.
+The project can regenerate cache files inside godot/.godot/; this is the only expected unlisted mutable project subtree. Capture results **outside** the package. The familiar Open Workbench.cmd name is retained for backwards compatibility, but in **new** deliveries it delegates to Verify and Open Workbench.cmd. Both entry points now fail closed before import or GUI startup; previously published historical ZIPs retain their historical launcher behavior.
 
 ## Verify, extract and run
 
@@ -66,7 +66,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Collect -Pa
 
 Optional, explicitly supplied profiler evidence: -FrameIntervalsCsv 'D:\Captures\real-frames.csv' -FrameCaptureTool 'tool and version'.
 
-The output includes a structured gentek80-owner-report.json, OS/driver/DPI information and SHA-256 hashes of *only the evidence files explicitly selected*. It performs no uploads, credentials collection, desktop capture, synthetic screenshots or mouse/keyboard trace fabrication. Inspect and redact selected logs before sharing. The report distinguishes OWNER-PASS-RECORDED, OWNER-FAILED, INCOMPLETE and PACKAGE-REJECTED; owner statements remain subject to independent review.
+The output includes a structured gentek80-owner-report.json, OS/driver/DPI information and SHA-256 hashes of *only the evidence files explicitly selected*. It performs no uploads, credentials collection, desktop capture, synthetic screenshots or mouse/keyboard trace fabrication. Inspect and redact selected logs before sharing. The report distinguishes OWNER-PASS-RECORDED, OWNER-FAILED, INCOMPLETE and PACKAGE-REJECTED. Even all-PASS owner declarations remain **INCOMPLETE** when the two distinct five-style projects, their recorded negative origin, two named maps, real screenshot, renderer, original frame samples or physical Windows 11/NVIDIA evidence are missing. Owner statements remain subject to independent review.
 
 ## Outstanding gates
 

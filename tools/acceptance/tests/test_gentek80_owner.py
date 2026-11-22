@@ -156,6 +156,15 @@ class WindowsAdmission(unittest.TestCase):
                     DecisionsPath=form, ResultsDirectory=self.root / "accepted")
         receipt = json.loads((self.root / "accepted" / "gentek80-owner-report.json").read_text())
         self.assertEqual(receipt["status"], "INCOMPLETE")
+        # A set of unsubstantiated PASS flags is not physical acceptance.
+        for row in data["cases"]:
+            row["decision"] = "PASS"
+        form.write_text(json.dumps(data), encoding="utf8")
+        self.run_ps("Collect", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    DecisionsPath=form, ResultsDirectory=self.root / "unsubstantiated-pass")
+        dishonest = json.loads((self.root / "unsubstantiated-pass" / "gentek80-owner-report.json").read_text())
+        self.assertEqual(dishonest["status"], "INCOMPLETE")
+        self.assertTrue(dishonest["owner_metadata_issues"])
 
 
 if __name__ == "__main__":
