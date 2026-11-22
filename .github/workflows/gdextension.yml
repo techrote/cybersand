@@ -410,7 +410,7 @@ jobs:
     timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_job_minutes) }}
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 16
       matrix: ${{ fromJSON(needs.execution-plan.outputs.windows_matrix) }}
     defaults:
       run:
@@ -644,7 +644,7 @@ jobs:
     timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.linux_job_minutes) }}
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 16
       matrix: ${{ fromJSON(needs.execution-plan.outputs.linux_matrix) }}
     steps:
       - name: Check out exact source
