@@ -200,7 +200,9 @@ class World {
 public:
     // ACT-004 admits eight actors with at most eight rectangular parts each.
     // These are transient occupancy identities, never authoritative cell IDs.
-    static constexpr std::uint16_t kMaximumTransientBodies = 64;
+    // Bounded response workspace: IDs stay uint16 and float32-exact. Authored
+    // Workbench budgets retain 8 actors / 64 bodies unless explicitly expanded.
+    static constexpr std::uint16_t kMaximumTransientBodies = 4096;
 
     explicit World(WorldConfig config = {});
     ~World();

@@ -3441,7 +3441,7 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 	var models: Array[StringName] = [model_id]
 	if demo_npcs:
 		for candidate: StringName in PhysicalCatalog.rigs_in_set(PhysicalCatalog.set_for(model_id)):
-			if candidate != model_id and models.size() < PhysicalSession.MAX_ACTORS:
+			if candidate != model_id and models.size() < PhysicalSession.Capacity.DEFAULT_ACTORS:
 				models.append(candidate)
 	var definitions: Array = []
 	var next_x: float = spawn.x + CyberSampledCharacter.BODY_SIZE.x * 0.5
@@ -4188,6 +4188,7 @@ func _workbench_key(key: Key) -> bool:
 func _publish_workbench_keyboard() -> void:
 	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
+		or (shared_workbench.actor_interaction != null and shared_workbench.actor_interaction.blocks_human_input()) \
 		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
 		if not _actor_input_rearm: cancel_playable_course_input()
 		return

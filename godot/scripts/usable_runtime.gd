@@ -21,6 +21,17 @@ const POWDERS: Array[int] = [2, 14, 23, 26, 27]
 const LIQUIDS: Array[int] = [3, 8, 12, 16, 20, 21, 24, 32, 33, 36]
 const GLASSES: Array[int] = [35, 55, 71, 72]
 
+# Per-session budgets scale only when an explicitly admitted physical roster
+# exceeds the ordinary eight slots. These remain finite and reported; no actor
+# is disabled or deleted to enforce frame-rate targets.
+var _actor_limit: int = MAX_ACTORS
+var _projectile_limit: int = MAX_PROJECTILES
+var _object_limit: int = MAX_OBJECTS
+var _effect_limit: int = MAX_EFFECTS
+var _hit_limit: int = MAX_HITS
+var _read_limit: int = MAX_READS
+var _write_limit: int = MAX_WRITES
+
 var _actors: Array = []
 var _projectiles: Array = []
 var _objects: Array = []
@@ -49,9 +60,20 @@ func _new_actor() -> Dictionary:
 		"position": Vector2.ZERO,
 	}
 
-func configure(actor_count: int) -> bool:
-	if actor_count < 0 or actor_count > MAX_ACTORS:
+func configure(actor_count: int, actor_limit: int = MAX_ACTORS) -> bool:
+	# Ordinary sampled equipment keeps eight slots; the physical owner explicitly
+	# admits its checked roster without preallocating the experimental maximum.
+	if actor_limit < 0 or actor_limit > CyberRigidBodyCoupling.MAX_BODIES \
+		or actor_count < 0 or actor_count > actor_limit:
 		return false
+	_actor_limit = actor_limit
+	var scale := maxi(1, ceili(float(actor_count) / float(MAX_ACTORS)))
+	_projectile_limit = MAX_PROJECTILES * scale
+	_object_limit = MAX_OBJECTS * scale
+	_effect_limit = MAX_EFFECTS * scale
+	_hit_limit = MAX_HITS * scale
+	_read_limit = MAX_READS * scale
+	_write_limit = MAX_WRITES * scale
 	_actors.clear()
 	for _i: int in range(actor_count):
 		_actors.append(_new_actor())
@@ -297,7 +319,7 @@ func _apply_tool(owner: int, definition: Dictionary, aim: Vector2, power: float,
 	return "applied"
 
 func _launch(owner: int, definition: Dictionary, aim: Vector2, power: float, world) -> String:
-	if _projectiles.size() >= MAX_PROJECTILES:
+	if _projectiles.size() >= _projectile_limit:
 		return "capacity"
 	var muzzle: Vector2 = _projectile_muzzle(owner, aim)
 	if _inside_foreign_actor(muzzle, owner) >= 0 or _read(Vector2i(muzzle.floor()), world) != EMPTY:
@@ -335,7 +357,7 @@ func _write_read_cost() -> int:
 	return 1
 
 func _deploy(owner: int, definition: Dictionary, aim: Vector2, power: float, world) -> String:
-	if _objects.size() >= MAX_OBJECTS or _owned_object_count(owner) >= MAX_OBJECTS_PER_ACTOR:
+	if _objects.size() >= _object_limit or _owned_object_count(owner) >= MAX_OBJECTS_PER_ACTOR:
 		return "capacity"
 	var origin: Vector2 = _centres[owner] if owner < _centres.size() else Vector2.ZERO
 	var distance: float = lerpf(8.0, 20.0, power)
@@ -490,7 +512,7 @@ func _impact_projectile(index: int, p: Dictionary, definition: Dictionary, conta
 	return false
 
 func _airburst(index: int, p: Dictionary, world) -> void:
-	var available: int = MAX_PROJECTILES - (_projectiles.size() - 1)
+	var available: int = _projectile_limit - (_projectiles.size() - 1)
 	var children: int = mini(int(Catalog.entry(int(p.usable_index)).get("children", 5)), available)
 	var owner: int = int(p.owner)
 	var base_angle: float = Vector2(p.velocity).angle()
@@ -536,7 +558,7 @@ func _object_cycle(obj: Dictionary, definition: Dictionary, world) -> String:
 			return "waiting-condition"
 		if _read(outputs[0], world) != EMPTY:
 			return "blocked-output"
-		if write_count_last + 1 > MAX_WRITES or read_count_last + _write_read_cost() > MAX_READS:
+		if write_count_last + 1 > _write_limit or read_count_last + _write_read_cost() > _read_limit:
 			refused_writes_last += 1
 			return "capacity"
 		if _write(outputs[0], 3, world):
@@ -570,7 +592,7 @@ func _object_cycle(obj: Dictionary, definition: Dictionary, world) -> String:
 		if _read(outputs[oi], world) != EMPTY:
 			return "blocked-output"
 	var writes_needed: int = required.size() + produced.size()
-	if write_count_last + writes_needed > MAX_WRITES or read_count_last + writes_needed * _write_read_cost() > MAX_READS:
+	if write_count_last + writes_needed > _write_limit or read_count_last + writes_needed * _write_read_cost() > _read_limit:
 		refused_writes_last += writes_needed
 		return "capacity"
 	for ri: int in range(required.size()):
@@ -669,7 +691,7 @@ func _sensor_has(center: Vector2i, materials: Array[int], radius: int, world) ->
 	return false
 
 func _read(point: Vector2i, world) -> int:
-	if read_count_last >= MAX_READS:
+	if read_count_last >= _read_limit:
 		refused_reads_last += 1
 		return -2
 	if not _inside_world(point):
@@ -678,7 +700,7 @@ func _read(point: Vector2i, world) -> int:
 	return int(world.material_at(point.x, point.y))
 
 func _write(point: Vector2i, material: int, world) -> bool:
-	if write_count_last >= MAX_WRITES or not _inside_world(point):
+	if write_count_last >= _write_limit or not _inside_world(point):
 		refused_writes_last += 1
 		return false
 	var before: int = _read(point, world)
@@ -756,7 +778,7 @@ func _segment_rect_t(start: Vector2, finish: Vector2, rect: Rect2) -> float:
 	return t_min
 
 func _record_hit(projectile: Dictionary, target: int) -> void:
-	if _hits_last.size() >= MAX_HITS:
+	if _hits_last.size() >= _hit_limit:
 		return
 	_hits_last.append({
 		"tick": _tick,
@@ -767,7 +789,7 @@ func _record_hit(projectile: Dictionary, target: int) -> void:
 	})
 
 func _add_effect(position: Vector2, color: Color, radius: float, kind: String) -> void:
-	if _effects.size() >= MAX_EFFECTS:
+	if _effects.size() >= _effect_limit:
 		_effects.pop_front()
 	_effects.append({
 		"id": _allocate_id(),
@@ -837,10 +859,10 @@ func snapshot() -> Dictionary:
 		"refused_reads_last": refused_reads_last,
 		"refused_writes_last": refused_writes_last,
 		"capacities": {
-			"actors": MAX_ACTORS, "projectiles": MAX_PROJECTILES,
-			"objects": MAX_OBJECTS, "objects_per_actor": MAX_OBJECTS_PER_ACTOR,
-			"effects": MAX_EFFECTS, "hits": MAX_HITS,
-			"reads_per_tick": MAX_READS, "writes_per_tick": MAX_WRITES,
+			"actors": _actor_limit, "projectiles": _projectile_limit,
+			"objects": _object_limit, "objects_per_actor": MAX_OBJECTS_PER_ACTOR,
+			"effects": _effect_limit, "hits": _hit_limit,
+			"reads_per_tick": _read_limit, "writes_per_tick": _write_limit,
 		},
 		"accounting_unit": "authored-cell-slots",
 	}

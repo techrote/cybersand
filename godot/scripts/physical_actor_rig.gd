@@ -27,6 +27,7 @@ const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
 const FlightController = preload("res://scripts/physical_flight_controller.gd")
+const SandboxCapacity = preload("res://scripts/workbench_sandbox_capacity.gd")
 
 var rig_id: StringName = &""
 var actor_slot: int = 0
@@ -315,10 +316,11 @@ static func valid_review_options(options: Dictionary) -> bool:
 
 func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1,
 		review_fleet_index: int = -1, review_options: Dictionary = {},
-		workbench_physical: bool = false) -> Error:
+		workbench_physical: bool = false, starting_angle: float = 0.0) -> Error:
 	if configured:
 		return ERR_ALREADY_IN_USE
-	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= 8 or incarnation <= 0:
+	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= SandboxCapacity.MAX_ACTORS \
+		or incarnation <= 0 or not is_finite(starting_angle) or absf(starting_angle) > TAU:
 		return ERR_INVALID_PARAMETER
 	var invalid: String = validate_definition(definition)
 	if not invalid.is_empty():
@@ -405,8 +407,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		var part: Dictionary = _part_defs[index]
 		var body: RigidBody2D = RigidBody2D.new()
 		body.name = "Part_%s" % str(part.id)
-		body.position = to_local(origin + Vector2(part.offset))
-		body.rotation = float(part.get("angle", 0.0))
+		body.position = to_local(origin + Vector2(part.offset).rotated(starting_angle))
+		body.rotation = float(part.get("angle", 0.0)) + starting_angle
 		body.mass = float(part.get("mass", 1.0))*float(review_options.get("mass_multiplier",1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
 		var compound: bool=str(part.get("shape","rectangle"))=="rectangle_union"
@@ -478,7 +480,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 			_parts[a].add_collision_exception_with(_parts[b])
 			_parts[b].add_collision_exception_with(_parts[a])
 	for joint: Dictionary in _definition.get("joints", []):
-		_create_joint(joint, origin)
+		_create_joint(joint, origin, starting_angle)
 	for mount: Dictionary in _definition.get("mounts", []):
 		var instance: Dictionary = mount.duplicate(true)
 		instance["attached"] = true
@@ -515,11 +517,11 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	return OK
 
 
-func _create_joint(definition: Dictionary, origin: Vector2) -> void:
+func _create_joint(definition: Dictionary, origin: Vector2, starting_angle: float = 0.0) -> void:
 	var joint: Dictionary = definition.duplicate(true)
 	var a: int = int(joint.a)
 	var b: int = int(joint.b)
-	var pivot: Vector2 = origin + Vector2(joint.anchor)
+	var pivot: Vector2 = origin + Vector2(joint.anchor).rotated(starting_angle)
 	var node: Joint2D
 	var type: String = str(joint.type)
 	if type == "rotary":
@@ -536,7 +538,7 @@ func _create_joint(definition: Dictionary, origin: Vector2) -> void:
 		pin.motor_enabled = false
 		node = pin
 	else:
-		var axis: Vector2 = Vector2(joint.axis).normalized()
+		var axis: Vector2 = Vector2(joint.axis).normalized().rotated(starting_angle)
 		var limits: Vector2 = joint.get("limits", Vector2(-2.0, 2.0))
 		var groove: GrooveJoint2D = GrooveJoint2D.new()
 		groove.position = to_local(pivot + axis * limits.x)
@@ -544,7 +546,7 @@ func _create_joint(definition: Dictionary, origin: Vector2) -> void:
 		groove.length = maxf(0.05, limits.y - limits.x)
 		groove.initial_offset = clampf(-limits.x, 0.0, groove.length)
 		node = groove
-		joint["axis_local"] = axis.rotated(-float(_part_defs[a].get("angle", 0.0)))
+		joint["axis_local"] = axis.rotated(-float(_part_defs[a].get("angle", 0.0)) - starting_angle)
 		joint["rest_separation"] = Vector2(_part_defs[b].offset) - Vector2(_part_defs[a].offset)
 		# Two spaced pin-in-slot constraints emulate a guided rail. One groove
 		# alone leaves a piston free to turn over under a foot strike; the second
@@ -559,8 +561,8 @@ func _create_joint(definition: Dictionary, origin: Vector2) -> void:
 		joint["guide_node"] = guide
 		if type == "spring":
 			var spring: DampedSpringJoint2D = DampedSpringJoint2D.new()
-			var start: Vector2 = origin + Vector2(_part_defs[a].offset)
-			var separation: Vector2 = (origin + Vector2(_part_defs[b].offset)) - start
+			var start: Vector2 = origin + Vector2(_part_defs[a].offset).rotated(starting_angle)
+			var separation: Vector2 = (Vector2(_part_defs[b].offset) - Vector2(_part_defs[a].offset)).rotated(starting_angle)
 			spring.position = to_local(start)
 			spring.rotation = separation.angle() - PI * 0.5
 			spring.length = maxf(0.1, separation.length())
@@ -627,6 +629,74 @@ func collision_rects(part_index: int = 0) -> Array[Dictionary]:
 
 func centre() -> Vector2:
 	return _transforms[0].origin if not _transforms.is_empty() else Vector2.ZERO
+
+
+func pick_part(world_point: Vector2) -> Dictionary:
+	# Read the actual manually stepped space, not scene properties or a stale
+	# render interpolation. Compound gaps and round wheels are genuine misses.
+	if not configured or not fault.is_empty() or not world_point.is_finite(): return {}
+	for index: int in range(_parts.size() - 1, -1, -1):
+		var body: RigidBody2D = _parts[index]
+		if not is_instance_valid(body) or not body.get_rid().is_valid() or body.freeze: continue
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var local: Vector2 = pose.affine_inverse() * world_point
+		var inside := false
+		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+			inside = local.length_squared() <= pow(_sizes[index].x * 0.5, 2.0)
+		else:
+			for rectangle: Dictionary in collision_rects(index):
+				var half: Vector2 = Vector2(rectangle.size) * 0.5
+				var distance: Vector2 = (local - Vector2(rectangle.center)).abs()
+				if distance.x <= half.x and distance.y <= half.y:
+					inside = true
+					break
+		if inside:
+			return {"part_index":index, "part_id":str(_part_defs[index].id),
+				"body_identity":body.get_instance_id(), "local_anchor":local,
+				"anchor":world_point, "pose":pose}
+	return {}
+
+
+func manipulation_geometry() -> Array:
+	var result: Array = []
+	for index: int in range(_parts.size()):
+		result.append({"part_index":index, "part_id":str(_part_defs[index].id),
+			"shape":str(_part_defs[index].get("shape", "rectangle")),
+			"size":_sizes[index], "rectangles":collision_rects(index)})
+	return result
+
+
+func physical_joint_count() -> int:
+	var result := 0
+	for joint: Dictionary in _joints:
+		if not bool(joint.enabled): continue
+		for key: String in ["node", "guide_node", "spring_node"]:
+			if joint.has(key) and is_instance_valid(joint[key]): result += 1
+	return result
+
+
+func placement_pose_error() -> String:
+	# Prepared authoring recreates the catalogue graph. Reusing current body
+	# poses after equipment release/pickup would reconnect different anchors.
+	# Refuse explicitly instead of turning an authored placement into a covert
+	# equipment checkpoint or snapping a distant released body back to a joint.
+	if not _detached.is_empty() or not _fixed_equipment.is_empty():
+		return "Reset or restore the actor before placement: equipment has been released or fixed."
+	var authored: Array = _definition.get("joints", [])
+	if authored.size() != _joints.size(): return "Reset the actor before placement: its joint graph has changed."
+	for index: int in range(authored.size()):
+		var original: Dictionary = authored[index]
+		var actual: Dictionary = _joints[index]
+		var a := int(original.a)
+		var b := int(original.b)
+		var local_a := (Vector2(original.anchor) - Vector2(_part_defs[a].offset)).rotated(-float(_part_defs[a].get("angle",0.0)))
+		var local_b := (Vector2(original.anchor) - Vector2(_part_defs[b].offset)).rotated(-float(_part_defs[b].get("angle",0.0)))
+		var relative := float(_part_defs[b].get("angle",0.0)) - float(_part_defs[a].get("angle",0.0))
+		if not bool(actual.enabled) or actual.type != original.type or actual.a != original.a or actual.b != original.b \
+			or not Vector2(actual.anchor_a_local).is_equal_approx(local_a) or not Vector2(actual.anchor_b_local).is_equal_approx(local_b) \
+			or not is_equal_approx(float(actual.initial_relative_angle),relative):
+			return "Reset the actor before placement: equipment pickup changed its joint anchors."
+	return ""
 
 
 func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:

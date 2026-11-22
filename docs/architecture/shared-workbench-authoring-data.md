@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation
 canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-22
 related-documents: [../systems/explore001-generated-playable-maps.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, data-ownership-and-lifetimes.md, liquid-prepared-setup-and-receipts.md, ../operations/github-development-and-release.md]
 ---
 
@@ -49,13 +49,20 @@ Keep Draft/HOLD. The dated candidate paragraphs above retain their original scop
 
 ## Common authored document semantics
 
-The [WB-ACTOR-COMPOSE-001 candidate](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility)
-adds an optional versioned actor-control extension within existing Setup-v2,
-generated-start and material-baseline containers. Source, bounded cadence,
-starting equipment and compatible tuning are authored values. Live policy
+The [Workbench composition contract](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility)
+retains the accepted optional actor-control extension within existing Setup-v2,
+generated-start and material-baseline containers. WB-ACTOR-COMPOSE-002R additionally
+admits optional finite `spawn_rotation_degrees` per actor and version-1 root
+`sandbox_capacity` logical/body/proxy budgets. Missing fields retain zero rotation
+and 8/64/64 limits; a saved larger composition is never silently truncated.
+Source, bounded cadence, starting equipment and compatible tuning are authored values. Live policy
 memory, leases, issued observations, resource consumption, momentum and evolved
 cells are not serialized by ordinary Save. Invalid definitions or controls refuse
 the complete preparation while retaining the previous applied map and session.
+Paused drag/rotation commits the authored start through one prepared transaction;
+its value-only preview and temporary live physical mouse grab are not saved.
+Live Brush/Eraser and their accepted authored strokes remain the existing
+Workbench contract, including the distinct release endpoint and history fences.
 
 **Approved requirements for convergence:**
 
