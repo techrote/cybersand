@@ -83,7 +83,8 @@ public:
     MutableBodyGate(World& world, Coordinator& coordinator, OwnerIdentity owner)
         : identity_(owner), world_address_(std::addressof(world)),
           owner_thread_(std::this_thread::get_id()) {
-        const auto& snapshot = coordinator.snapshot();
+        if (!coordinator.world_available()) return;
+        const auto& snapshot = coordinator.m4_owner_readback();
         valid_ = owner.session != 0 && owner.epoch != 0 &&
             owner.world_generation != 0 && owner.shard_session != 0 &&
             owner.world_incarnation != 0 &&
@@ -99,13 +100,19 @@ public:
     MutableBodyGate(MutableBodyGate&&) = delete;
     MutableBodyGate& operator=(MutableBodyGate&&) = delete;
 
-    [[nodiscard]] bool initially_bound() const noexcept { return valid_; }
+    [[nodiscard]] bool initially_bound() const noexcept {
+        return on_owner_thread() && valid_;
+    }
     [[nodiscard]] std::size_t registered_bodies() const noexcept {
+        // Even diagnostics must not race with an exclusive owner mutation.
+        if (!on_owner_thread()) return 0;
         std::size_t count = 0;
         for (const auto& slot : slots_) if (slot.used) ++count;
         return count;
     }
-    [[nodiscard]] bool motion_outstanding() const noexcept { return awaiting_motion_; }
+    [[nodiscard]] bool motion_outstanding() const noexcept {
+        return on_owner_thread() && awaiting_motion_;
+    }
 
     // A new version must be explicitly proposed and installed. Native-owned
     // material remains exclusively in Registry; this ticket owns no cells.
@@ -114,10 +121,11 @@ public:
         const auto check = verify(world, coordinator, owner);
         if (check != Verdict::Accepted) return check;
         if (awaiting_motion_) return Verdict::Held;
-        const auto& snap = coordinator.snapshot();
-        if (snap.quarantined || snap.promotion.present) return Verdict::Fenced;
+        const auto& snap = coordinator.m4_owner_readback();
+        if (snap.quarantined || snap.promotion_pending) return Verdict::Fenced;
         const auto* shard = coordinator.registry().find(handle);
         const BodyView* body = view(snap, handle);
+        if (!body && snap.truncated) return Verdict::Capacity;
         if (!shard || !body || !body->has_body || !shard->owns_inventory() ||
             shard->phase() != Phase::Active) return Verdict::Fenced;
         const auto candidate = revision(*shard, *body);
@@ -131,9 +139,23 @@ public:
         } else {
             if (!slot->ready) return Verdict::Held; // Never replace an unacknowledged install.
             if (candidate == slot->revision) return Verdict::Busy;
-            if (candidate.geometry_revision <= slot->revision.geometry_revision ||
+            if (candidate.geometry_revision < slot->revision.geometry_revision ||
                 candidate.material_revision < slot->revision.material_revision ||
+                (candidate.geometry_revision == slot->revision.geometry_revision &&
+                 candidate.material_revision == slot->revision.material_revision) ||
                 candidate.pose_serial < slot->revision.pose_serial) return Verdict::Stale;
+            // State-only material changes may increment material revision with
+            // unchanged collider geometry: they still require a fresh ticket.
+            // But changed mass/COM/inertia/shape with an unchanged geometry
+            // revision could be smuggled past the installed-geometry witness.
+            if (candidate.geometry_revision == slot->revision.geometry_revision &&
+                (candidate.shape_count != slot->revision.shape_count ||
+                 candidate.mask_digest != slot->revision.mask_digest ||
+                 candidate.shape_digest != slot->revision.shape_digest ||
+                 candidate.mass != slot->revision.mass ||
+                 candidate.com_x != slot->revision.com_x ||
+                 candidate.com_y != slot->revision.com_y ||
+                 candidate.inertia != slot->revision.inertia)) return Verdict::Stale;
         }
         if (next_sequence_ == std::numeric_limits<std::uint64_t>::max())
             return Verdict::Capacity;
@@ -143,6 +165,9 @@ public:
         slot->ready = false;
         slot->revision = candidate;
         slot->ticket = ticket;
+        // A post-tick authoring change voids the former physical-time permit.
+        // It cannot be re-granted for the same semantic tick.
+        permit_armed_ = false;
         out = ticket;
         return Verdict::Accepted;
     }
@@ -157,7 +182,7 @@ public:
         Slot* slot = locate(ticket.body.shard);
         if (!slot || slot->ready || ticket != slot->ticket || awaiting_motion_)
             return Verdict::Stale;
-        const auto& snap = coordinator.snapshot();
+        const auto& snap = coordinator.m4_owner_readback();
         const auto* shard = coordinator.registry().find(ticket.body.shard);
         const BodyView* body = view(snap, ticket.body.shard);
         if (!shard || !body || !body->has_body || !shard->owns_inventory() ||
@@ -182,7 +207,7 @@ public:
         if (awaiting_motion_) return Verdict::Held;
         if (!tick || tick <= baseline_tick_ || tick <= permitted_tick_ ||
             tick != world.completed_tick_index()) return Verdict::Stale;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         if (snapshot.tick != tick || snapshot.quarantined) return Verdict::Fenced;
         // Native semantic-step pose application is not a Rapier substep.
         // Refresh only serials proven by the *one* completed World tick.
@@ -203,6 +228,7 @@ public:
             slot.revision.pose_serial = body->pose.pose_serial;
         }
         permitted_tick_ = tick;
+        permit_armed_ = true;
         segments_ = 0;
         return Verdict::Accepted;
     }
@@ -215,12 +241,13 @@ public:
         const auto check = verify(world, coordinator, owner);
         if (check != Verdict::Accepted) return check;
         if (awaiting_motion_) return Verdict::Held;
-        if (!permitted_tick_ || world.completed_tick_index() != permitted_tick_ ||
-            coordinator.paused() || coordinator.snapshot().quarantined)
+        if (!permit_armed_ || !permitted_tick_ ||
+            world.completed_tick_index() != permitted_tick_ ||
+            coordinator.paused() || coordinator.m4_owner_readback().quarantined)
             return Verdict::Fenced;
         if (segments_ >= kSegmentLimit || next_sequence_ == std::numeric_limits<std::uint64_t>::max())
             return Verdict::Capacity;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         std::size_t actual = 0;
         for (const auto& b : snapshot.bodies) if (b.has_body) {
             ++actual;
@@ -231,7 +258,9 @@ public:
                 shard->applied_physics_revision() != s->revision.geometry_revision ||
                 revision(*shard, b) != s->revision) return Verdict::Fenced;
         }
-        if (!actual || actual != registered_bodies() || actual > kBodyLimit) return Verdict::Capacity;
+        if (!actual || actual != registered_bodies() || actual > kBodyLimit ||
+            actual != snapshot.active_count || snapshot.truncated)
+            return Verdict::Capacity;
         MotionTicket candidate{};
         candidate.owner = identity_;
         candidate.completed_tick = permitted_tick_;
@@ -256,7 +285,7 @@ public:
         if (!awaiting_motion_ || !(ticket == issued_) ||
             ticket.completed_tick != world.completed_tick_index())
             return Verdict::Stale;
-        const auto& snapshot = coordinator.snapshot();
+        const auto& snapshot = coordinator.m4_owner_readback();
         if (snapshot.quarantined || coordinator.paused()) return Verdict::Fenced;
         std::array<BodyRevision, kBodyLimit> latest{};
         for (std::uint32_t i = 0; i < ticket.count; ++i) {
@@ -291,6 +320,9 @@ public:
         if (awaiting_motion_) return Verdict::Held;
         for (const auto& shard : coordinator.registry().shards())
             if (shard.owns_inventory()) return Verdict::Held;
+        // Native body retirement acknowledgement must precede release; the
+        // absence of material alone is not proof of RID/collider disposal.
+        if (coordinator.m4_owner_readback().active_count != 0) return Verdict::Held;
         slots_ = {};
         valid_ = false;
         world_address_ = nullptr;
@@ -311,25 +343,29 @@ private:
     MotionTicket issued_{};
     std::uint64_t next_sequence_{}, permitted_tick_{}, baseline_tick_{};
     std::uint32_t segments_{};
-    bool valid_{}, awaiting_motion_{};
+    bool valid_{}, awaiting_motion_{}, permit_armed_{};
 
+    [[nodiscard]] bool on_owner_thread() const noexcept {
+        return owner_thread_ == std::this_thread::get_id();
+    }
     [[nodiscard]] Verdict verify(World& world, Coordinator& coordinator,
                                  OwnerIdentity owner) const {
         // Thread check must precede ANY native World/coordinator observation.
-        if (owner_thread_ != std::this_thread::get_id()) return Verdict::WrongOwner;
+        if (!on_owner_thread()) return Verdict::WrongOwner;
         if (!valid_) return Verdict::Retired;
+        if (!coordinator.world_available()) return Verdict::WrongWorld;
         if (owner != identity_ || std::addressof(world) != world_address_ ||
             std::addressof(coordinator.world()) != world_address_)
             return Verdict::WrongWorld;
         if (world.has_failed() || world.is_tick_in_progress())
             return Verdict::Fenced;
-        const auto& snap = coordinator.snapshot();
+        const auto& snap = coordinator.m4_owner_readback();
         if (snap.session != identity_.shard_session ||
             snap.world_incarnation != identity_.world_incarnation)
             return Verdict::WrongWorld;
         return Verdict::Accepted;
     }
-    [[nodiscard]] static const BodyView* view(const Snapshot& snap, Handle h) {
+    [[nodiscard]] static const BodyView* view(const OwnerReadback& snap, Handle h) {
         for (const auto& body : snap.bodies) if (body.shard == h) return &body;
         return nullptr;
     }
