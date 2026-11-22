@@ -90,6 +90,8 @@ func exercise() -> void:
 	check(panel.stiffness.get_line_edit().text == "425","live diagnostics preserve focused uncommitted force field")
 	find_button(panel,"Apply manipulation settings").pressed.emit()
 	check(is_equal_approx(float(wb.actor_interaction.settings.stiffness),425.0),"real Workbench button commits child-window SpinBox before applying")
+	check(panel.apply_info.text.contains("Accepted") and not panel._settings_dirty,
+		"real synchronous settings adoption acknowledges applied state, not just signal")
 	panel.interaction_mode.select(1)
 	panel.interaction_mode.item_selected.emit(1)
 	check(wb.actor_interaction.mode() == "grab" and not host.paused,"mode signal selects live Grab without pausing")
@@ -98,6 +100,9 @@ func exercise() -> void:
 	find_button(panel,"Apply authored placement (paused)").pressed.emit()
 	check(wb.actor(wb.applied,2) == before and host.pending_microscenario_apply.is_empty(),"running authored placement refuses without changing composition")
 	check(wb.message.to_lower().contains("pause"),"running placement explains Pause requirement")
+	panel.refresh()
+	check(panel.placement_x.value == 320 and panel._placement_dirty and panel.apply_info.text.contains("Refused"),
+		"running paused-only placement refusal preserves visible staged field and status")
 	if not check(wb.toggle_pause(),"Pause for exact placement"): return
 	wb.select_instance(1)
 	panel.refresh(true)
@@ -132,6 +137,9 @@ func exercise() -> void:
 	check(wb.applied.sandbox_capacity.body_limit == 128 and wb.applied.sandbox_capacity.proxy_limit == 128,
 		"actual configuration preserves independent body and native-mask budgets")
 	check(wb.applied.actors.size() == 3 and wb.pilot_id() == 1,"capacity adoption retains cast and pilot")
+	panel.refresh()
+	check(panel.logical_limit.value == 17 and not panel._capacity_dirty and panel._apply_requests.capacity.phase == "accepted",
+		"real asynchronous capacity adoption acknowledges actual installed owner, then clears staging")
 	var original_mass: float = wb.body_state(1).mass
 	panel.tabs.current_tab = 3
 	await process_frame
@@ -143,12 +151,59 @@ func exercise() -> void:
 	check(is_equal_approx(float(wb.actor(wb.applied,1).options.mass_multiplier),2.0),"unified tuning commits focused numeric value to authored actor")
 	check(is_equal_approx(float(wb.body_state(1).mass),original_mass*2.0),"unified tuning changes actual Rapier body mass")
 	check(wb.pilot_id() == 1 and wb.applied.actors.size() == 3,"tuning keeps actor identities and explicit pilot")
+	panel.refresh()
+	check(not panel._tuning_dirty and panel._apply_requests.tuning.phase == "accepted",
+		"real asynchronous physical tuning adopts only after the correct actor options are accepted")
 	panel.interaction_mode.select(0)
 	panel.interaction_mode.item_selected.emit(0)
 	panel.hide()
 	check(wb.actor_interaction.mode() == "paint","return to existing live PAINT mode")
 	if check(wb.toggle_pause(),"resume after exact placement"):
 		await ticks(8,"new owner and NPC resume after precision placement")
+	# An independently installed 64-barrel population exercises the exact
+	# reported failure in the ordinary Workbench, not a mocked signal handler.
+	if not check(wb.toggle_pause(),"pause before population acceptance test"): return
+	if not check(wb.load_actor_sandbox("barrels",64),"request a real 64-barrel playground"): return
+	if not await until(func() -> bool: return not wb.busy() and wb.applied.actors.size() == 64,
+		"64 barrels installed in real native/Rapier owner"): return
+	check(host.physical_actor_session.bodies().size() == 64,
+		"64 installed barrels are 64 real physical bodies")
+	wb.open_actor_composition()
+	panel = wb._actor_panel
+	panel.tabs.current_tab = 4
+	panel.refresh()
+	var original_capacity: int = int(wb.applied.sandbox_capacity.logical_limit)
+	var original_pilot: int = wb.pilot_id()
+	var original_epoch: int = host._physical_epoch
+	check(original_capacity >= 64,"playground has a legitimate budget for all 64 installed actors")
+	panel.logical_limit.value = 32
+	find_button(panel,"Apply capacity").pressed.emit()
+	check(wb.message.begins_with("Refused") and not wb.busy(),"real 64-to-32 capacity reduction refused synchronously")
+	await create_timer(0.3).timeout
+	panel.refresh()
+	check(panel.logical_limit.value == 32 and panel._capacity_dirty,
+		"rejected 32 is still visible after the 200-ms UI diagnostic refresh")
+	check(panel._apply_requests.capacity.phase == "rejected" and panel.apply_info.text.contains("Refused"),
+		"real rejected Apply retains explicit refusal acknowledgement")
+	check(wb.applied.actors.size() == 64 and int(wb.applied.sandbox_capacity.logical_limit) == original_capacity
+		and host._physical_epoch == original_epoch,"rejected Apply never mutates real owner or accepted capacity")
+	check(wb.pilot_id() == original_pilot and host.paused,"refusal neither transfers pilot nor changes pause state")
+	panel.logical_limit.value = original_capacity+16
+	var accepted_target: int = int(panel.logical_limit.value)
+	find_button(panel,"Apply capacity").pressed.emit()
+	check(not host.pending_microscenario_apply.is_empty() and panel._capacity_dirty
+		and panel._apply_requests.capacity.phase == "pending",
+		"real admitted capacity remains pending until the prepared owner has installed")
+	if not await until(func() -> bool: return not wb.busy() and host._physical_epoch > original_epoch
+		and int(wb.applied.sandbox_capacity.logical_limit) == accepted_target,
+		"accepted 64-barrel capacity change completes asynchronously"): return
+	panel.refresh()
+	check(panel.logical_limit.value == accepted_target and not panel._capacity_dirty
+		and panel._apply_requests.capacity.phase == "accepted",
+		"real accepted capacity clears staging only after installed configuration matches")
+	check(wb.applied.actors.size() == 64 and wb.pilot_id() == original_pilot and host.paused,
+		"successful capacity preserves all 64 actors, pilot identity, and pause state")
+	panel.hide()
 	report = {"native_tick":host.latest_snapshot.tick_index,"rapier_tick":host.physical_actor_session.tick,
 		"actors":wb.applied.actors.size(),"source":"actual-ordinary-workbench","renderer":DisplayServer.get_name()}
 
