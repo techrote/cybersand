@@ -16,6 +16,7 @@ import qualify
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = "res://tools/qualify_gentek80_compositions.gd"
+SHARES = [[30.0, 25.0, 20.0, 15.0, 10.0], [20.0] * 5]
 COMPOSITIONS = [
     ["cathedral_megaframe", "seeded_typology_megablock", "megatruss_station",
      "interlaced_viaduct", "suspended_arcology"],
@@ -36,6 +37,29 @@ def validate(phase: dict, label: str) -> dict[str, tuple]:
     for i, case in enumerate(cases):
         if case.get("modules") != COMPOSITIONS[i] or case.get("active_slots") != 5:
             raise ValueError("Not five exact active showcase modules")
+        if case.get("shares") != SHARES[i]:
+            raise ValueError("Equal/unequal requested shares not restored exactly")
+        controls = case.get("configurations", [])
+        if len(controls) != 5:
+            raise ValueError("Five style geometry/material/aperture/deterioration receipts missing")
+        edited = controls[0] if i == 0 else controls[2]
+        if i == 0 and not (
+            int(edited["geometry"]["room_size"]) == 88
+            and int(edited["geometry"]["floor_height"]) == 112
+            and edited["materials"] == {"wall": 130, "floor": 114, "window": 120}
+            and edited["apertures"]["automatic_doors"] is True
+            and edited["apertures"]["automatic_windows"] is True
+            and float(edited["deterioration"]) == 0.05
+        ):
+            raise ValueError("First showcase lacks nondefault geometry/material and deterioration")
+        if i == 1 and not (
+            int(edited["geometry"]["floor_height"]) == 80
+            and int(edited["materials"]["wall"]) == 58
+            and edited["apertures"]["automatic_doors"] is False
+            and edited["apertures"]["automatic_windows"] is False
+            and float(edited["deterioration"]) == 0.1
+        ):
+            raise ValueError("Second showcase lacks nondefault apertures/material/deterioration")
         if case.get("display") == "headless" or case.get("native_receipts", 0) < 1:
             raise ValueError("Native/graphical evidence is absent")
         if i == 1 and not all(float(x) < 0 for x in case.get("origin", [])):

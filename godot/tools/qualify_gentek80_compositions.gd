@@ -9,6 +9,7 @@ const COMPOSITIONS := [
 	["metabolist_spine", "rosework_gatehouse", "interlock_brutalism",
 		"cathedral_megaframe", "megatruss_station"]
 ]
+const SHARES := [[30.0,25.0,20.0,15.0,10.0], [20.0,20.0,20.0,20.0,20.0]]
 const NAMES := ["gentek80-five-showcase-a", "gentek80-five-showcase-b-negative"]
 const PROJECT_FILES := ["user://gentek80-five-showcase-a.json", "user://gentek80-five-showcase-b-negative.json"]
 var completed_count := 0
@@ -30,7 +31,24 @@ func _project(index: int) -> Dictionary:
 				break
 		if not check(not match_preset.is_empty(), "advanced showcase exists: " + module):
 			return {}
-		p.styles.append({"enabled": true, "share": 20.0, "preset": match_preset})
+		var slot: int = p.styles.size()
+		# Exercise real mixed composition controls, not only builtin defaults.
+		if index == 0 and slot == 0:
+			match_preset.geometry.room_size = int(match_preset.geometry.room_size) + 16
+			match_preset.geometry.floor_height = int(match_preset.geometry.floor_height) + 16
+			match_preset.materials.wall = 130
+			match_preset.materials.floor = 114
+			match_preset.materials.window = 120
+			match_preset.apertures["automatic_doors"] = true
+			match_preset.apertures["automatic_windows"] = true
+			match_preset.deterioration = 0.05
+		elif index == 1 and slot == 2:
+			match_preset.geometry.floor_height = int(match_preset.geometry.floor_height) + 8
+			match_preset.materials.wall = 58
+			match_preset.apertures["automatic_doors"] = false
+			match_preset.apertures["automatic_windows"] = false
+			match_preset.deterioration = 0.1
+		p.styles.append({"enabled": true, "share": SHARES[index][slot], "preset": match_preset})
 	return p
 
 func _install_case(packet: Dictionary, label: String) -> bool:
@@ -67,9 +85,16 @@ func _case(index: int, reopening: bool) -> bool:
 	if not check(FileAccess.file_exists(path), name + " editable project exists"): return false
 	var project_file_hash: String = FileAccess.get_sha256(path)
 	var modules: Array[String] = []
+	var shares: Array[float] = []
+	var configurations: Array[Dictionary] = []
 	for slot: Dictionary in actual.styles:
 		check(bool(slot.enabled) and float(slot.share) > 0, name + " all five style slots active")
 		modules.append(str(slot.preset.module))
+		shares.append(float(slot.share))
+		configurations.append({"geometry": slot.preset.geometry.duplicate(true),
+			"materials": slot.preset.materials.duplicate(true),
+			"apertures": slot.preset.apertures.duplicate(true),
+			"deterioration": float(slot.preset.deterioration)})
 	check(modules.size() == 5 and modules == COMPOSITIONS[index],
 			name + " exact five selected advanced showcase modules")
 	if index == 1:
@@ -116,7 +141,8 @@ func _case(index: int, reopening: bool) -> bool:
 		"case": "five-showcase-reopen" if reopening else "five-showcase-author",
 		"name": name, "editable_project": path, "project_file_sha256": project_file_hash,
 		"project_sha256": restored.project_hash, "seed": actual.seed, "origin": actual.origin,
-		"active_slots": 5, "modules": modules, "named_map": name,
+		"active_slots": 5, "modules": modules, "shares": shares,
+		"configurations": configurations, "named_map": name,
 		"source_sha256": packet.sha256, "recipe_sha256": packet.recipe_sha256,
 		"native_receipts": packet.receipt_hashes.size(), "process_id": OS.get_process_id(),
 		"display": DisplayServer.get_name(), "source_commit": OS.get_environment("CYBERSAND_SOURCE_REVISION")
