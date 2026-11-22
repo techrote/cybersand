@@ -194,7 +194,7 @@ func exercise() -> void:
 	check(not host.pending_microscenario_apply.is_empty() and panel._capacity_dirty
 		and panel._apply_requests.capacity.phase == "pending",
 		"real admitted capacity remains pending until the prepared owner has installed")
-	if not await until(func() -> bool: return not wb.busy() and host._physical_epoch > original_epoch
+	if not await until(func() -> bool: return not wb.busy() and host._physical_epoch > original_epoch \
 		and int(wb.applied.sandbox_capacity.logical_limit) == accepted_target,
 		"accepted 64-barrel capacity change completes asynchronously"): return
 	panel.refresh()
