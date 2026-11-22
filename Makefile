@@ -17,6 +17,12 @@ GENERATION_SAN_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worl
 CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp native/src/*.inc)
 TEST_SOURCES := native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp native/tests/test_ballistic_water.cpp native/tests/test_workbench_pressure_heads.cpp
 TEST_HEADERS := $(wildcard native/tests/*.inc native/tests/*.hpp)
+# Soliding's six core-linked fixtures share only exact-configuration objects.
+# No compiled artifacts or previous test outcomes are restored between CI jobs.
+SOLIDING_NORMAL_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/soliding-objects/normal/%.o,$(CORE_SOURCES))
+SOLIDING_SAN_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/soliding-objects/sanitized/%.o,$(CORE_SOURCES))
+SOLIDING_SAN_FLAGS := -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined
+
 BENCH_SOURCES := native/bench/benchmark.cpp
 PHYSICS_CHARACTERISATION_SOURCES := $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/bench/physics_characterisation.cpp
 
@@ -164,38 +170,63 @@ physics-characterisation-sanitize: $(BUILD_DIR)/physics_characterisation_sanitiz
 $(BUILD_DIR)/tests_tsan: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
+.PHONY: soliding-configuration-force
+soliding-configuration-force:
+
+# The forced recipe retains its timestamp when the compiler/flags identity is
+# unchanged. A failed identity query blocks reuse; make -n executes no compiler.
+$(BUILD_DIR)/soliding-objects/normal/configuration.json: export CYBERSAND_BUILD_CXX = $(CXX)
+$(BUILD_DIR)/soliding-objects/normal/configuration.json: export CYBERSAND_BUILD_FLAGS = $(COMMON_FLAGS) $(DEBUG_FLAGS)
+$(BUILD_DIR)/soliding-objects/sanitized/configuration.json: export CYBERSAND_BUILD_CXX = $(CXX)
+$(BUILD_DIR)/soliding-objects/sanitized/configuration.json: export CYBERSAND_BUILD_FLAGS = $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS)
+$(BUILD_DIR)/soliding-objects/normal/configuration.json $(BUILD_DIR)/soliding-objects/sanitized/configuration.json: export CYBERSAND_BUILD_INPUTS = $(CORE_SOURCES) $(CORE_HEADERS) Makefile tools/ci/native_build_configuration.py
+$(BUILD_DIR)/soliding-objects/normal/configuration.json $(BUILD_DIR)/soliding-objects/sanitized/configuration.json: soliding-configuration-force
+	python3 tools/ci/native_build_configuration.py --output $@
+
+# Atomic object publication prevents a failed/interrupted compiler from leaving
+# a partial .o that a subsequent invocation could treat as complete.
+$(BUILD_DIR)/soliding-objects/normal/%.o: native/src/%.cpp $(CORE_HEADERS) Makefile tools/ci/native_build_configuration.py $(BUILD_DIR)/soliding-objects/normal/configuration.json
+	@set -eu; temporary="$@.tmp.$$$$"; trap 'rm -f "$$temporary"' EXIT; trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM; \
+	  $(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -c $< -o "$$temporary"; \
+	  mv -f "$$temporary" "$@"
+
+$(BUILD_DIR)/soliding-objects/sanitized/%.o: native/src/%.cpp $(CORE_HEADERS) Makefile tools/ci/native_build_configuration.py $(BUILD_DIR)/soliding-objects/sanitized/configuration.json
+	@set -eu; temporary="$@.tmp.$$$$"; trap 'rm -f "$$temporary"' EXIT; trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM; \
+	  $(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) -c $< -o "$$temporary"; \
+	  mv -f "$$temporary" "$@"
+
 $(BUILD_DIR)/test_soliding_lifecycle: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_soliding_lifecycle.cpp -o $@
 
-$(BUILD_DIR)/test_settled_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_settled_discovery.cpp -o $@
+$(BUILD_DIR)/test_settled_discovery: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_settled_discovery.cpp -o $@
 
 $(BUILD_DIR)/test_settled_regions: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp native/include/cybersand/bounded_ordered_index.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_settled_regions.cpp -o $@
 
-$(BUILD_DIR)/test_settled_world_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_settled_world_discovery.cpp -o $@
+$(BUILD_DIR)/test_settled_world_discovery: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_settled_world_discovery.cpp -o $@
 
-$(BUILD_DIR)/test_stage3b_runtime_storage: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_runtime_storage.cpp -o $@
+$(BUILD_DIR)/test_stage3b_runtime_storage: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_runtime_storage.cpp -o $@
 
 soliding-stage3b-runtime-storage-test: $(BUILD_DIR)/test_stage3b_runtime_storage
 	./$(BUILD_DIR)/test_stage3b_runtime_storage
 
-$(BUILD_DIR)/test_stage3b_bounded_spatial_index: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
+$(BUILD_DIR)/test_stage3b_bounded_spatial_index: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
 
 soliding-stage3b-spatial-index-test: $(BUILD_DIR)/test_stage3b_bounded_spatial_index
 	./$(BUILD_DIR)/test_stage3b_bounded_spatial_index
 
-$(BUILD_DIR)/test_stage3b_sparse_mutation_witness: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
+$(BUILD_DIR)/test_stage3b_sparse_mutation_witness: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
 
 soliding-stage3b-sparse-mutation-witness-test: $(BUILD_DIR)/test_stage3b_sparse_mutation_witness
 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness
 
-$(BUILD_DIR)/test_stage3b_sparse_activity_deadline: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
+$(BUILD_DIR)/test_stage3b_sparse_activity_deadline: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
 
 soliding-stage3b-sparse-activity-deadline-test: $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
 	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline
@@ -231,26 +262,26 @@ soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_di
 $(BUILD_DIR)/test_soliding_lifecycle_sanitized: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_soliding_lifecycle.cpp -o $@
 
-$(BUILD_DIR)/test_settled_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_settled_discovery.cpp -o $@
+$(BUILD_DIR)/test_settled_discovery_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_settled_discovery.cpp -o $@
 
 $(BUILD_DIR)/test_settled_regions_sanitized: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp native/include/cybersand/bounded_ordered_index.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_settled_regions.cpp -o $@
 
-$(BUILD_DIR)/test_settled_world_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_settled_world_discovery.cpp -o $@
+$(BUILD_DIR)/test_settled_world_discovery_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_settled_world_discovery.cpp -o $@
 
-$(BUILD_DIR)/test_stage3b_runtime_storage_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_runtime_storage.cpp -o $@
+$(BUILD_DIR)/test_stage3b_runtime_storage_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_runtime_storage.cpp -o $@
 
-$(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
+$(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
 
-$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
+$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
 
-$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
+$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
 
 soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
 	./$(BUILD_DIR)/test_soliding_lifecycle_sanitized
@@ -355,7 +386,7 @@ thread-sanitize: $(BUILD_DIR)/tests_tsan
 clean:
 	rm -f $(BUILD_DIR)/test_material_baseline $(BUILD_DIR)/test_material_baseline_sanitized
 	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/stage3_cost $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
-	rm -rf $(BUILD_DIR)/worldgen-objects
+	rm -rf $(BUILD_DIR)/worldgen-objects $(BUILD_DIR)/soliding-objects
 
 $(BUILD_DIR)/test_generation_typed: $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_typed_fields.o $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_spatial.o $(CORE_HEADERS) native/tests/test_generation_typed.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_typed_fields.o $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_spatial.o native/tests/test_generation_typed.cpp -o $@

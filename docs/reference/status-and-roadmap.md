@@ -14,6 +14,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) owns current evidence and remaining gates. Draft/HOLD; broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
 
+## CI-OPT-003 soliding compilation reuse — 2026-11-21
+
+The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)
+removes 30 repeated translation-unit compilations per complete normal or
+sanitized target while retaining the original eight executables and test order.
+Compiler/configuration/source identity guards local object reuse; interrupted
+compilations cannot publish partial objects. Full Native and Windows/Linux
+regression admission remains required. The dedicated CI-only PR records exact
+source qualification and controlled timings before any merge or speed claim.
+
 ## Floating Oil in Wave Water
 
 The [impingement tank replay](../audits/2026-11-20-wave-oil-impinge.md) tests whether Water waves can lift and lower a floating Oil slick. In the previous build the Water–Oil boundary remained fixed through 900 ticks of observation.
