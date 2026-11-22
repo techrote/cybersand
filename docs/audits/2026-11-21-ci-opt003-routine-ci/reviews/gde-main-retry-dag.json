@@ -1,0 +1,360 @@
+{
+  "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "workflow_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+  "root": "ready_scope",
+  "descendant_closure": [
+    "art-graphical-smoke",
+    "execution-plan",
+    "linux-build",
+    "linux-regression",
+    "linux-regression-gate",
+    "physical-timing",
+    "ready_scope",
+    "windows-build",
+    "windows-coverage",
+    "windows-regression"
+  ],
+  "outside_closure": [
+    "physical-actor-stress"
+  ],
+  "jobs": {
+    "physical-actor-stress": {
+      "name": null,
+      "needs": null,
+      "if": "github.event_name == 'workflow_dispatch' && inputs.physical_actor_stress == true",
+      "uses": "./.github/workflows/physical-actor-stress.yml",
+      "strategy": null
+    },
+    "ready_scope": {
+      "name": "ready validation scope",
+      "needs": null,
+      "if": "github.event_name == 'pull_request' && github.event.action == 'ready_for_review'",
+      "uses": null,
+      "strategy": null
+    },
+    "execution-plan": {
+      "name": "complete execution budgets",
+      "needs": [
+        "ready_scope"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && (github.event_name != 'pull_request' ||\n (github.event.pull_request.draft == false &&\n  (github.event.action != 'ready_for_review' ||\n   needs.ready_scope.outputs.required == 'true')))",
+      "uses": null,
+      "strategy": null
+    },
+    "linux-build": {
+      "name": "linux build x86_64",
+      "needs": [
+        "ready_scope"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && (github.event_name != 'pull_request' ||\n (github.event.pull_request.draft == false &&\n  (github.event.action != 'ready_for_review' ||\n   needs.ready_scope.outputs.required == 'true')))",
+      "uses": null,
+      "strategy": null
+    },
+    "windows-build": {
+      "name": "windows x86_64",
+      "needs": [
+        "ready_scope"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && (github.event_name != 'pull_request' ||\n (github.event.pull_request.draft == false &&\n  (github.event.action != 'ready_for_review' ||\n   needs.ready_scope.outputs.required == 'true')))",
+      "uses": null,
+      "strategy": null
+    },
+    "windows-regression": {
+      "name": "windows headless regression shard ${{ matrix.shard }}",
+      "needs": [
+        "ready_scope",
+        "execution-plan",
+        "windows-build"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && needs.execution-plan.result == 'success' && needs.windows-build.result == 'success' && (github.event_name != 'pull_request' ||\n (github.event.pull_request.draft == false &&\n  (github.event.action != 'ready_for_review' ||\n   needs.ready_scope.outputs.required == 'true')))",
+      "uses": null,
+      "strategy": {
+        "fail-fast": false,
+        "max-parallel": 8,
+        "matrix": "${{ fromJSON(needs.execution-plan.outputs.windows_matrix) }}"
+      }
+    },
+    "windows-coverage": {
+      "name": "windows sharded execution coverage",
+      "needs": [
+        "ready_scope",
+        "execution-plan",
+        "windows-regression"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && (github.event_name != 'pull_request' ||\n (github.event.pull_request.draft == false &&\n  (github.event.action != 'ready_for_review' ||\n   needs.ready_scope.outputs.required == 'true' ||\n   needs.ready_scope.result != 'success')))",
+      "uses": null,
+      "strategy": null
+    },
+    "art-graphical-smoke": {
+      "name": "art workbench graphical smoke",
+      "needs": [
+        "linux-build"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && needs.linux-build.result == 'success'",
+      "uses": null,
+      "strategy": null
+    },
+    "linux-regression": {
+      "name": "linux regression shard ${{ matrix.shard }}",
+      "needs": [
+        "linux-build",
+        "execution-plan"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && needs.linux-build.result == 'success' && needs.execution-plan.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)",
+      "uses": null,
+      "strategy": {
+        "fail-fast": false,
+        "max-parallel": 8,
+        "matrix": "${{ fromJSON(needs.execution-plan.outputs.linux_matrix) }}"
+      }
+    },
+    "linux-regression-gate": {
+      "name": "linux x86_64",
+      "needs": [
+        "ready_scope",
+        "execution-plan",
+        "linux-regression",
+        "art-graphical-smoke"
+      ],
+      "if": "always() && inputs.physical_actor_stress != true && (github.event_name != 'pull_request' ||\n (github.event.pull_request.draft == false &&\n  (github.event.action != 'ready_for_review' ||\n   needs.ready_scope.outputs.required == 'true' ||\n   needs.ready_scope.result != 'success')))",
+      "uses": null,
+      "strategy": null
+    },
+    "physical-timing": {
+      "name": "retained execution and physical timing history",
+      "needs": [
+        "linux-regression",
+        "windows-regression",
+        "linux-build",
+        "windows-build"
+      ],
+      "if": "always() && (needs.linux-regression.result != 'skipped' ||\n needs.windows-regression.result != 'skipped')",
+      "uses": null,
+      "strategy": null
+    }
+  },
+  "artifacts": {
+    "physical-actor-stress": [],
+    "ready_scope": [],
+    "execution-plan": [
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "godot-execution-plan-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/execution-plan.json",
+          "if-no-files-found": "warn",
+          "retention-days": 90
+        }
+      }
+    ],
+    "linux-build": [
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": null,
+        "with": {
+          "name": "linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-runtime/",
+          "if-no-files-found": "error",
+          "retention-days": 1
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": null,
+        "with": {
+          "name": "native-candidate-linux-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-runtime/",
+          "if-no-files-found": "error",
+          "retention-days": 90
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "godot-build-timing-linux-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/build-timing/",
+          "if-no-files-found": "warn",
+          "retention-days": 90
+        }
+      }
+    ],
+    "windows-build": [
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": null,
+        "with": {
+          "name": "native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/windows-candidate/",
+          "if-no-files-found": "error",
+          "retention-days": 90
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "godot-build-timing-windows-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/build-timing/",
+          "if-no-files-found": "warn",
+          "retention-days": 90
+        }
+      }
+    ],
+    "windows-regression": [
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "name": "native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/windows-candidate"
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "windows-godot-headless-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/godot-regressions/windows-${{ matrix.shard }}/",
+          "if-no-files-found": "error",
+          "retention-days": 30
+        }
+      }
+    ],
+    "windows-coverage": [
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "pattern": "windows-godot-headless-*-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/windows-coverage-input"
+        }
+      },
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "name": "native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/windows-candidate"
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "windows-coverage-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/windows-coverage.json\nbuild/windows-coverage-verification.log\nbuild/windows-play-readback/\n",
+          "if-no-files-found": "warn",
+          "retention-days": 30
+        }
+      }
+    ],
+    "art-graphical-smoke": [
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "name": "linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-runtime"
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "art-final-graphical-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/art-final-graphical/\nbuild/linux-runtime/source-sha.txt\nbuild/linux-runtime/runtime.sha256\n",
+          "if-no-files-found": "error",
+          "retention-days": 90
+        }
+      }
+    ],
+    "linux-regression": [
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "name": "linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-runtime"
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "linux-godot-shard-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/godot-regressions/shard-${{ matrix.shard }}/\nbuild/linux-runtime/source-sha.txt\nbuild/linux-runtime/runtime.sha256\n",
+          "if-no-files-found": "warn",
+          "retention-days": 30
+        }
+      }
+    ],
+    "linux-regression-gate": [
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "pattern": "linux-godot-shard-*-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-coverage-input"
+        }
+      },
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "name": "linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-runtime"
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "linux-coverage-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/linux-coverage.json\nbuild/linux-play-readback/\n",
+          "if-no-files-found": "warn",
+          "retention-days": 90
+        }
+      }
+    ],
+    "physical-timing": [
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": null,
+        "with": {
+          "pattern": "*-godot-*-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/physical-timing-input/"
+        }
+      },
+      {
+        "uses": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+        "if": "always()",
+        "with": {
+          "pattern": "godot-build-timing-*-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/compiler-timing-input/"
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "execution-performance-godot-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/execution-performance/",
+          "if-no-files-found": "warn",
+          "retention-days": 90
+        }
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "if": "always()",
+        "with": {
+          "name": "physical-timing-${{ github.run_id }}-${{ github.run_attempt }}",
+          "path": "build/physical-timing-report/",
+          "if-no-files-found": "warn",
+          "retention-days": 90
+        }
+      }
+    ]
+  }
+}

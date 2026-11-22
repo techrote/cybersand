@@ -1,0 +1,52 @@
+{
+  "scope": "Failed main GDE attempt1; never successful qualification.",
+  "run_id": 44967549040,
+  "run_attempt": 1,
+  "runner_minutes": 19.716666666666665,
+  "executed_jobs": 6,
+  "conditional_skips": 5,
+  "jobs": [
+    {
+      "id": 137039882977,
+      "name": "windows x86_64",
+      "conclusion": "success",
+      "seconds": 322.0,
+      "run_attempt": 1
+    },
+    {
+      "id": 137039883118,
+      "name": "complete execution budgets",
+      "conclusion": "failure",
+      "seconds": 306.0,
+      "run_attempt": 1
+    },
+    {
+      "id": 137039883440,
+      "name": "linux build x86_64",
+      "conclusion": "success",
+      "seconds": 419.0,
+      "run_attempt": 1
+    },
+    {
+      "id": 137041235398,
+      "name": "windows sharded execution coverage",
+      "conclusion": "failure",
+      "seconds": 20.0,
+      "run_attempt": 1
+    },
+    {
+      "id": 137041635296,
+      "name": "art workbench graphical smoke",
+      "conclusion": "success",
+      "seconds": 93.0,
+      "run_attempt": 1
+    },
+    {
+      "id": 137042046512,
+      "name": "linux x86_64",
+      "conclusion": "failure",
+      "seconds": 23.0,
+      "run_attempt": 1
+    }
+  ]
+}

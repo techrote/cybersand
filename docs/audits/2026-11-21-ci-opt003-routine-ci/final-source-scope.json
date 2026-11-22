@@ -1,0 +1,130 @@
+{
+  "schema": "ci-opt003-final-source-scope-v1",
+  "initial_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "accepted_main": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "accepted_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+  "changed_file_count": 17,
+  "changed_files": [
+    {
+      "path": ".github/workflows/documentation.yml",
+      "category": "CI workflow",
+      "git_blob": "0c96e25f9fdf7e470dafe7bc804c601bc9835dfe",
+      "bytes": 10393,
+      "sha256": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d"
+    },
+    {
+      "path": ".github/workflows/native.yml",
+      "category": "CI workflow",
+      "git_blob": "54558e632057165eb410b1e61562fc499a9b9a67",
+      "bytes": 12009,
+      "sha256": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919"
+    },
+    {
+      "path": "Makefile",
+      "category": "CI build/test tooling",
+      "git_blob": "03a756ed6d88a90d9c76ee9fd0e6bc8c6f1d6b9e",
+      "bytes": 39045,
+      "sha256": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7"
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "category": "CI documentation",
+      "git_blob": "f47de1891820b8cc1eb02fd7b0b51c055ff5bfed",
+      "bytes": 18644,
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd"
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "category": "CI documentation",
+      "git_blob": "cf7ba0c191bcb7516716bcf449565e5b21ffdada",
+      "bytes": 117202,
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "category": "CI documentation",
+      "git_blob": "62977d632e48b875b41183685397b3ec6f719515",
+      "bytes": 73249,
+      "sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "category": "CI documentation",
+      "git_blob": "285050f30b33fc6e048019711085eaee2ef3dfc0",
+      "bytes": 161415,
+      "sha256": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33"
+    },
+    {
+      "path": "tools/ci/check_soliding_build_inventory.py",
+      "category": "CI build/test tooling",
+      "git_blob": "c7f477d4b5a4a141738d23245fa4f84b10ff9a5a",
+      "bytes": 6279,
+      "sha256": "0e643d5bd4d72d63c1d605868cabd0dcb2e4641c66c29d181f47ab659e021a93"
+    },
+    {
+      "path": "tools/ci/check_worldgen_build_inventory.py",
+      "category": "CI build/test tooling",
+      "git_blob": "d6e2cc1d03b59fe0e6880fb60873866e2ad8057b",
+      "bytes": 12761,
+      "sha256": "1721d6d885d185c0a9556b2070c801694b4e1e2db9f17bdcdf1f7efe7d6683a7"
+    },
+    {
+      "path": "tools/ci/native_build_configuration.py",
+      "category": "CI build/test tooling",
+      "git_blob": "0af41c993bf11eceaee6b66c7d5b8f7f7e59ce08",
+      "bytes": 3936,
+      "sha256": "0e57af8210215cf36f006dffab4a511773f06428bb2d51a49dbd0be2e280a303"
+    },
+    {
+      "path": "tools/ci/native_execution_policy.py",
+      "category": "CI build/test tooling",
+      "git_blob": "05e5bfeb468003271912439c3bfd69fe9f644f0c",
+      "bytes": 7150,
+      "sha256": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb"
+    },
+    {
+      "path": "tools/ci/run_native_family.sh",
+      "category": "CI build/test tooling",
+      "git_blob": "2212d55988cd2a954658fb3645d774eaba429223",
+      "bytes": 4305,
+      "sha256": "34e5d9da827a02b8846ad27c5b85277dcf4e419bd9483cf599359221e300a607"
+    },
+    {
+      "path": "tools/ci/test_native_shards.py",
+      "category": "CI build/test tooling",
+      "git_blob": "599869941664617bca7b12549b4f2865dab8a985",
+      "bytes": 34013,
+      "sha256": "dcfc3ce80e331a28c92949a7b69e0f9c911ec518cd630ffde652b7249ff30bc4"
+    },
+    {
+      "path": "tools/ci/test_native_watchdogs.py",
+      "category": "CI build/test tooling",
+      "git_blob": "00deb2967487d2a5cf82b0e6b61920c4b6cfe6e7",
+      "bytes": 24080,
+      "sha256": "14d4be9c2cf9328e3167fd9a303b7a5b73b9f1c7da7521913c8ff7417a9f05f7"
+    },
+    {
+      "path": "tools/ci/test_soliding_build_reuse.py",
+      "category": "CI build/test tooling",
+      "git_blob": "831ccc156822f68301d48133bca03c7c70202fd4",
+      "bytes": 11535,
+      "sha256": "4a6d732eb2008539a29f1379e399c303edd1f05f87d95b4cb702614466e1f661"
+    },
+    {
+      "path": "tools/ci/test_worldgen_build_inventory.py",
+      "category": "CI build/test tooling",
+      "git_blob": "c31f6411deddf08aa4bd086e1df16464e2b3fb4c",
+      "bytes": 22980,
+      "sha256": "dee2cc2426b0195185ea869566e40e507b2a0146a8ff710d2d0777a477bbd044"
+    },
+    {
+      "path": "tools/ci/verify_native_shards.py",
+      "category": "CI build/test tooling",
+      "git_blob": "c534279c135bfa5eb920c17f1458fa14be0d8db5",
+      "bytes": 24914,
+      "sha256": "b86278278ff0f83ef189a7889d6d4bb729e7adbd587ee24edd29350f48815ead"
+    }
+  ],
+  "files_outside_ci_build_tooling_and_documentation": [],
+  "basis": "Exact committed Git blob contents; scientific/runtime invariants are additionally checked in the two before/after machine contracts."
+}

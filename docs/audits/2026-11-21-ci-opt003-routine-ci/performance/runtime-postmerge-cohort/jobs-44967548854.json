@@ -1,0 +1,105 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 137039881929,
+      "run_id": 44967548854,
+      "workflow_name": "Native source-scope advisory (report only)",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44967548854",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf6DamyQ",
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137039881929",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44967548854/job/137039881929",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:37:47Z",
+      "started_at": "2026-11-22T00:37:50Z",
+      "completed_at": "2026-11-22T00:38:17Z",
+      "name": "exact-source report-only Native scope",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:37:51Z",
+          "completed_at": "2026-11-22T00:37:53Z"
+        },
+        {
+          "name": "Check out the exact executed commit and complete comparison history",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:37:53Z",
+          "completed_at": "2026-11-22T00:38:09Z"
+        },
+        {
+          "name": "Preserve provider and runner policy",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:38:09Z",
+          "completed_at": "2026-11-22T00:38:10Z"
+        },
+        {
+          "name": "Verify scope advice and source-failure contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:38:10Z",
+          "completed_at": "2026-11-22T00:38:12Z"
+        },
+        {
+          "name": "Report the immutable Git comparison without authorizing a skip",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:38:12Z",
+          "completed_at": "2026-11-22T00:38:12Z"
+        },
+        {
+          "name": "Retain authenticated apparatus and report identities",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:38:12Z",
+          "completed_at": "2026-11-22T00:38:12Z"
+        },
+        {
+          "name": "Upload original scope evidence including failed decisions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-22T00:38:12Z",
+          "completed_at": "2026-11-22T00:38:14Z"
+        },
+        {
+          "name": "Post Check out the exact executed commit and complete comparison history",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-22T00:38:14Z",
+          "completed_at": "2026-11-22T00:38:14Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-22T00:38:14Z",
+          "completed_at": "2026-11-22T00:38:14Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137039881929",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141880,
+      "runner_name": "GitHub Actions 1000141880",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "ci-opt003-original-postmerge-artifact-archive-v1",
+  "repository": "https://github.com/techrote/cybersand",
+  "scope": "Unmodified original final-source Native and platform coverage archives; not every raw platform shard or complete workflow log. Failed attempt1 is not qualification and is recorded in repository accounting.",
+  "artifacts": [
+    {
+      "artifact_id": 14732861215,
+      "run_id": 44964966221,
+      "run_attempt": 1,
+      "role": "B merged-main Native aggregate",
+      "source_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "archive_entry": "original-artifacts/14732861215.zip",
+      "bytes": 11532,
+      "sha256": "7ae2b34e7208f1971d283ebdf81c51eb7696bd33c5cce78b5a8b028fce23c2ee",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44964966221"
+    },
+    {
+      "artifact_id": 14732293333,
+      "run_id": 44964966221,
+      "run_attempt": 1,
+      "role": "B merged-main raw worldgen",
+      "source_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "archive_entry": "original-artifacts/14732293333.zip",
+      "bytes": 161097,
+      "sha256": "913319f5700a818f25679421f3decdadb4bf87b14395f330ebf2d30a2aae8ab6",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44964966221"
+    },
+    {
+      "artifact_id": 14733002831,
+      "run_id": 44967548870,
+      "run_attempt": 1,
+      "role": "C merged-main Native aggregate",
+      "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "archive_entry": "original-artifacts/14733002831.zip",
+      "bytes": 12258,
+      "sha256": "afd00cbc21bf17e61d0454278c57fe3ae6dc8fb52bbf4d5dff6f12aa84e19f92",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44967548870"
+    },
+    {
+      "artifact_id": 14732372886,
+      "run_id": 44967548870,
+      "run_attempt": 1,
+      "role": "C merged-main raw worldgen",
+      "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "archive_entry": "original-artifacts/14732372886.zip",
+      "bytes": 173410,
+      "sha256": "7623ee9406fa5e29bb3d17282a52ac3a3bdfb9e6e404cbb5372df64479dd3fcd",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44967548870"
+    },
+    {
+      "artifact_id": 14733270246,
+      "run_id": 44967548870,
+      "run_attempt": 1,
+      "role": "C merged-main raw TSan",
+      "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "archive_entry": "original-artifacts/14733270246.zip",
+      "bytes": 29831,
+      "sha256": "209c7e6d81be802e25060bf2d1d334d11ee1d06ae04cbc630e869a317888f272",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44967548870"
+    },
+    {
+      "artifact_id": 14733112711,
+      "run_id": 44967549040,
+      "run_attempt": 2,
+      "role": "C merged-main Linux coverage",
+      "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "archive_entry": "original-artifacts/14733112711.zip",
+      "bytes": 82950,
+      "sha256": "8362b7053f1b37a20a926fc7a8cc82ba328c70c17624567cae5638f50382c3dd",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44967549040"
+    },
+    {
+      "artifact_id": 14733406653,
+      "run_id": 44967549040,
+      "run_attempt": 2,
+      "role": "C merged-main Windows coverage",
+      "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "archive_entry": "original-artifacts/14733406653.zip",
+      "bytes": 84407,
+      "sha256": "849c9ff66891fd70786795bc4c3fc2d9137c4cd530adf30ab28e02b3bb2b1758",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44967549040"
+    }
+  ],
+  "outer_archive": {
+    "filename": "CyberSand_CI_OPT_003_postmerge_evidence.zip",
+    "bytes": 560193,
+    "sha256": "826c66f04d0f1738919b2ddb7d45e3620c69fdc1bee146088c1f333e0d0ac455"
+  }
+}

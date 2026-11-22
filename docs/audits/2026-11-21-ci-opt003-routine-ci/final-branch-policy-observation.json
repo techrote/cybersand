@@ -1,0 +1,25 @@
+{
+  "branch": {
+    "url": "https://api.github.com/repos/techrote/cybersand/branches/main",
+    "name": "main",
+    "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "protected": false,
+    "protection": {
+      "enabled": false,
+      "required_status_checks": {
+        "enforcement_level": "off",
+        "contexts": [],
+        "checks": []
+      }
+    }
+  },
+  "rules_endpoint": {
+    "status": "unsupported by approved GitHub connector",
+    "response": {
+      "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+      "error_code": "INVALID_ARGUMENT"
+    }
+  },
+  "scope": "Read-only observation; no protection or ruleset configuration was changed. Metric labels refer to mission/workflow validation gates rather than asserting branch-enforced required status contexts.",
+  "recorded_utc": "2026-11-22 01:17:14 UTC"
+}

@@ -1,0 +1,257 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 137039881988,
+      "run_id": 44967548903,
+      "workflow_name": "Documentation and provenance",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44967548903",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf6DanBA",
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137039881988",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44967548903/job/137039881988",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:37:47Z",
+      "started_at": "2026-11-22T00:37:50Z",
+      "completed_at": "2026-11-22T00:45:26Z",
+      "name": "consistency",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:37:51Z",
+          "completed_at": "2026-11-22T00:37:53Z"
+        },
+        {
+          "name": "Check out pinned companion workspace documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:37:53Z",
+          "completed_at": "2026-11-22T00:37:58Z"
+        },
+        {
+          "name": "Check out current source and complete audited history",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:37:58Z",
+          "completed_at": "2026-11-22T00:38:30Z"
+        },
+        {
+          "name": "Validate active CI provider policy",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:38:30Z",
+          "completed_at": "2026-11-22T00:38:31Z"
+        },
+        {
+          "name": "Test CI provider policy checker",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:38:31Z",
+          "completed_at": "2026-11-22T00:38:31Z"
+        },
+        {
+          "name": "Validate Actions syntax with pinned actionlint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:38:31Z",
+          "completed_at": "2026-11-22T00:38:31Z"
+        },
+        {
+          "name": "Audit workflow inventory and scheduling policies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-22T00:38:31Z",
+          "completed_at": "2026-11-22T00:38:37Z"
+        },
+        {
+          "name": "Retain machine-readable workflow inventory",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-22T00:38:37Z",
+          "completed_at": "2026-11-22T00:38:39Z"
+        },
+        {
+          "name": "Validate current documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-22T00:38:39Z",
+          "completed_at": "2026-11-22T00:38:40Z"
+        },
+        {
+          "name": "Validate dependency pins and published runtime provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-22T00:38:40Z",
+          "completed_at": "2026-11-22T00:38:41Z"
+        },
+        {
+          "name": "Verify soliding object reuse and original compiler contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-22T00:38:41Z",
+          "completed_at": "2026-11-22T00:38:51Z"
+        },
+        {
+          "name": "Retain soliding build contract evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:38:51Z",
+          "completed_at": "2026-11-22T00:38:52Z"
+        },
+        {
+          "name": "Check LCB capability matrix is source-derived",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:38:52Z",
+          "completed_at": "2026-11-22T00:38:52Z"
+        },
+        {
+          "name": "Check LCB policy wire/hash contract vectors",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-22T00:38:52Z",
+          "completed_at": "2026-11-22T00:38:52Z"
+        },
+        {
+          "name": "Check native LCB setup and run receipt canonical vectors",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-22T00:38:52Z",
+          "completed_at": "2026-11-22T00:38:52Z"
+        },
+        {
+          "name": "Check material catalogue shadow compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-11-22T00:38:52Z",
+          "completed_at": "2026-11-22T00:44:40Z"
+        },
+        {
+          "name": "Check LCB scenario definitions and registry are source-derived",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-22T00:44:40Z",
+          "completed_at": "2026-11-22T00:45:14Z"
+        },
+        {
+          "name": "Verify retained M11 records against their audited Git revision",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-22T00:45:14Z",
+          "completed_at": "2026-11-22T00:45:14Z"
+        },
+        {
+          "name": "Test validation failure contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-22T00:45:14Z",
+          "completed_at": "2026-11-22T00:45:14Z"
+        },
+        {
+          "name": "Test soliding evidence integrity contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-22T00:45:14Z",
+          "completed_at": "2026-11-22T00:45:14Z"
+        },
+        {
+          "name": "Test coupled-lockstep evidence reducer contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-22T00:45:14Z",
+          "completed_at": "2026-11-22T00:45:15Z"
+        },
+        {
+          "name": "Evaluate current retrieval routes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-11-22T00:45:15Z",
+          "completed_at": "2026-11-22T00:45:17Z"
+        },
+        {
+          "name": "Validate Git LFS objects and whitespace",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-11-22T00:45:17Z",
+          "completed_at": "2026-11-22T00:45:19Z"
+        },
+        {
+          "name": "Retain retrieval evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-11-22T00:45:19Z",
+          "completed_at": "2026-11-22T00:45:21Z"
+        },
+        {
+          "name": "Retain material catalogue parity evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-22T00:45:21Z",
+          "completed_at": "2026-11-22T00:45:23Z"
+        },
+        {
+          "name": "Post Check out current source and complete audited history",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 49,
+          "started_at": "2026-11-22T00:45:23Z",
+          "completed_at": "2026-11-22T00:45:23Z"
+        },
+        {
+          "name": "Post Check out pinned companion workspace documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 50,
+          "started_at": "2026-11-22T00:45:23Z",
+          "completed_at": "2026-11-22T00:45:23Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 51,
+          "started_at": "2026-11-22T00:45:23Z",
+          "completed_at": "2026-11-22T00:45:23Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137039881988",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141879,
+      "runner_name": "GitHub Actions 1000141879",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "ci-opt003-infrastructure-failure-v1",
+  "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "run_id": 44967549040,
+  "run_attempt": 1,
+  "job_id": 137039883118,
+  "job_name": "complete execution budgets",
+  "job_url": "https://github.com/techrote/cybersand/actions/runs/44967549040/job/137039883118",
+  "original_log_bytes": 13154,
+  "original_log_sha256": "56683e29512a04bafc9eece8d247eec0eb3657ffedbe6baf26044acc95ebc89a",
+  "diagnostic_excerpt": [
+    "2026-11-22T00:40:08.7257103Z ##[error]fatal: unable to access 'https://github.com/techrote/cybersand/': Failed to connect to github.com port 443 after 133700 ms: Couldn't connect to server",
+    "2026-11-22T00:42:36.1797086Z ##[error]fatal: unable to access 'https://github.com/techrote/cybersand/': Failed to connect to github.com port 443 after 136446 ms: Couldn't connect to server",
+    "2026-11-22T00:42:52.8988509Z  * [new ref]         662df51cd8409a52332fa7ef15d06d8ab8945aed -> origin/main",
+    "2026-11-22T00:42:53.2991819Z ##[error]The action 'Check out exact planning source' has timed out after 5 minutes."
+  ],
+  "root_cause": "Two GitHub TCP/443 connection failures exhausted the existing five-minute checkout watchdog; the execution planner never ran.",
+  "failure_semantics": "Missing plan and mandatory shard evidence caused platform reducers to fail; this attempt is not qualification.",
+  "recovery": "Rerun shared ready_scope root and all dependent jobs as complete attempt2, unchanged source; no prior-attempt artifact substitution.",
+  "prior_failed_attempt_cost_record": "runtime-postmerge-cohort/gde-first-attempt-cost.json",
+  "retry_review": "../reviews/gde-main-retry-review.md",
+  "measurement_limit": "Original event-to-green includes failed attempt and recovery delay; recovered cohort is not a clean performance comparison."
+}

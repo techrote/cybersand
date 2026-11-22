@@ -1,0 +1,102 @@
+{
+  "schema": "cybersand-ci-opt003-original-artifact-archive-v1",
+  "repository": "https://github.com/techrote/cybersand",
+  "created_utc": "2026-11-22",
+  "scope": "Unmodified original controlled proof artifacts and selected final-source Native receipts; not a complete backup of every platform artifact.",
+  "artifacts": [
+    {
+      "artifact_id": 14729210780,
+      "run_id": 44959131042,
+      "run_attempt": 1,
+      "scope": "compiler-order normal pair",
+      "archive_entry": "original-artifacts/14729210780.zip",
+      "bytes": 157292,
+      "sha256": "ae9e84dba2ededf27a863e28278649f45c0a8999360a9fc7cd85d75e6e2f2185",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44959131042"
+    },
+    {
+      "artifact_id": 14730460793,
+      "run_id": 44959131042,
+      "run_attempt": 1,
+      "scope": "compiler-order sanitized pair",
+      "archive_entry": "original-artifacts/14730460793.zip",
+      "bytes": 168882,
+      "sha256": "33c9948018df1916b1c8b87270fd8385dfd82a959b59f2ee1e7e84c4692602db",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44959131042"
+    },
+    {
+      "artifact_id": 14730300616,
+      "run_id": 44961498877,
+      "run_attempt": 1,
+      "scope": "soliding normal pair",
+      "archive_entry": "original-artifacts/14730300616.zip",
+      "bytes": 207765,
+      "sha256": "350a46cfd441cd24920829231a05ffb6c6a60614c7c6aeea198fb9d36e19d413",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44961498877"
+    },
+    {
+      "artifact_id": 14731021438,
+      "run_id": 44961498877,
+      "run_attempt": 1,
+      "scope": "soliding sanitized pair",
+      "archive_entry": "original-artifacts/14731021438.zip",
+      "bytes": 81290,
+      "sha256": "3cd95df73c231f7b305f8b8c724f460528625a56cce0836c4fe7685d8d5d54b3",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44961498877"
+    },
+    {
+      "artifact_id": 14732380696,
+      "run_id": 44963259696,
+      "run_attempt": 1,
+      "scope": "complete worldgen pair",
+      "archive_entry": "original-artifacts/14732380696.zip",
+      "bytes": 443487,
+      "sha256": "9411292cbcf416dd56600c37e3e19d85c9b3ca4e1fdf885e6b2bff4cbd4e5238",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44963259696"
+    },
+    {
+      "artifact_id": 14729763528,
+      "run_id": 44960371733,
+      "run_attempt": 1,
+      "scope": "PR722 final Native aggregate",
+      "archive_entry": "original-artifacts/14729763528.zip",
+      "bytes": 11509,
+      "sha256": "4fe00dacdbdb7a102fb840517ee4de9f11b4cba1d9697b3299dbe3aecdfef6e8",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44960371733"
+    },
+    {
+      "artifact_id": 14730789639,
+      "run_id": 44963101962,
+      "run_attempt": 1,
+      "scope": "PR723 final Native aggregate",
+      "archive_entry": "original-artifacts/14730789639.zip",
+      "bytes": 12270,
+      "sha256": "c9b548b06f5f14339464e3bae661136a0cf8602175313740520ed6fadbf14e68",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44963101962"
+    },
+    {
+      "artifact_id": 14731551841,
+      "run_id": 44963101962,
+      "run_attempt": 1,
+      "scope": "PR723 original worldgen qualification",
+      "archive_entry": "original-artifacts/14731551841.zip",
+      "bytes": 173402,
+      "sha256": "9b9f5b54d3f35beeb568027a9c7f3fc7b23bb9a430938aba19120c662d030be8",
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/44963101962"
+    }
+  ],
+  "source_readers": {
+    "rejected_compiler_order_strict_reader_sha256": "ee58321a5cfab2b27edd7f1ac6383a85e8244cd7496c784facc1690127295eb8",
+    "soliding_proof_commit": "fd4921ace2c4f97f06c70b887778b2366d7a9f0f",
+    "soliding_reader_sha256": "ab0be75fd3cd58d0af24a2bd44b9dff392bbb6c73ab8729217b53c40dd6a573a",
+    "worldgen_proof_commit": "cc22fb8ffbba2a7c18a0bc1c0ad60413ad5c3147",
+    "worldgen_reader_sha256": "6579cc7476996764cb21b4bfabd90bd3948d55c5e1d1c7c29b10e3c31c06a7a5",
+    "worldgen_required_supplement_sha256": "540c4f5490529ec61f767736be8c23bc3451b0e1f383ec9ad5b0e7ce10e69c7a",
+    "evidence_checkpoint_commit": "dd58eff1dc2cebb8fb2bea17e544156a9710d549"
+  },
+  "outer_archive": {
+    "filename": "CyberSand_CI_OPT_003_original_evidence.zip",
+    "bytes": 1262468,
+    "sha256": "c4acd79239032db6c01b9a9484a48958bd3a9ac16ddc56938862304b6c5fce8d"
+  }
+}

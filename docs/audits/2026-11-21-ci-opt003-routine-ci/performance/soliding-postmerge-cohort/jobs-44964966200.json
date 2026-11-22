@@ -1,0 +1,368 @@
+{
+  "total_count": 5,
+  "jobs": [
+    {
+      "id": 137031794236,
+      "run_id": 44964966200,
+      "workflow_name": "Wave Flow native qualification",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966200",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57s-PA",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031794236",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966200/job/137031794236",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:03Z",
+      "started_at": "2026-11-22T00:06:05Z",
+      "completed_at": "2026-11-22T00:07:26Z",
+      "name": "Windows Wave Flow correctness",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:06Z",
+          "completed_at": "2026-11-22T00:06:06Z"
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:06Z",
+          "completed_at": "2026-11-22T00:06:18Z"
+        },
+        {
+          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:18Z",
+          "completed_at": "2026-11-22T00:06:18Z"
+        },
+        {
+          "name": "Build and execute source-matched MSVC native suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:18Z",
+          "completed_at": "2026-11-22T00:07:23Z"
+        },
+        {
+          "name": "Build complete tick comparison executable",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-22T00:07:23Z",
+          "completed_at": "2026-11-22T00:07:23Z"
+        },
+        {
+          "name": "Measure matched complete native ticks including negative results",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-11-22T00:07:23Z",
+          "completed_at": "2026-11-22T00:07:23Z"
+        },
+        {
+          "name": "Retain Windows native evidence and available measurements",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-22T00:07:23Z",
+          "completed_at": "2026-11-22T00:07:23Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:07:23Z",
+          "completed_at": "2026-11-22T00:07:23Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-22T00:07:23Z",
+          "completed_at": "2026-11-22T00:07:25Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-22T00:07:25Z",
+          "completed_at": "2026-11-22T00:07:25Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031794236",
+      "labels": [
+        "windows-2022"
+      ],
+      "runner_id": 1000141774,
+      "runner_name": "GitHub Actions 1000141774",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031794330,
+      "run_id": 44964966200,
+      "workflow_name": "Wave Flow native qualification",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966200",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57s-mg",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031794330",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966200/job/137031794330",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:03Z",
+      "started_at": "2026-11-22T00:06:07Z",
+      "completed_at": "2026-11-22T00:07:28Z",
+      "name": "Wave Flow normal",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:07Z",
+          "completed_at": "2026-11-22T00:06:10Z"
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:10Z",
+          "completed_at": "2026-11-22T00:06:19Z"
+        },
+        {
+          "name": "Run concurrent, conservation and C ABI regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:19Z",
+          "completed_at": "2026-11-22T00:07:23Z"
+        },
+        {
+          "name": "Retain original source and sanitizer results",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:07:23Z",
+          "completed_at": "2026-11-22T00:07:25Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-22T00:07:25Z",
+          "completed_at": "2026-11-22T00:07:25Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-22T00:07:25Z",
+          "completed_at": "2026-11-22T00:07:25Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031794330",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141779,
+      "runner_name": "GitHub Actions 1000141779",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031794346,
+      "run_id": 44964966200,
+      "workflow_name": "Wave Flow native qualification",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966200",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57s-qg",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031794346",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966200/job/137031794346",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:03Z",
+      "started_at": "2026-11-22T00:06:06Z",
+      "completed_at": "2026-11-22T00:12:45Z",
+      "name": "Wave Flow tsan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:06Z",
+          "completed_at": "2026-11-22T00:06:09Z"
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:09Z",
+          "completed_at": "2026-11-22T00:06:18Z"
+        },
+        {
+          "name": "Run concurrent, conservation and C ABI regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:18Z",
+          "completed_at": "2026-11-22T00:12:43Z"
+        },
+        {
+          "name": "Retain original source and sanitizer results",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:12:43Z",
+          "completed_at": "2026-11-22T00:12:44Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-22T00:12:44Z",
+          "completed_at": "2026-11-22T00:12:44Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-22T00:12:44Z",
+          "completed_at": "2026-11-22T00:12:44Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031794346",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141780,
+      "runner_name": "GitHub Actions 1000141780",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031794394,
+      "run_id": 44964966200,
+      "workflow_name": "Wave Flow native qualification",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966200",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57s-2g",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031794394",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966200/job/137031794394",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:03Z",
+      "started_at": "2026-11-22T00:06:06Z",
+      "completed_at": "2026-11-22T00:10:27Z",
+      "name": "Wave Flow asan-ubsan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:06Z",
+          "completed_at": "2026-11-22T00:06:08Z"
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:08Z",
+          "completed_at": "2026-11-22T00:06:18Z"
+        },
+        {
+          "name": "Run concurrent, conservation and C ABI regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:18Z",
+          "completed_at": "2026-11-22T00:10:24Z"
+        },
+        {
+          "name": "Retain original source and sanitizer results",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:10:24Z",
+          "completed_at": "2026-11-22T00:10:25Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-22T00:10:25Z",
+          "completed_at": "2026-11-22T00:10:25Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-22T00:10:25Z",
+          "completed_at": "2026-11-22T00:10:25Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031794394",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141778,
+      "runner_name": "GitHub Actions 1000141778",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031795112,
+      "run_id": 44964966200,
+      "workflow_name": "Wave Flow native qualification",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966200",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57tBqA",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031795112",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966200/job/137031795112",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-22T00:06:04Z",
+      "started_at": "2026-11-22T00:06:04Z",
+      "completed_at": "2026-11-22T00:06:03Z",
+      "name": "Paired default-off Water against accepted main",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031795112",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    }
+  ]
+}

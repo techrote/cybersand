@@ -1,0 +1,2714 @@
+{
+  ".github/workflows/architectural-generator-qualification.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/atlas-agent-ci.yml": {
+    "complete-dry-run-workflow": {
+      "continue_on_error": null,
+      "job_timeout_minutes": null,
+      "step_watchdogs": []
+    },
+    "tests": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "20",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/atlas-agent-runner.yml": {
+    "run": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/copy292-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/documentation.yml": {
+    "consistency": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Validate Actions syntax with pinned actionlint",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Audit workflow inventory and scheduling policies",
+          "timeout_minutes": "10"
+        }
+      ]
+    }
+  },
+  ".github/workflows/explore001-qualification.yml": {
+    "linux-real": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/explore001-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/explore001-windows.yml": {
+    "cross-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gdextension.yml": {
+    "art-graphical-smoke": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "75",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Restore exact Linux runtime",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Verify and install source-built runtime",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Prepare pinned Godot runtime",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Prepare software-rendered display",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Run native graphical art smoke with scripted provider",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Retain original graphical smoke evidence",
+          "timeout_minutes": "5"
+        }
+      ]
+    },
+    "execution-plan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact planning source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Prove slow success, late failure, owned cleanup and complete budgets",
+          "timeout_minutes": "20"
+        }
+      ]
+    },
+    "linux-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "linux-regression": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ fromJSON(needs.execution-plan.outputs.linux_job_minutes) }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Restore exact Linux runtime",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Verify and install runtime artifact",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Prepare exact Godot runtime",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Install software rendering display",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Run isolated regression shard with actual rendered-pixel tests",
+          "timeout_minutes": "${{ fromJSON(needs.execution-plan.outputs.linux_execution_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 7,
+          "name": "Retain shard evidence",
+          "timeout_minutes": "10"
+        }
+      ]
+    },
+    "linux-regression-gate": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "physical-actor-stress": {
+      "continue_on_error": null,
+      "job_timeout_minutes": null,
+      "step_watchdogs": []
+    },
+    "physical-timing": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": []
+    },
+    "ready_scope": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "windows-coverage": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Download independently verified same-run Windows candidate",
+          "timeout_minutes": "5"
+        }
+      ]
+    },
+    "windows-regression": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ fromJSON(needs.execution-plan.outputs.windows_job_minutes) }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact tested source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python 3.12",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Materialize pinned Windows Rapier runtime",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Download same-run source-built Windows candidate",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Verify and install candidate without changing retained provenance",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Validate Windows execution harness",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Download official Windows Godot archive",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 7,
+          "name": "Verify retained runtime and execute every applicable Windows case",
+          "timeout_minutes": "${{ fromJSON(needs.execution-plan.outputs.windows_execution_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 8,
+          "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 9,
+          "name": "Retain actual Windows execution evidence",
+          "timeout_minutes": "5"
+        }
+      ]
+    }
+  },
+  ".github/workflows/gen008-flatten-qualification.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "catalogue-linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    },
+    "dispatch-existing-gates": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-contracts": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Exercise Windows storage fences and measured engine before retained suites",
+          "timeout_minutes": "15"
+        }
+      ]
+    },
+    "windows-package": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-cathedral-showcase.yml": {
+    "native-material-campaign": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-classic-draft-gallery.yml": {
+    "gallery": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-interlaced-draft.yml": {
+    "godot": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "verify": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-interlock-draft.yml": {
+    "godot": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "verify": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-megablock-draft-gallery.yml": {
+    "linux-gallery": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    },
+    "windows-native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-megatruss-draft.yml": {
+    "godot": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "verify": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-metabolist-draft.yml": {
+    "godot": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "verify": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-rosework-draft.yml": {
+    "godot": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "verify": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-showcase-integration-001.yml": {
+    "integrated": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek-suspended-draft.yml": {
+    "godot": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "verify": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek691-art-history-repro.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "35",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "45",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek80-qualification.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/gentek80-water-merged-requalification.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/in-tools-361-a01-independent-qualification.yml": {
+    "a01-404-exact-source": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "successor-current-main-source": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/in-tools-361-windows-gate.yml": {
+    "actual-windows-causal-gate": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/issue49-water-apparatus.yml": {
+    "apparatus": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb001-shared-contract-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "25",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb002-pressure-variants-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "25",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb003-application-host-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "25",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb005-inertial-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "25",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb005-water-inertial-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "55",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "25",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb201-current-main-camera-abba.yml": {
+    "source-matched-screen": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb201-mc-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/lcb201-p1-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/mat-workbench-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "catalogue-linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    },
+    "dispatch-existing-gates": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "windows-package": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/mat003-c128-timing.yml": {
+    "timing": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Download the immutable qualified artifact",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Repeat the frozen independent C128 apparatus readback",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Run only the exact admitted paired campaign",
+          "timeout_minutes": "35"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Independently read all registered timing evidence without granting acceptance",
+          "timeout_minutes": "20"
+        }
+      ]
+    }
+  },
+  ".github/workflows/mat003-s2a.yml": {
+    "paired-s2a": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "70",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/mat003-s2p-timing.yml": {
+    "timing": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Download the immutable qualified artifact",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Repeat the frozen independent S2P apparatus readback",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Run only the exact admitted paired campaign",
+          "timeout_minutes": "35"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Independently read all registered timing evidence without granting acceptance",
+          "timeout_minutes": "20"
+        }
+      ]
+    }
+  },
+  ".github/workflows/mat003-wclear-timing.yml": {
+    "timing": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "210",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Download the immutable qualified artifact",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Repeat the frozen independent WCLEAR apparatus readback",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Run only the exact admitted paired campaign",
+          "timeout_minutes": "125"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Independently read all registered timing evidence without granting acceptance",
+          "timeout_minutes": "20"
+        }
+      ]
+    }
+  },
+  ".github/workflows/material-liveness-phase-a.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "40",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Record exact source and validate the apparatus boundary",
+          "timeout_minutes": "3"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Run the registered 552-case native campaign",
+          "timeout_minutes": "31"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Independently authenticate every case and worker comparison",
+          "timeout_minutes": "3"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Package original raw evidence, including failed attempts",
+          "timeout_minutes": "3"
+        }
+      ]
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "40",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Record exact source and validate the apparatus boundary",
+          "timeout_minutes": "3"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Discover installed Visual Studio tools and execute actual Windows native code",
+          "timeout_minutes": "31"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Independently authenticate every case and worker comparison",
+          "timeout_minutes": "3"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Package original raw evidence, including failed attempts",
+          "timeout_minutes": "3"
+        }
+      ]
+    }
+  },
+  ".github/workflows/materials-lab-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "catalogue-linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    },
+    "dispatch-existing-gates": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "windows-package": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/native-copy-extreme-292.yml": {
+    "baseline_original_ubsan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "candidate_asan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "18",
+      "step_watchdogs": []
+    },
+    "candidate_ubsan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "windows_msvc": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Compile with actual Windows MSVC and execute all native / C ABI cases",
+          "timeout_minutes": "22"
+        }
+      ]
+    }
+  },
+  ".github/workflows/native-scope-advisory.yml": {
+    "classification": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/native.yml": {
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "native-shards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ matrix.job_minutes }}",
+      "step_watchdogs": []
+    },
+    "policy": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "ready_scope": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/paint001-native-suite.yml": {
+    "native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "native-shards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ matrix.job_minutes }}",
+      "step_watchdogs": []
+    },
+    "policy": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "ready_scope": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/paint001-qualification.yml": {
+    "linux-real": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/paint001-windows.yml": {
+    "cross-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "integration-dryrun": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/palette-shader-qualification.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ matrix.job_minutes }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact source",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Materialize source-pinned dependencies and run portable adverse controls",
+          "timeout_minutes": "${{ matrix.dependency_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Execute actual native GL cohort with full source-policy allowances",
+          "timeout_minutes": "${{ matrix.suite_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Independently reread retained source, pixels and cache lineage",
+          "timeout_minutes": "${{ matrix.readback_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Preserve every original success, failure, raw frame and managed cache",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        }
+      ]
+    },
+    "plan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact source and preserved native baseline",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Derive complete registered inventory and every outer budget",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Retain exact plan and provider control",
+          "timeout_minutes": "5"
+        }
+      ]
+    },
+    "readback": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).job_minutes }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out the independently expected source",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Retrieve all six original cohorts without merging their files",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Prepare the independently pinned pixel readers",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).dependency_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Require the complete source-bound inventory and same-variant native versus ANGLE pixels",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).readback_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Preserve the final independent verdict, including missing or failed cohorts",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}"
+        }
+      ]
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ matrix.job_minutes }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Preserve exact source text bytes before checkout",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Check out exact source",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Select Python",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Materialize source-pinned dependencies and run portable adverse controls",
+          "timeout_minutes": "${{ matrix.dependency_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Execute actual Windows ANGLE cohort with full source-policy allowances",
+          "timeout_minutes": "${{ matrix.suite_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Independently reread retained source, pixels and cache lineage",
+          "timeout_minutes": "${{ matrix.readback_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Preserve every original success, failure, raw frame and managed cache",
+          "timeout_minutes": "${{ matrix.metadata_step_minutes }}"
+        }
+      ]
+    }
+  },
+  ".github/workflows/pf-c2048-native-qualification.yml": {
+    "native-qualification": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf-c2048-prepared-host.yml": {
+    "prepared-host": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf-c2048-real-native-matrix.yml": {
+    "authored-native-world": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf-c2048-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf-c2048-windows-source-execution.yml": {
+    "build-windows-candidate": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "run-windows-candidate": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf-gas-exact-paired-native.yml": {
+    "matched-native": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf-gas-exact-windows-native.yml": {
+    "native-windows-source": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Strict Current deadline predicate reliability \u2014 12 separate original-binary executions",
+          "timeout_minutes": "10"
+        }
+      ]
+    }
+  },
+  ".github/workflows/pf-gas-hotpath-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf504-after405-identical-input-replay.yml": {
+    "native-exactness": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "130",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Export source-authored Godot stress-canvas and freeze eight-body input tape",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Build exactly two current-main-equivalent native binaries",
+          "timeout_minutes": "35"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Replay 264 identical native inputs per source and worker/camera lane; compare every physics tick",
+          "timeout_minutes": "65"
+        }
+      ]
+    }
+  },
+  ".github/workflows/pf504-after405-real-workbench.yml": {
+    "actual-workbench-stress": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf504-post405-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/pf522-msvc-deadline-attribution.yml": {
+    "strict-source-differential": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Build baseline and candidate ORIGINAL MSVC native tests, no injected changes",
+          "timeout_minutes": "35"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Apply identical test-only per-predicate instrumentation to both checked-out worktrees",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Build independent diagnostic binaries; preserve ORIGINAL binaries separately",
+          "timeout_minutes": "35"
+        },
+        {
+          "continue_on_error": null,
+          "index": 7,
+          "name": "Run B-C-C-B unmodified focused and full 191/192-test gates plus strict predicate probe",
+          "timeout_minutes": "35"
+        }
+      ]
+    }
+  },
+  ".github/workflows/physical-actor-stress.yml": {
+    "frequency": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": []
+    },
+    "linux-paired": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": []
+    },
+    "linux-stress": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": []
+    },
+    "paired-qualification": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "rapier-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": null,
+      "step_watchdogs": []
+    },
+    "windows-paired": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": []
+    },
+    "windows-stress": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/physical-timeout-stress.yml": {
+    "linux-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "stress-gate": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "stress-linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "125",
+      "step_watchdogs": []
+    },
+    "stress-windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "125",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/play-busy001a-pool.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/play-busy001b-host.yml": {
+    "linux-real-host": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "90",
+      "step_watchdogs": []
+    },
+    "windows-real-host": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "20",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/play-desktop-packet.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ fromJSON(needs.plan.outputs.job_minutes) }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out pinned companion documentation",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.setup_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Check out exact source and all retained runtime objects",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.source_checkout_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Select Python",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.setup_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Preserve exact source identity",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.metadata_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Run original adverse packet controls",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.controls_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Verify every retained LFS object",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.dependency_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Authenticate and extract pinned engine without executing it",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.engine_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 7,
+          "name": "Create actual-host identity packet",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.packet_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 8,
+          "name": "Independently reverify the original identity packet",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.packet_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 9,
+          "name": "Preserve final clean source observation",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.metadata_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 10,
+          "name": "Retain original identity checks and untested manual sheet",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.artifact_minutes) }}"
+        }
+      ]
+    },
+    "plan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact planning source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python for budget planning",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Derive the complete source policy budget",
+          "timeout_minutes": "5"
+        }
+      ]
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ fromJSON(needs.plan.outputs.job_minutes) }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out pinned companion documentation",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.setup_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Check out exact source and all retained runtime objects",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.source_checkout_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Select Python",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.setup_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Preserve exact source identity",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.metadata_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Run original adverse packet controls",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.controls_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Verify every retained LFS object",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.dependency_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Authenticate and extract pinned engine without executing it",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.engine_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 7,
+          "name": "Create actual-host identity packet",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.packet_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 8,
+          "name": "Independently reverify the original identity packet",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.packet_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 9,
+          "name": "Preserve final clean source observation",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.metadata_minutes) }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 10,
+          "name": "Retain original identity checks and untested manual sheet",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.artifact_minutes) }}"
+        }
+      ]
+    }
+  },
+  ".github/workflows/play-life009.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Materialize authentic selected runtimes and engine archive",
+          "timeout_minutes": "6"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Run all five first-attempt automatic-callback fixtures",
+          "timeout_minutes": "21"
+        }
+      ]
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Materialize authentic selected runtimes and engine archive",
+          "timeout_minutes": "6"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Run all five first-attempt automatic-callback fixtures",
+          "timeout_minutes": "21"
+        }
+      ]
+    }
+  },
+  ".github/workflows/play-pace004.yml": {
+    "complete_inventory": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ fromJSON(needs.plan.outputs.inventory_job_minutes || '360') }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out the independent reader at the executed source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Retrieve every original shard without combining their directories",
+          "timeout_minutes": "60"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Require the exact sixty headless and twelve graphical cases",
+          "timeout_minutes": "${{ fromJSON(needs.plan.outputs.inventory_readback_minutes || '270') }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Require every admitted job result",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Preserve the complete inventory verdict",
+          "timeout_minutes": "10"
+        }
+      ]
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ matrix.job_minutes }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Materialize pinned runtime dependencies within independent allowances",
+          "timeout_minutes": "${{ matrix.dependency_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Execute the registered two-case source-bound shard",
+          "timeout_minutes": "${{ matrix.suite_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Independently verify retained logs, pixels and source custody",
+          "timeout_minutes": "${{ matrix.readback_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Preserve original positive, failed and incomplete evidence",
+          "timeout_minutes": "10"
+        }
+      ]
+    },
+    "plan": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Check out exact source and accepted ancestry",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Select Python",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Validate source, adverse controls and complete registered inventory",
+          "timeout_minutes": "30"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Preserve planning controls and failures",
+          "timeout_minutes": "10"
+        }
+      ]
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "${{ matrix.job_minutes }}",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 0,
+          "name": "Keep implicit checkout text conversions disabled",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Check out exact source",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 2,
+          "name": "Select Python",
+          "timeout_minutes": "5"
+        },
+        {
+          "continue_on_error": null,
+          "index": 3,
+          "name": "Materialize pinned runtime dependencies within independent allowances",
+          "timeout_minutes": "${{ matrix.dependency_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Execute the registered two-case source-bound shard",
+          "timeout_minutes": "${{ matrix.suite_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Independently verify retained logs, pixels and source custody",
+          "timeout_minutes": "${{ matrix.readback_minutes }}"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Preserve original positive, failed and incomplete evidence",
+          "timeout_minutes": "10"
+        }
+      ]
+    }
+  },
+  ".github/workflows/rapier-bvh-build.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/release-hashes.yml": {
+    "hashes": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/render-copy-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-differential": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/script-hotpath-godot.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "75",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Build pinned godot-cpp and exact-head Linux extension",
+          "timeout_minutes": "40"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Restore source-matched Rapier native dependency",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 6,
+          "name": "Download verified official Godot 4.7",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 7,
+          "name": "Import project and verify native planner is present",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 8,
+          "name": "Run exact-head Godot native-vs-script differential tests",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 9,
+          "name": "Benchmark script vs compiled C++ and dispatch in same process",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 10,
+          "name": "Run existing PAINT shapes and worker contracts in both modes",
+          "timeout_minutes": "12"
+        },
+        {
+          "continue_on_error": null,
+          "index": 11,
+          "name": "Prepare software rendering for mounted Workbench frame-gap A/B",
+          "timeout_minutes": "15"
+        },
+        {
+          "continue_on_error": null,
+          "index": 12,
+          "name": "Mounted Workbench A/B with PAINT gestures and per-frame gap telemetry",
+          "timeout_minutes": "20"
+        }
+      ]
+    }
+  },
+  ".github/workflows/script-hotpath-native.yml": {
+    "native-kernel": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/script-hotpath-production.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    },
+    "native-kernel": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "15",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "5",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "150",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "110",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/script-hotpath-windows.yml": {
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "140",
+      "step_watchdogs": []
+    },
+    "windows-workbench": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": [
+        {
+          "continue_on_error": null,
+          "index": 1,
+          "name": "Restore source-matched Windows Rapier native DLL",
+          "timeout_minutes": "10"
+        },
+        {
+          "continue_on_error": null,
+          "index": 4,
+          "name": "Download official pinned Godot 4.7 Windows runtime",
+          "timeout_minutes": "20"
+        },
+        {
+          "continue_on_error": null,
+          "index": 5,
+          "name": "Run actual Windows native and fallback parity and headless Workbench ABBA",
+          "timeout_minutes": "70"
+        }
+      ]
+    }
+  },
+  ".github/workflows/waterlab-661-ui-qualification.yml": {
+    "workbench-linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "45",
+      "step_watchdogs": []
+    },
+    "workbench-windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "45",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-flow.yml": {
+    "default-off": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-mt-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-wave": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-oil-buoyancy-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-wave": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-water-face-004-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-wave": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-water-ramp-003-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-wave": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-waterwall-002-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-wave": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wave-waterwall-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-wave": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wb-art-paint-qualification.yml": {
+    "cross-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "linux-real": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "180",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wb-art-traffic-lifetime.yml": {
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/wbh406-runtime-publication.yml": {
+    "admission": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "360",
+      "step_watchdogs": []
+    },
+    "native-pressure": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "240",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "publisher-guards": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    },
+    "windows-build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "120",
+      "step_watchdogs": []
+    },
+    "windows-execution": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "300",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/web-demo.yml": {
+    "build": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "40",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/web-toolchain.yml": {
+    "prepare": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/workbench-actor-composition.yml": {
+    "linux": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "100",
+      "step_watchdogs": []
+    },
+    "publish": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    },
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "70",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/workbench-host-claims.yml": {
+    "windows": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "30",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/world-art-capture.yml": {
+    "linux-opengl-llvmpipe": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": []
+    },
+    "windows-angle": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "60",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/world-art-physical-nvidia-acceptance.yml": {
+    "windows-powershell-static": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "10",
+      "step_watchdogs": []
+    }
+  },
+  ".github/workflows/world-art-preview.yml": {
+    "linux-opengl-llvmpipe": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "35",
+      "step_watchdogs": []
+    },
+    "windows-angle": {
+      "continue_on_error": null,
+      "job_timeout_minutes": "35",
+      "step_watchdogs": []
+    }
+  }
+}

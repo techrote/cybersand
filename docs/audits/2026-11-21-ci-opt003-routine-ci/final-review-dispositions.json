@@ -1,0 +1,55 @@
+{
+  "schema": "ci-opt003-final-review-dispositions-v1",
+  "observed_at_utc": "2026-11-22 01:06:52 UTC",
+  "reviewers": "Independent non-author agent reviews; GitHub comments are published through the owner's connector identity.",
+  "prs": [
+    {
+      "pr": 722,
+      "open_threads": 0,
+      "threads": [],
+      "verdict": "Source, failure semantics, complete qualification and performance GO before manual merge.",
+      "review_files": [
+        "reviews/soliding-source.md",
+        "reviews/soliding-independent-controls.json",
+        "performance/soliding-final-performance-verdict.md"
+      ]
+    },
+    {
+      "pr": 723,
+      "open_threads": 0,
+      "threads": [
+        {
+          "id": "PRRT_kwDOUHiL-866doas",
+          "resolved": true,
+          "head": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+          "path": "tools/ci/run_native_family.sh",
+          "line": 57,
+          "comment_ids": [
+            4655537208,
+            4655719349
+          ]
+        }
+      ],
+      "verdict": "Confirmed P2 repaired at final source; independent runtime, CI/failure, inventory and performance GO before manual merge.",
+      "review_files": [
+        "reviews/worldgen-runtime-delta-review.md",
+        "reviews/worldgen-runtime-ci-delta.md",
+        "reviews/worldgen-runtime-inventory-review.md",
+        "reviews/showcase-replay-audit-review.md",
+        "performance/worldgen-runtime-final-performance-verdict.md"
+      ]
+    }
+  ],
+  "final_postmerge_platform_review": {
+    "verdict": "GO",
+    "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "run_id": 44967549040,
+    "run_attempt": 2,
+    "applicable_jobs_passed": 54,
+    "qualification_file": "reviews/gde-main-attempt2-final-qualification.json",
+    "linux_cases": 338,
+    "windows_cases": 315,
+    "retained_play_proofs": 30,
+    "attempt1_used_for_qualification": false
+  }
+}

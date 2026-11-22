@@ -1,0 +1,768 @@
+{
+  "total_count": 9,
+  "jobs": [
+    {
+      "id": 137031794557,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57s_fQ",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031794557",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031794557",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:03Z",
+      "started_at": "2026-11-22T00:06:06Z",
+      "completed_at": "2026-11-22T00:06:30Z",
+      "name": "Native evidence and provider policy",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:07Z",
+          "completed_at": "2026-11-22T00:06:08Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:08Z",
+          "completed_at": "2026-11-22T00:06:14Z"
+        },
+        {
+          "name": "Derive complete family and hosted job allowances",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:14Z",
+          "completed_at": "2026-11-22T00:06:14Z"
+        },
+        {
+          "name": "Check hosted provider and evidence failure controls",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:14Z",
+          "completed_at": "2026-11-22T00:06:27Z"
+        },
+        {
+          "name": "Preserve Native policy check results",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:06:27Z",
+          "completed_at": "2026-11-22T00:06:28Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-22T00:06:28Z",
+          "completed_at": "2026-11-22T00:06:28Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-22T00:06:28Z",
+          "completed_at": "2026-11-22T00:06:28Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031794557",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141781,
+      "runner_name": "GitHub Actions 1000141781",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031795526,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf57tDRg",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031795526",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031795526",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-22T00:06:04Z",
+      "started_at": "2026-11-22T00:06:04Z",
+      "completed_at": "2026-11-22T00:06:03Z",
+      "name": "ready validation scope",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031795526",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 137031909521,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf570AkQ",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031909521",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031909521",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:30Z",
+      "started_at": "2026-11-22T00:06:33Z",
+      "completed_at": "2026-11-22T00:19:31Z",
+      "name": "Native family / tsan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:34Z",
+          "completed_at": "2026-11-22T00:06:36Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:36Z",
+          "completed_at": "2026-11-22T00:06:44Z"
+        },
+        {
+          "name": "Record compiler, linker and exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:44Z",
+          "completed_at": "2026-11-22T00:06:45Z"
+        },
+        {
+          "name": "Execute complete test family with shared watchdogs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:45Z",
+          "completed_at": "2026-11-22T00:19:27Z"
+        },
+        {
+          "name": "Retain original family outcome and source fingerprints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:19:27Z",
+          "completed_at": "2026-11-22T00:19:27Z"
+        },
+        {
+          "name": "Preserve original family logs and scientific outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:19:27Z",
+          "completed_at": "2026-11-22T00:19:29Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:19:29Z",
+          "completed_at": "2026-11-22T00:19:29Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:19:29Z",
+          "completed_at": "2026-11-22T00:19:29Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031909521",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141782,
+      "runner_name": "GitHub Actions 1000141782",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031909522,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf570Akg",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031909522",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031909522",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:30Z",
+      "started_at": "2026-11-22T00:06:33Z",
+      "completed_at": "2026-11-22T00:08:12Z",
+      "name": "Native family / soliding-normal",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:34Z",
+          "completed_at": "2026-11-22T00:06:36Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:36Z",
+          "completed_at": "2026-11-22T00:06:46Z"
+        },
+        {
+          "name": "Record compiler, linker and exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:46Z",
+          "completed_at": "2026-11-22T00:06:47Z"
+        },
+        {
+          "name": "Execute complete test family with shared watchdogs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:47Z",
+          "completed_at": "2026-11-22T00:08:07Z"
+        },
+        {
+          "name": "Retain original family outcome and source fingerprints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:08:07Z",
+          "completed_at": "2026-11-22T00:08:07Z"
+        },
+        {
+          "name": "Preserve original family logs and scientific outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:08:07Z",
+          "completed_at": "2026-11-22T00:08:09Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:08:09Z",
+          "completed_at": "2026-11-22T00:08:09Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:08:09Z",
+          "completed_at": "2026-11-22T00:08:10Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031909522",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141783,
+      "runner_name": "GitHub Actions 1000141783",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031909523,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf570Akw",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031909523",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031909523",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:30Z",
+      "started_at": "2026-11-22T00:06:33Z",
+      "completed_at": "2026-11-22T00:51:12Z",
+      "name": "Native family / worldgen",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:34Z",
+          "completed_at": "2026-11-22T00:06:35Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:35Z",
+          "completed_at": "2026-11-22T00:06:39Z"
+        },
+        {
+          "name": "Record compiler, linker and exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:39Z",
+          "completed_at": "2026-11-22T00:06:39Z"
+        },
+        {
+          "name": "Execute complete test family with shared watchdogs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:39Z",
+          "completed_at": "2026-11-22T00:51:07Z"
+        },
+        {
+          "name": "Retain original family outcome and source fingerprints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:51:07Z",
+          "completed_at": "2026-11-22T00:51:08Z"
+        },
+        {
+          "name": "Preserve original family logs and scientific outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:51:08Z",
+          "completed_at": "2026-11-22T00:51:09Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:51:09Z",
+          "completed_at": "2026-11-22T00:51:09Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:51:10Z",
+          "completed_at": "2026-11-22T00:51:10Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031909523",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141784,
+      "runner_name": "GitHub Actions 1000141784",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031909549,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf570ArQ",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031909549",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031909549",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:30Z",
+      "started_at": "2026-11-22T00:06:33Z",
+      "completed_at": "2026-11-22T00:19:48Z",
+      "name": "Native family / soliding-asan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:33Z",
+          "completed_at": "2026-11-22T00:06:36Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:36Z",
+          "completed_at": "2026-11-22T00:06:44Z"
+        },
+        {
+          "name": "Record compiler, linker and exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:44Z",
+          "completed_at": "2026-11-22T00:06:45Z"
+        },
+        {
+          "name": "Execute complete test family with shared watchdogs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:45Z",
+          "completed_at": "2026-11-22T00:19:44Z"
+        },
+        {
+          "name": "Retain original family outcome and source fingerprints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:19:44Z",
+          "completed_at": "2026-11-22T00:19:44Z"
+        },
+        {
+          "name": "Preserve original family logs and scientific outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:19:44Z",
+          "completed_at": "2026-11-22T00:19:45Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:19:45Z",
+          "completed_at": "2026-11-22T00:19:45Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:19:45Z",
+          "completed_at": "2026-11-22T00:19:45Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031909549",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141785,
+      "runner_name": "GitHub Actions 1000141785",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031909557,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf570AtQ",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031909557",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031909557",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:30Z",
+      "started_at": "2026-11-22T00:06:34Z",
+      "completed_at": "2026-11-22T00:18:26Z",
+      "name": "Native family / asan-ubsan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:35Z",
+          "completed_at": "2026-11-22T00:06:37Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:37Z",
+          "completed_at": "2026-11-22T00:06:45Z"
+        },
+        {
+          "name": "Record compiler, linker and exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:45Z",
+          "completed_at": "2026-11-22T00:06:45Z"
+        },
+        {
+          "name": "Execute complete test family with shared watchdogs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:45Z",
+          "completed_at": "2026-11-22T00:18:21Z"
+        },
+        {
+          "name": "Retain original family outcome and source fingerprints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:18:21Z",
+          "completed_at": "2026-11-22T00:18:21Z"
+        },
+        {
+          "name": "Preserve original family logs and scientific outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:18:21Z",
+          "completed_at": "2026-11-22T00:18:23Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:18:23Z",
+          "completed_at": "2026-11-22T00:18:23Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:18:23Z",
+          "completed_at": "2026-11-22T00:18:23Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031909557",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141786,
+      "runner_name": "GitHub Actions 1000141786",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137031909594,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf570A2g",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137031909594",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137031909594",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:06:30Z",
+      "started_at": "2026-11-22T00:06:33Z",
+      "completed_at": "2026-11-22T00:13:18Z",
+      "name": "Native family / native-normal",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:06:33Z",
+          "completed_at": "2026-11-22T00:06:35Z"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:06:35Z",
+          "completed_at": "2026-11-22T00:06:40Z"
+        },
+        {
+          "name": "Record compiler, linker and exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:06:40Z",
+          "completed_at": "2026-11-22T00:06:40Z"
+        },
+        {
+          "name": "Execute complete test family with shared watchdogs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:06:40Z",
+          "completed_at": "2026-11-22T00:13:16Z"
+        },
+        {
+          "name": "Retain original family outcome and source fingerprints",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:13:16Z",
+          "completed_at": "2026-11-22T00:13:16Z"
+        },
+        {
+          "name": "Preserve original family logs and scientific outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:13:16Z",
+          "completed_at": "2026-11-22T00:13:17Z"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-22T00:13:17Z",
+          "completed_at": "2026-11-22T00:13:17Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-22T00:13:17Z",
+          "completed_at": "2026-11-22T00:13:17Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137031909594",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141787,
+      "runner_name": "GitHub Actions 1000141787",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137043258844,
+      "run_id": 44964966221,
+      "workflow_name": "Native C++ validation",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44964966221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUHiL-88AAAAf6Got3A",
+      "head_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/jobs/137043258844",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44964966221/job/137043258844",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-22T00:51:12Z",
+      "started_at": "2026-11-22T00:51:15Z",
+      "completed_at": "2026-11-22T00:51:55Z",
+      "name": "native",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-22T00:51:16Z",
+          "completed_at": "2026-11-22T00:51:17Z"
+        },
+        {
+          "name": "Check out exact verifier source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-22T00:51:17Z",
+          "completed_at": "2026-11-22T00:51:24Z"
+        },
+        {
+          "name": "Download all original family evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-22T00:51:24Z",
+          "completed_at": "2026-11-22T00:51:26Z"
+        },
+        {
+          "name": "Verify complete exact-source Native qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-22T00:51:26Z",
+          "completed_at": "2026-11-22T00:51:26Z"
+        },
+        {
+          "name": "Retain Native aggregate proof and failures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-22T00:51:26Z",
+          "completed_at": "2026-11-22T00:51:27Z"
+        },
+        {
+          "name": "Retain advisory history across comparable native runs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-22T00:51:27Z",
+          "completed_at": "2026-11-22T00:51:51Z"
+        },
+        {
+          "name": "Publish native execution performance observations",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-22T00:51:51Z",
+          "completed_at": "2026-11-22T00:51:53Z"
+        },
+        {
+          "name": "Post Check out exact verifier source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-22T00:51:53Z",
+          "completed_at": "2026-11-22T00:51:53Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-22T00:51:53Z",
+          "completed_at": "2026-11-22T00:51:53Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/techrote/cybersand/check-runs/137043258844",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000141911,
+      "runner_name": "GitHub Actions 1000141911",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

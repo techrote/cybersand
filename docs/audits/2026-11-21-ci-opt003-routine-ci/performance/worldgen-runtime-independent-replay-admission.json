@@ -1,0 +1,124 @@
+{
+  "schema": "ci-opt003-independent-showcase-replay-v2",
+  "status": "passed",
+  "candidate_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "run_id": 44963259696,
+  "run_attempt": 1,
+  "source_contract_proof_sha": "cc22fb8ffbba2a7c18a0bc1c0ad60413ad5c3147",
+  "source_contract_sha256": "8263b339bde686eb41dc3d4de1471ecbe60ac79e47b0b5075b269b6018c750d4",
+  "logs": [
+    {
+      "target": "worldgen-test",
+      "binary": "test_megatruss_station",
+      "bytes": 1214,
+      "sha256": "6364117368be249f37c12143fee65dab785b0cba52a0ba833233ba4e37eacf49",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-test",
+      "binary": "test_seeded_typology_megablock",
+      "bytes": 275,
+      "sha256": "0f71b8b8cd1fe44841b61fbe4f5a47cb8e8111f1371b3a5950ef46da2e2917b2",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-test",
+      "binary": "test_metabolist_spine",
+      "bytes": 732,
+      "sha256": "3a68912dea66f250ed393ca035e68f1458d710c55159a28f898e5d17be37b0c9",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-test",
+      "binary": "test_interlaced_viaduct",
+      "bytes": 622,
+      "sha256": "1442952a90255575e09ca29027c9f5c7fdefc2e73f3131a6033d5113499eec34",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-test",
+      "binary": "test_rosework_gatehouse",
+      "bytes": 4939,
+      "sha256": "92bc65749674a07e45a6aec5039959f8b0d6d1df2a785529c31f36ea1e5d7d44",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-test",
+      "binary": "test_interlock_brutalism",
+      "bytes": 697,
+      "sha256": "575a62e77155f74b09a22507bd3bf21e7b2d0b19903227bbb1464cdb01dde814",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-test",
+      "binary": "test_suspended_arcology",
+      "bytes": 685,
+      "sha256": "52824d33995b76c1a4bfd5ca4e450cac47480ebea93c9fb9f9b1969612115ab7",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_megatruss_station_sanitized",
+      "bytes": 1224,
+      "sha256": "f125b292008f6b369fc1f442b1eec7dfb43b4e203d148d1605dbf866326a05e1",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_seeded_typology_megablock_sanitized",
+      "bytes": 285,
+      "sha256": "1afa72a1e9905c856b8f9ba7fe84d7ebbec25e340ac614e0b8fe2b819dda4be5",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_metabolist_spine_sanitized",
+      "bytes": 742,
+      "sha256": "667132bf8e35b9e86ce96f28bc0352bebc78b0540070bf8ad693aac4f9125089",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_interlaced_viaduct_sanitized",
+      "bytes": 632,
+      "sha256": "eeb3f9bedf68d6f77df8f8b2e354262d710377fb12073a086bf1bcdc7da10a28",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_rosework_gatehouse_sanitized",
+      "bytes": 4949,
+      "sha256": "837a379ee23a2073c048977fec3b3c7b5c79123b24a2287cba05d3b27df1d743",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_interlock_brutalism_sanitized",
+      "bytes": 707,
+      "sha256": "520390ae37f9498b3c90df52629adf0c9c28259c123440196a2c324e560c439e",
+      "replay_count": 1,
+      "complete_group": true
+    },
+    {
+      "target": "worldgen-sanitize",
+      "binary": "test_suspended_arcology_sanitized",
+      "bytes": 695,
+      "sha256": "e9c15e3adef2f8bc1f07985badf4b61d061e4a50f56352d4ac2e4735e7212934",
+      "replay_count": 1,
+      "complete_group": true
+    }
+  ],
+  "scope": "Supplement only; canonical paired-family admission remains required."
+}

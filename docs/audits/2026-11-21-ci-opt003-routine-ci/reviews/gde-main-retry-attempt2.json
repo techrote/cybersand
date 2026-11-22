@@ -1,0 +1,57 @@
+{
+  "schema": "ci-opt003-gde-retry-independent-readback-v1",
+  "reviewer": "/root/review_ci_proof",
+  "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "run_id": 44967549040,
+  "run_attempt": 2,
+  "retrieved_utc": "2026-11-22T00:55:37.914Z",
+  "jobs": [
+    {
+      "id": 137043874559,
+      "name": "linux build x86_64",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 2,
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "started_at": "2026-11-22T00:53:40Z"
+    },
+    {
+      "id": 137043874747,
+      "name": "complete execution budgets",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 2,
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "started_at": "2026-11-22T00:53:40Z"
+    },
+    {
+      "id": 137043874754,
+      "name": "windows x86_64",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 2,
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "started_at": "2026-11-22T00:53:40Z"
+    },
+    {
+      "id": 137043875363,
+      "name": "physical-actor-stress",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_attempt": 2,
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "started_at": "2026-11-22T00:53:37Z"
+    },
+    {
+      "id": 137043875640,
+      "name": "ready validation scope",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_attempt": 2,
+      "head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "started_at": "2026-11-22T00:53:37Z"
+    }
+  ],
+  "verdict": "GO for complete same-attempt retry design; terminal qualification remains pending",
+  "docs": "https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run"
+}

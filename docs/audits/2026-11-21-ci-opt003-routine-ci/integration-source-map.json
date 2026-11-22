@@ -1,6 +1,6 @@
 {
-  "schema": "ci-opt003-integration-source-map-v1",
-  "updated_utc": "2026-11-22T00:08:05Z",
+  "schema": "ci-opt003-integration-source-map-v2",
+  "updated_utc": "2026-11-22T01:20:47Z",
   "accepted_initial_main": {
     "commit": "846fe0533b3170e7b01f690518da49fc40cc24d1",
     "tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590"
@@ -30,14 +30,20 @@
       44960371735
     ],
     "proof_run": 44961498877,
-    "disposition": "Manually merged after all admission gates; post-merge checks running",
+    "disposition": "Manually merged after all admission gates; all applicable post-merge checks passed.",
     "postmerge_runs": [
       44964966221,
       44964966242,
       44964966199,
       44964966200,
       44964966217
-    ]
+    ],
+    "qualification": {
+      "full_ready_cohort": "passed",
+      "controlled_proof": "passed; independent performance GO",
+      "postmerge_cohort": "passed",
+      "summary": "performance/soliding-postmerge-cohort-summary.json"
+    }
   },
   "candidate_c": {
     "pr": 723,
@@ -65,7 +71,72 @@
       44963101939
     ],
     "proof_run": 44963259696,
-    "disposition": "Final source frozen; hosted qualification and complete paired proof pending; no merge admission",
-    "superseded_source_not_qualification": "28ec075afab840cf6fbb35190a7b1915808904f3"
+    "disposition": "Manually merged after all admission gates; complete exact-source post-merge Native, Linux/Windows, documentation/provenance and Wave qualification passed.",
+    "superseded_source_not_qualification": "28ec075afab840cf6fbb35190a7b1915808904f3",
+    "merged_commit": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "merged_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "admission_review": 6009201962,
+    "delta_review": 6008906011,
+    "postmerge_runs": [
+      44967548870,
+      44967549040,
+      44967548903,
+      44967548863,
+      44967548854
+    ],
+    "qualification": {
+      "full_ready_cohort": "passed",
+      "controlled_proof": "passed; independent performance GO",
+      "postmerge_native": "passed",
+      "postmerge_gde": "Complete attempt2 passed; attempt1 checkout infrastructure failure preserved in accounting.",
+      "supplemental_consumer_sha256": "540c4f5490529ec61f767736be8c23bc3451b0e1f383ec9ad5b0e7ce10e69c7a",
+      "postmerge_cohort": "passed",
+      "postmerge_summary": "performance/runtime-postmerge-cohort-summary.json",
+      "independent_platform_readback": "reviews/gde-main-attempt2-final-qualification.json",
+      "postmerge_native_root_readback": "performance/runtime-main-native-root-readback.json"
+    },
+    "review_finding": {
+      "id": "WGEN-RUNTIME-P2-01",
+      "severity": "P2",
+      "defective_source": "28ec075afab840cf6fbb35190a7b1915808904f3",
+      "fixed_source": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "thread": "PRRT_kwDOUHiL-866doas",
+      "thread_url": "https://github.com/techrote/cybersand/pull/723#discussion_r4655537208",
+      "resolution": "Resolved only after independent delta controls and final-source hosted raw-log/reducer readback."
+    },
+    "postmerge_gde_attempt": 2,
+    "postmerge_cohort_measurement": {
+      "event_to_last_validation_gate_seconds": 2196,
+      "event_to_all_applicable_jobs_seconds": 2222,
+      "latest_successful_attempt_runner_minutes": 275.35,
+      "failed_attempt_runner_minutes": 19.716666666666665,
+      "total_runner_minutes": 295.06666666666666,
+      "qualified_executed_jobs": 68,
+      "all_executed_attempts": 74,
+      "performance_comparison_limitation": "Recovered infrastructure failure and different worker allocation; no causal whole-CI speed percentage."
+    }
+  },
+  "accepted_final_main": {
+    "commit": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "parents": [
+      "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "19023b4016facfda2b13b9a1503742e4a9fe1982"
+    ]
+  },
+  "constraints": {
+    "auto_merge_enabled": false,
+    "production_algorithms_changed": false,
+    "published_runtime_provenance_changed": false,
+    "unrelated_feature_branches_changed": false,
+    "historical_draft_hold_prs": [
+      708,
+      718,
+      721
+    ],
+    "preserved_merged_pr": 714,
+    "programme_issue": 706,
+    "programme_closed": false,
+    "physical_windows_ui_acceptance": "NOT RUN; actual hosted Linux/Windows qualification separately retained"
   }
 }

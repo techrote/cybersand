@@ -1,0 +1,4874 @@
+{
+  "cases": [
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_act004_body_capacity.gd"
+      ],
+      "name": "test_act004_body_capacity",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_actuator_session.gd"
+      ],
+      "name": "test_actor_actuator_session",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_prototype_integration.gd"
+      ],
+      "name": "test_actor_prototype_integration",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_prototype_session.gd"
+      ],
+      "name": "test_actor_prototype_session",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_prototypes.gd"
+      ],
+      "name": "test_actor_prototypes",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_rig_actuation.gd"
+      ],
+      "name": "test_actor_rig_actuation",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_rig_integration.gd"
+      ],
+      "name": "test_actor_rig_integration",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_rig_session.gd"
+      ],
+      "name": "test_actor_rig_session",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_rigs.gd"
+      ],
+      "name": "test_actor_rigs",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_actor_usables_integration.gd"
+      ],
+      "name": "test_actor_usables_integration",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_architectural_generator.gd"
+      ],
+      "name": "test_architectural_generator",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_architectural_generator_ui.gd"
+      ],
+      "name": "test_architectural_generator_ui",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_architectural_project_contract.gd"
+      ],
+      "name": "test_architectural_project_contract",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_batch_native.gd"
+      ],
+      "name": "test_art_batch_native",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_batch_native_render.gd"
+      ],
+      "name": "test_art_batch_native_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_deferred_manual.gd"
+      ],
+      "name": "test_art_deferred_manual",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_history_durability.gd"
+      ],
+      "name": "test_art_history_durability",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_history_receipt_identity.gd"
+      ],
+      "name": "test_art_history_receipt_identity",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_lazy_traffic.gd"
+      ],
+      "name": "test_art_lazy_traffic",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_panel_ui.gd"
+      ],
+      "name": "test_art_panel_ui",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_provider.gd"
+      ],
+      "name": "test_art_provider",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_stored_material.gd"
+      ],
+      "name": "test_art_stored_material",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_traffic_integrity.gd"
+      ],
+      "name": "test_art_traffic_integrity",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_traffic_panel_safety.gd"
+      ],
+      "name": "test_art_traffic_panel_safety",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_art_undo.gd"
+      ],
+      "name": "test_art_undo",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_auto_worker_policy.gd"
+      ],
+      "name": "test_auto_worker_policy",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_blacksite_nine.gd"
+      ],
+      "name": "test_blacksite_nine",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_blacksite_nine_integration.gd"
+      ],
+      "name": "test_blacksite_nine_integration",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_blacksite_nine_render.gd"
+      ],
+      "name": "test_blacksite_nine_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_brush_owner_commands.gd"
+      ],
+      "name": "test_brush_owner_commands",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_building_material_integration.gd"
+      ],
+      "name": "test_building_material_integration",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_cell_world.gd"
+      ],
+      "name": "test_cell_world",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_ci_execution_policy.gd"
+      ],
+      "name": "test_ci_execution_policy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_coupling_lockstep.gd"
+      ],
+      "name": "test_coupling_lockstep",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_coupling_lockstep_desktop.gd"
+      ],
+      "name": "test_coupling_lockstep_desktop",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_coupling_lockstep_semantics.gd"
+      ],
+      "name": "test_coupling_lockstep_semantics",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_deepworks.gd"
+      ],
+      "name": "test_deepworks",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_deepworks_controller.gd"
+      ],
+      "name": "test_deepworks_controller",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_deepworks_reactions.gd"
+      ],
+      "name": "test_deepworks_reactions",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_deepworks_render.gd"
+      ],
+      "name": "test_deepworks_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_depth_compositor.gd"
+      ],
+      "name": "test_depth_compositor",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_depth_dimensions.gd"
+      ],
+      "name": "test_depth_dimensions",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_depth_dimensions_render.gd"
+      ],
+      "name": "test_depth_dimensions_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_depth_lab.gd"
+      ],
+      "name": "test_depth_lab",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_depth_layer_runtime.gd"
+      ],
+      "name": "test_depth_layer_runtime",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_depth_surface_render.gd"
+      ],
+      "name": "test_depth_surface_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 2.25,
+      "flags": [
+        "--script",
+        "res://tests/test_experiment_tower.gd"
+      ],
+      "name": "test_experiment_tower",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 112.5,
+      "flags": [
+        "--script",
+        "res://tests/test_exploratory_actor_selection.gd"
+      ],
+      "name": "test_exploratory_actor_selection",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_dialog_native_render.gd"
+      ],
+      "name": "test_explore001_dialog_native_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_dialog_native_saved_render.gd"
+      ],
+      "name": "test_explore001_dialog_native_saved_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_dialog_native_small_render.gd"
+      ],
+      "name": "test_explore001_dialog_native_small_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_dialog_render.gd"
+      ],
+      "name": "test_explore001_dialog_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_dialog_saved_render.gd"
+      ],
+      "name": "test_explore001_dialog_saved_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_dialog_small_render.gd"
+      ],
+      "name": "test_explore001_dialog_small_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_explore001_generated_workbench.gd"
+      ],
+      "name": "test_explore001_generated_workbench",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_failed_world_status_survives.gd"
+      ],
+      "name": "test_failed_world_status_survives",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_feature_launch_arguments.gd"
+      ],
+      "name": "test_feature_launch_arguments",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_feature_launcher.gd"
+      ],
+      "name": "test_feature_launcher",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gameplay_recorder.gd"
+      ],
+      "name": "test_gameplay_recorder",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gen007_inspection.gd"
+      ],
+      "name": "test_gen007_inspection",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 67.5,
+      "flags": [
+        "--script",
+        "res://tests/test_gen007_qualification.gd"
+      ],
+      "name": "test_gen007_qualification",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gen007_qualification_render.gd"
+      ],
+      "name": "test_gen007_qualification_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 60.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gen007_reactions.gd"
+      ],
+      "name": "test_gen007_reactions",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gen007_workbench.gd"
+      ],
+      "name": "test_gen007_workbench",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 60.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gen007_workbench_render.gd"
+      ],
+      "name": "test_gen007_workbench_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_gentek_cathedral_showcase.gd"
+      ],
+      "name": "test_gentek_cathedral_showcase",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_hard_surface_incremental_packet.gd"
+      ],
+      "name": "test_hard_surface_incremental_packet",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 19.5,
+      "flags": [
+        "--script",
+        "res://tests/test_interaction_async.gd"
+      ],
+      "name": "test_interaction_async",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 157.5,
+      "flags": [
+        "--script",
+        "res://tests/test_interaction_policy.gd"
+      ],
+      "name": "test_interaction_policy",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_fixture_manifests.gd"
+      ],
+      "name": "test_lcb_fixture_manifests",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_inertial_adapter.gd"
+      ],
+      "name": "test_lcb_inertial_adapter",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_negative_contracts.gd"
+      ],
+      "name": "test_lcb_negative_contracts",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 150.0,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_physics_contracts.gd"
+      ],
+      "name": "test_lcb_physics_contracts",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_pressure_optimization.gd"
+      ],
+      "name": "test_lcb_pressure_optimization",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 67.5,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_pressure_reference.gd"
+      ],
+      "name": "test_lcb_pressure_reference",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 90.0,
+      "flags": [
+        "--script",
+        "res://tests/test_lcb_scenario_catalogue.gd"
+      ],
+      "name": "test_lcb_scenario_catalogue",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_comparison_ui.gd"
+      ],
+      "name": "test_liquid_comparison_ui",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_default_demo_preparation.gd"
+      ],
+      "name": "test_liquid_default_demo_preparation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_desktop_default_host.gd"
+      ],
+      "name": "test_liquid_desktop_default_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_feel_census.gd"
+      ],
+      "name": "test_liquid_feel_census",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_host_evidence.gd"
+      ],
+      "name": "test_liquid_host_evidence",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_host_web_probe.gd"
+      ],
+      "name": "test_liquid_host_web_probe",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_inertial_host.gd"
+      ],
+      "name": "test_liquid_inertial_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_level_import_host.gd"
+      ],
+      "name": "test_liquid_level_import_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_level_preparation.gd"
+      ],
+      "name": "test_liquid_level_preparation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_ordinary_demo_host.gd"
+      ],
+      "name": "test_liquid_ordinary_demo_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_owner_observation.gd"
+      ],
+      "name": "test_liquid_owner_observation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_physical_preparation.gd"
+      ],
+      "name": "test_liquid_physical_preparation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_physical_transaction.gd"
+      ],
+      "name": "test_liquid_physical_transaction",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_policy_worker.gd"
+      ],
+      "name": "test_liquid_policy_worker",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_prepared_host.gd"
+      ],
+      "name": "test_liquid_prepared_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_pressure_rapier.gd"
+      ],
+      "name": "test_liquid_pressure_rapier",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_reference_body_poses.gd"
+      ],
+      "name": "test_liquid_reference_body_poses",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_sampled_preparation.gd"
+      ],
+      "name": "test_liquid_sampled_preparation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_solver_policy.gd"
+      ],
+      "name": "test_liquid_solver_policy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_synchronous_reference_body.gd"
+      ],
+      "name": "test_liquid_synchronous_reference_body",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 75.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_synchronous_water_reference_body.gd"
+      ],
+      "name": "test_liquid_synchronous_water_reference_body",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_tower_host.gd"
+      ],
+      "name": "test_liquid_tower_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 60.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_trial_body.gd"
+      ],
+      "name": "test_liquid_trial_body",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_water_feel_host.gd"
+      ],
+      "name": "test_liquid_water_feel_host",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 60.0,
+      "flags": [
+        "--script",
+        "res://tests/test_liquid_water_reference_body.gd"
+      ],
+      "name": "test_liquid_water_reference_body",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 120.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_appearance_lut.gd"
+      ],
+      "name": "test_material_appearance_lut",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_glow_control.gd"
+      ],
+      "name": "test_material_glow_control",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_catalogue.gd"
+      ],
+      "name": "test_material_lab_catalogue",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_diagnostics.gd"
+      ],
+      "name": "test_material_lab_diagnostics",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_experiment.gd"
+      ],
+      "name": "test_material_lab_experiment",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_readability.gd"
+      ],
+      "name": "test_material_lab_readability",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_service.gd"
+      ],
+      "name": "test_material_lab_service",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_ui.gd"
+      ],
+      "name": "test_material_lab_ui",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_workbench_integration.gd"
+      ],
+      "name": "test_material_lab_workbench_integration",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_lab_world.gd"
+      ],
+      "name": "test_material_lab_world",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_presentation_render.gd"
+      ],
+      "name": "test_material_presentation_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_material_vapour_pipeline_render.gd"
+      ],
+      "name": "test_material_vapour_pipeline_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_megablock_project.gd"
+      ],
+      "name": "test_megablock_project",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 4.5,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_controllers.gd"
+      ],
+      "name": "test_microscenario_controllers",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_flood_control.gd"
+      ],
+      "name": "test_microscenario_flood_control",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_materials_lab.gd"
+      ],
+      "name": "test_microscenario_materials_lab",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_native_observation.gd"
+      ],
+      "name": "test_microscenario_native_observation",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 67.5,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_reference_contract.gd"
+      ],
+      "name": "test_microscenario_reference_contract",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_reference_pack_ui.gd"
+      ],
+      "name": "test_microscenario_reference_pack_ui",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_stress.gd"
+      ],
+      "name": "test_microscenario_stress",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_workbench.gd"
+      ],
+      "name": "test_microscenario_workbench",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenario_workbench_lifecycle.gd"
+      ],
+      "name": "test_microscenario_workbench_lifecycle",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 180.0,
+      "flags": [
+        "--script",
+        "res://tests/test_microscenarios.gd"
+      ],
+      "name": "test_microscenarios",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_native_edge_contact_regression.gd"
+      ],
+      "name": "test_native_edge_contact_regression",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_native_fire_presentation_regression.gd"
+      ],
+      "name": "test_native_fire_presentation_regression",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_native_render_bridge_regression.gd"
+      ],
+      "name": "test_native_render_bridge_regression",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_neon_reliquary.gd"
+      ],
+      "name": "test_neon_reliquary",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_executor.gd"
+      ],
+      "name": "test_paint_editor_executor",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_generated_workbench.gd"
+      ],
+      "name": "test_paint_editor_generated_workbench",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_history.gd"
+      ],
+      "name": "test_paint_editor_history",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_native.gd"
+      ],
+      "name": "test_paint_editor_native",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_recovery.gd"
+      ],
+      "name": "test_paint_editor_recovery",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_shapes.gd"
+      ],
+      "name": "test_paint_editor_shapes",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_paint_editor_workbench.gd"
+      ],
+      "name": "test_paint_editor_workbench",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_palette_crossfade_render.gd"
+      ],
+      "name": "test_palette_crossfade_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_palette_shader_compile_bounds.gd"
+      ],
+      "name": "test_palette_shader_compile_bounds",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_pchar001_player_representations.gd"
+      ],
+      "name": "test_pchar001_player_representations",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_penv001_player_environment.gd"
+      ],
+      "name": "test_penv001_player_environment",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_pf_c2048_prepared.gd"
+      ],
+      "name": "test_pf_c2048_prepared",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_actuation.gd"
+      ],
+      "name": "test_physical_actor_actuation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_arena.gd"
+      ],
+      "name": "test_physical_actor_arena",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_catalog.gd"
+      ],
+      "name": "test_physical_actor_catalog",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_effect_admission.gd"
+      ],
+      "name": "test_physical_actor_effect_admission",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_effect_cancellation.gd"
+      ],
+      "name": "test_physical_actor_effect_cancellation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_effects.gd"
+      ],
+      "name": "test_physical_actor_effects",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_integration.gd"
+      ],
+      "name": "test_physical_actor_integration",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_rigs.gd"
+      ],
+      "name": "test_physical_actor_rigs",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_script.gd"
+      ],
+      "name": "test_physical_actor_script",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_session.gd"
+      ],
+      "name": "test_physical_actor_session",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_actor_trial.gd"
+      ],
+      "name": "test_physical_actor_trial",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_gameplay_render.gd"
+      ],
+      "name": "test_physical_flight_gameplay_render",
+      "requires_display": true,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_handling.gd"
+      ],
+      "name": "test_physical_flight_handling",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_lab.gd"
+      ],
+      "name": "test_physical_flight_lab",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_lab_scene.gd"
+      ],
+      "name": "test_physical_flight_lab_scene",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_physics.gd"
+      ],
+      "name": "test_physical_flight_physics",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_pilot.gd"
+      ],
+      "name": "test_physical_flight_pilot",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_profile.gd"
+      ],
+      "name": "test_physical_flight_profile",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_selection.gd"
+      ],
+      "name": "test_physical_flight_selection",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_session.gd"
+      ],
+      "name": "test_physical_flight_session",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 112.5,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_teacher_dev_free.gd"
+      ],
+      "name": "test_physical_flight_teacher_dev_free",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 150.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_flight_teacher_dev_obstacle.gd"
+      ],
+      "name": "test_physical_flight_teacher_dev_obstacle",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usable_course.gd"
+      ],
+      "name": "test_physical_usable_course",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usable_equipment.gd"
+      ],
+      "name": "test_physical_usable_equipment",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usable_lifecycle.gd"
+      ],
+      "name": "test_physical_usable_lifecycle",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usable_script.gd"
+      ],
+      "name": "test_physical_usable_script",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usables_admission.gd"
+      ],
+      "name": "test_physical_usables_admission",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usables_desktop.gd"
+      ],
+      "name": "test_physical_usables_desktop",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "name": "test_physical_usables_runtime",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 3.75,
+      "flags": [
+        "--script",
+        "res://tests/test_physics_async.gd"
+      ],
+      "name": "test_physics_async",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physics_characterisation.gd"
+      ],
+      "name": "test_physics_characterisation",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_physics_instrumentation.gd"
+      ],
+      "name": "test_physics_instrumentation",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_auto001_shared_course.gd"
+      ],
+      "name": "test_play_auto001_shared_course",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_comp001_existing_host_spike.gd"
+      ],
+      "name": "test_play_comp001_existing_host_spike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_comp002_five_rig_course.gd"
+      ],
+      "name": "test_play_comp002_five_rig_course",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input010_acrobat.gd"
+      ],
+      "name": "test_play_input010_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input010_arcadelander.gd"
+      ],
+      "name": "test_play_input010_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input010_jetbarrel.gd"
+      ],
+      "name": "test_play_input010_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input010_stuntbuggy.gd"
+      ],
+      "name": "test_play_input010_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input010_trialsbike.gd"
+      ],
+      "name": "test_play_input010_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input011_acrobat.gd"
+      ],
+      "name": "test_play_input011_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input011_arcadelander.gd"
+      ],
+      "name": "test_play_input011_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input011_jetbarrel.gd"
+      ],
+      "name": "test_play_input011_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input011_legacy_pause.gd"
+      ],
+      "name": "test_play_input011_legacy_pause",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input011_stuntbuggy.gd"
+      ],
+      "name": "test_play_input011_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_input011_trialsbike.gd"
+      ],
+      "name": "test_play_input011_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life001_acrobat.gd"
+      ],
+      "name": "test_play_life001_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life001_arcadelander.gd"
+      ],
+      "name": "test_play_life001_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life001_jetbarrel.gd"
+      ],
+      "name": "test_play_life001_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life001_stuntbuggy.gd"
+      ],
+      "name": "test_play_life001_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life001_trialsbike.gd"
+      ],
+      "name": "test_play_life001_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life002_acrobat.gd"
+      ],
+      "name": "test_play_life002_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life002_arcadelander.gd"
+      ],
+      "name": "test_play_life002_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life002_jetbarrel.gd"
+      ],
+      "name": "test_play_life002_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life002_stuntbuggy.gd"
+      ],
+      "name": "test_play_life002_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life002_trialsbike.gd"
+      ],
+      "name": "test_play_life002_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life003_acrobat.gd"
+      ],
+      "name": "test_play_life003_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life003_arcadelander.gd"
+      ],
+      "name": "test_play_life003_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life003_jetbarrel.gd"
+      ],
+      "name": "test_play_life003_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life003_stuntbuggy.gd"
+      ],
+      "name": "test_play_life003_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life003_trialsbike.gd"
+      ],
+      "name": "test_play_life003_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life004_acrobat.gd"
+      ],
+      "name": "test_play_life004_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life004_arcadelander.gd"
+      ],
+      "name": "test_play_life004_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life004_jetbarrel.gd"
+      ],
+      "name": "test_play_life004_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life004_stuntbuggy.gd"
+      ],
+      "name": "test_play_life004_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life004_trialsbike.gd"
+      ],
+      "name": "test_play_life004_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life005_failure_recovery.gd"
+      ],
+      "name": "test_play_life005_failure_recovery",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life007_failed_session_restart.gd"
+      ],
+      "name": "test_play_life007_failed_session_restart",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life008_recovery_navigation.gd"
+      ],
+      "name": "test_play_life008_recovery_navigation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life009_acrobat.gd"
+      ],
+      "name": "test_play_life009_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life009_arcadelander.gd"
+      ],
+      "name": "test_play_life009_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life009_jetbarrel.gd"
+      ],
+      "name": "test_play_life009_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life009_stuntbuggy.gd"
+      ],
+      "name": "test_play_life009_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life009_trialsbike.gd"
+      ],
+      "name": "test_play_life009_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life010_acrobat.gd"
+      ],
+      "name": "test_play_life010_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life010_arcadelander.gd"
+      ],
+      "name": "test_play_life010_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life010_jetbarrel.gd"
+      ],
+      "name": "test_play_life010_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life010_stuntbuggy.gd"
+      ],
+      "name": "test_play_life010_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life010_trialsbike.gd"
+      ],
+      "name": "test_play_life010_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life011_acrobat.gd"
+      ],
+      "name": "test_play_life011_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life011_arcadelander.gd"
+      ],
+      "name": "test_play_life011_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life011_jetbarrel.gd"
+      ],
+      "name": "test_play_life011_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life011_stuntbuggy.gd"
+      ],
+      "name": "test_play_life011_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_life011_trialsbike.gd"
+      ],
+      "name": "test_play_life011_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace001_acrobat.gd"
+      ],
+      "name": "test_play_pace001_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace001_arcadelander.gd"
+      ],
+      "name": "test_play_pace001_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace001_jetbarrel.gd"
+      ],
+      "name": "test_play_pace001_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace001_stuntbuggy.gd"
+      ],
+      "name": "test_play_pace001_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace001_trialsbike.gd"
+      ],
+      "name": "test_play_pace001_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 82.5,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace002_acrobat.gd"
+      ],
+      "name": "test_play_pace002_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 82.5,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace002_arcadelander.gd"
+      ],
+      "name": "test_play_pace002_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 82.5,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace002_jetbarrel.gd"
+      ],
+      "name": "test_play_pace002_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 82.5,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace002_stuntbuggy.gd"
+      ],
+      "name": "test_play_pace002_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 82.5,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace002_trialsbike.gd"
+      ],
+      "name": "test_play_pace002_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_pace004_capture_buffer.gd"
+      ],
+      "name": "test_play_pace004_capture_buffer",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui003_lap_clock.gd"
+      ],
+      "name": "test_play_ui003_lap_clock",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui003_physics_cadence.gd"
+      ],
+      "name": "test_play_ui003_physics_cadence",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui004_gamepad_events.gd"
+      ],
+      "name": "test_play_ui004_gamepad_events",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui005_session_selection.gd"
+      ],
+      "name": "test_play_ui005_session_selection",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui007_acrobat.gd"
+      ],
+      "name": "test_play_ui007_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui007_arcadelander.gd"
+      ],
+      "name": "test_play_ui007_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui007_jetbarrel.gd"
+      ],
+      "name": "test_play_ui007_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui007_overlay_render.gd"
+      ],
+      "name": "test_play_ui007_overlay_render",
+      "requires_display": true,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui007_stuntbuggy.gd"
+      ],
+      "name": "test_play_ui007_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_ui007_trialsbike.gd"
+      ],
+      "name": "test_play_ui007_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_wait001_acrobat.gd"
+      ],
+      "name": "test_play_wait001_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_wait001_arcadelander.gd"
+      ],
+      "name": "test_play_wait001_arcadelander",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_wait001_jetbarrel.gd"
+      ],
+      "name": "test_play_wait001_jetbarrel",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_wait001_stuntbuggy.gd"
+      ],
+      "name": "test_play_wait001_stuntbuggy",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_play_wait001_trialsbike.gd"
+      ],
+      "name": "test_play_wait001_trialsbike",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_player_acrobat.gd"
+      ],
+      "name": "test_player_acrobat",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_player_acrobat_physics.gd"
+      ],
+      "name": "test_player_acrobat_physics",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_player_material_field.gd"
+      ],
+      "name": "test_player_material_field",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_player_playground_course.gd"
+      ],
+      "name": "test_player_playground_course",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_player_playground_runtime.gd"
+      ],
+      "name": "test_player_playground_runtime",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_player_vehicle_controls.gd"
+      ],
+      "name": "test_player_vehicle_controls",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_playval001_selectable_player_fixtures.gd"
+      ],
+      "name": "test_playval001_selectable_player_fixtures",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_prepared_physical_owner.gd"
+      ],
+      "name": "test_prepared_physical_owner",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_presentation_controls.gd"
+      ],
+      "name": "test_presentation_controls",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_rapier_backend_preflight.gd"
+      ],
+      "name": "test_rapier_backend_preflight",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_rapier_drop_in.gd"
+      ],
+      "name": "test_rapier_drop_in",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_rapier_manual_step.gd"
+      ],
+      "name": "test_rapier_manual_step",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_rem002_body_granular.gd"
+      ],
+      "name": "test_rem002_body_granular",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 157.5,
+      "flags": [
+        "--script",
+        "res://tests/test_rem003_player_granular.gd"
+      ],
+      "name": "test_rem003_player_granular",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_render_patch_handoff_regression.gd"
+      ],
+      "name": "test_render_patch_handoff_regression",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_render_world_generation.gd"
+      ],
+      "name": "test_render_world_generation",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_script_hotpath_native_fill.gd"
+      ],
+      "name": "test_script_hotpath_native_fill",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_semantic_depth_render.gd"
+      ],
+      "name": "test_semantic_depth_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_semantic_planes_examples.gd"
+      ],
+      "name": "test_semantic_planes_examples",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_semantic_planes_runtime.gd"
+      ],
+      "name": "test_semantic_planes_runtime",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_showcase_backdrop_render.gd"
+      ],
+      "name": "test_showcase_backdrop_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_showcase_tiles.gd"
+      ],
+      "name": "test_showcase_tiles",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_simulation_worker_interest_ownership.gd"
+      ],
+      "name": "test_simulation_worker_interest_ownership",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_thunderbowl_arena.gd"
+      ],
+      "name": "test_thunderbowl_arena",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_thunderbowl_controllers.gd"
+      ],
+      "name": "test_thunderbowl_controllers",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 3.0,
+      "flags": [
+        "--script",
+        "res://tests/test_tick_failure_regression.gd"
+      ],
+      "name": "test_tick_failure_regression",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 82.5,
+      "flags": [
+        "--script",
+        "res://tests/test_transport_probe.gd"
+      ],
+      "name": "test_transport_probe",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_transport_profiles.gd"
+      ],
+      "name": "test_transport_profiles",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_usable_session.gd"
+      ],
+      "name": "test_usable_session",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_usables.gd"
+      ],
+      "name": "test_usables",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_water_experiment_profiles.gd"
+      ],
+      "name": "test_water_experiment_profiles",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 4.5,
+      "flags": [
+        "--script",
+        "res://tests/test_water_feel_controller.gd"
+      ],
+      "name": "test_water_feel_controller",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 4.5,
+      "flags": [
+        "--script",
+        "res://tests/test_water_feel_integration.gd"
+      ],
+      "name": "test_water_feel_integration",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_water_feel_scenarios.gd"
+      ],
+      "name": "test_water_feel_scenarios",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_water_presentation_model.gd"
+      ],
+      "name": "test_water_presentation_model",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_water_presentation_render.gd"
+      ],
+      "name": "test_water_presentation_render",
+      "requires_display": true,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_wave_flow.gd"
+      ],
+      "name": "test_wave_flow",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_wave_flow_render.gd"
+      ],
+      "name": "test_wave_flow_render",
+      "requires_display": true,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_web_demo_setup.gd"
+      ],
+      "name": "test_web_demo_setup",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 2.25,
+      "flags": [
+        "--script",
+        "res://tests/test_web_rapier.gd"
+      ],
+      "name": "test_web_rapier",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 16.5,
+      "flags": [
+        "--script",
+        "res://tests/test_web_worker_parity.gd"
+      ],
+      "name": "test_web_worker_parity",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 240.0,
+      "flags": [
+        "--script",
+        "res://tests/test_wex001_water_body_baseline.gd"
+      ],
+      "name": "test_wex001_water_body_baseline",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_wex004_decompression.gd"
+      ],
+      "name": "test_wex004_decompression",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_actor_catalog.gd"
+      ],
+      "name": "test_workbench_actor_catalog",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_actor_composition.gd"
+      ],
+      "name": "test_workbench_actor_composition",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_actor_composition_native.gd"
+      ],
+      "name": "test_workbench_actor_composition_native",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_actor_composition_session.gd"
+      ],
+      "name": "test_workbench_actor_composition_session",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_actor_equipment_extent.gd"
+      ],
+      "name": "test_workbench_actor_equipment_extent",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_boundary_retention.gd"
+      ],
+      "name": "test_workbench_boundary_retention",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_canvas.gd"
+      ],
+      "name": "test_workbench_canvas",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_combined_authoring.gd"
+      ],
+      "name": "test_workbench_combined_authoring",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_deferred_paint.gd"
+      ],
+      "name": "test_workbench_deferred_paint",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_desktop_interest.gd"
+      ],
+      "name": "test_workbench_desktop_interest",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_edit_ordering.gd"
+      ],
+      "name": "test_workbench_edit_ordering",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_failure_containment.gd"
+      ],
+      "name": "test_workbench_failure_containment",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_failure_recovery.gd"
+      ],
+      "name": "test_workbench_failure_recovery",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_flatten.gd"
+      ],
+      "name": "test_workbench_flatten",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_flatten_owner_failure.gd"
+      ],
+      "name": "test_workbench_flatten_owner_failure",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_fleet_session.gd"
+      ],
+      "name": "test_workbench_fleet_session",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_generator_discovery.gd"
+      ],
+      "name": "test_workbench_generator_discovery",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_generator_installed.gd"
+      ],
+      "name": "test_workbench_generator_installed",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_hard_placement.gd"
+      ],
+      "name": "test_workbench_hard_placement",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_host_claim_capacity.gd"
+      ],
+      "name": "test_workbench_host_claim_capacity",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_host_claim_native.gd"
+      ],
+      "name": "test_workbench_host_claim_native",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_input.gd"
+      ],
+      "name": "test_workbench_input",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_lcb_salvage.gd"
+      ],
+      "name": "test_workbench_lcb_salvage",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_liquid_edges.gd"
+      ],
+      "name": "test_workbench_liquid_edges",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_liquid_equipment.gd"
+      ],
+      "name": "test_workbench_liquid_equipment",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_live_liquid_edit.gd"
+      ],
+      "name": "test_workbench_live_liquid_edit",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_material_baseline.gd"
+      ],
+      "name": "test_workbench_material_baseline",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_physics_play.gd"
+      ],
+      "name": "test_workbench_physics_play",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_pilot_ui.gd"
+      ],
+      "name": "test_workbench_pilot_ui",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_reservoir_lab.gd"
+      ],
+      "name": "test_workbench_reservoir_lab",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_retained_pressure.gd"
+      ],
+      "name": "test_workbench_retained_pressure",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_spray_rearm.gd"
+      ],
+      "name": "test_workbench_spray_rearm",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_wave.gd"
+      ],
+      "name": "test_workbench_wave",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_wave_render.gd"
+      ],
+      "name": "test_workbench_wave_render",
+      "requires_display": true,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_workbench_wave_spill.gd"
+      ],
+      "name": "test_workbench_wave_spill",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 6.0,
+      "flags": [
+        "--script",
+        "res://tests/test_worker_benchmark.gd"
+      ],
+      "name": "test_worker_benchmark",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_world_design_pack_adapter.gd"
+      ],
+      "name": "test_world_design_pack_adapter",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_worldgen_fields.gd"
+      ],
+      "name": "test_worldgen_fields",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_worldgen_grammar.gd"
+      ],
+      "name": "test_worldgen_grammar",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_worldgen_planes.gd"
+      ],
+      "name": "test_worldgen_planes",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_worldgen_typed.gd"
+      ],
+      "name": "test_worldgen_typed",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 15.0,
+      "flags": [
+        "--script",
+        "res://tests/test_worldgen_workbench.gd"
+      ],
+      "name": "test_worldgen_workbench",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "estimated_seconds": 1.5,
+      "flags": [
+        "--script",
+        "res://tests/profile_native_world.gd"
+      ],
+      "name": "profile_native_world",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 60.0,
+      "flags": [
+        "--script",
+        "res://tests/profile_scheduler.gd"
+      ],
+      "name": "profile_scheduler",
+      "requires_display": false,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "estimated_seconds": 3.0,
+      "flags": [
+        "--quit-after",
+        "180"
+      ],
+      "name": "scene",
+      "requires_display": false,
+      "timeout_seconds": 1200.0
+    }
+  ],
+  "execution_policy": {
+    "advisories": {
+      "drift_ratio": 1.2,
+      "drift_window": 5,
+      "minimum_baseline_samples": 3,
+      "prominent_ratio": 2.0,
+      "rolling_window": 10,
+      "warning_ratio": 1.5
+    },
+    "path": "godot/tests/support/ci_execution_policy.json",
+    "policy_id": "github-hosted-complete-execution-v1",
+    "scale": 1.0,
+    "schema_version": 1,
+    "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "watchdogs": {
+      "aggregate_headroom_seconds": 600.0,
+      "complex_fixture_seconds": 3600.0,
+      "dependency_prepare_seconds": 1200.0,
+      "diagnostic_capture_seconds": 30.0,
+      "godot_import_seconds": 1200.0,
+      "godot_job_minutes": 360.0,
+      "godot_metadata_seconds": 900.0,
+      "godot_setup_seconds": 4200.0,
+      "graphical_case_seconds": 1200.0,
+      "hosted_job_minutes": 180.0,
+      "main_ack_seconds": 600.0,
+      "native_case_seconds": 3600.0,
+      "native_compile_seconds": 3600.0,
+      "native_suite_seconds": 7200.0,
+      "operation_seconds": 300.0,
+      "ordinary_case_seconds": 1200.0,
+      "terminate_grace_seconds": 10.0
+    }
+  },
+  "platforms": {
+    "linux": {
+      "case_count": 338,
+      "cases": [
+        "test_act004_body_capacity",
+        "test_actor_actuator_session",
+        "test_actor_prototype_integration",
+        "test_actor_prototype_session",
+        "test_actor_prototypes",
+        "test_actor_rig_actuation",
+        "test_actor_rig_integration",
+        "test_actor_rig_session",
+        "test_actor_rigs",
+        "test_actor_usables_integration",
+        "test_architectural_generator",
+        "test_architectural_generator_ui",
+        "test_architectural_project_contract",
+        "test_art_batch_native",
+        "test_art_batch_native_render",
+        "test_art_deferred_manual",
+        "test_art_history_durability",
+        "test_art_history_receipt_identity",
+        "test_art_lazy_traffic",
+        "test_art_panel_ui",
+        "test_art_provider",
+        "test_art_stored_material",
+        "test_art_traffic_integrity",
+        "test_art_traffic_panel_safety",
+        "test_art_undo",
+        "test_auto_worker_policy",
+        "test_blacksite_nine",
+        "test_blacksite_nine_integration",
+        "test_blacksite_nine_render",
+        "test_brush_owner_commands",
+        "test_building_material_integration",
+        "test_cell_world",
+        "test_ci_execution_policy",
+        "test_coupling_lockstep",
+        "test_coupling_lockstep_desktop",
+        "test_coupling_lockstep_semantics",
+        "test_deepworks",
+        "test_deepworks_controller",
+        "test_deepworks_reactions",
+        "test_deepworks_render",
+        "test_depth_compositor",
+        "test_depth_dimensions",
+        "test_depth_dimensions_render",
+        "test_depth_lab",
+        "test_depth_layer_runtime",
+        "test_depth_surface_render",
+        "test_experiment_tower",
+        "test_exploratory_actor_selection",
+        "test_explore001_dialog_native_render",
+        "test_explore001_dialog_native_saved_render",
+        "test_explore001_dialog_native_small_render",
+        "test_explore001_dialog_render",
+        "test_explore001_dialog_saved_render",
+        "test_explore001_dialog_small_render",
+        "test_explore001_generated_workbench",
+        "test_failed_world_status_survives",
+        "test_feature_launch_arguments",
+        "test_feature_launcher",
+        "test_gameplay_recorder",
+        "test_gen007_inspection",
+        "test_gen007_qualification",
+        "test_gen007_qualification_render",
+        "test_gen007_reactions",
+        "test_gen007_workbench",
+        "test_gen007_workbench_render",
+        "test_gentek_cathedral_showcase",
+        "test_hard_surface_incremental_packet",
+        "test_interaction_async",
+        "test_interaction_policy",
+        "test_lcb_fixture_manifests",
+        "test_lcb_inertial_adapter",
+        "test_lcb_negative_contracts",
+        "test_lcb_physics_contracts",
+        "test_lcb_pressure_optimization",
+        "test_lcb_pressure_reference",
+        "test_lcb_scenario_catalogue",
+        "test_liquid_comparison_ui",
+        "test_liquid_default_demo_preparation",
+        "test_liquid_desktop_default_host",
+        "test_liquid_feel_census",
+        "test_liquid_host_evidence",
+        "test_liquid_host_web_probe",
+        "test_liquid_inertial_host",
+        "test_liquid_level_import_host",
+        "test_liquid_level_preparation",
+        "test_liquid_ordinary_demo_host",
+        "test_liquid_owner_observation",
+        "test_liquid_physical_preparation",
+        "test_liquid_physical_transaction",
+        "test_liquid_policy_worker",
+        "test_liquid_prepared_host",
+        "test_liquid_pressure_rapier",
+        "test_liquid_reference_body_poses",
+        "test_liquid_sampled_preparation",
+        "test_liquid_solver_policy",
+        "test_liquid_synchronous_reference_body",
+        "test_liquid_synchronous_water_reference_body",
+        "test_liquid_tower_host",
+        "test_liquid_trial_body",
+        "test_liquid_water_feel_host",
+        "test_liquid_water_reference_body",
+        "test_material_appearance_lut",
+        "test_material_glow_control",
+        "test_material_lab_catalogue",
+        "test_material_lab_diagnostics",
+        "test_material_lab_experiment",
+        "test_material_lab_readability",
+        "test_material_lab_service",
+        "test_material_lab_ui",
+        "test_material_lab_workbench_integration",
+        "test_material_lab_world",
+        "test_material_presentation_render",
+        "test_material_vapour_pipeline_render",
+        "test_megablock_project",
+        "test_microscenario_controllers",
+        "test_microscenario_flood_control",
+        "test_microscenario_materials_lab",
+        "test_microscenario_native_observation",
+        "test_microscenario_reference_contract",
+        "test_microscenario_reference_pack_ui",
+        "test_microscenario_stress",
+        "test_microscenario_workbench",
+        "test_microscenario_workbench_lifecycle",
+        "test_microscenarios",
+        "test_native_edge_contact_regression",
+        "test_native_fire_presentation_regression",
+        "test_native_render_bridge_regression",
+        "test_neon_reliquary",
+        "test_paint_editor_executor",
+        "test_paint_editor_generated_workbench",
+        "test_paint_editor_history",
+        "test_paint_editor_native",
+        "test_paint_editor_recovery",
+        "test_paint_editor_shapes",
+        "test_paint_editor_workbench",
+        "test_palette_crossfade_render",
+        "test_palette_shader_compile_bounds",
+        "test_pchar001_player_representations",
+        "test_penv001_player_environment",
+        "test_pf_c2048_prepared",
+        "test_physical_actor_actuation",
+        "test_physical_actor_arena",
+        "test_physical_actor_catalog",
+        "test_physical_actor_effect_admission",
+        "test_physical_actor_effect_cancellation",
+        "test_physical_actor_effects",
+        "test_physical_actor_integration",
+        "test_physical_actor_rigs",
+        "test_physical_actor_script",
+        "test_physical_actor_session",
+        "test_physical_actor_trial",
+        "test_physical_flight_gameplay_render",
+        "test_physical_flight_handling",
+        "test_physical_flight_lab",
+        "test_physical_flight_lab_scene",
+        "test_physical_flight_physics",
+        "test_physical_flight_pilot",
+        "test_physical_flight_profile",
+        "test_physical_flight_selection",
+        "test_physical_flight_session",
+        "test_physical_flight_teacher_dev_free",
+        "test_physical_flight_teacher_dev_obstacle",
+        "test_physical_usable_course",
+        "test_physical_usable_equipment",
+        "test_physical_usable_lifecycle",
+        "test_physical_usable_script",
+        "test_physical_usables_admission",
+        "test_physical_usables_desktop",
+        "test_physical_usables_runtime",
+        "test_physics_async",
+        "test_physics_characterisation",
+        "test_physics_instrumentation",
+        "test_play_auto001_shared_course",
+        "test_play_comp001_existing_host_spike",
+        "test_play_comp002_five_rig_course",
+        "test_play_input010_acrobat",
+        "test_play_input010_arcadelander",
+        "test_play_input010_jetbarrel",
+        "test_play_input010_stuntbuggy",
+        "test_play_input010_trialsbike",
+        "test_play_input011_acrobat",
+        "test_play_input011_arcadelander",
+        "test_play_input011_jetbarrel",
+        "test_play_input011_legacy_pause",
+        "test_play_input011_stuntbuggy",
+        "test_play_input011_trialsbike",
+        "test_play_life001_acrobat",
+        "test_play_life001_arcadelander",
+        "test_play_life001_jetbarrel",
+        "test_play_life001_stuntbuggy",
+        "test_play_life001_trialsbike",
+        "test_play_life002_acrobat",
+        "test_play_life002_arcadelander",
+        "test_play_life002_jetbarrel",
+        "test_play_life002_stuntbuggy",
+        "test_play_life002_trialsbike",
+        "test_play_life003_acrobat",
+        "test_play_life003_arcadelander",
+        "test_play_life003_jetbarrel",
+        "test_play_life003_stuntbuggy",
+        "test_play_life003_trialsbike",
+        "test_play_life004_acrobat",
+        "test_play_life004_arcadelander",
+        "test_play_life004_jetbarrel",
+        "test_play_life004_stuntbuggy",
+        "test_play_life004_trialsbike",
+        "test_play_life005_failure_recovery",
+        "test_play_life007_failed_session_restart",
+        "test_play_life008_recovery_navigation",
+        "test_play_life009_acrobat",
+        "test_play_life009_arcadelander",
+        "test_play_life009_jetbarrel",
+        "test_play_life009_stuntbuggy",
+        "test_play_life009_trialsbike",
+        "test_play_life010_acrobat",
+        "test_play_life010_arcadelander",
+        "test_play_life010_jetbarrel",
+        "test_play_life010_stuntbuggy",
+        "test_play_life010_trialsbike",
+        "test_play_life011_acrobat",
+        "test_play_life011_arcadelander",
+        "test_play_life011_jetbarrel",
+        "test_play_life011_stuntbuggy",
+        "test_play_life011_trialsbike",
+        "test_play_pace001_acrobat",
+        "test_play_pace001_arcadelander",
+        "test_play_pace001_jetbarrel",
+        "test_play_pace001_stuntbuggy",
+        "test_play_pace001_trialsbike",
+        "test_play_pace002_acrobat",
+        "test_play_pace002_arcadelander",
+        "test_play_pace002_jetbarrel",
+        "test_play_pace002_stuntbuggy",
+        "test_play_pace002_trialsbike",
+        "test_play_pace004_capture_buffer",
+        "test_play_ui003_lap_clock",
+        "test_play_ui003_physics_cadence",
+        "test_play_ui004_gamepad_events",
+        "test_play_ui005_session_selection",
+        "test_play_ui007_acrobat",
+        "test_play_ui007_arcadelander",
+        "test_play_ui007_jetbarrel",
+        "test_play_ui007_overlay_render",
+        "test_play_ui007_stuntbuggy",
+        "test_play_ui007_trialsbike",
+        "test_play_wait001_acrobat",
+        "test_play_wait001_arcadelander",
+        "test_play_wait001_jetbarrel",
+        "test_play_wait001_stuntbuggy",
+        "test_play_wait001_trialsbike",
+        "test_player_acrobat",
+        "test_player_acrobat_physics",
+        "test_player_material_field",
+        "test_player_playground_course",
+        "test_player_playground_runtime",
+        "test_player_vehicle_controls",
+        "test_playval001_selectable_player_fixtures",
+        "test_prepared_physical_owner",
+        "test_presentation_controls",
+        "test_rapier_backend_preflight",
+        "test_rapier_drop_in",
+        "test_rapier_manual_step",
+        "test_rem002_body_granular",
+        "test_rem003_player_granular",
+        "test_render_patch_handoff_regression",
+        "test_render_world_generation",
+        "test_script_hotpath_native_fill",
+        "test_semantic_depth_render",
+        "test_semantic_planes_examples",
+        "test_semantic_planes_runtime",
+        "test_showcase_backdrop_render",
+        "test_showcase_tiles",
+        "test_simulation_worker_interest_ownership",
+        "test_thunderbowl_arena",
+        "test_thunderbowl_controllers",
+        "test_tick_failure_regression",
+        "test_transport_probe",
+        "test_transport_profiles",
+        "test_usable_session",
+        "test_usables",
+        "test_water_experiment_profiles",
+        "test_water_feel_controller",
+        "test_water_feel_integration",
+        "test_water_feel_scenarios",
+        "test_water_presentation_model",
+        "test_water_presentation_render",
+        "test_wave_flow",
+        "test_wave_flow_render",
+        "test_web_demo_setup",
+        "test_web_rapier",
+        "test_web_worker_parity",
+        "test_wex001_water_body_baseline",
+        "test_wex004_decompression",
+        "test_workbench_actor_catalog",
+        "test_workbench_actor_composition",
+        "test_workbench_actor_composition_native",
+        "test_workbench_actor_composition_session",
+        "test_workbench_actor_equipment_extent",
+        "test_workbench_boundary_retention",
+        "test_workbench_canvas",
+        "test_workbench_combined_authoring",
+        "test_workbench_deferred_paint",
+        "test_workbench_desktop_interest",
+        "test_workbench_edit_ordering",
+        "test_workbench_failure_containment",
+        "test_workbench_failure_recovery",
+        "test_workbench_flatten",
+        "test_workbench_flatten_owner_failure",
+        "test_workbench_fleet_session",
+        "test_workbench_generator_discovery",
+        "test_workbench_generator_installed",
+        "test_workbench_hard_placement",
+        "test_workbench_host_claim_capacity",
+        "test_workbench_host_claim_native",
+        "test_workbench_input",
+        "test_workbench_lcb_salvage",
+        "test_workbench_liquid_edges",
+        "test_workbench_liquid_equipment",
+        "test_workbench_live_liquid_edit",
+        "test_workbench_material_baseline",
+        "test_workbench_physics_play",
+        "test_workbench_pilot_ui",
+        "test_workbench_reservoir_lab",
+        "test_workbench_retained_pressure",
+        "test_workbench_spray_rearm",
+        "test_workbench_wave",
+        "test_workbench_wave_render",
+        "test_workbench_wave_spill",
+        "test_worker_benchmark",
+        "test_world_design_pack_adapter",
+        "test_worldgen_fields",
+        "test_worldgen_grammar",
+        "test_worldgen_planes",
+        "test_worldgen_typed",
+        "test_worldgen_workbench",
+        "profile_native_world",
+        "profile_scheduler",
+        "scene"
+      ],
+      "shard_count": 24,
+      "shards": [
+        [
+          "test_play_ui007_trialsbike",
+          "test_semantic_planes_runtime",
+          "test_wex001_water_body_baseline",
+          "test_workbench_combined_authoring",
+          "test_workbench_spray_rearm"
+        ],
+        [
+          "test_microscenarios",
+          "test_physical_actor_effect_cancellation",
+          "test_physics_characterisation",
+          "test_play_life002_jetbarrel",
+          "test_play_life010_jetbarrel",
+          "test_play_wait001_acrobat",
+          "test_showcase_backdrop_render",
+          "test_workbench_deferred_paint",
+          "test_workbench_wave"
+        ],
+        [
+          "test_interaction_policy",
+          "test_material_lab_readability",
+          "test_paint_editor_native",
+          "test_physical_flight_lab_scene",
+          "test_play_input011_acrobat",
+          "test_play_life004_jetbarrel",
+          "test_play_pace001_jetbarrel",
+          "test_player_vehicle_controls",
+          "test_water_presentation_model",
+          "test_workbench_hard_placement",
+          "test_worldgen_typed"
+        ],
+        [
+          "test_material_lab_service",
+          "test_paint_editor_recovery",
+          "test_physical_flight_physics",
+          "test_play_input011_arcadelander",
+          "test_play_life004_stuntbuggy",
+          "test_play_pace001_stuntbuggy",
+          "test_playval001_selectable_player_fixtures",
+          "test_rem003_player_granular",
+          "test_water_presentation_render",
+          "test_workbench_host_claim_capacity",
+          "test_worldgen_workbench"
+        ],
+        [
+          "test_lcb_physics_contracts",
+          "test_liquid_sampled_preparation",
+          "test_microscenario_workbench",
+          "test_physical_actor_effects",
+          "test_physics_instrumentation",
+          "test_play_life002_stuntbuggy",
+          "test_play_life010_stuntbuggy",
+          "test_play_wait001_arcadelander",
+          "test_showcase_tiles",
+          "test_workbench_desktop_interest",
+          "test_workbench_wave_render"
+        ],
+        [
+          "test_liquid_solver_policy",
+          "test_microscenario_workbench_lifecycle",
+          "test_physical_actor_integration",
+          "test_physical_flight_teacher_dev_obstacle",
+          "test_play_auto001_shared_course",
+          "test_play_life002_trialsbike",
+          "test_play_life010_trialsbike",
+          "test_play_wait001_jetbarrel",
+          "test_simulation_worker_interest_ownership",
+          "test_workbench_edit_ordering",
+          "test_workbench_wave_spill"
+        ],
+        [
+          "test_explore001_dialog_native_saved_render",
+          "test_lcb_pressure_optimization",
+          "test_liquid_synchronous_reference_body",
+          "test_material_appearance_lut",
+          "test_native_edge_contact_regression",
+          "test_physical_actor_rigs",
+          "test_play_comp001_existing_host_spike",
+          "test_play_life003_acrobat",
+          "test_play_life011_acrobat",
+          "test_play_wait001_stuntbuggy",
+          "test_thunderbowl_arena",
+          "test_workbench_failure_containment",
+          "test_world_design_pack_adapter"
+        ],
+        [
+          "test_deepworks",
+          "test_exploratory_actor_selection",
+          "test_feature_launch_arguments",
+          "test_liquid_inertial_host",
+          "test_material_lab_ui",
+          "test_paint_editor_shapes",
+          "test_physical_flight_pilot",
+          "test_play_input011_jetbarrel",
+          "test_play_life004_trialsbike",
+          "test_play_pace001_trialsbike",
+          "test_prepared_physical_owner",
+          "test_wave_flow",
+          "test_workbench_host_claim_native",
+          "test_worker_benchmark",
+          "profile_native_world"
+        ],
+        [
+          "test_deepworks_controller",
+          "test_feature_launcher",
+          "test_liquid_level_import_host",
+          "test_material_lab_workbench_integration",
+          "test_microscenario_controllers",
+          "test_paint_editor_workbench",
+          "test_physical_flight_profile",
+          "test_physical_flight_teacher_dev_free",
+          "test_play_input011_legacy_pause",
+          "test_play_life005_failure_recovery",
+          "test_play_pace004_capture_buffer",
+          "test_presentation_controls",
+          "test_wave_flow_render",
+          "test_web_rapier",
+          "test_workbench_input"
+        ],
+        [
+          "test_art_history_receipt_identity",
+          "test_cell_world",
+          "test_explore001_dialog_render",
+          "test_lcb_scenario_catalogue",
+          "test_liquid_default_demo_preparation",
+          "test_liquid_water_feel_host",
+          "test_native_render_bridge_regression",
+          "test_physical_actor_session",
+          "test_play_input010_acrobat",
+          "test_play_life003_jetbarrel",
+          "test_play_life011_jetbarrel",
+          "test_player_acrobat",
+          "test_transport_profiles",
+          "test_workbench_flatten",
+          "test_worldgen_grammar"
+        ],
+        [
+          "test_actor_rigs",
+          "test_art_traffic_integrity",
+          "test_deepworks_reactions",
+          "test_gameplay_recorder",
+          "test_liquid_level_preparation",
+          "test_material_lab_world",
+          "test_palette_crossfade_render",
+          "test_physical_flight_selection",
+          "test_play_input011_stuntbuggy",
+          "test_play_life007_failed_session_restart",
+          "test_play_pace002_acrobat",
+          "test_play_ui003_lap_clock",
+          "test_rapier_backend_preflight",
+          "test_water_feel_controller",
+          "test_web_demo_setup",
+          "test_workbench_lcb_salvage"
+        ],
+        [
+          "test_actor_usables_integration",
+          "test_art_traffic_panel_safety",
+          "test_deepworks_render",
+          "test_gen007_inspection",
+          "test_liquid_ordinary_demo_host",
+          "test_material_presentation_render",
+          "test_palette_shader_compile_bounds",
+          "test_physical_flight_session",
+          "test_play_input011_trialsbike",
+          "test_play_life008_recovery_navigation",
+          "test_play_pace002_arcadelander",
+          "test_play_ui003_physics_cadence",
+          "test_rapier_drop_in",
+          "test_water_feel_integration",
+          "test_wex004_decompression",
+          "test_workbench_liquid_edges"
+        ],
+        [
+          "test_architectural_generator",
+          "test_art_undo",
+          "test_depth_compositor",
+          "test_gen007_qualification_render",
+          "test_liquid_owner_observation",
+          "test_material_vapour_pipeline_render",
+          "test_pchar001_player_representations",
+          "test_physical_usable_course",
+          "test_physics_async",
+          "test_play_life001_acrobat",
+          "test_play_life009_acrobat",
+          "test_play_pace002_jetbarrel",
+          "test_play_ui004_gamepad_events",
+          "test_rapier_manual_step",
+          "test_workbench_actor_catalog",
+          "test_workbench_liquid_equipment"
+        ],
+        [
+          "test_architectural_generator_ui",
+          "test_auto_worker_policy",
+          "test_depth_dimensions",
+          "test_gen007_workbench",
+          "test_liquid_physical_preparation",
+          "test_megablock_project",
+          "test_penv001_player_environment",
+          "test_physical_usable_equipment",
+          "test_play_life001_arcadelander",
+          "test_play_life009_arcadelander",
+          "test_play_pace002_stuntbuggy",
+          "test_play_ui005_session_selection",
+          "test_rem002_body_granular",
+          "test_workbench_actor_composition",
+          "test_workbench_live_liquid_edit",
+          "scene"
+        ],
+        [
+          "test_architectural_project_contract",
+          "test_blacksite_nine",
+          "test_depth_dimensions_render",
+          "test_gentek_cathedral_showcase",
+          "test_liquid_physical_transaction",
+          "test_microscenario_flood_control",
+          "test_pf_c2048_prepared",
+          "test_physical_usable_lifecycle",
+          "test_play_life001_jetbarrel",
+          "test_play_life009_jetbarrel",
+          "test_play_pace002_trialsbike",
+          "test_play_ui007_acrobat",
+          "test_render_patch_handoff_regression",
+          "test_tick_failure_regression",
+          "test_workbench_actor_composition_native",
+          "test_workbench_material_baseline"
+        ],
+        [
+          "test_art_batch_native",
+          "test_blacksite_nine_integration",
+          "test_depth_lab",
+          "test_experiment_tower",
+          "test_hard_surface_incremental_packet",
+          "test_liquid_policy_worker",
+          "test_microscenario_materials_lab",
+          "test_physical_actor_actuation",
+          "test_physical_usable_script",
+          "test_play_life001_stuntbuggy",
+          "test_play_life009_stuntbuggy",
+          "test_play_ui007_arcadelander",
+          "test_render_world_generation",
+          "test_transport_probe",
+          "test_workbench_actor_composition_session",
+          "test_workbench_physics_play"
+        ],
+        [
+          "test_actor_prototypes",
+          "test_art_lazy_traffic",
+          "test_ci_execution_policy",
+          "test_explore001_dialog_saved_render",
+          "test_liquid_desktop_default_host",
+          "test_liquid_synchronous_water_reference_body",
+          "test_material_glow_control",
+          "test_neon_reliquary",
+          "test_physical_actor_trial",
+          "test_play_input010_arcadelander",
+          "test_play_life003_stuntbuggy",
+          "test_play_life011_stuntbuggy",
+          "test_player_acrobat_physics",
+          "test_usable_session",
+          "test_workbench_flatten_owner_failure",
+          "test_worldgen_planes"
+        ],
+        [
+          "test_actor_actuator_session",
+          "test_art_batch_native_render",
+          "test_blacksite_nine_render",
+          "test_depth_layer_runtime",
+          "test_gen007_qualification",
+          "test_lcb_fixture_manifests",
+          "test_liquid_prepared_host",
+          "test_microscenario_native_observation",
+          "test_physical_actor_arena",
+          "test_physical_usables_admission",
+          "test_play_life001_trialsbike",
+          "test_play_life009_trialsbike",
+          "test_play_ui007_jetbarrel",
+          "test_script_hotpath_native_fill",
+          "test_workbench_actor_equipment_extent",
+          "test_workbench_pilot_ui"
+        ],
+        [
+          "test_actor_prototype_integration",
+          "test_art_deferred_manual",
+          "test_brush_owner_commands",
+          "test_depth_surface_render",
+          "test_lcb_inertial_adapter",
+          "test_lcb_pressure_reference",
+          "test_liquid_pressure_rapier",
+          "test_microscenario_reference_pack_ui",
+          "test_physical_actor_catalog",
+          "test_physical_usables_desktop",
+          "test_play_life002_acrobat",
+          "test_play_life010_acrobat",
+          "test_play_ui007_overlay_render",
+          "test_semantic_depth_render",
+          "test_workbench_boundary_retention",
+          "test_workbench_reservoir_lab"
+        ],
+        [
+          "test_actor_prototype_session",
+          "test_art_history_durability",
+          "test_building_material_integration",
+          "test_explore001_dialog_native_render",
+          "test_lcb_negative_contracts",
+          "test_liquid_reference_body_poses",
+          "test_microscenario_reference_contract",
+          "test_microscenario_stress",
+          "test_physical_actor_effect_admission",
+          "test_physical_usables_runtime",
+          "test_play_life002_arcadelander",
+          "test_play_life010_arcadelander",
+          "test_play_ui007_stuntbuggy",
+          "test_semantic_planes_examples",
+          "test_workbench_canvas",
+          "test_workbench_retained_pressure"
+        ],
+        [
+          "test_explore001_dialog_native_small_render",
+          "test_liquid_comparison_ui",
+          "test_liquid_tower_host",
+          "test_liquid_water_reference_body",
+          "test_native_fire_presentation_regression",
+          "test_physical_actor_script",
+          "test_play_comp002_five_rig_course",
+          "test_play_life003_arcadelander",
+          "test_play_life011_arcadelander",
+          "test_play_wait001_trialsbike",
+          "test_thunderbowl_controllers",
+          "test_workbench_failure_recovery",
+          "test_worldgen_fields",
+          "profile_scheduler"
+        ],
+        [
+          "test_actor_rig_session",
+          "test_art_stored_material",
+          "test_coupling_lockstep_semantics",
+          "test_failed_world_status_survives",
+          "test_gen007_reactions",
+          "test_interaction_async",
+          "test_liquid_host_web_probe",
+          "test_material_lab_experiment",
+          "test_paint_editor_history",
+          "test_physical_flight_lab",
+          "test_play_input010_trialsbike",
+          "test_play_life004_arcadelander",
+          "test_play_pace001_arcadelander",
+          "test_player_playground_runtime",
+          "test_water_feel_scenarios",
+          "test_workbench_generator_installed"
+        ],
+        [
+          "test_actor_rig_integration",
+          "test_art_provider",
+          "test_coupling_lockstep_desktop",
+          "test_explore001_generated_workbench",
+          "test_gen007_workbench_render",
+          "test_liquid_host_evidence",
+          "test_material_lab_diagnostics",
+          "test_paint_editor_generated_workbench",
+          "test_physical_flight_handling",
+          "test_play_input010_stuntbuggy",
+          "test_play_life004_acrobat",
+          "test_play_pace001_acrobat",
+          "test_player_playground_course",
+          "test_water_experiment_profiles",
+          "test_web_worker_parity",
+          "test_workbench_generator_discovery"
+        ],
+        [
+          "test_act004_body_capacity",
+          "test_actor_rig_actuation",
+          "test_art_panel_ui",
+          "test_coupling_lockstep",
+          "test_explore001_dialog_small_render",
+          "test_liquid_feel_census",
+          "test_liquid_trial_body",
+          "test_material_lab_catalogue",
+          "test_paint_editor_executor",
+          "test_physical_flight_gameplay_render",
+          "test_play_input010_jetbarrel",
+          "test_play_life003_trialsbike",
+          "test_play_life011_trialsbike",
+          "test_player_material_field",
+          "test_usables",
+          "test_workbench_fleet_session"
+        ]
+      ]
+    },
+    "windows": {
+      "case_count": 315,
+      "cases": [
+        "test_act004_body_capacity",
+        "test_actor_actuator_session",
+        "test_actor_prototype_integration",
+        "test_actor_prototype_session",
+        "test_actor_prototypes",
+        "test_actor_rig_actuation",
+        "test_actor_rig_integration",
+        "test_actor_rig_session",
+        "test_actor_rigs",
+        "test_actor_usables_integration",
+        "test_architectural_generator",
+        "test_architectural_generator_ui",
+        "test_architectural_project_contract",
+        "test_art_batch_native",
+        "test_art_deferred_manual",
+        "test_art_history_durability",
+        "test_art_history_receipt_identity",
+        "test_art_lazy_traffic",
+        "test_art_panel_ui",
+        "test_art_provider",
+        "test_art_stored_material",
+        "test_art_traffic_integrity",
+        "test_art_traffic_panel_safety",
+        "test_art_undo",
+        "test_auto_worker_policy",
+        "test_blacksite_nine",
+        "test_blacksite_nine_integration",
+        "test_brush_owner_commands",
+        "test_building_material_integration",
+        "test_cell_world",
+        "test_ci_execution_policy",
+        "test_coupling_lockstep",
+        "test_coupling_lockstep_desktop",
+        "test_coupling_lockstep_semantics",
+        "test_deepworks",
+        "test_deepworks_controller",
+        "test_deepworks_reactions",
+        "test_depth_compositor",
+        "test_depth_dimensions",
+        "test_depth_lab",
+        "test_depth_layer_runtime",
+        "test_experiment_tower",
+        "test_exploratory_actor_selection",
+        "test_explore001_generated_workbench",
+        "test_failed_world_status_survives",
+        "test_feature_launch_arguments",
+        "test_feature_launcher",
+        "test_gameplay_recorder",
+        "test_gen007_inspection",
+        "test_gen007_qualification",
+        "test_gen007_reactions",
+        "test_gen007_workbench",
+        "test_gentek_cathedral_showcase",
+        "test_hard_surface_incremental_packet",
+        "test_interaction_async",
+        "test_interaction_policy",
+        "test_lcb_fixture_manifests",
+        "test_lcb_inertial_adapter",
+        "test_lcb_negative_contracts",
+        "test_lcb_physics_contracts",
+        "test_lcb_pressure_optimization",
+        "test_lcb_pressure_reference",
+        "test_lcb_scenario_catalogue",
+        "test_liquid_comparison_ui",
+        "test_liquid_default_demo_preparation",
+        "test_liquid_desktop_default_host",
+        "test_liquid_feel_census",
+        "test_liquid_host_evidence",
+        "test_liquid_host_web_probe",
+        "test_liquid_inertial_host",
+        "test_liquid_level_import_host",
+        "test_liquid_level_preparation",
+        "test_liquid_ordinary_demo_host",
+        "test_liquid_owner_observation",
+        "test_liquid_physical_preparation",
+        "test_liquid_physical_transaction",
+        "test_liquid_policy_worker",
+        "test_liquid_prepared_host",
+        "test_liquid_pressure_rapier",
+        "test_liquid_reference_body_poses",
+        "test_liquid_sampled_preparation",
+        "test_liquid_solver_policy",
+        "test_liquid_synchronous_reference_body",
+        "test_liquid_synchronous_water_reference_body",
+        "test_liquid_tower_host",
+        "test_liquid_trial_body",
+        "test_liquid_water_feel_host",
+        "test_liquid_water_reference_body",
+        "test_material_appearance_lut",
+        "test_material_glow_control",
+        "test_material_lab_catalogue",
+        "test_material_lab_diagnostics",
+        "test_material_lab_experiment",
+        "test_material_lab_readability",
+        "test_material_lab_service",
+        "test_material_lab_ui",
+        "test_material_lab_workbench_integration",
+        "test_material_lab_world",
+        "test_megablock_project",
+        "test_microscenario_controllers",
+        "test_microscenario_flood_control",
+        "test_microscenario_materials_lab",
+        "test_microscenario_native_observation",
+        "test_microscenario_reference_contract",
+        "test_microscenario_reference_pack_ui",
+        "test_microscenario_stress",
+        "test_microscenario_workbench",
+        "test_microscenario_workbench_lifecycle",
+        "test_microscenarios",
+        "test_native_edge_contact_regression",
+        "test_native_fire_presentation_regression",
+        "test_native_render_bridge_regression",
+        "test_neon_reliquary",
+        "test_paint_editor_executor",
+        "test_paint_editor_generated_workbench",
+        "test_paint_editor_history",
+        "test_paint_editor_native",
+        "test_paint_editor_recovery",
+        "test_paint_editor_shapes",
+        "test_paint_editor_workbench",
+        "test_palette_shader_compile_bounds",
+        "test_pchar001_player_representations",
+        "test_penv001_player_environment",
+        "test_pf_c2048_prepared",
+        "test_physical_actor_actuation",
+        "test_physical_actor_arena",
+        "test_physical_actor_catalog",
+        "test_physical_actor_effect_admission",
+        "test_physical_actor_effect_cancellation",
+        "test_physical_actor_effects",
+        "test_physical_actor_integration",
+        "test_physical_actor_rigs",
+        "test_physical_actor_script",
+        "test_physical_actor_session",
+        "test_physical_actor_trial",
+        "test_physical_flight_handling",
+        "test_physical_flight_lab",
+        "test_physical_flight_lab_scene",
+        "test_physical_flight_physics",
+        "test_physical_flight_pilot",
+        "test_physical_flight_profile",
+        "test_physical_flight_selection",
+        "test_physical_flight_session",
+        "test_physical_flight_teacher_dev_free",
+        "test_physical_flight_teacher_dev_obstacle",
+        "test_physical_usable_course",
+        "test_physical_usable_equipment",
+        "test_physical_usable_lifecycle",
+        "test_physical_usable_script",
+        "test_physical_usables_admission",
+        "test_physical_usables_desktop",
+        "test_physical_usables_runtime",
+        "test_physics_async",
+        "test_physics_characterisation",
+        "test_physics_instrumentation",
+        "test_play_auto001_shared_course",
+        "test_play_comp001_existing_host_spike",
+        "test_play_comp002_five_rig_course",
+        "test_play_input010_acrobat",
+        "test_play_input010_arcadelander",
+        "test_play_input010_jetbarrel",
+        "test_play_input010_stuntbuggy",
+        "test_play_input010_trialsbike",
+        "test_play_input011_acrobat",
+        "test_play_input011_arcadelander",
+        "test_play_input011_jetbarrel",
+        "test_play_input011_legacy_pause",
+        "test_play_input011_stuntbuggy",
+        "test_play_input011_trialsbike",
+        "test_play_life001_acrobat",
+        "test_play_life001_arcadelander",
+        "test_play_life001_jetbarrel",
+        "test_play_life001_stuntbuggy",
+        "test_play_life001_trialsbike",
+        "test_play_life002_acrobat",
+        "test_play_life002_arcadelander",
+        "test_play_life002_jetbarrel",
+        "test_play_life002_stuntbuggy",
+        "test_play_life002_trialsbike",
+        "test_play_life003_acrobat",
+        "test_play_life003_arcadelander",
+        "test_play_life003_jetbarrel",
+        "test_play_life003_stuntbuggy",
+        "test_play_life003_trialsbike",
+        "test_play_life004_acrobat",
+        "test_play_life004_arcadelander",
+        "test_play_life004_jetbarrel",
+        "test_play_life004_stuntbuggy",
+        "test_play_life004_trialsbike",
+        "test_play_life005_failure_recovery",
+        "test_play_life007_failed_session_restart",
+        "test_play_life008_recovery_navigation",
+        "test_play_life009_acrobat",
+        "test_play_life009_arcadelander",
+        "test_play_life009_jetbarrel",
+        "test_play_life009_stuntbuggy",
+        "test_play_life009_trialsbike",
+        "test_play_life010_acrobat",
+        "test_play_life010_arcadelander",
+        "test_play_life010_jetbarrel",
+        "test_play_life010_stuntbuggy",
+        "test_play_life010_trialsbike",
+        "test_play_life011_acrobat",
+        "test_play_life011_arcadelander",
+        "test_play_life011_jetbarrel",
+        "test_play_life011_stuntbuggy",
+        "test_play_life011_trialsbike",
+        "test_play_pace001_acrobat",
+        "test_play_pace001_arcadelander",
+        "test_play_pace001_jetbarrel",
+        "test_play_pace001_stuntbuggy",
+        "test_play_pace001_trialsbike",
+        "test_play_pace002_acrobat",
+        "test_play_pace002_arcadelander",
+        "test_play_pace002_jetbarrel",
+        "test_play_pace002_stuntbuggy",
+        "test_play_pace002_trialsbike",
+        "test_play_pace004_capture_buffer",
+        "test_play_ui003_lap_clock",
+        "test_play_ui003_physics_cadence",
+        "test_play_ui004_gamepad_events",
+        "test_play_ui005_session_selection",
+        "test_play_ui007_acrobat",
+        "test_play_ui007_arcadelander",
+        "test_play_ui007_jetbarrel",
+        "test_play_ui007_stuntbuggy",
+        "test_play_ui007_trialsbike",
+        "test_play_wait001_acrobat",
+        "test_play_wait001_arcadelander",
+        "test_play_wait001_jetbarrel",
+        "test_play_wait001_stuntbuggy",
+        "test_play_wait001_trialsbike",
+        "test_player_acrobat",
+        "test_player_acrobat_physics",
+        "test_player_material_field",
+        "test_player_playground_course",
+        "test_player_playground_runtime",
+        "test_player_vehicle_controls",
+        "test_playval001_selectable_player_fixtures",
+        "test_prepared_physical_owner",
+        "test_presentation_controls",
+        "test_rapier_backend_preflight",
+        "test_rapier_drop_in",
+        "test_rapier_manual_step",
+        "test_rem002_body_granular",
+        "test_rem003_player_granular",
+        "test_render_patch_handoff_regression",
+        "test_render_world_generation",
+        "test_script_hotpath_native_fill",
+        "test_semantic_planes_examples",
+        "test_semantic_planes_runtime",
+        "test_showcase_tiles",
+        "test_simulation_worker_interest_ownership",
+        "test_thunderbowl_arena",
+        "test_thunderbowl_controllers",
+        "test_tick_failure_regression",
+        "test_transport_probe",
+        "test_transport_profiles",
+        "test_usable_session",
+        "test_usables",
+        "test_water_experiment_profiles",
+        "test_water_feel_controller",
+        "test_water_feel_integration",
+        "test_water_feel_scenarios",
+        "test_water_presentation_model",
+        "test_wave_flow",
+        "test_web_demo_setup",
+        "test_web_rapier",
+        "test_web_worker_parity",
+        "test_wex001_water_body_baseline",
+        "test_wex004_decompression",
+        "test_workbench_actor_catalog",
+        "test_workbench_actor_composition",
+        "test_workbench_actor_composition_native",
+        "test_workbench_actor_composition_session",
+        "test_workbench_actor_equipment_extent",
+        "test_workbench_boundary_retention",
+        "test_workbench_canvas",
+        "test_workbench_combined_authoring",
+        "test_workbench_deferred_paint",
+        "test_workbench_desktop_interest",
+        "test_workbench_edit_ordering",
+        "test_workbench_failure_containment",
+        "test_workbench_failure_recovery",
+        "test_workbench_flatten",
+        "test_workbench_flatten_owner_failure",
+        "test_workbench_fleet_session",
+        "test_workbench_generator_discovery",
+        "test_workbench_generator_installed",
+        "test_workbench_hard_placement",
+        "test_workbench_host_claim_capacity",
+        "test_workbench_host_claim_native",
+        "test_workbench_input",
+        "test_workbench_lcb_salvage",
+        "test_workbench_liquid_edges",
+        "test_workbench_liquid_equipment",
+        "test_workbench_live_liquid_edit",
+        "test_workbench_material_baseline",
+        "test_workbench_physics_play",
+        "test_workbench_pilot_ui",
+        "test_workbench_reservoir_lab",
+        "test_workbench_retained_pressure",
+        "test_workbench_spray_rearm",
+        "test_workbench_wave",
+        "test_workbench_wave_spill",
+        "test_worker_benchmark",
+        "test_world_design_pack_adapter",
+        "test_worldgen_fields",
+        "test_worldgen_grammar",
+        "test_worldgen_planes",
+        "test_worldgen_typed",
+        "test_worldgen_workbench",
+        "profile_native_world",
+        "profile_scheduler",
+        "scene"
+      ],
+      "shard_count": 23,
+      "shards": [
+        [
+          "test_play_wait001_trialsbike",
+          "test_transport_profiles",
+          "test_wex001_water_body_baseline",
+          "test_workbench_flatten_owner_failure",
+          "test_worldgen_planes"
+        ],
+        [
+          "test_microscenarios",
+          "test_physical_flight_handling",
+          "test_play_input010_jetbarrel",
+          "test_play_life003_stuntbuggy",
+          "test_play_life011_jetbarrel",
+          "test_player_acrobat",
+          "test_usable_session",
+          "test_workbench_fleet_session",
+          "test_worldgen_typed"
+        ],
+        [
+          "test_interaction_policy",
+          "test_megablock_project",
+          "test_penv001_player_environment",
+          "test_physical_usable_equipment",
+          "test_play_life001_acrobat",
+          "test_play_life008_recovery_navigation",
+          "test_play_ui003_lap_clock",
+          "test_rapier_backend_preflight",
+          "test_workbench_actor_composition",
+          "test_workbench_liquid_equipment",
+          "profile_native_world"
+        ],
+        [
+          "test_microscenario_flood_control",
+          "test_pf_c2048_prepared",
+          "test_physical_usable_lifecycle",
+          "test_play_life001_arcadelander",
+          "test_play_life009_acrobat",
+          "test_play_ui003_physics_cadence",
+          "test_rapier_drop_in",
+          "test_rem003_player_granular",
+          "test_workbench_actor_composition_native",
+          "test_workbench_live_liquid_edit"
+        ],
+        [
+          "test_lcb_physics_contracts",
+          "test_material_lab_catalogue",
+          "test_paint_editor_generated_workbench",
+          "test_physical_flight_lab",
+          "test_play_input010_stuntbuggy",
+          "test_play_life003_trialsbike",
+          "test_play_life011_stuntbuggy",
+          "test_player_acrobat_physics",
+          "test_usables",
+          "test_workbench_generator_discovery",
+          "test_worldgen_workbench"
+        ],
+        [
+          "test_material_lab_diagnostics",
+          "test_paint_editor_history",
+          "test_physical_flight_lab_scene",
+          "test_physical_flight_teacher_dev_obstacle",
+          "test_play_input010_trialsbike",
+          "test_play_life004_acrobat",
+          "test_play_life011_trialsbike",
+          "test_player_material_field",
+          "test_water_experiment_profiles",
+          "test_web_rapier",
+          "test_workbench_generator_installed",
+          "test_worker_benchmark"
+        ],
+        [
+          "test_feature_launch_arguments",
+          "test_liquid_inertial_host",
+          "test_material_appearance_lut",
+          "test_material_lab_experiment",
+          "test_microscenario_controllers",
+          "test_paint_editor_native",
+          "test_physical_flight_physics",
+          "test_play_input011_acrobat",
+          "test_play_life004_arcadelander",
+          "test_play_pace001_acrobat",
+          "test_player_playground_course",
+          "test_water_feel_scenarios",
+          "test_workbench_hard_placement",
+          "scene"
+        ],
+        [
+          "test_coupling_lockstep_desktop",
+          "test_exploratory_actor_selection",
+          "test_hard_surface_incremental_packet",
+          "test_liquid_physical_transaction",
+          "test_microscenario_materials_lab",
+          "test_physical_actor_actuation",
+          "test_physical_usable_script",
+          "test_play_life001_jetbarrel",
+          "test_play_life009_arcadelander",
+          "test_play_ui004_gamepad_events",
+          "test_rapier_manual_step",
+          "test_workbench_actor_composition_session",
+          "test_workbench_material_baseline"
+        ],
+        [
+          "test_coupling_lockstep_semantics",
+          "test_lcb_fixture_manifests",
+          "test_liquid_policy_worker",
+          "test_microscenario_native_observation",
+          "test_physical_actor_arena",
+          "test_physical_flight_teacher_dev_free",
+          "test_physical_usables_admission",
+          "test_play_life001_stuntbuggy",
+          "test_play_life009_jetbarrel",
+          "test_play_ui005_session_selection",
+          "test_rem002_body_granular",
+          "test_workbench_actor_equipment_extent",
+          "test_workbench_physics_play"
+        ],
+        [
+          "test_art_history_durability",
+          "test_building_material_integration",
+          "test_experiment_tower",
+          "test_gameplay_recorder",
+          "test_lcb_scenario_catalogue",
+          "test_liquid_level_preparation",
+          "test_material_lab_service",
+          "test_paint_editor_shapes",
+          "test_physical_flight_profile",
+          "test_play_input011_jetbarrel",
+          "test_play_life004_stuntbuggy",
+          "test_play_pace001_jetbarrel",
+          "test_player_vehicle_controls",
+          "test_water_feel_integration",
+          "test_wave_flow",
+          "test_workbench_host_claim_native"
+        ],
+        [
+          "test_actor_rig_integration",
+          "test_art_provider",
+          "test_deepworks",
+          "test_lcb_inertial_adapter",
+          "test_liquid_prepared_host",
+          "test_microscenario_reference_pack_ui",
+          "test_physical_actor_catalog",
+          "test_physical_usables_desktop",
+          "test_play_life001_trialsbike",
+          "test_play_life009_stuntbuggy",
+          "test_play_pace002_acrobat",
+          "test_play_ui007_acrobat",
+          "test_render_patch_handoff_regression",
+          "test_workbench_boundary_retention",
+          "test_workbench_pilot_ui"
+        ],
+        [
+          "test_actor_rig_session",
+          "test_art_stored_material",
+          "test_deepworks_controller",
+          "test_lcb_negative_contracts",
+          "test_liquid_pressure_rapier",
+          "test_microscenario_stress",
+          "test_physical_actor_effect_admission",
+          "test_physical_usables_runtime",
+          "test_play_life002_acrobat",
+          "test_play_life009_trialsbike",
+          "test_play_pace002_arcadelander",
+          "test_play_ui007_arcadelander",
+          "test_render_world_generation",
+          "test_workbench_canvas",
+          "test_workbench_reservoir_lab"
+        ],
+        [
+          "test_actor_rigs",
+          "test_art_traffic_integrity",
+          "test_deepworks_reactions",
+          "test_lcb_pressure_optimization",
+          "test_liquid_reference_body_poses",
+          "test_microscenario_workbench",
+          "test_physical_actor_effect_cancellation",
+          "test_physics_characterisation",
+          "test_play_life002_arcadelander",
+          "test_play_life010_acrobat",
+          "test_play_pace002_jetbarrel",
+          "test_play_ui007_jetbarrel",
+          "test_script_hotpath_native_fill",
+          "test_workbench_combined_authoring",
+          "test_workbench_retained_pressure"
+        ],
+        [
+          "test_actor_usables_integration",
+          "test_art_traffic_panel_safety",
+          "test_depth_compositor",
+          "test_liquid_comparison_ui",
+          "test_liquid_sampled_preparation",
+          "test_microscenario_workbench_lifecycle",
+          "test_physical_actor_effects",
+          "test_physics_instrumentation",
+          "test_play_life002_jetbarrel",
+          "test_play_life010_arcadelander",
+          "test_play_pace002_stuntbuggy",
+          "test_play_ui007_stuntbuggy",
+          "test_semantic_planes_examples",
+          "test_workbench_deferred_paint",
+          "test_workbench_spray_rearm"
+        ],
+        [
+          "test_architectural_generator",
+          "test_art_undo",
+          "test_depth_dimensions",
+          "test_liquid_default_demo_preparation",
+          "test_liquid_solver_policy",
+          "test_native_edge_contact_regression",
+          "test_physical_actor_integration",
+          "test_play_auto001_shared_course",
+          "test_play_life002_stuntbuggy",
+          "test_play_life010_jetbarrel",
+          "test_play_pace002_trialsbike",
+          "test_play_ui007_trialsbike",
+          "test_semantic_planes_runtime",
+          "test_workbench_desktop_interest",
+          "test_workbench_wave"
+        ],
+        [
+          "test_architectural_generator_ui",
+          "test_auto_worker_policy",
+          "test_depth_lab",
+          "test_liquid_desktop_default_host",
+          "test_liquid_synchronous_reference_body",
+          "test_native_fire_presentation_regression",
+          "test_physical_actor_rigs",
+          "test_play_comp001_existing_host_spike",
+          "test_play_life002_trialsbike",
+          "test_play_life010_stuntbuggy",
+          "test_play_wait001_acrobat",
+          "test_showcase_tiles",
+          "test_transport_probe",
+          "test_workbench_edit_ordering",
+          "test_workbench_wave_spill"
+        ],
+        [
+          "test_actor_prototype_session",
+          "test_art_history_receipt_identity",
+          "test_cell_world",
+          "test_gen007_inspection",
+          "test_liquid_ordinary_demo_host",
+          "test_liquid_synchronous_water_reference_body",
+          "test_material_lab_ui",
+          "test_paint_editor_workbench",
+          "test_physical_flight_selection",
+          "test_physics_async",
+          "test_play_input011_legacy_pause",
+          "test_play_life004_trialsbike",
+          "test_play_pace001_stuntbuggy",
+          "test_playval001_selectable_player_fixtures",
+          "test_web_demo_setup",
+          "test_workbench_input"
+        ],
+        [
+          "test_act004_body_capacity",
+          "test_architectural_project_contract",
+          "test_blacksite_nine",
+          "test_depth_layer_runtime",
+          "test_gen007_qualification",
+          "test_liquid_feel_census",
+          "test_liquid_tower_host",
+          "test_native_render_bridge_regression",
+          "test_physical_actor_script",
+          "test_play_comp002_five_rig_course",
+          "test_play_life003_acrobat",
+          "test_play_life010_trialsbike",
+          "test_play_wait001_arcadelander",
+          "test_simulation_worker_interest_ownership",
+          "test_workbench_failure_containment",
+          "test_world_design_pack_adapter"
+        ],
+        [
+          "test_actor_actuator_session",
+          "test_art_batch_native",
+          "test_blacksite_nine_integration",
+          "test_explore001_generated_workbench",
+          "test_lcb_pressure_reference",
+          "test_liquid_host_evidence",
+          "test_liquid_water_feel_host",
+          "test_neon_reliquary",
+          "test_physical_actor_session",
+          "test_play_input010_acrobat",
+          "test_play_life003_arcadelander",
+          "test_play_life011_acrobat",
+          "test_play_wait001_jetbarrel",
+          "test_thunderbowl_arena",
+          "test_workbench_failure_recovery",
+          "test_worldgen_fields"
+        ],
+        [
+          "test_actor_prototype_integration",
+          "test_art_deferred_manual",
+          "test_brush_owner_commands",
+          "test_failed_world_status_survives",
+          "test_liquid_host_web_probe",
+          "test_material_glow_control",
+          "test_microscenario_reference_contract",
+          "test_paint_editor_executor",
+          "test_physical_actor_trial",
+          "test_play_input010_arcadelander",
+          "test_play_life003_jetbarrel",
+          "test_play_life011_arcadelander",
+          "test_play_wait001_stuntbuggy",
+          "test_thunderbowl_controllers",
+          "test_workbench_flatten",
+          "test_worldgen_grammar"
+        ],
+        [
+          "test_feature_launcher",
+          "test_liquid_level_import_host",
+          "test_liquid_water_reference_body",
+          "test_material_lab_readability",
+          "test_paint_editor_recovery",
+          "test_physical_flight_pilot",
+          "test_play_input011_arcadelander",
+          "test_play_life004_jetbarrel",
+          "test_play_pace001_arcadelander",
+          "test_player_playground_runtime",
+          "test_tick_failure_regression",
+          "test_water_feel_controller",
+          "test_water_presentation_model",
+          "test_workbench_host_claim_capacity",
+          "profile_scheduler"
+        ],
+        [
+          "test_actor_rig_actuation",
+          "test_art_panel_ui",
+          "test_coupling_lockstep",
+          "test_gen007_reactions",
+          "test_gentek_cathedral_showcase",
+          "test_interaction_async",
+          "test_liquid_physical_preparation",
+          "test_material_lab_world",
+          "test_pchar001_player_representations",
+          "test_physical_usable_course",
+          "test_play_input011_trialsbike",
+          "test_play_life007_failed_session_restart",
+          "test_play_pace004_capture_buffer",
+          "test_presentation_controls",
+          "test_workbench_actor_catalog",
+          "test_workbench_liquid_edges"
+        ],
+        [
+          "test_actor_prototypes",
+          "test_art_lazy_traffic",
+          "test_ci_execution_policy",
+          "test_gen007_workbench",
+          "test_liquid_owner_observation",
+          "test_liquid_trial_body",
+          "test_material_lab_workbench_integration",
+          "test_palette_shader_compile_bounds",
+          "test_physical_flight_session",
+          "test_play_input011_stuntbuggy",
+          "test_play_life005_failure_recovery",
+          "test_play_pace001_trialsbike",
+          "test_prepared_physical_owner",
+          "test_web_worker_parity",
+          "test_wex004_decompression",
+          "test_workbench_lcb_salvage"
+        ]
+      ]
+    }
+  },
+  "schema": "ci-opt003-source-derived-platform-inventory-v1",
+  "source_file_sha256": {
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/ci/godot_scheduling_profile.json": "b6c69784aba12b11b622ed337852ed5cf2c6e36ccb65d1fe92fdaf7085e882de",
+    "tools/ci/run_godot_regressions.py": "e274262be6bcc70a7ad1b223a6c178caeb420394cc95165cc68dfcbca1037ee6",
+    "tools/ci/run_windows_godot_regressions.py": "5350e385c92d8a4b9333fa09dd310c99ceaa2b3d1b89f7a8935400471f446cb1",
+    "tools/ci/verify_linux_godot_shards.py": "58b9897ffd1fa2ba0e456d17467342bd6e7a60a6d8296933b093438fd0ea08df",
+    "tools/ci/verify_windows_godot_shards.py": "27c1b25205335c50fdd1c8daae0de7b231c95d366686839ec30151e570660ba6"
+  },
+  "source_load_worktree_head": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "source_load_worktree_tree_identical": true,
+  "source_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "source_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+  "windows_graphical_exclusions": [
+    "test_art_batch_native_render",
+    "test_blacksite_nine_render",
+    "test_deepworks_render",
+    "test_depth_dimensions_render",
+    "test_depth_surface_render",
+    "test_explore001_dialog_native_render",
+    "test_explore001_dialog_native_saved_render",
+    "test_explore001_dialog_native_small_render",
+    "test_explore001_dialog_render",
+    "test_explore001_dialog_saved_render",
+    "test_explore001_dialog_small_render",
+    "test_gen007_qualification_render",
+    "test_gen007_workbench_render",
+    "test_material_presentation_render",
+    "test_material_vapour_pipeline_render",
+    "test_palette_crossfade_render",
+    "test_physical_flight_gameplay_render",
+    "test_play_ui007_overlay_render",
+    "test_semantic_depth_render",
+    "test_showcase_backdrop_render",
+    "test_water_presentation_render",
+    "test_wave_flow_render",
+    "test_workbench_wave_render"
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "scope": "One complete cold same-worker family pair; excludes pre-matrix policy, queue and hosted setup.",
+  "run_id": 44963259696,
+  "proof_sha": "cc22fb8ffbba2a7c18a0bc1c0ad60413ad5c3147",
+  "seconds_saved": 516.231168966,
+  "observed_percent_saved": 29.521862144525663,
+  "arms": {
+    "baseline": {
+      "source_sha": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+      "source_tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+      "elapsed_seconds": 1748.6402667920001,
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+        "environment": {
+          "CC": "gcc-13",
+          "CXX": "g++-13",
+          "CYBERSAND_CI_WATCHDOG_SCALE": "1",
+          "GNUMAKEFLAGS": "",
+          "MAKEFILES": "",
+          "MAKEFLAGS": "",
+          "MFLAGS": ""
+        },
+        "image": "ubuntu24",
+        "image_version": "20261116.133.1",
+        "job": "pair",
+        "logical_cpu_count": 4,
+        "memory_kib": 16078416,
+        "nproc": 4,
+        "runner_environment": "github-hosted",
+        "runner_name_sha256": "0633cb9392dc8e0b46a3ccd6b4873b0914f540b379bd2005e380e099d026487f",
+        "runner_os": "Linux",
+        "tools": {
+          "g++-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+            "target": "x86_64-linux-gnu",
+            "version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "gcc-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+            "target": "x86_64-linux-gnu",
+            "version": "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "ld": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+          },
+          "make": {
+            "path": "/usr/bin/make",
+            "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+            "version": "GNU Make 4.3\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+          }
+        }
+      },
+      "commands": [
+        {
+          "label": "physics-characterisation-sanitize",
+          "seconds": 98.95050707799999
+        },
+        {
+          "label": "worldgen-test",
+          "seconds": 241.54531365999998,
+          "gnu_time": {
+            "User time (seconds)": "338.61",
+            "System time (seconds)": "8.45",
+            "Percent of CPU this job got": "143%",
+            "Elapsed (wall clock) time (h:mm:ss or m:ss)": "4:01.50",
+            "Maximum resident set size (kbytes)": "933264",
+            "Swaps": "0"
+          }
+        },
+        {
+          "label": "worldgen-sanitize",
+          "seconds": 1407.494205153,
+          "gnu_time": {
+            "User time (seconds)": "1655.38",
+            "System time (seconds)": "19.39",
+            "Percent of CPU this job got": "118%",
+            "Elapsed (wall clock) time (h:mm:ss or m:ss)": "23:27.45",
+            "Maximum resident set size (kbytes)": "1696048",
+            "Swaps": "0"
+          }
+        }
+      ],
+      "first_complete_functional_command_seconds": 99.24767899513245,
+      "physics": {
+        "invocation_count": 154,
+        "results_sha256": "9fcad0ea22c7d9466399f1a46983248611d3d073e4654ff7f51818c624f5d16a",
+        "scientific_assertions_reapplied": true
+      }
+    },
+    "candidate": {
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "source_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+      "elapsed_seconds": 1232.409097826,
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+        "environment": {
+          "CC": "gcc-13",
+          "CXX": "g++-13",
+          "CYBERSAND_CI_WATCHDOG_SCALE": "1",
+          "GNUMAKEFLAGS": "",
+          "MAKEFILES": "",
+          "MAKEFLAGS": "",
+          "MFLAGS": ""
+        },
+        "image": "ubuntu24",
+        "image_version": "20261116.133.1",
+        "job": "pair",
+        "logical_cpu_count": 4,
+        "memory_kib": 16078416,
+        "nproc": 4,
+        "runner_environment": "github-hosted",
+        "runner_name_sha256": "0633cb9392dc8e0b46a3ccd6b4873b0914f540b379bd2005e380e099d026487f",
+        "runner_os": "Linux",
+        "tools": {
+          "g++-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+            "target": "x86_64-linux-gnu",
+            "version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "gcc-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+            "target": "x86_64-linux-gnu",
+            "version": "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "ld": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+          },
+          "make": {
+            "path": "/usr/bin/make",
+            "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+            "version": "GNU Make 4.3\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+          }
+        }
+      },
+      "commands": [
+        {
+          "label": "physics-characterisation-sanitize",
+          "seconds": 97.21171354299986
+        },
+        {
+          "label": "worldgen-test",
+          "seconds": 188.02442952599995,
+          "gnu_time": {
+            "User time (seconds)": "344.40",
+            "System time (seconds)": "8.61",
+            "Percent of CPU this job got": "187%",
+            "Elapsed (wall clock) time (h:mm:ss or m:ss)": "3:07.97",
+            "Maximum resident set size (kbytes)": "933408",
+            "Swaps": "0"
+          }
+        },
+        {
+          "label": "worldgen-sanitize",
+          "seconds": 946.7405877800002,
+          "gnu_time": {
+            "User time (seconds)": "1658.36",
+            "System time (seconds)": "19.09",
+            "Percent of CPU this job got": "177%",
+            "Elapsed (wall clock) time (h:mm:ss or m:ss)": "15:46.69",
+            "Maximum resident set size (kbytes)": "1695928",
+            "Swaps": "0"
+          }
+        }
+      ],
+      "first_complete_functional_command_seconds": 97.42587041854858,
+      "physics": {
+        "invocation_count": 154,
+        "results_sha256": "4e64d0bc5d621034b4105039f04c2cb881da6c898a691f7472e390588b191be2",
+        "scientific_assertions_reapplied": true
+      }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "observed_between_utc": [
+    "2026-11-22 01:20:46 UTC",
+    "2026-11-22 01:20:47 UTC"
+  ],
+  "snapshot": [
+    {
+      "key": "main",
+      "data": {
+        "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+        "parents": [
+          "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+          "19023b4016facfda2b13b9a1503742e4a9fe1982"
+        ]
+      }
+    },
+    {
+      "key": "pr708",
+      "data": {
+        "number": 708,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "head": "11e23b392b63dfb15ea0916c90ca8d9361d3406b",
+        "base": "integration/gentek80-water-conflict-reconcile",
+        "merge_commit": "8973470c9ed9b9ca6f467d0ac193994f91390a56",
+        "auto_merge": null
+      }
+    },
+    {
+      "key": "pr714",
+      "data": {
+        "number": 714,
+        "state": "closed",
+        "draft": false,
+        "merged": true,
+        "head": "68e0261466fc275a095360c63ed6f67311ecc0f6",
+        "base": "main",
+        "merge_commit": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+        "auto_merge": null
+      }
+    },
+    {
+      "key": "pr718",
+      "data": {
+        "number": 718,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+        "base": "main",
+        "merge_commit": null,
+        "auto_merge": null
+      }
+    },
+    {
+      "key": "pr721",
+      "data": {
+        "number": 721,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "head": "506dfc8c343c5d24fe26e89a9542cf985c52853e",
+        "base": "main",
+        "merge_commit": null,
+        "auto_merge": null
+      }
+    },
+    {
+      "key": "pr722",
+      "data": {
+        "number": 722,
+        "state": "closed",
+        "draft": false,
+        "merged": true,
+        "head": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+        "base": "main",
+        "merge_commit": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+        "auto_merge": null
+      }
+    },
+    {
+      "key": "pr723",
+      "data": {
+        "number": 723,
+        "state": "closed",
+        "draft": false,
+        "merged": true,
+        "head": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+        "base": "main",
+        "merge_commit": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "auto_merge": null
+      }
+    },
+    {
+      "key": "programme",
+      "data": {
+        "number": 706,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/issues/706"
+      }
+    }
+  ]
+}
