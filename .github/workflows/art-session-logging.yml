@@ -1,0 +1,114 @@
+name: Art session-only logging qualification
+on:
+  push:
+    branches:
+      - fix/art-session-scoped-logging-20261122
+  pull_request:
+    paths:
+      - 'godot/scripts/art_batch_panel.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/tests/test_art_session_log.gd'
+      - 'docs/systems/workbench-art-providers.md'
+      - '.github/workflows/art-session-logging.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: art-session-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux 4.7 native Workbench session logging
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Materialize source-matched native runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          test -s godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          test -s godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+      - name: Authenticate official Godot 4.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT=$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Import exact project
+        shell: bash
+        run: |
+          mkdir -p evidence
+          timeout 180 "$GODOT" --headless --path godot --editor --import > evidence/import.log 2>&1
+      - name: Execute session isolation and native regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for case in test_art_session_log test_art_traffic_integrity test_art_batch_native; do
+            export XDG_DATA_HOME="$RUNNER_TEMP/session-$case"
+            mkdir -p "$XDG_DATA_HOME"
+            timeout 600 "$GODOT" --headless --path godot -s "res://tests/$case.gd" 2>&1 | tee "evidence/$case.log"
+            if grep -E 'SCRIPT ERROR:|Parse Error:' "evidence/$case.log"; then exit 1; fi
+          done
+          grep -F 'ART_SESSION_RESULT ' evidence/test_art_session_log.log
+          grep -F 'ART_STAGE1_RESULT ' evidence/test_art_batch_native.log
+      - name: Retain evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: art-session-linux-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
+  windows:
+    name: Windows 4.7 real Workbench session logging
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Materialize source-matched native runtime
+        shell: pwsh
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'LFS materialization failed' }
+      - name: Authenticate official Godot 4.7
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot checksum mismatch' }
+          Expand-Archive -Path $zip -DestinationPath (Join-Path $env:RUNNER_TEMP 'godot-win47')
+          'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot-win47/Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Import and execute fresh user-data Workbench test
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-session-isolated-appdata'
+          New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+          & $env:GODOT_EXE --headless --path godot --editor --import *> evidence/import.log
+          if ($LASTEXITCODE -ne 0) { throw 'Godot import failed' }
+          & $env:GODOT_EXE --headless --path godot -s res://tests/test_art_session_log.gd 2>&1 | Tee-Object evidence/test_art_session_log.log
+          if ($LASTEXITCODE -ne 0) { throw 'Art session regression failed' }
+          if ((Get-Content evidence/test_art_session_log.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing test receipt' }
+      - name: Retain evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: art-session-windows-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
