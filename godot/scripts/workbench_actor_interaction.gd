@@ -78,8 +78,14 @@ func cancel(reason: String = "input_cancelled") -> void:
 	_source.clear()
 	if is_instance_valid(_overlay): _overlay.queue_redraw()
 
+func actively_manipulating() -> bool:
+	return not placement.is_empty() or bool(grab_state().get("active",false))
+
+
 func blocks_human_input() -> bool:
-	return mode() in ["grab","place"] or (is_instance_valid(bench._actor_panel) and bench._actor_panel.visible)
+	# Choosing Grab/Place is not itself an active gesture. Idle tools must not
+	# permanently disable keyboard controls for the explicit human pilot.
+	return actively_manipulating() or (is_instance_valid(bench._actor_panel) and bench._actor_panel.visible)
 
 func poll() -> void:
 	if bench == null or bench.host == null: return
