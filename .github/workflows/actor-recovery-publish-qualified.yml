@@ -1,0 +1,158 @@
+name: ACTOR-RECOVERY source-exact publication repair
+on:
+  push:
+    branches: [recovery/actor-compose-publication-tooling-20261122]
+    paths: ['.github/workflows/actor-recovery-publish-qualified.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: actor-recovery-source-exact-publication
+  cancel-in-progress: false
+env:
+  QUALIFIED_SOURCE: a85b3a5655e7f711ce27fbfc8fee7819332006f0
+  EVIDENCE_RUN: '45068056417'
+jobs:
+  publish:
+    name: Publish fully qualified sandbox runtime pair without changing source
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/recovery/actor-compose-publication-tooling-20261122'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Check out the pinned companion documentation required by repository custody
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out the exact qualified source with ordinary Actions authentication
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: a85b3a5655e7f711ce27fbfc8fee7819332006f0
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+      - name: Require the dedicated Draft branch to remain at the built source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$QUALIFIED_SOURCE"
+          test "$(git ls-remote --exit-code origin refs/heads/recovery/actor-compose-002r-final-20261122 | cut -f1)" = "$QUALIFIED_SOURCE"
+          git switch -c recovery/actor-compose-002r-final-20261122 "$QUALIFIED_SOURCE"
+          git lfs install --local
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Restore same-run Linux candidate and complete receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-linux-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1
+          run-id: 45068056417
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: workspace/source/build/actor-publish/linux
+      - name: Restore the same-run source-bound Windows candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-runtime-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1
+          run-id: 45068056417
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: workspace/source/build/actor-publish/windows
+      - name: Restore Windows source and extracted-package qualification
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1
+          run-id: 45068056417
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: workspace/source/build/actor-publish/windows-evidence
+      - name: Restore the exact delivered Windows ZIP
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-sandbox-windows-evaluation-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1
+          run-id: 45068056417
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: workspace/source/build/actor-publish/windows-package
+      - name: Reverify complete qualified-run evidence and stage exactly three changed paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox \
+            --linux build/actor-publish/linux/build/actor-linux \
+            --windows build/actor-publish/windows \
+            --linux-report build/actor-publish/linux/evidence/linux/qualification.json \
+            --windows-report build/actor-publish/windows-evidence/windows/qualification.json \
+            --windows-installed-report build/actor-publish/windows-evidence/installed-windows/qualification.json \
+            --windows-modules-report build/actor-publish/windows-evidence/installed-windows/runtime-modules.json \
+            --windows-extraction-report build/actor-publish/windows-evidence/windows-package-extraction.json \
+            --windows-package "build/actor-publish/windows-package/CyberSand-Actor-Sandbox-Windows-${QUALIFIED_SOURCE:0:12}.zip"
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 - <<'PY'
+          import hashlib,json,os,re,subprocess
+          from pathlib import Path
+          expected = {
+            # The rebuilt Linux LFS object matches the existing pointer.
+            # It must therefore remain unchanged in Git's staged diff.
+            'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+            'godot/addons/cybersand_native/runtime-provenance.linux.json',
+            'godot/addons/cybersand_native/runtime-provenance.json',
+          }
+          actual = set(subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
+          if actual != expected: raise SystemExit('Require exact three-path publication (new Windows LFS plus two provenance files): '+repr(sorted(actual)))
+          for name in sorted(path for path in expected if path.endswith('.json')):
+              value = json.loads(subprocess.check_output(['git','show',':'+name]))
+              pointer = subprocess.check_output(['git','show',':'+value['artifact']])
+              match = re.fullmatch(rb'version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n',pointer)
+              original_pointer = subprocess.check_output(['git','show','HEAD:'+value['artifact']])
+              if value['artifact'].endswith('.linux.x86_64.so'):
+                  if (pointer != original_pointer or
+                      value['sha256'] != '1aa42ed85b2fafa31d1c521224ed9d4f8199709b41cbe8b9c1299f9c2392fb4f'):
+                      raise SystemExit('Linux pointer changed or differs from qualified existing LFS hash')
+              elif value['artifact'].endswith('.windows.x86_64.dll'):
+                  if (pointer == original_pointer or
+                      value['sha256'] != 'db24ec1de3a259608a4a44ad7b8a46c7f87d1eb4758a99fd75ed62aa06ca9336'):
+                      raise SystemExit('Windows pointer unchanged or differs from qualified new LFS hash')
+              else:
+                  raise SystemExit('Unexpected native path in provenance')
+              if (not match or match[1].decode()!=value['sha256'] or int(match[2])!=value['size']
+                  or value['source_commit']!=os.environ['QUALIFIED_SOURCE']
+                  or value['publication_branch']!='recovery/actor-compose-002r-final-20261122'
+                  or value['qualification']['status']!='passed' or value['status']!='evaluation-candidate-passed'
+                  or hashlib.sha256(Path(value['artifact']).read_bytes()).hexdigest()!=value['sha256']):
+                  raise SystemExit('Staged sandbox LFS/runtime/provenance identity mismatch')
+          PY
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit and upload only qualified runtimes with an exact source lease
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --exit-code origin refs/heads/recovery/actor-compose-002r-final-20261122 | cut -f1)" = "$QUALIFIED_SOURCE"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(native): publish qualified Draft sandbox runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $QUALIFIED_SOURCE"
+          python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
+          # A single child commit and exact expected-parent lease cannot replace
+          # concurrent source work. The LFS hook uploads only the two new objects.
+          git push --force-with-lease="refs/heads/recovery/actor-compose-002r-final-20261122:$QUALIFIED_SOURCE" origin HEAD:refs/heads/recovery/actor-compose-002r-final-20261122
+          {
+            echo '### Draft/HOLD sandbox runtime publication'
+            echo "Qualified source: $QUALIFIED_SOURCE"
+            echo "Three-path runtime publication: $(git rev-parse HEAD)"
+            echo 'Both complete sandbox campaigns, graphical captures, 16/32/64 matrices and extracted Windows package passed. Owner Windows 11/NVIDIA and playfeel acceptance remain outstanding. No Ready, merge or default promotion.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git rev-parse HEAD > build/actor-publish/publication-commit.txt
+      - name: Retain runtime publication and final repository verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-sandbox-publication-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            workspace/source/build/actor-publish/publication-commit.txt
+            workspace/source/build/actor-publish/final-repository-check.json
+            workspace/source/godot/addons/cybersand_native/runtime-provenance*.json
+          if-no-files-found: warn
+          retention-days: 90
