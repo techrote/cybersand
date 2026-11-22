@@ -1,0 +1,1680 @@
+diff --git a/.github/workflows/documentation.yml b/.github/workflows/documentation.yml
+index dd1ae9bf42d93f1854a2dfb66f4bee8e8ffe014a..0c96e25f9fdf7e470dafe7bc804c601bc9835dfe 100644
+--- a/.github/workflows/documentation.yml
++++ b/.github/workflows/documentation.yml
+@@ -70,6 +70,19 @@ jobs:
+       - name: Validate dependency pins and published runtime provenance
+         if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_repository.py --require-materialized
++      - name: Verify soliding object reuse and original compiler contracts
++        run: |
++          command -v g++
++          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_soliding_build_inventory.py --output build/soliding-build-inventory.json
++          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/test_soliding_build_reuse.py
++      - name: Retain soliding build contract evidence
++        if: always()
++        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
++        with:
++          name: soliding-build-inventory-${{ github.run_id }}-${{ github.run_attempt }}
++          path: workspace/source/build/soliding-build-inventory.json
++          if-no-files-found: ignore
++          retention-days: 90
+       - name: Check LCB capability matrix is source-derived
+         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/derive_capability_matrix.py --check
+       - name: Check LCB policy wire/hash contract vectors
+diff --git a/.github/workflows/native.yml b/.github/workflows/native.yml
+index 299249764743bf1b08acd02bb19f523f33360e5d..54558e632057165eb410b1e61562fc499a9b9a67 100644
+--- a/.github/workflows/native.yml
++++ b/.github/workflows/native.yml
+@@ -232,6 +232,7 @@ jobs:
+           path: |
+             build/native-parallel/
+             build/physics-cli-validation/
++            build/worldgen-showcase-logs/
+             build/stage3b-validation-*.json
+           if-no-files-found: error
+           retention-days: 90
+diff --git a/Makefile b/Makefile
+index b1bdafe5e72c6a2703d1a66e77e6bb9513028a65..3d40c1b2391231faf6a5a02823567124e8f81313 100644
+--- a/Makefile
++++ b/Makefile
+@@ -17,6 +17,12 @@ GENERATION_SAN_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worl
+ CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp native/src/*.inc)
+ TEST_SOURCES := native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp native/tests/test_ballistic_water.cpp native/tests/test_workbench_pressure_heads.cpp
+ TEST_HEADERS := $(wildcard native/tests/*.inc native/tests/*.hpp)
++# Soliding's six core-linked fixtures share only exact-configuration objects.
++# No compiled artifacts or previous test outcomes are restored between CI jobs.
++SOLIDING_NORMAL_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/soliding-objects/normal/%.o,$(CORE_SOURCES))
++SOLIDING_SAN_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/soliding-objects/sanitized/%.o,$(CORE_SOURCES))
++SOLIDING_SAN_FLAGS := -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined
++
+ BENCH_SOURCES := native/bench/benchmark.cpp
+ PHYSICS_CHARACTERISATION_SOURCES := $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/bench/physics_characterisation.cpp
+ 
+@@ -171,38 +177,63 @@ physics-characterisation-sanitize: $(BUILD_DIR)/physics_characterisation_sanitiz
+ $(BUILD_DIR)/tests_tsan: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADERS) | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) $(TEST_SOURCES) -o $@
+ 
++.PHONY: soliding-configuration-force
++soliding-configuration-force:
++
++# The forced recipe retains its timestamp when the compiler/flags identity is
++# unchanged. A failed identity query blocks reuse; make -n executes no compiler.
++$(BUILD_DIR)/soliding-objects/normal/configuration.json: export CYBERSAND_BUILD_CXX = $(CXX)
++$(BUILD_DIR)/soliding-objects/normal/configuration.json: export CYBERSAND_BUILD_FLAGS = $(COMMON_FLAGS) $(DEBUG_FLAGS)
++$(BUILD_DIR)/soliding-objects/sanitized/configuration.json: export CYBERSAND_BUILD_CXX = $(CXX)
++$(BUILD_DIR)/soliding-objects/sanitized/configuration.json: export CYBERSAND_BUILD_FLAGS = $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS)
++$(BUILD_DIR)/soliding-objects/normal/configuration.json $(BUILD_DIR)/soliding-objects/sanitized/configuration.json: export CYBERSAND_BUILD_INPUTS = $(CORE_SOURCES) $(CORE_HEADERS) Makefile tools/ci/native_build_configuration.py
++$(BUILD_DIR)/soliding-objects/normal/configuration.json $(BUILD_DIR)/soliding-objects/sanitized/configuration.json: soliding-configuration-force
++	python3 tools/ci/native_build_configuration.py --output $@
++
++# Atomic object publication prevents a failed/interrupted compiler from leaving
++# a partial .o that a subsequent invocation could treat as complete.
++$(BUILD_DIR)/soliding-objects/normal/%.o: native/src/%.cpp $(CORE_HEADERS) Makefile tools/ci/native_build_configuration.py $(BUILD_DIR)/soliding-objects/normal/configuration.json
++	@set -eu; temporary="$@.tmp.$$$$"; trap 'rm -f "$$temporary"' EXIT; trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM; \
++	  $(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -c $< -o "$$temporary"; \
++	  mv -f "$$temporary" "$@"
++
++$(BUILD_DIR)/soliding-objects/sanitized/%.o: native/src/%.cpp $(CORE_HEADERS) Makefile tools/ci/native_build_configuration.py $(BUILD_DIR)/soliding-objects/sanitized/configuration.json
++	@set -eu; temporary="$@.tmp.$$$$"; trap 'rm -f "$$temporary"' EXIT; trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM; \
++	  $(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) -c $< -o "$$temporary"; \
++	  mv -f "$$temporary" "$@"
++
+ $(BUILD_DIR)/test_soliding_lifecycle: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_soliding_lifecycle.cpp -o $@
+ 
+-$(BUILD_DIR)/test_settled_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_settled_discovery.cpp -o $@
++$(BUILD_DIR)/test_settled_discovery: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_settled_discovery.cpp -o $@
+ 
+ $(BUILD_DIR)/test_settled_regions: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp native/include/cybersand/bounded_ordered_index.hpp | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_settled_regions.cpp -o $@
+ 
+-$(BUILD_DIR)/test_settled_world_discovery: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_settled_world_discovery.cpp -o $@
++$(BUILD_DIR)/test_settled_world_discovery: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_settled_world_discovery.cpp -o $@
+ 
+-$(BUILD_DIR)/test_stage3b_runtime_storage: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_runtime_storage.cpp -o $@
++$(BUILD_DIR)/test_stage3b_runtime_storage: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_runtime_storage.cpp -o $@
+ 
+ soliding-stage3b-runtime-storage-test: $(BUILD_DIR)/test_stage3b_runtime_storage
+ 	./$(BUILD_DIR)/test_stage3b_runtime_storage
+ 
+-$(BUILD_DIR)/test_stage3b_bounded_spatial_index: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
++$(BUILD_DIR)/test_stage3b_bounded_spatial_index: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
+ 
+ soliding-stage3b-spatial-index-test: $(BUILD_DIR)/test_stage3b_bounded_spatial_index
+ 	./$(BUILD_DIR)/test_stage3b_bounded_spatial_index
+ 
+-$(BUILD_DIR)/test_stage3b_sparse_mutation_witness: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
++$(BUILD_DIR)/test_stage3b_sparse_mutation_witness: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
+ 
+ soliding-stage3b-sparse-mutation-witness-test: $(BUILD_DIR)/test_stage3b_sparse_mutation_witness
+ 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness
+ 
+-$(BUILD_DIR)/test_stage3b_sparse_activity_deadline: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
++$(BUILD_DIR)/test_stage3b_sparse_activity_deadline: $(SOLIDING_NORMAL_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) $(SOLIDING_NORMAL_OBJECTS) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
+ 
+ soliding-stage3b-sparse-activity-deadline-test: $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+ 	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+@@ -238,26 +269,26 @@ soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_di
+ $(BUILD_DIR)/test_soliding_lifecycle_sanitized: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_soliding_lifecycle.cpp -o $@
+ 
+-$(BUILD_DIR)/test_settled_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_settled_discovery.cpp -o $@
++$(BUILD_DIR)/test_settled_discovery_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_discovery.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_settled_discovery.cpp -o $@
+ 
+ $(BUILD_DIR)/test_settled_regions_sanitized: native/tests/test_settled_regions.cpp native/include/cybersand/settled_regions.hpp native/include/cybersand/settled_discovery.hpp native/include/cybersand/bounded_ordered_index.hpp | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_settled_regions.cpp -o $@
+ 
+-$(BUILD_DIR)/test_settled_world_discovery_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_settled_world_discovery.cpp -o $@
++$(BUILD_DIR)/test_settled_world_discovery_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_settled_world_discovery.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_settled_world_discovery.cpp -o $@
+ 
+-$(BUILD_DIR)/test_stage3b_runtime_storage_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_runtime_storage.cpp -o $@
++$(BUILD_DIR)/test_stage3b_runtime_storage_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_runtime_storage.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_runtime_storage.cpp -o $@
+ 
+-$(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
++$(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_bounded_spatial_index.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_bounded_spatial_index.cpp -o $@
+ 
+-$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
++$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_mutation_witness.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_sparse_mutation_witness.cpp -o $@
+ 
+-$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
+-	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
++$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized: $(SOLIDING_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
++	$(CXX) $(COMMON_FLAGS) $(SOLIDING_SAN_FLAGS) $(SOLIDING_SAN_OBJECTS) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
+ 
+ soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
+ 	./$(BUILD_DIR)/test_soliding_lifecycle_sanitized
+@@ -362,7 +393,7 @@ thread-sanitize: $(BUILD_DIR)/tests_tsan
+ clean:
+ 	rm -f $(BUILD_DIR)/test_material_baseline $(BUILD_DIR)/test_material_baseline_sanitized
+ 	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/stage3_cost $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
+-	rm -rf $(BUILD_DIR)/worldgen-objects
++	rm -rf $(BUILD_DIR)/worldgen-objects $(BUILD_DIR)/soliding-objects
+ 
+ $(BUILD_DIR)/test_generation_typed: $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_typed_fields.o $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_spatial.o $(CORE_HEADERS) native/tests/test_generation_typed.cpp | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_typed_fields.o $(BUILD_DIR)/worldgen-objects/normal-threaded/generation_spatial.o native/tests/test_generation_typed.cpp -o $@
+@@ -442,11 +473,25 @@ $(BUILD_DIR)/test_suspended_arcology: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS)
+ $(BUILD_DIR)/test_suspended_arcology_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_suspended_arcology.cpp | $(BUILD_DIR)
+ 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_suspended_arcology.cpp -o $@
+ 
+-gentek-showcases-test: $(GENTEK_SHOWCASE_TEST_BINS)
+-	@set -eu; for binary in $(GENTEK_SHOWCASE_TEST_BINS); do echo "Running $$binary"; "$$binary"; done
++# Independent no-argument suites share make's existing jobserver with builds.
++# Phony executions also run for warm binaries; every showcase must pass before
++# the nine ordered worldgen tests. Write raw output before grouped replay so a
++# watchdog kill retains flushed diagnostics even while make buffers the target.
++GENTEK_SHOWCASE_TEST_RUNS := $(addsuffix .run,$(GENTEK_SHOWCASE_TEST_BINS))
++GENTEK_SHOWCASE_SANITIZED_RUNS := $(addsuffix .run,$(GENTEK_SHOWCASE_SANITIZED_BINS))
++.PHONY: $(GENTEK_SHOWCASE_TEST_RUNS) $(GENTEK_SHOWCASE_SANITIZED_RUNS)
++
++$(GENTEK_SHOWCASE_TEST_RUNS): %.run: %
++	@echo "Running $<"
++	@set -eu; log="$(BUILD_DIR)/worldgen-showcase-logs/$(notdir $<).log"; mkdir -p "$${log%/*}"; printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\n' "$${GITHUB_SHA:-unqualified}" "$${GITHUB_RUN_ID:-unqualified}" "$${GITHUB_RUN_ATTEMPT:-unqualified}" "$(notdir $<)" > "$$log"; status=0; "$<" >> "$$log" 2>&1 || status=$$?; capture=0; cat "$$log" || capture=$$?; if [ "$$status" -ne 0 ]; then exit "$$status"; fi; exit "$$capture"
++
++$(GENTEK_SHOWCASE_SANITIZED_RUNS): %.run: %
++	@echo "Running sanitized $<"
++	@set -eu; log="$(BUILD_DIR)/worldgen-showcase-logs/$(notdir $<).log"; mkdir -p "$${log%/*}"; printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\n' "$${GITHUB_SHA:-unqualified}" "$${GITHUB_RUN_ID:-unqualified}" "$${GITHUB_RUN_ATTEMPT:-unqualified}" "$(notdir $<)" > "$$log"; status=0; ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$<" >> "$$log" 2>&1 || status=$$?; capture=0; cat "$$log" || capture=$$?; if [ "$$status" -ne 0 ]; then exit "$$status"; fi; exit "$$capture"
++
++gentek-showcases-test: $(GENTEK_SHOWCASE_TEST_RUNS)
+ 
+-gentek-showcases-sanitize: $(GENTEK_SHOWCASE_SANITIZED_BINS)
+-	@set -eu; for binary in $(GENTEK_SHOWCASE_SANITIZED_BINS); do echo "Running sanitized $$binary"; ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$$binary"; done
++gentek-showcases-sanitize: $(GENTEK_SHOWCASE_SANITIZED_RUNS)
+ 
+ # Include every showcase-specific native test in the ordinary generation gate.
+ worldgen-test: gentek-showcases-test
+diff --git a/docs/operations/ci-execution-and-performance.md b/docs/operations/ci-execution-and-performance.md
+index c1fcb4fae2604e13bc81a82059cfa956c94e316e..f47de1891820b8cc1eb02fd7b0b51c055ff5bfed 100644
+--- a/docs/operations/ci-execution-and-performance.md
++++ b/docs/operations/ci-execution-and-performance.md
+@@ -71,8 +71,9 @@ records estimator inputs, selected counts, original results and limitations.
+ The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains
+ six hours; an individual case that cannot fit or an oversized matrix is rejected.
+ 
+-The six Native families retain the exact original 20 commands and scientific
+-inputs. [Their planner](../../tools/ci/native_execution_policy.py) derives
++The six Native families retain the same 20 command obligations and scientific
++inputs; the two worldgen commands add output grouping as described below.
++[Their planner](../../tools/ci/native_execution_policy.py) derives
+ 180/350/180/333/284/223-minute parents for TSan, normal, ASan, worldgen,
+ soliding-normal and soliding-ASan respectively. The physics CLI inventory still
+ contains all 154 original invocations, each with a 300-second operation budget;
+@@ -105,6 +106,71 @@ candidate still executes the complete original inventory. This ordering change
+ targets time to actionable failure, not a claimed reduction in successful-run
+ wall time. It changes neither publication ownership nor runtime provenance.
+ 
++## Parallel worldgen showcase execution
++
++The complete normal and ASan/UBSan worldgen targets each retain 28 original
++compiler/link commands, 12 objects, 16 executables and 16 test executions. Seven
++independent showcase executables are individual required Make targets. Hosted
++execution uses the existing two-job Make limit for both compilation and tests;
++it adds no worker pool or extra family. Each ordinary showcase invocation uses
++its original deterministic fixtures and no shared output files. Optional export
++and benchmark modes remain outside these invocations.
++
++All seven showcases must succeed before the nine principal test recipes run in
++their original order. The showcase completion order is intentionally independent.
++`--output-sync=target` keeps each target's diagnostic output together. Before
++replaying output to Make, each showcase writes its combined raw stdout/stderr to
++`build/worldgen-showcase-logs/<binary>.log`. This preserves flushed diagnostics
++when a watchdog or cancellation terminates Make before its grouped buffer is
++printed. Native artifacts retain these files on success and failure. Each file
++has a source/run/attempt/binary header; the reducer requires all fourteen normal
++and sanitized logs with the current context and original hashes. Missing, stale,
++unexpected or header-only logs cannot qualify. Local executions without GitHub
++identity are explicitly marked unqualified.
++
++A failed prerequisite prevents successful aggregate completion; an already-running
++peer may finish while Make unwinds. The original outer watchdog and descendant
++cleanup remain responsible for a hung or cancelled peer. The original test exit
++takes precedence over an output replay failure, and incomplete work cannot pass
++the Native evidence reducer.
++
++The [worldgen build inventory](../../tools/ci/check_worldgen_build_inventory.py)
++records the seven mandatory showcase executions and nine ordered principal
++executions separately. [Actual Make regressions](../../tools/ci/test_worldgen_build_inventory.py)
++check coverage, the two-job limit and failure behavior. The two worldgen outer
++commands gain only the output-grouping option; compiler flags, sanitizer
++environments, assertions, inputs and command watchdogs remain unchanged.
++Exact-source hosted comparisons and final required checks determine admission;
++the source-level concurrency change alone is not a measured CI speedup.
++
++## Soliding compilation reuse
++
++The six core-linked soliding test executables use one local object set per
++compiler configuration. Normal and ASan/UBSan objects have separate directories;
++the original flags, source order at link time, eight executables and eight test
++invocations remain unchanged. A cold complete target compiles 14 translation
++units instead of 44. The lifecycle and settled-region standalone compilations
++remain separate, and the memory-intensive sanitizer build remains serial.
++
++[`native_build_configuration.py`](../../tools/ci/native_build_configuration.py)
++binds reuse to compiler and compiler-component bytes, compiler identity, flags,
++relevant environment, core source/header contents and the Makefile. A changed
++identity invalidates the local objects; an unavailable identity fails the build.
++Objects are published by atomic replacement only after successful compilation.
++The helper executes in a Make recipe, so inventory dry-runs execute no compiler.
++No CI job restores compiled objects or previous test outcomes from an artifact
++or shared cache.
++
++The [expanded build inventory](../../tools/ci/check_soliding_build_inventory.py)
++checks the original per-executable source/flag contract and ordered tests.
++[Actual Make/compiler regressions](../../tools/ci/test_soliding_build_reuse.py)
++exercise invalidation, profile isolation and interrupted builds. Documentation
++runs these after its original early documentation/provenance admission. The six
++Native families, their 20 outer commands and final source/run/attempt reducer
++remain the behavioral acceptance route. The CI-OPT-003 PR evidence records exact
++hosted source identities and measured costs; eliminated compilations alone do
++not establish an end-to-end turnaround percentage.
++
+ ## Shared capacity and concurrency
+ 
+ The GDExtension matrices each use `max-parallel: 8`. Together with Native's six
+diff --git a/docs/operations/local-build-and-validation.md b/docs/operations/local-build-and-validation.md
+index e84137c14fd7c6349aee3a481c64f985512b296b..892bc0300d93c3371940a0a6063813d15aad4fc1 100644
+--- a/docs/operations/local-build-and-validation.md
++++ b/docs/operations/local-build-and-validation.md
+@@ -1131,20 +1131,25 @@ The native targets reuse generation objects within each existing compiler flag
+ set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
+ threaded/non-threaded variants stay separate. Source, shared-header and Makefile
+ changes invalidate those objects. This avoids recompiling the same generation
+-sources for each test. The current aggregates contain nine executables each,
+-including GEN-005 semantic planes, with five-minute normal and ten-minute
+-sanitizer CI bounds. The
++sources for each test. The current aggregates contain sixteen executables each:
++seven showcases and nine principal tests, including GEN-005 semantic planes.
++The [shared execution policy](ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
++owns current command and family watchdogs. The earlier five/ten-minute bounds
++below describe historical qualification. The
+ [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+ retains the cold-build timeout that motivated this change and subsequent results.
+ 
+ The [bounded build investigation](../audits/2026-10-31-worldgen-bounded-build.md)
+ retains the later post-merge sanitizer timeout: eight tests passed, and the ninth
+ was interrupted after prerequisite compilation consumed most of its ten-minute
+-budget. The candidate Native workflow uses exactly `make -j2` for these two
+-aggregates only. Their nine test recipe lines remain sequential after all
+-prerequisites complete; no compilation moves outside the original deadlines.
+-The inventory helper checks forced serial/two-job dry runs without executing a
+-compiler, and rejects omitted/reordered tests or altered source/flag families.
++budget. The current Native workflow uses `make -j2 --output-sync=target` for these
++two aggregates. Seven independent showcases use the same two-job Make budget as
++compilation, followed by the nine principal recipes in their original order.
++See [parallel showcase execution](ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
++for the complete test and failure contract. No compilation moves outside the
++original command watchdog. The inventory helper checks forced serial/two-job
++dry runs without executing a compiler and rejects omitted/duplicated showcases,
++omitted/reordered principal tests or altered source/flag families.
+ Its passing checks do not replace actual cold compilation/execution. The first
+ local two-job normal build failed at linking with an unexplained empty object;
+ the separate sanitizer attempt stopped at its second test with a nonexecutable
+@@ -1746,10 +1751,15 @@ and discovery suites. They change no installed native runtime artifact. See the
+ benchmark compilation; builds/tests must stop during registered local timing.
+ 
+ Native CI prebuilds the eight soliding sanitizer executables under a separate
+-twenty-minute compilation bound, then runs the unchanged `make soliding-sanitize`
+-group under its ten-minute execution bound with ASan/UBSan failure handling.
+-The same Makefile prerequisites, compiler flags, tests and hosted runner apply;
+-the ninety-minute overall job bound remains. The
++compilation watchdog, then runs the unchanged `make soliding-sanitize` group
++with ASan/UBSan failure handling. Current watchdog values come from the
++[shared execution policy](ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
++and Native planner; the earlier twenty/ten-minute command and ninety-minute job
++bounds below are historical. The original compiler flags, eight executables,
++test order and hosted runner remain. Six executables now share exact-input
++core objects within each build configuration; see
++[soliding compilation reuse](ci-execution-and-performance.md#soliding-compilation-reuse)
++for invalidation, interruption and full-coverage requirements. The
+ [residual shared-contract audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#native-aggregate-compilation-timeout-and-separate-build-budget)
+ preserves the preceding aggregate timeout while compiling the final executable
+ and distinguishes partial earlier passes from complete final-head acceptance.
+diff --git a/docs/reference/retrieval-index.md b/docs/reference/retrieval-index.md
+index 144d5acae3f1da2353006fd9b04cb793e6bb1f01..7059ebaa7b98890365dd20f447d8e13a496a8445 100644
+--- a/docs/reference/retrieval-index.md
++++ b/docs/reference/retrieval-index.md
+@@ -386,6 +386,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation
+ | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
+ | Invariants and incomplete enforcement | [Invariants](invariants.md) |
+ | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
++| Can worldgen showcases run concurrently without losing sanitizer coverage or accepting partial work? | [Parallel worldgen showcase execution](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution); seven required independent showcases precede nine ordered principal tests within the existing two-job Make limit. |
++| How does soliding avoid repeated compilation without reusing stale objects or skipping tests? | [Soliding compilation reuse](../operations/ci-execution-and-performance.md#soliding-compilation-reuse), [local validation](../operations/local-build-and-validation.md#soliding-successor-validation); hosted timings and admission remain source-bound CI-OPT-003 PR evidence. |
+ | How do six Native families and four Windows shards preserve CI coverage and deadlines, and may scope advice skip Native? | [Parallel validation contract](../operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31), [exact coverage](../operations/testing-validation-and-replay.md#parallel-native-and-four-way-windows-admission), and [source-bound integration audit](../audits/2026-10-31-ci-parallel-production-integration.md). Scope advice grants no exemption; predecessor timing is not resulting-head qualification. |
+ | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |
+ | What is the current CI provider/recovery state, and is main protected? | [Repository/release](../operations/github-development-and-release.md), then the [2026-09-24 recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for incident evidence |
+diff --git a/docs/reference/status-and-roadmap.md b/docs/reference/status-and-roadmap.md
+index 95268972557208da0416b2eed857e5559a1c47fd..28001585f536c524118e6ba74c037e11fb47d5d7 100644
+--- a/docs/reference/status-and-roadmap.md
++++ b/docs/reference/status-and-roadmap.md
+@@ -10,6 +10,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
+ 
+ # Status and foundational roadmap
+ 
++<<<<<<< 428f842034a1f80d593bcc6bb32af2dd99cd0105
+ ## SWARM-006 integration repair — 2026-11-21
+ 
+ The [dedicated successor](../operations/swarm006-integration-finisher.md) adds
+@@ -53,6 +54,29 @@ and [actual Windows graphical/package authoring and reopen](../operations/swarm0
+ remain explicit gates. The candidate preserves accepted main's Water authority,
+ material IDs, native world limits, existing catalogue and Art lifetime; no Ready
+ promotion, merge or production-default selection is authorized.
++=======
++## CI-OPT-003 worldgen showcase execution — 2026-11-21
++
++The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
++runs seven independent worldgen showcases through the existing two-job Make
++budget. All seven remain required before the nine principal tests. The original
++compiler flags, scientific fixtures, sixteen executables and sanitizer coverage
++remain. Raw per-showcase output is retained before grouped replay, including
++flushed partial output from hung or cancelled peers; source/run/attempt checks
++reject stale or incomplete log inventories. The
++dedicated CI-only PR records source-matched execution, controlled performance
++and independent review before any merge or turnaround claim.
++
++## CI-OPT-003 soliding compilation reuse — 2026-11-21
++
++The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)
++removes 30 repeated translation-unit compilations per complete normal or
++sanitized target while retaining the original eight executables and test order.
++Compiler/configuration/source identity guards local object reuse; interrupted
++compilations cannot publish partial objects. Full Native and Windows/Linux
++regression admission remains required. The dedicated CI-only PR records exact
++source qualification and controlled timings before any merge or speed claim.
++>>>>>>> 662df51cd8409a52332fa7ef15d06d8ab8945aed
+ 
+ ## Floating Oil in Wave Water
+ 
+diff --git a/tools/ci/check_soliding_build_inventory.py b/tools/ci/check_soliding_build_inventory.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c7f477d4b5a4a141738d23245fa4f84b10ff9a5a
+--- /dev/null
++++ b/tools/ci/check_soliding_build_inventory.py
+@@ -0,0 +1,129 @@
++#!/usr/bin/env python3
++"""Verify soliding object reuse preserves the original expanded compiler contract.
++
++Uses forced-cold make dry-runs with a deliberately nonexistent compiler. The
++configuration helper is printed as a recipe, never executed during this check.
++"""
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import shlex
++import subprocess
++
++ROOT = Path(__file__).resolve().parents[2]
++COMPILER = "soliding-inventory-compiler-must-not-execute"
++CORE = ("world", "material_rules", "scheduler_geometry", "settled_world_discovery", "render_snapshot", "c_api")
++TESTS = ("soliding_lifecycle", "settled_discovery", "settled_regions", "settled_world_discovery",
++         "stage3b_runtime_storage", "stage3b_bounded_spatial_index", "stage3b_sparse_mutation_witness",
++         "stage3b_sparse_activity_deadline")
++HEADER_ONLY = {"soliding_lifecycle", "settled_regions"}
++COMMON = ["-std=c++20", "-Wall", "-Wextra", "-Wpedantic", "-Wconversion", "-Wshadow", "-Inative/include"]
++ATOMIC = re.compile(r'^set -eu; temporary="([^" ]+)\.tmp\.\$\$"; trap \'rm -f "\$temporary"\' EXIT; '
++                    r"trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM; +"
++                    + COMPILER + r' (.+); +mv -f "\$temporary" "([^" ]+)"$')
++
++
++def require(condition: bool, message: str) -> None:
++    if not condition:
++        raise ValueError(message)
++
++
++def expected_flags(sanitized: bool) -> list[str]:
++    return COMMON + (["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
++                     if sanitized else ["-O0", "-g3"])
++
++
++def original_contract(sanitized: bool) -> dict[str, list[str]]:
++    suffix = "_sanitized" if sanitized else ""
++    return {f"build/test_{name}{suffix}": [COMPILER, *expected_flags(sanitized),
++            *([] if name in HEADER_ONLY else [f"native/src/{source}.cpp" for source in CORE]),
++            f"native/tests/test_{name}.cpp", "-o", f"build/test_{name}{suffix}"] for name in TESTS}
++
++
++def inspect(text: str, sanitized: bool) -> dict:
++    family = "sanitized" if sanitized else "normal"
++    suffix = "_sanitized" if sanitized else ""
++    flags = expected_flags(sanitized)
++    objects = {}
++    links = {}
++    tests = []
++    configurations = 0
++    for line in text.replace("\\\n", " ").splitlines():
++        atomic = ATOMIC.fullmatch(line)
++        if atomic:
++            output, command, published = atomic.groups()
++            require(output == published and output not in objects, "Wrong/duplicate atomic object publication")
++            argv = shlex.split(command)
++            name = Path(output).stem
++            require(name in CORE and output == f"build/soliding-objects/{family}/{name}.o", "Wrong object profile")
++            require(argv == [*flags, "-c", f"native/src/{name}.cpp", "-o", "$temporary"], "Object flags/source changed")
++            objects[output] = f"native/src/{name}.cpp"
++            continue
++        argv = shlex.split(line)
++        if not argv:
++            continue
++        if argv == ["mkdir", "-p", "build"]:
++            continue
++        if argv == ["python3", "tools/ci/native_build_configuration.py", "--output",
++                    f"build/soliding-objects/{family}/configuration.json"]:
++            configurations += 1
++            continue
++        if argv[0] == COMPILER:
++            require(not tests and argv.count("-o") == 1 and argv[-2] == "-o", "Malformed/late link command")
++            output = argv[-1]
++            require(output not in links, "Duplicate test link")
++            expanded = []
++            for argument in argv:
++                if argument.endswith(".o"):
++                    require(argument in objects, "Link uses an absent or incompatible object")
++                expanded.append(objects.get(argument, argument))
++            links[output] = expanded
++            continue
++        require(len(argv) == 1 and argv[0].startswith("./build/test_"), "Unexpected build recipe: " + line)
++        tests.append(argv[0])
++    require(configurations == 1, "Compiler configuration guard missing/duplicated")
++    require(set(objects.values()) == {f"native/src/{name}.cpp" for name in CORE}, "Missing core object")
++    require(links == original_contract(sanitized), "Expanded original compile/link contract changed")
++    require(tests == [f"./build/test_{name}{suffix}" for name in TESTS], "Eight-test execution order changed")
++    return {"objects": objects, "expanded_original_commands": links, "ordered_tests": tests,
++            "original_translation_unit_compilations": 44, "candidate_translation_unit_compilations": 14,
++            "eliminated_translation_unit_compilations": 30}
++
++
++def check(root: Path = ROOT) -> dict:
++    env = os.environ.copy()
++    env.pop("MAKEFLAGS", None)
++    env.pop("MFLAGS", None)
++    report = {}
++    for target in ("soliding-test", "soliding-sanitize"):
++        command = ["make", "--no-print-directory", "--dry-run", "--always-make", f"CXX={COMPILER}", target]
++        run = subprocess.run(command, cwd=root, env=env, text=True, capture_output=True, check=True, timeout=30)
++        require(not run.stderr, "Unexpected make diagnostic: " + run.stderr)
++        report[target] = {"command": command, "dry_run_sha256": hashlib.sha256(run.stdout.encode()).hexdigest(),
++                          **inspect(run.stdout, target.endswith("sanitize"))}
++    return {"schema": "cybersand-soliding-build-inventory-v1", "status": "passed",
++            "scope": "Cold dry-run build contract only; no compilation or tests executed",
++            "makefile_sha256": hashlib.sha256((root / "Makefile").read_bytes()).hexdigest(), "families": report}
++
++
++def main() -> int:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    try:
++        result = check()
++    except (ValueError, OSError, subprocess.SubprocessError) as error:
++        result = {"status": "failed", "error": str(error)}
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2) + "\n")
++    print(json.dumps({"status": result["status"], "error": result.get("error", "")}))
++    return int(result["status"] != "passed")
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/tools/ci/check_worldgen_build_inventory.py b/tools/ci/check_worldgen_build_inventory.py
+index 64c7584f884cfe67617c0e9ee973dac696811acd..d6e2cc1d03b59fe0e6880fb60873866e2ad8057b 100644
+--- a/tools/ci/check_worldgen_build_inventory.py
++++ b/tools/ci/check_worldgen_build_inventory.py
+@@ -1,9 +1,10 @@
+ #!/usr/bin/env python3
+-"""Check bounded worldgen prerequisite parallelism without executing a compiler.
++"""Check the bounded worldgen build/execution graph without running a compiler.
+ 
+ The sentinel compiler is intentionally nonexistent. These are forced cold
+-dry-runs only; real compilation, all nine ordered generation tests and the seven
+-showcase tests remain within their shared execution-policy command watchdog.
++dry-runs only. Seven independently scheduled showcases must precede the nine
++ordered generation tests; compilation and showcases share the existing jobserver
++and all work remains within the execution-policy command watchdog.
+ """
+ 
+ from __future__ import annotations
+@@ -83,51 +84,77 @@ def expected_commands(sanitized: bool) -> dict[str, list[str]]:
+     return expected
+ 
+ 
+-def showcase_loop(sanitized: bool) -> list[str]:
+-    suffix = "_sanitized" if sanitized else ""
+-    binaries = " ".join(f"build/test_{test}{suffix}" for test in SHOWCASES)
+-    execution = ('ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} '
+-                 'UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} ' if sanitized else '')
+-    label = "Running sanitized" if sanitized else "Running"
+-    return shlex.split(f'set -eu; for binary in {binaries}; do echo "{label} $binary"; '
+-                       f'{execution}"$binary"; done')
++def showcase_command(binary: str, sanitized: bool) -> list[str]:
++    environment = ('ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} '
++                   'UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} ' if sanitized else '')
++    name = Path(binary).name
++    return shlex.split(f'set -eu; log="build/worldgen-showcase-logs/{name}.log"; mkdir -p "${{log%/*}}"; '
++                       "printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\\n' "
++                       '"${GITHUB_SHA:-unqualified}" "${GITHUB_RUN_ID:-unqualified}" '
++                       f'"${{GITHUB_RUN_ATTEMPT:-unqualified}}" "{name}" > "$log"; status=0; '
++                       f'{environment}"{binary}" >> "$log" 2>&1 || status=$?; capture=0; '
++                       'cat "$log" || capture=$?; if [ "$status" -ne 0 ]; then exit "$status"; fi; exit "$capture"')
+ 
+ 
+ def inspect_commands(text: str, sanitized: bool) -> dict:
+     expected = expected_commands(sanitized)
+     suffix = "_sanitized" if sanitized else ""
+     compile_commands: list[list[str]] = []
+-    tests: list[str] = []
++    required_showcases = [f"build/test_{test}{suffix}" for test in SHOWCASES]
++    required_main = [f"./build/test_{test}{suffix}" for test in TESTS]
++    showcases: list[str] = []
++    main_tests: list[str] = []
++    pending_showcase: str | None = None
++    label = "Running sanitized" if sanitized else "Running"
+     outputs: set[str] = set()
+     for line in text.splitlines():
+         command = shlex.split(line)
+         if not command:
+             continue
++        if pending_showcase is not None:
++            require(command == showcase_command(pending_showcase, sanitized),
++                    "Seven-showcase execution inventory/environment changed")
++            showcases.append(pending_showcase)
++            pending_showcase = None
++            continue
+         if command[:2] == ["mkdir", "-p"]:
+             require(len(command) == 3 and command[2] in {
+                 "build", "build/worldgen-objects/normal", "build/worldgen-objects/normal-threaded",
+                 "build/worldgen-objects/sanitized", "build/worldgen-objects/sanitized-threaded",
+             }, "Unexpected directory prerequisite")
+         elif command[0] == COMPILER:
+-            require(not tests, "Compilation appears after test execution starts")
++            require(not main_tests, "Compilation appears after ordered main tests start")
+             require(command.count("-o") == 1 and command[-2] == "-o", "Malformed compiler output")
+             output = command[-1]
+             require(output in expected and output not in outputs, "Wrong or duplicate object/binary family")
+             require(command == expected[output], "Compiler flag/source contract changed: " + output)
++            require(all(item in outputs for item in command if item.endswith(".o") and item != output),
++                    "Link appears before object prerequisite")
+             outputs.add(output)
+             compile_commands.append(command)
+-        elif command[0] == "set":
+-            require(not tests and command == showcase_loop(sanitized),
+-                    "Seven-showcase execution inventory/environment changed")
+-            tests.extend(f"./build/test_{test}{suffix}" for test in SHOWCASES)
++        elif command[0] == "echo":
++            require(not main_tests and len(command) == 2 and command[1].startswith(label + " "),
++                    "Unexpected showcase marker")
++            binary = command[1][len(label) + 1:]
++            require(binary in required_showcases and binary not in showcases,
++                    "Wrong or duplicate showcase execution")
++            require(binary in outputs, "Showcase execution precedes its binary link")
++            pending_showcase = binary
+         else:
+             require(len(command) == 1 and command[0].startswith("./build/test_"),
+                     "Unexpected executable command in dry-run")
+-            tests.append(command[0])
++            require(set(showcases) == set(required_showcases), "Main tests start before all seven showcases")
++            require(command[0][2:] in outputs, "Main test execution precedes its binary link")
++            main_tests.append(command[0])
++    require(pending_showcase is None and set(showcases) == set(required_showcases),
++            "Missing showcase execution")
+     require(outputs == set(expected), "Missing compilation or link prerequisite")
+-    require(tests == [f"./build/test_{test}{suffix}" for test in (*SHOWCASES, *TESTS)],
+-            "Sixteen-test inventory/order changed")
+-    return {"compile_link_commands":compile_commands, "ordered_tests":tests,
++    require(main_tests == required_main, "Nine-main-test inventory/order changed")
++    return {"compile_link_commands":compile_commands,
++            "required_showcase_tests":required_showcases, "ordered_main_tests":main_tests,
++            "required_showcase_logs":[f"worldgen-showcase-logs/{Path(binary).name}.log"
++                                      for binary in required_showcases],
++            "execution_count":len(showcases) + len(main_tests),
+             "object_count":sum(output.endswith(".o") for output in outputs),
+             "binary_count":sum(not output.endswith(".o") for output in outputs)}
+ 
+@@ -136,7 +163,8 @@ def compare(serial: str, bounded: str, sanitized: bool) -> dict:
+     first, second = inspect_commands(serial, sanitized), inspect_commands(bounded, sanitized)
+     require(Counter(map(tuple, first["compile_link_commands"])) ==
+             Counter(map(tuple, second["compile_link_commands"])), "Parallel prerequisite inventory changed")
+-    require(first["ordered_tests"] == second["ordered_tests"], "Parallel test order changed")
++    require(first["required_showcase_tests"] == second["required_showcase_tests"] and
++            first["ordered_main_tests"] == second["ordered_main_tests"], "Parallel test inventory changed")
+     return second
+ 
+ 
+@@ -144,7 +172,7 @@ def dry_run(root: Path, target: str, jobs: int) -> dict:
+     require(target in {"worldgen-test", "worldgen-sanitize"} and jobs in {1, 2},
+             "Unbounded or unrelated make request")
+     command = ["make", "--no-print-directory", "--dry-run", "--always-make",
+-               f"-j{jobs}", f"CXX={COMPILER}", target]
++               f"-j{jobs}", "--output-sync=target", f"CXX={COMPILER}", target]
+     env = os.environ.copy()
+     for variable in ("MAKEFLAGS", "MFLAGS"):
+         env.pop(variable, None)
+@@ -162,8 +190,12 @@ def check(root: Path) -> dict:
+         inventory = compare(serial["stdout"], bounded["stdout"], target == "worldgen-sanitize")
+         reports[target] = {"serial":serial, "two_jobs":bounded, **inventory}
+     return {
+-        "schema":"cybersand-worldgen-build-inventory-v1", "status":"passed",
+-        "scope":"forced cold dry-run prerequisite/flag/test-order equivalence; no compiler or test executed",
++        "schema":"cybersand-worldgen-build-inventory-v2", "status":"passed",
++        "scope":"forced cold dry-run flags/build/showcase union/ordered main-tail equivalence; no execution",
++        "execution_contract":{"showcases":"seven independent phony targets sharing make's build jobserver",
++                              "main_tests":"nine ordered tests after all seven showcases pass",
++                              "ci_jobs":2, "ci_output_sync":"target",
++                              "showcase_output":"raw combined files before replay; source/run/attempt/binary header"},
+         "source_revision":subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True,
+                                                    timeout=watchdog_seconds("operation_seconds")).strip(),
+         "makefile_sha256":hashlib.sha256((root / "Makefile").read_bytes()).hexdigest(),
+@@ -187,7 +219,9 @@ def main() -> int:
+     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+     print(json.dumps({"status":report["status"],
+                       "families":{name:{"objects":row["object_count"], "binaries":row["binary_count"],
+-                                        "ordered_tests":len(row["ordered_tests"])}
++                                        "showcases":len(row["required_showcase_tests"]),
++                                        "ordered_main_tests":len(row["ordered_main_tests"]),
++                                        "executions":row["execution_count"]}
+                                   for name, row in report.get("families", {}).items()},
+                       "error":report.get("error", "")}))
+     return int(report["status"] != "passed")
+diff --git a/tools/ci/native_build_configuration.py b/tools/ci/native_build_configuration.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0af41c993bf11eceaee6b66c7d5b8f7f7e59ce08
+--- /dev/null
++++ b/tools/ci/native_build_configuration.py
+@@ -0,0 +1,99 @@
++#!/usr/bin/env python3
++"""Invalidate local reusable native objects when their compiler contract changes.
++
++This is invoked only by an ordinary Make recipe, never by Make expansion or
++inventory dry-runs. It does not restore a cache or accept previous test results.
++"""
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import shlex
++import shutil
++import subprocess
++import tempfile
++
++ENVIRONMENT = ("PATH", "CPATH", "CPLUS_INCLUDE_PATH", "C_INCLUDE_PATH", "LIBRARY_PATH",
++               "COMPILER_PATH", "GCC_EXEC_PREFIX", "SOURCE_DATE_EPOCH", "GCC_COMPARE_DEBUG")
++
++
++def file_identity(path: str) -> dict:
++    resolved = Path(path).resolve(strict=True)
++    if not resolved.is_file():
++        raise ValueError("Compiler component is not a regular file: " + str(resolved))
++    return {"path": str(resolved), "sha256": hashlib.sha256(resolved.read_bytes()).hexdigest()}
++
++
++def configuration(compiler: str, flags: str, inputs: str) -> dict:
++    argv = shlex.split(compiler)
++    if not argv:
++        raise ValueError("Empty C++ compiler")
++    programs = {}
++    for token in argv:
++        resolved = shutil.which(token) if not token.startswith("-") else None
++        if resolved is None and Path(token).is_file():
++            resolved = token
++        if resolved:
++            programs[token] = file_identity(resolved)
++    if argv[0] not in programs:
++        raise ValueError("C++ compiler executable cannot be resolved")
++
++    def query(option: str) -> str:
++        result = subprocess.run([*argv, *shlex.split(flags), option], text=True, capture_output=True,
++                                check=True, timeout=30)
++        value = result.stdout.strip()
++        if not value:
++            raise ValueError("Empty compiler identity response: " + option)
++        return value
++
++    reported = {name: query(name) for name in ("--version", "-dumpmachine", "-dumpfullversion")}
++    for name in ("cc1plus", "ld"):
++        path = query("-print-prog-name=" + name)
++        resolved = shutil.which(path) or path
++        programs[name] = file_identity(resolved)
++    return {"schema": "cybersand-local-native-build-configuration-v1",
++            "compiler": argv, "flags": shlex.split(flags), "programs": programs,
++            "reported": reported,
++            "inputs": {name: file_identity(name) for name in shlex.split(inputs)},
++            "environment": {name: os.environ.get(name, "") for name in ENVIRONMENT}}
++
++
++def update(output: Path, record: dict) -> bool:
++    data = (json.dumps(record, sort_keys=True, indent=2) + "\n").encode()
++    if output.is_file() and output.read_bytes() == data:
++        return False
++    output.parent.mkdir(parents=True, exist_ok=True)
++    temporary = None
++    try:
++        with tempfile.NamedTemporaryFile(dir=output.parent, prefix=output.name + ".", delete=False) as stream:
++            temporary = Path(stream.name)
++            stream.write(data)
++            stream.flush()
++            os.fsync(stream.fileno())
++        os.replace(temporary, output)
++    finally:
++        if temporary is not None:
++            temporary.unlink(missing_ok=True)
++    return True
++
++
++def main() -> int:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output", required=True, type=Path)
++    args = parser.parse_args()
++    try:
++        changed = update(args.output, configuration(os.environ["CYBERSAND_BUILD_CXX"],
++                                                   os.environ["CYBERSAND_BUILD_FLAGS"],
++                                                   os.environ["CYBERSAND_BUILD_INPUTS"]))
++        print("Local native compiler configuration: " + ("changed" if changed else "unchanged"))
++        return 0
++    except (KeyError, ValueError, OSError, subprocess.SubprocessError) as error:
++        print("Cannot establish local native compiler configuration: " + str(error))
++        return 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/tools/ci/native_execution_policy.py b/tools/ci/native_execution_policy.py
+index 039f7a0acfc2e327a6073ed848094d2c2543de86..05e5bfeb468003271912439c3bfd69fe9f644f0c 100644
+--- a/tools/ci/native_execution_policy.py
++++ b/tools/ci/native_execution_policy.py
+@@ -37,8 +37,8 @@ COMMANDS = {
+         ("physics-characterisation-sanitize", "native_case_seconds", [
+             "env", "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+             "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1", "make", "physics-characterisation-sanitize"]),
+-        ("worldgen-test", "native_case_seconds", ["/usr/bin/time", "-v", "make", "-j2", "worldgen-test"]),
+-        ("worldgen-sanitize", "native_case_seconds", [*ASAN, "/usr/bin/time", "-v", "make", "-j2", "worldgen-sanitize"]),
++        ("worldgen-test", "native_case_seconds", ["/usr/bin/time", "-v", "make", "-j2", "--output-sync=target", "worldgen-test"]),
++        ("worldgen-sanitize", "native_case_seconds", [*ASAN, "/usr/bin/time", "-v", "make", "-j2", "--output-sync=target", "worldgen-sanitize"]),
+     ],
+     "soliding-normal": [
+         (target, "native_case_seconds", ["make", target]) for target in (
+diff --git a/tools/ci/run_native_family.sh b/tools/ci/run_native_family.sh
+index a080315c301b201003dd4b296280a5046f14a721..2212d55988cd2a954658fb3645d774eaba429223 100755
+--- a/tools/ci/run_native_family.sh
++++ b/tools/ci/run_native_family.sh
+@@ -54,8 +54,8 @@ case "$suite" in
+     native_command physics-characterisation-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
+     # Two prerequisite jobs; the nine test recipe lines remain serial.
+     # time reports max-child RSS, not concurrent aggregate RSS.
+-    native_command worldgen-test native_case_seconds /usr/bin/time -v make -j2 worldgen-test
+-    native_command worldgen-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 worldgen-sanitize
++    native_command worldgen-test native_case_seconds /usr/bin/time -v make -j2 --output-sync=target worldgen-test
++    native_command worldgen-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 --output-sync=target worldgen-sanitize
+     ;;
+   soliding-normal)
+     native_command soliding-test native_case_seconds make soliding-test
+diff --git a/tools/ci/test_native_shards.py b/tools/ci/test_native_shards.py
+index c5df6144cbbd7b3ae9c48272fde59fd4612e0569..599869941664617bca7b12549b4f2865dab8a985 100644
+--- a/tools/ci/test_native_shards.py
++++ b/tools/ci/test_native_shards.py
+@@ -70,6 +70,9 @@ class NativeEvidenceTests(unittest.TestCase):
+                 report = {"invocations": [{"name": "control", "stdout_sha256": gate.digest(b'{}\n'),
+                                            "stderr_sha256": gate.digest(b"")}]}
+                 outputs["physics-cli-validation/sanitized/results.json"] = json.dumps(report).encode()
++                outputs.update({name:(f"source_sha={self.source} run_id=1234 run_attempt=1 "
++                                      f"binary={Path(name).stem}\noriginal showcase stdout/stderr\n").encode()
++                                for name in gate.SHOWCASE_OUTPUTS})
+             elif suite == "soliding-normal":
+                 outputs = {name: b'{}\n' for name in gate.STAGE_OUTPUTS}
+             for name, data in outputs.items():
+@@ -294,6 +297,80 @@ class NativeEvidenceTests(unittest.TestCase):
+         path.write_text(json.dumps(receipt))
+         self.assert_failed(self.verify(), "invocation output is absent or differs")
+ 
++    def reseal_worldgen_outputs(self):
++        path = self.receipts["worldgen"]
++        receipt = json.loads(path.read_text())
++        receipt["scientific_outputs"] = gate.scientific_inventory(path.parents[2])
++        path.write_text(json.dumps(receipt))
++
++    def test_exact_fourteen_showcase_logs_cannot_be_omitted_after_resealing(self):
++        self.assertEqual(len(gate.SHOWCASE_OUTPUTS), 14)
++        self.assertEqual(self.verify()["status"], "passed")
++        root = self.receipts["worldgen"].parents[2]
++        for name in sorted(gate.SHOWCASE_OUTPUTS):
++            with self.subTest(name=name):
++                path = root / name
++                original = path.read_bytes()
++                path.unlink()
++                self.reseal_worldgen_outputs()
++                self.assert_failed(self.verify(), "Required fourteen raw showcase logs")
++                path.write_bytes(original)
++                self.reseal_worldgen_outputs()
++
++    def test_resealed_stale_or_wrong_showcase_identity_and_empty_payload_are_rejected(self):
++        path = self.receipts["worldgen"].parents[2] / sorted(gate.SHOWCASE_OUTPUTS)[0]
++        original = path.read_bytes()
++        for before, after in ((self.source.encode(), b"c" * 40), (b"run_id=1234", b"run_id=9999"),
++                              (b"run_attempt=1", b"run_attempt=2"),
++                              (Path(path).stem.encode(), b"test_wrong_showcase"),
++                              (b"original showcase stdout/stderr\n", b"")):
++            with self.subTest(before=before):
++                path.write_bytes(original.replace(before, after))
++                self.reseal_worldgen_outputs()
++                self.assert_failed(self.verify(), "Showcase log source/run/attempt/binary identity differs")
++        path.write_bytes(original)
++        self.reseal_worldgen_outputs()
++
++    def test_resealed_extra_showcase_log_is_rejected(self):
++        root = self.receipts["worldgen"].parents[2]
++        extra = root / "worldgen-showcase-logs/test_unregistered.log"
++        extra.write_bytes((root / sorted(gate.SHOWCASE_OUTPUTS)[0]).read_bytes())
++        self.reseal_worldgen_outputs()
++        self.assert_failed(self.verify(), "Unexpected or missing worldgen scientific output")
++
++    def test_worldgen_verification_requires_explicit_context_not_reader_environment(self):
++        root = self.receipts["worldgen"].parents[2]
++        outputs = gate.scientific_inventory(root)
++        with mock.patch.dict(os.environ, {"GITHUB_SHA":self.source, "GITHUB_RUN_ID":"1234", "GITHUB_RUN_ATTEMPT":"1"}):
++            with self.assertRaisesRegex(ValueError, "requires explicit source/run/attempt"):
++                gate.validate_scientific_outputs(root, "worldgen", outputs)
++
++    def test_failed_worldgen_record_preserves_partial_raw_showcase_output(self):
++        output = self.root / "partial-native-parallel"
++        folder = output / "worldgen"
++        folder.mkdir(parents=True)
++        (folder / "run.log").write_bytes(b"grouped timeout output\n")
++        (folder / gate.EXIT_FILES["family"]).write_bytes(b"124\n")
++        (folder / gate.EXIT_FILES["log_capture"]).write_bytes(b"0\n")
++        name = sorted(gate.SHOWCASE_OUTPUTS)[0]
++        raw = b"partial flushed stdout\npartial flushed stderr\n"
++        path = output.parent / name
++        path.parent.mkdir(parents=True)
++        path.write_bytes(raw)
++        with mock.patch.object(gate, "source_identity", return_value=self.identity), \
++             mock.patch.dict(os.environ, {"RUNNER_OS":"Linux"}):
++            result = gate.record_shard(self.root, output, "worldgen", "failure", self.source, 1234, 1)
++        self.assertTrue(result["errors"])
++        self.assertEqual(result["scientific_outputs"][name], {"bytes":len(raw), "sha256":gate.digest(raw)})
++        self.assertEqual(path.read_bytes(), raw)
++
++    def test_workflow_always_uploads_the_original_raw_showcase_directory(self):
++        workflow = (gate.ROOT / ".github/workflows/native.yml").read_text()
++        upload = workflow.split("      - name: Preserve original family logs and scientific outputs\n", 1)[1]
++        upload = upload.split("\n  native:", 1)[0]
++        self.assertIn("        if: always()", upload)
++        self.assertIn("            build/worldgen-showcase-logs/", upload)
++
+     def test_required_stage_outputs_cannot_be_removed_from_file_and_receipt(self):
+         path = self.receipts["soliding-normal"]
+         receipt = json.loads(path.read_text())
+diff --git a/tools/ci/test_native_watchdogs.py b/tools/ci/test_native_watchdogs.py
+index 4eafee829d1030abf08e84e8e350a18fe7ea300b..00deb2967487d2a5cf82b0e6b61920c4b6cfe6e7 100644
+--- a/tools/ci/test_native_watchdogs.py
++++ b/tools/ci/test_native_watchdogs.py
+@@ -105,7 +105,7 @@ class NativeShellTests(unittest.TestCase):
+         rows = [json.loads(line) for line in self.log.read_text().splitlines()] if self.log.exists() else []
+         return result, rows
+ 
+-    def test_all_twenty_original_invocations_and_environments_are_preserved(self):
++    def test_all_twenty_policy_invocations_and_environments_are_preserved(self):
+         count = 0
+         for suite, expected in gate.COMMANDS.items():
+             with self.subTest(suite=suite):
+@@ -119,6 +119,15 @@ class NativeShellTests(unittest.TestCase):
+                 count += len(rows)
+         self.assertEqual(count, 20)
+ 
++    def test_only_two_worldgen_commands_group_output_under_the_same_two_job_cap(self):
++        grouped = [(suite, label) for suite, commands in gate.COMMANDS.items()
++                   for label, _, command in commands if "--output-sync=target" in command]
++        self.assertEqual(grouped, [("worldgen", "worldgen-test"), ("worldgen", "worldgen-sanitize")])
++        for label, _, command in gate.COMMANDS["worldgen"]:
++            if label in {"worldgen-test", "worldgen-sanitize"}:
++                self.assertEqual(command[command.index("make"):],
++                                 ["make", "-j2", "--output-sync=target", label])
++
+     def test_each_original_command_preserves_error_and_timeout_exit(self):
+         for suite, commands in gate.COMMANDS.items():
+             for index, (label, _, _) in enumerate(commands):
+diff --git a/tools/ci/test_soliding_build_reuse.py b/tools/ci/test_soliding_build_reuse.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..831ccc156822f68301d48133bca03c7c70202fd4
+--- /dev/null
++++ b/tools/ci/test_soliding_build_reuse.py
+@@ -0,0 +1,221 @@
++#!/usr/bin/env python3
++"""Actual Make/compiler regressions for local soliding object reuse.
++
++Small synthetic translation units exercise invalidation and failure behavior;
++they do not replace the complete production soliding scientific suites.
++"""
++from __future__ import annotations
++
++import hashlib
++import json
++import os
++from pathlib import Path
++import shlex
++import shutil
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++import check_soliding_build_inventory as inventory
++import native_build_configuration as configuration
++
++
++class SolidingInventoryTests(unittest.TestCase):
++    def test_exact_original_expanded_source_flags_and_eight_test_order(self):
++        report = inventory.check()
++        for family in report["families"].values():
++            self.assertEqual(len(family["objects"]), 6)
++            self.assertEqual(len(family["expanded_original_commands"]), 8)
++            self.assertEqual(len(family["ordered_tests"]), 8)
++            self.assertEqual(family["eliminated_translation_unit_compilations"], 30)
++
++    def test_missing_source_flag_profile_or_test_cannot_pass(self):
++        run = subprocess.run(["make", "--dry-run", "--always-make", f"CXX={inventory.COMPILER}",
++                              "soliding-sanitize"], cwd=inventory.ROOT, capture_output=True, text=True, check=True)
++        for before, after in ((" -fsanitize=address,undefined", ""),
++                              ("soliding-objects/sanitized", "soliding-objects/normal"),
++                              ("./build/test_settled_regions_sanitized", ""),
++                              ("native/src/world.cpp", "native/src/unregistered.cpp")):
++            with self.subTest(change=before), self.assertRaises(ValueError):
++                inventory.inspect(run.stdout.replace(before, after), True)
++
++    def test_configuration_replace_failure_preserves_previous_evidence(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / "configuration.json"
++            configuration.update(path, {"before": 1})
++            before = path.read_bytes()
++            with patch.object(configuration.os, "replace", side_effect=OSError("injected interruption")):
++                with self.assertRaises(OSError):
++                    configuration.update(path, {"after": 2})
++            self.assertEqual(path.read_bytes(), before)
++            self.assertEqual(list(path.parent.iterdir()), [path])
++
++
++@unittest.skipUnless(shutil.which("g++"), "GNU C++ required for actual compiler invalidation controls")
++class SolidingMakeTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory(prefix="soliding-reuse-")
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++        shutil.copy2(inventory.ROOT / "Makefile", self.root / "Makefile")
++        (self.root / "tools/ci").mkdir(parents=True)
++        shutil.copy2(inventory.ROOT / "tools/ci/native_build_configuration.py",
++                     self.root / "tools/ci/native_build_configuration.py")
++        (self.root / "native/src").mkdir(parents=True)
++        (self.root / "native/include/cybersand").mkdir(parents=True)
++        (self.root / "native/tests").mkdir(parents=True)
++        self.header = self.root / "native/include/cybersand/reuse_fixture.hpp"
++        self.header.write_text("#pragma once\ninline constexpr int fixture_value = 0;\n")
++        for name in inventory.CORE:
++            (self.root / f"native/src/{name}.cpp").write_text(
++                '#include "cybersand/reuse_fixture.hpp"\nint fixture_' + name + '() { return fixture_value; }\n')
++        for name in inventory.TESTS:
++            (self.root / f"native/tests/test_{name}.cpp").write_text(
++                "int fixture_world();\nint main() { return fixture_world(); }\n")
++        self.log = self.root / "compiler.jsonl"
++        self.compiler = self.root / "compiler.py"
++        self.compiler.write_text('''import json, os, pathlib, signal, sys
++args = sys.argv[1:]
++with open(os.environ["REUSE_COMPILER_LOG"], "a") as stream:
++    stream.write(json.dumps(args) + "\\n")
++if "--version" in args and os.environ.get("REUSE_IDENTITY_FAIL"):
++    raise SystemExit(19)
++if "-c" in args and os.environ.get("REUSE_COMPILE_FAIL"):
++    pathlib.Path(args[args.index("-o") + 1]).write_bytes(b"incomplete object")
++    if os.environ["REUSE_COMPILE_FAIL"] == "signal":
++        os.kill(os.getpid(), signal.SIGTERM)
++    raise SystemExit(19)
++os.execv(''' + repr(str(Path(shutil.which("g++")).resolve())) + ''', [''' + repr(shutil.which("g++")) + ''', *args])
++''')
++        self.env = os.environ.copy()
++        for name in ("MAKEFLAGS", "MFLAGS", "CXX", "CYBERSAND_BUILD_CXX", "CYBERSAND_BUILD_FLAGS"):
++            self.env.pop(name, None)
++        self.env.update(CXX=f"{shlex.quote(sys.executable)} {shlex.quote(str(self.compiler))}",
++                        REUSE_COMPILER_LOG=str(self.log))
++        self.target = "build/test_settled_discovery"
++
++    def run_make(self, *arguments, extra_env=None):
++        env = {**self.env, **(extra_env or {})}
++        offset = len(self.records())
++        result = subprocess.run(["make", "--no-print-directory", *arguments], cwd=self.root,
++                                env=env, text=True, capture_output=True, timeout=60)
++        return result, self.records()[offset:]
++
++    def records(self):
++        return [json.loads(line) for line in self.log.read_text().splitlines()] if self.log.exists() else []
++
++    def compile_sources(self, records):
++        return [row[row.index("-c") + 1] for row in records if "-c" in row]
++
++    def assert_success(self, result):
++        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
++
++    def test_same_config_compiles_six_core_sources_once_across_six_binaries(self):
++        targets = [f"build/test_{name}" for name in inventory.TESTS if name not in inventory.HEADER_ONLY]
++        result, records = self.run_make(*targets)
++        self.assert_success(result)
++        self.assertEqual(self.compile_sources(records), [f"native/src/{name}.cpp" for name in inventory.CORE])
++        self.assertEqual(sum("-o" in row and "-c" not in row for row in records), 6)
++        result, records = self.run_make(*targets)
++        self.assert_success(result)
++        self.assertFalse(any("-o" in row for row in records))
++        for target in targets:
++            self.assertEqual(subprocess.run([str(self.root / target)], cwd=self.root).returncode, 0)
++
++    def test_changed_flags_and_compiler_bytes_each_invalidate_all_objects(self):
++        self.assert_success(self.run_make(self.target)[0])
++        flags = "DEBUG_FLAGS=-O0 -g3 -DREUSE_CHANGED_CONFIGURATION=1"
++        result, records = self.run_make(flags, self.target)
++        self.assert_success(result)
++        self.assertEqual(len(self.compile_sources(records)), 6)
++        with self.compiler.open("a") as stream:
++            stream.write("# changed compiler wrapper identity\n")
++        result, records = self.run_make(flags, self.target)
++        self.assert_success(result)
++        self.assertEqual(len(self.compile_sources(records)), 6)
++
++    def test_changed_source_and_header_invalidate_their_objects(self):
++        self.assert_success(self.run_make(self.target)[0])
++        source = self.root / "native/src/world.cpp"
++        before = source.stat()
++        with source.open("a") as stream:
++            stream.write("// changed source with preserved timestamp\n")
++        os.utime(source, ns=(before.st_atime_ns, before.st_mtime_ns))
++        result, records = self.run_make(self.target)
++        self.assert_success(result)
++        self.assertEqual(len(self.compile_sources(records)), 6)
++        before = self.header.stat()
++        with self.header.open("a") as stream:
++            stream.write("// changed header with preserved timestamp\n")
++        os.utime(self.header, ns=(before.st_atime_ns, before.st_mtime_ns))
++        result, records = self.run_make(self.target)
++        self.assert_success(result)
++        self.assertEqual(len(self.compile_sources(records)), 6)
++
++    def test_deleted_required_header_blocks_previously_built_binary(self):
++        self.assert_success(self.run_make(self.target)[0])
++        self.header.unlink()
++        result, records = self.run_make(self.target)
++        self.assertNotEqual(result.returncode, 0)
++        self.assertTrue(self.compile_sources(records))
++
++    def test_normal_and_sanitized_profiles_never_alias(self):
++        self.assert_success(self.run_make(self.target)[0])
++        normal = self.root / "build/soliding-objects/normal/world.o"
++        before = (normal.stat().st_mtime_ns, hashlib.sha256(normal.read_bytes()).hexdigest())
++        result, records = self.run_make(self.target + "_sanitized")
++        self.assert_success(result)
++        self.assertEqual(len(self.compile_sources(records)), 6)
++        self.assertTrue(all("-fsanitize=address,undefined" in row for row in records if "-c" in row))
++        self.assertEqual(before, (normal.stat().st_mtime_ns, hashlib.sha256(normal.read_bytes()).hexdigest()))
++        self.assertTrue((self.root / "build/soliding-objects/sanitized/world.o").exists())
++
++    def test_missing_object_rebuilds_and_corrupt_object_fails_link(self):
++        self.assert_success(self.run_make(self.target)[0])
++        obj = self.root / "build/soliding-objects/normal/world.o"
++        obj.unlink()
++        result, records = self.run_make(self.target)
++        self.assert_success(result)
++        self.assertEqual(self.compile_sources(records), ["native/src/world.cpp"])
++        obj.write_bytes(b"incomplete object")
++        result, records = self.run_make(self.target)
++        self.assertNotEqual(result.returncode, 0)
++        self.assertFalse(self.compile_sources(records))
++
++    def test_failed_or_terminated_compile_cannot_publish_a_partial_object(self):
++        for mode in ("exit", "signal"):
++            with self.subTest(mode=mode):
++                result, _ = self.run_make(self.target, extra_env={"REUSE_COMPILE_FAIL": mode})
++                self.assertNotEqual(result.returncode, 0)
++                directory = self.root / "build/soliding-objects/normal"
++                self.assertFalse((directory / "world.o").exists())
++                self.assertFalse(list(directory.glob("*.tmp.*")))
++        self.assert_success(self.run_make(self.target)[0])
++        obj = self.root / "build/soliding-objects/normal/world.o"
++        before = obj.read_bytes()
++        with (self.root / "native/src/world.cpp").open("a") as stream:
++            stream.write("// source changed after a successful build\n")
++        result, _ = self.run_make(self.target, extra_env={"REUSE_COMPILE_FAIL": "exit"})
++        self.assertNotEqual(result.returncode, 0)
++        self.assertEqual(obj.read_bytes(), before)
++        result, records = self.run_make(self.target)
++        self.assert_success(result)
++        self.assertEqual(len(self.compile_sources(records)), 6)
++
++    def test_failed_identity_query_blocks_existing_outputs(self):
++        self.assert_success(self.run_make(self.target)[0])
++        result, records = self.run_make(self.target, extra_env={"REUSE_IDENTITY_FAIL": "1"})
++        self.assertNotEqual(result.returncode, 0)
++        self.assertFalse(any("-o" in row for row in records))
++
++    def test_make_dry_run_never_queries_or_executes_compiler(self):
++        result, records = self.run_make("--dry-run", "--always-make", self.target)
++        self.assert_success(result)
++        self.assertFalse(records)
++        self.assertFalse((self.root / "build").exists())
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tools/ci/test_worldgen_build_inventory.py b/tools/ci/test_worldgen_build_inventory.py
+index c9191d31e65b845f85036956e5303913f3c64ab5..c31f6411deddf08aa4bd086e1df16464e2b3fb4c 100644
+--- a/tools/ci/test_worldgen_build_inventory.py
++++ b/tools/ci/test_worldgen_build_inventory.py
+@@ -1,17 +1,25 @@
+ #!/usr/bin/env python3
+-"""Actual make dry-run inventory and adverse controls; no native execution."""
++"""Actual make graph and watchdog controls with compiler/test doubles only."""
+ 
+ from __future__ import annotations
+ 
+ import hashlib
++import io
++import json
+ import os
+ from pathlib import Path
+ import shutil
++import signal
++import subprocess
++import sys
+ import tempfile
++import time
+ import unittest
++from contextlib import redirect_stdout
+ from unittest.mock import patch
+ 
+ import check_worldgen_build_inventory as inventory
++import run_timed_command as timed
+ 
+ 
+ class WorldgenBuildInventoryTests(unittest.TestCase):
+@@ -23,27 +31,29 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
+         row = self.report["families"][target]
+         return row["serial"]["stdout"], row["two_jobs"]["stdout"]
+ 
+-    def test_both_actual_graphs_have_twelve_objects_sixteen_binaries_and_ordered_tests(self):
++    def test_both_actual_graphs_have_twelve_objects_sixteen_binaries_and_all_tests(self):
+         for target, row in self.report["families"].items():
+             with self.subTest(target=target):
+                 self.assertEqual(row["object_count"], 12)
+                 self.assertEqual(row["binary_count"], 16)
+                 self.assertEqual(len(row["compile_link_commands"]), 28)
+-                self.assertEqual(len(row["ordered_tests"]), 16)
++                self.assertEqual(len(row["required_showcase_tests"]), 7)
++                self.assertEqual(len(row["ordered_main_tests"]), 9)
++                self.assertEqual(row["execution_count"], 16)
+ 
+     def test_missing_prerequisite_is_rejected(self):
+         serial, bounded = self.streams()
+         lines = bounded.splitlines()
+         index = next(index for index, line in enumerate(lines) if line.startswith(inventory.COMPILER))
+         lines.pop(index)
+-        with self.assertRaisesRegex(ValueError, "Missing compilation"):
++        with self.assertRaisesRegex(ValueError, "Missing compilation|before object prerequisite"):
+             inventory.compare(serial, "\n".join(lines), True)
+ 
+     def test_omitted_test_is_rejected(self):
+         serial, bounded = self.streams()
+         altered = "\n".join(line for line in bounded.splitlines()
+                             if line != "./build/test_generation_planes_sanitized")
+-        with self.assertRaisesRegex(ValueError, "Sixteen-test inventory/order"):
++        with self.assertRaisesRegex(ValueError, "Nine-main-test inventory/order"):
+             inventory.compare(serial, altered, True)
+ 
+     def test_reordered_tests_are_rejected(self):
+@@ -51,12 +61,12 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
+         lines = bounded.splitlines()
+         positions = [index for index, line in enumerate(lines) if line.startswith("./build/test_")]
+         lines[positions[0]], lines[positions[1]] = lines[positions[1]], lines[positions[0]]
+-        with self.assertRaisesRegex(ValueError, "Sixteen-test inventory/order"):
++        with self.assertRaisesRegex(ValueError, "Nine-main-test inventory/order"):
+             inventory.compare(serial, "\n".join(lines), True)
+ 
+     def test_omitted_showcase_or_changed_sanitizer_environment_is_rejected(self):
+         serial, bounded = self.streams()
+-        for before, after in (("build/test_suspended_arcology_sanitized; do", "; do"),
++        for before, after in (("\"build/test_suspended_arcology_sanitized\"", ""),
+                               ("UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1}", "")):
+             with self.subTest(change=before), self.assertRaisesRegex(ValueError, "Seven-showcase"):
+                 inventory.compare(serial, bounded.replace(before, after), True)
+@@ -79,12 +89,12 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, "Compiler flag/source contract"):
+             inventory.compare(serial, bounded.replace(" -Werror", ""), False)
+ 
+-    def test_compilation_cannot_move_after_tests_begin(self):
++    def test_compilation_cannot_move_after_ordered_main_tests_begin(self):
+         serial, bounded = self.streams()
+         lines = bounded.splitlines()
+         index = next(index for index, line in enumerate(lines) if line.startswith(inventory.COMPILER))
+-        lines.append(lines.pop(index))
+-        with self.assertRaisesRegex(ValueError, "Compilation appears after test"):
++        lines.append(lines[index])
++        with self.assertRaisesRegex(ValueError, "Compilation appears after ordered main tests"):
+             inventory.compare(serial, "\n".join(lines), True)
+ 
+     def test_unexpected_executable_is_not_ignored(self):
+@@ -105,6 +115,7 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
+                 self.assertIn("--dry-run", command)
+                 self.assertIn("--always-make", command)
+                 self.assertIn(f"-j{jobs}", command)
++                self.assertIn("--output-sync=target", command)
+                 self.assertIn(f"CXX={inventory.COMPILER}", command)
+ 
+     def test_dry_run_cannot_create_or_touch_prerequisites_with_inherited_make_flags(self):
+@@ -131,6 +142,281 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
+                         inventory.inspect_commands(result["stdout"], target.endswith("sanitize"))
+             self.assertEqual(state(), before, "A dry-run created or touched a build prerequisite")
+ 
++    def test_duplicate_or_missing_showcase_cannot_satisfy_the_main_tail(self):
++        serial, bounded = self.streams("worldgen-test")
++        lines = bounded.splitlines()
++        index = lines.index('echo "Running build/test_megatruss_station"')
++        marker = "\n".join(lines[index:index + 2]) + "\n"
++        for replacement in ("", marker * 2):
++            with self.subTest(replacement=replacement), self.assertRaisesRegex(
++                    ValueError, "Main tests start before all seven|duplicate showcase"):
++                inventory.compare(serial, bounded.replace(marker, replacement), False)
++
++    def test_showcase_must_be_linked_before_it_runs(self):
++        serial, bounded = self.streams("worldgen-test")
++        lines = bounded.splitlines()
++        index = lines.index('echo "Running build/test_megatruss_station"')
++        marker = "\n".join(lines[index:index + 2]) + "\n"
++        with self.assertRaisesRegex(ValueError, "Showcase execution precedes its binary"):
++            inventory.compare(serial, marker + bounded.replace(marker, ""), False)
++
++
++@unittest.skipUnless(sys.platform.startswith("linux"), "Native Make/watchdog boundary is Linux-only")
++class WorldgenExecutionGraphTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory(prefix="worldgen-execution-control-")
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++        shutil.copy2(inventory.ROOT / "Makefile", self.root / "Makefile")
++        shutil.copytree(inventory.ROOT / "native", self.root / "native")
++        self.events = self.root / "events.jsonl"
++        self.controls = self.root / "control.json"
++        self.compiler = self.root / "compiler-double.py"
++        # Real Make executes this double for every unchanged compiler argv. Its
++        # linked executables exercise scheduling and failure propagation only,
++        # never substitute for real native/scientific qualification.
++        self.compiler.write_text("#!" + sys.executable + "\n" + r'''
++import json, os, sys, time
++from pathlib import Path
++controls = json.loads(Path("control.json").read_text())
++compiling = "-o" in sys.argv
++name = sys.argv[-1] if compiling else sys.argv[0]
++name = str(Path(name).relative_to(Path.cwd())) if Path(name).is_absolute() else str(Path(name))
++kind = "compile" if compiling else "test"
++def event(phase):
++    row = {"phase":phase, "kind":kind, "name":name, "pid":os.getpid(),
++           "time":time.monotonic(), "args":sys.argv[1:],
++           "asan":os.environ.get("ASAN_OPTIONS"), "ubsan":os.environ.get("UBSAN_OPTIONS")}
++    descriptor = os.open("events.jsonl", os.O_APPEND | os.O_CREAT | os.O_WRONLY, 0o600)
++    try:
++        os.write(descriptor, (json.dumps(row) + "\n").encode())
++    finally:
++        os.close(descriptor)
++event("start")
++if compiling:
++    output = Path(name)
++    output.parent.mkdir(parents=True, exist_ok=True)
++    time.sleep(.005)
++    if controls.get("partial") == name:
++        output.write_text("incomplete compiler output")
++        event("failed")
++        raise SystemExit(27)
++    if controls.get("missing") != name:
++        output.write_bytes(b"object-double" if output.suffix == ".o" else Path(__file__).read_bytes())
++        output.chmod(0o755)
++else:
++    print("CONTROL-BEGIN " + name, flush=True)
++    print("CONTROL-ERR " + name, file=sys.stderr, flush=True)
++    if controls.get("fail") == name:
++        if controls.get("hang"):
++            deadline = time.monotonic() + 5
++            while not any(row["name"] == controls["hang"] and row["phase"] == "start"
++                          for row in map(json.loads, Path("events.jsonl").read_text().splitlines())):
++                if time.monotonic() > deadline:
++                    raise SystemExit("hanging peer was never scheduled")
++                time.sleep(.01)
++        event("failed")
++        raise SystemExit(29)
++    time.sleep(60 if controls.get("hang") == name else .08)
++    print("CONTROL-END " + name, flush=True)
++event("end")
++''')
++        self.compiler.chmod(0o755)
++        self.reset()
++
++    def reset(self, **controls):
++        self.events.unlink(missing_ok=True)
++        self.controls.write_text(json.dumps(controls))
++
++    def command(self, sanitized=False):
++        return ["make", "--no-print-directory", "-j2", "--output-sync=target",
++                "CXX=" + str(self.compiler), "worldgen-sanitize" if sanitized else "worldgen-test"]
++
++    def environment(self, **extra):
++        env = os.environ.copy()
++        for key in ("MAKEFLAGS", "MFLAGS", "ASAN_OPTIONS", "UBSAN_OPTIONS"):
++            env.pop(key, None)
++        return env | {"GITHUB_SHA":"a" * 40, "GITHUB_RUN_ID":"1234", "GITHUB_RUN_ATTEMPT":"1"} | extra
++
++    def execute(self, sanitized=False, **environment):
++        result = subprocess.run(self.command(sanitized), cwd=self.root, env=self.environment(**environment),
++                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=15)
++        return result, self.rows()
++
++    def rows(self):
++        return [json.loads(line) for line in self.events.read_text().splitlines()] if self.events.exists() else []
++
++    def assert_contract(self, result, rows, sanitized=False, warm=False, qualified=True):
++        self.assertEqual(result.returncode, 0, result.stdout)
++        compile_rows = [row for row in rows if row["kind"] == "compile" and row["phase"] == "start"]
++        expected = inventory.expected_commands(sanitized)
++        self.assertEqual({row["name"]:[inventory.COMPILER, *row["args"]] for row in compile_rows},
++                         {} if warm else expected)
++        self.assertEqual(len(compile_rows), 0 if warm else 28)
++        starts = [row["name"] for row in rows if row["kind"] == "test" and row["phase"] == "start"]
++        suffix = "_sanitized" if sanitized else ""
++        showcases = [f"build/test_{name}{suffix}" for name in inventory.SHOWCASES]
++        main = [f"build/test_{name}{suffix}" for name in inventory.TESTS]
++        self.assertCountEqual(starts, showcases + main)
++        self.assertEqual(starts[-9:], main)
++        self.assertEqual([row["name"] for row in rows if row["phase"] == "end" and row["kind"] == "test"][-9:], main)
++        first_main = next(row["time"] for row in rows if row["kind"] == "test" and
++                          row["name"] == main[0] and row["phase"] == "start")
++        self.assertTrue(all(row["time"] < first_main for row in rows
++                            if row["name"] in showcases and row["phase"] == "end"))
++        active, active_showcases, peak, peak_showcases = set(), set(), 0, 0
++        for row in rows:
++            if row["phase"] == "start":
++                active.add(row["pid"])
++                if row["kind"] == "test" and row["name"] in showcases:
++                    active_showcases.add(row["pid"])
++                peak, peak_showcases = max(peak, len(active)), max(peak_showcases, len(active_showcases))
++            else:
++                active.remove(row["pid"])
++                active_showcases.discard(row["pid"])
++        self.assertEqual((active, peak, peak_showcases), (set(), 2, 2))
++        output = [line for line in result.stdout.splitlines() if line.startswith("CONTROL-")]
++        self.assertEqual(len(output), 48)
++        for index in range(0, len(output), 3):
++            name = output[index].split(" ", 1)[1]
++            self.assertEqual(output[index:index + 3], [f"CONTROL-{part} {name}" for part in ("BEGIN", "ERR", "END")])
++        logs = self.root / "build/worldgen-showcase-logs"
++        expected_logs = {f"test_{name}{mode}.log" for name in inventory.SHOWCASES
++                         for mode in ("", "_sanitized") if (self.root / f"build/test_{name}{mode}").is_file()}
++        self.assertEqual({path.name for path in logs.iterdir()}, expected_logs)
++        source, run, attempt = ("a" * 40, "1234", "1") if qualified else ("unqualified",) * 3
++        for binary in showcases:
++            header = f"source_sha={source} run_id={run} run_attempt={attempt} binary={Path(binary).name}\n"
++            self.assertEqual((logs / (Path(binary).name + ".log")).read_text(), header +
++                             "".join(f"CONTROL-{part} {binary}\n" for part in ("BEGIN", "ERR", "END")))
++
++    def test_actual_graph_shares_two_jobs_groups_output_and_runs_warm_tests_again(self):
++        for sanitized in (False, True):
++            with self.subTest(sanitized=sanitized):
++                self.reset()
++                result, rows = self.execute(sanitized, GITHUB_SHA="", GITHUB_RUN_ID="", GITHUB_RUN_ATTEMPT="")
++                self.assert_contract(result, rows, sanitized, qualified=False)
++                if sanitized:
++                    for row in rows:
++                        if row["kind"] == "test" and any(name in row["name"] for name in inventory.SHOWCASES):
++                            self.assertEqual((row["asan"], row["ubsan"]),
++                                             ("detect_leaks=1:strict_string_checks=1", "halt_on_error=1"))
++                suffix = "_sanitized" if sanitized else ""
++                for name in inventory.SHOWCASES:
++                    (self.root / f"build/test_{name}{suffix}.run").write_text("stale run marker")
++                    (self.root / f"build/worldgen-showcase-logs/test_{name}{suffix}.log").write_text("stale raw log")
++                self.reset()
++                result, rows = self.execute(sanitized, ASAN_OPTIONS="detect_leaks=0:strict_string_checks=1",
++                                             UBSAN_OPTIONS="halt_on_error=1")
++                self.assert_contract(result, rows, sanitized, warm=True)
++                self.assertTrue(all(row["asan"] == "detect_leaks=0:strict_string_checks=1" and
++                                    row["ubsan"] == "halt_on_error=1" for row in rows))
++
++    def test_replay_failure_fails_and_cannot_mask_an_original_test_failure(self):
++        result, _ = self.execute()
++        self.assertEqual(result.returncode, 0, result.stdout)
++        binaries = self.root / "fault-bin"
++        binaries.mkdir()
++        cat = binaries / "cat"
++        cat.write_text("#!/bin/sh\nexit 37\n")
++        cat.chmod(0o755)
++        for failed in (False, True):
++            with self.subTest(original_test_failure=failed):
++                self.reset(**({"fail":"build/test_megatruss_station"} if failed else {}))
++                result, rows = self.execute(PATH=str(binaries) + os.pathsep + os.environ["PATH"])
++                self.assertNotEqual(result.returncode, 0)
++                self.assertIn(f"build/test_megatruss_station.run] Error {29 if failed else 37}", result.stdout)
++                self.assert_no_main_or_live_peer(rows)
++                raw = (self.root / "build/worldgen-showcase-logs/test_megatruss_station.log").read_text()
++                self.assertIn("CONTROL-BEGIN build/test_megatruss_station\n", raw)
++                self.assertIn("CONTROL-ERR build/test_megatruss_station\n", raw)
++
++    def timed(self, label, timeout=10):
++        with patch.dict(os.environ, self.environment(), clear=True), redirect_stdout(io.StringIO()):
++            receipt = timed.run(self.command(), timeout_seconds=timeout, label=label,
++                                output_dir=self.root / label, root=self.root)
++        self.assertEqual(receipt, json.loads((self.root / label / "receipt.json").read_text()))
++        return receipt
++
++    def assert_no_main_or_live_peer(self, rows):
++        main = {f"build/test_{name}" for name in inventory.TESTS}
++        self.assertFalse(any(row["kind"] == "test" and row["name"] in main for row in rows))
++        table = timed.process_table()
++        self.assertTrue(all(row["pid"] not in table or table[row["pid"]]["state"] == "Z" for row in rows))
++
++    def test_each_failed_showcase_blocks_the_main_tail(self):
++        result, _ = self.execute()
++        self.assertEqual(result.returncode, 0, result.stdout)
++        for name in inventory.SHOWCASES:
++            with self.subTest(showcase=name):
++                self.reset(fail="build/test_" + name)
++                receipt = self.timed(name)
++                self.assertEqual(receipt["status"], "failed")
++                self.assertNotEqual(receipt["returncode"], 0)
++                self.assert_no_main_or_live_peer(self.rows())
++
++    def test_missing_binary_and_partial_failed_compilation_cannot_qualify(self):
++        for control in ("missing", "partial"):
++            with self.subTest(control=control):
++                shutil.rmtree(self.root / "build", ignore_errors=True)
++                self.reset(**{control:"build/test_megatruss_station"})
++                receipt = self.timed(control)
++                self.assertEqual(receipt["status"], "failed")
++                self.assertNotEqual(receipt["returncode"], 0)
++                self.assert_no_main_or_live_peer(self.rows())
++
++    def prepare_failure_and_hang(self):
++        result, _ = self.execute()
++        self.assertEqual(result.returncode, 0, result.stdout)
++        self.reset(fail="build/test_megatruss_station", hang="build/test_seeded_typology_megablock")
++
++    def assert_hung_peer_raw_output_survived(self):
++        binary = "test_seeded_typology_megablock"
++        path = self.root / "build/worldgen-showcase-logs" / (binary + ".log")
++        self.assertEqual(path.read_text(), f"source_sha={'a' * 40} run_id=1234 run_attempt=1 binary={binary}\n"
++                         f"CONTROL-BEGIN build/{binary}\nCONTROL-ERR build/{binary}\n")
++
++    def test_failure_with_hanging_peer_times_out_and_reaps_the_peer(self):
++        self.prepare_failure_and_hang()
++        receipt = self.timed("timeout", timeout=1)
++        self.assertEqual(receipt["status"], "timeout")
++        self.assertTrue(receipt["timed_out"])
++        self.assertFalse(receipt["natural_completion"])
++        rows = self.rows()
++        hanging = [row for row in rows if row["name"] == "build/test_seeded_typology_megablock"]
++        self.assertEqual([row["phase"] for row in hanging], ["start"])
++        self.assertIn(str(hanging[0]["pid"]), receipt["terminated_descendants"])
++        self.assert_no_main_or_live_peer(rows)
++        self.assert_hung_peer_raw_output_survived()
++
++    def test_cancellation_after_failure_reaps_the_inflight_peer_and_is_incomplete(self):
++        self.prepare_failure_and_hang()
++        program = ("import sys; from pathlib import Path; "
++                   f"sys.path.insert(0, {str(inventory.ROOT / 'tools/ci')!r}); import run_timed_command as timed; "
++                   f"timed.run({self.command()!r}, timeout_seconds=10, label='cancel', "
++                   f"output_dir=Path({str(self.root / 'cancel')!r}), root=Path({str(self.root)!r}))")
++        process = subprocess.Popen([sys.executable, "-u", "-c", program], cwd=self.root,
++                                   env=self.environment(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
++                                   text=True, start_new_session=True)
++        try:
++            deadline = time.monotonic() + 5
++            while not any(row["phase"] == "failed" for row in self.rows()) and time.monotonic() < deadline:
++                time.sleep(.01)
++            self.assertTrue(any(row["phase"] == "failed" for row in self.rows()))
++            process.send_signal(signal.SIGINT)
++            output, _ = process.communicate(timeout=10)
++            self.assertNotEqual(process.returncode, 0, output)
++            receipt = json.loads((self.root / "cancel/receipt.json").read_text())
++            self.assertEqual(receipt["status"], "interrupted")
++            self.assertFalse(receipt["complete"])
++            self.assertFalse(receipt["natural_completion"])
++            self.assert_no_main_or_live_peer(self.rows())
++            self.assert_hung_peer_raw_output_survived()
++        finally:
++            if process.poll() is None:
++                process.send_signal(signal.SIGINT)
++                process.communicate(timeout=10)
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+diff --git a/tools/ci/verify_native_shards.py b/tools/ci/verify_native_shards.py
+index cb0e5f7d27a083c25b914aaf632617e31790a11f..c534279c135bfa5eb920c17f1458fa14be0d8db5 100644
+--- a/tools/ci/verify_native_shards.py
++++ b/tools/ci/verify_native_shards.py
+@@ -13,6 +13,7 @@ import time
+ 
+ from execution_policy import identity as execution_policy_identity, watchdog_seconds
+ from native_execution_policy import COMMANDS, command_timeout_seconds, family_timeout_seconds
++from check_worldgen_build_inventory import SHOWCASES
+ 
+ ROOT = Path(__file__).resolve().parents[2]
+ SUITES = frozenset({"tsan", "native-normal", "asan-ubsan", "worldgen", "soliding-normal", "soliding-asan"})
+@@ -35,6 +36,8 @@ INPUTS = {
+ }
+ EXIT_FILES = {"family": "family-exit-code.txt", "log_capture": "log-capture-exit-code.txt"}
+ STAGE_OUTPUTS = frozenset({"stage3b-validation-synthetic-smoke.json", "stage3b-validation-plan-smoke.json"})
++SHOWCASE_OUTPUTS = frozenset(f"worldgen-showcase-logs/test_{name}{suffix}.log"
++                             for name in SHOWCASES for suffix in ("", "_sanitized"))
+ 
+ 
+ 
+@@ -184,11 +187,12 @@ def validate_command_outputs(folder, suite, inventory):
+ 
+ def scientific_inventory(root):
+     paths = list(root.glob("stage3b-validation-*.json"))
+-    physics = root / "physics-cli-validation"
+-    require(not physics.is_symlink(), "Physics evidence directory is a symlink")
+-    if physics.exists():
+-        require(physics.is_dir(), "Physics evidence path is not a directory")
+-        paths.extend(physics.rglob("*"))
++    for name in ("physics-cli-validation", "worldgen-showcase-logs"):
++        directory = root / name
++        require(not directory.is_symlink(), "Scientific evidence directory is a symlink")
++        if directory.exists():
++            require(directory.is_dir(), "Scientific evidence path is not a directory")
++            paths.extend(directory.rglob("*"))
+     inventory = {}
+     for path in sorted(paths):
+         require(not path.is_symlink(), "Scientific output contains a symlink")
+@@ -200,7 +204,7 @@ def scientific_inventory(root):
+     return inventory
+ 
+ 
+-def validate_scientific_outputs(root, suite, inventory):
++def validate_scientific_outputs(root, suite, inventory, *, expected_source=None, run_id=None, run_attempt=None):
+     require(isinstance(inventory, dict), "Scientific output inventory is not an object")
+     for path, value in inventory.items():
+         require(isinstance(path, str) and isinstance(value, dict)
+@@ -208,13 +212,23 @@ def validate_scientific_outputs(root, suite, inventory):
+                 and re.fullmatch(r"[0-9a-f]{64}", value.get("sha256", "")),
+                 "Scientific output identity is malformed")
+     if suite == "worldgen":
++        require(isinstance(expected_source, str) and re.fullmatch(r"[0-9a-f]{40}", expected_source)
++                and type(run_id) is int and run_id > 0 and type(run_attempt) is int and run_attempt > 0,
++                "Worldgen log verification requires explicit source/run/attempt context")
+         required = {"physics-cli-validation/validation.log", "physics-cli-validation/sanitized/results.json"}
+         require(required <= set(inventory), "Required physics results or validation log are absent")
++        require(SHOWCASE_OUTPUTS <= set(inventory), "Required fourteen raw showcase logs are absent")
++        for name in sorted(SHOWCASE_OUTPUTS):
++            header = (f"source_sha={expected_source} run_id={run_id} run_attempt={run_attempt} "
++                      f"binary={Path(name).stem}\n").encode()
++            raw = (root / name).read_bytes()
++            require(raw.startswith(header) and len(raw) > len(header),
++                    "Showcase log source/run/attempt/binary identity differs or raw output is absent: " + name)
+         result = load_json((root / "physics-cli-validation/sanitized/results.json").read_text(encoding="utf-8"))
+         rows = result.get("invocations")
+         require(isinstance(rows, list) and rows, "Physics invocation output inventory is absent")
+         names = set()
+-        expected = set(required)
++        expected = set(required) | SHOWCASE_OUTPUTS
+         # This checks output custody from the producing report, not its scientific assertions.
+         for row in rows:
+             require(isinstance(row, dict) and isinstance(row.get("name"), str)
+@@ -226,7 +240,7 @@ def validate_scientific_outputs(root, suite, inventory):
+                 require(path in inventory and inventory[path]["sha256"] == row.get(field + "_sha256"),
+                         "Original physics invocation output is absent or differs")
+                 expected.add(path)
+-        require(set(inventory) == expected, "Unexpected or missing physics scientific output")
++        require(set(inventory) == expected, "Unexpected or missing worldgen scientific output")
+     elif suite == "soliding-normal":
+         require(set(inventory) == STAGE_OUTPUTS, "Required Stage3B scientific outputs are absent or unexpected")
+     else:
+@@ -271,7 +285,8 @@ def record_shard(root, output, suite, outcome, expected_source, run_id, run_atte
+         receipt["errors"].append("execution outputs: " + type(error).__name__ + ": " + str(error))
+     try:
+         receipt["scientific_outputs"] = scientific_inventory(output.parent)
+-        validate_scientific_outputs(output.parent, suite, receipt["scientific_outputs"])
++        validate_scientific_outputs(output.parent, suite, receipt["scientific_outputs"],
++                                    expected_source=expected_source, run_id=run_id, run_attempt=run_attempt)
+     except Exception as error:
+         receipt["errors"].append("scientific output: " + type(error).__name__ + ": " + str(error))
+     if outcome != "success":
+@@ -337,9 +352,11 @@ def verify_evidence(directory, identity, expected_source, run_id, run_attempt, p
+             validate_command_outputs(path.parent, suite, command_outputs)
+             output_root = path.parent.parent.parent
+             outputs = scientific_inventory(output_root)
+-            validate_scientific_outputs(output_root, suite, r.get("scientific_outputs"))
++            validate_scientific_outputs(output_root, suite, r.get("scientific_outputs"),
++                                        expected_source=expected_source, run_id=run_id, run_attempt=run_attempt)
+             require(r["scientific_outputs"] == outputs, "Original scientific output inventory/bytes differ")
+-            validate_scientific_outputs(output_root, suite, outputs)
++            validate_scientific_outputs(output_root, suite, outputs,
++                                        expected_source=expected_source, run_id=run_id, run_attempt=run_attempt)
+             log = path.parent / "run.log"
+             require(log.is_file() and not log.is_symlink(), "Original Native family log is absent or a symlink")
+             raw = log.read_bytes()

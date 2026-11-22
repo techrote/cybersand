@@ -1,0 +1,40 @@
+{
+  "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "node_id": "C_kwDOUHiL-9oAKDY2MmRmNTFjZDg0MDlhNTIzMzJmYTdlZjE1ZDA2ZDhhYjg5NDVhZWQ",
+  "url": "https://api.github.com/repos/techrote/cybersand/git/commits/662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "html_url": "https://github.com/techrote/cybersand/commit/662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "author": {
+    "name": "tom",
+    "email": "261801702+techrote@users.noreply.github.com",
+    "date": "2026-11-22T00:37:43Z"
+  },
+  "committer": {
+    "name": "GitHub",
+    "email": "noreply@github.com",
+    "date": "2026-11-22T00:37:43Z"
+  },
+  "tree": {
+    "sha": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "url": "https://api.github.com/repos/techrote/cybersand/git/trees/39b658c5de9c5e541312b5190bd5d8ba797c6bed"
+  },
+  "message": "Merge PR #723: accelerate complete worldgen CI with bounded showcase concurrency\n\nCI-OPT-003 independently qualified CI-only increment. Exact-source Linux/Windows/Native qualification passed. One controlled same-worker complete-family pair preserved every original scientific case and reduced elapsed work by8m36s. Independent runtime/CI review verified repaired diagnostic custody and fail-closed evidence. Manual owner-authorized merge; no auto-merge. Admission review6009201962.",
+  "parents": [
+    {
+      "sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "url": "https://api.github.com/repos/techrote/cybersand/git/commits/30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "html_url": "https://github.com/techrote/cybersand/commit/30e1cddd3d678456df10f52f7a2fb2210a9daaad"
+    },
+    {
+      "sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "url": "https://api.github.com/repos/techrote/cybersand/git/commits/19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "html_url": "https://github.com/techrote/cybersand/commit/19023b4016facfda2b13b9a1503742e4a9fe1982"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "valid",
+    "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJrAjlXCRC1aQ7uu5UhlAAANIQQAJC078BbAX2urc4T98YADROR\nl1ciYpVFIEiJaQX06uzhERfp5hwkUoUiaNWRBwMugskm8BCFxGW/7jZg4jCwORNa\nzKBAC62Jg0UqgDBo5c9fk1wkaOyHC6hxpN38C14eAqZYtfQowaJpz0rXR37GYFj6\nz5LqCemT78dSRKTyKt7CMNgyIAXsHJDp2WWakd/w2uGWQJXXoRJe17HO670+sDAS\nzS+l0N3Jb1FpDG/qwQpHG84zjNyBPZQOY+J2MuBPRPsRu2ziMpcXyufe1VVRivlE\npYbag+BEPEvnlYmHYIxeIlDFbS62K2t0BhpAs6XpWxCTv/e8UJsLy/rdmxdtRCbZ\ndDLoU4YT95Y7fgQRraQ4O8OpVWjL8ylesSc911hAPJR/KdZWkGowqnbeRg/jbFiR\nlwRUtLIG9lTu7Sqf98qxEXAKWeVMMjxElAteApjCI2k/UOEDCuHzJ3eCM4TQtq/k\nWLBSZ1T+9AkDKwpQcnrc5GYqvqLy+7dVYASZdETUS3hiNYoVpDqncAYZUTahPokf\nWNKslaPqU1s6mVVrESA0PieZkeWeNkW14u1Aj3worpseU9cvMBilEHtyneIICoC/\nEMTgjpem9md2mx50ztwaMdCr3GWhG423p0chGzOC1BOj5Ijo7UejLXplyTmYDSf8\nd28Tz7IhtY0MSWcFzUV9\n=ZDlo\n-----END PGP SIGNATURE-----\n",
+    "payload": "tree 39b658c5de9c5e541312b5190bd5d8ba797c6bed\nparent 30e1cddd3d678456df10f52f7a2fb2210a9daaad\nparent 19023b4016facfda2b13b9a1503742e4a9fe1982\nauthor tom <261801702+techrote@users.noreply.github.com> 1795307863 +0000\ncommitter GitHub <noreply@github.com> 1795307863 +0000\n\nMerge PR #723: accelerate complete worldgen CI with bounded showcase concurrency\n\nCI-OPT-003 independently qualified CI-only increment. Exact-source Linux/Windows/Native qualification passed. One controlled same-worker complete-family pair preserved every original scientific case and reduced elapsed work by8m36s. Independent runtime/CI review verified repaired diagnostic custody and fail-closed evidence. Manual owner-authorized merge; no auto-merge. Admission review6009201962.",
+    "verified_at": "2026-11-22T00:37:44Z"
+  }
+}

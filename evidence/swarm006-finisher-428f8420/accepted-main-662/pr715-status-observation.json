@@ -1,0 +1,13 @@
+{
+  "observed_utc": "2026-11-22T00:50:31.650Z",
+  "url": "https://github.com/techrote/cybersand/pull/715",
+  "number": 715,
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "head": "integration/swarm004-005-mainline-20261121",
+  "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+  "merge_commit_sha": null,
+  "updated_at": "2026-11-21T23:16:26Z",
+  "merged_at": null
+}

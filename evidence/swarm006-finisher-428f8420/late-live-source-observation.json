@@ -1,0 +1,90 @@
+{
+  "observed_at": "2026-11-22T00:46:23.626Z",
+  "main": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "main_predecessor": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+  "qualified_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "pr715": {
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "draft": true,
+    "merged": false
+  },
+  "pr716": {
+    "head": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "draft": true,
+    "merged": false
+  },
+  "donors": [
+    {
+      "number": 692,
+      "head": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+      "branch": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T00:16:52Z"
+    },
+    {
+      "number": 693,
+      "head": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+      "branch": "experiment/gentek-swarm-004-workbench",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T00:16:22Z"
+    },
+    {
+      "number": 696,
+      "head": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+      "branch": "experiment/gentek-swarm-005-native-closure",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T02:16:48Z"
+    },
+    {
+      "number": 697,
+      "head": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+      "branch": "experiment/gentek-swarm-005-workbench-closure",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T02:10:58Z"
+    },
+    {
+      "number": 700,
+      "head": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+      "branch": "experiment/gentek-swarm-005-doc-gate",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T02:21:21Z"
+    },
+    {
+      "number": 705,
+      "head": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+      "branch": "experiment/gentek-swarm-006-native-recovery",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T12:53:33Z"
+    },
+    {
+      "number": 707,
+      "head": "4e8ff0b01043d9e1bed336559b17e37283094add",
+      "branch": "experiment/gentek-swarm-006-workbench-recovery",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T15:56:28Z"
+    },
+    {
+      "number": 709,
+      "head": "9daceee82b5f06b1c32867a1f274f4bebf9f91ff",
+      "branch": "experiment/gentek-swarm-006-exact-crop-compare",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T16:46:06Z"
+    },
+    {
+      "number": 710,
+      "head": "8fad90c78c7c0edb111a27fb21b69f94eadb629a",
+      "branch": "experiment/gentek-swarm-006-final-round-inspector-fix",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T17:07:19Z"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+12defa27b6beb6309b3584d874522f03bc4592fb
+100644 a44ebe055c9eaac1a0689d3ecc7a4d5a6867566c 1	docs/reference/status-and-roadmap.md
+100644 95268972557208da0416b2eed857e5559a1c47fd 2	docs/reference/status-and-roadmap.md
+100644 285050f30b33fc6e048019711085eaee2ef3dfc0 3	docs/reference/status-and-roadmap.md
+
+Auto-merging Makefile
+Auto-merging docs/operations/local-build-and-validation.md
+Auto-merging docs/reference/retrieval-index.md
+Auto-merging docs/reference/status-and-roadmap.md
+CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md

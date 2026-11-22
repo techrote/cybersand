@@ -1,0 +1,127 @@
+{
+  "observed_utc": "2026-11-22T00:50:31.541Z",
+  "repository_full_name": "techrote/cybersand",
+  "base": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+  "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "status": "ahead",
+  "ahead_by": 3,
+  "behind_by": 0,
+  "total_commits": 3,
+  "too_large": null,
+  "base_commit": {
+    "sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+    "url": "https://api.github.com/repos/techrote/cybersand/commits/30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+    "html_url": "https://github.com/techrote/cybersand/commit/30e1cddd3d678456df10f52f7a2fb2210a9daaad"
+  },
+  "merge_base_commit": {
+    "sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+    "url": "https://api.github.com/repos/techrote/cybersand/commits/30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+    "html_url": "https://github.com/techrote/cybersand/commit/30e1cddd3d678456df10f52f7a2fb2210a9daaad"
+  },
+  "files": [
+    {
+      "filename": ".github/workflows/native.yml",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "previous_filename": null
+    },
+    {
+      "filename": "Makefile",
+      "status": "modified",
+      "additions": 18,
+      "deletions": 4,
+      "changes": 22,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/operations/ci-execution-and-performance.md",
+      "status": "modified",
+      "additions": 40,
+      "deletions": 2,
+      "changes": 42,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/operations/local-build-and-validation.md",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 8,
+      "changes": 21,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/reference/retrieval-index.md",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 1,
+      "changes": 3,
+      "previous_filename": null
+    },
+    {
+      "filename": "docs/reference/status-and-roadmap.md",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 0,
+      "changes": 12,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/check_worldgen_build_inventory.py",
+      "status": "modified",
+      "additions": 60,
+      "deletions": 26,
+      "changes": 86,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/native_execution_policy.py",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/run_native_family.sh",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/test_native_shards.py",
+      "status": "modified",
+      "additions": 77,
+      "deletions": 0,
+      "changes": 77,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/test_native_watchdogs.py",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 1,
+      "changes": 11,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/test_worldgen_build_inventory.py",
+      "status": "modified",
+      "additions": 296,
+      "deletions": 10,
+      "changes": 306,
+      "previous_filename": null
+    },
+    {
+      "filename": "tools/ci/verify_native_shards.py",
+      "status": "modified",
+      "additions": 28,
+      "deletions": 11,
+      "changes": 39,
+      "previous_filename": null
+    }
+  ]
+}

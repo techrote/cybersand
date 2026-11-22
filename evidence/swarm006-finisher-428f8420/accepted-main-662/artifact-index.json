@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "scope": "Append-only late-main662 independent source-impact addendum; no runtime qualification",
+  "files": [
+    {
+      "path": "Late-Main-662df51c-Addendum.md",
+      "bytes": 9732,
+      "sha256": "b42ab7b3d6317620ad128466f8b0e394d3dfafc78646416efbc3ab93d5579a20"
+    },
+    {
+      "path": "accepted-30e-to-662-github-compare.json",
+      "bytes": 3444,
+      "sha256": "d0ea0ce00b31362723c6710bb5487641f85036047fed506c7b36c6e3d699e8d9"
+    },
+    {
+      "path": "accepted-30e1cddd-to-662df51c.patch",
+      "bytes": 63338,
+      "sha256": "f60e59fbd12e9ecb2b1667c669ab25e306376373ca7a88f0f41903d1e348071d"
+    },
+    {
+      "path": "accepted-662df51c-github-commit.json",
+      "bytes": 3624,
+      "sha256": "34db819b4d4618bedd5ef897720669ec2156ecdd830730798f84f278da330487"
+    },
+    {
+      "path": "accepted-main-review.json",
+      "bytes": 46177,
+      "sha256": "c856115ce255b055338ccdb8dd29ae75be0cbbc7d1ce103834d480d29ace2f00"
+    },
+    {
+      "path": "audit_late_main.py",
+      "bytes": 16151,
+      "sha256": "038f82aac847a33cbd3ff51169852d909d5a405b8e61e892619d903ed880c4e8"
+    },
+    {
+      "path": "merge-tree.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "merge-tree.stdout.txt",
+      "bytes": 556,
+      "sha256": "4821a593bae22cfbd1634ef534330e4c2c40c0390980f8755138d74d1df485c3"
+    },
+    {
+      "path": "pr715-status-observation.json",
+      "bytes": 383,
+      "sha256": "8172ea139da20f1cf3f49f62dc0193bfc41da6363d599aa4fa6fb89ce304218d"
+    },
+    {
+      "path": "qualified-428-to-unresolved-accepted-main-projection.patch",
+      "bytes": 106991,
+      "sha256": "b1089819c1406449d1fe8bfb93f0d4797899861ff7e47b7c1312406f0af52cab"
+    }
+  ]
+}

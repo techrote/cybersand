@@ -1,0 +1,46 @@
+{
+  "schema": "swarm006-delivery-file-identities/v1",
+  "source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "files": [
+    {
+      "name": "CyberSand-SWARM006-Draft-HOLD-Windows-428f842034a1.zip",
+      "bytes": 93736036,
+      "sha256": "2462275ad0093097b3c80b6bfe6fb543780b2b53cf3ee2ec56829c4341c7f015"
+    },
+    {
+      "name": "CyberSand-SWARM006-Draft-HOLD-Windows-428f842034a1.zip.sha256",
+      "bytes": 122,
+      "sha256": "37b7491b41a4a2bad1e4718a4f70a6cd77532d75c4b9fc6d7d71cc857dc46ab3"
+    },
+    {
+      "name": "CyberSand-SWARM006-Windows-Owner-Acceptance.ps1",
+      "bytes": 8910,
+      "sha256": "66934e384542531747e9d8d0e9fd1f6e2d971c5a96ac05b4ec3c2e273a21f4fe"
+    },
+    {
+      "name": "Owner-Acceptance.md",
+      "bytes": 8773,
+      "sha256": "512bdbb437aeccfa3264ea7c245eb83d439b657791e56fa28f3ffa731b6c331a"
+    },
+    {
+      "name": "Qualification-Report.md",
+      "bytes": 42679,
+      "sha256": "441f8674fd6de9c99a45a9789136926a4ad0e7af9210ca446d1d4a33b575b0c7"
+    },
+    {
+      "name": "CyberSand-SWARM006-Finisher-428f842034a1-Evidence.zip",
+      "bytes": 500131811,
+      "sha256": "ec2fca91e6ecf08873c39e9c153bcda25a83c1d2fe6bba570c5a0e7a2fa43067"
+    },
+    {
+      "name": "CyberSand-SWARM006-Finisher-428f842034a1-Evidence-Index.json",
+      "bytes": 2713192,
+      "sha256": "25c2bf9bef4b0afe729bd79e08446cef1f120ebaef725b42ac941e9a60d5ffc0"
+    },
+    {
+      "name": "CyberSand-SWARM006-Finisher-428f842034a1-Evidence.zip.sha256",
+      "bytes": 120,
+      "sha256": "c0122db038cfde4502062578eca7f1f54f3eea86434acc18ad844eb118585187"
+    }
+  ]
+}
