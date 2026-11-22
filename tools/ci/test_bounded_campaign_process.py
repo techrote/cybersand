@@ -39,6 +39,9 @@ if mode in ("timeout","early-success","early-failure"):
     while True:time.sleep(.05)
 if mode=="success":sys.exit(0)
 if mode=="failure":sys.exit(7)
+if mode=="joined-history":
+    subprocess.run([sys.executable,"-c","pass"],check=True)
+    sys.exit(0)
 '''
 
 
@@ -193,6 +196,22 @@ class ActualProcessTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name=="nt","Actual Windows assignment refusal requires Windows")
     def test_assignment_and_termination_refusal_is_not_retired(self):self.assignment_refusal(True)
+
+    @unittest.skipUnless(os.name=="nt","Actual Windows lifetime accounting requires Windows")
+    def test_missing_lifetime_handle_stays_unproven(self):
+        folder=self.output/"joined-history";folder.mkdir()
+        fixture=folder/"fixture.py";fixture.write_text(FIXTURE)
+        record=folder/"retirement.json"
+        result=subject.run_campaign([sys.executable,str(fixture),str(folder),"joined-history"],
+            cwd=folder,timeout=20,record_path=record)
+        value=json.loads(record.read_text());proof=value["retirement_proof"]
+        self.assertEqual(result.returncode,0)
+        self.assertIs(value["retired"],False)
+        self.assertEqual(value["status"],"retirement-unproven")
+        self.assertGreater(proof["job_lifetime_processes"],len(proof["retained_job_pids"]))
+        self.assertFalse(alive(value["pid"]))
+        self.rows.append({"mode":"joined-history","record":value,
+            "scope":"Actual Windows child already exited before snapshot; accounting alone does not prove its retirement."})
 
 
 def main() -> int:

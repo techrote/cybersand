@@ -70,6 +70,9 @@ class _LinuxGroup:
     def close(self) -> None:
         self.pid = 0
 
+    def retirement_proof(self) -> dict:
+        return {"complete": True, "scope": "cooperating Linux process group"}
+
 
 class _WindowsJob:
     method = "suspended-windows-process-job"
@@ -78,6 +81,11 @@ class _WindowsJob:
         from ctypes import wintypes as w
         self.process: subprocess.Popen | None = None
         self.assigned = False
+        self.retained: dict[int, int] = {}
+        self.owned_handles: list[int] = []
+        self.snapshot_total: int | None = None
+        self.snapshot_stable = False
+        self.termination_requested = False
 
         class BasicLimits(ctypes.Structure):
             _fields_ = [("process_time", ctypes.c_longlong), ("job_time", ctypes.c_longlong),
@@ -102,7 +110,13 @@ class _WindowsJob:
                 ("process_id", w.DWORD), ("base_priority", w.LONG),
                 ("delta_priority", w.LONG), ("flags", w.DWORD)]
 
-        self.Accounting, self.ThreadEntry = Accounting, ThreadEntry
+        class ProcessIds(ctypes.Structure):
+            # Defensive CI supervision bound, unrelated to native World limits.
+            _fields_ = [("assigned", w.DWORD), ("listed", w.DWORD),
+                ("pids", ctypes.c_size_t*4096)]
+
+        self.Accounting, self.ThreadEntry, self.ProcessIds = Accounting, ThreadEntry, ProcessIds
+        self.Bool = w.BOOL
         self.api = ctypes.WinDLL("kernel32", use_last_error=True)
         declarations = {
             "CreateJobObjectW": ([ctypes.c_void_p, w.LPCWSTR], w.HANDLE),
@@ -117,6 +131,9 @@ class _WindowsJob:
             "OpenThread": ([w.DWORD, w.BOOL, w.DWORD], w.HANDLE),
             "GetProcessIdOfThread": ([w.HANDLE], w.DWORD),
             "ResumeThread": ([w.HANDLE], w.DWORD),
+            "OpenProcess": ([w.DWORD, w.BOOL, w.DWORD], w.HANDLE),
+            "IsProcessInJob": ([w.HANDLE, w.HANDLE, ctypes.POINTER(w.BOOL)], w.BOOL),
+            "WaitForSingleObject": ([w.HANDLE, w.DWORD], w.DWORD),
         }
         for name, (args, result) in declarations.items():
             function = getattr(self.api, name)
@@ -174,39 +191,101 @@ class _WindowsJob:
         finally:
             self.api.CloseHandle(snapshot)
 
-    def active(self) -> list[int]:
+    def _accounting(self):
         account = self.Accounting()
         if not self.api.QueryInformationJobObject(self.handle, 1, ctypes.byref(account), ctypes.sizeof(account), None):
             raise ctypes.WinError(ctypes.get_last_error())
-        # Only cardinality is required; no unrelated system PID is inspected.
+        return account
+
+    def _retain_members(self) -> None:
+        self.snapshot_total = self._accounting().total
+        if self.assigned:
+            # The original Popen handle was retained before Job assignment.
+            self.retained[self.process.pid] = int(self.process._handle)
+        members = self.ProcessIds()
+        if not self.api.QueryInformationJobObject(self.handle, 3, ctypes.byref(members), ctypes.sizeof(members), None):
+            raise ctypes.WinError(ctypes.get_last_error())
+        if members.listed != members.assigned or members.listed > 4096:
+            raise CampaignRetirementError("Job process identity list is incomplete")
+        for pid in members.pids[:members.listed]:
+            if pid in self.retained:
+                continue
+            handle = self.api.OpenProcess(0x101000, False, pid)  # SYNCHRONIZE | QUERY_LIMITED_INFORMATION
+            if not handle:
+                raise ctypes.WinError(ctypes.get_last_error())
+            self.owned_handles.append(handle)
+            belongs = self.Bool()
+            if not self.api.IsProcessInJob(handle, self.handle, ctypes.byref(belongs)):
+                raise ctypes.WinError(ctypes.get_last_error())
+            if not belongs.value:
+                raise CampaignRetirementError("Opened process no longer belongs to the campaign Job")
+            self.retained[pid] = handle
+        self.snapshot_stable = self._accounting().total == self.snapshot_total
+
+    def active(self) -> list[int]:
+        account = self._accounting()
         unassigned = [self.process.pid] if not self.assigned and self.process is not None \
             and self.process.poll() is None else []
-        return [0] * account.active + unassigned
+        pending = []
+        for pid, handle in self.retained.items():
+            result = self.api.WaitForSingleObject(handle, 0)
+            if result == 258:  # WAIT_TIMEOUT: termination is not yet witnessed.
+                pending.append(pid)
+            elif result != 0:
+                raise CampaignRetirementError("Exact process-handle termination query failed")
+        return [0] * account.active + unassigned + pending
 
     def terminate(self) -> None:
         try:
-            if self.handle and not self.api.TerminateJobObject(self.handle, 1):
-                raise ctypes.WinError(ctypes.get_last_error())
+            try:
+                self._retain_members()
+            finally:
+                if self.handle and not self.api.TerminateJobObject(self.handle, 1):
+                    raise ctypes.WinError(ctypes.get_last_error())
+                self.termination_requested = True
         finally:
             # Assignment may have failed. Kill only the exact Popen handle that
             # we created; Job retirement alone cannot cover this suspended child.
             if not self.assigned and self.process is not None and self.process.poll() is None:
                 self.process.kill()
 
+    def retirement_proof(self) -> dict:
+        final = self._accounting()
+        complete = self.snapshot_stable and self.snapshot_total == final.total \
+            and len(self.retained) == final.total and not self.active()
+        # A process removed from the current PID list is not a termination
+        # witness. Earlier, unobserved lifetime admissions make proof unknown.
+        return {"complete": complete, "scope": "exact retained Windows process handles",
+            "job_lifetime_processes": final.total, "retained_job_pids": sorted(self.retained),
+            "stable_lifetime_count": self.snapshot_stable and self.snapshot_total == final.total,
+            "unassigned_direct_child": self.process.pid if self.process is not None and not self.assigned else None,
+            "termination_requested": self.termination_requested}
+
     def close(self) -> None:
+        error = None
+        for handle in self.owned_handles:
+            if not self.api.CloseHandle(handle):
+                error = ctypes.WinError(ctypes.get_last_error())
+        self.owned_handles.clear()
         if self.handle:
             handle, self.handle = self.handle, None
             if not self.api.CloseHandle(handle):
-                raise ctypes.WinError(ctypes.get_last_error())
+                error = ctypes.WinError(ctypes.get_last_error())
+        if error is not None:
+            raise error
 
 
 def run_campaign(command: list[str], *, cwd: Path, timeout: float,
                  record_path: Path | None = None) -> subprocess.CompletedProcess:
-    """Return only after the owned process scope is quiescent; preserve failures.
+    """Bound cleanup, separately record proven retirement, preserve failures.
 
 An aggregate timeout is raised after retirement, never converted to a pass.
 A parent that reports success while leaving live descendants is also refused.
 The fixed 10-second cleanup allowance is separate from the campaign deadline.
+Windows lifetime members absent from the retained handle set leave retirement
+explicitly unproven. A normal parent return is then only its return status; the
+caller must independently verify complete campaign child-wait/custody evidence.
+Unknown retirement never authorizes uploading a failed mutable profile tree.
 """
     if not command or any(not isinstance(arg, str) or "\0" in arg for arg in command) \
             or isinstance(timeout, bool) or not isinstance(timeout, (int, float)) \
@@ -258,7 +337,9 @@ The fixed 10-second cleanup allowance is separate from the campaign deadline.
                     if time.monotonic() >= deadline:
                         raise CampaignRetirementError("Campaign descendants did not retire before evidence upload")
                     time.sleep(0.02)
-                record["retired"] = True
+                proof = owner.retirement_proof()
+                record["retirement_proof"] = proof
+                record["retired"] = proof["complete"]
             else:
                 # The owner constructor has not launched a process.
                 record["retired"] = True
@@ -272,7 +353,8 @@ The fixed 10-second cleanup allowance is separate from the campaign deadline.
                 except BaseException as error:
                     retirement_error = error
                     record["retired"] = False
-    record.update(status="retired" if record["retired"] else "retirement-failed",
+    record.update(status="retired" if record["retired"] else
+        ("retirement-failed" if retirement_error is not None else "retirement-unproven"),
         returncode=process.returncode if process is not None else None,
         timed_out=isinstance(outcome,subprocess.TimeoutExpired),parent_left_descendants=left_descendants,
         elapsed_seconds=time.monotonic()-began,
