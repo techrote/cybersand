@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Opt-in GEN-006 three-area controls, Windows evaluation, isolated profiles, expected observations and failure capture
 canonical-for: [persistent-areas-owner-evaluation]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-22
 related-documents: [../systems/persistent-authored-areas.md, ../audits/2026-11-21-gen006-persistent-areas.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -80,6 +80,18 @@ session, per-area time, durable generation and supported-domain information.
 the persistent native profile. **Save & Menu**, F2 and the window close action
 attempt the same safe departure; a failed save leaves an explicit error and
 retains the current World.
+
+Crash recovery restores the last durably acknowledged checkpoint. Active edits
+or ticks after it can be lost if the application is forcibly killed before
+capture/publication completes. This prototype uses checkpoints, without an
+always-on edit journal. Save before deliberately terminating the process.
+
+The qualified Windows evaluator has a known responsiveness limitation: routine
+travel took roughly 16 seconds on the hosted software-rendered runner, and its
+first open recorded a 40.743-second maximum main-frame gap with no identified
+cause. These measurements are not NVIDIA timings. Keep the initial launch
+and transition delays in mind during owner evaluation; the qualification ledger
+retains the complete performance evidence.
 
 ## Failure recovery and evidence
 

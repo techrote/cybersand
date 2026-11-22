@@ -6,7 +6,7 @@ scope: Opt-in GEN-006 three-area desktop vertical slice, native CYPS2 continuati
 canonical-for: [persistent-authored-areas-prototype]
 keywords: [GEN-006, persistent areas, game time, catch-up, CYPS, durable checkpoint, Simulate Ahead]
 related-documents: [../reference/level-saves-and-replay.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../decisions/ADR-015-persistent-authored-areas.md, ../operations/persistent-areas-evaluation.md, ../audits/2026-11-21-gen006-persistent-areas.md]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-22
 ---
 
 # Persistent authored areas prototype
@@ -179,6 +179,12 @@ claims that peak process memory equals serialized payload size. During initial
 creation three capsules coexist; transitions retain one live World, at most one
 candidate and bounded serialization/I/O copies. Qualification records process
 RSS and retained disk size separately.
+
+Crash recovery restores the last durably published checkpoint. Active edits or
+ticks after it can be lost if the process is killed before successful capture
+and publication. Save, travel and bounded progression acknowledge their durable
+state; there is no always-on edit journal. Ordinary save failures retain the
+current live World, and normal departure attempts a durable save.
 
 The durability claim covers executed process-crash and I/O failure recovery on
 the tested platforms. It does not promise hardware power-loss behaviour for
