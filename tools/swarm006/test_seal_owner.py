@@ -14,8 +14,11 @@ SOURCE='a'*40
 def fixture(root: Path) -> dict:
     for name in owner.REQUIRED:
         path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'synthetic integrity fixture\n')
-    runtime={'schema':1,'programme':'GENTEK-SWARM-006','draft_hold':True,'source':SOURCE,'sha256':owner.sha(root/'godot/tools/gentek_reciprocal.exe')}
+    runtime={'schema':1,'programme':'GENTEK-SWARM-006','draft_hold':True,'source':SOURCE,
+             'platform':'windows','artifact':'godot/tools/gentek_reciprocal.exe',
+             'sha256':owner.sha(root/'godot/tools/gentek_reciprocal.exe')}
     (root/'godot/tools/swarm004-runtime.json').write_text(json.dumps(runtime),encoding='utf-8')
+    (root/'godot/tools/swarm004-runtime.windows.json').write_text(json.dumps(runtime),encoding='utf-8')
     manifest={'schema':1,'programme':'GENTEK-SWARM-006','draft_hold':True,'source_commit':SOURCE,
               'native_sha256':owner.sha(root/'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'),
               'reciprocal_cli_sha256':runtime['sha256'],
@@ -70,6 +73,18 @@ class PackageIntegrity(unittest.TestCase):
                 runtime={'source':SOURCE,'sha256':manifest['reciprocal_cli_sha256'],'programme':'GENTEK-SWARM-006'}
                 runtime[key]=value;(root/'godot/tools/swarm004-runtime.json').write_text(json.dumps(runtime))
                 manifest['files_sha256']['godot/tools/swarm004-runtime.json']=owner.sha(root/'godot/tools/swarm004-runtime.json');save(root,manifest)
+                with self.assertRaisesRegex(ValueError,'Runtime'):owner.validate_package(root,SOURCE)
+
+    def test_preferred_platform_binding_cannot_be_stale_or_foreign(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);original=fixture(root)
+            preferred=root/'godot/tools/swarm004-runtime.windows.json'
+            binding=json.loads(preferred.read_text())
+            for field,value in [('source','b'*40),('platform','linux'),('sha256','0'*64)]:
+                manifest=copy.deepcopy(original)
+                preferred.write_text(json.dumps({**binding,field:value}))
+                manifest['files_sha256']['godot/tools/swarm004-runtime.windows.json']=owner.sha(preferred)
+                save(root,manifest)
                 with self.assertRaisesRegex(ValueError,'Runtime'):owner.validate_package(root,SOURCE)
 
 if __name__=='__main__':unittest.main(verbosity=2)

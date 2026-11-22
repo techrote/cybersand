@@ -61,7 +61,8 @@ def main() -> None:
         targets.append(str(objects / "replay_swarm005_known"))
     run("reciprocal-strict", [*make, "BUILD=" + str(objects), *options, *targets])
     names = custody.names(args.platform)
-    for name in (names["cli"], *names["tests"][:4]):
+    reciprocal_count = len(custody.RECIPROCAL_TESTS)
+    for name in (names["cli"], *names["tests"][:reciprocal_count]):
         shutil.copyfile(objects / name, output / name)
     suffix = ["-static"] if args.platform == "windows" else []
     flags = [cxx, "-std=c++20", "-Wall", "-Wextra", "-Wpedantic", "-Wconversion", "-Wshadow", "-Inative/include"]
@@ -70,18 +71,18 @@ def main() -> None:
     run("authoring-patch-strict", [*flags, "-Werror", "-fsyntax-only", "native/tests/test_workbench_authoring_patch.cpp"])
     simulation = ["native/src/" + name for name in SIMULATION]
     run("authoring-patch", [*flags, "-O2", "-g", "-pthread", *suffix, *simulation,
-                            "native/tests/test_workbench_authoring_patch.cpp", "-o", str(output / names["tests"][4])])
+                            "native/tests/test_workbench_authoring_patch.cpp", "-o", str(output / names["tests"][-1])])
     if args.platform == "linux":
         shutil.copyfile(objects / "replay_swarm005_known", output / "replay_swarm005_known")
         sanitized = output / "sanitized"
         sanitized.mkdir()
         san_objects = output.parent / "swarm45-linux-sanitized-objects"
         run("reciprocal-sanitized", [*make, "BUILD=" + str(san_objects), "SANITIZE=1", "tests"])
-        for name in names["tests"][:4]:
+        for name in names["tests"][:reciprocal_count]:
             shutil.copyfile(san_objects / name, sanitized / name)
         run("authoring-patch-sanitized", [*flags, "-O1", "-g", "-pthread", "-fno-omit-frame-pointer",
                                           "-fsanitize=address,undefined", *simulation,
-                                          "native/tests/test_workbench_authoring_patch.cpp", "-o", str(sanitized / names["tests"][4])])
+                                          "native/tests/test_workbench_authoring_patch.cpp", "-o", str(sanitized / names["tests"][-1])])
     cpp = Path(os.environ["GODOT_CPP_ROOT"])
     library = cpp / "bin" / ("libgodot-cpp." + args.platform + ".template_debug.x86_64.a")
     compiler = subprocess.check_output([cxx, "--version"], text=True, timeout=30).strip()

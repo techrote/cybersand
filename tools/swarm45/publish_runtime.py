@@ -23,8 +23,8 @@ import runtime_custody as custody
 import run_request
 from publication_candidate import BINDINGS, CLIS, PATHS, PROVENANCE, RUNTIMES
 
-REQUEST = ".github/swarm45-runtime-publication-request.json"
-WORKFLOW = ".github/workflows/swarm45-runtime-publication.yml"
+REQUEST = ".github/swarm456-runtime-publication-request.json"
+WORKFLOW = ".github/workflows/swarm456-runtime-publication.yml"
 KEYS = {"schema", "programme", "action", "request_id", "expected_parent_sha", "qualification_source_sha",
         "qualification_run_id", "qualification_run_attempt", "publication_artifact_id"}
 
@@ -70,7 +70,7 @@ def verify_request(root: Path, execution: str, event: dict) -> dict:
         custody.require(len(parents) == 1 and run_request.changed(root, parents[0], revision) == [REQUEST],
                         "Source changed after qualification; only explicit publication-request commits are admitted")
     custody.require(run_request.ancestor(root, run_request.ACCEPTED_MAIN, execution)
-                    and run_request.ancestor(root, run_request.DONORS["700"], execution), "Publication left accepted-main/donor ancestry")
+                    and all(run_request.ancestor(root, donor, execution) for donor in run_request.DONORS.values()), "Publication left accepted-main/donor ancestry")
     return {**value, "execution_sha": execution, "request_sha256": hashlib.sha256(payload).hexdigest(),
             "request_only_commits": revisions}
 
@@ -86,7 +86,7 @@ def validate_run(request: dict, run: dict, workflow: dict, artifacts: list[dict]
                     and run.get("head_repository", {}).get("full_name") == "techrote/cybersand"
                     and workflow.get("path") == custody.WORKFLOW and str(workflow.get("id")) == str(run.get("workflow_id")),
                     "Qualification workflow/repository custody changed")
-    name = "swarm45-runtime-publication-candidate-" + request["qualification_source_sha"] + "-" + request["qualification_run_id"] + "-" + request["qualification_run_attempt"]
+    name = "swarm456-runtime-publication-candidate-" + request["qualification_source_sha"] + "-" + request["qualification_run_id"] + "-" + request["qualification_run_attempt"]
     selected = [item for item in artifacts if item.get("name") == name]
     custody.require(len(selected) == 1 and str(selected[0].get("id")) == request["publication_artifact_id"]
                     and selected[0].get("expired") is False and selected[0].get("size_in_bytes", 0) > 0,
@@ -136,6 +136,7 @@ def verify_bundle(bundle: Path, request: dict) -> dict:
     source = request["qualification_source_sha"]
     source_tree = custody.git(custody.ROOT, "rev-parse", source + "^{tree}")
     custody.require(plan.get("schema") == 1 and plan.get("programme") == custody.PROGRAMME
+                    and plan.get("qualification_programme") == custody.QUALIFICATION_PROGRAMME
                     and plan.get("source_commit") == source and plan.get("source_tree") == source_tree
                     and plan.get("build_context") == context and plan.get("branch") == custody.BRANCH
                     and plan.get("permitted_tracked_paths") == PATHS
@@ -150,6 +151,7 @@ def verify_bundle(bundle: Path, request: dict) -> dict:
         runtime = bundle / RUNTIMES[platform]
         custody.require(manifest.get("schema_version") == 1
                         and manifest.get("kind") == "source-matched-swarm45-mainline-evaluation-candidate"
+                        and manifest.get("qualification_programme") == custody.QUALIFICATION_PROGRAMME
                         and manifest.get("source_commit") == source and manifest.get("build_commit") == source
                         and manifest.get("source_tree") == source_tree and manifest.get("artifact") == RUNTIMES[platform]
                         and manifest.get("source_inputs") == current["extension_inputs_sha256"]
@@ -164,6 +166,7 @@ def verify_bundle(bundle: Path, request: dict) -> dict:
         binding = json.loads((bundle / BINDINGS[platform]).read_text(encoding="utf-8"))
         cli = bundle / CLIS[platform]
         custody.require(binding.get("schema") == 1 and binding.get("programme") == custody.PROGRAMME
+                        and binding.get("qualification_programme") == custody.QUALIFICATION_PROGRAMME
                         and binding.get("platform") == platform and binding.get("source") == source
                         and binding.get("artifact") == CLIS[platform]
                         and binding.get("source_commit") == source and binding.get("build_commit") == source

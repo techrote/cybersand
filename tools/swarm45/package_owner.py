@@ -40,7 +40,7 @@ def main() -> None:
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--vc-runtime", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--readme", default="docs/operations/swarm005-workbench-playtest.md")
+    parser.add_argument("--readme", default="docs/operations/swarm456-owner-acceptance.md")
     args = parser.parse_args()
     receipt = custody.verify(args.runtime)
     custody.require(receipt["platform"] == "windows", "Evaluator requires the Windows source-built runtime")
@@ -55,12 +55,27 @@ def main() -> None:
     binding = custody.cli_binding(receipt)
     custody.write_json(destination / "swarm004-runtime.windows.json", binding)
     custody.write_json(destination / "swarm004-runtime.json", binding)
+    custody.require(not (destination / "gentek_reciprocal").exists()
+                    and not (destination / "swarm004-runtime.linux.json").exists(), "Windows evaluator contains a foreign runtime")
     load("swarm45_launcher_binding", "tools/swarm005/package_owner.py").bind_owner_launcher(args.output)
+    comparison = (custody.ROOT / "tools/swarm006/compare_saved_setup.ps1").read_text(encoding="utf-8")
+    replacements = {
+        '"4e8ff0b01043d9e1bed336559b17e37283094add"': '"' + receipt["source_commit"] + '"',
+        '"0db65201955dfe1d8be518feb66de3812d1d2ec8fe70e450e338f007510c60d3"': '"' + binding["sha256"] + '"',
+        'godot\\tools\\swarm004-runtime.json': 'godot\\tools\\swarm004-runtime.windows.json',
+        "SWARM006 4e8ff0b0 owner package": "unified source-bound owner package",
+    }
+    for old, new in replacements.items():
+        custody.require(old in comparison, "Frozen comparison template changed: " + old)
+        comparison = comparison.replace(old, new)
+    (args.output / "Compare saved setup.ps1").write_text(comparison, encoding="utf-8-sig", newline="\r\n")
     path = args.output / "candidate-manifest.json"
     manifest = json.loads(path.read_text(encoding="utf-8"))
     records = custody.inventory(args.output)
     del records[path.name]
-    manifest.update(programme=custody.PROGRAMME, draft_hold=True, owner_visual_acceptance="pending",
+    manifest.update(programme="GENTEK-SWARM-006", qualification_programme=custody.QUALIFICATION_PROGRAMME,
+                    runtime_programme=custody.PROGRAMME, native_definition_sha256=receipt["native_definition_sha256"],
+                    draft_hold=True, owner_visual_acceptance="pending",
                     reciprocal_programme_acceptance=False, reciprocal_cli_sha256=receipt["files"][receipt["cli"]]["sha256"],
                     runtime_manifest_sha256=custody.sha(args.runtime / custody.NAME), files_sha256=records,
                     qualification_receipts="Exact-source and pristine ZIP Windows runs; physical owner acceptance remains separate")

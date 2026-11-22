@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REQUIRED = {
     'Open Workbench.cmd', 'Godot_v4.7-stable_win64.exe', 'Godot_v4.7-stable_win64_console.exe',
     'godot/project.godot', 'godot/tools/gentek_reciprocal.exe', 'godot/tools/swarm004-runtime.json',
+    'godot/tools/swarm004-runtime.windows.json',
     'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
     'godot/addons/cybersand_native/cybersand_native.gdextension', 'godot/main.tscn',
     'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll',
@@ -47,16 +48,28 @@ def validate_package(directory: Path, source: str) -> dict:
     if actual != entries.keys():
         raise ValueError('Package has unlisted or missing files')
     runtime = json.loads((directory/'godot/tools/swarm004-runtime.json').read_text(encoding='utf-8'))
-    if runtime.get('schema') != 1 or runtime.get('draft_hold') is not True or runtime.get('source') != source or runtime.get('programme') != 'GENTEK-SWARM-006' or runtime.get('sha256') != manifest.get('reciprocal_cli_sha256') or runtime.get('sha256') != entries['godot/tools/gentek_reciprocal.exe'] or manifest.get('native_sha256') != entries['godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll']:
+    preferred = json.loads((directory/'godot/tools/swarm004-runtime.windows.json').read_text(encoding='utf-8'))
+    expected_programme = manifest.get('runtime_programme', 'GENTEK-SWARM-006')
+    if (expected_programme not in ('GENTEK-SWARM-006', 'GENTEK-SWARM-004-005-MAINLINE')
+            or preferred != runtime or runtime.get('platform') != 'windows'
+            or runtime.get('artifact') != 'godot/tools/gentek_reciprocal.exe'
+            or any((directory/name).exists() for name in ('godot/tools/gentek_reciprocal', 'godot/tools/swarm004-runtime.linux.json'))
+            or runtime.get('schema') != 1 or runtime.get('draft_hold') is not True or runtime.get('source') != source or runtime.get('programme') != expected_programme or runtime.get('sha256') != manifest.get('reciprocal_cli_sha256') or runtime.get('sha256') != entries['godot/tools/gentek_reciprocal.exe'] or manifest.get('native_sha256') != entries['godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll']):
         raise ValueError('Runtime source/binary identity mismatch')
+    if manifest.get('qualification_programme') == 'GENTEK-SWARM-004-005-006-UNIFIED' and (
+            not re.fullmatch('[0-9a-f]{64}', str(manifest.get('native_definition_sha256', '')))
+            or runtime.get('native_definition_sha256') != manifest['native_definition_sha256']
+            or runtime.get('qualification_programme') != manifest['qualification_programme']):
+        raise ValueError('Unified package native definition/qualification mismatch')
     return manifest
 
 def seal(directory: Path, output: Path, source: str) -> dict:
-    validate_package(directory, source)
+    manifest = validate_package(directory, source)
     output.mkdir(parents=True,exist_ok=True)
-    name = f'CyberSand-SWARM006-Draft-HOLD-Windows-{source[:12]}.zip'
+    label = 'SWARM456' if manifest.get('qualification_programme') == 'GENTEK-SWARM-004-005-006-UNIFIED' else 'SWARM006'
+    name = f'CyberSand-{label}-Draft-HOLD-Windows-{source[:12]}.zip'
     archive=output/name
-    launcher=output/'CyberSand-SWARM006-Windows-Owner-Acceptance.ps1'
+    launcher=output/f'CyberSand-{label}-Windows-Owner-Acceptance.ps1'
     if any(p.exists() for p in (archive,Path(str(archive)+'.sha256'),launcher)):
         raise ValueError('Refusing to overwrite a prior sealed evaluator')
     with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED,compresslevel=6) as package:
@@ -65,13 +78,14 @@ def seal(directory: Path, output: Path, source: str) -> dict:
     digest=sha(archive)
     Path(str(archive)+'.sha256').write_text(f'{digest}  {name}\n',encoding='ascii')
     template=(ROOT/'tools/swarm006/owner_launcher.ps1.in').read_text(encoding='utf-8')
+    template=template.replace('SWARM006', label)
     values={'__SOURCE_COMMIT__':source,'__ZIP_NAME__':name,'__ZIP_SHA256__':digest,'__MANIFEST_SHA256__':sha(directory/'candidate-manifest.json')}
     for key,value in values.items():
         if template.count(key) != 1: raise ValueError('Launcher binding placeholder mismatch: '+key)
         template=template.replace(key,value)
     launcher.write_text(template,encoding='utf-8-sig',newline='\r\n')
     result={'source_commit':source,'archive':name,'archive_sha256':digest,'launcher_sha256':sha(launcher),'manifest_sha256':values['__MANIFEST_SHA256__']}
-    (output/'swarm006-owner-seal.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    (output/(label.lower()+'-owner-seal.json')).write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     return result
 
 def main() -> None:

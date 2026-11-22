@@ -105,8 +105,19 @@ foreach ($file in (Get-ChildItem -LiteralPath $Destination -Recurse -File)) {
 foreach ($name in @('Open Workbench.cmd','Godot_v4.7-stable_win64.exe','Godot_v4.7-stable_win64_console.exe','godot/project.godot','godot/tools/gentek_reciprocal.exe','godot/tools/swarm004-runtime.json','godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll','godot/addons/cybersand_native/cybersand_native.gdextension','godot/main.tscn','godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll','godot/addons/godot-rapier2d/godot-rapier2d.gdextension','vcruntime140.dll','godot/scripts/workbench_reciprocal_protocol.gd','godot/scripts/workbench_reciprocal_panel.gd','READ-ME.md')) {
     if (-not $listed.Contains([IO.Path]::GetFullPath((Join-Path $Destination $name)))) { throw "Launch-critical file is not manifest-bound: $name" }
 }
-$runtime = Get-Content -LiteralPath (Join-Path $Destination 'godot/tools/swarm004-runtime.json') -Raw | ConvertFrom-Json
-if ($runtime.schema -ne 1 -or $runtime.draft_hold -ne $true -or $runtime.source -cne $ExpectedSource -or $runtime.programme -cne 'GENTEK-SWARM-006' -or $runtime.sha256 -cne $manifest.reciprocal_cli_sha256 -or (Get-Sha256 (Join-Path $Destination 'godot/tools/gentek_reciprocal.exe')) -cne $runtime.sha256) { throw 'Native generator manifest/source/hash mismatch.' }
+$genericPath = Join-Path $Destination 'godot/tools/swarm004-runtime.json'
+$preferredPath = Join-Path $Destination 'godot/tools/swarm004-runtime.windows.json'
+if (-not $listed.Contains([IO.Path]::GetFullPath($preferredPath)) -or (Get-Sha256 $genericPath) -cne (Get-Sha256 $preferredPath)) { throw 'Preferred Windows runtime binding is missing or differs from the generic compatibility binding.' }
+$runtime = Get-Content -LiteralPath $preferredPath -Raw | ConvertFrom-Json
+$expectedProgramme = 'GENTEK-SWARM-006'
+if ($manifest.PSObject.Properties.Name -contains 'runtime_programme') { $expectedProgramme = $manifest.runtime_programme }
+if ($expectedProgramme -cnotin @('GENTEK-SWARM-006','GENTEK-SWARM-004-005-MAINLINE') -or $runtime.schema -ne 1 -or $runtime.draft_hold -ne $true -or $runtime.platform -cne 'windows' -or $runtime.artifact -cne 'godot/tools/gentek_reciprocal.exe' -or $runtime.source -cne $ExpectedSource -or $runtime.programme -cne $expectedProgramme -or $runtime.sha256 -cne $manifest.reciprocal_cli_sha256 -or (Get-Sha256 (Join-Path $Destination 'godot/tools/gentek_reciprocal.exe')) -cne $runtime.sha256) { throw 'Native generator manifest/source/hash mismatch.' }
+foreach ($foreign in @('godot/tools/gentek_reciprocal','godot/tools/swarm004-runtime.linux.json')) {
+    if (Test-Path -LiteralPath (Join-Path $Destination $foreign)) { throw 'Windows evaluator contains a foreign-platform runtime.' }
+}
+if ($manifest.PSObject.Properties.Name -contains 'qualification_programme') {
+    if ($manifest.qualification_programme -cne 'GENTEK-SWARM-004-005-006-UNIFIED' -or $runtime.qualification_programme -cne $manifest.qualification_programme -or $runtime.native_definition_sha256 -cne $manifest.native_definition_sha256 -or $runtime.native_definition_sha256 -cnotmatch '^[0-9a-f]{64}$') { throw 'Unified native definition/qualification mismatch.' }
+}
 if ((Get-Sha256 (Join-Path $Destination 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll')) -cne $manifest.native_sha256) { throw 'Source-matched native GDExtension hash mismatch.' }
 Write-Host "Verified GENTEK-SWARM-006 source $ExpectedSource; $($listed.Count) packaged files; generator and Windows GDExtension."
 Write-Host "Evaluator: $Destination"

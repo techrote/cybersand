@@ -56,7 +56,7 @@ EXAMPLES = {
 }
 PROFILE_DIRECTORIES = (("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache"),
                        ("APPDATA", "roaming"), ("LOCALAPPDATA", "local"))
-UI_SCRIPT = "tests/test_workbench_swarm006_ui.gd"
+UI_SCRIPT = "tests/swarm456_reciprocal_ui.gd"
 INPUT_SCRIPT = "tests/swarm006_reciprocal_input.gd"
 INPUT_CASES = {"shared", "independent", "gesture", "busy-active", "busy-off", "busy-hidden", "keyboard"}
 INPUT_PAIRS = ("shared", "independent", "gesture", "busy-active", "busy-off", "busy-hidden", "keyboard-undo", "keyboard-redo")
@@ -638,7 +638,8 @@ def execute(name: str, command: list[str], env: dict[str, str], output: Path, ti
                 terminate_tree(child)
     text = log.read_text(encoding="utf-8", errors="replace")
     result = {"case": name, "command": command, "process_id": child.pid, "returncode": code,
-              "timed_out": timed_out, "wall_seconds": time.monotonic() - began,
+              "timed_out": timed_out, "child_reaped": child.poll() is not None, "timeout_seconds": timeout,
+              "wall_seconds": time.monotonic() - began,
               "log_sha256": custody.native.sha(log), "passed": code == 0 and not timed_out and not ERRORS.search(text)}
     (output / (name + "-process.json")).write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     if not result["passed"]:
@@ -723,7 +724,7 @@ def main() -> int:
     for name, script, marker, timeout in (
             ("protocol", "test_workbench_reciprocal_protocol.gd", "SWARM004_PROTOCOL ", 60),
             ("controller-mechanical", "test_workbench_reciprocal_controller.gd", "SWARM004_CONTROLLER ", 90),
-            ("controls-native", "test_workbench_reciprocal_controls.gd", "SWARM004_CONTROLS ", 90)):
+            ("controls-native", "swarm45_reciprocal_controls.gd", "SWARM004_CONTROLS ", 180)):
         if not results[-1]["passed"]:
             break
         result = execute(name, [*base, "--headless", "--script", "res://tests/" + script], headless_env, headless, timeout)

@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Consolidated reciprocal Workbench candidate, explicit reconciliation, source-matched qualification and mandatory physical owner admission
 canonical-for: [swarm456-unified-mainline, swarm456-owner-evaluation, swarm456-reconciliation]
 last-reviewed: 2026-11-22
-related-documents: [swarm45-mainline-integration.md, swarm006-integration-finisher.md, swarm006-workbench-playtest.md, ../systems/gentek-reciprocal-assembly.md, ../systems/gentek-negotiated-recovery.md, ../architecture/experimental-workbench-authoring-patch.md]
+related-documents: [swarm456-owner-acceptance.md, swarm45-mainline-integration.md, swarm006-integration-finisher.md, swarm006-workbench-playtest.md, ../systems/gentek-reciprocal-assembly.md, ../systems/gentek-negotiated-recovery.md, ../architecture/experimental-workbench-authoring-patch.md]
 ---
 
 # Unified SWARM-004/005/006 mainline integration
@@ -64,7 +64,7 @@ independent reviews are retained in consolidated qualification evidence.
 | Territory/numeric input | Keep #715 coherent press/release/global-release and numeric commitment with #716 immutable captured requests and stale-authority retirement. | Actual pending typing, buttons, outside-canvas release, source changes and cancellation. |
 | Busy World | Keep #716 guard before Paint and shared history guard, including hidden/OFF preparation. | Paint/Undo exclusion while busy and ordinary authoring after retirement. |
 | Runtime lookup | Keep #715 platform-first fail-closed loader. Refresh every advertised package binding with the new CLI. | Ordinary startup without developer overrides; source/pristine equality and stale-binding refusals. |
-| Renamed fixture | Route to `swarm45_reciprocal_controls.gd`, retaining `SWARM004_CONTROLS` and #716 inspector evidence. | Exact process inventory and substantive assertions from both donors. |
+| Scoped fixtures | Route controls to `swarm45_reciprocal_controls.gd` and all nine graphical examples to `swarm456_reciprocal_ui.gd`. Retain `SWARM004_CONTROLS` and #716 inspector evidence. Refuse missing explicit graphical mode/example/evidence before World creation. | Exact mandatory graphical inventory; both donors' assertions; no unconfigured fixture in ordinary headless discovery. |
 | Package custody | Keep canonical committed archive text and explicit Windows attributes with #716 raw asset/import byte inventories and before/after checks. | Source stage, pristine extraction, executable hashes, sidecars and terminal recheck. |
 | Accepted #722/#723 | Preserve compilation reuse, source/configuration guards and bounded showcase concurrency. Add scoped Swarm qualification only. | Existing CI helpers and complete Native/Godot coverage. |
 | Documentation | Combine additive donor routes and main's CI sections; retain frozen registrations, negatives and reviews. | Documentation/provenance, integrity and additive retrieval questions. |
@@ -114,7 +114,7 @@ Retain original failures and identify each repaired successor in the PR.
 
 ## Physical owner acceptance
 
-The consolidated PR supplies one Windows archive, SHA-256, source/runtime manifest
+The [owner launch guide](swarm456-owner-acceptance.md) accompanies one Windows archive, SHA-256, source/runtime manifest
 and simple launcher. Physical acceptance remains **pending** until the owner tests
 that exact package on the NVIDIA system.
 

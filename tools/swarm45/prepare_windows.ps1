@@ -42,11 +42,16 @@ $vc = Join-Path $env:RUNNER_TEMP 'swarm45-vc-runtime'
 if ($LASTEXITCODE -ne 0) { throw 'Runtime staging failed' }
 python tools/swarm45/package_owner.py --engine $engine.Replace('_console.exe','.exe') --engine-notices $notices --runtime build/swarm45-windows --vc-runtime $vc --output build/swarm45-owner
 if ($LASTEXITCODE -ne 0) { throw 'Evaluator packaging failed' }
-$archive = "build/CyberSand-SWARM45-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
-Compress-Archive -Path build/swarm45-owner/* -DestinationPath $archive -CompressionLevel Optimal
-(Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + (Split-Path $archive -Leaf) | Set-Content "$archive.sha256"
+python tools/swarm006/seal_owner.py --package build/swarm45-owner --output build/swarm456-sealed --source $env:TARGET_SOURCE
+if ($LASTEXITCODE -ne 0) { throw 'Unified evaluator sealing failed' }
+python tools/swarm006/test_owner_launcher.py --sealed build/swarm456-sealed --output evidence/windows-launcher --source $env:TARGET_SOURCE
+if ($LASTEXITCODE -ne 0) { throw 'Actual Windows owner launcher qualification failed' }
+Copy-Item build/swarm456-sealed/swarm456-owner-seal.json evidence/windows-package-seal.json
+$archive = "build/swarm456-sealed/CyberSand-SWARM456-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
+$launcher = 'build/swarm456-sealed/CyberSand-SWARM456-Windows-Owner-Acceptance.ps1'
 $validation = Join-Path $env:RUNNER_TEMP 'swarm45-pristine-package'
-Expand-Archive $archive $validation
+& $launcher -Archive $archive -Destination $validation -VerifyOnly
+if (-not $?) { throw 'Source-bound fresh owner ZIP extraction failed' }
 'SWARM45_PACKAGE=' + $validation | Out-File -Append $env:GITHUB_ENV
 'SWARM45_PACKAGE_ZIP=' + (Resolve-Path $archive).Path | Out-File -Append $env:GITHUB_ENV
 'SWARM45_PACKAGE_ENGINE=' + (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV

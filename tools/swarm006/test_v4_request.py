@@ -86,10 +86,13 @@ def main() -> None:
             assert len(round_value['recovery_attempts']) <= 520 and round_value['recovery_work'] <= 2000000
         for label, value in [('off', off), ('on', candidate)]:
             plane = b''.join(int(cell).to_bytes(2, 'little') for cell in value['cells'])
+            remaining = value['metrics'].get('still_required')
+            evaluated = value['status'] in ('complete', 'blocked') and type(remaining) is int and remaining >= 0
             row = {'case': name, 'recovery': label, 'status': value['status'], 'can_apply': value['can_apply'],
                    'stop_reason': value['stop_reason'], 'native_cells': sum(cell != 0 for cell in value['cells']),
                    'joints': len(value['joints']), 'obligations': len(value['obligations']),
-                   'unresolved': sum(o['state'] == 'STILL_REQUIRED' for o in value['obligations']),
+                   'closure_evaluated': evaluated, 'unresolved': remaining if evaluated else None,
+                   'retained_obligation_unresolved': sum(o['state'] == 'STILL_REQUIRED' for o in value['obligations']),
                    'material_sha256': hashlib.sha256(plane).hexdigest(), 'metrics': value['metrics']}
             rows.append(row);print(json.dumps(row), flush=True)
     lines = request('industrial', True).splitlines()

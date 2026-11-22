@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source and target-OS custody for the SWARM-004/005 mainline integration.
+"""Source and target-OS custody for the unified SWARM-004/005/006 integration.
 
 This does not rebuild, publish, retag a donor, or accept a local diagnostic.
 Hosted producer/consumer identity and original build bytes remain explicit.
@@ -22,11 +22,13 @@ import native_candidate_identity as native
 
 NAME = "swarm45-runtime-provenance.json"
 PROGRAMME = "GENTEK-SWARM-004-005-MAINLINE"
-BRANCH = "integration/swarm004-005-mainline-20261121"
-WORKFLOW = ".github/workflows/swarm45-mainline-qualification.yml"
+QUALIFICATION_PROGRAMME = "GENTEK-SWARM-004-005-006-UNIFIED"
+BRANCH = "integration/swarm004-005-006-unified-20261122"
+WORKFLOW = ".github/workflows/swarm456-qualification.yml"
 GODOT_CPP = "101ae38034304346a46ea9ea84ae156d3e860496"
-NATIVE_TESTS = ("test_assembly", "test_reciprocal_mosaic", "test_reciprocal", "test_swarm005",
-                "test_workbench_authoring_patch")
+RECIPROCAL_TESTS = ("test_assembly", "test_reciprocal_mosaic", "test_reciprocal", "test_swarm005",
+                    "test_swarm006_source", "test_swarm006_admission", "test_custody_hash", "test_swarm006_recovery")
+NATIVE_TESTS = (*RECIPROCAL_TESTS, "test_workbench_authoring_patch")
 EXTENSIONS = {
     "linux": "libcybersand_native.linux.x86_64.so",
     "windows": "cybersand_native.windows.x86_64.dll",
@@ -40,7 +42,11 @@ BUILD_EXACT = (".gitattributes", "Makefile", "godot/project.godot", "godot/main.
                "godot/addons/cybersand_native/cybersand_native.gdextension",
                "godot/addons/godot-rapier2d/godot-rapier2d.gdextension",
                "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
-               "godot/addons/godot-rapier2d/runtime-provenance.windows.json")
+               "godot/addons/godot-rapier2d/runtime-provenance.windows.json",
+               "godot/addons/godot-rapier2d/Radial2D.svg.import",
+               "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+               "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+               "godot/addons/godot-rapier2d/logo_square_2d.png.import")
 DEFINITION_EXTRA = ("../../../native/src/generation_spatial.cpp", "../../../native/include/cybersand/material.hpp",
                     "../../../native/include/cybersand/generation_spatial.hpp", "../../../native/include/cybersand/generation_numeric.hpp")
 
@@ -125,7 +131,7 @@ def names(platform: str) -> dict:
 
 def cli_binding(receipt: dict) -> dict:
     """OS-specific ordinary-checkout binding; build source is never retagged."""
-    return {"schema": 1, "programme": PROGRAMME, "draft_hold": True,
+    return {"schema": 1, "programme": PROGRAMME, "qualification_programme": QUALIFICATION_PROGRAMME, "draft_hold": True,
             "platform": receipt["platform"], "source": receipt["source_commit"],
             "artifact": "godot/tools/" + receipt["cli"],
             "source_commit": receipt["source_commit"], "build_commit": receipt["build_commit"],
@@ -187,7 +193,7 @@ def create(directory: Path, platform: str, root: Path = ROOT, local_preflight: b
     if not local_preflight:
         require("compiler_policy=pinned-hosted" in toolchain and "toolchain_drift=false" in toolchain,
                 "Hosted qualification cannot admit local compiler drift")
-    manifest = {"schema": 1, "programme": PROGRAMME, "platform": platform,
+    manifest = {"schema": 1, "programme": PROGRAMME, "qualification_programme": QUALIFICATION_PROGRAMME, "platform": platform,
                 "qualification_kind": "local-preflight" if local_preflight else "hosted-source-bound",
                 "build_commit": identity["source_commit"], **identity, "build_context": context,
                 "files": records, **names(platform), "owner_visual_acceptance": "pending"}
@@ -199,7 +205,8 @@ def create(directory: Path, platform: str, root: Path = ROOT, local_preflight: b
 
 def verify(directory: Path, root: Path = ROOT, allow_local: bool = False, same_run: bool = True) -> dict:
     manifest = json.loads((directory / NAME).read_text(encoding="utf-8"))
-    require(manifest.get("schema") == 1 and manifest.get("programme") == PROGRAMME, "Wrong runtime schema/programme")
+    require(manifest.get("schema") == 1 and manifest.get("programme") == PROGRAMME
+            and manifest.get("qualification_programme") == QUALIFICATION_PROGRAMME, "Wrong runtime schema/programme")
     platform = manifest.get("platform")
     require(platform in EXTENSIONS, "Wrong runtime platform")
     identity = source(root)

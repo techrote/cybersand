@@ -16,6 +16,10 @@ MARKERS = {
     "test_reciprocal_mosaic": r"^reciprocal MOSAIC tests: [1-9][0-9]* passed, 0 failed, ([1-9][0-9]*) checks$",
     "test_reciprocal": r"^reciprocal checks=([1-9][0-9]*) both=[1-9][0-9]* joints=[1-9][0-9]* complete=[0-9]+$",
     "test_swarm005": r"^SWARM005_NATIVE_PILOT: PASS tests=([1-9][0-9]*)/\1 assertions=([1-9][0-9]*)$",
+    "test_swarm006_source": r"^SWARM006_SOURCE_OPPORTUNITIES: PASS tests=([1-9][0-9]*)/\1 assertions=([1-9][0-9]*)$",
+    "test_swarm006_admission": r"^recovery admission tests: [1-9][0-9]* passed, 0 failed, ([1-9][0-9]*) assertions$",
+    "test_custody_hash": r"^custody hash: ([1-9][0-9]*) assertions PASS$",
+    "test_swarm006_recovery": r"^SWARM006 recovery: [1-9][0-9]* groups passed, 0 failed; ([1-9][0-9]*) assertions$",
     "test_workbench_authoring_patch": r"^WORKBENCH_AUTHORING_PATCH_NATIVE checks=([1-9][0-9]*) failures=0$",
 }
 SANITIZER_ERRORS = re.compile(r"AddressSanitizer:|LeakSanitizer:|UndefinedBehaviorSanitizer:|runtime error:")
@@ -56,10 +60,26 @@ def main() -> int:
             errors = [] if marker_valid(logical, text) else ["Missing complete native assertions or sanitizer diagnostics present"]
             result.update(binary_sha256=custody.sha(target), mode=mode)
             results.append(legacy.validate_result(result, errors, output))
-    result = legacy.execute("v3-request", [sys.executable, str(custody.ROOT / "tools/swarm005/test_v3_request.py"),
-                                           "--exe", str(runtime / receipt["cli"]), "--output", str(output / "v3")], env, output, 180)
-    results.append(result)
-    passed = len(results) == (11 if platform == "linux" else 6) and all(record["passed"] for record in results)
+    transport = (
+        ("v1-v2-request", [sys.executable, str(custody.ROOT / "native/experiments/gentek_swarm/test_reciprocal_io.py"),
+                           "--binary", str(runtime / receipt["cli"]), "-v"]),
+        ("v3-request", [sys.executable, str(custody.ROOT / "tools/swarm005/test_v3_request.py"),
+                         "--exe", str(runtime / receipt["cli"]), "--output", str(output / "v3")]),
+        ("v4-request", [sys.executable, str(custody.ROOT / "tools/swarm006/test_v4_request.py"),
+                         "--exe", str(runtime / receipt["cli"]), "--output", str(output / "v4"),
+                         "--source", receipt["source_commit"]]),
+    )
+    for label, command in transport:
+        result = legacy.execute(label, command, env, output, 180)
+        text = (output / (label + ".log")).read_text(encoding="utf-8", errors="replace")
+        errors = []
+        if label == "v1-v2-request" and (not re.search(r"Ran [1-9][0-9]* tests? in", text) or "skipped" in text.lower() or not re.search(r"^OK$", text, re.MULTILINE)):
+            errors.append("V1/V2 transport tests did not execute their complete real-binary inventory")
+        result.update(binary_sha256=receipt["files"][receipt["cli"]]["sha256"],
+                      test_script_sha256=custody.sha(Path(command[1])))
+        results.append(legacy.validate_result(result, errors, output))
+    expected = len(custody.NATIVE_TESTS) * (2 if platform == "linux" else 1) + len(transport)
+    passed = len(results) == expected and all(record["passed"] for record in results)
     summary = {"schema": 1, "programme": custody.PROGRAMME, "source_commit": receipt["source_commit"],
                "source_tree": receipt["source_tree"], "build_context": receipt["build_context"],
                "runtime_manifest_sha256": custody.sha(runtime / custody.NAME), "platform": platform,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a bounded mainline SWARM-004/005 request against immutable history.
+"""Validate a bounded unified SWARM-004/005/006 request against immutable history.
 
 This is an execution request, not a credential or permission mechanism. The
 workflow keeps GitHub's existing branch access and read-only job permissions.
@@ -19,13 +19,15 @@ import runtime_custody as custody
 
 ROOT = Path(__file__).resolve().parents[2]
 BRANCH = "refs/heads/" + custody.BRANCH
-REQUEST = ".github/swarm45-mainline-request.json"
-ACCEPTED_MAIN = "846fe0533b3170e7b01f690518da49fc40cc24d1"
+REQUEST = ".github/swarm456-request.json"
+ACCEPTED_MAIN = "662df51cd8409a52332fa7ef15d06d8ab8945aed"
 DONORS = {"692": "2c4b8061ef5315de6a31df933e9f84c31865284e",
           "693": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
           "696": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
           "697": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
-          "700": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d"}
+          "700": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+          "715": "919134a39d31461947c410c233d59d1965c48414",
+          "716": "428f842034a1f80d593bcc6bb32af2dd99cd0105"}
 MAX_REQUEST_BYTES = 4096
 MAX_REQUEST_COMMITS = 16
 SHA = re.compile(r"[0-9a-f]{40}")
@@ -102,10 +104,10 @@ def validate(root: Path, event_name: str, ref: str, execution: str, target: str,
     execution = commit(root, execution)
     require(git(root, "rev-parse", "HEAD").decode().strip() == execution and target == execution,
             "Checkout, execution HEAD and qualification target must be identical")
-    require(ancestor(root, ACCEPTED_MAIN, execution) and ancestor(root, DONORS["700"], execution),
+    require(ancestor(root, ACCEPTED_MAIN, execution) and all(ancestor(root, donor, execution) for donor in DONORS.values()),
             "Integration must contain accepted main and the frozen donor chain")
     definition = custody.definition_hash(root)
-    result = {"schema": 1, "programme": custody.PROGRAMME, "event": event_name, "ref": ref,
+    result = {"schema": 1, "programme": custody.PROGRAMME, "qualification_programme": custody.QUALIFICATION_PROGRAMME, "event": event_name, "ref": ref,
               "accepted_main": ACCEPTED_MAIN, "frozen_donors": DONORS,
               "native_definition_sha256": definition, "execution_source_sha": execution,
               "frozen_source_sha": execution, "request_id": None, "request_sha256": None,

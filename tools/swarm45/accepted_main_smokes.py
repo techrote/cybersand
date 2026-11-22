@@ -17,6 +17,7 @@ from shared import legacy, package_identity, verify_engine, verify_project
 
 sys.path.insert(0, str(custody.ROOT / "tools/ci"))
 from run_workbench_qualification import Runner, completion
+from run_flatten_qualification import direct_engine
 
 REQUIRED = (
     "import", "workbench-canvas", "workbench-wave", "paint-workbench-author", "paint-workbench-reopen",
@@ -71,7 +72,9 @@ def main() -> None:
     identity = {"schema": 1, "programme": custody.PROGRAMME, "source_commit": receipt["source_commit"],
                 "source_tree": receipt["source_tree"], "platform": platform, "package": bool(args.package),
                 "runtime_manifest_sha256": custody.sha(runtime / custody.NAME), "build_context": receipt["build_context"],
-                "godot_sha256": custody.sha(args.godot), "required_cases": list(REQUIRED), "passed": False,
+                "godot_sha256": custody.sha(args.godot),
+                "godot_engine_sha256": custody.sha(direct_engine(args.godot.resolve(), sys.platform)),
+                "required_cases": list(REQUIRED), "passed": False,
                 "scope": "Bounded accepted-main smoke; unchanged complete admission workflows remain mandatory"}
     try:
         runner.godot(project, "import")

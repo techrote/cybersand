@@ -21,7 +21,7 @@ import qualify_workbench as input_qualification
 
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = "4.7.stable.official.5b4e0cb0f"
-SOURCE_PATHS = (".gitattributes", "godot", "native/include", "native/src", "native/experiments/gentek_swarm", "tools/swarm006")
+SOURCE_PATHS = (".gitattributes", "godot", "native/include", "native/src", "native/experiments/gentek_swarm", "tools/swarm006", "tools/swarm45")
 SOURCE_EXCLUDES = (":(exclude)godot/addons/**/bin/**",)
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:|GDExtension library not found")
 WATER_SECTIONS = {"activation", "parameters", "workers_substeps", "runtime_apply", "regeneration", "scenario_change",
@@ -30,7 +30,7 @@ CASES = (
     ("native-authoring", "test_workbench_authoring_patch.gd", "WORKBENCH_AUTHORING_PATCH:", {}, 180),
     ("protocol", "test_workbench_reciprocal_protocol.gd", "SWARM004_PROTOCOL", {}, 60),
     ("controller", "test_workbench_reciprocal_controller.gd", "SWARM004_CONTROLLER", {}, 120),
-    ("controls-inspector", "test_workbench_reciprocal_controls.gd", "SWARM004_CONTROLS", {}, 180),
+    ("controls-inspector", "swarm45_reciprocal_controls.gd", "SWARM004_CONTROLS", {}, 180),
     ("input-integrity", "swarm006_reciprocal_input.gd", "SWARM006_INPUT_INTEGRITY", {}, 180),
     ("art", "test_art_undo.gd", "ART_UNDO_RESULT", {"ART_UNDO_WORKERS": "1"}, 300),
     ("paint-author", "test_paint_editor_workbench.gd", "PAINT_EDITOR_WORKBENCH", {"PAINT_REOPEN": "0"}, 240),
@@ -67,19 +67,40 @@ def source_inputs() -> dict:
     return {path: sha(ROOT / path) for path in paths}
 
 
-def native_paths() -> tuple[Path, Path]:
-    native = ROOT / "godot/addons/cybersand_native/bin" / ("cybersand_native.windows.x86_64.dll" if os.name == "nt" else "libcybersand_native.linux.x86_64.so")
-    rapier = ROOT / "godot/addons/godot-rapier2d/bin" / ("libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if os.name == "nt" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
+def native_paths(project: Path | None = None) -> tuple[Path, Path]:
+    project = project or ROOT / "godot"
+    native = project / "addons/cybersand_native/bin" / ("cybersand_native.windows.x86_64.dll" if os.name == "nt" else "libcybersand_native.linux.x86_64.so")
+    rapier = project / "addons/godot-rapier2d/bin" / ("libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if os.name == "nt" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
     return native, rapier
+
+
+def execution_inputs(project: Path, expected: dict | None = None) -> dict:
+    """Hash raw installed source/assets/runtime; allow only new generated UID/cache files."""
+    records = {}
+    for path in sorted(project.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("Execution project contains a symlink")
+        if not path.is_file() or ".godot" in path.relative_to(project).parts:
+            continue
+        name = path.relative_to(project).as_posix()
+        if expected is not None and path.suffix == ".uid" and name not in expected:
+            continue
+        records[name] = sha(path)
+    return records
 
 
 def identity_errors(identity: dict, engine: Path, cli: Path) -> list[str]:
     """The same exact-byte custody check ends the suite and follows graphics."""
-    native, rapier = native_paths()
+    project = Path(identity["project"]) if "project" in identity else None
+    native, rapier = native_paths(project)
     checks = {"source": lambda: git("rev-parse", "HEAD"), "tree": lambda: git("rev-parse", "HEAD^{tree}"),
               "platform": lambda: sys.platform, "engine_sha256": lambda: sha(engine), "cli_sha256": lambda: sha(cli),
               "native_sha256": lambda: sha(native), "rapier_sha256": lambda: sha(rapier),
               "inputs": source_inputs, "source_delta": lambda: source_delta(SOURCE_PATHS)}
+    if project is not None:
+        checks["execution_inputs"] = lambda: execution_inputs(project, identity.get("execution_inputs"))
+    if "runtime_manifest" in identity:
+        checks["runtime_manifest_sha256"] = lambda: sha(Path(identity["runtime_manifest"]))
     errors = []
     for key, read in checks.items():
         try:
@@ -227,6 +248,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--cli", type=Path, required=True)
+    parser.add_argument("--project", type=Path, help="Verified external source stage or pristine extracted project")
+    parser.add_argument("--runtime", type=Path, help="Unified exact-source target runtime; positive gates use installed manifests")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--development", action="store_true", help="Explicitly unqualified local dirty-source engineering run")
     parser.add_argument("--recheck", type=Path, help="Only recheck exact custody of this earlier successful preservation directory")
@@ -243,7 +266,8 @@ def main() -> int:
         evidence = retain_source_refusal(output, dirty, engine, cli)
         raise ValueError("Qualification source must be committed and clean; evidence: " + str(evidence))
     output.mkdir(parents=True)
-    native, rapier = native_paths()
+    project = args.project.resolve() if args.project else ROOT / "godot"
+    native, rapier = native_paths(project)
     magic = b"MZ" if os.name == "nt" else b"\x7fELF"
     if not native.read_bytes().startswith(magic):
         raise ValueError("Native runtime is not materialized for this host")
@@ -252,14 +276,37 @@ def main() -> int:
                 "platform": sys.platform, "development": args.development, "source_delta": dirty,
                 "engine_sha256": sha(engine), "native_sha256": sha(native), "rapier_sha256": sha(rapier),
                 "cli_sha256": sha(cli), "inputs": inputs}
+    if args.project:
+        identity.update(project=str(project), execution_inputs=execution_inputs(project))
+    if args.runtime:
+        if not args.project or args.development:
+            raise ValueError("Unified preservation requires an exact external project and no development override")
+        spec = importlib.util.spec_from_file_location("unified_preservation_custody", ROOT / "tools/swarm45/runtime_custody.py")
+        unified = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(unified)
+        receipt = unified.verify(args.runtime.resolve())
+        platform = "windows" if os.name == "nt" else "linux"
+        if (receipt["platform"] != platform or cli != project / "tools" / receipt["cli"]
+                or sha(cli) != receipt["files"][receipt["cli"]]["sha256"]
+                or sha(native) != receipt["files"][receipt["extension"]]["sha256"]
+                or json.loads((project / "tools" / ("swarm004-runtime." + platform + ".json")).read_bytes()) != unified.cli_binding(receipt)):
+            raise ValueError("Unified preservation must use the installed source/target-bound native payload")
+        manifest = args.runtime.resolve() / unified.NAME
+        identity.update(runtime_manifest=str(manifest), runtime_manifest_sha256=sha(manifest),
+                        qualification_programme=unified.QUALIFICATION_PROGRAMME, build_context=receipt["build_context"])
     (output / "identity.json").write_text(json.dumps(identity, indent=2) + "\n")
     spec = importlib.util.spec_from_file_location("frozen_process_runner", ROOT / "native/experiments/gentek_swarm/run_swarm006.py")
     runner = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runner)
-    base = [str(engine), "--headless", "--audio-driver", "Dummy", "--path", str(ROOT / "godot")]
+    base = [str(engine), "--headless", "--audio-driver", "Dummy", "--path", str(project)]
     environment = os.environ.copy()
-    environment.update(CYBERSAND_SWARM004_CLI=str(cli), CYBERSAND_SWARM004_SOURCE=identity["source"],
-                       CYBERSAND_SWARM004_SHA256=identity["cli_sha256"], CYBERSAND_SOURCE_REVISION=identity["source"])
+    if args.runtime:
+        for key in ("CYBERSAND_SWARM004_CLI", "CYBERSAND_SWARM004_SOURCE", "CYBERSAND_SWARM004_SHA256"):
+            environment.pop(key, None)
+        environment["CYBERSAND_SOURCE_REVISION"] = identity["source"]
+    else:
+        environment.update(CYBERSAND_SWARM004_CLI=str(cli), CYBERSAND_SWARM004_SOURCE=identity["source"],
+                           CYBERSAND_SWARM004_SHA256=identity["cli_sha256"], CYBERSAND_SOURCE_REVISION=identity["source"])
     results = []
     for name, script, marker, extra, timeout in (("import", "", "", {}, 180), *CASES):
         group = name.split("-")[0] if name.startswith(("paint-", "flatten-")) else name
@@ -290,7 +337,7 @@ def main() -> int:
                 record["assertions"] = completion(text, marker, name)
             if name == "input-integrity":
                 errors.extend(input_qualification.input_integrity_errors(output / name, record["assertions"],
-                    identity["source"], identity["cli_sha256"], sha(ROOT / "godot" / input_qualification.INPUT_SCRIPT), require_graphics=False))
+                    identity["source"], identity["cli_sha256"], sha(project / input_qualification.INPUT_SCRIPT), require_graphics=False))
         except (ValueError, TypeError) as error:
             errors.append(str(error))
         record.update(name=name, script=script, errors=errors, passed=not errors)

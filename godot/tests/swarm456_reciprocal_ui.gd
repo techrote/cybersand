@@ -2,6 +2,8 @@ extends SceneTree
 
 # Uses the actual Main scene, native worker, UI input dispatch and persistence.
 # Two OS processes are required: create, then reopen the exact saved start.
+# Mandatory scoped fixture: the unified qualifier supplies mode, example and
+# an isolated evidence destination. Ordinary headless discovery cannot do so.
 const Setup=preload("res://scripts/workbench_setup.gd")
 const Protocol=preload("res://scripts/workbench_reciprocal_protocol.gd")
 const Inspector=preload("res://tests/support/workbench_reciprocal_inspector_checks.gd")
@@ -742,7 +744,10 @@ func reopen_map()->void:
 	completed=true
 
 func run()->void:
-	if example.is_empty():example="transaction"
+	if not check(mode in ["create","reopen","blocked","evaluate","lifecycle","smoke"],"explicit scoped Workbench UI mode is required"):
+		quit(1);return
+	if not check(not evidence.is_empty(),"explicit isolated Workbench UI evidence directory is required"):
+		quit(1);return
 	if not check(example in ["transaction","reciprocal","swarm005_irregular","swarm005_viaduct"] or RECOVERY_CASES.has(example),"explicit registered authoring example"):
 		quit(1);return
 	# Validate every synthetic label against the real saved-map contract before
@@ -772,7 +777,7 @@ func run()->void:
 		"native_evidence_sha256":native_evidence,
 		"inspector_evidence":inspector_evidence,"integration_refusals":integration_refusals,"timeout_diagnostics":timeout_diagnostics,
 		"owner_visual_acceptance":"pending","reciprocal_programme_acceptance":false,
-		"test_sha256":FileAccess.get_sha256("res://tests/test_workbench_swarm006_ui.gd")}
+		"test_sha256":FileAccess.get_sha256("res://tests/swarm456_reciprocal_ui.gd")}
 	if panel!=null:
 		report["historical_only"]=panel._read_only_evidence();report["controller_phase"]=panel.phase
 		report["apply_disabled"]=panel._apply.disabled;report["undo_disabled"]=panel._undo_button.disabled

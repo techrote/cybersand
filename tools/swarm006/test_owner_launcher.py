@@ -30,10 +30,14 @@ def main() -> None:
     if output.exists():
         raise ValueError('Launcher qualification requires a fresh output folder')
     output.mkdir(parents=True)
-    metadata = json.loads((sealed/'swarm006-owner-seal.json').read_text())
+    seals = [path for path in (sealed/'swarm006-owner-seal.json', sealed/'swarm456-owner-seal.json') if path.is_file()]
+    if len(seals) != 1:
+        raise ValueError('Exactly one original or unified owner seal is required')
+    metadata = json.loads(seals[0].read_text())
     if metadata['source_commit'] != args.source:
         raise ValueError('Seal source mismatch')
-    archive, launcher = sealed/metadata['archive'], sealed/'CyberSand-SWARM006-Windows-Owner-Acceptance.ps1'
+    label = 'SWARM456' if seals[0].name.startswith('swarm456-') else 'SWARM006'
+    archive, launcher = sealed/metadata['archive'], sealed/f'CyberSand-{label}-Windows-Owner-Acceptance.ps1'
     if sha(archive) != metadata['archive_sha256'] or sha(launcher) != metadata['launcher_sha256']:
         raise ValueError('Sealed archive or launcher changed before qualification')
     records = []
@@ -58,7 +62,7 @@ def main() -> None:
         # Use the native Windows PowerShell5 path that the owner handoff names.
         invoke('direct-inner-archive', archive, output/'direct', True)
         nested_inputs = output/'nested artifact inputs with spaces';nested_inputs.mkdir()
-        wrapper = nested_inputs/f'swarm006-owner-windows-{args.source}.zip'
+        wrapper = nested_inputs/f'{label.lower()}-owner-windows-{args.source}.zip'
         with zipfile.ZipFile(wrapper, 'x', zipfile.ZIP_STORED) as outer:
             for path in sorted(sealed.iterdir()):
                 if path.is_file(): outer.write(path, path.name)
@@ -89,13 +93,15 @@ def main() -> None:
                    'platform': 'Windows', 'passed': len(records) == 7 and all(r['passed'] for r in records),
                    'graphical_qualification': False, 'graphical_dispatch_passed': len(records) == 7 and records[-1]['passed'],
                    'owner_nvidia_acceptance': 'pending', 'results': records}
-        (output/'owner-launcher-qualification.json').write_text(json.dumps(summary, indent=2)+'\n')
         # Keep the original logs and hash receipts, not redundant large binaries.
         for name in ('direct', 'nested', 'nested-artifact', 'corrupt', 'wrong-name', 'missing',
                      'actual owner package with spaces', 'actual owner package with spaces-artifact',
                      'nested artifact inputs with spaces'):
             shutil.rmtree(output/name, ignore_errors=True)
-        for path in output.glob('swarm006-owner-windows-*.zip'): path.unlink()
+        for path in output.glob(f'{label.lower()}-owner-windows-*.zip'): path.unlink()
+        summary['files_sha256'] = {path.relative_to(output).as_posix(): sha(path)
+                                  for path in sorted(output.rglob('*')) if path.is_file()}
+        (output/'owner-launcher-qualification.json').write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary))
 
 

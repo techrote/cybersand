@@ -9,6 +9,7 @@ from unittest.mock import patch
 import run_request as guard
 import runtime_custody as custody
 import publish_runtime as publisher
+import broad_validation as broad
 
 
 class History(unittest.TestCase):
@@ -21,7 +22,7 @@ class History(unittest.TestCase):
         self.git("config", "user.email", "fixture@example.invalid")
         self.git("config", "core.autocrlf", "false")
         self.frozen = self.commit({"source.cpp": "int main() { return 0; }\n"})
-        self.donors = {**guard.DONORS, "700": self.frozen}
+        self.donors = {key: self.frozen for key in guard.DONORS}
         for mock in (patch.object(guard, "ACCEPTED_MAIN", self.frozen), patch.object(guard, "DONORS", self.donors),
                      patch.object(custody, "definition_hash", return_value="e" * 64)):
             mock.start(); self.addCleanup(mock.stop)
@@ -111,6 +112,22 @@ class History(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Duplicate JSON key"):
             publisher.verify_request(self.root, execution, event)
 
+    def test_broad_request_is_exact_parent_and_fixed_workflows_only(self):
+        value = {"schema": 1, "qualification_programme": custody.QUALIFICATION_PROGRAMME,
+                 "action": "qualify-full-regressions", "request_id": "broad-001",
+                 "expected_parent_sha": self.frozen, "workflows": list(broad.WORKFLOWS)}
+        execution, event = self.push(broad.REQUEST, value)
+        self.assertEqual(broad.verify_request(self.root, execution, event)["execution_sha"], execution)
+        for field, wrong in (("workflows", ["other-mission.yml"]), ("action", "merge"), ("qualification_programme", "other")):
+            self.git("reset", "--hard", self.frozen)
+            execution, event = self.push(broad.REQUEST, {**value, field: wrong})
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                broad.verify_request(self.root, execution, event)
+        self.git("reset", "--hard", self.frozen)
+        execution, event = self.push(broad.REQUEST, value, {"source.cpp": "unqualified source change\n"})
+        with self.assertRaisesRegex(ValueError, "source/runtime edits"):
+            broad.verify_request(self.root, execution, event)
+
 
 class ImmutableArtifact(unittest.TestCase):
     def setUp(self):
@@ -120,7 +137,7 @@ class ImmutableArtifact(unittest.TestCase):
                     "event": "push", "status": "completed", "conclusion": "success", "workflow_id": 789,
                     "repository": {"full_name": "techrote/cybersand"}, "head_repository": {"full_name": "techrote/cybersand"}}
         self.workflow = {"id": 789, "path": custody.WORKFLOW}
-        self.artifact = {"id": 456, "name": "swarm45-runtime-publication-candidate-" + "a" * 40 + "-123-2",
+        self.artifact = {"id": 456, "name": "swarm456-runtime-publication-candidate-" + "a" * 40 + "-123-2",
                          "expired": False, "size_in_bytes": 100, "digest": "sha256:" + "e" * 64,
                          "workflow_run": {"id": 123, "head_sha": "a" * 40}}
 

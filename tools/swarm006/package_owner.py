@@ -43,8 +43,10 @@ def main() -> None:
     shutil.copyfile(args.native_candidate / custody.CLI, destination / custody.CLI)
     shutil.copyfile(args.native_candidate / custody.NAME, args.output / custody.NAME)
     runtime = {"schema": 1, "programme": "GENTEK-SWARM-006", "draft_hold": True,
+               "platform": "windows", "artifact": "godot/tools/gentek_reciprocal.exe",
                "source": receipt["source_commit"], "sha256": receipt["files"][custody.CLI]["sha256"]}
-    (destination / "swarm004-runtime.json").write_text(json.dumps(runtime, indent=2) + "\n", encoding="utf-8")
+    for name in ("swarm004-runtime.json", "swarm004-runtime.windows.json"):
+        (destination / name).write_text(json.dumps(runtime, indent=2) + "\n", encoding="utf-8")
     bind_owner_launcher(args.output)
     manifest_path = args.output / "candidate-manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
