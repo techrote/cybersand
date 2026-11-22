@@ -523,6 +523,17 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 679},)
 
 
+# OBJECTSHARD-001: opt-in mutation witnesses and shared selected lifecycle decisions.
+# The frozen catalogue/quantity identities and ordinary World behavior remain unchanged.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'to_lf_sha256': 'bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214',
+  'source_commit': '5afe5643097c543f7d8a6840ced9afac58dd053e',
+  'record': 'docs/audits/2026-11-22-objectshard-world-transition.md',
+  'issue': 281,
+  'pr': 726},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 
