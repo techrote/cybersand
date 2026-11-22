@@ -99,6 +99,25 @@ func _run() -> void:
 	_expect(worker == host.simulation_worker and worker._world == world and
 		worker._world.get_instance_id() == original_native_instance,
 		"Exactly the original ordinary native World remains authoritative")
+	# Repeat under real continuous simulation. This is an input-refusal control,
+	# NOT an ObjectShard moving-body physics or timing acceptance fixture.
+	var before_live_tick: int = int(host.latest_snapshot.tick_index)
+	_expect(bench.toggle_pause(), "Enter actual ordinary continuously playable World")
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
+	while int(host.latest_snapshot.tick_index) <= before_live_tick \
+			and Time.get_ticks_msec() < deadline and not worker.has_failed():
+		await process_frame
+	_expect(host.latest_snapshot.tick_index > before_live_tick and not worker.has_failed(),
+		"Real ordinary World advances a semantic tick while M4 seam is unavailable")
+	_pointer(MOUSE_BUTTON_RIGHT, 5)
+	_expect(bench.message.contains("SameWorldAdapterMissing") \
+			and bench.object_shard_m4_port.pending_count() == 0,
+		"Running World refuses moving-cell edit without routing it into terrain")
+	_expect(not worker.paint_state().get("legacy_busy", true),
+		"Running World remains free of reinterpreted moving-cell brush commands")
+	_expect(worker._world == world and worker._world.get_instance_id() == original_native_instance,
+		"Continuously playing Workbench keeps exactly the same original native World")
+	_expect(bench.toggle_pause(), "Return to paused ordinary World after live refusal")
 	var old_port_epoch: int = bench.object_shard_m4_port.generation
 	var old_trace_epoch: int = host.object_shard_m4_probe.epoch
 	bench.object_shard_m4_port.retire("TestNavigation")
