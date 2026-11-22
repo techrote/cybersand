@@ -139,6 +139,20 @@ material-baseline-test: $(BUILD_DIR)/test_material_baseline
 material-baseline-sanitize: $(BUILD_DIR)/test_material_baseline_sanitized
 	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_material_baseline_sanitized
 
+.PHONY: test-workbench-actor-capacity test-workbench-actor-capacity-sanitize
+
+$(BUILD_DIR)/test_workbench_actor_capacity: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_actor_capacity.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_workbench_actor_capacity.cpp -o $@
+
+$(BUILD_DIR)/test_workbench_actor_capacity_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_actor_capacity.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_workbench_actor_capacity.cpp -o $@
+
+test-workbench-actor-capacity: $(BUILD_DIR)/test_workbench_actor_capacity
+	$<
+
+test-workbench-actor-capacity-sanitize: $(BUILD_DIR)/test_workbench_actor_capacity_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} $<
+
 .PHONY: physics-characterisation-test physics-characterisation-sanitize
 
 $(BUILD_DIR)/physics_characterisation: $(PHYSICS_CHARACTERISATION_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)

@@ -12,8 +12,9 @@ const Usables = preload("res://scripts/usable_catalog.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
 const BARREL := "reference_barrel"
 const VERSION := 1
-const MAX_ACTORS := 8
-const MAX_PARTS := 8
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const MAX_ACTORS := Capacity.MAX_ACTORS
+const MAX_PARTS := Capacity.MAX_PARTS
 const CONTROL_KEYS := ["version", "source", "enabled", "decision_ticks", "policy", "usable_index"]
 const SOURCES := ["human", "scripted", "policy", "passive"]
 const FAMILY_NAMES := {"setA":"Ground and hover", "setB":"Survey and excavation",
@@ -137,24 +138,46 @@ static func control_error(model: String, value: Variant) -> String:
 	return equipment_error(model, value.usable_index)
 
 
-# Called before preparing or mutating the live session. The eight logical slots,
-# eight prepared parts per actor and 64 native proxies are separate limits.
-static func capacity_error(actors: Array) -> String:
-	if actors.size() > MAX_ACTORS: return "The physical session has eight actor slots. Remove an actor first."
-	var parts := 0
-	var proxies := 0
+# Count actual prepared topology, including permanent equipment. A one-body
+# barrel consumes one body and one proxy; a compound flyer may consume more
+# proxies than bodies. Repeated models share only copied count calculations.
+static func resource_usage(actors: Array) -> Dictionary:
+	var result := {"actors":actors.size(), "bodies":0, "proxies":0, "joints":0, "authored_links":0, "error":""}
+	var counts := {}
 	for actor: Variant in actors:
-		if not actor is Dictionary or not actor.get("model") is String: return "Invalid actor definition."
+		if not actor is Dictionary or not actor.get("model") is String:
+			result.error = "Invalid actor definition."
+			return result
 		var model := str(actor.model)
-		var data := definition(model)
-		if data.is_empty(): return "Unavailable physical actor definition: " + model
-		var count: int = data.get("parts", []).size()
-		if count < 1 or count > MAX_PARTS:
-			return "%s needs %d physical parts including equipment; each actor allows 1–8." % [model, count]
-		parts += count
-		proxies += proxy_count(model)
-	if parts > Coupling.MAX_BODIES or proxies > Coupling.MAX_BODIES:
-		return "Composition needs %d physical parts and %d native masks; the shared limit is %d. Equipment retains its slot when released." % [parts, proxies, Coupling.MAX_BODIES]
+		if not counts.has(model):
+			var data := definition(model)
+			if data.is_empty():
+				result.error = "Unavailable physical actor definition: " + model
+				return result
+			var count: int = data.get("parts", []).size()
+			if count < 1 or count > MAX_PARTS:
+				result.error = "%s needs %d physical parts including equipment; each actor allows 1–%d." % [model, count, MAX_PARTS]
+				return result
+			var joints := 0
+			for joint: Dictionary in data.get("joints", []):
+				joints += 3 if joint.type == "spring" else (2 if joint.type == "slide" else 1)
+			counts[model] = {"bodies":count, "proxies":proxy_count(model), "joints":joints,
+				"authored_links":data.get("joints", []).size()}
+		for key: String in ["bodies", "proxies", "joints", "authored_links"]:
+			result[key] += int(counts[model][key])
+	return result
+
+
+static func capacity_error(actors: Array, capacity: Dictionary = {}) -> String:
+	var limits := Capacity.defaults() if capacity.is_empty() else capacity
+	var invalid := Capacity.error(limits)
+	if not invalid.is_empty(): return invalid
+	if actors.size() > int(limits.logical_limit):
+		return "Composition needs %d actors; configured logical capacity is %d. Increase it in Sandbox Capacity." % [actors.size(), limits.logical_limit]
+	var used := resource_usage(actors)
+	if not str(used.error).is_empty(): return str(used.error)
+	if int(used.bodies) > int(limits.body_limit) or int(used.proxies) > int(limits.proxy_limit):
+		return "Composition needs %d physical bodies and %d native masks; configured budgets are %d and %d. Equipment retains its slot when released." % [used.bodies, used.proxies, limits.body_limit, limits.proxy_limit]
 	return ""
 
 

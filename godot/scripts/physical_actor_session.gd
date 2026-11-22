@@ -10,13 +10,15 @@ const WorkbenchControl = preload("res://scripts/workbench_actor_control.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WorkbenchEmitter = preload("res://scripts/workbench_emitter.gd")
+const Manipulator = preload("res://scripts/workbench_actor_manipulator.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Rig = preload("res://scripts/physical_actor_rig.gd")
 const Scripted = preload("res://scripts/physical_actor_script.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
-const MAX_ACTORS: int = 8
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const MAX_ACTORS: int = Capacity.MAX_ACTORS
 const MAX_PARTS: int = 8
 const MAX_LEASE: int = 18
 const DECISION_TICKS: int = 6
@@ -66,6 +68,8 @@ var _issued: Array = []
 var _effects: Array = []
 var _active: bool = false
 var _suspended: bool = false
+var _manipulator: RefCounted
+var _manipulated_actor: int = -1
 var accepted_commands: int = 0
 var rejected_commands: int = 0
 
@@ -103,8 +107,9 @@ static func _prepared_inside(value: Dictionary, prepared: Dictionary) -> bool:
 	var extent: Vector2i = value.canvas_extent
 	for index: int in range(prepared.parts.size()):
 		var part: Dictionary = prepared.parts[index]
-		var angle: float = float(part.get("angle", 0.0))
-		var origin: Vector2 = value.position + Vector2(part.offset)
+		var spawn_rotation: float = float(value.get("spawn_rotation", 0.0))
+		var angle: float = float(part.get("angle", 0.0)) + spawn_rotation
+		var origin: Vector2 = value.position + Vector2(part.offset).rotated(spawn_rotation)
 		if value.has("retained_motion"):
 			angle = float(value.retained_motion.rotation)
 		elif value.has("retained_parts"):
@@ -124,6 +129,10 @@ static func valid_definitions(definitions: Array) -> bool:
 	if definitions.is_empty() or definitions.size() > MAX_ACTORS: return false
 	var parts: int = 0
 	var proxies: int = 0
+	var limits_value: Variant = definitions[0].get("workbench_capacity", Capacity.defaults()) if definitions[0] is Dictionary else {}
+	if not Capacity.error(limits_value).is_empty(): return false
+	var limits: Dictionary = limits_value
+	if definitions.size() > int(limits.logical_limit): return false
 	var identities: Dictionary = {}
 	var workbench: bool = definitions[0] is Dictionary and definitions[0].has("workbench_options")
 	var response: String = ""
@@ -133,6 +142,8 @@ static func valid_definitions(definitions: Array) -> bool:
 		var model := StringName(str(value.get("model", "")))
 		var producer := StringName(str(value.get("producer", "")))
 		if workbench != value.has("workbench_options"): return false
+		if workbench and value.get("workbench_capacity", Capacity.defaults()) != limits: return false
+		if not workbench and value.has("workbench_capacity"): return false
 		if not value.get("position") is Vector2 or not value.position.is_finite(): return false
 		var prepared: Dictionary
 		if workbench:
@@ -153,6 +164,7 @@ static func valid_definitions(definitions: Array) -> bool:
 				if int(value.get("usable_index", -1)) != int(value.workbench_control.usable_index): return false
 			if value.has("retained_motion") and (prepared.get("parts", []).size() != 1 or value.has("retained_parts") or not _valid_retained_motion(value.retained_motion)): return false
 			if value.has("retained_parts") and not _valid_retained_parts(value.retained_parts, prepared.get("parts", []).size()): return false
+			if value.has("spawn_rotation") and (not _finite_scalar(value.spawn_rotation) or absf(float(value.spawn_rotation)) > TAU): return false
 			if model in Flight.IDS and (float(value.workbench_options.mass_multiplier) != 1.0 or float(value.workbench_options.inertia_multiplier) != 1.0): return false
 			if prepared.is_empty() or not _prepared_inside(value, prepared): return false
 			proxies += WorkbenchCatalog.proxy_count(str(model))
@@ -161,7 +173,7 @@ static func valid_definitions(definitions: Array) -> bool:
 			if model == Catalog.PASSIVE_BARREL:
 				if producer != &"passive": return false
 			elif producer not in PRODUCERS: return false
-			if value.has("retained_motion") or value.has("retained_parts") or value.has("workbench_control"): return false
+			if value.has("retained_motion") or value.has("retained_parts") or value.has("workbench_control") or value.has("spawn_rotation"): return false
 			if value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0: return false
 			prepared = Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
 		var selected: Variant = value.get("usable_index", Loadouts.entry(model).get("usable_index", -1))
@@ -170,7 +182,7 @@ static func valid_definitions(definitions: Array) -> bool:
 		var count: int = prepared.parts.size()
 		if count < 1 or count > MAX_PARTS: return false
 		parts += count
-	return parts <= CyberRigidBodyCoupling.MAX_BODIES and proxies <= CyberRigidBodyCoupling.MAX_BODIES
+	return parts <= int(limits.body_limit) and proxies <= int(limits.proxy_limit)
 
 
 func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
@@ -206,7 +218,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		_body_offsets.append(all_bodies.size())
 		_rigs.append(rig)
 		var options: Dictionary = definition.get("workbench_options", {})
-		if rig.configure(data, definition.position, index, epoch, fleet_index, options, definition.has("workbench_options") and fleet_index < 0) != OK:
+		if rig.configure(data, definition.position, index, epoch, fleet_index, options, definition.has("workbench_options") and fleet_index < 0,
+			float(definition.get("spawn_rotation", 0.0))) != OK:
 			last_error = "Physical rig refused: " + str(definition.model)
 			close()
 			return false
@@ -333,6 +346,7 @@ func workbench_control(instance_id: int) -> Dictionary:
 	var status := str(result.source)
 	if not str(view.fault).is_empty(): status = "faulted"
 	elif _suspended: status = "paused"
+	elif slot == _manipulated_actor: status = "physically grabbed"
 	elif not bool(result.enabled): status = "stopped"
 	elif result.source == "policy" and int(view.lease_remaining) == 0: status = "expired" if _fallback_reasons[slot] == "expired" else "waiting"
 	result.merge({"instance_id":instance_id, "actor_id":slot, "run_id":run_id, "epoch":epoch,
@@ -404,6 +418,76 @@ func workbench_actor_state(instance_id: int) -> Dictionary:
 		"retained_parts":_retained_parts(slot)}
 
 
+func manipulator() -> RefCounted:
+	if _manipulator == null:
+		_manipulator = Manipulator.new()
+		_manipulator.bind(self)
+	return _manipulator
+
+
+func pick_workbench_part(point: Vector2) -> Dictionary:
+	if not _active or not bridge is WorkbenchBridge or not point.is_finite(): return {}
+	# Match the draw order: the last actor/part is visually above earlier ones.
+	for slot: int in range(_rigs.size() - 1, -1, -1):
+		var hit: Dictionary = _rigs[slot].pick_part(point)
+		if hit.is_empty(): continue
+		hit.merge({"instance_id":int(_definitions[slot].instance_id), "actor_slot":slot,
+			"run_id":run_id, "epoch":epoch, "extent":_definitions[slot].canvas_extent})
+		return hit
+	return {}
+
+
+func workbench_grab_body(hit: Dictionary) -> RigidBody2D:
+	# RIDs never cross the native worker boundary. Every access revalidates the
+	# current session, actor identity and exact live body before returning it.
+	if not _active or hit.get("run_id") != run_id or hit.get("epoch") != epoch: return null
+	var slot := slot_for_instance(int(hit.get("instance_id", -1)))
+	if slot < 0 or slot != int(hit.get("actor_slot", -1)) or not str(_rigs[slot].fault).is_empty(): return null
+	var parts: Array = _rigs[slot].bodies()
+	var index := int(hit.get("part_index", -1))
+	if index < 0 or index >= parts.size(): return null
+	var body: RigidBody2D = parts[index]
+	if not is_instance_valid(body) or body.get_instance_id() != int(hit.get("body_identity", -1)) \
+		or not body.get_rid().is_valid() or body.freeze: return null
+	return body
+
+
+func claim_workbench_grab(hit: Dictionary) -> bool:
+	if _suspended or workbench_grab_body(hit) == null: return false
+	if _manipulated_actor >= 0 and _manipulator != null: _manipulator.end_grab("replaced_grab")
+	var slot := int(hit.actor_slot)
+	if not cancel_input(slot, epoch, StringName(str(_definitions[slot].producer))): return false
+	_manipulated_actor = slot
+	_fallback_reasons[slot] = "physical_grab"
+	return true
+
+
+func release_workbench_grab(hit: Dictionary, reason: String) -> void:
+	if not _active or hit.get("run_id") != run_id or hit.get("epoch") != epoch: return
+	var slot := slot_for_instance(int(hit.get("instance_id", -1)))
+	if slot < 0 or slot != _manipulated_actor: return
+	_manipulated_actor = -1
+	# Fresh post-release observations are required; a stale policy result or
+	# held equipment edge from before the grab must not restart a motor/tool.
+	cancel_input(slot, epoch, StringName(str(_definitions[slot].producer)))
+	_fallback_reasons[slot] = reason
+
+
+func capture_workbench_assembly(instance_id: int) -> Dictionary:
+	var slot := slot_for_instance(instance_id)
+	if slot < 0: return {}
+	var parts: Array = _retained_parts(slot)
+	if parts.is_empty(): return {}
+	var definition: Dictionary = _catalogue[slot]
+	var rotation: float = float(parts[0].rotation) - float(definition.parts[0].get("angle", 0.0))
+	var origin: Vector2 = Vector2(parts[0].position) - Vector2(definition.parts[0].offset).rotated(rotation)
+	return {"instance_id":instance_id, "run_id":run_id, "epoch":epoch,
+		"model":str(_definitions[slot].model), "position":origin, "rotation":rotation,
+		"parts":parts, "geometry":_rigs[slot].manipulation_geometry(),
+		"extent":_definitions[slot].canvas_extent, "joint_count":_rigs[slot].physical_joint_count(),
+		"pose_error":_rigs[slot].placement_pose_error()}
+
+
 func _retained_parts(slot: int) -> Array:
 	var result: Array = []
 	for body: RigidBody2D in _rigs[slot].bodies():
@@ -436,9 +520,12 @@ func adopt_retained_motion() -> void:
 func pack_workbench_sample() -> Dictionary:
 	if not _active or not bridge is WorkbenchBridge: return {}
 	var drives: Array[bool] = []
-	for rig in _rigs:
+	for slot: int in range(_rigs.size()):
+		var rig = _rigs[slot]
 		var driven: bool = not rig._action.is_empty() and (rig._last_impulse != Vector2.ZERO or rig._last_torque_impulse != 0.0)
-		for part: int in range(rig.bodies().size()): drives.append(driven and not rig._detached.has(part))
+		for part: int in range(rig.bodies().size()):
+			var grabbed: bool = slot == _manipulated_actor and _manipulator != null and _manipulator.grabs_part(slot, part)
+			drives.append(grabbed or (driven and not rig._detached.has(part)))
 	var packet: Dictionary = bridge.pack_sample(drives)
 	if packet.is_empty(): return packet
 	packet["emitters"] = []
@@ -609,6 +696,7 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if not _integer(command.get("actor_id"), 0, _rigs.size() - 1):
 		return _reject("actor_id")
 	var actor_id: int = int(command.actor_id)
+	if actor_id == _manipulated_actor: return _reject("actor_physically_grabbed", actor_id)
 	if _definitions[actor_id].model == Catalog.PASSIVE_BARREL or _definitions[actor_id].producer == &"passive":
 		return _reject("passive_prop", actor_id)
 	if bridge is WorkbenchBridge and not bool(_workbench_configuration(actor_id).enabled): return _reject("controller_stopped", actor_id)
@@ -693,6 +781,9 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
 		or producer != StringName(str(_definitions[actor_id].producer)):
 		return false
+	if actor_id == _manipulated_actor:
+		_manipulated_actor = -1
+		if _manipulator != null: _manipulator.invalidate("input_cancelled")
 	_capture_flight_step(actor_id)
 	_commands[actor_id] = {}
 	_flight_commands[actor_id] = {}
@@ -718,6 +809,7 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 
 
 func set_suspended(value: bool) -> void:
+	if value and _manipulator != null: _manipulator.end_grab("paused")
 	if value == _suspended:
 		return
 	if not value and _has_flight:
@@ -770,6 +862,7 @@ func advance(delta: float) -> void:
 	var script_actions: Array = []
 	for index: int in range(_rigs.size()):
 		if not str(_rigs[index].fault).is_empty(): continue
+		if index == _manipulated_actor: continue
 		var producer: String = str(_definitions[index].producer)
 		var period: int = DECISION_TICKS
 		if bridge is WorkbenchBridge:
@@ -835,11 +928,14 @@ func advance(delta: float) -> void:
 		_equipment[index].advance(command.get("equipment", {}), delta, tick, _generations[index],
 			_deadlines[index], not command.is_empty() and str(_rigs[index].fault).is_empty())
 		for request: Dictionary in _rigs[index].drain_effects():
-			if _effects.size() >= MAX_ACTORS:
+			if _effects.size() >= _rigs.size():
 				break
 			var effect: Dictionary = request.duplicate(true)
 			effect["source_body_id"] = bridge.proxy_for_body(_body_offsets[index] + int(effect.get("source_part", 0))) if bridge is WorkbenchBridge else _body_offsets[index] + int(effect.get("source_part", 0)) + 1
 			_effects.append(effect)
+	# This is the existing authoritative prepare-before-Rapier-step boundary.
+	# The spring is never advanced by UI frames or by the native cell worker.
+	if _manipulator != null: _manipulator.advance(delta)
 
 
 func _capture_flight_step(actor_id: int) -> void:
@@ -1005,6 +1101,8 @@ func snapshot() -> Dictionary:
 
 
 func close() -> void:
+	if _manipulator != null: _manipulator.end_grab("session_closed")
+	_manipulated_actor = -1
 	_active = false
 	bridge.shutdown()
 	for rig in _rigs:

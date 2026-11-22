@@ -725,6 +725,7 @@ struct World::TransientObstacleState {
     RectI64 region{};
     std::vector<std::uint16_t> body_ids;
     std::vector<std::size_t> occupied_indices;
+    std::uint16_t body_high_water = 0;
     std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> contacts{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_x{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_y{};
@@ -737,7 +738,7 @@ struct World::TransientObstacleState {
     std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> arrival_count{}, arrival_missing{}, arrival_misaligned{};
 
     void reset_contacts() noexcept {
-        for (std::size_t index = 0; index < contacts.size(); ++index) {
+        for (std::size_t index = 0; index <= body_high_water; ++index) {
             contacts[index].store(0, std::memory_order_relaxed);
             impulse_x[index].store(0, std::memory_order_relaxed);
             impulse_y[index].store(0, std::memory_order_relaxed);
@@ -2440,7 +2441,7 @@ void World::configure_transient_obstacles(RectI64 region, bool reserve_full_occu
         transient_obstacles_->body_ids.assign(required, 0U);
     }
     transient_obstacles_->occupied_indices.reserve(
-        reserve_full_occupancy ? required : std::min<std::size_t>(required, kMaximumTransientBodies * 256U));
+        reserve_full_occupancy ? required : std::min<std::size_t>(required, 64U * 256U));
     (void)witness_discovery_rect(
         region, soliding::ProducerReason::TransientMask, 0);
 }
@@ -2507,6 +2508,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     auto& slot = state.body_ids[index];
     if (slot != 0U) return false;
     slot = body_id;
+    state.body_high_water = std::max(state.body_high_water, body_id);
     const auto at = address(x, y);
     invalidate_pressure_input(at.chunk, at.local_x, at.local_y, at.local_x, at.local_y, true);
     state.occupied_indices.push_back(index);

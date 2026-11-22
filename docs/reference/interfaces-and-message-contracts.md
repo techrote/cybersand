@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-22
 ---
 
 # Interfaces and message contracts
@@ -1079,6 +1079,18 @@ by stable authored instance ID. It validates controller/equipment capabilities,
 keeps inspection separate from the human pilot, and preserves body identity
 during producer takeover. Sampled packets are refused at the physical boundary.
 The optional authored control-v1 extension does not serialize command authority.
+WB-ACTOR-COMPOSE-002R adds a session-local manipulation interface:
+`manipulator().hit_test(point)`, `begin_grab(point)`, `update_target(point)` and
+`end_grab(reason)` operate on current physical part identities; `state()` copies
+the active instance/part, anchor, target and bounded force. They issue no policy
+command and expose no mutable native storage. `capture_workbench_assembly(id)`
+returns copied current part transforms plus run/epoch, origin, geometry and any
+topology-preservation refusal. A value-only placement preview is revalidated
+against that source before one ordinary prepared-owner transaction.
+Setup-v2 optionally includes actor `spawn_rotation_degrees` in `[-180,180]` and
+root `sandbox_capacity: {version:1, logical_limit, body_limit, proxy_limit}`.
+Absent values retain zero orientation and 8/64/64 admission. Integer capacity
+limits are independently bounded at 4096, and no live mouse/lease state is saved.
 
 **Current experimental ACT-004 / ACT-005:**
 [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)

@@ -64,6 +64,30 @@ CASES = (
     "test_physical_usable_script",
     "test_physical_usables_admission",
 )
+SANDBOX_CASES = (
+    "test_workbench_actor_sandbox",
+    "test_workbench_actor_configuration",
+    "test_workbench_actor_configuration_native",
+    "test_workbench_actor_manipulation",
+    "test_workbench_actor_interaction",
+    "test_workbench_actor_capacity",
+    "test_workbench_actor_topology",
+    "test_act004_body_capacity",
+    "test_physical_actor_effects",
+    "test_physical_actor_effect_admission",
+    "test_physical_usables_runtime",
+    "test_physical_usable_equipment",
+)
+SANDBOX_RECEIPTS = {
+    "test_workbench_actor_sandbox": "WB_ACTOR_SANDBOX ",
+    "test_workbench_actor_configuration": "WB_ACTOR_CONFIGURATION ",
+    "test_workbench_actor_configuration_native": "WB_ACTOR_CONFIGURATION_NATIVE ",
+    "test_workbench_actor_manipulation": "WB_ACTOR_MANIPULATION_RESULT ",
+    "test_workbench_actor_interaction": "WB_ACTOR_SANDBOX_INTERACTION ",
+    "test_workbench_actor_interaction_reopen": "WB_ACTOR_SANDBOX_INTERACTION ",
+    "test_workbench_actor_capacity": "WB_ACTOR_CAPACITY ",
+    "test_workbench_actor_topology": "WB_ACTOR_TOPOLOGY ",
+}
 
 
 def digest(path: Path) -> str:
@@ -101,6 +125,7 @@ def project_inputs() -> dict:
         "docs/reference/liquid-run-receipt-vectors.json",
         "docs/operations/workbench-actor-composition.md",
         "third_party", ".github/workflows/workbench-actor-composition.yml",
+        ".github/workflows/workbench-actor-sandbox.yml",
     ], cwd=ROOT).decode().split("\0")
     result = {}
     for name in sorted(filter(None, names)):
@@ -248,7 +273,19 @@ def publish(args) -> None:
 def completion(case: runner.Case, receipt: dict, output: Path) -> None:
     """A zero engine exit without reaching the fixture's assertions is failure."""
     log = (output / receipt["log"]).read_text(encoding="utf-8", errors="replace")
-    if case.name in ("test_workbench_actor_composition", "test_workbench_actor_composition_reopen"):
+    if case.name in SANDBOX_RECEIPTS:
+        prefix = SANDBOX_RECEIPTS[case.name]
+        records = [json.loads(line.removeprefix(prefix)) for line in log.splitlines() if line.startswith(prefix)]
+        if len(records) != 1 or records[0].get("failures") != [] or records[0].get("checks", 0) <= 0:
+            raise ValueError("Missing complete sandbox assertion receipt: " + case.name)
+        if case.name == "test_workbench_actor_capacity":
+            required = {(family, count) for family in ("barrels", "mixed", "articulated") for count in (16, 32, 64)}
+            rows = records[0].get("rows", [])
+            observed = {(row["family"], row["actors"]) for row in rows if row.get("passed")}
+            if not required.issubset(observed) or any(row.get("native_ticks", 0) < 30 or row.get("rapier_ticks", 0) < 30 for row in rows):
+                raise ValueError("Incomplete real native/Rapier 16/32/64 capacity matrix")
+        receipt["assertion_receipt"] = records[0]
+    elif case.name in ("test_workbench_actor_composition", "test_workbench_actor_composition_reopen"):
         records = [json.loads(line.removeprefix("WB_ACTOR_COMPOSE "))
                    for line in log.splitlines() if line.startswith("WB_ACTOR_COMPOSE ")]
         if len(records) != 1 or records[0].get("failures") != [] or records[0].get("checks", 0) <= 0:
@@ -338,22 +375,35 @@ def test(args) -> int:
     available = {case.name: case for case in runner.discover_cases()}
     requested = args.cases.split(",") if args.cases else (
         ["test_workbench_actor_composition"] if args.package else list(CASES))
+    if args.sandbox and not args.cases:
+        requested += list(SANDBOX_CASES)
     if not requested or len(requested) != len(set(requested)) or any(name not in available for name in requested):
         raise ValueError("Required actor regression is absent or duplicated")
     cases = [runner.Case("import", ("--editor", "--quit"),
                         execution_policy.watchdog_seconds("godot_import_seconds"), 3)]
     for name in requested:
         case = available[name]
+        if name == "test_workbench_actor_capacity":
+            case = runner.Case(case.name, case.flags, execution_policy.complex_process_seconds(), case.weight, args.graphical)
+        if args.graphical and name in ("test_workbench_actor_interaction", "test_workbench_actor_configuration_native"):
+            case = runner.Case(case.name, case.flags, execution_policy.complex_process_seconds(), case.weight, True)
         if name == "test_workbench_actor_composition" and args.package:
             case = runner.Case(case.name, case.flags, case.timeout, case.weight, True)
         cases.append(case)
         if name == "test_workbench_actor_composition":
             cases.append(runner.Case(case.name + "_reopen", case.flags, case.timeout,
                                      case.weight, case.requires_display))
+        if name == "test_workbench_actor_interaction":
+            cases.append(runner.Case(case.name + "_reopen", case.flags, case.timeout,
+                                     case.weight, case.requires_display))
     if args.graphical:
         cases.append(runner.Case("actor_workshop_render",
                      ("--script", "res://tests/capture_workbench_actor_workshop.gd"),
                      execution_policy.watchdog_seconds("graphical_case_seconds"), 30, True))
+        if args.sandbox:
+            cases.append(runner.Case("actor_sandbox_render",
+                         ("--script", "res://tests/capture_workbench_actor_sandbox.gd"),
+                         execution_policy.complex_process_seconds(), 60, True))
     if args.measure:
         cases.append(runner.Case("actor_composition_performance",
                      ("--script", "res://tests/measure_workbench_actor_composition.gd"),
@@ -373,6 +423,9 @@ def test(args) -> int:
         env["WB_ACTOR_MEASURE_MS"] = "3000"
         env.pop("WB_ACTOR_BASELINE", None)
         env["CYBERSAND_ACTOR_COMPOSITION_NAME"] = "actor-composition-" + manifest["source_commit"][:12]
+        env["CYBERSAND_ACTOR_SANDBOX_NAME"] = "actor-sandbox-" + manifest["source_commit"][:12]
+        env.pop("CYBERSAND_ACTOR_SANDBOX_REOPEN", None)
+        env["CYBERSAND_ACTOR_CAPACITY_REPORT"] = str((args.output / "sandbox-capacity.json").resolve())
         env.pop("CYBERSAND_ACTOR_COMPOSITION_REOPEN", None)
         env.pop("CYBERSAND_ACTOR_COMPOSITION_CAPTURE", None)
         # Reuse the established watchdog and diagnostics, changing only the
@@ -391,6 +444,12 @@ def test(args) -> int:
                 if case.requires_display:
                     case_env["CYBERSAND_ACTOR_COMPOSITION_CAPTURE"] = str(
                         (args.output / ("reopen-frames" if reopen else "authored-frames")).resolve())
+            if case.name in ("test_workbench_actor_interaction", "test_workbench_actor_interaction_reopen"):
+                reopen = case.name.endswith("_reopen")
+                case_env["CYBERSAND_ACTOR_SANDBOX_REOPEN"] = "1" if reopen else "0"
+                if case.requires_display:
+                    case_env["CYBERSAND_ACTOR_COMPOSITION_CAPTURE"] = str(
+                        (args.output / ("sandbox-reopen-frames" if reopen else "sandbox-frames")).resolve())
             receipt, failed = runner.run_case(str(args.godot.resolve()), case, args.output, "case", env=case_env)
             report["results"].append(receipt)
             write(args.output / "qualification.json", report)
@@ -404,6 +463,11 @@ def test(args) -> int:
             if capture.get("status") != "passed" or len(capture.get("images", [])) < 3:
                 raise ValueError("Actual Workbench capture receipt is absent/incomplete")
             report["graphical_capture"] = capture
+            if args.sandbox:
+                sandbox = json.loads((args.output / "frames/sandbox.json").read_text())
+                if sandbox.get("status") != "passed" or len(sandbox.get("images", [])) < 9:
+                    raise ValueError("Actual sandbox demos/configuration/manipulation capture is incomplete")
+                report["sandbox_graphical_capture"] = sandbox
         report.update(status="passed", completed=True, executed_cases=len(cases))
         return 0
     except Exception as error:
@@ -458,6 +522,8 @@ def main() -> int:
     run.add_argument("--output", type=Path, required=True)
     run.add_argument("--cases", help="Comma-separated focused selection; omission executes complete registered set")
     run.add_argument("--graphical", action="store_true")
+    run.add_argument("--sandbox", action="store_true",
+                     help="Add continuous-play manipulation, unified configuration and real 16/32/64+ capacity qualification")
     run.add_argument("--measure", action="store_true",
                      help="Measure 12 actual owner workloads on 1024x512 and 2048x1024 canvases")
     run.add_argument("--package", type=Path,

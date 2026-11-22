@@ -1,8 +1,16 @@
 extends Window
 
+signal interaction_mode_requested(mode: String)
+signal manipulation_settings_requested(settings: Dictionary)
+signal capacity_requested(config: Dictionary)
+signal demo_requested(kind: String, count: int)
+signal placement_requested(instance_id: int, position: Vector2, rotation_degrees: float)
+signal tuning_requested(instance_id: int, options: Dictionary)
+
 # A lazy inspector over the ordinary Workbench's existing actor/session owner.
 # Visibility has no effect on controller scheduling or physics lifetime.
 const Catalog = preload("res://scripts/workbench_actor_catalog.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
 const Usables = preload("res://scripts/usable_catalog.gd")
 const SOURCE_LABELS := {"human":"Human / Pilot", "scripted":"Scripted NPC",
 	"policy":"External Policy", "passive":"Passive / Uncontrolled"}
@@ -21,18 +29,49 @@ var status := Label.new()
 var observation := TextEdit.new()
 var command := TextEdit.new()
 var details := VBoxContainer.new()
+var tabs := TabContainer.new()
+var pages: Dictionary = {}
+var interaction_mode := OptionButton.new()
+var operation_info := Label.new()
+var demo := OptionButton.new()
+var demo_count := SpinBox.new()
+var stiffness := SpinBox.new()
+var damping := SpinBox.new()
+var max_force := SpinBox.new()
+var snap := CheckButton.new()
+var grid_size := SpinBox.new()
+var rotation_step := SpinBox.new()
+var fine_step := SpinBox.new()
+var placement_x := SpinBox.new()
+var placement_y := SpinBox.new()
+var placement_angle := SpinBox.new()
+var logical_limit := SpinBox.new()
+var body_limit := SpinBox.new()
+var proxy_limit := SpinBox.new()
+var capacity_info := Label.new()
+var capacity_limit_info := Label.new()
+var diagnostics := TextEdit.new()
+var tuning: Dictionary = {}
+var _tuning_id := -1
+var _tuning_dirty := false
+var _sandbox_state: Dictionary = {}
+var _settings_dirty := false
+var _capacity_dirty := false
+var _placement_dirty := false
+var _placement_id := -1
 var _models: Array[String] = []
 var _last_refresh := 0
 var _shown_id := -1
+var _shown_control: Dictionary = {}
 var _roster_key := ""
 var _issued: Dictionary = {}
 
 
 func mount(workbench: Control) -> void:
 	wb = workbench
-	title = "CyberSand / Actor Composition"
-	size = Vector2i(700,650)
-	min_size = Vector2i(540,400)
+	title = "CyberSand / Workbench Configuration"
+	size = Vector2i(760,700)
+	min_size = Vector2i(600,440)
 	transient = true
 	exclusive = false
 	close_requested.connect(hide)
@@ -40,18 +79,72 @@ func mount(workbench: Control) -> void:
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side: String in ["left","top","right","bottom"]: margin.add_theme_constant_override("margin_"+side,12)
 	add_child(margin)
-	var scroll := ScrollContainer.new()
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	margin.add_child(scroll)
 	var column := VBoxContainer.new()
-	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(column)
+	column.add_theme_constant_override("separation",8)
+	margin.add_child(column)
 	var row: Control = wb._row(column)
-	wb._button(row,"Mixed Actor Workshop",func() -> void: wb.load_mixed_actor_workshop())
+	wb._label(row,"Pointer")
+	for entry: Array in [["Paint","paint"],["Grab physical part","grab"],["Place whole actor (paused)","place"],["Other Workbench tool","inspect"]]:
+		interaction_mode.add_item(entry[0])
+		interaction_mode.set_item_metadata(interaction_mode.item_count-1,entry[1])
+	interaction_mode.set_item_disabled(3,true)
+	row.add_child(interaction_mode)
+	interaction_mode.item_selected.connect(func(index: int) -> void:
+		interaction_mode_requested.emit(str(interaction_mode.get_item_metadata(index))))
 	wb._button(row,"Play / Pause",wb.toggle_pause)
 	wb._button(row,"Close",hide)
 	pilot_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(pilot_info)
+	operation_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(operation_info)
+	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(tabs)
+	for caption: String in ["Actors","Controllers","Equipment","Physics","Capacity","Diagnostics"]:
+		_page(caption)
+	_build_actors(pages.Actors)
+	_build_controllers(pages.Controllers)
+	_build_equipment(pages.Equipment)
+	_build_physics(pages.Physics)
+	_build_capacity(pages.Capacity)
+	_build_diagnostics(pages.Diagnostics)
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status.custom_minimum_size.y = 40
+	column.add_child(status)
+	_fill_models()
+	refresh(true)
+
+
+func _page(caption: String) -> void:
+	var scroll := ScrollContainer.new()
+	scroll.name = caption
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	tabs.add_child(scroll)
+	var column := VBoxContainer.new()
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.add_theme_constant_override("separation",8)
+	scroll.add_child(column)
+	pages[caption] = column
+
+
+func _note(parent: Control, text: String) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	parent.add_child(label)
+	return label
+
+
+func _build_actors(column: Control) -> void:
+	_note(column,"Explore a prepared playground, or compose your own. Loading a playground replaces the current authored start; save your work first.")
+	var row: Control = wb._row(column)
+	for entry: Array in [["Living Mixed Workshop","mixed"],["Barrel Crowd","barrels"],["Mechanical Chaos","mechanical"]]:
+		demo.add_item(entry[0])
+		demo.set_item_metadata(demo.item_count-1,entry[1])
+	row.add_child(demo)
+	wb._spin(row,"Crowd count",demo_count,1,256,1,64)
+	demo_count.tooltip_text = "Barrel Crowd population. Other examples use their authored cast. Higher counts are experiments, not frame-rate promises."
+	wb._button(row,"Load playground",func() -> void:
+		demo_requested.emit(str(demo.get_item_metadata(demo.selected)),int(demo_count.value)))
 	row = wb._row(column)
 	wb._label(row,"Family")
 	family.add_item("All physical actors")
@@ -61,7 +154,6 @@ func mount(workbench: Control) -> void:
 		for i: int in family.item_count:
 			if family.get_item_text(i) == label: found = true
 		if not found: family.add_item(label)
-	family.select(1)
 	row.add_child(family)
 	family.item_selected.connect(func(_index: int) -> void: _fill_models())
 	row = wb._row(column)
@@ -69,7 +161,7 @@ func mount(workbench: Control) -> void:
 	model.fit_to_longest_item = false
 	model.clip_text = true
 	model.get_popup().max_size = Vector2i(700,450)
-	model.custom_minimum_size.x = 300
+	model.custom_minimum_size.x = 280
 	model.item_selected.connect(func(_index: int) -> void: _model_info())
 	wb._button(row,"Place at Workbench X/Y",_place)
 	wb._button(row,"Replace inspected",_replace)
@@ -78,6 +170,9 @@ func mount(workbench: Control) -> void:
 	row = wb._row(column)
 	wb._label(row,"Inspect")
 	instances.custom_minimum_size.x = 280
+	instances.fit_to_longest_item = false
+	instances.clip_text = true
+	instances.get_popup().max_size = Vector2i(700,450)
 	row.add_child(instances)
 	instances.item_selected.connect(func(index: int) -> void:
 		wb.select_instance(instances.get_item_id(index))
@@ -85,7 +180,22 @@ func mount(workbench: Control) -> void:
 	wb._button(row,"Focus",wb.focus_selected)
 	wb._button(row,"Reset",wb.reset_selected)
 	wb._button(row,"Remove",wb.remove_selected)
+	_note(column,"Inspection keeps the current pilot and NPC sources. Reset, replacement, equipment Apply and authored placement prepare a new owner before changing the applied composition.")
 	row = wb._row(column)
+	wb._spin(row,"Spawn X",placement_x,0,16384,0.25,0)
+	wb._spin(row,"Y",placement_y,0,16384,0.25,0)
+	wb._spin(row,"Angle °",placement_angle,-180,180,0.25,0)
+	for field: SpinBox in [placement_x,placement_y,placement_angle]:
+		field.value_changed.connect(func(_value: float) -> void: _placement_dirty = true)
+	row = wb._row(column)
+	wb._button(row,"Apply authored placement (paused)",_apply_placement)
+	wb._button(row,"Read current pose",_read_current_pose)
+	_note(column,"Pause and choose Place whole actor to drag on the canvas. Q/E rotate, Shift uses fine steps, Escape cancels. Release commits once. Save start stores authored position and orientation, not live momentum or ragdoll deformation.")
+
+
+func _build_controllers(column: Control) -> void:
+	_note(column,"Inspect and pilot are separate. Only explicit pilot controls transfer human authority. Opening this window releases held human inputs while unrelated NPCs continue.")
+	var row: Control = wb._row(column)
 	wb._button(row,"Pilot inspected",func() -> void:
 		wb.pilot_instance(wb.selected_id())
 		refresh(true))
@@ -105,30 +215,17 @@ func mount(workbench: Control) -> void:
 	row = wb._row(column)
 	wb._spin(row,"Decision interval (physics ticks)",cadence,1,12,1,6)
 	wb._button(row,"Apply interval",_apply_control)
+	row = wb._row(column)
 	policy.add_item("Deterministic test producer")
 	policy.add_item("External submissions")
 	row.add_child(policy)
 	policy.item_selected.connect(func(_index: int) -> void: _apply_control())
+	_note(column,"Live source changes preserve bodies and equipment. A grabbed actor temporarily stops its drive; release resumes its compatible source. External Policy is an adapter, not a running model or network service.")
 	row = wb._row(column)
-	wb._label(row,"Mounted equipment")
-	usable.add_item("None",-1)
-	for index: int in Usables.count(): usable.add_item(Usables.name_for(index),index)
-	row.add_child(usable)
-	wb._button(row,"Apply equipment / restart",func() -> void: wb.apply_actor_equipment(wb.selected_id(),usable.get_selected_id()))
-	var help := Label.new()
-	help.text = "Inspecting does not take control. NPCs continue while this panel is closed or terrain is painted. Human tools use M / Alt, N drop and U attach; the paint pointer stays with PAINT."
-	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(help)
-	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(status)
-	row = wb._row(column)
-	wb._button(row,"Observations and policy adapter…",func() -> void: details.visible = not details.visible)
+	wb._button(row,"Advanced observations and policy…",func() -> void: details.visible = not details.visible)
 	column.add_child(details)
 	details.hide()
-	var description := Label.new()
-	description.text = "Copied physical observations only. Issue a fresh observation, edit its command values, then submit while running. Late, foreign and retired replies are refused by the session. No network service or learned model is started."
-	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	details.add_child(description)
+	_note(details,"Copied physical observations only. Issue a fresh observation, edit its command values, then submit while running. Late, foreign and retired replies are refused by the session.")
 	row = wb._row(details)
 	wb._button(row,"Issue observation",_issue)
 	wb._button(row,"Submit command",_submit)
@@ -139,8 +236,168 @@ func mount(workbench: Control) -> void:
 	command.custom_minimum_size.y = 170
 	command.placeholder_text = "Issue observation to prepare an authorized command."
 	details.add_child(command)
-	_fill_models()
-	refresh(true)
+
+
+func _build_equipment(column: Control) -> void:
+	_note(column,"Starting loadout belongs to the saved composition. Applying it prepares a replacement session and restarts controller/resource state; live source handoff preserves the current item.")
+	var row: Control = wb._row(column)
+	wb._label(row,"Mounted equipment")
+	usable.add_item("None",-1)
+	for index: int in Usables.count(): usable.add_item(Usables.name_for(index),index)
+	row.add_child(usable)
+	wb._button(row,"Apply equipment / restart",func() -> void: wb.apply_actor_equipment(wb.selected_id(),usable.get_selected_id()))
+	_note(column,"Human equipment: M / Alt use, N drop, U attach. The pointer remains reserved for the chosen canvas tool. A released equipment body retains its actual body/proxy allocation. Unsupported mounts refuse instead of inventing an attachment.")
+
+
+func _build_physics(column: Control) -> void:
+	_note(column,"Live Grab pulls the clicked physical part with a bounded damped force. Joints and collisions remain active. A temporary grab is never saved as authored placement.")
+	var row: Control = wb._row(column)
+	wb._spin(row,"Stiffness",stiffness,5,2400,5,160)
+	wb._spin(row,"Damping",damping,0,160,1,24)
+	row = wb._row(column)
+	wb._spin(row,"Maximum force",max_force,10,1000000,10,24000)
+	stiffness.tooltip_text = "Mass-normalized spring response, in s⁻². Higher values pull more strongly."
+	damping.tooltip_text = "Velocity damping, in s⁻¹. Reduces oscillation while retaining physical motion."
+	max_force.tooltip_text = "Absolute force cap in mass × cell/s². Unsafe or nonfinite settings are refused."
+	_note(column,"Paused Place transforms the whole assembly. The preview does no native preparation until commit. Bounds or preparation refusal leaves the applied world intact.")
+	row = wb._row(column)
+	snap.text = "Snap to grid"
+	row.add_child(snap)
+	wb._spin(row,"Grid cells",grid_size,0.25,256,0.25,8)
+	row = wb._row(column)
+	wb._spin(row,"Rotate step °",rotation_step,0.25,180,0.25,15)
+	wb._spin(row,"Fine move cells",fine_step,0.01,16,0.01,1)
+	for field: SpinBox in [stiffness,damping,max_force,grid_size,rotation_step,fine_step]:
+		field.value_changed.connect(func(_value: float) -> void: _settings_dirty = true)
+	snap.toggled.connect(func(_pressed: bool) -> void: _settings_dirty = true)
+	row = wb._row(column)
+	wb._button(row,"Apply manipulation settings",_apply_settings)
+	_note(column,"Inspected actor tuning — changes prepare a replacement owner and restart controller/resource state. Model-incompatible controls are disabled. The shared material response law stays unchanged.")
+	row = wb._row(column)
+	for key: String in Setup.DEFAULT_OPTIONS:
+		var low := 5.0 if key == "budget" else (1.0 if key == "boost_multiplier" else (0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0))
+		var high := 80.0 if key == "budget" else (8.0 if key == "boost_multiplier" else 64.0)
+		var field := SpinBox.new()
+		tuning[key] = field
+		wb._spin(row,key.replace("_multiplier"," ×").capitalize(),field,low,high,1.0 if key == "budget" else 0.01,Setup.DEFAULT_OPTIONS[key])
+		field.value_changed.connect(func(_value: float) -> void: _tuning_dirty = true)
+	row = wb._row(column)
+	wb._button(row,"Apply actor tuning / restart",_apply_tuning)
+	_note(column,"Live Paint retains the existing Brush, Eraser and right-button erasing. Pause for Line, Rectangle, Fill, selection, Paste and Undo/Redo. Grab and Place own the pointer exclusively; close this window to interact with the canvas.")
+
+
+func _build_capacity(column: Control) -> void:
+	_note(column,"Choose the population ceiling independently from physical-body and native-mask budgets. A barrel consumes one real body; multipart machines and compound flyers use their actual allocations.")
+	var row: Control = wb._row(column)
+	wb._spin(row,"Logical actors",logical_limit,1,4096,1,8)
+	row = wb._row(column)
+	wb._spin(row,"Response bodies",body_limit,1,4096,1,64)
+	wb._spin(row,"Native masks",proxy_limit,1,4096,1,64)
+	for field: SpinBox in [logical_limit,body_limit,proxy_limit]:
+		field.value_changed.connect(func(_value: float) -> void: _capacity_dirty = true)
+	row = wb._row(column)
+	wb._label(row,"Stage preset")
+	for count: int in [16,32,64,128,256]:
+		wb._button(row,str(count),func() -> void: stage_capacity_preset(count))
+	row = wb._row(column)
+	wb._button(row,"Apply capacity",_apply_capacity)
+	capacity_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(capacity_info)
+	capacity_limit_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(capacity_limit_info)
+	_note(column,"Large populations can be extremely slow. Actors, controllers, joints and equipment are not automatically removed to recover FPS. Only real allocation, identity and native-structure limits refuse. The saved composition retains the capacity required to reopen it.")
+
+
+func _build_diagnostics(column: Control) -> void:
+	_note(column,"Current source, physical part and capacity receipts. Prepared-owner operations are asynchronous; a pending request is not a completed placement. Native publication stalls and actor/controller costs are separate measurements.")
+	diagnostics.editable = false
+	diagnostics.custom_minimum_size = Vector2(0,300)
+	diagnostics.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(diagnostics)
+
+
+func stage_capacity_preset(count: int) -> void:
+	logical_limit.value = count
+	body_limit.value = mini(int(body_limit.max_value),maxi(int(body_limit.value),count * Catalog.MAX_PARTS))
+	proxy_limit.value = mini(int(proxy_limit.max_value),maxi(int(proxy_limit.value),count * Catalog.MAX_PARTS))
+	_capacity_dirty = true
+
+
+func _apply_settings() -> void:
+	manipulation_settings_requested.emit({"stiffness":stiffness.value,"damping":damping.value,
+		"max_force":max_force.value,"snap_enabled":snap.button_pressed,"grid_size":grid_size.value,
+		"rotation_step":rotation_step.value,"fine_step":fine_step.value})
+	_settings_dirty = false
+
+
+func _apply_capacity() -> void:
+	capacity_requested.emit({"version":1,"logical_limit":int(logical_limit.value),"body_limit":int(body_limit.value),
+		"proxy_limit":int(proxy_limit.value)})
+	_capacity_dirty = false
+
+
+func _apply_tuning() -> void:
+	var options: Dictionary = {}
+	for key: String in tuning: options[key] = tuning[key].value
+	tuning_requested.emit(wb.selected_id(),options)
+	_tuning_dirty = false
+
+
+func _apply_placement() -> void:
+	placement_requested.emit(wb.selected_id(),Vector2(placement_x.value,placement_y.value),placement_angle.value)
+	_placement_dirty = false
+
+
+func _read_current_pose() -> void:
+	var state: Dictionary = wb.actor_placement_pose(wb.selected_id())
+	if state.is_empty():
+		wb.refuse("Select an installed actor before reading its current pose.")
+		return
+	var position: Vector2 = state.get("position",Vector2.ZERO)
+	placement_x.value = position.x
+	placement_y.value = position.y
+	placement_angle.value = wrapf(rad_to_deg(float(state.get("rotation",0.0))),-180.0,180.0)
+	_placement_dirty = true
+
+
+func _editing(fields: Array) -> bool:
+	for field: SpinBox in fields:
+		if field.get_line_edit().has_focus(): return true
+	return false
+
+
+func set_sandbox_state(state: Dictionary) -> void:
+	_sandbox_state = state.duplicate(true)
+	var mode := str(state.get("mode","paint"))
+	for index: int in interaction_mode.item_count:
+		if str(interaction_mode.get_item_metadata(index)) == mode: interaction_mode.select(index)
+	var pending := bool(state.get("preparing",false))
+	var paused: bool = wb.host.paused if wb != null and wb.host != null else true
+	var hints := {"paint":"Brush / Eraser live; precision shapes and history require Pause.",
+		"grab":"Running: drag an individual part with physics. Release or Escape ends the grab.",
+		"place":"Paused: drag the complete actor; Q/E rotate, Shift fine, Escape cancel.",
+		"inspect":"Other Workbench canvas tool selected; inspection does not transfer the pilot."}
+	operation_info.text = "Preparing owner…" if pending else "%s · %s" % ["Paused" if paused else "Running",hints.get(mode,mode)]
+	var settings: Dictionary = state.get("settings",{})
+	if not _settings_dirty and not _editing([stiffness,damping,max_force,grid_size,rotation_step,fine_step]):
+		for item: Array in [["stiffness",stiffness],["damping",damping],["max_force",max_force],
+				["grid_size",grid_size],["rotation_step",rotation_step],["fine_step",fine_step]]:
+			if settings.has(item[0]): item[1].set_value_no_signal(float(settings[item[0]]))
+		if settings.has("snap_enabled"): snap.set_pressed_no_signal(bool(settings.snap_enabled))
+	var capacity: Dictionary = state.get("capacity",{})
+	for item: Array in [["max_logical",logical_limit],["max_bodies",body_limit],["max_proxies",proxy_limit]]:
+		if capacity.has(item[0]): item[1].max_value = int(capacity[item[0]])
+	if capacity.has("max_logical"): demo_count.max_value = int(capacity.max_logical)
+	if not _capacity_dirty and not _editing([logical_limit,body_limit,proxy_limit]):
+		for item: Array in [["logical_limit",logical_limit],["body_limit",body_limit],["proxy_limit",proxy_limit]]:
+			if capacity.has(item[0]): item[1].set_value_no_signal(int(capacity[item[0]]))
+	capacity_info.text = "Current: %d actors · %d bodies · %d native masks · %d authored joints\nAvailable: %d actor slots · %d bodies · %d masks" % [
+		int(capacity.get("actors",0)),int(capacity.get("bodies",0)),int(capacity.get("proxies",0)),int(capacity.get("joints",0)),
+		maxi(0,int(capacity.get("logical_limit",0))-int(capacity.get("actors",0))),
+		maxi(0,int(capacity.get("body_limit",0))-int(capacity.get("bodies",0))),
+		maxi(0,int(capacity.get("proxy_limit",0))-int(capacity.get("proxies",0)))]
+	capacity_limit_info.text = str(capacity.get("limit_reason","Budgets are checked before preparation; rejected changes keep the current world."))
+	diagnostics.text = JSON.stringify(_json(state),"  ")
 
 
 func _fill_models() -> void:
@@ -195,14 +452,33 @@ func refresh(force: bool = false) -> void:
 			instances.add_item("#%d · %s" % [a.id,Catalog.entry(a.model).get("name",a.model)],a.id)
 	instances.select(maxi(0,instances.get_item_index(inspected)))
 	var a: Dictionary = wb.actor(wb.applied,inspected)
+	if _tuning_id != inspected or (not _tuning_dirty and not _editing(tuning.values())):
+		_tuning_id = inspected
+		var options: Dictionary = a.get("options",Setup.DEFAULT_OPTIONS)
+		var fleet_tuning := Catalog.Fleet.index_for_id(str(a.get("model",""))) >= 0
+		var flight_plant := str(a.get("model","")) in Catalog.Flight.IDS
+		for option_key: String in tuning:
+			tuning[option_key].set_value_no_signal(float(options.get(option_key,Setup.DEFAULT_OPTIONS[option_key])))
+			tuning[option_key].editable = not a.is_empty() and (fleet_tuning or option_key == "budget" or (not flight_plant and option_key in ["mass_multiplier","inertia_multiplier"]))
+		_tuning_dirty = false
+	if _placement_id != inspected or (not _placement_dirty and not _editing([placement_x,placement_y,placement_angle])):
+		_placement_id = inspected
+		if not a.is_empty():
+			placement_x.set_value_no_signal(float(a.spawn[0]))
+			placement_y.set_value_no_signal(float(a.spawn[1]))
+			placement_angle.set_value_no_signal(float(a.get("spawn_rotation_degrees",0.0)))
+		_placement_dirty = false
+	if wb.has_method("actor_sandbox_state"):
+		set_sandbox_state(wb.call("actor_sandbox_state"))
 	if _shown_id != inspected:
 		_issued.clear()
 		observation.text = "No inspected actor." if a.is_empty() else ""
-	if force or _shown_id != inspected:
+	var config: Dictionary = {} if a.is_empty() else Catalog.control_for(a)
+	if force or _shown_id != inspected or config != _shown_control:
 		_shown_id = inspected
+		_shown_control = config.duplicate(true)
 		source.clear()
 		if not a.is_empty():
-			var config := Catalog.control_for(a)
 			for mode: String in Catalog.entry(a.model).controllers:
 				source.add_item(SOURCE_LABELS[mode])
 				source.set_item_metadata(source.item_count-1,mode)
