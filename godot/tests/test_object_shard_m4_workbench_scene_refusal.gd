@@ -53,14 +53,14 @@ func _run() -> void:
 	_expect("--objectshard-m4-workbench" in OS.get_cmdline_user_args(),
 		"Explicit M4 flag required; production defaults remain untouched")
 	if failures:
-		_finish()
+		await _finish()
 		return
 	set_meta("cybersand_feature", "shared_workbench")
 	host = load("res://main.tscn").instantiate()
 	root.add_child(host)
 	if not await _ready_workbench():
 		_expect(false, "Real ordinary Workbench installed and worker published")
-		_finish()
+		await _finish()
 		return
 	var worker: CyberSimulationWorker = host.simulation_worker
 	var world: Variant = worker._world
@@ -106,7 +106,7 @@ func _run() -> void:
 	_expect(bench.object_shard_m4_port.generation == old_port_epoch + 1 and
 		host.object_shard_m4_probe.epoch == old_trace_epoch + 1,
 		"Explicit F2/reset-style fence invalidates prior M4 observations")
-	_finish()
+	await _finish()
 
 
 func _finish() -> void:
