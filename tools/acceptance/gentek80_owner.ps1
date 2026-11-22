@@ -22,7 +22,13 @@ function Require-Hash([string]$h,[string]$name) {
 function Require-Commit([string]$c,[string]$name) {
  if($c -cnotmatch '^[0-9a-f]{40}$'){throw "$name requires an exact 40-digit Git commit"}
 }
-function Hash([string]$path){ (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
+function Hash([string]$path){
+  # .NET stream hashing avoids PowerShell module autoload differences on hosted Windows.
+  $f=[IO.File]::OpenRead($path)
+  $h=[Security.Cryptography.SHA256]::Create()
+  try{ return ([BitConverter]::ToString($h.ComputeHash($f))).Replace('-','').ToLowerInvariant() }
+  finally{ $h.Dispose(); $f.Dispose() }
+}
 function Member([string]$name,[bool]$dir=$false){
  if([string]::IsNullOrWhiteSpace($name)){throw 'Empty archive member'}
  $n=$name.Replace('\','/')
