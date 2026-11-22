@@ -40,19 +40,21 @@ def processes_using_engine(exe: Path) -> dict:
     if os.name != "nt":
         return {"supported": False, "reason": "Windows process-path inspection unavailable"}
     script = (
-        "$e=[IO.Path]::GetFullPath($args[0]);"
+        "$targets=@([IO.Path]::GetFullPath($args[0]),[IO.Path]::GetFullPath($args[1]));"
         "$p=@(Get-CimInstance Win32_Process | Where-Object "
-        "{ $_.ExecutablePath -and [string]::Equals($_.ExecutablePath,$e,"
-        "[StringComparison]::OrdinalIgnoreCase) } | ForEach-Object { $_.ProcessId });"
+        "{ $_.ExecutablePath -and ($targets -contains $_.ExecutablePath) }"
+        " | ForEach-Object { $_.ProcessId });"
         "ConvertTo-Json -Compress -InputObject $p"
     )
     run = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive",
-                          "-Command", script, str(exe)], text=True,
+                          "-Command", script, str(exe),
+                          str(exe.with_name(exe.name.replace("_console.exe", ".exe")))], text=True,
                          capture_output=True, timeout=90)
     if run.returncode:
         return {"supported": False, "error": run.stderr.strip()}
     try:
-        return {"supported": True, "pids": json.loads(run.stdout.strip())}
+        return {"supported": True, "pids": json.loads(run.stdout.strip()),
+                "checked_console_and_gui": True}
     except (json.JSONDecodeError, ValueError) as exc:
         return {"supported": False, "error": str(exc), "stdout": run.stdout.strip()}
 
@@ -107,6 +109,8 @@ def main() -> int:
             environment_phase = f"multistyle-{phase}"
             before = processes_using_engine(engine)
             process_checks.append({"phase": environment_phase, "boundary": "before", **before})
+            if os.name == "nt" and not before.get("supported"):
+                raise RuntimeError("Windows pre-phase console/GUI process-path inventory unavailable")
             if before.get("supported") and before.get("pids"):
                 raise RuntimeError("Packaged engine process already running at fresh-process boundary")
             env["CYBERSAND_ARCHITECTURE_PHASE"] = environment_phase
@@ -124,6 +128,9 @@ def main() -> int:
             results.append(r)
             after = processes_using_engine(engine)
             process_checks.append({"phase": environment_phase, "boundary": "after", **after})
+            if os.name == "nt" and not after.get("supported"):
+                results.append({"case": f"{environment_phase}-process-inventory", "passed": False,
+                                "error": after.get("error")})
             if after.get("supported") and after.get("pids"):
                 results.append({"case": f"{environment_phase}-process-cleanup", "passed": False,
                                 "pids": after.get("pids")})

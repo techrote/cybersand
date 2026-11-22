@@ -81,3 +81,9 @@ The output includes a structured gentek80-owner-report.json, OS/driver/DPI infor
 | Integrator/owner merge gate | Review exact source and runtime, accept outstanding failures, explicit merge authority | **HOLD** |
 
 This guide does not itself grant merge, auto-merge or Ready promotion authority.
+
+### Transactional extraction and authenticity boundary
+
+The offline `Extract` action now verifies all ZIP entries, payload hashes and source/native identities inside a newly created **sibling staging directory**. Only a successful verification publishes the destination with a same-volume directory rename. Rejected archives must leave no partial destination or staging contents.
+
+The independently supplied **original archive SHA-256** is the trust anchor. The bundled manifest and launcher cannot, on their own, authenticate an extracted directory against a local attacker capable of replacing **both** its manifest and executable after extraction. If custody of the extracted directory is uncertain, re-check the original ZIP against the independently obtained digest and extract afresh. An expected source commit string is an identity check, not a digital signature.

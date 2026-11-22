@@ -8,6 +8,8 @@ on:
       - '.github/workflows/gentek-windows-final-source.yml'
       - 'docs/operations/gentek80-physical-owner-acceptance.md'
       - 'docs/reference/retrieval-corpus.json'
+      - 'tools/architecture/gentek80_advanced_mixed.py'
+      - 'godot/tools/qualify_gentek80_advanced_mixed.gd'
   workflow_dispatch:
 permissions:
   contents: read
@@ -199,6 +201,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Complete Windows catalogue campaign failed' }
           python tools/architecture/gentek80_workbench.py --godot $env:GODOT_EXE --output evidence/gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 Windows Workbench author/reopen failed' }
+          python tools/architecture/gentek80_advanced_mixed.py --godot $env:GODOT_EXE --output evidence/gentek80-advanced-mixed --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Two five-advanced-style Workbench compositions failed author/reopen' }
       - name: Package source-matched Windows owner candidate
         shell: pwsh
         run: |
@@ -246,6 +250,11 @@ jobs:
           Expand-Archive $archive $gentekValidation
           python tools/architecture/gentek80_workbench.py --godot (Join-Path $gentekValidation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $gentekValidation 'godot') --package $gentekValidation --output evidence/package-gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 extracted Windows package replay failed' }
+          # Separate pristine extraction, preserving distinct author/reopen profile.
+          $mixedValidation = Join-Path $env:RUNNER_TEMP 'gentek80-advanced-package-validation'
+          Expand-Archive $archive $mixedValidation
+          python tools/architecture/gentek80_advanced_mixed.py --godot (Join-Path $mixedValidation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $mixedValidation 'godot') --package $mixedValidation --output evidence/package-gentek80-advanced-mixed --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted source-exact two five-advanced-style compositions failed fresh-process replay' }
       - name: Verify entire original archive and extracted package with source-pinned offline owner verifier
         shell: pwsh
         run: |

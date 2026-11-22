@@ -255,13 +255,20 @@ switch($Action){
  'Extract'{
    if(-not $Destination -or (Test-Path -LiteralPath $Destination)){throw 'Extract destination must be new'}
    $z=Zip-Checked $ArchivePath $ExpectedArchiveSha256
+   $staging=$null
    try{
-     $base=[IO.Path]::GetFullPath($Destination)
-     [IO.Directory]::CreateDirectory($base)|Out-Null
+     $target=[IO.Path]::GetFullPath($Destination)
+     if([IO.File]::Exists($target) -or [IO.Directory]::Exists($target)){throw 'Extract destination already exists'}
+     $parent=[IO.Path]::GetDirectoryName($target)
+     if([string]::IsNullOrWhiteSpace($parent)){throw 'Extract destination has no parent directory'}
+     [IO.Directory]::CreateDirectory($parent)|Out-Null
+     # Only publish after checking every file on a same-volume sibling stage.
+     $staging=Join-Path $parent ('.gentek80-stage-'+[Guid]::NewGuid().ToString('N'))
+     [IO.Directory]::CreateDirectory($staging)|Out-Null
      foreach($e in $z.zip.Entries){
        $dir=$e.FullName.EndsWith('/') -or $e.FullName.EndsWith('\')
        $name=Member $e.FullName $dir
-       $path=Safe-Path $base $name
+       $path=Safe-Path $staging $name
        if($dir){[IO.Directory]::CreateDirectory($path)|Out-Null;continue}
        [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($path))|Out-Null
        $out=[IO.File]::Open($path,[IO.FileMode]::CreateNew)
@@ -269,9 +276,17 @@ switch($Action){
        try{$input.CopyTo($out)}finally{$input.Dispose();$out.Dispose()}
      }
      if((Hash $z.path) -ne $ExpectedArchiveSha256.ToLowerInvariant()){throw 'ZIP changed during extraction'}
-     $x=Verify $base $ExpectedSource
+     $x=Verify $staging $ExpectedSource
+     # An existing or raced-in destination makes the rename fail closed.
+     [IO.Directory]::Move($staging,$target)
      Write-Output "EXTRACTED AND VERIFIED: source=$($x.source) files=$($x.files)"
-   }finally{$z.zip.Dispose()}
+   }finally{
+     if($staging -and [IO.Directory]::Exists($staging)){
+       try{[IO.Directory]::Delete($staging,$true)}
+       catch{Write-Warning "Rejected package stage cleanup failed: $($_.Exception.Message)"}
+     }
+     $z.zip.Dispose()
+   }
  }
  'VerifyPayload'{$x=Verify $PackagePath $ExpectedSource;Write-Output "PAYLOAD VERIFIED: source=$($x.source) native=$($x.native)"}
  'Launch'{

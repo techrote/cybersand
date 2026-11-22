@@ -145,6 +145,22 @@ class WindowsAdmission(unittest.TestCase):
         cache.write_bytes(b"engine-owned cache")
         self.run_ps("VerifyPayload", True, PackagePath=self.src, ExpectedSource=SOURCE)
 
+    def test_invalid_manifest_extract_is_transactional(self):
+        # Never publish a partial destination after a valid ZIP with
+        # semantically invalid payload hashes.
+        manifest = self.src / "candidate-manifest.json"
+        data = json.loads(manifest.read_text(encoding="utf8"))
+        data["files_sha256"][NATIVE] = "0" * 64
+        manifest.write_text(json.dumps(data), encoding="utf8")
+        bad = self.root / "bad-payload-manifest.zip"
+        sha = zipup(self.src, bad)
+        dest = self.root / "sibling (stage test)" / "Unicode Ω" / "published"
+        self.run_ps("Extract", False, ArchivePath=bad, ExpectedArchiveSha256=sha,
+                    ExpectedSource=SOURCE, Destination=dest)
+        self.assertFalse(dest.exists(), "Invalid package left a published partial destination")
+        self.assertEqual(list(dest.parent.glob(".gentek80-stage-*")), [],
+                         "Invalid package left an unverified extraction stage")
+
     def test_owner_decisions_not_invented(self):
         formdir = self.root / "owner form"
         self.run_ps("NewChecklist", True, ResultsDirectory=formdir)
