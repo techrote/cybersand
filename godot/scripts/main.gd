@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const ObjectShardM4LatencyProbe = preload("res://scripts/object_shard_m4_latency_probe.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const WAVE_TUNING := [
 	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
@@ -57,6 +58,8 @@ var _workbench_wait_sample: int = -1
 var _workbench_frame_error: String = ""
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+# Optional measurement only; never owns native World, RIDs or publication state.
+var object_shard_m4_probe = ObjectShardM4LatencyProbe.new()
 # Experimental Water settings staged for explicit Apply/Load. Unrelated
 # lifecycle rebuilds reuse the last acknowledged native construction options.
 # Empty keeps every default.
@@ -1844,6 +1847,9 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	object_shard_m4_probe.configure("--objectshard-m4-workbench" in OS.get_cmdline_user_args())
+	if object_shard_m4_probe.enabled:
+		RenderingServer.frame_post_draw.connect(_object_shard_m4_post_draw)
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
@@ -2019,6 +2025,13 @@ func _ready() -> void:
 		showcase_presentation.launch.call_deferred()
 
 
+func _object_shard_m4_post_draw() -> void:
+	# Never mutate the probe from a foreign renderer thread.
+	if object_shard_m4_probe.enabled and shared_workbench != null \
+			and OS.get_thread_caller_id() == OS.get_main_thread_id():
+		object_shard_m4_probe.observe_post_draw(Time.get_ticks_usec())
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
 		# A loss/regain between physics callbacks must still retire old edges.
@@ -2026,6 +2039,10 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if object_shard_m4_probe.enabled:
+		if RenderingServer.frame_post_draw.is_connected(_object_shard_m4_post_draw):
+			RenderingServer.frame_post_draw.disconnect(_object_shard_m4_post_draw)
+		object_shard_m4_probe.retire("SceneExit")
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -2037,6 +2054,7 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	var m4_callback_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
 	if shared_workbench == null:
 		tower_panel.refresh(tower_active,tower_floor,tower_context)
 		_refresh_microscenario_controls()
@@ -2088,6 +2106,9 @@ func _process(delta: float) -> void:
 		refresh_actor_prototypes()
 		maximum_frame_time_ms = frame_time_ms
 		maximum_collider_time_ms = 0.0
+	if m4_callback_started_usec >= 0:
+		object_shard_m4_probe.record_duration("scene_callback", m4_callback_started_usec,
+			Time.get_ticks_usec(), {"scope":"complete_Main_process_callback_includes_nested_upload"})
 
 
 func _physics_process(_delta: float) -> void:
@@ -2149,7 +2170,11 @@ func _physics_process(_delta: float) -> void:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
 		else:
 			apply_barrel_player_control(_delta)
+		var m4_physics_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
 		rapier_bridge.step()
+		if m4_physics_started_usec >= 0:
+			object_shard_m4_probe.record_duration("physics_work", m4_physics_started_usec,
+				Time.get_ticks_usec(), {"scope":"actual_main_thread_Rapier_step"})
 		if physical_actor_session != null:
 			var before_completed_tick: int = physical_actor_session.tick
 			physical_actor_session.complete_step()
@@ -2932,6 +2957,8 @@ func sync_player_presentation_position() -> void:
 
 func reset_world() -> void:
 	if water_controlled_run_active(): return
+	if object_shard_m4_probe.enabled and shared_workbench != null:
+		object_shard_m4_probe.retire("ResetRequested")
 	if _liquid_default_active:
 		_apply_prepared_liquid_default(microscenario_liquid_policy,
 			microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
@@ -3107,6 +3134,8 @@ func consume_worker_snapshot() -> void:
 	if not worker_publication_counter.observe(snapshot.serial):
 		return
 	latest_snapshot = snapshot
+	if object_shard_m4_probe.enabled and shared_workbench != null:
+		object_shard_m4_probe.observe_snapshot(snapshot, Time.get_ticks_usec())
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if shared_workbench != null and not str(tower_context.get("workbench_refusal","")).is_empty():
@@ -3219,6 +3248,10 @@ func consume_worker_snapshot() -> void:
 	gameplay_recorder.ingest_snapshot(snapshot)
 
 
+func object_shard_m4_latency_report() -> Dictionary:
+	return object_shard_m4_probe.summary()
+
+
 func workbench_display_frame() -> Dictionary:
 	if shared_workbench == null or latest_snapshot == null: return {}
 	# Static material bytes can span multiple native ticks. Prefer the most
@@ -3235,12 +3268,16 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
+		var m4_upload_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
 		var render_uploaded: bool = upload_texture_patches(
 			snapshot.render_patch_rectangles,
 			snapshot.render_patch_cells,
 			snapshot.world_revision,
 			snapshot.render_channels
 		)
+		if m4_upload_started_usec >= 0:
+			object_shard_m4_probe.mark_upload(snapshot, m4_upload_started_usec,
+				Time.get_ticks_usec(), render_uploaded)
 		if render_uploaded:
 			# Only an accepted World replacement invalidates presentation history.
 			# Full refreshes also occur during resync and every fallback frame.
