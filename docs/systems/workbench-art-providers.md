@@ -39,7 +39,34 @@ native queued/executing/partial and errors are visibly distinct.
 |---|---|---|---|
 | OpenAI | Responses | `https://api.openai.com/v1` | `gpt-5.6-luna`, editable |
 | NVIDIA | Chat Completions | `https://integrate.api.nvidia.com/v1` | `nvidia/nemotron-3.5-super-vl-120b-a12b`, editable |
-| LM Studio | Chat Completions | `http://127.0.0.1:1234/v1` | `wb-art-instruct`, local tested alias, editable |
+| LM Studio | Chat Completions | `http://127.0.0.1:1234/v1` | `kat-coder-v2.5-dev-reap-50@q6_k`, editable |
+
+**Curated model menu — WB-ART-MODEL-ROSTER-001 (#750):**
+
+- **NVIDIA Build:** `moonshotai/kimi-k3_1-pro` (Kimi K3.1 Pro),
+  `mistralai/mistral-large-4-1t-a52b` (Mistral Large 4),
+  `nvidia/nemotron-3.5-super-vl-120b-a12b` (Nemotron 3.5 Super VL).
+- **LM Studio:** `kat-coder-v2.5-dev-reap-50@q6_k`,
+  `daisyrose-27b`,
+  `lfm2.5-24b-a2b-turbo-brilliance-50x-neo-max-imatrix`.
+
+The selector displays these presets above saved/custom model IDs; the model
+field and base URL remain editable and do not enforce a fixed allowlist.
+Previously saved custom IDs remain in configuration even after a preset changes.
+The nonexistent legacy ID `astra5-6` is not presented as a choice; if it was
+the active saved ID, the default is displayed instead. Historical records are
+not silently deleted. Locally served LM Studio IDs must match the active
+server's model identifiers.
+
+**NVIDIA capability note (22 November 2026):** Kimi K3.1 Pro currently appears
+on NVIDIA Build as a playground-only preview without programmatic API access;
+its menu entry is informational until that service enables API calls. Nemotron
+Super VL remains the API-backed NVIDIA default. Mistral Large 4 and Nemotron
+Super VL accept image input. Actual endpoint availability and local model
+loading require live verification; menu qualification never sends paid inference.
+See [Kimi NVIDIA Build](https://build.nvidia.com/moonshotai/kimi-k3_1-pro),
+[Mistral NVIDIA Build](https://build.nvidia.com/mistralai/mistral-large-4-1t-a52b)
+and [Nemotron NVIDIA Build](https://build.nvidia.com/nvidia/nemotron-3.5-super-vl-120b-a12b).
 
 Use **Key…** for each cloud provider. Keys stay in process memory, separately per
 provider; reopening Key always permits replacement. The button indicates a key

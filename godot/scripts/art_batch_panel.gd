@@ -48,12 +48,19 @@ var current_provider := "LM Studio"
 var request_epoch := 0
 var request_local := false
 const ArtPlan = preload("res://scripts/art_batch_plan.gd")
+# Curated menu entries are convenience choices, not a request allowlist.
+# Preserve exact user-specified local names and NVIDIA Build identifiers.
+const LM_STUDIO_MODELS := {
+	"KAT Coder V2.5 Dev REAP-50 · local": "kat-coder-v2.5-dev-reap-50@q6_k",
+	"Daisyrose 27B · local": "daisyrose-27b",
+	"LFM2.5 24B Turbo-Brilliance · local": "lfm2.5-24b-a2b-turbo-brilliance-50x-neo-max-imatrix",
+}
 const NVIDIA_MODELS := {
-	"Qwen3 Next 80B Instruct · text": "qwen/qwen3-next-80b-a3b-instruct",
-	"Qwen2.5 Coder 32B · text": "qwen/qwen2.5-coder-32b-instruct",
-	"Nemotron 3.5 Lightning · text": "nvidia/nemotron-3.5-lightning-30b-a3b",
+	"Kimi K3.1 Pro · preview (API pending)": "moonshotai/kimi-k3_1-pro",
+	"Mistral Large 4 · image": "mistralai/mistral-large-4-1t-a52b",
 	"Nemotron 3.5 Super VL · image": "nvidia/nemotron-3.5-super-vl-120b-a12b",
 }
+const INVALID_LEGACY_MODEL := "astra5-6"
 var ui_epoch := 0
 var capturing := false
 var request_area: Rect2i
@@ -535,9 +542,9 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	source.item_selected.connect(change_provider)
 	row.add_child(source)
 	model.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	model.placeholder_text = "Model ID"
+	model.placeholder_text = "Model ID (custom names allowed)"
 	row.add_child(model)
-	history.tooltip_text = "Previously used model IDs"
+	history.tooltip_text = "Curated provider choices followed by saved/custom model IDs"
 	history.fit_to_longest_item = false
 	history.clip_text = true
 	history.custom_minimum_size.x = 34
@@ -787,17 +794,39 @@ func change_provider(index: int) -> void:
 	load_profile()
 
 func load_profile() -> void:
-	var defaults := {"LM Studio":["http://127.0.0.1:1234/v1","wb-art-instruct"],"OpenAI":["https://api.openai.com/v1","gpt-5.6-luna"],"NVIDIA":["https://integrate.api.nvidia.com/v1","qwen/qwen3-next-80b-a3b-instruct"]}
+	# Keep an API-supported NVIDIA default; Kimi is listed for future use but
+	# its NVIDIA Build page currently offers playground preview, not API calls.
+	var defaults := {"LM Studio":["http://127.0.0.1:1234/v1","kat-coder-v2.5-dev-reap-50@q6_k"],
+		"OpenAI":["https://api.openai.com/v1","gpt-5.6-luna"],
+		"NVIDIA":["https://integrate.api.nvidia.com/v1","nvidia/nemotron-3.5-super-vl-120b-a12b"]}
 	endpoint.text = settings.get_value(current_provider,"endpoint",defaults[current_provider][0])
-	model.text = settings.get_value(current_provider,"model",defaults[current_provider][1])
+	var saved_model: String = str(settings.get_value(current_provider,"model",defaults[current_provider][1]))
+	# A retired, nonexistent built-in ID must not reappear as the active choice.
+	# Do not rewrite disk settings or delete historical records during display.
+	model.text = defaults[current_provider][1] if saved_model == INVALID_LEGACY_MODEL else saved_model
 	tokens.value = settings.get_value(current_provider,"tokens",8192)
 	seconds.value = settings.get_value(current_provider,"seconds",180)
-	history.clear(); history.add_item("▾")
-	if current_provider == "NVIDIA":
-		for label: String in NVIDIA_MODELS:
-			history.add_item(label)
-			history.set_item_metadata(history.item_count-1,NVIDIA_MODELS[label])
-	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
+	history.clear()
+	history.add_item("▾")
+	var curated: Dictionary = NVIDIA_MODELS if current_provider == "NVIDIA" else (
+		LM_STUDIO_MODELS if current_provider == "LM Studio" else {})
+	var offered_ids: Dictionary = {}
+	for label: String in curated:
+		history.add_item(label)
+		history.set_item_metadata(history.item_count-1,curated[label])
+		offered_ids[str(curated[label])] = true
+	# Display saved/custom names separately. Keep the stored history untouched,
+	# including historical retired IDs, without suggesting invalid astra5-6.
+	var custom: Array[String] = []
+	for value: Variant in settings.get_value(current_provider,"history",[]):
+		if not value is String or value == INVALID_LEGACY_MODEL or offered_ids.has(value) or custom.has(value):
+			continue
+		custom.append(value)
+	if not custom.is_empty():
+		var separator := history.item_count
+		history.add_item("— Saved / custom —")
+		history.set_item_disabled(separator,true)
+		for value: String in custom: history.add_item(value)
 
 func stop_all(reason: String = "Human Stop") -> void:
 	if provider.resume_active:
