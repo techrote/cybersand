@@ -141,7 +141,6 @@ jobs:
           $link.WorkingDirectory = $bundle
           $link.Description = "Source-verified CyberSand Windows Workbench"
           $link.Save()
-          $feedbackIdentity = 'cybersand-accept'
           "bundle: $bundle" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
           "godot_sha256: $engineSha" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
           Write-Host "Staged $bundle, Godot $engineVersion, $count LFS digests"
@@ -165,8 +164,6 @@ jobs:
             New-LocalUser -Name 'cybersand-accept' -Password $secure -Description 'Disposable CyberSand acceptance desktop' -PasswordNeverExpires | Out-Null
           }
           Add-LocalGroupMember -Group 'Remote Desktop Users' -Member 'cybersand-accept'
-          & icacls 'C:\Acceptance\Feedback' /grant '*S-1-5-21-0-0-0-0:(OI)(CI)M' 2>$null | Out-Null
-          # Use the resolved local user explicitly. The above SID is deliberately ignored.
           & icacls 'C:\Acceptance\Feedback' /grant 'cybersand-accept:(OI)(CI)M' | Out-Null
           if ($LASTEXITCODE -ne 0) { throw 'Could not allow the tester to write feedback' }
           Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 0
