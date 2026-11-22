@@ -244,6 +244,12 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
             $Manifest.engine.console.sha256 -ceq 'd8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c') 'Completion Godot executable pin differs'
         Assert-PP ($Manifest.owner_command -ceq 'Open Workbench.cmd' -and $Names.Contains($Manifest.owner_command) -and
             $Manifest.owner_material -ceq 'full') 'Completion owner launcher or publication default differs'
+        Assert-PP ($Manifest.owner_results_command -ceq 'Collect Results.cmd' -and $Names.Contains($Manifest.owner_results_command) -and
+            $Manifest.owner_results_collector -ceq 'tools/pubpres_completion/Collect-PUBPRES-Results.ps1' -and $Names.Contains($Manifest.owner_results_collector) -and
+            $Manifest.owner_acceptance -ceq 'ACCEPTANCE.md' -and $Names.Contains($Manifest.owner_acceptance) -and
+            $Names.Contains('tools/pubpres_completion/ACCEPTANCE.md')) 'Completion acceptance or result collection entrypoint differs'
+        Assert-PP ((Get-PPHash (Join-PPSafe $Root $Manifest.owner_acceptance)) -ceq
+            (Get-PPHash (Join-PPSafe $Root 'tools/pubpres_completion/ACCEPTANCE.md'))) 'Acceptance instructions differ from the frozen source'
     }
     $VC = Read-PPJson (Join-PPSafe $Root 'vc-runtime-provenance.json')
     Assert-PP ($VC.schema -eq 1 -and $VC.authenticode.status -ceq 'Valid' -and

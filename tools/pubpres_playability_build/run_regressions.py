@@ -21,6 +21,7 @@ import time
 
 from build_runtime import bounded_process, canonical_digest, committed_inputs, digest, git
 import dependency_custody
+from sustained_trace import reduce_trace
 
 ROOT = Path(__file__).resolve().parents[2]
 from regression_contract import case_diagnostic_error
@@ -288,8 +289,7 @@ def sustained_evidence(folder, project, source, engine_hash, native_file, native
         if (receipt["gpu_history"][plane + "_matches"] is not True
                 or re.fullmatch(r"[0-9a-f]{64}", receipt["gpu_history"][plane + "_sha256"]) is None):
             raise ValueError("First GPU reads do not match both terminal histories")
-    if digest(folder / "receipt-events.jsonl") != receipt["trace_sha256"]:
-        raise ValueError("Sustained trace bytes differ")
+    witnesses = reduce_trace(folder / "receipt-events.jsonl", receipt)
     if {frame["label"] for frame in receipt["framebuffers"]} != {"before", "after"} or len(receipt["framebuffers"]) != 2:
         raise ValueError("Missing before/after framebuffers")
     for frame in receipt["framebuffers"]:
@@ -297,10 +297,9 @@ def sustained_evidence(folder, project, source, engine_hash, native_file, native
         if frame["outside_timing"] is not True or digest(path) != frame["sha256"]:
             raise ValueError("Sustained framebuffer identity differs")
         check_framebuffer(path, frame, [1280, 720])
-    return {"duration_usec": duration, "rapier_steps": receipt["actual_rapier_steps"],
-            "late_rapier_steps": receipt["late_rapier_steps"], "dense_to_sparse": len(transitions),
+    return {**witnesses, "duration_usec": duration,
             "resident_samples": len(samples), "gpu_history": receipt["gpu_history"],
-            "receipt_sha256": digest(folder / "receipt.json"), "trace_sha256": receipt["trace_sha256"]}
+            "receipt_sha256": digest(folder / "receipt.json")}
 
 
 def combined_evidence(text, project, native_sha, screenshots, *, graphical, reopen, same_frame="off"):

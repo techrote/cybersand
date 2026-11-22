@@ -188,6 +188,238 @@ CYBERSAND_DIAG_SAME_FRAME_CONTINUATION=0 \
 The local process sampler bounded execution at 175 seconds including setup
 and close. The fixture's measured wall window is 65–95 seconds.
 
+## Source-matched sustained renderer comparison
+
+The four-process local comparison froze source
+`d4fb48040f530e0c5d69b466d018ee7ac37a27a0`, including the World history repair.
+One fresh private display and profile ran at a time. The workload, pinned
+engine, same-source native runtime, actor input tape, four native workers,
+early publication, coherent pose, measured material timing and Safe OpenGL
+thread mode were shared. The material publication order was full, corrected
+target-retirement blit, corrected target-retirement blit, full. Rendezvous
+and same-frame continuation were disabled.
+
+Every arm completed 65.004–65.006 seconds, witnessed ten accepted dense to
+sparse native transitions and matched both complete GPU histories on their
+first terminal reads. The authoritative body, installed terrain and sample
+tuples agreed through all 1,418 steps common to the four processes. Camera
+and material pulses used the same wall-time schedule. The separate pilot
+tape was addressed to actual steps. Each row retains its own distribution.
+
+| Actual Workbench outcome | Full A0 | Target B0 | Target B1 | Full A1 |
+| --- | ---: | ---: | ---: | ---: |
+| Completed Rapier steps | 1,444 | 1,442 | 1,418 | 1,431 |
+| Rapier gap p95 / p99, ms | 61.242 / 99.171 | 61.701 / 94.312 | 76.856 / 92.723 | 63.880 / 95.521 |
+| Rapier maximum gap, ms | 179.574 | 149.194 | 103.661 | 122.383 |
+| Rapier gaps of at least 100 ms | 14 | 7 | 3 | 6 |
+| Frame callback gap p95, ms | 56.735 | 56.699 | 60.798 | 55.202 |
+| Publication call p95, ms | 1.311 | 6.495 | 6.667 | 1.353 |
+| Godot process high-water working set, MiB | 1,250.36 | 1,272.05 | 1,274.96 | 1,250.65 |
+
+Both blit arms held 25 publisher identities and 38,207,493 logical bytes
+through their sampled lifetimes. The full arms held two material texture
+identities. Engine-reported video totals during zoom switched within
+30,049,243–40,624,295 bytes on full and 67,710,598–78,285,650 on blit.
+Full retains the default. Corrected blit lowered the observed physical p99
+and maximum in each nearest full/blit pair. The physical p95 and callback
+results were mixed, and both blit processes had larger high-water marks.
+
+In the final full arm, the longest physical gap lasted 122.383 ms. The
+matching native result completed 15.436 ms after the prior Rapier step,
+leaving 106.947 ms until the next observed Rapier step. The real solver took
+0.584 ms. The one overlapping material call took 1.104 ms. The balance is
+unattributed. Software callback and wall-call measurements leave graphics
+driver completion and physical adapter memory unobserved.
+
+The original arm logs, input ledger, capture and memory samples, receipts,
+event traces and local reduction are indexed in the 32-member
+`PUBPRES-COMPLETION-001-sustained-renderer-d4fb4804.zip`.
+Archive SHA-256 `b9d7e75bfdd18e3c4dd47d17e05e52030436cdcbcf89730976425234d96ba70d`.
+Reduction SHA-256 `1f557ece3b9091e410b18fa183fcfe440025e909af79191bd89fb2adae4ac4e6`.
+
+## Main-thread callback blackout
+
+The final full comparison arm's raw trace joins the 122.383 ms handoff from
+step 158 to step 159. The material wall call finished at +2.096 ms and
+application Main returned at +2.739 ms. The matching healthy native tick
+completed at +15.436 ms, with the first usable handoff at +16.141 ms and the
+same installed hard terrain. The inline post-draw signal for that process
+frame arrived at +91.405 ms. The next physics callback started at
++115.353 ms and admitted that tick. It was the first application Main or
+physics callback after readiness. The earlier application Main callback
+had already returned by the time the native result was ready.
+
+A separate diagnostic used the same stock engine, mounted source, native
+runtime, settings and Full Safe path. A fixture subclass bracketed the
+startup and terminal framebuffer captures with clock anchors. An external
+sampler read the actual Godot main task through Linux procfs at a nominal
+3 ms cadence. The diagnostic ran 65.009 seconds and completed 1,431 real
+physical steps, ten actual dense-to-sparse transitions and exact terminal
+history reads. The anchor endpoints required a 3.091 ms clock-alignment
+envelope. Counts use observations inside that conservative envelope.
+The sampler used 4.876 seconds of its own CPU during the process lifetime.
+These results are for attribution outside the four-arm comparison.
+
+At step 1262, the physical gap was 107.721 ms. The matching native tick
+completed at +18.390 ms and the first matching handoff arrived at
++19.823 ms. The inline post-draw signal arrived at +73.629 ms, followed
+by the next physics entry at +100.005 ms without an intervening Main or
+physics callback. Ten of 15 sampled main-task observations between native
+completion and post-draw showed the Linux futex wait channel and syscall.
+Three of six after post-draw showed the polling wait channel and syscall.
+The enclosing counter readings bound main-task CPU service to at most
+30.973 ms across the 81.615 ms from ready to next physics entry. Guest
+run-queue wait increased by 0.048 ms over the enclosing readings.
+
+Two further gaps repeated the sampled pre-draw futex and post-draw polling
+pattern. This identifies actual main-task blocking across a stock inline
+render frame with an exact native result already available. The readings
+leave the futex owner and graphics completion unobserved. In all 33 in-capture
+thread inventories the guest allowed nine CPUs and Godot had 57 tasks,
+including nine named llvmpipe workers. The container exposed no CPU quota
+or throttling counter.
+
+The archived procfs samples, output, clock anchors, fixture extension and
+receipt reduction are in `PUBPRES-COMPLETION-001-scheduler-full-d4fb4804.zip`.
+Archive SHA-256 `d296fb6aa5eac2f8fe7d827ce83abc29aead08a15743d87717b90b47072d9e71`.
+Reduction SHA-256 `5cb278c4b9da6be79bfe351c6c18c462fcb463b4a4bdb1d3a60eb688608e3b9e`.
+
+## Linux software-renderer worker-count sensitivity
+
+Four more fresh Full Safe processes used the same `d4fb4804` source,
+runtime and authored Wave tape. The llvmpipe worker setting was absent in
+the first and last arms. The two middle arms set `LP_NUM_THREADS=4`.
+The fixture subclass read actual task names and process working set at
+the before and after framebuffer boundaries. The external scheduler
+sampler was disabled for this comparison. Both inventories verified
+9/4/4/9 named llvmpipe workers and 57/47/47/57 Godot tasks on the same
+nine-CPU guest affinity. The native solver's four-worker participation
+was observed in at least 96% of sampled dispatches in every arm.
+
+Every arm ran 65.010–65.044 seconds and witnessed ten actual native
+dense-to-sparse transitions and exact first reads of both complete GPU
+histories. Physical body, sample and terrain witnesses matched through
+all 1,021 steps common to the four processes.
+
+| Actual Workbench outcome | Default A0 | Four B0 | Four B1 | Default A1 |
+| --- | ---: | ---: | ---: | ---: |
+| Completed Rapier steps | 1,430 | 1,025 | 1,021 | 1,430 |
+| Rapier gap p95 / p99, ms | 61.803 / 91.221 | 82.866 / 104.142 | 81.329 / 92.363 | 64.182 / 94.899 |
+| Rapier maximum gap, ms | 136.847 | 187.974 | 125.015 | 117.284 |
+| Rapier gaps of at least 100 ms | 4 | 11 | 5 | 7 |
+| Frame callback gap p95, ms | 58.044 | 82.846 | 81.446 | 56.209 |
+| Joined native tick p50, ms | 14.494 | 10.548 | 10.403 | 14.511 |
+| Native completed to observed Rapier step p95, ms | 37.598 | 69.823 | 71.102 | 36.522 |
+| Godot process high-water working set, MiB | 1,255.89 | 1,250.54 | 1,254.90 | 1,250.90 |
+
+Limiting Mesa to four workers reduced actual step throughput by 28% and
+slowed frame delivery in both pairs. The exact matched native ticks finished
+sooner while eligible results took longer to reach an observed Rapier step.
+The default llvmpipe setting was restored. The result is specific to the
+local Linux software adapter and worker counts.
+
+The 33-member `PUBPRES-COMPLETION-001-llvmpipe-workers-d4fb4804.zip` indexes
+all four original outputs, traces, framebuffers and process inventories.
+Archive SHA-256 `fd89d114f04792116118a549421cd1322c4f03ce679052951e085ae134a69792`.
+Reduction SHA-256 `6a741ae81a7159be270e43de5eb4b59f2180ed21e3b60e13f8855e58019e689d`.
+
+## Targeted hosted Linux renderer controls
+
+The original targeted artifact `14774018047` ran frozen source
+`1aaacaa6ca7038eb469012719af1a4b8473c8cc8` with official Godot 4.7 and Linux
+Mesa 25.2.8 llvmpipe. Corrected target retirement passed 3,237 Safe and
+3,249 Separate reachability assertions. The Separate actual threaded
+publication fixture passed 128 checks. The Safe run recorded 224
+transition-history, 87 rectangular staging and 1,730 rotating camera
+assertions. Actual Safe material pixels and all ten World-blend checks
+passed. The Separate result covers these exact Linux conditions.
+
+The 65.001-second sustained Safe corrected-blit trace contains 890 actual
+Rapier steps, 890 advancing physics callbacks and 889 accepted material
+uploads. Both terminal planes matched exactly on their first reads.
+There were ten native dense-to-sparse re-entries and 245 of 248 sampled
+dispatches observed all four native participants. Actual Rapier gap
+p95/p99/maximum was 92.977/106.651/113.431 ms. This is a hosted correctness
+sample from one instrumented profile.
+
+The Safe reachable tile fixture's process returned zero but its original
+log reports two GDScript errors. Its 33×19 test World has no reachable
+64×64 sparse atlas. The test used that absent atlas, so both storage-format
+owner checks stopped early. The strict host harness rejected the raw log.
+Fixture repair `2569df6d2` uses the actual full staging resource for a
+foreign same-shape array mutation and requires both format sections to
+finish. Pinned same-source local Safe Eager and Reachable checks passed
+1,985 and 1,982 assertions, including both owner sections and all eight
+shader comparisons. Original reachable log SHA-256
+`a8c01327b4c11c2002cc731f22caf178e5470dc5ead5cf0d2747ce7e911b96b6`.
+Original targeted ZIP SHA-256
+`d5817bcb29bd6c91e3067679e308ca598cdd4f34787957fe0f78731f7ea61fe2`.
+
+Both original Safe graphical author runs reached Save. Both fresh-process
+reopen runs verified native saved state and failed the superseded assertion
+that a prior Art prompt reenters live model context. Accepted
+ART-SESSION-LOG-001 requires separate session audit files. The repaired
+fixture at `601f8fcd3f4aa1805a829e262bfecfb9d5555479` passed pinned local
+graphical 512×512 author and fresh-reopen runs with both continuation
+selectors. Each pair passed 210 author and 67 reopen assertions. All four
+prepared native material hashes matched
+`52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab`.
+Both profiles retained the exact original post-shutdown root JSONL and
+created an independent six-event root log containing the fresh marker.
+The 31-member archive `PUBPRES-COMPLETION-001-art-author-reopen-601f8fcd3.zip`
+indexes the logs, source evidence, screenshots and independent JSONL checks.
+Archive SHA-256
+`8c5095c1166e6a7e494d8badab4f60ce7382a316b04d54b928955d7b7d33df0d`.
+
+## Original targeted Windows graphical results
+
+The Windows checks artifact `14775586372` ran frozen `1aaacaa6` in Safe
+ANGLE on the Microsoft Basic Render Driver. Target-retirement staging
+passed 3,237 assertions. The 224 transition-history, 87 rectangular
+staging and ten World-blend checks passed, along with actual material
+presentation pixels. The reachable tile fixture repeated its original
+Linux script error. Both installed and source author/reopen pairs
+executed their native save reconstruction and repeated the same retired
+cross-session Art assertion.
+
+The original camera test passed all 12 fast Follow rotations and matching
+overlays and the actual renderer picking grids. Six fixed-hover assertions
+failed across the three resized windows. The logged cursors
+`[154,83]`, `[115,55]` and `[77,53]` agree with an ambient window point
+`[512,384]` under each retained renderer transform. The fixture's direct
+Workbench input had assigned a different test point without changing the
+system mouse. Camera fixture repair `5d78d9d3e` isolates ambient viewport
+input only during that controlled hover and restores its prior setting
+afterward. It retains an unguarded viewport overwrite control, attempts
+the same ambient event during each actual resize, and records both
+observed pointer and independently expected cell.
+
+The repaired pinned Linux run passed all 1,732 assertions and retained
+12 verified rapidly rotating overlays. A scratch run with isolation
+disabled repeated exactly the six original Windows failure strings and
+three cursor cells while measuring the alternate pointer. The
+`PUBPRES-COMPLETION-001-camera-input-isolation.zip` archive retains the
+original Windows log and both local controls. SHA-256
+`ea8c951579766762b97cece835568450a9841d07fceae59ab717d5eb0ecc7847`.
+The repaired fixture requires its own Windows run.
+
+The separately timed Windows 2048×1024 Safe corrected-blit run completed
+636 physical steps in 65.132 seconds, 275 accepted uploads and ten
+dense-to-sparse transitions. Both terminal GPU planes matched on their
+first reads. Rapier gap p95/p99/maximum was 224.882/422.111/608.601 ms.
+There were three gaps of at least 500 ms. In the longest gap, application
+Main returned at +11.305 ms, the native result completed at +15.484 ms and
+the exact handoff arrived at +16.547 ms. The same inline post-draw callback
+arrived at +606.805 ms and the next physics callback started at +606.922 ms.
+The overlapping submission call took 3.817 ms and the solver took 0.217 ms.
+The gap is an observed host callback delay on the software adapter.
+
+Both Separate Windows processes ended during GLES3/GLAD initialization
+with access violation `0xC0000005`, before any fixture completion. They
+remain separate experimental startup failures. Original Windows checks
+ZIP SHA-256
+`064fbcf07d67e186279933e267e29d9db3ed0217130599d56e878e7ce6adade3`.
+
 ## Original artifact identities
 
 Original logs, GPU captures and receipts were retained separately from the

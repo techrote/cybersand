@@ -29,6 +29,14 @@
   "source_material": "full",
   "continuation_order": ["off", "on", "on", "off"],
   "renderer_order": ["full", "blit", "blit", "full"],
+  "main_baseline": {
+    "order": ["M", "C", "C", "M"],
+    "cases": ["wave_gameplay_2048_follow", "wave_512_follow"],
+    "direction_rule": "Apply source_gain_criteria with M in place of D within this independent cohort.",
+    "M": "Full material publication, combined physics delivery, legacy presentation and source-default cadence. No integrated continuation.",
+    "C": "Full material publication, early physics delivery, coherent presentation, repaired cadence and continuation Off.",
+    "I": "Untimed incompatibility preflight for the current Wave profile; no substituted performance arm."
+  },
   "sustained_minimum_usec": 60000000,
   "source_gain_criteria": {
     "window": "first_144_steps",
@@ -60,5 +68,5 @@
     "pressure_512_follow",
     "freemass_2048_follow"
   ],
-  "scope": "Primary D/C/C/D source comparison with full publication, continuation Off, early physics and coherent presentation. Candidate-only continuation and renderer diagnostics have separate ordered cohorts. Preserve all attempts and admit only matching software-renderer workloads and exact equal-step physical/input outcomes. M and I are independent as-built references. Physical Windows/NVIDIA acceptance is HOLD."
+  "scope": "Primary D/C/C/D source comparison with full publication, continuation Off, early physics and coherent presentation. The final phase adds a separate M/C/C/M whole-source comparison. Candidate-only continuation and renderer diagnostics have separate ordered cohorts. Preserve all attempts and admit only matching software-renderer workloads and exact equal-step physical/input outcomes. I receives an explicit untimed incompatibility preflight. Physical Windows/NVIDIA acceptance is HOLD."
 }

@@ -625,14 +625,25 @@ func root_canvas_stretch() -> void:
 			"physical_basis":[physical_basis.x,physical_basis.y],"world_zero":[mapping.origin.x,mapping.origin.y],
 			"legacy_sample_mismatches":legacy_mismatches,"sample_count":8})
 
-	# Deliver one real mouse-motion event, then leave the physical pointer in
-	# place while the root changes size. Subsequent updates use only the
-	# controller's normal process callback, without another pointer event.
+	# Deliver one controlled pointer event through the ordinary Workbench
+	# handler. Window resizing can independently deliver a desktop mouse
+	# event, so isolate the test point while the normal controller remaps it.
 	check(shared_content.has_area(),"all root sizes retain a shared interior physical hover sample")
 	var fixed_point := shared_content.get_center()+Vector2(0.17,0.23)
+	var input_was_disabled: bool = root.gui_disable_input
 	editor.select_tool("Rectangle")
 	var hover := InputEventMouseMotion.new()
 	hover.position = renderer_screen_transform().affine_inverse()*fixed_point
+	var ambient := InputEventMouseMotion.new()
+	ambient.position = Vector2(512,384)
+	ambient.global_position = ambient.position
+	bench._world_input(hover)
+	root.push_input(ambient)
+	check(near(editor._pointer_screen,ambient.position)
+		and editor.cursor == rendered_interior_cell(ambient.position)
+		and editor.cursor != rendered_interior_cell(fixed_point),
+		"ordinary viewport mouse input replaces the unisolated synthetic hover")
+	root.gui_disable_input = true
 	bench._world_input(hover)
 	check(near(editor._pointer_screen,fixed_point) and editor.cursor == rendered_interior_cell(fixed_point),
 		"root-resize hover stores the actual physical pointer and addressed cell")
@@ -641,6 +652,7 @@ func root_canvas_stretch() -> void:
 		root.size = dimensions
 		await process_frame
 		await process_frame
+		root.push_input(ambient)
 		editor._process(0.0)
 		var expected := rendered_interior_cell(fixed_point)
 		check(expected.x >= 0 and editor.cursor == expected and editor.cursor != previous_cursor,
@@ -649,8 +661,14 @@ func root_canvas_stretch() -> void:
 			"root resize preserves physical pointer without synthesizing motion "+str(dimensions))
 		previous_cursor = editor.cursor
 		root_stretch_receipts.append({"hover_window":[dimensions.x,dimensions.y],
-			"stationary_physical_pointer":[fixed_point.x,fixed_point.y],"cursor":[editor.cursor.x,editor.cursor.y]})
+			"stationary_physical_pointer":[fixed_point.x,fixed_point.y],
+			"observed_physical_pointer":[editor._pointer_screen.x,editor._pointer_screen.y],
+			"expected_cursor":[expected.x,expected.y],"cursor":[editor.cursor.x,editor.cursor.y],
+			"attempted_ambient_window_pointer":[ambient.position.x,ambient.position.y],
+			"ambient_gui_input_disabled":root.gui_disable_input})
 	host.world_view.mouse_exited.emit()
+	root.gui_disable_input = input_was_disabled
+	check(root.gui_disable_input == input_was_disabled,"root viewport input is restored after the fixed hover probe")
 	root.size = saved_window
 	await process_frame
 	await process_frame

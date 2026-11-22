@@ -6,8 +6,8 @@ Godot 4.7, Safe rendering, full material publication and continuation Off. The
 included Godot, native and Rapier runtimes are used from this package. No
 separate engine, Python, Git or redistributable installation is needed.
 
-Use the Workbench's ordinary **Save** command. Close the window, then use
-`Open Workbench.cmd` again and choose **Load** in Workbench. The launcher
+Choose **Save start [Ctrl+S]** to save the authored starting scene. Close the
+window, open `Open Workbench.cmd` again and choose **Load start**. The launcher
 reuses the same isolated profile under the sibling `Runs` directory. Keep that
 directory to keep saved work and launch evidence. A package with a different
 manifest starts a separate profile. Two windows cannot open the same profile
@@ -37,7 +37,7 @@ run directory. To reopen that specific run, supply `-ReopenRun` with its
 path and omit `-OwnerProfile`.
 
 An explicit reachable-staging candidate run uses blit with target retirement.
-Physical NVIDIA acceptance remains HOLD. Hosted ANGLE results
-measure the listed software-renderer setup. Please retain the affected
-`Runs/<run>/run.json`, `launches` diagnostics and saved profile if reporting a
-startup, gameplay or Save/Load result.
+Physical NVIDIA acceptance remains HOLD. Hosted ANGLE results measure the
+listed software-renderer setup. Follow `ACCEPTANCE.md` for the physical owner
+run and use `Collect Results.cmd` to collect its evidence once Workbench has
+closed.

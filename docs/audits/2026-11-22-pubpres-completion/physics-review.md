@@ -2,7 +2,7 @@
 title: PUBPRES completion physics and native evidence
 status: Historical
 document-kind: audit
-scope: Fixed Workbench hold-clock qualification, causal admission trace, isolated Wave stage profiling and two unselected native optimizations
+scope: Workbench hold-clock and causal admission evidence, Wave stage profiling, two unselected optimizations and an allocation overlap observation
 canonical-for: []
 last-reviewed: 2026-11-22
 related-documents: [../../operations/pubpres-playability-evaluation.md, ../../architecture/simulation-tick-and-threading.md, ../../architecture/rendering-and-gameplay-bridges.md, ../../architecture/wave-flow-v1.md]
@@ -97,8 +97,26 @@ R passed all 48 Wave spill cases and every one of the same 24 live-state and ind
 
 All eight fresh headless processes ran sequentially from 21:24:50 to 21:27:56 UTC and preserved exact physical credit, 144 completed Rapier steps and their native sequences. The two R large-case column means average 44.816 ms, close to the first A control's 44.548 ms. The slower final control produces an arithmetic 11.04% reduction against the two-control mean. Its long native tail stays in the record and its cause remains unmeasured. The 512 column means differ by 0.21%, with mixed physical tails. The evidence supports retaining A rather than selecting R. It identifies gather and scatter as the largest measured stages while leaving the cause of their remaining cost unresolved.
 
+## Adjacent Wave strip allocation
+
+The Wave column tasks own distinct halves of a chunk. With 64-byte cache lines, a misaligned row-major `weight` or `meta` array can place the two halves' boundary cells in the same line. The diagnostic measured the allocated pointer residues and adjacent task intervals on the real four-worker workload. It also marked each task's scatter spans at that boundary after existing row skips. The normal array layout, task dispatch and barriers stayed intact.
+
+This isolated Linux build used source `0020c18bae2723618149d0d378871ca49b047589`, tree `9ac2638052e72904675821451252cc49cde806e6`, and runtime SHA-256 `07337d4ba8b8ea7f2b8681c4c8ed0f4e6cc1b7e2f47276b49abbfbda68686c25`. The real Wave2048 Follow trial completed 144 Rapier steps. Its exact body, movement, Water-ledger and terrain sequences match the prior A control. The diagnostic took seven first-substep samples at native ticks 1, 16, 32, 64, 96, 128 and 144. A solved chunk can appear in more than one sample.
+
+| Measured observation | Count |
+| --- | ---: |
+| Solved chunk observations | 1,092 |
+| `weight` boundaries sharing a modelled line | 957 |
+| `meta` boundaries sharing a modelled line | 1,069 |
+| Adjacent task pairs on distinct threads with overlapping task intervals and writes on both sides | 79 |
+| Adjacent task pairs with overlapping boundary scatter spans | 0 |
+
+The static line model establishes layout adjacency. The sampled wall intervals show no simultaneous boundary scatter in this trial. Hardware cache traffic and possible line transfers between sequential phases were outside the measurement. The result supplies no causal basis for a storage alignment change. The candidate retains the original allocation and scheduling.
+
 ## Evidence custody
 
 `PUBPRES-COMPLETION-001-physics-checkpoint-01-20261122.zip` contains 104 indexed payloads, 3,101,461 bytes, SHA-256 `1e8b0f649c4236e5895e8524b6c0932555dedab591c1ddab99028344fb2f4e9f`. Its `INDEX.json` binds the raw process logs, unmodified negative Windows and hosted trace excerpts, monotonic-clock reproducer, exact native build receipts, both native test logs, capture receipts and all eight raw traces. The index records the full historical ZIP identities independently of their selected entries. Per-arm filenames and hashes are also in `native-abba-wave-gameplay-2048-follow/native-reduction.json` and `native-abba-wave-gameplay-512-free/native-reduction.json` inside the archive.
 
 `PUBPRES-COMPLETION-001-physics-column-checkpoint-02-20261122.zip` contains 81 indexed payloads, 2,247,641 bytes, SHA-256 `6aaef820db1610af20aec37d5300471ec6e3ddfa4fd9380c128006433295bd73`. The raw profile and R comparison paths are `native-abba-wave-profile-2048-follow/`, `native-abba-wave-clipped-2048-follow/` and `native-abba-wave-clipped-512-free/`. Each includes the individual traces, executable receipts and independent reduction. `wave-parity-R/parity.json` binds the 24 exact checkpoints to the original A fixture and log. `pubpres-physics-source-deltas.bundle` reconstructs the isolated source and control commits given accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f` and frozen donor `d316c281e0abb575eb6302afc12ec44f211460ba`.
+
+`PUBPRES-COMPLETION-001-physics-alignment-checkpoint-03-20261122.zip` contains 18 indexed payloads, 276,468 bytes, SHA-256 `bfb4bb9ccedf967fd4abc1bd140efae886fde84a6066456817de0e36947e591b`. It includes the exact diagnostic source bundle, build and native runtime receipts, pinned process command, original test log and raw JSONL, and the independent layout and overlap reduction. The source bundle requires `098a65c225561a11d72ddd22e12dfc92f0a63f90`.

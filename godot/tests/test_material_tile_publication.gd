@@ -12,6 +12,7 @@ var assertions: int = 0
 var failures: int = 0
 var observations: Array[Dictionary] = []
 var histories_completed: int = 0
+var owner_and_format_completed: int = 0
 var shader_pairs_completed: int = 0
 var large_completed: bool = false
 
@@ -345,13 +346,16 @@ func _owner_and_format_contract(channels: int) -> void:
 	publisher.previous.drawable = foreign
 	check(not publisher.publish(changed,areas), "foreign valid-RID SRGB target is refused")
 	publisher.previous.drawable = target
-	var stage: Texture2DArray = publisher.staging[1].resources[0].texture
+	# This small World has no reachable sparse atlas. Both policies own the
+	# full staging ring, so corrupt its actual resource without changing shape.
+	var resource: Publisher.StagingResource = publisher.full_staging.resources[0]
+	var stage: Texture2DArray = resource.texture
 	var foreign_stage := Texture2DArray.new()
-	var stage_images: Array[Image] = [Image.create(side,side,false,format)]
+	var stage_images: Array[Image] = [Image.create(extent.x,extent.y,false,format)]
 	check(foreign_stage.create_from_images(stage_images) == OK, "foreign array fixture created")
-	publisher.staging[1].resources[0].texture = foreign_stage
+	resource.texture = foreign_stage
 	check(not publisher.publish(changed,areas), "foreign staging allocation is refused")
-	publisher.staging[1].resources[0].texture = stage
+	resource.texture = stage
 	var dummy: ImageTexture = publisher.dummy_source
 	publisher.dummy_source = ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_R8))
 	check(not publisher.publish(changed,areas), "foreign source0 dummy is refused")
@@ -368,6 +372,7 @@ func _owner_and_format_contract(channels: int) -> void:
 	check(retained.get_image().get_data() == previous_bytes,
 		"retained public texture independently owns its actual drawable history")
 	check(not retained.update(current), "texture refuses updates after its publisher retires")
+	owner_and_format_completed += 1
 
 
 func _direct_update_history_contract(channels: int) -> void:
@@ -1020,6 +1025,7 @@ func _run() -> void:
 		check(_rectangular_staging_contract() == true,"all rectangular staging cases completed")
 		_horizontal_copy_contract()
 		_maximum_height_contract()
+		check(owner_and_format_completed == 2, "both storage ownership and format tests reached completion")
 		check(histories_completed == 2 and large_completed, "all history and transfer tests reached completion")
 		check(await _shader_equivalence() == true and shader_pairs_completed == 8, "all shader comparisons reached completion")
 	var report := {"godot":Engine.get_version_info(), "display":DisplayServer.get_name(),
@@ -1027,6 +1033,7 @@ func _run() -> void:
 		"platform":OS.get_name(), "main_policy":"",
 		"assertions":assertions, "failures":failures, "observations":observations,
 		"histories_completed":histories_completed, "large_completed":large_completed,
+		"owner_and_format_completed":owner_and_format_completed,
 		"shader_pairs_completed":shader_pairs_completed,
 		"scope":("Unsupported/headless driver full fallback only; graphical cases not run." if DisplayServer.get_name() == "headless"
 			else "Actual Main mode selection and independent sparse-component GPU readback with production shader equality; no physical GPU acceptance.")}

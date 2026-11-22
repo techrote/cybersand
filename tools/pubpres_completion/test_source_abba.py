@@ -2,8 +2,11 @@
 """Reject source-cohort claims with a reordered or physically unmatched arm."""
 
 import copy
+import json
+from pathlib import Path
 import unittest
 
+from run_main_abba import CASE_ORDER, ORDER as MAIN_ORDER, comparison_campaign
 from run_source_abba import compare_registered_direction, validate_source_cohort
 
 
@@ -64,9 +67,38 @@ class SourceCohortTests(unittest.TestCase):
         result = compare_registered_direction(arms)
         self.assertTrue(result["all_candidate_rates_higher"])
         self.assertTrue(all(result["all_candidate_gap_quantiles_lower"].values()))
-        self.assertFalse(result["all_candidate_max_gaps_within_worst_donor"])
-        self.assertFalse(result["all_candidate_severe_counts_within_worst_donor"]["500"])
+        self.assertFalse(result["all_candidate_max_gaps_within_worst_reference"])
+        self.assertFalse(result["all_candidate_severe_counts_within_worst_reference"]["500"])
         self.assertEqual(result["disposition"], "NOT_ESTABLISHED")
+
+    def test_independent_current_main_treatment_registers_two_balanced_cases(self):
+        tools = Path(__file__).resolve().parents[1]
+        frozen = (tools / "pubpres_playability/campaign.json").read_bytes()
+        settings = json.loads(Path(__file__).with_name("registration.json").read_bytes())
+        campaign = comparison_campaign(frozen, settings)
+        predecessor = json.loads(frozen)
+        self.assertEqual(tuple(case["id"] for case in campaign["cases"]), CASE_ORDER)
+        self.assertTrue(all(tuple(case["arm_order"]) == MAIN_ORDER for case in campaign["cases"]))
+        self.assertEqual(campaign["source_commits"]["main"], settings["reference_sources"]["M"]["source_commit"])
+        self.assertEqual(campaign["arms"]["M"], predecessor["arms"]["M"])
+        self.assertEqual(campaign["arms"]["I"], predecessor["arms"]["I"])
+        self.assertEqual(campaign["arms"]["C"]["material"], "full")
+        self.assertIs(campaign["arms"]["C"]["same_frame_continuation"], False)
+        self.assertIs(campaign["cases"][0]["compatibility_preflight"]["performance_capture_attempted"], False)
+
+    def test_main_cohort_rejects_integrated_treatment_on_historical_baseline(self):
+        arms, sources = cohort()
+        sources["M"] = sources.pop("D")
+        for index in (0, 3):
+            arms[index]["arm"] = "M"
+            state = dict.fromkeys(("material", "physics", "presentation", "cadence", "rendezvous"))
+            state["requested"] = {"CYBERSAND_DIAG_PHYSICS_PUBLICATION": "combined", "CYBERSAND_DIAG_PRESENTATION": "legacy"}
+            arms[index]["statistics"].update(selectors_before=state, selectors_after=state)
+        self.assertEqual(len(validate_source_cohort(arms, sources, MAIN_ORDER)["pairs"]), 6)
+        self.assertEqual(compare_registered_direction(arms, reference="M")["reference_role"], "M")
+        arms[0]["statistics"]["selectors_after"]["physics"] = "early"
+        with self.assertRaisesRegex(ValueError, "Accepted main acquired"):
+            validate_source_cohort(arms, sources, MAIN_ORDER)
 
 
 if __name__ == "__main__":

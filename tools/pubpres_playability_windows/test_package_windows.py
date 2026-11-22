@@ -138,6 +138,10 @@ def fixture(root, completion=False):
         campaign = package.COMPLETION_REGISTRATION
         put(root, campaign, (source_root / campaign).read_bytes())
         put(root, package.OWNER_COMMAND, package.owner_command(candidate))
+        put(root, package.OWNER_RESULTS_COMMAND, package.owner_results_command(candidate))
+        put(root, package.OWNER_RESULTS_COLLECTOR, "# synthetic result collector\n")
+        put(root, package.OWNER_ACCEPTANCE_SOURCE, "# Synthetic acceptance instructions\n")
+        put(root, package.OWNER_ACCEPTANCE, (root / package.OWNER_ACCEPTANCE_SOURCE).read_bytes())
     record = {"schema": package.COMPLETION_SCHEMA if completion else package.SCHEMA,
               "mission": mission, "candidate_commit": candidate, "sources": sources, "engine": engine,
               "package_filename": "CyberSand-" + mission + "-" + candidate[:12] + "-Windows.zip",
@@ -148,6 +152,9 @@ def fixture(root, completion=False):
     if completion:
         record["owner_command"] = package.OWNER_COMMAND
         record["owner_material"] = "full"
+        record["owner_results_command"] = package.OWNER_RESULTS_COMMAND
+        record["owner_results_collector"] = package.OWNER_RESULTS_COLLECTOR
+        record["owner_acceptance"] = package.OWNER_ACCEPTANCE
     save(root, record)
     return record
 
@@ -381,6 +388,9 @@ class CompletionPackageTests(unittest.TestCase):
         command = (self.root / package.OWNER_COMMAND).read_bytes()
         self.assertIn(b"-Action Open -OwnerProfile", command)
         self.assertIn(self.candidate.encode("ascii"), command)
+        collector = (self.root / package.OWNER_RESULTS_COMMAND).read_bytes()
+        self.assertIn(b"-PackageRoot", collector)
+        self.assertIn(self.candidate.encode("ascii"), collector)
 
     def test_missing_donor_fails_even_with_valid_file_inventory(self):
         shutil.rmtree(self.root / "sources/D")
@@ -394,6 +404,17 @@ class CompletionPackageTests(unittest.TestCase):
         save(self.root, self.manifest)
         with self.assertRaisesRegex(ValueError, "Owner Windows command differs"):
             self.verify()
+
+    def test_changed_results_command_or_acceptance_fails_after_rehash(self):
+        for name in (package.OWNER_RESULTS_COMMAND, package.OWNER_ACCEPTANCE):
+            with self.subTest(name=name):
+                previous = (self.root / name).read_bytes()
+                put(self.root, name, "changed\n")
+                save(self.root, self.manifest)
+                with self.assertRaisesRegex(ValueError, "Owner acceptance or result collection entrypoint differs"):
+                    self.verify()
+                put(self.root, name, previous)
+                save(self.root, self.manifest)
 
     def test_changed_pinned_engine_fails_after_rehash(self):
         path = put(self.root, package.GUI, pe("another engine"))

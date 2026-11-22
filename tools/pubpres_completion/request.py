@@ -54,8 +54,10 @@ def plan(request):
     cases = [] if phase == "delivery" else settings["development_cases" if phase == "targeted" else "final_cases"]
     if len(cases) != len(set(cases)) or len(cases) > 7:
         raise ValueError("Repeated or excessive comparison cases")
-    return {"phase": phase, "comparisons": {"include": [{"case": case,
-             "include_diagnostics": case in settings["development_cases"]} for case in cases]}}
+    rows = [{"case": case, "cohort": "donor", "include_diagnostics": case in settings["development_cases"]} for case in cases]
+    if phase == "final":
+        rows.append({"case": "registered_current_main", "cohort": "main", "include_diagnostics": False})
+    return {"phase": phase, "comparisons": {"include": rows}}
 
 
 def main():

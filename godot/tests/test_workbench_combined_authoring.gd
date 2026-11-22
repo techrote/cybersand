@@ -36,6 +36,7 @@ var prepared_sha256 := ""
 var stopped_prefix := 0
 var simulation_evidence: Dictionary = {}
 var source_identity: Dictionary = {}
+var prior_art_audit: Dictionary = {}
 var same_frame_configuration := {"schema":"pubpres-authoring-continuation-evidence-v1",
 	"mode":"source-default","claim":"configuration-only","before":{},"after":{}}
 var started_usec := 0
@@ -727,18 +728,31 @@ func reopen() -> void:
 		"reopened equipment starts stopped with authored supply, without saved transient effects")
 	check(panel.model.text==expected.provider_model and panel.context_mode.selected==expected.provider_context,
 		"provider model and context settings survive restart")
-	# Mounted Art controls leave saved history unopened. Exercise the same
-	# explicit, cancellable restore as a user opening Art after restarting.
+	# Accepted ART-SESSION-LOG-001 makes model context session-local. The map
+	# and provider preferences persist; old conversation logs remain untouched.
+	# This donor fixture must not require the retired cross-session restore.
+	prior_art_audit = expected.get("closed_art_audit",{})
+	if not check(not prior_art_audit.is_empty()
+		and str(prior_art_audit.get("sha256","")).length()==64
+		and FileAccess.get_sha256(str(prior_art_audit.get("path","")))==str(prior_art_audit.get("sha256","")),
+		"prior process Art audit survives orderly shutdown byte-for-byte"): return
+	check(FileAccess.get_file_as_string(str(prior_art_audit.path)).contains(FOLLOWUP_PROMPT),
+		"prior fixture instruction remains in its original audit")
 	panel.popup_centered()
-	var history_restored := await until(func() -> bool: return not panel.provider.resume_active,
-		"fresh-process incremental Art conversation restoration")
+	await process_frame
 	panel.hide()
-	if not history_restored or not check(panel.conversation_loaded,
-		"explicit Art open restores the saved conversation before inspection"): return
-	var resumed_prompt := false
-	for turn: Dictionary in panel.conversation:
-		if str(turn.get("content",""))==FOLLOWUP_PROMPT: resumed_prompt=true
-	check(resumed_prompt,"persistent provider conversation resumes the prior fixture instruction")
+	check(panel.conversation_loaded and panel.conversation.is_empty()
+		and not panel.provider.resume_active and panel.provider.log_path.is_empty()
+		and panel.provider.parent_log_path.is_empty(),
+		"reopened Art starts fresh and never imports a previous session's model context")
+	if not check(panel.remember_turn("user","Fresh-process authoring acceptance session."),
+		"new session creates its own writable Art audit"): return
+	var new_audit := FileAccess.get_file_as_string(panel.provider.log_path)
+	check(not panel.provider.log_path.is_empty() and panel.provider.log_path!=prior_art_audit.path
+		and panel.provider.parent_log_path.is_empty() and new_audit.contains("session_start")
+		and new_audit.contains("Fresh-process authoring acceptance session.")
+		and not new_audit.contains("session_parent") and not new_audit.contains(FOLLOWUP_PROMPT),
+		"new Art audit is independent of the retained prior conversation")
 	phases.reopen = true
 	bench._set_view(Vector2.ZERO,Vector2i(960,540))
 	bench._brush.value = 0
@@ -803,9 +817,25 @@ func run() -> void:
 	check(same_frame_configuration.before==same_frame_configuration.after,
 		"continuation selectors and actual configuration remain unchanged across authoring transactions")
 	check(source_identity==identity(),"tested source and native runtime bytes did not change during execution")
+	var closed_audit_path := str(panel.provider.log_path)
 	host.queue_free()
 	await process_frame
 	await process_frame
+	if not reopening and author_complete:
+		# Capture after _exit_tree has recorded any terminal session events.
+		# The fresh process verifies these exact immutable bytes, not a prefix
+		# captured before orderly shutdown has finished.
+		var expectation: Variant = JSON.parse_string(FileAccess.get_file_as_string(EXPECTED_PATH))
+		if check(expectation is Dictionary and not closed_audit_path.is_empty()
+			and FileAccess.file_exists(closed_audit_path),"closed author session has a retained audit"):
+			expectation.closed_art_audit = {"path":closed_audit_path,"sha256":FileAccess.get_sha256(closed_audit_path)}
+			var final_expectation := FileAccess.open(EXPECTED_PATH,FileAccess.WRITE)
+			if check(final_expectation!=null,"closed-session audit identity can be saved"):
+				final_expectation.store_string(JSON.stringify(expectation))
+				final_expectation.close()
+	elif reopening and not prior_art_audit.is_empty():
+		check(FileAccess.get_sha256(str(prior_art_audit.path))==str(prior_art_audit.sha256),
+			"continued authoring and fresh-session shutdown leave the prior audit unchanged")
 	print("WB_COMBINED_EVIDENCE ",JSON.stringify({"schema":"workbench-combined-authoring-v2",
 		"checks":checks,"failures":failures,"phases":phases,
 		"author_complete":author_complete,"reopen_complete":reopen_complete,"profile_count":profile_count,

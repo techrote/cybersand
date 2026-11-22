@@ -25,9 +25,9 @@ TOOLCHAIN_FIELDS = ("godot_cpp_commit", "godot_cpp_library_sha256", "godot_cpp_d
                     "compiler_command", "compiler_version", "toolchain_drift_allowed")
 
 
-def validate_source_cohort(arms, sources):
-    validate_complete_comparison(arms, len(ORDER))
-    need([arm["arm"] for arm in arms] == list(ORDER), "D/C source order changed")
+def validate_source_cohort(arms, sources, order=ORDER):
+    validate_complete_comparison(arms, len(order))
+    need([arm["arm"] for arm in arms] == list(order), "Registered source order changed")
     for arm in arms:
         stats = arm["statistics"]
         need(stats["source"] == sources[arm["arm"]] and stats["observer_mode"] == "full",
@@ -38,9 +38,15 @@ def validate_source_cohort(arms, sources):
              "Source cohort enabled the continuation treatment")
         for phase in ("selectors_before", "selectors_after"):
             selected = stats[phase]
-            need(selected["physics"] == "early" and selected["presentation"] == "coherent"
-                 and selected["cadence"] == "repaired" and selected["rendezvous"]["mode"] == "off",
-                 "Physical, presentation or cadence treatment differs")
+            if arm["arm"] == "M":
+                need(all(selected[key] is None for key in ("material", "physics", "presentation", "cadence", "rendezvous"))
+                     and selected["requested"]["CYBERSAND_DIAG_PHYSICS_PUBLICATION"] == "combined"
+                     and selected["requested"]["CYBERSAND_DIAG_PRESENTATION"] == "legacy",
+                     "Accepted main acquired an integrated treatment")
+            else:
+                need(selected["physics"] == "early" and selected["presentation"] == "coherent"
+                     and selected["cadence"] == "repaired" and selected["rendezvous"]["mode"] == "off",
+                     "Physical, presentation or cadence treatment differs")
     parity = physical_outcome_parity(arms)
     need(len(parity["pairs"]) == 6 and all(row["bodies_equal"] and row["admitted_moves_equal"]
                                           for row in parity["pairs"]),
@@ -48,8 +54,8 @@ def validate_source_cohort(arms, sources):
     return parity
 
 
-def compare_registered_direction(arms):
-    rates = {"D": [], "C": []}
+def compare_registered_direction(arms, reference="D"):
+    rates = {reference: [], "C": []}
     tails = {role: {key: [] for key in ("p95", "p99", "max")} for role in rates}
     severe = {role: {key: [] for key in GAP_THRESHOLDS} for role in rates}
     for arm in arms:
@@ -68,15 +74,15 @@ def compare_registered_direction(arms):
             tails[arm["arm"]][quantile].append(gaps[quantile])
         for threshold in GAP_THRESHOLDS:
             severe[arm["arm"]][threshold].append(counts[threshold])
-    higher_rate = min(rates["C"]) > max(rates["D"])
-    smaller_tail = {q: max(tails["C"][q]) < min(tails["D"][q]) for q in ("p95", "p99")}
-    maximum_within_donor = max(tails["C"]["max"]) <= max(tails["D"]["max"])
-    severe_within_donor = {ms: max(severe["C"][ms]) <= max(severe["D"][ms]) for ms in GAP_THRESHOLDS}
-    supported = higher_rate and all(smaller_tail.values()) and maximum_within_donor and all(severe_within_donor.values())
-    return {"window": "first_144_steps", "all_candidate_rates_higher": higher_rate,
+    higher_rate = min(rates["C"]) > max(rates[reference])
+    smaller_tail = {q: max(tails["C"][q]) < min(tails[reference][q]) for q in ("p95", "p99")}
+    maximum_within_reference = max(tails["C"]["max"]) <= max(tails[reference]["max"])
+    severe_within_reference = {ms: max(severe["C"][ms]) <= max(severe[reference][ms]) for ms in GAP_THRESHOLDS}
+    supported = higher_rate and all(smaller_tail.values()) and maximum_within_reference and all(severe_within_reference.values())
+    return {"window": "first_144_steps", "reference_role": reference, "all_candidate_rates_higher": higher_rate,
             "all_candidate_gap_quantiles_lower": smaller_tail,
-            "all_candidate_max_gaps_within_worst_donor": maximum_within_donor,
-            "all_candidate_severe_counts_within_worst_donor": severe_within_donor,
+            "all_candidate_max_gaps_within_worst_reference": maximum_within_reference,
+            "all_candidate_severe_counts_within_worst_reference": severe_within_reference,
             "repeatable_direction": supported,
             "disposition": "SUPPORTED_FOR_THIS_COHORT" if supported else "NOT_ESTABLISHED"}
 

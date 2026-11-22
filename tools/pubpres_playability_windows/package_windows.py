@@ -41,6 +41,10 @@ COMPLETION_REFERENCES = {
           "source_tree": "7a57dc0873dd161abe165f3a60e14e64886d04a8"},
 }
 OWNER_COMMAND = "Open Workbench.cmd"
+OWNER_RESULTS_COMMAND = "Collect Results.cmd"
+OWNER_RESULTS_COLLECTOR = "tools/pubpres_completion/Collect-PUBPRES-Results.ps1"
+OWNER_ACCEPTANCE_SOURCE = "tools/pubpres_completion/ACCEPTANCE.md"
+OWNER_ACCEPTANCE = "ACCEPTANCE.md"
 MANIFEST = "PUBPRES-PLAYABILITY-MANIFEST.json"
 RUNTIME_RECEIPT = "PUBPRES-RUNTIME.json"
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
@@ -94,6 +98,22 @@ def owner_command(candidate):
         '-PackageRoot "%~dp0." -ExpectedCandidate ' + candidate + ' -Action Open -OwnerProfile %adapter%',
         'set "result=%errorlevel%"',
         'if not "%result%"=="0" if "%adapter%"=="" pause',
+        'exit /b %result%',
+        "",
+    ]
+    return "\r\n".join(lines).encode("ascii")
+
+
+def owner_results_command(candidate):
+    need(COMMIT.fullmatch(candidate), "Result collection requires the exact candidate source")
+    script = OWNER_RESULTS_COLLECTOR.replace("/", "\\")
+    lines = [
+        "@echo off",
+        "setlocal",
+        '"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -ExecutionPolicy Bypass '
+        f'-File "%~dp0{script}" -PackageRoot "%~dp0." -ExpectedCandidate {candidate}',
+        'set "result=%errorlevel%"',
+        'if /i not "%~1"=="--hosted-smoke" pause',
         'exit /b %result%',
         "",
     ]
@@ -338,6 +358,13 @@ def verify_registration(output, record, completion):
              "Frozen predecessor registration changed")
         need(record["owner_command"] == OWNER_COMMAND and (output / OWNER_COMMAND).read_bytes()
              == owner_command(record["candidate_commit"]), "Owner Windows command differs")
+        need(record.get("owner_results_command") == OWNER_RESULTS_COMMAND
+             and record.get("owner_results_collector") == OWNER_RESULTS_COLLECTOR
+             and record.get("owner_acceptance") == OWNER_ACCEPTANCE
+             and {OWNER_RESULTS_COMMAND, OWNER_RESULTS_COLLECTOR, OWNER_ACCEPTANCE, OWNER_ACCEPTANCE_SOURCE} <= set(record["files_sha256"])
+             and (output / OWNER_RESULTS_COMMAND).read_bytes() == owner_results_command(record["candidate_commit"])
+             and digest(output / OWNER_ACCEPTANCE) == digest(output / OWNER_ACCEPTANCE_SOURCE),
+             "Owner acceptance or result collection entrypoint differs")
         need(record["owner_material"] == "full", "Owner material publication default differs")
         campaign = json.loads((output / LEGACY_REGISTRATION).read_text(encoding="utf-8"))
     else:
@@ -506,11 +533,14 @@ def main():
     readme = TOOLS + "/README.md"
     if completion:
         readme = "tools/pubpres_completion/README.md"
-        packaged_tools.extend((COMPLETION_REGISTRATION, readme))
+        packaged_tools.extend((COMPLETION_REGISTRATION, readme, OWNER_ACCEPTANCE_SOURCE, OWNER_RESULTS_COLLECTOR))
         (output / OWNER_COMMAND).write_bytes(owner_command(args.candidate_sha))
+        (output / OWNER_RESULTS_COMMAND).write_bytes(owner_results_command(args.candidate_sha))
     archive_source(root, args.candidate_sha, output, packaged_tools)
     engine = stage_dependencies(output, args.godot_zip, args.vc_runtime, args.notices)
     shutil.copyfile(output / readme, output / "READ-ME.md")
+    if completion:
+        shutil.copyfile(output / OWNER_ACCEPTANCE_SOURCE, output / OWNER_ACCEPTANCE)
     registration = COMPLETION_REGISTRATION if completion else LEGACY_REGISTRATION
     record = {"schema": COMPLETION_SCHEMA if completion else SCHEMA, "mission": mission, "candidate_commit": args.candidate_sha,
               "package_filename": expected_name, "sources": sources, "engine": engine,
@@ -522,6 +552,9 @@ def main():
     if completion:
         record["owner_command"] = OWNER_COMMAND
         record["owner_material"] = "full"
+        record["owner_results_command"] = OWNER_RESULTS_COMMAND
+        record["owner_results_collector"] = OWNER_RESULTS_COLLECTOR
+        record["owner_acceptance"] = OWNER_ACCEPTANCE
     record["files_sha256"] = file_hashes(output)
     record["file_count"] = len(record["files_sha256"])
     write_json(output / MANIFEST, record)

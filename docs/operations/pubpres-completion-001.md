@@ -10,7 +10,7 @@ related-documents: [pubpres-playability-evaluation.md, pubpres-integration-evalu
 
 # PUBPRES-COMPLETION-001 — engineering handover
 
-**Status: active engineering; Draft/HOLD.** This file records the new integration,
+**Status: source qualification candidate; REPAIR/HOLD.** This file records the new integration,
 not a retrospective performance PASS. Production defaults, donor branches and
 owner merge authority remain unchanged. Owner Windows/NVIDIA acceptance has not
 been performed by this mission.
@@ -44,6 +44,14 @@ main and D. The first local integration was a two-parent merge of accepted main 
 `75c5899aecdf06812dc5f4b4a365366b97652554`. A connector-published commit may
 have different commit metadata; any such mapping must prove identical tree and
 parents rather than relabel local execution as execution of another commit.
+
+The first targeted hosted campaign uses published
+`1aaacaa6ca7038eb469012719af1a4b8473c8cc8`, tree
+`96f8680e791f64f1a62500fe7821bb9518a279c2` (the tree of local `0bd6f770`).
+[Run 45072609238](https://github.com/techrote/cybersand/actions/runs/45072609238)
+retains its original failures. Later fixture, evidence and delivery repairs do
+not retroactively turn that run green. Each final package and campaign must bind
+its own actual published commit; this document is not a substitute for that receipt.
 
 | Shared source | Reconciliation |
 | --- | --- |
@@ -167,6 +175,78 @@ causal reducer separately binds response application to the packet's snapshot
 and transaction exit to the genuine completed-step counter; it never treats an
 entry, accepted flag from another snapshot or callback as a completion.
 
+### Whole-pipeline diagnosis
+
+The quiet local 65-second full/target/target/full series on `d4fb4804` completed
+1,444/1,442/1,418/1,431 genuine steps, with physical-gap p95
+61.242/61.701/76.856/63.880 ms. Target retirement did not produce a repeatable
+whole-application gain. All ten recovery transitions and both complete GPU
+history planes were validated in each arm. The current sparse native packets
+can still require full publisher staging: packet sparsity is not evidence of
+sparse GPU work. See the [renderer review and raw archive identities](../audits/2026-11-22-pubpres-completion/renderer-review.md).
+
+In an observed 122.383 ms full-publication gap, native work completed after
+15.436 ms and handed off after 16.141 ms; the next genuine physics callback
+did not enter until 115.353 ms. Solver time was 0.584 ms. There was no intervening
+application callback in which an additional Main poll could have progressed
+physics. A separate external Linux scheduler witness found Main sleeping in
+futex/poll intervals while matching native work was ready, with little measured
+Main run-queue delay. This identifies a host/render-loop interval, not the
+futex owner, GPU completion, scanout or an NVIDIA driver defect.
+
+A separate stock llvmpipe 9/4/4/9-worker control improved native tick medians
+when restricted to four renderer workers, but reduced real 65-second progression
+from 1,430 to 1,025/1,021 steps before returning to 1,430. That intervention is
+rejected. Conditional native stores, clipped native loop bounds and the measured
+cache-line-alignment hypothesis likewise supplied no repeatable end-to-end win;
+none is selected. No production thread, Water or publisher default changes.
+
+### Targeted hosted qualification repairs
+
+The first hosted runtime lane independently built all M/I/D/C native closures
+for Windows and Linux. Packaging then passed extraction, every-file verification,
+tamper/process controls and two actual fresh shipped-command launches. These
+facts do not erase subsequent installed authoring or graphical failures.
+
+Three retained failure categories required current-source fixture repairs:
+
+- The old combined authoring fixture expected a prior Art conversation to resume.
+  Accepted `ART-SESSION-LOG-001` intentionally preserves preferences and audit
+  files while starting fresh in-memory model context. The repaired fixture
+  verifies empty new context, a distinct new root audit, and unchanged prior
+  audit bytes captured after orderly shutdown. It retains all native authored
+  material, generator, actor, equipment, Save/Load and continued-edit checks.
+- The small reachable-staging fixture indexed a tile pool that its own policy
+  correctly omitted. It now exercises the actual full staging ring and requires
+  both owner/format sections to finish. The original exit-zero script error
+  remains a failure under the strict log-aware harness.
+- Windows also delivered an ordinary desktop mouse event while the camera
+  fixture expected its directly injected synthetic pointer to remain fixed.
+  An explicit ambient event reproduced all six original failed assertions and
+  identical addressed cells on Linux. Only that synthetic-pointer subsequence
+  now suppresses ambient viewport input; actual root resizing, normal controller
+  remapping and independent pixel picking remain tested. The fixture records
+  observed as well as requested positions and restores input before Follow.
+  The repaired local graphical gate passes 1,732 checks; Windows must rerun it.
+
+Original Windows Safe physics guards also pass their true 150 ms windows, and
+the extracted evaluator passes two actual same-profile launches. The actual
+65-second target-blit sustained run nevertheless includes a 608.601 ms Rapier
+completion gap. Its matching native handoff occurs after 16.547 ms, followed by
+inline draw delivery at 606.805 ms and the next physics callback at 606.922 ms;
+the solver itself takes 0.217 ms. No intervening application callback is present.
+This is a measured stock Safe/software-ANGLE host gap, not proof of GPU hardware
+completion or a physical NVIDIA defect. The two Separate diagnostics terminate
+with GLAD initialization errors and Windows access violations before exercising
+their publisher fixtures. They remain failed experimental startup evidence.
+
+Independent raw-evidence review also strengthened sustained validation: actual
+unique callbacks, complete native/sample/handoff joins, recomputed Water closure,
+strict publication serials and all ten pulse/recovery pairs must agree with the
+trace. An empty or rehashed contradictory trace cannot pass on summary counts.
+Raw V1 does not contain per-command input events; the fixture checks its tape
+internally. Do not claim an independent per-command trace that was not recorded.
+
 ## 4. Qualification protocol
 
 Qualification separates source tests, headless native/Rapier, real graphical
@@ -189,12 +269,45 @@ startup. Final acceptance requires repeatable representative Wave gameplay gains
 without equivalent downstream stalls, material corruption or non-Wave regression.
 Record exact numerical decision criteria before the frozen campaign.
 
+The final registration adds a separate M/C/C/M whole-source comparison of current
+accepted main against C on current Wave2048 Follow and Wave512 Follow. M retains
+combined physics/legacy presentation; C requests early publication/coherent
+presentation with continuation Off, and both use full material publication.
+This compares complete source/policy bundles; it cannot isolate one repair.
+I at `8503ec19` lacks the required current-Wave workload readback and receives
+an explicit untimed incompatibility refusal for that case, not a substitute arm.
+
 Required correctness includes delayed completion, reset/epoch/pause fences,
 stale/missing/advanced ACK, rejected material patches, history recovery,
 dense-to-sparse reuse, real save/fresh-process reopen and active shutdown.
 The transition oracle retains all 180 accepted revisions and both full histories.
 Independent review rotates A over B's coupling, B over A's temporal correctness,
 C over measurements/custody, with root reviewing every authority change.
+
+### Independent combined-source review
+
+The pre-final review snapshot is local `eeea6c3277e9b5fad820c7f17a114d8efa4d3cb4`,
+tree `124f8071cc68150fcc3c7ee1b339fd1af883e657`. Relative to the targeted hosted
+candidate, its Godot/native diff contains only the two repaired fixtures.
+Later evidence-upload filtering does not alter product execution.
+The subsequent Windows camera repair is fixture-only and retains a discriminating
+negative control; its product source remains identical to the reviewed snapshot.
+
+| Reviewer | Authored work | Independent review performed |
+| --- | --- | --- |
+| A — native physics specialist | Worker causal trace, hold-clock fixture and unselected native experiments | Root Main authority, B's actor/render coupling, C's sustained decoder and owner collection. Independently replayed exact raw native-to-Rapier joins, nine evidence tamper cases and hosted continuation attempts. |
+| B — renderer specialist | Target-retirement option, renderer/camera fixtures and sustained gameplay observer | A's callback/worker timing, root's World blend and accepted-main authoring reconciliation, C's actual package/launcher and root's collector. Independently decoded graphical histories, Art audits and raw performance arms. |
+| C — platform specialist | Build, package, workflow and evidence tooling | Exact source/compiler/runtime closure, original failures, counterbalanced measurement, root's collector bounds and native experiment source. Independent receipt/ZIP/hash checks supplement authored validators. |
+| Root — lead/integrator | Main integration, World-blend gate, Art fixture reconciliation and result collector | Every selected authority, provenance and acceptance change; reconciled current main against the donors and rejected unsupported performance promotions. |
+
+A and B found no remaining blocking production authority or renderer source
+finding in this snapshot. Confirmed evidence and collection findings were
+repaired, then independently rechecked: copied empty/contradictory traces refuse,
+real originals still pass, and admitted run bytes are exactly those archived.
+These reviews do not establish a gameplay performance PASS or replace final
+installed Windows execution. The [physics review](../audits/2026-11-22-pubpres-completion/physics-review.md)
+and [renderer review](../audits/2026-11-22-pubpres-completion/renderer-review.md)
+identify original source versions and retained raw artifacts.
 
 ## 5. Delivery and owner acceptance
 
@@ -212,6 +325,16 @@ Owner acceptance must cover sustained Wave/actor play, Follow and Free cameras,
 fast rotation/effects, dense transitions, painting, pause/reset/save/reopen and
 longer playback. Export timing and logs. Windows software-host success remains
 separate from the owner's TITAN RTX or other NVIDIA hardware decision.
+
+The packaged `ACCEPTANCE.md` describes the actual **Save start / Load start**
+controls: they preserve authored starts, not evolved live Water or velocities.
+`Collect Results.cmd` verifies the immutable package and writes a new ZIP outside
+it, with exact launch receipts, bounded logs/reports/saved starts and optional
+owner notes/screenshots. Limits are 16 MiB per file, 128 MiB total, 512 included
+files and 8,192 enumerated entries; omissions remain explicit. Captured run
+identity and archived run bytes are the same stable read. The original profile,
+saves and package remain unchanged. Installed Windows execution and independent
+ZIP-entry verification are required in addition to synthetic collector tests.
 
 Final disposition remains **REPAIR/HOLD** until the source-matched progression,
 correctness, installed Windows and independent review gates have actual evidence.
