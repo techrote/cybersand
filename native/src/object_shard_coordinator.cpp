@@ -243,6 +243,30 @@ bool Coordinator::paused() const noexcept {
     for (const auto& b : bodies_) if (b.geometry_pending) return true;
     return false;
 }
+OwnerReadback Coordinator::m4_owner_readback() const noexcept {
+    // Exclusive owner only. No full World presentation copy or discovery
+    // refresh, and no borrowed coordinator memory escapes this value object.
+    OwnerReadback readback{};
+    readback.session = session_;
+    readback.world_incarnation = world_incarnation_;
+    readback.world_available = world_ != nullptr;
+    readback.tick = world_ ? world_->completed_tick_index() : 0;
+    readback.paused = paused();
+    readback.quarantined = quarantined_;
+    readback.promotion_pending = pending_->present;
+    for (const auto& body : bodies_) {
+        if (body.has_body) ++readback.active_count;
+        if (body.shard.id == 0) continue;
+        if (readback.copied_count < readback.bodies.size()) {
+            readback.bodies[readback.copied_count] = body;
+            ++readback.copied_count;
+        } else {
+            readback.truncated = true;
+        }
+    }
+    return readback;
+}
+
 Result Coordinator::edit(std::int64_t x, std::int64_t y, Payload value) {
     if (paused()) return finish({Outcome::Fenced, {}, 0, Phase::Empty, "Lab promotion/geometry barrier"});
     if (!resident(x,y)) return finish({Outcome::NotResident});
