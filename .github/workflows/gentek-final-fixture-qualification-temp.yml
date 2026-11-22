@@ -1,0 +1,49 @@
+name: GENTEK five-style unequal/controls Windows proof (TEMP DRAFT HOLD)
+on:
+  push:
+    branches: [qualification/gentek-windows-final-fixture-corrections-20261122]
+permissions:
+  contents: read
+jobs:
+  mixed:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Restore and authenticate accepted native inputs
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          python -m py_compile tools/architecture/gentek80_compositions.py
+          if ($LASTEXITCODE -ne 0) { throw 'Five-style Python syntax invalid' }
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'LFS restoration failed' }
+          $n=(Get-FileHash godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($n -ne '668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e') { throw "Wrong inherited qualified native DLL: $n" }
+      - name: Obtain official source-pinned Godot Windows 4.7
+        shell: pwsh
+        run: |
+          $zip=Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Download refused' }
+          $sha=(Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant()
+          if ($sha -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Official engine checksum differs' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+          $exe=Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe'
+          "GODOT_EXE=$exe" | Out-File -Append $env:GITHUB_ENV
+      - name: Execute real Shared Workbench unequal/equal five-style author, native paint, save and fresh-process reopen
+        shell: pwsh
+        run: |
+          python tools/architecture/gentek80_compositions.py --godot $env:GODOT_EXE --project godot --output evidence/advanced-showcase --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Exact real Workbench advanced five-style mixed qualification failed' }
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-fixture-five-styles-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
