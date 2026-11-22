@@ -1,0 +1,1453 @@
+{
+  "retrieval_policy": "historical-isolation-v1",
+  "authority": "current-documentation",
+  "historical_opt_in": false,
+  "link_expansion": false,
+  "cache_policy": "No persistent cache is read; external caches require rebuild with this policy and per-chunk authority.",
+  "created_utc": "2026-11-22T08:19:47.856864+00:00",
+  "corpus_root": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit current manifest if present; otherwise focused directories plus navigation README/AGENTS; historical paths and tagged copies rejected"
+  },
+  "fixture_sha256": "e9748e8656ef8daf4671e2972de393143d2b44c7f0fb0feb607575ed52d7fadd",
+  "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+  "corpus_manifest_sha256": "77f4c0302366648028e11472956e8e0d4115bdbe52e1380e50ded55df16abc9d",
+  "corpus_manifest": "docs/reference/retrieval-corpus.json",
+  "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "bytes": 13377
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "246f130a0fa07d4ae5f8330e8e3929ad588d793f323900e90a9a6e557d9082f7",
+      "bytes": 16079
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "112060dc5d88ffc99b56f04c5667597f9e73ca1adb1b9353bc5d078f79763c40",
+      "bytes": 39570
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "4a85c1007a438d86f52d7b51a6c59b5aee0c85d6e900857e14fdfb07ec65aea8",
+      "bytes": 11309
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "bdacfa2db93d74044d212940ea375d08404e1c376a96cde250443f19690607a2",
+      "bytes": 84579
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "826b8454abdb75620120736c005a65a5b993c742846e0fe7985edf2c08f3005d",
+      "bytes": 66230
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "752a352b88ec125b1e8c3d319eeb35f0c8529eff3ecfda9969a4389ac4bd2977",
+      "bytes": 63265
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "cf0046c5ccce66ee0c1f0cc150f1a873d9a03ef50016770f28f5700f89476b57",
+      "bytes": 32330
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "ad0b728477160ba8b52737ca6204d55d36be70dfe04e9380bcd93f7b1a56adfc",
+      "bytes": 20378
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "eeb3bdee911991e0529f9f9b10f6d444a6e0a3f906680f8643a70e96e5a075a0",
+      "bytes": 15352
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "eb25808450399ed44f230e037928c3541dc70d667014171b1ba0b7dd213c6c11",
+      "bytes": 24788
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "94fdd3d39211766309798ce7e16f3dea8821f486c5055cdd2f621d2752322a73",
+      "bytes": 25476
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "bytes": 47213
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "22c82ce2edb6e615cf097a45d6a36b505cd7a057d782439c7949db0b1a0b3e41",
+      "bytes": 7714
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "bytes": 12906
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "79076c441a2883d56f5640907cd4bf38821e96448995e9b402c54e163cf5fa77",
+      "bytes": 130672
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "bytes": 3762
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "f3083780031d5512435c07d4d454ef8f5bdb029ac33f2e1d7181e0b52fa1c862",
+      "bytes": 14140
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "bytes": 18806
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "bytes": 18051
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "bytes": 117202
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "0f8ed826d60d97f0d863556422559e720f6ac92f38157701b8015d43ea177a66",
+      "bytes": 19717
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "bytes": 13039
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "ae468a2213585d4be04d8e9b333f5d432981c6e1da37b764b52696708a4e9267",
+      "bytes": 32150
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "bytes": 17952
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/objectshard-lab-playtest.md",
+      "sha256": "d140a0c1dd0454da9f16e555734a2a719e96c68961150b4fed59da14ae648a72",
+      "bytes": 15151
+    },
+    {
+      "path": "docs/operations/objectshard-m3-preflight-playtest.md",
+      "sha256": "654a71f6bdd2c763e1e89788ac2eb3610cb161d335514d00110e2ebc76bc4bd1",
+      "bytes": 14472
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "bytes": 32428
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "bytes": 17230
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "de75e024d6b86b5a40cd7a0d148ea86295acc3dfd91565a3f917f16a13e37db8",
+      "bytes": 40397
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f",
+      "bytes": 13944
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "726497a27ac4745af06a4941cf4b658983a2833e0aa9c0eef3aed4c28342b35b",
+      "bytes": 15344
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "bee8124fee89b2cb426da2ff01e491cbe883ca2bd84aee4c16d7ce95b26fff5b",
+      "bytes": 90310
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "0edd84df08e0e653fc73f4c47d7e2931749e725951c3c836bc3f2340e6f4d396",
+      "bytes": 99376
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "02ad3d26a1193669dc0d582a46c4254da016b25f1281ff69ea9ba4afe61d6a6e",
+      "bytes": 47306
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "2ea330678ce74d6206213b39213aa5783374b61bda2efa0a48a575d2f76af552",
+      "bytes": 15430
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "fc8f06018d923481d37c766acea8113130d7739b99c84871ce3ad89e760b573b",
+      "bytes": 20969
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "c59df9702b8a6bae8fa1f5d2a7cd510e9d3815f667315f76297f033b89153b80",
+      "bytes": 163824
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "bytes": 77127
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/objectshard-001.md",
+      "sha256": "c48d702d52bef5ee4f49b2903c3ea31fd80e2f466247e2ee06deaff50c8826a6",
+      "bytes": 27842
+    },
+    {
+      "path": "docs/research/objectshard-m3-preflight.md",
+      "sha256": "4226153ffb8c9701c642d738c401df0dd63dfc820b2b91bd3955ef431b1e809e",
+      "bytes": 23547
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "b9a500aa2ad7545b53ce03fe40f12b9a09cfc7c7d16661a541dd82fcfa485072",
+      "bytes": 24845
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "bytes": 13442
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "bytes": 21861
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "2140d649728829bf1b5163eb0686ab8eadd6493be7512ad5e25e21359a5c2e24",
+      "bytes": 14476
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "cb0ad9d255d648064362b2c13dfa9e5c76eae388705d52ed47988024a5fe714c",
+      "bytes": 23872
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "bytes": 62162
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "0edcd936c2a82cc7e0e8c0e5b586a84fa9841e87bb7b5edd74c60c96dd82afc3",
+      "bytes": 28537
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "b6c24131a38f2ede5a2b6426db193c1976ea5ce770a0b96195079279b75b5428",
+      "bytes": 23536
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "e1ecb768e8e8685943db5ba8c2638dee18b3b9f9d856f705247916978323c740",
+      "bytes": 32226
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "0608fbdc4ed4a4b38cd3ce47422bbbaeee07ce1c0a080b555f820d377692538d",
+      "bytes": 13532
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "21d0d16074f0d1e3203addc8c5707bcaa70d85b6d7f0eec6e3ca12e3db96890c",
+      "bytes": 11007
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "de44534954f0d38639f220cab5a56135fec0a0589777be21460543400885953b",
+      "bytes": 12516
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "d24aa9fe1631a5506044ace6653cc035e2f469d0add9bc5f037943b6c483f281",
+      "bytes": 11786
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "4aa4f20c295f3dd92fc4854d4c02e5571c3acb49a3cf90c1e0538909ceaae72a",
+      "bytes": 16243
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "bytes": 12488
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "99ce3e3d637d456d18d93fbf1e22f1fcf713df1753a24dd2928b4702bce34b44",
+      "bytes": 8616
+    }
+  ],
+  "document_count": 149,
+  "chunk_count": 1992,
+  "summary": {
+    "questions": 9,
+    "canonical_hit_at_1": 7,
+    "canonical_hit_at_k": 9,
+    "mrr_at_k": 0.837,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "OBJECTSHARD01",
+      "query": "How does ObjectShard promotion transfer native material ownership and activate Rapier without duplicate collision?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "One exclusive Lab owner preflights and transfers exact inventory while both clocks are paused.",
+        "Actual terrain installation and occupancy application precede BodyActivated; queued receipts are insufficient.",
+        "This is a Draft/HOLD candidate, not ordinary production behavior."
+      ],
+      "sources": [
+        "../../native/src/object_shard_coordinator.cpp",
+        "../../godot/scripts/object_shard_physics_bridge.gd"
+      ],
+      "canonical_rank": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 18.64389,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "title": "Water hybrid, saturated-head and compartment-pressure extension programme",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Required generic hybrid contract before a production-like sheet proof",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Water hybrid, saturated-head and compartment-pressure extension programme\nPath: operations/water-hybrid-pressure-extension-programme.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Planned\nscope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption\ncanonical-for: [water-hybrid-pressure-extension-programme]\nlast-reviewed: 2026-10-24\nSection: Water hybrid, saturated-head and compartment-pressure extension programme > Required generic hybrid contract before a production-like sheet proof\nThe sheet experiment must not build a duplicate hybrid backend while #12 owns production soliding. Before a production-like proof modifies runtime soliding, there must be a usable generic cell↔Rapier ownership substrate or an explicitly isolated experimental facsimile that cannot be mistaken for production integration. The contract must account for at least: - one authoritative material owner at every transition phase; - exact Water integer mass carried across promotion/demotion; - material/state/temperature payload needed by the selected Water subset; - geometry and mass distinguished when partially filled Water cells are involved; - deterministic, bounded promotion/demotion ordering; - main-thread Rapier ownership; - capacity/refusal without material deletion; - collision ownership with no double-contact authority; - motion/energy accounting at the declared approximation level; - stale/cancelled/failed transition handling; - hard-terrain and foreign-body boundaries; - exclusion/re-entry and relevant save/refusal semantics. If #12 has not yet supplied an appropriate generic substrate, the sheet issue may freeze fixtures and characterization but must stop before creating a competing production handoff architecture."
+        },
+        {
+          "rank": 2,
+          "score": 18.57022,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Executable candidate scope",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Executable candidate scope\nThe opt-in `object_shard_worker_rehearsal.tscn` executes one real native ObjectShard World on one exclusive worker thread and the real Rapier bridge on main. Ordinary material edits trigger actual discovery, transfer, collision switching and motion. Material/pose publication uses only the last applied native snapshot. This is an executable ownership and timing rehearsal, **not production Workbench integration**. It preserves the synchronous 001R Lab as a control and does not alter production input, Water, worker, renderer or physics-host defaults. The separate developer launcher, source-bound report/capture and host-specific replay establish a practical play → export → reproduce → repair loop. Ordinary Workbench World attachment, persistence and fracture remain separate work; the programme label here describes Workbench preparation only."
+        },
+        {
+          "rank": 3,
+          "score": 18.456709,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Executed ordering",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Executed ordering\nEach requested semantic interval executes native `step` exactly once. Discovery may prepare a complete component. Main reserves a real disabled body and shapes, then sends the exact reservation acknowledgement. Native commit leaves inventory in `CommittedInactive`. Main installs touched static terrain contents and returns actual installed digests; native applies the occupancy mask. Only then does main activate the body and native acknowledge `BodyActivated`. Native geometry changes require main installation and the corresponding native geometry receipt before physical motion. One Rapier interval is divided into the same bounded real substeps as 001R. `advance_motion_segment` performs exactly one solver piece, publishes sampled poses and enters `AwaitingNative`. Main submits those poses to worker-owned `accept_motion`; only an exact applied receipt with unchanged semantic tick and full owner/pose inventory permits another solver piece. Maximum 16 segments and the original motion guards remain intact. Delayed replies leave both the UI and cancellation/reset controls live, without stepping physics again. The bridge requires an explicit completed native tick and refuses duplicate/backward ticks or reused native sessions. The synchronous wrapper and asynchronous API share this state machine. A retained-action control matched all 3,599 before/after pose rows and accounting against the unchanged final001R bridge on the same pinned native runtime; extraction did not invent a second dynamics implementation. A preparation cancellation retains World inventory and removes only uncommitted reservations. It then finishes the physical interval belonging to the native tick that already ran. An actual negative reproduced the old skipped interval (native2→3 while physics4→4); the maintained adverse case covers the repair. Reset retires pending transport sequences, requests explicit native whole-session disposal and reinitializes main RIDs only after the new session receipt. A late receipt during Closing/Closed is nonmutating; duplicate worker stop preserves its original terminal result. Stop refusal leaves the native owner/thread retained with a visible `ShutdownHeld` reason."
+        },
+        {
+          "rank": 4,
+          "score": 17.688046,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Controls",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Controls\nChoose a scenario, then **Resume**, **Pause**, **Single step**, or **Reset**. The default view uses native material colours. Left-drag with **Erase**, **Wood**, **Sand**, **Water**, or **Ignite**. Right-click, or select **Inspect**, to inspect the exact owner, local identity, state and temperature of a material cell. **Erase lower Wood band** finds the lowest current Wood row and removes the lowest twelve rows through the same ordinary native edit operation used by the brush. It is a convenience for making a readable fall; there is no special cut-to-physics command or fixed component capture rectangle. The optional **Shapes / centre of mass / pocket** overlay shows exact collision rectangles in cyan, centre of mass in gold and the admitted pocket in green. Empty holes remain empty. The side panel records structural inventory, products, cargo, revisions, native events and measured frame/promotion costs. The ownership and inspection panes scroll when their diagnostics exceed the available window height. **Erase** resolves the actual material owner. Stationary material is edited in World; moving structural material is erased through an identity-fenced native shard transaction, followed by collision installation and acknowledgement between Rapier steps. Other moving material replacement and cargo painting are refused. Ignition and inspection remain owner-aware. Fast drags use a continuous four-connected cut rather than disconnected mouse samples. At most 256 unique cells wait in the edit queue and at most 16 execute per frame. The pending count is visible, and pause/export remain available. A target that changes owner while waiting is refused explicitly. Let the pending count reach zero before assessing a cut or resuming a paused multi-cut experiment. **Erode resting cell** selects an actually sleeping body, then queues one visible structural-cell erasure. It does not apply a scripted impulse or freeze the body. **External Fire burner** authors genuine Fire into Empty World cells at the outlined fixed source positions. It never deletes Wood, overwrites cargo or draws decorative flames. Its authored Fire count is separate from products generated by native chemistry."
+        },
+        {
+          "rank": 5,
+          "score": 17.387695,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Executable stage boundaries",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Executable stage boundaries\n| Stage | Behavior | Recorded qualification boundary | | --- | --- | --- | | M0 | Compact inventory, ordinary-mutation discovery, exact promotion, actual collider switch and Rapier motion | Native and actual Linux iteration executed; independent scoped review passed | | M1 | Shared combustion, material products, mutable geometry and sleeping-body chemistry | Native scheduler and actual Linux Rapier Lab executed; exact results below | | M2 | Authentic output, physical Sand lodging, historical Water exposure, Windows evaluator | Implemented in the M2 child; final source-bound Linux/Windows campaign recorded separately from local iteration |"
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD02",
+      "query": "Does a burning ObjectShard emit real Fire, and can external Water extinguish Wood after contact has ended?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "Wood uses its shared two-tick state_b lifecycle and creates Fire32 in a sole occupied product carrier.",
+        "Exact output transfers into World, where ordinary Fire becomes Smoke.",
+        "Historical non-consuming Water exposure is incarnation-bound, expiring and consumed once; Water remains World-owned."
+      ],
+      "sources": [
+        "../../native/include/cybersand/material_lifecycle.hpp",
+        "../../native/src/object_shard_coordinator.cpp"
+      ],
+      "canonical_rank": 3,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 35.455633,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Scenario B — burning Wood tree",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Scenario B — burning Wood tree\nThe tree is genuinely Wood, with an existing native burn countdown. Resume for a few ticks, then remove support. Inspect a burning cell before and after promotion. Its burn state must continue rather than restart. Allow several seconds for Wood consumption to change the structure and collision geometry. Ordinary Wood combustion is unchanged. One or two initially burning pixels may die out without consuming the whole tree. For sustained erosion, use **J — Sustained external flame** or enable the visible burner and place the reacting structure in its path. Fire remains an external material source; native selected contact and combustion decisions determine whether a Wood cell ignites. **PASS:** native combustion continues after motion begins and while the body sleeps. Wood produces actual Fire; delivered Fire enters World and follows the native Fire-to-Smoke lifecycle. The side panel's product/output accounting must advance. Bright cells are drawn from native material state, not decorative flames. This first slice keeps disconnected structural islands in one compound. The panel labels this **split_pending**. Independent fragment motion is not claimed. Persistent, conspicuously floating branches should be reported as a gameplay limitation; small transient disconnected regions are expected before fracture."
+        },
+        {
+          "rank": 2,
+          "score": 30.302536,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Scenario C — external contact and lodging",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Scenario C — external contact and lodging\nDetach the pocket structure. The authored Sand is above an open channel; more Sand can be placed over it. The capture must occur through the physical aperture, not through a solid wall. Inspect carried Sand to see its material, state, temperature and cargo identity. Ignite Wood, then place Water against an exposed burning surface. Water remains owned by World while the accepted contact extinguishes that Wood incarnation. Pause, inspect and single-step to see the change. Contact and ingestion are separate capabilities; Water is not silently copied into a private liquid solver. The admitted opening is one to three cells wide. A suspicious sideways entry holds ingestion until that local opening is clear again; it must not become a valid capture merely because the body subsequently stops moving. Most Sand can legitimately miss or pass through the small capture aperture and reach the floor. Inspect the lodged cell and cargo count to distinguish real ingestion from bypass. This experiment does not advertise an internal granular solver or an unlimited Sand container. **PASS:** real Sand is removed from World exactly once and becomes inspectable cargo; genuine Water contact changes burning Wood; failed delivery retains its inventory and reports a blocked state. A vanished pocket or retired rigid body must not silently delete remaining cargo or products."
+        },
+        {
+          "rank": 3,
+          "score": 26.532039,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Qualification, measurement and retained failures",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Qualification, measurement and retained failures\nThe first local M2 Godot4.7.2 attempt retained three failures: the one-cell Sand opening did not admit real grains under ordinary small rotation, and Fire re-ignition delayed the chosen geometry observation. The fixture changed to a three-cell opening and includes one genuinely near-consumed Wood cell alongside the long-burning cell. No chemistry rule or unsupported decorative effect was introduced to make the test pass. The repaired local M2 iteration passed359 checks. At tick34, five World Sand grains became four World grains plus one carried grain with its tuple and temperature. Water extinguished the same Wood incarnation224→0 without a Water debit. Sleeping Wood progressed237→227, geometry changed, five real products were created and two Fire deliveries reached World. Three independent bodies created eight products and delivered four Fire carriers by tick94. This iteration used extension SHA256 `adb5fb9b90cbed1c2a688e75d0566cdebca5964a6cf570aa616f2766dfcc779a`. It predates the final ingress hardening and is not final-source Windows evidence. After those repairs, the source-matched local M2c Godot4.7.2 iteration passed **373 checks, zero failures**, including moved→consumed→body-retired domains whose retained products remain at the actual final pose for both rendering and inspection. Its extension SHA256 is `36c04d20a1ae713466342b26454eb73f13e79f93ac9ec29c20df4d62c67584ef`. The corrected native catalogue has60,432 applicable checks with zero failures, plus192 unchanged World test cases. The separate final review executed350 adversarial checks with zero failures. Exact inputs, sanitizer scope and remaining hosted gates are recorded in the [local qualification checkpoint](../audits/2026-11-22-objectshard-m2-local-qualification.md). Independent review subsequently reproduced side-entry laundering, transfer- budget history loss and overlap-relocation laundering. The failed probes and their source identities remain retained; focused repairs added persistent aperture history, a two-pass history/proposal schedule and relocation exclusions. Final evidence must execute those probes against the repaired source. Separate before/after-debit fault injection covers exact ownership, tuple, temperature, receipt replay and reset after exceptional partial progress. A fresh reviewer rebuilt the immutable original World wrapper and the extracted wrapper independently: all20 JSON fixture records were byte-identical, including the author's16 fixtures and four new serial/phased, signed-origin burn/expiry/ epoch-wrap fixtures. The unchanged full World suite passed192 test cases with zero failures. Neither result is a claim about Windows or full-game acceptance. `tools/objectshard/run_native_tests.py` retains immutable input snapshots, compiler commands, bounded process logs and summaries. Its normal and sanitizer results are distinct; LeakSanitizer is explicitly disabled where unavailable. `run_benchmarks.py` records construction separately from steady state, exact allocation counters, p50/p95/p99/max and every failure. The fair serial miniature- World probe shares the same admitted payload, semantic clock, actual output and external World. Its reported scope must not be extrapolated to untested payloads. Native and actual-Godot budgets were registered before final qualification in `tools/objectshard/native_budgets.json` and `lab_budgets.json`. Native p95≤2ms, p99≤10ms and"
+        },
+        {
+          "rank": 4,
+          "score": 26.467538,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Tools and compact configuration",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Tools and compact configuration\nLeft-drag selects **Erase**, **Wood**, **Sand**, **Water**, **Fire**, **Ignite** or **Inspect**. Right-click always inspects the actual current owner. Fast drags use the existing four-connected cut path. Native inspection reports the material, state, temperature and moving-cell identity; display colour is not the authority. **Configuration** consolidates collision-shape/centre-of-mass/pocket overlays, scenario seed, external Fire, receipt work and the delayed-receipt diagnostic. The seed applies on the next Reset. Collision friction, damping, body slots, geometry capacity, material laws and the admitted motion envelope retain the qualified settings. The evaluator does not expose unqualified values as successful tuning ranges. Continuous progression gives each completed displayed tick an input admission window before the next interval starts. Pointer commands enter the host before that scheduling step, so a fresh visible moving cell can be cut while the game keeps running. Older in-flight witnesses still refuse explicitly; they are never silently retargeted onto a newer pose. **Receipt work** selects the measured 4 ms soft loop budget or its 0 ms control. The default briefly waits for completed worker receipts within the current callback, reducing avoidable process-frame gaps without creating extra World or physics time. Deferred receipt notifications remain off. The budget is checked between complete receipt handlers: a handler already running can exceed 4 ms. Actual pump duration and the enclosing frame callback remain visible in the export. A positive throughput comparison does not establish real-time 60 Hz simulation or target GPU frame rate. **External Fire burner** repeatedly requests a visible band of genuine Fire. The worker checks that each target is still Empty immediately before its native edit; an occupied cell is refused rather than overwritten. Accepted fixture Fire is counted separately from chemistry products. This supports sustained external heating without changing ordinary Wood's weak self-sustaining burning law. The manual Fire brush remains ordinary intentional World painting. **Hold worker receipts** is a protocol diagnostic. Physics waits at its pending applied acknowledgement, and the view retains the last coherent publication. The UI and export controls remain usable. Release the hold before the 15-second receipt deadline to continue. Once that deadline expires, the explicit Held state retains ownership and requires Reset or Stop; releasing the checkbox alone does not resume the retired operation. Deliberately holding a receipt does not demonstrate physical rest or good throughput."
+        },
+        {
+          "rank": 5,
+          "score": 26.11909,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Preserved scenes",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Preserved scenes\nAll eleven 001R scenes are available in the worker screen and remain available in the synchronous Lab. Additional fixtures are authored using bounded ordered native edits before continuous progression begins. | Scene | Native canvas | Main observation | | --- | --- | --- | | A — Ordinary detachment | 192 × 128 | Live support cut, transfer, fall and continued edits. | | B — Burning Wood tree | 192 × 128 | Existing burn state survives transfer and continuing chemistry. | | C — Water and Sand exchange | 192 × 128 | Real pocket capture, legitimate Sand bypass and Water exposure. | | D — Three reacting structures | 192 × 128 | Separate owners, material changes and physical contacts. | | E — Perforated crown | 192 × 128 | Holes and exact geometry survive detachment. | | F — Long settling control | 192 × 128 | Natural rest, then one-cell erosion and continued play. | | G — Main structure and offcuts | 192 × 128 | Large-component admission ahead of competing tiny fragments. | | H — Irregular branching | 256 × 160 | Diagonal cuts and deliberate negative space. | | I — Diagonal / multi-support cuts | 256 × 160 | One surviving genuine support preserves anchoring. | | J — Sustained external flame | 256 × 160 | Genuine external Fire, Smoke and selected native ignition. | | K — Extended play canvas | 320 × 192 | Repeated edits, three structures and asymmetric ledges. | For the priority experiment, pause before cutting several supports, let pending input drain, then Resume. This makes simultaneous eligibility explicit. A tiny body already admitted before the main cut remains an actual material owner; it is not silently deleted to create a slot. In the Sand pocket experiment, most Sand may bypass the narrow accepted aperture and reach the floor. Inspect the carried cell and cargo accounting to identify real capture. Water remains World-owned when accepted exposure extinguishes Wood. Internal fluid transport and unlimited cargo are not advertised."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD03",
+      "query": "What makes ObjectShard Sand lodging physical and prevents side entry or overlap relocation from laundering a transfer?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "Whole-cell Sand requires an open one-to-three-cell pocket and valid bounded pose sweep.",
+        "Invalid ingress history survives budget exhaustion and stationary frames until the aperture clears.",
+        "Mechanical relocation excludes pocket columns; cargo retains exact state and temperature separately from structural bonds."
+      ],
+      "sources": [
+        "../../native/include/cybersand/object_shard_contact.hpp",
+        "../../native/src/object_shard_coordinator.cpp"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 33.410947,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > M2 ownership and exchange",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > M2 ownership and exchange\nThe M2 coordinator owns World and all registry inventories under one exclusive Lab owner. The public bridge copies observations and explicit receipts; it never exposes mutable cell storage. The ordinary Workbench worker and immutable Workbench compound adapter are unchanged. The new revisioned adapter replaces complete exact geometry between manual Rapier steps, binds material/geometry revision, generation, mass, COM and inertia, and acknowledges actual installation. One native owner identity is independent of the number of compound rectangles. Every conservative exchange validates a monotonic transaction, session, shard generation, cell incarnation, body generation, applied geometry, pose serial, capability version and exact accepted tuple. It reserves local/World capacity before debiting inventory. A bounded receipt ring returns prior outcomes, while the retired sequence watermark prevents evicted transactions from executing again. Unexpected partial progress retains the actual sole owner in quarantine; expected stale, capacity, unsupported and destination refusals are nonmutating. **Authentic output:** Wood creates Fire32 in a real local product carrier. The outbox is a proposal referencing that carrier, not another material copy. At an admitted transformed destination the coordinator transfers the exact Fire tuple into a resident Empty World cell. World then executes its ordinary Fire→Smoke lifecycle and world-up movement. Blocked products remain occupied and execute only their supported retained lifecycle; no failed delivery deletes inventory. The declaration does not promise internal gas transport. **Physical Sand ingress:** baseline whole-cell Sand may lodge through an open one-to-three-cell-wide pocket. Structural side walls, the full supporting floor and a clear column to the local top define the aperture. Current pose and the bounded actual pose sweep must admit entry through that aperture. State and temperature transfer once; carried Sand is inspectable and visible, contributes declared unit-cell mass and occupancy, and does not create a structural bond. The Lab's C fixture uses a three-cell opening so ordinary small rigid-body rotation does not make the demonstration depend on perfect lattice alignment. Invalid side-entry history is retained until the complete aperture column is observably clear. History sampling runs before any cargo mutation and even when the transfer budget is zero or exhausted. Mechanical overlap relocation excludes all pocket capture columns, including temporarily occupied ones; it cannot manufacture a later valid-looking ingress by moving Sand through a solid wall. This is distinct from ordinary World material movement through a real opening. **External Water exposure:** before overlap relocation, a bounded pose sweep captures actual World-owned Water adjacent to a shard Wood cell. The historical fact binds incarnation, geometry/sample identity, semantic interval and expiry. It is consumed once at that Wood's next admitted two-tick opportunity,"
+        },
+        {
+          "rank": 2,
+          "score": 31.709344,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Qualification, measurement and retained failures",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Qualification, measurement and retained failures\nThe first local M2 Godot4.7.2 attempt retained three failures: the one-cell Sand opening did not admit real grains under ordinary small rotation, and Fire re-ignition delayed the chosen geometry observation. The fixture changed to a three-cell opening and includes one genuinely near-consumed Wood cell alongside the long-burning cell. No chemistry rule or unsupported decorative effect was introduced to make the test pass. The repaired local M2 iteration passed359 checks. At tick34, five World Sand grains became four World grains plus one carried grain with its tuple and temperature. Water extinguished the same Wood incarnation224→0 without a Water debit. Sleeping Wood progressed237→227, geometry changed, five real products were created and two Fire deliveries reached World. Three independent bodies created eight products and delivered four Fire carriers by tick94. This iteration used extension SHA256 `adb5fb9b90cbed1c2a688e75d0566cdebca5964a6cf570aa616f2766dfcc779a`. It predates the final ingress hardening and is not final-source Windows evidence. After those repairs, the source-matched local M2c Godot4.7.2 iteration passed **373 checks, zero failures**, including moved→consumed→body-retired domains whose retained products remain at the actual final pose for both rendering and inspection. Its extension SHA256 is `36c04d20a1ae713466342b26454eb73f13e79f93ac9ec29c20df4d62c67584ef`. The corrected native catalogue has60,432 applicable checks with zero failures, plus192 unchanged World test cases. The separate final review executed350 adversarial checks with zero failures. Exact inputs, sanitizer scope and remaining hosted gates are recorded in the [local qualification checkpoint](../audits/2026-11-22-objectshard-m2-local-qualification.md). Independent review subsequently reproduced side-entry laundering, transfer- budget history loss and overlap-relocation laundering. The failed probes and their source identities remain retained; focused repairs added persistent aperture history, a two-pass history/proposal schedule and relocation exclusions. Final evidence must execute those probes against the repaired source. Separate before/after-debit fault injection covers exact ownership, tuple, temperature, receipt replay and reset after exceptional partial progress. A fresh reviewer rebuilt the immutable original World wrapper and the extracted wrapper independently: all20 JSON fixture records were byte-identical, including the author's16 fixtures and four new serial/phased, signed-origin burn/expiry/ epoch-wrap fixtures. The unchanged full World suite passed192 test cases with zero failures. Neither result is a claim about Windows or full-game acceptance. `tools/objectshard/run_native_tests.py` retains immutable input snapshots, compiler commands, bounded process logs and summaries. Its normal and sanitizer results are distinct; LeakSanitizer is explicitly disabled where unavailable. `run_benchmarks.py` records construction separately from steady state, exact allocation counters, p50/p95/p99/max and every failure. The fair serial miniature- World probe shares the same admitted payload, semantic clock, actual output and external World. Its reported scope must not be extrapolated to untested payloads. Native and actual-Godot budgets were registered before final qualification in `tools/objectshard/native_budgets.json` and `lab_budgets.json`. Native p95≤2ms, p99≤10ms and"
+        },
+        {
+          "rank": 3,
+          "score": 21.760433,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Deliberate limits",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Deliberate limits\nM0–M2 supports admitted structural cells, selected shared combustion/product lifecycle, real bounded output, whole-cell baseline Sand lodging and selected non-consuming Water contact. It does not provide general fracture, internal gas or liquid transport, fractional liquid ingestion, solver-sidecar transfer, durable save/restore or streaming. Wave, PressureFlow, inertial and ballistic state remain with their existing World owner. Production Water defaults are unchanged. The motion envelope retains four cells of translation and 0.20 radians of rotation per accepted physical segment. Bounded actual Rapier substeps reconcile each segment with the same native owner while chemistry advances only once per semantic tick. At most 16 segments are allowed; limits are not increased to hide unstable motion. An unsupported interval holds the Lab with exact inventory retained. Arbitrary high-speed chemical collision coverage is not claimed. The diagnostic native `transfer_budget` can be set to 0–64 during construction for resource-pressure tests; the owner launcher uses the ordinary Lab default of 64 and provides no new Workbench control."
+        },
+        {
+          "rank": 4,
+          "score": 21.754454,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Scenario C — external contact and lodging",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Scenario C — external contact and lodging\nDetach the pocket structure. The authored Sand is above an open channel; more Sand can be placed over it. The capture must occur through the physical aperture, not through a solid wall. Inspect carried Sand to see its material, state, temperature and cargo identity. Ignite Wood, then place Water against an exposed burning surface. Water remains owned by World while the accepted contact extinguishes that Wood incarnation. Pause, inspect and single-step to see the change. Contact and ingestion are separate capabilities; Water is not silently copied into a private liquid solver. The admitted opening is one to three cells wide. A suspicious sideways entry holds ingestion until that local opening is clear again; it must not become a valid capture merely because the body subsequently stops moving. Most Sand can legitimately miss or pass through the small capture aperture and reach the floor. Inspect the lodged cell and cargo count to distinguish real ingestion from bypass. This experiment does not advertise an internal granular solver or an unlimited Sand container. **PASS:** real Sand is removed from World exactly once and becomes inspectable cargo; genuine Water contact changes burning Wood; failed delivery retains its inventory and reports a blocked state. A vanished pocket or retired rigid body must not silently delete remaining cargo or products."
+        },
+        {
+          "rank": 5,
+          "score": 21.468507,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation\nThe ObjectShard Lab is a separate experimental scene. It leaves ordinary CyberSand gameplay and Workbench defaults unchanged. Keep the implementation **Draft / HOLD** until the recorded native/platform qualification and your physical Windows acceptance are complete. The source is delivered in executable stages. The native capability panel identifies the implemented milestone, and unavailable scenarios stay disabled. M0 supplies ownership transfer and motion; M1 adds continuing material chemistry; M2 adds real product delivery, Sand lodging and external Water exposure. A scenario's presence in this guide is not evidence that an earlier-stage binary already implements it. The 001R candidate adds admission diagnostics, sustained-rest experiments, source-owned moving erasure and prospective action capture. Its qualification record must identify the exact tested source and delivered ZIP. Earlier M2 qualification does not qualify a changed DLL or launcher. The historical native performance result remains **10 failed limits out of 74** until a separately identified, comparable run establishes a different result."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD04",
+      "query": "How do I launch and verify the ObjectShard Windows Lab and record scenarios A through D?",
+      "canonical": [
+        "operations/objectshard-lab-playtest.md"
+      ],
+      "facts": [
+        "Extract the complete source-bound evaluator and use Open ObjectShard Lab.cmd.",
+        "The manifest binds source, DLL, pinned engine, selected Rapier and complete file inventory.",
+        "Windows automation and rendered evidence do not establish the owner's physical Windows11/NVIDIA acceptance."
+      ],
+      "sources": [
+        "../../tools/objectshard/package_windows_lab.py",
+        "../../tools/objectshard/qualify_lab.py"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 19.227191,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Open the Windows evaluator",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Open the Windows evaluator\n1. Extract the complete evaluation ZIP into a new directory. 2. Double-click **Open ObjectShard Lab.cmd**. It verifies the file manifest, imports the included source project and launches the bundled Godot runtime. 3. If verification or import fails, retain the console message and do not copy DLLs from another CyberSand build. **Verify ObjectShard Lab.cmd** repeats the package check without starting the Lab. Extract a new folder for each candidate; do not overlay a previous build. The package generator resolves its root as `%~dp0.` before passing it to Windows argument parsers, preventing a terminal backslash from escaping a closing quote. Automated qualification exercises the shipped verifier and GUI launcher after extracting the same ZIP under paths with spaces, an ending `(1)`, nesting and Unicode. Consult the exact candidate record for the executed results; this procedure is not itself a pass. The package contains its exact source commit/tree, native build input ledger, native DLL hash, selected Rapier provenance, pinned Godot archive identity and file hashes. It is a bundled source-project evaluator, not an exported release. No export-template installation or developer command reconstruction is needed."
+        },
+        {
+          "rank": 2,
+          "score": 18.882964,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation\nThe ObjectShard Lab is a separate experimental scene. It leaves ordinary CyberSand gameplay and Workbench defaults unchanged. Keep the implementation **Draft / HOLD** until the recorded native/platform qualification and your physical Windows acceptance are complete. The source is delivered in executable stages. The native capability panel identifies the implemented milestone, and unavailable scenarios stay disabled. M0 supplies ownership transfer and motion; M1 adds continuing material chemistry; M2 adds real product delivery, Sand lodging and external Water exposure. A scenario's presence in this guide is not evidence that an earlier-stage binary already implements it. The 001R candidate adds admission diagnostics, sustained-rest experiments, source-owned moving erasure and prospective action capture. Its qualification record must identify the exact tested source and delivered ZIP. Earlier M2 qualification does not qualify a changed DLL or launcher. The historical native performance result remains **10 failed limits out of 74** until a separately identified, comparable run establishes a different result."
+        },
+        {
+          "rank": 3,
+          "score": 18.462748,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Start the delivered Windows evaluator",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Start the delivered Windows evaluator\nExtract the entire ZIP into a new writable directory. Run **Verify ObjectShard Lab.cmd**, then **Open ObjectShard M3 Preflight.cmd**. The launchers verify the sealed manifest, import the included source project and start the bundled Godot 4.7 runtime. No compiler or external DLL replacement is needed. Keep **Open ObjectShard Lab.cmd** available for the preserved synchronous 001R control. The full project's feature launcher also offers the experimental ObjectShard entry; `--objectshard-m3` selects the same rehearsal. The package manifest binds the source commit/tree, exact native candidate, Godot, selected Rapier, launcher, scripts and guide. Do not modify verified files or overlay an older evaluator. A launcher failure is evidence: retain its console message and package identity. A successful verifier checks custody, not physical gameplay acceptance."
+        },
+        {
+          "rank": 4,
+          "score": 17.585856,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Reproduce the source-bound candidate",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Reproduce the source-bound candidate\nThe dedicated `ObjectShard requested source-bound Lab qualification` workflow runs only for an explicit ObjectShard milestone marker or dispatch on an ObjectShard branch. It uses hosted Linux and Windows runners, exact checked-out SHA, pinned engine/toolchains, selected Rapier hashes and immutable input ledgers. It neither publishes production runtimes nor cancels another campaign. Its scoped results do not replace mandatory merge gates. Linux builds and seals the exact extension before actual Godot tests and renders. Windows consumes a source-verified DLL candidate, executes the Lab, packages the exact project/runtime/dependencies, then replays that delivered package. Missing native receipts, ambiguous custody or modified delivered scripts are refusals. Partial failure logs remain artifacts. See the [owner procedure](../operations/objectshard-lab-playtest.md) for the verified launcher, scenarios, inspection and result export."
+        },
+        {
+          "rank": 5,
+          "score": 16.209519,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Scenario D — three moving owners",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Scenario D — three moving owners\nRemove supports from the three native Wood structures. Their identities, inventory, material revisions and body revisions must remain distinct. Ignite them and observe concurrent chemistry and motion. **PASS:** all three remain usable without freezing the control loop, sharing a singleton inventory, duplicating effects or accumulating an unbounded backlog."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD05",
+      "query": "Does ObjectShard M2 implement fracture, arbitrary fluid solver transfer, internal transport or durable persistence?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "These capabilities are unsupported; advanced solver sidecars remain World-owned.",
+        "Disconnected islands continue chemistry in one declared split_pending compound.",
+        "Products and cargo retain a draining owner after the last rigid cell disappears; reset disposal is explicit."
+      ],
+      "sources": [
+        "../../native/include/cybersand/object_shard.hpp",
+        "../../native/src/object_shard_coordinator.cpp"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 41.769929,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Delivery constraints",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Delivery constraints\nSee [ObjectShard Lab playtest](../operations/objectshard-lab-playtest.md). The final evaluator must bind committed source, native DLL, selected Rapier, pinned Windows Godot, scenario identities and complete file inventory. Missing or stale binaries must fail verification. Windows automation, rendered evidence and owner Windows11/NVIDIA physical acceptance are separate statuses. Unsupported scope remains explicit: arbitrary material admission, fractional quantity transfers, Wave/pressure/inertial/ballistic sidecar transfer, general internal transport, consuming Acid reactions, fracture and durable persistence."
+        },
+        {
+          "rank": 2,
+          "score": 37.655741,
+          "path": "operations/objectshard-lab-playtest.md",
+          "title": "ObjectShard Lab owner evaluation",
+          "heading": "ObjectShard Lab owner evaluation > Deliberate limits",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard Lab owner evaluation\nPath: operations/objectshard-lab-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations\ncanonical-for: [objectshard-owner-evaluation]\nlast-reviewed: 2026-11-22\nSection: ObjectShard Lab owner evaluation > Deliberate limits\nM0–M2 supports admitted structural cells, selected shared combustion/product lifecycle, real bounded output, whole-cell baseline Sand lodging and selected non-consuming Water contact. It does not provide general fracture, internal gas or liquid transport, fractional liquid ingestion, solver-sidecar transfer, durable save/restore or streaming. Wave, PressureFlow, inertial and ballistic state remain with their existing World owner. Production Water defaults are unchanged. The motion envelope retains four cells of translation and 0.20 radians of rotation per accepted physical segment. Bounded actual Rapier substeps reconcile each segment with the same native owner while chemistry advances only once per semantic tick. At most 16 segments are allowed; limits are not increased to hide unstable motion. An unsupported interval holds the Lab with exact inventory retained. Arbitrary high-speed chemical collision coverage is not claimed. The diagnostic native `transfer_budget` can be set to 0–64 during construction for resource-pressure tests; the owner launcher uses the ordinary Lab default of 64 and provides no new Workbench control."
+        },
+        {
+          "rank": 3,
+          "score": 34.58101,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Capability and lifecycle boundary",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Capability and lifecycle boundary\n| Capability | M2 declaration | | --- | --- | | Structural admission | Wood and separately admitted inert RedBrick; like-material cohesion; explicit Wall anchors | | Surface chemical contact | Selected non-consuming World Water extinction of burning shard Wood | | Selected reactions/lifecycle | Canonical pair resolver; shared Wood combustion, Fire expiry, Smoke lifetime/crowding; no arbitrary Plant admission | | Emission | Exact whole-cell Fire/Smoke; retained cargo release when draining and physically admitted | | Ingestion | Baseline whole-cell Sand through a validated bounded lodging pocket | | Momentum/state | Exact material tuple and temperature; declared carried-mass policy, not general solver momentum transfer | | Fractional quantity / solver sidecars | Unsupported; Wave, PressureFlow, Inertial Cellular and ballistic sidecars remain World-owned | | Internal transport | Unsupported; retained products have selected lifecycle, not a rotating gas or granular solver | | Persistence / fracture | Unsupported; controlled in-session reset and draining are implemented | The local lattice origin and random-coordinate anchor remain stable under motion and erosion. Disconnected structural islands set `split_pending` and continue reacting as one explicitly nonfracturing compound. Losing the last structural cell retires the body without deleting products or cargo. The draining owner retains its last validated pose as a release/inspection anchor; a retired RID is not an inventory destructor. Bounded blocked inventory remains visible. Per-material population accounting separates initial/authored creation and destruction, World tick changes, shard chemical transitions, conservative promotions/transfers and explicit whole-session reset disposal. Water quanta are reported separately. This is not universal stoichiometric mass conservation."
+        },
+        {
+          "rank": 4,
+          "score": 34.259476,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Scope and follow-on integration",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Scope and follow-on integration\nThe three active-body limit, bounded local material domains and exact geometry limits remain. Physics intervals retain the four-cell / 0.20-radian segment bounds and at most sixteen real substeps. Capacity refusal preserves material; a failed or inconsistent interval is held visibly. Larger fixtures do not imply that the finisher's narrow default-canvas memory margin scales universally. This deliverable establishes executable worker/main-thread/material/physics interfaces and a continuous play-driven development loop. It does not implement general fracture, recellularisation, arbitrary material cohesion, an internal fluid solver, durable ObjectShard save/restore or area streaming. Disconnected islands may remain one compound, labelled `split_pending`. The ordinary Workbench native coupling roster still requires a separately versioned mutable-geometry integration; PUBPRES owns its broader scheduling and renderer succession. The rehearsal's narrow coherent-publication and applied receipt contract is the integration seam. An experimental feature-launcher entry is not ordinary Workbench World adoption. Keep the complete ObjectShard stack Draft/HOLD until owner acceptance and an authorised mergedown satisfy the production provenance and repository gates."
+        },
+        {
+          "rank": 5,
+          "score": 26.843094,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Shared chemistry seam",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Shared chemistry seam\n`material_lifecycle.hpp` extracts the existing Wood, Fire and Smoke decisions; World retains rule ordering, traversal, transport, activity and accounting. Wood uses `state_b` on its two-tick lane, emits real Fire with `state_a=32`, and does not convert directly to Smoke. Fire expiry produces Smoke. Motion must not change the logical random-coordinate anchor. Internal world-up gas transport is not implied by retained product lifecycle support. The original and extracted World wrappers were compared on immutable source fixtures: **4,472 assertions, zero differences**, including serial/phased lanes, tuples, products, temperature, accounting, signed coordinates and epoch wrap. This baseline also passed in the final combined-source hosted native campaign."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD06",
+      "query": "Which final ObjectShard M2 Linux and Windows checks passed, and which performance and acceptance gaps keep it on HOLD?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "The exact 8f55a4e runtime source passed the Linux and Windows Lab campaign and delivered-package replay.",
+        "The final native matrix retains ten of 74 timing-limit failures; the bounded matched control does not replace that failed result.",
+        "Windows 11/NVIDIA physical acceptance and production runtime publication remain outstanding; all PRs remain Draft/HOLD."
+      ],
+      "sources": [
+        "../audits/2026-11-22-objectshard-final-acceptance.md",
+        "../audits/2026-11-22-objectshard-portable-math-performance-delta.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 31.865061,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Final source-bound delivery",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Final source-bound delivery\nRuntime source `8f55a4e61b7cbb34a594f5e07e7d81d49aa58945`, tree `a0e3478c293908247bc5cdaab9497fc290a374c6`, passed all three jobs in [campaign 44974395620](https://github.com/techrote/cybersand/actions/runs/44974395620). Hosted native ASan/UBSan executed **61,652 checks / 0 failures**. Actual pinned Godot 4.7 on each platform passed **379 Lab checks / 0** and **28 bridge checks / 0**, both existing Rapier/Materials Lab regression scripts, ten rendered captures and eight-workload headless/rendered profiles. The delivered Windows package replay repeated the Lab, bridge and existing regressions successfully. The [Windows owner evaluator](https://github.com/techrote/cybersand/actions/runs/44974395620/artifacts/14735176557) contains the exact source-built DLL, pinned GUI/console engines, selected Rapier, dependencies, licences, source, manifest and verified launchers. The owner can extract it and run **Open ObjectShard Lab.cmd** without rebuilding anything. Automated Windows and software-rendered evidence do not establish physical Windows 11/NVIDIA acceptance. Final Windows rendered owner-thread p95 is 2.258 ms empty and 3.552 ms for three reacting shards; the longest profile frame is 6.592 ms. Linux equivalents are 1.911/2.994 ms and 5.584 ms. Both platforms pass their registered Lab budgets. The separate final native development-host matrix nevertheless retains **10/74 failed timing limits**. Its single bounded matched control passed, but does not replace that complete failed result. The [performance delta](../audits/2026-11-22-objectshard-portable-math-performance-delta.md) and [full-tree mini-World comparison](../audits/2026-11-22-objectshard-native-performance.md) preserve exact sources, failures, allocations and the observed tradeoffs. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md) contains source/ancestry, capability boundaries, independent findings and repairs, runtime/package identities, measurements, visual review and owner actions. The ordinary repository runtime-provenance gate remains unsatisfied because production binaries were deliberately not published. The evaluator is separate from strict four-path publication. All three PRs remain Draft/HOLD; no merge, Ready promotion, auto-merge or release occurred."
+        },
+        {
+          "rank": 2,
+          "score": 29.939658,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > First hosted campaign and portability repair",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > First hosted campaign and portability repair\nCampaign [44972695658](https://github.com/techrote/cybersand/actions/runs/44972695658) executed source `1bb6185be05f5ef838543a0e13c81428b751d969`. Actual Windows Godot4.7, all ten ANGLE-rendered PNGs, the headless/rendered performance matrices and delivered-package replay passed. Those results remain attached to that source. The Linux native sanitizer tests and extension compilation passed, but the unchanged runtime-floor gate correctly rejected the new `hypot@GLIBC_2.35` dependency against the selected GLIBC2.34 floor. No Linux actual-Godot pass is inferred from compilation. The subsequent narrow repair replaces five contact magnitude calls with a finite scaled-square-root helper, following the repository's existing portable numeric pattern. It preserves bounds and meaningful tiny/subnormal components. The affected normal and ASan/UBSan suites each passed49,055 checks, including 1,220 new numerical checks; the applicable ObjectShard catalogue is61,652. An independent 100-digit reference comparison passed4,006 pairs, with at most two ULP observed error. Deliberately pathological diagonal boundary inputs can differ from `hypot` by less than9e-16; this is not bit-identical floating-point math, and it is far below the existing1e-9 contact padding. Full rebuilt ELF floor verification and fresh Linux/Windows execution passed in the final campaign recorded below. Visual review of the first Windows PNGs confirmed actual rotated shapes, burning material/products, consumed holes, carried Sand and retained draining products. It also found stale scenario-selection and inspection presentation. The repaired scene keeps the dropdown and overlay state synchronized, clears obsolete inspection on reset, and places material/owner/state/temperature before the exact JSON. The capture now inspects the extinguished Wood instead of stale Sand. Added actual-scene assertions raise the integrated inventory to379 checks; the rebuilt final runtime executed all of them on Linux and Windows."
+        },
+        {
+          "rank": 3,
+          "score": 29.223147,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains > Executable stage boundaries",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains > Executable stage boundaries\n| Stage | Behavior | Recorded qualification boundary | | --- | --- | --- | | M0 | Compact inventory, ordinary-mutation discovery, exact promotion, actual collider switch and Rapier motion | Native and actual Linux iteration executed; independent scoped review passed | | M1 | Shared combustion, material products, mutable geometry and sleeping-body chemistry | Native scheduler and actual Linux Rapier Lab executed; exact results below | | M2 | Authentic output, physical Sand lodging, historical Water exposure, Windows evaluator | Implemented in the M2 child; final source-bound Linux/Windows campaign recorded separately from local iteration |"
+        },
+        {
+          "rank": 4,
+          "score": 29.017407,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains\n**001R finisher qualified as a Draft/HOLD evaluation candidate, 22 November 2026.** The [final finisher record](../audits/2026-11-22-objectshard-001r-final-qualification.md) binds native/host source `514d76fb...`, corrected Windows package source `28be5a4a...`, actual Linux/Windows qualification, independent review and the verified delivered ZIP. It repairs component-admission starvation, late resting-body rotation, repeated-edit ownership, bounded motion progression and diagnostic/capture deficiencies. Ordinary Workbench defaults are unchanged. The [forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md) preserves the original owner exports and controlled negative results. The [implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md) explains resumable component census, size/age admission, source-owned moving cuts, native-applied Rapier segments and one-opportunity external Fire contact. The [native performance record](../audits/2026-11-22-objectshard-001r-native-performance.md) retains the original M2 10/74 timing failures and the repaired finisher's earlier 14/74 memory failures. Final same-host source passes 74/74; no general frame-rate improvement is claimed. M3 executable preparation and owner physical acceptance remain separately qualified gates. Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md) distinguishes passing platform qualification, the retained native timing failure, and outstanding owner physical acceptance. No production default changes, merge, Ready promotion or release occurred. The implemented slice is chemically active, mutable, nonfracturing rigid aggregates with bounded material exchange."
+        },
+        {
+          "rank": 5,
+          "score": 28.980758,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > ObjectShard M0–M3 research candidates — 2026-11-22",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-22\nSection: Status and foundational roadmap > ObjectShard M0–M3 research candidates — 2026-11-22\nThe [M3 continuous-play candidate](../research/objectshard-m3-preflight.md) reconstructs the recovered exclusive-worker rehearsal and retains a separate World/Rapier scene. Mutable geometry cannot enter the ordinary immutable Workbench GCR roster; the current PUBPRES successor remains a separately owned interface. Full ordinary Workbench binding, persistence and owner acceptance remain Planned. The [M3 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md) delivers Draft/HOLD #741 at qualified source `e034f229`: fresh Linux/Windows execution, an actual verified Windows ZIP, controlled navigation disposal and three independent final reviews. Continuous editing, real detachment/motion and bounded capture are executable. The slower hosted timing observations, 1.93-second burst tail and production runtime-provenance failure remain explicit. The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md) is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native, actual Rapier rest/erosion, Linux/Windows and delivered-ZIP gates passed. Its size/age admission, wake-safe geometry, bounded motion and owner capture remain isolated Lab capabilities. Original M2 timing failures are retained. M3 preflight is a separate child; it does not authorize production Workbench changes or claim owner physical acceptance. The [implementation record](../research/objectshard-001.md) and [independent Lab procedure](../operations/objectshard-lab-playtest.md) describe the staged Draft/HOLD candidate, beginning with M0 #726 and M1 #728. The M2 child adds real product output, physical Sand lodging and selected Water extinction. The M2 [final delivery record](../audits/2026-11-22-objectshard-final-acceptance.md) records the completed exact-source Linux/Windows campaign, verified owner package and unresolved native timing gate. No Ready promotion or merge occurred. Native/local-Godot iteration, exact-source hosted Windows qualification and owner Windows11/NVIDIA physical acceptance are separate claims. The ordinary World/Workbench defaults and protected concurrent branches remain unchanged. Fracture, advanced solver transfers and durable persistence remain outside M0–M2. Do not infer production readiness or merge authority from a passing Lab probe."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD07",
+      "query": "Does ObjectShard M3 attach to the ordinary Workbench World and its existing physics roster?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "The executable rehearsal owns one real native World on one exclusive worker and real Rapier on main.",
+        "The ordinary GCR roster fixes geometry and mass; no attach_world API exists.",
+        "The feature launcher opens a separate experimental scene; production Workbench adoption is not claimed."
+      ],
+      "sources": [
+        "../../godot/scripts/object_shard_native_worker.gd",
+        "../../godot/scripts/object_shard_worker_host.gd"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 32.684681,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Exact source ownership and concrete blocker",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Exact source ownership and concrete blocker\n[The source ownership ledger](objectshard-m3-source-ownership.json) records exact Git objects and SHA-256 identities. At the 2026-11-22 06:24 UTC refresh, main remained `662df51cd8409a52332fa7ef15d06d8ab8945aed`; #740 was `adedb2761bad6cce91002ffe50c50c39b5f63645`, #719 was `d316c281e0abb575eb6302afc12ec44f211460ba`, #682 was `4302ba2058c1bdac1c3fc54540c078dfc9147573`, and #734 was `34606231677d4287e3f1ae595b6e2ce93cc6fa75`. All remain Draft and unmerged. The newer #740 Wave invalidation optimization and #734 cache diagnostics leave the inspected GCR/physics bridge contract unchanged. These branches were inspected read-only, not incorporated or runtime-qualified by this mission. Recovered staging identities remain in the dated evidence. | Existing boundary | Source finding | Integration consequence | |---|---|---| | Native Workbench GCR | `workbench_granular_coupling.inc` is the identical blob `c0c8a8f2f927471cc57bd238ba37f7d9137cda9f` in accepted main and all four inspected concurrent heads. It fixes owner roster, proxy count, shape geometry, mass and inertia for a prepared World; 8 shapes/owner and 64 proxies remain enforced. | Mutable ObjectShard geometry cannot enter by resubmitting a changed ordinary GCR roster. A separately versioned mutable adapter is required. | | ObjectShard native facade | `CyberObjectShardLab.configure` privately constructs its coordinator/World. Its bound methods expose no `attach_world` or `set_world`. | Creating the facade beside Workbench would create a second authoritative World. This rehearsal explicitly avoids claiming such an attachment. | | SimulationWorker | Copied samples carry session/epoch and the result captures the sample actually consumed, World generation, render and terrain revisions. | A future ObjectShard command must run under that existing native owner; an enqueue acknowledgement cannot authorize physics. | | PUBPRES719/682 | Their rendezvous and presentation repairs preserve GCR admission. The same-frame continuation spends one genuinely scheduled callback, checks owner/worker/bridge/session/sample/terrain and is single-use; it creates no extra physical time. | Integrate the accepted successor's callback policy, retaining its temporal identity. Do not call the synchronous ObjectShard `step_motion` with an asynchronous queue callback. | | GPU presentation programme | Coherence helpers assess presentation under bounded swept-mask scans; they do not mutate World or grant physics authority. | Publish one accepted material/pose revision pair through the accepted renderer; no independent newer RID transform override. | | GEN-006 worker protocol | Bounded pure-value messages bind session/area/incarnation/source/runtime and operation identity. Background work uses explicit time/memory reservations; recovery retains a failed owner. The latest controller retains unresolved advancement and admits its exact completed interval against the original game-time plan before release. | An active shard needs an explicit residency/custody policy before area eviction or save. Current shard persistence is unsupported; silently resetting or detaching ownership is forbidden. | The executable `test_object_shard_workbench_contract.gd` calls actual current native Workbench interfaces. It admits a legitimate initial roster and refuses changed geometry, mass, inertia, body identity, session, epoch and omissions without"
+        },
+        {
+          "rank": 2,
+          "score": 29.190277,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation\nThis opt-in evaluator runs **one real native World on an exclusive worker and real Rapier physics on the main thread**. It provides continuous painting, cutting, detachment, collision, settling and further editing. It remains a separate-World integration rehearsal. Selecting its experimental launcher entry does not attach ObjectShards to an already-running ordinary Workbench World. Production defaults are unchanged and the PR stack remains **Draft / HOLD**."
+        },
+        {
+          "rank": 3,
+          "score": 27.823532,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Exact source ownership and concrete blocker",
+          "part": 2,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Exact source ownership and concrete blocker\nmaterial mutation, then accepts the valid original roster. It also verifies the facade has no World-attachment API. This qualifies the inspected accepted native contract, **not execution of the competing PUBPRES/GEN branches**. The later 07:51 UTC delivery refresh is retained in the source ledger and [exact dependency receipt](../audits/objectshard-m3-20261122/final-qualification/delivery-interface-refresh.json). Main and all inspected PUBPRES/ObjectShard heads remain unchanged. GEN #734 has advanced to `a3b9ea9606900e3faed989ab0f1c33400cad3b95`; its delta changes CI and evidence handling only. The complete native/Godot delta is empty, and the five inspected Workbench/persistent-worker interfaces still match their prior blobs. This refresh does not incorporate or qualify the concurrent programme's runtime."
+        },
+        {
+          "rank": 4,
+          "score": 26.932463,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Scope and follow-on integration",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Scope and follow-on integration\nThe three active-body limit, bounded local material domains and exact geometry limits remain. Physics intervals retain the four-cell / 0.20-radian segment bounds and at most sixteen real substeps. Capacity refusal preserves material; a failed or inconsistent interval is held visibly. Larger fixtures do not imply that the finisher's narrow default-canvas memory margin scales universally. This deliverable establishes executable worker/main-thread/material/physics interfaces and a continuous play-driven development loop. It does not implement general fracture, recellularisation, arbitrary material cohesion, an internal fluid solver, durable ObjectShard save/restore or area streaming. Disconnected islands may remain one compound, labelled `split_pending`. The ordinary Workbench native coupling roster still requires a separately versioned mutable-geometry integration; PUBPRES owns its broader scheduling and renderer succession. The rehearsal's narrow coherent-publication and applied receipt contract is the integration seam. An experimental feature-launcher entry is not ordinary Workbench World adoption. Keep the complete ObjectShard stack Draft/HOLD until owner acceptance and an authorised mergedown satisfy the production provenance and repository gates."
+        },
+        {
+          "rank": 5,
+          "score": 26.047284,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Continuous input and exact target identity",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Continuous input and exact target identity\nThe current candidate preserves input-time session, transport generation, owner, local cell, cell incarnation, material tuple and geometry/material/pose revisions. A moving cut is refused as TargetChanged when any authoritative identity differs at dispatch. A new hit-test cannot retarget the old command. World-location edits retain their session and must still address World-owned material. Native owns the final debit and exact geometry preflight. The UI retains bounded pending input; capacity pressure and stale targets have explicit outcomes. The host services at most four queued actions before a requested semantic tick. Each admitted action receives a result or explicit retirement record. Queued actions retired by reset/stop never execute; a dispatched action with a lost receipt is marked outcome unknown and its old trace loses complete-replay status. Fixture preparation can apply up to 32 ordered ordinary World edits per worker call with one copied snapshot and per-edit results, only while paused with no shard owners. The eleven qualified presets retain their definitions; 256x160 and 320x192 scenes report separate memory costs. The default six-MiB native bound does not cover larger scenes. Optional deferred worker notifications contain no payload or physics authority. Main consumes copied receipts with a budget of sixteen callbacks and two milliseconds of accumulated callback work per ordinary poll. The budget stops before another callback; an individual native-receipt handler is not preempted. Explicit receipt holds apply immediately. All scene and RID operations remain on main, and notification arrival cannot mint a native tick or Rapier interval. Source: [worker](../../godot/scripts/object_shard_native_worker.gd), [host](../../godot/scripts/object_shard_worker_host.gd), [bridge](../../godot/scripts/object_shard_physics_bridge.gd), [interactive scene](../../godot/scripts/object_shard_worker_rehearsal.gd). The [feature launcher](../../godot/scripts/feature_launcher.gd) provides one explicit experimental entry and the --objectshard-m3 argument. It opens a separate scene with one real World; it does not attach another World to Workbench."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD08",
+      "query": "How does continuous ObjectShard editing prevent stale moving cuts and simulation starvation?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "Input retains session, body generation, local cell, incarnation, pose and material revisions.",
+        "Changed targets receive an explicit TargetChanged refusal; an old input is never re-hit on another cell.",
+        "At most four queued actions precede a requested semantic tick; bounded queues expose backpressure."
+      ],
+      "sources": [
+        "../../godot/scripts/object_shard_worker_host.gd",
+        "../../godot/tests/test_object_shard_worker_input_fences.gd"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.517337,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Recovery barriers and input admission",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Recovery barriers and input admission\nA failed host stays Held until explicit native whole-session reset or stop. Cancellation, promotion resume, idle scheduling and transport continuations cannot resume chemistry, Rapier or queued edits while failed. A 15-second missing-receipt deadline retains actual owners and exposes the pending operation. Expiry does not authorize replay of an uncertain mutation. A reset whose successful receipt was lost can leave worker and host sessions different. Recovery reads the worker session solely to request another explicit disposal. It cannot authorize edits, adopt an unseen snapshot or activate old RIDs. The worker atomically refuses a second reset while one is queued or executing, including when full control replies prevent its start. Only a fresh successful reset receipt with a strictly newer native session reinitializes main physics. Bounded terminal input records survive reset in `retired_action_results` and incident exports. They distinguish exact queued cancellation from an in-flight outcome that cannot be reconstructed. The old trace retains retirement events before the next session starts its own trace; uncertain mutation traces cannot claim a successful complete replay. An in-place `Host.reset` intentionally retains native allocation generations and the bridge pose serial. Its new trace declares `standalone_replay: false` and `inherited-native-registry`; the standalone replayer refuses it before constructing a new owner. Reproducing that history needs the preceding sessions, which this driver does not reconstruct. The interactive scene's Reset/scenario path instead disposes and recreates the worker/host. Those fresh-registry traces can replay even when their process-global native session number is not one: only the header's current session is mapped to the new session, preserving every body, generation, pose, cell and material witness. Stale targets must still be refused. Continuous pointer admission uses the publication actually presented to the view. The scene offers input an admission opportunity before scheduling the next interval from that displayed tick. This makes fresh moving cuts usable while preserving exact pose/material/geometry refusal for stale commands and the native debit fence."
+        },
+        {
+          "rank": 2,
+          "score": 22.151491,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains\n**001R finisher qualified as a Draft/HOLD evaluation candidate, 22 November 2026.** The [final finisher record](../audits/2026-11-22-objectshard-001r-final-qualification.md) binds native/host source `514d76fb...`, corrected Windows package source `28be5a4a...`, actual Linux/Windows qualification, independent review and the verified delivered ZIP. It repairs component-admission starvation, late resting-body rotation, repeated-edit ownership, bounded motion progression and diagnostic/capture deficiencies. Ordinary Workbench defaults are unchanged. The [forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md) preserves the original owner exports and controlled negative results. The [implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md) explains resumable component census, size/age admission, source-owned moving cuts, native-applied Rapier segments and one-opportunity external Fire contact. The [native performance record](../audits/2026-11-22-objectshard-001r-native-performance.md) retains the original M2 10/74 timing failures and the repaired finisher's earlier 14/74 memory failures. Final same-host source passes 74/74; no general frame-rate improvement is claimed. M3 executable preparation and owner physical acceptance remain separately qualified gates. Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md) distinguishes passing platform qualification, the retained native timing failure, and outstanding owner physical acceptance. No production default changes, merge, Ready promotion or release occurred. The implemented slice is chemically active, mutable, nonfracturing rigid aggregates with bounded material exchange."
+        },
+        {
+          "rank": 3,
+          "score": 18.515791,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Preserved scenes",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Preserved scenes\nAll eleven 001R scenes are available in the worker screen and remain available in the synchronous Lab. Additional fixtures are authored using bounded ordered native edits before continuous progression begins. | Scene | Native canvas | Main observation | | --- | --- | --- | | A — Ordinary detachment | 192 × 128 | Live support cut, transfer, fall and continued edits. | | B — Burning Wood tree | 192 × 128 | Existing burn state survives transfer and continuing chemistry. | | C — Water and Sand exchange | 192 × 128 | Real pocket capture, legitimate Sand bypass and Water exposure. | | D — Three reacting structures | 192 × 128 | Separate owners, material changes and physical contacts. | | E — Perforated crown | 192 × 128 | Holes and exact geometry survive detachment. | | F — Long settling control | 192 × 128 | Natural rest, then one-cell erosion and continued play. | | G — Main structure and offcuts | 192 × 128 | Large-component admission ahead of competing tiny fragments. | | H — Irregular branching | 256 × 160 | Diagonal cuts and deliberate negative space. | | I — Diagonal / multi-support cuts | 256 × 160 | One surviving genuine support preserves anchoring. | | J — Sustained external flame | 256 × 160 | Genuine external Fire, Smoke and selected native ignition. | | K — Extended play canvas | 320 × 192 | Repeated edits, three structures and asymmetric ledges. | For the priority experiment, pause before cutting several supports, let pending input drain, then Resume. This makes simultaneous eligibility explicit. A tiny body already admitted before the main cut remains an actual material owner; it is not silently deleted to create a slot. In the Sand pocket experiment, most Sand may bypass the narrow accepted aperture and reach the floor. Inspect the carried cell and cargo accounting to identify real capture. Water remains World-owned when accepted exposure extinguishes Wood. Internal fluid transport and unlimited cargo are not advertised."
+        },
+        {
+          "rank": 4,
+          "score": 18.272196,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > First continuous loop",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > First continuous loop\n1. Leave **A · Ordinary detachment** selected and click **Resume**. 2. Left-drag **Erase** through the Wood support, or click **Cut lower support**. These are ordinary native material edits. There is no scripted rigid-body motion or special cut-to-physics operation. 3. Observe the structure detach and become a real Rapier body. It must disappear from ordinary World ownership exactly once, then fall, collide and settle. 4. Keep painting Wood, Sand or Water in the World while it moves. The semantic clock must continue while input is queued. Capacity and stale-target refusals appear explicitly; retained commands wait instead of silently vanishing. 5. Erase or inspect a moving structural cell. A cut retains the exact observed owner, cell, incarnation, geometry and pose identity. If that target changes before dispatch, the edit is refused with `TargetChanged`; make a fresh stroke. Painting replacement material into moving inventory is not admitted. 6. After natural sleep, click **Erode resting cell**. This removes one real structural cell through the same owner-aware route. It neither applies an impulse nor freezes the body. Continue watching for a violent late twitch. 7. Use **Pause**, **Single step**, **Resume**, **Reset** and another scenario. A previously admitted interval finishes coherently. Reset explicitly disposes the old owner before constructing another World, including when the canvas dimensions change. **F2** returns to the feature launcher only after the worker disposes its native session and main releases the physics bodies. The screen stays present during that handoff. Repeated F2 is harmless; closing the window during the handoff requests process exit instead. A pending Reset does not open another World after navigation begins. If shutdown enters an explicit Held state, export evidence and retry F2 or window close; the owner remains retained until disposal succeeds. The launcher regains its previous window-close policy after the handoff. **PASS:** the loop continues without duplicate material, stale colliders, unexplained inventory loss, unintended motion bursts or a stopped advertised clock. Legitimate component/body/geometry capacity refusal is distinct from a fault. Ordinary small settling drift is distinct from the original violent late rotation. Export the evidence when the distinction is unclear."
+        },
+        {
+          "rank": 5,
+          "score": 18.127947,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation\nThis opt-in evaluator runs **one real native World on an exclusive worker and real Rapier physics on the main thread**. It provides continuous painting, cutting, detachment, collision, settling and further editing. It remains a separate-World integration rehearsal. Selecting its experimental launcher entry does not attach ObjectShards to an already-running ordinary Workbench World. Production defaults are unchanged and the PR stack remains **Draft / HOLD**."
+        }
+      ]
+    },
+    {
+      "id": "OBJECTSHARD09",
+      "query": "Which repaired ObjectShard M3 Windows evaluator is qualified after the F2 shutdown fix, and what remains outside acceptance?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "Qualified source e034f229 and campaign 44999117090 pass 41 Linux, 41 Windows and 32 extracted-package cases; the 68235b12 package is superseded.",
+        "The repaired owner ZIP is 93168827 bytes, SHA-256 61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b.",
+        "F2 retains the owner until disposal and join; repeated navigation, close priority and stale completion are tested.",
+        "The separate-World rehearsal does not establish ordinary Workbench attachment, production provenance, physical Windows11/NVIDIA acceptance or uniform low-latency play; final rendered burst maximum is 1.929452 seconds."
+      ],
+      "sources": [
+        "../audits/2026-11-22-objectshard-m3-final-qualification.md",
+        "../../godot/tests/test_object_shard_worker_navigation.gd"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 35.144804,
+          "path": "research/objectshard-m3-preflight.md",
+          "title": "ObjectShard continuous-play worker and Rapier preflight",
+          "heading": "M3-PREFLIGHT-001 — executable Workbench preparation > Controlled navigation and final delivery",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard continuous-play worker and Rapier preflight\nPath: research/objectshard-m3-preflight.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental M3 real-worker rehearsal and explicit ordinary Workbench integration boundary; Draft/HOLD\ncanonical-for: [objectshard-m3-worker-and-physics-contract]\nlast-reviewed: 2026-11-22\nSection: M3-PREFLIGHT-001 — executable Workbench preparation > Controlled navigation and final delivery\nThe global feature-navigation dispatcher recognizes the optional `request_feature_launcher_navigation()` hook. The M3 scene retains its live owner while main polls shutdown; `feature_launcher_navigation_ready()` becomes true only after native disposal, stopped-thread join and main-thread RID release reach `Closed`. `complete_feature_launcher_navigation(expected_scene)` rejects early or obsolete callers, and its deferred completion rechecks current scene identity. Existing ordinary Workbench navigation keeps its previous ordering. This does not provide universal cleanup for arbitrary external forced scene replacement or freeing of a live owner. F2 supersedes pending reset/scenario replacement. Repeated F2 is idempotent; window close upgrades the destination to process exit. Quit priority survives retry from ShutdownHeld, while an explicit Reset starts a new owner decision. Input admission and both support/erosion shortcut controls refuse visibly while closing, replacing or held. The prior `auto_accept_quit` policy is restored only after disposal. The maintained regression executes eight real navigation cases, 135 parent assertions and an 18-assertion child that actually closes the process. The [final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md) binds Draft/HOLD #741 to runtime source `e034f2294663e0485cfb9adcc8ada46a6e977cee`, tree `246e7324ca618d98c43a0ed54fe19bc86a155877`. Fresh campaign 44999117090 passes 41 Linux source, 41 Windows source and 32 extracted-package cases, including the navigation regression on each surface, plus complete native sanitizer/World qualification. The repaired Windows ZIP is 93,168,827 bytes, SHA-256 `61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b`. The old `68235b12` evaluator is a retained superseded candidate, not the delivery. Final paired scheduling observations reach 17.1382 semantic ticks/s on hosted Windows and 16.6068 on Linux with the 4 ms soft pump; these are slower than the earlier candidate observations and do not establish a product-change cause. The deliberate rendered input-burst maximum is 1.929452 seconds on Windows. The final audit preserves the stage distributions, byte-identical core code, baseline comparisons and measurement limits. Ordinary Workbench attachment, production provenance and physical Windows 11/NVIDIA owner acceptance remain unimplemented, unpassed and unrecorded respectively."
+        },
+        {
+          "rank": 2,
+          "score": 31.286259,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > First continuous loop",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > First continuous loop\n1. Leave **A · Ordinary detachment** selected and click **Resume**. 2. Left-drag **Erase** through the Wood support, or click **Cut lower support**. These are ordinary native material edits. There is no scripted rigid-body motion or special cut-to-physics operation. 3. Observe the structure detach and become a real Rapier body. It must disappear from ordinary World ownership exactly once, then fall, collide and settle. 4. Keep painting Wood, Sand or Water in the World while it moves. The semantic clock must continue while input is queued. Capacity and stale-target refusals appear explicitly; retained commands wait instead of silently vanishing. 5. Erase or inspect a moving structural cell. A cut retains the exact observed owner, cell, incarnation, geometry and pose identity. If that target changes before dispatch, the edit is refused with `TargetChanged`; make a fresh stroke. Painting replacement material into moving inventory is not admitted. 6. After natural sleep, click **Erode resting cell**. This removes one real structural cell through the same owner-aware route. It neither applies an impulse nor freezes the body. Continue watching for a violent late twitch. 7. Use **Pause**, **Single step**, **Resume**, **Reset** and another scenario. A previously admitted interval finishes coherently. Reset explicitly disposes the old owner before constructing another World, including when the canvas dimensions change. **F2** returns to the feature launcher only after the worker disposes its native session and main releases the physics bodies. The screen stays present during that handoff. Repeated F2 is harmless; closing the window during the handoff requests process exit instead. A pending Reset does not open another World after navigation begins. If shutdown enters an explicit Held state, export evidence and retry F2 or window close; the owner remains retained until disposal succeeds. The launcher regains its previous window-close policy after the handoff. **PASS:** the loop continues without duplicate material, stale colliders, unexplained inventory loss, unintended motion bursts or a stopped advertised clock. Legitimate component/body/geometry capacity refusal is distinct from a fault. Ordinary small settling drift is distinct from the original violent late rotation. Export the evidence when the distinction is unclear."
+        },
+        {
+          "rank": 3,
+          "score": 31.054773,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > ObjectShard M0–M3 — 2026-11-22",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-22\nSection: Development handover > ObjectShard M0–M3 — 2026-11-22\nThe [M3 recovery ledger](../audits/2026-11-22-objectshard-m3-recovery.md) identifies the recovered 26-file staging handoff and fresh implementation. Use the [continuous-play guide](objectshard-m3-preflight-playtest.md) for the opt-in worker scene, and the [contract](../research/objectshard-m3-preflight.md) for exact target fences, copied receipts and the ordinary Workbench seam. [Draft/HOLD #741 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md) binds runtime source `e034f2294663e0485cfb9adcc8ada46a6e977cee` to 41 Linux, 41 Windows and 32 extracted-package cases, complete native/sanitizer World regressions and the repaired F2 lifecycle. Use its final owner ZIP, not the superseded `68235b12` M3 candidate. The unchanged 001R native matrix passes 74/74 limits with only 14,176 bytes of margin. Rendered burst latency reaches 1.93 seconds; the separate-World rehearsal is not ordinary Workbench attachment. Production provenance and physical Windows 11/NVIDIA owner acceptance remain unpassed/unrecorded respectively. The separate OBJECTSHARD-001R finisher #738 has a [source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md) and a verified corrected Windows ZIP. Follow its exact native/platform/package identities rather than substituting the historical M2 evaluator. M3 Workbench preflight follows as a separate executable preparation child. Historical M0/M1/M2 heads and failures are preserved; all successor work remains Draft/HOLD with no merge authority. Evaluate the dedicated staged Draft/HOLD ObjectShard stack M0 #726 → M1 #728 → M2 #730; use the [implementation and evidence record](../research/objectshard-001.md) and [Windows Lab procedure](objectshard-lab-playtest.md). Shared World changes are limited to the opt-in mutation journal and behavior-preserving lifecycle seam; the Lab has a separate native facade and revisioned Rapier adapter. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md) binds runtime source `8f55a4e...` to successful Linux/Windows execution and the verified Windows package. The separate native performance matrix retains ten failed timing limits. Owner physical acceptance and strict production runtime publication remain outstanding; do not infer merge readiness from the Lab pass. Preserve PUBPRES, GEN-006, SWARM and CI mission ownership. The owner authorized M0–M2 implementation and qualification, not Ready, merge, production defaults or release. Source-bound Windows automation does not establish physical acceptance."
+        },
+        {
+          "rank": 4,
+          "score": 26.006899,
+          "path": "research/objectshard-001.md",
+          "title": "ObjectShard M0–M2 implementation and qualification",
+          "heading": "OBJECTSHARD-001 — compact moving material domains",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M0–M2 implementation and qualification\nPath: research/objectshard-001.md\nauthority: current-documentation\ndocument-kind: research\nstatus: Planned\nscope: Implemented Draft/HOLD branch candidate with separately identified source and runtime evidence; not accepted main, fracture, persistence or owner physical acceptance\ncanonical-for: [objectshard-runtime, objectshard-ownership, objectshard-qualification]\nlast-reviewed: 2026-11-22\nSection: OBJECTSHARD-001 — compact moving material domains\n**001R finisher qualified as a Draft/HOLD evaluation candidate, 22 November 2026.** The [final finisher record](../audits/2026-11-22-objectshard-001r-final-qualification.md) binds native/host source `514d76fb...`, corrected Windows package source `28be5a4a...`, actual Linux/Windows qualification, independent review and the verified delivered ZIP. It repairs component-admission starvation, late resting-body rotation, repeated-edit ownership, bounded motion progression and diagnostic/capture deficiencies. Ordinary Workbench defaults are unchanged. The [forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md) preserves the original owner exports and controlled negative results. The [implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md) explains resumable component census, size/age admission, source-owned moving cuts, native-applied Rapier segments and one-opportunity external Fire contact. The [native performance record](../audits/2026-11-22-objectshard-001r-native-performance.md) retains the original M2 10/74 timing failures and the repaired finisher's earlier 14/74 memory failures. Final same-host source passes 74/74; no general frame-rate improvement is claimed. M3 executable preparation and owner physical acceptance remain separately qualified gates. Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md) distinguishes passing platform qualification, the retained native timing failure, and outstanding owner physical acceptance. No production default changes, merge, Ready promotion or release occurred. The implemented slice is chemically active, mutable, nonfracturing rigid aggregates with bounded material exchange."
+        },
+        {
+          "rank": 5,
+          "score": 25.621332,
+          "path": "operations/objectshard-m3-preflight-playtest.md",
+          "title": "ObjectShard M3 continuous-play owner evaluation",
+          "heading": "ObjectShard M3 continuous-play evaluation > Start the delivered Windows evaluator",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ObjectShard M3 continuous-play owner evaluation\nPath: operations/objectshard-m3-preflight-playtest.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Planned\nscope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure\ncanonical-for: [objectshard-m3-owner-playtest]\nlast-reviewed: 2026-11-22\nSection: ObjectShard M3 continuous-play evaluation > Start the delivered Windows evaluator\nExtract the entire ZIP into a new writable directory. Run **Verify ObjectShard Lab.cmd**, then **Open ObjectShard M3 Preflight.cmd**. The launchers verify the sealed manifest, import the included source project and start the bundled Godot 4.7 runtime. No compiler or external DLL replacement is needed. Keep **Open ObjectShard Lab.cmd** available for the preserved synchronous 001R control. The full project's feature launcher also offers the experimental ObjectShard entry; `--objectshard-m3` selects the same rehearsal. The package manifest binds the source commit/tree, exact native candidate, Godot, selected Rapier, launcher, scripts and guide. Do not modify verified files or overlay an older evaluator. A launcher failure is evidence: retain its console message and package identity. A successful verifier checks custody, not physical gameplay acceptance."
+        }
+      ]
+    }
+  ]
+}

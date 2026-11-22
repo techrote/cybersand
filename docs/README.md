@@ -664,7 +664,7 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 ## ObjectShard M0–M2 candidate
 
-The [M3 worker/physics contract](research/objectshard-m3-preflight.md), [continuous-play guide](operations/objectshard-m3-preflight-playtest.md) and [recovery ledger](audits/2026-11-22-objectshard-m3-recovery.md) cover the executable successor. Actual platform acceptance is recorded separately; no ordinary Workbench adoption is implied.
+The [M3 worker/physics contract](research/objectshard-m3-preflight.md), [continuous-play guide](operations/objectshard-m3-preflight-playtest.md) and [recovery ledger](audits/2026-11-22-objectshard-m3-recovery.md) cover the executable successor. The [final M3 qualification](audits/2026-11-22-objectshard-m3-final-qualification.md) records fresh Linux/Windows execution, the repaired delivered ZIP, independent reviews, timing tails and outstanding gates. No ordinary Workbench adoption or physical owner acceptance is implied.
 
 The [001R final qualification](audits/2026-11-22-objectshard-001r-final-qualification.md)
 binds repaired component admission and Rapier rest stability to source-matched

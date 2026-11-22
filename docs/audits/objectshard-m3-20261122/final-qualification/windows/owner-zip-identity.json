@@ -1,0 +1,14 @@
+{
+  "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+  "bytes": 93168827,
+  "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "run_id": 44999117090,
+  "owner_artifact_id": 14745303779,
+  "evidence_artifact_id": 14745662483,
+  "evidence_directory": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745662483",
+  "owner_archive_sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d",
+  "evidence_archive_sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb",
+  "scope": "Downloaded immutable archive custody; report and independent reviews pending"
+}

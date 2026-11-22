@@ -115,6 +115,7 @@ This integration remains Draft/HOLD pending explicit owner acceptance.
 ## ObjectShard Lab — Draft/HOLD research
 
 The separate [M3 continuous-play preflight](docs/operations/objectshard-m3-preflight-playtest.md) adds an opt-in exclusive-worker/Rapier rehearsal with live edits, eleven fixtures and bounded bug capture. It is a separate experimental World; ordinary Workbench attachment remains a documented seam.
+Its [final qualification and Windows delivery](docs/audits/2026-11-22-objectshard-m3-final-qualification.md) bind repaired source `e034f229` to fresh Linux/Windows execution, the verified owner ZIP and independent reviews. PR #741 and the complete ObjectShard stack remain Draft/HOLD.
 
 The independent [ObjectShard Lab](docs/operations/objectshard-lab-playtest.md)
 evaluates genuine native Wood structures that detach into moving Rapier bodies,

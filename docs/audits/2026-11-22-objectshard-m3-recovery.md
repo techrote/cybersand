@@ -138,3 +138,25 @@ source and extracted-package qualification, and the global navigation script is
 now explicitly included in the executed-source ledger. A fresh committed-source
 campaign and final-source reviews are required for the successor; the original
 40-case campaign is not relabelled as that qualification.
+
+## Final repaired-source disposition
+
+The [final qualification and handover](2026-11-22-objectshard-m3-final-qualification.md)
+records the completed successor at `e034f2294663e0485cfb9adcc8ada46a6e977cee`,
+tree `246e7324ca618d98c43a0ed54fe19bc86a155877`, in Draft/HOLD PR #741.
+Fresh campaign 44999117090 passed all three jobs: 93,529 ASan/UBSan checks,
+192 complete World cases, 41 Linux and 41 Windows source cases, and 32 cases
+from the extracted owner ZIP. The new 135-parent/18-child navigation case passes
+on all three execution surfaces. The exact final source has independent
+ownership, physics/presentation and performance/custody reviews.
+
+The repaired owner ZIP is 93,168,827 bytes with SHA-256
+`61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b`.
+The superseded Windows ZIP and all original operator findings remain historical
+evidence. Final performance retains the slower Windows observations and a
+1.93-second deliberate burst tail. The 74/74 native matrix is a separate
+source-identical receipt with the original 14,176-byte margin, not a matrix newly
+run in this hosted campaign. Ordinary Workbench attachment, production runtime
+publication/provenance and physical owner acceptance remain explicit successor
+conditions. The completed mission delivers the executable real-worker fallback;
+it does not relabel that boundary as ordinary Workbench adoption.

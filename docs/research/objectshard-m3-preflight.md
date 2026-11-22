@@ -31,6 +31,14 @@ The separate developer launcher, source-bound report/capture and host-specific r
 
 The executable `test_object_shard_workbench_contract.gd` calls actual current native Workbench interfaces. It admits a legitimate initial roster and refuses changed geometry, mass, inertia, body identity, session, epoch and omissions without material mutation, then accepts the valid original roster. It also verifies the facade has no World-attachment API. This qualifies the inspected accepted native contract, **not execution of the competing PUBPRES/GEN branches**.
 
+The later 07:51 UTC delivery refresh is retained in the source ledger and
+[exact dependency receipt](../audits/objectshard-m3-20261122/final-qualification/delivery-interface-refresh.json).
+Main and all inspected PUBPRES/ObjectShard heads remain unchanged. GEN #734 has
+advanced to `a3b9ea9606900e3faed989ab0f1c33400cad3b95`; its delta changes CI and
+evidence handling only. The complete native/Godot delta is empty, and the five
+inspected Workbench/persistent-worker interfaces still match their prior blobs.
+This refresh does not incorporate or qualify the concurrent programme's runtime.
+
 ## Thread and interface map
 
 | Module | Authoritative owner | Public role |
@@ -182,3 +190,42 @@ digest, final accounting, 954 real physics segments and 60 in-flight inputs. The
 notification-only pair showed no benefit and is retained. These local results
 are not a 60 FPS or target NVIDIA claim. Final platform profiles and rendered
 input timings remain separate evidence.
+
+## Controlled navigation and final delivery
+
+The global feature-navigation dispatcher recognizes the optional
+`request_feature_launcher_navigation()` hook. The M3 scene retains its live
+owner while main polls shutdown; `feature_launcher_navigation_ready()` becomes
+true only after native disposal, stopped-thread join and main-thread RID release
+reach `Closed`. `complete_feature_launcher_navigation(expected_scene)` rejects
+early or obsolete callers, and its deferred completion rechecks current scene
+identity. Existing ordinary Workbench navigation keeps its previous ordering.
+This does not provide universal cleanup for arbitrary external forced scene
+replacement or freeing of a live owner.
+
+F2 supersedes pending reset/scenario replacement. Repeated F2 is idempotent;
+window close upgrades the destination to process exit. Quit priority survives
+retry from ShutdownHeld, while an explicit Reset starts a new owner decision.
+Input admission and both support/erosion shortcut controls refuse visibly while
+closing, replacing or held. The prior `auto_accept_quit` policy is restored only
+after disposal. The maintained regression executes eight real navigation cases,
+135 parent assertions and an 18-assertion child that actually closes the process.
+
+The [final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
+binds Draft/HOLD #741 to runtime source
+`e034f2294663e0485cfb9adcc8ada46a6e977cee`, tree
+`246e7324ca618d98c43a0ed54fe19bc86a155877`. Fresh campaign 44999117090 passes
+41 Linux source, 41 Windows source and 32 extracted-package cases, including the
+navigation regression on each surface, plus complete native sanitizer/World
+qualification. The repaired Windows ZIP is 93,168,827 bytes, SHA-256
+`61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b`.
+The old `68235b12` evaluator is a retained superseded candidate, not the delivery.
+
+Final paired scheduling observations reach 17.1382 semantic ticks/s on hosted
+Windows and 16.6068 on Linux with the 4 ms soft pump; these are slower than the
+earlier candidate observations and do not establish a product-change cause.
+The deliberate rendered input-burst maximum is 1.929452 seconds on Windows.
+The final audit preserves the stage distributions, byte-identical core code,
+baseline comparisons and measurement limits. Ordinary Workbench attachment,
+production provenance and physical Windows 11/NVIDIA owner acceptance remain
+unimplemented, unpassed and unrecorded respectively.

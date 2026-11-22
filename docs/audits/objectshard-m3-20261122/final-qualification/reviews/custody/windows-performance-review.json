@@ -1,0 +1,700 @@
+{
+  "schema": "objectshard-independent-final-performance-custody-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "utc": "2026-11-22T07:58:35.006483+00:00",
+  "failures": [],
+  "source_bound_evidence_sha256": {
+    "qualification.json": "64331b1a300151c783a79b96a982dab41eabd277c579ec3cb45d45ebb6370e76",
+    "objectshard_profile_headless.json": "8c73a941c410f6a00a05f1a96ee6a884923d22851e09afb0d969fef58d54948d",
+    "objectshard_profile_rendered.json": "2dea0262bf7a82fd7030f45aceded1fcc15ccf8a98935a1b4b6a33bfe3856490",
+    "objectshard_worker_profile_0.json": "543ffd2fc19668755e47b0b1b94906c15cd915136661efffb376253746b9af9c",
+    "objectshard_worker_profile_4000.json": "5f561eea0ebba655d038ac08202c08530e7fd7ef49ad9f46163043840f64087c",
+    "continuous-play-rendered.json": "5270c51d40ab86ed852fb55c8b056047819504a89d7f425c868e97ebadf9b52b",
+    "continuous-physics.json": "79a272c3ecb946e1e1724405bbdb8342d2db6daf11bfc2518b761212bf12d8a6"
+  },
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "lab_budget_sha256": "317ef316b7550dec04c794af209958c063ef0016aa2bd7f435aaca60f0be117a",
+  "lab_profiles": {
+    "objectshard_profile_headless": {
+      "budget_checks": 56,
+      "rendered": false,
+      "workloads": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 1613,
+            "p95": 1674,
+            "p99": 1751,
+            "maximum": 2700
+          },
+          "promotion_pause_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2715,
+            "p95": 2816,
+            "p99": 2886,
+            "maximum": 3378
+          },
+          "promotion_pause_max_usec": 2127,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2718,
+            "p95": 2802,
+            "p99": 2943,
+            "maximum": 4538
+          },
+          "promotion_pause_max_usec": 2070,
+          "geometry_install_max_usec": 121,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1018.6
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4023,
+            "p95": 4143,
+            "p99": 4305,
+            "maximum": 5817
+          },
+          "promotion_pause_max_usec": 2476,
+          "geometry_install_max_usec": 111,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1880.9
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2727,
+            "p95": 2888,
+            "p99": 2967,
+            "maximum": 3685
+          },
+          "promotion_pause_max_usec": 2365,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2754,
+            "p95": 2846,
+            "p99": 2963,
+            "maximum": 5146
+          },
+          "promotion_pause_max_usec": 2066,
+          "geometry_install_max_usec": 107,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1038.4
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3983,
+            "p95": 4124,
+            "p99": 5031,
+            "maximum": 6597
+          },
+          "promotion_pause_max_usec": 2432,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4075,
+            "p95": 4240,
+            "p99": 4365,
+            "maximum": 5930
+          },
+          "promotion_pause_max_usec": 2483,
+          "geometry_install_max_usec": 95,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1619.0
+        }
+      ]
+    },
+    "objectshard_profile_rendered": {
+      "budget_checks": 80,
+      "rendered": true,
+      "workloads": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3039,
+            "p95": 3550,
+            "p99": 3699,
+            "maximum": 57983
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 16000,
+            "p95": 16145,
+            "p99": 31769,
+            "maximum": 61909
+          },
+          "promotion_pause_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5646,
+            "p95": 6198,
+            "p99": 6321,
+            "maximum": 8195
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 16000,
+            "p95": 16120,
+            "p99": 31816,
+            "maximum": 32029
+          },
+          "promotion_pause_max_usec": 2274,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5670,
+            "p95": 6197,
+            "p99": 6414,
+            "maximum": 14411
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15999,
+            "p95": 16124,
+            "p99": 29492,
+            "maximum": 31955
+          },
+          "promotion_pause_max_usec": 2124,
+          "geometry_install_max_usec": 135,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1727.6
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 6968,
+            "p95": 7593,
+            "p99": 8523,
+            "maximum": 15096
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15999,
+            "p95": 16110,
+            "p99": 31837,
+            "maximum": 32000
+          },
+          "promotion_pause_max_usec": 2562,
+          "geometry_install_max_usec": 148,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 2850.3
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5853,
+            "p95": 6463,
+            "p99": 6709,
+            "maximum": 17784
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 16001,
+            "p95": 16144,
+            "p99": 31837,
+            "maximum": 31972
+          },
+          "promotion_pause_max_usec": 2449,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5846,
+            "p95": 6415,
+            "p99": 6732,
+            "maximum": 16753
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 16000,
+            "p95": 16129,
+            "p99": 31846,
+            "maximum": 32140
+          },
+          "promotion_pause_max_usec": 2109,
+          "geometry_install_max_usec": 163,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1767.5
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 6918,
+            "p95": 7266,
+            "p99": 8133,
+            "maximum": 15695
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15999,
+            "p95": 16132,
+            "p99": 31854,
+            "maximum": 31949
+          },
+          "promotion_pause_max_usec": 2501,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 7014,
+            "p95": 7283,
+            "p99": 7574,
+            "maximum": 15686
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 16002,
+            "p95": 16154,
+            "p99": 31887,
+            "maximum": 32036
+          },
+          "promotion_pause_max_usec": 2549,
+          "geometry_install_max_usec": 124,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 2602.6
+        }
+      ]
+    }
+  },
+  "worker_scheduling_pair": {
+    "matched_fields": [
+      "identity",
+      "engine",
+      "platform",
+      "publication_digests",
+      "native_accounting",
+      "completed_intervals",
+      "actual_live_inputs",
+      "actual_physics_steps"
+    ],
+    "publication_count": 240,
+    "actual_live_inputs": 60,
+    "actual_physics_steps": 954,
+    "control_wall_usec": 29069550,
+    "candidate_wall_usec": 14003797,
+    "control_semantic_ticks_per_wall_second": 8.25606175534193,
+    "candidate_semantic_ticks_per_wall_second": 17.138209015740518,
+    "wall_progression_ratio": 2.0758334328896657,
+    "candidate_soft_pump_budget_usec": 4000,
+    "candidate_actual_pump_call_usec": {
+      "count": 840,
+      "maximum": 5996,
+      "p50": 5089,
+      "p95": 5795,
+      "p99": 5914
+    },
+    "control_admission_to_publication_usec": {
+      "count": 60,
+      "maximum": 166718,
+      "p50": 116706,
+      "p95": 116757,
+      "p99": 166718,
+      "session_maximum": 166718,
+      "total_count": 60
+    },
+    "candidate_admission_to_publication_usec": {
+      "count": 60,
+      "maximum": 83408,
+      "p50": 50022,
+      "p95": 52399,
+      "p99": 83408,
+      "session_maximum": 83408,
+      "total_count": 60
+    },
+    "scope": "One source/runtime-matched same-platform pair; 240 canonical published World materials and shard material/state/temperature/pose/geometry digests plus quantity ledgers match. Not hidden full World state or a cross-platform Rapier identity proof. Pump budget includes a possibly-overrunning current handler."
+  },
+  "rendered_live_burst": {
+    "actions": 153,
+    "outcomes": {
+      "Accepted": 148,
+      "": 1,
+      "TargetChanged": 3,
+      "Observed": 1
+    },
+    "pointer_input": {
+      "dispatched": 153,
+      "explicitly_cancelled_by_reset": 0,
+      "pending": 0,
+      "queued": 153,
+      "refused": 0,
+      "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+    },
+    "host_timings_usec": {
+      "geometry_install_usec": {
+        "count": 3,
+        "maximum": 141,
+        "p50": 127,
+        "p95": 141,
+        "p99": 141,
+        "session_maximum": 141,
+        "total_count": 3
+      },
+      "host_admission_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 688169,
+        "p50": 372316,
+        "p95": 660732,
+        "p99": 688131,
+        "session_maximum": 688169,
+        "total_count": 153
+      },
+      "host_admission_to_presented_usec": {
+        "count": 153,
+        "maximum": 704746,
+        "p50": 399139,
+        "p95": 688155,
+        "p99": 704288,
+        "session_maximum": 704746,
+        "total_count": 153
+      },
+      "host_admission_to_publication_usec": {
+        "count": 153,
+        "maximum": 692030,
+        "p50": 384457,
+        "p95": 673324,
+        "p99": 691847,
+        "session_maximum": 692030,
+        "total_count": 153
+      },
+      "host_admission_to_result_usec": {
+        "count": 153,
+        "maximum": 691811,
+        "p50": 384350,
+        "p95": 673137,
+        "p99": 691670,
+        "session_maximum": 691811,
+        "total_count": 153
+      },
+      "input_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 1902116,
+        "p50": 736411,
+        "p95": 1738032,
+        "p99": 1898319,
+        "session_maximum": 1902116,
+        "total_count": 153
+      },
+      "input_to_presented_usec": {
+        "count": 153,
+        "maximum": 1929452,
+        "p50": 763739,
+        "p95": 1753913,
+        "p99": 1913506,
+        "session_maximum": 1929452,
+        "total_count": 153
+      },
+      "input_to_publication_usec": {
+        "count": 153,
+        "maximum": 1914809,
+        "p50": 748555,
+        "p95": 1741896,
+        "p99": 1902151,
+        "session_maximum": 1914809,
+        "total_count": 153
+      },
+      "input_to_result_usec": {
+        "count": 153,
+        "maximum": 1914622,
+        "p50": 748450,
+        "p95": 1741677,
+        "p99": 1901922,
+        "session_maximum": 1914622,
+        "total_count": 153
+      },
+      "main_receipt_pump_usec": {
+        "count": 151,
+        "maximum": 5975,
+        "p50": 5208,
+        "p95": 5714,
+        "p99": 5938,
+        "session_maximum": 5975,
+        "total_count": 151
+      },
+      "native_execute_usec": {
+        "count": 284,
+        "maximum": 595,
+        "p50": 231,
+        "p95": 371,
+        "p99": 573,
+        "session_maximum": 595,
+        "total_count": 284
+      },
+      "physics_segment_usec": {
+        "count": 52,
+        "maximum": 2143,
+        "p50": 132,
+        "p95": 2046,
+        "p99": 2143,
+        "session_maximum": 2143,
+        "total_count": 52
+      },
+      "publication_to_presented_usec": {
+        "count": 120,
+        "maximum": 27254,
+        "p50": 11466,
+        "p95": 15277,
+        "p99": 27229,
+        "session_maximum": 27254,
+        "total_count": 120
+      },
+      "queue_wait_usec": {
+        "count": 284,
+        "maximum": 651,
+        "p50": 21,
+        "p95": 48,
+        "p99": 429,
+        "session_maximum": 651,
+        "total_count": 284
+      },
+      "receipt_delivery_usec": {
+        "count": 284,
+        "maximum": 77527,
+        "p50": 1972,
+        "p95": 11841,
+        "p99": 23767,
+        "session_maximum": 77527,
+        "total_count": 284
+      },
+      "receipt_roundtrip_usec": {
+        "count": 284,
+        "maximum": 79835,
+        "p50": 3704,
+        "p95": 13625,
+        "p99": 25652,
+        "session_maximum": 79835,
+        "total_count": 284
+      },
+      "receipt_value_accounting_usec": {
+        "count": 284,
+        "maximum": 1695,
+        "p50": 226,
+        "p95": 302,
+        "p99": 337,
+        "session_maximum": 1695,
+        "total_count": 284
+      },
+      "semantic_interval_usec": {
+        "count": 38,
+        "maximum": 116063,
+        "p50": 15535,
+        "p95": 75647,
+        "p99": 116063,
+        "session_maximum": 116063,
+        "total_count": 38
+      },
+      "snapshot_usec": {
+        "count": 284,
+        "maximum": 2577,
+        "p50": 1371,
+        "p95": 1576,
+        "p99": 1603,
+        "session_maximum": 2577,
+        "total_count": 284
+      },
+      "terrain_install_usec": {
+        "count": 230,
+        "maximum": 366,
+        "p50": 90,
+        "p95": 206,
+        "p99": 227,
+        "session_maximum": 366,
+        "total_count": 230
+      }
+    },
+    "ui_timings_usec": {
+      "frame_callback_usec": {
+        "count": 156,
+        "p50": 6087,
+        "p95": 7245,
+        "p99": 9729,
+        "maximum": 9774
+      },
+      "input_to_host_usec": {
+        "count": 153,
+        "p50": 364059,
+        "p95": 1049885,
+        "p99": 1240791,
+        "maximum": 1241508
+      },
+      "publication_interval_usec": {
+        "count": 119,
+        "p50": 16005,
+        "p95": 48007,
+        "p99": 78703,
+        "maximum": 123242
+      },
+      "publication_upload_usec": {
+        "count": 120,
+        "p50": 99,
+        "p95": 3984,
+        "p99": 4364,
+        "maximum": 6105
+      }
+    },
+    "action_ledger_verified": true,
+    "maximum_host_actions": 32,
+    "worker_maximum_snapshot_value_bytes": 190374,
+    "worker_maximum_reply_value_bytes": 321756,
+    "process_wide_maximum_godot_static_bytes": 43003934,
+    "scope": "Maintained rendered153-action workload includes96-point burst. All original UI queue latency is included; slowp95/p99/max must remain visible. Frame callback is nested CPU work, not end-to-end responsiveness. Presentation summary is actual frame_post_draw, not raw per-present timestamp ledger or scanout."
+  },
+  "sustained_actual_physics": {
+    "actions_queued": 540,
+    "checks": 22513,
+    "completed_ticks": 3599,
+    "elapsed_usec": 78498140,
+    "failures": 0,
+    "fire_seen": true,
+    "maximum_displacements": {
+      "1": 19.9768753051758,
+      "2": 19.9768753051758,
+      "3": 20.1384086608887
+    },
+    "moving_owners": 3,
+    "physics_steps": 14390,
+    "platform": "Windows",
+    "poll_count": 14800,
+    "post_erosion_maximum_rotation": 3.58819670509547e-06,
+    "post_erosion_maximum_translation": 6.7918750573881e-05,
+    "post_settle_edit_tick": 2400,
+    "publication_sequence": 4140,
+    "pump_budget_usec": 4000,
+    "real_contacts": true,
+    "schema": "objectshard-continuous-physics-test-v1",
+    "sleeping_owners": 3,
+    "smoke_seen": true,
+    "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "tick": 3600,
+    "native_accounting_sparse": {
+      "accepted_exposures": 1,
+      "authored_created": {
+        "2": 99,
+        "3": 100,
+        "6": 100
+      },
+      "authored_destroyed": {
+        "7": 241
+      },
+      "consumed_exposures": 1,
+      "created": {
+        "4": 10,
+        "6": 34
+      },
+      "destroyed": {
+        "6": 10,
+        "7": 9
+      },
+      "emitted": {
+        "4": 1,
+        "6": 24
+      },
+      "expired": {
+        "4": 9
+      },
+      "external_ignitions": 1,
+      "extinguished": 0,
+      "ingested": {},
+      "promoted": {
+        "7": 1482
+      },
+      "reset_disposed": {},
+      "reset_water_quanta": 0,
+      "scope": "Lifetime ownership ledger, including explicit reset disposal; not session-only totals",
+      "setup_created": {
+        "1": 1016,
+        "6": 2,
+        "7": 1722
+      },
+      "world_tick_delta": {
+        "3": 27,
+        "4": 52,
+        "6": -121
+      }
+    },
+    "post_erosion_rotation_degrees": 0.00020558852726471852,
+    "scope": "Actual3600 semantic tick state,3599 host interval completions after initial fixture,540 queued actions and14390 real substeps. Longrun authored Sand/Water and accepted exposure do not alone prove ingestion or extinction; inspect separate fixtures."
+  },
+  "methodology_limits": [
+    "Lab limits are unchanged; headless56 and rendered80 constraints independently recomputed from complete1200-sample workloads",
+    "Native6MiB allocator bound and14,176B margin exclude Godot/Rapier/GPU/mailbox container overhead; no universal canvas scalability claim",
+    "Stage counters overlap; enclosing result/publication/presentation and frame callbacks must not be summed",
+    "Hosted software-renderer timing is not owner Windows11/NVIDIA gameplay or a60FPS claim",
+    "Same-source pair is a single controlled workload observation, not statistical or cross-platform bit-identical proof"
+  ],
+  "status": "passed"
+}

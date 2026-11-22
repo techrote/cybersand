@@ -10,9 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## ObjectShard M0–M2 — 2026-11-22
+## ObjectShard M0–M3 — 2026-11-22
 
 The [M3 recovery ledger](../audits/2026-11-22-objectshard-m3-recovery.md) identifies the recovered 26-file staging handoff and fresh implementation. Use the [continuous-play guide](objectshard-m3-preflight-playtest.md) for the opt-in worker scene, and the [contract](../research/objectshard-m3-preflight.md) for exact target fences, copied receipts and the ordinary Workbench seam.
+
+[Draft/HOLD #741 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
+binds runtime source `e034f2294663e0485cfb9adcc8ada46a6e977cee` to 41 Linux,
+41 Windows and 32 extracted-package cases, complete native/sanitizer World
+regressions and the repaired F2 lifecycle. Use its final owner ZIP, not the
+superseded `68235b12` M3 candidate. The unchanged 001R native matrix passes 74/74
+limits with only 14,176 bytes of margin. Rendered burst latency reaches 1.93
+seconds; the separate-World rehearsal is not ordinary Workbench attachment.
+Production provenance and physical Windows 11/NVIDIA owner acceptance remain
+unpassed/unrecorded respectively.
 
 The separate OBJECTSHARD-001R finisher #738 has a
 [source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md)

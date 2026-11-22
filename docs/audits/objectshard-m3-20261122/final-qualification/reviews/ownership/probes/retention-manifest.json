@@ -1,0 +1,139 @@
+{
+  "schema": "objectshard-operator-independent-negative-retention-v1",
+  "created_utc": "2026-11-22T07:47:45.630803+00:00",
+  "repo_relative_paths": true,
+  "negative_base_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "negative_scope": "First uncommitted navigation repair delta. This is distinct from the original 682 F2 ownership leak. Reconstruct with commit 682 plus the retained source.patch.",
+  "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "final_verified_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "reconstruction_verified": [
+    {
+      "path": "godot/scripts/feature_navigation.gd",
+      "sha256": "d4cf50d13948f86c5c0b96a47dd12cbb67cb201314257706a512585b652c2167",
+      "matches_original_negative_source": true
+    },
+    {
+      "path": "godot/scripts/object_shard_worker_rehearsal.gd",
+      "sha256": "51d8de17a57fc654f38333eecb19ee4a00447d894ce3488848d4aa707b557fc5",
+      "matches_original_negative_source": true
+    }
+  ],
+  "files": [
+    {
+      "path": "build/review-ownership/navigation-repair1/project/tests/review_navigation_reentry.gd",
+      "sha256": "ba093b741719ce9dfc8e95a8fc4f2999de9ffc33667140f6a5cbe488f7d6c9c7",
+      "bytes": 6653,
+      "purpose": "OPERATOR-02 independent native reproducer; real F2 event plus actual support-cut button"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/project/tests/review_navigation_held.gd",
+      "sha256": "b4c11507fe2d9419528ae7c0a63674a3e2ce02f2d9c90aa90f43af40afe92074",
+      "bytes": 4883,
+      "purpose": "OPERATOR-03 independent native reproducer; only main elapsed deadline accelerated"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/source.patch",
+      "sha256": "565295545e78f7d3b94e934f93bc74a9ed82b870c9e5e03e9d98f3a4082d17b7",
+      "bytes": 6402,
+      "purpose": "Reconstructs exact first-repair product source from 682; independently reapplied and hash-verified"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/source-binding.json",
+      "sha256": "b822250996d7983efd126cdeb3b7af040d54cb04264065237e9065b22c4762de",
+      "bytes": 21989,
+      "purpose": "Original product source and native/runtime hash binding"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/reentry-v2.log",
+      "sha256": "3bab486b7553017e1b0caceead8abd972d4e07a63484d6dfd2705277464dd8d2",
+      "bytes": 1814,
+      "purpose": "Valid OPERATOR-02 negative: 17 checks, 2 failures; 44 post-exit intents silently discarded"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/review-navigation-reentry-result.json",
+      "sha256": "09e0be270bb94e045210449e78dcda8dbdc4f9cc1846f186fdc262b7923b9ea0",
+      "bytes": 3367,
+      "purpose": "Structured OPERATOR-02 negative result"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/held-v2.log",
+      "sha256": "9a6e86c2d1a776b80a06398ce37c6c82e888f94089118d5ce325a45420ae4239",
+      "bytes": 718,
+      "purpose": "Valid OPERATOR-03 negative: 9 checks, 1 failure; quit downgraded after actual inflight deadline"
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/review-navigation-held-result.json",
+      "sha256": "33a280ec09fc3d86a69dd98b71f018bcad8c3aca52b30eff17d3776ed9f9b4bb",
+      "bytes": 4331,
+      "purpose": "Structured OPERATOR-03 negative result"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/source-binding.json",
+      "sha256": "6cac3ab06c4f7a012c2b1ce409b798cfcbe1ce7ad32e553dd7527f67631f5516",
+      "bytes": 53077,
+      "purpose": "Exact e034 committed source/runtime/probe identities and post-execution source match"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/review-navigation-reentry-result.json",
+      "sha256": "ec56e8a7e36f866659afda685d0a02e9f1f7b268d11568156c56559a0bae2e8e",
+      "bytes": 3347,
+      "purpose": "Exact e034 OPERATOR-02 repaired control: 17 checks, 0 failures"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/review-navigation-held-result.json",
+      "sha256": "3c7bd5650a5c4eaad641f3e075c8185abaff73e503e3937594b78478cb25800e",
+      "bytes": 4334,
+      "purpose": "Exact e034 OPERATOR-03 repaired control: 9 checks, 0 failures"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/reentry.execution.json",
+      "sha256": "44a1a03c2cbe3339065790580fd7f91e1415e16c388b2c356e8571b3c49aade0",
+      "bytes": 1036,
+      "purpose": "Exact command/environment/exit/log hash for final OPERATOR-02 rerun"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/held.execution.json",
+      "sha256": "69dd5c50b321b4e522d66afec3baabc437c5ad1a7b96de612c83cf5009360216",
+      "bytes": 1027,
+      "purpose": "Exact command/environment/exit/log hash for final OPERATOR-03 rerun"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/reentry.log",
+      "sha256": "8ce47b3262d47771b366920dc6a5497873b499094221ac48e6f843483bf532c1",
+      "bytes": 293,
+      "purpose": "Final native OPERATOR-02 rerun log"
+    },
+    {
+      "path": "build/review-ownership/navigation-final-e034f229/held.log",
+      "sha256": "1caa1637eb380b08e9884ae3c383a201f9b96f769d2473719a815da31c0040ab",
+      "bytes": 289,
+      "purpose": "Final native OPERATOR-03 rerun log"
+    }
+  ],
+  "excluded_harness_iterations": [
+    {
+      "path": "build/review-ownership/navigation-repair1/reentry.log",
+      "reason": "InputEvent queue was not flushed before synchronous assertions; not valid finding evidence."
+    },
+    {
+      "path": "build/review-ownership/navigation-repair1/held.log",
+      "reason": "Unqualified notification constant parse error; not valid finding evidence."
+    }
+  ],
+  "assertion_accounting": {
+    "top_level_checks": 341,
+    "top_level_failures": 0,
+    "quit_child_checks": 18,
+    "quit_child_failures": 0,
+    "quit_child_included_in_top_level_count": false,
+    "fresh_replay_child_checks": 47,
+    "fresh_replay_child_failures": 0,
+    "fresh_replay_child_included_in_top_level_count": false,
+    "scope": "The 341 top-level assertions are the seven suite counts: 135 + 63 + 57 + 31 + 29 + 17 + 9. The 18 quit-child and 47 fresh-replay child assertions are separate subprocess evidence; neither child count is included in 341."
+  },
+  "full_review": {
+    "path": "build/review-ownership/navigation-final-e034f229/final-review.json",
+    "sha256": "f2772692251d6f707a1405a93d683d4d82e5aab830dac8c90a5fb3912d6be807"
+  },
+  "runtime_scope": "Actual native Linux/Rapier probes with sealed 514 runtime reuse; no new package, Windows, human acceptance or production write implied."
+}

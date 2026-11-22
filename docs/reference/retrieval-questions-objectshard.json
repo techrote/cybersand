@@ -129,6 +129,23 @@
         "../../godot/scripts/object_shard_worker_host.gd",
         "../../godot/tests/test_object_shard_worker_input_fences.gd"
       ]
+    },
+    {
+      "id": "OBJECTSHARD09",
+      "query": "Which repaired ObjectShard M3 Windows evaluator is qualified after the F2 shutdown fix, and what remains outside acceptance?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "Qualified source e034f229 and campaign 44999117090 pass 41 Linux, 41 Windows and 32 extracted-package cases; the 68235b12 package is superseded.",
+        "The repaired owner ZIP is 93168827 bytes, SHA-256 61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b.",
+        "F2 retains the owner until disposal and join; repeated navigation, close priority and stale completion are tested.",
+        "The separate-World rehearsal does not establish ordinary Workbench attachment, production provenance, physical Windows11/NVIDIA acceptance or uniform low-latency play; final rendered burst maximum is 1.929452 seconds."
+      ],
+      "sources": [
+        "../audits/2026-11-22-objectshard-m3-final-qualification.md",
+        "../../godot/tests/test_object_shard_worker_navigation.gd"
+      ]
     }
   ]
 }

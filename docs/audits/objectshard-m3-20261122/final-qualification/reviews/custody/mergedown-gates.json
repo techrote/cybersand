@@ -1,0 +1,546 @@
+{
+  "additional_discovered_blockers": [
+    {
+      "id": "CUST-02",
+      "negative_evidence": "../ordinary-discovery-negative.json",
+      "repair_evidence": "source-review.json",
+      "status": "Repaired source independently verified at e034;360 ordinary cases exclude both package probes. Fresh delivered package remains subject to separate archive/execution audit."
+    },
+    {
+      "id": "OPERATOR-01/02/03",
+      "repair_evidence": "source-review.json",
+      "status": "Source repair and strict maintained navigation receipt contract reviewed; old682 package superseded. Fresh source/package execution audit required."
+    }
+  ],
+  "current_provenance_gate": {
+    "command": "python tools/ci/check_repository.py",
+    "details": [
+      {
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+        "platform": "windows",
+        "source_input": "godot/native_extension/register_types.cpp"
+      },
+      {
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+        "platform": "windows",
+        "source_input": "native/include/cybersand/world.hpp"
+      },
+      {
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+        "platform": "windows",
+        "source_input": "native/src/world.cpp"
+      },
+      {
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "platform": "linux",
+        "source_input": "godot/native_extension/register_types.cpp"
+      },
+      {
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "platform": "linux",
+        "source_input": "native/include/cybersand/world.hpp"
+      },
+      {
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "platform": "linux",
+        "source_input": "native/src/world.cpp"
+      }
+    ],
+    "draft_workflow_caveat": "documentation.yml runs check_repository.py --require-materialized only outside Draft pull_request events. A green Draft Documentation workflow does not clear these six full-provenance blockers.",
+    "errors": [
+      "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+      "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+      "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp"
+    ],
+    "failure_count": 6,
+    "historical_integrity": "Keep M11 validation separate; never change historical hashes to make the current source pass.",
+    "local_runtime_materialization": "Committed production-runtime paths remain their original LFS pointer identities; the full materialization/provenance workflow remains required. Source-built experimental artifact qualification does not publish these paths.",
+    "new_native_inputs_absent_from_both_105_input_manifests": [
+      "godot/native_extension/cyber_object_shard_lab.cpp",
+      "godot/native_extension/cyber_object_shard_lab.hpp",
+      "native/include/cybersand/material_lifecycle.hpp",
+      "native/include/cybersand/object_shard.hpp",
+      "native/include/cybersand/object_shard_contact.hpp",
+      "native/include/cybersand/object_shard_coordinator.hpp",
+      "native/include/cybersand/object_shard_discovery.hpp",
+      "native/include/cybersand/object_shard_mutation.hpp",
+      "native/src/object_shard.cpp",
+      "native/src/object_shard_coordinator.cpp",
+      "native/src/object_shard_fire.inc"
+    ],
+    "raw_readback": "production-provenance.log",
+    "raw_sha256": "257d369122154b12d969bb1b9010a2b38f04fb70848b969496683c1e64c92488",
+    "status": "failed"
+  },
+  "dependency_order": [
+    {
+      "current_source": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "pr": 726,
+      "stage": "M0"
+    },
+    {
+      "current_source": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "pr": 728,
+      "stage": "M1"
+    },
+    {
+      "current_source": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "pr": 730,
+      "stage": "M2"
+    },
+    {
+      "current_source": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "pr": 738,
+      "stage": "001R finisher"
+    },
+    {
+      "base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "current_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "draft": true,
+      "pr": 741,
+      "stage": "M3 continuous-play preflight"
+    }
+  ],
+  "future_publication_paths": [
+    {
+      "kind": "Linux native runtime, committed through Git LFS",
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    },
+    {
+      "kind": "Windows native runtime, committed through Git LFS",
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+    },
+    {
+      "kind": "Linux validated-development provenance with actual source/build/target execution",
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    },
+    {
+      "kind": "Windows validated-development provenance with actual source/build/target execution",
+      "path": "godot/addons/cybersand_native/runtime-provenance.json"
+    }
+  ],
+  "inspected_utc": "2026-11-22T07:55:13.994204+00:00",
+  "interface_refresh": {
+    "gen734_delta": {
+      "files": [
+        ".github/workflows/gen006-ramcache-process-retirement.yml",
+        ".github/workflows/gen006-ramcache-qualification.yml",
+        "docs/audits/2026-11-22-gen006-ramcache.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "tools/ci/bounded_campaign_process.py",
+        "tools/ci/gen006_persistent_runtime_publication.py",
+        "tools/ci/gen006_ramcache_publish_request.json",
+        "tools/ci/gen006_ramcache_runtime_publication.py",
+        "tools/ci/run_persistent_area_residency_memory.py",
+        "tools/ci/test_bounded_campaign_process.py",
+        "tools/ci/test_gen006_ramcache_runtime_publication.py"
+      ],
+      "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+      "native_and_godot_delta_empty": true,
+      "parents": [
+        "34606231677d4287e3f1ae595b6e2ce93cc6fa75"
+      ],
+      "prior_head": "34606231677d4287e3f1ae595b6e2ce93cc6fa75",
+      "scope": "Read-only CI/evidence changes only; no product interface changes or incorporation into ObjectShard.",
+      "verified_interfaces": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/persistent_area_worker_protocol.gd": {
+          "git_blob": "26fe9e8aefa6c7f5128570883cb6f957fbe218c5",
+          "sha256": "784c919ff312a999bf2bfc22a3bfafa87816d2dd7e39272557767e8ddab77ca3",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/persistent_areas_controller.gd": {
+          "git_blob": "21190ba3baddcaa41103bd94083fd7fc2f4dc1cd",
+          "sha256": "58c1252807995dcbf743e280c56a8067944ed8226d36aea6e8c05b52fe165b99",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+          "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "unchanged_since_prior_refresh": true
+        }
+      }
+    },
+    "independent_git_delta_verified": true,
+    "main": {
+      "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed"
+    },
+    "path": "build/m3-platform/delivery-interface-refresh.json",
+    "prs": [
+      {
+        "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "base_ref": "main",
+        "branch": "experiment/objectshard-001-m0-20261122",
+        "draft": true,
+        "head": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 726,
+        "state": "open",
+        "updated_at": "2026-11-22T03:50:27Z",
+        "url": "https://github.com/techrote/cybersand/pull/726"
+      },
+      {
+        "base": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+        "base_ref": "experiment/objectshard-001-m0-20261122",
+        "branch": "experiment/objectshard-001-m1-20261122",
+        "draft": true,
+        "head": "1b85782a15565bad7e4dae28755b17d630daaf46",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 728,
+        "state": "open",
+        "updated_at": "2026-11-22T03:50:28Z",
+        "url": "https://github.com/techrote/cybersand/pull/728"
+      },
+      {
+        "base": "1b85782a15565bad7e4dae28755b17d630daaf46",
+        "base_ref": "experiment/objectshard-001-m1-20261122",
+        "branch": "experiment/objectshard-001-m2-20261122",
+        "draft": true,
+        "head": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 730,
+        "state": "open",
+        "updated_at": "2026-11-22T03:50:30Z",
+        "url": "https://github.com/techrote/cybersand/pull/730"
+      },
+      {
+        "base": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+        "base_ref": "experiment/objectshard-001-m2-20261122",
+        "branch": "experiment/objectshard-001r-20261122",
+        "draft": true,
+        "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 738,
+        "state": "open",
+        "updated_at": "2026-11-22T05:30:09Z",
+        "url": "https://github.com/techrote/cybersand/pull/738"
+      },
+      {
+        "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "base_ref": "main",
+        "branch": "experiment/pubpres-playability-003",
+        "draft": true,
+        "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 740,
+        "state": "open",
+        "updated_at": "2026-11-22T06:23:36Z",
+        "url": "https://github.com/techrote/cybersand/pull/740"
+      },
+      {
+        "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+        "base_ref": "main",
+        "branch": "experiment/pubpres-playability-001",
+        "draft": true,
+        "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 719,
+        "state": "open",
+        "updated_at": "2026-11-22T03:20:24Z",
+        "url": "https://github.com/techrote/cybersand/pull/719"
+      },
+      {
+        "base": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+        "base_ref": "main",
+        "branch": "codex/pubpres-integration-001",
+        "draft": true,
+        "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 682,
+        "state": "open",
+        "updated_at": "2026-11-21T10:40:55Z",
+        "url": "https://github.com/techrote/cybersand/pull/682"
+      },
+      {
+        "base": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+        "base_ref": "exp/gen006-persistent-areas-001-20261121",
+        "branch": "exp/gen006-ramcache-001-20261122",
+        "draft": true,
+        "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 734,
+        "state": "open",
+        "updated_at": "2026-11-22T07:23:51Z",
+        "url": "https://github.com/techrote/cybersand/pull/734"
+      },
+      {
+        "base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+        "base_ref": "experiment/objectshard-001r-20261122",
+        "branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+        "draft": true,
+        "head": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "merged": false,
+        "owner": "techrote",
+        "pr": 741,
+        "state": "open",
+        "updated_at": "2026-11-22T07:39:33Z",
+        "url": "https://github.com/techrote/cybersand/pull/741"
+      }
+    ],
+    "refreshed_at": "2026-11-22T07:51:04Z",
+    "sha256": "12781cb000121e9d0171ccd09943bc68ce286a0ea51d0538e6f04f2ea7b936b3"
+  },
+  "ordinary_final_head_gates": [
+    {
+      "gate": "Documentation and provenance / consistency",
+      "requirement": "Complete exact-head run including published runtime provenance and materialized LFS; no Draft skip substitution.",
+      "source_refs": [
+        "documentation_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "Native C++ validation / native",
+      "requirement": "All source-planned Native families, original commands/assertions, sanitizer/worker coverage and independent complete aggregate pass. Native source-scope advisory never authorizes skipping.",
+      "source_refs": [
+        "native_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "GDExtension build and current Godot regression / windows x86_64",
+      "requirement": "Exact-source pinned Windows cross-build.",
+      "source_refs": [
+        "godot_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "All source-planned windows headless regression shards and windows sharded execution coverage",
+      "requirement": "Actual Windows execution and independent source/runtime/unique-case completeness.",
+      "source_refs": [
+        "godot_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "GDExtension build and current Godot regression / linux x86_64",
+      "requirement": "Exact-source Linux build, source-planned Linux regressions, graphical smoke and independent coverage aggregate.",
+      "source_refs": [
+        "godot_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "Issue49 Water apparatus v2 / apparatus when applicable",
+      "requirement": "ObjectShard stack changes native/include and native/src/world.cpp, which are in its path filter. Evaluate the actual PR diff after each retarget/reconcile; retain and execute applicable registered Water/scoped apparatus.",
+      "source_refs": [
+        "water49_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "ObjectShard exact-source campaign and owner physical playtest",
+      "requirement": "Retain experimental M0\u2013M3/Rapier/package evidence separately. Owner Windows11/NVIDIA acceptance remains an owner decision; automated hosted software rendering is not physical acceptance.",
+      "source_refs": [
+        "objectshard_workflow",
+        "finisher_handover"
+      ]
+    }
+  ],
+  "per_pr_mergedown_loop": [
+    "Keep every PR Draft/HOLD until the owner authorizes its Ready/mergedown transition.",
+    "Land in dependency order726\u2192728\u2192730\u2192738\u2192M3. After each authorized parent merge, retarget the child to acceptedmain, refresh/reconcile and identify its resulting exact head.",
+    "For each resulting native/build input set, require matching published runtimes. Never publish the final M3 DLL against an earlier M0/M1 source to make an intermediate gate green.",
+    "If a later step changes only GDScript and full native input provenance is identical, the documented reuse rule permits unchanged native bytes, while all changed scripts/tests still require fresh resulting-head execution. This does not relabel the old build or waive this mission\u2019s fresh M3 evaluator build.",
+    "Obtain complete applicable exact-head checks and independent review, then owner alone authorizes merge. No auto-merge, release or production-default change follows."
+  ],
+  "publication_checklist": [
+    {
+      "action": "Obtain explicit owner authorization for retained native runtime publication and identify the exact feature branch/source SHA to publish. Keep the current M3 evaluator artifact separate from repository runtime adoption.",
+      "order": 1,
+      "source_refs": [
+        "repository_policy",
+        "objectshard_workflow"
+      ]
+    },
+    {
+      "action": "Refresh accepted main and the current PUBPRES/GEN sources. Reconcile only accepted inputs; freeze the actual reconciled native/build/test source and branch lease. Any source change during compilation or validation invalidates the selected publication.",
+      "order": 2,
+      "source_refs": [
+        "repository_policy",
+        "guarded_publication_tool"
+      ]
+    },
+    {
+      "action": "Prepare and independently review a dedicated ObjectShard publication profile/request or another explicitly owner-approved path. The existing ObjectShard workflow has contents:read and produces artifacts only. Existing LCB/Water publishers are branch/schema/request guarded; do not rename their requests or spoof their environment to publish this branch.",
+      "order": 3,
+      "source_refs": [
+        "objectshard_workflow",
+        "guarded_publication_tool",
+        "guarded_publication_example"
+      ]
+    },
+    {
+      "action": "Build both runtimes from the exact frozen source with pinned Godot bindings/toolchains; execute source-matched target-OS tests. Authenticate source/tree, full native inventory (currently116 files), build/test inputs, runtime bytes, target engine/Rapier and actual pass/log receipts. Manually replacing only the three stale hashes would omit new native inputs and is not publication.",
+      "order": 4,
+      "source_refs": [
+        "guarded_publication_tool",
+        "repository_checker"
+      ]
+    },
+    {
+      "action": "Require Linux and Windows manifests to agree on source commit/tree and full native/build input ledgers. Validate actual binaries, architecture, runtime floors, no source drift and complete executed test results before staging.",
+      "order": 5,
+      "source_refs": [
+        "guarded_publication_tool"
+      ]
+    },
+    {
+      "action": "Stage only the two runtime pointers and two matching manifests. Both manifests must update; pointer SHA/size must match materialized validated binaries. Upload required LFS objects and append one runtime-only commit with the exact built source as sole parent using an atomic expected-head lease. Refuse if the branch moved; do not overwrite concurrent work.",
+      "order": 6,
+      "source_refs": [
+        "guarded_publication_tool",
+        "guarded_publication_example",
+        "lfs_policy"
+      ]
+    },
+    {
+      "action": "Materialize and rehash the final retained runtime inventory; run check_repository.py --require-materialized and git lfs fsck on the resulting head. Preserve selected Rapier, Godot, scientific thresholds, historical M11 and original negative evidence.",
+      "order": 7,
+      "source_refs": [
+        "documentation_workflow",
+        "repository_checker",
+        "lfs_policy"
+      ]
+    },
+    {
+      "action": "Run complete ordinary final-head gates and independent review after the publication/source reconciliation. A scoped publisher pass, old build, skipped Draft job or owner ZIP verification cannot replace them.",
+      "order": 8,
+      "source_refs": [
+        "repository_policy",
+        "native_workflow",
+        "godot_workflow",
+        "water49_workflow"
+      ]
+    }
+  ],
+  "pubpres_boundary": {
+    "ordinary_workbench_attachment": "A later ordinary binding must target the owner-accepted PUBPRES successor, share its existing World under the exclusive worker, add revisioned mutable-body/geometry admission beside immutable GCR, preserve single-use callback/terrain/session/source-clock fences, then qualify the combined source.",
+    "persistence": "GEN006/734 residency and disposal/save contracts remain separate. No ObjectShard eviction, streaming or durable save/restore is admitted by this rehearsal.",
+    "relation": "The separate-World M3 rehearsal does not require merging active PUBPRES740/719/682. They are independent Draft programmes, not implicit merge dependencies.",
+    "source_refs": [
+      "finisher_handover"
+    ]
+  },
+  "remote_policy_caveat": "Live public readback at06:39UTC reports main.protected=false and no rulesets. The checks above are current procedural repository gates; no remote enforcement was installed or claimed.",
+  "remote_protection": {
+    "branches/main": {
+      "protected": false,
+      "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed"
+    },
+    "rulesets": [],
+    "status": "Historical06:39UTC readback; do not claim current enforcement. Repository-required procedures still apply.",
+    "utc": "2026-11-22T06:39:14.618054+00:00"
+  },
+  "retained_native_manifests": [
+    {
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "current_native_input_count": 116,
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "published_bytes": 5820416,
+      "published_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "published_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "source_inputs_count": 105,
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44916761139"
+    },
+    {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "current_native_input_count": 116,
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "published_bytes": 5253776,
+      "published_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "published_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "source_inputs_count": 105,
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44916761139"
+    }
+  ],
+  "reviewer": "independent /root/review_custody",
+  "schema": "objectshard-m3-owner-mergedown-gates-v1",
+  "scope": "Read-only planning from current source and live public branch metadata. No runtime publication, Ready transition, merge, auto-merge, release or default promotion performed or authorized by this checklist.",
+  "source_head": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_link_deltas": {
+    ".gitattributes": {
+      "explanation": "Only retained audit paths gained raw-byte text preservation; LFS patterns unchanged.",
+      "sha256": "be7bb4cea8131454afd5c274101fc72eb29f51c1c5d81818e058362126a2b0d8",
+      "unchanged_from_finisher": false
+    },
+    ".github/workflows/documentation.yml": {
+      "sha256": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d",
+      "unchanged_from_finisher": true
+    },
+    ".github/workflows/gdextension.yml": {
+      "sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+      "unchanged_from_finisher": true
+    },
+    ".github/workflows/issue49-water-apparatus.yml": {
+      "sha256": "3a2bb2c90e636f4778a8929606e0d99882241c5067b4bfdadd1099295a798926",
+      "unchanged_from_finisher": true
+    },
+    ".github/workflows/lcb001-shared-contract-runtime-publication.yml": {
+      "sha256": "e51793f067297405069e5588bf360e584518f4087dbe3aa90ed60fdcce743934",
+      "unchanged_from_finisher": true
+    },
+    ".github/workflows/native.yml": {
+      "sha256": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+      "unchanged_from_finisher": true
+    },
+    ".github/workflows/objectshard-lab.yml": {
+      "explanation": "Only opt-in M3 markers were added relative to738; exact682-to-e034 workflow is unchanged.",
+      "sha256": "e282f78cab2921d6699e1a14f1e01ec008e62d2465a01a1a70cdc24c8b2d0a24",
+      "unchanged_from_finisher": false
+    },
+    "docs/operations/github-development-and-release.md": {
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "unchanged_from_finisher": true
+    },
+    "docs/operations/local-build-and-validation.md": {
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "unchanged_from_finisher": true
+    },
+    "tools/ci/check_repository.py": {
+      "sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "unchanged_from_finisher": true
+    },
+    "tools/ci/lcb001_shared_contract_runtime_publication.py": {
+      "sha256": "513d33b3fa3b4e2aa3e2af5abc65a253566111e1d25d505d86834b04c25922bd",
+      "unchanged_from_finisher": true
+    }
+  },
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "sources": {
+    "documentation_workflow": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.github/workflows/documentation.yml",
+    "finisher_handover": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/docs/audits/2026-11-22-objectshard-001r-final-qualification.md",
+    "godot_workflow": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.github/workflows/gdextension.yml",
+    "guarded_publication_example": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.github/workflows/lcb001-shared-contract-runtime-publication.yml",
+    "guarded_publication_tool": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/tools/ci/lcb001_shared_contract_runtime_publication.py",
+    "lfs_policy": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.gitattributes",
+    "native_workflow": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.github/workflows/native.yml",
+    "objectshard_workflow": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.github/workflows/objectshard-lab.yml",
+    "repository_checker": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/tools/ci/check_repository.py",
+    "repository_policy": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/docs/operations/github-development-and-release.md",
+    "reuse_rule": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/docs/operations/local-build-and-validation.md",
+    "water49_workflow": "https://github.com/techrote/cybersand/blob/e034f2294663e0485cfb9adcc8ada46a6e977cee/.github/workflows/issue49-water-apparatus.yml"
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "cases": [
+    {
+      "case": "invalid_start_identity",
+      "invalid_identity": {
+        "ok": false,
+        "outcome": "InvalidTransportStart"
+      },
+      "invalid_payload": {
+        "ok": false,
+        "outcome": "InvalidTransportStart"
+      },
+      "recovered_generation": 93000,
+      "recovered_state": "Idle"
+    },
+    {
+      "case": "lost_cancel_hold",
+      "held_body_after": {
+        "active": true,
+        "angular_velocity": 0.0,
+        "backend_rotation": 0.0,
+        "body_generation": 1,
+        "com_x": 3.0,
+        "com_y": 3.0,
+        "generation": 1,
+        "geometry_digest": "14745672366255180322",
+        "geometry_revision": 1,
+        "id": 1,
+        "inertia": 42.6666679382324,
+        "last_geometry_step": 0,
+        "last_geometry_usec": 0,
+        "mass": 16.0,
+        "nominal_rotation_headroom": 0.2,
+        "nominal_translation_headroom": 3.95666666825612,
+        "reported_contacts": 0,
+        "rotation": 0.0,
+        "shape_count": 1,
+        "sleeping": false,
+        "vx": 0.0,
+        "vy": 2.59999990463257,
+        "x": 49.0,
+        "y": 39.0230178833008
+      },
+      "held_body_before": {
+        "active": true,
+        "angular_velocity": 0.0,
+        "backend_rotation": 0.0,
+        "body_generation": 1,
+        "com_x": 3.0,
+        "com_y": 3.0,
+        "generation": 1,
+        "geometry_digest": "14745672366255180322",
+        "geometry_revision": 1,
+        "id": 1,
+        "inertia": 42.6666679382324,
+        "last_geometry_step": 0,
+        "last_geometry_usec": 0,
+        "mass": 16.0,
+        "nominal_rotation_headroom": 0.2,
+        "nominal_translation_headroom": 3.95666666825612,
+        "reported_contacts": 0,
+        "rotation": 0.0,
+        "shape_count": 1,
+        "sleeping": false,
+        "vx": 0.0,
+        "vy": 2.59999990463257,
+        "x": 49.0,
+        "y": 39.0230178833008
+      },
+      "retired": {
+        "action_id": 33,
+        "admitted_usec": 1093808,
+        "captured_usec": 1093808,
+        "completed_usec": 1156435,
+        "input_observation": "host_admission",
+        "may_have_executed": false,
+        "name": "edit",
+        "ok": false,
+        "outcome": "CancelledByReset",
+        "session": 3
+      },
+      "retry": {
+        "ok": false,
+        "outcome": "HeldUntilExplicitReset"
+      },
+      "steps_before": 4
+    },
+    {
+      "case": "lost_reset_recovery",
+      "old_session": 6,
+      "recovered_session": 8,
+      "retry": {
+        "ok": true,
+        "operation": "reset",
+        "outcome": "Queued",
+        "sequence": 3,
+        "session": 7,
+        "transport_generation": 93002
+      },
+      "unseen_session": 7
+    },
+    {
+      "case": "queued_reset_fence",
+      "final_session": 12,
+      "first": {
+        "ok": true,
+        "operation": "reset",
+        "outcome": "Queued",
+        "sequence": 9,
+        "session": 10,
+        "transport_generation": 93003
+      },
+      "recovery": {
+        "ok": true,
+        "operation": "reset",
+        "outcome": "Queued",
+        "sequence": 10,
+        "session": 11,
+        "transport_generation": 93003
+      },
+      "retry_while_queued": {
+        "ok": false,
+        "outcome": "PreviousResetStillRunning"
+      },
+      "unseen_session": 11
+    },
+    {
+      "case": "retirement_dispositions",
+      "old_trace_footer": {
+        "complete_prefix": false,
+        "reason": "In-flight action outcome retired by explicit reset; observation trace only"
+      },
+      "retired": [
+        {
+          "action_id": 2,
+          "admitted_usec": 1376147,
+          "captured_usec": 1376147,
+          "completed_usec": 1376274,
+          "input_observation": "host_admission",
+          "may_have_executed": false,
+          "name": "edit",
+          "ok": false,
+          "outcome": "CancelledByReset",
+          "session": 14
+        },
+        {
+          "action_id": 3,
+          "admitted_usec": 1376186,
+          "captured_usec": 1376186,
+          "completed_usec": 1376377,
+          "input_observation": "host_admission",
+          "may_have_executed": false,
+          "name": "edit",
+          "ok": false,
+          "outcome": "CancelledByReset",
+          "session": 14
+        },
+        {
+          "action_id": 4,
+          "admitted_usec": 1376208,
+          "captured_usec": 1376208,
+          "completed_usec": 1376450,
+          "input_observation": "host_admission",
+          "may_have_executed": false,
+          "name": "edit",
+          "ok": false,
+          "outcome": "CancelledByReset",
+          "session": 14
+        },
+        {
+          "action_id": 1,
+          "admitted_usec": 1370804,
+          "captured_usec": 1370804,
+          "completed_usec": 1376516,
+          "input_observation": "host_admission",
+          "may_have_executed": true,
+          "name": "edit",
+          "ok": false,
+          "outcome": "RetiredByResetOutcomeUnknown",
+          "session": 14
+        },
+        {
+          "action_id": 5,
+          "admitted_usec": 1390202,
+          "captured_usec": 1390202,
+          "completed_usec": 1390388,
+          "input_observation": "host_admission",
+          "may_have_executed": false,
+          "name": "edit",
+          "ok": false,
+          "outcome": "CancelledByStop",
+          "session": 15
+        }
+      ],
+      "uncertain": {
+        "action_id": 1,
+        "admitted_usec": 1370804,
+        "captured_usec": 1370804,
+        "completed_usec": 1376516,
+        "input_observation": "host_admission",
+        "may_have_executed": true,
+        "name": "edit",
+        "ok": false,
+        "outcome": "RetiredByResetOutcomeUnknown",
+        "session": 14
+      }
+    }
+  ],
+  "checks": 63,
+  "failures": 0,
+  "schema": "objectshard-worker-recovery-test-v1",
+  "scope": "Actual native and Rapier loss, queued control saturation, monotonic failed holds and explicit retirement"
+}

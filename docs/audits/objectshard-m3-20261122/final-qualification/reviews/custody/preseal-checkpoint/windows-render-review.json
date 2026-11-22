@@ -1,0 +1,172 @@
+{
+  "schema": "objectshard-independent-actual-render-review-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "status": "passed",
+  "rendered_images": [
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-a-exact-shapes.png",
+      "sha256": "73465c2bc75a7efaf3fa2d8435b3551118e6022804008d5b2ea68f85c4b3ede8",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-a-impact.png",
+      "sha256": "1612fb33c37f3cee2f2813e1024ed55b1a033757c4f21dd296346564f643bb5b",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-a-native-supported.png",
+      "sha256": "194d8c4854bede02d1ba287b08f70c8f0edf1e22a365e8909f0493ede5a2943f",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-a-transferred-falling.png",
+      "sha256": "1053d86dab6f2677c21db23c9bec3fc758aa8ef9355fe4f87967ddce4bd4336f",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-b-consumed-geometry.png",
+      "sha256": "8b3cf6587f9ca0bc7abac9a4a61639ec704f19e2f55dd0fd45ac992aecc27471",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-b-real-combustion.png",
+      "sha256": "c06b120d67182f029f9131b9610f43292608812bc5a9640f6d4caab3edfc1c3d",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-c-carried-sand.png",
+      "sha256": "62c0563c8be37e29894109e125efd68eeac7db315c8d6b96edd89869cefc8984",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-c-water-extinction.png",
+      "sha256": "e4913b0c5b414e56a99154bd421e0214d3f2d90a1c16170f6eef480e97dcca1d",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-d-three-owners.png",
+      "sha256": "85b7131653ade70d920b9ca137614403b2e395d11f99c73f640b804a79ac43ab",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_render",
+      "file": "frames/objectshard-retired-material-anchor.png",
+      "sha256": "9a6912cafb5a42f5adf1a58926873d552afe2c1358c5047affc030d880a89f8a",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_finisher_render",
+      "file": "frames-finisher/objectshard-001r-extended-320.png",
+      "sha256": "14f82b8098b06fe69d7066998b011b541e102313399498d7e6060fd230f621a1",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_finisher_render",
+      "file": "frames-finisher/objectshard-001r-external-fire.png",
+      "sha256": "986d07d0d88e17dd56386143dac0cdd16ff161a398f33e0484b5fce8bb5fbc72",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_finisher_render",
+      "file": "frames-finisher/objectshard-001r-irregular-256.png",
+      "sha256": "996db6f765685dfb8a595ebf7814ee9b8332cdfdd05b8f29f02d50319bdb6f49",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_finisher_render",
+      "file": "frames-finisher/objectshard-001r-main-priority.png",
+      "sha256": "06ff42a20a9c76b59cd3cdce820186f73eacd85fdb9535f13a0e7fc9fbb1a4b6",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_finisher_render",
+      "file": "frames-finisher/objectshard-001r-resting-erosion.png",
+      "sha256": "3f495454f1545640629552f22421144aac9b64ddae574e44efd9b23f801cb049",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-extended-320.png",
+      "sha256": "82a0e78874c4daf8bc3763b82b729b04f6782032b7439efa9c4c1c404d5eca18",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-external-fire.png",
+      "sha256": "3917ce1bd90e621bcd3c5e926cdf855b3813f4088880e4a00fcd5f529ad01d18",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-falling.png",
+      "sha256": "b91b2a27f38f2fed771f05ce91948133c6859c851a43f1b83edfa19065d28407",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-main-structure-priority.png",
+      "sha256": "c56bd279568b889267bc576179cc4d3408d5010b7eba8bff9be483b021abf418",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-native-supported.png",
+      "sha256": "e1a1efba6b208fbe2fe050b60af37d4c3cc28e276840fb00274dda8691e1632f",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-settled-after-erosion.png",
+      "sha256": "b8c0c6521caa679989a1cf144163e72288d8197ab705d9b96be2b5c0da80f289",
+      "width": 1280,
+      "height": 840
+    },
+    {
+      "case": "objectshard_worker_render",
+      "file": "frames-worker/objectshard-m3-water-sand-pocket.png",
+      "sha256": "79c75d9d2dcf6263e715127471670f4607672f7cb40641fcf3d59f5513459439",
+      "width": 1280,
+      "height": 840
+    }
+  ],
+  "independently_viewed": [
+    "frames-worker/objectshard-m3-falling.png",
+    "frames-worker/objectshard-m3-settled-after-erosion.png",
+    "frames-worker/objectshard-m3-external-fire.png"
+  ],
+  "observations": [
+    "Falling image: awake526-cell body, geometryrevision1/six shapes, tick21 and77physicalsegments",
+    "Settled-after-erosion image: visibly rotated resting525-cell body, natural sleeping, geometryrevision2/sevenshapes, tick471/1877segments",
+    "ExternalFire image:256x160 real flame fixture,83accepted authoredFire attempts and explicit occupied-cell refusal; native31/published21 outstanding receipt is visible andRapier paused atbarrier, not disguised as matching clocks"
+  ],
+  "scope": "Actual hosted renderer output and source-bound report/image hashes, not owner physical acceptance or monitor motion assessment"
+}

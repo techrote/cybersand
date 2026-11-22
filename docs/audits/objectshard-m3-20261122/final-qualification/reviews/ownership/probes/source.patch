@@ -1,0 +1,153 @@
+diff --git a/godot/scripts/feature_navigation.gd b/godot/scripts/feature_navigation.gd
+index 63629f7e3..bbb8dfdae 100644
+--- a/godot/scripts/feature_navigation.gd
++++ b/godot/scripts/feature_navigation.gd
+@@ -19,9 +19,42 @@ func return_to_launcher() -> void:
+ 	# its replacement. Navigation must cancel that pending recovery as well.
+ 	if (scene != null and scene.scene_file_path != "res://feature_launcher.tscn") \
+ 		or tree.has_meta("cybersand_playable_recovery"):
+-		if scene != null and scene.has_method("cancel_playable_session_recovery"):
+-			scene.cancel_playable_session_recovery()
+-		if tree.has_meta("cybersand_playable_recovery"):
+-			tree.remove_meta("cybersand_playable_recovery")
+-		if tree.has_meta("cybersand_feature"): tree.remove_meta("cybersand_feature")
+-		tree.change_scene_to_file.call_deferred("res://feature_launcher.tscn")
++		# An asynchronous owner must remain in the tree until its worker has
++		# disposed native inventory and main has released its physics RIDs.
++		# Other scenes retain their existing navigation path.
++		if scene != null and scene.has_method("request_feature_launcher_navigation"):
++			scene.request_feature_launcher_navigation()
++			return
++		_queue_return_to_launcher(tree, scene)
++
++
++func complete_feature_launcher_navigation(expected_scene: Node) -> bool:
++	if OS.has_feature("web") or bool(ProjectSettings.get_setting("cybersand/web_demo", false)):
++		return false
++	var tree: SceneTree = get_tree()
++	# A late completion from a retired scene cannot replace its successor.
++	if not is_instance_valid(expected_scene) or tree.current_scene != expected_scene:
++		return false
++	if not expected_scene.has_method("feature_launcher_navigation_ready") \
++		or not expected_scene.feature_launcher_navigation_ready():
++		return false
++	_queue_return_to_launcher(tree, expected_scene)
++	return true
++
++
++func _queue_return_to_launcher(tree: SceneTree, scene: Node) -> void:
++	if scene != null and scene.has_method("cancel_playable_session_recovery"):
++		scene.cancel_playable_session_recovery()
++	if tree.has_meta("cybersand_playable_recovery"):
++		tree.remove_meta("cybersand_playable_recovery")
++	if tree.has_meta("cybersand_feature"): tree.remove_meta("cybersand_feature")
++	_finish_return_if_current.call_deferred(scene.get_instance_id() if scene != null else 0)
++
++
++func _finish_return_if_current(expected_scene_id: int) -> void:
++	var tree: SceneTree = get_tree()
++	var scene: Node = tree.current_scene
++	var current_id: int = scene.get_instance_id() if scene != null else 0
++	if current_id != expected_scene_id:
++		return
++	tree.change_scene_to_file("res://feature_launcher.tscn")
+diff --git a/godot/scripts/object_shard_worker_rehearsal.gd b/godot/scripts/object_shard_worker_rehearsal.gd
+index 8db6bfdff..80d7edfbc 100644
+--- a/godot/scripts/object_shard_worker_rehearsal.gd
++++ b/godot/scripts/object_shard_worker_rehearsal.gd
+@@ -30,6 +30,9 @@ var pump_selector: OptionButton
+ var receipt_pump_usec: int = 4000
+ var running: bool = false
+ var closing: bool = false
++var close_destination: String = ""
++var close_dispatched: bool = false
++var previous_auto_accept_quit: bool = true
+ var queued_cuts: Array[Dictionary] = []
+ var last_publication: int = -1
+ var opened_usec: int = 0
+@@ -62,6 +65,7 @@ var ui_sample_totals: Dictionary = {}
+ 
+ 
+ func _ready() -> void:
++	previous_auto_accept_quit = get_tree().auto_accept_quit
+ 	get_tree().auto_accept_quit = false
+ 	get_window().title = "CyberSand · ObjectShard continuous play · Draft / HOLD"
+ 	get_window().size = Vector2i(1280, 840)
+@@ -269,10 +273,10 @@ func _process(_delta: float) -> void:
+ 	host.poll(not delay_box.button_pressed or closing or replacing_owner or loading or host.state == "Resetting")
+ 	if closing:
+ 		if host.state == "Closed":
+-			get_tree().quit()
++			_finish_exit()
+ 		elif host.state == "ShutdownHeld":
+ 			closing = false
+-			report_label.text = host.status + " · Export evidence before retrying shutdown."
++			report_label.text = host.status + " · Owner retained. Export evidence, then retry F2 or window close."
+ 		return
+ 	if replacing_owner:
+ 		if host.state == "Closed":
+@@ -682,7 +686,60 @@ func _export_and_open() -> void:
+ 
+ 
+ func _notification(what: int) -> void:
+-	if what == NOTIFICATION_WM_CLOSE_REQUEST and not closing:
+-		closing = true
+-		running = false
+-		host.close()
++	if what == NOTIFICATION_WM_CLOSE_REQUEST:
++		_request_exit("quit")
++
++
++func request_feature_launcher_navigation() -> void:
++	_request_exit("launcher")
++
++
++func feature_launcher_navigation_ready() -> bool:
++	return closing and close_destination == "launcher" and host.state == "Closed" and not close_dispatched
++
++
++func _request_exit(destination: String) -> void:
++	if close_dispatched:
++		return
++	if closing:
++		# Process exit takes precedence over an already-requested launcher handoff.
++		if destination == "quit":
++			close_destination = "quit"
++		return
++	close_destination = destination
++	closing = true
++	running = false
++	run_button.text = "Resume"
++	# Navigation supersedes a pending reset. Never open an intermediate owner
++	# after the user has asked to leave this scene.
++	replacing_owner = false
++	pending_preset.clear()
++	delay_box.set_pressed_no_signal(false)
++	pointer_cancelled += queued_cuts.size()
++	host.capture.write("event", int(host.frame.get("tick", 0)),
++		{"kind": "ExplicitUIExit", "destination": destination, "cancelled_pointer_intents": queued_cuts.size()})
++	queued_cuts.clear()
++	host.close()
++	report_label.text = "Disposing the native owner before " + ("returning to the launcher." if destination == "launcher" else "closing the window.")
++
++
++func _finish_exit() -> void:
++	if close_dispatched or host.state != "Closed":
++		return
++	if close_destination == "launcher":
++		var navigation: Node = get_node_or_null("/root/FeatureNavigation")
++		if navigation == null or get_tree().current_scene != self:
++			closing = false
++			report_label.text = "Owner disposed; launcher handoff refused because this is no longer the current scene."
++			return
++		if not navigation.complete_feature_launcher_navigation(self):
++			closing = false
++			report_label.text = "Owner disposed; launcher handoff refused. Retry F2."
++			return
++		close_dispatched = true
++		get_tree().auto_accept_quit = previous_auto_accept_quit
++		set_process(false)
++	else:
++		close_dispatched = true
++		get_tree().auto_accept_quit = previous_auto_accept_quit
++		get_tree().quit()

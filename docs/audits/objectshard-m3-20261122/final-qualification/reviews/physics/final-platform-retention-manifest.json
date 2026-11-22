@@ -1,0 +1,69 @@
+{
+  "schema": "independent-final-platform-review-retention-manifest-v1",
+  "reviewer": "/root/review_physics",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "files": [
+    {
+      "path": "build/review-physics/audit_final_platform.py",
+      "bytes": 22150,
+      "sha256": "ad12b2c2791f984f13f4c96331cbcd65de11b32f3b1dc3eb6574abc56d7ad60c"
+    },
+    {
+      "path": "build/review-physics/audit_platform_physics.py",
+      "bytes": 31830,
+      "sha256": "3a3824de33590139972b2c42f96a89c2188f53b3e3d555672f32576d9c7359b7"
+    },
+    {
+      "path": "build/review-physics/compose_final_platform_review.py",
+      "bytes": 20569,
+      "sha256": "b5914bea156e844ad991e30f3c7d13b236f5fbc4d31fc972a2f7cfd34d17b208"
+    },
+    {
+      "path": "build/review-physics/final-windows-audit-config.json",
+      "bytes": 5825,
+      "sha256": "36a5dda4c374c1d9777b408cfc4f82bf14e5d7dc7a721cc952debdc6e421d239"
+    },
+    {
+      "path": "build/review-physics/final-linux-audit-config.json",
+      "bytes": 5246,
+      "sha256": "4d7c362d0ae524534a0c594385f139e3a39826d9f2ad73844d3c96868c89be3e"
+    },
+    {
+      "path": "build/review-physics/platform-windows-final-e034-review.json",
+      "bytes": 97083,
+      "sha256": "44dfd53ae642084864a5c24bdcd73ebbf4d42cfaa3e9f51156a8323c0f093166"
+    },
+    {
+      "path": "build/review-physics/platform-linux-final-e034-review.json",
+      "bytes": 80065,
+      "sha256": "7574e581ead459d245f6428e14e8eee507795b445bc4dc00002851060e514eda"
+    },
+    {
+      "path": "build/review-physics/final-publication-source-review.json",
+      "bytes": 9620,
+      "sha256": "7f323e30e63f6ce1f4eb94d0cc489f9f2af45e921f52a8e7031b2a44cd235593"
+    },
+    {
+      "path": "build/review-physics/final-source-platform-addendum.json",
+      "bytes": 70466,
+      "sha256": "2af91e1875eb79cd96895252f81e3489f1eae03c5f0e4976424a3bd9e90fbfc9"
+    },
+    {
+      "path": "build/review-physics/final-source-platform-addendum.md",
+      "bytes": 10764,
+      "sha256": "9d06b08048792bfe3c9784f76af5600586fe847c383bcbaa0786c9156e4e9400"
+    },
+    {
+      "path": "build/review-physics/review-current-state.json",
+      "bytes": 4742,
+      "sha256": "0783479c9ada3c06df159590e66f1d11641fad591eefca7a757825cfd69bd48e"
+    }
+  ],
+  "retention_instruction": "Copy these reviewer-owned files byte-for-byte with their original path-to-retained-name custody mapping. The two audit configs name the original authenticated artifacts under build/m3-platform. Keep raw artifacts and API/member custody outside these compact review files. Earlier source probes and adverse logs are already bound by probe-retention-manifest.json and exact final local review.",
+  "standalone_reaudit": [
+    "python3 build/review-physics/audit_final_platform.py build/review-physics/final-windows-audit-config.json",
+    "python3 build/review-physics/audit_final_platform.py build/review-physics/final-linux-audit-config.json"
+  ],
+  "scope": "These artifact audits execute no Godot/native candidate code and edit no product files. Stored counts of repeated row consistency assertions are not extra runtime test cases."
+}

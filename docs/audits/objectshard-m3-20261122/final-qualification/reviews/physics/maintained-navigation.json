@@ -1,0 +1,2017 @@
+{
+  "cases": [
+    "active_pending_repeated",
+    "naturally_sleeping",
+    "opening",
+    "reset_superseded",
+    "held_interval",
+    "stop_delivery_faults",
+    "already_closed_prior_policy",
+    "window_close_upgrade"
+  ],
+  "checks": 135,
+  "failures": 0,
+  "observations": [
+    {
+      "check": "Actual project FeatureNavigation autoload exists",
+      "passed": true
+    },
+    {
+      "check": "Actual feature launcher is the current scene",
+      "passed": true
+    },
+    {
+      "check": "Actual feature launcher opens the native rehearsal",
+      "passed": true
+    },
+    {
+      "check": "Actual support removal promotes native Wood before active navigation",
+      "passed": true
+    },
+    {
+      "check": "F2 active fixture contains an awake real Rapier body",
+      "passed": true
+    },
+    {
+      "check": "An open owner cannot complete navigation without disposal",
+      "passed": true
+    },
+    {
+      "check": "A foreign scene cannot authorize current-owner replacement",
+      "passed": true
+    },
+    {
+      "check": "Actual native tick is admitted before navigation",
+      "passed": true
+    },
+    {
+      "check": "F2 begins with a real native receipt outstanding",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "active_pending_repeated: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 1,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 2258,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 35475988,
+          "maximum_native_execute_usec": 647,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 174,
+          "maximum_reply_age_usec": 17989,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 4160,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 26,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 190754,
+          "session": 1,
+          "snapshot_copies": 57,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 1,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 26,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 485602
+          },
+          "transport_generation": 485602
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 44,
+          "bytes": 85565,
+          "complete_prefix": true,
+          "dropped_action_records": 0,
+          "io_usec": 11596,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "user://ObjectShardPreflightReports/actions-1795333200-485596-session-1.jsonl",
+          "reason": "Recording from session start",
+          "records": 200,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 485602,
+        "host_state": "Awaiting:tick",
+        "pending": {
+          "ok": true,
+          "operation": "tick",
+          "outcome": "Queued",
+          "purpose": "tick",
+          "sent_usec": 747479,
+          "sequence": 56,
+          "session": 1,
+          "transport_generation": 485602
+        },
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [
+            {
+              "active": true,
+              "angular_velocity": 0.0,
+              "backend_rotation": 0.0,
+              "body_generation": 1,
+              "com_x": 14.5380229949951,
+              "com_y": 13.2585554122925,
+              "generation": 1,
+              "geometry_digest": "14709829798384320201",
+              "geometry_revision": 1,
+              "id": 1,
+              "inertia": 61277.2421875,
+              "last_geometry_step": 1,
+              "last_geometry_usec": 0,
+              "mass": 526.0,
+              "nominal_rotation_headroom": 0.2,
+              "nominal_translation_headroom": 3.95666666825612,
+              "reported_contacts": 0,
+              "rotation": 0.0,
+              "shape_count": 6,
+              "sleeping": false,
+              "vx": 0.0,
+              "vy": 2.59999990463257,
+              "x": 83.0,
+              "y": 60.0230140686035
+            }
+          ],
+          "events": [
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "BodyActivated",
+              "physics_step": 1
+            }
+          ],
+          "last_completed_semantic_tick": 3,
+          "last_error": "",
+          "last_physics_session": 1,
+          "last_sampled_pose_serial": 7,
+          "motion": {
+            "applied_delta": 0.0166666666666667,
+            "applied_segments": 4,
+            "completed_delta": 0.0166666666666667,
+            "maximum_substeps": 16,
+            "operation_sequence": 2,
+            "requested_delta": 0.0166666666666667,
+            "substeps": 4
+          },
+          "motion_phase": "Completed",
+          "motion_refused": false,
+          "operation_sequence": 2,
+          "physics_steps": 5,
+          "segment_sequence": 4,
+          "session": 1
+        },
+        "session": 1,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 56,
+          "last_native_call_usec": 2027,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 35475988,
+          "maximum_native_execute_usec": 647,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 174,
+          "maximum_reply_age_usec": 17989,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 4160,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 26,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 1,
+          "snapshot_copies": 56,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 485602
+        }
+      },
+      "case": "active_pending_repeated"
+    },
+    {
+      "check": "Re-entry starts a new owner after active-body disposal",
+      "passed": true
+    },
+    {
+      "check": "New entry has a different worker and does not overlap the stopped old owner",
+      "passed": true
+    },
+    {
+      "check": "A stale deferred navigation completion cannot replace the new scene",
+      "passed": true
+    },
+    {
+      "check": "Re-entered scene promotes its own genuine component",
+      "passed": true
+    },
+    {
+      "check": "Second body reaches natural Rapier sleep without forcing sleep",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "naturally_sleeping: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 2097,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 38138302,
+          "maximum_native_execute_usec": 3443,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 4369,
+          "maximum_reply_age_usec": 54002,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 9186,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 28,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 3,
+          "snapshot_copies": 1982,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 3,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 28,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 786575
+          },
+          "transport_generation": 786575
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 44,
+          "bytes": 1779612,
+          "complete_prefix": true,
+          "dropped_action_records": 0,
+          "io_usec": 250168,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "user://ObjectShardPreflightReports/actions-1795333200-786569-session-3.jsonl",
+          "reason": "Recording from session start",
+          "records": 4051,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 786575,
+        "host_state": "Idle",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [
+            {
+              "active": true,
+              "angular_velocity": 0.0,
+              "backend_rotation": 1.57080435752869,
+              "body_generation": 1,
+              "com_x": 14.5380229949951,
+              "com_y": 13.2585554122925,
+              "generation": 1,
+              "geometry_digest": "14709829798384320201",
+              "geometry_revision": 1,
+              "id": 1,
+              "inertia": 61277.2421875,
+              "last_geometry_step": 1,
+              "last_geometry_usec": 0,
+              "mass": 526.0,
+              "nominal_rotation_headroom": 0.2,
+              "nominal_translation_headroom": 4.0,
+              "reported_contacts": 0,
+              "rotation": 1.57080435752869,
+              "shape_count": 6,
+              "sleeping": true,
+              "vx": 0.0,
+              "vy": 0.0,
+              "x": 141.14176940918,
+              "y": 81.0001525878906
+            }
+          ],
+          "events": [
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "BodyActivated",
+              "physics_step": 1
+            },
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "Sleeping",
+              "physics_step": 1289
+            }
+          ],
+          "last_completed_semantic_tick": 324,
+          "last_error": "",
+          "last_physics_session": 3,
+          "last_sampled_pose_serial": 1611,
+          "motion": {
+            "applied_delta": 0.0166666666666667,
+            "applied_segments": 4,
+            "completed_delta": 0.0166666666666667,
+            "maximum_substeps": 16,
+            "operation_sequence": 323,
+            "requested_delta": 0.0166666666666667,
+            "substeps": 4
+          },
+          "motion_phase": "Completed",
+          "motion_refused": false,
+          "operation_sequence": 323,
+          "physics_steps": 1289,
+          "segment_sequence": 1288,
+          "session": 3
+        },
+        "session": 3,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 2097,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 38138302,
+          "maximum_native_execute_usec": 3443,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 4369,
+          "maximum_reply_age_usec": 54002,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 9186,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 28,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 3,
+          "snapshot_copies": 1982,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 786575
+        }
+      },
+      "case": "naturally_sleeping"
+    },
+    {
+      "check": "Actual launcher constructs the opening owner",
+      "passed": true
+    },
+    {
+      "check": "Startup receipt remains genuinely unconsumed at F2",
+      "passed": true
+    },
+    {
+      "check": "opening: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "opening: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "opening: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "opening: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "opening: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "opening: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "opening: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "opening: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "opening: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "opening: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "opening: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "opening: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "opening: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "opening: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 1,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 37335634,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 0,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2437,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 30,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 321756,
+          "session": 5,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 5,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 30,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 10217535
+          },
+          "transport_generation": 10217535
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 0,
+          "bytes": 0,
+          "complete_prefix": false,
+          "dropped_action_records": 0,
+          "io_usec": 0,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "",
+          "reason": "Capture not started",
+          "records": 0,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 10217535,
+        "host_state": "Opening",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [],
+          "events": [],
+          "last_completed_semantic_tick": -1,
+          "last_error": "",
+          "last_physics_session": 0,
+          "last_sampled_pose_serial": 0,
+          "motion": {},
+          "motion_phase": "Idle",
+          "motion_refused": false,
+          "operation_sequence": 0,
+          "physics_steps": 0,
+          "segment_sequence": 0,
+          "session": 0
+        },
+        "session": 0,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 0,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 0,
+          "maximum_reply_value_bytes": 0,
+          "maximum_snapshot_usec": 0,
+          "maximum_snapshot_value_bytes": 0,
+          "owner_thread": 0,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 0,
+          "snapshot_copies": 0,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10217535
+        }
+      },
+      "case": "opening"
+    },
+    {
+      "check": "Reset-navigation fixture opens normally",
+      "passed": true
+    },
+    {
+      "check": "Real UI reset has an outstanding replacement preset",
+      "passed": true
+    },
+    {
+      "check": "F2 cancels the pending replacement before any new World can open",
+      "passed": true
+    },
+    {
+      "check": "Navigation keeps the original owner while reset disposal is outstanding",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "reset_superseded: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 37796446,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 885,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 1976,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 32,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 7,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 7,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 32,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 10268799
+          },
+          "transport_generation": 10268799
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 0,
+          "bytes": 1298,
+          "complete_prefix": true,
+          "dropped_action_records": 0,
+          "io_usec": 105,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "user://ObjectShardPreflightReports/actions-1795333210-10268793-session-7.jsonl",
+          "reason": "Recording from session start",
+          "records": 2,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 10268799,
+        "host_state": "Idle",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [],
+          "events": [],
+          "last_completed_semantic_tick": -1,
+          "last_error": "",
+          "last_physics_session": 7,
+          "last_sampled_pose_serial": 0,
+          "motion": {},
+          "motion_phase": "Idle",
+          "motion_refused": false,
+          "operation_sequence": 0,
+          "physics_steps": 0,
+          "segment_sequence": 0,
+          "session": 7
+        },
+        "session": 7,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 37796446,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 885,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 1976,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 32,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 7,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10268799
+        }
+      },
+      "case": "reset_superseded"
+    },
+    {
+      "check": "Held-interval fixture contains an actual native and Rapier body",
+      "passed": true
+    },
+    {
+      "check": "Held fixture starts from a real pending native operation",
+      "passed": true
+    },
+    {
+      "check": "An expired real pending receipt enters the production Held state",
+      "passed": true
+    },
+    {
+      "check": "held_interval: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "held_interval: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "held_interval: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "held_interval: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "held_interval: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "held_interval: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "held_interval: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "held_interval: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "held_interval: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "held_interval: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "held_interval: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "held_interval: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "held_interval: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "held_interval: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 1,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 2260,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 39605354,
+          "maximum_native_execute_usec": 497,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 116,
+          "maximum_reply_age_usec": 3226,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2643,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 34,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 190754,
+          "session": 9,
+          "snapshot_copies": 57,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 9,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 34,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 10322380
+          },
+          "transport_generation": 10322380
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 44,
+          "bytes": 88691,
+          "complete_prefix": true,
+          "dropped_action_records": 0,
+          "io_usec": 10151,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "user://ObjectShardPreflightReports/actions-1795333210-10322375-session-9.jsonl",
+          "reason": "Recording from session start",
+          "records": 202,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 10322380,
+        "host_state": "Held",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [
+            {
+              "active": true,
+              "angular_velocity": 0.0,
+              "backend_rotation": 0.0,
+              "body_generation": 1,
+              "com_x": 14.5380229949951,
+              "com_y": 13.2585554122925,
+              "generation": 1,
+              "geometry_digest": "14709829798384320201",
+              "geometry_revision": 1,
+              "id": 1,
+              "inertia": 61277.2421875,
+              "last_geometry_step": 1,
+              "last_geometry_usec": 0,
+              "mass": 526.0,
+              "nominal_rotation_headroom": 0.2,
+              "nominal_translation_headroom": 3.95666666825612,
+              "reported_contacts": 0,
+              "rotation": 0.0,
+              "shape_count": 6,
+              "sleeping": false,
+              "vx": 0.0,
+              "vy": 2.59999990463257,
+              "x": 83.0,
+              "y": 60.0230140686035
+            }
+          ],
+          "events": [
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "BodyActivated",
+              "physics_step": 1
+            }
+          ],
+          "last_completed_semantic_tick": 3,
+          "last_error": "",
+          "last_physics_session": 9,
+          "last_sampled_pose_serial": 7,
+          "motion": {
+            "applied_delta": 0.0166666666666667,
+            "applied_segments": 4,
+            "completed_delta": 0.0166666666666667,
+            "maximum_substeps": 16,
+            "operation_sequence": 2,
+            "requested_delta": 0.0166666666666667,
+            "substeps": 4
+          },
+          "motion_phase": "Completed",
+          "motion_refused": false,
+          "operation_sequence": 2,
+          "physics_steps": 5,
+          "segment_sequence": 4,
+          "session": 9
+        },
+        "session": 9,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 56,
+          "last_native_call_usec": 1977,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 39605354,
+          "maximum_native_execute_usec": 416,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 116,
+          "maximum_reply_age_usec": 3226,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2643,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 34,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 9,
+          "snapshot_copies": 56,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10322380
+        }
+      },
+      "case": "held_interval"
+    },
+    {
+      "check": "Stop-delivery fixture retains actual body RIDs until acknowledgement",
+      "passed": true
+    },
+    {
+      "check": "Native stop actually completes before controlled delivery faults are injected",
+      "passed": true
+    },
+    {
+      "check": "A refused stop receipt retains the scene and offers explicit retry",
+      "passed": true
+    },
+    {
+      "check": "Unaccepted terminal status retains main RIDs and the unjoined thread handle",
+      "passed": true
+    },
+    {
+      "check": "ShutdownHeld cannot bypass the final navigation gate",
+      "passed": true
+    },
+    {
+      "check": "Export remains usable while navigation is held",
+      "passed": true
+    },
+    {
+      "check": "Missing stopped-status delivery reaches the bounded shutdown hold without replacing the scene",
+      "passed": true
+    },
+    {
+      "check": "Deadline expiry does not release unacknowledged body resources",
+      "passed": true
+    },
+    {
+      "actual_terminal": {
+        "cancelled_control": 0,
+        "cancelled_data": 0,
+        "disposal": {
+          "detail": "accepted",
+          "generation": 0,
+          "id": 0,
+          "ok": true,
+          "outcome": "Accepted",
+          "phase": "Empty",
+          "session": 0,
+          "transaction": 0
+        },
+        "disposed_session": 11,
+        "ok": true,
+        "outcome": "Stopped",
+        "owner_thread": 36,
+        "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+        "transport_generation": 10588442
+      },
+      "fault_scope": "Real native stop completed first. Only terminal/stopped delivery status was injected under its mutex; native disposal refusal is not claimed."
+    },
+    {
+      "check": "stop_delivery_faults: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "stop_delivery_faults: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 2088,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 40829082,
+          "maximum_native_execute_usec": 529,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 70,
+          "maximum_reply_age_usec": 2820,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2126,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 36,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 11,
+          "snapshot_copies": 56,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 11,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 36,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 10588442
+          },
+          "transport_generation": 10588442
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 44,
+          "bytes": 86385,
+          "complete_prefix": true,
+          "dropped_action_records": 0,
+          "io_usec": 9757,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "user://ObjectShardPreflightReports/actions-1795333210-10588436-session-11.jsonl",
+          "reason": "Recording from session start",
+          "records": 199,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 10588442,
+        "host_state": "Idle",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [
+            {
+              "active": true,
+              "angular_velocity": 0.0,
+              "backend_rotation": 0.0,
+              "body_generation": 1,
+              "com_x": 14.5380229949951,
+              "com_y": 13.2585554122925,
+              "generation": 1,
+              "geometry_digest": "14709829798384320201",
+              "geometry_revision": 1,
+              "id": 1,
+              "inertia": 61277.2421875,
+              "last_geometry_step": 1,
+              "last_geometry_usec": 0,
+              "mass": 526.0,
+              "nominal_rotation_headroom": 0.2,
+              "nominal_translation_headroom": 3.95666666825612,
+              "reported_contacts": 0,
+              "rotation": 0.0,
+              "shape_count": 6,
+              "sleeping": false,
+              "vx": 0.0,
+              "vy": 2.59999990463257,
+              "x": 83.0,
+              "y": 60.0230140686035
+            }
+          ],
+          "events": [
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "BodyActivated",
+              "physics_step": 1
+            }
+          ],
+          "last_completed_semantic_tick": 3,
+          "last_error": "",
+          "last_physics_session": 11,
+          "last_sampled_pose_serial": 6,
+          "motion": {
+            "applied_delta": 0.0166666666666667,
+            "applied_segments": 4,
+            "completed_delta": 0.0166666666666667,
+            "maximum_substeps": 16,
+            "operation_sequence": 2,
+            "requested_delta": 0.0166666666666667,
+            "substeps": 4
+          },
+          "motion_phase": "Completed",
+          "motion_refused": false,
+          "operation_sequence": 2,
+          "physics_steps": 5,
+          "segment_sequence": 4,
+          "session": 11
+        },
+        "session": 11,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 2088,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 40829082,
+          "maximum_native_execute_usec": 529,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 70,
+          "maximum_reply_age_usec": 2820,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2126,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 36,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 11,
+          "snapshot_copies": 56,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10588442
+        }
+      },
+      "case": "stop_delivery_faults"
+    },
+    {
+      "check": "An alternate prior quit policy enters the actual scene",
+      "passed": true
+    },
+    {
+      "check": "Already-closed navigation fixture has completed real disposal",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: F2 retains the scene while disposal is pending",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: navigation has an explicit paused launcher destination",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: actual support and erosion controls are present",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: post-exit button and pointer input cannot enter a queue that navigation will discard",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: actual autoload completes the real launcher handoff",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: old scene is removed after shutdown",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: host reaches Closed before handoff",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: actual exclusive worker reports stopped",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: stopped worker was joined by the production host",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: terminal receipt confirms native disposal",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: body and terrain RID registries are empty",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: main physics space was released",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: prospective trace is closed",
+      "passed": true
+    },
+    {
+      "check": "already_closed_prior_policy: prior SceneTree quit policy is restored",
+      "passed": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": false,
+        "body_count": 0,
+        "space_valid": false,
+        "state": "Closed",
+        "terrain_count": 0,
+        "thread_started": false,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 40431844,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 6293,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2102,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 38,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 13,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": true,
+          "stopped": true,
+          "terminal": {
+            "cancelled_control": 0,
+            "cancelled_data": 0,
+            "disposal": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "disposed_session": 13,
+            "ok": true,
+            "outcome": "Stopped",
+            "owner_thread": 38,
+            "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+            "transport_generation": 10955781
+          },
+          "transport_generation": 10955781
+        }
+      },
+      "before": {
+        "capture": {
+          "action_window": 0,
+          "bytes": 1299,
+          "complete_prefix": true,
+          "dropped_action_records": 0,
+          "io_usec": 101,
+          "max_bytes": 33554432,
+          "max_records": 100000,
+          "path": "user://ObjectShardPreflightReports/actions-1795333211-10955773-session-13.jsonl",
+          "reason": "Recording from session start",
+          "records": 2,
+          "schema": "objectshard-action-trace-v1"
+        },
+        "generation": 10955781,
+        "host_state": "Idle",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [],
+          "events": [],
+          "last_completed_semantic_tick": -1,
+          "last_error": "",
+          "last_physics_session": 13,
+          "last_sampled_pose_serial": 0,
+          "motion": {},
+          "motion_phase": "Idle",
+          "motion_refused": false,
+          "operation_sequence": 0,
+          "physics_steps": 0,
+          "segment_sequence": 0,
+          "session": 13
+        },
+        "session": 13,
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 40431844,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 6293,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2102,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 38,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 13,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10955781
+        }
+      },
+      "case": "already_closed_prior_policy"
+    },
+    {
+      "check": "Navigation restores the captured false policy instead of hardcoding true",
+      "passed": true
+    },
+    {
+      "check": "Actual window-close upgrade child exits successfully",
+      "passed": true
+    },
+    {
+      "check": "Child receipt proves native/RID shutdown before actual process exit",
+      "passed": true
+    },
+    {
+      "case": "window_close_upgrade",
+      "child_exit_code": 0,
+      "child_output_log": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/maintained-navigation-quit-child.json.log",
+      "child_output_sha256": "ddefc974fe444df2ec1b16e3787b412082e463e759cafa461ce0398197f63acf",
+      "child_report": {
+        "checks": 18,
+        "failures": 0,
+        "observations": [
+          {
+            "check": "Actual project FeatureNavigation autoload exists",
+            "passed": true
+          },
+          {
+            "check": "Actual feature launcher is the current scene",
+            "passed": true
+          },
+          {
+            "check": "Quit child opens a real moving-owner fixture",
+            "passed": true
+          },
+          {
+            "check": "F2 begins asynchronous launcher disposal in child",
+            "passed": true
+          },
+          {
+            "check": "Window close upgrades pending navigation to process exit",
+            "passed": true
+          },
+          {
+            "check": "Repeated F2 cannot downgrade process exit",
+            "passed": true
+          },
+          {
+            "check": "Child native owner actually stops before delayed terminal delivery",
+            "passed": true
+          },
+          {
+            "check": "Child holds the scene when stopped-status delivery misses its deadline",
+            "passed": true
+          },
+          {
+            "check": "F2 retry after ShutdownHeld preserves the earlier window-close intent",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: host reaches Closed before handoff",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: actual exclusive worker reports stopped",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: stopped worker was joined by the production host",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: terminal receipt confirms native disposal",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: body and terrain RID registries are empty",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: main physics space was released",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: prospective trace is closed",
+            "passed": true
+          },
+          {
+            "check": "window_close_upgrade: prior SceneTree quit policy is restored",
+            "passed": true
+          },
+          {
+            "after": {
+              "auto_accept_quit": true,
+              "body_count": 0.0,
+              "space_valid": false,
+              "state": "Closed",
+              "terrain_count": 0.0,
+              "thread_started": false,
+              "worker": {
+                "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+                "control_results": 0.0,
+                "data_results": 0.0,
+                "inflight_sequence": 0.0,
+                "last_native_call_usec": 2129.0,
+                "limits": {
+                  "command_value_bytes": 65536.0,
+                  "control": 8.0,
+                  "control_results": 8.0,
+                  "data": 32.0,
+                  "data_results": 32.0,
+                  "edit_batch": 32.0,
+                  "native_total_shard_bbox_area": 12288.0,
+                  "native_world_area": 262144.0
+                },
+                "maximum_godot_static_bytes": 35482488.0,
+                "maximum_native_execute_usec": 729.0,
+                "maximum_pending": 1.0,
+                "maximum_queue_wait_usec": 105.0,
+                "maximum_reply_age_usec": 3399.0,
+                "maximum_reply_value_bytes": 321756.0,
+                "maximum_snapshot_usec": 2633.0,
+                "maximum_snapshot_value_bytes": 190194.0,
+                "owner_thread": 26.0,
+                "pending_control": 0.0,
+                "pending_data": 0.0,
+                "pending_reset_sequence": 0.0,
+                "retained_reply_value_bytes": 0.0,
+                "session": 1.0,
+                "snapshot_copies": 56.0,
+                "started": true,
+                "stop_requested": true,
+                "stopped": true,
+                "terminal": {
+                  "cancelled_control": 0.0,
+                  "cancelled_data": 0.0,
+                  "disposal": {
+                    "detail": "accepted",
+                    "generation": 0.0,
+                    "id": 0.0,
+                    "ok": true,
+                    "outcome": "Accepted",
+                    "phase": "Empty",
+                    "session": 0.0,
+                    "transaction": 0.0
+                  },
+                  "disposed_session": 1.0,
+                  "ok": true,
+                  "outcome": "Stopped",
+                  "owner_thread": 26.0,
+                  "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+                  "transport_generation": 818788.0
+                },
+                "transport_generation": 818788.0
+              }
+            },
+            "before": {
+              "capture": {
+                "action_window": 44.0,
+                "bytes": 85451.0,
+                "complete_prefix": true,
+                "dropped_action_records": 0.0,
+                "io_usec": 12338.0,
+                "max_bytes": 33554432.0,
+                "max_records": 100000.0,
+                "path": "user://ObjectShardPreflightReports/actions-1795333211-818783-session-1.jsonl",
+                "reason": "Recording from session start",
+                "records": 199.0,
+                "schema": "objectshard-action-trace-v1"
+              },
+              "generation": 818788.0,
+              "host_state": "Idle",
+              "pending": {},
+              "physics": {
+                "awaiting_native": false,
+                "bodies": [
+                  {
+                    "active": true,
+                    "angular_velocity": 0.0,
+                    "backend_rotation": 0.0,
+                    "body_generation": 1.0,
+                    "com_x": 14.5380229949951,
+                    "com_y": 13.2585554122925,
+                    "generation": 1.0,
+                    "geometry_digest": "14709829798384320201",
+                    "geometry_revision": 1.0,
+                    "id": 1.0,
+                    "inertia": 61277.2421875,
+                    "last_geometry_step": 1.0,
+                    "last_geometry_usec": 0.0,
+                    "mass": 526.0,
+                    "nominal_rotation_headroom": 0.2,
+                    "nominal_translation_headroom": 3.95666666825612,
+                    "reported_contacts": 0.0,
+                    "rotation": 0.0,
+                    "shape_count": 6.0,
+                    "sleeping": false,
+                    "vx": 0.0,
+                    "vy": 2.59999990463257,
+                    "x": 83.0,
+                    "y": 60.0230140686035
+                  }
+                ],
+                "events": [
+                  {
+                    "detail": {
+                      "geometry_revision": 1.0
+                    },
+                    "id": 1.0,
+                    "kind": "BodyActivated",
+                    "physics_step": 1.0
+                  }
+                ],
+                "last_completed_semantic_tick": 3.0,
+                "last_error": "",
+                "last_physics_session": 1.0,
+                "last_sampled_pose_serial": 6.0,
+                "motion": {
+                  "applied_delta": 0.0166666666666667,
+                  "applied_segments": 4.0,
+                  "completed_delta": 0.0166666666666667,
+                  "maximum_substeps": 16.0,
+                  "operation_sequence": 2.0,
+                  "requested_delta": 0.0166666666666667,
+                  "substeps": 4.0
+                },
+                "motion_phase": "Completed",
+                "motion_refused": false,
+                "operation_sequence": 2.0,
+                "physics_steps": 5.0,
+                "segment_sequence": 4.0,
+                "session": 1.0
+              },
+              "session": 1.0,
+              "worker": {
+                "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+                "control_results": 0.0,
+                "data_results": 0.0,
+                "inflight_sequence": 0.0,
+                "last_native_call_usec": 2129.0,
+                "limits": {
+                  "command_value_bytes": 65536.0,
+                  "control": 8.0,
+                  "control_results": 8.0,
+                  "data": 32.0,
+                  "data_results": 32.0,
+                  "edit_batch": 32.0,
+                  "native_total_shard_bbox_area": 12288.0,
+                  "native_world_area": 262144.0
+                },
+                "maximum_godot_static_bytes": 35482488.0,
+                "maximum_native_execute_usec": 729.0,
+                "maximum_pending": 1.0,
+                "maximum_queue_wait_usec": 105.0,
+                "maximum_reply_age_usec": 3399.0,
+                "maximum_reply_value_bytes": 321756.0,
+                "maximum_snapshot_usec": 2633.0,
+                "maximum_snapshot_value_bytes": 190194.0,
+                "owner_thread": 26.0,
+                "pending_control": 0.0,
+                "pending_data": 0.0,
+                "pending_reset_sequence": 0.0,
+                "retained_reply_value_bytes": 0.0,
+                "session": 1.0,
+                "snapshot_copies": 56.0,
+                "started": true,
+                "stop_requested": false,
+                "stopped": false,
+                "terminal": {},
+                "transport_generation": 818788.0
+              }
+            },
+            "case": "window_close_upgrade"
+          },
+          {
+            "check": "Actual process exit occurs only after disposal and policy restoration",
+            "passed": true
+          }
+        ],
+        "schema": "objectshard-worker-navigation-quit-child-v1",
+        "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+      }
+    },
+    {
+      "check": "Every required navigation lifecycle scenario completes",
+      "passed": true
+    }
+  ],
+  "schema": "objectshard-worker-navigation-test-v1",
+  "scope": "Actual autoload F2, real native/Rapier ownership, scene re-entry and child-process window close. Controlled stop-delivery faults are explicitly distinguished from native failures.",
+  "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+}

@@ -1,0 +1,178 @@
+{
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "main": {
+    "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed"
+  },
+  "prs": [
+    {
+      "pr": 726,
+      "url": "https://github.com/techrote/cybersand/pull/726",
+      "head": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "branch": "experiment/objectshard-001-m0-20261122",
+      "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "base_ref": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T03:50:27Z"
+    },
+    {
+      "pr": 728,
+      "url": "https://github.com/techrote/cybersand/pull/728",
+      "head": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "branch": "experiment/objectshard-001-m1-20261122",
+      "base": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "base_ref": "experiment/objectshard-001-m0-20261122",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T03:50:28Z"
+    },
+    {
+      "pr": 730,
+      "url": "https://github.com/techrote/cybersand/pull/730",
+      "head": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "branch": "experiment/objectshard-001-m2-20261122",
+      "base": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "base_ref": "experiment/objectshard-001-m1-20261122",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T03:50:30Z"
+    },
+    {
+      "pr": 738,
+      "url": "https://github.com/techrote/cybersand/pull/738",
+      "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "branch": "experiment/objectshard-001r-20261122",
+      "base": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "base_ref": "experiment/objectshard-001-m2-20261122",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T05:30:09Z"
+    },
+    {
+      "pr": 740,
+      "url": "https://github.com/techrote/cybersand/pull/740",
+      "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+      "branch": "experiment/pubpres-playability-003",
+      "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "base_ref": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T06:23:36Z"
+    },
+    {
+      "pr": 719,
+      "url": "https://github.com/techrote/cybersand/pull/719",
+      "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "branch": "experiment/pubpres-playability-001",
+      "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "base_ref": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T03:20:24Z"
+    },
+    {
+      "pr": 682,
+      "url": "https://github.com/techrote/cybersand/pull/682",
+      "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "branch": "codex/pubpres-integration-001",
+      "base": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+      "base_ref": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-21T10:40:55Z"
+    },
+    {
+      "pr": 734,
+      "url": "https://github.com/techrote/cybersand/pull/734",
+      "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+      "branch": "exp/gen006-ramcache-001-20261122",
+      "base": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+      "base_ref": "exp/gen006-persistent-areas-001-20261121",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T07:23:51Z"
+    },
+    {
+      "pr": 741,
+      "url": "https://github.com/techrote/cybersand/pull/741",
+      "head": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "base_ref": "experiment/objectshard-001r-20261122",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "owner": "techrote",
+      "updated_at": "2026-11-22T07:39:33Z"
+    }
+  ],
+  "read_only": true,
+  "refreshed_at": "2026-11-22T07:51:04Z",
+  "gen734_delta": {
+    "prior_head": "34606231677d4287e3f1ae595b6e2ce93cc6fa75",
+    "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+    "parents": [
+      "34606231677d4287e3f1ae595b6e2ce93cc6fa75"
+    ],
+    "files": [
+      ".github/workflows/gen006-ramcache-process-retirement.yml",
+      ".github/workflows/gen006-ramcache-qualification.yml",
+      "docs/audits/2026-11-22-gen006-ramcache.md",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "tools/ci/bounded_campaign_process.py",
+      "tools/ci/gen006_persistent_runtime_publication.py",
+      "tools/ci/gen006_ramcache_publish_request.json",
+      "tools/ci/gen006_ramcache_runtime_publication.py",
+      "tools/ci/run_persistent_area_residency_memory.py",
+      "tools/ci/test_bounded_campaign_process.py",
+      "tools/ci/test_gen006_ramcache_runtime_publication.py"
+    ],
+    "native_and_godot_delta_empty": true,
+    "scope": "Read-only CI/evidence changes only; no product interface changes or incorporation into ObjectShard.",
+    "verified_interfaces": {
+      "godot/native_extension/workbench_granular_coupling.inc": {
+        "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+        "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/workbench_physics_bridge.gd": {
+        "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+        "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/simulation_worker.gd": {
+        "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+        "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/persistent_areas_controller.gd": {
+        "git_blob": "21190ba3baddcaa41103bd94083fd7fc2f4dc1cd",
+        "sha256": "58c1252807995dcbf743e280c56a8067944ed8226d36aea6e8c05b52fe165b99",
+        "unchanged_since_prior_refresh": true
+      },
+      "godot/scripts/persistent_area_worker_protocol.gd": {
+        "git_blob": "26fe9e8aefa6c7f5128570883cb6f957fbe218c5",
+        "sha256": "784c919ff312a999bf2bfc22a3bfafa87816d2dd7e39272557767e8ddab77ca3",
+        "unchanged_since_prior_refresh": true
+      }
+    }
+  }
+}
