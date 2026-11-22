@@ -92,6 +92,7 @@ function Verify([string]$root,[string]$expected){
  Require-Commit $m.source_tree 'Source tree'
  Require-Hash $m.native_sha256 'Native runtime'
  $seen=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
+ $allowedPaths=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
  $entries=@($m.files_sha256.PSObject.Properties)
  if($entries.Count -lt 100){throw 'Incomplete file hash manifest'}
  foreach($e in $entries){
@@ -99,6 +100,7 @@ function Verify([string]$root,[string]$expected){
    if(-not $seen.Add($name)){throw "Duplicate manifest entry: $name"}
    Require-Hash ([string]$e.Value) "Manifest member $name"
    $path=Safe-Path $base $name
+   [void]$allowedPaths.Add([IO.Path]::GetFullPath($path))
    if(-not(Test-Path -LiteralPath $path -PathType Leaf)){throw "Missing package component: $name"}
    if((Hash $path) -ne ([string]$e.Value).ToLowerInvariant()){throw "Tampered package component: $name"}
  }
@@ -112,10 +114,14 @@ function Verify([string]$root,[string]$expected){
  $proof=Get-Content -LiteralPath (Safe-Path $base 'source-built-candidate-provenance.json') -Raw -Encoding UTF8 | ConvertFrom-Json
  if($proof.source_commit -cne $expected -or $proof.source_tree -cne $m.source_tree -or
     $proof.sha256 -cne $m.native_sha256){throw 'Native source/build provenance disagrees with candidate'}
+ $cacheRoot=[IO.Path]::GetFullPath((Join-Path $base 'godot/.godot')).TrimEnd('\')+'\'
  foreach($f in Get-ChildItem -LiteralPath $base -File -Recurse -Force){
-   $rel=$f.FullName.Substring($base.TrimEnd('\').Length+1).Replace('\','/')
-   if($rel -eq 'candidate-manifest.json' -or $rel -match '(^|/)\.godot/'){continue}
-   if(-not $seen.Contains($rel)){throw "Unexpected untracked package member: $rel"}
+   $full=[IO.Path]::GetFullPath($f.FullName)
+   if($full -eq [IO.Path]::GetFullPath($manifest) -or
+      $full.StartsWith($cacheRoot,[StringComparison]::OrdinalIgnoreCase)){continue}
+   if(-not $allowedPaths.Contains($full)){
+     throw "Unexpected untracked package member: $full (base $base)"
+   }
  }
  return @{source=$m.source_commit; tree=$m.source_tree; native=$m.native_sha256;
     gui=(Hash (Safe-Path $base 'Godot_v4.7-stable_win64.exe')); files=$entries.Count; root=$base;
