@@ -262,6 +262,12 @@ def prepare_godot(archive: Path, platform: str) -> tuple[Path, dict]:
                    "runtime_sha256": sha(godot)}
 
 
+def execute_campaign(command: list[str], *, cwd: Path, timeout: float,
+                     bundle: Path) -> subprocess.CompletedProcess:
+    """Donor default; successor profiles may supply an isolated process owner."""
+    return subprocess.run(command, cwd=cwd, timeout=timeout)
+
+
 def execute(args: argparse.Namespace) -> None:
     require((args.platform == "windows" and sys.platform == "win32") or
             (args.platform == "linux" and sys.platform.startswith("linux")),
@@ -289,7 +295,7 @@ def execute(args: argparse.Namespace) -> None:
         "--godot", str(godot.resolve()), "--project", str(engine.ROOT / "godot"),
         "--evidence", str((args.bundle / "qualification").resolve()),
         "--require-clean-source", "--native-build-ledger", str(ledger_path.resolve())]
-    result = subprocess.run(campaign, cwd=engine.ROOT, timeout=campaign_timeout)
+    result = execute_campaign(campaign, cwd=engine.ROOT, timeout=campaign_timeout, bundle=args.bundle)
     require(result.returncode == 0, "Persistent-area campaign failed; no validated runtime published")
     qpath = args.bundle / "qualification" / "qualification.json"
     report.update({"qualification_sha256": sha(qpath), "status": "passed", "completed": True})

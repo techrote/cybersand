@@ -63,7 +63,7 @@ def run_one(args: argparse.Namespace, workers: int) -> dict:
     script = args.repo / "godot/tests/test_persistent_area_residency_memory.gd"
     sources = [script, args.repo / "godot/tests/fixtures/persistent_area_native_fixture.gd",
                args.repo / "godot/scripts/microscenario_contract.gd"]
-    hashes = {str(path.relative_to(args.repo)): digest(path) for path in sources}
+    hashes = {path.relative_to(args.repo).as_posix(): digest(path) for path in sources}
     native_sha, godot_sha, harness_sha = digest(args.native), digest(args.godot), digest(Path(__file__))
     command = [str(args.godot), "--headless", "--path", str(args.repo / "godot"), "--script",
                "res://tests/test_persistent_area_residency_memory.gd", "--", f"--residency-memory-workers={workers}"]
@@ -133,7 +133,7 @@ def run_one(args: argparse.Namespace, workers: int) -> dict:
         if before in indexed and after in indexed:
             left, right = indexed[before]["rss_p50_bytes"], indexed[after]["rss_p50_bytes"]
             increments[before + " -> " + after] = right - left if left is not None and right is not None else None
-    unchanged = all(digest(path) == hashes[str(path.relative_to(args.repo))] for path in sources)
+    unchanged = all(digest(path) == hashes[path.relative_to(args.repo).as_posix()] for path in sources)
     binaries_unchanged = digest(args.native) == native_sha and digest(args.godot) == godot_sha
     harness_unchanged = digest(Path(__file__)) == harness_sha
     report = {"schema": 1, "command": command, "pid": process.pid, "exit_code": code,

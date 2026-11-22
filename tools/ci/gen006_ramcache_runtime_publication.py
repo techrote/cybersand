@@ -8,7 +8,9 @@ import json
 import math
 import os
 import re
+import uuid
 from pathlib import Path
+import bounded_campaign_process as process_owner
 from run_persistent_areas_qualification import ERRORS, completion
 
 _spec = spec_from_file_location("_ramcache_private_donor_profile",
@@ -43,11 +45,82 @@ donor.CAMPAIGN_SCRIPT = "tools/ci/run_persistent_area_ramcache_qualification.py"
 # watchdog; every child deadline and the production native owner timeout remain.
 # The ordinarily imported donor and successor Linux retain 3600-second limits.
 donor.CAMPAIGN_TIMEOUT_SECONDS["windows"] = 7200
+
+
+def execute_owned_campaign(command: list[str], *, cwd: Path, timeout: float, bundle: Path):
+    """Keep failure evidence immutable without claiming a universal Job barrier.
+
+    A new exclusive receipt belongs only to this invocation. Positive retirement
+    can admit failed evidence uploads. Otherwise only the complete, successful
+    existing child-wait/custody/semantic campaign verifier admits normal uploads.
+    """
+    record = bundle / ("campaign-process-owner-" + uuid.uuid4().hex + ".json")
+
+    def step_output(text: str) -> None:
+        if os.environ.get("GITHUB_OUTPUT"):
+            with Path(os.environ["GITHUB_OUTPUT"]).open("a", encoding="utf-8") as output:
+                output.write(text)
+
+    # Clear any earlier invocation in the same step before fallible preparation.
+    step_output("campaign_retirement_record=\ncampaign_retired_record=\n")
+    with record.open("x", encoding="utf-8") as stream:
+        json.dump({"status":"reserved", "retired":False}, stream)
+    step_output("campaign_retirement_record=" + record.name + "\n")
+
+    def acknowledge() -> bool:
+        try:
+            value = json.loads(record.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return False
+        valid = isinstance(value, dict) and value.get("schema") == "gen006-campaign-process-owner-v1" \
+            and value.get("command") == command and type(value.get("timeout_seconds")) in (int, float) \
+            and value["timeout_seconds"] == timeout \
+            and type(value.get("retired")) is bool and type(value.get("process_created")) is bool \
+            and "pid" in value and isinstance(value.get("retirement_proof"), dict) \
+            and type(value["retirement_proof"].get("complete")) is bool \
+            and value.get("retirement_error") == ""
+        if not valid:
+            return False
+        proof=value["retirement_proof"]
+        if value["process_created"]:
+            valid = type(value["pid"]) is int and value["pid"] > 0 \
+                and value.get("method") in ("owned-linux-process-group", "suspended-windows-process-job") \
+                and proof.get("no_process_created") is not True
+        else:
+            valid = value["pid"] is None and value.get("returncode") is None \
+                and isinstance(value.get("original_error"), str) and bool(value["original_error"]) \
+                and set(proof) == {"complete", "scope", "no_process_created"} \
+                and proof.get("scope") == "no process created" and proof.get("no_process_created") is True
+        if not valid:
+            return False
+        proven = value["retired"] and value.get("status") == "retired" \
+            and proof["complete"]
+        if proven:
+            step_output("campaign_retired_record=" + record.name + "\n")
+        return proven or (value["process_created"] and value["retired"] is False \
+            and value.get("status") == "retirement-unproven" and proof["complete"] is False)
+
+    try:
+        result = process_owner.run_campaign(command, cwd=cwd, timeout=timeout, record_path=record)
+    except BaseException:
+        try:
+            acknowledge()  # A proven cleanup does not change the failed outcome.
+        except Exception as acknowledgement_error:
+            # Evidence-record failure must not mask the original timeout/refusal.
+            print("Campaign retirement acknowledgement refused: " + repr(acknowledgement_error), flush=True)
+        raise
+    require(acknowledge(), "Campaign process completion receipt is absent or invalid")
+    return result
+
+
+donor.execute_campaign = execute_owned_campaign
 EXTRA_INPUTS = {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE, donor.CAMPAIGN_SCRIPT,
     "tools/ci/test_gen006_ramcache_packaged_smoke.ps1",
     "tools/ci/gen006_ramcache_runtime_publication.py",
     "tools/ci/test_gen006_ramcache_runtime_publication.py",
+    "tools/ci/bounded_campaign_process.py",
+    "tools/ci/test_bounded_campaign_process.py",
     "tools/ci/run_persistent_area_writeback_faults.py",
     "tools/ci/run_persistent_area_residency_memory.py",
     "tools/ci/run_persistent_area_recovery.py",

@@ -394,7 +394,7 @@ class PublicationGuards(unittest.TestCase):
             writes = []
             stack.enter_context(patch.object(engine, "write_json", side_effect=lambda path, value:
                 writes.append((path, copy.deepcopy(value)))))
-            run = stack.enter_context(patch.object(selected.subprocess, "run",
+            run = stack.enter_context(patch.object(selected, "execute_campaign",
                 **({"side_effect":outcome} if isinstance(outcome, Exception) else {"return_value":outcome})))
             if isinstance(outcome, Exception):
                 with self.assertRaises(type(outcome)): selected.execute(args)
@@ -407,7 +407,7 @@ class PublicationGuards(unittest.TestCase):
             self.assertEqual(command[:2], [sys.executable, str(root/selected.CAMPAIGN_SCRIPT)])
             self.assertIn("--require-clean-source", command)
             timeout = selected.CAMPAIGN_TIMEOUT_SECONDS[args.platform]
-            self.assertEqual(run.call_args.kwargs, {"cwd":root, "timeout":timeout})
+            self.assertEqual(run.call_args.kwargs, {"cwd":root, "timeout":timeout, "bundle":args.bundle})
             self.assertEqual(writes[0][1]["campaign_timeout_seconds"], timeout)
             if isinstance(outcome, Exception) or outcome.returncode:
                 checked.assert_not_called()
@@ -427,6 +427,8 @@ class PublicationGuards(unittest.TestCase):
         self.assertIsNot(profile.donor.CAMPAIGN_TIMEOUT_SECONDS, original.CAMPAIGN_TIMEOUT_SECONDS)
         self.assertEqual(original.CAMPAIGN_TIMEOUT_SECONDS, {"linux":3600,"windows":3600})
         self.assertEqual(profile.donor.CAMPAIGN_TIMEOUT_SECONDS, {"linux":3600,"windows":7200})
+        self.assertIs(profile.donor.execute_campaign, profile.execute_owned_campaign)
+        self.assertIsNot(original.execute_campaign, profile.execute_owned_campaign)
         for selected in (original, profile.donor):
             with self.subTest(profile=selected.CAMPAIGN_SCRIPT):
                 self._execute_campaign_probe(selected, subprocess.CompletedProcess([], 0))
@@ -445,6 +447,68 @@ class PublicationGuards(unittest.TestCase):
         for outcome in (subprocess.TimeoutExpired(["campaign"], 7200), subprocess.CompletedProcess([], 7)):
             with self.subTest(outcome=type(outcome).__name__):
                 self._execute_campaign_probe(profile.donor, outcome)
+
+    def test_donor_default_keeps_dynamic_subprocess_boundary(self):
+        command=["qualified-campaign"]
+        with patch.object(original.subprocess,"run",return_value=subprocess.CompletedProcess(command,7)) as run:
+            result=original.execute_campaign(command,cwd=Path("cwd"),timeout=3600,bundle=Path("bundle"))
+        self.assertEqual(result.returncode,7)
+        run.assert_called_once_with(command,cwd=Path("cwd"),timeout=3600)
+
+    def test_retirement_receipt_is_current_and_does_not_hide_failure(self):
+        # Orchestration fault injection only. Actual process trees are qualified
+        # separately on Linux/Windows by test_bounded_campaign_process.py.
+        for mode in ("success","nonzero","timeout","unknown","unknown-timeout",
+                     "missing","wrong-command","boolean-timeout","false-proof","missing-pid",
+                     "boolean-pid","negative-pid","no-child-with-members","list-proof-timeout"):
+            with self.subTest(mode=mode),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);output=root/"outputs";command=["exact-campaign"]
+                output.write_text("campaign_retirement_record=stale\ncampaign_retired_record=stale\n")
+                stale=root/"campaign-process-owner-stale.json"
+                stale.write_text(json.dumps({"retired":True,"status":"retired"}))
+                outcome=subprocess.TimeoutExpired(command,7200)
+                records=[]
+                def invoke(actual,*,cwd,timeout,record_path):
+                    records.append(record_path)
+                    self.assertEqual(actual,command);self.assertEqual(cwd,root)
+                    self.assertEqual(timeout,7200);self.assertNotEqual(record_path,stale)
+                    self.assertEqual(json.loads(record_path.read_text()),{"status":"reserved","retired":False})
+                    value={"schema":"gen006-campaign-process-owner-v1","command":command,
+                        "timeout_seconds":7200,"retired":True,"status":"retired","pid":123,
+                        "process_created":True,"method":"owned-linux-process-group","retirement_error":"",
+                        "retirement_proof":{"complete":True}}
+                    if mode.startswith("unknown"):
+                        value.update(retired=False,status="retirement-unproven",retirement_proof={"complete":False})
+                    if mode=="wrong-command":value["command"]=["stale-campaign"]
+                    if mode=="boolean-timeout":value["timeout_seconds"]=True
+                    if mode=="false-proof":value["retirement_proof"]["complete"]=False
+                    if mode=="missing-pid":del value["pid"]
+                    if mode=="boolean-pid":value["pid"]=True
+                    if mode=="negative-pid":value["pid"]=-1
+                    if mode=="no-child-with-members":
+                        value.update(process_created=False,pid=None,original_error="refusal")
+                        value["retirement_proof"].update(no_process_created=True,scope="no process created",retained_job_pids=[123])
+                    if mode=="list-proof-timeout":value["retirement_proof"]=[]
+                    if mode!="missing":record_path.write_text(json.dumps(value))
+                    if mode in ("timeout","unknown-timeout","list-proof-timeout"):raise outcome
+                    return subprocess.CompletedProcess(command,7 if mode=="nonzero" else 0)
+                with patch.dict(os.environ,{"GITHUB_OUTPUT":str(output)}),patch.object(profile.process_owner,"run_campaign",side_effect=invoke):
+                    if mode in ("timeout","unknown-timeout","list-proof-timeout"):
+                        with self.assertRaises(subprocess.TimeoutExpired) as caught:
+                            profile.execute_owned_campaign(command,cwd=root,timeout=7200,bundle=root)
+                        self.assertIs(caught.exception,outcome)
+                    elif mode in ("missing","wrong-command","boolean-timeout","false-proof","missing-pid",
+                                  "boolean-pid","negative-pid","no-child-with-members"):
+                        with self.assertRaisesRegex(RuntimeError,"receipt"):
+                            profile.execute_owned_campaign(command,cwd=root,timeout=7200,bundle=root)
+                    else:
+                        result=profile.execute_owned_campaign(command,cwd=root,timeout=7200,bundle=root)
+                        self.assertEqual(result.returncode,7 if mode=="nonzero" else 0)
+                fields=dict(line.split("=",1) for line in output.read_text().splitlines())
+                self.assertEqual(fields["campaign_retirement_record"],records[0].name)
+                positive=mode in ("success","nonzero","timeout")
+                self.assertEqual(fields["campaign_retired_record"],records[0].name if positive else "")
+                self.assertEqual(json.loads(stale.read_text()),{"retired":True,"status":"retired"})
 
     def test_inherited_portable_smoke_explicitly_qualifies_only_the_cold_path(self):
         source = ast.parse((ROOT/"tools/package_gen006_persistent_areas.py").read_text())

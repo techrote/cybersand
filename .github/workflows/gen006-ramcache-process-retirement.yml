@@ -1,0 +1,71 @@
+name: 'GEN-006 isolated campaign process-retirement qualification'
+
+on:
+  push:
+    branches: [exp/gen006-ramcache-ci-retirement-001-20261122]
+    paths:
+      - '.github/workflows/gen006-ramcache-process-retirement.yml'
+      - 'tools/ci/bounded_campaign_process.py'
+      - 'tools/ci/test_bounded_campaign_process.py'
+
+permissions:
+  contents: read
+
+jobs:
+  linux-owner:
+    name: real process retirement on ubuntu-24.04
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Timeout, early exit, unrelated process and evidence quiescence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/ci/check_ci_provider_policy.py
+          mkdir -p build/gen006-process-retirement
+          python tools/ci/test_bounded_campaign_process.py --output build/gen006-process-retirement/cases 2>&1 | tee build/gen006-process-retirement/original.log
+          git diff --exit-code
+      - name: Retain actual process results including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-process-retirement-ubuntu-24.04-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-process-retirement/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-owner:
+    name: real process retirement on windows-2022
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Timeout, early exit, unrelated process and evidence quiescence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/ci/check_ci_provider_policy.py
+          mkdir -p build/gen006-process-retirement
+          python tools/ci/test_bounded_campaign_process.py --output build/gen006-process-retirement/cases 2>&1 | tee build/gen006-process-retirement/original.log
+          git diff --exit-code
+      - name: Retain actual process results including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-process-retirement-windows-2022-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-process-retirement/
+          if-no-files-found: error
+          retention-days: 90

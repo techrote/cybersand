@@ -9,6 +9,8 @@ on:
       - '.github/workflows/gen006-ramcache-qualification.yml'
       - 'tools/ci/gen006_ramcache_runtime_publication.py'
       - 'tools/ci/test_gen006_ramcache_runtime_publication.py'
+      - 'tools/ci/bounded_campaign_process.py'
+      - 'tools/ci/test_bounded_campaign_process.py'
       - 'tools/package_gen006_ramcache.py'
       - 'tools/ci/test_gen006_packaged_smoke.ps1'
       - 'tools/ci/test_gen006_ramcache_packaged_smoke.ps1'
@@ -19,6 +21,8 @@ on:
       - '.github/workflows/gen006-ramcache-qualification.yml'
       - 'tools/ci/gen006_ramcache_runtime_publication.py'
       - 'tools/ci/test_gen006_ramcache_runtime_publication.py'
+      - 'tools/ci/bounded_campaign_process.py'
+      - 'tools/ci/test_bounded_campaign_process.py'
       - 'tools/package_gen006_ramcache.py'
       - 'tools/ci/test_gen006_packaged_smoke.ps1'
       - 'tools/ci/test_gen006_ramcache_packaged_smoke.ps1'
@@ -61,6 +65,15 @@ jobs:
           python3 tools/ci/test_gen006_source_custody.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_bounded_campaign_process.py --output build/gen006-process-guards-linux
+      - name: Retain actual Linux process-owner guards
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-process-guards-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-process-guards-linux/
+          if-no-files-found: warn
+          retention-days: 90
 
   windows-smoke-guards:
     name: Windows PowerShell 5 portable smoke failure guards
@@ -80,6 +93,20 @@ jobs:
         run: |
           ./tools/ci/test_gen006_packaged_smoke.ps1 -Output build/gen006-ramcache-smoke-guards/donor
           ./tools/ci/test_gen006_ramcache_packaged_smoke.ps1 -Output build/gen006-ramcache-smoke-guards/ramcache
+      - name: Exercise actual Windows process ownership and retirement
+        run: |
+          set -euo pipefail
+          python tools/ci/test_gen006_ramcache_runtime_publication.py
+          python tools/ci/test_gen006_persistent_runtime_publication.py
+          python tools/ci/test_bounded_campaign_process.py --output build/gen006-process-guards-windows
+      - name: Retain actual Windows process-owner guards
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-process-guards-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-process-guards-windows/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Retain original native-process guard evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -257,6 +284,7 @@ jobs:
           GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/gen006-ramcache-donor" d0d043f4740ffed5f0dbb4120e437458d7a9bd57
           git -C "$RUNNER_TEMP/gen006-ramcache-donor" lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
       - name: Run bounded real graphical, crash and fresh-process campaign
+        id: campaign
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
           LP_NUM_THREADS: '2'
@@ -270,12 +298,26 @@ jobs:
         id: artifact
         run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
       - name: Retain Linux runtime and complete original evidence
-        if: always()
+        # Normal success includes complete existing child-wait/custody/semantic
+        # verification. Failed mutable evidence needs its own positive witness.
+        if: always() && (steps.campaign.outcome == 'success' || (steps.campaign.outputs.campaign_retirement_record != '' && steps.campaign.outputs.campaign_retired_record == steps.campaign.outputs.campaign_retirement_record))
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: gen006-ramcache-runtime-attempt-${{ github.run_attempt }}-linux-${{ github.run_id }}
           path: build/gen006-ramcache-linux/
           if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain immutable outer campaign diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-outer-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-ramcache-linux/validation.json
+            build/gen006-ramcache-linux/native-build.json
+            build/gen006-ramcache-linux/campaign-process-owner-*.json
+          if-no-files-found: warn
           retention-days: 90
 
   windows-build:
@@ -380,6 +422,7 @@ jobs:
           GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/gen006-ramcache-donor" d0d043f4740ffed5f0dbb4120e437458d7a9bd57
           git -C "$RUNNER_TEMP/gen006-ramcache-donor" lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
       - name: Run actual Windows native, graphical and crash-recovery campaign
+        id: campaign
         env:
           CYBERSAND_GEN006_DONOR: ${{ runner.temp }}/gen006-ramcache-donor
         run: |
@@ -440,12 +483,23 @@ jobs:
         id: artifact
         run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
       - name: Retain Windows runtime and complete original evidence
-        if: always()
+        if: always() && (steps.campaign.outcome == 'success' || (steps.campaign.outputs.campaign_retirement_record != '' && steps.campaign.outputs.campaign_retired_record == steps.campaign.outputs.campaign_retirement_record))
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: gen006-ramcache-runtime-attempt-${{ github.run_attempt }}-windows-${{ github.run_id }}
           path: build/gen006-ramcache-windows/
           if-no-files-found: error
+          retention-days: 90
+      - name: Retain immutable outer campaign diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-outer-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-ramcache-windows/validation.json
+            build/gen006-ramcache-windows/native-build.json
+            build/gen006-ramcache-windows/campaign-process-owner-*.json
+          if-no-files-found: warn
           retention-days: 90
       - name: Retain Windows owner evaluator
         if: always()
