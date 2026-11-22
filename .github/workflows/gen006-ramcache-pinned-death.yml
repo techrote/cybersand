@@ -62,6 +62,33 @@ jobs:
           assert 'PERSISTENT_AREAS_WORKBENCH' in text
           print('PINNED_NATIVE_EXIT_FAILURE_LINUX: real failed Save & Menu refuses exit; later successful retry')
           PY
+      - name: Resident lost-ACK qualification retains genuinely completed ticks exactly once
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pinned-faults-linux
+          "$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64" --headless --path "$PWD/godot" --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- \
+            "--persistent-profile=$PWD/build/pinned-faults-linux/profile" \
+            "--persistent-evidence=$PWD/build/pinned-faults-linux" \
+            --persistent-test-mode=faults --persistent-start-paused \
+            >build/pinned-faults-linux/engine.log 2>&1
+          python3 - <<'PY'
+          import json,pathlib
+          d=pathlib.Path('build/pinned-faults-linux')
+          v=json.loads((d/'workbench-faults.json').read_text())
+          log=(d/'engine.log').read_text()
+          assert v['mode']=='faults' and not v['failures'] and v['checks']>=35
+          assert 'failed ACK retains exactly once all completed resident native ticks and their game-time debt' not in log or 'PERSISTENT_AREAS_WORKBENCH' in log
+          print('PINNED_RESIDENT_LOST_ACK_LINUX: acknowledged native ticks retained exactly once')
+          PY
+      - name: Preserve original resident lost-ACK evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-resident-lost-ack-linux
+          path: build/pinned-faults-linux
+          if-no-files-found: warn
+          retention-days: 90
       - name: Preserve normal-exit failure evidence including faults
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -139,6 +166,29 @@ jobs:
             throw 'Original Windows native Save & Menu did not prove failure/refusal and subsequent healthy retry'
           }
           'PINNED_NATIVE_EXIT_FAILURE_WINDOWS: real failed Save & Menu refuses exit; later successful retry'
+      - name: Resident lost-ACK qualification retains completed Windows native ticks once
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path (Get-Location) 'build/pinned-faults-windows'
+          New-Item -ItemType Directory -Path $root -Force | Out-Null
+          $engine = Join-Path $env:RUNNER_TEMP 'gen006-historical-Godot/Godot_v4.7-stable_win64_console.exe'
+          $profile = Join-Path $root 'profile'
+          & $engine --headless --path godot --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- "--persistent-profile=$profile" "--persistent-evidence=$root" '--persistent-test-mode=faults' '--persistent-start-paused' *> (Join-Path $root 'engine.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Original Windows native lost-ACK regression failed' }
+          $v = Get-Content (Join-Path $root 'workbench-faults.json') -Raw | ConvertFrom-Json
+          if ($v.mode -ne 'faults' -or $v.failures.Count -ne 0 -or $v.checks -lt 35) {
+            throw 'Original Windows native resident debt and lost-ACK regression failed'
+          }
+          'PINNED_RESIDENT_LOST_ACK_WINDOWS: actual completed native work credited exactly once'
+      - name: Preserve Windows resident lost-ACK evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-pinned-native-resident-lost-ack-windows
+          path: build/pinned-faults-windows
+          if-no-files-found: warn
+          retention-days: 90
       - name: Preserve Windows normal-exit failure evidence including faults
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
