@@ -1,0 +1,30 @@
+{
+  "schema": "pubpres-integration-campaign-v1",
+  "design": "Fresh sequential A-B-B-A processes for each case on one package, host and renderer. A is full publication and original presentation. B is tiled publication and coherent presentation. This compares the integrated configurations; a separate treatment is required for causal attribution.",
+  "order": ["A", "B", "B", "A"],
+  "arms": {
+    "A": {"material": "full", "physics": "combined", "presentation": "legacy", "rendezvous": "0", "timing": "legacy"},
+    "B": {"material": "blit", "physics": "early", "presentation": "coherent", "rendezvous": "0", "timing": "measured"}
+  },
+  "geometry": {
+    "world": [2048, 2048],
+    "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+    "recipe_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+    "generation_receipts": 256,
+    "tape": "original8_plus_cadence_30_90_120",
+    "physical_step_target": 144
+  },
+  "cases": [
+    {"id": "transition_2048_w1", "kind": "transition", "campaign": "ordinary"},
+    {"id": "needle_follow_2048_w1", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 1, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
+    {"id": "needle_free_2048_w1", "kind": "physical", "family": "freemass", "camera": "free", "workers": 1, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
+    {"id": "needle_follow_2048_w4", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
+    {"id": "needle_free_2048_w4", "kind": "physical", "family": "freemass", "camera": "free", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
+    {"id": "needle_wave_follow_2048_w4", "kind": "physical", "family": "freemass", "water_law": "wave_flow_v1", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary", "quick": true},
+    {"id": "needle_pressure_2048_w4", "kind": "physical", "family": "pressure", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "extended"},
+    {"id": "needle_cellular_2048_w4", "kind": "physical", "family": "cellular", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "extended"},
+    {"id": "needle_inertial_2048_w4", "kind": "physical", "family": "inertial", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "extended"},
+    {"id": "needle_slow_native_2048_w1", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 1, "pixel_hz": 2, "ack_delay": 0, "profile": "scripted", "campaign": "extended"},
+    {"id": "needle_delayed_ack_2048_w1", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 1, "pixel_hz": 60, "ack_delay": 3, "profile": "scripted", "campaign": "extended"}
+  ]
+}

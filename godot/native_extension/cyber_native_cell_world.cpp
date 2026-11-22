@@ -305,6 +305,19 @@ std::int64_t CyberNativeCellWorld::logical_processor_count() {
 
 void CyberNativeCellWorld::create_world() {
     try {
+        // Reject the preserved negative experiment explicitly. The ordinary
+        // reference path remains the only admitted column execution layout.
+        const Variant column_tiles = ProjectSettings::get_singleton()->get_setting(
+            "cybersand/experimental_wave_column_tiles", false);
+        if (column_tiles.get_type() != Variant::BOOL)
+            throw std::invalid_argument("PUBPRES column tiles setting must be boolean");
+        if (static_cast<bool>(column_tiles))
+            throw std::invalid_argument("PUBPRES column tiles experiment is retired; reference columns required");
+        const Variant column_probe = ProjectSettings::get_singleton()->get_setting(
+            "cybersand/pubpres_wave_column_probe", false);
+        if (column_probe.get_type() != Variant::BOOL)
+            throw std::invalid_argument("PUBPRES Wave column probe setting must be boolean");
+        pubpres_wave_column_probe_ = static_cast<bool>(column_probe);
         const auto processors = std::max(1U, std::thread::hardware_concurrency());
         const auto automatic_threads = static_cast<std::uint32_t>(auto_worker_threads(processors));
         const auto requested_threads = static_cast<std::int64_t>(
@@ -2049,7 +2062,15 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         }
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
+        // Initialization can fail before the presentation exchange exists.
+        // Stage that missing owner before committing a fresh diagnostic World;
+        // a successful reset must be able to publish its actual material plane.
+        auto replacement_exchange = !render_exchange_
+            ? std::make_unique<cybersand::RenderSnapshotExchange>(
+                3, 64, static_cast<std::size_t>(kWorldWidth) * kWorldHeight * 2U)
+            : nullptr;
         world_.swap(candidate);
+        if (replacement_exchange) render_exchange_.swap(replacement_exchange);
         committed = true;
         tick_failure_count_ = 0; last_tick_error_ = String{};
         coupling_failure_context_ = {};
@@ -2595,7 +2616,7 @@ Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const try {
 
 Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
     Dictionary out;
-    if (!world_) return out;
+    if (!world_) return native_failure_status();
     const auto& config = world_->config();
     const auto wave = world_->wave_flow_diagnostics();
     // A bound method must never let an exception reach Godot (that aborts the
@@ -2716,6 +2737,23 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
     out["water_cells"] = static_cast<std::int64_t>(quantity.material_cells[static_cast<std::uint16_t>(cybersand::Material::Water)]);
     out["native_tick_ms"] = simulation_time_ms_;
     out["completed_tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
+    if (pubpres_wave_column_probe_) {
+        // Existing cumulative native counters: bounded owner-side readback,
+        // no new per-cell clocks, pool callbacks or physical authority.
+        Dictionary stages;
+        stages["schema"] = "PUBPRES-WAVE-COLUMNS-V1";
+        stages["experimental_column_tiles"] = false;
+        stages["column_slots"] = 1;
+        stages["ticks"] = static_cast<std::int64_t>(wave.ticks);
+        stages["prepare_ns"] = static_cast<std::int64_t>(wave.prepare_nanoseconds);
+        stages["column_ns"] = static_cast<std::int64_t>(wave.column_nanoseconds);
+        stages["flux_ns"] = static_cast<std::int64_t>(wave.flux_nanoseconds);
+        stages["apply_ns"] = static_cast<std::int64_t>(wave.apply_nanoseconds);
+        stages["merge_ns"] = static_cast<std::int64_t>(wave.merge_nanoseconds);
+        stages["launch_ns"] = static_cast<std::int64_t>(wave.launch_nanoseconds);
+        stages["storage_bytes"] = static_cast<std::int64_t>(wave.storage_bytes);
+        out["column_probe"] = stages;
+    }
     out["physical_save_supported"] = !world_->wave_flow_enabled();
     out["extent"] = extent_;
     return out;

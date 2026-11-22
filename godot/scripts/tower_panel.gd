@@ -118,7 +118,8 @@ func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 	var chosen: Array=CyberExperimentTower.tubes(floor_index)[tube_picker.selected]
 	info.text += "\n"+str(chosen[3] if str(chosen[3])!="" else CyberExperimentTower.tubes(floor_index)[maxi(0,tube_picker.selected-1)][3])+" / prepared contents below; amber mixing gates are manually erasable"
 	var content: Rect2 = host.view_content_rect()
+	var origin: Vector2 = host.presentation_camera_origin() if host.has_method("presentation_camera_origin") else Vector2(host.camera_origin)
 	for i: int in range(labels.size()):
-		var point: Vector2 = content.position+(label_points[i]-host.camera_origin)/Vector2(host.current_view_size)*content.size
+		var point: Vector2 = content.position+(label_points[i]-origin)/Vector2(host.current_view_size)*content.size
 		labels[i].position = point
 		labels[i].visible = content.has_point(point)

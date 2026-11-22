@@ -30,8 +30,13 @@ var _applied_sample_serials: PackedInt32Array = PackedInt32Array()
 var _hard_surface_body: RID
 var _hard_surface_shape_rids: Array[RID] = []
 var _hard_surface_chunk_bodies: Array[RID] = []
+# Packet order stays aligned with _hard_surface_chunk_rectangles. Retaining an
+# attached shape after a neighbour is removed means the server's index order
+# can differ; keep that order separately for exact body_remove_shape calls.
 var _hard_surface_chunk_shape_rids: Array = []
+var _hard_surface_chunk_body_shape_rids: Array = []
 var _hard_surface_chunk_rectangles: Array = []
+var _installed_hard_surface_chunk_snapshot: PackedInt32Array = PackedInt32Array()
 var _pending_hard_surface_chunk_snapshot: PackedInt32Array = PackedInt32Array()
 var _pending_hard_surface_scan_cursor: int = 0
 var _pending_hard_surface_chunks: int = 0
@@ -342,6 +347,15 @@ func rebuild_hard_surface_colliders_from_rectangles_chunked(
 	var chunk_columns: int = ceili(float(world_width) / float(chunk_size))
 	var chunk_rows: int = ceili(float(world_height) / float(chunk_size))
 	var chunk_count: int = chunk_columns * chunk_rows
+	# This path does not install the packed chunk stream, so a prior packet can
+	# no longer certify that the complete current geometry is already installed.
+	_installed_hard_surface_chunk_snapshot = PackedInt32Array()
+	# A synchronous replacement also supersedes any partly installed packet.
+	# Its completed prefix may now describe different geometry; an equal packet
+	# queued afterward must examine every chunk again.
+	_pending_hard_surface_chunk_snapshot = PackedInt32Array()
+	_pending_hard_surface_scan_cursor = 0
+	_pending_hard_surface_chunks = 0
 	var next_chunk_rectangles: Array = []
 	next_chunk_rectangles.resize(chunk_count)
 	for chunk_index: int in range(chunk_count):
@@ -403,7 +417,7 @@ func rebuild_hard_surface_colliders_from_rectangles_chunked(
 
 # Format: [chunk_count, absolute_offset_0 ... absolute_offset_N, rectangle data].
 # The native worker performs the million-cell scan and rectangle merge. This
-# main-thread bridge touches only a bounded number of chunks per rendered frame.
+# main-thread bridge touches only a bounded number of chunks per budget call.
 func queue_hard_surface_chunk_snapshot(packed_chunks: PackedInt32Array) -> bool:
 	if not _initialized or packed_chunks.size() < 3:
 		return false
@@ -426,6 +440,14 @@ func queue_hard_surface_chunk_snapshot(packed_chunks: PackedInt32Array) -> bool:
 	if previous_offset != packed_chunks.size():
 		return false
 
+	# A repeated immutable publication does not restart a partly completed scan.
+	# Keep the owned copy for a new packet: callers must not be able to mutate an
+	# accepted install or its equality certificate after queueing it.
+	if packed_chunks == _pending_hard_surface_chunk_snapshot:
+		return true
+	if _pending_hard_surface_chunks == 0 \
+		and packed_chunks == _installed_hard_surface_chunk_snapshot:
+		return true
 	_pending_hard_surface_chunk_snapshot = packed_chunks.duplicate()
 	_pending_hard_surface_scan_cursor %= chunk_count
 	_pending_hard_surface_chunks = chunk_count
@@ -450,7 +472,8 @@ func process_hard_surface_collider_budget(
 	var rebuilt: int = 0
 	_clear_full_hard_surface_shapes()
 	# Only replaced chunks consume the chunk budget; an unchanged chunk costs a
-	# slice comparison. The time budget still bounds every call.
+	# slice comparison. The cooperative deadline is checked after each chunk;
+	# one indivisible server update or host preemption can exceed it.
 	while rebuilt < maximum_chunks and _pending_hard_surface_chunks > 0:
 		var chunk_index: int = _pending_hard_surface_scan_cursor
 		var rectangle_start: int = _pending_hard_surface_chunk_snapshot[chunk_index + 1]
@@ -486,6 +509,7 @@ func process_hard_surface_collider_budget(
 		float(Time.get_ticks_usec() - start_usec) / 1000.0
 	)
 	if _pending_hard_surface_chunks <= 0:
+		_installed_hard_surface_chunk_snapshot = _pending_hard_surface_chunk_snapshot
 		_pending_hard_surface_chunk_snapshot = PackedInt32Array()
 	return processed
 
@@ -519,6 +543,7 @@ func _ensure_hard_surface_chunk_bodies(chunk_count: int) -> void:
 	while _hard_surface_chunk_bodies.size() < chunk_count:
 		_hard_surface_chunk_bodies.append(_create_hard_surface_body())
 		_hard_surface_chunk_shape_rids.append([])
+		_hard_surface_chunk_body_shape_rids.append([])
 		_hard_surface_chunk_rectangles.append(PackedInt32Array())
 
 
@@ -529,13 +554,49 @@ func _replace_hard_surface_chunk_shapes(
 	var body: RID = _hard_surface_chunk_bodies[chunk_index]
 	if not body.is_valid():
 		return
-	PhysicsServer2D.body_clear_shapes(body)
+	var previous_rectangles: PackedInt32Array = _hard_surface_chunk_rectangles[chunk_index]
 	var previous_shapes: Array = _hard_surface_chunk_shape_rids[chunk_index]
-	for shape_rid: RID in previous_shapes:
-		if shape_rid.is_valid():
-			PhysicsServer2D.free_rid(shape_rid)
+	var previous_body_shapes: Array = _hard_surface_chunk_body_shape_rids[chunk_index]
+	# Match exact rectangle multisets, not just positions or shape dimensions.
+	# A cell edit usually changes a few rectangles in one chunk. Clearing every
+	# neighbour here needlessly invalidates their Rapier contacts and broadphase
+	# entries even though their geometry has not changed.
+	var previous_by_rectangle: Dictionary = {}
+	for rectangle_index: int in range(previous_shapes.size()):
+		var offset: int = rectangle_index * 4
+		var rectangle := Rect2i(previous_rectangles[offset], previous_rectangles[offset + 1],
+			previous_rectangles[offset + 2], previous_rectangles[offset + 3])
+		if not previous_by_rectangle.has(rectangle):
+			previous_by_rectangle[rectangle] = []
+		(previous_by_rectangle[rectangle] as Array).append(previous_shapes[rectangle_index])
+
 	var next_shapes: Array[RID] = []
+	next_shapes.resize(packed_rectangles.size() / 4)
+	var retained: Dictionary = {}
+	for rectangle_index: int in range(next_shapes.size()):
+		var offset: int = rectangle_index * 4
+		var rectangle := Rect2i(packed_rectangles[offset], packed_rectangles[offset + 1],
+			packed_rectangles[offset + 2], packed_rectangles[offset + 3])
+		var matches: Array = previous_by_rectangle.get(rectangle, [])
+		if not matches.is_empty():
+			var shape_rid: RID = matches.pop_back()
+			next_shapes[rectangle_index] = shape_rid
+			retained[shape_rid] = true
+
+	# Remove in actual server-index order, back to front. The surviving shapes
+	# remain attached at their exact old transforms; new rectangles are appended.
+	for shape_index: int in range(previous_body_shapes.size() - 1, -1, -1):
+		var shape_rid: RID = previous_body_shapes[shape_index]
+		if not retained.has(shape_rid):
+			PhysicsServer2D.body_remove_shape(body, shape_index)
+			PhysicsServer2D.free_rid(shape_rid)
+	var next_body_shapes: Array[RID] = []
+	for shape_rid: RID in previous_body_shapes:
+		if retained.has(shape_rid):
+			next_body_shapes.append(shape_rid)
 	for rectangle_index: int in range(packed_rectangles.size() / 4):
+		if next_shapes[rectangle_index].is_valid():
+			continue
 		var offset: int = rectangle_index * 4
 		var rectangle: Rect2i = Rect2i(
 			packed_rectangles[offset],
@@ -547,8 +608,10 @@ func _replace_hard_surface_chunk_shapes(
 		PhysicsServer2D.shape_set_data(shape_rid, Vector2(rectangle.size) * 0.5)
 		var center: Vector2 = Vector2(rectangle.position) + Vector2(rectangle.size) * 0.5
 		PhysicsServer2D.body_add_shape(body, shape_rid, Transform2D(0.0, center))
-		next_shapes.append(shape_rid)
+		next_shapes[rectangle_index] = shape_rid
+		next_body_shapes.append(shape_rid)
 	_hard_surface_chunk_shape_rids[chunk_index] = next_shapes
+	_hard_surface_chunk_body_shape_rids[chunk_index] = next_body_shapes
 
 
 func _replace_hard_surface_colliders(
@@ -644,7 +707,7 @@ func _destroy_hard_surface_collider() -> void:
 
 
 func _clear_full_hard_surface_shapes() -> void:
-	if _hard_surface_body.is_valid():
+	if _hard_surface_body.is_valid() and not _hard_surface_shape_rids.is_empty():
 		PhysicsServer2D.body_clear_shapes(_hard_surface_body)
 	for shape_rid: RID in _hard_surface_shape_rids:
 		if shape_rid.is_valid():
@@ -665,7 +728,9 @@ func _destroy_chunk_hard_surface_colliders() -> void:
 			PhysicsServer2D.free_rid(body)
 	_hard_surface_chunk_bodies.clear()
 	_hard_surface_chunk_shape_rids.clear()
+	_hard_surface_chunk_body_shape_rids.clear()
 	_hard_surface_chunk_rectangles.clear()
+	_installed_hard_surface_chunk_snapshot = PackedInt32Array()
 	_pending_hard_surface_chunk_snapshot = PackedInt32Array()
 	_pending_hard_surface_scan_cursor = 0
 	_pending_hard_surface_chunks = 0
@@ -939,7 +1004,9 @@ func clear_state() -> void:
 	_hard_surface_shape_rids.clear()
 	_hard_surface_chunk_bodies.clear()
 	_hard_surface_chunk_shape_rids.clear()
+	_hard_surface_chunk_body_shape_rids.clear()
 	_hard_surface_chunk_rectangles.clear()
+	_installed_hard_surface_chunk_snapshot = PackedInt32Array()
 	_pending_hard_surface_chunk_snapshot = PackedInt32Array()
 	_pending_hard_surface_scan_cursor = 0
 	_pending_hard_surface_chunks = 0
