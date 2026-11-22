@@ -542,6 +542,20 @@ func publication_fault_checks() -> void:
 		"definitely unpublished checkpoint failure retains an active, retryable old World")
 	check(int(controller.manifest.revision)==revision and controller.clock==original_clock,
 		"failed unpublished checkpoint does not advance durable generation or game time")
+	phase("failed Save during normal Save & Menu exit retains native authority")
+	# This deliberately re-injects a real filesystem publication failure at
+	# the *exit* operation, not only Save all. The native owner must remain
+	# editable and current_scene must not switch to the launcher.
+	check(not controller._io_busy,"failed-exit setup owns an idle store")
+	controller._store.set_test_fault("before_publish")
+	if not check(controller.request_exit("launcher"),"normal exit attempts a durable Save boundary"): return
+	if not await until(func() -> bool: return not controller.busy,"normal exit publication failure is reported"): return
+	if not check(not controller.last_result.get("ok",true) and controller.active_ready
+			and not controller._quarantined and current_scene==host,
+			"failed normal exit retains the active native World and refuses launcher change"): return
+	check(int(controller.manifest.revision)==revision and controller.clock==original_clock
+		and controller.manifest.areas[controller.active_area].physical_hash==original_hash,
+		"failed Save & Menu exit retains the same durable generation, game time and native hash")
 	if not await save_current("retry after unpublished checkpoint failure"): return
 	check(controller.manifest.areas[controller.active_area].physical_hash==original_hash,
 		"retry after unpublished failure captures the same paused native state")
