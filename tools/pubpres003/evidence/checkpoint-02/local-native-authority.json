@@ -1,0 +1,199 @@
+{
+  "schema": "pubpres003-local-correctness-archive-v1",
+  "scope": "Exact frozen donor and explicit Main/producer development delta; local GCC14.2 drift; no graphical, performance or owner acceptance claim",
+  "archive": "local-native-authority.zip",
+  "archive_bytes": 150123,
+  "archive_sha256": "f5284424d235745da6676b8a7e1eebc141449c7fa520a67ea8e3d413ae716a71",
+  "entries": [
+    {
+      "path": "native-baseline/focused-attempt01/import-off/process.json",
+      "bytes": 515,
+      "sha256": "66bc496b5028d4a616ff0dd787a5b02262c5eaf6e156de4b81d919904386f6f2"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/import-off/stdout.log",
+      "bytes": 47736,
+      "sha256": "894c3966d629574dbe42fcf49962d4995e0d367d2849b7b2fd81dd305697840d"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/receipt.json",
+      "bytes": 147508,
+      "sha256": "cfb731b7126478a2e6ae53911769394339beba0a508d05251f8dd07c72fdb1a3"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_pubpres_playability_native_probe-off/process.json",
+      "bytes": 561,
+      "sha256": "467600497c50f789ad8a901f5b500f7f2d11d18f5f19a90b7052a7ced824e885"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_pubpres_playability_native_probe-off/stdout.log",
+      "bytes": 264,
+      "sha256": "504b07bded049f7118965fda4e2e8c9d8a770770e4070dc192bdc7fefa24f89f"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_rapier_manual_step-off/process.json",
+      "bytes": 545,
+      "sha256": "1f6ad15a2da60ed925ff6c72e84a18103df70044929fb24a72343310307c2533"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_rapier_manual_step-off/stdout.log",
+      "bytes": 773,
+      "sha256": "e3f03591cd0e48c3462f0373a435c25bd57a452334fbe4010f5f9970da62b3ec"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_owner_deadline-off/process.json",
+      "bytes": 552,
+      "sha256": "b7a52fe82be17eb1b608bd3d2fa75525b20678d06e6a503a25811fa79baa2730"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_owner_deadline-off/receipts/workbench-owner-deadline.json",
+      "bytes": 19737,
+      "sha256": "0758d5ccb47a960dd5e16ad3daa252a9261ac38486fa400d81753d5ae648aa95"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_owner_deadline-off/stdout.log",
+      "bytes": 269,
+      "sha256": "5258f788cb400bb17b52ede7ef08cc7d96384114be36b8971536003cd7b97e4e"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_physics_pacing-off/process.json",
+      "bytes": 551,
+      "sha256": "1e9b0faa4a9b70fe15caa715c9935fdde481caec69f30e64e8d1877bc3340dc0"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_physics_pacing-off/stdout.log",
+      "bytes": 617,
+      "sha256": "f111230596e6940a7d61c4861429c082d826d3d0d4127c91911ff0bb5ffd3ea5"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_physics_publication-off/process.json",
+      "bytes": 557,
+      "sha256": "def8f354d30ead49177e2357e890bafbf8e6623662aba58f31add1d0a29a0b4a"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_physics_publication-off/stdout.log",
+      "bytes": 2526,
+      "sha256": "899d363d1e9cc90dede35aefdf8eef3522df717c772ac44dd6b3c84d00186e0f"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_physics_publication-on/process.json",
+      "bytes": 556,
+      "sha256": "e30e56e90335a1d250ef311d588ed23ceb3b4010cea4569909e98ebd97032763"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_physics_publication-on/stdout.log",
+      "bytes": 2523,
+      "sha256": "305a620b428451746c7f1892f43dc7947be9058cd8505f12c54951adeaef7a01"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_same_frame_continuation-off/process.json",
+      "bytes": 562,
+      "sha256": "f069fa300c63963d81d4b1d9f5b48dcf1d7da61d30ed756072c69959abaa65fe"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_same_frame_continuation-off/stdout.log",
+      "bytes": 425,
+      "sha256": "f91b93845781cb12423a9185746dbdebf8db62f78d40e12602ab8fd2bf26861c"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_same_frame_integration-on/process.json",
+      "bytes": 559,
+      "sha256": "495ebbbdafbe8ea6dcd795e4568d9fd2de5c3a12b0cc96c997f734de519d7a9f"
+    },
+    {
+      "path": "native-baseline/focused-attempt01/test_workbench_same_frame_integration-on/stdout.log",
+      "bytes": 8394,
+      "sha256": "30ca5ea858460ff281ddad826efe3d94ec38293e54047510ab37fafd26d3b3d5"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/SOURCE-IDENTITY-CLARIFICATION.json",
+      "bytes": 14067,
+      "sha256": "e9f8e8123a035e06f623f4ace6b7e5b18ac966173da38e947396aa194f34ba56"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/import-off/process.json",
+      "bytes": 514,
+      "sha256": "35334480306555aedc5e00183cf4301894280c238853c487ca6b617e8efa8830"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/import-off/stdout.log",
+      "bytes": 47794,
+      "sha256": "a7238f8e5b5c4a18d5b942268c05f78890f4af773c8be0541ec2474884601d9f"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/receipt.json",
+      "bytes": 158492,
+      "sha256": "62767335ab336d6b81ae66a55474ea2ad099f3496288701026dc349bf2169c76"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_pubpres_producer_trace-off/process.json",
+      "bytes": 549,
+      "sha256": "604759c696b00564b25051ef32d288215a059a985364712f444fc013d8eaa284"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_pubpres_producer_trace-off/stdout.log",
+      "bytes": 414,
+      "sha256": "ea4f2108927f1ea2c777b28e25bad52c430a4b2ff8cfcc5bdde80f3343518d2a"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_pubpres_producer_trace-on/process.json",
+      "bytes": 548,
+      "sha256": "5af34c99121582417abca341b7897b191482ef95240c0f009ea05f3f1dd0f712"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_pubpres_producer_trace-on/stdout.log",
+      "bytes": 415,
+      "sha256": "059a3d6aa1aa3e04280aadd8274c60c53cbcf0a7883ca1bac7860696e23015a2"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_render_cadence_worker-off/process.json",
+      "bytes": 548,
+      "sha256": "f06a4016c1aa72fabc6b5d1f4974f58e39c3af8358121a16fd36c50c9452a11f"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_render_cadence_worker-off/stdout.log",
+      "bytes": 305,
+      "sha256": "09f8efa8a366aa038d2f90f3aef5a08cc658b69fdf6fd475941289f911710789"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_workbench_physics_publication-off/process.json",
+      "bytes": 556,
+      "sha256": "c50487af3761139269a457a1e007c77b155fa9fe508f976c5c278b8d727b7825"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_workbench_physics_publication-off/stdout.log",
+      "bytes": 2525,
+      "sha256": "600950b9f4f9b50d68182d8a275e8122b84d2a93041a43d21d4307dde6e67c77"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_workbench_same_frame_integration-on/process.json",
+      "bytes": 558,
+      "sha256": "94e7a1ea3b86388cd5d723cb2055c4caf943882a39afcfdaedccbc8713d100de"
+    },
+    {
+      "path": "producer-trace/focused-attempt01/test_workbench_same_frame_integration-on/stdout.log",
+      "bytes": 8394,
+      "sha256": "9ca2600015a2c42fc0785b10f0c7cf88857a8536e1365e6b4d4498f3eb0efb3f"
+    }
+  ],
+  "source_publication_map": [
+    {
+      "local_commit": "94864ca351532ca35c7248b1248dd868b9eb1c09",
+      "published_commit": "11e8c397f6ec8e1e963df7948a7916724f371923",
+      "tree": "cbfb7d14c859fb689057f7d53d528888507b7c1b",
+      "parent": "d316c281e0abb575eb6302afc12ec44f211460ba"
+    },
+    {
+      "local_commit": "5f51bc1beedef96c9b27dd4696efdc373e7c2041",
+      "published_commit": "e408bdee0b7856194f0d8dd231992f17eb0ba0d8",
+      "tree": "c5afa8e650bda85be918f605eb1b6872daa8b074",
+      "parent": "11e8c397f6ec8e1e963df7948a7916724f371923"
+    },
+    {
+      "local_commit": "eaea7af586184350746f06d413705388cf29b469",
+      "published_commit": "16ab4c05df15fac9727e4d76f53c898b0d116d2b",
+      "tree": "7119974dba44d050cbb8989f799beb25475210a4",
+      "parent": "e408bdee0b7856194f0d8dd231992f17eb0ba0d8"
+    }
+  ]
+}

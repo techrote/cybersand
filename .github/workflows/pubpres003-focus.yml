@@ -1,0 +1,116 @@
+name: PUBPRES-003 focused source qualification
+
+on:
+  push:
+    branches: [experiment/pubpres-playability-003]
+    paths: ['.github/pubpres003-run.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres003-focus-${{ github.ref }}
+  cancel-in-progress: false
+
+# Explicit source-frozen requests only. The original PUBPRES-001 campaign and
+# unrelated production workflows are untouched. These jobs run sequentially.
+env:
+  PUBPRES_FROZEN: d316c281e0abb575eb6302afc12ec44f211460ba
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GIT_LFS_SKIP_SMUDGE: '1'
+
+jobs:
+  plan:
+    if: github.ref == 'refs/heads/experiment/pubpres-playability-003'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Validate exact bounded request and provider policy
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          request = json.loads(Path('.github/pubpres003-run.json').read_text())
+          assert set(request) == {'schema','phase','frozen_payload_tree_sha256','purpose'}
+          assert request['schema'] == 'pubpres003-focus-request-v1'
+          assert request['phase'] == 'baseline-and-causal'
+          rows = subprocess.check_output(['git','ls-tree','-rz','HEAD']).split(b'\0')
+          payload = b'\0'.join(row for row in rows if row and row.split(b'\t',1)[1] != b'.github/pubpres003-run.json') + b'\0'
+          assert hashlib.sha256(payload).hexdigest() == request['frozen_payload_tree_sha256']
+          print(json.dumps({'source':os.environ['GITHUB_SHA'],'request':request},indent=2))
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/pubpres003/test_audit_traces.py
+          python3 tools/pubpres_playability_windows/test_package_windows.py
+
+  linux-baseline:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      SCONS_JOBS: '2'
+      CYBERSAND_REAL_CXX: /usr/bin/g++-13
+      LINUX_CXX: /usr/bin/g++-13
+      PUBPRES_GODOT_CPP_BUILD_LOG: build/pubpres003-runtime/godot-cpp.log
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 64, persist-credentials: false}
+      - name: Prepare exact donor, pinned build dependencies and real display
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+        run: |
+          git fetch --no-tags --depth=1 origin "$PUBPRES_FROZEN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-frozen" "$PUBPRES_FROZEN"
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          git lfs install --local
+          for source_root in "$PWD" "$RUNNER_TEMP/pubpres-frozen"; do
+            git -C "$source_root" lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          done
+          python3 tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Build independently source-bound frozen and instrumented runtimes
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+        run: |
+          mkdir -p build/pubpres003-runtime
+          timeout 1800 bash tools/build_pinned_godot_cpp.sh linux > build/pubpres003-runtime/godot-cpp.log 2>&1
+          python3 tools/pubpres_playability_build/build_runtime.py --source-root "$RUNNER_TEMP/pubpres-frozen" --source-sha "$PUBPRES_FROZEN" --platform linux --output-dir build/pubpres003-runtime/F
+          python3 tools/pubpres_playability_build/build_runtime.py --source-root "$PWD" --source-sha "$GITHUB_SHA" --platform linux --output-dir build/pubpres003-runtime/C
+      - name: Frozen Safe eager pixel history and camera correctness
+        run: |
+          python3 tools/pubpres003/run_safe_baseline.py --source-root "$RUNNER_TEMP/pubpres-frozen" --source-sha "$PUBPRES_FROZEN" --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --runtime build/pubpres003-runtime/F --output build/pubpres003-safe-F --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - name: Instrumented source Safe eager pixel history and camera correctness
+        if: always() && !cancelled()
+        run: |
+          python3 tools/pubpres003/run_safe_baseline.py --source-root "$PWD" --source-sha "$GITHUB_SHA" --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --runtime build/pubpres003-runtime/C --output build/pubpres003-safe-C --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - name: Three sequential genuine frozen gameplay baselines
+        if: always() && !cancelled()
+        run: |
+          python3 tools/pubpres003/run_focus.py --source "$RUNNER_TEMP/pubpres-frozen" --runtime build/pubpres003-runtime/F --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output build/pubpres003-focus-F --case wave_512_follow --case wave_2048_follow --case wave_gameplay_2048_follow --mode baseline --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - name: One current gameplay causal capture without a speed claim
+        if: always() && !cancelled()
+        run: |
+          python3 tools/pubpres003/run_focus.py --source "$PWD" --runtime build/pubpres003-runtime/C --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output build/pubpres003-causal-C --case wave_gameplay_2048_follow --mode causal --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres003-linux-baseline-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres003-runtime/
+            build/pubpres003-safe-F/
+            build/pubpres003-safe-C/
+            build/pubpres003-focus-F/
+            build/pubpres003-causal-C/
+          if-no-files-found: error
+          retention-days: 90

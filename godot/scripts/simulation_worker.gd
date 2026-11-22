@@ -1398,6 +1398,11 @@ func set_workbench_sample(value: Dictionary) -> Dictionary:
 	_rigid_body_epoch = int(value.epoch)
 	result["effects"] = _queue_physical_effects_locked(int(value.epoch),value.get("physical_effects",[]))
 	result["accepted"] = true
+	if _render_cadence_trace_active and _publication_detail_trace:
+		var accepted_usec: int = Time.get_ticks_usec()
+		# Main accepts an immutable sample; it does not observe native World here.
+		_append_render_cadence_event_locked(_workbench_phase_event("sample_admitted",
+			accepted_usec,accepted_usec,value,"accepted"),_render_cadence_trace_generation)
 	if not _paused and not _reset_requested and _lab_request.is_empty() and _prepared_physical_publication.is_empty():
 		var emitters: Array = _workbench_sample.get("emitters",[])
 		if not emitters.is_empty() and not value.states.is_empty():
@@ -1987,6 +1992,21 @@ func _append_render_cadence_event(event: Dictionary, generation: int) -> void:
 	_mutex.lock()
 	_append_render_cadence_event_locked(event,generation)
 	_mutex.unlock()
+
+
+# Additive producer diagnostics share the existing bounded capture. Unknown
+# World/tick/terrain fields remain -1 until that owner boundary observes them;
+# session/epoch/sample join the admission to the actual worker consumption.
+# These copied values never authorize a tick, a Rapier step or publication.
+func _workbench_phase_event(kind: String, started: int, completed: int,
+		sample: Dictionary, status: String, generation: int = -1,
+		tick: int = -1, hard_revision: int = -1) -> Dictionary:
+	var states: Variant = sample.get("states",null)
+	return {"kind":kind,"start_usec":started,"completed_usec":completed,
+		"session":int(sample.get("session",-1)),"rigid_body_epoch":int(sample.get("epoch",-1)),
+		"body_sample":int(states[10]) if states != null and states.size() > 10 else -1,
+		"world_generation":generation,"tick_index":tick,
+		"required_hard_revision":hard_revision,"status":status}
 
 
 func engine_lab_pixel_pacing() -> Dictionary:
@@ -2739,6 +2759,12 @@ func _worker_loop() -> void:
 		_lab_request = {}
 		_legacy_edit_inflight = not local_emissions.is_empty() or not local_cell_emissions.is_empty()
 		_world_change_inflight = local_reset_requested or not local_lab.is_empty() or not _pending_physical_liquid.is_empty()
+		if local_trace_generation > 0 and _publication_detail_trace and not local_workbench_sample.is_empty():
+			var latched_usec: int = Time.get_ticks_usec()
+			_append_render_cadence_event_locked(_workbench_phase_event("worker_latch",
+				latched_usec,latched_usec,local_workbench_sample,
+				"owner_transition" if _world_change_inflight or physical_wait else "latched",
+				_world_generation),local_trace_generation)
 		_mutex.unlock()
 
 		if not local_running:
@@ -2917,6 +2943,7 @@ func _worker_loop() -> void:
 				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
 				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+					var prepare_started_usec: int = Time.get_ticks_usec() if local_trace_generation > 0 and _publication_detail_trace else 0
 					if not _workbench_sample_inside(sample.states,_workbench_extent):
 						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
@@ -2929,6 +2956,11 @@ func _worker_loop() -> void:
 						_workbench_prepared_sample = workbench_serial
 						_workbench_consumed_sample = sample
 						if _workbench_result.is_empty(): _capture_workbench_result()
+					if prepare_started_usec > 0:
+						_append_render_cadence_event(_workbench_phase_event("coupling_prepare",
+							prepare_started_usec,Time.get_ticks_usec(),sample,
+							"native_failed" if _simulation_failed else "prepared" if _workbench_refusal.is_empty() else "refused",
+							_world_generation),local_trace_generation)
 				if not _workbench_refusal.is_empty():
 					local_paused = true
 					_lab_status = _workbench_refusal
@@ -2990,6 +3022,7 @@ func _worker_loop() -> void:
 						"worker_turn_started_usec":step_start_usec,"tick_index":int(_world.tick_index),
 						"world_generation":_world_generation,"revision":int(_world.revision),
 						"body_sample":workbench_serial,"offered_body_sample":offered_body_sample,
+						"session":int(local_workbench_sample.get("session",-1)),"rigid_body_epoch":local_rigid_body_epoch,
 						"body_publication":local_body_publication,"offered_body_publication":_rigid_body_publication,
 						"requested_hz":local_pixel_target_hz,"requested_interval_usec":local_pixel_interval_usec,
 						"sample_wake":local_sample_wake,"deadline_usec":next_tick_usec,
@@ -2997,11 +3030,16 @@ func _worker_loop() -> void:
 						"scheduler_overruns":_worker_overruns},local_trace_generation)
 					_mutex.unlock()
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
+					var results_started_usec: int = Time.get_ticks_usec() if local_trace_generation > 0 and _publication_detail_trace else 0
 					_capture_workbench_result()
 					if _world.has_failed():
 						_simulation_failed = true
 					else:
 						_workbench_completed_sample = workbench_serial
+					if results_started_usec > 0:
+						_append_render_cadence_event(_workbench_phase_event("coupling_results",
+							results_started_usec,Time.get_ticks_usec(),local_workbench_sample,
+							"native_failed" if _simulation_failed else "healthy",_world_generation),local_trace_generation)
 				if not _simulation_failed and local_lab.has("workbench_step_serial"):
 					_workbench_step_serial = int(local_lab.workbench_step_serial)
 				if _lab_active and _scenario_host.active() and not _scenario_host.after_tick():
@@ -3169,6 +3207,7 @@ func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
 			"snapshot_serial":snapshot.serial,"world_generation":_world_generation,
 			"tick_index":snapshot.tick_index,"revision":snapshot.simulation_world_revision,
 			"body_sample":_workbench_completed_sample,"required_hard_revision":source.lab_context.workbench_hard_surface_revision,
+			"session":int(_workbench_consumed_sample.get("session",-1)),"rigid_body_epoch":rigid_body_epoch,
 			"packet_hard_revision":snapshot.hard_surface_revision,
 			"native_completed_usec":snapshot.last_native_tick_completed_usec},trace_generation)
 	_mutex.unlock()
@@ -3512,6 +3551,12 @@ func _publish_snapshot(
 	# turn. A getter can discover a fault even after a successful native tick.
 	if _world.has_method(&"has_failed") and _world.has_failed():
 		_simulation_failed = true
+	if trace_generation > 0 and _publication_detail_trace and workbench_physics:
+		_append_render_cadence_event(_workbench_phase_event("native_observations_ready",
+			copy_start_usec,Time.get_ticks_usec(),_workbench_consumed_sample,
+			"native_failed" if _simulation_failed else "healthy",_world_generation,
+			snapshot.tick_index,current_hard_surface_revision),trace_generation)
+	if _simulation_failed:
 		_publish_failure_snapshot()
 		return
 	if workbench_physics and not _combined_physics_publication:

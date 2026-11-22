@@ -79,6 +79,9 @@ var shared_workbench: Control
 # Opt-in physical presentation trace. Empty and inactive in normal operation.
 var workbench_pose_trace = WorkbenchPoseTrace.new()
 var _workbench_pose_trace_reasons: Dictionary = {}
+# PUBPRES-003 observation seam. Only the dedicated bounded test observer enables
+# it; ordinary play creates no causal event dictionaries or additional reads.
+var _pubpres_trace_enabled: bool = false
 # One resolved presentation decision per Main render submission. Rapier and
 # native World remain authoritative; this state owns only visual selection.
 var workbench_presentation_frame: Dictionary = {}
@@ -2168,7 +2171,10 @@ func _process(delta: float) -> void:
 			and _actor_reset_receipt == 0 and _pending_physical_candidate == null \
 			and pending_microscenario_apply.is_empty() \
 			and rapier_bridge.pending_hard_surface_chunks() > 0:
-		rapier_bridge.process_hard_surface_collider_budget(32, 1000)
+		if _pubpres_trace_enabled:
+			_pubpres_terrain_budget(32, 1000, "process", null)
+		else:
+			rapier_bridge.process_hard_surface_collider_budget(32, 1000)
 	consume_worker_snapshot()
 	_advance_prepared_physical_candidate()
 	if _pending_physical_candidate == null and shared_workbench == null: refresh_actor_usables()
@@ -2302,14 +2308,15 @@ func _physics_process(_delta: float) -> void:
 		# Physics consumes the bounded native/terrain mailbox before material
 		# extraction and upload complete. Terrain, sample and wrench still
 		# belong to one immutable owner turn and the ordinary strict fence.
-		physics_snapshot = simulation_worker.take_latest_physics_snapshot()
+		physics_snapshot = _pubpres_take_physics_snapshot("physics_callback") if _pubpres_trace_enabled \
+			else simulation_worker.take_latest_physics_snapshot()
 		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch():
 			_cadence_physics_hold("missing_failed_or_wrong_epoch",physics_snapshot)
 			return
 		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty():
 			_cadence_physics_hold("native_refusal",physics_snapshot)
 			return
-		if not _workbench_terrain_installed(physics_snapshot):
+		if not (_pubpres_terrain_installed(physics_snapshot) if _pubpres_trace_enabled else _workbench_terrain_installed(physics_snapshot)):
 			_cadence_physics_hold("terrain_installation",physics_snapshot)
 			return
 		if paused and not single_step:
@@ -2325,7 +2332,7 @@ func _physics_process(_delta: float) -> void:
 					"world_generation":physics_snapshot.physics_world_generation,
 					"session":physical_actor_session.bridge._session}
 				var waited: Dictionary = _workbench_native_rendezvous.wait_for_sample(
-					simulation_worker.try_read_physics_mailbox, expected)
+					_pubpres_try_physics_mailbox if _pubpres_trace_enabled else simulation_worker.try_read_physics_mailbox, expected)
 				if workbench_pose_trace.active:
 					var event: Dictionary = waited.duplicate()
 					event.erase("snapshot")
@@ -2349,7 +2356,7 @@ func _physics_process(_delta: float) -> void:
 					if not str(physics_snapshot.lab_context.get("workbench_refusal", "")).is_empty():
 						_cadence_physics_hold("native_refusal",physics_snapshot)
 						return
-					if not _workbench_terrain_installed(physics_snapshot):
+					if not (_pubpres_terrain_installed(physics_snapshot) if _pubpres_trace_enabled else _workbench_terrain_installed(physics_snapshot)):
 						_cadence_physics_hold("terrain_installation",physics_snapshot)
 						return
 			if physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample:
@@ -2391,6 +2398,10 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot
 		var cadence_step_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active else 0
+		if _pubpres_trace_enabled:
+			_pubpres_packet_observed("transaction_entry", Time.get_ticks_usec(), physics_snapshot,
+				{"native_and_terrain_gate_passed":true, "manual_steps_before":rapier_bridge.manual_step_count(),
+				"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks()})
 		apply_latest_rigid_body_results(physics_snapshot)
 		if physical_actor_session != null:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
@@ -2469,7 +2480,7 @@ func _try_same_frame_continuation() -> void:
 	var started_usec: int = Time.get_ticks_usec()
 	var before: int = physical_actor_session.tick if physical_actor_session != null else -1
 	var attempt: Dictionary = _workbench_same_frame.take_ready(Engine.get_process_frames(),
-		_same_frame_identity(), simulation_worker.try_read_physics_mailbox)
+		_same_frame_identity(), _pubpres_try_physics_mailbox if _pubpres_trace_enabled else simulation_worker.try_read_physics_mailbox)
 	attempt["start_usec"] = started_usec
 	attempt["before_step"] = before
 	attempt["attempt_process_frame"] = Engine.get_process_frames()
@@ -2494,6 +2505,76 @@ func _try_same_frame_continuation() -> void:
 		var event: Dictionary = attempt.duplicate(true)
 		event["event"] = "physics_continuation"
 		workbench_pose_trace.observe_event(event)
+
+
+func _pubpres_transaction_observed(_event: String, _evidence: Dictionary) -> void:
+	# No retained history or behavior in Main. The dedicated observer owns its
+	# bounded sidecar and joins these observations to actual callback/step proof.
+	pass
+
+
+func _pubpres_packet_observed(event: String, started_usec: int,
+		snapshot: CyberSimulationSnapshot, extra: Dictionary) -> void:
+	var evidence := {"start_usec":started_usec, "time_usec":Time.get_ticks_usec(),
+		"process_frame":Engine.get_process_frames(), "physics_frame":Engine.get_physics_frames(),
+		"requested_sample":_workbench_wait_sample, "current_epoch":_body_owner_epoch(),
+		"current_session":physical_actor_session.bridge._session if physical_actor_session != null else -1,
+		"physical_tick":physical_actor_session.tick if physical_actor_session != null else -1,
+		"queued_hard_revision":last_hard_surface_revision, "packet_present":snapshot != null}
+	if snapshot != null:
+		evidence.merge({"world_generation":snapshot.physics_world_generation,
+			"rigid_body_epoch":snapshot.rigid_body_epoch, "snapshot_serial":snapshot.serial,
+			"tick_index":snapshot.tick_index,
+			"completed_body_sample":snapshot.lab_context.get("workbench_completed_sample", -1),
+			"packet_session":snapshot.lab_context.get("workbench_gcr", {}).get("session", -1),
+			"required_hard_revision":snapshot.lab_context.get("workbench_hard_surface_revision", -1),
+			"packet_hard_revision":snapshot.hard_surface_revision,
+			"native_completed_usec":snapshot.last_native_tick_completed_usec,
+			"physics_handoff_usec":snapshot.physics_handoff_usec,
+			"simulation_failed":snapshot.simulation_failed,
+			"native_refusal":str(snapshot.lab_context.get("workbench_refusal", ""))})
+	evidence.merge(extra)
+	_pubpres_transaction_observed(event, evidence)
+
+
+func _pubpres_take_physics_snapshot(callsite: String) -> CyberSimulationSnapshot:
+	var started_usec: int = Time.get_ticks_usec()
+	var snapshot: CyberSimulationSnapshot = simulation_worker.take_latest_physics_snapshot()
+	_pubpres_packet_observed("mailbox_observation", started_usec, snapshot,
+		{"callsite":callsite, "status":"ready" if snapshot != null else "empty", "nonblocking":false})
+	return snapshot
+
+
+func _pubpres_try_physics_mailbox() -> Dictionary:
+	var started_usec: int = Time.get_ticks_usec()
+	var mailbox: Dictionary = simulation_worker.try_read_physics_mailbox()
+	var snapshot: CyberSimulationSnapshot = mailbox.get("snapshot")
+	_pubpres_packet_observed("mailbox_observation", started_usec, snapshot,
+		{"callsite":"try_read", "status":str(mailbox.get("status", "invalid")), "nonblocking":true,
+		"mailbox_epoch":mailbox.get("epoch", -1), "mailbox_session":mailbox.get("session", -1)})
+	return mailbox
+
+
+func _pubpres_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
+	var started_usec: int = Time.get_ticks_usec()
+	var pending_before: int = rapier_bridge.pending_hard_surface_chunks()
+	var queued_before: int = last_hard_surface_revision
+	var ready: bool = _workbench_terrain_installed(snapshot)
+	_pubpres_packet_observed("terrain_install", started_usec, snapshot,
+		{"operation":"check", "pending_before":pending_before,
+		"pending_after":rapier_bridge.pending_hard_surface_chunks(),
+		"queued_revision_before":queued_before, "queued_revision_after":last_hard_surface_revision, "ready":ready})
+	return ready
+
+
+func _pubpres_terrain_budget(chunks: int, usec: int, callsite: String,
+		snapshot: CyberSimulationSnapshot) -> void:
+	var started_usec: int = Time.get_ticks_usec()
+	var pending_before: int = rapier_bridge.pending_hard_surface_chunks()
+	rapier_bridge.process_hard_surface_collider_budget(chunks, usec)
+	_pubpres_packet_observed("terrain_install", started_usec, snapshot,
+		{"operation":"budget", "callsite":callsite, "pending_before":pending_before,
+		"pending_after":rapier_bridge.pending_hard_surface_chunks(), "chunks_allowance":chunks, "usec_allowance":usec})
 
 
 func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
@@ -4645,13 +4726,17 @@ func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
 	# render frame must not make otherwise available callbacks idle behind this
 	# independent native-feedback fence. Each call keeps the existing allowance.
 	if rapier_bridge.pending_hard_surface_chunks() > 0:
-		rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
+		if _pubpres_trace_enabled:
+			_pubpres_terrain_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME, WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC, "physics_callback", snapshot)
+		else:
+			rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
 	if last_hard_surface_revision != required or rapier_bridge.pending_hard_surface_chunks() != 0: return false
 	_physical_terrain_ready = true
 	return true
 
 
 func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> void:
+	var started_usec: int = Time.get_ticks_usec() if _pubpres_trace_enabled else 0
 	if snapshot == null: snapshot = latest_snapshot
 	if (
 		snapshot == null
@@ -4664,7 +4749,8 @@ func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> vo
 		# A later physical completion may already have installed newer terrain
 		# while the full graphical snapshot was being assembled. Direct callers
 		# and the render callback must never roll that geometry backwards.
-		var newest: CyberSimulationSnapshot = simulation_worker.take_latest_physics_snapshot()
+		var newest: CyberSimulationSnapshot = _pubpres_take_physics_snapshot("terrain_queue_guard") if _pubpres_trace_enabled \
+			else simulation_worker.take_latest_physics_snapshot()
 		if newest == null: return
 		if newest.rigid_body_epoch == snapshot.rigid_body_epoch \
 			and newest.serial > snapshot.serial and newest.hard_surface_revision != snapshot.hard_surface_revision:
@@ -4693,6 +4779,9 @@ func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> vo
 		)
 	last_hard_surface_revision = snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = HARD_SURFACE_REBUILD_INTERVAL
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("terrain_install", started_usec, snapshot,
+			{"operation":"queue", "pending_after":rapier_bridge.pending_hard_surface_chunks()})
 
 
 func _update_physical_terrain_ready() -> void:

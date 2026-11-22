@@ -20,7 +20,8 @@ remains the owner's gate.
 | Historical qualified integration | `8503ec19e4d620e125dc6df2c5c6571b1256cb92` |
 | Historical integration branch | [#682](https://github.com/techrote/cybersand/pull/682), preserved |
 | Accepted main at recovery | `662df51cd8409a52332fa7ef15d06d8ab8945aed` |
-| First bounded package repair | `94864ca351532ca35c7248b1248dd868b9eb1c09` |
+| First bounded package repair | Published `11e8c397f6ec8e1e963df7948a7916724f371923`, same tree as local `94864ca351532ca35c7248b1248dd868b9eb1c09` |
+| Successor PR | [Draft/HOLD #740](https://github.com/techrote/cybersand/pull/740) |
 
 Use `git rev-parse HEAD HEAD^{tree}` for the current log's exact source and tree.
 The successor PR/checkpoint comments record each published commit. Main must be
@@ -72,7 +73,9 @@ post-import changes or rewrite an original package.
 | Minimal pinned Godot 4.7 import | Exact committed LF descriptor remained unchanged |
 | Source-matched frozen Linux native build | PASS: 5,168,408 bytes; SHA-256 `a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae`; exact donor/tree and 105 native inputs recorded; local GCC 14.2 scope |
 | Independent retained-trace audit | PASS: 32 arms, eight ABBA cohorts, 12 adversarial reducer tests; unchanged original validator and three independent timing-window reductions agree |
-| Safe/eager full graphical history and Rapier baseline | Pending execution |
+| Focused frozen native/Rapier baseline | PASS: fresh import plus eight test processes, including publication OFF/ON, real same-frame native/Rapier execution, pacing, manual steps and owner deadlines |
+| Additive producer/Main trace | PASS: real Workbench trace ON/OFF, bounded ownership, late-native-failure/terrain publication and same-frame integration; explicit development delta and unchanged native input closure |
+| Safe/eager full graphical history | Pending hosted execution |
 | Actual Windows pristine import/startup/Save/reopen | Pending execution |
 | New Wave2048 performance improvement | NOT ESTABLISHED |
 
@@ -91,14 +94,46 @@ are not a successor performance claim.
 
 Checkpoint documentation checks: historical M11 integrity PASS (18 records,
 28 hashes), diff whitespace PASS, retrieval 30/32 routes (known Q19/Q32 misses).
-The standalone checkout documentation gate currently reports missing companion
-workspace fixtures; the repository provenance gate additionally rejects retained
-adapter runtime receipts whose source is stale. Neither refusal is waived or
-reported as final-source qualification. Build-specific receipts identify the
-fresh experimental runtime separately. Required graphical and real Windows
-gates remain pending. A private Xorg attempt failed before Godot because this
-environment refused display listener sockets; an existing permitted desktop is
-being investigated, with hosted graphical testing as the fallback.
+After materializing the five exact retained companion fixtures, documentation
+PASS covers 147 documents, 276 claims, 4,163 links and 32 questions. Repository
+provenance still correctly refuses stale retained adapter runtime receipts;
+final matching runtime publication is pending. Neither refusal was weakened.
+Build-specific receipts identify the fresh experimental runtime separately.
+Required graphical and real Windows gates remain pending. Private Xorg and
+existing-desktop attempts could not execute a real renderer in this environment;
+the dedicated bounded hosted workflow is the selected path.
+
+The [local authority archive](tools/pubpres003/evidence/checkpoint-02/local-native-authority.json)
+binds immutable original process logs, receipts, the explicit application/native
+identity clarification and local-to-published tree mapping. The producer
+receipt's original `source_tree` field identified the native donor while its
+`source` named the test application; its preserved correction sidecar separates
+those identities. The original receipt is not rewritten.
+
+An additional strict review found that the original camera test exited zero
+after a script error on an unconstructed lazy Art panel: six root-stretch and
+twelve moving-Follow phases were absent. That original result is FAIL, not a
+camera qualification. The successor fixture invokes the ordinary Art action and
+requires every phase; no pixel/history assertion is relaxed. The exact frozen
+fixture remains untouched and the new hosted runner will retain its failure.
+
+## Causal instrumentation checkpoint
+
+Main observes each existing mailbox call once, including returned packet and
+requested sample identities, current owner, native completion, first handoff,
+terrain check/queue/budget and entry to the existing physical transaction. The
+worker records sample acceptance, worker latch, coupling preparation/results and
+completion of native getters before healthy publication. Ordinary Main tracing
+defaults off. Captures are bounded; unknown identities remain unknown. No new
+mailbox poll, terrain allowance, callback, accumulated time credit or solver step
+is granted. `transaction_entry` is not final native-response admission: the
+existing response validation and genuine Rapier completion remain mandatory.
+
+The dedicated `pubpres003-focus.yml` request runs frozen and successor Safe/eager
+checks, three genuine frozen gameplay baselines and one explicitly diagnostic
+current-gameplay causal capture sequentially. Its payload hash excludes only the
+request file; pinned compiler/engine/native/Rapier source identities remain
+required. The original 176-arm campaign and registrations are unchanged.
 
 ## Active ownership and next work
 

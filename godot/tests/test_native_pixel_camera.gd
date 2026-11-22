@@ -356,7 +356,10 @@ func mounted() -> void:
 	for y: int in range(5):
 		for x: int in range(5): expected_block.append(58 if x in [1,2,3] and y in [1,2,3] else 0)
 	check(block == expected_block,"fractional-camera rectangle writes exact cells across x/y chunk64 boundary")
-	bench.art_batches.show()
+	# Art is intentionally lazy. Exercise the actual owner action before using
+	# its panel; direct show() on an unopened panel aborts this coroutine.
+	bench.open_art_batches()
+	if not check(is_instance_valid(bench.art_batches),"ordinary Art action constructs the lazy panel"): return
 	await gesture("Select",Vector2i(65,65),Vector2i(63,63))
 	check(editor.selection == Rect2i(63,63,3,3),"reverse Select retains exact inclusive world bounds")
 	check(bench.art_batches.rectangle(bench.art_batches.fields) == editor.selection,
@@ -758,6 +761,10 @@ func follow_moving_actor() -> void:
 func run() -> void:
 	transforms()
 	await mounted()
+	# A script error in an awaited helper must not leave a successful-looking
+	# footer after only the early camera algebra/paint assertions executed.
+	check(root_stretch_receipts.size() == 6,"all root-stretch and stationary-hover phases completed")
+	check(moving_follow_receipts.size() == 12,"all genuine moving-Follow observations completed")
 	if host != null:
 		host.queue_free()
 		await process_frame
