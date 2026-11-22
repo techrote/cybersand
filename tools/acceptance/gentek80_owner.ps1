@@ -281,6 +281,21 @@ switch($Action){
    & $console --headless --path $project --editor --quit
    if($LASTEXITCODE -ne 0){throw 'Bundled Godot import failed, no GUI started'}
    $null=Verify $x.root $ExpectedSource
+   # Isolate only this evaluator's child processes. The stable source + native
+   # identity makes two fresh launches reopen the same test starts without
+   # reading or modifying another CyberSand user's ordinary save directory.
+   $userBase=[Environment]::GetFolderPath('LocalApplicationData')
+   if([string]::IsNullOrWhiteSpace($userBase)){throw 'Windows user-local application data directory unavailable'}
+   $tag=$ExpectedSource.Substring(0,12)+'-'+$x.native.Substring(0,12)
+   $profileRoot=Join-Path $userBase ('CyberSand-Gentek80-Owner-'+$tag)
+   $local=Join-Path $profileRoot 'Local'
+   $roaming=Join-Path $profileRoot 'Roaming'
+   [IO.Directory]::CreateDirectory($local)|Out-Null
+   [IO.Directory]::CreateDirectory($roaming)|Out-Null
+   $env:LOCALAPPDATA=$local
+   $env:APPDATA=$roaming
+   $env:CYBERSAND_SOURCE_REVISION=$ExpectedSource
+   Write-Output "ISOLATED OWNER PROFILE: $profileRoot (source/native matched)"
    $p=Start-Process -FilePath $gui -WorkingDirectory $x.root -ArgumentList @('--path',('"'+$project+'"'),'--','--workbench') -PassThru
    Write-Output "PACKAGED WORKBENCH STARTED: PID=$($p.Id); close this GUI to finish"
    $p.WaitForExit()

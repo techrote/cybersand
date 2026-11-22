@@ -40,6 +40,8 @@ Extraction **must target a new directory**. Launch uses only the bundled pinned 
 
 Repeat clean extraction and tamper-refusal tests under spaces, parentheses, Unicode, nested directories and a non-default user-profile path. Intentionally corrupt only *copies* of the archive/package (missing Rapier, changed executable/DLL, truncated ZIP, altered manifest/source, unlisted GDScript, ZIP traversal). Keep exact failure messages and do not bypass a refusal with the legacy launcher. tools/acceptance/tests/test_gentek80_owner.py contains strictly synthetic Windows admission adversaries; they **do not prove actual generator quality or physical GUI interaction**.
 
+The engine process inherits an isolated, persistent owner profile under the current user's Local AppData, keyed by the **source SHA and native runtime SHA**. This changes only the launched process environment, not machine-global settings. Fresh launches of the same verified ZIP reuse that profile; unrelated CyberSand saves are not read or changed. The source revision variable is explicitly propagated to the Godot process.
+
 ## Owner graphical acceptance
 
 Run the actual candidate on **Windows 11 with a local NVIDIA graphics driver and physical keyboard/mouse**. Record OS build, GPU, graphics driver, renderer and DPI/scaling. Hosted Windows Server 2022/ANGLE, headless, RDP software rendering and simulated input are *not* equivalent to this gate.
