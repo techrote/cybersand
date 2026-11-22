@@ -110,6 +110,54 @@ func _run() -> void:
 		"Failed moving-cell admission changes neither queue nor World")
 	_expect(port.consume_receipt({"action_id": 1, "outcome": "Applied"}).outcome == "UnknownOrRetiredAction",
 		"A fabricated or delayed applied receipt cannot mutate ownership")
+	# Adversarial *value-only* terminal-delivery controls; these do not claim
+	# a currently absent native same-World API or a real applied mutation.
+	var guarded: CyberObjectShardM4WorkbenchPort = Port.new(true)
+	var request: Dictionary = {"action_id": 77, "port_generation": guarded.generation,
+		"native_instance_id": 88, "world_generation": 7, "session": 12,
+		"owner_epoch": 9, "shard_session": 14, "world_incarnation": 5,
+		"transport_generation": 3, "operation": "erase",
+		"position": position, "target": target.duplicate(true)}
+	guarded._pending[77] = request.duplicate(true)
+	var stale_applied: Dictionary = request.duplicate(true)
+	stale_applied["outcome"] = "Applied"
+	stale_applied.world_incarnation = 4
+	_expect(guarded.consume_receipt(stale_applied).outcome == "StaleOrForeignReceipt",
+		"Foreign native incarnation on tracked edit enters explicit hold")
+	_expect(guarded.held_reason() == "StaleOrForeignReceipt" and guarded.pending_count() == 1,
+		"Uncertain native mutation stays pending and fences subsequent edits")
+	_expect(guarded.interface_status(worker, snapshot).outcome == "StaleOrForeignReceipt",
+		"UI readback never promotes held transport to same-World ready")
+	_expect(guarded.consume_receipt(request.merged({"outcome": "Cancelled"})).outcome == "StaleOrForeignReceipt",
+		"Late apparently valid disposition cannot release previously uncertain edit")
+	guarded.retire("AuthoritativeWorldReplacement")
+	_expect(guarded.held_reason().is_empty() and guarded.pending_count() == 0,
+		"Explicit owner retirement clears held mutation and invalidates its generation")
+
+	request.action_id = 78
+	request.port_generation = guarded.generation
+	guarded._pending[78] = request.duplicate(true)
+	var fake_applied: Dictionary = request.duplicate(true)
+	fake_applied["outcome"] = "Applied"
+	_expect(guarded.consume_receipt(fake_applied).outcome == "UnprovenNativeApplication",
+		"Applied without exact native transaction is held, not acknowledged")
+	_expect(guarded.pending_count() == 1 and guarded.held_reason() == "UnprovenNativeApplication",
+		"No apparent applied edit can be silently discarded or followed by another")
+	guarded.retire("ExplicitReset")
+	_expect(guarded.pending_count() == 0 and guarded.held_reason().is_empty(),
+		"Only explicit reset/retirement releases ambiguous application hold")
+
+	request.action_id = 79
+	request.port_generation = guarded.generation
+	guarded._pending[79] = request.duplicate(true)
+	var unknown: Dictionary = {"action_id": 99, "port_generation": guarded.generation,
+		"outcome": "Applied"}
+	_expect(guarded.consume_receipt(unknown).outcome == "UnknownOrRetiredAction"
+		and guarded.held_reason() == "UnknownOrRetiredAction",
+		"Unknown current-generation reply while an edit is pending must hold")
+	guarded.retire("Navigation")
+	_expect(guarded.held_reason().is_empty(), "Retirement clears unknown-receipt hold")
+
 	var first_generation: int = port.generation
 	port.retire("Navigation")
 	_expect(port.generation == first_generation + 1 and port.pending_count() == 0,

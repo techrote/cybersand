@@ -37,6 +37,19 @@ func _refusal(reason: String) -> Dictionary:
 	return last_status.duplicate()
 
 
+func _hold(reason: String, action_id: int = 0, detail: String = "") -> Dictionary:
+	# A previously admitted edit may already have changed native inventory.
+	# A malformed or alien terminal receipt must prevent ALL further edits
+	# until explicit source-owned disposal, never merely drop that receipt.
+	if _held_reason.is_empty():
+		_held_reason = reason
+	last_status = {"ready": false, "ok": false, "outcome": _held_reason,
+		"action_id": action_id, "pending": _pending.size(), "may_have_executed": true}
+	if not detail.is_empty():
+		last_status["detail"] = detail
+	return last_status.duplicate(true)
+
+
 func pending_count() -> int:
 	return _pending.size()
 
@@ -51,6 +64,9 @@ func held_reason() -> String:
 func interface_status(worker: Object, snapshot: CyberSimulationSnapshot) -> Dictionary:
 	if not enabled:
 		return _refusal("FeatureDisabled")
+	# The UI must display a previously entered hold, not a new ready status.
+	if not _held_reason.is_empty():
+		return _refusal(_held_reason)
 	if worker == null or not worker is CyberSimulationWorker:
 		return _refusal("OrdinaryWorkerRequired")
 	if snapshot == null or snapshot.simulation_failed:
@@ -206,8 +222,16 @@ func queue_intent(worker: Object, snapshot: CyberSimulationSnapshot, uploaded: D
 
 
 func consume_receipt(receipt: Dictionary) -> Dictionary:
+	if not _held_reason.is_empty():
+		return _refusal(_held_reason)
 	var id: Variant = receipt.get("action_id")
 	if not id is int or not _pending.has(id):
+		# Genuine previous-generation completions are ignored, but an unknown
+		# current-generation response while another mutation is pending is
+		# an ambiguous delivery fault, not safe progress.
+		if not _pending.is_empty() and (not receipt.get("port_generation") is int
+				or int(receipt.port_generation) == generation):
+			return _hold("UnknownOrRetiredAction")
 		return {"ok": false, "outcome": "UnknownOrRetiredAction"}
 	var request: Dictionary = _pending[id]
 	if receipt.get("port_generation") != generation \
@@ -218,14 +242,14 @@ func consume_receipt(receipt: Dictionary) -> Dictionary:
 			or receipt.get("world_incarnation") != request.world_incarnation \
 			or receipt.get("transport_generation") != request.transport_generation \
 			or receipt.get("native_instance_id") != request.native_instance_id:
-		return {"ok": false, "outcome": "StaleOrForeignReceipt"}
+		return _hold("StaleOrForeignReceipt", int(id))
 	var outcome: String = str(receipt.get("outcome", ""))
 	if outcome not in TERMINAL_OUTCOMES:
-		return {"ok": false, "outcome": "NonterminalOrUnknownReceipt"}
+		return _hold("NonterminalOrUnknownReceipt", int(id))
 	if outcome == "Applied":
 		var native_reason: String = _applied_receipt_error(receipt, request)
 		if not native_reason.is_empty():
-			return {"ok": false, "outcome": "UnprovenNativeApplication", "detail": native_reason}
+			return _hold("UnprovenNativeApplication", int(id), native_reason)
 	_pending.erase(id)
 	var raw_native: Variant = receipt.get("native_receipt", {})
 	var terminal: Dictionary = {"ok": outcome == "Applied", "outcome": outcome,
@@ -266,23 +290,33 @@ static func _applied_receipt_error(receipt: Dictionary, request: Dictionary) -> 
 
 
 func poll_results(worker: Object, maximum: int = 16) -> Dictionary:
+	if not _held_reason.is_empty():
+		return _refusal(_held_reason)
 	if not enabled or worker == null or not worker is CyberSimulationWorker \
 			or not worker.has_method(StringName(REQUIRED_METHODS[2])):
+		if not _pending.is_empty():
+			return _hold("ReceiptTransportUnavailable")
 		return {"ok": false, "outcome": "SameWorldAdapterMissing"}
 	if maximum < 1 or maximum > MAX_PENDING:
 		return {"ok": false, "outcome": "InvalidReceiptLimit"}
 	var replies: Variant = worker.call(REQUIRED_METHODS[2], maximum)
 	if not replies is Array or replies.size() > maximum:
-		return {"ok": false, "outcome": "InvalidReceiptBatch"}
+		return _hold("InvalidReceiptBatch") if not _pending.is_empty() else \
+			{"ok": false, "outcome": "InvalidReceiptBatch"}
 	var accepted: int = 0
 	var refused: int = 0
 	for value: Variant in replies:
 		var disposition: Dictionary = consume_receipt(value) if value is Dictionary else \
+			_hold("InvalidReceipt") if not _pending.is_empty() else \
 			{"ok": false, "outcome": "InvalidReceipt"}
 		if disposition.ok:
 			accepted += 1
 		else:
 			refused += 1
+		# Never process later successful receipts after an unknown outcome.
+		if not _held_reason.is_empty():
+			return {"ok": false, "outcome": _held_reason, "accepted": accepted,
+				"other": refused, "pending": _pending.size(), "may_have_executed": true}
 	return {"ok": true, "outcome": "ReceiptsObserved", "accepted": accepted,
 		"other": refused, "pending": _pending.size()}
 

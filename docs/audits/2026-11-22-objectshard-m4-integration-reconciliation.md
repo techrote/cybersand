@@ -52,3 +52,9 @@ The integration lead incorporated later native and Workbench donor corrections w
 Native donor a06537555002c12ffde231bfa051575a64bc16ca tightens stale geometry/motion admission ordering.
 Workbench donor 351c5a78ebf7a6f71650ecc6b092ef36123badbe adds owner epoch, shard session and World incarnation to capability, observed target and native applied receipt witnesses. The existing ordinary Worker still does not expose an attachment, so these are fail-closed value guards, not positive integrated physics.
 These changes are incorporated as exact donor blobs with both donor commits retained in merge ancestry. Legacy Art session-only settings from main remain intact.
+
+## Lead review: terminal-receipt uncertainty repaired
+
+An independent source-level review identified that the initial M4 ordinary Workbench port refused a malformed receipt for a **tracked pending action** without entering a held state. Further edits could have been admitted after an ambiguous native mutation; a batch containing invalid receipts reported overall success. The principal integration branch now preserves the pending identity and enters explicit Hold for tracked stale/foreign, unknown terminal, or unproved Applied receipts, unexpected current-generation replies, corrupt batches and disappearing result transport. Later replies cannot clear the hold; only explicit owner retirement resets its generation. The UI reports Held rather than a stale ready state.
+
+New value-only GDScript adversarial checks inject a pending witnessed action and corrupt completion, with negative controls for stale incarnation, forged applied success, and unexpected current-generation action IDs. These are **contract tests**, not real same-World physics evidence. Await source-matched execution on this new SHA; previous CI source does not qualify these changes.
