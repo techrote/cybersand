@@ -61,10 +61,8 @@ func select_preset(panel, id: String) -> void:
 func new_panel():
 	var panel = ArtPanel.new()
 	panel.hide()
+	# _ready() builds and connects the real provider controls exactly once.
 	root.add_child(panel)
-	var container := VBoxContainer.new()
-	panel.add_child(container)
-	panel.mount_provider_controls(container)
 	return panel
 
 
