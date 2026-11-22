@@ -40,7 +40,7 @@ def save(root, record):
     put(root, package.MANIFEST + ".sha256", f"{package.digest(root / package.MANIFEST)}  {package.MANIFEST}\n")
 
 
-def fixture(root):
+def fixture(root, frozen=False):
     """Three distinct source closures/DLLs, even when toolchain agrees."""
     put(root, package.BUILD_DRIVER, "synthetic build driver\n")
     for name in package.dependency_custody.DRIVER_FILES[1:]:
@@ -51,7 +51,7 @@ def fixture(root):
                  "compiler_command": "synthetic-c++", "compiler_version": "fixture-only",
                  "toolchain_drift_allowed": False}
     sources = {}
-    for index, key in enumerate(("M", "I", "C"), 1):
+    for index, key in enumerate(("M", "I", "C", "F") if frozen else ("M", "I", "C"), 1):
         prefix = "sources/" + key
         put(root, prefix + "/godot/addons/godot-rapier2d/Radial2D.svg.import",
             '[remap]\nimporter="texture"\n[params]\ncompress/mode=0\n')
@@ -67,6 +67,8 @@ def fixture(root):
         dll = put(root, prefix + "/" + package.NATIVE, pe(key))
         log = put(root, prefix + "/provenance/build.log", "synthetic complete " + key + "\n")
         source, tree = str(index)*40, str(index+3)*40
+        if key == "F":
+            source, tree = package.FROZEN_COMMIT, package.FROZEN_TREE
         dependency_log = put(root, prefix + "/provenance/GODOT-CPP-BUILD.log", "synthetic dependency build\n")
         dependency_script = put(root, prefix + "/provenance/GODOT-CPP-BUILD.sh", "synthetic dependency builder\n")
         dependency_helper = put(root, prefix + "/provenance/GODOT-CPP-CXX.sh", "synthetic dependency helper\n")
@@ -106,8 +108,8 @@ def fixture(root):
                                    "receipt_sha256": package.digest(root / receipt), "source_input_count": len(inputs)},
                         "rapier": {"path": prefix + "/" + package.RAPIER, "sha256": package.digest(rapier_dll),
                                    "bytes": rapier_dll.stat().st_size, "receipt": prefix + "/" + package.RAPIER_RECEIPT},
-                        "toolchain": copy.deepcopy(toolchain), "features": {"reachable_staging_pools": key == "C",
-                        "wave_stage_probe": key == "C", "wave_column_tiles": False, "wave_column_slots": 1, "same_frame_continuation": key == "C"}}
+                        "toolchain": copy.deepcopy(toolchain), "features": {"reachable_staging_pools": key in ("C", "F"),
+                        "wave_stage_probe": key in ("C", "F"), "wave_column_tiles": False, "wave_column_slots": 1, "same_frame_continuation": key in ("C", "F")}}
     engine = {"version": package.GODOT_VERSION, "archive_sha512": package.GODOT_SHA512}
     for label, name in (("gui", package.GUI), ("console", package.CONSOLE)):
         engine[label] = {"path": name, "sha256": package.digest(put(root, name, pe(label)))}
@@ -116,7 +118,7 @@ def fixture(root):
     engine["vc_runtime_sha256"] = vc["vcruntime140.dll"]
     observer = put(root, "sources/C/godot/tests/observer.gd", "extends SceneTree\n")
     campaign = "tools/pubpres_playability/campaign.json"
-    (root / campaign).parent.mkdir(parents=True)
+    (root / campaign).parent.mkdir(parents=True, exist_ok=True)
     package.write_json(root / campaign, {"schema": "pubpres-playability-campaign-v3",
                       "source_commits": {"main": sources["M"]["source_commit"], "integration": sources["I"]["source_commit"]},
                       "overlay_sha256": {"tests/observer.gd": package.digest(observer)}})
@@ -129,6 +131,10 @@ def fixture(root):
               "owner_launcher": package.TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": package.TOOLS + "/owner_start.gd",
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"}}
+    if frozen:
+        record.update(schema=package.FROZEN_SCHEMA, mission="PUBPRES-PLAYABILITY-003",
+                      owner_comparison={"baseline": "F", "candidate": "C"})
+        record["package_filename"] = "CyberSand-PUBPRES-PLAYABILITY-003-" + candidate[:12] + "-Windows.zip"
     save(root, record)
     return record
 
@@ -162,6 +168,70 @@ class PackageTests(unittest.TestCase):
                 save(self.root, self.manifest)
                 with self.assertRaisesRegex(ValueError, "mission profile"):
                     package.verify(self.root, self.candidate)
+
+    def test_v3_frozen_baseline_has_its_own_exact_source_and_runtime(self):
+        self.manifest = fixture(self.root, frozen=True)
+        verified = package.verify(self.root, self.candidate)
+        self.assertEqual(verified["sources"]["F"]["source_commit"], package.FROZEN_COMMIT)
+        self.assertEqual(verified["owner_comparison"], {"baseline": "F", "candidate": "C"})
+        self.assertEqual(len({s["native"]["sha256"] for s in verified["sources"].values()}), 4)
+
+    def test_v3_requires_explicit_003_and_exact_frozen_commit_tree(self):
+        for field, value in (("mission", "PUBPRES-PLAYABILITY-001"),
+                             ("source_commit", "7" * 40), ("source_tree", "8" * 40)):
+            with self.subTest(field=field):
+                self.manifest = fixture(self.root, frozen=True)
+                if field == "mission":
+                    self.manifest[field] = value
+                else:
+                    self.manifest["sources"]["F"][field] = value
+                save(self.root, self.manifest)
+                self.check_bad("Frozen baseline")
+
+    def test_v3_cannot_substitute_candidate_runtime_for_frozen(self):
+        self.manifest = fixture(self.root, frozen=True)
+        self.manifest["sources"]["F"]["native"] = copy.deepcopy(self.manifest["sources"]["C"]["native"])
+        save(self.root, self.manifest)
+        self.check_bad("path substitution")
+
+    def test_v3_rejects_changed_frozen_source_after_rehash(self):
+        self.manifest = fixture(self.root, frozen=True)
+        put(self.root, "sources/F/native/src/world.cpp", "changed frozen implementation")
+        save(self.root, self.manifest)
+        self.check_bad("native source differs")
+
+    def test_fourth_source_cannot_escape_shared_toolchain_check(self):
+        self.manifest = fixture(self.root, frozen=True)
+        source = self.manifest["sources"]["F"]
+        path, native = self.native("F")
+        native["compiler_command"] = "different-but-consistently-recorded"
+        source["toolchain"]["compiler_command"] = native["compiler_command"]
+        package.write_json(path, native)
+        source["native"]["receipt_sha256"] = package.digest(path)
+        derived_path = self.root / source["root"] / package.NATIVE_RECEIPT
+        derived = json.loads(derived_path.read_text())
+        derived["build_receipt_sha256"] = package.digest(path)
+        package.write_json(derived_path, derived)
+        save(self.root, self.manifest)
+        self.check_bad("unmatched toolchains")
+
+    def test_v3_rejects_missing_frozen_and_wrong_comparison_mapping(self):
+        self.manifest = fixture(self.root, frozen=True)
+        self.manifest["owner_comparison"]["baseline"] = "M"
+        save(self.root, self.manifest)
+        self.check_bad("baseline/candidate mapping")
+        self.manifest["sources"].pop("F")
+        save(self.root, self.manifest)
+        self.check_bad("independent source")
+
+    def test_v2_cannot_acquire_fourth_source_or_frozen_advertisement(self):
+        self.manifest = fixture(self.root, frozen=True)
+        self.manifest["schema"] = package.SCHEMA
+        save(self.root, self.manifest)
+        self.check_bad("independent source")
+        self.manifest["sources"].pop("F")
+        save(self.root, self.manifest)
+        self.check_bad("Legacy profile")
 
     def check_bad(self, pattern):
         with self.assertRaisesRegex(ValueError, pattern):

@@ -16,6 +16,16 @@ performance or acceptance claim. Use the source identities and qualification
 gates in the accompanying handoff. Earlier ZIPs, receipts and launchers remain
 immutable evidence and must not be renamed into a new profile.
 
+An explicitly built 003 **v3** package adds the independently built frozen
+PUBPRES-001 candidate F (`d316c281e0abb575eb6302afc12ec44f211460ba`, tree
+`7a57dc0873dd161abe165f3a60e14e64886d04a8`). Its owner comparison is F versus C.
+The original M/I registration and all v2 package meanings remain unchanged.
+F has its own checked source, build receipt and native DLL; it cannot use C's
+runtime. All four native builds must match the pinned toolchain. A v3 package
+supports `-Source FrozenBaseline` using the same Safe/eager/OFF selectors as C.
+That is a whole-source comparison, not a promise that every source difference
+is the one performance correction under study.
+
 The package has no installer and does not use your ordinary CyberSand profile.
 Keep the verified `Payload` directory pristine. The launcher makes a fresh
 source copy and isolated profile under its sibling `Runs` directory. Only a
@@ -90,6 +100,7 @@ timing acceptance test.
 | `-Source Main` | Frozen historical accepted-main control, its own native runtime and ordinary source policies | — |
 | `-Source Integration` | Historical PUBPRES source with its registered blit/early/coherent/repaired policies | — |
 | `-Source Candidate` | Current candidate with those same integration policies | Candidate |
+| `-Source FrozenBaseline` | V3 only: exact frozen PUBPRES-001 source F and its own native runtime | — |
 | `-StagingPools Eager` | Existing eager staging-pool allocation | Eager |
 | `-StagingPools Reachable` | Candidate only: omit provably unreachable atlas allocations at setup | Off |
 | `-RenderThread Safe` | Existing Godot safe/inline rendering mode | Safe |

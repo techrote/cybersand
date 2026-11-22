@@ -151,6 +151,30 @@ def selectors(arm, nonce):
             "CYBERSAND_SHADER_NONCE": nonce, "CYBERSAND_SHADER_CACHE_STATE": "isolated-project-and-profile"}
 
 
+def validate_requested_capture(data, case, campaign, source_commit, nonce, driver):
+    """A valid registered receipt must also be the particular requested arm."""
+    need(data["source_identity"]["source_sha"] == source_commit and data["case_nonce"] == nonce,
+         "Captured source/nonce differs")
+    expected = {"renderer": driver, "render_thread": {"requested": "safe", "runtime": "safe"},
+                "camera": case["camera"], "workers": case["workers"], "water_law": case["water_law"],
+                "water_profile": case.get("water_profile", campaign["measurement"]["water_profile"]),
+                "water_variant": case.get("water_variant", "reference"),
+                "input_mode": case.get("input_mode", "tape"),
+                "command_mode": "repeated_callback", "observer_mode": "full"}
+    need(data["fixture"]["name"] == case["fixture"], "Requested fixture differs")
+    for key, wanted in expected.items():
+        need(data[key] == wanted, "Requested capture differs: " + key)
+
+
+def validate_complete_comparison(arms, count):
+    """Retain the predecessor's complete hardware/workload matching contract."""
+    need(len(arms) == count and [arm["index"] for arm in arms] == list(range(count)),
+         "Incomplete or reordered registered comparison")
+    matches = [arm["statistics"]["match"] for arm in arms]
+    need(all(canonical(match) == canonical(matches[0]) for match in matches),
+         "Unmatched hardware, rendering owner, fixture or workload")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("source", "runtime", "engine", "output"):
@@ -247,12 +271,7 @@ def main():
             try:
                 process = execute(engine, arguments, folder, source["source_commit"], setting, 420, args.display_wrapper)
                 data = json.loads(receipt.read_text())
-                need(data["source_identity"]["source_sha"] == source["source_commit"] and data["case_nonce"] == nonce,
-                     "Captured source/nonce differs")
-                need(data["camera"] == case["camera"] and data["workers"] == case["workers"]
-                     and data["water_law"] == case["water_law"]
-                     and data["water_profile"] == case.get("water_profile", campaign["measurement"]["water_profile"]),
-                     "Captured workload differs")
+                validate_requested_capture(data, case, campaign, source["source_commit"], nonce, driver)
                 effective = copy.deepcopy(campaign)
                 effective["arms"]["C"] = arm
                 analysis = reduce_receipt(receipt, effective, project=project, engine=engine, arm_letter="C")
@@ -275,6 +294,10 @@ def main():
         parity = physical_outcome_parity(arms)
         if parity["same_source_pairs_equal"] is False:
             failures.append({"case": case_name, "reason": "Same-source physical outcome parity failed; causal attribution refused"})
+        try:
+            validate_complete_comparison(arms, len(treatment_order))
+        except ValueError as error:
+            failures.append({"case": case_name, "reason": str(error)})
         results.append({"case": case_name, "arms": arms, "physical_outcome_parity": parity})
     summary = {"schema": "pubpres003-focused-result-v1", "complete": not failures,
                "source": source, "mode": args.mode, "cases": results, "failures": failures,

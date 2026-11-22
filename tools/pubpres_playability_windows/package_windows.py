@@ -27,6 +27,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pubpres_playabilit
 import dependency_custody
 
 SCHEMA = "pubpres-playability-windows-v2"
+FROZEN_SCHEMA = "pubpres-playability-windows-v3"
+FROZEN_COMMIT = "d316c281e0abb575eb6302afc12ec44f211460ba"
+FROZEN_TREE = "7a57dc0873dd161abe165f3a60e14e64886d04a8"
 MISSIONS = ("PUBPRES-PLAYABILITY-001", "PUBPRES-PLAYABILITY-003")
 MANIFEST = "PUBPRES-PLAYABILITY-MANIFEST.json"
 RUNTIME_RECEIPT = "PUBPRES-RUNTIME.json"
@@ -227,8 +230,8 @@ def stage_project(root, source, key, runtime_dir, output, mission=MISSIONS[0]):
             "rapier": {"path": prefix + "/" + RAPIER, "sha256": rapier["sha256"], "bytes": rapier["size"],
                 "receipt": prefix + "/" + RAPIER_RECEIPT},
             "toolchain": {name: runtime[name] for name in ("godot_cpp_commit", "godot_cpp_library_sha256", "godot_cpp_dependency_sha256", "compiler_command", "compiler_version", "toolchain_drift_allowed")},
-            "features": {"reachable_staging_pools": key == "C", "wave_column_tiles": False,
-                         "wave_column_slots": 1, "wave_stage_probe": key == "C", "same_frame_continuation": key == "C"},
+            "features": {"reachable_staging_pools": key in ("C", "F"), "wave_column_tiles": False,
+                         "wave_column_slots": 1, "wave_stage_probe": key in ("C", "F"), "same_frame_continuation": key in ("C", "F")},
             "source_projection": "Exact committed project and closure; new source-matched DLL/provenance and canonical recipe copies are explicit package additions."}
 
 
@@ -283,8 +286,10 @@ def verify(output, candidate):
     output = Path(output)
     manifest_path = output / MANIFEST
     record = json.loads(manifest_path.read_text(encoding="utf-8"))
-    need(record.get("schema") == SCHEMA and record.get("candidate_commit") == candidate and COMMIT.fullmatch(candidate), "Package candidate/schema differs")
+    need(record.get("schema") in (SCHEMA, FROZEN_SCHEMA) and record.get("candidate_commit") == candidate and COMMIT.fullmatch(candidate), "Package candidate/schema differs")
     need(record.get("mission") in MISSIONS, "Unknown or missing evaluator mission profile")
+    frozen = record["schema"] == FROZEN_SCHEMA
+    need(not frozen or record["mission"] == "PUBPRES-PLAYABILITY-003", "Frozen baseline requires explicit 003 profile")
     need((output / (MANIFEST + ".sha256")).read_text(encoding="ascii") == f"{digest(manifest_path)}  {MANIFEST}\n", "Manifest checksum differs")
     names = record.get("files_sha256", {})
     need(names and len(names) == record.get("file_count") and len(names) <= 30000
@@ -294,7 +299,14 @@ def verify(output, candidate):
     for name, expected in names.items():
         safe_name(name)
         need(not (output / name).is_symlink() and SHA.fullmatch(expected) and observed[name] == expected, "Changed package file: " + name)
-    need(set(record.get("sources", {})) == {"M", "I", "C"}, "Missing independent source projects")
+    need(set(record.get("sources", {})) == ({"M", "I", "C", "F"} if frozen else {"M", "I", "C"}), "Missing independent source projects")
+    if frozen:
+        need(record["sources"]["F"]["source_commit"] == FROZEN_COMMIT
+             and record["sources"]["F"]["source_tree"] == FROZEN_TREE,
+             "Frozen baseline source differs from the preserved 001 candidate")
+        need(record.get("owner_comparison") == {"baseline": "F", "candidate": "C"}, "Owner baseline/candidate mapping differs")
+    else:
+        need("owner_comparison" not in record, "Legacy profile cannot advertise a frozen baseline")
     toolchains = []
     for key, source in record["sources"].items():
         need(COMMIT.fullmatch(source["source_commit"]) and COMMIT.fullmatch(source["source_tree"]), "Incomplete source identity")
@@ -344,10 +356,10 @@ def verify(output, candidate):
              and derived["source_inputs"] == native["source_inputs_sha256"] and derived["build_receipt"] == source["native"]["receipt"]
              and derived["build_receipt_sha256"] == source["native"]["receipt_sha256"] and derived["production_runtime_promotion"] is False,
              "Runtime observation would read stale or misleading provenance")
-        need(source["features"] == {"reachable_staging_pools": key == "C", "wave_column_tiles": False,
-                                   "wave_column_slots": 1, "wave_stage_probe": key == "C", "same_frame_continuation": key == "C"}, "Unsupported experimental feature advertisement")
+        need(source["features"] == {"reachable_staging_pools": key in ("C", "F"), "wave_column_tiles": False,
+                                   "wave_column_slots": 1, "wave_stage_probe": key in ("C", "F"), "same_frame_continuation": key in ("C", "F")}, "Unsupported experimental feature advertisement")
         toolchains.append(source["toolchain"])
-    need(toolchains[0] == toolchains[1] == toolchains[2], "Comparison runtimes use unmatched toolchains")
+    need(all(item == toolchains[0] for item in toolchains), "Comparison runtimes use unmatched toolchains")
     need(record["sources"]["C"]["source_commit"] == candidate and record["physical_acceptance"] == "HOLD"
          and record["production_defaults_changed"] is False
          and record["experimental_defaults"] == {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
@@ -384,7 +396,7 @@ def main():
     parser.add_argument("--verify", action="store_true")
     parser.add_argument("--mission", choices=MISSIONS,
                         help="Package identity (build default: PUBPRES-PLAYABILITY-001); verify checks it when supplied")
-    for key in ("candidate", "main", "integration"):
+    for key in ("candidate", "main", "integration", "frozen"):
         parser.add_argument("--" + key + "-root", type=Path)
         if key != "candidate":
             parser.add_argument("--" + key + "-sha")
@@ -401,6 +413,11 @@ def main():
         print(json.dumps({"verified_files": result["file_count"], "candidate": args.candidate_sha, "physical_acceptance": "HOLD"}))
         return
     args.mission = args.mission or MISSIONS[0]
+    frozen_fields = (args.frozen_root, args.frozen_sha, args.frozen_runtime)
+    frozen = any(value is not None for value in frozen_fields)
+    need(not frozen or all(value is not None for value in frozen_fields), "Supply all three independent frozen-source arguments")
+    need(not frozen or args.mission == "PUBPRES-PLAYABILITY-003" and args.frozen_sha == FROZEN_COMMIT,
+         "Frozen baseline requires explicit 003 profile and exact preserved d316 source")
     need(os.name == "nt", "Build the Windows evaluator on actual Windows; metadata tests can run elsewhere")
     need(all(getattr(args, name) for name in ("candidate_root", "main_root", "integration_root", "candidate_runtime", "main_runtime",
          "integration_runtime", "main_sha", "integration_sha", "godot_zip", "vc_runtime", "notices", "archive")), "All independent sources/builds and dependencies are required")
@@ -414,9 +431,15 @@ def main():
     need(canonical_digest(Path(__file__).read_bytes()) == canonical_digest(committed(root, args.candidate_sha, TOOLS + "/package_windows.py")), "Packaging script differs from candidate commit")
     git(root, "merge-base", "--is-ancestor", args.main_sha, args.candidate_sha)
     git(root, "merge-base", "--is-ancestor", args.integration_sha, args.candidate_sha)
+    if frozen:
+        git(root, "merge-base", "--is-ancestor", FROZEN_COMMIT, args.candidate_sha)
+        need(git(args.frozen_root, "rev-parse", "HEAD^{tree}") == FROZEN_TREE, "Frozen baseline tree differs")
     output.mkdir(parents=True)
     sources = {}
-    for key, label in (("M", "main"), ("I", "integration"), ("C", "candidate")):
+    source_order = [("M", "main"), ("I", "integration"), ("C", "candidate")]
+    if frozen:
+        source_order.append(("F", "frozen"))
+    for key, label in source_order:
         sources[key] = stage_project(getattr(args, label + "_root"), getattr(args, label + "_sha"), key,
                                      getattr(args, label + "_runtime"), output, args.mission)
     archive_source(root, args.candidate_sha, output, [TOOLS, "tools/pubpres_playability", "tools/pubpres_playability_build"])
@@ -427,13 +450,15 @@ def main():
     for name, expected in campaign["overlay_sha256"].items():
         need(digest(output / sources["C"]["project"] / safe_name(name)) == expected, "Frozen observer overlay differs")
     shutil.copyfile(output / TOOLS / "README.md", output / "READ-ME.md")
-    record = {"schema": SCHEMA, "mission": args.mission, "candidate_commit": args.candidate_sha,
+    record = {"schema": FROZEN_SCHEMA if frozen else SCHEMA, "mission": args.mission, "candidate_commit": args.candidate_sha,
               "package_filename": expected_name, "sources": sources, "engine": engine,
               "campaign": "tools/pubpres_playability/campaign.json", "campaign_sha256": digest(output / "tools/pubpres_playability/campaign.json"),
               "owner_launcher": TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": TOOLS + "/owner_start.gd",
               "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "qualification_scope": "Fresh source-matched Windows evaluator. Hosted software-renderer results and owner physical NVIDIA acceptance are distinct."}
+    if frozen:
+        record["owner_comparison"] = {"baseline": "F", "candidate": "C"}
     record["files_sha256"] = file_hashes(output)
     record["file_count"] = len(record["files_sha256"])
     write_json(output / MANIFEST, record)
@@ -447,7 +472,7 @@ def main():
         need(archive.testzip() is None, "Fresh evaluator ZIP integrity failed")
     checksum = digest(archive_path)
     archive_path.with_suffix(".zip.sha256").write_text(f"{checksum}  {archive_path.name}\n", encoding="ascii")
-    write_json(archive_path.with_suffix(".zip.json"), {"schema": SCHEMA, "mission": args.mission, "candidate_commit": args.candidate_sha,
+    write_json(archive_path.with_suffix(".zip.json"), {"schema": record["schema"], "mission": args.mission, "candidate_commit": args.candidate_sha,
                "archive_sha256": checksum, "archive_bytes": archive_path.stat().st_size,
                "manifest_sha256": digest(output / MANIFEST), "physical_acceptance": "HOLD"})
     print(f"{checksum}  {archive_path.name}")

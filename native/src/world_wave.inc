@@ -826,8 +826,13 @@ void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, s
         return;
     }
     const auto column = at % static_cast<std::size_t>(config_.chunk_size);
-    chunk.wave->clean[column < static_cast<std::size_t>(config_.chunk_size / 2) ? 0U : 1U] = false;
-    chunk.wave->dry[column] = 0;
+    // Each strip owns these marks. Most changed cells already belong to a
+    // wet, unclean column; repeatedly storing the same values needlessly
+    // invalidates cache lines read by the adjacent strip. Preserve the exact
+    // invalidation while writing only at the clean/dry transition.
+    auto& clean = chunk.wave->clean[column < static_cast<std::size_t>(config_.chunk_size / 2) ? 0U : 1U];
+    if (clean) clean = false;
+    if (chunk.wave->dry[column] != 0) chunk.wave->dry[column] = 0;
     if (before == 0) {
         cell = Chunk::Cell::for_material(Material::Water);
         cell.set_state_b(0);

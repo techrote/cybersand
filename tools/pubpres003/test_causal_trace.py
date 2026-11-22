@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Synthetic causal joins; no native work or performance claim is implied."""
 import copy
+import json
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
 
 from causal_trace import analyze
-from run_focus import PREDECESSOR_DRIVER_INPUTS, planned_arms, selectors, verify_driver
+from run_focus import (PREDECESSOR_DRIVER_INPUTS, planned_arms, selectors, verify_driver,
+                       validate_requested_capture, validate_complete_comparison)
+from native_probe import validate_native_workload
 
 
 def fixture():
@@ -116,6 +119,74 @@ class CausalEvidenceTests(unittest.TestCase):
 
 
 class FocusedDesignTests(unittest.TestCase):
+    def test_native_diagnosis_rejects_smaller_fixture_and_altered_tape_or_selectors(self):
+        campaign = json.loads((Path(__file__).resolve().parents[1] / "pubpres_playability/campaign.json").read_text())
+        keys = ("CYBERSAND_MATERIAL_PUBLICATION", "CYBERSAND_DIAG_PHYSICS_PUBLICATION", "CYBERSAND_DIAG_PRESENTATION",
+                "CYBERSAND_DIAG_MATERIAL_TIMING", "CYBERSAND_DIAG_NATIVE_RENDEZVOUS", "CYBERSAND_DIAG_RENDER_CADENCE",
+                "CYBERSAND_DIAG_MATERIAL_POOL_POLICY", "CYBERSAND_DIAG_SAME_FRAME_CONTINUATION",
+                "CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES", "CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE")
+        settings = selectors({"same_frame_continuation": False, "wave_column_probe": True, "causal": False}, "nonce")
+        state = {"requested": {k: settings[k] for k in keys}, "physics": "early", "presentation": "coherent",
+                 "cadence": "repaired", "rendezvous": {"mode": "off"},
+                 "wave_column_probe": {"schema": "PUBPRES-WAVE-COLUMNS-V1", "experimental_column_tiles": False}}
+        data = {"fixture": {"name": "reference2048", **campaign["fixtures"]["reference2048"]},
+                "camera": "follow", "workers": 4, "water_law": "wave_flow_v1", "water_profile": "gameplay_main846f",
+                "water_variant": "reference", "input_mode": "tape", "command_mode": "repeated_callback", "observer_mode": "full",
+                "render_thread": {"requested": "safe", "runtime": "safe"},
+                "source_identity": {"files": {"res://" + k: v for k, v in campaign["overlay_sha256"].items()}},
+                "input_tape": campaign["measurement"]["input_tape"],
+                "input_events": [{"input_index": i, "requested_physical_tick": row["tick"],
+                                  "accepted_physical_tick": row["tick"], "move": row["move"]}
+                                 for i, row in enumerate(campaign["measurement"]["input_tape"])],
+                "selectors_before": state, "selectors_after": state}
+        validate_native_workload(data, campaign)
+        changed = copy.deepcopy(data); changed["fixture"]["name"] = "basin512"
+        with self.assertRaisesRegex(ValueError, "fixture"):
+            validate_native_workload(changed, campaign)
+        changed = copy.deepcopy(data); changed["input_events"][2]["accepted_physical_tick"] += 1
+        with self.assertRaisesRegex(ValueError, "declared step"):
+            validate_native_workload(changed, campaign)
+        changed = copy.deepcopy(data); del changed["selectors_after"]["requested"][keys[-1]]
+        with self.assertRaisesRegex(ValueError, "selector"):
+            validate_native_workload(changed, campaign)
+
+    def test_other_registered_fixture_or_apparatus_cannot_replace_requested_case(self):
+        case = {"fixture": "reference2048", "camera": "follow", "workers": 4,
+                "water_law": "wave_flow_v1"}
+        campaign = {"measurement": {"water_profile": "historical"}}
+        data = {"fixture": {"name": "reference2048"}, "camera": "follow", "workers": 4,
+                "water_law": "wave_flow_v1", "water_profile": "historical", "water_variant": "reference",
+                "input_mode": "tape", "command_mode": "repeated_callback", "observer_mode": "full",
+                "renderer": "opengl3", "render_thread": {"requested": "safe", "runtime": "safe"},
+                "source_identity": {"source_sha": "source"}, "case_nonce": "nonce"}
+        validate_requested_capture(data, case, campaign, "source", "nonce", "opengl3")
+        substitutions = {"fixture": {"name": "basin512"}, "renderer": "opengl3_angle",
+                         "water_variant": "replacement", "input_mode": "idle",
+                         "command_mode": "once_per_step", "observer_mode": "reduced",
+                         "render_thread": {"requested": "separate", "runtime": "separate"},
+                         "workers": 1, "camera": "free", "water_profile": "gameplay_main846f",
+                         "water_law": "free_mass_v1", "source_identity": {"source_sha": "stale"},
+                         "case_nonce": "replayed"}
+        for key, replacement in substitutions.items():
+            with self.subTest(field=key), self.assertRaises(ValueError):
+                validate_requested_capture({**data, key: replacement}, case, campaign,
+                                           "source", "nonce", "opengl3")
+
+    def test_cross_arm_matching_refuses_missing_arms_and_changed_hardware_or_workload(self):
+        match = {"cpu": "CPU", "fixture": {"name": "reference2048", "generated_sha256": "fixture"},
+                 "worker_capacities": [4], "initial_body_state_sha256": "bodies", "engine": "engine"}
+        arms = [{"index": i, "statistics": {"match": copy.deepcopy(match)}} for i in range(4)]
+        validate_complete_comparison(arms, 4)
+        for key in match:
+            changed = copy.deepcopy(arms)
+            changed[2]["statistics"]["match"][key] = "different"
+            with self.subTest(field=key), self.assertRaisesRegex(ValueError, "Unmatched"):
+                validate_complete_comparison(changed, 4)
+        with self.assertRaisesRegex(ValueError, "Incomplete"):
+            validate_complete_comparison(arms[:-1], 4)
+        with self.assertRaisesRegex(ValueError, "reordered"):
+            validate_complete_comparison(arms[::-1], 4)
+
     def test_driver_binds_committed_code_and_refuses_dirty_or_untracked_inputs(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

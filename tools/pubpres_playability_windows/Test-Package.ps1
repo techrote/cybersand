@@ -74,6 +74,15 @@ try {
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
     Assert-PP ($RunRecord.same_frame_continuation -ceq 'off' -and $RunRecord.settings.CYBERSAND_DIAG_SAME_FRAME_CONTINUATION -ceq '0') 'Continuation default changed'
     $Checks.Add([ordered]@{name='pristine-isolated-run';passed=$true;run=$Run})
+    if ($Manifest.schema -ceq 'pubpres-playability-windows-v3') {
+        $FrozenRun = New-PPRun $PackageRoot $Manifest 'F' 'eager' 'safe' 'opengl3'
+        $FrozenRecord = Test-PPRun $FrozenRun $PackageRoot $Manifest
+        Assert-PP ($FrozenRecord.source_commit -ceq $script:PPFrozenCommit -and
+            $FrozenRecord.same_frame_continuation -ceq 'off') 'Frozen baseline run source/defaults differ'
+        $Checks.Add([ordered]@{name='independent-frozen-baseline-run';passed=$true;run=$FrozenRun})
+    } else {
+        Expect-PPRefusal 'legacy-package-has-no-frozen-alias' { New-PPRun $PackageRoot $Manifest 'F' 'eager' 'safe' 'opengl3' } 'Selected source is absent'
+    }
     $ContinuationRun = New-PPRun $PackageRoot $Manifest 'C' 'eager' 'safe' 'opengl3' 'on'
     $ContinuationRecord = Test-PPRun $ContinuationRun $PackageRoot $Manifest
     Assert-PP ($ContinuationRecord.same_frame_continuation -ceq 'on' -and $ContinuationRecord.settings.CYBERSAND_DIAG_SAME_FRAME_CONTINUATION -ceq '1') 'Explicit continuation selector differs'
@@ -98,7 +107,7 @@ try {
     }
     # Source-derived import metadata remains immutable and hash checked.
     # Canonical archive export must prevent Godot's LF rewrite on every source.
-    foreach ($SourceKey in @('M','I','C')) {
+    foreach ($SourceKey in @($Manifest.sources.PSObject.Properties.Name)) {
         $DescriptorPath = Join-PPSafe $PackageRoot ($Manifest.sources.$SourceKey.root+'/godot/addons/godot-rapier2d/Radial2D.svg.import')
         $DescriptorBytes = [IO.File]::ReadAllBytes($DescriptorPath)
         Assert-PP (-not ($script:PPUtf8.GetString($DescriptorBytes).Contains("`r"))) 'Committed import descriptor must be canonical LF'

@@ -1,0 +1,19 @@
+{
+  "schema": "pubpres003-local-native-evidence-custody-v1",
+  "archive": "PUBPRES003-NativeColumn-ABBA01-20261122.zip",
+  "archive_bytes": 7209692,
+  "archive_sha256": "d5b85b2d122ea9c27061a3cf25dbf3f80326beb6c8e2e42256582dfbdc5b8e75",
+  "library_file_id": "libfile_fac2344dd62c8191860a27723ada6cbc",
+  "library_version": 0,
+  "library_url": "https://chatgpt.com/library?file_id=libfile_fac2344dd62c8191860a27723ada6cbc&account_id=personal",
+  "payload_files": 107,
+  "contents": [
+    "Original F and C1 quick native diagnostic receipts, traces, requests, logs and analyses",
+    "Original sequential D0/C1/C1/D0 plan, four requests, receipts, traces, process observations, logs and independent reduction",
+    "Exact F, independently rebuilt D0 and C1 native shared libraries, source/runtime manifests, compiler/dependency receipts and original build logs",
+    "Per-payload SHA-256 and byte-size inventory"
+  ],
+  "excluded": "Regenerable staged source trees/import caches and fresh runtime profile caches; immutable source remains in Git and its file hashes are in each capture.",
+  "scope": "Local development native-phase diagnosis with explicit GCC14.2 toolchain drift. No graphical playability, full final live-material-map parity or Windows/NVIDIA acceptance is asserted.",
+  "physical_acceptance": "HOLD"
+}

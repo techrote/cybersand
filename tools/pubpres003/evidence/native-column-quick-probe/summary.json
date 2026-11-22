@@ -1,0 +1,359 @@
+{
+  "schema": "pubpres003-native-column-quick-probe-v1",
+  "status": "HYPOTHESIS_ONLY",
+  "physical_acceptance": "HOLD",
+  "scope": "One frozen F and one C1 headless current-gameplay native-stage diagnostic. Unbalanced run order and worker-observer source delta prohibit causal performance attribution. No graphical or final live-material parity claim.",
+  "followup_design": "Exact D0 application/native build versus C1, identical application/observer code and paired D0/C1/C1/D0. Separate full live-World/inventory native differential corpus required.",
+  "runs": [
+    {
+      "label": "F",
+      "source": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "files": {
+          "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "2e96ee9366df690b0ab9645c1d47c821c456579d4651b2e2a1eec239b8fd2057",
+          "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "6672da180bcdc8d0380b1dbebe85e7deb05f6c764ffd0e9b26460766c9a82c5d",
+          "res://project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+          "res://scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+          "res://scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
+          "res://scripts/main.gd": "32c93b22850a002667ffc0ae204b90d9b312267156c462ae37806a3232a7801b",
+          "res://scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+          "res://scripts/physical_actor_session.gd": "677f522acf0bea0625f5bee5a114d04305e9b08ab68d5114b34980cef39d149e",
+          "res://scripts/rapier_physics_bridge.gd": "1757daa7dd0038462f720d6c30c0e7d26bd37f943879310f200633139f4ad4b3",
+          "res://scripts/shared_workbench.gd": "4fb0cd8bc7a6830e9cffdf36ce2352d7f2426c56f45f778ab6c90280b391bba6",
+          "res://scripts/simulation_worker.gd": "e5b5d5915e1fbbf752b7d75dd0d0078198b829cda3a7b66fe9a85ec6e662e6a5",
+          "res://scripts/workbench_material_timeline.gd": "b6a9e447708515d55a3533e874f71b47229da160f0364dd9d29370d814d15efb",
+          "res://scripts/workbench_native_rendezvous.gd": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "res://scripts/workbench_presentation_coherence.gd": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "res://scripts/workbench_presentation_history.gd": "448c1386843b66e9e4f89bac2a9b0759429f6cdb4cba391f09071a95fd395240",
+          "res://scripts/workbench_same_frame_continuation.gd": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+          "res://shaders/material_palette.gdshader": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+          "res://tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+          "res://tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+          "res://tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+          "res://tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18"
+        },
+        "source_sha": "d316c281e0abb575eb6302afc12ec44f211460ba"
+      },
+      "native_oracles": {
+        "status": "PASS",
+        "scope": "Explicit native/body/terrain/Water/input/callback checks; no framebuffer claim",
+        "callback_credit": {
+          "enabled": false,
+          "available": true,
+          "actual_physics_callbacks": 839,
+          "attempts": 0,
+          "completed_continuations": 0,
+          "completed_in_callbacks": 144,
+          "outcomes": {},
+          "every_step_has_unique_real_callback_credit": true,
+          "maximum_attempts_per_process_frame": 1,
+          "scope": "Observed actual callback and immutable owner receipts; no modeled or extrapolated speedup."
+        },
+        "workers_observed": [
+          4
+        ],
+        "first_144_body_trajectory_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+        "first_144_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "profile": "gameplay_main846f",
+      "display": {
+        "fps_cap": 60,
+        "physics_callbacks_hz": 60,
+        "server": "headless",
+        "vsync_mode": -1,
+        "window": [
+          1600,
+          900
+        ]
+      },
+      "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+      "phases": {
+        "first_10s": {
+          "ticks": 74,
+          "prepare_ns": 54135759,
+          "column_ns": 5944020498,
+          "flux_ns": 823037311,
+          "apply_ns": 649179010,
+          "merge_ns": 3208252,
+          "launch_ns": 2099430,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.7315643108108107,
+            "column_ns": 80.32460132432432,
+            "flux_ns": 11.122125824324325,
+            "apply_ns": 8.772689324324325,
+            "merge_ns": 0.04335475675675676,
+            "launch_ns": 0.028370675675675677
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 66489693,
+          "column_ns": 7579520111,
+          "flux_ns": 1079171999,
+          "apply_ns": 844409318,
+          "merge_ns": 4452128,
+          "launch_ns": 3632569,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.4617339791666667,
+            "column_ns": 52.63555632638889,
+            "flux_ns": 7.494249993055556,
+            "apply_ns": 5.863953597222222,
+            "merge_ns": 0.030917555555555556,
+            "launch_ns": 0.02522617361111111
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 66489693,
+          "column_ns": 7579520111,
+          "flux_ns": 1079171999,
+          "apply_ns": 844409318,
+          "merge_ns": 4452128,
+          "launch_ns": 3632569,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.4617339791666667,
+            "column_ns": 52.63555632638889,
+            "flux_ns": 7.494249993055556,
+            "apply_ns": 5.863953597222222,
+            "merge_ns": 0.030917555555555556,
+            "launch_ns": 0.02522617361111111
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 74,
+          "max": 164.312393,
+          "p50": 118.73729700000001,
+          "p95": 139.06804185,
+          "p99": 163.07129299
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 164.312393,
+          "p50": 105.415446,
+          "p95": 129.88369855000002,
+          "p99": 159.67297809999997
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 164.312393,
+          "p50": 105.415446,
+          "p95": 129.88369855000002,
+          "p99": 159.67297809999997
+        }
+      },
+      "source_files_sha256": {
+        "native-oracles-v2-analysis.json": "6b771c33a14aa42d3be1fc18174831331d53108d164734fbb4c244035d37a614",
+        "receipt-events.jsonl": "70d1ae0f02d8ebf03c849af065f8f47d3480ac5741d4d999767409e2e315a710",
+        "receipt.json": "43a9c881946d35567fc375f1ef4eac194106b7e8c297957df481808166d5cb9e",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "native-oracles-analysis.json": "6b771c33a14aa42d3be1fc18174831331d53108d164734fbb4c244035d37a614",
+        "process.json": "2d795bcf400bce204600c02ff0299a02298391c471e59583408fb60612f0393d",
+        "godot.log": "5803ccdb461af54153470cbc04ee86408991a2d673ee04279b5e9dc200da5c70",
+        "request.json": "63b898109803fe5caf9b36814e8623e650763f1d48ab64d9514b2eeb12712fac",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "b9f8f3647b3d6102e5a22e8cdc2d7c93d4e671ccfdd50caadb795b43494765ff",
+        "process-memory.json": "c12c2b82b2063f58c6d94dcdad89e84e422f4538468b0e30b20309fad8bd9f5f"
+      },
+      "retained_raw_relative_path": "frozen-headless-current-gameplay-probe01",
+      "graphical_validation": {
+        "status": "REFUSED",
+        "reason": "'current_matches_cpu'"
+      }
+    },
+    {
+      "label": "C1",
+      "source": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "files": {
+          "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "2e96ee9366df690b0ab9645c1d47c821c456579d4651b2e2a1eec239b8fd2057",
+          "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "6672da180bcdc8d0380b1dbebe85e7deb05f6c764ffd0e9b26460766c9a82c5d",
+          "res://project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+          "res://scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+          "res://scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
+          "res://scripts/main.gd": "32c93b22850a002667ffc0ae204b90d9b312267156c462ae37806a3232a7801b",
+          "res://scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+          "res://scripts/physical_actor_session.gd": "677f522acf0bea0625f5bee5a114d04305e9b08ab68d5114b34980cef39d149e",
+          "res://scripts/rapier_physics_bridge.gd": "1757daa7dd0038462f720d6c30c0e7d26bd37f943879310f200633139f4ad4b3",
+          "res://scripts/shared_workbench.gd": "4fb0cd8bc7a6830e9cffdf36ce2352d7f2426c56f45f778ab6c90280b391bba6",
+          "res://scripts/simulation_worker.gd": "b336001c6ad19b00200a1028a1b4b6c5bd620a37d6b287fde35112e41ffcf328",
+          "res://scripts/workbench_material_timeline.gd": "b6a9e447708515d55a3533e874f71b47229da160f0364dd9d29370d814d15efb",
+          "res://scripts/workbench_native_rendezvous.gd": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "res://scripts/workbench_presentation_coherence.gd": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "res://scripts/workbench_presentation_history.gd": "448c1386843b66e9e4f89bac2a9b0759429f6cdb4cba391f09071a95fd395240",
+          "res://scripts/workbench_same_frame_continuation.gd": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+          "res://shaders/material_palette.gdshader": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+          "res://tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+          "res://tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+          "res://tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+          "res://tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18"
+        },
+        "source_sha": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f"
+      },
+      "native_oracles": {
+        "status": "PASS",
+        "scope": "Explicit native/body/terrain/Water/input/callback checks; no framebuffer claim",
+        "callback_credit": {
+          "enabled": false,
+          "available": true,
+          "actual_physics_callbacks": 764,
+          "attempts": 0,
+          "completed_continuations": 0,
+          "completed_in_callbacks": 144,
+          "outcomes": {},
+          "every_step_has_unique_real_callback_credit": true,
+          "maximum_attempts_per_process_frame": 1,
+          "scope": "Observed actual callback and immutable owner receipts; no modeled or extrapolated speedup."
+        },
+        "workers_observed": [
+          4
+        ],
+        "first_144_body_trajectory_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+        "first_144_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "profile": "gameplay_main846f",
+      "display": {
+        "fps_cap": 60,
+        "physics_callbacks_hz": 60,
+        "server": "headless",
+        "vsync_mode": -1,
+        "window": [
+          1600,
+          900
+        ]
+      },
+      "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+      "phases": {
+        "first_10s": {
+          "ticks": 82,
+          "prepare_ns": 41105786,
+          "column_ns": 6037415458,
+          "flux_ns": 797595475,
+          "apply_ns": 615213120,
+          "merge_ns": 3461732,
+          "launch_ns": 1947228,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.5012900731707317,
+            "column_ns": 73.6270177804878,
+            "flux_ns": 9.726774085365854,
+            "apply_ns": 7.502599024390244,
+            "merge_ns": 0.04221624390243903,
+            "launch_ns": 0.023746682926829268
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 47290292,
+          "column_ns": 6959110067,
+          "flux_ns": 947431506,
+          "apply_ns": 725247198,
+          "merge_ns": 4333971,
+          "launch_ns": 3409627,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.32840480555555557,
+            "column_ns": 48.327153243055555,
+            "flux_ns": 6.579385458333333,
+            "apply_ns": 5.036438875,
+            "merge_ns": 0.03009702083333333,
+            "launch_ns": 0.02367796527777778
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 47290292,
+          "column_ns": 6959110067,
+          "flux_ns": 947431506,
+          "apply_ns": 725247198,
+          "merge_ns": 4333971,
+          "launch_ns": 3409627,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.32840480555555557,
+            "column_ns": 48.327153243055555,
+            "flux_ns": 6.579385458333333,
+            "apply_ns": 5.036438875,
+            "merge_ns": 0.03009702083333333,
+            "launch_ns": 0.02367796527777778
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 82,
+          "max": 129.742607,
+          "p50": 104.4939325,
+          "p95": 117.14535910000001,
+          "p99": 122.44338757999998
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 129.742607,
+          "p50": 102.02374449999999,
+          "p95": 113.89861135,
+          "p99": 119.91061127999998
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 129.742607,
+          "p50": 102.02374449999999,
+          "p95": 113.89861135,
+          "p99": 119.91061127999998
+        }
+      },
+      "source_files_sha256": {
+        "native-oracles-v2-analysis.json": "8e4b11dfd07906bec018d1da8a84cbf49c3bdd827f6ed9330ae7983d2b5ffc44",
+        "receipt-events.jsonl": "2d5728aa18fca518d769433161223296290cb26bbd8367acb2134081d25d6e2c",
+        "receipt.json": "eaf346954665165948ce4a0bad4daf054762424129854dbc72ea5f3469136d02",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "6d12172ce882538eff1be2c37d4e67cda70f1572add39316ccdc6d3607ccb3f1",
+        "request.json": "7ef9cb5a406e45d1e301d80d5fa99432f93c97416f83068cfeb4d410abe7f165",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "8e4b11dfd07906bec018d1da8a84cbf49c3bdd827f6ed9330ae7983d2b5ffc44",
+        "process-memory.json": "a140afd51d6f44c4dc56bbf9f861f6627d137ab1163a09da49d8d46ca31225ea"
+      },
+      "retained_raw_relative_path": "c1-headless-current-gameplay-probe01",
+      "graphical_validation": {
+        "status": "REFUSED",
+        "reason": "'current_matches_cpu'"
+      }
+    }
+  ]
+}

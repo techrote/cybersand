@@ -75,9 +75,9 @@ post-import changes or rewrite an original package.
 | Independent retained-trace audit | PASS: 32 arms, eight ABBA cohorts, 12 adversarial reducer tests; unchanged original validator and three independent timing-window reductions agree |
 | Focused frozen native/Rapier baseline | PASS: fresh import plus eight test processes, including publication OFF/ON, real same-frame native/Rapier execution, pacing, manual steps and owner deadlines |
 | Additive producer/Main trace | PASS: real Workbench trace ON/OFF, bounded ownership, late-native-failure/terrain publication and same-frame integration; explicit development delta and unchanged native input closure |
-| Safe/eager full graphical history | Pending hosted execution |
+| Safe/eager full graphical history | PASS on hosted Linux successor `0fc3adc48b7e25c39a2211989169c1e43d46639f`, including all camera phases; frozen camera fixture remains FAIL |
 | Actual Windows pristine import/startup/Save/reopen | Pending execution |
-| New Wave2048 performance improvement | NOT ESTABLISHED |
+| New Wave2048 performance improvement | First native-only correction reduces mean column phase by 7.93% in balanced D0/C1/C1/D0; graphical sustained playability NOT ESTABLISHED |
 
 Local development compiler is GCC 14.2, whereas final hosted qualification must
 use its declared pinned platform compiler. Local comparisons must use the same
@@ -99,7 +99,7 @@ PASS covers 147 documents, 276 claims, 4,163 links and 32 questions. Repository
 provenance still correctly refuses stale retained adapter runtime receipts;
 final matching runtime publication is pending. Neither refusal was weakened.
 Build-specific receipts identify the fresh experimental runtime separately.
-Required graphical and real Windows gates remain pending. Private Xorg and
+Final-source graphical and real Windows gates remain pending. Private Xorg and
 existing-desktop attempts could not execute a real renderer in this environment;
 the dedicated bounded hosted workflow is the selected path.
 
@@ -134,6 +134,82 @@ checks, three genuine frozen gameplay baselines and one explicitly diagnostic
 current-gameplay causal capture sequentially. Its payload hash excludes only the
 request file; pinned compiler/engine/native/Rapier source identities remain
 required. The original 176-arm campaign and registrations are unchanged.
+
+## First native correction and independent repair loop
+
+The first retained native correction removes redundant writes to already-invalid
+Wave column metadata inside each worker-owned strip. It changes neither the
+Water law nor the number of cells, substeps, callbacks or native work allowances.
+The two half-chunk clean flags are ordinary distinct `bool` memory locations;
+column dry flags are distinct bytes. Existing phase barriers and ownership are
+unchanged. Repeated invalidation stores were causing avoidable shared-cache-line
+traffic. The source delta is seven added and two removed lines in
+`native/src/world_wave.inc` (original implementation commit `4215a9b2b3681b11a0115fc896c23fbde3d6ed6f`).
+
+The balanced four-worker current-gameplay native diagnostic retained spill,
+parcels, ballistic transport and two Wave rounds. Fixed-first-144 column means
+were 58.996 / 57.682 / 52.201 / 60.355 ms for D0/C1/C1/D0: pair means
+59.675 to 54.942 ms, a 7.93% reduction. This is a modest native-only result, not
+evidence of a playable graphical candidate. Every capture correctly fails the
+graphical validator because it is headless. All native/actor/sample/terrain/input/
+Water oracles passed. The [balanced report](tools/pubpres003/evidence/native-column-abba01/REPORT.md)
+retains per-run tails, exact binaries, source identities, variation and raw-capture
+archive custody. No tail quantiles are averaged into an invented population.
+
+A new live current-gameplay native regression checks 24 exact full physical-state
+hashes across one, two, four and eight workers, with a negative origin, partial
+viewport interruption, independently scanned Water plus parcel inventory, real
+ballistic launches and actual worker participation. D0 and C1 match every
+checkpoint. [Original logs, receipts and archive](tools/pubpres003/evidence/native-invalidation-2026-11-22/README.md)
+retain both positive and failed development records without rewriting receipts.
+The archive is 252,532 bytes, SHA-256
+`9a8ca36dcf6ac42e7c7fec322fc297a3ca2b3e489181beee394be595f292976c`.
+
+A second experiment grouped both half-column tasks on one worker. It preserved
+all physical-state checkpoints but slowed the fixed-144 column mean from an
+adjacent C1 control's 60.891 ms to 72.435 ms (18.96% worse). It is rejected and
+is not integrated. The native lane is profiling gather, settle, support, head,
+depth and scatter within the dominant column phase before another correction.
+
+Independent qualification review found a real gap in the new capture runner:
+a valid smaller workload could satisfy the old generic receipt predicate while
+being the wrong requested arm. The correction binds exact source, nonce, fixture,
+renderer, thread mode, camera, workers, Water law/profile/variant and input mode,
+and requires complete ordered cohorts with identical apparatus. The reviewer
+independently reproduced the original hole and verified the repair against the
+original trace and 25 mismatch/order/hardware cases. See
+[the preserved finding and delta review](tools/pubpres003/evidence/science-review/).
+Existing raw captures are not rewritten: captures produced by the earlier runner
+must pass the corrected post-hoc binding check before any qualification claim.
+
+## Hosted baseline and delivery checkpoint
+
+[Run 44991036789](https://github.com/techrote/cybersand/actions/runs/44991036789)
+tests exact source `0fc3adc48b7e25c39a2211989169c1e43d46639f` (tree
+`98f0a5c54f44ea6d837b3b6a2c0b04fdcaa502d4`), before the C1 native correction.
+Independent pinned frozen and successor Linux builds passed. Successor Safe/eager
+pixel-history and complete camera tests passed. The original frozen camera
+fixture failed as expected and remains a strict negative. Three frozen gameplay
+captures and one successor current-gameplay causal capture completed; independent
+post-hoc workload binding and temporal reduction are in progress. Windows build,
+pristine import, actual author/Save/fresh-process reopen and package tamper gates
+follow sequentially. This development baseline is not the final owner evaluator.
+
+The original Linux artifact is 85,709,448 bytes, SHA-256
+`e45c0f882bec0e41b648002538e5de0289135d41b32ac4dc0d8a16da77257166`,
+GitHub artifact `14742083432`. It was downloaded and independently hashed.
+
+Final evaluator support now has an explicit additive v3 manifest carrying four
+independently built M/I/F/C applications; F is pinned to the exact donor commit
+and tree. The owner comparison is F versus C, Safe/eager by default. All four
+compiler/dependency identities must match; 39 package tests pass, including a
+coherent but mismatched fourth toolchain refusal. Historical v2 packages retain
+their existing verification. Actual Windows execution of the v3 package and
+one-click active Wave2048/Save/reopen scenario remains pending final publication.
+
+Accepted main was refreshed at this checkpoint and remains
+`662df51cd8409a52332fa7ef15d06d8ab8945aed`. A read-only merge preflight is clean;
+actual reconciliation and source-matched final qualification are still pending.
 
 ## Active ownership and next work
 

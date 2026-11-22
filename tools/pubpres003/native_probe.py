@@ -9,26 +9,30 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import uuid
 
-from run_focus import (ROOT, ENGINE_SHA256, selectors, source_identity,
+from run_focus import (ROOT, ENGINE_SHA256, FROZEN_REGISTRATION, selectors, source_identity,
                        stage_committed_project, validate_runtime, verify_driver, write_json)
 from run_campaign import execute
-from results import canonical, check_water_ledger, digest, need, vector
+from results import canonical, check_water_ledger, digest, gameplay_parameters, need, vector
 from results_same_frame import reduce_receipt, validate_continuations, window
 
 
 def native_oracles(data, events, campaign):
     """Explicit native-only checks; the original graphical refusal is retained."""
+    validate_native_workload(data, campaign)
     need(data["display"]["server"] == "headless", "Native-only diagnostic requires explicit headless identity")
     need(data["complete"] and not data["failures"], "Native diagnostic script failed")
     credit = validate_continuations(data, campaign, events, "C")
     steps = sorted((r for r in events if r["event"] == "rapier_step"), key=lambda r: r["step"])
     need(len(steps) >= 144, "Fewer than 144 genuine completed steps")
     roster = data["actor_roster_before"]
-    need(len(roster) == 1 and roster == data["actor_roster_after"] and roster[0]["model"] == "needle"
-         and roster[0]["producer"] == "human" and len(roster[0]["bodies"]) == 1, "Real Needle ownership differs")
+    expected = campaign["measurement"]["required_actor"]
+    need(len(roster) == 1 and roster == data["actor_roster_after"]
+         and all(roster[0][key] == expected[key] for key in ("actor_slot", "instance_id", "model", "producer"))
+         and len(roster[0]["bodies"]) == expected["body_count"] == 1, "Real Needle ownership differs")
     body = roster[0]["bodies"][0]
     need(body["body_rid"] == body["bridge_rid"] and body["node_class"] == "RigidBody2D", "Rapier body ownership differs")
     owner = {(r["world_generation"], r["session"], r["epoch"]) for r in steps}
@@ -70,6 +74,17 @@ def native_oracles(data, events, campaign):
     for state in (data["water_before"]["wave_flow"], data["water_after"]["wave_flow"]):
         need(state["enabled"] and state["healthy"] and state["substeps"] == 2 and state["spill"]["enabled"]
              and state["spill"]["parcels"] and state["construction_options"]["workbench_ballistic"], "Current gameplay mechanics changed")
+        need(all(state["parameters"].get(key) == value for key, value in gameplay_parameters().items()),
+             "Current gameplay Wave parameters changed")
+        spill = {"sheet_rate": 64, "coyote_ticks": 4, "full_face": True, "fall": 3,
+                 "draw": 127, "draw_head": 255, "deep_draw": 64, "launch_budget": 128}
+        need(all(state["spill"].get(key) == value for key, value in spill.items()), "Current gameplay spill parameters changed")
+    before, after = data["water_before"], data["water_after"]
+    a, b = before["wave_flow"], after["wave_flow"]
+    need(a["session_generation"] == b["session_generation"] and b["ticks"] > a["ticks"]
+         and b["rounds"] - a["rounds"] == 2 * (b["ticks"] - a["ticks"])
+         and before["construction"]["receipt_hash"] == after["construction"]["receipt_hash"]
+         and after["policy"]["effective_water_solver"] == "wave_flow_v1", "Native Wave source/rounds/policy changed")
     workers = [r["sample"] for r in events if r["event"] == "worker_participation"]
     need(workers and all(r["worker_capacity"] == 4 for r in workers) and max(r["workers_observed"] for r in workers) == 4,
          "Four native workers did not actually participate")
@@ -79,6 +94,39 @@ def native_oracles(data, events, campaign):
             "first_144_admitted_moves_sha256": hashlib.sha256(canonical([r["admitted_move"] for r in steps[:144]]).encode()).hexdigest()}
 
 
+def validate_native_workload(data, campaign):
+    """Bind native diagnosis to its one declared active 2048² workload."""
+    expected = {"camera": "follow", "workers": 4, "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f", "water_variant": "reference", "input_mode": "tape",
+                "command_mode": "repeated_callback", "observer_mode": "full",
+                "render_thread": {"requested": "safe", "runtime": "safe"}}
+    need(data["fixture"]["name"] == "reference2048", "Native diagnostic requested fixture differs")
+    for key in ("json_sha256", "generated_sha256", "receipts"):
+        need(data["fixture"][key] == campaign["fixtures"]["reference2048"][key], "Native diagnostic fixture identity differs: " + key)
+    for key, wanted in expected.items():
+        need(data[key] == wanted, "Native diagnostic requested apparatus differs: " + key)
+    for relative, wanted in campaign["overlay_sha256"].items():
+        need(data["source_identity"]["files"]["res://" + relative] == wanted,
+             "Native diagnostic frozen observer differs: " + relative)
+    need(data["input_tape"] == campaign["measurement"]["input_tape"], "Native diagnostic registered input tape differs")
+    need(len(data["input_events"]) == len(data["input_tape"]) == 11, "Native diagnostic input tape incomplete")
+    for index, (actual, wanted) in enumerate(zip(data["input_events"], data["input_tape"])):
+        need(actual["input_index"] == index and actual["requested_physical_tick"] == actual["accepted_physical_tick"] == wanted["tick"]
+             and actual["move"] == wanted["move"], "Native diagnostic input was not admitted at its declared step")
+    requested = selectors({"same_frame_continuation": False, "wave_column_probe": True, "causal": False}, "unused")
+    requested = {key: requested[key] for key in (
+        "CYBERSAND_MATERIAL_PUBLICATION", "CYBERSAND_DIAG_PHYSICS_PUBLICATION", "CYBERSAND_DIAG_PRESENTATION",
+        "CYBERSAND_DIAG_MATERIAL_TIMING", "CYBERSAND_DIAG_NATIVE_RENDEZVOUS", "CYBERSAND_DIAG_RENDER_CADENCE",
+        "CYBERSAND_DIAG_MATERIAL_POOL_POLICY", "CYBERSAND_DIAG_SAME_FRAME_CONTINUATION",
+        "CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES", "CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE")}
+    for state in (data["selectors_before"], data["selectors_after"]):
+        need(state["requested"] == requested, "Native diagnostic selector differs")
+        need(state["physics"] == "early" and state["presentation"] == "coherent" and state["cadence"] == "repaired"
+             and state["rendezvous"]["mode"] == "off", "Native diagnostic runtime treatment differs")
+        need(state["wave_column_probe"]["schema"] == "PUBPRES-WAVE-COLUMNS-V1"
+             and state["wave_column_probe"]["experimental_column_tiles"] is False, "Native diagnostic column treatment differs")
+
+
 def analyze_native(path):
     data = json.loads(path.read_text())
     trace = path.with_name("receipt-events.jsonl")
@@ -86,7 +134,9 @@ def analyze_native(path):
     rows = [json.loads(s) for s in trace.read_text().splitlines()]
     need(rows[0]["source"] == data["source_identity"], "Native diagnostic source differs")
     events = rows[1:]
-    campaign = json.loads((ROOT / "tools/pubpres_playability/campaign.json").read_text())
+    campaign_path = ROOT / "tools/pubpres_playability/campaign.json"
+    need(digest(campaign_path) == FROZEN_REGISTRATION, "Frozen predecessor registration changed")
+    campaign = json.loads(campaign_path.read_text())
     campaign["arms"]["C"].update(same_frame_continuation=False, wave_column_probe=True)
     checks = native_oracles(data, events, campaign)
     try:
@@ -131,8 +181,12 @@ def main():
     source["native_runtime"] = validate_runtime(root, source, runtime, args.allow_development_toolchain_drift)
     platform = "windows" if os.name == "nt" else "linux"
     need(digest(engine) == ENGINE_SHA256[platform], "Pinned engine hash differs")
-    rapier = json.loads((root / ("godot/addons/godot-rapier2d/runtime-provenance." + platform + ".json")).read_text())
+    rapier_receipt = "godot/addons/godot-rapier2d/runtime-provenance." + platform + ".json"
+    rapier = json.loads(subprocess.check_output(["git", "-C", str(root), "show", source["source_commit"] + ":" + rapier_receipt]))
     need(digest(args.rapier_runtime) == rapier["sha256"], "Rapier runtime differs")
+    for relative, wanted in rapier.get("source_inputs", {}).items():
+        need(hashlib.sha256(subprocess.check_output(["git", "-C", str(root), "show", source["source_commit"] + ":" + relative])).hexdigest()
+             == wanted, "Rapier source closure differs: " + relative)
     output.mkdir(parents=True)
     project = stage_committed_project(root, source["source_commit"], output)
     shutil.copyfile(source["native_runtime"]["binary_path"], project / source["native_runtime"]["staged_relative_path"])
@@ -153,6 +207,12 @@ def main():
     write_json(output / "request.json", request)
     execute(engine, ["--headless", "--path", str(project), "--editor", "--import"], output / "import", source["source_commit"], {}, 300)
     execute(engine, arguments, output, source["source_commit"], settings, 420)
+    data = json.loads(receipt.read_text())
+    need(data["case_nonce"] == settings["CYBERSAND_SHADER_NONCE"], "Native diagnostic request nonce differs")
+    need(data["source_identity"]["engine_sha256"] == digest(engine), "Executed native diagnostic engine differs")
+    for relative, expected in data["source_identity"]["files"].items():
+        local = project / relative.removeprefix("res://")
+        need((digest(local) if local.is_file() else None) == expected, "Executed native diagnostic source/runtime differs: " + relative)
     analysis = analyze_native(receipt)
     need(analysis["source"]["source_sha"] == source["source_commit"], "Executed source differs")
     need(analysis["source"]["files"]["res://" + source["native_runtime"]["staged_relative_path"]]

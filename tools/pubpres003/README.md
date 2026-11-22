@@ -111,3 +111,39 @@ The independent causal reducer refuses altered sidecars, wrong owner/sample or
 terrain joins, duplicated completion credit, fabricated admission authority and
 overflow. Unknown producer identities at early boundaries remain `-1`; missing
 edge observations remain unavailable rather than becoming zero-age packets.
+
+Each receipt must match the specific requested fixture, Water variant/profile,
+camera, workers, renderer/thread, input, and fixed full-observer/repeated-callback
+apparatus. Being another valid registered case is insufficient. Every planned
+arm must complete in order, and the frozen reducer's complete hardware/workload
+matching map must be identical across the comparison. A repaired validator can
+audit retained captures separately; it must not rewrite their original driver
+identity or failure record.
+
+## Native-phase diagnosis before graphical qualification
+
+`native_probe.py` runs the unchanged frozen v3 observer with the active
+`reference2048`/`gameplay_main846f` fixture under explicitly headless Godot. It
+checks exact fixture hashes, the original input tape, real actor/Rapier/native
+sample and terrain identities, four participating native workers, callback
+credit, Water accounting, two native rounds, spill and ballistic transport.
+Native current-gameplay parameters and requested/effective treatments are fixed.
+
+```sh
+python tools/pubpres003/native_probe.py \
+  --source /path/to/exact/source --runtime /path/to/native-build \
+  --engine /path/to/pinned/Godot --rapier-runtime /path/to/matched/rapier \
+  --output /path/to/new-native-diagnostic
+```
+
+The original graphical validator's refusal is retained. The independent native
+checks are not a relaxed graphical pass, and headless step rates cannot qualify
+playability or camera/material freshness. Their purpose is to distinguish the
+native column, flux, apply and preparation costs before spending hosted graphics
+time. Compare the same first 144 physical steps as well as the first ten seconds;
+faster runs can reach a different amount of settled Water within a time window.
+
+Identical actor trajectories and admitted moves do not establish complete live
+material-map parity. `water_identity().construction` describes the prepared
+source. A separate exact-module native differential corpus must compare actual
+live World state and inventory before a native correction is accepted.

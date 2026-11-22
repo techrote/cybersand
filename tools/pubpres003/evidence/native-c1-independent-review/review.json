@@ -1,0 +1,64 @@
+{
+  "schema": "pubpres003-independent-native-c1-review-v1",
+  "reviewer": "Performance/science specialist; did not implement native correction or native parity harness",
+  "reviewed_delta": {
+    "base": "1dc272df857407187596bbdc52b4125e2252551c",
+    "head": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+    "files": [
+      "native/src/world_wave.inc"
+    ]
+  },
+  "assessment": "NO_CONFIRMED_SOURCE_BLOCKER_IN_C1_DELTA",
+  "findings": [],
+  "reasoning": [
+    "C1 changes only redundant invalidation stores after the existing after==0 return. It preserves the final false/zero values, Water/Empty transitions, native quantity accounting, epoch writes and invalid-mass handling.",
+    "WaveChunk.clean is std::array<bool,2>, not a packed bit container; each bool is a separate C++ scalar memory location. dry is vector<uint8_t>, with one element per column. Distinct half tasks own disjoint x ranges and their own corresponding clean/dry elements.",
+    "Task construction emits each contiguous chunk-column group exactly once for half0 and half1. wave_column_task and wave_apply_task compute first_x/last_x from that half, and wave_write_mass derives the same half from column. The added reads therefore use the same owned locations as the replaced stores.",
+    "Column, flux and apply dispatch barriers are unchanged in C1. Neighbor dry/flux reads do not become concurrent cross-half writes from this change. Cache-line sharing may affect timing but does not merge the distinct ordinary scalar memory locations.",
+    "No loop bounds, dispatch count, native tick allowance, resource ceiling, callback credit, sample/terrain authority, actor ownership, pause behavior, heap allocation or material policy changes in this delta.",
+    "Independent raw-log reduction reproduces all 24 live physical-state/inventory/parcel checkpoints across D0 and C1. It verifies native binary, manifest, harness-source and log identities and exact dynamic-loader paths. The new test harness source is 1e912; the tested implementation binaries remain independently source-bound D0/C1.",
+    "world.physical_state_hash is queried live after ticks, including source/solver state and retained physical content. Inventory assertions independently compare World water_quantity plus in-flight quantity with ledger and material cell scans. This is stronger than prepared construction identity.",
+    "Paired current 2048 actual-actor headless runs separately preserve exact first 144 actor trajectories and admitted moves. That evidence does not by itself prove full live material state for the 2048 fixture or graphical progression."
+  ],
+  "executed_independent_checks": [
+    {
+      "source_label": "D0",
+      "source_commit": "1dc272df857407187596bbdc52b4125e2252551c",
+      "source_tree": "77ea076649fc3ee207e116a0431cf436a950a92e",
+      "native_sha256": "a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae",
+      "native_manifest_sha256": "1690a753b02bfe8b53cb7d0dfd3316e83b9be8cbfa84a81ef15daeac87bdfa12",
+      "test_receipt_sha256": "a65ba355cd657104c178f1a89519c3a9f7f99749dc51701135aca8a9dba5021d",
+      "stdout_sha256": "bb6944e23d0565e98e65471d2bd26eb2e25fcc013493c2d8e1b1ba364608ae50",
+      "loader_record_sha256": "fca99a6e79c81896060a761438ce10cf7da49c2c297874bbf98a7361f5f74b54",
+      "parsed_distinct_checkpoints": 24,
+      "explicit_development_toolchain_drift": true
+    },
+    {
+      "source_label": "C1",
+      "source_commit": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+      "source_tree": "6affa40cbd3cc7da667813dbd5d148c25b5ab825",
+      "native_sha256": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+      "native_manifest_sha256": "e495796238fd29863208d105027f9c399594a08f0db3b2e52d0d516ff8283c5f",
+      "test_receipt_sha256": "6804d26f8513bfa59904a4b82b756e3bef9b50281559f9e708bf1cc7fd2f85e1",
+      "stdout_sha256": "bb6944e23d0565e98e65471d2bd26eb2e25fcc013493c2d8e1b1ba364608ae50",
+      "loader_record_sha256": "0dbad5a4b8296e25dcd24a0f7ee8df1e5145c2eb7f09de7baf6abab4f3945681",
+      "parsed_distinct_checkpoints": 24,
+      "explicit_development_toolchain_drift": true
+    }
+  ],
+  "native_harness": {
+    "source_commit": "1e912084362ea92f03f226e0409573086983d6e2",
+    "test_source_sha256": "fd680e8eec09e35dc34134dca9eb14382b1793ea53ba2593a9fe5f67da7f579d",
+    "binary_sha256": "5992fbe00426515052fcaeadae5a33e3580429ecdea4c7e8a31f99ef435894e6",
+    "compile_receipt_sha256": "3238baadecf30bfd65e0ed480618f44ea9bea9e7a8d0fbe6ffa4e63950f86194"
+  },
+  "full_live_checkpoints_equal": true,
+  "timing_claim": "None from this review. Native ABBA performance results and variability are separate evidence.",
+  "remaining_gates": [
+    "Relevant sanitizer/full native regression families on final integrated source.",
+    "Source-matched hosted graphical and Windows qualification.",
+    "Final integrated-source delta review if native code changes.",
+    "Physical NVIDIA owner gameplay acceptance."
+  ],
+  "physical_acceptance": "HOLD"
+}

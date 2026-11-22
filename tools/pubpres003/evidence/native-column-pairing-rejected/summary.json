@@ -1,0 +1,719 @@
+{
+  "schema": "pubpres003-rejected-native-pairing-v1",
+  "decision": "DO_NOT_INTEGRATE_C2",
+  "intervention": "Dispatch both existing half-column solves on one worker when at least two complete groups per worker remain. Native law, tasks and barriers unchanged; exact live-state correctness was separately checked.",
+  "source_delta": {
+    "control": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+    "intervention_commit": "1b1c8760b",
+    "tested_source": "1e912084362ea92f03f226e0409573086983d6e2"
+  },
+  "order": [
+    "C2",
+    "C1_adjacent_control"
+  ],
+  "interpretation": "A single C2 probe was unfavorable versus prior balanced C1 runs. One immediate C1 control remained faster. This is enough to reject adoption; two sequential runs do not establish a precise causal slowdown. Unchanged flux/apply stages also varied. Preserve the negative and profile column subphases before another correction.",
+  "scope": "Native-phase headless diagnosis; original graphical validator refusal retained; no graphical playability claim.",
+  "physical_acceptance": "HOLD",
+  "runs": [
+    {
+      "label": "C2",
+      "source": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "files": {
+          "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "2e96ee9366df690b0ab9645c1d47c821c456579d4651b2e2a1eec239b8fd2057",
+          "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "1c8659f6b0f71b4bd9c5a5c1b99a43c2d9193f8dfae30006507dfa97ec48e139",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "6672da180bcdc8d0380b1dbebe85e7deb05f6c764ffd0e9b26460766c9a82c5d",
+          "res://project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+          "res://scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+          "res://scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
+          "res://scripts/main.gd": "32c93b22850a002667ffc0ae204b90d9b312267156c462ae37806a3232a7801b",
+          "res://scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+          "res://scripts/physical_actor_session.gd": "677f522acf0bea0625f5bee5a114d04305e9b08ab68d5114b34980cef39d149e",
+          "res://scripts/rapier_physics_bridge.gd": "1757daa7dd0038462f720d6c30c0e7d26bd37f943879310f200633139f4ad4b3",
+          "res://scripts/shared_workbench.gd": "4fb0cd8bc7a6830e9cffdf36ce2352d7f2426c56f45f778ab6c90280b391bba6",
+          "res://scripts/simulation_worker.gd": "b336001c6ad19b00200a1028a1b4b6c5bd620a37d6b287fde35112e41ffcf328",
+          "res://scripts/workbench_material_timeline.gd": "b6a9e447708515d55a3533e874f71b47229da160f0364dd9d29370d814d15efb",
+          "res://scripts/workbench_native_rendezvous.gd": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "res://scripts/workbench_presentation_coherence.gd": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "res://scripts/workbench_presentation_history.gd": "448c1386843b66e9e4f89bac2a9b0759429f6cdb4cba391f09071a95fd395240",
+          "res://scripts/workbench_same_frame_continuation.gd": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+          "res://shaders/material_palette.gdshader": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+          "res://tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+          "res://tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+          "res://tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+          "res://tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18"
+        },
+        "source_sha": "1e912084362ea92f03f226e0409573086983d6e2"
+      },
+      "runtime": {
+        "manifest_path": "/workspace/scratch/d425b9146667/pubpres003-evidence/native-column-invalidation/runtime-C2/PUBPRES-RUNTIME.json",
+        "manifest_sha256": "0cc2729cc10cdc69c71fd76e225e1370d418cdaa1ab4440f36a916009f958dc6",
+        "binary_path": "/workspace/scratch/d425b9146667/pubpres003-evidence/native-column-invalidation/runtime-C2/libcybersand_native.linux.x86_64.so",
+        "binary_sha256": "1c8659f6b0f71b4bd9c5a5c1b99a43c2d9193f8dfae30006507dfa97ec48e139",
+        "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "build_commit": "1e912084362ea92f03f226e0409573086983d6e2",
+        "checked_source_files": 105,
+        "source_inputs_sha256": "8a678f7254870daf8b313efc30fc26eb64947b01ae3d62aa82ff730cff8e649b",
+        "dependency_builder_commit": "1e912084362ea92f03f226e0409573086983d6e2",
+        "toolchain": {
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "007a8e0048aca9b1680390e12f7fa0c34e1ee96ae6baf512526cad55910e486a",
+          "godot_cpp_dependency_sha256": "0a7d28a0bd1c8509acb7fac0de28f3aec7ab3d6f3971299664e7c9994c3a2567",
+          "compiler_command": "/workspace/scratch/d425b9146667/pubpres003-native/tools/toolchains/g++",
+          "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+          "toolchain_drift_allowed": true
+        },
+        "experimental_build": true,
+        "qualification": "DEVELOPMENT_TOOLCHAIN_DRIFT"
+      },
+      "driver": {
+        "source_commit": "0a82a9d320bd0f55def9795c5f6a62a5bef78589",
+        "source_tree": "7ad20f3d363642733ad0c0c684d77018303aa4e0",
+        "files_sha256": {
+          "godot/tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+          "godot/tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+          "godot/tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18",
+          "tools/pubpres003/audit_traces.py": "1e9d8fc361a2dcc9ffcf206ed51cb41783988b6aac6396da9afb6826eebf7f8b",
+          "tools/pubpres003/causal_trace.py": "bf33e4330348b7324257cdc2051b0ac6e84ff838a3d879018b49d7f882ff40ab",
+          "tools/pubpres003/native_probe.py": "e9216a7351a4f27a6ff62f2be09716255fc4f1e48266812153da758e4301a261",
+          "tools/pubpres003/pubpres_causal_gameplay.gd": "23b6606297b6d01c9634dfb70e58049c63b53c956d5ab476cb7702e9a1179752",
+          "tools/pubpres003/run_focus.py": "a920faee85e29d6e914e4170c7c8c9d91a0ac5d5179c12fa4c212732646eb0df",
+          "tools/pubpres003/test_audit_traces.py": "2dd81095126378681e3ea3bef664d0345214fa4eec84ebdc65a1bc5bc1a1c54f",
+          "tools/pubpres003/test_causal_trace.py": "c47064ddc5282afd9ed1bdd350a6bd9bba24f350a22bed8508efb7bd52350bd8",
+          "tools/pubpres_playability/campaign.json": "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef",
+          "tools/pubpres_playability/results.py": "3cc39c23157a4daa091aadd91b003c6694135e2fd4547933c73755760a0bb91c",
+          "tools/pubpres_playability/results_same_frame.py": "896126129f035e4ed39f776d6514f562ff0e6815d6ba1132d8f2a685982a3be2",
+          "tools/pubpres_playability/run_campaign.py": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+          "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+          "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+          "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a"
+        },
+        "scope": "Actual committed measurement code and frozen imported oracle/runner/build-driver closure; distinct from tested application source."
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "water_options": {
+        "workbench_ballistic": true,
+        "workbench_face_release": false,
+        "workbench_fine_cores": false,
+        "workbench_inertial_signed": false,
+        "workbench_wave_active_rows": 32,
+        "workbench_wave_adhesion_shift": 1,
+        "workbench_wave_body_push": 256,
+        "workbench_wave_body_push_by_mass": 1,
+        "workbench_wave_calm": 128,
+        "workbench_wave_calm_damp_shift": 8,
+        "workbench_wave_coast": 32,
+        "workbench_wave_damp_shift": 16,
+        "workbench_wave_deep_gain": 32,
+        "workbench_wave_empty_pour_shift": 2,
+        "workbench_wave_floor_gain": 1024,
+        "workbench_wave_flow": true,
+        "workbench_wave_flow_share_shift": 1,
+        "workbench_wave_flux_smoothing": 16,
+        "workbench_wave_gain": 32,
+        "workbench_wave_gain_confined": 4,
+        "workbench_wave_level_shift": 3,
+        "workbench_wave_maximum_mass": 32000,
+        "workbench_wave_rest_head": 1,
+        "workbench_wave_sleep_after": 90,
+        "workbench_wave_spill": true,
+        "workbench_wave_spill_coyote_ticks": 4,
+        "workbench_wave_spill_deep_draw": 64,
+        "workbench_wave_spill_draw": 127,
+        "workbench_wave_spill_draw_head": 255,
+        "workbench_wave_spill_fall": 3,
+        "workbench_wave_spill_full_face": true,
+        "workbench_wave_spill_launch_budget": 128,
+        "workbench_wave_spill_parcels": true,
+        "workbench_wave_spill_sheet_rate": 64,
+        "workbench_wave_stick": 128,
+        "workbench_wave_stiffness": 256,
+        "workbench_wave_substeps": 2,
+        "workbench_wave_wake_peak": 1
+      },
+      "apparatus": {
+        "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "logical_processors": 9,
+        "camera": "follow",
+        "workers": 4,
+        "display": {
+          "fps_cap": 60,
+          "physics_callbacks_hz": 60,
+          "server": "headless",
+          "vsync_mode": -1,
+          "window": [
+            1600,
+            900
+          ]
+        },
+        "water_law": "wave_flow_v1",
+        "water_profile": "gameplay_main846f",
+        "water_variant": "reference",
+        "input_mode": "tape",
+        "command_mode": "repeated_callback",
+        "observer_mode": "full",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "input_tape": [
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 0
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 2
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 4
+          },
+          {
+            "move": [
+              -1.0,
+              0.0
+            ],
+            "tick": 6
+          },
+          {
+            "move": [
+              0.0,
+              1.0
+            ],
+            "tick": 8
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 10
+          },
+          {
+            "move": [
+              0.70710678,
+              -0.70710678
+            ],
+            "tick": 12
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 14
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 30
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 90
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 120
+          }
+        ]
+      },
+      "native_oracles": {
+        "status": "PASS",
+        "scope": "Explicit native/body/terrain/Water/input/callback checks; no framebuffer claim",
+        "callback_credit": {
+          "enabled": false,
+          "available": true,
+          "actual_physics_callbacks": 1250,
+          "attempts": 0,
+          "completed_continuations": 0,
+          "completed_in_callbacks": 144,
+          "outcomes": {},
+          "every_step_has_unique_real_callback_credit": true,
+          "maximum_attempts_per_process_frame": 1,
+          "scope": "Observed actual callback and immutable owner receipts; no modeled or extrapolated speedup."
+        },
+        "workers_observed": [
+          4
+        ],
+        "first_144_body_trajectory_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+        "first_144_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726"
+      },
+      "phases": {
+        "first_10s": {
+          "ticks": 49,
+          "prepare_ns": 83179097,
+          "column_ns": 5567672162,
+          "flux_ns": 969169313,
+          "apply_ns": 680318772,
+          "merge_ns": 5861596,
+          "launch_ns": 1876628,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 1.6975325918367348,
+            "column_ns": 113.62596248979592,
+            "flux_ns": 19.77896557142857,
+            "apply_ns": 13.884056571428571,
+            "merge_ns": 0.1196244081632653,
+            "launch_ns": 0.0382985306122449
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 142304235,
+          "column_ns": 10430655126,
+          "flux_ns": 1884946803,
+          "apply_ns": 1379700450,
+          "merge_ns": 14002929,
+          "launch_ns": 5419047,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.9882238541666666,
+            "column_ns": 72.43510504166667,
+            "flux_ns": 13.089908354166665,
+            "apply_ns": 9.581253125,
+            "merge_ns": 0.0972425625,
+            "launch_ns": 0.037632270833333335
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 142304235,
+          "column_ns": 10430655126,
+          "flux_ns": 1884946803,
+          "apply_ns": 1379700450,
+          "merge_ns": 14002929,
+          "launch_ns": 5419047,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.9882238541666666,
+            "column_ns": 72.43510504166667,
+            "flux_ns": 13.089908354166665,
+            "apply_ns": 9.581253125,
+            "merge_ns": 0.0972425625,
+            "launch_ns": 0.037632270833333335
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 49,
+          "max": 221.396489,
+          "p50": 178.578821,
+          "p95": 208.3143408,
+          "p99": 220.88620436
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 221.396489,
+          "p50": 154.0763085,
+          "p95": 200.79834955,
+          "p99": 218.19193751999995
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 221.396489,
+          "p50": 154.0763085,
+          "p95": 200.79834955,
+          "p99": 218.19193751999995
+        }
+      },
+      "raw_files_sha256": {
+        "receipt-events.jsonl": "f692e959333b29e4bfd4ea0d72410afbb139caf9e358bbe5c7cd482e20d84f57",
+        "receipt.json": "8022f37a68fad96c1cb2c2f0c45221e048ba59133e977d3a8a05d8615cb33f6d",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "9e5b39ecf95fdba37e13917986551a95fe3fd449265801d6be099a327962d021",
+        "request.json": "846ef88575952c293dd05c89ee3555407e22ea99ddfcd138ae867c06ad9f1201",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "aff5d21dc93f051ff5a46f12cd4d810e232994274f8854ac7c32307849f0aa02",
+        "process-memory.json": "ce2084a19ea9d613b43ad8cef3e831574f71a908c34cafda82e1c4a2058509a5"
+      },
+      "original_graphical_validation": {
+        "status": "REFUSED",
+        "reason": "'current_matches_cpu'"
+      }
+    },
+    {
+      "label": "C1_adjacent_control",
+      "source": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "files": {
+          "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "2e96ee9366df690b0ab9645c1d47c821c456579d4651b2e2a1eec239b8fd2057",
+          "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "6672da180bcdc8d0380b1dbebe85e7deb05f6c764ffd0e9b26460766c9a82c5d",
+          "res://project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+          "res://scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+          "res://scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
+          "res://scripts/main.gd": "32c93b22850a002667ffc0ae204b90d9b312267156c462ae37806a3232a7801b",
+          "res://scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+          "res://scripts/physical_actor_session.gd": "677f522acf0bea0625f5bee5a114d04305e9b08ab68d5114b34980cef39d149e",
+          "res://scripts/rapier_physics_bridge.gd": "1757daa7dd0038462f720d6c30c0e7d26bd37f943879310f200633139f4ad4b3",
+          "res://scripts/shared_workbench.gd": "4fb0cd8bc7a6830e9cffdf36ce2352d7f2426c56f45f778ab6c90280b391bba6",
+          "res://scripts/simulation_worker.gd": "b336001c6ad19b00200a1028a1b4b6c5bd620a37d6b287fde35112e41ffcf328",
+          "res://scripts/workbench_material_timeline.gd": "b6a9e447708515d55a3533e874f71b47229da160f0364dd9d29370d814d15efb",
+          "res://scripts/workbench_native_rendezvous.gd": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "res://scripts/workbench_presentation_coherence.gd": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "res://scripts/workbench_presentation_history.gd": "448c1386843b66e9e4f89bac2a9b0759429f6cdb4cba391f09071a95fd395240",
+          "res://scripts/workbench_same_frame_continuation.gd": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+          "res://shaders/material_palette.gdshader": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+          "res://tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+          "res://tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+          "res://tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+          "res://tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18"
+        },
+        "source_sha": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f"
+      },
+      "runtime": {
+        "manifest_path": "/workspace/scratch/d425b9146667/pubpres003-evidence/native-column-invalidation/runtime-C1/PUBPRES-RUNTIME.json",
+        "manifest_sha256": "e495796238fd29863208d105027f9c399594a08f0db3b2e52d0d516ff8283c5f",
+        "binary_path": "/workspace/scratch/d425b9146667/pubpres003-evidence/native-column-invalidation/runtime-C1/libcybersand_native.linux.x86_64.so",
+        "binary_sha256": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+        "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "build_commit": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+        "checked_source_files": 105,
+        "source_inputs_sha256": "1505759589dcb9ae3ca62279c3c2ad1badb8147f8b161a7a695ddbbcce01bda3",
+        "dependency_builder_commit": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+        "toolchain": {
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "007a8e0048aca9b1680390e12f7fa0c34e1ee96ae6baf512526cad55910e486a",
+          "godot_cpp_dependency_sha256": "d31d2310963a2bbdbaaa8854fc6774e4bc3f7c447085f6b3896912d1f2a4997a",
+          "compiler_command": "/workspace/scratch/d425b9146667/pubpres003-native/tools/toolchains/g++",
+          "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+          "toolchain_drift_allowed": true
+        },
+        "experimental_build": true,
+        "qualification": "DEVELOPMENT_TOOLCHAIN_DRIFT"
+      },
+      "driver": {
+        "source_commit": "0a82a9d320bd0f55def9795c5f6a62a5bef78589",
+        "source_tree": "7ad20f3d363642733ad0c0c684d77018303aa4e0",
+        "files_sha256": {
+          "godot/tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+          "godot/tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+          "godot/tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18",
+          "tools/pubpres003/audit_traces.py": "1e9d8fc361a2dcc9ffcf206ed51cb41783988b6aac6396da9afb6826eebf7f8b",
+          "tools/pubpres003/causal_trace.py": "bf33e4330348b7324257cdc2051b0ac6e84ff838a3d879018b49d7f882ff40ab",
+          "tools/pubpres003/native_probe.py": "e9216a7351a4f27a6ff62f2be09716255fc4f1e48266812153da758e4301a261",
+          "tools/pubpres003/pubpres_causal_gameplay.gd": "23b6606297b6d01c9634dfb70e58049c63b53c956d5ab476cb7702e9a1179752",
+          "tools/pubpres003/run_focus.py": "a920faee85e29d6e914e4170c7c8c9d91a0ac5d5179c12fa4c212732646eb0df",
+          "tools/pubpres003/test_audit_traces.py": "2dd81095126378681e3ea3bef664d0345214fa4eec84ebdc65a1bc5bc1a1c54f",
+          "tools/pubpres003/test_causal_trace.py": "c47064ddc5282afd9ed1bdd350a6bd9bba24f350a22bed8508efb7bd52350bd8",
+          "tools/pubpres_playability/campaign.json": "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef",
+          "tools/pubpres_playability/results.py": "3cc39c23157a4daa091aadd91b003c6694135e2fd4547933c73755760a0bb91c",
+          "tools/pubpres_playability/results_same_frame.py": "896126129f035e4ed39f776d6514f562ff0e6815d6ba1132d8f2a685982a3be2",
+          "tools/pubpres_playability/run_campaign.py": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+          "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+          "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+          "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a"
+        },
+        "scope": "Actual committed measurement code and frozen imported oracle/runner/build-driver closure; distinct from tested application source."
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "water_options": {
+        "workbench_ballistic": true,
+        "workbench_face_release": false,
+        "workbench_fine_cores": false,
+        "workbench_inertial_signed": false,
+        "workbench_wave_active_rows": 32,
+        "workbench_wave_adhesion_shift": 1,
+        "workbench_wave_body_push": 256,
+        "workbench_wave_body_push_by_mass": 1,
+        "workbench_wave_calm": 128,
+        "workbench_wave_calm_damp_shift": 8,
+        "workbench_wave_coast": 32,
+        "workbench_wave_damp_shift": 16,
+        "workbench_wave_deep_gain": 32,
+        "workbench_wave_empty_pour_shift": 2,
+        "workbench_wave_floor_gain": 1024,
+        "workbench_wave_flow": true,
+        "workbench_wave_flow_share_shift": 1,
+        "workbench_wave_flux_smoothing": 16,
+        "workbench_wave_gain": 32,
+        "workbench_wave_gain_confined": 4,
+        "workbench_wave_level_shift": 3,
+        "workbench_wave_maximum_mass": 32000,
+        "workbench_wave_rest_head": 1,
+        "workbench_wave_sleep_after": 90,
+        "workbench_wave_spill": true,
+        "workbench_wave_spill_coyote_ticks": 4,
+        "workbench_wave_spill_deep_draw": 64,
+        "workbench_wave_spill_draw": 127,
+        "workbench_wave_spill_draw_head": 255,
+        "workbench_wave_spill_fall": 3,
+        "workbench_wave_spill_full_face": true,
+        "workbench_wave_spill_launch_budget": 128,
+        "workbench_wave_spill_parcels": true,
+        "workbench_wave_spill_sheet_rate": 64,
+        "workbench_wave_stick": 128,
+        "workbench_wave_stiffness": 256,
+        "workbench_wave_substeps": 2,
+        "workbench_wave_wake_peak": 1
+      },
+      "apparatus": {
+        "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "logical_processors": 9,
+        "camera": "follow",
+        "workers": 4,
+        "display": {
+          "fps_cap": 60,
+          "physics_callbacks_hz": 60,
+          "server": "headless",
+          "vsync_mode": -1,
+          "window": [
+            1600,
+            900
+          ]
+        },
+        "water_law": "wave_flow_v1",
+        "water_profile": "gameplay_main846f",
+        "water_variant": "reference",
+        "input_mode": "tape",
+        "command_mode": "repeated_callback",
+        "observer_mode": "full",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "input_tape": [
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 0
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 2
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 4
+          },
+          {
+            "move": [
+              -1.0,
+              0.0
+            ],
+            "tick": 6
+          },
+          {
+            "move": [
+              0.0,
+              1.0
+            ],
+            "tick": 8
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 10
+          },
+          {
+            "move": [
+              0.70710678,
+              -0.70710678
+            ],
+            "tick": 12
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 14
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 30
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 90
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 120
+          }
+        ]
+      },
+      "native_oracles": {
+        "status": "PASS",
+        "scope": "Explicit native/body/terrain/Water/input/callback checks; no framebuffer claim",
+        "callback_credit": {
+          "enabled": false,
+          "available": true,
+          "actual_physics_callbacks": 992,
+          "attempts": 0,
+          "completed_continuations": 0,
+          "completed_in_callbacks": 144,
+          "outcomes": {},
+          "every_step_has_unique_real_callback_credit": true,
+          "maximum_attempts_per_process_frame": 1,
+          "scope": "Observed actual callback and immutable owner receipts; no modeled or extrapolated speedup."
+        },
+        "workers_observed": [
+          4
+        ],
+        "first_144_body_trajectory_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+        "first_144_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726"
+      },
+      "phases": {
+        "first_10s": {
+          "ticks": 63,
+          "prepare_ns": 45115458,
+          "column_ns": 5865545808,
+          "flux_ns": 949158729,
+          "apply_ns": 753160937,
+          "merge_ns": 2717249,
+          "launch_ns": 2356382,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.7161183809523809,
+            "column_ns": 93.10390171428571,
+            "flux_ns": 15.066011571428572,
+            "apply_ns": 11.954935507936508,
+            "merge_ns": 0.04313093650793651,
+            "launch_ns": 0.03740288888888889
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 66771217,
+          "column_ns": 8768345459,
+          "flux_ns": 1453500341,
+          "apply_ns": 1148454717,
+          "merge_ns": 4395099,
+          "launch_ns": 4195452,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.4636890069444444,
+            "column_ns": 60.89128790972222,
+            "flux_ns": 10.093752368055556,
+            "apply_ns": 7.975379979166667,
+            "merge_ns": 0.030521520833333333,
+            "launch_ns": 0.029135083333333332
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 66771217,
+          "column_ns": 8768345459,
+          "flux_ns": 1453500341,
+          "apply_ns": 1148454717,
+          "merge_ns": 4395099,
+          "launch_ns": 4195452,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.4636890069444444,
+            "column_ns": 60.89128790972222,
+            "flux_ns": 10.093752368055556,
+            "apply_ns": 7.975379979166667,
+            "merge_ns": 0.030521520833333333,
+            "launch_ns": 0.029135083333333332
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 63,
+          "max": 182.642202,
+          "p50": 140.142515,
+          "p95": 148.6171486,
+          "p99": 174.53942758000002
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 182.642202,
+          "p50": 136.08499799999998,
+          "p95": 147.35336065,
+          "p99": 167.75887716999995
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 182.642202,
+          "p50": 136.08499799999998,
+          "p95": 147.35336065,
+          "p99": 167.75887716999995
+        }
+      },
+      "raw_files_sha256": {
+        "receipt-events.jsonl": "987c65068eb18fb5556716c5d49cdb2f0383b088f925ceb742835d2b02aeaf52",
+        "receipt.json": "5debba3556d87ba72539f0867eb4751a800c9b0844f50bfb473c351ec0952747",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "d2b9a6f24108eb88a9925aafdc5335ca182450f2c872d2511eacdc52d5275e3c",
+        "request.json": "1364de3ead9c67b3cc9668be04f0a4eb40918a1f9b533f5a757adde85cfced28",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "30ccb98d7986353d3618812dd835795fc5e54ce0cd8226ba58bda77d37d0ce0b",
+        "process-memory.json": "e03a190c685f6233acd4429637a36b25a1bb6865f4f8e416dbcb9bdbadfc6932"
+      },
+      "original_graphical_validation": {
+        "status": "REFUSED",
+        "reason": "'current_matches_cpu'"
+      }
+    }
+  ]
+}
