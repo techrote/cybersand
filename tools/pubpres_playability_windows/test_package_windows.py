@@ -7,6 +7,7 @@ import importlib.util
 import json
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import unittest
 
@@ -52,6 +53,8 @@ def fixture(root):
     sources = {}
     for index, key in enumerate(("M", "I", "C"), 1):
         prefix = "sources/" + key
+        put(root, prefix + "/godot/addons/godot-rapier2d/Radial2D.svg.import",
+            '[remap]\nimporter="texture"\n[params]\ncompress/mode=0\n')
         inputs = {}
         for name in ("native/include/world.hpp", "native/src/world.cpp", "godot/native_extension/bridge.cpp"):
             path = put(root, prefix + "/" + name, key + "/" + name + "\n")
@@ -167,6 +170,11 @@ class PackageTests(unittest.TestCase):
     def test_unexpected_stale_file_is_rejected(self):
         put(self.root, "old-evaluator.txt", "stale")
         self.check_bad("unexpected files")
+
+    def test_changed_import_descriptor_is_rejected(self):
+        put(self.root, "sources/C/godot/addons/godot-rapier2d/Radial2D.svg.import",
+            '[remap]\nimporter="texture"\n[params]\ncompress/mode=1\n')
+        self.check_bad("Changed package file")
 
     def test_nested_manifest_name_is_not_exempt(self):
         put(self.root, "unlisted/" + package.MANIFEST, "shadow")
@@ -293,6 +301,43 @@ class PackageTests(unittest.TestCase):
 
     def test_canonical_lf_source_hashes_match(self):
         self.assertEqual(package.canonical_digest(b"a\r\nb\r\n"), package.canonical_digest(b"a\nb\n"))
+
+
+class SourceArchiveTests(unittest.TestCase):
+    def test_windows_git_eol_settings_preserve_reopen_source_bytes(self):
+        # Exercise Git itself: the historical M/I source has no .import rule,
+        # while the candidate carries the explicit portable source attribute.
+        # The owner can reopen all three exported projects without weakening
+        # any hash check or normalizing a possibly altered run after import.
+        historical = b"* text=auto\n*.ps1 text eol=crlf\n"
+        current = (HERE.parents[1] / ".gitattributes").read_bytes()
+        for label, attributes in (("historical", historical), ("candidate", current)):
+            with self.subTest(source=label), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary) / "repository"
+                root.mkdir()
+                def git(*arguments):
+                    return subprocess.check_output(["git", "-C", str(root), *arguments], stderr=subprocess.PIPE)
+                git("init", "-q", "--initial-branch=fixture")
+                git("config", "core.autocrlf", "false")
+                put(root, ".gitattributes", attributes)
+                descriptor = b'[remap]\nimporter="texture"\n[params]\ncompress/mode=0\n'
+                name = "godot/addons/godot-rapier2d/Radial2D.svg.import"
+                put(root, name, descriptor)
+                put(root, "launch.ps1", b"# explicit source attribute\n")
+                binary = b"\x00binary\r\n\xff"
+                put(root, "asset.bin", binary)
+                git("add", ".")
+                git("-c", "user.name=PUBPRES archive regression", "-c",
+                    "user.email=archive-test@example.invalid", "commit", "-qm", "fixture")
+                source = git("rev-parse", "HEAD").decode().strip()
+                git("config", "core.autocrlf", "true")
+                git("config", "core.eol", "crlf")
+                output = Path(temporary) / "archive"
+                output.mkdir()
+                package.archive_source(root, source, output, [name, "launch.ps1", "asset.bin"])
+                self.assertEqual((output / name).read_bytes(), descriptor)
+                self.assertEqual((output / "launch.ps1").read_bytes(), b"# explicit source attribute\r\n")
+                self.assertEqual((output / "asset.bin").read_bytes(), binary)
 
 
 if __name__ == "__main__":

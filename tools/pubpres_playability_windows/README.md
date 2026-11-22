@@ -137,7 +137,13 @@ pristine package, not against a mutable self-reported file list. Explicit
 selectors must agree with the original run. It preserves that run's profile;
 it does not copy an unrelated ordinary profile. Package or source corruption
 fails before launch. Godot-generated import cache and script UID companions
-are not a source of native authority.
+are not a source of native authority. Committed `.import` descriptors remain
+fully hashed source-derived metadata. The exporter selects canonical LF for
+unspecified text endings even for historical M/I sources, while explicit Git
+attributes still apply. Candidate checkouts also pin `*.import` to LF. This
+prevents a legitimate Godot import from rewriting Windows CRLF descriptors;
+reopening still rejects any descriptor edit or forged run-local hash. The
+pristine payload is never rewritten to accept an imported run.
 
 Retain `run.json`, each `launches` directory, `ready-*.json`, process logs and
 the profile containing the saved state. A readiness receipt binds the observed

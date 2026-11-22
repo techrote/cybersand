@@ -96,6 +96,27 @@ try {
         [IO.File]::WriteAllBytes($World,$Original)
         [IO.File]::WriteAllBytes((Join-Path $Run 'run.json'),$OriginalRun)
     }
+    # Source-derived import metadata remains immutable and hash checked.
+    # Canonical archive export must prevent Godot's LF rewrite on every source.
+    foreach ($SourceKey in @('M','I','C')) {
+        $DescriptorPath = Join-PPSafe $PackageRoot ($Manifest.sources.$SourceKey.root+'/godot/addons/godot-rapier2d/Radial2D.svg.import')
+        $DescriptorBytes = [IO.File]::ReadAllBytes($DescriptorPath)
+        Assert-PP (-not ($script:PPUtf8.GetString($DescriptorBytes).Contains("`r"))) 'Committed import descriptor must be canonical LF'
+        $Checks.Add([ordered]@{name=('canonical-import-descriptor-'+$SourceKey);passed=$true;sha256=(Get-PPHash $DescriptorPath)})
+    }
+    $Import = Join-PPSafe $Run 'source/godot/addons/godot-rapier2d/Radial2D.svg.import'
+    $OriginalImport = [IO.File]::ReadAllBytes($Import)
+    try {
+        [IO.File]::AppendAllText($Import,"`n# deliberate import metadata corruption`n",$script:PPUtf8)
+        Expect-PPRefusal 'changed-committed-import-descriptor' { Test-PPRun $Run $PackageRoot $Manifest } 'Changed World/application source'
+        $Changed = Read-PPJson (Join-Path $Run 'run.json')
+        $Changed.files_sha256.'godot/addons/godot-rapier2d/Radial2D.svg.import' = Get-PPHash $Import
+        Write-PPJson (Join-Path $Run 'run.json') $Changed
+        Expect-PPRefusal 'changed-import-and-forged-local-hash' { Test-PPRun $Run $PackageRoot $Manifest } 'Changed World/application source'
+    } finally {
+        [IO.File]::WriteAllBytes($Import,$OriginalImport)
+        [IO.File]::WriteAllBytes((Join-Path $Run 'run.json'),$OriginalRun)
+    }
     $Changed = Read-PPJson (Join-Path $Run 'run.json')
     try {
         $Changed.settings.CYBERSAND_DIAG_NATIVE_RENDEZVOUS = '1'

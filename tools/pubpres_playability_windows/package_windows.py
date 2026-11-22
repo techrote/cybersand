@@ -143,7 +143,12 @@ def lfs_bytes(root, source, name, data):
 
 def archive_source(root, source, destination, names):
     with tempfile.TemporaryFile() as stream:
-        subprocess.run(["git", "-C", str(root), "archive", "--format=tar", source, "--", *sorted(set(names))],
+        # Archive export observes Git's working-tree EOL configuration. Old
+        # comparison sources lack an explicit .import attribute; canonical LF
+        # prevents Godot's legitimate import pass from changing their bytes.
+        # Explicit source attributes (including CRLF launchers) still apply.
+        subprocess.run(["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf",
+                        "-C", str(root), "archive", "--format=tar", source, "--", *sorted(set(names))],
                        check=True, stdout=stream, timeout=180)
         stream.seek(0)
         with tarfile.open(fileobj=stream) as archive:
