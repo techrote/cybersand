@@ -24,6 +24,7 @@ var last_status: Dictionary = {"ready": false, "outcome": "FeatureDisabled"}
 var results: Array[Dictionary] = []
 var _next_action: int = 0
 var _pending: Dictionary = {}
+var _held_reason: String = ""
 
 
 func _init(requested: bool = false) -> void:
@@ -37,6 +38,10 @@ func _refusal(reason: String) -> Dictionary:
 
 func pending_count() -> int:
 	return _pending.size()
+
+
+func held_reason() -> String:
+	return _held_reason
 
 
 # A status readback is a worker-published VALUE. The native specialist must
@@ -133,6 +138,8 @@ func queue_intent(worker: Object, snapshot: CyberSimulationSnapshot, uploaded: D
 		return {"ok": false, "outcome": status.outcome}
 	if action not in ACTIONS:
 		return {"ok": false, "outcome": "UnsupportedAction"}
+	if not _held_reason.is_empty():
+		return {"ok": false, "outcome": _held_reason, "pending": _pending.size()}
 	if _pending.size() >= MAX_PENDING:
 		return {"ok": false, "outcome": "ActionCapacity"}
 	var visible_reason: String = visible_error(observation, uploaded)
@@ -159,10 +166,17 @@ func queue_intent(worker: Object, snapshot: CyberSimulationSnapshot, uploaded: D
 	# Only the normal simulation worker can accept the request. Its queue must
 	# separately check capacity and execute against the same World on its thread.
 	var reply: Variant = worker.call(REQUIRED_METHODS[1], request.duplicate(true))
+	# Explicit fenced refusal proves non-admission. A malformed acknowledgement
+	# cannot establish whether the worker already accepted or executed the edit.
+	if reply is Dictionary and reply.get("action_id") == _next_action \
+			and reply.get("port_generation") == generation and reply.get("ok") == false:
+		return {"ok": false, "outcome": str(reply.get("outcome", "WorkerAdmissionRefused"))}
 	if not reply is Dictionary or reply.get("ok") != true or \
 			reply.get("action_id") != _next_action or reply.get("port_generation") != generation:
-		return {"ok": false, "outcome": "WorkerAdmissionRefused",
-			"detail": str(reply.get("outcome", "InvalidReply")) if reply is Dictionary else "InvalidReply"}
+		_pending[_next_action] = request
+		_held_reason = "AdmissionUncertain"
+		return {"ok": false, "outcome": _held_reason, "may_have_executed": true,
+			"action_id": _next_action, "port_generation": generation}
 	_pending[_next_action] = request
 	return {"ok": true, "outcome": "QueuedOnOrdinaryWorker", "action_id": _next_action,
 		"port_generation": generation}
@@ -176,20 +190,51 @@ func consume_receipt(receipt: Dictionary) -> Dictionary:
 	if receipt.get("port_generation") != generation \
 			or receipt.get("world_generation") != request.world_generation \
 			or receipt.get("session") != request.session \
+			or receipt.get("transport_generation") != request.transport_generation \
 			or receipt.get("native_instance_id") != request.native_instance_id:
 		return {"ok": false, "outcome": "StaleOrForeignReceipt"}
 	var outcome: String = str(receipt.get("outcome", ""))
 	if outcome not in TERMINAL_OUTCOMES:
 		return {"ok": false, "outcome": "NonterminalOrUnknownReceipt"}
-	if outcome == "Applied" and (not receipt.get("native_receipt") is Dictionary \
-			or not receipt.native_receipt.get("accepted", false)):
-		return {"ok": false, "outcome": "UnprovenNativeApplication"}
+	if outcome == "Applied":
+		var native_reason: String = _applied_receipt_error(receipt, request)
+		if not native_reason.is_empty():
+			return {"ok": false, "outcome": "UnprovenNativeApplication", "detail": native_reason}
 	_pending.erase(id)
+	var raw_native: Variant = receipt.get("native_receipt", {})
 	var terminal: Dictionary = {"ok": outcome == "Applied", "outcome": outcome,
 		"action_id": id, "port_generation": generation,
-		"native_receipt": receipt.get("native_receipt", {}).duplicate(true)}
+		"native_receipt": raw_native.duplicate(true) if raw_native is Dictionary else {}}
 	_append_result(terminal)
 	return terminal
+
+
+# An applied edit requires a source-bound same-World native transaction and
+# native revisioned material/geometry/physics receipt, not a success boolean.
+static func _applied_receipt_error(receipt: Dictionary, request: Dictionary) -> String:
+	var value: Variant = receipt.get("native_receipt")
+	if not value is Dictionary:
+		return "MissingNativeReceipt"
+	var native: Dictionary = value
+	if native.get("accepted") != true or native.get("same_world") != true:
+		return "NotAcceptedSameWorld"
+	for key: String in ["native_instance_id", "session", "world_generation",
+			"transport_generation", "action_id", "port_generation"]:
+		if native.get(key) != request.get(key):
+			return "NativeIdentityMismatch"
+	if native.get("operation") != request.operation or native.get("position") != request.position:
+		return "NativeOperationMismatch"
+	for key: String in ["transaction_id", "material_revision", "geometry_revision",
+			"applied_physics_revision", "pose_serial", "body_generation",
+			"incarnation", "owner", "cell"]:
+		if not native.get(key) is int or int(native[key]) < 0:
+			return "IncompleteNativeMutationReceipt"
+	if int(native.transaction_id) <= 0 or int(native.owner) != int(request.target.owner) \
+			or int(native.cell) != int(request.target.cell) \
+			or int(native.body_generation) != int(request.target.body_generation) \
+			or int(native.incarnation) != int(request.target.incarnation):
+		return "NativeTargetMismatch"
+	return ""
 
 
 func poll_results(worker: Object, maximum: int = 16) -> Dictionary:
@@ -219,6 +264,7 @@ func retire(reason: String = "OwnerRetired") -> void:
 		_append_result({"ok": false, "outcome": reason, "action_id": id,
 			"port_generation": generation, "may_have_executed": true})
 	_pending.clear()
+	_held_reason = ""
 	generation += 1
 	last_status = {"ready": false, "outcome": reason}
 
