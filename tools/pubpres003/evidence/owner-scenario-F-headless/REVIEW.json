@@ -1,0 +1,20 @@
+{
+  "schema": "pubpres003-owner-scenario-functional-evidence-v1",
+  "application_source": "d316c281e0abb575eb6302afc12ec44f211460ba",
+  "application_tree": "7a57dc0873dd161abe165f3a60e14e64886d04a8",
+  "native_build_receipt": "/workspace/scratch/d425b9146667/pubpres003-evidence/native-baseline/runtime-F/PUBPRES-RUNTIME.json",
+  "native_build_receipt_sha256": "362a22d4e613990d23115bc518e37106e6ddb21534bb1f515e69974488d121a7",
+  "native_toolchain_drift": "Local GCC14 development runtime; pinned hosted final qualification is separate.",
+  "status": "PASS",
+  "scope": "Two actual fresh headless Godot processes against the same isolated profile; actual ordinary native2048generation/Apply/Save/Play,4native+Rapier completions,4workers,Wave2rounds/spill/ballistic/healthyledger,brush+Save and freshLoad preserving marker. No graphical/steady-state/NVIDIA claim.",
+  "pending": "Matching integratedC runtime, actualWindows launchers and final-source graphical/evaluator qualification.",
+  "files_sha256": {
+    "author.json": "3f94d24552a401b6889b6eae1f902854463380cc2c764b4c2c55e38f24e75bce",
+    "author.log": "767baa4e148a5a4eb486f13aaa149846302822a194794bf074853d88b3533d46",
+    "parse-results.json": "0576ca52be23490c5f7672e9b880a9546e98b3d961408329c443010bd7fe9c3a",
+    "parse.log": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+    "process-results.json": "42bfcf8ea88dd943a78292a9941f737dbec11cb9bddc0a043f20c496322ed5d9",
+    "reopen.json": "0824bbdae79eaebd3cdbc97eb21939d390597077a491ff927c8633f2eb5614b8",
+    "reopen.log": "5cd24495bc0a9d6c19eaf68273124cb949de34d28c13a2bf1128936a5e0b9217"
+  }
+}

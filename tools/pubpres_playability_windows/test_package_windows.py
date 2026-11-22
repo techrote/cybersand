@@ -133,8 +133,14 @@ def fixture(root, frozen=False):
               "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"}}
     if frozen:
         record.update(schema=package.FROZEN_SCHEMA, mission="PUBPRES-PLAYABILITY-003",
-                      owner_comparison={"baseline": "F", "candidate": "C"})
+                      owner_comparison={"baseline": "F", "candidate": "C"}, owner_scenario=copy.deepcopy(package.OWNER_SCENARIO),
+                      owner_launchers=copy.deepcopy(package.OWNER_LAUNCHERS))
         record["package_filename"] = "CyberSand-PUBPRES-PLAYABILITY-003-" + candidate[:12] + "-Windows.zip"
+        put(root, package.OWNER_SCENARIO["observer"], "extends SceneTree\n")
+        put(root, package.OWNER_SCENARIO["helper"], "extends RefCounted\n")
+        put(root, package.TOOLS + "/Play-PUBPRES003.ps1", "# synthetic owner wrapper\n")
+        for name, content in package.owner_launcher_bytes(candidate).items():
+            put(root, name, content)
     save(root, record)
     return record
 
@@ -232,6 +238,31 @@ class PackageTests(unittest.TestCase):
         self.manifest["sources"].pop("F")
         save(self.root, self.manifest)
         self.check_bad("Legacy profile")
+
+    def test_owner_scenario_cannot_change_fixture_worker_budget_or_observer(self):
+        for field, value in (("workers", 1), ("name", "empty512"), ("generated_sha256", "0" * 64),
+                             ("observer", package.TOOLS + "/owner_start.gd")):
+            with self.subTest(field=field):
+                self.manifest = fixture(self.root, frozen=True)
+                self.manifest["owner_scenario"][field] = value
+                save(self.root, self.manifest)
+                self.check_bad("matched scenario contract")
+
+    def test_owner_scene_requires_actual_hashed_helper_and_wrapper(self):
+        for field in ("helper", "wrapper"):
+            with self.subTest(field=field):
+                self.manifest = fixture(self.root, frozen=True)
+                path = package.OWNER_SCENARIO["helper"] if field == "helper" else package.TOOLS + "/Play-PUBPRES003.ps1"
+                (self.root / path).unlink()
+                save(self.root, self.manifest)
+                self.check_bad("scenario source is missing|wrapper is missing")
+
+    def test_rehashed_one_click_baseline_cannot_launch_candidate_or_wrong_source(self):
+        self.manifest = fixture(self.root, frozen=True)
+        path = self.root / package.OWNER_LAUNCHERS["baseline"]
+        path.write_bytes(path.read_bytes().replace(b"FrozenBaseline", b"Candidate"))
+        save(self.root, self.manifest)
+        self.check_bad("Source-bound owner launcher changed")
 
     def check_bad(self, pattern):
         with self.assertRaisesRegex(ValueError, pattern):

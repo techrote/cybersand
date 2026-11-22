@@ -1,0 +1,57 @@
+{
+  "schema": "pubpres003-accepted-main-reconciliation-v1",
+  "published_merge_commit": "62020af419e3e23dfabd1d22379fac2c1bbf0eec",
+  "published_merge_tree": "ac761a025da188291c2c0a3a8570d25f2fe9629b",
+  "parents": [
+    "282bba75d4864cc4b48733ceb8d2f2a144bc3f0e",
+    "662df51cd8409a52332fa7ef15d06d8ab8945aed"
+  ],
+  "accepted_main": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "premerge_successor": "282bba75d4864cc4b48733ceb8d2f2a144bc3f0e",
+  "frozen_registered_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "frozen_registration_changed": false,
+  "production_defaults_changed": false,
+  "source_subtrees": {
+    "godot": {
+      "premerge": "52a3346fe5b1f22787bc0e94049a7355fe42696f",
+      "merged": "52a3346fe5b1f22787bc0e94049a7355fe42696f",
+      "registered_M": "6a5e9d462136abbf463e91910aad5c7f133c8ac7",
+      "accepted_M": "6a5e9d462136abbf463e91910aad5c7f133c8ac7"
+    },
+    "native": {
+      "premerge": "595188efacdd8e5a2a948a3bfc4484d4b3d87c9e",
+      "merged": "595188efacdd8e5a2a948a3bfc4484d4b3d87c9e",
+      "registered_M": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "accepted_M": "e6946f5c5d47eddd6118696b124470737cdd385e"
+    },
+    "materials": {
+      "premerge": "0402173c387905f1a3a910750edb62f3fb3613a6",
+      "merged": "0402173c387905f1a3a910750edb62f3fb3613a6",
+      "registered_M": "0402173c387905f1a3a910750edb62f3fb3613a6",
+      "accepted_M": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "examples": {
+      "premerge": "a1a1118e18ebfa579143c4d259a75604e08d6cbc",
+      "merged": "a1a1118e18ebfa579143c4d259a75604e08d6cbc",
+      "registered_M": "a1a1118e18ebfa579143c4d259a75604e08d6cbc",
+      "accepted_M": "a1a1118e18ebfa579143c4d259a75604e08d6cbc"
+    }
+  },
+  "executed_integration_checks": [
+    {
+      "gate": "soliding_build_reuse",
+      "tests": 12,
+      "status": "PASS"
+    },
+    {
+      "gate": "worldgen_build_inventory",
+      "tests": 21,
+      "status": "PASS"
+    },
+    {
+      "gate": "application_native_material_example_bytes",
+      "status": "PASS_UNCHANGED"
+    }
+  ],
+  "scope": "True two-parent merge of live accepted main. New source receipts/builds remain required; prior executable receipts are not relabelled. Frozen performance registration retains its original M source."
+}

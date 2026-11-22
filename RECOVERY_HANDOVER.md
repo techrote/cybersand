@@ -207,9 +207,27 @@ coherent but mismatched fourth toolchain refusal. Historical v2 packages retain
 their existing verification. Actual Windows execution of the v3 package and
 one-click active Wave2048/Save/reopen scenario remains pending final publication.
 
-Accepted main was refreshed at this checkpoint and remains
-`662df51cd8409a52332fa7ef15d06d8ab8945aed`. A read-only merge preflight is clean;
-actual reconciliation and source-matched final qualification are still pending.
+Accepted main was refreshed and merged as published two-parent commit
+`62020af419e3e23dfabd1d22379fac2c1bbf0eec`, tree
+`ac761a025da188291c2c0a3a8570d25f2fe9629b`. Its parents are successor
+`282bba75d4864cc4b48733ceb8d2f2a144bc3f0e` and accepted main
+`662df51cd8409a52332fa7ef15d06d8ab8945aed`. Application/native/material/example
+subtrees are byte-identical before and after integration; the accepted changes
+are CI and documentation. The accepted soliding reuse suite passes 12 tests and
+worldgen build inventory passes 21. The [source mapping](tools/pubpres003/evidence/mainline-reconciliation.json)
+also proves accepted main's application subtrees equal the frozen registration's
+historical M, without rewriting that registration or relabelling its receipts.
+All final-source executable builds and qualification remain required.
+
+The one-click F/C evaluator scenario uses ordinary Apply, pilot selection,
+Follow, Play, Save and fresh-process Load of a genuine current-gameplay
+Wave2048 World. Forty-two package tests pass. Two real development Godot
+processes prove four completed native/Rapier steps per startup and preservation
+of an ordinary brush edit across Save/reopen. This headless result is explicitly
+not graphical or sustained-play acceptance. The new v3 Windows scenario remains
+pending actual hosted execution. The earlier v2 Windows development package has
+built and passed its hosted corruption/process-ownership controls; pristine
+import/startup/reopen is running.
 
 ## Active ownership and next work
 

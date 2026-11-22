@@ -30,6 +30,15 @@ SCHEMA = "pubpres-playability-windows-v2"
 FROZEN_SCHEMA = "pubpres-playability-windows-v3"
 FROZEN_COMMIT = "d316c281e0abb575eb6302afc12ec44f211460ba"
 FROZEN_TREE = "7a57dc0873dd161abe165f3a60e14e64886d04a8"
+OWNER_SCENARIO = {"schema": "pubpres003-owner-scenario-v1", "name": "wave2048_gameplay_follow",
+                  "observer": "tools/pubpres_playability_windows/owner_start_003.gd",
+                  "helper": "tools/pubpres_playability_windows/owner_scenario.gd",
+                  "save_name": "pubpres003-wave2048", "workers": 4,
+                  "fixture_json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+                  "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a"}
+OWNER_LAUNCHERS = {"candidate": "Play-Candidate.bat", "baseline": "Play-Frozen-Baseline.bat",
+                   "reopen_candidate": "Reopen-Candidate.bat", "reopen_baseline": "Reopen-Frozen-Baseline.bat",
+                   "evidence": "Pack-Owner-Evidence.bat"}
 MISSIONS = ("PUBPRES-PLAYABILITY-001", "PUBPRES-PLAYABILITY-003")
 MANIFEST = "PUBPRES-PLAYABILITY-MANIFEST.json"
 RUNTIME_RECEIPT = "PUBPRES-RUNTIME.json"
@@ -66,6 +75,20 @@ def digest(path, algorithm="sha256"):
 
 def canonical_digest(data):
     return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
+
+
+def owner_launcher_bytes(candidate):
+    need(COMMIT.fullmatch(candidate), "Owner launcher requires exact candidate source")
+    result = {}
+    for key, name in OWNER_LAUNCHERS.items():
+        action = "Evidence" if key == "evidence" else "Reopen" if key.startswith("reopen_") else "New"
+        source = "FrozenBaseline" if "baseline" in key else "Candidate"
+        text = ('@echo off\r\n'
+                'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\\pubpres_playability_windows\\Play-PUBPRES003.ps1" '
+                '-PackageRoot "%~dp0." -ExpectedCandidate ' + candidate + ' -Action ' + action + ' -Source ' + source + '\r\n'
+                'if errorlevel 1 pause\r\n')
+        result[name] = text.encode("ascii")
+    return result
 
 
 def safe_name(name):
@@ -305,8 +328,14 @@ def verify(output, candidate):
              and record["sources"]["F"]["source_tree"] == FROZEN_TREE,
              "Frozen baseline source differs from the preserved 001 candidate")
         need(record.get("owner_comparison") == {"baseline": "F", "candidate": "C"}, "Owner baseline/candidate mapping differs")
+        need(record.get("owner_scenario") == OWNER_SCENARIO, "Owner matched scenario contract differs")
+        need(all(OWNER_SCENARIO[key] in names for key in ("observer", "helper")), "Owner scenario source is missing")
+        need(record.get("owner_launchers") == OWNER_LAUNCHERS, "Owner one-click launcher mapping differs")
+        need(TOOLS + "/Play-PUBPRES003.ps1" in names, "Owner one-click wrapper is missing")
+        for name, expected in owner_launcher_bytes(candidate).items():
+            need((output / name).read_bytes() == expected, "Source-bound owner launcher changed: " + name)
     else:
-        need("owner_comparison" not in record, "Legacy profile cannot advertise a frozen baseline")
+        need("owner_comparison" not in record and "owner_scenario" not in record and "owner_launchers" not in record, "Legacy profile cannot advertise a frozen baseline or owner scenario")
     toolchains = []
     for key, source in record["sources"].items():
         need(COMMIT.fullmatch(source["source_commit"]) and COMMIT.fullmatch(source["source_tree"]), "Incomplete source identity")
@@ -459,6 +488,10 @@ def main():
               "qualification_scope": "Fresh source-matched Windows evaluator. Hosted software-renderer results and owner physical NVIDIA acceptance are distinct."}
     if frozen:
         record["owner_comparison"] = {"baseline": "F", "candidate": "C"}
+        record["owner_scenario"] = dict(OWNER_SCENARIO)
+        record["owner_launchers"] = dict(OWNER_LAUNCHERS)
+        for name, content in owner_launcher_bytes(args.candidate_sha).items():
+            (output / name).write_bytes(content)
     record["files_sha256"] = file_hashes(output)
     record["file_count"] = len(record["files_sha256"])
     write_json(output / MANIFEST, record)

@@ -12,6 +12,7 @@ param(
     [ValidateSet('Safe','Separate')][string]$RenderThread = 'Safe',
     [ValidateSet('Off','On')][string]$SameFrameContinuation = 'Off',
     [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver = 'opengl3',
+    [ValidateSet('Ordinary','Wave2048')][string]$Scenario = 'Ordinary',
     [string]$ReopenRun = '',
     [switch]$QuitAfterReady,
     [switch]$Library
@@ -134,7 +135,29 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
             $Manifest.sources.F.source_tree -ceq $script:PPFrozenTree) 'Frozen baseline source differs'
         Assert-PP ($Manifest.owner_comparison.baseline -ceq 'F' -and $Manifest.owner_comparison.candidate -ceq 'C' -and
             @($Manifest.owner_comparison.PSObject.Properties).Count -eq 2) 'Owner baseline/candidate mapping differs'
-    } else { Assert-PP ($null -eq (Get-PPField $Manifest 'owner_comparison')) 'Legacy profile cannot advertise a frozen baseline' }
+        $ScenarioContract = [ordered]@{schema='pubpres003-owner-scenario-v1';name='wave2048_gameplay_follow';
+            observer='tools/pubpres_playability_windows/owner_start_003.gd';helper='tools/pubpres_playability_windows/owner_scenario.gd';
+            save_name='pubpres003-wave2048';workers=4;
+            fixture_json_sha256='b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954';
+            generated_sha256='71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a'}
+        Assert-PP (@($Manifest.owner_scenario.PSObject.Properties).Count -eq $ScenarioContract.Count) 'Owner scenario contract differs'
+        foreach ($Field in $ScenarioContract.Keys) { Assert-PP ($Manifest.owner_scenario.$Field -ceq $ScenarioContract[$Field]) 'Owner scenario contract differs' }
+        foreach ($Name in @($Manifest.owner_scenario.observer,$Manifest.owner_scenario.helper)) {
+            Assert-PP ($null -ne $Manifest.files_sha256.PSObject.Properties[$Name]) 'Owner scenario source is missing'
+        }
+        $LauncherNames = [ordered]@{candidate='Play-Candidate.bat';baseline='Play-Frozen-Baseline.bat';
+            reopen_candidate='Reopen-Candidate.bat';reopen_baseline='Reopen-Frozen-Baseline.bat';evidence='Pack-Owner-Evidence.bat'}
+        Assert-PP (@($Manifest.owner_launchers.PSObject.Properties).Count -eq $LauncherNames.Count -and
+            $null -ne $Manifest.files_sha256.PSObject.Properties['tools/pubpres_playability_windows/Play-PUBPRES003.ps1']) 'Owner launcher mapping/wrapper differs'
+        foreach ($Key in $LauncherNames.Keys) {
+            Assert-PP ($Manifest.owner_launchers.$Key -ceq $LauncherNames[$Key]) 'Owner one-click launcher mapping differs'
+            $LauncherAction = if ($Key -ceq 'evidence') {'Evidence'} elseif ($Key.StartsWith('reopen_')) {'Reopen'} else {'New'}
+            $LauncherSource = if ($Key.Contains('baseline')) {'FrozenBaseline'} else {'Candidate'}
+            $LauncherText = '@echo off'+"`r`n"+'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\pubpres_playability_windows\Play-PUBPRES003.ps1" -PackageRoot "%~dp0." -ExpectedCandidate '+$Candidate+' -Action '+$LauncherAction+' -Source '+$LauncherSource+"`r`n"+'if errorlevel 1 pause'+"`r`n"
+            Assert-PP ([IO.File]::ReadAllText((Join-PPSafe $Root $LauncherNames[$Key])) -ceq $LauncherText) 'Source-bound owner launcher changed'
+        }
+    } else { Assert-PP ($null -eq (Get-PPField $Manifest 'owner_comparison') -and
+        $null -eq (Get-PPField $Manifest 'owner_scenario') -and $null -eq (Get-PPField $Manifest 'owner_launchers')) 'Legacy profile cannot advertise a frozen baseline or owner scenario' }
     $Toolchain = $null
     foreach ($Key in $SourceKeys) {
         $Item = $Manifest.sources.$Key
@@ -439,7 +462,7 @@ function Get-PPSettings([string]$Key,[string]$Pools,[string]$Thread,[string]$Dri
     return $Settings
 }
 function Get-PPOverride { return "[cybersand]`nexperimental_wave_column_tiles=false`npubpres_wave_column_probe=false`n" }
-function Get-PPExpectedRunFiles([string]$Root,$Manifest,[string]$Key) {
+function Get-PPExpectedRunFiles([string]$Root,$Manifest,[string]$Key,[string]$Scenario='ordinary') {
     $Files = [ordered]@{}; $Prefix = $Manifest.sources.$Key.root+'/'
     foreach ($Entry in $Manifest.files_sha256.PSObject.Properties) {
         if (-not $Entry.Name.StartsWith($Prefix,[StringComparison]::Ordinal)) { continue }
@@ -448,15 +471,24 @@ function Get-PPExpectedRunFiles([string]$Root,$Manifest,[string]$Key) {
     }
     Assert-PP (-not $Files.Contains('godot/tests/pubpres_playability_owner_start.gd') -and
         -not $Files.Contains('godot/override.cfg')) 'Run-only observer/settings collide with committed source'
-    $Files['godot/tests/pubpres_playability_owner_start.gd']=$Manifest.files_sha256.($Manifest.owner_observer)
+    Assert-PP ($Scenario -cin @('ordinary','wave2048') -and ($Scenario -ceq 'ordinary' -or
+        ($Manifest.schema -ceq 'pubpres-playability-windows-v3' -and $Key -cin @('C','F')))) 'Scenario requires the explicit F/C owner profile'
+    $Observer = if ($Scenario -ceq 'wave2048') { $Manifest.owner_scenario.observer } else { $Manifest.owner_observer }
+    $Files['godot/tests/pubpres_playability_owner_start.gd']=$Manifest.files_sha256.$Observer
+    if ($Scenario -ceq 'wave2048') {
+        Assert-PP (-not $Files.Contains('godot/tests/pubpres_playability_owner_scenario.gd')) 'Scenario overlay collides with committed source'
+        $Files['godot/tests/pubpres_playability_owner_scenario.gd']=$Manifest.files_sha256.($Manifest.owner_scenario.helper)
+    }
     $Hash = [Security.Cryptography.SHA256]::Create()
     try { $Files['godot/override.cfg']=([BitConverter]::ToString($Hash.ComputeHash($script:PPUtf8.GetBytes((Get-PPOverride))))).Replace('-','').ToLowerInvariant() }
     finally { $Hash.Dispose() }
     return $Files
 }
-function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off') {
+function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off',[string]$Scenario='ordinary') {
     Assert-PP ($Key -cin @($Manifest.sources.PSObject.Properties.Name)) 'Selected source is absent from this verified package'
     $Settings = Get-PPSettings $Key $Pools $Thread $Driver $Continuation
+    $Files = Get-PPExpectedRunFiles $Root $Manifest $Key $Scenario
+    Assert-PP ($Scenario -ceq 'ordinary' -or ($Pools -ceq 'eager' -and $Thread -ceq 'safe' -and $Continuation -ceq 'off')) 'Matched Wave2048 owner scene requires Safe/eager/OFF'
     $Item = $Manifest.sources.$Key
     Assert-PP ($Continuation -ceq 'off' -or $Item.features.same_frame_continuation) 'This historical source does not support same-frame continuation'
     Assert-PP ($Pools -ceq 'eager' -or $Item.features.reachable_staging_pools) 'This historical source does not support reachable staging pools'
@@ -472,29 +504,37 @@ function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$
         [IO.File]::Copy((Join-PPSafe $Root $Entry.Name),$Target,$false)
     }
     $Observer = Join-PPSafe $CopyRoot 'godot/tests/pubpres_playability_owner_start.gd'
-    [IO.File]::Copy((Join-PPSafe $Root $Manifest.owner_observer),$Observer,$false)
+    $ObserverSource = if ($Scenario -ceq 'wave2048') { $Manifest.owner_scenario.observer } else { $Manifest.owner_observer }
+    [IO.File]::Copy((Join-PPSafe $Root $ObserverSource),$Observer,$false)
+    if ($Scenario -ceq 'wave2048') {
+        [IO.File]::Copy((Join-PPSafe $Root $Manifest.owner_scenario.helper),(Join-PPSafe $CopyRoot 'godot/tests/pubpres_playability_owner_scenario.gd'),$false)
+    }
     $Override = Join-PPSafe $CopyRoot 'godot/override.cfg'
     Assert-PP (-not (Test-Path -LiteralPath $Override)) 'Committed override.cfg must be reviewed explicitly before owner overlay'
     [IO.File]::WriteAllText($Override,(Get-PPOverride),$script:PPUtf8)
-    $Files = Get-PPExpectedRunFiles $Root $Manifest $Key
-    $Record = [ordered]@{schema='pubpres-playability-owner-run-v2'; candidate_commit=$Manifest.candidate_commit; source=$Key;
+    $RunSchema = if ($Manifest.schema -ceq 'pubpres-playability-windows-v3') {'pubpres-playability-owner-run-v3'} else {'pubpres-playability-owner-run-v2'}
+    $Record = [ordered]@{schema=$RunSchema; candidate_commit=$Manifest.candidate_commit; source=$Key;
         source_commit=$Item.source_commit; package_manifest_sha256=(Get-PPHash (Join-Path $Root $script:PPManifestName));
         staging_pools=$Pools;render_thread=$Thread;render_driver=$Driver;same_frame_continuation=$Continuation;settings=$Settings;files_sha256=$Files;
         wave_column_tiles=$false;profile='profile';project='source/godot';physical_acceptance='HOLD'}
+    if ($Manifest.schema -ceq 'pubpres-playability-windows-v3') { $Record['scenario']=$Scenario }
     Write-PPJson (Join-Path $Run 'run.json') $Record
     return $Run
 }
 
 function Test-PPRun([string]$Run,[string]$Root,$Manifest) {
     $Record = Read-PPJson (Join-Path $Run 'run.json')
-    Assert-PP ($Record.schema -ceq 'pubpres-playability-owner-run-v2' -and $Record.candidate_commit -ceq $Manifest.candidate_commit -and
+    $RunSchema = if ($Manifest.schema -ceq 'pubpres-playability-windows-v3') {'pubpres-playability-owner-run-v3'} else {'pubpres-playability-owner-run-v2'}
+    $RunScenario = if ($Manifest.schema -ceq 'pubpres-playability-windows-v3') { $Record.scenario } else { 'ordinary' }
+    Assert-PP ($Record.schema -ceq $RunSchema -and $Record.candidate_commit -ceq $Manifest.candidate_commit -and
         $Record.package_manifest_sha256 -ceq (Get-PPHash (Join-Path $Root $script:PPManifestName)) -and
         $Record.source -cin @($Manifest.sources.PSObject.Properties.Name) -and $Record.source_commit -ceq $Manifest.sources.($Record.source).source_commit -and
         $Record.wave_column_tiles -eq $false -and $Record.project -ceq 'source/godot' -and $Record.profile -ceq 'profile') 'Reopen source/package identity differs'
     $Settings = Get-PPSettings $Record.source $Record.staging_pools $Record.render_thread $Record.render_driver $Record.same_frame_continuation
     Assert-PP (@($Record.settings.PSObject.Properties).Count -eq $Settings.Count) 'Unexpected run selector'
     foreach ($Name in $Settings.Keys) { Assert-PP ($Record.settings.$Name -ceq $Settings[$Name]) 'Requested run selectors changed' }
-    $Expected = Get-PPExpectedRunFiles $Root $Manifest $Record.source
+    $Expected = Get-PPExpectedRunFiles $Root $Manifest $Record.source $RunScenario
+    Assert-PP ($RunScenario -ceq 'ordinary' -or ($Record.staging_pools -ceq 'eager' -and $Record.render_thread -ceq 'safe' -and $Record.same_frame_continuation -ceq 'off')) 'Matched owner scenario selectors differ'
     Assert-PP (@($Record.files_sha256.PSObject.Properties).Count -eq $Expected.Count) 'Run source inventory differs from the pristine package'
     foreach ($Name in $Expected.Keys) {
         Assert-PP ($Record.files_sha256.$Name -ceq $Expected[$Name] -and
@@ -529,12 +569,13 @@ if ($ReopenRun) {
     $Run = [IO.Path]::GetFullPath($ReopenRun)
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
     if ($PSBoundParameters.ContainsKey('Source')) { Assert-PP (@{Candidate='C';FrozenBaseline='F';Integration='I';Main='M'}[$Source] -ceq $RunRecord.source) 'Explicit reopen source differs' }
+    if ($PSBoundParameters.ContainsKey('Scenario')) { Assert-PP ($Scenario.ToLowerInvariant() -ceq (Get-PPField $RunRecord 'scenario' 'ordinary')) 'Explicit reopen scenario differs' }
     foreach ($Choice in @(@('StagingPools','staging_pools'),@('RenderThread','render_thread'),@('RenderingDriver','render_driver'),@('SameFrameContinuation','same_frame_continuation'))) {
         if ($PSBoundParameters.ContainsKey($Choice[0])) { Assert-PP ((Get-Variable -Name $Choice[0] -ValueOnly).ToLowerInvariant() -ceq $RunRecord.($Choice[1])) 'Explicit reopen selector differs from saved run' }
     }
 } else {
     $Key = @{Candidate='C';FrozenBaseline='F';Integration='I';Main='M'}[$Source]
-    $Run = New-PPRun $PackageRoot $Manifest $Key ($StagingPools.ToLowerInvariant()) ($RenderThread.ToLowerInvariant()) $RenderingDriver ($SameFrameContinuation.ToLowerInvariant())
+    $Run = New-PPRun $PackageRoot $Manifest $Key ($StagingPools.ToLowerInvariant()) ($RenderThread.ToLowerInvariant()) $RenderingDriver ($SameFrameContinuation.ToLowerInvariant()) ($Scenario.ToLowerInvariant())
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
 }
 $Item = $Manifest.sources.($RunRecord.source)
@@ -546,6 +587,14 @@ Invoke-PPProcess $Engine @('--headless','--path',$Project,'--editor','--import',
 Test-PPRun $Run $PackageRoot $Manifest | Out-Null
 $ReadyPath = Join-Path $Run ('ready-'+[Guid]::NewGuid().ToString('N')+'.json')
 $Settings['CYBERSAND_PLAYABILITY_OWNER_RECEIPT'] = $ReadyPath
+$RunScenario = Get-PPField $RunRecord 'scenario' 'ordinary'
+$ScenarioReopen = $false
+if ($RunScenario -ceq 'wave2048') {
+    $Launches = Join-Path $Run 'launches'
+    $ScenarioReopen = (Test-Path -LiteralPath $Launches) -and @(Get-ChildItem -LiteralPath $Launches -Recurse -File -Filter 'verified-startup.json').Count -gt 0
+    $Settings['CYBERSAND_PLAYABILITY_OWNER_SCENARIO']=$Manifest.owner_scenario.name
+    $Settings['CYBERSAND_PLAYABILITY_OWNER_REOPEN']=$(if ($ScenarioReopen) {'1'} else {'0'})
+}
 if ($QuitAfterReady) { $Settings['CYBERSAND_PLAYABILITY_OWNER_QUIT_AFTER_READY']='1' }
 Write-Host ('Opening source '+$RunRecord.source+'; staging='+$RunRecord.staging_pools+'; render thread='+$RunRecord.render_thread+'; same-frame continuation='+$RunRecord.same_frame_continuation)
 Write-Host ('Save/reopen profile and evidence: '+$Run)
@@ -554,7 +603,8 @@ $Process = Invoke-PPProcess $Engine @('--path',$Project,'--rendering-method','gl
     '--render-thread',$RunRecord.render_thread,'--audio-driver','Dummy','--script','res://tests/pubpres_playability_owner_start.gd') $Launch $Profile $Settings $Item.source_commit $OverallSeconds $ReadyPath 300
 Assert-PP (Test-Path -LiteralPath $ReadyPath -PathType Leaf) 'Application exited without an installed native World receipt'
 $Ready = Read-PPJson $ReadyPath
-Assert-PP ($Ready.schema -ceq 'pubpres-playability-owner-start-v2' -and $Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and $Ready.process_id -eq $Process.process_id -and
+$ReadySchema = if ($RunScenario -ceq 'wave2048') {'pubpres-playability-owner-start-v3'} else {'pubpres-playability-owner-start-v2'}
+Assert-PP ($Ready.schema -ceq $ReadySchema -and $Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and $Ready.process_id -eq $Process.process_id -and
     $Ready.native_sha256 -ceq $Item.native.sha256 -and $Ready.rapier_sha256 -ceq $Item.rapier.sha256 -and
     $Ready.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and $Ready.render_thread_inline -eq ($RunRecord.render_thread -ceq 'safe') -and
     $Ready.render_driver -ceq $RunRecord.render_driver -and
@@ -572,6 +622,22 @@ if ($RunRecord.source -cin @('C','F')) {
         $Continuation.maximum_attempts_per_process_frame -eq 1 -and $Continuation.maximum_mailbox_reads_per_attempt -eq 1 -and
         $Continuation.wait_usec -eq 0 -and $Continuation.new_physics_callbacks -eq 0 -and $Continuation.carried_time_credit -eq $false) 'Requested continuation policy did not reach actual Main owner'
 } else { Assert-PP ($null -eq $Ready.same_frame_continuation) 'Historical source unexpectedly advertises the new continuation' }
+if ($RunScenario -ceq 'wave2048') {
+    $Scene = $Ready.scenario
+    Assert-PP ($Ready.scenario_helper_sha256 -ceq $RunRecord.files_sha256.'godot/tests/pubpres_playability_owner_scenario.gd' -and
+        $Scene.name -ceq $Manifest.owner_scenario.name -and $Scene.save_name -ceq $Manifest.owner_scenario.save_name -and
+        $Scene.phase -ceq $(if ($ScenarioReopen) {'reopen'} else {'initialize'}) -and
+        $Scene.fixture_json_sha256 -ceq $Manifest.owner_scenario.fixture_json_sha256 -and
+        $Scene.initial_generated_sha256 -ceq $Manifest.owner_scenario.generated_sha256 -and
+        $Scene.worker_request -eq 4 -and $Scene.worker_capacity -eq 4 -and $Scene.camera -ceq 'follow' -and $Scene.pilot_id -gt 0 -and
+        $Scene.water_profile -ceq 'gameplay_main846f' -and $Scene.actual_wave_substeps -eq 2 -and
+        $Scene.actual_spill.enabled -eq $true -and $Scene.actual_spill.parcels -eq $true -and $Scene.actual_ballistic -eq $true -and
+        $Scene.native_tick_ready -ge ($Scene.native_tick_before+4) -and $Scene.physical_tick_ready -ge ($Scene.physical_tick_before+4) -and
+        $Scene.water_ledger_healthy -eq $true -and $Scene.saved_setup_sha256 -cmatch '^[0-9a-f]{64}$') 'Actual owner scenario did not execute the matched active World'
+    Assert-PP (-not $ScenarioReopen -or $Scene.saved_before_sha256 -ceq $Scene.saved_setup_sha256) 'Reopen replaced or changed the saved authored start'
+    $ScreenshotPath = [IO.Path]::ChangeExtension($ReadyPath,'.png')
+    Assert-PP ($Ready.startup_framebuffer.path -ceq $ScreenshotPath -and (Get-PPHash $ScreenshotPath) -ceq $Ready.startup_framebuffer.sha256) 'Actual owner startup framebuffer differs'
+}
 Test-PPRun $Run $PackageRoot $Manifest | Out-Null
 Write-PPJson (Join-Path $Launch 'verified-startup.json') $Ready
 Write-Host ('Closed verified owner session; evidence retained at '+$Run)

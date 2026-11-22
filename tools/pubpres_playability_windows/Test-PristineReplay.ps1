@@ -3,7 +3,9 @@ param(
     [Parameter(Mandatory=$true)][string]$PackageRoot,
     [Parameter(Mandatory=$true)][string]$ExpectedCandidate,
     [Parameter(Mandatory=$true)][string]$Output,
-    [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver = 'opengl3_angle'
+    [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver = 'opengl3_angle',
+    [ValidateSet('C','F')][string]$SourceKey = 'C',
+    [ValidateSet('Ordinary','Wave2048')][string]$Scenario = 'Ordinary'
 )
 
 # Two genuine ordinary Workbench processes from one fresh immutable-package
@@ -11,7 +13,7 @@ param(
 # gate; startup alone cannot establish either persistence or playability.
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$ReplayInputs = @{Root=$PackageRoot; Candidate=$ExpectedCandidate; Output=$Output; Driver=$RenderingDriver}
+$ReplayInputs = @{Root=$PackageRoot; Candidate=$ExpectedCandidate; Output=$Output; Driver=$RenderingDriver; Source=$SourceKey; Scenario=$Scenario.ToLowerInvariant()}
 $ReplayLauncher = Join-Path $PSScriptRoot 'Start-PUBPRES-Playability.ps1'
 . $ReplayLauncher -Library
 $ReplayRoot = [IO.Path]::GetFullPath($ReplayInputs.Root)
@@ -25,8 +27,10 @@ $ReplayReport = [ordered]@{schema='pubpres003-pristine-replay-v1'; candidate_com
 try {
     $ReplayManifest = Test-PPPackage $ReplayRoot $ReplayInputs.Candidate
     $ReplayReport.mission = $ReplayManifest.mission
+    $ReplayReport.source = $ReplayInputs.Source; $ReplayReport.scenario = $ReplayInputs.Scenario
+    if ($ReplayInputs.Scenario -ceq 'wave2048') { $ReplayReport.scope='Actual Windows Safe/eager active Wave2048 first preparation, ordinary initial Save and fresh-process Load/Play; four real startup steps per process; no steady-state or physical NVIDIA acceptance' }
     $ReplayReport.manifest_sha256 = Get-PPHash (Join-Path $ReplayRoot $script:PPManifestName)
-    $ReplayRun = New-PPRun $ReplayRoot $ReplayManifest 'C' 'eager' 'safe' $ReplayInputs.Driver 'off'
+    $ReplayRun = New-PPRun $ReplayRoot $ReplayManifest $ReplayInputs.Source 'eager' 'safe' $ReplayInputs.Driver 'off' $ReplayInputs.Scenario
     $ReplayReport.run = $ReplayRun
     $ReplayDescriptor = Join-PPSafe $ReplayRun 'source/godot/addons/godot-rapier2d/Radial2D.svg.import'
     $ReplayDescriptorHash = Get-PPHash $ReplayDescriptor
@@ -35,7 +39,7 @@ try {
         & $ReplayLauncher -PackageRoot $ReplayRoot -ExpectedCandidate $ReplayInputs.Candidate `
             -Action Open -ReopenRun $ReplayRun -QuitAfterReady
         $ReplayRecord = Test-PPRun $ReplayRun $ReplayRoot $ReplayManifest
-        Assert-PP ($ReplayRecord.source -ceq 'C' -and $ReplayRecord.render_thread -ceq 'safe' -and
+        Assert-PP ($ReplayRecord.source -ceq $ReplayInputs.Source -and $ReplayRecord.render_thread -ceq 'safe' -and
             $ReplayRecord.staging_pools -ceq 'eager' -and $ReplayRecord.same_frame_continuation -ceq 'off' -and
             $ReplayRecord.render_driver -ceq $ReplayInputs.Driver) 'Replay selectors changed'
         Assert-PP ((Get-PPHash $ReplayDescriptor) -ceq $ReplayDescriptorHash) 'Committed import descriptor changed during legitimate replay'

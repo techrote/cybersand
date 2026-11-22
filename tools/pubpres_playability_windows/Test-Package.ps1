@@ -80,6 +80,21 @@ try {
         Assert-PP ($FrozenRecord.source_commit -ceq $script:PPFrozenCommit -and
             $FrozenRecord.same_frame_continuation -ceq 'off') 'Frozen baseline run source/defaults differ'
         $Checks.Add([ordered]@{name='independent-frozen-baseline-run';passed=$true;run=$FrozenRun})
+        foreach ($SceneKey in @('F','C')) {
+            $SceneRun = New-PPRun $PackageRoot $Manifest $SceneKey 'eager' 'safe' 'opengl3' 'off' 'wave2048'
+            $SceneRecord = Test-PPRun $SceneRun $PackageRoot $Manifest
+            Assert-PP ($SceneRecord.scenario -ceq 'wave2048' -and $SceneRecord.source -ceq $SceneKey) 'One-click source/scenario differs'
+            $SceneHelper = Join-PPSafe $SceneRun 'source/godot/tests/pubpres_playability_owner_scenario.gd'
+            $OriginalHelper = [IO.File]::ReadAllBytes($SceneHelper)
+            try {
+                [IO.File]::AppendAllText($SceneHelper,"`n# deliberately altered scenario helper`n",$script:PPUtf8)
+                Expect-PPRefusal ('changed-owner-scenario-'+$SceneKey) { Test-PPRun $SceneRun $PackageRoot $Manifest } 'Changed World/application source'
+            } finally { [IO.File]::WriteAllBytes($SceneHelper,$OriginalHelper) }
+            $Checks.Add([ordered]@{name=('matched-owner-scene-'+$SceneKey);passed=$true;run=$SceneRun})
+        }
+        Expect-PPRefusal 'historical-main-cannot-claim-matched-scene' { New-PPRun $PackageRoot $Manifest 'M' 'eager' 'safe' 'opengl3' 'off' 'wave2048' } 'Scenario requires'
+        Expect-PPRefusal 'matched-scene-cannot-use-unqualified-renderer' { New-PPRun $PackageRoot $Manifest 'C' 'eager' 'separate' 'opengl3' 'off' 'wave2048' } 'requires Safe/eager/OFF'
+
     } else {
         Expect-PPRefusal 'legacy-package-has-no-frozen-alias' { New-PPRun $PackageRoot $Manifest 'F' 'eager' 'safe' 'opengl3' } 'Selected source is absent'
     }

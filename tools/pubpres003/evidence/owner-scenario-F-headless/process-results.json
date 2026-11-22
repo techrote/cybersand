@@ -1,0 +1,15 @@
+{
+  "scope": "Headless source-F functional test; GCC14 development native drift; no graphical/performance qualification",
+  "results": [
+    {
+      "phase": "author",
+      "returncode": 0,
+      "strict_errors": []
+    },
+    {
+      "phase": "reopen",
+      "returncode": 0,
+      "strict_errors": []
+    }
+  ]
+}

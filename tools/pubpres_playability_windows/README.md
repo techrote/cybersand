@@ -26,6 +26,56 @@ supports `-Source FrozenBaseline` using the same Safe/eager/OFF selectors as C.
 That is a whole-source comparison, not a promise that every source difference
 is the one performance correction under study.
 
+## One-click Wave2048 owner trial (003 v3)
+
+After extracting and verifying the new evaluator, open `Play-Candidate.bat`.
+It prepares the real 2048-square generated starting map, a human-piloted Needle,
+Follow camera, four requested native workers and the explicit current-gameplay
+Wave profile: two substeps, spill, spill parcels and ballistic transport. The
+ordinary Workbench Apply path validates and installs the native map, actors and
+terrain. The helper uses the ordinary Save start and Play controls, observes
+four genuine native and Rapier startup steps, records a screenshot, then
+disconnects. No benchmark input tape replaces the owner's controls.
+
+Use the ordinary pilot controls and interact with the scene. Paint while
+playing, pause and resume, and check that actors, water, materials and Follow
+camera progress together. Keep the save name `pubpres003-wave2048`; use **Save
+start**, close the Workbench, then run `Reopen-Candidate.bat`. The fresh process
+loads the saved authored start and preserves its edits. A missing saved start
+is refused rather than silently replaced with the initial fixture.
+
+`Play-Frozen-Baseline.bat` starts the same scene in a separate isolated F
+session. `Reopen-Frozen-Baseline.bat` reopens that session. Compare fresh starts
+with the same viewport, interaction and Water settings. Both launchers use
+Safe/eager with the old same-frame experiment OFF; the F/C source identity is
+the comparison treatment. Leave one session closed while running the other
+when comparing responsiveness. No Python, Git or developer tool installation
+is needed.
+
+Save start retains the normal application's meaning: it saves the authored
+starting construction and material baseline, not accumulated physics time or
+transient actor velocity. To retain the current stored material plane, use
+ordinary **Pause → Flatten → Save start** before closing. Reopening reconstructs
+that saved material baseline through the existing native path. The one-click
+comparison requires a 2048-square Wave start with actors; generic **Open the
+ordinary Workbench** below remains available for other scenarios and Water
+families without changing production defaults.
+
+After closing both sessions, `Pack-Owner-Evidence.bat` creates a new ZIP and
+SHA-256 sidecar next to the payload. It collects actual process logs, startup
+framebuffers, source/runtime manifests, isolated authored profiles and graphics
+adapter metadata. The payload stays pristine. Each open owner run has an
+exclusive lock, so a second launcher or evidence pack cannot race its active
+profile. Keep the resulting evidence for the owner acceptance decision; a
+successful startup and adapter listing are not sustained NVIDIA gameplay
+acceptance.
+
+The equivalent hosted command uses `Play-PUBPRES003.ps1 -RenderingDriver
+opengl3_angle -QuitAfterReady`; the owner BATs use desktop `opengl3`. The
+strict `Test-PristineReplay.ps1` accepts `-SourceKey F` or `C` with
+`-Scenario Wave2048` to execute first preparation and a fresh-process Load/Play
+on actual Windows. This gate complements the separate authoring regression.
+
 The package has no installer and does not use your ordinary CyberSand profile.
 Keep the verified `Payload` directory pristine. The launcher makes a fresh
 source copy and isolated profile under its sibling `Runs` directory. Only a
