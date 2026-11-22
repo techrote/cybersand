@@ -1,0 +1,41 @@
+{
+  "schema": "objectshard-gallery-custody-v1",
+  "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "source_tree": "a0e3478c293908247bc5cdaab9497fc290a374c6",
+  "run_id": 44974395620,
+  "run_attempt": 1,
+  "artifact_id": 14734604007,
+  "artifact_sha256": "c21e70c3d64dee92081272275db9c102b4c5f0848558eff2e6eca72ac223d3d6",
+  "native_sha256": "2e4a70c4c4eb80e451648deaeac0dea476aa6ad95231308ea6bb81fb445f2178",
+  "engine": "4.7.stable.official.5b4e0cb0f",
+  "platform": "Windows hosted runner",
+  "renderer": "ANGLE / Microsoft Basic Render Driver",
+  "image_processing": "Unmodified actual Godot viewport captures; no crops, edits, resampling or generated imagery",
+  "files": {
+    "objectshard-a-exact-shapes.png": {
+      "sha256": "db66ee51b5f9653281041fab17fd2ea4f83a0c11824b056f54980676938b3fee",
+      "bytes": 119244,
+      "source_path": "windows-lab/frames/objectshard-a-exact-shapes.png"
+    },
+    "objectshard-b-real-combustion.png": {
+      "sha256": "c591c62c5493648f73ff33cccbe0691bf98cbfaec66fa90213b5ba60216d5565",
+      "bytes": 117883,
+      "source_path": "windows-lab/frames/objectshard-b-real-combustion.png"
+    },
+    "objectshard-c-carried-sand.png": {
+      "sha256": "8f5c92350bef7c70f951f8f9fdc3905e8e314902c57f3d85d6ad045c1a0cf988",
+      "bytes": 121347,
+      "source_path": "windows-lab/frames/objectshard-c-carried-sand.png"
+    },
+    "objectshard-c-water-extinction.png": {
+      "sha256": "e034bb146ac5cf2c1045c3e4f96da37d63e909ccfd7cae2006d7813c036dfbed",
+      "bytes": 121798,
+      "source_path": "windows-lab/frames/objectshard-c-water-extinction.png"
+    },
+    "objectshard-d-three-owners.png": {
+      "sha256": "c7d1a6e5b9e993cefe741ce78a3893c756cc9c68aa968b80ba53e5b354f6f5ec",
+      "bytes": 116661,
+      "source_path": "windows-lab/frames/objectshard-d-three-owners.png"
+    }
+  }
+}

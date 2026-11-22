@@ -669,6 +669,9 @@ is a separate Draft/HOLD branch candidate: exact material ownership, shared
 combustion, revisioned Rapier geometry, real Fire output, physical Sand lodging
 and historical Water exposure. The [Lab owner procedure](operations/objectshard-lab-playtest.md)
 explains the source-bound Windows package and explicit physical acceptance.
+The [final delivery and acceptance record](audits/2026-11-22-objectshard-final-acceptance.md)
+records exact runtime identities, final platform passes and the separately
+retained native performance failure.
 This does not promote the older soliding programme, change ordinary defaults,
 or establish fracture/persistence. [Focused retrieval questions](reference/retrieval-questions-objectshard.json)
 keep this candidate's capabilities and evidence limits explicit.

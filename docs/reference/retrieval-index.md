@@ -18,6 +18,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 | What prevents duplicate Fire, stale Sand capture or lost Water contact? | [M2 ownership and exchange](../research/objectshard-001.md#m2-ownership-and-exchange) |
 | Are fracture, arbitrary liquids, internal gas transport and durable saves supported? | [Capability and lifecycle boundary](../research/objectshard-001.md#capability-and-lifecycle-boundary) |
 | How do I launch the exact Windows evaluator and record physical PASS/FAIL? | [ObjectShard Lab owner evaluation](../operations/objectshard-lab-playtest.md) |
+| Which final ObjectShard checks passed, and what remains on HOLD? | [Final source-bound delivery](../research/objectshard-001.md#final-source-bound-delivery) |
 
 [Additive ObjectShard questions](retrieval-questions-objectshard.json) distinguish
 this implemented branch candidate from accepted-main behavior and owner acceptance.

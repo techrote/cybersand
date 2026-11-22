@@ -10,10 +10,12 @@ related-documents: [../operations/objectshard-lab-playtest.md, ../architecture/r
 
 # OBJECTSHARD-001 — compact moving material domains
 
-Status: implementation in progress; staged Draft/HOLD research. No production
-default changes, merge, Ready promotion or release is authorized by this record.
-The intended complete slice is M0–M2: chemically active, mutable, nonfracturing
-rigid aggregates with bounded material exchange. M0 alone is not completion.
+Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an
+exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
+distinguishes passing platform qualification, the retained native timing failure,
+and outstanding owner physical acceptance. No production default changes, merge,
+Ready promotion or release occurred. The implemented slice is chemically active,
+mutable, nonfracturing rigid aggregates with bounded material exchange.
 
 ## Source and ownership
 
@@ -104,7 +106,7 @@ not implied by retained product lifecycle support.
 The original and extracted World wrappers were compared on immutable source
 fixtures: **4,472 assertions, zero differences**, including serial/phased lanes,
 tuples, products, temperature, accounting, signed coordinates and epoch wrap.
-This baseline must be rerun on final combined source.
+This baseline also passed in the final combined-source hosted native campaign.
 
 ## M0 evidence and repaired findings
 
@@ -368,7 +370,8 @@ An independent 100-digit reference comparison passed4,006 pairs, with at most
 two ULP observed error. Deliberately pathological diagonal boundary inputs can
 differ from `hypot` by less than9e-16; this is not bit-identical floating-point
 math, and it is far below the existing1e-9 contact padding. Full rebuilt ELF
-floor verification and fresh Linux/Windows execution remain required.
+floor verification and fresh Linux/Windows execution passed in the final
+campaign recorded below.
 
 Visual review of the first Windows PNGs confirmed actual rotated shapes,
 burning material/products, consumed holes, carried Sand and retained draining
@@ -377,4 +380,39 @@ The repaired scene keeps the dropdown and overlay state synchronized, clears
 obsolete inspection on reset, and places material/owner/state/temperature before
 the exact JSON. The capture now inspects the extinguished Wood instead of stale
 Sand. Added actual-scene assertions raise the integrated inventory to379 checks;
-the new source must execute them with its rebuilt runtime before qualification.
+the rebuilt final runtime executed all of them on Linux and Windows.
+
+## Final source-bound delivery
+
+Runtime source `8f55a4e61b7cbb34a594f5e07e7d81d49aa58945`, tree
+`a0e3478c293908247bc5cdaab9497fc290a374c6`, passed all three jobs in
+[campaign 44974395620](https://github.com/techrote/cybersand/actions/runs/44974395620).
+Hosted native ASan/UBSan executed **61,652 checks / 0 failures**. Actual pinned
+Godot 4.7 on each platform passed **379 Lab checks / 0** and **28 bridge checks /
+0**, both existing Rapier/Materials Lab regression scripts, ten rendered
+captures and eight-workload headless/rendered profiles. The delivered Windows
+package replay repeated the Lab, bridge and existing regressions successfully.
+
+The [Windows owner evaluator](https://github.com/techrote/cybersand/actions/runs/44974395620/artifacts/14735176557)
+contains the exact source-built DLL, pinned GUI/console engines, selected Rapier,
+dependencies, licences, source, manifest and verified launchers. The owner can
+extract it and run **Open ObjectShard Lab.cmd** without rebuilding anything.
+Automated Windows and software-rendered evidence do not establish physical
+Windows 11/NVIDIA acceptance.
+
+Final Windows rendered owner-thread p95 is 2.258 ms empty and 3.552 ms for three
+reacting shards; the longest profile frame is 6.592 ms. Linux equivalents are
+1.911/2.994 ms and 5.584 ms. Both platforms pass their registered Lab budgets.
+The separate final native development-host matrix nevertheless retains **10/74
+failed timing limits**. Its single bounded matched control passed, but does not
+replace that complete failed result. The [performance delta](../audits/2026-11-22-objectshard-portable-math-performance-delta.md)
+and [full-tree mini-World comparison](../audits/2026-11-22-objectshard-native-performance.md)
+preserve exact sources, failures, allocations and the observed tradeoffs.
+
+The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
+contains source/ancestry, capability boundaries, independent findings and repairs,
+runtime/package identities, measurements, visual review and owner actions.
+The ordinary repository runtime-provenance gate remains unsatisfied because
+production binaries were deliberately not published. The evaluator is separate
+from strict four-path publication. All three PRs remain Draft/HOLD; no merge,
+Ready promotion, auto-merge or release occurred.

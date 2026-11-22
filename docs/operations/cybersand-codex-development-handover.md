@@ -12,11 +12,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## ObjectShard M0–M2 — 2026-11-22
 
-Continue the dedicated staged Draft/HOLD ObjectShard branches from M0 #726 and
-M1 #728; use the [implementation and evidence record](../research/objectshard-001.md)
+Evaluate the dedicated staged Draft/HOLD ObjectShard stack M0 #726 → M1 #728 →
+M2 #730; use the [implementation and evidence record](../research/objectshard-001.md)
 and [Windows Lab procedure](objectshard-lab-playtest.md). Shared World changes
 are limited to the opt-in mutation journal and behavior-preserving lifecycle
 seam; the Lab has a separate native facade and revisioned Rapier adapter.
+The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
+binds runtime source `8f55a4e...` to successful Linux/Windows execution and the
+verified Windows package. The separate native performance matrix retains ten
+failed timing limits. Owner physical acceptance and strict production runtime
+publication remain outstanding; do not infer merge readiness from the Lab pass.
 Preserve PUBPRES, GEN-006, SWARM and CI mission ownership. The owner authorized
 M0–M2 implementation and qualification, not Ready, merge, production defaults or
 release. Source-bound Windows automation does not establish physical acceptance.

@@ -16,6 +16,9 @@ The [implementation record](../research/objectshard-001.md) and
 [independent Lab procedure](../operations/objectshard-lab-playtest.md) describe
 the staged Draft/HOLD candidate, beginning with M0 #726 and M1 #728. The M2 child
 adds real product output, physical Sand lodging and selected Water extinction.
+The M2 [final delivery record](../audits/2026-11-22-objectshard-final-acceptance.md)
+records the completed exact-source Linux/Windows campaign, verified owner package
+and unresolved native timing gate. No Ready promotion or merge occurred.
 Native/local-Godot iteration, exact-source hosted Windows qualification and
 owner Windows11/NVIDIA physical acceptance are separate claims. The ordinary
 World/Workbench defaults and protected concurrent branches remain unchanged.

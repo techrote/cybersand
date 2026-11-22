@@ -1,0 +1,161 @@
+--- a/native/tests/benchmark_object_shard.cpp
++++ b/native/tests/benchmark_object_shard.cpp
+@@ -520,6 +520,147 @@
+         static_cast<unsigned long long>(compact_allocations), static_cast<unsigned long long>(miniature_allocations),
+         static_cast<unsigned long long>(products), static_cast<unsigned long long>(smoke_samples));
+ }
++void compare_tree_domains(unsigned repetitions) {
++    // The equivalence envelope is deliberate: a stationary complete Wood tree with one burning cell,
++    // the same semantic/random anchor, immediate physical-port output, and an
++    // identical external World. Fire evolves to Smoke in that external World.
++    // No internal transport is needed; retained-gas transport is NOT equivalent
++    // and is not smuggled into a benchmark of the admitted compact capability.
++    constexpr std::int64_t x = 111, y = 70;
++    constexpr unsigned ticks = 128;
++    const auto count = static_cast<std::size_t>(ticks) * repetitions;
++    Samples compact_time(count), miniature_time(count), common_world_time(count * 2),
++        compact_construction(repetitions), miniature_construction(repetitions);
++    std::uint64_t compact_bytes{}, compact_cpp_bytes{}, miniature_bytes{}, miniature_cell_bytes{},
++        compact_construction_allocations{}, miniature_construction_allocations{};
++    std::uint64_t compact_allocations{}, miniature_allocations{}, products{}, smoke_samples{};
++    for (unsigned repetition = 0; repetition < repetitions; ++repetition) {
++        Config config;
++        config.scenario = 1; config.world_bounds = {0, 0, 192, 128};
++        config.limits.max_shards = 1; config.limits.max_area = 2048;
++        config.limits.max_total_area = 2048; config.limits.max_shapes = 128;
++        Coordinator compact(config), alternative_external(config);
++        const auto floor = config.world_bounds.height - 18;
++        for (auto* owner : {&compact, &alternative_external})
++            for (int dx = -2; dx <= 1; ++dx)
++                accepted(owner->edit(config.world_bounds.width / 2 + dx, floor - 6, empty()), "comparison ordinary trunk erase");
++        const auto handle = promote_one(compact);
++        auto* shard = CoordinatorTestAccess::registry(compact).find(handle);
++        require(shard != nullptr, "comparison promotes a real complete tree");
++        const auto bounds = shard->bounds();
++        const auto burning_cell = static_cast<std::size_t>(y - bounds.y) * bounds.width + static_cast<std::size_t>(x - bounds.x);
++        require(shard->surface(burning_cell), "comparison ignition cell has a real surface emission opportunity");
++        accepted(compact.ignite_shard(handle, static_cast<std::uint32_t>(burning_cell)), "comparison ignites an actual tree Wood cell");
++        auto& external = CoordinatorTestAccess::world(alternative_external);
++        for (std::size_t cell = 0; cell < shard->area(); ++cell) if (shard->structural(cell)) {
++            const auto wx = bounds.x + static_cast<std::int64_t>(cell % bounds.width);
++            const auto wy = bounds.y + static_cast<std::int64_t>(cell / bounds.width);
++            PrecisionProbe::remove_captured(external, wx, wy);
++            require(external.set_transient_obstacle(wx, wy, 1), "alternative uses equal complete-tree occupancy");
++        }
++
++        // Isolate allocation/construction of the selected compact carrier using
++        // the real Registry preparation and exact geometry path. Chemistry below
++        // still runs the integrated production Coordinator, not this carrier.
++        {
++            const auto before = allocation_probe::snapshot();
++            const auto start = Clock::now();
++            auto carrier = std::make_unique<Registry>(config.limits, 1, 1);
++            Handle prepared;
++            require(carrier->prepare(bounds, compact.world().completed_tick_index(), prepared) == Outcome::Accepted,
++                "compact comparison carrier admits exact bounding box");
++            for (std::size_t cell = 0; cell < shard->area(); ++cell) if (shard->occupied(cell))
++                require(carrier->find(prepared)->set_cell(cell, shard->payload(cell), shard->role(cell),
++                    compact.world().completed_tick_index()) == Outcome::Accepted, "compact comparison captures exact tree tuple");
++            require(carrier->finish_preparation(prepared) == Outcome::Accepted, "compact comparison constructs real geometry");
++            compact_construction.add(elapsed(start));
++            const auto after = allocation_probe::snapshot();
++            compact_cpp_bytes = std::max(compact_cpp_bytes, after.live - before.live);
++            compact_construction_allocations += after.allocations - before.allocations;
++        }
++
++        const auto memory_before = allocation_probe::snapshot();
++        auto started = Clock::now();
++        auto miniature_execution = miniature_config();
++        miniature_execution.initial_chunk_reserve = 64;
++        miniature_execution.maximum_chunk_count = 64;
++        miniature_execution.active_chunk_capacity = 64;
++        miniature_execution.active_core_capacity = 64;
++        auto miniature = std::make_unique<World>(miniature_execution);
++        const RectI64 region{bounds.x, bounds.y, bounds.width, bounds.height};
++        miniature->reserve_region(region);
++        miniature->reserve_temperature_region(region);
++        miniature->set_simulation_region(region);
++        PrecisionProbe::clock(*miniature, compact.world().completed_tick_index());
++        for (std::size_t cell = 0; cell < shard->area(); ++cell) {
++            const auto wx = bounds.x + static_cast<std::int64_t>(cell % bounds.width);
++            const auto wy = bounds.y + static_cast<std::int64_t>(cell / bounds.width);
++            const auto value = shard->payload(cell);
++            (void)miniature->set_cell_state(wx, wy, value.material, value.state_a, value.state_b);
++            miniature->set_temperature(wx, wy, value.temperature);
++        }
++        miniature_construction.add(elapsed(started));
++        const auto memory_after = allocation_probe::snapshot();
++        miniature_bytes = std::max(miniature_bytes, memory_after.live - memory_before.live);
++        miniature_construction_allocations += memory_after.allocations - memory_before.allocations;
++        miniature_cell_bytes = std::max(miniature_cell_bytes, static_cast<std::uint64_t>(miniature->resident_cell_bytes()));
++        compact_bytes = std::max(compact_bytes, static_cast<std::uint64_t>(compact.registry().memory_usage().retained_bytes));
++        require(shard->counts().structural > 500 && shard->area() > 1000, "comparison includes a representative complete tree and bounding box");
++        for (unsigned tick = 0; tick < ticks; ++tick) {
++            // Common external simulation is outside the material-domain timer,
++            // executed once per semantic tick on both sides and reported apart.
++            started = Clock::now(); (void)CoordinatorTestAccess::world(compact).tick(); common_world_time.add(elapsed(started));
++            started = Clock::now(); (void)external.tick(); common_world_time.add(elapsed(started));
++            const auto run_compact = [&] {
++                const auto before = allocation_probe::snapshot();
++                const auto start = Clock::now();
++                CoordinatorTestAccess::material_domain_step(compact);
++                compact_time.add(elapsed(start));
++                compact_allocations += allocation_probe::snapshot().allocations - before.allocations;
++            };
++            const auto run_miniature = [&] {
++                const auto before = allocation_probe::snapshot();
++                const auto start = Clock::now();
++                (void)miniature->tick();
++                for (auto wy = y - 1; wy <= y + 1; ++wy) for (auto wx = x - 1; wx <= x + 1; ++wx) {
++                    const auto material = miniature->stored_material(wx, wy);
++                    if (material == Material::Fire || material == Material::Smoke)
++                        require(PrecisionProbe::move_product(*miniature, external, wx, wy), "comparison output remains immediately admissible");
++                }
++                miniature_time.add(elapsed(start));
++                miniature_allocations += allocation_probe::snapshot().allocations - before.allocations;
++            };
++            if ((tick + repetition) % 2 == 0) { run_compact(); run_miniature(); }
++            else { run_miniature(); run_compact(); }
++            require(!compact.snapshot().quarantined, "actual compact coordinator remains healthy");
++            require(shard->counts().products == 0, "comparison compact output remains immediately admissible");
++            require(compact.world().completed_tick_index() == miniature->completed_tick_index(), "domain semantic clocks agree");
++            for (std::size_t cell = 0; cell < shard->area(); ++cell) {
++                const auto wx = shard->bounds().x + static_cast<std::int64_t>(cell % shard->bounds().width);
++                const auto wy = shard->bounds().y + static_cast<std::int64_t>(cell / shard->bounds().width);
++                require(shard->payload(cell) == tuple(*miniature, wx, wy), "actual compact and mini-World material tuples agree every tick");
++            }
++            for (std::int64_t wy = 0; wy < config.world_bounds.height; ++wy) for (std::int64_t wx = 0; wx < config.world_bounds.width; ++wx)
++                require(tuple(compact.world(), wx, wy) == tuple(external, wx, wy), "equal outputs produce identical actual external World tuples");
++            smoke_samples += compact.world().quantity_ledger().material_cells[static_cast<std::size_t>(Material::Smoke)];
++        }
++        products += compact.accounting().emitted[static_cast<std::size_t>(Material::Fire)];
++        require(compact.metrics().output_blocked == 0, "comparison does not hide unavailable destinations");
++    }
++    require(products > 0 && smoke_samples > 0, "comparison executes real Fire delivery and downstream World Smoke");
++    std::printf("{\"name\":\"compact_tree_vs_tuned_serial_miniature\",\"scope\":\"native_material_domain_with_actual_output_excludes_common_World_physics_render\",\"equivalence\":\"every_local_and_external_payload_each_tick\",\"ticks_per_repetition\":%u,\"repetitions\":%u,\"miniature_configuration\":{\"chunk_size\":8,\"activity_block_size\":4,\"backend\":\"SerialInPlace\",\"workers\":1,\"maximum_chunks\":64,\"deferred_events\":4},\"timings\":{", ticks, repetitions);
++    compact_time.print("actual_compact_chemistry_and_emission"); std::printf(",");
++    miniature_time.print("actual_serial_World_and_minimal_boundary_adapter"); std::printf(",");
++    common_world_time.print("common_external_World_tick"); std::printf(",");
++    compact_construction.print("compact_carrier_construction_and_geometry"); std::printf(",");
++    miniature_construction.print("miniature_construction");
++    std::printf("},\"memory\":{\"compact_registry_including_shared_scratch_bytes\":%llu,\"compact_carrier_Cpp_live_bytes\":%llu,\"miniature_World_Cpp_live_bytes\":%llu,\"miniature_cell_storage_bytes\":%llu,\"compact_construction_allocations\":%llu,\"miniature_construction_allocations\":%llu,\"compact_steady_allocations\":%llu,\"miniature_steady_allocations\":%llu},\"observations\":{\"fire_deliveries\":%llu,\"World_smoke_cell_samples\":%llu}}",
++        static_cast<unsigned long long>(compact_bytes), static_cast<unsigned long long>(compact_cpp_bytes),
++        static_cast<unsigned long long>(miniature_bytes), static_cast<unsigned long long>(miniature_cell_bytes),
++        static_cast<unsigned long long>(compact_construction_allocations), static_cast<unsigned long long>(miniature_construction_allocations),
++        static_cast<unsigned long long>(compact_allocations), static_cast<unsigned long long>(miniature_allocations),
++        static_cast<unsigned long long>(products), static_cast<unsigned long long>(smoke_samples));
++}
+ }
+ 
+ int main(int argc, char** argv) {
+@@ -549,6 +690,10 @@
+             if (comma) std::printf(",");
+             compare_domains(std::max(16U, repetitions)); comma = true;
+         }
++        if (only == "compact_tree_vs_tuned_serial_miniature") {
++            if (comma) std::printf(",");
++            compare_tree_domains(std::max(16U, repetitions)); comma = true;
++        }
+         require(comma, "selected benchmark case exists");
+         std::printf("],\"checks\":%llu,\"failures\":0}\n", static_cast<unsigned long long>(checks));
+         return 0;
