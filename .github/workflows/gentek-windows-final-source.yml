@@ -41,7 +41,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py tools/architecture/gentek80_compositions.py
+          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py tools/architecture/gentek80_compositions.py tools/acceptance/stage_gentek80_examples.py tools/acceptance/tests/test_stage_gentek80_examples.py
+          python3 -m unittest discover -s tools/acceptance/tests -p test_stage_gentek80_examples.py -v
           python3 tools/ci/test_gentek80_runtime_publication.py
           python3 tools/architecture/test_gentek80_reference_inputs.py
           python3 tools/ci/check_ci_provider_policy.py
@@ -225,6 +226,8 @@ jobs:
           $gui = $env:GODOT_EXE.Replace('_console.exe','.exe')
           python tools/package_explore001_candidate.py --engine $gui --engine-notices $notices --native-candidate build/architecture-windows --vc-runtime $vc --readme docs/operations/gentek80-evaluation.md --output build/architecture-desktop-candidate
           if ($LASTEXITCODE -ne 0) { throw 'Owner candidate packaging failed' }
+          python tools/acceptance/stage_gentek80_examples.py --candidate build/architecture-desktop-candidate --evidence evidence/gentek80-five-style-projects --source $env:GITHUB_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'Source-exact graphical project/map examples were not attested and staged' }
           $archive = "build/CyberSand-Gentek80-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
           Compress-Archive -Path build/architecture-desktop-candidate/* -DestinationPath $archive -CompressionLevel Optimal
           (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + (Split-Path $archive -Leaf) | Set-Content "$archive.sha256"
@@ -236,6 +239,12 @@ jobs:
           "$manifestHash  candidate-manifest.json" | Set-Content "$archive.manifest.sha256"
           $manifest = Get-Content (Join-Path $validation 'candidate-manifest.json') -Raw | ConvertFrom-Json
           if ($manifest.source_commit -ne $env:GITHUB_SHA) { throw 'Extracted package source mismatch' }
+          if ($manifest.gentek80_acceptance_examples.schema -ne 'gentek80-exact-source-example-archive-v1' -or @($manifest.gentek80_acceptance_examples.examples).Count -ne 2) { throw 'Original two five-style project/map examples missing from delivered ZIP' }
+          $exampleFiles = @($manifest.gentek80_acceptance_examples.generated_example_files_sha256.PSObject.Properties)
+          if ($exampleFiles.Count -ne 5) { throw 'Expected four original project/start JSONs plus example import guide' }
+          foreach ($entry in $exampleFiles) {
+            if (-not $manifest.files_sha256.PSObject.Properties[$entry.Name] -or $manifest.files_sha256.PSObject.Properties[$entry.Name].Value -ne $entry.Value) { throw 'Original example file is not SHA-256 bound to entire payload: ' + $entry.Name }
+          }
           foreach ($entry in $manifest.files_sha256.PSObject.Properties) {
             $path = Join-Path $validation $entry.Name
             if ((Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.Value) { throw "Extracted package file mismatch: $($entry.Name)" }
