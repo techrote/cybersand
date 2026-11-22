@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -13,6 +14,18 @@ import execution_telemetry
 import godot_scheduling as subject
 import run_godot_regressions as runner
 from test_performance_history import observation
+
+
+class WorkflowFanoutTests(unittest.TestCase):
+    def test_linux14_windows18_regression_fanout_retains_fail_fast_false(self):
+        source = (Path(__file__).resolve().parents[2] /
+                  ".github/workflows/gdextension.yml").read_text(encoding="utf-8")
+        for job, slots in (("linux-regression", 14), ("windows-regression", 18)):
+            with self.subTest(job=job):
+                match = re.search(rf"(?ms)^  {job}:\n(.*?)(?=^  [a-z][\w-]*:\n|\Z)", source)
+                self.assertIsNotNone(match, f"Missing workflow job: {job}")
+                self.assertRegex(match.group(1), r"(?m)^      fail-fast: false$")
+                self.assertRegex(match.group(1), rf"(?m)^      max-parallel: {slots}$")
 
 
 class HistoryTests(unittest.TestCase):
