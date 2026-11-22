@@ -600,8 +600,20 @@ func publication_fault_checks() -> void:
 	check(not controller.active_ready and controller._quarantined and controller._publication_uncertain \
 		and controller._force_profile_reopen and host.paused,
 		"ambiguous publication keeps the old live World paused and requires profile reopening")
-	check(int(worker.paint_state().tick)==native_before and int(controller.clock.game_ticks)==game_before,
-		"failed ACK neither resumes nor falsely advances the older live World/clock")
+	# COLD donor Ahead prepares an unadopted private candidate; its live source
+	# must remain at the old frontier. RAMCACHE resident Ahead advances the
+	# existing native owner *before* the failed durable ACK. All genuinely
+	# completed ticks MUST remain accounted, even while publication is
+	# quarantined and the older durable manifest is independently reconciled.
+	if controller._cache_open and controller._cache_configuration.enabled:
+		check(int(worker.paint_state().tick)==native_before+actual
+			and int(controller.clock.game_ticks)==game_before+actual
+			and int(controller.operation.native_ticks_executed)==actual,
+			"failed ACK retains exactly once all completed resident native ticks and their game-time debt")
+	else:
+		check(int(worker.paint_state().tick)==native_before
+			and int(controller.clock.game_ticks)==game_before,
+			"unadopted private candidate failed ACK leaves the original live World and clock unchanged")
 	var published: Dictionary = await controller._io("current_manifest",[])
 	if not check(published.has("areas") and int(published.clock.game_ticks)==game_before+actual,
 		"lost ACK fixture actually published the advanced checkpoint and matching accounted time"): return
