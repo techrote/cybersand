@@ -1394,7 +1394,42 @@ void m4_same_world_promotion_and_exact_motion() {
     CHECK(second.sequence > motion.sequence);
     CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
     CHECK(adapter.accept_applied_motion(*world, coordinator, owner, second) == gate::Verdict::Accepted);
+    // The M3 bridge retains its original 16-segment physical interval cap.
+    for (std::uint32_t segment = 2; segment < gate::kSegmentLimit; ++segment) {
+        gate::MotionTicket accepted_segment{};
+        CHECK(adapter.issue_motion(*world, coordinator, owner, accepted_segment) == gate::Verdict::Accepted);
+        CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+        CHECK(adapter.accept_applied_motion(*world, coordinator, owner, accepted_segment) == gate::Verdict::Accepted);
+    }
+    gate::MotionTicket over_budget{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Capacity);
     CHECK(world->completed_tick_index() == before_tick + 1);
+
+    // A real state-only Wood ignition increments material identity while
+    // preserving collider geometry. It must re-ticket the material and
+    // invalidate the old completed-tick motion permit.
+    const auto* physical = coordinator.registry().find(prepared.shard);
+    CHECK(physical != nullptr);
+    if (!physical) return;
+    std::uint32_t structural_cell = 0;
+    for (; structural_cell < physical->area(); ++structural_cell)
+        if (physical->structural(structural_cell)) break;
+    CHECK(structural_cell < physical->area());
+    if (structural_cell >= physical->area()) return;
+    const auto geometry_before = physical->geometry().revision;
+    const auto material_before = physical->material_revision();
+    CHECK(coordinator.ignite_shard(prepared.shard, structural_cell).outcome == Outcome::Accepted);
+    const auto* ignited = coordinator.registry().find(prepared.shard);
+    CHECK(ignited && ignited->geometry().revision == geometry_before);
+    CHECK(ignited && ignited->material_revision() > material_before);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Fenced);
+    gate::GeometryTicket state_only{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, state_only) == gate::Verdict::Accepted);
+    CHECK(state_only.body.geometry_revision == geometry_before);
+    CHECK(state_only.body.material_revision > material_before);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, state_only) == gate::Verdict::Accepted);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Fenced);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Stale);
     CHECK(owned_population(coordinator, Material::Wood) == before);
     CHECK(adapter.release_when_empty(*world, coordinator, owner) == gate::Verdict::Held);
     CHECK(&coordinator.world() == world);
@@ -1433,13 +1468,18 @@ void m4_cancel_does_not_consume_world_and_replacement_fences() {
     CHECK(isolated.grant_completed_tick(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
               coordinator, other, 1) == gate::Verdict::WrongWorld);
     gate::Verdict foreign = gate::Verdict::Accepted;
+    std::size_t foreign_count = 99;
+    bool foreign_bound = true;
+    World& live_other_world = cybersand::object_shard::CoordinatorTestAccess::world(another);
     std::thread hostile([&] {
         gate::MotionTicket ignored{};
-        foreign = isolated.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(another),
-            another, other, ignored);
+        foreign = isolated.issue_motion(live_other_world, another, other, ignored);
+        foreign_count = isolated.registered_bodies();
+        foreign_bound = isolated.initially_bound();
     });
     hostile.join();
     CHECK(foreign == gate::Verdict::WrongOwner);
+    CHECK(foreign_count == 0 && !foreign_bound);
     CHECK(another.reset(0, 888).outcome == Outcome::Accepted);
     gate::MotionTicket after_reset{};
     CHECK(isolated.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(another), another,
