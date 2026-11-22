@@ -57,15 +57,18 @@ func _run() -> void:
 	_expect(probe.observe_post_draw(260).outcome == "NoVisibleUpload",
 		"Refused texture upload is not counted as presentation")
 	probe.mark_upload(snapshot, 301, 350, true)
-	_expect(probe.observe_post_draw(360).get("ok", false),
-		"Post-draw must follow an accepted texture submission")
+	var post_draw: Dictionary = probe.observe_post_draw(360)
+	_expect(post_draw.get("ok", false) and not post_draw.get("causal_frame_identity_proven", true),
+		"Deferred post-draw callback is observed without claiming that exact render serial was displayed")
 	_expect(probe.observe_post_draw(370).outcome == "NoVisibleUpload",
 		"Duplicate frame callbacks do not create duplicate presentations")
 	var summary: Dictionary = probe.summary()
 	_expect(summary.no_additive_stage_total and not summary.input_to_post_draw_causally_proven,
 		"Overlapping durations and uncorrelated input are never summed into fake latency")
-	_expect(summary.presented_uploads == 1 and summary.stages.scene_callback.count == 1,
-		"Reported scope distinguishes callback, accepted upload and presentation")
+	_expect(summary.post_draw_callbacks_after_upload == 1 and summary.proven_presented_uploads == 0 \
+			and not summary.frame_serial_coherence_proven \
+			and summary.stages.scene_callback.count == 1,
+		"Reported scope distinguishes accepted upload and unproven post-draw serial")
 	_expect(summary.worker_metrics.scope == "worker_reported_potentially_nested_not_a_sum",
 		"Native render/snapshot costs remain source-labelled, not fake disjoint stages")
 	var old_epoch: int = probe.epoch
