@@ -132,6 +132,10 @@ public:
     // Semantic payload only: World traversal epoch never becomes shard state.
     // Same-material state/temperature changes preserve cell incarnation unless
     // replace_identity is explicit. A change of material always advances it.
+    // Under the exclusive coordinator, preflight the destination before a
+    // source debit. With no intervening mutation, set_cell cannot then refuse.
+    [[nodiscard]] Outcome validate_cell_write(std::size_t index, Payload value, Role role,
+        std::uint64_t semantic_tick, bool replace_identity = false) const noexcept;
     [[nodiscard]] Outcome set_cell(std::size_t index, Payload value, Role role,
         std::uint64_t semantic_tick, bool replace_identity = false) noexcept;
     [[nodiscard]] Outcome set_due(std::size_t index, std::uint64_t next_tick) noexcept;

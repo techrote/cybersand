@@ -1,5 +1,7 @@
 #include "cybersand/object_shard_coordinator.hpp"
+#include "cybersand/material_lifecycle.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdio>
@@ -95,6 +97,34 @@ std::vector<PoseSample> next_poses(Coordinator& coordinator) {
 }
 std::uint64_t world_population(Coordinator& coordinator, Material material) {
     return coordinator.world().quantity_ledger().material_cells[static_cast<std::uint8_t>(material)];
+}
+Acknowledgement geometry_ack(Coordinator& coordinator, Handle handle, AckKind kind = AckKind::GeometryInstalled) {
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr);
+    for (const auto& body : coordinator.snapshot().bodies) if (body.shard == handle) {
+        const auto& geometry = shard->geometry();
+        return {handle, body.transaction, body.body_generation, shard->payload_digest(),
+            geometry.revision, geometry.mask_digest, geometry.shape_digest, kind, {}};
+    }
+    CHECK(false);
+    return {};
+}
+void install_geometry(Coordinator& coordinator) {
+    std::vector<Handle> pending;
+    for (const auto& body : coordinator.snapshot().bodies)
+        if (body.geometry_pending) pending.push_back(body.shard);
+    for (const auto handle : pending) {
+        const auto* shard = coordinator.registry().find(handle);
+        CHECK(shard != nullptr);
+        const auto kind = shard->counts().structural == 0 ? AckKind::BodyRetired : AckKind::GeometryInstalled;
+        CHECK(coordinator.acknowledge(geometry_ack(coordinator, handle, kind)).outcome == Outcome::Accepted);
+    }
+}
+void sleeping_step(Coordinator& coordinator) {
+    auto poses = next_poses(coordinator);
+    for (auto& pose : poses) pose.sleeping = true;
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    install_geometry(coordinator);
 }
 
 void finite_coordinate_configuration() {
@@ -442,6 +472,148 @@ void one_mutation_discovers_every_disconnected_component() {
     CHECK(world_population(coordinator, Material::Wood) == 0);
     CHECK(coordinator.registry().inventory_counts().structural == 3);
 }
+
+void burning_world_capture_continues_while_sleeping_and_moving() {
+    namespace chemistry = material_lifecycle;
+    Coordinator coordinator(small_config());
+    constexpr std::int64_t x = 31, y = 31;
+    CHECK(coordinator.edit(x, y, {Material::Wood, 219, 5, 654}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    // These are actual World opportunities before promotion, not an authored
+    // countdown substituted after the transfer.
+    for (unsigned i = 0; i < 2; ++i) CHECK(coordinator.step().outcome == Outcome::Accepted);
+    const auto captured = coordinator.inspect_world(x, y);
+    CHECK(captured.material == Material::Wood && captured.state_b == 4);
+    CHECK(captured.state_a == 219 && captured.temperature == 654);
+    CHECK(coordinator.edit(x, y + 1, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    const auto stable_bounds = shard->bounds();
+    constexpr std::size_t cell = 4; // Centre of the tight one-cell payload plus port ring.
+    CHECK(shard->payload(cell) == captured);
+    auto expected = captured;
+    for (unsigned i = 0; i < 12 && expected.material != Material::Empty; ++i) {
+        const auto next_tick = coordinator.world().completed_tick_index() + 1;
+        const auto transition = chemistry::combustible(expected.material, expected.state_a,
+            expected.state_b, chemistry::lane_due(next_tick, x, y, 2, 191), false);
+        if (transition.write) expected = {transition.material, transition.state_a, transition.state_b, expected.temperature};
+        auto poses = next_poses(coordinator);
+        CHECK(poses.size() == 1);
+        poses[0].sleeping = true;
+        poses[0].x += .15; poses[0].rotation += .01;
+        CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+        CHECK(coordinator.world().completed_tick_index() == next_tick);
+        CHECK(shard->payload(cell) == expected);
+        CHECK(shard->bounds() == stable_bounds); // Motion does not reseed logical lanes.
+        install_geometry(coordinator);
+    }
+    CHECK(expected.material == Material::Empty);
+    CHECK(shard->counts().structural == 0);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Wood)] == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Smoke)] == 0);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Fire)] == 0);
+}
+
+void blocked_product_lifetime_and_draining_inventory() {
+    Coordinator coordinator(small_config());
+    constexpr int x = 31, y = 31;
+    CHECK(coordinator.edit(x, y, {Material::Wood, 77, 8, 510}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    // Actual resident occupied destinations prevent output. The product must
+    // still occupy one spatial local carrier; it is not an outbox copy.
+    for (int dy = -4; dy <= 4; ++dy) for (int dx = -4; dx <= 4; ++dx)
+        if (dx || dy) CHECK(coordinator.edit(x + dx, y + dy, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    for (unsigned i = 0; i < 3 && shard->counts().products == 0; ++i) sleeping_step(coordinator);
+    CHECK(shard->counts().products == 1);
+    std::size_t product = shard->area();
+    for (std::size_t at = 0; at < shard->area(); ++at) if (shard->role(at) == Role::Product) product = at;
+    CHECK(product < shard->area());
+    if (product >= shard->area()) return;
+    CHECK(shard->payload(product).material == Material::Fire && shard->payload(product).state_a == 32);
+    CHECK(shard->schedule(product).birth_tick == coordinator.world().completed_tick_index());
+    CHECK(shard->schedule(product).next_due_tick > shard->schedule(product).birth_tick);
+    const auto birth = shard->schedule(product).birth_tick;
+    const auto incarnation = shard->schedule(product).incarnation;
+    for (unsigned tick = 1; tick <= 32; ++tick) {
+        sleeping_step(coordinator);
+        CHECK(shard->counts().products == 1);
+        CHECK(shard->occupied(product) && !shard->structural(product));
+        CHECK(coordinator.world().completed_tick_index() == birth + tick);
+        if (tick < 32) {
+            CHECK(shard->payload(product).material == Material::Fire);
+            CHECK(shard->payload(product).state_a == 32 - tick);
+            CHECK(shard->schedule(product).incarnation == incarnation);
+        }
+    }
+    CHECK(shard->payload(product).material == Material::Smoke);
+    CHECK(shard->payload(product).state_a == material_definition(Material::Smoke).initial_state_a);
+    CHECK(shard->schedule(product).incarnation != incarnation);
+    CHECK(shard->counts().structural == 0 && shard->phase() == Phase::Draining);
+    CHECK(shard->owns_inventory() && shard->counts().products == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Fire)] == 1);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Fire)] == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Smoke)] == 1);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Wood)] == 1);
+    CHECK(coordinator.accounting().emitted[static_cast<std::uint8_t>(Material::Fire)] == 0);
+    CHECK(world_population(coordinator, Material::Fire) == 0);
+    CHECK(world_population(coordinator, Material::Smoke) == 0);
+}
+
+void chemistry_perforates_geometry_beyond_eight_shapes() {
+    Coordinator coordinator(small_config());
+    std::uint32_t removed = 0;
+    for (int y = 30; y < 45; ++y) for (int x = 30; x < 45; ++x) {
+        const bool hole = x == 37 || (x > 30 && x < 44 && y > 30 && y < 44 && x % 2 == 0 && y % 2 == 0);
+        removed += hole;
+        CHECK(coordinator.edit(x, y, {Material::Wood, 0, static_cast<std::uint8_t>(hole ? 1 : 0), 200}).outcome == Outcome::Accepted);
+    }
+    for (int x = 30; x < 45; ++x)
+        CHECK(coordinator.edit(x, 45, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    for (int x = 30; x < 45; ++x) CHECK(coordinator.edit(x, 45, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    const auto origin = shard->bounds();
+    for (unsigned tick = 0; tick < 2; ++tick) {
+        const auto obsolete = geometry_ack(coordinator, prepared.shard);
+        CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Accepted);
+        CHECK(coordinator.paused());
+        const auto now = coordinator.world().completed_tick_index();
+        CHECK(coordinator.acknowledge(obsolete).outcome == Outcome::Stale);
+        CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Fenced);
+        CHECK(coordinator.world().completed_tick_index() == now);
+        install_geometry(coordinator);
+    }
+    CHECK(shard->counts().structural == 225 - removed);
+    CHECK(shard->geometry().shapes.size() > 8);
+    CHECK(shard->geometry().split_pending && shard->geometry().islands == 2);
+    CHECK(shard->geometry().mass.mass == 225 - removed);
+    CHECK(shard->bounds() == origin);
+    CHECK(shard->chemistry_allowed());
+    std::vector<unsigned> cover(shard->area());
+    for (const auto& shape : shard->geometry().shapes)
+        for (unsigned y = shape.y; y < shape.y + shape.height; ++y)
+            for (unsigned x = shape.x; x < shape.x + shape.width; ++x)
+                ++cover[static_cast<std::size_t>(y) * origin.width + x];
+    for (std::size_t at = 0; at < shard->area(); ++at)
+        CHECK(cover[at] == static_cast<unsigned>(shard->structural(at)));
+    const std::uint32_t surviving_cell = origin.width + 1;
+    CHECK(coordinator.ignite_shard(prepared.shard, surviving_cell).outcome == Outcome::Accepted);
+    sleeping_step(coordinator); sleeping_step(coordinator);
+    CHECK(shard->payload(surviving_cell).material == Material::Wood);
+    CHECK(shard->payload(surviving_cell).state_b < 240); // Split-pending does not freeze burning.
+}
 } // namespace
 
 int main() {
@@ -455,6 +627,9 @@ int main() {
     pose_refusal_keeps_pose_and_mask_coherent();
     disjoint_shapes_can_share_a_raster_cell();
     one_mutation_discovers_every_disconnected_component();
+    burning_world_capture_continues_while_sleeping_and_moving();
+    blocked_product_lifetime_and_draining_inventory();
+    chemistry_perforates_geometry_beyond_eight_shapes();
     std::printf("ObjectShard coordinator: %llu checks, %llu failures\n",
         static_cast<unsigned long long>(checks), static_cast<unsigned long long>(failures));
     return failures == 0 ? 0 : 1;

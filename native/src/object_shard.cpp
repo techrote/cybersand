@@ -147,8 +147,8 @@ void Shard::refresh_neighbor_surfaces(std::size_t index) noexcept {
     if (index + width < area()) refresh_surface(index + width);
 }
 
-Outcome Shard::set_cell(std::size_t index, Payload value, Role role_value,
-        std::uint64_t tick, bool replace_identity) noexcept {
+Outcome Shard::validate_cell_write(std::size_t index, Payload value, Role role_value,
+        std::uint64_t tick, bool replace_identity) const noexcept {
     if (index >= area() || !permitted(value, role_value)) return Outcome::Unsupported;
     if (phase_ == Phase::Empty || phase_ == Phase::Retired) return Outcome::Retired;
     if (phase_ == Phase::Quarantined) return Outcome::Quarantined;
@@ -159,14 +159,26 @@ Outcome Shard::set_cell(std::size_t index, Payload value, Role role_value,
     const auto before = payload(index);
     const auto old_role = roles_[index];
     if (before == value && old_role == role_value && !replace_identity) return Outcome::Accepted;
+    const bool new_identity = replace_identity || before.material != value.material || old_role != role_value;
+    const bool topology_changed = (old_role == Role::Structural) != (role_value == Role::Structural);
+    if (material_revision_ == kNever || (topology_changed && topology_revision_ == kNever) ||
+        (new_identity && schedule_[index].incarnation == std::numeric_limits<std::uint32_t>::max()))
+        return Outcome::GenerationExhausted;
+    return Outcome::Accepted;
+}
+
+Outcome Shard::set_cell(std::size_t index, Payload value, Role role_value,
+        std::uint64_t tick, bool replace_identity) noexcept {
+    const auto admitted = validate_cell_write(index, value, role_value, tick, replace_identity);
+    if (admitted != Outcome::Accepted) return admitted;
+    const auto before = payload(index);
+    const auto old_role = roles_[index];
+    if (before == value && old_role == role_value && !replace_identity) return Outcome::Accepted;
     auto& scheduling = schedule_[index];
     const bool new_identity = replace_identity || before.material != value.material || old_role != role_value;
     const bool topology_changed = (old_role == Role::Structural) != (role_value == Role::Structural);
     const bool geometry_changed = topology_changed ||
         ((old_role == Role::Cargo) != (role_value == Role::Cargo));
-    if (material_revision_ == kNever || (topology_changed && topology_revision_ == kNever) ||
-        (new_identity && scheduling.incarnation == std::numeric_limits<std::uint32_t>::max()))
-        return Outcome::GenerationExhausted;
 
     // No capacity acquisition or fallible operation follows the first write.
     auto& cell = cells_[index];

@@ -80,6 +80,7 @@ void payload_identity_and_activation() {
     CHECK(registry.finish_preparation(handle) == Outcome::Accepted);
     CHECK(registry.reserve_physics(handle) == Outcome::Accepted);
     CHECK(shard->set_cell(27, wood(20), Role::Structural, 256) == Outcome::Fenced);
+    CHECK(shard->validate_cell_write(27, wood(20), Role::Structural, 256) == Outcome::Fenced);
     CHECK(registry.commit(handle) == Outcome::Accepted);
     CHECK(registry.inventory_counts().structural == 1);
     CHECK(registry.commit(handle) == Outcome::Stale);
@@ -253,12 +254,47 @@ void explicit_capabilities_and_optional_temperature() {
     CHECK(shard->set_cell(12, {Material::Plant, 0, 0, 200}, Role::Structural, 0) == Outcome::Unsupported);
     CHECK(shard->set_cell(12, {Material::Water, 255, 0, 200}, Role::Cargo, 0) == Outcome::Unsupported);
     CHECK(shard->set_cell(12, wood(3, 201), Role::Structural, 0) == Outcome::Unsupported);
+    CHECK(shard->validate_cell_write(12, wood(3, 201), Role::Structural, 0) == Outcome::Unsupported);
     CHECK(shard->payload_digest() == digest);
     CHECK(shard->set_cell(12, wood(3), Role::Structural, 0) == Outcome::Accepted);
     CHECK(shard->payload(12).temperature == 200);
     CHECK(!valid_bounds({std::numeric_limits<std::int64_t>::max(), 0, 2, 1}));
     CHECK(!valid_bounds({0, 0, 0, 1}));
     CHECK(valid_bounds({std::numeric_limits<std::int64_t>::min(), -1, 1, 1}));
+}
+
+void destination_preflight_is_nonmutating_and_matches_commit() {
+    Registry registry;
+    Handle handle;
+    CHECK(registry.prepare({0, 0, 5, 5}, 7, handle) == Outcome::Accepted);
+    auto* shard = registry.find(handle);
+    CHECK(shard->set_cell(12, wood(3, 420), Role::Structural, 7) == Outcome::Accepted);
+    activate(registry, handle);
+    const auto attempt = [&](std::size_t index, Payload payload, Role role,
+                             std::uint64_t tick, Outcome expected, bool replace_identity = false) {
+        const auto digest = shard->payload_digest();
+        const auto material_revision = shard->material_revision();
+        const auto topology_revision = shard->topology_revision();
+        const auto allocation_count = allocations.load();
+        CHECK(shard->validate_cell_write(index, payload, role, tick, replace_identity) == expected);
+        CHECK(shard->payload_digest() == digest);
+        CHECK(shard->material_revision() == material_revision && shard->topology_revision() == topology_revision);
+        CHECK(allocations.load() == allocation_count);
+        CHECK(shard->set_cell(index, payload, role, tick, replace_identity) == expected);
+        if (expected != Outcome::Accepted) CHECK(shard->payload_digest() == digest);
+    };
+    attempt(25, wood(), Role::Structural, 8, Outcome::Unsupported);
+    attempt(7, {Material::Water, 255, 0, 200}, Role::Cargo, 8, Outcome::Unsupported);
+    attempt(7, {Material::Plant, 0, 0, 200}, Role::Structural, 8, Outcome::Unsupported);
+    attempt(7, {Material::Empty, 1, 0, 200}, Role::Empty, 8, Outcome::Invalid);
+    attempt(7, wood(), Role::Structural, 6, Outcome::Stale);
+    attempt(7, wood(), Role::Structural, std::numeric_limits<std::uint64_t>::max(), Outcome::Stale);
+    attempt(12, wood(3, 420), Role::Structural, 8, Outcome::Accepted);
+    attempt(12, wood(2, 419), Role::Structural, 8, Outcome::Accepted);
+    attempt(7, {Material::Sand, 211, 19, -470}, Role::Cargo, 8, Outcome::Accepted);
+    attempt(12, wood(2, 419), Role::Structural, 8, Outcome::Accepted, true);
+    CHECK(registry.quarantine(handle) == Outcome::Quarantined);
+    attempt(7, empty(), Role::Empty, 9, Outcome::Quarantined);
 }
 
 void partial_commit_retains_exact_debited_inventory() {
@@ -347,6 +383,7 @@ int main() {
     products_cargo_and_draining();
     capacity_refusal_and_quarantine();
     explicit_capabilities_and_optional_temperature();
+    destination_preflight_is_nonmutating_and_matches_commit();
     partial_commit_retains_exact_debited_inventory();
     three_owners_and_no_tick_allocations();
     std::printf("ObjectShard storage: %llu checks, %llu failures\n",
