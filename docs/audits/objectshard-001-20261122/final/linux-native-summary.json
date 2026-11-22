@@ -1,0 +1,197 @@
+{
+  "checks_reported": 61652,
+  "counts_complete": true,
+  "elapsed_seconds": 97.379346697,
+  "failures_reported": 0,
+  "git_head": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "input_digest": "21f466fa53aeba74392e4c3e62c761a2533409b1c4817d95b55260f8a39f6a96",
+  "leak_sanitizer": false,
+  "qualification_scope": "Native C++ only; no rendered, Rapier or owner physical acceptance claim.",
+  "run_directory": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae",
+  "sanitizers": true,
+  "schema": 1,
+  "status": "passed",
+  "suites": {
+    "chemistry": {
+      "binary_sha256": "2e0daa2a57516ae8bf1cdd0cb82235a16df8caa135d8abef8954a28818f858dd",
+      "checks": 4472,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_chemistry"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source",
+        "elapsed_seconds": 1.6479411079999977,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/test-chemistry.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/include",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/tests/test_object_shard_chemistry.cpp",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/world.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/material_rules.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/scheduler_geometry.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/settled_world_discovery.o",
+          "-o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_chemistry"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand",
+        "elapsed_seconds": 3.951008562999988,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/link-chemistry.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "contact": {
+      "binary_sha256": "821bbe8df0d2af25a4726068eec090adff2c16049336ab63079e20fd3c0e0555",
+      "checks": 46037,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_contact"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source",
+        "elapsed_seconds": 0.019709211000005666,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/test-contact.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/include",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/tests/test_object_shard_contact.cpp",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/object_shard.o",
+          "-o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_contact"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand",
+        "elapsed_seconds": 1.5207429520000062,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/link-contact.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "coordinator": {
+      "binary_sha256": "42cc5a4be7d678631caffb9b48d55ce6ceeda1a4c6f12a2d4403f30fcad09842",
+      "checks": 3018,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_coordinator"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source",
+        "elapsed_seconds": 2.425802374,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/test-coordinator.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/include",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/tests/test_object_shard_coordinator.cpp",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/world.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/material_rules.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/scheduler_geometry.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/settled_world_discovery.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/object_shard.o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/object_shard_coordinator.o",
+          "-o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_coordinator"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand",
+        "elapsed_seconds": 5.267770593999998,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/link-coordinator.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "storage": {
+      "binary_sha256": "bf2c678578534e011260f0495972a1b3ffbbd4826074d6fa470fc8becb252451",
+      "checks": 8125,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_storage"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source",
+        "elapsed_seconds": 0.07845470799999532,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/test-storage.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/include",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/source/native/tests/test_object_shard_storage.cpp",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/objects/object_shard.o",
+          "-o",
+          "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/test_object_shard_storage"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand",
+        "elapsed_seconds": 1.3463976459999998,
+        "log": "/home/runner/work/cybersand/cybersand/evidence/native/20261122T020515.263051Z-21f466fa53ae/logs/link-storage.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    }
+  },
+  "test_cases_reported": 0
+}

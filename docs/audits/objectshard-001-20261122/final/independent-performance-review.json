@@ -1,0 +1,951 @@
+{
+  "schema": "objectshard-independent-performance-review-v1",
+  "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "scope": "Independent source/statistical audit; no complete campaign or performance rerun",
+  "profiles": [
+    {
+      "platform": "windows",
+      "mode": "headless",
+      "source_file": "build/objectshard-hosted-44974395620/windows-evidence/windows-lab/objectshard_profile_headless.json",
+      "source_file_sha256": "1353618791b46c228e86133e0045a2525db258af8b6e7a8976b398b0189947ff",
+      "functional_checks": 719,
+      "functional_failures": 0,
+      "percentile_comparisons": 576,
+      "summary_mismatches": [],
+      "limits_checked": 56,
+      "limit_failures": [],
+      "cases": [
+        {
+          "name": "empty_lab",
+          "frame_usec": {
+            "max": 1984.0,
+            "p50": 1139.0,
+            "p95": 1319.0,
+            "p99": 1356.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3768,
+          "setup_edits_and_promotion_usec": 1,
+          "sampled_live_native_max_bytes": 4170528,
+          "final_native_live_bytes": 4170528,
+          "native_retained_bytes": 4172576,
+          "native_peak_bytes": 4172576,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "inert_moving",
+          "frame_usec": {
+            "max": 3954.0,
+            "p50": 1425.0,
+            "p95": 1494.0,
+            "p99": 1618.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 2467,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 2919,
+          "setup_edits_and_promotion_usec": 46735,
+          "sampled_live_native_max_bytes": 4212030,
+          "final_native_live_bytes": 4212030,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "reacting_one",
+          "frame_usec": {
+            "max": 2624.0,
+            "p50": 1443.0,
+            "p95": 1502.0,
+            "p99": 1567.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 2468,
+          "geometry_install_max_usec": 123,
+          "construction_usec": 3042,
+          "setup_edits_and_promotion_usec": 49171,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 459
+        },
+        {
+          "name": "reacting_three",
+          "frame_usec": {
+            "max": 4968.0,
+            "p50": 1941.0,
+            "p95": 2115.0,
+            "p99": 3132.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 3012,
+          "geometry_install_max_usec": 122,
+          "construction_usec": 3045,
+          "setup_edits_and_promotion_usec": 157322,
+          "sampled_live_native_max_bytes": 4295098,
+          "final_native_live_bytes": 4295098,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 523
+        },
+        {
+          "name": "perforated",
+          "frame_usec": {
+            "max": 2564.0,
+            "p50": 1448.0,
+            "p95": 1586.0,
+            "p99": 1912.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 2843,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3086,
+          "setup_edits_and_promotion_usec": 91596,
+          "sampled_live_native_max_bytes": 4213230,
+          "final_native_live_bytes": 4213230,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "saturated_output",
+          "frame_usec": {
+            "max": 3690.0,
+            "p50": 1452.0,
+            "p95": 1579.0,
+            "p99": 2030.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 2546,
+          "geometry_install_max_usec": 108,
+          "construction_usec": 3039,
+          "setup_edits_and_promotion_usec": 1723253,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        },
+        {
+          "name": "dormant_three",
+          "frame_usec": {
+            "max": 2243.0,
+            "p50": 1898.0,
+            "p95": 1951.0,
+            "p99": 2013.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 2988,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3125,
+          "setup_edits_and_promotion_usec": 159276,
+          "sampled_live_native_max_bytes": 4294938,
+          "final_native_live_bytes": 4294938,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "wake_burst_three",
+          "frame_usec": {
+            "max": 3937.0,
+            "p50": 1943.0,
+            "p95": 2081.0,
+            "p99": 2260.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 2924,
+          "geometry_install_max_usec": 98,
+          "construction_usec": 3137,
+          "setup_edits_and_promotion_usec": 158554,
+          "sampled_live_native_max_bytes": 4294970,
+          "final_native_live_bytes": 4294970,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 399
+        }
+      ]
+    },
+    {
+      "platform": "windows",
+      "mode": "rendered",
+      "source_file": "build/objectshard-hosted-44974395620/windows-evidence/windows-lab/objectshard_profile_rendered.json",
+      "source_file_sha256": "1175f3ea0dbcf76292b36d779374c44dd9f79f94f3c014ccb80b9faf677950d9",
+      "functional_checks": 719,
+      "functional_failures": 0,
+      "percentile_comparisons": 704,
+      "summary_mismatches": [],
+      "limits_checked": 80,
+      "limit_failures": [],
+      "cases": [
+        {
+          "name": "empty_lab",
+          "frame_usec": {
+            "max": 4672.0,
+            "p50": 2186.0,
+            "p95": 2258.0,
+            "p99": 3677.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32271.0,
+            "p50": 16002.0,
+            "p95": 16179.0,
+            "p99": 31822.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 2652,
+          "setup_edits_and_promotion_usec": 1,
+          "sampled_live_native_max_bytes": 4170528,
+          "final_native_live_bytes": 4170528,
+          "native_retained_bytes": 4172576,
+          "native_peak_bytes": 4172576,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "inert_moving",
+          "frame_usec": {
+            "max": 3765.0,
+            "p50": 2664.0,
+            "p95": 2785.0,
+            "p99": 3700.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32039.0,
+            "p50": 16004.0,
+            "p95": 16198.0,
+            "p99": 31823.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 2596,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 4091,
+          "setup_edits_and_promotion_usec": 46943,
+          "sampled_live_native_max_bytes": 4212030,
+          "final_native_live_bytes": 4212030,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "reacting_one",
+          "frame_usec": {
+            "max": 4602.0,
+            "p50": 2652.0,
+            "p95": 2741.0,
+            "p99": 3712.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31921.0,
+            "p50": 16004.0,
+            "p95": 16164.0,
+            "p99": 31780.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 2423,
+          "geometry_install_max_usec": 163,
+          "construction_usec": 4722,
+          "setup_edits_and_promotion_usec": 49309,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 459
+        },
+        {
+          "name": "reacting_three",
+          "frame_usec": {
+            "max": 6592.0,
+            "p50": 3432.0,
+            "p95": 3552.0,
+            "p99": 5084.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32408.0,
+            "p50": 16005.0,
+            "p95": 16315.0,
+            "p99": 31805.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 2962,
+          "geometry_install_max_usec": 165,
+          "construction_usec": 4792,
+          "setup_edits_and_promotion_usec": 147969,
+          "sampled_live_native_max_bytes": 4295098,
+          "final_native_live_bytes": 4295098,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 523
+        },
+        {
+          "name": "perforated",
+          "frame_usec": {
+            "max": 4214.0,
+            "p50": 2665.0,
+            "p95": 3003.0,
+            "p99": 4068.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31997.0,
+            "p50": 16006.0,
+            "p95": 16220.0,
+            "p99": 31845.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 2736,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 5045,
+          "setup_edits_and_promotion_usec": 90374,
+          "sampled_live_native_max_bytes": 4213230,
+          "final_native_live_bytes": 4213230,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 523
+        },
+        {
+          "name": "saturated_output",
+          "frame_usec": {
+            "max": 4938.0,
+            "p50": 2657.0,
+            "p95": 2825.0,
+            "p99": 3867.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32311.0,
+            "p50": 16000.0,
+            "p95": 16222.0,
+            "p99": 31866.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 2440,
+          "geometry_install_max_usec": 166,
+          "construction_usec": 4921,
+          "setup_edits_and_promotion_usec": 1722672,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        },
+        {
+          "name": "dormant_three",
+          "frame_usec": {
+            "max": 6482.0,
+            "p50": 3375.0,
+            "p95": 3493.0,
+            "p99": 4811.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31982.0,
+            "p50": 16005.0,
+            "p95": 16224.0,
+            "p99": 31817.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 2993,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 5287,
+          "setup_edits_and_promotion_usec": 159999,
+          "sampled_live_native_max_bytes": 4294938,
+          "final_native_live_bytes": 4294938,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        },
+        {
+          "name": "wake_burst_three",
+          "frame_usec": {
+            "max": 6137.0,
+            "p50": 3454.0,
+            "p95": 3550.0,
+            "p99": 4367.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32004.0,
+            "p50": 16007.0,
+            "p95": 16263.0,
+            "p99": 31804.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 3107,
+          "geometry_install_max_usec": 128,
+          "construction_usec": 5178,
+          "setup_edits_and_promotion_usec": 160447,
+          "sampled_live_native_max_bytes": 4294970,
+          "final_native_live_bytes": 4294970,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "mode": "headless",
+      "source_file": "build/objectshard-hosted-44974395620/linux-evidence/lab/objectshard_profile_headless.json",
+      "source_file_sha256": "e23e8ae3029ed1ee1f715bd8347216392e7964e8f1f3ea836de0a4f0d2298e6e",
+      "functional_checks": 719,
+      "functional_failures": 0,
+      "percentile_comparisons": 576,
+      "summary_mismatches": [],
+      "limits_checked": 56,
+      "limit_failures": [],
+      "cases": [
+        {
+          "name": "empty_lab",
+          "frame_usec": {
+            "max": 2024.0,
+            "p50": 1637.0,
+            "p95": 1686.0,
+            "p99": 1729.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3971,
+          "setup_edits_and_promotion_usec": 1,
+          "sampled_live_native_max_bytes": 4170528,
+          "final_native_live_bytes": 4170528,
+          "native_retained_bytes": 4172576,
+          "native_peak_bytes": 4172576,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "inert_moving",
+          "frame_usec": {
+            "max": 2748.0,
+            "p50": 1973.0,
+            "p95": 2021.0,
+            "p99": 2062.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 3457,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3757,
+          "setup_edits_and_promotion_usec": 73279,
+          "sampled_live_native_max_bytes": 4212030,
+          "final_native_live_bytes": 4212030,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "reacting_one",
+          "frame_usec": {
+            "max": 3703.0,
+            "p50": 1984.0,
+            "p95": 2041.0,
+            "p99": 2150.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 3411,
+          "geometry_install_max_usec": 104,
+          "construction_usec": 3724,
+          "setup_edits_and_promotion_usec": 78444,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 459
+        },
+        {
+          "name": "reacting_three",
+          "frame_usec": {
+            "max": 5228.0,
+            "p50": 2584.0,
+            "p95": 2659.0,
+            "p99": 2841.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 4099,
+          "geometry_install_max_usec": 115,
+          "construction_usec": 3889,
+          "setup_edits_and_promotion_usec": 239288,
+          "sampled_live_native_max_bytes": 4295098,
+          "final_native_live_bytes": 4295098,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 523
+        },
+        {
+          "name": "perforated",
+          "frame_usec": {
+            "max": 3164.0,
+            "p50": 1980.0,
+            "p95": 2137.0,
+            "p99": 2205.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 3597,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3742,
+          "setup_edits_and_promotion_usec": 143309,
+          "sampled_live_native_max_bytes": 4213230,
+          "final_native_live_bytes": 4213230,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "saturated_output",
+          "frame_usec": {
+            "max": 4246.0,
+            "p50": 2010.0,
+            "p95": 2076.0,
+            "p99": 2219.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 3653,
+          "geometry_install_max_usec": 106,
+          "construction_usec": 3734,
+          "setup_edits_and_promotion_usec": 2664948,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        },
+        {
+          "name": "dormant_three",
+          "frame_usec": {
+            "max": 3366.0,
+            "p50": 2552.0,
+            "p95": 2622.0,
+            "p99": 2725.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 4046,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 3928,
+          "setup_edits_and_promotion_usec": 251372,
+          "sampled_live_native_max_bytes": 4294938,
+          "final_native_live_bytes": 4294938,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "wake_burst_three",
+          "frame_usec": {
+            "max": 5152.0,
+            "p50": 2600.0,
+            "p95": 2653.0,
+            "p99": 2733.0,
+            "samples": 1200
+          },
+          "present_interval_usec": null,
+          "promotion_max_usec": 4105,
+          "geometry_install_max_usec": 94,
+          "construction_usec": 3863,
+          "setup_edits_and_promotion_usec": 251470,
+          "sampled_live_native_max_bytes": 4294970,
+          "final_native_live_bytes": 4294970,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 399
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "mode": "rendered",
+      "source_file": "build/objectshard-hosted-44974395620/linux-evidence/lab/objectshard_profile_rendered.json",
+      "source_file_sha256": "ec832651c3be990e85cfadcfaf66d04f3438ae53205b1e9be404989918343eca",
+      "functional_checks": 719,
+      "functional_failures": 0,
+      "percentile_comparisons": 704,
+      "summary_mismatches": [],
+      "limits_checked": 80,
+      "limit_failures": [],
+      "cases": [
+        {
+          "name": "empty_lab",
+          "frame_usec": {
+            "max": 2280.0,
+            "p50": 1839.0,
+            "p95": 1911.0,
+            "p99": 1969.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31224.0,
+            "p50": 21702.0,
+            "p95": 27474.0,
+            "p99": 29989.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 2769,
+          "setup_edits_and_promotion_usec": 1,
+          "sampled_live_native_max_bytes": 4170528,
+          "final_native_live_bytes": 4170528,
+          "native_retained_bytes": 4172576,
+          "native_peak_bytes": 4172576,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "inert_moving",
+          "frame_usec": {
+            "max": 2847.0,
+            "p50": 2243.0,
+            "p95": 2325.0,
+            "p99": 2381.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32610.0,
+            "p50": 23026.0,
+            "p95": 28490.0,
+            "p99": 30307.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 3560,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 5379,
+          "setup_edits_and_promotion_usec": 74087,
+          "sampled_live_native_max_bytes": 4212030,
+          "final_native_live_bytes": 4212030,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 0
+        },
+        {
+          "name": "reacting_one",
+          "frame_usec": {
+            "max": 3955.0,
+            "p50": 2272.0,
+            "p95": 2357.0,
+            "p99": 2413.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 33707.0,
+            "p50": 23227.0,
+            "p95": 28297.0,
+            "p99": 31139.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 3606,
+          "geometry_install_max_usec": 104,
+          "construction_usec": 6038,
+          "setup_edits_and_promotion_usec": 80354,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4216030,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 459
+        },
+        {
+          "name": "reacting_three",
+          "frame_usec": {
+            "max": 5525.0,
+            "p50": 2889.0,
+            "p95": 2994.0,
+            "p99": 3182.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 34470.0,
+            "p50": 24421.0,
+            "p95": 29597.0,
+            "p99": 33626.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 4228,
+          "geometry_install_max_usec": 114,
+          "construction_usec": 6317,
+          "setup_edits_and_promotion_usec": 247165,
+          "sampled_live_native_max_bytes": 4295098,
+          "final_native_live_bytes": 4295098,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 523
+        },
+        {
+          "name": "perforated",
+          "frame_usec": {
+            "max": 2986.0,
+            "p50": 2264.0,
+            "p95": 2496.0,
+            "p99": 2580.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 35334.0,
+            "p50": 23117.0,
+            "p95": 28707.0,
+            "p99": 30704.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 3962,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 7101,
+          "setup_edits_and_promotion_usec": 148510,
+          "sampled_live_native_max_bytes": 4213230,
+          "final_native_live_bytes": 4213230,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 523
+        },
+        {
+          "name": "saturated_output",
+          "frame_usec": {
+            "max": 4060.0,
+            "p50": 2273.0,
+            "p95": 2364.0,
+            "p99": 2500.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 33129.0,
+            "p50": 23055.0,
+            "p95": 28267.0,
+            "p99": 31223.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 3585,
+          "geometry_install_max_usec": 110,
+          "construction_usec": 6723,
+          "setup_edits_and_promotion_usec": 2712945,
+          "sampled_live_native_max_bytes": 4212094,
+          "final_native_live_bytes": 4212094,
+          "native_retained_bytes": 4216030,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        },
+        {
+          "name": "dormant_three",
+          "frame_usec": {
+            "max": 4208.0,
+            "p50": 2863.0,
+            "p95": 2974.0,
+            "p99": 3069.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 35330.0,
+            "p50": 24429.0,
+            "p95": 30345.0,
+            "p99": 33826.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 4389,
+          "geometry_install_max_usec": 0,
+          "construction_usec": 7701,
+          "setup_edits_and_promotion_usec": 262745,
+          "sampled_live_native_max_bytes": 4294938,
+          "final_native_live_bytes": 4294938,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        },
+        {
+          "name": "wake_burst_three",
+          "frame_usec": {
+            "max": 5584.0,
+            "p50": 2831.0,
+            "p95": 2979.0,
+            "p99": 3055.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 34717.0,
+            "p50": 23895.0,
+            "p95": 30259.0,
+            "p99": 33485.0,
+            "samples": 1199
+          },
+          "promotion_max_usec": 4525,
+          "geometry_install_max_usec": 101,
+          "construction_usec": 7166,
+          "setup_edits_and_promotion_usec": 263638,
+          "sampled_live_native_max_bytes": 4294970,
+          "final_native_live_bytes": 4294970,
+          "native_retained_bytes": 4302938,
+          "native_peak_bytes": 4302938,
+          "maximum_geometry_age": 0,
+          "native_lifetime_maximum_product_age": 1227
+        }
+      ]
+    }
+  ],
+  "native": [
+    {
+      "scope": "historical",
+      "source_file": "docs/audits/objectshard-001-20261122/native-benchmark-result.json",
+      "sha256": "e74a442c681e570de9b402eb18189a872be4723fc0d0a673120c0335463c5b7d",
+      "functional_checks": 4237384,
+      "functional_failures": 0,
+      "limits_checked": 74,
+      "limit_failures": []
+    },
+    {
+      "scope": "final",
+      "source_file": "docs/audits/objectshard-001-20261122/portable-math/native-result.json",
+      "sha256": "b057f69b8582fc300275dc29760cb025f2fe3496db359628e49b9bc8928e58ba",
+      "functional_checks": 4237384,
+      "functional_failures": 0,
+      "limits_checked": 74,
+      "limit_failures": [
+        {
+          "case": "empty_lab",
+          "metric": "p95",
+          "observed": 3535.535,
+          "maximum": 2000
+        },
+        {
+          "case": "inert_stationary",
+          "metric": "p95",
+          "observed": 4514.675,
+          "maximum": 2000
+        },
+        {
+          "case": "inert_moving",
+          "metric": "p95",
+          "observed": 3990.996,
+          "maximum": 2000
+        },
+        {
+          "case": "reacting_one",
+          "metric": "p95",
+          "observed": 4247.744,
+          "maximum": 2000
+        },
+        {
+          "case": "reacting_three",
+          "metric": "p95",
+          "observed": 5760.462,
+          "maximum": 2000
+        },
+        {
+          "case": "perforated_reacting",
+          "metric": "p95",
+          "observed": 3528.389,
+          "maximum": 2000
+        },
+        {
+          "case": "perforated_reacting",
+          "metric": "max",
+          "observed": 64604.694,
+          "maximum": 50000
+        },
+        {
+          "case": "saturated_world_destinations",
+          "metric": "p95",
+          "observed": 4343.424,
+          "maximum": 2000
+        },
+        {
+          "case": "dormant_twelve",
+          "metric": "p95",
+          "observed": 3491.468,
+          "maximum": 2000
+        },
+        {
+          "case": "wake_burst_twelve",
+          "metric": "p95",
+          "observed": 3745.427,
+          "maximum": 2000
+        }
+      ]
+    }
+  ],
+  "statistics_checked": 2560,
+  "profile_limits_checked": 272,
+  "unexpected_findings": [],
+  "notes": [
+    "Native complete final matrix remains budget_failed; old pass and bounded matched control do not supersede it.",
+    "Accounted native memory is not RSS. Sampled live, retained and peak values are distinct.",
+    "Rendered mode reuses a native coordinator across scenario resets; headless mode constructs a fresh session. Construction paths are not matched cold cohorts.",
+    "Native maximum counters are lifetime/campaign maxima across rendered resets; per-frame component deltas are measured independently."
+  ],
+  "final_native_source_binding": {
+    "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+    "capture_git_head": "1bb6185be05f5ef838543a0e13c81428b751d969",
+    "inputs_checked": 92,
+    "mismatches": [],
+    "qualification_status_unchanged": "budget_failed"
+  },
+  "scope_conclusions": {
+    "unexpected_statistical_or_scope_errors": 0,
+    "runtime_class_a_findings": 0,
+    "runtime_class_b_findings": 0,
+    "final_native_complete_timing_qualification": "failed: 10/74 registered limits",
+    "hosted_lab_performance": "passed in four source-bound matrices; Windows 11/NVIDIA physical acceptance not established",
+    "requested_publication_precision": [
+      "Distinguish maximum sampled live accounted bytes 4295098 from peak/retained accounted bytes 4302938. Neither is RSS.",
+      "Rendered construction resets a retained native coordinator; headless construction creates a new native session. Do not call these matched cold/warm measurements.",
+      "Native lifetime maxima persist across rendered resets; attribute them to the campaign, not the final case."
+    ],
+    "profile_frames": 38400,
+    "rendered_profile_frames": 19200
+  },
+  "report_hashes": {
+    "docs/audits/2026-11-22-objectshard-final-acceptance.md": "75bf85e88e99cd893ba87876a17a2182090fafe5c51ca790753bc12e5f2aa941",
+    "docs/audits/2026-11-22-objectshard-native-performance.md": "0f70d8ba4878ce91ae1315161e4ce47b9c36f470a1fc3d02864bfc423eabc688",
+    "docs/audits/2026-11-22-objectshard-portable-math-performance-delta.md": "beacf6ffa0269c8cbcf0c905aaf9fc9b7a257d175a6a219753327e6873767b15"
+  },
+  "registered_budget_hashes": {
+    "tools/objectshard/native_budgets.json": "d8ba1fb5b2c59eab559011eaa0dbe3b2caab1b4b4e26f75673bb4535460903f6",
+    "tools/objectshard/lab_budgets.json": "317ef316b7550dec04c794af209958c063ef0016aa2bd7f435aaca60f0be117a"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "base_commit": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "patch_sha256": "a6eafcd741511ae26a77d7e319e96cd9e33fcae08770f615bd48464f0230d0dc",
+  "replayed_harness_sha256": "03ee85efeac3a5b35a5c37a5f5dfddab9fadfb7c808f7f0a5c0f716cdaab8c6f",
+  "expected_executed_harness_sha256": "03ee85efeac3a5b35a5c37a5f5dfddab9fadfb7c808f7f0a5c0f716cdaab8c6f",
+  "matches": true,
+  "tracked_source_changed": false,
+  "expected_identity_source": "SHA256 computed directly from the executed fulltree-probe-v3/benchmark.cpp artifact"
+}

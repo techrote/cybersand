@@ -13,6 +13,7 @@ var failed: bool = false
 var scenario: int = 1
 var seed: int = 12
 var status: String = "Not started"
+var last_refusal: Dictionary = {}
 var events: Array[Dictionary] = []
 var samples: Array[Dictionary] = []
 var promotion_max_usec: int = 0
@@ -20,6 +21,7 @@ var frame_max_usec: int = 0
 var last_frame_usec: int = 0
 var last_copy_usec: int = 0
 var last_native_usec: int = 0
+var last_snapshot_copies: int = 0
 
 
 func open(next_scenario: int = 1, next_seed: int = 12) -> Dictionary:
@@ -42,6 +44,7 @@ func open(next_scenario: int = 1, next_seed: int = 12) -> Dictionary:
 	paused = true
 	events.clear()
 	samples.clear()
+	last_refusal.clear()
 	promotion_max_usec = 0
 	frame_max_usec = 0
 	frame = native.snapshot()
@@ -64,6 +67,7 @@ func advance(force: bool = false) -> Dictionary:
 	var started: int = Time.get_ticks_usec()
 	bridge.begin_frame()
 	last_copy_usec = 0
+	last_snapshot_copies = 0
 	# Every material/shape installation finishes between explicit Rapier steps.
 	if not _synchronize():
 		return {"ok": false, "outcome": "SynchronizationFailed"}
@@ -78,7 +82,11 @@ func advance(force: bool = false) -> Dictionary:
 	if not bool(frame.promotion.get("present", false)):
 		var preparation: Dictionary = native.prepare_next()
 		if preparation.get("ok", false):
+			last_refusal.clear()
 			_refresh()
+		elif str(preparation.get("outcome", "")) not in ["Busy", "Anchored"]:
+			last_refusal = preparation.duplicate(true)
+			_event("DiscoveryRefused", preparation)
 	if bool(frame.promotion.get("present", false)):
 		if not _promote():
 			return {"ok": false, "outcome": "PromotionHeld"}
@@ -92,6 +100,8 @@ func advance(force: bool = false) -> Dictionary:
 	frame_max_usec = maxi(frame_max_usec, last_frame_usec)
 	_record_sample()
 	status = "Tick %d · %d moving owners · %s" % [int(frame.tick), bridge.bodies.size(), "paused" if paused else "running"]
+	if not last_refusal.is_empty():
+		status += " · discovery " + str(last_refusal.get("outcome", "refused")) + ": inventory stays with its current owner"
 	return {"ok": true, "tick": frame.tick}
 
 
@@ -146,12 +156,29 @@ func inspect(position: Vector2i) -> Dictionary:
 
 
 func export_result() -> Dictionary:
+	var owners: Array[Dictionary] = []
+	for shard: Dictionary in frame.get("shards", []):
+		var owner: Dictionary = {}
+		for key: String in ["session", "id", "generation", "lifecycle", "owns_inventory", "structural", "cargo", "products",
+			"width", "height", "origin_x", "origin_y", "body_generation", "material_revision", "topology_revision",
+			"geometry_revision", "applied_physics_revision", "geometry_pending", "mask_digest", "shape_digest",
+			"mass", "com_x", "com_y", "inertia", "split_pending", "islands"]:
+			owner[key] = shard.get(key)
+		var inventory: Dictionary = {}
+		for material: int in shard.get("materials", PackedByteArray()):
+			if material != 0:
+				inventory[str(material)] = int(inventory.get(str(material), 0)) + 1
+		owner["material_populations"] = inventory
+		owner["actual_pose"] = _pose(shard)
+		owners.append(owner)
 	return {"schema": "objectshard-lab-observation-v1", "source_revision": OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"engine": Engine.get_version_info(), "platform": OS.get_name(), "scenario": scenario, "seed": seed,
 		"session": frame.get("session", 0), "tick": frame.get("tick", 0), "failed": failed, "status": status,
+		"last_refusal": last_refusal.duplicate(true),
 		"capabilities": native.capabilities() if native != null else {}, "accounting": frame.get("accounting", {}),
 		"native_metrics": frame.get("metrics", {}), "physics_metrics": bridge.timings if bridge != null else {},
 		"promotion_max_usec": promotion_max_usec, "frame_max_usec": frame_max_usec,
+		"owners": owners,
 		"events": events.duplicate(true), "samples": samples.duplicate(true),
 		"owner_acceptance": "unrecorded; automated execution is not physical acceptance"}
 
@@ -225,6 +252,7 @@ func _promote() -> bool:
 
 
 func _synchronize() -> bool:
+	var native_changed: bool = false
 	var installed: Dictionary = bridge.install_terrain(frame.get("terrain_chunks", []))
 	if not installed.get("ok", false):
 		_failure("Terrain synchronization failed: " + str(installed))
@@ -241,7 +269,13 @@ func _synchronize() -> bool:
 		if not accepted.get("ok", false):
 			_failure("Geometry receipt rejected; both clocks held: " + str(accepted))
 			return false
-	_refresh()
+		native_changed = true
+	# Installing unchanged terrain reads back the backend; it does not mutate the
+	# native owner. Copy a new material publication only after an actual native ACK.
+	# The caller already refreshes after step/edit/promotion. This avoids two whole
+	# Lab copies per ordinary frame without skipping a geometry or ownership barrier.
+	if native_changed:
+		_refresh()
 	return true
 
 
@@ -257,6 +291,7 @@ func _refresh() -> void:
 	var started: int = Time.get_ticks_usec()
 	frame = native.snapshot()
 	last_copy_usec += Time.get_ticks_usec() - started
+	last_snapshot_copies += 1
 
 
 func _find_shard(id: int) -> Dictionary:
@@ -283,6 +318,7 @@ func _record_sample() -> void:
 		# A fixed-size observation window, never an unbounded owner-facing log.
 		samples.pop_front()
 	samples.append({"tick": frame.tick, "frame_usec": last_frame_usec, "native_usec": last_native_usec,
+		"snapshot_copies": last_snapshot_copies,
 		"copy_usec": last_copy_usec, "rapier_usec": bridge.timings.rapier_step_usec,
 		"flush_usec": bridge.timings.rapier_flush_usec, "geometry_usec": bridge.timings.geometry_install_usec,
 		"terrain_usec": bridge.timings.terrain_install_usec})

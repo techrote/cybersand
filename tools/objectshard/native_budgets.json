@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "registered_utc": "2026-11-22T01:07:21Z",
+  "scope": "Development-host native C++ costs with synthetic poses and exact protocol receipts. These are not Windows presentation, Rapier-step, GPU-upload, or owner physical-acceptance budgets.",
+  "baseline_input_digest": "72da75b047f926d029850ca259a7469f09d2a28cc307db193939616ccc006670",
+  "baseline_host": {
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "visible_logical_cpus": 9,
+    "compiler": "GCC 14.2.0, -O3 -DNDEBUG without LTO"
+  },
+  "baseline_harness_evidence": "build/objectshard-benchmarks-harness-iteration/inputs.json and matrix.json",
+  "baseline_observations": {
+    "native_empty_frame_p95_us": 361.375,
+    "native_three_reacting_frame_p95_us": 822.794,
+    "largest_observed_native_frame_us": 13400.609,
+    "steady_cpp_allocations": 0,
+    "three_reacting_cpp_live_bytes": 4228160,
+    "three_reacting_registry_retained_bytes": 173438
+  },
+  "minimum_frame_samples_per_workload": 1000,
+  "integrated_limits": {
+    "native_frame_p95_us": 2000,
+    "native_frame_p99_us": 10000,
+    "native_frame_max_us": 50000,
+    "steady_cpp_allocations": 0,
+    "cpp_live_max_bytes": 6291456,
+    "cpp_peak_max_bytes": 6291456,
+    "registry_retained_max_bytes": 262144,
+    "geometry_age_max_ticks": 1
+  },
+  "comparison_requirements": {
+    "local_and_external_tuple_equality_each_tick": true,
+    "actual_fire_delivery_and_world_smoke": true,
+    "steady_cpp_allocations_each_candidate": 0,
+    "speedup_required": false
+  },
+  "caveats": [
+    "p99 and maximum include host scheduling delays; every observed maximum is retained.",
+    "A percentile with fewer than 1000 steady-state samples is descriptive, not final budget qualification.",
+    "Construction and promotion samples are reported separately and are not silently mixed into steady-state percentiles.",
+    "Requested C++ allocation bytes are not RSS and exclude malloc metadata, C allocations, stacks and executable mappings.",
+    "Initial native storage counters reported 1.83 MB for three trees while global C++ new observed 4.23 MB. World non-cell metadata and other allocations are not included in the former; do not label resident_cell_bytes as total World residency.",
+    "The miniature-World experiment excludes common external World/physics/render work and qualifies only its declared equivalent-output material-domain fixture."
+  ]
+}

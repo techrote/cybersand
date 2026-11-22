@@ -112,6 +112,19 @@ runtime, interactive viewer and offline gallery, or use the
 Large/asymmetric art dimensions are independent of native playable World limits.
 This integration remains Draft/HOLD pending explicit owner acceptance.
 
+## ObjectShard Lab — Draft/HOLD research
+
+The independent [ObjectShard Lab](docs/operations/objectshard-lab-playtest.md)
+evaluates genuine native Wood structures that detach into moving Rapier bodies,
+continue selected combustion, emit real material and admit bounded Sand/Water
+interactions. Its [M0–M2 implementation record](docs/research/objectshard-001.md)
+separates staged source, exact runtime evidence and owner physical acceptance.
+The [final delivery record](docs/audits/2026-11-22-objectshard-final-acceptance.md)
+links the verified Windows evaluator, passing Linux/Windows campaign and retained
+native timing failure. Physical owner acceptance remains outstanding.
+This branch candidate is not enabled in ordinary gameplay or Workbench. It does
+not claim fracture, general liquid transfer or durable shard saves.
+
 ## Development
 
 **Current source, reviewed 2026-09-08:** this checkout preserves the acquired

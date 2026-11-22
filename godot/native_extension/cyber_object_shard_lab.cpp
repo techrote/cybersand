@@ -1,4 +1,5 @@
 #include "cyber_object_shard_lab.hpp"
+#include "cybersand/object_shard_contact.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
@@ -70,12 +71,17 @@ Dictionary metrics_value(const os::Metrics& value) {
     COPY_METRIC(promotions); COPY_METRIC(refusals); COPY_METRIC(chemistry_cells);
     COPY_METRIC(products_created); COPY_METRIC(output_blocked); COPY_METRIC(sand_ingested);
     COPY_METRIC(exposure_overflows); COPY_METRIC(stale_messages); COPY_METRIC(mask_cells);
+    COPY_METRIC(ingress_blocked);
     COPY_METRIC(sweep_samples); COPY_METRIC(world_ns); COPY_METRIC(chemistry_ns);
     COPY_METRIC(contact_ns); COPY_METRIC(occupancy_ns); COPY_METRIC(geometry_ns);
+    COPY_METRIC(discovery_ns); COPY_METRIC(terrain_ns); COPY_METRIC(exchange_ns); COPY_METRIC(relocation_ns);
     COPY_METRIC(snapshot_ns); COPY_METRIC(maximum_pause_ns); COPY_METRIC(maximum_geometry_age);
+    COPY_METRIC(maximum_geometry_wait_ns);
     COPY_METRIC(maximum_product_age); COPY_METRIC(coordinator_bytes); COPY_METRIC(world_bytes);
     COPY_METRIC(live_bytes); COPY_METRIC(retained_bytes); COPY_METRIC(peak_bytes);
 #undef COPY_METRIC
+    result["occupancy_timing_scope"] = "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters";
+    result["memory_scope"] = "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier";
     return result;
 }
 
@@ -131,9 +137,14 @@ Dictionary CyberObjectShardLab::configure(const Dictionary& configuration) {
         os::Config config;
         const auto scenario = static_cast<std::int64_t>(configuration.get("scenario", 1));
         const auto seed = static_cast<std::int64_t>(configuration.get("seed", 12));
+        const Variant transfer_limit = configuration.get("transfer_budget", 64);
+        if (transfer_limit.get_type() != Variant::INT) return refusal("InvalidConfiguration");
+        const auto transfer_budget = static_cast<std::int64_t>(transfer_limit);
         if (scenario < 0 || scenario > 4 || seed < 0) return refusal("InvalidConfiguration");
+        if (transfer_budget < 0 || transfer_budget > 64) return refusal("InvalidConfiguration");
         config.scenario = static_cast<std::uint32_t>(scenario);
         config.seed = static_cast<std::uint64_t>(seed);
+        config.transfer_budget = static_cast<std::uint32_t>(transfer_budget);
         coordinator_ = std::make_unique<os::Coordinator>(config);
         return snapshot();
     } catch (const std::exception& error) { return fail(error.what()); }
@@ -302,11 +313,14 @@ Dictionary CyberObjectShardLab::snapshot() {
             row["origin_x"] = bounds.x; row["origin_y"] = bounds.y;
             row["width"] = bounds.width; row["height"] = bounds.height;
             row["body_generation"] = static_cast<std::int64_t>(body && body->body_generation ? body->body_generation : handle.generation);
-            row["position_x"] = body && body->has_body ? body->pose.x : static_cast<double>(bounds.x);
-            row["position_y"] = body && body->has_body ? body->pose.y : static_cast<double>(bounds.y);
+            // A draining domain keeps its last physical release anchor after
+            // its RID retires. Capture coordinates never regain pose authority.
+            row["position_x"] = body ? body->pose.x : static_cast<double>(bounds.x);
+            row["position_y"] = body ? body->pose.y : static_cast<double>(bounds.y);
             row["rotation"] = body ? body->pose.rotation : 0.0;
             row["has_body"] = body && body->has_body;
             row["geometry_pending"] = body && body->geometry_pending;
+            row["ingress_fenced"] = body && body->ingress_fenced;
             row["material_revision"] = static_cast<std::int64_t>(shard.material_revision());
             row["topology_revision"] = static_cast<std::int64_t>(shard.topology_revision());
             row["geometry_revision"] = static_cast<std::int64_t>(geometry.revision);
@@ -319,7 +333,11 @@ Dictionary CyberObjectShardLab::snapshot() {
             row["islands"] = geometry.islands;
             const auto counts = shard.counts();
             row["structural"] = counts.structural; row["products"] = counts.products; row["cargo"] = counts.cargo;
-            if (body && body->pocket_open) row["pocket"] = Rect2i(body->pocket_cell % bounds.width, body->pocket_cell / bounds.width, 1, 1);
+            if (body && body->pocket_open) {
+                const auto opening = os::contact::pocket_opening(shard, body->pocket_cell);
+                if (opening.outcome == os::Outcome::Accepted)
+                    row["pocket"] = Rect2i(opening.min_x, opening.row, opening.max_x - opening.min_x, 1);
+            }
             PackedInt32Array rectangles, states_a, states_b, temperature, roles, incarnations;
             for (const auto& rect : geometry.shapes) {
                 rectangles.push_back(rect.x); rectangles.push_back(rect.y);
@@ -346,7 +364,9 @@ Dictionary CyberObjectShardLab::snapshot() {
 #define COPY_COUNTS(name) { PackedInt64Array counts; for (auto value : source.accounting.name) counts.push_back(static_cast<std::int64_t>(value)); accounting[#name] = counts; }
         COPY_COUNTS(promoted); COPY_COUNTS(ingested); COPY_COUNTS(emitted);
         COPY_COUNTS(created); COPY_COUNTS(destroyed); COPY_COUNTS(expired); COPY_COUNTS(reset_disposed);
+        COPY_COUNTS(setup_created); COPY_COUNTS(authored_created); COPY_COUNTS(authored_destroyed); COPY_COUNTS(world_tick_delta);
 #undef COPY_COUNTS
+        accounting["reset_water_quanta"] = static_cast<std::int64_t>(source.accounting.reset_water_quanta);
         accounting["extinguished"] = static_cast<std::int64_t>(source.accounting.extinguished);
         accounting["accepted_exposures"] = static_cast<std::int64_t>(source.accounting.accepted_exposures);
         accounting["consumed_exposures"] = static_cast<std::int64_t>(source.accounting.consumed_exposures);
@@ -370,19 +390,30 @@ Dictionary CyberObjectShardLab::metrics() const {
 Dictionary CyberObjectShardLab::capabilities() const {
     Dictionary value;
     value["version"] = os::kCapabilityVersion;
-    value["implemented_milestone"] = 1; // Advanced only with the corresponding native stage.
-    value["qualification"] = "M1 source checkpoint; product delivery, ingress and external contact await M2";
-    value["surface_contact"] = false;
+    value["implemented_milestone"] = 2;
+    value["qualification"] = "M2 experimental source; exact platform/package receipts are separate from capability advertisement";
+    value["surface_contact"] = true;
+    value["surface_contact_scope"] = "Historical non-consuming World Water exposure extinguishes the same Wood incarnation";
     value["reaction"] = true;
     value["selected_lifecycle"] = "Wood combustion; retained Fire to Smoke; Smoke expiry; no internal transport";
+    Dictionary rules;
+    rules["int.kernel.combustible.burn.v1"] = "Wood only: burn cadence, Water extinction, consumption and real Fire production";
+    rules["int.kernel.fire.ignite-smoke.v1"] = "Selected local ignition and Fire expiry; movement stays World-owned after delivery";
+    value["selected_rule_ids"] = rules;
     value["mutable_geometry"] = true;
-    value["emission"] = false;
-    value["ingestion"] = false;
+    value["emission"] = true;
+    value["emission_scope"] = "Exact Fire/Smoke product transfer; retained cargo release while draining";
+    value["ingestion"] = true;
+    value["ingestion_scope"] = "Baseline whole-cell Sand through a validated open lodging aperture; cargo never forms structural bonds";
+    value["cargo_mass_policy"] = "Retained Sand contributes mass, COM and inertia but does not add a rigid shape";
     value["whole_cell_quantity"] = true;
     value["fractional_quantity"] = false; value["momentum_state_transfer"] = false;
     value["solver_sidecar_transfer"] = false; value["internal_transport"] = false;
     value["persistence_restore"] = false; value["fracture"] = false;
     value["max_bodies"] = 3; value["max_shapes_per_body"] = 256;
+    value["transfer_budget_per_tick"] = owner_ == std::this_thread::get_id() && coordinator_
+        ? coordinator_->config().transfer_budget : 64;
+    value["motion_envelope"] = "At most 4 cells translation and 0.20 radians rotation per semantic step; unresolved complete rotations hold the Lab";
     value["world_solver"] = "Explicit isolated SerialInPlace baseline; production Water defaults unchanged";
     return value;
 }

@@ -63,9 +63,7 @@ func _draw() -> void:
 		var id: int = int(shard.id)
 		if not shard_textures.has(id):
 			continue
-		var fallback := Transform2D(float(shard.get("rotation", 0.0)), Vector2(
-			float(shard.get("position_x", shard.origin_x)), float(shard.get("position_y", shard.origin_y))))
-		var pose: Transform2D = poses.get(id, fallback)
+		var pose: Transform2D = material_pose(shard)
 		draw_set_transform(offset + pose.origin * zoom, pose.get_rotation(), Vector2.ONE * zoom)
 		draw_texture(shard_textures[id].texture, Vector2.ZERO)
 		if overlays:
@@ -79,6 +77,14 @@ func _draw() -> void:
 				draw_rect(Rect2(pocket), Color("77e6a5"), false, 1.0 / zoom)
 	draw_set_transform(Vector2.ZERO)
 	draw_rect(Rect2(offset, canvas * zoom), Color("506477"), false, 1.0)
+
+
+func material_pose(shard: Dictionary) -> Transform2D:
+	# A retired RID removes only the live pose sample. Retained material still
+	# renders at the coordinator's final physical anchor, not its capture origin.
+	var fallback := Transform2D(float(shard.get("rotation", 0.0)), Vector2(
+		float(shard.get("position_x", shard.origin_x)), float(shard.get("position_y", shard.origin_y))))
+	return poses.get(int(shard.id), fallback)
 
 
 func _gui_input(event: InputEvent) -> void:
