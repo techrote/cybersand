@@ -372,6 +372,37 @@ class QualificationGuards(unittest.TestCase):
             with self.subTest(fault=fault), self.assertRaises(RuntimeError): profile.verify_ramcache(value)
 
 
+    def test_additional_lifecycle_death_oracles_fail_closed(self):
+        for fault in ("old_authoring_changed","new_authoring_changed","second_area_clock",
+                      "unacknowledged_generation","queued_write_missing","write_barrier_missing",
+                      "seed_process_reuse","seed_runtime_rewritten","new_dirty_not_witnessed"):
+            with self.subTest(fault=fault):
+                value = valid_guard_fixture()
+                rows = value["ramcache_recovery"]["rows"]
+                offset = list(profile.BOUNDARIES).index("newer_dirty_after_durable")*3
+                queued = list(profile.BOUNDARIES).index("queued_dirty")*3
+                if fault == "old_authoring_changed":
+                    rows[offset]["seed"]["baseline"]["durable_oracle"]["areas"]["a"]["authoring_sha256"] = "f"*64
+                elif fault == "new_authoring_changed":
+                    rows[offset+1]["durable_oracle"]["areas"]["a"]["authoring_sha256"] = "f"*64
+                elif fault == "second_area_clock":
+                    rows[offset+1]["durable_oracle"]["areas"]["b"]["completed_tick"] = 1
+                elif fault == "unacknowledged_generation":
+                    rows[offset+1]["durable_oracle"]["areas"]["a"]["mutation_generation"] = 2
+                elif fault == "queued_write_missing":
+                    rows[queued]["observed_barrier"]["queued_requests"] = 0
+                elif fault == "write_barrier_missing":
+                    rows[queued]["barrier_witnesses"].pop(0)
+                elif fault == "seed_process_reuse":
+                    rows[offset]["seed"]["pid"] = rows[offset]["pid"]
+                elif fault == "seed_runtime_rewritten":
+                    rows[offset]["seed"]["baseline"]["native_sha256"] = "f"*64
+                else:
+                    rows[offset]["observed_barrier"]["live_native_tick"] = 5
+                with self.assertRaises(RuntimeError):
+                    profile.verify_ramcache(value)
+
+
     def test_child_custody_and_failed_recovery_cannot_be_relabelled(self):
         for fault in ("engine", "memory_pid", "phase_pid", "worker", "harness", "source", "binary", "failed_child",
                       "fake_kill", "wrong_barrier", "wrong_session", "wrong_tick", "reused_process", "changed_resume"):
