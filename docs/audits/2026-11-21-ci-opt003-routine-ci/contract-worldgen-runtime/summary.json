@@ -1,0 +1,35 @@
+{
+  "base": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+  "base_godot_plan_sha256": "682b451c76e917b10b5872e7bfd0b65d2c12587d882923c159a1dba011f693fd",
+  "base_tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+  "candidate": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "candidate_godot_plan_sha256": "0692603835fe9f511c5f9968cb52e4bb6a60de49986293f05f143c98066dc37d",
+  "candidate_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+  "changed_outer_argv": 2,
+  "contract": {
+    "bytes": 728200,
+    "path": "contract-worldgen-runtime.json",
+    "sha256": "0e5e0b310191ca472788f6f7e7ca21413e577d3591835a136409fce59e811bf6"
+  },
+  "control_counts": [
+    21,
+    51,
+    22
+  ],
+  "documentation_workflow_sha256": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d",
+  "platforms": {
+    "linux": {
+      "cases": 338,
+      "shards": 24
+    },
+    "windows": {
+      "cases": 315,
+      "shards": 23
+    }
+  },
+  "production_discrepancies": [],
+  "required_raw_logs": 14,
+  "status": "passed",
+  "workflow_inventory_equal": true,
+  "worktrees_clean": true
+}

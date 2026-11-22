@@ -1,0 +1,76 @@
+{
+  "baseline": [
+    {
+      "binary": "build/test_megatruss_station_sanitized",
+      "elapsed_until_next_boundary_seconds": 68.802733975,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_seeded_typology_megablock_sanitized",
+      "elapsed_until_next_boundary_seconds": 202.242719041,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_metabolist_spine_sanitized",
+      "elapsed_until_next_boundary_seconds": 185.095254523,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_interlaced_viaduct_sanitized",
+      "elapsed_until_next_boundary_seconds": 59.153929207,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_rosework_gatehouse_sanitized",
+      "elapsed_until_next_boundary_seconds": 131.861909158,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_interlock_brutalism_sanitized",
+      "elapsed_until_next_boundary_seconds": 102.822880564,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_suspended_arcology_sanitized",
+      "elapsed_until_next_boundary_seconds": 126.053896781,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    }
+  ],
+  "candidate": [
+    {
+      "binary": "build/test_megatruss_station_sanitized",
+      "elapsed_until_next_boundary_seconds": 70.405876554,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_seeded_typology_megablock_sanitized",
+      "elapsed_until_next_boundary_seconds": 206.819878475,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_metabolist_spine_sanitized",
+      "elapsed_until_next_boundary_seconds": 178.638264279,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_interlaced_viaduct_sanitized",
+      "elapsed_until_next_boundary_seconds": 62.656219505,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_rosework_gatehouse_sanitized",
+      "elapsed_until_next_boundary_seconds": 131.738010223,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_interlock_brutalism_sanitized",
+      "elapsed_until_next_boundary_seconds": 104.664223606,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    },
+    {
+      "binary": "build/test_suspended_arcology_sanitized",
+      "elapsed_until_next_boundary_seconds": 125.064447343,
+      "qualification": "stdout marker timing within independently admitted serial loop; includes tiny shell/print overhead"
+    }
+  ]
+}

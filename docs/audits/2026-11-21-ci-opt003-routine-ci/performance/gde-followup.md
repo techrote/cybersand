@@ -58,3 +58,9 @@ Terminal jobs: `candidate-cohort/jobs-44959001009.json`. Downloaded original art
 
 Raw logs of both build jobs and both tail shards retained as `job-ID.log`; per-case summary `gde-followup-raw-summary.json`. Platform telemetry confirms a mixture of Intel/AMD worker models. Windows22 used AMD64 Family25 Model1 and Linux18 Intel Xeon Platinum8573C; no precise cross-worker speedup is inferred. The performance aggregate contains the hosted job durations as well as individual cases: their sums are kept separate to avoid double-counting runner-minutes.
 
+
+## Follow-up ranking refinement: bounded dependency build parallelism first
+
+A subsequent source read identified an even smaller intervention than persistent dependency reuse: both Linux and Windows cross-build jobs set `SCONS_JOBS: "2"` exclusively for godot-cpp. Trying four compiler jobs on the existing four-logical-CPU hosted worker should rank ahead of a new cross-run dependency cache on implementation effort, provenance risk and reversibility. It preserves every compilation, source, flag, ABI and fresh outcome; only bounded scheduling changes.
+
+This is a hypothesis. Original telemetry reports CPU0 and RSS about3.8MiB for both godot-cpp commands because it measures only the direct shell process. It does not measure SCons/compiler descendants and cannot establish memory headroom. Hosted proof machines expose two physical cores with two threads each; four logical CPUs are not evidence of a2× throughput increase. A future single predeclared same-worker `-j2`/`-j4` comparison should include descendant CPU/RSS and identical output qualification. No extra hosted campaign was started for this hypothesis, and it must not delay the Native deliveries. If successful, persistent dependency caching becomes a later, more complex option.

@@ -1,0 +1,35 @@
+{
+  "base": "28ec075afab840cf6fbb35190a7b1915808904f3",
+  "candidate": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+  "source": {
+    ".github/workflows/native.yml": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+    "Makefile": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7",
+    "docs/operations/ci-execution-and-performance.md": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+    "docs/reference/status-and-roadmap.md": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33",
+    "tools/ci/check_worldgen_build_inventory.py": "1721d6d885d185c0a9556b2070c801694b4e1e2db9f17bdcdf1f7efe7d6683a7",
+    "tools/ci/test_native_shards.py": "dcfc3ce80e331a28c92949a7b69e0f9c911ec518cd630ffde652b7249ff30bc4",
+    "tools/ci/test_worldgen_build_inventory.py": "dee2cc2426b0195185ea869566e40e507b2a0146a8ff710d2d0777a477bbd044",
+    "tools/ci/verify_native_shards.py": "b86278278ff0f83ef189a7889d6d4bb729e7adbd587ee24edd29350f48815ead"
+  },
+  "local_controls": {
+    "actual_watchdog_timeout_and_cancellation": {
+      "tests": 2,
+      "seconds": 5.254,
+      "status": "passed"
+    },
+    "actual_log_replay_failure_priority": {
+      "tests": 1,
+      "seconds": 2.394,
+      "status": "passed"
+    },
+    "canonical_native_shard_verifier": {
+      "tests": 51,
+      "seconds": 3.212,
+      "status": "passed"
+    }
+  },
+  "exact_source_correlated": true,
+  "verdict": "GO for repaired CI/failure/diagnostic contract; no remaining P1/P2 identified; full hosted and performance admission remain required",
+  "p2_disposition": "Confirmed fixed: flushed stdout/stderr survive actual watchdog termination and SIGINT in original source-bound per-case files"
+}

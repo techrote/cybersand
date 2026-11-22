@@ -1,0 +1,31 @@
+{
+  "scope": "synthetic real-Make and actual run_timed_command boundary; not scientific/runtime qualification",
+  "candidate_anchor": "28ec075afab840cf6fbb35190a7b1915808904f3 plus working-tree repair",
+  "status": "timeout",
+  "complete": true,
+  "natural_completion": false,
+  "hanging_stdout_retained": true,
+  "hanging_stderr_retained": true,
+  "raw_log_sha256": "76cf2a11a0d9e20958f3145b8e20e5ef30ac70a888e4fdc13cbea3af3359b782",
+  "raw_log": "source_sha=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa run_id=1234 run_attempt=1 binary=test_seeded_typology_megablock\nCONTROL-BEGIN build/test_seeded_typology_megablock\nCONTROL-ERR build/test_seeded_typology_megablock\n",
+  "command_log": "Running build/test_megatruss_station\nsource_sha=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa run_id=1234 run_attempt=1 binary=test_megatruss_station\nCONTROL-BEGIN build/test_megatruss_station\nCONTROL-ERR build/test_megatruss_station\nmake: *** [Makefile:465: build/test_megatruss_station.run] Error 29\nmake: *** Waiting for unfinished jobs....\n",
+  "terminated_descendants": {
+    "89": {
+      "group": 85,
+      "parent": 85,
+      "start": 4706039,
+      "state": "S"
+    },
+    "92": {
+      "group": 85,
+      "parent": 89,
+      "start": 4706039,
+      "state": "S"
+    }
+  },
+  "implementation_sha256": {
+    "Makefile": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7",
+    "tools/ci/test_worldgen_build_inventory.py": "dee2cc2426b0195185ea869566e40e507b2a0146a8ff710d2d0777a477bbd044",
+    "tools/ci/verify_native_shards.py": "b86278278ff0f83ef189a7889d6d4bb729e7adbd587ee24edd29350f48815ead"
+  }
+}

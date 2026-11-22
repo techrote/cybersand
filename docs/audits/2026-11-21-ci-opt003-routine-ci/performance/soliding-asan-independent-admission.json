@@ -1,0 +1,360 @@
+{
+  "arms": {
+    "baseline": {
+      "binary_digests": {
+        "build/test_settled_discovery_sanitized": {
+          "bytes": 57882576,
+          "sha256": "f1c137acf1d40060113ddc23b3b074dc0206c8ff3d864ca7f79f37ecc0b089c3"
+        },
+        "build/test_settled_regions_sanitized": {
+          "bytes": 352916752,
+          "sha256": "680ded52553ea0ee85e45866fdfc5449100997ee458527a09648b43f5fde6d44"
+        },
+        "build/test_settled_world_discovery_sanitized": {
+          "bytes": 56869320,
+          "sha256": "96e3d300f79d540a7e3fdbde8c27251721c1e6b899737a7b011e248fa7072038"
+        },
+        "build/test_soliding_lifecycle_sanitized": {
+          "bytes": 1001760,
+          "sha256": "13ee453c5d795272d389057b2b6f5b80bbae2a941d716c5219bf142b50e18f53"
+        },
+        "build/test_stage3b_bounded_spatial_index_sanitized": {
+          "bytes": 75159888,
+          "sha256": "e283aaf3fe87aa0997299cc15456e6265c93d758a904365a929f50fc597a3bc5"
+        },
+        "build/test_stage3b_runtime_storage_sanitized": {
+          "bytes": 95508784,
+          "sha256": "f62419f8953fe18aa2cf8925c19b0f8015fb3934f627cfc03d8588fb4e1eb5c9"
+        },
+        "build/test_stage3b_sparse_activity_deadline_sanitized": {
+          "bytes": 56425616,
+          "sha256": "7d72cd23caec45a5d8856318dffd3dff13b843c054d5e0fa9cdca26ee0b8ca74"
+        },
+        "build/test_stage3b_sparse_mutation_witness_sanitized": {
+          "bytes": 56308632,
+          "sha256": "2ab8ab900634edd7f91a2fffe66bac002f87b511363b9373f86cfefc02bfad2d"
+        }
+      },
+      "command_outputs": {
+        "commands/build-settled-regions-sanitized/command.log": {
+          "bytes": 1002,
+          "sha256": "b5ea15b2e98568475f3e4ba4a98f1030325ecfd9962a20afde5aee79fa4b7dd3"
+        },
+        "commands/build-settled-regions-sanitized/performance.jsonl": {
+          "bytes": 2753,
+          "sha256": "13b8b1a2ebc5a4e8ee76cbca1a2f599506762ff2f80bb5e352e3650cea28eb0f"
+        },
+        "commands/build-settled-regions-sanitized/receipt.json": {
+          "bytes": 2173,
+          "sha256": "11efddee32cc7e4d03dcfd5890737f7de26d9a4790f8668305b8333c20aeeef3"
+        },
+        "commands/build-soliding-sanitized/command.log": {
+          "bytes": 27133,
+          "sha256": "ff1438f4432cb59e53745ea36ddeeee6df018e4d2144ee029c7b26436cc19f68"
+        },
+        "commands/build-soliding-sanitized/performance.jsonl": {
+          "bytes": 2751,
+          "sha256": "3910ae8cbc3f951b3a855a2ab8d21bd3aaec5a80a4f0f897b77ad7ac86d2f756"
+        },
+        "commands/build-soliding-sanitized/receipt.json": {
+          "bytes": 2516,
+          "sha256": "ea2e7575563183c18b57d8a1ffed14bd46dfc2bace17ec35f29b018221663d7d"
+        },
+        "commands/soliding-sanitize/command.log": {
+          "bytes": 1000,
+          "sha256": "f97a1c222461c80ab42b1d76dfdcd80687c13d7bec1e60b65384d1ebb75e6d3d"
+        },
+        "commands/soliding-sanitize/performance.jsonl": {
+          "bytes": 2743,
+          "sha256": "2ecd076333ae1b8a0072724e6d7b92a1f601751a09a4f2b60c67d6a11a6a6037"
+        },
+        "commands/soliding-sanitize/receipt.json": {
+          "bytes": 2219,
+          "sha256": "90bf250a8dc5c3979fce89b238524d922eb72fb4dcfa5e1bb811ee8de3d2477b"
+        },
+        "family/command.log": {
+          "bytes": 29373,
+          "sha256": "07d2b11bfbbbf081087515b5c9d3d7c96a283b62cc3bb3a601dc3518f18db875"
+        },
+        "family/performance.jsonl": {
+          "bytes": 2741,
+          "sha256": "8e23490398aa707c36154934cbc624431b221c7186996ab1124e26b9b2e83153"
+        },
+        "family/receipt.json": {
+          "bytes": 2187,
+          "sha256": "0c618377cbab7a1f1d4bdf0329ec89dac4506405925626236f3e57c46c0ef85c"
+        }
+      },
+      "commands": [
+        {
+          "label": "build-settled-regions-sanitized",
+          "seconds": 578.847723928
+        },
+        {
+          "label": "build-soliding-sanitized",
+          "seconds": 703.5645546320001
+        },
+        {
+          "label": "soliding-sanitize",
+          "seconds": 1.91220399000008
+        }
+      ],
+      "family_elapsed_seconds": 1285.2321405760001,
+      "family_started_utc": "2026-11-21T23:23:04.558520+00:00",
+      "first_complete_functional_command_seconds": 1285.2006318569183,
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+        "environment": {
+          "CC": "gcc-13",
+          "CXX": "g++-13",
+          "CYBERSAND_CI_WATCHDOG_SCALE": "1",
+          "GNUMAKEFLAGS": "",
+          "MAKEFILES": "",
+          "MAKEFLAGS": "",
+          "MFLAGS": ""
+        },
+        "image": "ubuntu24",
+        "image_version": "20261116.376.1",
+        "job": "pair",
+        "logical_cpu_count": 4,
+        "runner_environment": "github-hosted",
+        "runner_name_sha256": "4a07ef5d0f716efce95eadb679ad19e4ff5baa50fd1e82c9b81f6c2536f42b32",
+        "runner_os": "Linux",
+        "tools": {
+          "g++-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+            "target": "x86_64-linux-gnu",
+            "version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "gcc-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+            "target": "x86_64-linux-gnu",
+            "version": "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "ld": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+          },
+          "make": {
+            "path": "/usr/bin/make",
+            "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+            "version": "GNU Make 4.3\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+          }
+        }
+      },
+      "receipt_sha256": "1449f75f5b09116064f64dd16f5614194659c1e058d38796f10a223ad64784c8",
+      "run_log_sha256": "0d9457dc20c9762eebaf2312daee4a12727c2a016f59c6b68052bfb7a7f29c40",
+      "scientific_outputs": {},
+      "source_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "source_snapshot_end": 1795304670.37557,
+      "source_snapshot_start": 1795303384.468741,
+      "source_tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590",
+      "test_commands": [
+        "./build/test_soliding_lifecycle_sanitized",
+        "./build/test_settled_discovery_sanitized",
+        "./build/test_settled_regions_sanitized",
+        "./build/test_settled_world_discovery_sanitized",
+        "./build/test_stage3b_runtime_storage_sanitized",
+        "./build/test_stage3b_bounded_spatial_index_sanitized",
+        "./build/test_stage3b_sparse_mutation_witness_sanitized",
+        "./build/test_stage3b_sparse_activity_deadline_sanitized"
+      ]
+    },
+    "candidate": {
+      "binary_digests": {
+        "build/test_settled_discovery_sanitized": {
+          "bytes": 57882584,
+          "sha256": "e0e6c02645804dc261bf69127db5b2cbc6d07fd0496a6519ffc906a167866a23"
+        },
+        "build/test_settled_regions_sanitized": {
+          "bytes": 352916752,
+          "sha256": "1feba2e816ac181df5a2a41940b9711ea9130fa95eb2bf235ee13f8f397ff235"
+        },
+        "build/test_settled_world_discovery_sanitized": {
+          "bytes": 56869320,
+          "sha256": "732c43ac3b30693b6360363c982158b546445d652ae6973a4648eaeaa89cdfa2"
+        },
+        "build/test_soliding_lifecycle_sanitized": {
+          "bytes": 1001760,
+          "sha256": "0d8a3c46ab9fdd5cdc7bcf03eac62229cb08a0a15a1f114a938591fdcbdfa674"
+        },
+        "build/test_stage3b_bounded_spatial_index_sanitized": {
+          "bytes": 75159888,
+          "sha256": "b82928100e90c50b6195b7d19ed4b5268800c6f2220d8a6b001c76bfe035a81f"
+        },
+        "build/test_stage3b_runtime_storage_sanitized": {
+          "bytes": 95508784,
+          "sha256": "ad2ca836ea8a3c414447b8de1707520b9354ca21197a7fd9a759321319a282bc"
+        },
+        "build/test_stage3b_sparse_activity_deadline_sanitized": {
+          "bytes": 56425616,
+          "sha256": "46768f4803b520f30f77e98fd560cb20ad00059c64c6a7bf7acaa0200229f747"
+        },
+        "build/test_stage3b_sparse_mutation_witness_sanitized": {
+          "bytes": 56308632,
+          "sha256": "23ec45e619af987240b60ad34d97dcd15884f483fe85a9489189796ce5294cf4"
+        }
+      },
+      "command_outputs": {
+        "commands/build-settled-regions-sanitized/command.log": {
+          "bytes": 996,
+          "sha256": "025d4623ae6bd661cc68c6b0204df04109d4265d496980a30cf56b36c95ee660"
+        },
+        "commands/build-settled-regions-sanitized/performance.jsonl": {
+          "bytes": 2753,
+          "sha256": "721211ce83ef747cde44066ec17e2f07345e38b51b1e33202a0d83872faad0e3"
+        },
+        "commands/build-settled-regions-sanitized/receipt.json": {
+          "bytes": 2173,
+          "sha256": "c139c6a1949d79a11f873f21488a9af80d162bfac12ba08f0ac1d2ce646409fa"
+        },
+        "commands/build-soliding-sanitized/command.log": {
+          "bytes": 10031,
+          "sha256": "a82a96b3c0ef217bb581c0f44b81bb76835005124cad55a5ebe8bc62fba0eb88"
+        },
+        "commands/build-soliding-sanitized/performance.jsonl": {
+          "bytes": 2749,
+          "sha256": "6e8b0c6d80ca4b4ce40dcc4ed6e0b5b66d4f06bc5a72ea80db787a9a6665b99e"
+        },
+        "commands/build-soliding-sanitized/receipt.json": {
+          "bytes": 2514,
+          "sha256": "5819796ff9f79cca77c9b50a642d41f96dae3117f7d37454eeaa72e353c06983"
+        },
+        "commands/soliding-sanitize/command.log": {
+          "bytes": 1155,
+          "sha256": "b9af8c5bd901855725910fcabadf639a5f82de531f3733b3ccd9dee2fb349a7d"
+        },
+        "commands/soliding-sanitize/performance.jsonl": {
+          "bytes": 2745,
+          "sha256": "7dd6ab0602f835c464f2f975381830cf7fb7c22fc2edb954513155073b92d356"
+        },
+        "commands/soliding-sanitize/receipt.json": {
+          "bytes": 2221,
+          "sha256": "a49b23349bc89d27497f9a86aa7dea0845ff3de3a1fa5d0e71cd3af35b8c1a89"
+        },
+        "family/command.log": {
+          "bytes": 12420,
+          "sha256": "ba0b707eea432951831ebe4acd023f1a2a71b0b6d1bd2cab23de6770f8031342"
+        },
+        "family/performance.jsonl": {
+          "bytes": 2740,
+          "sha256": "dc86d1852b49da457b27dc0758b24818a8834dc0ea24ab3b83049430c3452bcc"
+        },
+        "family/receipt.json": {
+          "bytes": 2186,
+          "sha256": "95c0fe4d2fe611a79211f90e6fbcf4046f149325532d2fc6781309fd4aa609da"
+        }
+      },
+      "commands": [
+        {
+          "label": "build-settled-regions-sanitized",
+          "seconds": 584.297976281
+        },
+        {
+          "label": "build-soliding-sanitized",
+          "seconds": 222.70223748099988
+        },
+        {
+          "label": "soliding-sanitize",
+          "seconds": 1.8576057919999585
+        }
+      ],
+      "family_elapsed_seconds": 809.2501570490001,
+      "family_started_utc": "2026-11-21T23:44:31.674090+00:00",
+      "first_complete_functional_command_seconds": 809.203950881958,
+      "host": {
+        "architecture": "x86_64",
+        "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+        "environment": {
+          "CC": "gcc-13",
+          "CXX": "g++-13",
+          "CYBERSAND_CI_WATCHDOG_SCALE": "1",
+          "GNUMAKEFLAGS": "",
+          "MAKEFILES": "",
+          "MAKEFLAGS": "",
+          "MFLAGS": ""
+        },
+        "image": "ubuntu24",
+        "image_version": "20261116.376.1",
+        "job": "pair",
+        "logical_cpu_count": 4,
+        "runner_environment": "github-hosted",
+        "runner_name_sha256": "4a07ef5d0f716efce95eadb679ad19e4ff5baa50fd1e82c9b81f6c2536f42b32",
+        "runner_os": "Linux",
+        "tools": {
+          "g++-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+            "target": "x86_64-linux-gnu",
+            "version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "gcc-13": {
+            "full_version": "13.3.0",
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+            "target": "x86_64-linux-gnu",
+            "version": "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+          },
+          "ld": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+          },
+          "make": {
+            "path": "/usr/bin/make",
+            "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+            "version": "GNU Make 4.3\nBuilt for x86_64-pc-linux-gnu\nCopyright (C) 1988-2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+          }
+        }
+      },
+      "receipt_sha256": "28a1f9b51aa1316524c1ee41eaa1e10eaae9258ff63f83c87b7a9ccbbab78be6",
+      "run_log_sha256": "b0115aa963085b3dbbae2cc19437f2a4e234e87bfd108ca81a03ce6e57177e0f",
+      "scientific_outputs": {},
+      "source_sha": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+      "source_snapshot_end": 1795305481.144261,
+      "source_snapshot_start": 1795304671.591671,
+      "source_tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+      "test_commands": [
+        "./build/test_soliding_lifecycle_sanitized",
+        "./build/test_settled_discovery_sanitized",
+        "./build/test_settled_regions_sanitized",
+        "./build/test_settled_world_discovery_sanitized",
+        "./build/test_stage3b_runtime_storage_sanitized",
+        "./build/test_stage3b_bounded_spatial_index_sanitized",
+        "./build/test_stage3b_sparse_mutation_witness_sanitized",
+        "./build/test_stage3b_sparse_activity_deadline_sanitized"
+      ]
+    }
+  },
+  "measurement_limit": "One baseline-then-candidate cold same-worker pair; no percentile or population speedup claim. Family elapsed times exclude hosted setup, queue, capture and upload; obtain job runner-minutes separately.",
+  "observed_percent_saved": 37.03470902258015,
+  "proof": {
+    "fingerprints": {
+      ".github/workflows/ci-opt003-soliding-proof.yml": "fbbbd2e974d93379efcb36b8302d353885e9cf5a7c6a7b8f968b5d045d04c9c6",
+      "tools/ci/ci_opt003_soliding_proof/README.md": "08e1c4bd8869bb50e9efc5a964e71e18dbe29d511fb68733d1d7c386caa679eb",
+      "tools/ci/ci_opt003_soliding_proof/common.py": "4a74cfee014a3555e8192974e11bd1f8062fbc090815f49c6d8818db3aefb8df",
+      "tools/ci/ci_opt003_soliding_proof/compare_pair.py": "ab0be75fd3cd58d0af24a2bd44b9dff392bbb6c73ab8729217b53c40dd6a573a",
+      "tools/ci/ci_opt003_soliding_proof/proof.py": "a878536d26f892e7037b8ad334a47e7dae479ba97902e70a83bf68751c1f45f9",
+      "tools/ci/ci_opt003_soliding_proof/run_arm.sh": "535716cf96f048d39e143b90e9e1af38dd6525b04fc085a0e336e2575d820ad0",
+      "tools/ci/ci_opt003_soliding_proof/test_compare_pair.py": "3fd7e44e5569c9f5a77b98fea8617bc6b285e7e246e0a3e73bf148fef86b68c1"
+    },
+    "sha": "fd4921ace2c4f97f06c70b887778b2366d7a9f0f",
+    "tree": "c0ef9677e8f3d652c0b4ab19b25b721e1b974219"
+  },
+  "routine_ci_qualified": false,
+  "run_attempt": 1,
+  "run_id": 44961498877,
+  "schema": "ci-opt003-soliding-pair-comparison-v1",
+  "scope": "paired-family-only",
+  "seconds_saved": 475.981983527,
+  "status": "passed",
+  "suite": "soliding-asan",
+  "whole_native_qualified": false
+}

@@ -1,0 +1,43 @@
+{
+  "status": "GO",
+  "scope": "Independent offline supplemental-reader delta review; actual hosted artifact admission remains required",
+  "auditor_sha256": "540c4f5490529ec61f767736be8c23bc3451b0e1f383ec9ad5b0e7ce10e69c7a",
+  "frozen_producer": "cc22fb8ffbba2a7c18a0bc1c0ad60413ad5c3147",
+  "candidate": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "producer_and_candidate_modified": false,
+  "hosted_rerun_required_for_reader_correction": false,
+  "tests": {
+    "author_controls": {
+      "passed": 5,
+      "seconds": 2.558
+    },
+    "fresh_independent_controls": {
+      "passed": 5,
+      "seconds": 3.288
+    },
+    "real_make_replay": {
+      "status": "passed",
+      "raw_logs": 14,
+      "processes": "local synthetic doubles",
+      "installed_make_version": "GNU Make 4.4.1"
+    }
+  },
+  "resolved_findings": [
+    {
+      "severity": "P2",
+      "old_audit_sha256": "f31ed10e2647b2ebec89789c14b013f072247c05801fff11152d630875e119a7",
+      "location": "audit_showcase_replay.py:35 (old version)",
+      "reproductions": [
+        "Complete final-line truncation of raw payload with all hashes resealed",
+        "Duplicate source/binary replay header with contradictory body"
+      ],
+      "delta": "v2 compares full source-delimited replay group and requires exact unique headers/markers",
+      "new_location": [
+        "audit_showcase_replay.py:73-79",
+        "audit_showcase_replay.py:85-109"
+      ]
+    }
+  ],
+  "remaining_p1_p2_p3_findings": [],
+  "admission_requirement": "Run both frozen paired-family reader and this supplemental audit over the same authenticated original hosted artifact, with its exact run ID/attempt; neither synthetic controls nor the supplement alone qualify the candidate."
+}

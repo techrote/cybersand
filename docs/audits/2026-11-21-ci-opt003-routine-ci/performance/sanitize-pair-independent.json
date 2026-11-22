@@ -1,0 +1,744 @@
+{
+  "schema": "ci-opt003-independent-pair-audit-v1",
+  "status": "passed",
+  "baseline": {
+    "source": {
+      "commit": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590",
+      "tracked_status": "",
+      "makefile_sha256": "abe1920b1a89b1444ada36e97c9e81f7a0657f06f447845294aa18aca122baf9"
+    },
+    "elapsed_seconds": 1180.636647558,
+    "compiler_count": 28,
+    "test_recipe_count": 10,
+    "test_execution_count": 16,
+    "compiler_user_seconds": 439.311186,
+    "compiler_system_seconds": 18.363366,
+    "compiler_union_seconds": 233.664841728,
+    "test_union_seconds": 946.586839677,
+    "compiler_test_overlap_seconds": 0.0,
+    "max_compiler_concurrency": 2,
+    "compiler_occupancy_seconds": {
+      "0": 0.092941989,
+      "1": 3.2104997130000004,
+      "2": 230.45434201500004
+    },
+    "last_compiler_end_seconds": 233.757783717,
+    "heavy_compiler_overlap_seconds": 0.0,
+    "heavy_compilers": [
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized-threaded/world_generation.o"
+        ],
+        "start_seconds": 0.12487407,
+        "end_seconds": 45.98866297,
+        "elapsed_seconds": 45.863790162,
+        "user_seconds": 43.780152,
+        "system_seconds": 1.378321,
+        "max_child_rss_kib": 1694136
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized/world_generation.o"
+        ],
+        "start_seconds": 95.265763785,
+        "end_seconds": 138.247349512,
+        "elapsed_seconds": 42.981586798,
+        "user_seconds": 41.290321,
+        "system_seconds": 1.324405,
+        "max_child_rss_kib": 1697524
+      }
+    ],
+    "longest_compilers": [
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/tests/test_world_generation_install.cpp",
+          "-o",
+          "build/test_world_generation_install_sanitized"
+        ],
+        "start_seconds": 0.092941989,
+        "end_seconds": 87.204619171,
+        "elapsed_seconds": 87.111678554,
+        "user_seconds": 82.812665,
+        "system_seconds": 2.536054,
+        "max_child_rss_kib": 1333500
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized-threaded/world_generation.o"
+        ],
+        "start_seconds": 0.12487407,
+        "end_seconds": 45.98866297,
+        "elapsed_seconds": 45.863790162,
+        "user_seconds": 43.780152,
+        "system_seconds": 1.378321,
+        "max_child_rss_kib": 1694136
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized/world_generation.o"
+        ],
+        "start_seconds": 95.265763785,
+        "end_seconds": 138.247349512,
+        "elapsed_seconds": 42.981586798,
+        "user_seconds": 41.290321,
+        "system_seconds": 1.324405,
+        "max_child_rss_kib": 1697524
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "build/worldgen-objects/sanitized-threaded/world_generation.o",
+          "build/worldgen-objects/sanitized-threaded/generation_fields.o",
+          "build/worldgen-objects/sanitized-threaded/generation_typed_fields.o",
+          "build/worldgen-objects/sanitized-threaded/generation_spatial.o",
+          "build/worldgen-objects/sanitized-threaded/generation_grammar.o",
+          "build/worldgen-objects/sanitized-threaded/generation_planes.o",
+          "native/tests/test_generation_grammar.cpp",
+          "-o",
+          "build/test_generation_grammar_sanitized"
+        ],
+        "start_seconds": 144.469026402,
+        "end_seconds": 172.24543969,
+        "elapsed_seconds": 27.77641433,
+        "user_seconds": 26.397256,
+        "system_seconds": 1.001966,
+        "max_child_rss_kib": 990440
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "build/worldgen-objects/sanitized/world_generation.o",
+          "build/worldgen-objects/sanitized/generation_fields.o",
+          "build/worldgen-objects/sanitized/generation_typed_fields.o",
+          "build/worldgen-objects/sanitized/generation_spatial.o",
+          "build/worldgen-objects/sanitized/generation_grammar.o",
+          "build/worldgen-objects/sanitized/generation_planes.o",
+          "native/tests/test_world_generation.cpp",
+          "-o",
+          "build/test_world_generation_sanitized"
+        ],
+        "start_seconds": 170.159887478,
+        "end_seconds": 197.029672026,
+        "elapsed_seconds": 26.869785459,
+        "user_seconds": 25.350713,
+        "system_seconds": 1.025179,
+        "max_child_rss_kib": 1004312
+      }
+    ],
+    "test_recipes": [
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "set -eu; for binary in build/test_megatruss_station_sanitized build/test_seeded_typology_megablock_sanitized build/test_metabolist_spine_sanitized build/test_interlaced_viaduct_sanitized build/test_rosework_gatehouse_sanitized build/test_interlock_brutalism_sanitized build/test_suspended_arcology_sanitized; do echo \"Running sanitized $binary\"; ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} \"$binary\"; done"
+        ],
+        "start_seconds": 233.789078424,
+        "end_seconds": 1109.82319676,
+        "elapsed_seconds": 876.034119217,
+        "user_seconds": 871.650868,
+        "system_seconds": 3.83652,
+        "max_child_rss_kib": 556980
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_world_generation_sanitized"
+        ],
+        "start_seconds": 1109.850792125,
+        "end_seconds": 1154.979051878,
+        "elapsed_seconds": 45.128260774,
+        "user_seconds": 44.474921,
+        "system_seconds": 0.583989,
+        "max_child_rss_kib": 632160
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_world_generation_install_sanitized"
+        ],
+        "start_seconds": 1155.00601167,
+        "end_seconds": 1155.270786134,
+        "elapsed_seconds": 0.264775406,
+        "user_seconds": 0.040097,
+        "system_seconds": 0.22430699999999998,
+        "max_child_rss_kib": 394540
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_fields_sanitized"
+        ],
+        "start_seconds": 1155.301613554,
+        "end_seconds": 1155.318258236,
+        "elapsed_seconds": 0.016645353,
+        "user_seconds": 0.0073479999999999995,
+        "system_seconds": 0.009500999999999999,
+        "max_child_rss_kib": 21940
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_modifiers_sanitized"
+        ],
+        "start_seconds": 1155.346657782,
+        "end_seconds": 1157.952845948,
+        "elapsed_seconds": 2.606188917,
+        "user_seconds": 2.601998,
+        "system_seconds": 0.061227,
+        "max_child_rss_kib": 122992
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_typed_sanitized"
+        ],
+        "start_seconds": 1157.980346962,
+        "end_seconds": 1158.068990205,
+        "elapsed_seconds": 0.088643985,
+        "user_seconds": 0.077323,
+        "system_seconds": 0.024856,
+        "max_child_rss_kib": 59460
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_typed_integration_sanitized"
+        ],
+        "start_seconds": 1158.097077837,
+        "end_seconds": 1158.94294959,
+        "elapsed_seconds": 0.845872494,
+        "user_seconds": 1.022064,
+        "system_seconds": 0.146613,
+        "max_child_rss_kib": 146468
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_spatial_sanitized"
+        ],
+        "start_seconds": 1158.973862059,
+        "end_seconds": 1159.103146875,
+        "elapsed_seconds": 0.129285437,
+        "user_seconds": 0.065136,
+        "system_seconds": 0.06583,
+        "max_child_rss_kib": 143424
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_grammar_sanitized"
+        ],
+        "start_seconds": 1159.130432926,
+        "end_seconds": 1163.510521914,
+        "elapsed_seconds": 4.380089839,
+        "user_seconds": 4.497521,
+        "system_seconds": 0.198901,
+        "max_child_rss_kib": 238580
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_planes_sanitized"
+        ],
+        "start_seconds": 1163.538449571,
+        "end_seconds": 1180.631415047,
+        "elapsed_seconds": 17.092966097,
+        "user_seconds": 16.840319,
+        "system_seconds": 0.459958,
+        "max_child_rss_kib": 558268
+      }
+    ],
+    "max_compiler_child_rss_kib": 1697524,
+    "max_test_child_rss_kib": 632160,
+    "profile_sha256": "6a39e916093bb7cef342dde2aabd99a859ac1551f05ecb024f45f648b4224eba",
+    "command_index_sha256": "f1de45be57b5650a365df55b0e0a89e3bcdee2ffa8a752654e26d621eeff2568"
+  },
+  "candidate": {
+    "source": {
+      "commit": "506dfc8c343c5d24fe26e89a9542cf985c52853e",
+      "tree": "71500851801b166188c27141e3b89f2f8e8b3fe1",
+      "tracked_status": "",
+      "makefile_sha256": "f1373f3df2f3259803b9213d37863ed59e97900affe8ece72241c36ae7874222"
+    },
+    "elapsed_seconds": 1172.141136654,
+    "compiler_count": 28,
+    "test_recipe_count": 10,
+    "test_execution_count": 16,
+    "compiler_user_seconds": 439.860907,
+    "compiler_system_seconds": 19.13465,
+    "compiler_union_seconds": 245.187713146,
+    "test_union_seconds": 949.474410357,
+    "compiler_test_overlap_seconds": 22.846556427999985,
+    "max_compiler_concurrency": 2,
+    "compiler_occupancy_seconds": {
+      "0": 0.079712702,
+      "1": 24.736948571,
+      "2": 220.45076457500002
+    },
+    "last_compiler_end_seconds": 245.267425848,
+    "heavy_compiler_overlap_seconds": 42.787119904,
+    "heavy_compilers": [
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized-threaded/world_generation.o"
+        ],
+        "start_seconds": 0.079712702,
+        "end_seconds": 43.196058511,
+        "elapsed_seconds": 43.11634686,
+        "user_seconds": 40.778173,
+        "system_seconds": 1.408026,
+        "max_child_rss_kib": 1695244
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized/world_generation.o"
+        ],
+        "start_seconds": 0.082460178,
+        "end_seconds": 42.869580082,
+        "elapsed_seconds": 42.787121777,
+        "user_seconds": 40.528565,
+        "system_seconds": 1.400936,
+        "max_child_rss_kib": 1697404
+      }
+    ],
+    "longest_compilers": [
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/tests/test_world_generation_install.cpp",
+          "-o",
+          "build/test_world_generation_install_sanitized"
+        ],
+        "start_seconds": 95.988946262,
+        "end_seconds": 178.674957176,
+        "elapsed_seconds": 82.686011855,
+        "user_seconds": 79.168941,
+        "system_seconds": 2.668694,
+        "max_child_rss_kib": 1338268
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized-threaded/world_generation.o"
+        ],
+        "start_seconds": 0.079712702,
+        "end_seconds": 43.196058511,
+        "elapsed_seconds": 43.11634686,
+        "user_seconds": 40.778173,
+        "system_seconds": 1.408026,
+        "max_child_rss_kib": 1695244
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-c",
+          "native/src/world_generation.cpp",
+          "-o",
+          "build/worldgen-objects/sanitized/world_generation.o"
+        ],
+        "start_seconds": 0.082460178,
+        "end_seconds": 42.869580082,
+        "elapsed_seconds": 42.787121777,
+        "user_seconds": 40.528565,
+        "system_seconds": 1.400936,
+        "max_child_rss_kib": 1697404
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "build/worldgen-objects/sanitized-threaded/world_generation.o",
+          "build/worldgen-objects/sanitized-threaded/generation_fields.o",
+          "build/worldgen-objects/sanitized-threaded/generation_typed_fields.o",
+          "build/worldgen-objects/sanitized-threaded/generation_spatial.o",
+          "build/worldgen-objects/sanitized-threaded/generation_grammar.o",
+          "build/worldgen-objects/sanitized-threaded/generation_planes.o",
+          "native/tests/test_generation_grammar.cpp",
+          "-o",
+          "build/test_generation_grammar_sanitized"
+        ],
+        "start_seconds": 193.280795857,
+        "end_seconds": 222.380921157,
+        "elapsed_seconds": 29.10012541,
+        "user_seconds": 27.547382,
+        "system_seconds": 1.1483539999999999,
+        "max_child_rss_kib": 990676
+      },
+      {
+        "argv": [
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "build/worldgen-objects/sanitized/world_generation.o",
+          "build/worldgen-objects/sanitized/generation_fields.o",
+          "build/worldgen-objects/sanitized/generation_typed_fields.o",
+          "build/worldgen-objects/sanitized/generation_spatial.o",
+          "build/worldgen-objects/sanitized/generation_grammar.o",
+          "build/worldgen-objects/sanitized/generation_planes.o",
+          "native/tests/test_world_generation.cpp",
+          "-o",
+          "build/test_world_generation_sanitized"
+        ],
+        "start_seconds": 217.944211943,
+        "end_seconds": 245.267425848,
+        "elapsed_seconds": 27.323214376,
+        "user_seconds": 25.456706,
+        "system_seconds": 1.044331,
+        "max_child_rss_kib": 1004360
+      }
+    ],
+    "test_recipes": [
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "set -eu; for binary in build/test_megatruss_station_sanitized build/test_seeded_typology_megablock_sanitized build/test_metabolist_spine_sanitized build/test_interlaced_viaduct_sanitized build/test_rosework_gatehouse_sanitized build/test_interlock_brutalism_sanitized build/test_suspended_arcology_sanitized; do echo \"Running sanitized $binary\"; ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} \"$binary\"; done"
+        ],
+        "start_seconds": 222.42086942,
+        "end_seconds": 1102.408736164,
+        "elapsed_seconds": 879.987867225,
+        "user_seconds": 875.143853,
+        "system_seconds": 4.280993,
+        "max_child_rss_kib": 555948
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_world_generation_sanitized"
+        ],
+        "start_seconds": 1102.435807867,
+        "end_seconds": 1146.682987555,
+        "elapsed_seconds": 44.24718066,
+        "user_seconds": 43.546945,
+        "system_seconds": 0.626863,
+        "max_child_rss_kib": 632608
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_world_generation_install_sanitized"
+        ],
+        "start_seconds": 1146.710391883,
+        "end_seconds": 1146.949166883,
+        "elapsed_seconds": 0.238775861,
+        "user_seconds": 0.034895999999999996,
+        "system_seconds": 0.203474,
+        "max_child_rss_kib": 394452
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_fields_sanitized"
+        ],
+        "start_seconds": 1146.975376255,
+        "end_seconds": 1146.995147241,
+        "elapsed_seconds": 0.019771627,
+        "user_seconds": 0.007353999999999999,
+        "system_seconds": 0.010492,
+        "max_child_rss_kib": 21860
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_modifiers_sanitized"
+        ],
+        "start_seconds": 1147.022271297,
+        "end_seconds": 1149.573506434,
+        "elapsed_seconds": 2.551235588,
+        "user_seconds": 2.551515,
+        "system_seconds": 0.054194,
+        "max_child_rss_kib": 122860
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_typed_sanitized"
+        ],
+        "start_seconds": 1149.599309681,
+        "end_seconds": 1149.692316334,
+        "elapsed_seconds": 0.093007344,
+        "user_seconds": 0.081412,
+        "system_seconds": 0.02888,
+        "max_child_rss_kib": 60184
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_typed_integration_sanitized"
+        ],
+        "start_seconds": 1149.718521707,
+        "end_seconds": 1150.559665955,
+        "elapsed_seconds": 0.841144658,
+        "user_seconds": 1.023493,
+        "system_seconds": 0.142651,
+        "max_child_rss_kib": 146320
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_spatial_sanitized"
+        ],
+        "start_seconds": 1150.586460254,
+        "end_seconds": 1150.719837034,
+        "elapsed_seconds": 0.133377211,
+        "user_seconds": 0.071576,
+        "system_seconds": 0.06265799999999999,
+        "max_child_rss_kib": 143396
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_grammar_sanitized"
+        ],
+        "start_seconds": 1150.745869592,
+        "end_seconds": 1155.006856636,
+        "elapsed_seconds": 4.260987555,
+        "user_seconds": 4.430548,
+        "system_seconds": 0.156744,
+        "max_child_rss_kib": 238672
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "./build/test_generation_planes_sanitized"
+        ],
+        "start_seconds": 1155.033831607,
+        "end_seconds": 1172.134899684,
+        "elapsed_seconds": 17.101069157,
+        "user_seconds": 16.878042,
+        "system_seconds": 0.45187099999999997,
+        "max_child_rss_kib": 558152
+      }
+    ],
+    "max_compiler_child_rss_kib": 1697404,
+    "max_test_child_rss_kib": 632608,
+    "profile_sha256": "6a21696377c9162d6d5d4d193cd396ca2ef736f8e94938726f4008ff95a470be",
+    "command_index_sha256": "a2f51bdbbcd415c6a3e7a0c20a6363d9a2bbcf8bd22f89bae5052986507227c5"
+  },
+  "saved_seconds": 8.495510903999957,
+  "observed_fraction_saved": 0.007195703200956749,
+  "compiler_user_cpu_delta_seconds": 0.5497209999999768,
+  "test_union_delta_seconds": 2.887570680000067,
+  "limits": [
+    "One same-worker sequential pair per target, not a population estimate.",
+    "Compiler RSS is a max-child observation, not aggregate process-tree memory.",
+    "Cold binary/object directories; OS caches may be warmer in second arm.",
+    "Full canonical exact-source platform qualification is a separate gate."
+  ]
+}

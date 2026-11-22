@@ -1,0 +1,5596 @@
+{
+  "schema": "ci-opt003-independent-cohort-audit-v1",
+  "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "event_to_last_required_job_seconds": 1809.0,
+  "runner_minutes": 285.4166666666667,
+  "executed_jobs": 78,
+  "workflows": [
+    {
+      "run_id": 44963101939,
+      "run_attempt": 1,
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "name": "Native source-scope advisory (report only)",
+      "event": "pull_request",
+      "branch": "ci/ci-opt-003-worldgen-runtime-20261121",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44963101939",
+      "event_at": "2026-11-21T23:42:31Z",
+      "first_job_at": "2026-11-21T23:42:39+00:00",
+      "last_job_at": "2026-11-21T23:43:03+00:00",
+      "initial_queue_seconds": 8.0,
+      "event_to_last_job_seconds": 32.0,
+      "runner_minutes": 0.4,
+      "first_complete_native_functional_seconds": null,
+      "executed_job_count": 1,
+      "conditional_skips": [],
+      "jobs": [
+        {
+          "id": 137026053773,
+          "name": "exact-source report-only Native scope",
+          "started_at": "2026-11-21T23:42:39Z",
+          "completed_at": "2026-11-21T23:43:03Z",
+          "runner_seconds": 24.0,
+          "event_to_completion_seconds": 32.0,
+          "runner_name": "GitHub Actions 1000141596",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out the exact executed commit and complete comparison history",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Preserve provider and runner policy",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify scope advice and source-failure contracts",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Report the immutable Git comparison without authorizing a skip",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Retain authenticated apparatus and report identities",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Upload original scope evidence including failed decisions",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out the exact executed commit and complete comparison history",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 44963101963,
+      "run_attempt": 1,
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "name": "Wave Flow native qualification",
+      "event": "pull_request",
+      "branch": "ci/ci-opt-003-worldgen-runtime-20261121",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44963101963",
+      "event_at": "2026-11-21T23:42:31Z",
+      "first_job_at": "2026-11-21T23:42:34+00:00",
+      "last_job_at": "2026-11-21T23:49:08+00:00",
+      "initial_queue_seconds": 3.0,
+      "event_to_last_job_seconds": 397.0,
+      "runner_minutes": 13.916666666666666,
+      "first_complete_native_functional_seconds": null,
+      "executed_job_count": 4,
+      "conditional_skips": [
+        {
+          "id": 137026036431,
+          "name": "Paired default-off Water against accepted main"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 137026035165,
+          "name": "Windows Wave Flow correctness",
+          "started_at": "2026-11-21T23:42:34Z",
+          "completed_at": "2026-11-21T23:44:17Z",
+          "runner_seconds": 103.0,
+          "event_to_completion_seconds": 106.0,
+          "runner_name": "GitHub Actions 1000141592",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 12.0
+            },
+            {
+              "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Build and execute source-matched MSVC native suite",
+              "conclusion": "success",
+              "elapsed_seconds": 84.0
+            },
+            {
+              "name": "Build complete tick comparison executable",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Measure matched complete native ticks including negative results",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain Windows native evidence and available measurements",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026035318,
+          "name": "Wave Flow asan-ubsan",
+          "started_at": "2026-11-21T23:42:35Z",
+          "completed_at": "2026-11-21T23:46:52Z",
+          "runner_seconds": 257.0,
+          "event_to_completion_seconds": 261.0,
+          "runner_name": "GitHub Actions 1000141590",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 9.0
+            },
+            {
+              "name": "Run concurrent, conservation and C ABI regressions",
+              "conclusion": "success",
+              "elapsed_seconds": 241.0
+            },
+            {
+              "name": "Retain original source and sanitizer results",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026035333,
+          "name": "Wave Flow tsan",
+          "started_at": "2026-11-21T23:42:35Z",
+          "completed_at": "2026-11-21T23:49:08Z",
+          "runner_seconds": 393.0,
+          "event_to_completion_seconds": 397.0,
+          "runner_name": "GitHub Actions 1000141591",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Run concurrent, conservation and C ABI regressions",
+              "conclusion": "success",
+              "elapsed_seconds": 379.0
+            },
+            {
+              "name": "Retain original source and sanitizer results",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026035432,
+          "name": "Wave Flow normal",
+          "started_at": "2026-11-21T23:42:35Z",
+          "completed_at": "2026-11-21T23:43:57Z",
+          "runner_seconds": 82.0,
+          "event_to_completion_seconds": 86.0,
+          "runner_name": "GitHub Actions 1000141593",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 13.0
+            },
+            {
+              "name": "Run concurrent, conservation and C ABI regressions",
+              "conclusion": "success",
+              "elapsed_seconds": 62.0
+            },
+            {
+              "name": "Retain original source and sanitizer results",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 44963101934,
+      "run_attempt": 1,
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "name": "Documentation and provenance",
+      "event": "pull_request",
+      "branch": "ci/ci-opt-003-worldgen-runtime-20261121",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44963101934",
+      "event_at": "2026-11-21T23:42:31Z",
+      "first_job_at": "2026-11-21T23:42:38+00:00",
+      "last_job_at": "2026-11-21T23:50:02+00:00",
+      "initial_queue_seconds": 7.0,
+      "event_to_last_job_seconds": 451.0,
+      "runner_minutes": 7.4,
+      "first_complete_native_functional_seconds": null,
+      "executed_job_count": 1,
+      "conditional_skips": [],
+      "jobs": [
+        {
+          "id": 137026049812,
+          "name": "consistency",
+          "started_at": "2026-11-21T23:42:38Z",
+          "completed_at": "2026-11-21T23:50:02Z",
+          "runner_seconds": 444.0,
+          "event_to_completion_seconds": 451.0,
+          "runner_name": "GitHub Actions 1000141594",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out pinned companion workspace documentation",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Check out current source and complete audited history",
+              "conclusion": "success",
+              "elapsed_seconds": 26.0
+            },
+            {
+              "name": "Validate active CI provider policy",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Test CI provider policy checker",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Validate Actions syntax with pinned actionlint",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Audit workflow inventory and scheduling policies",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Retain machine-readable workflow inventory",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate current documentation",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate dependency pins and published runtime provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify soliding object reuse and original compiler contracts",
+              "conclusion": "success",
+              "elapsed_seconds": 9.0
+            },
+            {
+              "name": "Retain soliding build contract evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check LCB capability matrix is source-derived",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Check LCB policy wire/hash contract vectors",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check native LCB setup and run receipt canonical vectors",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Check material catalogue shadow compatibility",
+              "conclusion": "success",
+              "elapsed_seconds": 344.0
+            },
+            {
+              "name": "Check LCB scenario definitions and registry are source-derived",
+              "conclusion": "success",
+              "elapsed_seconds": 34.0
+            },
+            {
+              "name": "Verify retained M11 records against their audited Git revision",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Test validation failure contracts",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Test soliding evidence integrity contracts",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Test coupled-lockstep evidence reducer contracts",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Evaluate current retrieval routes",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Git LFS objects and whitespace",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Retain retrieval evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Retain material catalogue parity evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out current source and complete audited history",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out pinned companion workspace documentation",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 44963101949,
+      "run_attempt": 1,
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "name": "Palette shader actual backend qualification",
+      "event": "pull_request",
+      "branch": "ci/ci-opt-003-worldgen-runtime-20261121",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44963101949",
+      "event_at": "2026-11-21T23:42:31Z",
+      "first_job_at": "2026-11-21T23:42:35+00:00",
+      "last_job_at": "2026-11-21T23:49:56+00:00",
+      "initial_queue_seconds": 4.0,
+      "event_to_last_job_seconds": 445.0,
+      "runner_minutes": 17.683333333333334,
+      "first_complete_native_functional_seconds": null,
+      "executed_job_count": 8,
+      "conditional_skips": [],
+      "jobs": [
+        {
+          "id": 137026035262,
+          "name": "plan",
+          "started_at": "2026-11-21T23:42:35Z",
+          "completed_at": "2026-11-21T23:42:59Z",
+          "runner_seconds": 24.0,
+          "event_to_completion_seconds": 28.0,
+          "runner_name": "GitHub Actions 1000141589",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source and preserved native baseline",
+              "conclusion": "success",
+              "elapsed_seconds": 14.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Derive complete registered inventory and every outer budget",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Retain exact plan and provider control",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact source and preserved native baseline",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026149038,
+          "name": "linux (linux, main-cache, 0, 1, 340, 235, 66, 14082, 3910, 15, 300, 240, 41, 300, 300, 300, 300, ...",
+          "started_at": "2026-11-21T23:44:56Z",
+          "completed_at": "2026-11-21T23:46:47Z",
+          "runner_seconds": 111.0,
+          "event_to_completion_seconds": 256.0,
+          "runner_name": "GitHub Actions 1000141603",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize source-pinned dependencies and run portable adverse controls",
+              "conclusion": "success",
+              "elapsed_seconds": 21.0
+            },
+            {
+              "name": "Execute actual native GL cohort with full source-policy allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 59.0
+            },
+            {
+              "name": "Independently reread retained source, pixels and cache lineage",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Preserve every original success, failure, raw frame and managed cache",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            }
+          ]
+        },
+        {
+          "id": 137026149070,
+          "name": "linux (linux, visual, 0, 2, 320, 213, 66, 12764, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 300,...",
+          "started_at": "2026-11-21T23:43:02Z",
+          "completed_at": "2026-11-21T23:44:54Z",
+          "runner_seconds": 112.0,
+          "event_to_completion_seconds": 143.0,
+          "runner_name": "GitHub Actions 1000141598",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize source-pinned dependencies and run portable adverse controls",
+              "conclusion": "success",
+              "elapsed_seconds": 28.0
+            },
+            {
+              "name": "Execute actual native GL cohort with full source-policy allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 54.0
+            },
+            {
+              "name": "Independently reread retained source, pixels and cache lineage",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Preserve every original success, failure, raw frame and managed cache",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026149080,
+          "name": "windows (win32, main-cache, 0, 1, 350, 235, 66, 14082, 3910, 15, 300, 240, 41, 300, 300, 300, 300...",
+          "started_at": "2026-11-21T23:46:11Z",
+          "completed_at": "2026-11-21T23:48:45Z",
+          "runner_seconds": 154.0,
+          "event_to_completion_seconds": 374.0,
+          "runner_name": "GitHub Actions 1000141610",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Preserve exact source text bytes before checkout",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 20.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize source-pinned dependencies and run portable adverse controls",
+              "conclusion": "success",
+              "elapsed_seconds": 31.0
+            },
+            {
+              "name": "Execute actual Windows ANGLE cohort with full source-policy allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 88.0
+            },
+            {
+              "name": "Independently reread retained source, pixels and cache lineage",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Preserve every original success, failure, raw frame and managed cache",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026149093,
+          "name": "linux (linux, visual, 1, 2, 320, 213, 66, 12764, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 300,...",
+          "started_at": "2026-11-21T23:43:02Z",
+          "completed_at": "2026-11-21T23:45:40Z",
+          "runner_seconds": 158.0,
+          "event_to_completion_seconds": 189.0,
+          "runner_name": "GitHub Actions 1000141599",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize source-pinned dependencies and run portable adverse controls",
+              "conclusion": "success",
+              "elapsed_seconds": 30.0
+            },
+            {
+              "name": "Execute actual native GL cohort with full source-policy allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 97.0
+            },
+            {
+              "name": "Independently reread retained source, pixels and cache lineage",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Preserve every original success, failure, raw frame and managed cache",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026149100,
+          "name": "windows (win32, visual, 0, 2, 320, 213, 66, 12764, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 30...",
+          "started_at": "2026-11-21T23:43:02Z",
+          "completed_at": "2026-11-21T23:47:09Z",
+          "runner_seconds": 247.0,
+          "event_to_completion_seconds": 278.0,
+          "runner_name": "GitHub Actions 1000141600",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Preserve exact source text bytes before checkout",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 23.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize source-pinned dependencies and run portable adverse controls",
+              "conclusion": "success",
+              "elapsed_seconds": 26.0
+            },
+            {
+              "name": "Execute actual Windows ANGLE cohort with full source-policy allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 178.0
+            },
+            {
+              "name": "Independently reread retained source, pixels and cache lineage",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Preserve every original success, failure, raw frame and managed cache",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137026149125,
+          "name": "windows (win32, visual, 1, 2, 290, 179, 66, 10683, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 30...",
+          "started_at": "2026-11-21T23:43:01Z",
+          "completed_at": "2026-11-21T23:46:08Z",
+          "runner_seconds": 187.0,
+          "event_to_completion_seconds": 217.0,
+          "runner_name": "GitHub Actions 1000141601",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Preserve exact source text bytes before checkout",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 21.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize source-pinned dependencies and run portable adverse controls",
+              "conclusion": "success",
+              "elapsed_seconds": 26.0
+            },
+            {
+              "name": "Execute actual Windows ANGLE cohort with full source-policy allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 122.0
+            },
+            {
+              "name": "Independently reread retained source, pixels and cache lineage",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Preserve every original success, failure, raw frame and managed cache",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137027551926,
+          "name": "readback",
+          "started_at": "2026-11-21T23:48:48Z",
+          "completed_at": "2026-11-21T23:49:56Z",
+          "runner_seconds": 68.0,
+          "event_to_completion_seconds": 445.0,
+          "runner_name": "GitHub Actions 1000141619",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out the independently expected source",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Retrieve all six original cohorts without merging their files",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Prepare the independently pinned pixel readers",
+              "conclusion": "success",
+              "elapsed_seconds": 14.0
+            },
+            {
+              "name": "Require the complete source-bound inventory and same-variant native versus ANGLE pixels",
+              "conclusion": "success",
+              "elapsed_seconds": 12.0
+            },
+            {
+              "name": "Preserve the final independent verdict, including missing or failed cohorts",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out the independently expected source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 44963101962,
+      "run_attempt": 1,
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "name": "Native C++ validation",
+      "event": "pull_request",
+      "branch": "ci/ci-opt-003-worldgen-runtime-20261121",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44963101962",
+      "event_at": "2026-11-21T23:42:31Z",
+      "first_job_at": "2026-11-21T23:49:57+00:00",
+      "last_job_at": "2026-11-22T00:12:40+00:00",
+      "initial_queue_seconds": 446.0,
+      "event_to_last_job_seconds": 1809.0,
+      "runner_minutes": 72.33333333333333,
+      "first_complete_native_functional_seconds": 602.0,
+      "executed_job_count": 9,
+      "conditional_skips": [],
+      "jobs": [
+        {
+          "id": 137027831097,
+          "name": "ready validation scope",
+          "started_at": "2026-11-21T23:49:57Z",
+          "completed_at": "2026-11-21T23:50:09Z",
+          "runner_seconds": 12.0,
+          "event_to_completion_seconds": 458.0,
+          "runner_name": "GitHub Actions 1000141634",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out execution policy",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Classify ready-for-review change scope",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out execution policy",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137027897975,
+          "name": "Native evidence and provider policy",
+          "started_at": "2026-11-21T23:50:12Z",
+          "completed_at": "2026-11-21T23:50:56Z",
+          "runner_seconds": 44.0,
+          "event_to_completion_seconds": 505.0,
+          "runner_name": "GitHub Actions 1000141635",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 10.0
+            },
+            {
+              "name": "Derive complete family and hosted job allowances",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Check hosted provider and evidence failure controls",
+              "conclusion": "success",
+              "elapsed_seconds": 30.0
+            },
+            {
+              "name": "Preserve Native policy check results",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028090824,
+          "name": "Native family / worldgen",
+          "started_at": "2026-11-21T23:50:59Z",
+          "completed_at": "2026-11-22T00:12:00Z",
+          "runner_seconds": 1261.0,
+          "event_to_completion_seconds": 1769.0,
+          "runner_name": "GitHub Actions 1000141651",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Record compiler, linker and exact source identity",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Execute complete test family with shared watchdogs",
+              "conclusion": "success",
+              "elapsed_seconds": 1242.0
+            },
+            {
+              "name": "Retain original family outcome and source fingerprints",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Preserve original family logs and scientific outputs",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028090836,
+          "name": "Native family / soliding-asan",
+          "started_at": "2026-11-21T23:50:59Z",
+          "completed_at": "2026-11-22T00:07:05Z",
+          "runner_seconds": 966.0,
+          "event_to_completion_seconds": 1474.0,
+          "runner_name": "GitHub Actions 1000141649",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Record compiler, linker and exact source identity",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Execute complete test family with shared watchdogs",
+              "conclusion": "success",
+              "elapsed_seconds": 952.0
+            },
+            {
+              "name": "Retain original family outcome and source fingerprints",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Preserve original family logs and scientific outputs",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028090845,
+          "name": "Native family / native-normal",
+          "started_at": "2026-11-21T23:50:59Z",
+          "completed_at": "2026-11-21T23:57:52Z",
+          "runner_seconds": 413.0,
+          "event_to_completion_seconds": 921.0,
+          "runner_name": "GitHub Actions 1000141648",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Record compiler, linker and exact source identity",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Execute complete test family with shared watchdogs",
+              "conclusion": "success",
+              "elapsed_seconds": 400.0
+            },
+            {
+              "name": "Retain original family outcome and source fingerprints",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Preserve original family logs and scientific outputs",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028090853,
+          "name": "Native family / tsan",
+          "started_at": "2026-11-21T23:50:58Z",
+          "completed_at": "2026-11-22T00:04:17Z",
+          "runner_seconds": 799.0,
+          "event_to_completion_seconds": 1306.0,
+          "runner_name": "GitHub Actions 1000141650",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Record compiler, linker and exact source identity",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Execute complete test family with shared watchdogs",
+              "conclusion": "success",
+              "elapsed_seconds": 785.0
+            },
+            {
+              "name": "Retain original family outcome and source fingerprints",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Preserve original family logs and scientific outputs",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028090855,
+          "name": "Native family / asan-ubsan",
+          "started_at": "2026-11-21T23:50:59Z",
+          "completed_at": "2026-11-22T00:02:54Z",
+          "runner_seconds": 715.0,
+          "event_to_completion_seconds": 1223.0,
+          "runner_name": "GitHub Actions 1000141653",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Record compiler, linker and exact source identity",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Execute complete test family with shared watchdogs",
+              "conclusion": "success",
+              "elapsed_seconds": 702.0
+            },
+            {
+              "name": "Retain original family outcome and source fingerprints",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Preserve original family logs and scientific outputs",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028090895,
+          "name": "Native family / soliding-normal",
+          "started_at": "2026-11-21T23:51:00Z",
+          "completed_at": "2026-11-21T23:52:33Z",
+          "runner_seconds": 93.0,
+          "event_to_completion_seconds": 602.0,
+          "runner_name": "GitHub Actions 1000141652",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 8.0
+            },
+            {
+              "name": "Record compiler, linker and exact source identity",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Execute complete test family with shared watchdogs",
+              "conclusion": "success",
+              "elapsed_seconds": 78.0
+            },
+            {
+              "name": "Retain original family outcome and source fingerprints",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Preserve original family logs and scientific outputs",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137033314371,
+          "name": "native",
+          "started_at": "2026-11-22T00:12:03Z",
+          "completed_at": "2026-11-22T00:12:40Z",
+          "runner_seconds": 37.0,
+          "event_to_completion_seconds": 1809.0,
+          "runner_name": "GitHub Actions 1000141805",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact verifier source",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Download all original family evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify complete exact-source Native qualification",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain Native aggregate proof and failures",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Retain advisory history across comparable native runs",
+              "conclusion": "success",
+              "elapsed_seconds": 24.0
+            },
+            {
+              "name": "Publish native execution performance observations",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact verifier source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": 44963102007,
+      "run_attempt": 1,
+      "source_sha": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+      "name": "GDExtension build and current Godot regression",
+      "event": "pull_request",
+      "branch": "ci/ci-opt-003-worldgen-runtime-20261121",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44963102007",
+      "event_at": "2026-11-21T23:42:31Z",
+      "first_job_at": "2026-11-21T23:46:37+00:00",
+      "last_job_at": "2026-11-22T00:07:35+00:00",
+      "initial_queue_seconds": 246.0,
+      "event_to_last_job_seconds": 1504.0,
+      "runner_minutes": 173.68333333333334,
+      "first_complete_native_functional_seconds": null,
+      "executed_job_count": 55,
+      "conditional_skips": [
+        {
+          "id": 137027019998,
+          "name": "physical-actor-stress"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 137027019022,
+          "name": "ready validation scope",
+          "started_at": "2026-11-21T23:46:37Z",
+          "completed_at": "2026-11-21T23:46:42Z",
+          "runner_seconds": 5.0,
+          "event_to_completion_seconds": 251.0,
+          "runner_name": "GitHub Actions 1000141613",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Classify ready-for-review change scope",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137027051428,
+          "name": "complete execution budgets",
+          "started_at": "2026-11-21T23:46:46Z",
+          "completed_at": "2026-11-21T23:47:48Z",
+          "runner_seconds": 62.0,
+          "event_to_completion_seconds": 317.0,
+          "runner_name": "GitHub Actions 1000141615",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact planning source",
+              "conclusion": "success",
+              "elapsed_seconds": 10.0
+            },
+            {
+              "name": "Prove slow success, late failure, owned cleanup and complete budgets",
+              "conclusion": "success",
+              "elapsed_seconds": 46.0
+            },
+            {
+              "name": "Derive complete platform matrices",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain original parent and child budget proof",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact planning source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137027051437,
+          "name": "windows x86_64",
+          "started_at": "2026-11-21T23:46:45Z",
+          "completed_at": "2026-11-21T23:53:50Z",
+          "runner_seconds": 425.0,
+          "event_to_completion_seconds": 679.0,
+          "runner_name": "GitHub Actions 1000141614",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Verify required host tools",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install pinned SCons",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Check out exact godot-cpp source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact LLVM-MinGW",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Build Windows godot-cpp and CyberSand extension",
+              "conclusion": "success",
+              "elapsed_seconds": 402.0
+            },
+            {
+              "name": "Stage exact-source Windows GDExtension candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Retain source-matched Windows GDExtension candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Retain compiler process timing and original logs",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137027051496,
+          "name": "linux build x86_64",
+          "started_at": "2026-11-21T23:46:45Z",
+          "completed_at": "2026-11-21T23:54:32Z",
+          "runner_seconds": 467.0,
+          "event_to_completion_seconds": 721.0,
+          "runner_name": "GitHub Actions 1000141616",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 9.0
+            },
+            {
+              "name": "Fetch Linux Rapier runtime only",
+              "conclusion": "success",
+              "elapsed_seconds": 14.0
+            },
+            {
+              "name": "Validate shard planner",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Install pinned SCons",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Check out exact godot-cpp source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Build Linux godot-cpp and CyberSand extension",
+              "conclusion": "success",
+              "elapsed_seconds": 419.0
+            },
+            {
+              "name": "Validate and stage exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Publish Linux runtime for isolated regression shards",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Retain source-matched Linux GDExtension candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Retain compiler process timing and original logs",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788658,
+          "name": "windows headless regression shard 1",
+          "started_at": "2026-11-21T23:53:52Z",
+          "completed_at": "2026-11-21T23:56:06Z",
+          "runner_seconds": 134.0,
+          "event_to_completion_seconds": 815.0,
+          "runner_name": "GitHub Actions 1000141674",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 106.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788665,
+          "name": "windows headless regression shard 9",
+          "started_at": "2026-11-21T23:57:20Z",
+          "completed_at": "2026-11-22T00:00:17Z",
+          "runner_seconds": 177.0,
+          "event_to_completion_seconds": 1066.0,
+          "runner_name": "GitHub Actions 1000141725",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 22.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 142.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788672,
+          "name": "windows headless regression shard 5",
+          "started_at": "2026-11-21T23:53:53Z",
+          "completed_at": "2026-11-21T23:56:52Z",
+          "runner_seconds": 179.0,
+          "event_to_completion_seconds": 861.0,
+          "runner_name": "GitHub Actions 1000141675",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 49.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 114.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788677,
+          "name": "windows headless regression shard 12",
+          "started_at": "2026-11-21T23:57:22Z",
+          "completed_at": "2026-11-22T00:00:39Z",
+          "runner_seconds": 197.0,
+          "event_to_completion_seconds": 1088.0,
+          "runner_name": "GitHub Actions 1000141728",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 20.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 167.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788678,
+          "name": "windows headless regression shard 3",
+          "started_at": "2026-11-21T23:53:53Z",
+          "completed_at": "2026-11-21T23:57:23Z",
+          "runner_seconds": 210.0,
+          "event_to_completion_seconds": 892.0,
+          "runner_name": "GitHub Actions 1000141672",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 24.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 172.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788685,
+          "name": "windows headless regression shard 2",
+          "started_at": "2026-11-21T23:53:52Z",
+          "completed_at": "2026-11-21T23:57:09Z",
+          "runner_seconds": 197.0,
+          "event_to_completion_seconds": 878.0,
+          "runner_name": "GitHub Actions 1000141676",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 19.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 168.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788694,
+          "name": "windows headless regression shard 0",
+          "started_at": "2026-11-21T23:53:53Z",
+          "completed_at": "2026-11-21T23:57:34Z",
+          "runner_seconds": 221.0,
+          "event_to_completion_seconds": 903.0,
+          "runner_name": "GitHub Actions 1000141678",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 22.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "success",
+              "elapsed_seconds": 20.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 166.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788698,
+          "name": "windows headless regression shard 17",
+          "started_at": "2026-11-22T00:00:19Z",
+          "completed_at": "2026-11-22T00:02:11Z",
+          "runner_seconds": 112.0,
+          "event_to_completion_seconds": 1180.0,
+          "runner_name": "GitHub Actions 1000141750",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 84.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788707,
+          "name": "windows headless regression shard 4",
+          "started_at": "2026-11-21T23:53:53Z",
+          "completed_at": "2026-11-21T23:56:51Z",
+          "runner_seconds": 178.0,
+          "event_to_completion_seconds": 860.0,
+          "runner_name": "GitHub Actions 1000141673",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 22.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 143.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788708,
+          "name": "windows headless regression shard 15",
+          "started_at": "2026-11-21T23:57:36Z",
+          "completed_at": "2026-11-22T00:01:13Z",
+          "runner_seconds": 217.0,
+          "event_to_completion_seconds": 1122.0,
+          "runner_name": "GitHub Actions 1000141733",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 23.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 178.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788709,
+          "name": "windows headless regression shard 11",
+          "started_at": "2026-11-21T23:57:20Z",
+          "completed_at": "2026-11-22T00:01:22Z",
+          "runner_seconds": 242.0,
+          "event_to_completion_seconds": 1131.0,
+          "runner_name": "GitHub Actions 1000141727",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 20.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 210.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788712,
+          "name": "windows headless regression shard 10",
+          "started_at": "2026-11-21T23:57:20Z",
+          "completed_at": "2026-11-22T00:00:27Z",
+          "runner_seconds": 187.0,
+          "event_to_completion_seconds": 1076.0,
+          "runner_name": "GitHub Actions 1000141726",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 19.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 155.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788713,
+          "name": "windows headless regression shard 14",
+          "started_at": "2026-11-21T23:57:34Z",
+          "completed_at": "2026-11-22T00:03:23Z",
+          "runner_seconds": 349.0,
+          "event_to_completion_seconds": 1252.0,
+          "runner_name": "GitHub Actions 1000141732",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 23.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 314.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788717,
+          "name": "windows headless regression shard 8",
+          "started_at": "2026-11-21T23:56:08Z",
+          "completed_at": "2026-11-21T23:59:21Z",
+          "runner_seconds": 193.0,
+          "event_to_completion_seconds": 1010.0,
+          "runner_name": "GitHub Actions 1000141712",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 21.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 161.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788730,
+          "name": "windows headless regression shard 13",
+          "started_at": "2026-11-21T23:57:28Z",
+          "completed_at": "2026-11-22T00:00:22Z",
+          "runner_seconds": 174.0,
+          "event_to_completion_seconds": 1071.0,
+          "runner_name": "GitHub Actions 1000141730",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 32.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 130.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            }
+          ]
+        },
+        {
+          "id": 137028788733,
+          "name": "windows headless regression shard 16",
+          "started_at": "2026-11-21T23:59:22Z",
+          "completed_at": "2026-11-22T00:06:39Z",
+          "runner_seconds": 437.0,
+          "event_to_completion_seconds": 1448.0,
+          "runner_name": "GitHub Actions 1000141748",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 23.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 404.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788737,
+          "name": "windows headless regression shard 6",
+          "started_at": "2026-11-21T23:53:53Z",
+          "completed_at": "2026-11-21T23:57:32Z",
+          "runner_seconds": 219.0,
+          "event_to_completion_seconds": 901.0,
+          "runner_name": "GitHub Actions 1000141677",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 21.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 187.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028788738,
+          "name": "windows headless regression shard 7",
+          "started_at": "2026-11-21T23:53:53Z",
+          "completed_at": "2026-11-21T23:57:20Z",
+          "runner_seconds": 207.0,
+          "event_to_completion_seconds": 889.0,
+          "runner_name": "GitHub Actions 1000141679",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 22.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 176.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028789568,
+          "name": "windows headless regression shard 18",
+          "started_at": "2026-11-22T00:00:25Z",
+          "completed_at": "2026-11-22T00:04:41Z",
+          "runner_seconds": 256.0,
+          "event_to_completion_seconds": 1330.0,
+          "runner_name": "GitHub Actions 1000141751",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 24.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 218.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028789635,
+          "name": "windows headless regression shard 22",
+          "started_at": "2026-11-22T00:01:25Z",
+          "completed_at": "2026-11-22T00:05:39Z",
+          "runner_seconds": 254.0,
+          "event_to_completion_seconds": 1388.0,
+          "runner_name": "GitHub Actions 1000141759",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 25.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 218.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028789693,
+          "name": "windows headless regression shard 19",
+          "started_at": "2026-11-22T00:00:29Z",
+          "completed_at": "2026-11-22T00:03:44Z",
+          "runner_seconds": 195.0,
+          "event_to_completion_seconds": 1273.0,
+          "runner_name": "GitHub Actions 1000141752",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 21.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 161.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028789695,
+          "name": "windows headless regression shard 21",
+          "started_at": "2026-11-22T00:01:15Z",
+          "completed_at": "2026-11-22T00:05:52Z",
+          "runner_seconds": 277.0,
+          "event_to_completion_seconds": 1401.0,
+          "runner_name": "GitHub Actions 1000141757",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 20.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 241.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028789782,
+          "name": "windows headless regression shard 20",
+          "started_at": "2026-11-22T00:00:42Z",
+          "completed_at": "2026-11-22T00:03:54Z",
+          "runner_seconds": 192.0,
+          "event_to_completion_seconds": 1283.0,
+          "runner_name": "GitHub Actions 1000141753",
+          "labels": [
+            "windows-2022"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 22.0
+            },
+            {
+              "name": "Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Materialize pinned Windows Rapier runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Download same-run source-built Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install candidate without changing retained provenance",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Validate Windows execution harness",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Download official Windows Godot archive",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify retained runtime and execute every applicable Windows case",
+              "conclusion": "success",
+              "elapsed_seconds": 154.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Retain actual Windows execution evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Select Python 3.12",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Post Check out exact tested source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952069,
+          "name": "art workbench graphical smoke",
+          "started_at": "2026-11-21T23:54:40Z",
+          "completed_at": "2026-11-21T23:56:22Z",
+          "runner_seconds": 102.0,
+          "event_to_completion_seconds": 831.0,
+          "runner_name": "GitHub Actions 1000141694",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 10.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Verify and install source-built runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare pinned Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prepare software-rendered display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run native graphical art smoke with scripted provider",
+              "conclusion": "success",
+              "elapsed_seconds": 73.0
+            },
+            {
+              "name": "Retain original graphical smoke evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952268,
+          "name": "linux regression shard 4",
+          "started_at": "2026-11-21T23:54:50Z",
+          "completed_at": "2026-11-21T23:58:20Z",
+          "runner_seconds": 210.0,
+          "event_to_completion_seconds": 949.0,
+          "runner_name": "GitHub Actions 1000141697",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 184.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952280,
+          "name": "linux regression shard 2",
+          "started_at": "2026-11-21T23:54:47Z",
+          "completed_at": "2026-11-21T23:57:18Z",
+          "runner_seconds": 151.0,
+          "event_to_completion_seconds": 887.0,
+          "runner_name": "GitHub Actions 1000141695",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 125.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952283,
+          "name": "linux regression shard 1",
+          "started_at": "2026-11-21T23:54:49Z",
+          "completed_at": "2026-11-21T23:57:48Z",
+          "runner_seconds": 179.0,
+          "event_to_completion_seconds": 917.0,
+          "runner_name": "GitHub Actions 1000141696",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 151.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952290,
+          "name": "linux regression shard 0",
+          "started_at": "2026-11-21T23:54:53Z",
+          "completed_at": "2026-11-21T23:57:37Z",
+          "runner_seconds": 164.0,
+          "event_to_completion_seconds": 906.0,
+          "runner_name": "GitHub Actions 1000141698",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 136.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952296,
+          "name": "linux regression shard 17",
+          "started_at": "2026-11-22T00:00:50Z",
+          "completed_at": "2026-11-22T00:03:38Z",
+          "runner_seconds": 168.0,
+          "event_to_completion_seconds": 1267.0,
+          "runner_name": "GitHub Actions 1000141754",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 134.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952300,
+          "name": "linux regression shard 8",
+          "started_at": "2026-11-21T23:57:25Z",
+          "completed_at": "2026-11-21T23:59:58Z",
+          "runner_seconds": 153.0,
+          "event_to_completion_seconds": 1047.0,
+          "runner_name": "GitHub Actions 1000141729",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 127.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952301,
+          "name": "linux regression shard 12",
+          "started_at": "2026-11-21T23:57:50Z",
+          "completed_at": "2026-11-22T00:02:54Z",
+          "runner_seconds": 304.0,
+          "event_to_completion_seconds": 1223.0,
+          "runner_name": "GitHub Actions 1000141736",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 272.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952310,
+          "name": "linux regression shard 3",
+          "started_at": "2026-11-21T23:55:07Z",
+          "completed_at": "2026-11-21T23:57:26Z",
+          "runner_seconds": 139.0,
+          "event_to_completion_seconds": 895.0,
+          "runner_name": "GitHub Actions 1000141700",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 20.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 101.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952316,
+          "name": "linux regression shard 10",
+          "started_at": "2026-11-21T23:57:37Z",
+          "completed_at": "2026-11-22T00:01:33Z",
+          "runner_seconds": 236.0,
+          "event_to_completion_seconds": 1142.0,
+          "runner_name": "GitHub Actions 1000141734",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 210.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952318,
+          "name": "linux regression shard 5",
+          "started_at": "2026-11-21T23:55:01Z",
+          "completed_at": "2026-11-21T23:57:35Z",
+          "runner_seconds": 154.0,
+          "event_to_completion_seconds": 904.0,
+          "runner_name": "GitHub Actions 1000141699",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 125.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952320,
+          "name": "linux regression shard 9",
+          "started_at": "2026-11-21T23:57:33Z",
+          "completed_at": "2026-11-22T00:00:48Z",
+          "runner_seconds": 195.0,
+          "event_to_completion_seconds": 1097.0,
+          "runner_name": "GitHub Actions 1000141731",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 162.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952322,
+          "name": "linux regression shard 7",
+          "started_at": "2026-11-21T23:55:16Z",
+          "completed_at": "2026-11-21T23:58:35Z",
+          "runner_seconds": 199.0,
+          "event_to_completion_seconds": 964.0,
+          "runner_name": "GitHub Actions 1000141703",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 164.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952324,
+          "name": "linux regression shard 6",
+          "started_at": "2026-11-21T23:55:10Z",
+          "completed_at": "2026-11-21T23:58:01Z",
+          "runner_seconds": 171.0,
+          "event_to_completion_seconds": 930.0,
+          "runner_name": "GitHub Actions 1000141701",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 137.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952328,
+          "name": "linux regression shard 16",
+          "started_at": "2026-11-22T00:00:01Z",
+          "completed_at": "2026-11-22T00:02:22Z",
+          "runner_seconds": 141.0,
+          "event_to_completion_seconds": 1191.0,
+          "runner_name": "GitHub Actions 1000141749",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 10.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 109.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952330,
+          "name": "linux regression shard 11",
+          "started_at": "2026-11-21T23:57:40Z",
+          "completed_at": "2026-11-22T00:02:01Z",
+          "runner_seconds": 261.0,
+          "event_to_completion_seconds": 1170.0,
+          "runner_name": "GitHub Actions 1000141735",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 227.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952337,
+          "name": "linux regression shard 13",
+          "started_at": "2026-11-21T23:58:03Z",
+          "completed_at": "2026-11-22T00:00:58Z",
+          "runner_seconds": 175.0,
+          "event_to_completion_seconds": 1107.0,
+          "runner_name": "GitHub Actions 1000141737",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 150.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952344,
+          "name": "linux regression shard 14",
+          "started_at": "2026-11-21T23:58:23Z",
+          "completed_at": "2026-11-22T00:01:13Z",
+          "runner_seconds": 170.0,
+          "event_to_completion_seconds": 1122.0,
+          "runner_name": "GitHub Actions 1000141738",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 144.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028952375,
+          "name": "linux regression shard 15",
+          "started_at": "2026-11-21T23:58:37Z",
+          "completed_at": "2026-11-22T00:00:47Z",
+          "runner_seconds": 130.0,
+          "event_to_completion_seconds": 1096.0,
+          "runner_name": "GitHub Actions 1000141739",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 14.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 103.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028953249,
+          "name": "linux regression shard 18",
+          "started_at": "2026-11-22T00:00:51Z",
+          "completed_at": "2026-11-22T00:03:59Z",
+          "runner_seconds": 188.0,
+          "event_to_completion_seconds": 1288.0,
+          "runner_name": "GitHub Actions 1000141755",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 7.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 152.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028953273,
+          "name": "linux regression shard 19",
+          "started_at": "2026-11-22T00:01:01Z",
+          "completed_at": "2026-11-22T00:03:57Z",
+          "runner_seconds": 176.0,
+          "event_to_completion_seconds": 1286.0,
+          "runner_name": "GitHub Actions 1000141756",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 14.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 150.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028953310,
+          "name": "linux regression shard 20",
+          "started_at": "2026-11-22T00:01:15Z",
+          "completed_at": "2026-11-22T00:03:48Z",
+          "runner_seconds": 153.0,
+          "event_to_completion_seconds": 1277.0,
+          "runner_name": "GitHub Actions 1000141758",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 17.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 125.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028953350,
+          "name": "linux regression shard 22",
+          "started_at": "2026-11-22T00:02:03Z",
+          "completed_at": "2026-11-22T00:04:45Z",
+          "runner_seconds": 162.0,
+          "event_to_completion_seconds": 1334.0,
+          "runner_name": "GitHub Actions 1000141761",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 135.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028953373,
+          "name": "linux regression shard 23",
+          "started_at": "2026-11-22T00:02:24Z",
+          "completed_at": "2026-11-22T00:04:49Z",
+          "runner_seconds": 145.0,
+          "event_to_completion_seconds": 1338.0,
+          "runner_name": "GitHub Actions 1000141763",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 15.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 5.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 119.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137028953374,
+          "name": "linux regression shard 21",
+          "started_at": "2026-11-22T00:01:35Z",
+          "completed_at": "2026-11-22T00:03:30Z",
+          "runner_seconds": 115.0,
+          "event_to_completion_seconds": 1259.0,
+          "runner_name": "GitHub Actions 1000141760",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 14.0
+            },
+            {
+              "name": "Restore exact Linux runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Verify and install runtime artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Prepare exact Godot runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 4.0
+            },
+            {
+              "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+              "conclusion": "skipped",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Install software rendering display",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Run isolated regression shard with actual rendered-pixel tests",
+              "conclusion": "success",
+              "elapsed_seconds": 91.0
+            },
+            {
+              "name": "Retain shard evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137031476617,
+          "name": "linux x86_64",
+          "started_at": "2026-11-22T00:04:51Z",
+          "completed_at": "2026-11-22T00:05:22Z",
+          "runner_seconds": 31.0,
+          "event_to_completion_seconds": 1371.0,
+          "runner_name": "GitHub Actions 1000141766",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Check out exact verification source",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Download every original Linux shard artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download source-matched built runtime",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Independently prove complete source and runtime matched Linux coverage",
+              "conclusion": "success",
+              "elapsed_seconds": 16.0
+            },
+            {
+              "name": "Retain Linux exact coverage receipt",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            },
+            {
+              "name": "Post Check out exact verification source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 1.0
+            }
+          ]
+        },
+        {
+          "id": 137031947288,
+          "name": "retained execution and physical timing history",
+          "started_at": "2026-11-22T00:06:43Z",
+          "completed_at": "2026-11-22T00:07:35Z",
+          "runner_seconds": 52.0,
+          "event_to_completion_seconds": 1504.0,
+          "runner_name": "GitHub Actions 1000141788",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 3.0
+            },
+            {
+              "name": "Check out timing reducer",
+              "conclusion": "success",
+              "elapsed_seconds": 6.0
+            },
+            {
+              "name": "Fetch existing per-platform Godot test evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 9.0
+            },
+            {
+              "name": "Produce source-bound distributions, retaining timeouts",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Fetch compiler process evidence",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Compare complete observations with matching hosted history",
+              "conclusion": "success",
+              "elapsed_seconds": 25.0
+            },
+            {
+              "name": "Retain advisory execution performance history",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Retain physical regression timing history for this run",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out timing reducer",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        },
+        {
+          "id": 137031947301,
+          "name": "windows sharded execution coverage",
+          "started_at": "2026-11-22T00:06:42Z",
+          "completed_at": "2026-11-22T00:07:16Z",
+          "runner_seconds": 34.0,
+          "event_to_completion_seconds": 1485.0,
+          "runner_name": "GitHub Actions 1000141789",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Check out exact verification source",
+              "conclusion": "success",
+              "elapsed_seconds": 10.0
+            },
+            {
+              "name": "Download every original Windows shard artifact",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Download independently verified same-run Windows candidate",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Independently verify complete, unique Windows case execution",
+              "conclusion": "success",
+              "elapsed_seconds": 12.0
+            },
+            {
+              "name": "Retain Windows exact-coverage receipt",
+              "conclusion": "success",
+              "elapsed_seconds": 2.0
+            },
+            {
+              "name": "Post Check out exact verification source",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success",
+              "elapsed_seconds": 0.0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Unweighted runner-minutes, not billed minutes.",
+    "Applicable workflow scope explicitly retained; compare identical scopes for speed claims.",
+    "Conditional skips counted separately from executed jobs."
+  ]
+}

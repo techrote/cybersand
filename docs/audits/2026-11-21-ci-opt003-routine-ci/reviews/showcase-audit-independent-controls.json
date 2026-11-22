@@ -1,0 +1,21 @@
+{
+  "audit_sha256": "f31ed10e2647b2ebec89789c14b013f072247c05801fff11152d630875e119a7",
+  "synthetic_only": true,
+  "results": [
+    {
+      "case": "valid_multiline_payload",
+      "audit_status": "passed"
+    },
+    {
+      "case": "raw_log_truncated_at_complete_line_with_all_hashes_resealed",
+      "audit_status": "passed",
+      "omitted_bytes": 27,
+      "frozen_reader": "passed"
+    },
+    {
+      "case": "duplicate_case_header_with_different_replay_body",
+      "audit_status": "passed",
+      "frozen_reader": "passed"
+    }
+  ]
+}

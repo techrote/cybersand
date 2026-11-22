@@ -1,0 +1,74 @@
+{
+  "reviewer": "/root/review_worldgen_runtime",
+  "independent_of_implementation": true,
+  "reviewed_utc": "2026-11-21T23:41:40.781551+00:00",
+  "verdict": "GO for source and diagnostic repair; hosted/performance gates pending",
+  "parent_review": "worldgen-runtime-source.json",
+  "prior_source": "28ec075afab840cf6fbb35190a7b1915808904f3",
+  "base": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+  "repaired_commit": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+  "git_correlation": {
+    "commit": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+    "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "all_reviewed_file_bytes_match": true
+  },
+  "file_sha256": {
+    ".github/workflows/native.yml": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+    "Makefile": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7",
+    "docs/operations/ci-execution-and-performance.md": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+    "docs/operations/local-build-and-validation.md": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+    "docs/reference/retrieval-index.md": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+    "docs/reference/status-and-roadmap.md": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33",
+    "tools/ci/check_worldgen_build_inventory.py": "1721d6d885d185c0a9556b2070c801694b4e1e2db9f17bdcdf1f7efe7d6683a7",
+    "tools/ci/native_execution_policy.py": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb",
+    "tools/ci/run_native_family.sh": "34e5d9da827a02b8846ad27c5b85277dcf4e419bd9483cf599359221e300a607",
+    "tools/ci/test_native_shards.py": "dcfc3ce80e331a28c92949a7b69e0f9c911ec518cd630ffde652b7249ff30bc4",
+    "tools/ci/test_native_watchdogs.py": "14d4be9c2cf9328e3167fd9a303b7a5b73b9f1c7da7521913c8ff7417a9f05f7",
+    "tools/ci/test_worldgen_build_inventory.py": "dee2cc2426b0195185ea869566e40e507b2a0146a8ff710d2d0777a477bbd044",
+    "tools/ci/verify_native_shards.py": "b86278278ff0f83ef189a7889d6d4bb729e7adbd587ee24edd29350f48815ead"
+  },
+  "findings": [
+    {
+      "id": "WGEN-RUNTIME-P2-01",
+      "severity": "P2",
+      "status": "resolved",
+      "resolution": "Per-case raw combined output is written directly before grouped replay; source/run/attempt/binary header, exact14-file inventory, hashes and unconditional Native artifact upload preserve and bind diagnostics.",
+      "independent_reproduction": "Exact prior failure-plus-hung-peer scenario now retains both flushed markers byte-for-byte after timeout and SIGINT cancellation. Nonpassing receipts, no principal tail and no live peer remain.",
+      "evidence": "worldgen-runtime-delta-controls.json"
+    },
+    {
+      "id": "WGEN-RUNTIME-P3-01",
+      "severity": "P3",
+      "status": "resolved",
+      "resolution": "Explicit output-grouping delta documented."
+    }
+  ],
+  "open_findings": [],
+  "tests": {
+    "worldgen_graph_controls": {
+      "count": 21,
+      "seconds": 20.527,
+      "status": "passed"
+    },
+    "native_shards": {
+      "count": 51,
+      "seconds": 3.446,
+      "status": "passed"
+    },
+    "native_watchdogs": {
+      "count": 22,
+      "status": "passed"
+    },
+    "independent_delta_controls": {
+      "count": 5,
+      "status": "passed"
+    }
+  },
+  "limits": [
+    "Executable doubles qualify infrastructure, not scientific assertions or performance",
+    "SIGINT cancellation and timeout cleanup tested; no blanket abrupt SIGTERM durability claim",
+    "Only flushed output can be retained; unflushed C++ userspace buffers cannot be recovered",
+    "Actual hosted source-matched Native/Linux/Windows and paired performance still pending"
+  ],
+  "candidate_source_modified_by_reviewer": false
+}

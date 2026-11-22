@@ -1,0 +1,71 @@
+{
+  "schema": "ci-opt003-integration-source-map-v1",
+  "updated_utc": "2026-11-22T00:08:05Z",
+  "accepted_initial_main": {
+    "commit": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590"
+  },
+  "candidate_a": {
+    "pr": 721,
+    "head": "506dfc8c343c5d24fe26e89a9542cf985c52853e",
+    "tree": "71500851801b166188c27141e3b89f2f8e8b3fe1",
+    "disposition": "Draft/HOLD; safety-qualified, insufficient measured value; no merge",
+    "proof_run": 44959131042
+  },
+  "candidate_b": {
+    "pr": 722,
+    "head": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+    "tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+    "tested_merge_checkout": "da63e0f3d5a189a67acdc2e1bc47b87d8a946ae5",
+    "merged_commit": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+    "merged_tree": "062f8ec0df0e9f1cb548c11860968301cad0ae16",
+    "source_review": 6008792911,
+    "admission_review": 6009060691,
+    "full_ready_cohort": [
+      44960371733,
+      44960371856,
+      44960371795,
+      44960371730,
+      44960371741,
+      44960371735
+    ],
+    "proof_run": 44961498877,
+    "disposition": "Manually merged after all admission gates; post-merge checks running",
+    "postmerge_runs": [
+      44964966221,
+      44964966242,
+      44964966199,
+      44964966200,
+      44964966217
+    ]
+  },
+  "candidate_c": {
+    "pr": 723,
+    "head": "19023b4016facfda2b13b9a1503742e4a9fe1982",
+    "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "proof_baseline": "cd32ed95b1c3da1d5e8bbecc8020f68e13fe1d55",
+    "accepted_main_base": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+    "baseline_tree_matches_accepted_main": true,
+    "tested_merge_checkout": "5c56bce96881291c57cea6575e1f4d5fb89485cc",
+    "tested_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "prospective_merge_tree_command": [
+      "git",
+      "merge-tree",
+      "--write-tree",
+      "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "19023b4016facfda2b13b9a1503742e4a9fe1982"
+    ],
+    "prospective_merge_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+    "full_ready_cohort": [
+      44963101962,
+      44963102007,
+      44963101934,
+      44963101963,
+      44963101949,
+      44963101939
+    ],
+    "proof_run": 44963259696,
+    "disposition": "Final source frozen; hosted qualification and complete paired proof pending; no merge admission",
+    "superseded_source_not_qualification": "28ec075afab840cf6fbb35190a7b1915808904f3"
+  }
+}
