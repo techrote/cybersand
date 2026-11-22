@@ -1,4 +1,5 @@
 #include "cybersand/persistent_area_continuation.hpp"
+#include "cybersand/render_snapshot.hpp"
 
 #include <array>
 #include <chrono>
@@ -223,6 +224,36 @@ void three_independent_areas() {
     }
     std::cout<<"GEN006_NATIVE_THREE_AREAS_PASS sequence=A,B,C,A,B retained_checkpoint_bytes="<<retained_bytes<<'\n';
 }
+
+void residency_memory_and_render_lifetime() {
+    auto world=fixture(4);
+    world->configure_transient_obstacles({0,0,512,512},true);
+    const auto cells=world->resident_cell_bytes();
+    const auto owned=world->current_resident_storage_bytes();
+    const auto reservation=world->current_resident_reservation_bytes();
+    require(owned>cells,"native ownership metric must include scheduler/coupling storage beyond cells");
+    require(reservation>=owned,"native residency growth reservation must cover current owned arrays");
+    step(*world,3);
+    require(world->current_resident_storage_bytes()<=reservation,"admitted native ticks exceed growth reservation");
+    auto exchange=std::make_unique<cybersand::RenderSnapshotExchange>(3,128,4U*1024U*1024U);
+    const auto rendered=exchange->publish(*world);
+    require(rendered.status==cybersand::RenderPublishStatus::Published,"native render publication failed");
+    auto lease=exchange->acquire_latest();
+    require(lease && static_cast<bool>(*lease),"immutable native presentation lease unavailable");
+    const auto serial=lease->serial(); const auto tick=lease->tick();
+    const std::vector<std::uint8_t> retained(lease->cells().begin(),lease->cells().end());
+    const auto render_bytes=exchange->resident_storage_bytes();
+    require(render_bytes>=3U*4U*1024U*1024U,"render allocation metric omits fixed byte slots");
+    world.reset(); exchange.reset();
+    require(lease->serial()==serial && lease->tick()==tick &&
+        std::equal(retained.begin(),retained.end(),lease->cells().begin(),lease->cells().end()),
+        "native eviction invalidated a retained immutable presentation lease");
+    lease.reset();
+    std::cout<<"GEN006_NATIVE_RESIDENCY_MEMORY_PASS owned_bytes="<<owned
+        <<" reservation_bytes="<<reservation<<" cell_bytes="<<cells
+        <<" render_bytes="<<render_bytes<<" immutable_lease_survives_world_and_exchange_release=true"
+        <<" excludes=allocator_metadata,os_thread_stacks,host_values\n";
+}
 }
 
 int main(int argc,char** argv) {
@@ -238,6 +269,7 @@ int main(int argc,char** argv) {
         }
         continuation_and_slices(argc==2?argv[1]:"");
         negative_domains_and_atomicity(); coarse_skip_counterexamples(); three_independent_areas();
+        residency_memory_and_render_lifetime();
         return 0;
     } catch (const std::exception& error) { std::cerr<<"GEN006_NATIVE_FAIL "<<error.what()<<'\n'; return 1; }
 }

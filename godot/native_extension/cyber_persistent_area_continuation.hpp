@@ -320,6 +320,7 @@ inline std::int64_t CyberDemoBridge::prepare_workbench_continuation(
         pending.source_checkpoint_sha256=capsule["sha256"];
         pending.source_checkpoint_tick=restored->completed_tick_index();
         pending.world.swap(restored);
+        ++adapter->resident_native_restorations_;
         pending.continuation_identity=identity.duplicate(true);
         pending.continuation=true; pending.continuation_dirty=true;
         pending.window=host["simulation_window_enabled"]; pending.cadence=false; pending.origin={0,0}; pending.size={512,512};

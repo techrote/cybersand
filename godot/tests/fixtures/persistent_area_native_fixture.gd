@@ -18,7 +18,7 @@ static func definition() -> Dictionary:
 		51,400,1,1,0, 65,60,1,1,1]
 	return value
 
-static func create() -> Dictionary:
+static func create(workers: int = 1) -> Dictionary:
 	var checked: Dictionary = Contract.validate(definition())
 	if not checked.get("ok",false): return {"error":checked.get("error","fixture invalid")}
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
@@ -28,7 +28,7 @@ static func create() -> Dictionary:
 			"geometry":PackedFloat64Array(),"bodies":[]},"region":PackedInt32Array([0,0,512,512]),
 		"intent":"controlled","pacing":"fixed_steps","definition_hash":checked.hash,
 		"initial_bodies":PackedFloat32Array(),"simulation_window_enabled":true,
-		"cadence_lod_enabled":false,"liquid_surface_adhesion_enabled":true,"workbench_worker_threads":1}
+		"cadence_lod_enabled":false,"liquid_surface_adhesion_enabled":true,"workbench_worker_threads":workers}
 	var result: Dictionary = {"world":world,"bridge":bridge,"checked":checked,"options":options}
 	var token: int = prepare(result,options)
 	if token <= 0 or not bridge.commit_liquid_world(world,token):

@@ -26,6 +26,9 @@ public:
     Dictionary publish(const String& stage, const String& target, const String& expected_target_sha256, const String& expected_stage_sha256);
     Dictionary remove_file(const String& name);
     Dictionary list_files();
+    // Per-owner application-attributed filesystem calls/bytes. These include
+    // kernel-cache hits and integrity readback, not physical-device I/O.
+    Dictionary telemetry();
 };
 
 } // namespace godot

@@ -129,11 +129,11 @@ wave-body-boundary-thread-sanitize: $(BUILD_DIR)/test_wave_body_boundary_tsan
 
 # GEN-006 opt-in full-area continuation; no default native law changes.
 .PHONY: persistent-area-test persistent-area-sanitize
-$(BUILD_DIR)/test_persistent_area_continuation: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_persistent_area_continuation.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_persistent_area_continuation.cpp -o $@
+$(BUILD_DIR)/test_persistent_area_continuation: $(SIMULATION_SOURCES) native/src/render_snapshot.cpp $(CORE_HEADERS) native/tests/test_persistent_area_continuation.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/tests/test_persistent_area_continuation.cpp -o $@
 
-$(BUILD_DIR)/test_persistent_area_continuation_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_persistent_area_continuation.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_persistent_area_continuation.cpp -o $@
+$(BUILD_DIR)/test_persistent_area_continuation_sanitized: $(SIMULATION_SOURCES) native/src/render_snapshot.cpp $(CORE_HEADERS) native/tests/test_persistent_area_continuation.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/tests/test_persistent_area_continuation.cpp -o $@
 
 persistent-area-test: $(BUILD_DIR)/test_persistent_area_continuation
 	./$(BUILD_DIR)/test_persistent_area_continuation

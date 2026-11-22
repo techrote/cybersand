@@ -1045,6 +1045,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->retained_window = adapter->simulation_window_enabled_;
         const auto token = pending->token;
         adapter->pending_liquid_world_ = std::move(pending);
+        ++adapter->resident_source_constructions_;
         return static_cast<std::int64_t>(token);
     } catch (const cybersand::LiquidPolicyRefused& error) {
         refuse_liquid_policy(error.refusal());
@@ -1098,8 +1099,21 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         error_ = "Retained World changed after preparation";
         return false;
     }
+    std::unique_ptr<CyberNativeCellWorld::PendingLiquidWorld> resident_departure;
+    try {
+        if (adapter->active_resident_handle_!=0) {
+            if (!pending->workbench || pending->extent!=Vector2i(512,512) || pending->cadence)
+                throw std::invalid_argument("Resident replacement must remain an admitted actor-free persistent area");
+            for (const auto& owner:pending->workbench->sample.owners)
+                if (owner.instance!=0) throw std::invalid_argument("Resident replacement is pinned by target actors");
+            cybersand::persistent_areas::validate_domain(*pending->world);
+        }
+        resident_departure=resident_stage_departure(*adapter.ptr());
+    }
+    catch (const std::exception& error) { error_=String(error.what()); return false; }
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
+    resident_take_active(*adapter.ptr(),std::move(resident_departure));
     adapter->world_.swap(pending->world);
     adapter->worker_threads_ = adapter->world_->config().worker_threads;
     adapter->workbench_.swap(pending->workbench);
