@@ -1,0 +1,538 @@
+{
+  "schema": "objectshard-m3-independent-final-navigation-ownership-review-v1",
+  "reviewer": "review_ownership",
+  "created_utc": "2026-11-22T07:45:33.248097+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "pr": 741,
+  "stack_base_pr": 738,
+  "stack_base_commit": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "result": "No remaining finding in the reviewed ownership, navigation, recovery and scoped-replay behavior at this exact published source. All original reviewer findings repaired or explicitly scoped and verified.",
+  "approval_scope": "Independent source/runtime review only. No Ready, merge, production publication, default adoption, fresh platform package qualification or human hardware acceptance.",
+  "scope": "Separate real native World/exclusive GDScript worker + main-thread Rapier integration rehearsal. The ordinary GCR immutable geometry/World attachment seam remains outside this delivered host.",
+  "runtime_scope": "Actual Godot4.7/Rapier native execution on Linux with the sealed514 reused library. All116native source inputs and5build-contract inputs match final source. This independently verifies committed scripts against a real compatible native runtime; it is not a fresh final-source native build or Windows/package acceptance.",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "native_sealed_source": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "runtime": {
+    "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+      "bytes": 5573096,
+      "resolved_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-68235b12/project/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    },
+    "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "bytes": 117275416,
+      "resolved_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-68235b12/project/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    },
+    "godot": {
+      "path": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "bytes": 144186224
+    }
+  },
+  "source_binding": "source-binding.json",
+  "committed_source_files_verified": 70,
+  "post_execution_source_mismatches": [],
+  "tests": {
+    "navigation": {
+      "schema": "objectshard-worker-navigation-test-v1",
+      "checks": 135,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 14.943773,
+      "unexpected_error_lines": []
+    },
+    "recovery": {
+      "schema": "objectshard-worker-recovery-test-v1",
+      "checks": 63,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.624973,
+      "unexpected_error_lines": []
+    },
+    "replay_admission": {
+      "schema": "objectshard-worker-replay-admission-test-v1",
+      "checks": 57,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.573917,
+      "unexpected_error_lines": []
+    },
+    "native_worker": {
+      "schema": "objectshard-native-worker-test-v1",
+      "checks": 31,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.668268,
+      "unexpected_error_lines": []
+    },
+    "worker_commands": {
+      "schema": "objectshard-worker-command-test-v1",
+      "checks": 29,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.571179,
+      "unexpected_error_lines": []
+    },
+    "reentry": {
+      "schema": "independent-navigation-reentry-v1",
+      "checks": 17,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.322761,
+      "unexpected_error_lines": []
+    },
+    "held": {
+      "schema": "independent-navigation-held-v1",
+      "checks": 9,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.919017,
+      "unexpected_error_lines": []
+    }
+  },
+  "top_level_checks": 341,
+  "top_level_failures": 0,
+  "navigation_child": {
+    "schema": "objectshard-worker-navigation-quit-child-v1",
+    "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "checks": 18,
+    "failures": 0
+  },
+  "navigation_child_exit_code": 0,
+  "navigation_qualifier_validation": "navigation-qualifier-validation.json",
+  "findings": [
+    {
+      "id": "OWN-01",
+      "original_severity": "P1",
+      "status": "repaired_and_verified_at_final_commit",
+      "title": "Lost cancellation receipt allowed a failed hold to resume physics and queued material edits",
+      "original_source_sha256": "1fb831bdcbfdcdb57ef48712a7e22e9643084071432c2f8eadc1861f520f9e58",
+      "minimal_repro": "Promote one actual dynamic component, prepare another, cancel and remove its real Cancelled receipt; enqueue one ordinary edit, expire only the host observation timestamp, enter Held, then retry cancel.",
+      "negative_observation": "Rapier steps4->8; y39.0230178833->39.0893707275, vy2.5999999046->5.1999983788; completed1->2/publication19->21; queued World(30,20) Empty->Wood while failed=true.",
+      "negative": "initial-adversaries-v4.log",
+      "repair": "Failed/Held gates at cancellation, resume, idle dispatch and ordinary send preserve the retained owner until explicit reset/stop.",
+      "final_source": "godot/scripts/object_shard_worker_host.gd",
+      "final_lines": [
+        174,
+        175,
+        378,
+        384,
+        394,
+        398,
+        617,
+        619,
+        866,
+        868,
+        929,
+        940
+      ],
+      "verification": "final-recovery.log: lost_cancel_hold; actual body pose/velocity, native material, ticks and publication remain unchanged; explicit reset disposes32 Wood cells once.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "recovery.receipt.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OWN-02",
+      "original_severity": "P2",
+      "status": "repaired_and_verified_at_final_commit",
+      "title": "Lost completed reset left retry bound to a retired native session",
+      "minimal_repro": "Remove an actual accepted reset receipt after native session advances, expire host pending timestamp, then retry reset.",
+      "negative_observation": "Host remained session1 Held while worker became2; retry was StaleTransportIdentity; late real receipt HeldUntilExplicitReset.",
+      "negative": "initial-adversaries-v4.log",
+      "repair": "Observed worker session is used solely for explicit disposal; unseen material/RIDs are not adopted. Only an exact reset receipt with a strictly newer session installs new main physics.",
+      "final_source": "godot/scripts/object_shard_worker_host.gd",
+      "final_lines": [
+        345,
+        375,
+        460,
+        481
+      ],
+      "verification": "final-recovery.log: lost_reset_recovery; successful new session and reset_disposed Wood1 exactly once, duplicate original reset receipt nonmutating.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "recovery.receipt.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OWN-03",
+      "original_severity": "P2",
+      "status": "repaired_and_verified_at_final_commit",
+      "title": "Reset discarded admitted input identities without terminal disposition",
+      "minimal_repro": "Queue three accepted ordinary edits and reset before dispatch. Separately withhold a real applied edit receipt before reset.",
+      "negative_observation": "Queued action IDs vanished from both pending and result records.",
+      "negative": "initial-adversaries-v4.log",
+      "repair": "Bounded retired_action_results distinguish queued CancelledByReset/Stop from dispatched OutcomeUnknown with may_have_executed=true; old trace is explicitly incomplete.",
+      "final_source": "godot/scripts/object_shard_worker_host.gd",
+      "final_lines": [
+        365,
+        409,
+        943,
+        972
+      ],
+      "verification": "final-recovery.log: retirement_dispositions; terminal session/IDs preserved, old on-disk footer incomplete, native disposal accounts only actual effect, duplicate close does not duplicate records.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "recovery.receipt.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OWN-04",
+      "original_severity": "P2",
+      "status": "repaired_and_verified_at_final_commit",
+      "title": "Recovery could enqueue a second reset while the first was queued behind full control replies",
+      "original_source_sha256": "7afd6c6706a9c389414a52cc0c96b03e607a6e3f439869930e89de716d4e1b86",
+      "minimal_repro": "Fill8 actual control replies, queue reset9, expire without draining, retry reset10 while inflight0/pending_control1.",
+      "negative_observation": "Both admitted for old session1; first moved native to2, second returned StaleTransportIdentity and returned host to Held.",
+      "negative": "repair1-reset-queue-race-v2.log",
+      "repair": "Worker checks both queued and in-flight reset under the same mutex as admission.",
+      "final_source": "godot/scripts/object_shard_native_worker.gd",
+      "final_lines": [
+        77,
+        92,
+        185,
+        193
+      ],
+      "verification": "final-recovery.log: queued_reset_fence; PreviousResetStillRunning with exactly one queued reset; drain completes original owner change, subsequent explicit disposal succeeds.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "recovery.receipt.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OWN-05",
+      "original_severity": "P2",
+      "status": "repaired_and_verified_at_final_commit",
+      "title": "Replay reported clean success for an explicitly incomplete trace with unknown applied mutation",
+      "minimal_repro": "Native really applies Wood1; remove action receipt; reset records ActionRetired may_have_executed=true and complete_prefix=false; replay original trace.",
+      "negative_observation": "Old replay exited0 with actions0/checks4/failures0/incomplete_barrier=false.",
+      "negative": "repair2-uncertain-action-replay.json",
+      "preserved_trace": "repair2-uncertain-action-trace.jsonl",
+      "repair": "Replay preflights uncertainty, incomplete evidence and unresolved operations before creating a replacement native World.",
+      "final_source": "godot/tests/replay_object_shard_worker_trace.gd",
+      "final_lines": [
+        54,
+        65,
+        151,
+        189
+      ],
+      "verification": "final-replay-admission/uncertain-replay.json: expected refusal UnknownMutationOutcomeRequiresAdversarialSchedule, replay_admitted=false, actions0/ticks0.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "replay_admission.receipt.json + replay-admission/*-replay.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OWN-06",
+      "original_severity": "P2",
+      "status": "resolved_with_explicit_supported_replay_scope_verified_at_final_commit",
+      "title": "Noninitial native sessions prevented otherwise valid standalone replay",
+      "minimal_repro": "Capture ordinary edit and moving stale/fresh cuts after native reset; launch replay in a fresh process.",
+      "negative_observation": "Original recorded session2 target refused against fresh process session1. In-place reset additionally retained owner2/gen2/bodygen2/pose15 while fresh registry had owner1/gen1/bodygen1/pose10.",
+      "negative": "repair2-reset-session-replay.json",
+      "preserved_trace": "repair2-inherited-moving-trace.jsonl",
+      "repair": "A source-produced fresh-native-registry header permits only current-session namespace aliasing. Other source sessions map to a nonlive sentinel; all owner/cell/incarnation/material/geometry/pose witnesses remain exact. Host.reset inherited-history captures are explicitly observation-only and rejected before native startup; UI close/recreate supplies fresh registry captures.",
+      "final_source": "godot/scripts/object_shard_worker_host.gd and godot/tests/replay_object_shard_worker_trace.gd",
+      "final_lines": [
+        465,
+        576,
+        589,
+        115,
+        124,
+        182,
+        189
+      ],
+      "verification": "final-replay-admission/fresh-replay.json:19actions/2ticks/47checks0failures, recorded4->replay1; actual stale session and stale pose refused, valid moving erase accepted. inherited-replay.json: expected preflight refusal with replay_admitted=false.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "replay_admission.receipt.json + replay-admission/*-replay.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OWN-07",
+      "original_severity": "P2",
+      "status": "repaired_and_verified_at_final_commit",
+      "title": "Rejected invalid startup consumed an unrecoverable transport generation",
+      "original_source_sha256": "afa35781ff1be0a28326292408fa6e9a450b52fc8f60cc012411f35c5de0145e",
+      "minimal_repro": "Host.open(validconfig,MAX_EXACT_SEQUENCE+1) followed by valid generation1 retry; compare actual native fresh-host control.",
+      "negative_observation": "Rejected InvalidTransportStart left Closed generation9007199254740992; valid retry always FreshTransportGenerationRequired.",
+      "negative": "repair3-invalid-open-identity.log",
+      "additional_negative": "repair3-startup-recovery-regression.log:63checks3startup failures; original59 passed.",
+      "repair": "Host preflights full generation and bounded copyable configuration before allocation/state mutation and commits generation only after Thread.start succeeds.",
+      "final_source": "godot/scripts/object_shard_worker_host.gd",
+      "final_lines": [
+        80,
+        87,
+        119,
+        126
+      ],
+      "verification": "final-recovery.log: invalid_start_identity; invalid generation and oversized config leave Closed generation0/no owners; same-host valid retry opens actual exclusive native thread and closes.",
+      "baseline_review": "build/review-ownership/final-review-68235b12.json",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_verification": "recovery.receipt.json",
+      "source_delta": "Relevant worker/host/bridge/replayer bytes unchanged from independently reviewed682 source; final committed bytes re-extracted and native controls rerun."
+    },
+    {
+      "id": "OPERATOR-01",
+      "severity": "P1",
+      "original_review_owner": "review_physics",
+      "original_evidence": "build/review-physics/navigation-68235b12/review-navigation-result.json",
+      "original_result": {
+        "checks": 22,
+        "failures": 8
+      },
+      "failure": "Actual F2 destroys owner scene and main host/bridge while native worker remains alive and owns526 structural cells; active/sleeping RIDs persist, prior quit policy is not restored, new launcher entry overlaps old native owner.",
+      "status": "repaired_and_verified_at_exact_published_commit",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_source_lines": {
+        "godot/scripts/feature_navigation.gd": [
+          14,
+          25,
+          31,
+          36,
+          38,
+          41,
+          59,
+          63
+        ],
+        "godot/scripts/object_shard_worker_rehearsal.gd": [
+          67,
+          68,
+          69,
+          269,
+          275,
+          276,
+          277,
+          279,
+          280,
+          718,
+          722,
+          726,
+          749,
+          753,
+          754,
+          756,
+          762,
+          766,
+          767,
+          769,
+          771,
+          772
+        ],
+        "godot/scripts/object_shard_worker_host.gd": [
+          144,
+          146,
+          152,
+          154,
+          156,
+          403,
+          406,
+          414
+        ]
+      },
+      "final_verification": "maintained-navigation.json: all8scenarios135checks, including awake pending, natural sleep, genuine Opening, reset supersession, held interval, stop-delivery faults, alreadyClosed/falsepriorpolicy, and actual window-close child18checks/exit0.",
+      "repair": "Global optional async navigation request; scene stays alive through main-polled close; only host Closed can complete; expected scene and deferred instance-ID fences reject stale completion; prior quit policy restored after stop/join and RID release."
+    },
+    {
+      "id": "OPERATOR-02",
+      "severity": "P2",
+      "initial_lines": {
+        "godot/scripts/object_shard_worker_rehearsal.gd": [
+          476,
+          500,
+          501,
+          519,
+          520,
+          718,
+          719,
+          720,
+          721,
+          722
+        ]
+      },
+      "failure": "After actual F2 cancels1 preexisting UI intent and sets scene.closing=true/host Closing, actual Cut lower support button admits44 more intents; launcher destruction drops44 with no cancellation disposition. No post-close native mutation claimed.",
+      "minimal_repro": "Open actual launcher/rehearsal and await native fixture. Pause only scene process to hold main close pump. Queue1 pointer intent. Send F2 InputEvent with Input.flush_buffered_events. Emit actual Cut lower support Button.pressed. Pump real host to Closed, finish normal launcher return.",
+      "negative": {
+        "path": "navigation-repair1/review-navigation-reentry-result.json",
+        "checks": 17,
+        "failures": 2,
+        "log": "navigation-repair1/reentry-v2.log",
+        "probe": "navigation-repair1/project/tests/review_navigation_reentry.gd"
+      },
+      "repaired": {
+        "path": "navigation-repair3/review-navigation-reentry-result.json",
+        "checks": 17,
+        "failures": 0,
+        "log": "navigation-repair3/reentry.log"
+      },
+      "fix": "Central _accepting_play_input gates closing/dispatched/loading/replacing/failed and unavailable host states; support-cut/erode routes refuse visibly before creating intents.",
+      "status": "repaired_and_verified_at_exact_published_commit",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_source_lines": {
+        "godot/scripts/object_shard_worker_rehearsal.gd": [
+          480,
+          481,
+          482,
+          483,
+          484,
+          508,
+          509,
+          510,
+          530,
+          531,
+          532,
+          557,
+          558,
+          559,
+          745,
+          746,
+          747,
+          748
+        ]
+      },
+      "final_verification": "review-navigation-reentry-result.json17checks0failures and maintained-navigation.json actual Cut/Erode Button.pressed refusal controls."
+    },
+    {
+      "id": "OPERATOR-03",
+      "severity": "P2",
+      "initial_lines": {
+        "godot/scripts/object_shard_worker_rehearsal.gd": [
+          277,
+          278,
+          279,
+          701,
+          704,
+          705,
+          706,
+          707,
+          709
+        ]
+      },
+      "failure": "F2 then actual WM_CLOSE_REQUEST upgrades destination to quit; real native tick remains inflight when only main elapsed close deadline is accelerated. ShutdownHeld causes UI closing=false. F2 retry changes destination from quit to launcher.",
+      "minimal_repro": "Use actual owner; admit real tick without receipt consumption; F2; scene.notification(Node.NOTIFICATION_WM_CLOSE_REQUEST); advance only host._closing_started_usec past15s; host.poll(false) enters ShutdownHeld, UI _process handles hold; F2 again.",
+      "negative": {
+        "path": "navigation-repair1/review-navigation-held-result.json",
+        "checks": 9,
+        "failures": 1,
+        "log": "navigation-repair1/held-v2.log",
+        "probe": "navigation-repair1/project/tests/review_navigation_held.gd"
+      },
+      "repaired": {
+        "path": "navigation-repair3/review-navigation-held-result.json",
+        "checks": 9,
+        "failures": 0,
+        "log": "navigation-repair3/held.log"
+      },
+      "fix": "Retain quit destination through ShutdownHeld retry; trace effective destination. Explicit Reset clears old exit decision, and new owner clears destination/dispatched flags.",
+      "status": "repaired_and_verified_at_exact_published_commit",
+      "final_verified_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "final_source_lines": {
+        "godot/scripts/object_shard_worker_rehearsal.gd": [
+          235,
+          239,
+          240,
+          434,
+          439,
+          440,
+          713,
+          726,
+          729,
+          731,
+          732,
+          734,
+          735,
+          736,
+          747,
+          750
+        ]
+      },
+      "final_verification": "review-navigation-held-result.json9checks0failures. First attempt had actual native tick inflight_sequence1/stoppedfalse both before and after accelerated elapsed deadline; F2retry preserved quit; real owner subsequently stopped/joined/RIDsfreed. Maintained child covers actual eventual process exit."
+    }
+  ],
+  "replay_controls": {
+    "fresh": {
+      "result": "admitted",
+      "checks": 47,
+      "failures": 0,
+      "actions": 19,
+      "semantic_ticks": 2,
+      "recorded_session": 4,
+      "replay_session": 1,
+      "witness_scope": "Alias only current recorded session; stale other sessions refuse and every other identity witness remains unchanged."
+    },
+    "uncertain": {
+      "result": "expected refusal before replacement World",
+      "reason": "UnknownMutationOutcomeRequiresAdversarialSchedule",
+      "actions": 0,
+      "semantic_ticks": 0
+    },
+    "inherited": {
+      "result": "expected refusal before replacement World",
+      "reason": "InheritedRegistryHistoryRequiresPriorSessionReplay",
+      "actions": 0,
+      "semantic_ticks": 0
+    }
+  },
+  "remaining_supported_scope_limits": [
+    "In-place Host.reset captures retain native allocation and bridge pose history; standalone replay explicitly refuses them. UI reset/reconstruction captures are supported fresh registries.",
+    "Replay checks named action outcomes and completed semantic order; it does not establish checkpoint inventory/pose equivalence, OS scheduling/receipt timing, or cross-platform pose bit identity.",
+    "Ordinary CyberSimulationWorker/Workbench World attachment and mutable GCR integration remain unimplemented; this is a separate real-World/Rapier rehearsal.",
+    "Fresh Linux/Windows campaign, final sealed package acceptance, and physical Windows11/NVIDIA gameplay acceptance are separate gates.",
+    "Navigation stop-delivery refusal injection in maintained test is explicitly synthetic delivery status after actual thread stop; it is not claimed as a naturally occurring native material-disposal refusal. Independent held probe instead reaches the deadline with real native work inflight and only elapsed main time accelerated.",
+    "Arbitrary external scene destruction or forced process termination bypasses the explicit operator navigation protocol; reviewed product routes are actual F2, UIreset and window close.",
+    "The retained682platform matrix and original navigation failure remain historical baseline evidence. Fresh e034Linux/Windows campaign and final owner-package custody are separate review results owned by root/platform reviewers."
+  ],
+  "baseline_report": "build/review-ownership/final-review-68235b12.json",
+  "navigation_negative_iteration_report": "build/review-ownership/navigation-iteration-review.json",
+  "evidence_sha256": {
+    "source-binding.json": "6cac3ab06c4f7a012c2b1ce409b798cfcbe1ce7ad32e553dd7527f67631f5516",
+    "execution-summary.json": "89b1b085c3a81a78d86a0c7acd65ad687da0a5eadaca2a80793216a33f98073a",
+    "navigation-qualifier-validation.json": "eea184e98ae03ef87ea16472ba7d158e45c2a8b5d600e39bf888a1dddf28d7d3",
+    "reused-native-provenance.json": "a81d892bb7eb243b89c2478697bd23f85d0944624a43bbcb64162b4dc3e41480",
+    "source-delta.patch": "21c551c0cf07b70fb599d8ff945d170ed91662b7c55ede6b039746d80e7d6747",
+    "run_probe.py": "be57b644c1b067b835a6ec306b8de53f8b2c25175fe242c3c6267d9b09df3b72",
+    "maintained-navigation.json": "7ed2da7776eaecb9ce5817131144286ad9228af654385f66685815b85e9d2f78",
+    "maintained-navigation-quit-child.json": "e1790ed751f882132bbf25e98e6f6f596d807774c0894766a8e0851281d68daa",
+    "maintained-navigation-quit-child.json.log": "ddefc974fe444df2ec1b16e3787b412082e463e759cafa461ce0398197f63acf",
+    "review-navigation-reentry-result.json": "ec56e8a7e36f866659afda685d0a02e9f1f7b268d11568156c56559a0bae2e8e",
+    "review-navigation-held-result.json": "3c7bd5650a5c4eaad641f3e075c8185abaff73e503e3937594b78478cb25800e",
+    "navigation.log": "8cc2c4253f45aa626e14a23c3ad28e52f84aeb7f49a785289aa4babb5f3295db",
+    "navigation.execution.json": "d1fccd4ef60e10baa1c06c1b6496a101e361fb1a65a7eaf464e534efa87f4f8c",
+    "navigation.receipt.json": "7ed2da7776eaecb9ce5817131144286ad9228af654385f66685815b85e9d2f78",
+    "recovery.log": "064b4ba2db74ef4a56bf52ff16ccc2862668bc62561262b44a905e353c4d5523",
+    "recovery.execution.json": "fe20588e327657061ea1bb2fbbda260557053cfe1179e71331367e6d9b23ac98",
+    "recovery.receipt.json": "3fcd325ade5e719ca463c2fa96e51e9ff2211b6fe88bbc0bbab8d5460af62e55",
+    "replay_admission.log": "190c5e2eb343739a56c736ad82e4796d110195abd294686a04c150aedfd0ac57",
+    "replay_admission.execution.json": "0069a50bc2683be9c702c81fa76077da90d387d9052335a8d7c2167efcf8f4a8",
+    "replay_admission.receipt.json": "3bff3f255019a86423feb88154fc1dac5080bf0d4ef3d61cb94e40578cb417c6",
+    "native_worker.log": "f3de122fbdc8b97597248a1db5ce1a991f6da1fcfe6c86a0463e0c28754cc27a",
+    "native_worker.execution.json": "a518ba488d6463dd27b345a4b775cdb96b02e0d55f04255b4d1763f26f0eaa28",
+    "native_worker.receipt.json": "a188053d0d542bba4626b7725af86036f74d03d48d0a5a2465279272c4a168d6",
+    "worker_commands.log": "93b98186c4e6de18a34ff93fc6d80090ab9391e1fbcdbe0be5da563e7c1a94d5",
+    "worker_commands.execution.json": "3b82421f26d473347b611cc296e840cb29514db986c995cb5f470851fe54545b",
+    "worker_commands.receipt.json": "75e0946cfa3d45505fecf5f522313c1df5478e2eb7d194e5da46be0d4e688012",
+    "reentry.log": "8ce47b3262d47771b366920dc6a5497873b499094221ac48e6f843483bf532c1",
+    "reentry.execution.json": "44a1a03c2cbe3339065790580fd7f91e1415e16c388b2c356e8571b3c49aade0",
+    "reentry.receipt.json": "23ec608ab73d67d61cafb5a3b7c08359fcbc733ce649c73805b7943489baf756",
+    "held.log": "1caa1637eb380b08e9884ae3c383a201f9b96f769d2473719a815da31c0040ab",
+    "held.execution.json": "69dd5c50b321b4e522d66afec3baabc437c5ad1a7b96de612c83cf5009360216",
+    "held.receipt.json": "4bd12b08fa3718d9e2e71b652df775d5034863a0b447e9bce43c88c2f2dbae0a",
+    "replay-admission/fresh-replay.json": "3a2d5081d85be5692f512e0039708b3bc277256d620982dc05beb95d9bd8d037",
+    "replay-admission/fresh-replay.log": "05a0f6b0afaa3a6a74eb138530e558a995fa29929923944938568081e7b686cb",
+    "replay-admission/fresh-session-4.jsonl": "aa75036bcaaf14cc8281ebff3c8b6e2012b7473064a0b30a1c0776676cd5f7a6",
+    "replay-admission/inherited-replay.json": "9784c8934938aa124d137bff8d34cc31c2ee4b56fe2c52dbe6edd7d0059af668",
+    "replay-admission/inherited-replay.log": "77d1db671dab6a46c5bd7e0d6c0b713bcab3d957b4218e7bc8f12c7ad90ae234",
+    "replay-admission/uncertain-replay.json": "b291b2c772a5ac77b49a117d80a0d2e6bb14328247f1f717221346762f0d722a",
+    "replay-admission/uncertain-replay.log": "19b405077ae42d7e87c0ee6d1b8d4c0b6f9e0fa3a8b1f6dfeccd5732976fb653",
+    "replay-admission/uncertain-session-1.jsonl": "75ebf085a2765c47f35de73543c3009fe3a86ba961457e9a4294a52a34829b0b",
+    "replay-admission/uncertain-session-2.jsonl": "254c4ba20718254e24e7e58ce01ff721ec8f30a727c4ba69c35aae1e18f6e68b"
+  }
+}

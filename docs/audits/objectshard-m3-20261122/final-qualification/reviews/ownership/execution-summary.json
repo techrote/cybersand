@@ -1,0 +1,88 @@
+{
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "results": {
+    "navigation": {
+      "schema": "objectshard-worker-navigation-test-v1",
+      "checks": 135,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 14.943773,
+      "unexpected_error_lines": []
+    },
+    "recovery": {
+      "schema": "objectshard-worker-recovery-test-v1",
+      "checks": 63,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.624973,
+      "unexpected_error_lines": []
+    },
+    "replay_admission": {
+      "schema": "objectshard-worker-replay-admission-test-v1",
+      "checks": 57,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.573917,
+      "unexpected_error_lines": []
+    },
+    "native_worker": {
+      "schema": "objectshard-native-worker-test-v1",
+      "checks": 31,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.668268,
+      "unexpected_error_lines": []
+    },
+    "worker_commands": {
+      "schema": "objectshard-worker-command-test-v1",
+      "checks": 29,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.571179,
+      "unexpected_error_lines": []
+    },
+    "reentry": {
+      "schema": "independent-navigation-reentry-v1",
+      "checks": 17,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.322761,
+      "unexpected_error_lines": []
+    },
+    "held": {
+      "schema": "independent-navigation-held-v1",
+      "checks": 9,
+      "failures": 0,
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.919017,
+      "unexpected_error_lines": []
+    }
+  },
+  "top_level_checks": 341,
+  "top_level_failures": 0,
+  "navigation_cases": [
+    "active_pending_repeated",
+    "naturally_sleeping",
+    "opening",
+    "reset_superseded",
+    "held_interval",
+    "stop_delivery_faults",
+    "already_closed_prior_policy",
+    "window_close_upgrade"
+  ],
+  "navigation_child": {
+    "schema": "objectshard-worker-navigation-quit-child-v1",
+    "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "checks": 18,
+    "failures": 0
+  },
+  "post_execution_source_mismatches": []
+}

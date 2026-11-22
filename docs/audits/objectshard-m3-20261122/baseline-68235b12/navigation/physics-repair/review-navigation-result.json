@@ -1,0 +1,571 @@
+{
+  "checks": 22,
+  "failures": 0,
+  "leave_orphan_for_exit_diagnostics": false,
+  "observations": [
+    {
+      "check": "real project autoload is instantiated",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual launcher opens actual native rehearsal",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual support-cut input drains",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual active awake owner exists before F2",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual tick receipt is pending at F2 navigation",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "active_pending real autoload F2 returns to real feature launcher",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "current_scene": "res://feature_launcher.tscn",
+        "live_body_readbacks": [],
+        "old_bridge_destroyed": true,
+        "old_host_destroyed": true,
+        "old_scene_destroyed": true,
+        "worker": {},
+        "worker_alive": false
+      },
+      "before": {
+        "auto_accept_quit": false,
+        "host_state": "Awaiting:tick",
+        "pending": {
+          "ok": true,
+          "operation": "tick",
+          "outcome": "Queued",
+          "purpose": "tick",
+          "sent_usec": 722792,
+          "sequence": 56,
+          "session": 1,
+          "transport_generation": 492407
+        },
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [
+            {
+              "active": true,
+              "angular_velocity": 0.0,
+              "backend_rotation": 0.0,
+              "body_generation": 1,
+              "com_x": 14.5380229949951,
+              "com_y": 13.2585554122925,
+              "generation": 1,
+              "geometry_digest": "14709829798384320201",
+              "geometry_revision": 1,
+              "id": 1,
+              "inertia": 61277.2421875,
+              "last_geometry_step": 1,
+              "last_geometry_usec": 0,
+              "mass": 526.0,
+              "nominal_rotation_headroom": 0.2,
+              "nominal_translation_headroom": 3.95666666825612,
+              "reported_contacts": 0,
+              "rotation": 0.0,
+              "shape_count": 6,
+              "sleeping": false,
+              "vx": 0.0,
+              "vy": 2.59999990463257,
+              "x": 83.0,
+              "y": 60.0230140686035
+            }
+          ],
+          "events": [
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "BodyActivated",
+              "physics_step": 1
+            }
+          ],
+          "last_completed_semantic_tick": 3,
+          "last_error": "",
+          "last_physics_session": 1,
+          "last_sampled_pose_serial": 7,
+          "motion": {
+            "applied_delta": 0.0166666666666667,
+            "applied_segments": 4,
+            "completed_delta": 0.0166666666666667,
+            "maximum_substeps": 16,
+            "operation_sequence": 2,
+            "requested_delta": 0.0166666666666667,
+            "substeps": 4
+          },
+          "motion_phase": "Completed",
+          "motion_refused": false,
+          "operation_sequence": 2,
+          "physics_steps": 5,
+          "segment_sequence": 4,
+          "session": 1
+        },
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 56,
+          "last_native_call_usec": 2361,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 35354450,
+          "maximum_native_execute_usec": 734,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 108,
+          "maximum_reply_age_usec": 3786,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 2364,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 26,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 1,
+          "snapshot_copies": 56,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 492407
+        }
+      },
+      "label": "active_pending"
+    },
+    {
+      "check": "active_pending old scene actually destroyed",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "active_pending navigation stops and joins the previous native worker",
+      "detail": {
+        "auto_accept_quit": true,
+        "current_scene": "res://feature_launcher.tscn",
+        "live_body_readbacks": [],
+        "old_bridge_destroyed": true,
+        "old_host_destroyed": true,
+        "old_scene_destroyed": true,
+        "worker": {},
+        "worker_alive": false
+      },
+      "ok": true
+    },
+    {
+      "check": "active_pending navigation releases old active or sleeping RIDs",
+      "detail": {
+        "auto_accept_quit": true,
+        "current_scene": "res://feature_launcher.tscn",
+        "live_body_readbacks": [],
+        "old_bridge_destroyed": true,
+        "old_host_destroyed": true,
+        "old_scene_destroyed": true,
+        "worker": {},
+        "worker_alive": false
+      },
+      "ok": true
+    },
+    {
+      "check": "active_pending navigation restores prior SceneTree close handling",
+      "detail": {
+        "actual": true,
+        "baseline": true
+      },
+      "ok": true
+    },
+    {
+      "check": "real launcher re-entry opens a new native worker",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "active_reentry_workers": {
+        "new": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 34270198,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 1156,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 1402,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 28,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 3,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 815200
+        },
+        "old": {}
+      }
+    },
+    {
+      "check": "re-entry never overlaps old and new live native owners",
+      "detail": {
+        "new": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 34270198,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 1156,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 1402,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 28,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 3,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 815200
+        },
+        "old": {}
+      },
+      "ok": true
+    },
+    {
+      "check": "second actual support cut drains",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "second owner reaches natural Rapier sleep before navigation",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "naturally_sleeping real autoload F2 returns to real feature launcher",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "after": {
+        "auto_accept_quit": true,
+        "current_scene": "res://feature_launcher.tscn",
+        "live_body_readbacks": [],
+        "old_bridge_destroyed": true,
+        "old_host_destroyed": true,
+        "old_scene_destroyed": true,
+        "worker": {},
+        "worker_alive": false
+      },
+      "before": {
+        "auto_accept_quit": false,
+        "host_state": "Idle",
+        "pending": {},
+        "physics": {
+          "awaiting_native": false,
+          "bodies": [
+            {
+              "active": true,
+              "angular_velocity": 0.0,
+              "backend_rotation": 1.57080435752869,
+              "body_generation": 1,
+              "com_x": 14.5380229949951,
+              "com_y": 13.2585554122925,
+              "generation": 1,
+              "geometry_digest": "14709829798384320201",
+              "geometry_revision": 1,
+              "id": 1,
+              "inertia": 61277.2421875,
+              "last_geometry_step": 1,
+              "last_geometry_usec": 0,
+              "mass": 526.0,
+              "nominal_rotation_headroom": 0.2,
+              "nominal_translation_headroom": 4.0,
+              "reported_contacts": 0,
+              "rotation": 1.57080435752869,
+              "shape_count": 6,
+              "sleeping": true,
+              "vx": 0.0,
+              "vy": 0.0,
+              "x": 141.14176940918,
+              "y": 81.0001525878906
+            }
+          ],
+          "events": [
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "BodyActivated",
+              "physics_step": 1
+            },
+            {
+              "detail": {
+                "geometry_revision": 1
+              },
+              "id": 1,
+              "kind": "Sleeping",
+              "physics_step": 1289
+            }
+          ],
+          "last_completed_semantic_tick": 324,
+          "last_error": "",
+          "last_physics_session": 3,
+          "last_sampled_pose_serial": 1611,
+          "motion": {
+            "applied_delta": 0.0166666666666667,
+            "applied_segments": 4,
+            "completed_delta": 0.0166666666666667,
+            "maximum_substeps": 16,
+            "operation_sequence": 323,
+            "requested_delta": 0.0166666666666667,
+            "substeps": 4
+          },
+          "motion_phase": "Completed",
+          "motion_refused": false,
+          "operation_sequence": 323,
+          "physics_steps": 1289,
+          "segment_sequence": 1288,
+          "session": 3
+        },
+        "worker": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 1965,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 36830468,
+          "maximum_native_execute_usec": 3461,
+          "maximum_pending": 1,
+          "maximum_queue_wait_usec": 1859,
+          "maximum_reply_age_usec": 20272,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 10558,
+          "maximum_snapshot_value_bytes": 190194,
+          "owner_thread": 28,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 3,
+          "snapshot_copies": 1982,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 815200
+        }
+      },
+      "label": "naturally_sleeping"
+    },
+    {
+      "check": "naturally_sleeping old scene actually destroyed",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "naturally_sleeping navigation stops and joins the previous native worker",
+      "detail": {
+        "auto_accept_quit": true,
+        "current_scene": "res://feature_launcher.tscn",
+        "live_body_readbacks": [],
+        "old_bridge_destroyed": true,
+        "old_host_destroyed": true,
+        "old_scene_destroyed": true,
+        "worker": {},
+        "worker_alive": false
+      },
+      "ok": true
+    },
+    {
+      "check": "naturally_sleeping navigation releases old active or sleeping RIDs",
+      "detail": {
+        "auto_accept_quit": true,
+        "current_scene": "res://feature_launcher.tscn",
+        "live_body_readbacks": [],
+        "old_bridge_destroyed": true,
+        "old_host_destroyed": true,
+        "old_scene_destroyed": true,
+        "worker": {},
+        "worker_alive": false
+      },
+      "ok": true
+    },
+    {
+      "check": "naturally_sleeping navigation restores prior SceneTree close handling",
+      "detail": {
+        "actual": true,
+        "baseline": true
+      },
+      "ok": true
+    },
+    {
+      "check": "re-entry after sleeping owner exit opens the rehearsal",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "sleeping_reentry_workers": {
+        "new": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 34238948,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 1113,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 3012,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 30,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 5,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10399287
+        },
+        "old": {}
+      }
+    },
+    {
+      "check": "sleeping navigation never overlaps live native owners",
+      "detail": {
+        "new": {
+          "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+          "control_results": 0,
+          "data_results": 0,
+          "inflight_sequence": 0,
+          "last_native_call_usec": 0,
+          "limits": {
+            "command_value_bytes": 65536,
+            "control": 8,
+            "control_results": 8,
+            "data": 32,
+            "data_results": 32,
+            "edit_batch": 32,
+            "native_total_shard_bbox_area": 12288,
+            "native_world_area": 262144
+          },
+          "maximum_godot_static_bytes": 34238948,
+          "maximum_native_execute_usec": 0,
+          "maximum_pending": 0,
+          "maximum_queue_wait_usec": 0,
+          "maximum_reply_age_usec": 1113,
+          "maximum_reply_value_bytes": 321756,
+          "maximum_snapshot_usec": 3012,
+          "maximum_snapshot_value_bytes": 157716,
+          "owner_thread": 30,
+          "pending_control": 0,
+          "pending_data": 0,
+          "pending_reset_sequence": 0,
+          "retained_reply_value_bytes": 0,
+          "session": 5,
+          "snapshot_copies": 1,
+          "started": true,
+          "stop_requested": false,
+          "stopped": false,
+          "terminal": {},
+          "transport_generation": 10399287
+        },
+        "old": {}
+      },
+      "ok": true
+    },
+    {
+      "check": "reviewer explicitly cleans the final healthy owner",
+      "detail": {},
+      "ok": true
+    }
+  ],
+  "schema": "independent-f2-navigation-lifecycle-v1",
+  "scope": "Actual exact-source project autoload, F2 InputEvent route, deferred change_scene, launcher re-entry and real native/Rapier ownership. Weak references observe old owners; cleanup is explicitly later reviewer-only activity.",
+  "source_revision": "68235b12+navigation-repair-freeze"
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "objectshard-material-transition-artifact-custody-v1",
+  "retrieved_utc": "2026-11-22T08:43:37.772701+00:00",
+  "source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "artifact": {
+    "id": 14747056801,
+    "name": "retrieval-45003383402",
+    "size_in_bytes": 1493499,
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14747056801",
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14747056801/zip",
+    "expired": false,
+    "created_at": "2026-11-22T08:42:53Z",
+    "expires_at": "2026-12-22T08:42:51Z",
+    "updated_at": "2026-11-22T08:42:53Z",
+    "digest": "sha256:055728a18749efacefa875ead555649bb96071125e09a2ed55855180c74499fa",
+    "workflow_run": {
+      "id": 45003383402,
+      "repository_id": 1350077435,
+      "head_repository_id": 1350077435,
+      "head_branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "head_sha": "73018218092e79fbe935aa60890e33bd9f4859ac"
+    }
+  },
+  "file_id": "file_000000001df082109abd116c1c1a8246",
+  "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-material-transition/delivery/m3-transition-artifact-14747056801.zip",
+  "archive_bytes": 1493499,
+  "archive_sha256": "055728a18749efacefa875ead555649bb96071125e09a2ed55855180c74499fa",
+  "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-material-transition/delivery/14747056801",
+  "members": [
+    {
+      "path": "challenges.json",
+      "bytes": 2809219,
+      "extracted": true,
+      "sha256": "bdf1bb2cc542f95f685867d505c45de4c9d4222ea4063747cd35ddb9a3de0099"
+    },
+    {
+      "path": "frozen.contexts.md",
+      "bytes": 351447,
+      "extracted": true,
+      "sha256": "7796ca96825cb963b0ee02b91f6a30b53abdc90ab8ba5cd7bccdc7c247ae3085"
+    },
+    {
+      "path": "challenges.contexts.md",
+      "bytes": 2447600,
+      "extracted": true,
+      "sha256": "33f675996e5a3d602b905ecf09bca762b31ab51a5522003f2b0ad89814a9ea28"
+    },
+    {
+      "path": "frozen.json",
+      "bytes": 442650,
+      "extracted": true,
+      "sha256": "90f4c42027025075c984e2ebf613600e5a23d3d00502279d77a4d365ed8fdd03"
+    }
+  ],
+  "extraction_scope": "complete"
+}

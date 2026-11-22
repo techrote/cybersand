@@ -1,0 +1,87 @@
+{
+  "baseline_evidence_retention": {
+    "files": 92,
+    "prefix": "docs/audits/objectshard-m3-20261122/baseline-68235b12/",
+    "status": "Historical superseded baseline, not final repaired-source qualification"
+  },
+  "cust_01": "Preserved original UI capture time, separate admission metrics, and rendered sample gates. Fresh rendered distributions still require new platform evidence.",
+  "cust_02": "Both strict package probes remain explicit probe_ entrypoints; ordinary discovery unmodified and excludes them",
+  "failures": [],
+  "gitattributes_delta": "Only baseline/final audit receipts are -text whitespace=cr-at-eol; runtime and ordinary source conversion unchanged",
+  "inventory_sha256": "5cc5accccb47cde97fcf90c8134d306dfc514152dbfe8667748af2188282511d",
+  "local_checks": {
+    "package-contracts": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/objectshard",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "package-contracts.log",
+      "sha256": "459f7aee5ae557c73007641f41955cf5efc4e7c0e5aa6287ad496ecac9a150a1",
+      "tests": 50
+    },
+    "production-provenance": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/ci/check_repository.py"
+      ],
+      "errors": [
+        "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+        "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+        "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+        "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+        "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+        "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp"
+      ],
+      "exit_code": 1,
+      "log": "production-provenance.log",
+      "sha256": "257d369122154b12d969bb1b9010a2b38f04fb70848b969496683c1e64c92488"
+    }
+  },
+  "native_inputs": 116,
+  "native_inputs_identical_to_682_and_qualified_514": true,
+  "native_regression_delta": [],
+  "navigation_review": {
+    "admission": "Closing/replacing/failed/closed owners visibly refuse pointer/support/erosion admission",
+    "cases": [
+      "active_pending_repeated",
+      "naturally_sleeping",
+      "opening",
+      "reset_superseded",
+      "held_interval",
+      "stop_delivery_faults",
+      "already_closed_prior_policy",
+      "window_close_upgrade"
+    ],
+    "fault_scope": "Only already-completed native stop delivery is injected; no synthetic native disposal failure claim",
+    "ownership": "F2 retains scene until exact Closed/disposal/join/RID release; stale completion fenced twice",
+    "qualification": "Strict source-bound parent schema, exact ordered case inventory, integral checks >=100; exactly one child with source, schema, checks>=18 and successful exit",
+    "quit": "Window close upgrades destination and survives ShutdownHeld retry; actual child process exit required"
+  },
+  "non_audit_delta": [
+    ".gitattributes",
+    "docs/operations/objectshard-m3-preflight-playtest.md",
+    "godot/scripts/feature_navigation.gd",
+    "godot/scripts/object_shard_worker_rehearsal.gd",
+    "godot/tests/test_object_shard_worker_navigation.gd",
+    "tools/objectshard/qualify_lab.py",
+    "tools/objectshard/test_qualification_receipts.py"
+  ],
+  "ordinary_discovered_cases": 360,
+  "package_probes_discovered": [],
+  "protected_contract_inputs": 21,
+  "reviewer": "review_custody",
+  "schema": "objectshard-independent-repaired-source-review-v1",
+  "scope": "Exact-source inspection and inexpensive existing contract/gate execution only. Full production provenance remains six failures; fresh Linux/Windows/package receipts are separate mandatory reviews.",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "status": "passed",
+  "utc": "2026-11-22T07:53:49.762193+00:00"
+}

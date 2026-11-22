@@ -1,0 +1,11 @@
+{
+  "time": "2026-11-22T06:39:22.289426+00:00",
+  "files": {
+    "scripts/object_shard_native_worker.gd": "29c45f0a9744f226ce604dcd6ddc36f1b059cc10d76a143c3d6d3bf175bca7bf",
+    "scripts/object_shard_worker_host.gd": "afa35781ff1be0a28326292408fa6e9a450b52fc8f60cc012411f35c5de0145e",
+    "scripts/object_shard_capture.gd": "13b0ec2462fc6e676c6cf9afb6f9f5b717bc1839dca16ecca4914af33838ed85",
+    "tests/replay_object_shard_worker_trace.gd": "7db6ec9839e2652db8456e7a9548ae5389692dd30138d496101d69c40a420fa6",
+    "tests/review_moving_recreate_replay.gd": "7fcb1f55c4ad830f93b3ab9bb6fb578cbab075b736f5990524ed52c09bf1364e"
+  },
+  "scope": "Fresh local ownership/replay probes on latest script bytes; source tag remains base44abd plus explicit local hash binding, not final-source qualification"
+}

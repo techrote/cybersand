@@ -1,0 +1,139 @@
+{
+  "schema": "objectshard-pump-comparison-v1",
+  "scope": "Local uncommitted iteration, pinned Godot4.7/Rapier0.35.2 and sealed514 native runtime. Same-source scheduling comparison, not final-source qualification or target-display benchmark.",
+  "files": {
+    "pump-control.json": "4e62fca4090a30dcb5fa73dd070b069db5aceff6bfdf657543ac1543ee526d61",
+    "pump-candidate.json": "4875e884b05000b265e1002ad1c8367f5cf4e98e59f90bd75d3a8fd7c31b06f8",
+    "pump-profile-inputs.json": "f7815692cc8136eb86c46761bbe8c9bfef3b67fd5213a60f62a4875f274c500d"
+  },
+  "equal_identity": true,
+  "equal_240_publication_digests": true,
+  "equal_accounting": true,
+  "canonical_publication_sequence_sha256": "26105efe6d1444e46e2b1b6cc202bdb4277d76225bd95b4e92effed64bb51878",
+  "control": {
+    "checks": 1102,
+    "failures": 0,
+    "play_elapsed_usec": 29572401,
+    "semantic_ticks_per_wall_second": 8.11567515265331,
+    "actual_physics_steps": 954,
+    "actual_live_inputs": 60,
+    "maximum_displacements": {
+      "1": 19.9768753051758,
+      "2": 19.9768753051758,
+      "3": 20.1384086608887
+    },
+    "semantic_interval_and_input_usec": {
+      "count": 240,
+      "maximum": 190088,
+      "p50": 111166,
+      "p95": 132693,
+      "p99": 166450
+    },
+    "process_callback_interval_usec": {
+      "count": 1769,
+      "maximum": 67557,
+      "p50": 16666,
+      "p95": 17066,
+      "p99": 25135
+    },
+    "publication_comparison_observation_usec": {
+      "count": 240,
+      "maximum": 14666,
+      "p50": 4030,
+      "p95": 7041,
+      "p99": 9775
+    },
+    "pump_call_usec": {
+      "count": 0
+    },
+    "pump_call_while_pending_usec": {
+      "count": 0
+    },
+    "input_to_publication_usec": {
+      "count": 60,
+      "maximum": 179039,
+      "p50": 116707,
+      "p95": 146795,
+      "p99": 179039,
+      "session_maximum": 179039,
+      "total_count": 60
+    },
+    "receipt_delivery_usec": {
+      "count": 1512,
+      "maximum": 66768,
+      "p50": 13368,
+      "p95": 14401,
+      "p99": 17347,
+      "session_maximum": 66768,
+      "total_count": 1512
+    }
+  },
+  "candidate": {
+    "checks": 2210,
+    "failures": 0,
+    "play_elapsed_usec": 18316070,
+    "semantic_ticks_per_wall_second": 13.1032475853172,
+    "actual_physics_steps": 954,
+    "actual_live_inputs": 60,
+    "maximum_displacements": {
+      "1": 19.9768753051758,
+      "2": 19.9768753051758,
+      "3": 20.1384086608887
+    },
+    "semantic_interval_and_input_usec": {
+      "count": 240,
+      "maximum": 127516,
+      "p50": 62075,
+      "p95": 101830,
+      "p99": 113359
+    },
+    "process_callback_interval_usec": {
+      "count": 1096,
+      "maximum": 51105,
+      "p50": 16665,
+      "p95": 17088,
+      "p99": 25458
+    },
+    "publication_comparison_observation_usec": {
+      "count": 240,
+      "maximum": 18822,
+      "p50": 3969,
+      "p95": 6813,
+      "p99": 9313
+    },
+    "pump_call_usec": {
+      "count": 1096,
+      "maximum": 10297,
+      "p50": 4067,
+      "p95": 4457,
+      "p99": 5874
+    },
+    "pump_call_while_pending_usec": {
+      "count": 947,
+      "maximum": 10297,
+      "p50": 4081,
+      "p95": 4486,
+      "p99": 6292
+    },
+    "input_to_publication_usec": {
+      "count": 60,
+      "maximum": 116735,
+      "p50": 66641,
+      "p95": 102169,
+      "p99": 116735,
+      "session_maximum": 116735,
+      "total_count": 60
+    },
+    "receipt_delivery_usec": {
+      "count": 1512,
+      "maximum": 55946,
+      "p50": 7839,
+      "p95": 11951,
+      "p99": 12913,
+      "session_maximum": 55946,
+      "total_count": 1512
+    }
+  },
+  "speed_ratio": 1.6145603833136755,
+  "finding": "Bounded4ms main-owner pump improved semantic throughput and input-to-publication latency in this local matched pair. Current handler can overrun; measured actual maximum10.297ms. No monitor/display or universal hardware claim."
+}

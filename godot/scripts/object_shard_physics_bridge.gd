@@ -25,12 +25,30 @@ var motion_refused: bool = false
 var last_error: String = ""
 var diagnostic_events: Array[Dictionary] = []
 var last_motion: Dictionary = {}
+# Main-thread handshake state. An actual solver segment cannot be cancelled or
+# rolled back after it advances; its exact native application must be acknowledged.
+var motion_phase: String = "Idle"
+var motion_operation_sequence: int = 0
+var motion_segment_sequence: int = 0
+var _motion_expected_tick: int = -1
+var _motion_last_completed_tick: int = -1
+# Native sessions are monotonic. This retirement watermark deliberately survives
+# shutdown, so reinitializing the same owner cannot reset its physics clock.
+var _last_physics_session: int = 0
+# Native Registry issues strictly increasing IDs within one session. A scalar
+# watermark fences retired reservations without accumulating an unbounded map.
+var _last_reserved_body_id: int = 0
+var _motion_pending_poses: Array = []
+var _motion_pending_delta: float = 0.0
+var _motion_roster: Dictionary = {}
 var timings: Dictionary = {"geometry_install_usec": 0, "terrain_install_usec": 0,
 	"rapier_step_usec": 0, "rapier_flush_usec": 0, "pose_copy_usec": 0,
 	"geometry_install_max_usec": 0, "terrain_install_max_usec": 0}
 
 
 func begin_frame() -> void:
+	if not _main_owner():
+		return
 	# Event costs belong to the frame that performed them. Several installations
 	# may occur during one handoff; accumulate those, never repeat the last event.
 	for key: String in ["geometry_install_usec", "terrain_install_usec", "rapier_step_usec", "rapier_flush_usec", "pose_copy_usec"]:
@@ -38,7 +56,15 @@ func begin_frame() -> void:
 
 
 func initialize(incarnation: int) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if incarnation <= 0:
+		return _motion_refusal("InvalidSession")
+	if incarnation <= _last_physics_session:
+		return _motion_refusal("RetiredSession")
 	shutdown()
+	_last_physics_session = incarnation
+	_motion_last_completed_tick = -1
 	if not ClassDB.class_exists(RAPIER) or str(ProjectSettings.get_setting(
 		"physics/2d/physics_engine", "")) != "Rapier2D":
 		return _refuse("RapierUnavailable")
@@ -53,6 +79,10 @@ func initialize(incarnation: int) -> Dictionary:
 
 
 func install_terrain(chunks: Array) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if _motion_in_progress() or motion_refused:
+		return _motion_refusal("MotionBarrierPending")
 	var started: int = Time.get_ticks_usec()
 	if not space.is_valid() or chunks.size() > MAX_TERRAIN_CHUNKS:
 		return _refuse("TerrainCapacity")
@@ -89,14 +119,22 @@ func install_terrain(chunks: Array) -> Dictionary:
 
 
 func reserve_body(shard: Dictionary) -> Dictionary:
-	if not space.is_valid() or int(shard.get("session", session)) != session:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if _motion_in_progress() or motion_refused:
+		return _motion_refusal("MotionBarrierPending")
+	if not space.is_valid() or int(shard.get("session", 0)) != session:
 		return _refuse("RetiredSession")
+	if not _valid_body_identity(shard):
+		return _refuse("InvalidBodyIdentity")
 	var id: int = int(shard.id)
 	if bodies.has(id):
 		var existing: Dictionary = bodies[id]
-		if int(existing.generation) == int(shard.generation) and str(existing.geometry_digest) == str(shard.geometry_digest):
+		if not _matching(shard).is_empty() and _same_installed_geometry(shard, existing):
 			return _body_receipt(shard, existing)
 		return _refuse("BodyIdentityConflict")
+	if id <= _last_reserved_body_id:
+		return _refuse("RetiredBodyIdentity")
 	if bodies.size() >= MAX_BODIES or not _valid_rectangles(shard.rectangles, MAX_SHAPES_PER_BODY):
 		return _refuse("ShapeCapacity")
 	var pose := Transform2D(float(shard.get("rotation", 0.0)), Vector2(
@@ -125,15 +163,36 @@ func reserve_body(shard: Dictionary) -> Dictionary:
 		_destroy_compound(reserved)
 		return _refuse("ShapeReadbackFailed")
 	bodies[id] = reserved
+	_last_reserved_body_id = id
 	return _body_receipt(shard, reserved)
 
 
 func activate(shard: Dictionary) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if _motion_in_progress() or motion_refused:
+		return _motion_refusal("MotionBarrierPending")
 	var body: Dictionary = _matching(shard)
 	if body.is_empty():
 		return _refuse("StaleBody")
-	if str(body.geometry_digest) != str(shard.geometry_digest):
+	# Native publications must confirm the completed debit, installed terrain
+	# and occupancy barrier. Physics-only fixtures have no native lifecycle.
+	if shard.has("lifecycle") and (str(shard.lifecycle) not in ["ReadyToActivate", "Active"] \
+		or not bool(shard.get("owns_inventory", false))):
+		return _refuse("NativeActivationBarrierPending")
+	if not _same_installed_geometry(shard, body):
 		return _refuse("StaleGeometry")
+	if bool(body.active):
+		# A delayed duplicate activation is an observation of the installed body,
+		# not another physics action. In particular it must not wake a sleeper,
+		# refresh its contact graph or disturb its settled pose/velocity.
+		var duplicate: Dictionary = _body_receipt(shard, body)
+		duplicate["activated"] = PhysicsServer2D.body_get_mode(body.rid) == PhysicsServer2D.BODY_MODE_RIGID \
+			and PhysicsServer2D.body_get_collision_layer(body.rid) == 1 \
+			and PhysicsServer2D.body_get_collision_mask(body.rid) == 1
+		duplicate["ok"] = duplicate.activated
+		duplicate["duplicate"] = true
+		return duplicate
 	PhysicsServer2D.body_set_mode(body.rid, PhysicsServer2D.BODY_MODE_RIGID)
 	PhysicsServer2D.body_set_collision_layer(body.rid, 1)
 	PhysicsServer2D.body_set_collision_mask(body.rid, 1)
@@ -149,6 +208,10 @@ func activate(shard: Dictionary) -> Dictionary:
 
 
 func install_geometry(shard: Dictionary) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if _motion_in_progress() or motion_refused:
+		return _motion_refusal("MotionBarrierPending")
 	var started: int = Time.get_ticks_usec()
 	var body: Dictionary = _matching(shard)
 	if body.is_empty():
@@ -157,7 +220,7 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 	if revision < int(body.geometry_revision):
 		return _refuse("StaleGeometry")
 	if revision == int(body.geometry_revision):
-		if str(shard.geometry_digest) != str(body.geometry_digest):
+		if not _same_installed_geometry(shard, body):
 			return _refuse("GeometryDigestConflict")
 		return _body_receipt(shard, body)
 	if not _valid_rectangles(shard.rectangles, MAX_SHAPES_PER_BODY):
@@ -226,6 +289,15 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 
 
 func sample_poses() -> Array:
+	if not _main_owner() or _motion_in_progress():
+		return []
+	return _sample_poses_unfenced()
+
+
+func _sample_poses_unfenced() -> Array:
+	if pose_serial == 9223372036854775807:
+		_motion_hold("PoseSequenceExhausted", {})
+		return []
 	var started: int = Time.get_ticks_usec()
 	var result: Array = []
 	if motion_refused:
@@ -251,6 +323,10 @@ func sample_poses() -> Array:
 
 
 func step() -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if _motion_in_progress():
+		return _motion_refusal("MotionBarrierPending")
 	if not space.is_valid() or motion_refused:
 		return _refuse("MotionHeld")
 	# Refuse a full-turn ambiguity before a known out-of-envelope manual step.
@@ -291,90 +367,197 @@ func step() -> Dictionary:
 
 
 func step_motion(accept_segment: Callable, expected_semantic_tick: int = -1) -> Dictionary:
-	# Each segment is an actual Rapier step followed by native applied-mask and
-	# contact admission. Never interpolate a large unobserved step after the fact.
-	if not space.is_valid() or motion_refused or not accept_segment.is_valid():
-		return _refuse("MotionHeld")
+	# Synchronous reference adapter over the same incremental implementation used
+	# by the exclusive-worker host. It has no separate stepping/receipt logic.
+	if not accept_segment.is_valid():
+		return _motion_refusal("InvalidMotionConsumer")
+	var result: Dictionary = begin_motion_tick(expected_semantic_tick)
+	if not result.get("ok", false):
+		return result
+	while not result.get("finished", false):
+		result = advance_motion_segment()
+		if not result.get("ok", false) or result.get("finished", false):
+			return result
+		var receipt: Variant = accept_segment.call(result.poses)
+		result = acknowledge_motion_segment(receipt)
+		if not result.get("ok", false):
+			return result
+	return result
+
+
+func begin_motion_tick(expected_semantic_tick: int = -1) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if not space.is_valid() or motion_refused:
+		return _motion_refusal("MotionHeld")
+	if _motion_in_progress():
+		return _motion_refusal("MotionTickAlreadyPending")
+	if expected_semantic_tick < 0:
+		return _motion_refusal("InvalidSemanticTick")
+	if expected_semantic_tick <= _motion_last_completed_tick:
+		return _motion_refusal("StaleSemanticTick")
+	if motion_operation_sequence == 9223372036854775807:
+		return _motion_hold("MotionOperationSequenceExhausted", {})
+	motion_operation_sequence += 1
+	_motion_expected_tick = expected_semantic_tick
+	_motion_pending_poses.clear()
+	_motion_pending_delta = 0.0
+	_motion_roster = _current_motion_roster()
 	last_motion = {"requested_delta": FIXED_DELTA, "completed_delta": 0.0,
-		"substeps": 0, "maximum_substeps": MAX_MOTION_SUBSTEPS, "applied_segments": 0}
+		"applied_delta": 0.0, "substeps": 0, "maximum_substeps": MAX_MOTION_SUBSTEPS,
+		"applied_segments": 0, "operation_sequence": motion_operation_sequence}
 	if bodies.is_empty():
 		var empty_step: Dictionary = step()
-		if empty_step.get("ok", false):
-			last_motion.completed_delta = FIXED_DELTA
-			last_motion.substeps = 1
-			return {"ok": true, "motion": last_motion.duplicate(true)}
-		return empty_step
-	var remaining: float = FIXED_DELTA
-	while remaining > 0.000000001:
-		var delta: float = minf(remaining, FIXED_DELTA / float(BASE_MOTION_SUBSTEPS))
-		for body: Dictionary in bodies.values():
-			if not body.active:
-				continue
-			var velocity: Vector2 = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
-			var angular: float = absf(float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)))
-			if not velocity.is_finite() or not is_finite(angular):
-				return _motion_hold("InvalidVelocity", {"id": _body_id(body.rid)})
-			# Half-envelope prediction leaves room for collision impulses. Actual
-			# displacement is checked independently after every solver invocation.
-			var speed: float = velocity.length()
-			if speed > 0.0:
-				delta = minf(delta, 0.5 * MAX_SEGMENT_TRANSLATION / speed)
-			if angular > 0.0:
-				delta = minf(delta, 0.5 * MAX_SEGMENT_ROTATION / angular)
-			var corner_speed: float = speed + float(body.bounds_diagonal) * angular
-			if corner_speed > 0.0:
-				delta = minf(delta, 0.5 * MAX_SEGMENT_CORNER_MOTION / corner_speed)
-		var available: int = MAX_MOTION_SUBSTEPS - int(last_motion.substeps)
-		if not is_finite(delta) or delta <= 0.0 or remaining / delta > float(available) + 0.0000001:
-			return _motion_hold("MotionSubstepCapacity", {"remaining_delta": remaining,
-				"proposed_delta": delta, "available_substeps": available})
-		var previous: Dictionary = {}
-		for id: int in bodies:
-			if bodies[id].active:
-				previous[id] = PhysicsServer2D.body_get_state(bodies[id].rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
-		var started: int = Time.get_ticks_usec()
-		ClassDB.class_call_static(RAPIER, &"space_step", space, delta)
-		timings.rapier_step_usec = int(timings.rapier_step_usec) + Time.get_ticks_usec() - started
-		started = Time.get_ticks_usec()
-		ClassDB.class_call_static(RAPIER, &"space_flush_queries", space)
-		timings.rapier_flush_usec = int(timings.rapier_flush_usec) + Time.get_ticks_usec() - started
-		steps += 1
-		last_motion.substeps = int(last_motion.substeps) + 1
-		last_motion.completed_delta = float(last_motion.completed_delta) + delta
-		var next_angles: Dictionary = {}
-		for id: int in previous:
-			var body: Dictionary = bodies[id]
-			var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
-			var angular: float = float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
-			var angle: float = wrapf(pose.get_rotation() - float(body.wrapped_rotation), -PI, PI)
-			var distance: float = pose.origin.distance_to(previous[id].origin)
-			var corner_motion: float = distance + float(body.bounds_diagonal) * absf(angle)
-			var evidence: Dictionary = {"id": id, "delta": delta, "translation": distance,
-				"rotation": angle, "corner_motion": corner_motion, "angular_velocity": angular,
-				"before_x": previous[id].origin.x, "before_y": previous[id].origin.y,
-				"after_x": pose.origin.x, "after_y": pose.origin.y}
-			if not pose.origin.is_finite() or not is_finite(angle) or not is_finite(angular) or absf(angular) * delta >= PI:
-				return _motion_hold("UnresolvedCompleteRotation", evidence)
-			if distance > MAX_SEGMENT_TRANSLATION or absf(angle) > MAX_SEGMENT_ROTATION or corner_motion > MAX_SEGMENT_CORNER_MOTION:
-				return _motion_hold("SegmentMotionEnvelopeExceeded", evidence)
-			next_angles[id] = {"rotation": float(body.rotation) + angle, "wrapped": pose.get_rotation()}
-		# All body segments passed before any new angle is published.
-		for id: int in next_angles:
-			bodies[id].rotation = next_angles[id].rotation
-			bodies[id].wrapped_rotation = next_angles[id].wrapped
-			var sleeping: bool = bool(PhysicsServer2D.body_get_state(bodies[id].rid, PhysicsServer2D.BODY_STATE_SLEEPING))
-			if sleeping != bool(bodies[id].last_sleeping):
-				_event("Sleeping" if sleeping else "Waking", id, {"geometry_revision": bodies[id].geometry_revision})
-			bodies[id].last_sleeping = sleeping
-		var segment_poses: Array = sample_poses()
-		var receipt: Variant = accept_segment.call(segment_poses)
-		if not _valid_motion_receipt(receipt, segment_poses, expected_semantic_tick):
-			return _motion_hold("NativeSegmentRefused", {"receipt": receipt})
-		if expected_semantic_tick < 0:
-			expected_semantic_tick = int(receipt.semantic_tick)
-		last_motion.applied_segments = int(last_motion.applied_segments) + 1
-		remaining = maxf(0.0, FIXED_DELTA - float(last_motion.completed_delta))
-	return {"ok": true, "motion": last_motion.duplicate(true)}
+		if not empty_step.get("ok", false):
+			return _motion_hold(str(empty_step.get("outcome", "EmptySpaceStepFailed")), empty_step)
+		last_motion.completed_delta = FIXED_DELTA
+		last_motion.applied_delta = FIXED_DELTA
+		last_motion.substeps = 1
+		motion_phase = "Completed"
+		_motion_last_completed_tick = expected_semantic_tick
+		return _motion_progress(true)
+	motion_phase = "Ready"
+	return _motion_progress(false)
+
+
+func advance_motion_segment() -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if motion_phase == "AwaitingNative":
+		return _motion_refusal("AwaitingNativeReceipt")
+	if motion_refused or not space.is_valid():
+		return _motion_refusal("MotionHeld")
+	if motion_phase == "Completed":
+		return _motion_progress(true)
+	if motion_phase != "Ready":
+		return _motion_refusal("MotionTickNotStarted")
+	if _current_motion_roster() != _motion_roster:
+		return _motion_hold("MotionOwnerRosterChanged", {})
+	if motion_segment_sequence == 9223372036854775807 or pose_serial == 9223372036854775807:
+		return _motion_hold("MotionSegmentSequenceExhausted", {})
+	var remaining: float = maxf(0.0, FIXED_DELTA - float(last_motion.completed_delta))
+	var delta: float = minf(remaining, FIXED_DELTA / float(BASE_MOTION_SUBSTEPS))
+	for body: Dictionary in bodies.values():
+		if not body.active:
+			continue
+		var velocity: Vector2 = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+		var angular: float = absf(float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)))
+		if not velocity.is_finite() or not is_finite(angular):
+			return _motion_hold("InvalidVelocity", {"id": _body_id(body.rid)})
+		# Half-envelope prediction leaves room for collision impulses. Actual
+		# displacement is checked independently after every solver invocation.
+		var speed: float = velocity.length()
+		if speed > 0.0:
+			delta = minf(delta, 0.5 * MAX_SEGMENT_TRANSLATION / speed)
+		if angular > 0.0:
+			delta = minf(delta, 0.5 * MAX_SEGMENT_ROTATION / angular)
+		var corner_speed: float = speed + float(body.bounds_diagonal) * angular
+		if corner_speed > 0.0:
+			delta = minf(delta, 0.5 * MAX_SEGMENT_CORNER_MOTION / corner_speed)
+	var available: int = MAX_MOTION_SUBSTEPS - int(last_motion.substeps)
+	if not is_finite(delta) or delta <= 0.0 or remaining / delta > float(available) + 0.0000001:
+		return _motion_hold("MotionSubstepCapacity", {"remaining_delta": remaining,
+			"proposed_delta": delta, "available_substeps": available})
+	var previous: Dictionary = {}
+	for id: int in bodies:
+		if bodies[id].active:
+			previous[id] = PhysicsServer2D.body_get_state(bodies[id].rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var started: int = Time.get_ticks_usec()
+	ClassDB.class_call_static(RAPIER, &"space_step", space, delta)
+	timings.rapier_step_usec = int(timings.rapier_step_usec) + Time.get_ticks_usec() - started
+	started = Time.get_ticks_usec()
+	ClassDB.class_call_static(RAPIER, &"space_flush_queries", space)
+	timings.rapier_flush_usec = int(timings.rapier_flush_usec) + Time.get_ticks_usec() - started
+	steps += 1
+	last_motion.substeps = int(last_motion.substeps) + 1
+	last_motion.completed_delta = float(last_motion.completed_delta) + delta
+	var next_angles: Dictionary = {}
+	for id: int in previous:
+		var body: Dictionary = bodies[id]
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var angular: float = float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
+		var angle: float = wrapf(pose.get_rotation() - float(body.wrapped_rotation), -PI, PI)
+		var distance: float = pose.origin.distance_to(previous[id].origin)
+		var corner_motion: float = distance + float(body.bounds_diagonal) * absf(angle)
+		var evidence: Dictionary = {"id": id, "delta": delta, "translation": distance,
+			"rotation": angle, "corner_motion": corner_motion, "angular_velocity": angular,
+			"before_x": previous[id].origin.x, "before_y": previous[id].origin.y,
+			"after_x": pose.origin.x, "after_y": pose.origin.y}
+		if not pose.origin.is_finite() or not is_finite(angle) or not is_finite(angular) or absf(angular) * delta >= PI:
+			return _motion_hold("UnresolvedCompleteRotation", evidence)
+		if distance > MAX_SEGMENT_TRANSLATION or absf(angle) > MAX_SEGMENT_ROTATION or corner_motion > MAX_SEGMENT_CORNER_MOTION:
+			return _motion_hold("SegmentMotionEnvelopeExceeded", evidence)
+		next_angles[id] = {"rotation": float(body.rotation) + angle, "wrapped": pose.get_rotation()}
+	# All body segments passed before any new angle is published.
+	for id: int in next_angles:
+		bodies[id].rotation = next_angles[id].rotation
+		bodies[id].wrapped_rotation = next_angles[id].wrapped
+		var sleeping: bool = bool(PhysicsServer2D.body_get_state(bodies[id].rid, PhysicsServer2D.BODY_STATE_SLEEPING))
+		if sleeping != bool(bodies[id].last_sleeping):
+			_event("Sleeping" if sleeping else "Waking", id, {"geometry_revision": bodies[id].geometry_revision})
+		bodies[id].last_sleeping = sleeping
+	_motion_pending_poses = _sample_poses_unfenced().duplicate(true)
+	_motion_pending_delta = delta
+	motion_segment_sequence += 1
+	motion_phase = "AwaitingNative"
+	var result: Dictionary = _motion_progress(false)
+	result["segment_sequence"] = motion_segment_sequence
+	result["poses"] = _motion_pending_poses.duplicate(true)
+	result["delta"] = delta
+	return result
+
+
+func acknowledge_motion_segment(receipt: Variant) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if motion_phase != "AwaitingNative":
+		return _motion_refusal("MotionAckNotPending")
+	if _current_motion_roster() != _motion_roster:
+		return _motion_hold("MotionOwnerRosterChanged", {})
+	if not _valid_motion_receipt(receipt, _motion_pending_poses, _motion_expected_tick):
+		return _motion_hold("NativeSegmentRefused", {"receipt": receipt,
+			"segment_sequence": motion_segment_sequence})
+	last_motion.applied_segments = int(last_motion.applied_segments) + 1
+	last_motion.applied_delta = float(last_motion.applied_delta) + _motion_pending_delta
+	_motion_pending_poses.clear()
+	_motion_pending_delta = 0.0
+	var finished: bool = FIXED_DELTA - float(last_motion.completed_delta) <= 0.000000001
+	motion_phase = "Completed" if finished else "Ready"
+	if finished:
+		_motion_last_completed_tick = _motion_expected_tick
+	return _motion_progress(finished)
+
+
+func _main_owner() -> bool:
+	return OS.get_thread_caller_id() == OS.get_main_thread_id()
+
+
+func _motion_in_progress() -> bool:
+	return motion_phase == "Ready" or motion_phase == "AwaitingNative"
+
+
+func _current_motion_roster() -> Dictionary:
+	var roster: Dictionary = {}
+	for id: int in bodies:
+		var body: Dictionary = bodies[id]
+		roster[id] = {"rid": body.rid, "active": body.active, "generation": body.generation,
+			"body_generation": body.body_generation, "geometry_revision": body.geometry_revision,
+			"geometry_digest": body.geometry_digest}
+	return roster
+
+
+func _motion_progress(finished: bool) -> Dictionary:
+	return {"ok": true, "finished": finished, "session": session,
+		"operation_sequence": motion_operation_sequence, "phase": motion_phase,
+		"motion": last_motion.duplicate(true)}
+
+
+func _motion_refusal(reason: String) -> Dictionary:
+	# Expected stale/duplicate/busy protocol calls do not advance physics, mint
+	# a pose serial, overwrite evidence or discard the outstanding acknowledgement.
+	return {"ok": false, "outcome": reason, "session": session,
+		"operation_sequence": motion_operation_sequence, "phase": motion_phase,
+		"motion": last_motion.duplicate(true)}
 
 
 func _valid_motion_receipt(receipt: Variant, poses: Array, semantic_tick: int) -> bool:
@@ -401,6 +584,7 @@ func _valid_motion_receipt(receipt: Variant, poses: Array, semantic_tick: int) -
 
 
 func _motion_hold(reason: String, detail: Dictionary) -> Dictionary:
+	motion_phase = "Held"
 	motion_refused = true
 	last_error = reason
 	last_motion["reason"] = reason
@@ -421,13 +605,20 @@ func _bounds_diagonal(shard: Dictionary) -> float:
 	return extent.length()
 
 
-func remove_body(id: int) -> void:
+func remove_body(id: int) -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
+	if _motion_in_progress() or motion_refused:
+		return _motion_refusal("MotionBarrierPending")
 	if bodies.has(id):
 		_destroy_compound(bodies[id])
 		bodies.erase(id)
+	return {"ok": true}
 
 
 func shutdown() -> void:
+	if not _main_owner():
+		return
 	for row: Dictionary in bodies.values():
 		_destroy_compound(row)
 	for row: Dictionary in terrain.values():
@@ -438,15 +629,24 @@ func shutdown() -> void:
 		PhysicsServer2D.free_rid(space)
 	space = RID()
 	session = 0
-	pose_serial = 0
+	_last_reserved_body_id = 0
+	# Serials are monotonic for the bridge object's lifetime. Explicit session
+	# disposal drops pending poses but cannot make an old ACK match new work.
 	steps = 0
 	motion_refused = false
 	last_error = ""
 	diagnostic_events.clear()
 	last_motion.clear()
+	motion_phase = "Idle"
+	_motion_expected_tick = -1
+	_motion_pending_poses.clear()
+	_motion_pending_delta = 0.0
+	_motion_roster.clear()
 
 
 func diagnostics() -> Dictionary:
+	if not _main_owner():
+		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
 	# Inspection must not create a pose serial or an admission receipt. The last
 	# native-accepted serial remains the coordinator/session's separate authority.
 	var result: Array[Dictionary] = []
@@ -475,6 +675,9 @@ func diagnostics() -> Dictionary:
 			"nominal_translation_headroom": 4.0 - velocity.length() * FIXED_DELTA})
 	return {"session": session, "physics_steps": steps, "last_sampled_pose_serial": pose_serial,
 		"motion_refused": motion_refused, "last_error": last_error,
+		"motion_phase": motion_phase, "operation_sequence": motion_operation_sequence,
+		"segment_sequence": motion_segment_sequence, "awaiting_native": motion_phase == "AwaitingNative",
+		"last_completed_semantic_tick": _motion_last_completed_tick, "last_physics_session": _last_physics_session,
 		"bodies": result, "events": diagnostic_events.duplicate(true), "motion": last_motion.duplicate(true)}
 
 
@@ -492,15 +695,42 @@ func _event(kind: String, id: int, detail: Dictionary) -> void:
 
 
 func _matching(shard: Dictionary) -> Dictionary:
+	if not _valid_body_identity(shard):
+		return {}
 	var body: Dictionary = bodies.get(int(shard.id), {})
-	if int(shard.get("session", session)) != session or body.is_empty() or int(body.generation) != int(shard.generation):
+	if int(shard.session) != session or body.is_empty() \
+		or int(body.generation) != int(shard.generation) \
+		or int(body.body_generation) != int(shard.body_generation) \
+		or int(body.transaction) != int(shard.transaction):
 		return {}
 	return body
 
 
+func _valid_body_identity(shard: Dictionary) -> bool:
+	for key: String in ["session", "id", "generation", "body_generation", "transaction", "geometry_revision"]:
+		if not shard.get(key) is int or int(shard[key]) <= 0:
+			return false
+	return shard.get("geometry_digest") is String
+
+
+func _same_installed_geometry(shard: Dictionary, body: Dictionary) -> bool:
+	# Equal revisions/digests alone cannot turn changed shape or mass data into
+	# an installed receipt. Read back the real backend before an idempotent ACK.
+	if int(shard.geometry_revision) != int(body.geometry_revision) \
+		or str(shard.geometry_digest) != str(body.geometry_digest) \
+		or not _valid_rectangles(shard.get("rectangles", []), MAX_SHAPES_PER_BODY) \
+		or PackedInt32Array(shard.rectangles) != body.rectangles:
+		return false
+	for key: String in ["mass", "com_x", "com_y", "inertia"]:
+		if not (shard.get(key) is float or shard.get(key) is int) or not is_finite(float(shard[key])):
+			return false
+	return _readback_shapes(body.rid, shard.rectangles) and _readback_mass(body.rid,
+		float(shard.mass), Vector2(float(shard.com_x), float(shard.com_y)), float(shard.inertia))
+
+
 func _body_receipt(shard: Dictionary, body: Dictionary) -> Dictionary:
 	return {"ok": true, "session": session, "id": int(shard.id),
-		"generation": int(shard.generation), "transaction": int(shard.transaction),
+		"generation": int(body.generation), "transaction": int(body.transaction),
 		"body_generation": body.body_generation, "geometry_revision": body.geometry_revision,
 		"geometry_digest": body.geometry_digest, "shape_count": body.shapes.size(),
 		"shape_count_readback": PhysicsServer2D.body_get_shape_count(body.rid),

@@ -1,0 +1,127 @@
+{
+  "schema": "objectshard-independent-final-windows-verdict-v1",
+  "reviewer": "review_custody (independent of implementation and download workstream)",
+  "utc": "2026-11-22T08:03:35.495210+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "status": "passed for scoped Windows experimental delivery; observed performance regressions and production gates retained",
+  "confirmed_unrepaired_class_a_b_findings": [],
+  "source_bound_reports": {
+    "source-review.json": "1df77d5df2d2b5b74bba06c5fba0b9a660bd57a3a93ef8b64ec9d35d5e067efa",
+    "windows-crossbuild-review.json": "02e542d83267b9cb5e644001840dc1621604c68de8bd035530cd2654cdd1103a",
+    "windows-artifact-inventory.json": "61f10ab7f91f5cb193ba8b7c679926ddf6ddd1bcbeba7b5335af9abaf66392c4",
+    "windows-delivered-archive-review.json": "dcbeba51783c76eaab9ae31000fe81ba8a977988a223382a5ba07fb3e1e38b0a",
+    "windows-execution-review.json": "b27dbf774ac1e047c464a157820a7a2a90cc04ed06495a6c83deab23af6da623",
+    "windows-performance-review.json": "89b55ab2fda28b8dd781384f9c8742db3c3f9db6ea364aca25940afafb7249bf",
+    "windows-performance-drift-investigation.json": "2c492d470e2a0cd753d2e9b509635c80e9b249c306a9f04e4de65732891b34b5",
+    "windows-render-review.json": "a530dbc520f2bd67167d97040eb1d59f007c4c76a46e418a360f696cdf2acaf8"
+  },
+  "owner_zip": {
+    "artifact_id": 14745303779,
+    "url": "https://github.com/techrote/cybersand/actions/runs/44999117090/artifacts/14745303779",
+    "bytes": 93168827,
+    "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "manifest_sha256": "0bc0c8a23f341e8a356c87f8247767b6ead72ce371f77dcf529502555e481910",
+    "manifest_files": 1099,
+    "committed_source_files": 1084,
+    "native_inputs": 116,
+    "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+  },
+  "actual_execution": {
+    "run_id": 44999117090,
+    "windows_job": 137137548583,
+    "source_process_cases": 41,
+    "extracted_package_process_cases": 32,
+    "each_navigation_parent_checks": 135,
+    "each_navigation_real_exit_child_checks": 18,
+    "launcher_paths": [
+      "spaces",
+      "parentheses",
+      "nested",
+      "unicode"
+    ],
+    "successful_launcher_verifier_commands": 12,
+    "tamper_refusal": "Package file changed: READ-ME.md",
+    "tamper_exit_code": 1,
+    "get_file_hash_shadow_exit_code": 0,
+    "images": 22
+  },
+  "performance": {
+    "original_lab_budget_checks": {
+      "headless": 56,
+      "rendered": 80
+    },
+    "worker_pair": {
+      "matched_fields": [
+        "identity",
+        "engine",
+        "platform",
+        "publication_digests",
+        "native_accounting",
+        "completed_intervals",
+        "actual_live_inputs",
+        "actual_physics_steps"
+      ],
+      "publication_count": 240,
+      "actual_live_inputs": 60,
+      "actual_physics_steps": 954,
+      "control_wall_usec": 29069550,
+      "candidate_wall_usec": 14003797,
+      "control_semantic_ticks_per_wall_second": 8.25606175534193,
+      "candidate_semantic_ticks_per_wall_second": 17.138209015740518,
+      "wall_progression_ratio": 2.0758334328896657,
+      "candidate_soft_pump_budget_usec": 4000,
+      "candidate_actual_pump_call_usec": {
+        "count": 840,
+        "maximum": 5996,
+        "p50": 5089,
+        "p95": 5795,
+        "p99": 5914
+      },
+      "control_admission_to_publication_usec": {
+        "count": 60,
+        "maximum": 166718,
+        "p50": 116706,
+        "p95": 116757,
+        "p99": 166718,
+        "session_maximum": 166718,
+        "total_count": 60
+      },
+      "candidate_admission_to_publication_usec": {
+        "count": 60,
+        "maximum": 83408,
+        "p50": 50022,
+        "p95": 52399,
+        "p99": 83408,
+        "session_maximum": 83408,
+        "total_count": 60
+      },
+      "scope": "One source/runtime-matched same-platform pair; 240 canonical published World materials and shard material/state/temperature/pose/geometry digests plus quantity ledgers match. Not hidden full World state or a cross-platform Rapier identity proof. Pump budget includes a possibly-overrunning current handler."
+    },
+    "rendered_burst_input_to_presented_usec": {
+      "count": 153,
+      "maximum": 1929452,
+      "p50": 763739,
+      "p95": 1753913,
+      "p99": 1913506,
+      "session_maximum": 1929452,
+      "total_count": 153
+    },
+    "observed_regression": "Relative to superseded 682 Windows observation, repaired run pump throughput is 12.2496% lower, wall interval 13.9596% longer, burst p95 input-to-frame 24.9828% higher and maximum 24.7115% higher. Raw tails retained; causal attribution unresolved.",
+    "soft_pump_limit_caveat": "4000 microseconds plus the current handler, observed maximum 5996 microseconds; not a hard 4 ms callback ceiling.",
+    "responsiveness_limit": "153-action workload including 96-point burst has 1.754 s p95 and 1.929 s maximum input-to-presented latency. Frame CPU budget success does not qualify universally responsive editing."
+  },
+  "findings_disposition": {
+    "CUST-01": "Repaired and verified from original scene capture/admission/completion ledgers and actual rendered samples",
+    "CUST-02": "Strict probes excluded from ordinary discovery and independently executed from all four delivered paths",
+    "OPERATOR-01/02/03": "Maintained actual F2 lifecycle inventory, disposal/join/RID observations and real exit child pass on source and actual extracted package"
+  },
+  "remaining_boundaries": [
+    "Full ordinary production provenance remains six failures, unchanged and not bypassed",
+    "Separate-World native worker rehearsal; ordinary CyberSimulationWorker/Workbench attachment remains future work",
+    "Hosted software rendering establishes neither owner Windows11/NVIDIA gameplay performance nor physical acceptance",
+    "Draft/HOLD only; no merge, release, Ready change, default adoption or retained runtime publication"
+  ],
+  "final_evidence_closeout_utc": "2026-11-22T08:17:28.143955+00:00",
+  "linux_review_completion": "Fresh Linux review completed; see linux-execution-review.json, linux-performance-review.json and final-review-verdict.json."
+}

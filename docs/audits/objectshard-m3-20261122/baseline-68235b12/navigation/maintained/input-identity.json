@@ -1,0 +1,9 @@
+{
+  "scope": "Local pinned runtime navigation repair overlay; not a fresh final-source build",
+  "base_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_inputs": {
+    "godot/scripts/feature_navigation.gd": "68d8774b767d0c13106892ff4449e701720e1a827c2b4c493a3d3803a3188441",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "7cdf71477b8a457d512801e6699ea0fd8ac1886c32a038c9af17e558d36e4383",
+    "godot/tests/test_object_shard_worker_navigation.gd": "328f3b5c35e35f071858c5483a4a3dba8dda9a0dc11145c9fdfecb3d558623db"
+  }
+}

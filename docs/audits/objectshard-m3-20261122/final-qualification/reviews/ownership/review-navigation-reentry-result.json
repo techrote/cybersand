@@ -1,0 +1,126 @@
+{
+  "checks": 17,
+  "failures": 0,
+  "observations": [
+    {
+      "check": "actual native scene opens through real launcher",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "live native owner cannot claim launcher readiness",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "real F2 requests close and disposes preexisting UI intents",
+      "detail": {
+        "cancelled": 1,
+        "host_state": "Closing",
+        "queued_before": 1
+      },
+      "ok": true
+    },
+    {
+      "check": "actual support-cut button remains available during close",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "support-cut button cannot admit unaccounted intents after explicit navigation",
+      "detail": {
+        "closing": true,
+        "host_state": "Closing",
+        "newly_admitted": 0,
+        "queued_intents": 0,
+        "ui_message": "Input refused: owner is loading, replacing, closing or held. No new material command was admitted."
+      },
+      "ok": true
+    },
+    {
+      "check": "repeated F2 is idempotent before Closed",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "reset cannot start replacement after exit request",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "real worker completes disposal and main closes host",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "Closed witnesses stopped joined worker and released main RIDs",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "launcher completion restores prior quit policy only after Closed",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "deferred actual launcher handoff completes",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "navigation destroys scene with no silently discarded post-exit intent",
+      "detail": {
+        "explicitly_cancelled": 1,
+        "unresolved_intents": 0,
+        "worker_terminal": {
+          "cancelled_control": 0,
+          "cancelled_data": 0,
+          "disposal": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "disposed_session": 1,
+          "ok": true,
+          "outcome": "Stopped",
+          "owner_thread": 26,
+          "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+          "transport_generation": 1057270
+        }
+      },
+      "ok": true
+    },
+    {
+      "check": "fresh owner re-entry works with prior quit policy false",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "F2 supersedes a pending preset replacement",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "superseded reset disposes original native owner",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "superseded reset returns to launcher",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "navigation restores false quit policy and creates no intermediate owner",
+      "detail": {},
+      "ok": true
+    }
+  ],
+  "schema": "independent-navigation-reentry-v1",
+  "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+}

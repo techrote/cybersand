@@ -1,0 +1,390 @@
+{
+  "schema": "objectshard-independent-final-linux-review-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "utc": "2026-11-22T08:06:32.391861+00:00",
+  "failures": [],
+  "artifact_id": 14746310288,
+  "archive_sha256": "cc0d1f8c04e3efd71c9a2d58da0d8f810e221852043adea5c2a4c5fcecbfee00",
+  "archive_bytes": 140492204,
+  "job_id": 137136516239,
+  "remote_readback_sha256": "44dd84ccba13564600fdbb298a234f1865de6c57af2992d014b416a82d31f3f4",
+  "archive_members": 327,
+  "expanded_bytes": 812386986,
+  "all_members_stream_hashed": true,
+  "native_sanitizer": {
+    "source_inputs": 128,
+    "input_digest": "c2174fb20087c5bab23f471d0d7864e49723b09db7ee8fe9b25f5dbc2fa99ace",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiled_objects": 22,
+    "checks": 93529,
+    "world_test_cases": 192,
+    "suites": [
+      {
+        "suite": "admission",
+        "checks": 28092,
+        "unit": "checks",
+        "seconds": 4.6434667409999975,
+        "binary_sha256": "5b23fff2d3b25848a3fe57e4f86fa8dd8e084be66cd1febc3340e9632357c9d4"
+      },
+      {
+        "suite": "chemistry",
+        "checks": 4472,
+        "unit": "checks",
+        "seconds": 1.302472684999998,
+        "binary_sha256": "943e45138b22583116512caa516e3724ae14b0be9d855baeba8e82a7c9e26cf0"
+      },
+      {
+        "suite": "contact",
+        "checks": 46037,
+        "unit": "checks",
+        "seconds": 0.011069084999974166,
+        "binary_sha256": "01d5efe1c7e6e85d549f55726dc2e98491852d1b552d063e64cd59f14db3112e"
+      },
+      {
+        "suite": "coordinator",
+        "checks": 3120,
+        "unit": "checks",
+        "seconds": 2.0048310509999965,
+        "binary_sha256": "f16e9640fd37559f8c6e2115a5ff88eb250b61eff2825e695e0b08415762305b"
+      },
+      {
+        "suite": "external_fire",
+        "checks": 3683,
+        "unit": "checks",
+        "seconds": 1.8358964520000143,
+        "binary_sha256": "1f3f6003f097de93790f6efbf0774bf868c77d2efd1eaab39b110bf5374f5685"
+      },
+      {
+        "suite": "storage",
+        "checks": 8125,
+        "unit": "checks",
+        "seconds": 0.08344941799998651,
+        "binary_sha256": "828193de31b84296b7200f3cee7745a60047f7e1e0a158f34edbd463819759bd"
+      },
+      {
+        "suite": "world",
+        "checks": 192,
+        "unit": "test_cases",
+        "seconds": 436.12575261899997,
+        "binary_sha256": "c590db1f0808bc1d2fdaa0171ea30fe5c84581baabf526872dad2e144fbfce11"
+      }
+    ],
+    "asan": true,
+    "ubsan": true,
+    "leak_sanitizer": false,
+    "world_filter": null,
+    "elapsed_seconds": 605.051325475
+  },
+  "runtime": {
+    "platform": "linux-x86_64",
+    "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+    "size": 5573096,
+    "native_inputs": 116,
+    "build_contract_inputs": 5,
+    "fresh_builds": [
+      {
+        "stage": "bindings",
+        "seconds": 291.847331153,
+        "log_sha256": "64068df3043692325ec699e1e2353f92b11465be2b67dc1a106b7fa41b49be99",
+        "receipt_sha256": "a8f89585cc1494c7c8eb546eb7638346dec16e3f8391272fbd612923741cbb00"
+      },
+      {
+        "stage": "extension",
+        "seconds": 89.46708761900004,
+        "log_sha256": "e5a90766c46843d0128b6abe21056dc9c7f169a04606130e5f780077127e15e7",
+        "receipt_sha256": "d375d5db398764816eef44272fab4b0ef33d7abc1c1385ec3298652c4e1fbc42"
+      }
+    ]
+  },
+  "godot": {
+    "runtime": {
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "native_sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+      "platform": "linux",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "lab_source_inputs": 51,
+    "qualification_tool_inputs": 19,
+    "cases": [
+      {
+        "name": "objectshard_import",
+        "seconds": 9.511,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "test_rapier_manual_step",
+        "seconds": 1.941,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "test_material_lab_experiment",
+        "seconds": 13.278,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_bridge",
+        "seconds": 0.266,
+        "checks": 28,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_lab",
+        "seconds": 3.983,
+        "checks": 379,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_capture",
+        "seconds": 0.265,
+        "checks": 20,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_motion_segments",
+        "seconds": 0.265,
+        "checks": 47,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_contacts",
+        "seconds": 0.366,
+        "checks": 34,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_boundary",
+        "seconds": 0.165,
+        "checks": 42,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_playability",
+        "seconds": 4.536,
+        "checks": 33,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_action_replay",
+        "seconds": 4.083,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_erode",
+        "seconds": 0.535,
+        "checks": 27,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_replace_identical",
+        "seconds": 0.535,
+        "checks": 27,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_mass_only",
+        "seconds": 0.534,
+        "checks": 27,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_owner_d",
+        "seconds": 18.11,
+        "checks": 17,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_incremental_motion",
+        "seconds": 0.265,
+        "checks": 137,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_native_worker",
+        "seconds": 0.265,
+        "checks": 31,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_workbench_contract",
+        "seconds": 0.366,
+        "checks": 29,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_rehearsal",
+        "seconds": 16.272,
+        "checks": 41,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_adverse",
+        "seconds": 0.812,
+        "checks": 23,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_recovery",
+        "seconds": 0.812,
+        "checks": 63,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_navigation",
+        "seconds": 8.638,
+        "checks": 135,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_replay_admission",
+        "seconds": 1.571,
+        "checks": 57,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_resources",
+        "seconds": 2.612,
+        "checks": 43,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_commands",
+        "seconds": 0.366,
+        "checks": 29,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_physics_identity",
+        "seconds": 0.265,
+        "checks": 70,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_input_fences",
+        "seconds": 0.812,
+        "checks": 46,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_continuous_play",
+        "seconds": 6.492,
+        "checks": 76,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_continuous_replay",
+        "seconds": 2.111,
+        "checks": 363,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_continuous_physics",
+        "seconds": 73.046,
+        "checks": 22513,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_scene",
+        "seconds": 0.535,
+        "checks": 13,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_replay",
+        "seconds": 0.719,
+        "checks": 97,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_render",
+        "seconds": 9.91,
+        "checks": null,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_finisher_render",
+        "seconds": 20.348,
+        "checks": null,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_continuous_play_rendered",
+        "seconds": 12.489,
+        "checks": 77,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_continuous_rendered_replay",
+        "seconds": 2.312,
+        "checks": 389,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_render",
+        "seconds": 68.418,
+        "checks": null,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_profile_headless",
+        "seconds": 43.117,
+        "checks": 719,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_profile_rendered",
+        "seconds": 201.373,
+        "checks": 719,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_worker_profile_0",
+        "seconds": 30.286,
+        "checks": 1102,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_profile_4000",
+        "seconds": 15.693,
+        "checks": 1981,
+        "requires_display": false
+      }
+    ],
+    "navigation": {
+      "failures": [],
+      "status": "passed",
+      "cases": [
+        "active_pending_repeated",
+        "naturally_sleeping",
+        "opening",
+        "reset_superseded",
+        "held_interval",
+        "stop_delivery_faults",
+        "already_closed_prior_policy",
+        "window_close_upgrade"
+      ],
+      "parent_checks": 135,
+      "child_checks": 18,
+      "child_exit_code": 0,
+      "child_log_sha256": "ddefc974fe444df2ec1b16e3787b412082e463e759cafa461ce0398197f63acf",
+      "scope": "Eight actual autoload/F2/launcher lifecycle cases; real quit child; injected stop-status delivery is expressly distinguished from native disposal failure"
+    }
+  },
+  "hosted_package_contracts": {
+    "tests": 50,
+    "log_sha256": "8e45d053f9c85aee6830f13c61910b6eee9efa8ad7131740b7765ad3021a4a7c"
+  },
+  "status": "passed",
+  "scope": "Fresh exact-source Linux native sanitizers, full World192 cases, runtime compilation and actual Godot/Rapier/navigation process custody. Raw performance distributions are reduced separately. No owner physical acceptance.",
+  "remaining_limits": [
+    "LeakSanitizer remains disabled by unchanged harness",
+    "No native performance matrix was generated by this artifact-only workflow; retained source-identical matrix74/74 is separately attributed",
+    "Native allocator limit is not Godot/Rapier/GPU or mailbox allocation qualification",
+    "Full ordinary production provenance remains six failures"
+  ]
+}

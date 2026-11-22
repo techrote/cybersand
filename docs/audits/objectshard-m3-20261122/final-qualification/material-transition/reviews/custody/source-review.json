@@ -1,0 +1,216 @@
+{
+  "schema": "objectshard-independent-material-transition-source-review-v1",
+  "reviewer": "review_custody; independent of the inherited native change and transition implementation",
+  "utc": "2026-11-22T08:33:54.840000+00:00",
+  "pre_transition_publication": "10d191bbf9223b7fbb9ddd30ba12e158ff6d60b9",
+  "qualified_runtime_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "status": "Source review passes; the appended substantive reviewed transition is justified. Committed-record guard and ordinary workflow validation remain separate pending results.",
+  "findings": [],
+  "new_entry": {
+    "path": "native/src/world.cpp",
+    "from_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+    "to_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+    "source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+    "record": "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+    "issue": 281,
+    "pr": 741
+  },
+  "source_bytes": {
+    "5afe5643097c543f7d8a6840ced9afac58dd053e": {
+      "bytes": 290499,
+      "lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+      "git_blob": "66c2e02ea20b9e894514053c0421e48981236f7c"
+    },
+    "c06550371ac5448642bff7e4ecb64fe9cd1df728": {
+      "bytes": 290625,
+      "lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "git_blob": "c7869c4e345fa1d2420d978f56fdd8c99603c524"
+    },
+    "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c": {
+      "bytes": 290625,
+      "lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "git_blob": "c7869c4e345fa1d2420d978f56fdd8c99603c524"
+    },
+    "44abd754d014a44078a41792d2d46967a9b8cf30": {
+      "bytes": 290625,
+      "lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "git_blob": "c7869c4e345fa1d2420d978f56fdd8c99603c524"
+    },
+    "e034f2294663e0485cfb9adcc8ada46a6e977cee": {
+      "bytes": 290625,
+      "lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "git_blob": "c7869c4e345fa1d2420d978f56fdd8c99603c524"
+    },
+    "10d191bbf9223b7fbb9ddd30ba12e158ff6d60b9": {
+      "bytes": 290625,
+      "lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "git_blob": "c7869c4e345fa1d2420d978f56fdd8c99603c524"
+    }
+  },
+  "exact_world_delta": {
+    "old": "            if (slow_interaction_due(10U)) {\n",
+    "new": "            if (slow_interaction_due(10U) && (object_shard_mutations_ == nullptr ||\n                !object_shard_mutations_->external_fire_claimed(x, y, tick_index_))) {\n",
+    "only_replacement": true
+  },
+  "guard_integrity": {
+    "prior_entries": 53,
+    "candidate_entries": 54,
+    "all_prior_entries_equal": true,
+    "all_other_python_ast_equal": true,
+    "baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "lock_lf_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+    "lock_unchanged": true,
+    "identity_inputs_unchanged_since_prior_reviewed_source": [
+      {
+        "path": "docs/reference/liquid-policy-wire-vectors.json",
+        "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+      },
+      {
+        "path": "docs/reference/liquid-run-receipt-vectors.json",
+        "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+      },
+      {
+        "path": "docs/reference/liquid-solver-capability-matrix.json",
+        "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+      },
+      {
+        "path": "docs/reference/water-normalization-vectors.json",
+        "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+      },
+      {
+        "path": "godot/scripts/cell_world.gd",
+        "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+      },
+      {
+        "path": "godot/scripts/interaction_policy.gd",
+        "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+      },
+      {
+        "path": "godot/scripts/material_appearance_lut.gd",
+        "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+      },
+      {
+        "path": "native/include/cybersand/interaction_rules.hpp",
+        "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+      },
+      {
+        "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+        "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+      },
+      {
+        "path": "native/include/cybersand/material.hpp",
+        "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+      },
+      {
+        "path": "tools/lcb/native_policy_artifacts.py",
+        "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+      },
+      {
+        "path": "tools/lcb/policy_contract.py",
+        "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+      }
+    ],
+    "old_tool_sha256": "02e034f2572bac8893dad808383ee5ee49485e768bdc7163110dcfe66c4bf89a",
+    "candidate_tool_sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302",
+    "record_sha256": "e4f42f007899f1f711c50db56676e75d725aedffd5e7f36fb3bc981ca51da204"
+  },
+  "behavior_review": [
+    "Ordinary Worlds leave the private unique_ptr mutation journal null. The original slow_interaction_due predicate is evaluated once and in the original order; null short-circuiting makes the added conjunct true without consulting any claim span.",
+    "Only an enabled ObjectShard journal with a resident, same-tick, already-claimed external Fire opportunity suppresses the existing ignition attempt. That is the intended opt-in ownership correction, not default World behavior equivalence for enabled ObjectShards.",
+    "The deterministic sample, ignition value, remaining Fire lifetime transition, transport, thermal behavior and surrounding rule order are byte-identical in the full protected consumer diff. The shared Wood lifecycle law is not rewritten by this delta.",
+    "MutationJournal::external_fire_claimed is a const noexcept bounded query: exact tick, nonempty span, contains(x,y), then the claimed bit. A missing, out-of-range or different-tick claim returns false.",
+    "The coordinator owns the fixed claim storage. Its serial native World receives the const span immediately before tick; normal completion and exception paths both clear the borrowed span. No Rapier, additional World or additional chemistry clock is introduced.",
+    "Existing source-bound tests explicitly cover one source opportunity across bodies/segments, suppression of a second World ignition after displacement, continued Fire lifetime and transport, cleared reset history and failed-motion recovery. The final native external-Fire suite passed 3,683 checks; ordinary World passed 192 unfiltered cases."
+  ],
+  "existing_qualification": {
+    "run_id": 44999117090,
+    "linux_artifact": 14746310288,
+    "linux_review_sha256": "fae80b86b90ee523fef98b791d8bb4924d593427b81a8003df40d88183d53ff4",
+    "native_checks": 93529,
+    "external_fire_checks": 3683,
+    "ordinary_world_cases": 192,
+    "asan": true,
+    "ubsan": true,
+    "leak_sanitizer": false,
+    "scope": "Previously independently verified final runtime execution; no new native campaign or newly claimed behavior comparison was performed for this review."
+  },
+  "package_input_exclusion": {
+    "native_source_inputs": {
+      "inputs": 116,
+      "contains_guard": false
+    },
+    "lab_source_inputs": {
+      "inputs": 51,
+      "contains_guard": false
+    },
+    "qualification_tool_inputs": {
+      "inputs": 19,
+      "contains_guard": false
+    },
+    "native_build_contract_inputs": {
+      "inputs": 5,
+      "contains_guard": false
+    },
+    "protected_gate_and_budget_inputs": {
+      "inputs": 21,
+      "contains_guard": false
+    },
+    "bundled_owner_guides": {
+      "inputs": 2,
+      "contains_guard": false
+    },
+    "packaged_repository_inputs": {
+      "inputs": 1109,
+      "contains_guard": false
+    }
+  },
+  "runtime_input_delta_from_qualified_source": [],
+  "owner_zip": {
+    "bytes": 93168827,
+    "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "requires_rebuild_for_guard_entry": false
+  },
+  "inherited_gate_failures": [
+    {
+      "source": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "run": 44989675198,
+      "job": 137107785492,
+      "log": "documentation-44989675198-137107785492.log",
+      "log_sha256": "4db1ee70376724b683628819e42f92c812948e35a2eea3d8078827c0f1b95426",
+      "failure_lines": [
+        "2026-11-22T05:31:13.2779171Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected reviewed transition target bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214, got 5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1. A further edit needs its own reviewed transition",
+        "2026-11-22T05:31:13.2853457Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "run": 44999120750,
+      "job": 137136528058,
+      "log": "documentation-44999120750-137136528058.log",
+      "log_sha256": "d8d39cc23d581b84196aed97fbd83524e2000a67c21066361faa5dc1dcd04fab",
+      "failure_lines": [
+        "2026-11-22T07:39:04.1089544Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected reviewed transition target bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214, got 5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1. A further edit needs its own reviewed transition",
+        "2026-11-22T07:39:04.1159284Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "source": "10d191bbf9223b7fbb9ddd30ba12e158ff6d60b9",
+      "run": 45002794045,
+      "job": 137147763392,
+      "log": "documentation-45002794045-137147763392.log",
+      "log_sha256": "994cab767080c5af4ff5675013c1cdbd3863792d8a11cda380c70a6904ef03d4",
+      "failure_lines": [
+        "2026-11-22T08:27:04.9544963Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected reviewed transition target bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214, got 5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1. A further edit needs its own reviewed transition",
+        "2026-11-22T08:27:04.9619469Z ##[error]Process completed with exit code 1."
+      ]
+    }
+  ],
+  "disposition": [
+    "Complete the existing reviewed per-file transition mechanism with this single authenticated source step and substantive committed record. Do not refresh the lock, replace the old transition, modify the guard checks or edit runtime provenance manifests.",
+    "This is a compatibility-tool/evidence descendant of e034, not a purely documentation descendant. Runtime and delivered package qualification remain explicitly attributed to e034.",
+    "The compatibility guard requires the audit record committed at HEAD. A precommit source review is not a passing guard result. Report focused guard tests and the full ordinary documentation workflow separately after publication.",
+    "The missing transition predates M3: the same failure is independently retained at #738, e034 and the documentation descendant. It is distinct from six retained native-runtime provenance failures, whose Draft workflow step was skipped.",
+    "Before an owner-authorized #738 mergedown, carry the entry and record onto the earliest dependent head containing c065 and qualify that exact head. Do not modify or merge the donor branch in this mission.",
+    "Preserve the reviewed source ancestry through merge commits. Squash or rebase requires separately reviewed repointing to an actual retained source commit; a green material-catalogue check never clears native-runtime provenance or grants merge authority."
+  ]
+}

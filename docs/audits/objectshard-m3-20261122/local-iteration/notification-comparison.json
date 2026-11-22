@@ -1,0 +1,118 @@
+{
+  "schema": "objectshard-notification-comparison-v1",
+  "scope": "Local uncommitted iteration, pinned Godot4.7/Rapier0.35.2 and sealed514 native runtime. Same-source scheduling comparison, not final-source qualification or monitor/display benchmark.",
+  "files": {
+    "notification-control.json": "138d8443bd94636cdc45fb2d7d17069f47194a4025a8a8b4a5f475e4660fb125",
+    "notification-candidate.json": "94591750e661f666add1f11759be6403b840147aa1b455a27aac2f7a96ebd0f4",
+    "notification-profile-inputs.json": "377ac12c49271734b9c72e05e032ac0311cf7866d4ae0a9a18e2c63a6f759a85"
+  },
+  "equal_identity": true,
+  "equal_240_publication_digests": true,
+  "equal_accounting": true,
+  "canonical_publication_sequence_sha256": "26105efe6d1444e46e2b1b6cc202bdb4277d76225bd95b4e92effed64bb51878",
+  "control": {
+    "checks": 1101,
+    "failures": 0,
+    "play_elapsed_usec": 29388406,
+    "semantic_ticks_per_wall_second": 8.16648579034875,
+    "actual_physics_steps": 954,
+    "actual_live_inputs": 60,
+    "maximum_displacements": {
+      "1": 19.9768753051758,
+      "2": 19.9768753051758,
+      "3": 20.1384086608887
+    },
+    "semantic_interval_and_input_usec": {
+      "count": 240,
+      "maximum": 178056,
+      "p50": 111183,
+      "p95": 130922,
+      "p99": 161628
+    },
+    "process_callback_interval_usec": {
+      "count": 1762,
+      "maximum": 41458,
+      "p50": 16662,
+      "p95": 17016,
+      "p99": 23004
+    },
+    "publication_comparison_observation_usec": {
+      "count": 240,
+      "maximum": 29255,
+      "p50": 3949,
+      "p95": 7058,
+      "p99": 10299
+    },
+    "input_to_publication_usec": {
+      "count": 60,
+      "maximum": 167049,
+      "p50": 116693,
+      "p95": 133453,
+      "p99": 167049,
+      "session_maximum": 167049,
+      "total_count": 60
+    },
+    "receipt_delivery_usec": {
+      "count": 1512,
+      "maximum": 45667,
+      "p50": 12824,
+      "p95": 14321,
+      "p99": 15561,
+      "session_maximum": 45667,
+      "total_count": 1512
+    }
+  },
+  "candidate": {
+    "checks": 1101,
+    "failures": 0,
+    "play_elapsed_usec": 29669461,
+    "semantic_ticks_per_wall_second": 8.08912571751809,
+    "actual_physics_steps": 954,
+    "actual_live_inputs": 60,
+    "maximum_displacements": {
+      "1": 19.9768753051758,
+      "2": 19.9768753051758,
+      "3": 20.1384086608887
+    },
+    "semantic_interval_and_input_usec": {
+      "count": 240,
+      "maximum": 286114,
+      "p50": 111112,
+      "p95": 139084,
+      "p99": 176602
+    },
+    "process_callback_interval_usec": {
+      "count": 1777,
+      "maximum": 58350,
+      "p50": 16640,
+      "p95": 17447,
+      "p99": 27042
+    },
+    "publication_comparison_observation_usec": {
+      "count": 240,
+      "maximum": 13889,
+      "p50": 3992,
+      "p95": 6689,
+      "p99": 11446
+    },
+    "input_to_publication_usec": {
+      "count": 60,
+      "maximum": 261747,
+      "p50": 116706,
+      "p95": 132390,
+      "p99": 261747,
+      "session_maximum": 261747,
+      "total_count": 60
+    },
+    "receipt_delivery_usec": {
+      "count": 1512,
+      "maximum": 36635,
+      "p50": 13378,
+      "p95": 14419,
+      "p99": 16517,
+      "session_maximum": 36635,
+      "total_count": 1512
+    }
+  },
+  "finding": "No notification-only latency or semantic-throughput benefit established. Worker receipt delivery dominates native work at this process cadence. Preserve this negative."
+}

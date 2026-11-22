@@ -1,0 +1,96 @@
+{
+  "schema": "objectshard-m3-navigation-maintained-test-handoff-v1",
+  "status": "local_repair_overlay_passed_final_source_campaign_pending",
+  "base_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_inputs": {
+    "godot/scripts/feature_navigation.gd": "68d8774b767d0c13106892ff4449e701720e1a827c2b4c493a3d3803a3188441",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "7cdf71477b8a457d512801e6699ea0fd8ac1886c32a038c9af17e558d36e4383",
+    "godot/tests/test_object_shard_worker_navigation.gd": "49a75b85e4730ccddc86d0cd25630d792cb12a56bea4c2dcf43a437d0e656f79",
+    "tools/objectshard/qualify_lab.py": "724fac38f88b13dc58ca9031fb6f04c85ec59ab16eb2377ae97b52622e79f463",
+    "tools/objectshard/test_qualification_receipts.py": "73582dccc3ce7872becd6713eca3d7d85b4a56efd29249980adbce1a5cccb5d3"
+  },
+  "actual_navigation_validation": {
+    "status": "passed",
+    "cases": [
+      "active_pending_repeated",
+      "naturally_sleeping",
+      "opening",
+      "reset_superseded",
+      "held_interval",
+      "stop_delivery_faults",
+      "already_closed_prior_policy",
+      "window_close_upgrade"
+    ],
+    "checks": 135,
+    "child_checks": 18,
+    "child_exit_code": 0,
+    "scope": "Actual F2/autoload navigation and real owner disposal; window-close process exit executes in a separate source-matched child. Stop-delivery fault injection is explicitly labelled."
+  },
+  "qualified_cases": [
+    "active_pending_repeated",
+    "naturally_sleeping",
+    "opening",
+    "reset_superseded",
+    "held_interval",
+    "stop_delivery_faults",
+    "already_closed_prior_policy",
+    "window_close_upgrade"
+  ],
+  "python_receipt_units": {
+    "tests": 22,
+    "failures": 0
+  },
+  "git_diff_check": "passed",
+  "actual_log_error_lines": [],
+  "runtime_identity": "input-identity-v2.json",
+  "artifacts": {
+    "input-identity-v1.json": {
+      "bytes": 1114,
+      "sha256": "895baef9996a67f8f4f5cfc35f0ebed93015660a90851248fd30b3599e4cb1c7"
+    },
+    "navigation-v1.json": {
+      "bytes": 68672,
+      "sha256": "1abbecedd5be7c4a8e4bd8e009e9cc0a379efafef1c6aca8524a67fee9c6e313"
+    },
+    "navigation-v1.log": {
+      "bytes": 46521,
+      "sha256": "51cf775bd6aa471b9a7439a6dee432e933cea03d39d096db6492b8f41a88e07e"
+    },
+    "navigation-v1-disposition.json": {
+      "bytes": 898,
+      "sha256": "3afefdfda26bfedbfb3aac34790c0e968bd2dd5643a375dc6e6c05f9004558cc"
+    },
+    "input-identity-v2.json": {
+      "bytes": 1114,
+      "sha256": "c951e50ee335223e0f58e70c469d194662491fa4154d4110af7cebce7f083890"
+    },
+    "navigation-v2.json": {
+      "bytes": 68531,
+      "sha256": "58a3dc53131a483e8b6e391e73bc37b05868c2850ec61c9cca4d5a8562c08b80"
+    },
+    "navigation-v2.log": {
+      "bytes": 45901,
+      "sha256": "08575a702a2ad74c3aa9d3391a03d337f3b2079ead4aff1f4d4c74a0ff3c67c0"
+    },
+    "navigation-v2-quit-child.json": {
+      "bytes": 8570,
+      "sha256": "7bbca42201fd419b3eb6c7951af5648e36539c2483a10ab114bf57cd259ac14b"
+    },
+    "navigation-v2-quit-child.json.log": {
+      "bytes": 303,
+      "sha256": "ddefc974fe444df2ec1b16e3787b412082e463e759cafa461ce0398197f63acf"
+    }
+  },
+  "source_scope": "Actual pinned Godot4.7 and native/Rapier execution against three locally overlaid source files. Native source is unchanged. This does not replace a fresh committed-source Linux/Windows/package campaign.",
+  "preserved_negative": "navigation-v1-disposition.json records opening fixture timing and ANSI reporter harness repairs; original files remain unmodified.",
+  "fault_scope": "Stop delivery refusal/deadline cases use the actual stopped native thread, then mutex-protected delivery-state injection. No synthetic native disposal refusal is represented as an observed native material-law failure.",
+  "qualification_wiring": {
+    "source_and_extracted_package": true,
+    "minimum_parent_checks": 100,
+    "exact_required_cases": 8,
+    "minimum_actual_child_checks": 18,
+    "exact_source_revision_required": true,
+    "feature_navigation_in_lab_source_inputs": true
+  },
+  "remaining": "Root commits and publishes repair; fresh exact-source platform and package evidence must replace original68235 evaluator for owner acceptance."
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "independent-material-transition-review-retention-v1",
+  "reviewer": "/root/review_physics",
+  "guard_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "runtime_execution_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "files": [
+    {
+      "path": "build/review-physics/material-transition/review.json",
+      "bytes": 6727,
+      "sha256": "86499e679e580cdbdbbdebf8f0abe3ca9d2c7dedd8705fbe1110e56285bcf444"
+    },
+    {
+      "path": "build/review-physics/material-transition/review.md",
+      "bytes": 7387,
+      "sha256": "ec2c576972762481897b532f814d06b596e6ce19e50facba30947a0d4664808c"
+    },
+    {
+      "path": "build/review-physics/material-transition/source-bindings.json",
+      "bytes": 10461,
+      "sha256": "cbc50803927d37001b4fea9ce919ec89190030d131cc445bef4c9668412a2eaa"
+    },
+    {
+      "path": "build/review-physics/material-transition/existing-native-evidence.json",
+      "bytes": 9488,
+      "sha256": "27b0857b005540f3bc015d6e4537c3bf45ab48c1f4045f54efe7f959533388d6"
+    },
+    {
+      "path": "build/review-physics/material-transition/published-guard-check.json",
+      "bytes": 22988,
+      "sha256": "073b52b62a8ca4ec387e46dbcddde61356fb937360f52d11195f109fc7bbba7f"
+    },
+    {
+      "path": "build/review-physics/material-transition/world.cpp-approved-to-current.diff",
+      "bytes": 756,
+      "sha256": "c3915cc0ab2142c2065a91096f008df765b645bae4f50f2d1699a7466e097265"
+    }
+  ]
+}

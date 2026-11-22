@@ -31,7 +31,23 @@ $required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', '
     'godot/scripts/object_shard_lab_view.gd', 'godot/scripts/object_shard_physics_bridge.gd',
     'godot/addons/godot-rapier2d/runtime-provenance.windows.json', 'READ-ME.md',
     'Open ObjectShard Lab.cmd', 'Verify ObjectShard Lab.cmd', 'tools/objectshard/verify_package.ps1',
-    'godot/tests/test_object_shard_package_boot.gd')
+    'godot/tests/probe_object_shard_package_boot.gd')
+$preflightScene = 'godot/object_shard_worker_rehearsal.tscn'
+if ($null -ne $manifest.preflight -or $null -ne $manifest.files_sha256.PSObject.Properties[$preflightScene]) {
+    if ($manifest.preflight.schema -ne 'objectshard-m3-preflight-v1' -or
+        $manifest.preflight.host -ne 'standalone-exclusive-worker-rehearsal' -or
+        $manifest.preflight.scene -ne $preflightScene -or
+        $manifest.preflight.launcher -ne 'Open ObjectShard M3 Preflight.cmd' -or
+        $manifest.preflight.replay_driver -ne 'godot/tests/replay_object_shard_worker_trace.gd' -or
+        $manifest.preflight.production_workbench -isnot [bool] -or $manifest.preflight.production_workbench) {
+        throw 'Incomplete or misleading M3 preflight identity'
+    }
+    $required += @($preflightScene, 'Open ObjectShard M3 Preflight.cmd',
+        'godot/tests/replay_object_shard_worker_trace.gd',
+        'godot/scripts/feature_launcher.gd', 'godot/scripts/object_shard_native_worker.gd', 'godot/scripts/object_shard_worker_host.gd',
+        'godot/scripts/object_shard_worker_rehearsal.gd', 'godot/tests/probe_object_shard_worker_package_boot.gd',
+        'docs/operations/objectshard-m3-preflight-playtest.md')
+}
 foreach ($relative in $required) {
     if ($null -eq $manifest.files_sha256.PSObject.Properties[$relative]) { throw "Incomplete package inventory: $relative" }
 }

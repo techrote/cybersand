@@ -30,6 +30,8 @@ func _run() -> void:
 	var session = Session.new()
 	if not loaded.get("ok", false):
 		_difference({"reason": "Trace admission", "result": loaded})
+	elif loaded.header.get("host") == "standalone-exclusive-worker-rehearsal":
+		_difference({"reason": "ReplayHostMismatch", "required_driver": "res://tests/replay_object_shard_worker_trace.gd"})
 	else:
 		var header: Dictionary = loaded.header
 		var opened: Dictionary = session.open(int(header.scenario), int(header.seed), {"width": header.get("width", 192), "height": header.get("height", 128)})

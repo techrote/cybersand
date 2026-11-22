@@ -1,0 +1,311 @@
+{
+  "schema": "objectshard-m3-owner-mergedown-gates-v1",
+  "reviewer": "independent /root/review_custody",
+  "inspected_utc": "2026-11-22T06:41:54.298172+00:00",
+  "source_head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "scope": "Read-only planning from current source and live public branch metadata. No runtime publication, Ready transition, merge, auto-merge, release or default promotion performed or authorized by this checklist.",
+  "sources": {
+    "repository_policy": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/docs/operations/github-development-and-release.md",
+    "reuse_rule": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/docs/operations/local-build-and-validation.md",
+    "repository_checker": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/tools/ci/check_repository.py",
+    "documentation_workflow": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.github/workflows/documentation.yml",
+    "native_workflow": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.github/workflows/native.yml",
+    "godot_workflow": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.github/workflows/gdextension.yml",
+    "water49_workflow": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.github/workflows/issue49-water-apparatus.yml",
+    "objectshard_workflow": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.github/workflows/objectshard-lab.yml",
+    "guarded_publication_tool": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/tools/ci/lcb001_shared_contract_runtime_publication.py",
+    "guarded_publication_example": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.github/workflows/lcb001-shared-contract-runtime-publication.yml",
+    "lfs_policy": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/.gitattributes",
+    "finisher_handover": "https://github.com/techrote/cybersand/blob/44abd754d014a44078a41792d2d46967a9b8cf30/docs/audits/2026-11-22-objectshard-001r-final-qualification.md"
+  },
+  "current_provenance_gate": {
+    "command": "python tools/ci/check_repository.py",
+    "status": "failed",
+    "errors": [
+      "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+      "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+      "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+      "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+      "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp"
+    ],
+    "failure_count": 6,
+    "details": [
+      {
+        "platform": "windows",
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+        "source_input": "godot/native_extension/register_types.cpp"
+      },
+      {
+        "platform": "windows",
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+        "source_input": "native/include/cybersand/world.hpp"
+      },
+      {
+        "platform": "windows",
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+        "source_input": "native/src/world.cpp"
+      },
+      {
+        "platform": "linux",
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "source_input": "godot/native_extension/register_types.cpp"
+      },
+      {
+        "platform": "linux",
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "source_input": "native/include/cybersand/world.hpp"
+      },
+      {
+        "platform": "linux",
+        "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "source_input": "native/src/world.cpp"
+      }
+    ],
+    "local_runtime_materialization": "Local checkout currently contains LFS pointers; ready/production workflow additionally requires all runtime objects materialized. Six listed failures are source mismatches, independent of that materialization condition.",
+    "draft_workflow_caveat": "documentation.yml runs check_repository.py --require-materialized only outside Draft pull_request events. A green Draft Documentation workflow does not clear these six full-provenance blockers.",
+    "historical_integrity": "Keep M11 validation separate; never change historical hashes to make the current source pass.",
+    "raw_readback": "repository-gate-current.json",
+    "new_native_inputs_absent_from_both_105_input_manifests": [
+      "godot/native_extension/cyber_object_shard_lab.cpp",
+      "godot/native_extension/cyber_object_shard_lab.hpp",
+      "native/include/cybersand/material_lifecycle.hpp",
+      "native/include/cybersand/object_shard.hpp",
+      "native/include/cybersand/object_shard_contact.hpp",
+      "native/include/cybersand/object_shard_coordinator.hpp",
+      "native/include/cybersand/object_shard_discovery.hpp",
+      "native/include/cybersand/object_shard_mutation.hpp",
+      "native/src/object_shard.cpp",
+      "native/src/object_shard_coordinator.cpp",
+      "native/src/object_shard_fire.inc"
+    ]
+  },
+  "retained_native_manifests": [
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "published_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "published_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "published_bytes": 5820416,
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44916761139",
+      "source_inputs_count": 105,
+      "current_native_input_count": 116
+    },
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "published_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "published_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "published_bytes": 5253776,
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44916761139",
+      "source_inputs_count": 105,
+      "current_native_input_count": 116
+    }
+  ],
+  "future_publication_paths": [
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "kind": "Linux native runtime, committed through Git LFS"
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "kind": "Windows native runtime, committed through Git LFS"
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "kind": "Linux validated-development provenance with actual source/build/target execution"
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "kind": "Windows validated-development provenance with actual source/build/target execution"
+    }
+  ],
+  "publication_checklist": [
+    {
+      "order": 1,
+      "action": "Obtain explicit owner authorization for retained native runtime publication and identify the exact feature branch/source SHA to publish. Keep the current M3 evaluator artifact separate from repository runtime adoption.",
+      "source_refs": [
+        "repository_policy",
+        "objectshard_workflow"
+      ]
+    },
+    {
+      "order": 2,
+      "action": "Refresh accepted main and the current PUBPRES/GEN sources. Reconcile only accepted inputs; freeze the actual reconciled native/build/test source and branch lease. Any source change during compilation or validation invalidates the selected publication.",
+      "source_refs": [
+        "repository_policy",
+        "guarded_publication_tool"
+      ]
+    },
+    {
+      "order": 3,
+      "action": "Prepare and independently review a dedicated ObjectShard publication profile/request or another explicitly owner-approved path. The existing ObjectShard workflow has contents:read and produces artifacts only. Existing LCB/Water publishers are branch/schema/request guarded; do not rename their requests or spoof their environment to publish this branch.",
+      "source_refs": [
+        "objectshard_workflow",
+        "guarded_publication_tool",
+        "guarded_publication_example"
+      ]
+    },
+    {
+      "order": 4,
+      "action": "Build both runtimes from the exact frozen source with pinned Godot bindings/toolchains; execute source-matched target-OS tests. Authenticate source/tree, full native inventory (currently116 files), build/test inputs, runtime bytes, target engine/Rapier and actual pass/log receipts. Manually replacing only the three stale hashes would omit new native inputs and is not publication.",
+      "source_refs": [
+        "guarded_publication_tool",
+        "repository_checker"
+      ]
+    },
+    {
+      "order": 5,
+      "action": "Require Linux and Windows manifests to agree on source commit/tree and full native/build input ledgers. Validate actual binaries, architecture, runtime floors, no source drift and complete executed test results before staging.",
+      "source_refs": [
+        "guarded_publication_tool"
+      ]
+    },
+    {
+      "order": 6,
+      "action": "Stage only the two runtime pointers and two matching manifests. Both manifests must update; pointer SHA/size must match materialized validated binaries. Upload required LFS objects and append one runtime-only commit with the exact built source as sole parent using an atomic expected-head lease. Refuse if the branch moved; do not overwrite concurrent work.",
+      "source_refs": [
+        "guarded_publication_tool",
+        "guarded_publication_example",
+        "lfs_policy"
+      ]
+    },
+    {
+      "order": 7,
+      "action": "Materialize and rehash the final retained runtime inventory; run check_repository.py --require-materialized and git lfs fsck on the resulting head. Preserve selected Rapier, Godot, scientific thresholds, historical M11 and original negative evidence.",
+      "source_refs": [
+        "documentation_workflow",
+        "repository_checker",
+        "lfs_policy"
+      ]
+    },
+    {
+      "order": 8,
+      "action": "Run complete ordinary final-head gates and independent review after the publication/source reconciliation. A scoped publisher pass, old build, skipped Draft job or owner ZIP verification cannot replace them.",
+      "source_refs": [
+        "repository_policy",
+        "native_workflow",
+        "godot_workflow",
+        "water49_workflow"
+      ]
+    }
+  ],
+  "ordinary_final_head_gates": [
+    {
+      "gate": "Documentation and provenance / consistency",
+      "requirement": "Complete exact-head run including published runtime provenance and materialized LFS; no Draft skip substitution.",
+      "source_refs": [
+        "documentation_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "Native C++ validation / native",
+      "requirement": "All source-planned Native families, original commands/assertions, sanitizer/worker coverage and independent complete aggregate pass. Native source-scope advisory never authorizes skipping.",
+      "source_refs": [
+        "native_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "GDExtension build and current Godot regression / windows x86_64",
+      "requirement": "Exact-source pinned Windows cross-build.",
+      "source_refs": [
+        "godot_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "All source-planned windows headless regression shards and windows sharded execution coverage",
+      "requirement": "Actual Windows execution and independent source/runtime/unique-case completeness.",
+      "source_refs": [
+        "godot_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "GDExtension build and current Godot regression / linux x86_64",
+      "requirement": "Exact-source Linux build, source-planned Linux regressions, graphical smoke and independent coverage aggregate.",
+      "source_refs": [
+        "godot_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "Issue49 Water apparatus v2 / apparatus when applicable",
+      "requirement": "ObjectShard stack changes native/include and native/src/world.cpp, which are in its path filter. Evaluate the actual PR diff after each retarget/reconcile; retain and execute applicable registered Water/scoped apparatus.",
+      "source_refs": [
+        "water49_workflow",
+        "repository_policy"
+      ]
+    },
+    {
+      "gate": "ObjectShard exact-source campaign and owner physical playtest",
+      "requirement": "Retain experimental M0\u2013M3/Rapier/package evidence separately. Owner Windows11/NVIDIA acceptance remains an owner decision; automated hosted software rendering is not physical acceptance.",
+      "source_refs": [
+        "objectshard_workflow",
+        "finisher_handover"
+      ]
+    }
+  ],
+  "dependency_order": [
+    {
+      "stage": "M0",
+      "pr": 726,
+      "current_source": "28fa42a5ad05d49fee96d1bba7252aaf36abf331"
+    },
+    {
+      "stage": "M1",
+      "pr": 728,
+      "current_source": "1b85782a15565bad7e4dae28755b17d630daaf46"
+    },
+    {
+      "stage": "M2",
+      "pr": 730,
+      "current_source": "dc4282e5f5f9b886315e8450613740d265f5fbc3"
+    },
+    {
+      "stage": "001R finisher",
+      "pr": 738,
+      "current_source": "44abd754d014a44078a41792d2d46967a9b8cf30"
+    },
+    {
+      "stage": "M3 continuous-play preflight",
+      "pr": "new Draft child of738; final published identity supplied by owner handover"
+    }
+  ],
+  "per_pr_mergedown_loop": [
+    "Keep every PR Draft/HOLD until the owner authorizes its Ready/mergedown transition.",
+    "Land in dependency order726\u2192728\u2192730\u2192738\u2192M3. After each authorized parent merge, retarget the child to acceptedmain, refresh/reconcile and identify its resulting exact head.",
+    "For each resulting native/build input set, require matching published runtimes. Never publish the final M3 DLL against an earlier M0/M1 source to make an intermediate gate green.",
+    "If a later step changes only GDScript and full native input provenance is identical, the documented reuse rule permits unchanged native bytes, while all changed scripts/tests still require fresh resulting-head execution. This does not relabel the old build or waive this mission\u2019s fresh M3 evaluator build.",
+    "Obtain complete applicable exact-head checks and independent review, then owner alone authorizes merge. No auto-merge, release or production-default change follows."
+  ],
+  "pubpres_boundary": {
+    "relation": "The separate-World M3 rehearsal does not require merging active PUBPRES740/719/682. They are independent Draft programmes, not implicit merge dependencies.",
+    "ordinary_workbench_attachment": "A later ordinary binding must target the owner-accepted PUBPRES successor, share its existing World under the exclusive worker, add revisioned mutable-body/geometry admission beside immutable GCR, preserve single-use callback/terrain/session/source-clock fences, then qualify the combined source.",
+    "persistence": "GEN006/734 residency and disposal/save contracts remain separate. No ObjectShard eviction, streaming or durable save/restore is admitted by this rehearsal.",
+    "source_refs": [
+      "finisher_handover"
+    ]
+  },
+  "remote_protection": {
+    "utc": "2026-11-22T06:39:14.618054+00:00",
+    "branches/main": {
+      "protected": false,
+      "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed"
+    },
+    "rulesets": []
+  },
+  "remote_policy_caveat": "Live public readback at06:39UTC reports main.protected=false and no rulesets. The checks above are current procedural repository gates; no remote enforcement was installed or claimed.",
+  "additional_discovered_blockers": [
+    {
+      "id": "CUST-02",
+      "status": "confirmed negative retained; dirty-worktree repair independently verified, final source/Windows delivery verification pending",
+      "finding": "Ordinary source-derived test discovery includes both package-only test_object_shard_package_boot and test_object_shard_worker_package_boot, but ordinary runners do not supply their required package manifest/launch receipt variables. Preserve strict shipped-launcher probes while giving package-only entrypoints a scope that does not mis-enter ordinary test discovery; do not fake custody or silently skip an admitted case.",
+      "evidence": "ordinary-discovery-negative.json",
+      "actual_result": "Both current package-only tests exit1 without package manifest/launch receipt environment; this is the ordinary runner environment.",
+      "repair_evidence": "repair-checkpoint.json"
+    }
+  ]
+}

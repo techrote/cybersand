@@ -1,0 +1,136 @@
+{
+  "checks": 9,
+  "failures": 1,
+  "fault": "Only elapsed main shutdown deadline accelerated; native owner/disposal results unmodified",
+  "observations": [
+    {
+      "check": "real launcher opens",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual owner ready for accelerated shutdown deadline",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "window close upgrades already requested F2 exit",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "attempt": 0,
+      "state_after_accelerated_deadline": "ShutdownHeld",
+      "worker_after": {
+        "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+        "control_results": 0,
+        "data_results": 0,
+        "inflight_sequence": 1,
+        "last_native_call_usec": 0,
+        "limits": {
+          "command_value_bytes": 65536,
+          "control": 8,
+          "control_results": 8,
+          "data": 32,
+          "data_results": 32,
+          "edit_batch": 32,
+          "native_total_shard_bbox_area": 12288,
+          "native_world_area": 262144
+        },
+        "maximum_godot_static_bytes": 33107138,
+        "maximum_native_execute_usec": 0,
+        "maximum_pending": 1,
+        "maximum_queue_wait_usec": 0,
+        "maximum_reply_age_usec": 2952,
+        "maximum_reply_value_bytes": 321756,
+        "maximum_snapshot_usec": 1421,
+        "maximum_snapshot_value_bytes": 157716,
+        "owner_thread": 26,
+        "pending_control": 0,
+        "pending_data": 0,
+        "pending_reset_sequence": 0,
+        "retained_reply_value_bytes": 0,
+        "session": 1,
+        "snapshot_copies": 1,
+        "started": true,
+        "stop_requested": true,
+        "stopped": false,
+        "terminal": {},
+        "transport_generation": 620504
+      },
+      "worker_before": {
+        "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+        "control_results": 0,
+        "data_results": 0,
+        "inflight_sequence": 1,
+        "last_native_call_usec": 0,
+        "limits": {
+          "command_value_bytes": 65536,
+          "control": 8,
+          "control_results": 8,
+          "data": 32,
+          "data_results": 32,
+          "edit_batch": 32,
+          "native_total_shard_bbox_area": 12288,
+          "native_world_area": 262144
+        },
+        "maximum_godot_static_bytes": 33107138,
+        "maximum_native_execute_usec": 0,
+        "maximum_pending": 1,
+        "maximum_queue_wait_usec": 0,
+        "maximum_reply_age_usec": 2952,
+        "maximum_reply_value_bytes": 321756,
+        "maximum_snapshot_usec": 1421,
+        "maximum_snapshot_value_bytes": 157716,
+        "owner_thread": 26,
+        "pending_control": 0,
+        "pending_data": 0,
+        "pending_reset_sequence": 0,
+        "retained_reply_value_bytes": 0,
+        "session": 1,
+        "snapshot_copies": 1,
+        "started": true,
+        "stop_requested": true,
+        "stopped": false,
+        "terminal": {},
+        "transport_generation": 620504
+      }
+    },
+    {
+      "check": "ShutdownHeld retains actual scene and RIDs with close interception active",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "explicit F2 retry preserves previously requested quit priority",
+      "detail": {
+        "after_retry": "launcher",
+        "before_retry": "quit",
+        "host_state": "Closing"
+      },
+      "ok": false
+    },
+    {
+      "check": "explicit retry joins completed real worker and closes host",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "retry releases the same actual native owner and RIDs",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "reviewer cleanup returns disposed scene to launcher",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual shutdown deadline fault reached retained ShutdownHeld",
+      "detail": {},
+      "ok": true
+    }
+  ],
+  "schema": "independent-navigation-held-v1",
+  "source_revision": "68235b12-plus-navigation-repair1"
+}

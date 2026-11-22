@@ -1,0 +1,44 @@
+{
+  "schema": "objectshard-m3-downloaded-artifact-custody-v1",
+  "retrieved_utc": "2026-11-22T07:44:01.888124+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "artifact": {
+    "id": 14745122677,
+    "name": "objectshard-dll-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+    "size_in_bytes": 2217474,
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745122677",
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745122677/zip",
+    "expired": false,
+    "created_at": "2026-11-22T07:42:30Z",
+    "expires_at": "2027-02-20T07:38:00Z",
+    "updated_at": "2026-11-22T07:42:30Z",
+    "digest": "sha256:5c32e97f40acd278a6fc871fbe22b22684dcbfdd978774afab9afe580acba9d6",
+    "workflow_run": {
+      "id": 44999117090,
+      "repository_id": 1350077435,
+      "head_repository_id": 1350077435,
+      "head_branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "head_sha": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+    }
+  },
+  "file_id": "file_00000000679c81f4ab2acc9584a3d32b",
+  "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745122677.zip",
+  "archive_bytes": 2217474,
+  "archive_sha256": "5c32e97f40acd278a6fc871fbe22b22684dcbfdd978774afab9afe580acba9d6",
+  "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745122677",
+  "members": [
+    {
+      "path": "candidate-provenance.json",
+      "bytes": 14442,
+      "extracted": true,
+      "sha256": "40f3439335f647785300e9af19fd6462b1ec7652ab26140bcd7c5efd4b1a1dc5"
+    },
+    {
+      "path": "cybersand_native.windows.x86_64.dll",
+      "bytes": 6075904,
+      "extracted": true,
+      "sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+    }
+  ],
+  "extraction_scope": "complete"
+}

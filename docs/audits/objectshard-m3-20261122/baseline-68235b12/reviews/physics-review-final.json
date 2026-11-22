@@ -1,0 +1,126 @@
+{
+  "schema": "objectshard-m3-final-independent-physics-review-v1",
+  "reviewer": "review_physics; reviewer B; no product implementation edits",
+  "reviewed_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "reviewed_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "utc": "2026-11-22T06:53:44.302335+00:00",
+  "status": "Final published-source review completed: no unresolved Class A/B finding within reviewed scope. Fresh platform evidence comparison pending.",
+  "source_identity": "source-identity.json",
+  "candidate_source_hashes_rechecked_after_execution": true,
+  "class_a_findings": [],
+  "class_b_findings": [],
+  "product_files_changed_by_reviewer": [],
+  "tests": [
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/review_physics_adversary.gd",
+      "script_sha256": "40ca9faa337776e6932ae9080c4e98bb5b7d79467959384b0d777a5c99879e2f",
+      "log": "build/review-physics/final-68235b12/review_physics_adversary.gd.log",
+      "log_sha256": "f0d40672c33ed6f8cb8f3d30b550399827fdaf25216aba56a5f1fd32e101d8da",
+      "schema": "review-physics-adversary-v1",
+      "checks": 52,
+      "failures": 0,
+      "exit_code": 0
+    },
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/review_live_admission.gd",
+      "script_sha256": "db24b5d9d9f149b55db422fdbf68cc27b7e3fd30f473cc263dc8084694136904",
+      "log": "build/review-physics/final-68235b12/review_live_admission.gd.log",
+      "log_sha256": "7c5c14f8e272a39237619d7ea99d168910125255c32f5cf702cc8ac904f153e5",
+      "schema": "independent-live-admission-review-v1",
+      "checks": 24,
+      "failures": 0,
+      "exit_code": 0
+    },
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/test_object_shard_physics_identity.gd",
+      "script_sha256": "e5c73eedd1fb97106a9d988b8fc2890def9a12c91a2977bd62a84539686b91ad",
+      "log": "build/review-physics/final-68235b12/test_object_shard_physics_identity.gd.log",
+      "log_sha256": "f6b79cf9c7af79d1420b15afa09addd89b5630fbb349e0e725f059c7fd022b58",
+      "schema": "objectshard-physics-identity-test-v1",
+      "checks": 70,
+      "failures": 0,
+      "exit_code": 0
+    },
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/test_object_shard_incremental_motion.gd",
+      "script_sha256": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6",
+      "log": "build/review-physics/final-68235b12/test_object_shard_incremental_motion.gd.log",
+      "log_sha256": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39",
+      "schema": "objectshard-incremental-motion-test-v1",
+      "checks": 137,
+      "failures": 0,
+      "exit_code": 0
+    },
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/test_object_shard_worker_input_fences.gd",
+      "script_sha256": "9a631fc5db20c15d2217f95a6b31699bb0fc100facf38a0de347cd1f95f30aa1",
+      "log": "build/review-physics/final-68235b12/test_object_shard_worker_input_fences.gd.log",
+      "log_sha256": "eb69f38d1a6e77f1cb0c3400aee680613bca2d9db2ae9a514a97a7227b8aaae5",
+      "schema": "objectshard-worker-input-fences-v1",
+      "checks": 46,
+      "failures": 0,
+      "exit_code": 0
+    },
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/test_object_shard_worker_recovery.gd",
+      "script_sha256": "0dd50978f994f36186474d3f0074c5836eb69148adc15ffacb8bc52fe5eeedd7",
+      "log": "build/review-physics/final-68235b12/test_object_shard_worker_recovery.gd.log",
+      "log_sha256": "6e3ac6b4fa83ca23c45aac835519d529b546a0dc7b99585249dc35ebd055fd84",
+      "schema": "objectshard-worker-recovery-test-v1",
+      "checks": 63,
+      "failures": 0,
+      "exit_code": 0
+    },
+    {
+      "script": "build/review-physics/final-68235b12/project/tests/test_object_shard_continuous_play.gd",
+      "script_sha256": "fcc416770e2343dc43ebbfe61c51d0ef562893af092f0ff27bd9e8ec21a6eee0",
+      "log": "build/review-physics/final-68235b12/test_object_shard_continuous_play.gd.log",
+      "log_sha256": "21af68e8f5744374c569ae6bdd7a1a74b9b7b30d3b6f409a88c96fcac20163ef",
+      "schema": "objectshard-continuous-play-test-v1",
+      "checks": 75,
+      "failures": 0,
+      "exit_code": 0
+    }
+  ],
+  "totals": {
+    "checks": 467,
+    "failures": 0,
+    "tests": 7
+  },
+  "key_conclusions": [
+    "Real exclusive native custody, terrain, activation and geometry barriers survived independently controlled actual receipt delays.",
+    "Main owns all RIDs; duplicate and stale receipts cannot grant extra solver movement; native semantic tick and physical interval completion remain paired.",
+    "Retired body/session identities and duplicate activation retain the qualified sleep behavior.",
+    "Rotating destructive erase preserves exact lattice origin and point velocity within declared floating-point tolerance while backend mass, COM and inertia match native.",
+    "The material view consumes accepted native pose/geometry; the older displayed target cannot retarget an unseen newer pose.",
+    "Continuous scene admits a real awake moving one-cell pointer cut while remaining running, with both pump0 and pump4000; tested one genuine cut and further semantic/physics progression in each mode.",
+    "Actual scene pointer backpressure retains original input time and target. Measured UI wait 30458 usec remains exactly present in both input-to-result and input-to-publication relative to host-admission metrics.",
+    "Negative and future input observation timestamps refuse before entering the action queue.",
+    "Headless _mark_visible does not fabricate rendered-frame timing. Frame_post_draw dispatch is source-reviewed only in this environment.",
+    "All 116 sealed514 native compilation inputs and five build-contract inputs equal the final reviewed commit; actual reused native library bytes match the sealed514 manifest. Native and Rapier were not rebuilt by this reviewer."
+  ],
+  "retained_harness_corrections": [
+    {
+      "artifact": "../review-physics-adversary-strict-basis-negative.json",
+      "description": "Initial strict full-basis equality failed at 5.96e-8 backend roundtrip difference. Final unchanged independent physics test retains exact origin equality, basis error <1e-6 and point velocity error <1e-4."
+    },
+    {
+      "artifacts": [
+        "review-live-admission-harness-negative.gd",
+        "review-live-admission-harness-negative.log",
+        "review-live-admission-harness-negative.json"
+      ],
+      "description": "The first new input test incorrectly used a SceneTree timer as a wall-clock wait and kept an internal command Dictionary by reference after retirement. Corrected only the reviewer harness to wait against Time.get_ticks_usec and copy the observation Dictionary. Final 24 checks pass; no product defect was attributed to the harness failure."
+    }
+  ],
+  "limitations": [
+    "Reused sealed514 native runtime supports iteration/source probes only; exact-source fresh Linux/Windows qualification remains pending root evidence.",
+    "Maintained continuous-play reports75 checks here; optional --report-copy adds the extra copy check used by root76.",
+    "Headless textures and pointer handlers do not establish visible scanout, display FPS, physical Windows11/NVIDIA acceptance or complete platform behavior.",
+    "This remains a separate one-real-World/exclusive-worker rehearsal, not ordinary CyberSimulationWorker or Workbench attachment.",
+    "No merge, Ready, default promotion or owner physical acceptance is authorized."
+  ],
+  "fresh_platform_evidence": {
+    "status": "awaiting root supply; not claimed"
+  }
+}

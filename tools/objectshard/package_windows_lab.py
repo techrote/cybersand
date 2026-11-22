@@ -25,12 +25,12 @@ sys.path.insert(0, str(ROOT / "tools"))
 import native_candidate_identity as native
 import run_windows_godot_regressions as windows
 from package_explore001_candidate import stage_vc_runtime, verify_vc_runtime
-from verify_package import verify as verify_package
+from verify_package import verify as verify_package, PREFLIGHT
 
 MANIFEST = "objectshard-lab-manifest.json"
 
 
-def launchers(source: str) -> dict[str, str]:
+def launchers(source: str, *, preflight: bool = False) -> dict[str, str]:
     """One permanent launch path, including the shipped diagnostic entry point.
 
     %~dp0 ends in a backslash. Passing it immediately before a closing quote to
@@ -57,12 +57,18 @@ def launchers(source: str) -> dict[str, str]:
                 'exit /b %errorlevel%\n'
                 '\n:selftest\n'
                 'if not defined OBJECTSHARD_LAUNCH_RECEIPT goto failed\n'
-                'start "ObjectShard Lab launch qualification" /wait "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --rendering-driver opengl3_angle --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --script res://tests/test_object_shard_package_boot.gd\n'
+                'start "ObjectShard Lab launch qualification" /wait "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --rendering-driver opengl3_angle --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --script res://tests/probe_object_shard_package_boot.gd\n'
                 'if errorlevel 1 goto failed\nexit /b 0\n' + failure)
     verifier = (common + 'if errorlevel 1 goto failed\n'
                 'if /i not "%~1"=="--noninteractive" pause\nexit /b 0\n'
                 '\n:failed\nif /i not "%~1"=="--noninteractive" pause\nexit /b 1\n')
-    return {"Open ObjectShard Lab.cmd": launcher, "Verify ObjectShard Lab.cmd": verifier}
+    result = {"Open ObjectShard Lab.cmd": launcher, "Verify ObjectShard Lab.cmd": verifier}
+    if preflight:
+        result[PREFLIGHT["launcher"]] = (launcher
+            .replace("res://object_shard_lab.tscn", "res://object_shard_worker_rehearsal.tscn")
+            .replace("res://tests/probe_object_shard_package_boot.gd", "res://tests/probe_object_shard_worker_package_boot.gd")
+            .replace("ObjectShard Lab", "ObjectShard M3 Preflight"))
+    return result
 
 
 def sha(path: Path) -> str:
@@ -79,6 +85,8 @@ def copy_committed_tree(destination: Path, candidate: Path, guide: str) -> None:
              "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
              "third_party/rapier-bvh-build.lock.json", "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
              "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md"]
+    if (ROOT / PREFLIGHT["scene"]).is_file():
+        paths.append("docs/operations/objectshard-m3-preflight-playtest.md")
     with tarfile.open(fileobj=io.BytesIO(git("archive", "HEAD", "--", *paths))) as archive:
         for member in archive:
             if not member.isfile() or member.name.startswith("godot/.godot/"):
@@ -122,12 +130,14 @@ def package(args: argparse.Namespace) -> dict:
     shutil.copyfile(args.native_candidate / native.NAME, args.output / "source-built-candidate-provenance.json")
     retained = args.output / "godot/addons/cybersand_native/runtime-provenance.json"
     retained.rename(retained.with_name("retained-runtime-provenance.reference.json"))
-    shutil.copyfile(args.output / args.guide, args.output / "READ-ME.md")
+    package_guide = "docs/operations/objectshard-m3-preflight-playtest.md" if (args.output / PREFLIGHT["scene"]).is_file() else args.guide
+    shutil.copyfile(args.output / package_guide, args.output / "READ-ME.md")
     verifier = args.output / "tools/objectshard/verify_package.ps1"
     if not verifier.is_file():
         raise ValueError("Committed package verifier is absent")
     source = candidate["source_commit"]
-    for name, content in launchers(source).items():
+    preflight = (args.output / PREFLIGHT["scene"]).is_file()
+    for name, content in launchers(source, preflight=preflight).items():
         (args.output / name).write_text(content, encoding="utf-8", newline="\r\n")
     identity = {"schema": "objectshard-lab-package-v1", "purpose": "Draft/HOLD owner evaluation; not a production release",
                 "source_commit": source, "source_tree": candidate["source_tree"],
@@ -139,6 +149,8 @@ def package(args: argparse.Namespace) -> dict:
                 "physical_owner_acceptance": "not established by automated qualification",
                 "files_sha256": {p.relative_to(args.output).as_posix(): sha(p)
                                  for p in sorted(args.output.rglob("*")) if p.is_file()}}
+    if preflight:
+        identity["preflight"] = dict(PREFLIGHT)
     (args.output / MANIFEST).write_text(json.dumps(identity, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     verify_package(args.output)
     return identity

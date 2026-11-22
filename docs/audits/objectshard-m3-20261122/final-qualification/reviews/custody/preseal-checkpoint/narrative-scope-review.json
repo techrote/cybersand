@@ -1,0 +1,24 @@
+{
+  "schema": "objectshard-independent-narrative-scope-review-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "narrative_sha256": "da81a41ad7b430049fbe4541553bdb5e9ae4fd1de2b8853e124542e47a045bae",
+  "utc": "2026-11-22T07:55:14.215779+00:00",
+  "status": "No further scope or custody overclaim found in current stable narrative; numeric fresh-platform results not yet prepended",
+  "findings": [],
+  "verified_claim_boundaries": [
+    "Separate-World exclusive native-worker rehearsal is explicitly distinguished from ordinary CyberSimulationWorker/Workbench adoption",
+    "Precommit cancellation leaves native ownership intact; postcommit uncertain state quarantines rather than claims rollback",
+    "Host32queued plus oneinflight; channels32data/8control;64KiB valuepayload not fullallocatorbound;UI256pending",
+    "F2 disposal/join/RIDrelease and quit-priority are explicit; no arbitrary force-replacement cleanup promise",
+    "Actual frame_post_draw observations are not monitor scanout;153burst queue tails must be retained in forthcoming results",
+    "Long-run Fire/Smoke/contact/three-body natural sleep are distinguished from separately qualified Sand ingestion and Water extinction",
+    "Original682 source/ZIP is historical and superseded by repaired e034; independent source probe runtime reuse is not fresh platform qualification",
+    "Production provenance remains six failures and all merges/runtime publication require separate owner authority"
+  ],
+  "remaining_checks": [
+    "Bind final numeric sections to fresh e034 Linux/Windows/source/extractedZIP results",
+    "Keep input-to-frame p99/max tails and soft receipt-pump overrun visible",
+    "Keep leak sanitizer disabled boundary and native-only memory scope explicit"
+  ]
+}

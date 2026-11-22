@@ -1,0 +1,151 @@
+{
+  "schema": "independent-publication-source-recheck-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "reviewer": "/root/review_physics",
+  "exact_source_sha256": {
+    "godot/tests/test_object_shard_incremental_motion.gd": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6",
+    "godot/tests/test_object_shard_physics_identity.gd": "e5c73eedd1fb97106a9d988b8fc2890def9a12c91a2977bd62a84539686b91ad",
+    "godot/tests/test_object_shard_worker_input_fences.gd": "9a631fc5db20c15d2217f95a6b31699bb0fc100facf38a0de347cd1f95f30aa1",
+    "godot/tests/test_object_shard_continuous_play.gd": "fcc416770e2343dc43ebbfe61c51d0ef562893af092f0ff27bd9e8ec21a6eee0",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "7cdf71477b8a457d512801e6699ea0fd8ac1886c32a038c9af17e558d36e4383",
+    "godot/scripts/object_shard_worker_host.gd": "aa7ddb16b584937c3859ffe4e463f4773c4192c82bd326177971cb4ff42a31ba",
+    "godot/scripts/object_shard_lab_view.gd": "34947a3dde5757ab49a36465db1b776b8ece2ad387ef4e02b06ea7454ab8bb78",
+    "godot/tests/capture_object_shard_worker.gd": "ee92636b23b5b8463bd716e5ad6ac1d3f1529fc233a080b81e450b1dd3746ca0"
+  },
+  "fresh_windows_direct_log_receipts": {
+    "windows-lab": {
+      "objectshard_incremental_motion": {
+        "source_path": "godot/tests/test_object_shard_incremental_motion.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_incremental_motion.log",
+        "log_sha256": "ec453ab3d1d43f21c03634d61fe51992b58ef746cb03e7b29dc8d7bca2ae5e7d",
+        "schema": "objectshard-incremental-motion-test-v1",
+        "checks": 137,
+        "failures": 0
+      },
+      "objectshard_physics_identity": {
+        "source_path": "godot/tests/test_object_shard_physics_identity.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_physics_identity.log",
+        "log_sha256": "22b9d3aed5e0061d98197c773e21671f6bf1b7dc8b696438cd0afbf66a58cffd",
+        "schema": "objectshard-physics-identity-test-v1",
+        "checks": 70,
+        "failures": 0
+      },
+      "objectshard_worker_input_fences": {
+        "source_path": "godot/tests/test_object_shard_worker_input_fences.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_input_fences.log",
+        "log_sha256": "9259f63212a3ebdfac2dccb6a426e9cd255bea12f64deba953d45d2110365c1b",
+        "schema": "objectshard-worker-input-fences-v1",
+        "checks": 46,
+        "failures": 0
+      },
+      "objectshard_continuous_play": {
+        "source_path": "godot/tests/test_object_shard_continuous_play.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_play.log",
+        "log_sha256": "88cf3e0e4dcbf805679f9a072ea5cd708c0729630ef0e7753f9cc2102b99e6af",
+        "schema": "objectshard-continuous-play-test-v1",
+        "checks": 76,
+        "failures": 0
+      },
+      "objectshard_continuous_play_rendered": {
+        "source_path": "godot/tests/test_object_shard_continuous_play.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_play_rendered.log",
+        "log_sha256": "03c8959e0610d61226a7a31cf30374eddbdbbdb4b628ef96333a4ee8f4495b56",
+        "schema": "objectshard-continuous-play-test-v1",
+        "checks": 77,
+        "failures": 0
+      }
+    },
+    "package-replay": {
+      "objectshard_incremental_motion": {
+        "source_path": "godot/tests/test_object_shard_incremental_motion.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_incremental_motion.log",
+        "log_sha256": "ec453ab3d1d43f21c03634d61fe51992b58ef746cb03e7b29dc8d7bca2ae5e7d",
+        "schema": "objectshard-incremental-motion-test-v1",
+        "checks": 137,
+        "failures": 0
+      },
+      "objectshard_physics_identity": {
+        "source_path": "godot/tests/test_object_shard_physics_identity.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_physics_identity.log",
+        "log_sha256": "22b9d3aed5e0061d98197c773e21671f6bf1b7dc8b696438cd0afbf66a58cffd",
+        "schema": "objectshard-physics-identity-test-v1",
+        "checks": 70,
+        "failures": 0
+      },
+      "objectshard_worker_input_fences": {
+        "source_path": "godot/tests/test_object_shard_worker_input_fences.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_input_fences.log",
+        "log_sha256": "c6fb85287090a838ed11a30e3b60e24f8a6c9501f41168c288fbcf7aea6424e6",
+        "schema": "objectshard-worker-input-fences-v1",
+        "checks": 46,
+        "failures": 0
+      },
+      "objectshard_continuous_play": {
+        "source_path": "godot/tests/test_object_shard_continuous_play.gd",
+        "log": "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_continuous_play.log",
+        "log_sha256": "bed5e43f5c35f2ee967661a6064adccf4fd79712cdd3a23a2f10ec55779e738f",
+        "schema": "objectshard-continuous-play-test-v1",
+        "checks": 76,
+        "failures": 0
+      }
+    }
+  },
+  "review_findings": [
+    "The rehearsal passes an empty live-pose override array to view.present(host.publication, []). Textures, shard geometry, local COM and fallback transform all derive from the accepted publication, rather than mixing a new backend transform with older material.",
+    "The ordinary pointer queue captures host.capture_target(position, view.frame); source/readback testing explicitly retains an old visible frame while a newer same-owner pose is accepted. The old target returns TargetChanged with unchanged inventory; a fresh distinct same-pixel target still removes exactly one cell.",
+    "Delaying native receipt consumption preserves publication sequence and physical step count. Existing independent52-check actual-worker/Rapier final-source probe additionally withholds genuine native receipts; the137-check bridge unit fixture alone is not represented as a full native-worker test.",
+    "The scene records original intent time before queue dispatch. Host actions retain captured/admitted/completed timestamps. Final Windows153-result distributions were recomputed from those raw values; supplied scene input queue sample distributions were also recomputed.",
+    "Actual scene _mark_visible awaits RenderingServer.frame_post_draw, checks same host and publication sequence and avoids replacement; headless execution returns without presentation timing. The scheduling profiles deliberately do not call mark_presented. The input-fence unit check calls the API directly and is treated only as an API contract test.",
+    "capture_object_shard_worker waits process_frame and frame_post_draw, obtains/saves PNG, then samples host.diagnostics. The PNG visible HUD may lag the adjacent diagnostic publication; no exact backend pose-to-PNG binding is inferred from that adjacent report."
+  ],
+  "limits": [
+    "No product changes or runtime reruns were performed for this recheck.",
+    "Fresh Windows41/source+32/delivered and Linux41 qualification receipts are checked as complete and naturally terminated by the separate final platform audits.",
+    "The already retained exact-source669 local assertion executions remain separate evidence; this static/source and artifact review is not an added runtime test count."
+  ],
+  "fresh_linux_direct_log_receipts": {
+    "lab": {
+      "objectshard_incremental_motion": {
+        "source_path": "godot/tests/test_object_shard_incremental_motion.gd",
+        "log": "build/m3-platform/repair-linux/14746310288/lab/objectshard_incremental_motion.log",
+        "log_sha256": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39",
+        "schema": "objectshard-incremental-motion-test-v1",
+        "checks": 137,
+        "failures": 0
+      },
+      "objectshard_physics_identity": {
+        "source_path": "godot/tests/test_object_shard_physics_identity.gd",
+        "log": "build/m3-platform/repair-linux/14746310288/lab/objectshard_physics_identity.log",
+        "log_sha256": "f6b79cf9c7af79d1420b15afa09addd89b5630fbb349e0e725f059c7fd022b58",
+        "schema": "objectshard-physics-identity-test-v1",
+        "checks": 70,
+        "failures": 0
+      },
+      "objectshard_worker_input_fences": {
+        "source_path": "godot/tests/test_object_shard_worker_input_fences.gd",
+        "log": "build/m3-platform/repair-linux/14746310288/lab/objectshard_worker_input_fences.log",
+        "log_sha256": "273837b464890d25b41f3966fcdf587ca5e64c6a81b878270762f33be63e9771",
+        "schema": "objectshard-worker-input-fences-v1",
+        "checks": 46,
+        "failures": 0
+      },
+      "objectshard_continuous_play": {
+        "source_path": "godot/tests/test_object_shard_continuous_play.gd",
+        "log": "build/m3-platform/repair-linux/14746310288/lab/objectshard_continuous_play.log",
+        "log_sha256": "c195906a23ddcd5f4ad154ff76adabae17498fed8aedee56a8973ae3b068e65e",
+        "schema": "objectshard-continuous-play-test-v1",
+        "checks": 76,
+        "failures": 0
+      },
+      "objectshard_continuous_play_rendered": {
+        "source_path": "godot/tests/test_object_shard_continuous_play.gd",
+        "log": "build/m3-platform/repair-linux/14746310288/lab/objectshard_continuous_play_rendered.log",
+        "log_sha256": "3376e63b08ba2026926b6ab86a924899913bbbbe670a9045ff6536cc27b798fc",
+        "schema": "objectshard-continuous-play-test-v1",
+        "checks": 77,
+        "failures": 0
+      }
+    }
+  }
+}

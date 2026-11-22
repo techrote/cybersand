@@ -1,0 +1,243 @@
+[
+  {
+    "name": "import",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--editor",
+      "--quit"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 7.69273777899798,
+    "log": "build/review-physics/final-e034f229/import.log",
+    "log_sha256": "6e65402d956ff664255f3a95040dd69e7b63417075dea00f8875816896ab6e28",
+    "natural_completion_footers": []
+  },
+  {
+    "name": "review_physics_adversary",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/review_physics_adversary.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6687961889983853,
+    "log": "build/review-physics/final-e034f229/review_physics_adversary.log",
+    "log_sha256": "f0d40672c33ed6f8cb8f3d30b550399827fdaf25216aba56a5f1fd32e101d8da",
+    "natural_completion_footers": [
+      {
+        "schema": "review-physics-adversary-v1",
+        "checks": 52,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "review_live_admission",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/review_live_admission.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9671934869984398,
+    "log": "build/review-physics/final-e034f229/review_live_admission.log",
+    "log_sha256": "7c5c14f8e272a39237619d7ea99d168910125255c32f5cf702cc8ac904f153e5",
+    "natural_completion_footers": [
+      {
+        "schema": "independent-live-admission-review-v1",
+        "checks": 24,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "test_object_shard_physics_identity",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/test_object_shard_physics_identity.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4192705140012549,
+    "log": "build/review-physics/final-e034f229/test_object_shard_physics_identity.log",
+    "log_sha256": "f6b79cf9c7af79d1420b15afa09addd89b5630fbb349e0e725f059c7fd022b58",
+    "natural_completion_footers": [
+      {
+        "schema": "objectshard-physics-identity-test-v1",
+        "checks": 70,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "test_object_shard_incremental_motion",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/test_object_shard_incremental_motion.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5183516550023342,
+    "log": "build/review-physics/final-e034f229/test_object_shard_incremental_motion.log",
+    "log_sha256": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39",
+    "natural_completion_footers": [
+      {
+        "schema": "objectshard-incremental-motion-test-v1",
+        "checks": 137,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "test_object_shard_worker_input_fences",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/test_object_shard_worker_input_fences.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9710474550083745,
+    "log": "build/review-physics/final-e034f229/test_object_shard_worker_input_fences.log",
+    "log_sha256": "5818f6fea75558d5f92c20eab7720ff256400d198953b8433fcc49d9d19da06b",
+    "natural_completion_footers": [
+      {
+        "schema": "objectshard-worker-input-fences-v1",
+        "checks": 46,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "test_object_shard_worker_recovery",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/test_object_shard_worker_recovery.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.0755853440059582,
+    "log": "build/review-physics/final-e034f229/test_object_shard_worker_recovery.log",
+    "log_sha256": "ae84ed58a172df30fc9494460d74bd058d6b690b204e33771089cd02f0da8780",
+    "natural_completion_footers": [
+      {
+        "schema": "objectshard-worker-recovery-test-v1",
+        "checks": 63,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "test_object_shard_continuous_play",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/test_object_shard_continuous_play.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 10.004992752001272,
+    "log": "build/review-physics/final-e034f229/test_object_shard_continuous_play.log",
+    "log_sha256": "552509b0d57fa803615768573527c872b6dde5d3f47a89e8acbc3b5006300cd8",
+    "natural_completion_footers": [
+      {
+        "schema": "objectshard-continuous-play-test-v1",
+        "checks": 75,
+        "failures": 0,
+        "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+      }
+    ]
+  },
+  {
+    "name": "review_navigation_lifecycle",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/review_navigation_lifecycle.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 10.353025132004404,
+    "log": "build/review-physics/final-e034f229/review_navigation_lifecycle.log",
+    "log_sha256": "265a7d586908a0fdd297ca7944917b613085befdf06639a651f7e18e6b2b6a10",
+    "natural_completion_footers": [
+      {
+        "schema": "independent-f2-navigation-lifecycle-v1",
+        "checks": 22,
+        "failures": 0,
+        "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+      }
+    ]
+  },
+  {
+    "name": "review_navigation_fences",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/review_navigation_fences.gd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8705912650038954,
+    "log": "build/review-physics/final-e034f229/review_navigation_fences.log",
+    "log_sha256": "e26932e0cbbc430e008222eb79b3e421b4b791f0a4092950fa48b111757ae37e",
+    "natural_completion_footers": [
+      {
+        "schema": "independent-navigation-completion-fences-v1",
+        "checks": 27,
+        "failures": 0
+      }
+    ]
+  },
+  {
+    "name": "test_object_shard_worker_navigation",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+      "--script",
+      "res://tests/test_object_shard_worker_navigation.gd",
+      "--",
+      "--output=/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/maintained-navigation.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.302302773008705,
+    "log": "build/review-physics/final-e034f229/test_object_shard_worker_navigation.log",
+    "log_sha256": "7de9827b814186787d3bea73fd64b0b3a0a9779aa478831bb1824238529458d1",
+    "natural_completion_footers": [
+      {
+        "schema": "objectshard-worker-navigation-test-v1",
+        "checks": 135,
+        "failures": 0,
+        "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+      }
+    ]
+  }
+]

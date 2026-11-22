@@ -1,0 +1,1151 @@
+{
+  "schema": "objectshard-m3-repair-windows-delivery-assessment-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "failures": [],
+  "scope": "Downloaded actual Windows qualification and immutable delivered ZIP evidence; no local Windows or physical GPU acceptance claim.",
+  "candidate_provenance": {
+    "path": "build/m3-platform/repair-windows/14745122677/candidate-provenance.json",
+    "sha256": "40f3439335f647785300e9af19fd6462b1ec7652ab26140bcd7c5efd4b1a1dc5",
+    "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+    "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+  },
+  "windows-lab": {
+    "source_input_counts": {
+      "native_source_inputs": 116,
+      "lab_source_inputs": 51,
+      "qualification_tool_inputs": 19
+    },
+    "navigation_lifecycle": {
+      "status": "passed",
+      "cases": [
+        "active_pending_repeated",
+        "naturally_sleeping",
+        "opening",
+        "reset_superseded",
+        "held_interval",
+        "stop_delivery_faults",
+        "already_closed_prior_policy",
+        "window_close_upgrade"
+      ],
+      "checks": 135,
+      "child_checks": 18,
+      "child_exit_code": 0,
+      "scope": "Actual F2/autoload navigation and real owner disposal; window-close process exit executes in a separate source-matched child. Stop-delivery fault injection is explicitly labelled."
+    },
+    "case_count": 41,
+    "cases": [
+      {
+        "name": "objectshard_import",
+        "status": "passed",
+        "checks": null,
+        "failures": null,
+        "budget": null
+      },
+      {
+        "name": "test_rapier_manual_step",
+        "status": "passed",
+        "checks": null,
+        "failures": null,
+        "budget": null
+      },
+      {
+        "name": "test_material_lab_experiment",
+        "status": "passed",
+        "checks": null,
+        "failures": null,
+        "budget": null
+      },
+      {
+        "name": "objectshard_bridge",
+        "status": "passed",
+        "checks": 28,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_lab",
+        "status": "passed",
+        "checks": 379,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_capture",
+        "status": "passed",
+        "checks": 20,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_motion_segments",
+        "status": "passed",
+        "checks": 47,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_contacts",
+        "status": "passed",
+        "checks": 34,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_boundary",
+        "status": "passed",
+        "checks": 42,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_playability",
+        "status": "passed",
+        "checks": 33,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_action_replay",
+        "status": "passed",
+        "checks": null,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_erode",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_replace_identical",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_mass_only",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_owner_d",
+        "status": "passed",
+        "checks": 17,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_incremental_motion",
+        "status": "passed",
+        "checks": 137,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_native_worker",
+        "status": "passed",
+        "checks": 31,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_workbench_contract",
+        "status": "passed",
+        "checks": 29,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_rehearsal",
+        "status": "passed",
+        "checks": 41,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_adverse",
+        "status": "passed",
+        "checks": 23,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_recovery",
+        "status": "passed",
+        "checks": 63,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_navigation",
+        "status": "passed",
+        "checks": 135,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_replay_admission",
+        "status": "passed",
+        "checks": 57,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_resources",
+        "status": "passed",
+        "checks": 43,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_commands",
+        "status": "passed",
+        "checks": 29,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_physics_identity",
+        "status": "passed",
+        "checks": 70,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_input_fences",
+        "status": "passed",
+        "checks": 46,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_play",
+        "status": "passed",
+        "checks": 76,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_replay",
+        "status": "passed",
+        "checks": 367,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_physics",
+        "status": "passed",
+        "checks": 22513,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_scene",
+        "status": "passed",
+        "checks": 13,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_replay",
+        "status": "passed",
+        "checks": 97,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_render",
+        "status": "passed",
+        "checks": null,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_finisher_render",
+        "status": "passed",
+        "checks": null,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_play_rendered",
+        "status": "passed",
+        "checks": 77,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_rendered_replay",
+        "status": "passed",
+        "checks": 387,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_render",
+        "status": "passed",
+        "checks": null,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_profile_headless",
+        "status": "passed",
+        "checks": 719,
+        "failures": 0,
+        "budget": {
+          "failures": [],
+          "limits_checked": 56,
+          "physical_owner_acceptance": "unrecorded",
+          "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+          "status": "passed"
+        }
+      },
+      {
+        "name": "objectshard_profile_rendered",
+        "status": "passed",
+        "checks": 719,
+        "failures": 0,
+        "budget": {
+          "failures": [],
+          "limits_checked": 80,
+          "physical_owner_acceptance": "unrecorded",
+          "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+          "status": "passed"
+        }
+      },
+      {
+        "name": "objectshard_worker_profile_0",
+        "status": "passed",
+        "checks": 1102,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_profile_4000",
+        "status": "passed",
+        "checks": 1954,
+        "failures": 0,
+        "budget": null
+      }
+    ],
+    "scheduling_comparison": {
+      "candidate_semantic_ticks_per_wall_second": 17.138209015740518,
+      "control_semantic_ticks_per_wall_second": 8.25606175534193,
+      "matched_fields": [
+        "identity",
+        "engine",
+        "platform",
+        "publication_digests",
+        "native_accounting",
+        "completed_intervals",
+        "actual_live_inputs",
+        "actual_physics_steps"
+      ],
+      "publication_count": 240,
+      "scope": "Same source/runtime and 240 per-interval material/pose publication digests. Timing is a paired hosted observation, not a new pass threshold or target GPU frame-rate claim.",
+      "status": "passed",
+      "wall_progression_ratio": 2.0758334328896657
+    },
+    "long_play": {
+      "checks": 22513,
+      "tick": 3600,
+      "completed_ticks": 3599,
+      "actions_queued": 540,
+      "moving_owners": 3,
+      "sleeping_owners": 3,
+      "maximum_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "physics_steps": 14390,
+      "real_contacts": true,
+      "fire_seen": true,
+      "smoke_seen": true,
+      "post_settle_edit_tick": 2400,
+      "post_erosion_maximum_rotation": 3.58819670509547e-06,
+      "post_erosion_maximum_translation": 6.7918750573881e-05,
+      "timing": {
+        "count": 3599,
+        "maximum_usec": 30979,
+        "p50_usec": 21864,
+        "p95_usec": 24657,
+        "p99_usec": 25813,
+        "scope": "Unpaced actual-host tick plus queued input completion; no target-display FPS claim"
+      }
+    }
+  },
+  "rendered_ui_timing": {
+    "host_admission_to_presented_usec": {
+      "count": 153,
+      "maximum": 704746,
+      "p50": 399139,
+      "p95": 688155,
+      "p99": 704288,
+      "session_maximum": 704746,
+      "total_count": 153
+    },
+    "input_to_presented_usec": {
+      "count": 153,
+      "maximum": 1929452,
+      "p50": 763739,
+      "p95": 1753913,
+      "p99": 1913506,
+      "session_maximum": 1929452,
+      "total_count": 153
+    },
+    "scene_input_to_host_usec": {
+      "count": 153,
+      "maximum_usec": 1241508,
+      "p50_usec": 364059,
+      "p95_usec": 1049885,
+      "p99_usec": 1240791,
+      "total_observations": 153
+    },
+    "scope": "Actual source-matched rendered scene observations, including the original scene-intent queue timestamp; not monitor scanout or target GPU performance"
+  },
+  "package-replay": {
+    "source_input_counts": {
+      "native_source_inputs": 116,
+      "lab_source_inputs": 51,
+      "qualification_tool_inputs": 19
+    },
+    "navigation_lifecycle": {
+      "status": "passed",
+      "cases": [
+        "active_pending_repeated",
+        "naturally_sleeping",
+        "opening",
+        "reset_superseded",
+        "held_interval",
+        "stop_delivery_faults",
+        "already_closed_prior_policy",
+        "window_close_upgrade"
+      ],
+      "checks": 135,
+      "child_checks": 18,
+      "child_exit_code": 0,
+      "scope": "Actual F2/autoload navigation and real owner disposal; window-close process exit executes in a separate source-matched child. Stop-delivery fault injection is explicitly labelled."
+    },
+    "case_count": 32,
+    "cases": [
+      {
+        "name": "objectshard_import",
+        "status": "passed",
+        "checks": null,
+        "failures": null,
+        "budget": null
+      },
+      {
+        "name": "test_rapier_manual_step",
+        "status": "passed",
+        "checks": null,
+        "failures": null,
+        "budget": null
+      },
+      {
+        "name": "test_material_lab_experiment",
+        "status": "passed",
+        "checks": null,
+        "failures": null,
+        "budget": null
+      },
+      {
+        "name": "objectshard_bridge",
+        "status": "passed",
+        "checks": 28,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_lab",
+        "status": "passed",
+        "checks": 379,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_capture",
+        "status": "passed",
+        "checks": 20,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_motion_segments",
+        "status": "passed",
+        "checks": 47,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_contacts",
+        "status": "passed",
+        "checks": 34,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_boundary",
+        "status": "passed",
+        "checks": 42,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_playability",
+        "status": "passed",
+        "checks": 33,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_action_replay",
+        "status": "passed",
+        "checks": null,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_erode",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_replace_identical",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_rest_mass_only",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_owner_d",
+        "status": "passed",
+        "checks": 17,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_incremental_motion",
+        "status": "passed",
+        "checks": 137,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_native_worker",
+        "status": "passed",
+        "checks": 31,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_workbench_contract",
+        "status": "passed",
+        "checks": 29,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_rehearsal",
+        "status": "passed",
+        "checks": 41,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_adverse",
+        "status": "passed",
+        "checks": 23,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_recovery",
+        "status": "passed",
+        "checks": 63,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_navigation",
+        "status": "passed",
+        "checks": 135,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_replay_admission",
+        "status": "passed",
+        "checks": 57,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_resources",
+        "status": "passed",
+        "checks": 43,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_commands",
+        "status": "passed",
+        "checks": 29,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_physics_identity",
+        "status": "passed",
+        "checks": 70,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_input_fences",
+        "status": "passed",
+        "checks": 46,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_play",
+        "status": "passed",
+        "checks": 76,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_replay",
+        "status": "passed",
+        "checks": 369,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_continuous_physics",
+        "status": "passed",
+        "checks": 22513,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_scene",
+        "status": "passed",
+        "checks": 13,
+        "failures": 0,
+        "budget": null
+      },
+      {
+        "name": "objectshard_worker_replay",
+        "status": "passed",
+        "checks": 97,
+        "failures": 0,
+        "budget": null
+      }
+    ],
+    "scheduling_comparison": null,
+    "long_play": {
+      "checks": 22513,
+      "tick": 3600,
+      "completed_ticks": 3599,
+      "actions_queued": 540,
+      "moving_owners": 3,
+      "sleeping_owners": 3,
+      "maximum_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "physics_steps": 14390,
+      "real_contacts": true,
+      "fire_seen": true,
+      "smoke_seen": true,
+      "post_settle_edit_tick": 2400,
+      "post_erosion_maximum_rotation": 3.58819670509547e-06,
+      "post_erosion_maximum_translation": 6.7918750573881e-05,
+      "timing": {
+        "count": 3599,
+        "maximum_usec": 27741,
+        "p50_usec": 21865,
+        "p95_usec": 24790,
+        "p99_usec": 25863,
+        "scope": "Unpaced actual-host tick plus queued input completion; no target-display FPS claim"
+      }
+    }
+  },
+  "launcher_matrix": {
+    "schema": "objectshard-windows-zip-qualification-v1",
+    "archive": "D:\\a\\cybersand\\cybersand\\build\\objectshard-windows-evaluator.zip",
+    "zip_sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "cases": [
+      {
+        "case": "spaces",
+        "root": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard evaluation with spaces",
+        "root_characters": 71,
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "commands": [
+          {
+            "script": "Verify ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 7.25
+          },
+          {
+            "script": "Open ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 7.844000000000051
+          },
+          {
+            "script": "Open ObjectShard M3 Preflight.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 5.8279999999999745
+          }
+        ],
+        "launch_receipt": {
+          "checks": 6,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard evaluation with spaces\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by launch qualification",
+          "physics": {
+            "geometry_install_max_usec": 0,
+            "geometry_install_usec": 0,
+            "pose_copy_usec": 24,
+            "rapier_flush_usec": 5,
+            "rapier_step_usec": 225,
+            "terrain_install_max_usec": 764,
+            "terrain_install_usec": 78
+          },
+          "schema": "objectshard-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 41
+        },
+        "preflight_launch_receipt": {
+          "checks": 15,
+          "completed_ticks": 2,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "host": "standalone-exclusive-worker-rehearsal",
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard evaluation with spaces\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by automated GUI launch qualification",
+          "production_workbench": false,
+          "schema": "objectshard-worker-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 3
+        },
+        "verifier_adversaries": {
+          "get_file_hash_shadow_exit_code": 0,
+          "tamper_exit_code": 1,
+          "tamper_path": "READ-ME.md",
+          "specific_hash_failure_observed": true,
+          "restored_sha256": "654a71f6bdd2c763e1e89788ac2eb3610cb161d335514d00110e2ebc76bc4bd1",
+          "after_restoration_inventory_verified": true,
+          "scope": "Unchanged delivered ZIP; explicit adversarial extraction restored and fully reverified"
+        }
+      },
+      {
+        "case": "parentheses",
+        "root": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard Lab (1)",
+        "root_characters": 56,
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "commands": [
+          {
+            "script": "Verify ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 1.015999999999849
+          },
+          {
+            "script": "Open ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 8.094000000000051
+          },
+          {
+            "script": "Open ObjectShard M3 Preflight.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 5.625
+          }
+        ],
+        "launch_receipt": {
+          "checks": 6,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard Lab (1)\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by launch qualification",
+          "physics": {
+            "geometry_install_max_usec": 0,
+            "geometry_install_usec": 0,
+            "pose_copy_usec": 26,
+            "rapier_flush_usec": 8,
+            "rapier_step_usec": 194,
+            "terrain_install_max_usec": 639,
+            "terrain_install_usec": 107
+          },
+          "schema": "objectshard-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 41
+        },
+        "preflight_launch_receipt": {
+          "checks": 15,
+          "completed_ticks": 2,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "host": "standalone-exclusive-worker-rehearsal",
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard Lab (1)\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by automated GUI launch qualification",
+          "production_workbench": false,
+          "schema": "objectshard-worker-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 3
+        }
+      },
+      {
+        "case": "nested",
+        "root": "D:\\a\\_temp\\objectshard-delivered-zip\\nested evaluation\\another level\\longer extraction directory\\owner playtesting\\candidate",
+        "root_characters": 124,
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "commands": [
+          {
+            "script": "Verify ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 1.0779999999999745
+          },
+          {
+            "script": "Open ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 8.030999999999949
+          },
+          {
+            "script": "Open ObjectShard M3 Preflight.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 5.891000000000076
+          }
+        ],
+        "launch_receipt": {
+          "checks": 6,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\nested evaluation\\another level\\longer extraction directory\\owner playtesting\\candidate\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by launch qualification",
+          "physics": {
+            "geometry_install_max_usec": 0,
+            "geometry_install_usec": 0,
+            "pose_copy_usec": 25,
+            "rapier_flush_usec": 6,
+            "rapier_step_usec": 202,
+            "terrain_install_max_usec": 620,
+            "terrain_install_usec": 74
+          },
+          "schema": "objectshard-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 41
+        },
+        "preflight_launch_receipt": {
+          "checks": 15,
+          "completed_ticks": 2,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "host": "standalone-exclusive-worker-rehearsal",
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\nested evaluation\\another level\\longer extraction directory\\owner playtesting\\candidate\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by automated GUI launch qualification",
+          "production_workbench": false,
+          "schema": "objectshard-worker-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 3
+        }
+      },
+      {
+        "case": "unicode",
+        "root": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard_日本語_é",
+        "root_characters": 54,
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "commands": [
+          {
+            "script": "Verify ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 1.0310000000001764
+          },
+          {
+            "script": "Open ObjectShard Lab.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 8.1099999999999
+          },
+          {
+            "script": "Open ObjectShard M3 Preflight.cmd",
+            "exit_code": 0,
+            "elapsed_seconds": 5.921999999999798
+          }
+        ],
+        "launch_receipt": {
+          "checks": 6,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard_日本語_é\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by launch qualification",
+          "physics": {
+            "geometry_install_max_usec": 0,
+            "geometry_install_usec": 0,
+            "pose_copy_usec": 33,
+            "rapier_flush_usec": 6,
+            "rapier_step_usec": 222,
+            "terrain_install_max_usec": 653,
+            "terrain_install_usec": 122
+          },
+          "schema": "objectshard-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 41
+        },
+        "preflight_launch_receipt": {
+          "checks": 15,
+          "completed_ticks": 2,
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "failures": 0,
+          "host": "standalone-exclusive-worker-rehearsal",
+          "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard_日本語_é\\.\\objectshard-lab-manifest.json",
+          "physical_owner_acceptance": "not established by automated GUI launch qualification",
+          "production_workbench": false,
+          "schema": "objectshard-worker-package-launch-v1",
+          "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+          "tick": 3
+        }
+      }
+    ],
+    "failures": [],
+    "status": "passed"
+  },
+  "screenshots": [
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-native-supported.png",
+      "sha256": "e1a1efba6b208fbe2fe050b60af37d4c3cc28e276840fb00274dda8691e1632f",
+      "preset": {
+        "burner": false,
+        "fixture": "",
+        "height": 128,
+        "id": 1,
+        "reference_carrier_bytes": 196608,
+        "scenario": 1,
+        "seed": 12,
+        "title": "A · Ordinary detachment",
+        "width": 192,
+        "world_cells": 24576
+      },
+      "detail": {}
+    },
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-falling.png",
+      "sha256": "b91b2a27f38f2fed771f05ce91948133c6859c851a43f1b83edfa19065d28407",
+      "preset": {
+        "burner": false,
+        "fixture": "",
+        "height": 128,
+        "id": 1,
+        "reference_carrier_bytes": 196608,
+        "scenario": 1,
+        "seed": 12,
+        "title": "A · Ordinary detachment",
+        "width": 192,
+        "world_cells": 24576
+      },
+      "detail": {}
+    },
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png",
+      "sha256": "b8c0c6521caa679989a1cf144163e72288d8197ab705d9b96be2b5c0da80f289",
+      "preset": {
+        "burner": false,
+        "fixture": "",
+        "height": 128,
+        "id": 1,
+        "reference_carrier_bytes": 196608,
+        "scenario": 1,
+        "seed": 12,
+        "title": "A · Ordinary detachment",
+        "width": 192,
+        "world_cells": 24576
+      },
+      "detail": {
+        "continued_semantic_ticks_after_edit": 120,
+        "natural_sleep_observed_before_edit": true
+      }
+    },
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-main-structure-priority.png",
+      "sha256": "c56bd279568b889267bc576179cc4d3408d5010b7eba8bff9be483b021abf418",
+      "preset": {
+        "burner": false,
+        "fixture": "offcuts",
+        "height": 128,
+        "id": 7,
+        "reference_carrier_bytes": 196608,
+        "scenario": 0,
+        "seed": 12,
+        "title": "G · Main structure and offcuts",
+        "width": 192,
+        "world_cells": 24576
+      },
+      "detail": {
+        "largest_admitted_structural_cells": 817
+      }
+    },
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png",
+      "sha256": "79c75d9d2dcf6263e715127471670f4607672f7cb40641fcf3d59f5513459439",
+      "preset": {
+        "burner": false,
+        "fixture": "",
+        "height": 128,
+        "id": 3,
+        "reference_carrier_bytes": 196608,
+        "scenario": 3,
+        "seed": 12,
+        "title": "C · Water and Sand exchange",
+        "width": 192,
+        "world_cells": 24576
+      },
+      "detail": {}
+    },
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-external-fire.png",
+      "sha256": "3917ce1bd90e621bcd3c5e926cdf855b3813f4088880e4a00fcd5f529ad01d18",
+      "preset": {
+        "burner": true,
+        "fixture": "",
+        "height": 160,
+        "id": 10,
+        "reference_carrier_bytes": 327680,
+        "scenario": 1,
+        "seed": 12,
+        "title": "J · Sustained external flame",
+        "width": 256,
+        "world_cells": 40960
+      },
+      "detail": {
+        "accepted_fixture_actions": 83,
+        "native_world_fire_cells": 83
+      }
+    },
+    {
+      "image": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-extended-320.png",
+      "sha256": "82a0e78874c4daf8bc3763b82b729b04f6782032b7439efa9c4c1c404d5eca18",
+      "preset": {
+        "burner": false,
+        "fixture": "extended",
+        "height": 192,
+        "id": 11,
+        "reference_carrier_bytes": 491520,
+        "scenario": 0,
+        "seed": 12,
+        "title": "K · Extended play canvas",
+        "width": 320,
+        "world_cells": 61440
+      },
+      "detail": {}
+    }
+  ],
+  "owner_zip": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+    "bytes": 93168827,
+    "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "verified_manifest_member_count": 1099,
+    "manifest_sha256": "0bc0c8a23f341e8a356c87f8247767b6ead72ce371f77dcf529502555e481910",
+    "repaired_navigation_scripts_match_commit": true,
+    "source_guide_matches": true
+  },
+  "status": "passed"
+}

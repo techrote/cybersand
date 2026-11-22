@@ -1,0 +1,594 @@
+{
+  "schema": "objectshard-material-transition-inherited-workflow-readback-v1",
+  "scope": "Independent read-only GitHub workflow/job/log fetch; no retries or dispatch",
+  "runs": [
+    {
+      "source": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "run": 44989675198,
+      "job": 137107785492,
+      "jobs": {
+        "jobs": [
+          {
+            "id": 137107785492,
+            "name": "consistency",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_id": 44989675198,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Check out pinned companion workspace documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Check out current source and complete audited history",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Validate active CI provider policy",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Test CI provider policy checker",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Validate Actions syntax with pinned actionlint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Audit workflow inventory and scheduling policies",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Retain machine-readable workflow inventory",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Validate current documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Validate dependency pins and published runtime provenance",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 10
+              },
+              {
+                "name": "Verify soliding object reuse and original compiler contracts",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              },
+              {
+                "name": "Retain soliding build contract evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12
+              },
+              {
+                "name": "Check LCB capability matrix is source-derived",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 13
+              },
+              {
+                "name": "Check LCB policy wire/hash contract vectors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 14
+              },
+              {
+                "name": "Check native LCB setup and run receipt canonical vectors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15
+              },
+              {
+                "name": "Check material catalogue shadow compatibility",
+                "status": "completed",
+                "conclusion": "failure",
+                "number": 16
+              },
+              {
+                "name": "Check LCB scenario definitions and registry are source-derived",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17
+              },
+              {
+                "name": "Verify retained M11 records against their audited Git revision",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 18
+              },
+              {
+                "name": "Test validation failure contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 19
+              },
+              {
+                "name": "Test soliding evidence integrity contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 20
+              },
+              {
+                "name": "Test coupled-lockstep evidence reducer contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 21
+              },
+              {
+                "name": "Evaluate current retrieval routes",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 22
+              },
+              {
+                "name": "Validate Git LFS objects and whitespace",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 23
+              },
+              {
+                "name": "Retain retrieval evidence",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 24
+              },
+              {
+                "name": "Retain material catalogue parity evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 25
+              },
+              {
+                "name": "Post Check out current source and complete audited history",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 49
+              },
+              {
+                "name": "Post Check out pinned companion workspace documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 50
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 51
+              }
+            ]
+          }
+        ]
+      },
+      "log": "documentation-44989675198-137107785492.log",
+      "original_decoded_content_characters": 137883,
+      "original_ends_with_newline": true,
+      "failure_lines": [
+        "2026-11-22T05:31:13.2779171Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected reviewed transition target bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214, got 5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1. A further edit needs its own reviewed transition",
+        "2026-11-22T05:31:13.2853457Z ##[error]Process completed with exit code 1."
+      ],
+      "stored_log_sha256": "4db1ee70376724b683628819e42f92c812948e35a2eea3d8078827c0f1b95426",
+      "stored_log_bytes": 137961
+    },
+    {
+      "source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "run": 44999120750,
+      "job": 137136528058,
+      "jobs": {
+        "jobs": [
+          {
+            "id": 137136528058,
+            "name": "consistency",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_id": 44999120750,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Check out pinned companion workspace documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Check out current source and complete audited history",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Validate active CI provider policy",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Test CI provider policy checker",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Validate Actions syntax with pinned actionlint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Audit workflow inventory and scheduling policies",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Retain machine-readable workflow inventory",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Validate current documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Validate dependency pins and published runtime provenance",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 10
+              },
+              {
+                "name": "Verify soliding object reuse and original compiler contracts",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              },
+              {
+                "name": "Retain soliding build contract evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12
+              },
+              {
+                "name": "Check LCB capability matrix is source-derived",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 13
+              },
+              {
+                "name": "Check LCB policy wire/hash contract vectors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 14
+              },
+              {
+                "name": "Check native LCB setup and run receipt canonical vectors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15
+              },
+              {
+                "name": "Check material catalogue shadow compatibility",
+                "status": "completed",
+                "conclusion": "failure",
+                "number": 16
+              },
+              {
+                "name": "Check LCB scenario definitions and registry are source-derived",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17
+              },
+              {
+                "name": "Verify retained M11 records against their audited Git revision",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 18
+              },
+              {
+                "name": "Test validation failure contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 19
+              },
+              {
+                "name": "Test soliding evidence integrity contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 20
+              },
+              {
+                "name": "Test coupled-lockstep evidence reducer contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 21
+              },
+              {
+                "name": "Evaluate current retrieval routes",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 22
+              },
+              {
+                "name": "Validate Git LFS objects and whitespace",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 23
+              },
+              {
+                "name": "Retain retrieval evidence",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 24
+              },
+              {
+                "name": "Retain material catalogue parity evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 25
+              },
+              {
+                "name": "Post Check out current source and complete audited history",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 49
+              },
+              {
+                "name": "Post Check out pinned companion workspace documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 50
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 51
+              }
+            ]
+          }
+        ]
+      },
+      "log": "documentation-44999120750-137136528058.log",
+      "original_decoded_content_characters": 138295,
+      "original_ends_with_newline": true,
+      "failure_lines": [
+        "2026-11-22T07:39:04.1089544Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected reviewed transition target bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214, got 5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1. A further edit needs its own reviewed transition",
+        "2026-11-22T07:39:04.1159284Z ##[error]Process completed with exit code 1."
+      ],
+      "stored_log_sha256": "d8d39cc23d581b84196aed97fbd83524e2000a67c21066361faa5dc1dcd04fab",
+      "stored_log_bytes": 138373
+    },
+    {
+      "source": "10d191bbf9223b7fbb9ddd30ba12e158ff6d60b9",
+      "run": 45002794045,
+      "job": 137147763392,
+      "jobs": {
+        "jobs": [
+          {
+            "id": 137147763392,
+            "name": "consistency",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_id": 45002794045,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Check out pinned companion workspace documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Check out current source and complete audited history",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Validate active CI provider policy",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Test CI provider policy checker",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Validate Actions syntax with pinned actionlint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Audit workflow inventory and scheduling policies",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Retain machine-readable workflow inventory",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Validate current documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Validate dependency pins and published runtime provenance",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 10
+              },
+              {
+                "name": "Verify soliding object reuse and original compiler contracts",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              },
+              {
+                "name": "Retain soliding build contract evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12
+              },
+              {
+                "name": "Check LCB capability matrix is source-derived",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 13
+              },
+              {
+                "name": "Check LCB policy wire/hash contract vectors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 14
+              },
+              {
+                "name": "Check native LCB setup and run receipt canonical vectors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15
+              },
+              {
+                "name": "Check material catalogue shadow compatibility",
+                "status": "completed",
+                "conclusion": "failure",
+                "number": 16
+              },
+              {
+                "name": "Check LCB scenario definitions and registry are source-derived",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17
+              },
+              {
+                "name": "Verify retained M11 records against their audited Git revision",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 18
+              },
+              {
+                "name": "Test validation failure contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 19
+              },
+              {
+                "name": "Test soliding evidence integrity contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 20
+              },
+              {
+                "name": "Test coupled-lockstep evidence reducer contracts",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 21
+              },
+              {
+                "name": "Evaluate current retrieval routes",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 22
+              },
+              {
+                "name": "Validate Git LFS objects and whitespace",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 23
+              },
+              {
+                "name": "Retain retrieval evidence",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 24
+              },
+              {
+                "name": "Retain material catalogue parity evidence",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 25
+              },
+              {
+                "name": "Post Check out current source and complete audited history",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 49
+              },
+              {
+                "name": "Post Check out pinned companion workspace documentation",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 50
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 51
+              }
+            ]
+          }
+        ]
+      },
+      "log": "documentation-45002794045-137147763392.log",
+      "original_decoded_content_characters": 138381,
+      "original_ends_with_newline": true,
+      "failure_lines": [
+        "2026-11-22T08:27:04.9544963Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected reviewed transition target bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214, got 5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1. A further edit needs its own reviewed transition",
+        "2026-11-22T08:27:04.9619469Z ##[error]Process completed with exit code 1."
+      ],
+      "stored_log_sha256": "994cab767080c5af4ff5675013c1cdbd3863792d8a11cda380c70a6904ef03d4",
+      "stored_log_bytes": 138459
+    }
+  ]
+}

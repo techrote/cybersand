@@ -1,0 +1,131 @@
+{
+  "schema": "objectshard-m3-final-c-retention-manifest-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "run_id": 44999117090,
+  "generated_utc": "2026-11-22T08:07:33.427182+00:00",
+  "status": "C-delivery-review-complete",
+  "source_changes_since_publication": false,
+  "original_package_mutations": false,
+  "additional_campaigns_for_timing_investigation": 0,
+  "physical_owner_acceptance": "unrecorded",
+  "summary": {
+    "source_cases_passed": 41,
+    "package_cases_passed": 32,
+    "navigation_checks_each": 135,
+    "navigation_actual_quit_child_checks_each": 18,
+    "retained_actual_path_cases": 4,
+    "manifest_members_stream_verified": 1099,
+    "native_inputs_verified": 116,
+    "lab_inputs_verified": 51,
+    "qualification_tool_inputs_verified": 19,
+    "actual_screenshots": 7,
+    "long_run_checks_each": 22513,
+    "long_run_input_actions_each": 540,
+    "long_run_real_rapier_steps_each": 14390,
+    "owner_zip_bytes": 93168827,
+    "owner_zip_sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b"
+  },
+  "reports": {
+    "crossbuild-assessment.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/crossbuild-assessment.json",
+      "bytes": 2550,
+      "sha256": "1f1ff101a67f3f78617aa87da9add4687215509f915c6b20133c9e52f9d894f8"
+    },
+    "windows-delivery-assessment.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/windows-delivery-assessment.json",
+      "bytes": 34776,
+      "sha256": "b8878f71154a827af4978d03f354f9cf3ebe0f895ad1d24a5f18ad3e1467025b"
+    },
+    "baseline-repair-timing-comparison.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/baseline-repair-timing-comparison.json",
+      "bytes": 79920,
+      "sha256": "d8db70e1e619b214f2359b5728e3047c0ac4e9cdfb15aa326a6c200f72be6467"
+    },
+    "operator-readiness.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/operator-readiness.json",
+      "bytes": 14743,
+      "sha256": "74f8109fd966529a5f31b9acf855ea3ee6fc6486be1dd737cf32f6a17020ee2a"
+    },
+    "renderer-launch-scope.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/renderer-launch-scope.json",
+      "bytes": 5733,
+      "sha256": "29276c5ae0868504dd7d79c6435636f9bd9b85445bd63b2b264a80bb7042ea9f"
+    },
+    "owner-zip-identity.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/owner-zip-identity.json",
+      "bytes": 888,
+      "sha256": "a6a886a5e418b1da56af72ef6c69c72b939cdf955d2180781e3b16952126bf47"
+    },
+    "final-job-status.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/final-job-status.json",
+      "bytes": 4669,
+      "sha256": "acf851c2d10a9a3691c3819b0ca5d8782b5c69a910f45a92e92e827043d390e9"
+    },
+    "delivery-index.json": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/delivery-index.json",
+      "bytes": 6280,
+      "sha256": "c25493a0c1148a5b6f27827fca5329cbc3f6593c8adc2e83566a0c0de453c93d"
+    }
+  },
+  "artifact_custody": {
+    "14745122677": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745122677-custody.json",
+      "bytes": 1943,
+      "sha256": "f407a2fc2f55d3bf421debacc6a3943007a7ccd2555310b0f5a115ed117a73eb",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745122677.zip",
+      "archive_bytes": 2217474,
+      "archive_sha256": "5c32e97f40acd278a6fc871fbe22b22684dcbfdd978774afab9afe580acba9d6",
+      "member_count": 2,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+    },
+    "14745236878": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745236878-custody.json",
+      "bytes": 3003,
+      "sha256": "8f0762c0c617857e66232f36be891662133518dc2eb10ce0fc7a58a8a58a132b",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745236878.zip",
+      "archive_bytes": 13861,
+      "archive_sha256": "a641552a46f7b6db770732ca8293eb45b70dd53c6c2daedcaeb633c146ca7e0b",
+      "member_count": 8,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+    },
+    "14745303779": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745303779-custody.json",
+      "bytes": 1766,
+      "sha256": "6f55a215eb363bc31c8222278c3ed3087814c405d5d9af2bb97fda66df923f79",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745303779.zip",
+      "archive_bytes": 92828683,
+      "archive_sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d",
+      "member_count": 1,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+    },
+    "14745662483": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745662483-custody.json",
+      "bytes": 41765,
+      "sha256": "bf5ef28065b3ab25e9281beafbc0b6eb459fb9941e4b8e4f49f2d4d228437120",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745662483.zip",
+      "archive_bytes": 10028066,
+      "archive_sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb",
+      "member_count": 196,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+    }
+  },
+  "reproducibility_helpers": {
+    "download_artifact.py": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/download_artifact.py",
+      "bytes": 4087,
+      "sha256": "99adf92a975c0cea7d10db81ce3bbb72f1895f3f7371d458eecf786dc9da4f78"
+    },
+    "assess_windows_evidence.py": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/assess_windows_evidence.py",
+      "bytes": 11623,
+      "sha256": "abfa41844a3687aa3b69f5cec2117d7f48ea863c76d3a39098a6b9f7c57f4298"
+    },
+    "compare_baseline.py": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/compare_baseline.py",
+      "bytes": 12300,
+      "sha256": "240f0d711cd95e2f2109f844cea66db5245836214296c6f7afd530a4621e2a6a"
+    }
+  },
+  "review_scope": "Independent final reviewers and root own final acceptance; earlier C download-time records saying review pending are retained chronological snapshots. This manifest confirms completed C work, not owner acceptance."
+}

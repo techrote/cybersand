@@ -1,0 +1,14 @@
+{
+  "scope": "Maintained test harness negative, preserved unchanged",
+  "source_identity": "input-identity-v1.json",
+  "main_checks": 135,
+  "main_failures": 1,
+  "child_checks": 18,
+  "child_failures": 0,
+  "failure": "Opening owner correctly remained Opening with one actual startup receipt pending, but node_added set_process(false) preceded automatic script process enablement. Fixture now freezes on ready signal.",
+  "reporter_failure": "Embedding ANSI-bearing child stdout via Godot JSON.stringify retained a raw ESC control byte. Raw original report is preserved; fixed harness writes child stdout to its own hashed log and retypes validated integer receipt counts before embedding.",
+  "files": {
+    "navigation-v1.json": "1abbecedd5be7c4a8e4bd8e009e9cc0a379efafef1c6aca8524a67fee9c6e313",
+    "navigation-v1.log": "51cf775bd6aa471b9a7439a6dee432e933cea03d39d096db6492b8f41a88e07e"
+  }
+}

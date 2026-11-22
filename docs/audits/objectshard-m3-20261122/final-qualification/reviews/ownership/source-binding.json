@@ -1,0 +1,1011 @@
+{
+  "schema": "objectshard-m3-navigation-final-ownership-inputs-v1",
+  "created_utc": "2026-11-22T07:40:23.867284+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "base_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "scope": "Exact committed project/autoload/GDScript/scene bytes extracted via git show into isolated project. Reviewer probes are separately bound. Real native/Rapier runtime reuse with116source+5build input equivalence; not a fresh native/platform package qualification. Repository addon provenance files are source files, not provenance for this reused library; reused-native-provenance.json is the actual sealed artifact source.",
+  "tracked_files": {
+    "godot/addons/cybersand_native/cybersand_native.gdextension": {
+      "sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+      "bytes": 899,
+      "git_blob": "7c1fe4a2fe94d0e6ef4b23df4c67ecdf2e6e3a71"
+    },
+    "godot/addons/cybersand_native/cybersand_native.gdextension.uid": {
+      "sha256": "544a97cab99ac9680c9d698ff821a96f64762d63e7fc61038197d1d1cae4a131",
+      "bytes": 20,
+      "git_blob": "61e862a17de2b41ef4b8d82d76a48e971a34f395"
+    },
+    "godot/addons/cybersand_native/runtime-provenance.json": {
+      "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d",
+      "bytes": 135020,
+      "git_blob": "9cb0cb3a7234569e3a37566def825ca6fab87a3c"
+    },
+    "godot/addons/cybersand_native/runtime-provenance.linux.json": {
+      "sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+      "bytes": 134860,
+      "git_blob": "4b2dde51df7dd188ca6660c82c063874a69b51cb"
+    },
+    "godot/addons/godot-rapier2d/godot-rapier2d.gdextension": {
+      "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+      "bytes": 2486,
+      "git_blob": "1667e5f100e375b04a81cdc27314f3db65b4995c"
+    },
+    "godot/addons/godot-rapier2d/godot-rapier2d.gdextension.uid": {
+      "sha256": "83a0d4f06d78f6dfa55192684f49409bb5ebb2dc39f9f5b38f33540a86320877",
+      "bytes": 20,
+      "git_blob": "bdc0fd727214c4d2cf33ef301ae749bf7850e355"
+    },
+    "godot/addons/godot-rapier2d/runtime-provenance.linux.json": {
+      "sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+      "bytes": 4095,
+      "git_blob": "a84e3aa920bac79d5999db802992fd92c128d4e8"
+    },
+    "godot/addons/godot-rapier2d/runtime-provenance.windows.json": {
+      "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0",
+      "bytes": 4193,
+      "git_blob": "d4e9870d87c0711303f173ba4424ada468613380"
+    },
+    "godot/feature_launcher.tscn": {
+      "sha256": "fafd97fe7362031cfd4e975e5adb871c8a0387c0e1fd41c4d335bd986e888dd3",
+      "bytes": 298,
+      "git_blob": "527b8c40d9cd11790f08626dfd9c9f716b400f9e"
+    },
+    "godot/object_shard_lab.tscn": {
+      "sha256": "6843972ab4fc43f9c195c0cd8ac3702be6baf58ad5af138020415f30b1249172",
+      "bytes": 295,
+      "git_blob": "e634e4ba14e515d495df31c85051d961e04dc0c1"
+    },
+    "godot/object_shard_worker_rehearsal.tscn": {
+      "sha256": "ca4b3c8fada4a69ba61b5b27c6c32d14a611c7e9b480bfd91d3c4ad95ee28a64",
+      "bytes": 320,
+      "git_blob": "6c7708c63fd3a49a133487490838ddf7a6488280"
+    },
+    "godot/project.godot": {
+      "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "bytes": 905,
+      "git_blob": "3055b7976da5d9378d226805492554b75717a1a1"
+    },
+    "godot/scripts/blacksite_nine.gd": {
+      "sha256": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+      "bytes": 6865,
+      "git_blob": "fdd1a900e15098e25af101902b8942b28f606736"
+    },
+    "godot/scripts/blacksite_nine_art.gd": {
+      "sha256": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+      "bytes": 4533,
+      "git_blob": "ca62f87da6c8876fe22cb001a2b06a55b4beaad1"
+    },
+    "godot/scripts/blacksite_nine_depths.gd": {
+      "sha256": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+      "bytes": 14682,
+      "git_blob": "7f3343b1ba10c1e11d2448cdda17429d9cf7c85e"
+    },
+    "godot/scripts/blacksite_nine_layout.gd": {
+      "sha256": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+      "bytes": 4799,
+      "git_blob": "1f0cd51a40065ea292314293297b31f7788b5aea"
+    },
+    "godot/scripts/blacksite_nine_midworks.gd": {
+      "sha256": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+      "bytes": 13166,
+      "git_blob": "ef76bf98992052b6921996c358ab583d17860b93"
+    },
+    "godot/scripts/blacksite_nine_surface.gd": {
+      "sha256": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+      "bytes": 17047,
+      "git_blob": "0ce0fb885fb80bb72bfd3f466f36c4869b12ccb0"
+    },
+    "godot/scripts/feature_launcher.gd": {
+      "sha256": "bcb04de545ec429e6debac8a9f762a42aa9d9ac9c554d01bceff609b7c25de04",
+      "bytes": 6511,
+      "git_blob": "3a5e953d52f96712bd5ab73a9a497d935fc59c05"
+    },
+    "godot/scripts/feature_navigation.gd": {
+      "sha256": "68d8774b767d0c13106892ff4449e701720e1a827c2b4c493a3d3803a3188441",
+      "bytes": 2951,
+      "git_blob": "439d4c7bba82b362c85b7a3e66a71341cafc781d"
+    },
+    "godot/scripts/microscenario_contract.gd": {
+      "sha256": "0a32ecacd2dff9f4712fd752d6d356d4937739abbf9f1d3c1c810047b7779af1",
+      "bytes": 16549,
+      "git_blob": "e7c50b5c53f1d3fd4ac0601bbef0dc57b4602af2"
+    },
+    "godot/scripts/microscenario_contract.gd.uid": {
+      "sha256": "c5a1620f42c5e4701468df2d406abb5a4d1157a6f84f80b605321ca7b37b49de",
+      "bytes": 20,
+      "git_blob": "26190dd7eb695844107513c3223a11cee3fe5959"
+    },
+    "godot/scripts/neon_reliquary.gd": {
+      "sha256": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+      "bytes": 27247,
+      "git_blob": "9b41026b50f3edfddb7c5013f79e7b169ea6aab5"
+    },
+    "godot/scripts/neon_reliquary.gd.uid": {
+      "sha256": "a801193de3033544ff1616e91bf696c4bdaad9f32dfb04b679e217a99e6e452b",
+      "bytes": 20,
+      "git_blob": "5bfa0c269fb20188314463fa4c7910a6d1053fb4"
+    },
+    "godot/scripts/object_shard_capture.gd": {
+      "sha256": "13b0ec2462fc6e676c6cf9afb6f9f5b717bc1839dca16ecca4914af33838ed85",
+      "bytes": 8027,
+      "git_blob": "4c529f36b2d22e2af23586c20bd6c8bfd78a5433"
+    },
+    "godot/scripts/object_shard_lab.gd": {
+      "sha256": "473e5fe36d79b88b555466611fc4e4239450563b1b54b2e4b5c33d4d030a9da1",
+      "bytes": 21365,
+      "git_blob": "d6c54ff6537d2af6b1d10f428c1f6d757ca7e3c4"
+    },
+    "godot/scripts/object_shard_lab_presets.gd": {
+      "sha256": "13c97dee2ded48aef1b830599261bfa0fd78c4f5acd357936c5360a0006f5118",
+      "bytes": 6500,
+      "git_blob": "49fb296d76c380c3c2b4f6ebfcfa71cee5fe4b3d"
+    },
+    "godot/scripts/object_shard_lab_session.gd": {
+      "sha256": "9de3c25a5cd6d3b2f54a8b0d3ba138ad52d18129d7cd49dae125f1a2032517cb",
+      "bytes": 28399,
+      "git_blob": "1fdedab35ff94ce1a0d70a668d8081362ac2edbd"
+    },
+    "godot/scripts/object_shard_lab_view.gd": {
+      "sha256": "34947a3dde5757ab49a36465db1b776b8ece2ad387ef4e02b06ea7454ab8bb78",
+      "bytes": 6211,
+      "git_blob": "46523b22d6566165d2bcfcff734ebcf19a0e5b32"
+    },
+    "godot/scripts/object_shard_native_worker.gd": {
+      "sha256": "29c45f0a9744f226ce604dcd6ddc36f1b059cc10d76a143c3d6d3bf175bca7bf",
+      "bytes": 21755,
+      "git_blob": "682da095673a1c220b04a360e74520733995e849"
+    },
+    "godot/scripts/object_shard_physics_bridge.gd": {
+      "sha256": "3c0f1af7488746b4b80c9d72fb38fba0409dbc7eff2c66078a3d96726fc9d82b",
+      "bytes": 39963,
+      "git_blob": "6d8315824fbf9b4664596a443e0b10a87a3d9a95"
+    },
+    "godot/scripts/object_shard_worker_host.gd": {
+      "sha256": "aa7ddb16b584937c3859ffe4e463f4773c4192c82bd326177971cb4ff42a31ba",
+      "bytes": 47662,
+      "git_blob": "c593896d9e46b3c54cb3994780bb7a3009308b8d"
+    },
+    "godot/scripts/object_shard_worker_rehearsal.gd": {
+      "sha256": "7cdf71477b8a457d512801e6699ea0fd8ac1886c32a038c9af17e558d36e4383",
+      "bytes": 34402,
+      "git_blob": "13a8862a4504e03c9153c6b78861cbe493c050ff"
+    },
+    "godot/scripts/physical_actor_trial.gd": {
+      "sha256": "8f2255cc3eedef597c945d5d7a9b9a50a5937ccd3a21ff3383a4414404ef8ffe",
+      "bytes": 2475,
+      "git_blob": "23a4fc501a9d0ae821836ca379dd366ecfa74656"
+    },
+    "godot/scripts/transport_profiles.gd": {
+      "sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "bytes": 6774,
+      "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a"
+    },
+    "godot/scripts/transport_profiles.gd.uid": {
+      "sha256": "1c2c508ea427d0f383d5f65fe90f9ae96ede0b4ec963723caa756a00a35a2bb5",
+      "bytes": 19,
+      "git_blob": "641b437fc5d39a8e3eceff6eb202b6a4295b2a3b"
+    },
+    "godot/tests/capture_object_shard_finisher.gd": {
+      "sha256": "81cbd5ceeaa1f1b84f3847133574c6d0be1b6aaef3d52b983b1fb68dcb53c916",
+      "bytes": 3723,
+      "git_blob": "4e5f6925279ac69025ccda656fe98dd6fd176ef8"
+    },
+    "godot/tests/capture_object_shard_lab.gd": {
+      "sha256": "c13f7430148b5c80d9a5e2ff622b33dca84b38fcdc14967da66a4ef15519f321",
+      "bytes": 11303,
+      "git_blob": "9bb0e49f56eb684ca71decd2ee0485b4a6f388c3"
+    },
+    "godot/tests/capture_object_shard_worker.gd": {
+      "sha256": "ee92636b23b5b8463bd716e5ad6ac1d3f1529fc233a080b81e450b1dd3746ca0",
+      "bytes": 5860,
+      "git_blob": "5bce1f5ac8700e6b4481aa2af90fa28ab392bbf7"
+    },
+    "godot/tests/fixtures/objectshard_owner_d_retained_actions.json": {
+      "sha256": "0b6baf1cfa74b6553478a9d04f1ba80830aaac9718b59dc7a9c0e3fe2a982698",
+      "bytes": 76948,
+      "git_blob": "d56338413f1c05456ad70eb04f47c68898df99de"
+    },
+    "godot/tests/probe_object_shard_package_boot.gd": {
+      "sha256": "3be628e30b35ab57ea6f6ddec9dc06ebc0f9dfc38bbc67e0e10c6b423b794ff1",
+      "bytes": 2894,
+      "git_blob": "4e3cdd7d56c4071766153a2954a58299653357a2"
+    },
+    "godot/tests/probe_object_shard_rest_stability.gd": {
+      "sha256": "034ccbce5cab1e75f8af84c3d56b0fa066fff1a17c04db20ad1441f231373a99",
+      "bytes": 12583,
+      "git_blob": "0820dad02363301c05a48a201251cf904b248e74"
+    },
+    "godot/tests/probe_object_shard_retained_actions.gd": {
+      "sha256": "58aec987035c37ad91ce2027fbb41c30bbb619f181e7ef9d4987c1392cbdd946",
+      "bytes": 7731,
+      "git_blob": "ac4abe85b6397de1c5b1a756ccb2bfc58c9d7882"
+    },
+    "godot/tests/probe_object_shard_worker_package_boot.gd": {
+      "sha256": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0",
+      "bytes": 1785,
+      "git_blob": "761e5b45fcd6d931c8b980fd9a8ee39ed8fc8f3a"
+    },
+    "godot/tests/profile_object_shard_lab.gd": {
+      "sha256": "d287b5cbb4323b4d1e45d2744eb75071be4ee27dbe2be5ee031174148f8cbde4",
+      "bytes": 12508,
+      "git_blob": "f12dbdacbb8e9d916b047204184f490ad13f28e4"
+    },
+    "godot/tests/profile_object_shard_worker.gd": {
+      "sha256": "e882f6cab48a2cf0be098390721c7bf216312481d5336106c4855a7687e24895",
+      "bytes": 13123,
+      "git_blob": "4c1d7b63a280a77b2b06277d916753446afd393c"
+    },
+    "godot/tests/replay_object_shard_trace.gd": {
+      "sha256": "519b539b090054166da014038e213183eb72422912b9900a5b8b8ccf3a607846",
+      "bytes": 4763,
+      "git_blob": "346a2e0ea11cd2ed0f20ebd29c873cd391d2b88d"
+    },
+    "godot/tests/replay_object_shard_worker_trace.gd": {
+      "sha256": "7db6ec9839e2652db8456e7a9548ae5389692dd30138d496101d69c40a420fa6",
+      "bytes": 11025,
+      "git_blob": "636d3f5ed909947c79c423141295b13952d1c1fd"
+    },
+    "godot/tests/test_object_shard_boundary.gd": {
+      "sha256": "07b9f8b6e41cef41db639b00154e8cb5a5d1d8c3684b5ca9bb1c588d1f6276ab",
+      "bytes": 3528,
+      "git_blob": "d380b5952bda0e70f2e686ff6166ddf4096d74e9"
+    },
+    "godot/tests/test_object_shard_capture.gd": {
+      "sha256": "92c0d985b0f08f81a368be84ef348f08fbcfa1e6bdefa45b9cb83781815266bb",
+      "bytes": 4554,
+      "git_blob": "e5ccc590eb485a1d7aa3e5c3c2fb44a61f21054b"
+    },
+    "godot/tests/test_object_shard_continuous_physics.gd": {
+      "sha256": "765546f2a4e60e69003fbc4d948cbdaf1f0dcd97fc1f4ade3308a82c65c6f6e6",
+      "bytes": 13762,
+      "git_blob": "33067c9a5b0bc81933624866e0b71abcf6364b9b"
+    },
+    "godot/tests/test_object_shard_continuous_play.gd": {
+      "sha256": "fcc416770e2343dc43ebbfe61c51d0ef562893af092f0ff27bd9e8ec21a6eee0",
+      "bytes": 17239,
+      "git_blob": "daf9c798342f854086929d2b174072fc2bf7e7d4"
+    },
+    "godot/tests/test_object_shard_incremental_motion.gd": {
+      "sha256": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6",
+      "bytes": 11761,
+      "git_blob": "405ecab56002acf341ea35cdecaa55ce8d09924a"
+    },
+    "godot/tests/test_object_shard_lab.gd": {
+      "sha256": "2ec5ce0345fb40f25eef039fcbfa241734bc9d3242ad4ea6977c67b5bc039a74",
+      "bytes": 24069,
+      "git_blob": "27ebb1efd4771f0a8f73adba3dd821778898d370"
+    },
+    "godot/tests/test_object_shard_motion_segments.gd": {
+      "sha256": "41a726a4885c1c9aec9439a3ebe2ff26a28646cf14adb96adb54f8ced3679cf7",
+      "bytes": 7770,
+      "git_blob": "087f082c90f3ed2380e34691ee44ecd03b826cf6"
+    },
+    "godot/tests/test_object_shard_native_worker.gd": {
+      "sha256": "a78bac83e92145699411b00ec3ba2fb9fb19998225e8fe950c3c48bea9178a4a",
+      "bytes": 7765,
+      "git_blob": "66f17f364af8e2a19a041a23d922f7efd10c2722"
+    },
+    "godot/tests/test_object_shard_physics_bridge.gd": {
+      "sha256": "1710969b699d9bcd2b946162ea816bbdbac0282f4849b08effa3ae6cae0daa15",
+      "bytes": 8344,
+      "git_blob": "c571ecea3b9a1dd645b8dbdb1fb7017bc91fa179"
+    },
+    "godot/tests/test_object_shard_physics_identity.gd": {
+      "sha256": "e5c73eedd1fb97106a9d988b8fc2890def9a12c91a2977bd62a84539686b91ad",
+      "bytes": 7212,
+      "git_blob": "1c87609e520ebc74fe707a2aafca1d40a08e00d0"
+    },
+    "godot/tests/test_object_shard_playability.gd": {
+      "sha256": "4a9a963fd5a7204acbab864f137fd115b57b5116d67648fee7c59891ea4591ed",
+      "bytes": 8010,
+      "git_blob": "7ceca2174b1aa2955abe1bcd8f36841980fa1038"
+    },
+    "godot/tests/test_object_shard_rest_contacts.gd": {
+      "sha256": "2a5e42396af93618f1e860eb1e4c3c58d456a921fb68b99ec7b351c6d44e3a7a",
+      "bytes": 7812,
+      "git_blob": "376d304c5ba0f8c389d4bbcdae84380e611bcc9e"
+    },
+    "godot/tests/test_object_shard_workbench_contract.gd": {
+      "sha256": "d751d277b0fd6a5952c4ee0ba92bfe35acc0383fb57897eb112bea0bb3fae9bf",
+      "bytes": 5477,
+      "git_blob": "35057a1b90129fb1ff9de295282e6c94d10ccf98"
+    },
+    "godot/tests/test_object_shard_worker_adverse.gd": {
+      "sha256": "490c6dc548d43f755de512cdb2f11891a52ba295ad27fa5a79b3619a4d3cbd25",
+      "bytes": 7150,
+      "git_blob": "0ccb2ab600865a8b4faf777a4570488dcbcaddf8"
+    },
+    "godot/tests/test_object_shard_worker_commands.gd": {
+      "sha256": "48341091e4099212cfc807bcebdc651f1c361e5ab12b87fbff489d69d6fa064e",
+      "bytes": 10270,
+      "git_blob": "0e7c5fc6aea4f7853934b08444dac49bd47a8fe3"
+    },
+    "godot/tests/test_object_shard_worker_input_fences.gd": {
+      "sha256": "9a631fc5db20c15d2217f95a6b31699bb0fc100facf38a0de347cd1f95f30aa1",
+      "bytes": 14826,
+      "git_blob": "0e2694d0554fbd2dd6c8cb5b1f355ee6751c4d69"
+    },
+    "godot/tests/test_object_shard_worker_navigation.gd": {
+      "sha256": "49a75b85e4730ccddc86d0cd25630d792cb12a56bea4c2dcf43a437d0e656f79",
+      "bytes": 22530,
+      "git_blob": "70ff7be87620e7dfa70fdb2b44c7e8bb803cf03f"
+    },
+    "godot/tests/test_object_shard_worker_recovery.gd": {
+      "sha256": "0dd50978f994f36186474d3f0074c5836eb69148adc15ffacb8bc52fe5eeedd7",
+      "bytes": 16575,
+      "git_blob": "c2484d7b19f8207d862e0df32f2bfab35b18027f"
+    },
+    "godot/tests/test_object_shard_worker_rehearsal.gd": {
+      "sha256": "e762d7c28611b618e76af15c9ae435e17924bcc5547ec37c69661e99a5fa8cac",
+      "bytes": 12174,
+      "git_blob": "33c38711b9b5478b47309b44916da059e40946c6"
+    },
+    "godot/tests/test_object_shard_worker_replay_admission.gd": {
+      "sha256": "b8cfe04933e653e6868cb98a53f4bb43a82538ed642d9986e386abf733d5e9d4",
+      "bytes": 11475,
+      "git_blob": "7d84e4c104d1a7c2262ddd99b55c779eb2ee929f"
+    },
+    "godot/tests/test_object_shard_worker_resources.gd": {
+      "sha256": "413828fa22a997dc10f34876beac7ad1e06a7d68fa90c1cc9d070680c5ba5016",
+      "bytes": 5576,
+      "git_blob": "dee0098ce7f8cc21eb085c6a3322a2266268e4ac"
+    },
+    "godot/tests/test_object_shard_worker_scene.gd": {
+      "sha256": "810c5c5c41571c9e2c43ddd8b05a6aff9ca3958c189b49878a3569861ffc2691",
+      "bytes": 5383,
+      "git_blob": "99b448f0f3e2e81aab1ac506573c4c2b290b381a"
+    }
+  },
+  "reviewer_probes": {
+    "tests/review_navigation_reentry.gd": {
+      "sha256": "ba093b741719ce9dfc8e95a8fc4f2999de9ffc33667140f6a5cbe488f7d6c9c7",
+      "bytes": 6653
+    },
+    "tests/review_navigation_held.gd": {
+      "sha256": "b4c11507fe2d9419528ae7c0a63674a3e2ce02f2d9c90aa90f43af40afe92074",
+      "bytes": 4883
+    }
+  },
+  "runtime": {
+    "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+      "bytes": 5573096,
+      "resolved_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-68235b12/project/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    },
+    "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "bytes": 117275416,
+      "resolved_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-68235b12/project/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    },
+    "godot": {
+      "path": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "bytes": 144186224
+    }
+  },
+  "native_input_equivalence": {
+    "source_inputs": {
+      "compared_to": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+      "count": 116,
+      "mismatches": [],
+      "files": {
+        "godot/native_extension/cyber_demo_bridge.hpp": {
+          "sealed_sha256": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "reviewed_sha256": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "equal": true
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "sealed_sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "reviewed_sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "equal": true
+        },
+        "godot/native_extension/cyber_native_cell_world.hpp": {
+          "sealed_sha256": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+          "reviewed_sha256": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+          "equal": true
+        },
+        "godot/native_extension/cyber_native_paint_planner.hpp": {
+          "sealed_sha256": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+          "reviewed_sha256": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+          "equal": true
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "sealed_sha256": "2d83573283399755fd0dc3f5e07aebdd8561e437a8a71f6a98670f4620a58ea3",
+          "reviewed_sha256": "2d83573283399755fd0dc3f5e07aebdd8561e437a8a71f6a98670f4620a58ea3",
+          "equal": true
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "sealed_sha256": "d319b38dac94c0b4535ded429e465c39e9e6eb02edc889ff04eb58423c73a37b",
+          "reviewed_sha256": "d319b38dac94c0b4535ded429e465c39e9e6eb02edc889ff04eb58423c73a37b",
+          "equal": true
+        },
+        "godot/native_extension/cyber_observation_values.hpp": {
+          "sealed_sha256": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "reviewed_sha256": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "equal": true
+        },
+        "godot/native_extension/cyber_prepared_level_payload.hpp": {
+          "sealed_sha256": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "reviewed_sha256": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "equal": true
+        },
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": {
+          "sealed_sha256": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "reviewed_sha256": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "equal": true
+        },
+        "godot/native_extension/cyber_world_generator.cpp": {
+          "sealed_sha256": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "reviewed_sha256": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "equal": true
+        },
+        "godot/native_extension/cyber_world_generator.hpp": {
+          "sealed_sha256": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "reviewed_sha256": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "equal": true
+        },
+        "godot/native_extension/generation_grammar_adapter.inc": {
+          "sealed_sha256": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "reviewed_sha256": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "equal": true
+        },
+        "godot/native_extension/generation_grammar_inspection.inc": {
+          "sealed_sha256": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "reviewed_sha256": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "equal": true
+        },
+        "godot/native_extension/generation_planes_adapter.inc": {
+          "sealed_sha256": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "reviewed_sha256": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "equal": true
+        },
+        "godot/native_extension/generation_planes_inspection.inc": {
+          "sealed_sha256": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "reviewed_sha256": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "equal": true
+        },
+        "godot/native_extension/generation_planes_methods.inc": {
+          "sealed_sha256": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "reviewed_sha256": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "equal": true
+        },
+        "godot/native_extension/generation_workbench_inspection.inc": {
+          "sealed_sha256": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "reviewed_sha256": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "equal": true
+        },
+        "godot/native_extension/generation_workbench_methods.inc": {
+          "sealed_sha256": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "reviewed_sha256": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "equal": true
+        },
+        "godot/native_extension/material_baseline_file.cpp": {
+          "sealed_sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+          "reviewed_sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+          "equal": true
+        },
+        "godot/native_extension/material_baseline_file.hpp": {
+          "sealed_sha256": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+          "reviewed_sha256": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+          "equal": true
+        },
+        "godot/native_extension/material_lab_inspection.inc": {
+          "sealed_sha256": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+          "reviewed_sha256": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+          "equal": true
+        },
+        "godot/native_extension/pressure_optimization_inspection.inc": {
+          "sealed_sha256": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+          "reviewed_sha256": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+          "equal": true
+        },
+        "godot/native_extension/register_types.cpp": {
+          "sealed_sha256": "cb1012ae5d655b5e8bb661175f2e1f0638bffd60075304a27e45133120b6c9f7",
+          "reviewed_sha256": "cb1012ae5d655b5e8bb661175f2e1f0638bffd60075304a27e45133120b6c9f7",
+          "equal": true
+        },
+        "godot/native_extension/water_spray_coupling.inc": {
+          "sealed_sha256": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+          "reviewed_sha256": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+          "equal": true
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "sealed_sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "reviewed_sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "equal": true
+        },
+        "godot/native_extension/workbench_retained_setup.hpp": {
+          "sealed_sha256": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+          "reviewed_sha256": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+          "equal": true
+        },
+        "native/include/cybersand/ballistic_water.hpp": {
+          "sealed_sha256": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "reviewed_sha256": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "equal": true
+        },
+        "native/include/cybersand/bounded_ordered_index.hpp": {
+          "sealed_sha256": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "reviewed_sha256": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "equal": true
+        },
+        "native/include/cybersand/c_api.h": {
+          "sealed_sha256": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "reviewed_sha256": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "equal": true
+        },
+        "native/include/cybersand/default_demo_recipe.hpp": {
+          "sealed_sha256": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "reviewed_sha256": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "equal": true
+        },
+        "native/include/cybersand/demo_snapshot.hpp": {
+          "sealed_sha256": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "reviewed_sha256": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "equal": true
+        },
+        "native/include/cybersand/generation_fields.hpp": {
+          "sealed_sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "reviewed_sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "equal": true
+        },
+        "native/include/cybersand/generation_grammar.hpp": {
+          "sealed_sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "reviewed_sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "equal": true
+        },
+        "native/include/cybersand/generation_numeric.hpp": {
+          "sealed_sha256": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "reviewed_sha256": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "equal": true
+        },
+        "native/include/cybersand/generation_planes.hpp": {
+          "sealed_sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "reviewed_sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "equal": true
+        },
+        "native/include/cybersand/generation_spatial.hpp": {
+          "sealed_sha256": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "reviewed_sha256": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "equal": true
+        },
+        "native/include/cybersand/generation_typed_fields.hpp": {
+          "sealed_sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "reviewed_sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "equal": true
+        },
+        "native/include/cybersand/granular_contact_response.hpp": {
+          "sealed_sha256": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "reviewed_sha256": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "equal": true
+        },
+        "native/include/cybersand/inertial_cellular.hpp": {
+          "sealed_sha256": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "reviewed_sha256": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "equal": true
+        },
+        "native/include/cybersand/interaction_policy.hpp": {
+          "sealed_sha256": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "reviewed_sha256": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "equal": true
+        },
+        "native/include/cybersand/interaction_rules.hpp": {
+          "sealed_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "reviewed_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "equal": true
+        },
+        "native/include/cybersand/liquid_comparison.hpp": {
+          "sealed_sha256": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "reviewed_sha256": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "equal": true
+        },
+        "native/include/cybersand/liquid_construction_refusal.hpp": {
+          "sealed_sha256": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "reviewed_sha256": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "equal": true
+        },
+        "native/include/cybersand/liquid_policy_catalogue.hpp": {
+          "sealed_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "reviewed_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "equal": true
+        },
+        "native/include/cybersand/liquid_run_receipt.hpp": {
+          "sealed_sha256": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "reviewed_sha256": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "equal": true
+        },
+        "native/include/cybersand/liquid_run_receipt_native_capture.hpp": {
+          "sealed_sha256": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "reviewed_sha256": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "equal": true
+        },
+        "native/include/cybersand/liquid_solver_policy.hpp": {
+          "sealed_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "reviewed_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "equal": true
+        },
+        "native/include/cybersand/material.hpp": {
+          "sealed_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "reviewed_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "equal": true
+        },
+        "native/include/cybersand/material_appearance.hpp": {
+          "sealed_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "reviewed_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "equal": true
+        },
+        "native/include/cybersand/material_baseline.hpp": {
+          "sealed_sha256": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "reviewed_sha256": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "equal": true
+        },
+        "native/include/cybersand/material_capabilities.hpp": {
+          "sealed_sha256": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "reviewed_sha256": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "equal": true
+        },
+        "native/include/cybersand/material_lifecycle.hpp": {
+          "sealed_sha256": "4375c14635875815cb2e2be407abfc579b76b4683e3efd3ba199bbd06b425de0",
+          "reviewed_sha256": "4375c14635875815cb2e2be407abfc579b76b4683e3efd3ba199bbd06b425de0",
+          "equal": true
+        },
+        "native/include/cybersand/material_rules.hpp": {
+          "sealed_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "reviewed_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "equal": true
+        },
+        "native/include/cybersand/object_shard.hpp": {
+          "sealed_sha256": "abec4e3c60bd40ad0500878ab8d90775e951cea731ff9fea468b94130c96519e",
+          "reviewed_sha256": "abec4e3c60bd40ad0500878ab8d90775e951cea731ff9fea468b94130c96519e",
+          "equal": true
+        },
+        "native/include/cybersand/object_shard_contact.hpp": {
+          "sealed_sha256": "0baf145a2d53bac817e0ede14904c39c21c8b956b7dc7b32e0c6568bab8f5f2a",
+          "reviewed_sha256": "0baf145a2d53bac817e0ede14904c39c21c8b956b7dc7b32e0c6568bab8f5f2a",
+          "equal": true
+        },
+        "native/include/cybersand/object_shard_coordinator.hpp": {
+          "sealed_sha256": "1986ce7c2960974dc7b00040eec679f70ad7050bc81163ee42011d3aa71640e4",
+          "reviewed_sha256": "1986ce7c2960974dc7b00040eec679f70ad7050bc81163ee42011d3aa71640e4",
+          "equal": true
+        },
+        "native/include/cybersand/object_shard_discovery.hpp": {
+          "sealed_sha256": "2c1c8c62546f21d0659d223e17ae12d0a254e7e0d2ee86bb472477d06611d6ad",
+          "reviewed_sha256": "2c1c8c62546f21d0659d223e17ae12d0a254e7e0d2ee86bb472477d06611d6ad",
+          "equal": true
+        },
+        "native/include/cybersand/object_shard_mutation.hpp": {
+          "sealed_sha256": "f2d94ba52bce97cfa939b08ded5a19cbcd2b4482ed8694ad3350108d3175ed46",
+          "reviewed_sha256": "f2d94ba52bce97cfa939b08ded5a19cbcd2b4482ed8694ad3350108d3175ed46",
+          "equal": true
+        },
+        "native/include/cybersand/paint_fill_planner.hpp": {
+          "sealed_sha256": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "reviewed_sha256": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "equal": true
+        },
+        "native/include/cybersand/physics_diagnostics.hpp": {
+          "sealed_sha256": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "reviewed_sha256": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "equal": true
+        },
+        "native/include/cybersand/precision_storage.hpp": {
+          "sealed_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "reviewed_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "equal": true
+        },
+        "native/include/cybersand/prepared_setup_identity.hpp": {
+          "sealed_sha256": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "reviewed_sha256": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "equal": true
+        },
+        "native/include/cybersand/prepared_world.hpp": {
+          "sealed_sha256": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "reviewed_sha256": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "equal": true
+        },
+        "native/include/cybersand/pressure_flow.hpp": {
+          "sealed_sha256": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "reviewed_sha256": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "equal": true
+        },
+        "native/include/cybersand/pressure_optimization.hpp": {
+          "sealed_sha256": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "reviewed_sha256": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "equal": true
+        },
+        "native/include/cybersand/pressure_setup_capacity.hpp": {
+          "sealed_sha256": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "reviewed_sha256": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "equal": true
+        },
+        "native/include/cybersand/quantity_ledger.hpp": {
+          "sealed_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "reviewed_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "equal": true
+        },
+        "native/include/cybersand/render_snapshot.hpp": {
+          "sealed_sha256": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "reviewed_sha256": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "equal": true
+        },
+        "native/include/cybersand/scheduler_geometry.hpp": {
+          "sealed_sha256": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "reviewed_sha256": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "equal": true
+        },
+        "native/include/cybersand/settled_discovery.hpp": {
+          "sealed_sha256": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "reviewed_sha256": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "equal": true
+        },
+        "native/include/cybersand/settled_regions.hpp": {
+          "sealed_sha256": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "reviewed_sha256": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "equal": true
+        },
+        "native/include/cybersand/settled_world_discovery.hpp": {
+          "sealed_sha256": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "reviewed_sha256": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "equal": true
+        },
+        "native/include/cybersand/sha256.hpp": {
+          "sealed_sha256": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "reviewed_sha256": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "equal": true
+        },
+        "native/include/cybersand/soliding_lifecycle.hpp": {
+          "sealed_sha256": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "reviewed_sha256": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "equal": true
+        },
+        "native/include/cybersand/transport_policy.hpp": {
+          "sealed_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "reviewed_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "equal": true
+        },
+        "native/include/cybersand/water_cellular_yield.hpp": {
+          "sealed_sha256": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "reviewed_sha256": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "equal": true
+        },
+        "native/include/cybersand/water_experiment_policy.hpp": {
+          "sealed_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "reviewed_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "equal": true
+        },
+        "native/include/cybersand/water_normalization.hpp": {
+          "sealed_sha256": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "reviewed_sha256": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "equal": true
+        },
+        "native/include/cybersand/wave_flow.hpp": {
+          "sealed_sha256": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "reviewed_sha256": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "equal": true
+        },
+        "native/include/cybersand/world.hpp": {
+          "sealed_sha256": "bb402502da561db59626131ee47a4f8c7ababa5029380d374a2fba43d3f0f1ce",
+          "reviewed_sha256": "bb402502da561db59626131ee47a4f8c7ababa5029380d374a2fba43d3f0f1ce",
+          "equal": true
+        },
+        "native/include/cybersand/world_generation.hpp": {
+          "sealed_sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "reviewed_sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "equal": true
+        },
+        "native/src/c_api.cpp": {
+          "sealed_sha256": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "reviewed_sha256": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "equal": true
+        },
+        "native/src/generation_architecture_classic.inc": {
+          "sealed_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "reviewed_sha256": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "equal": true
+        },
+        "native/src/generation_architecture_megablock.inc": {
+          "sealed_sha256": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "reviewed_sha256": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "equal": true
+        },
+        "native/src/generation_architecture_metabolist.inc": {
+          "sealed_sha256": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "reviewed_sha256": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "equal": true
+        },
+        "native/src/generation_architecture_modules.inc": {
+          "sealed_sha256": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "reviewed_sha256": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "equal": true
+        },
+        "native/src/generation_architecture_rosework.inc": {
+          "sealed_sha256": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "reviewed_sha256": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "equal": true
+        },
+        "native/src/generation_fields.cpp": {
+          "sealed_sha256": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "reviewed_sha256": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "equal": true
+        },
+        "native/src/generation_grammar.cpp": {
+          "sealed_sha256": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "reviewed_sha256": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "equal": true
+        },
+        "native/src/generation_interlaced_viaduct.inc": {
+          "sealed_sha256": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "reviewed_sha256": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "equal": true
+        },
+        "native/src/generation_interlock_brutalism.inc": {
+          "sealed_sha256": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "reviewed_sha256": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "equal": true
+        },
+        "native/src/generation_megablock_programme.hpp": {
+          "sealed_sha256": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "reviewed_sha256": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "equal": true
+        },
+        "native/src/generation_planes.cpp": {
+          "sealed_sha256": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "reviewed_sha256": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "equal": true
+        },
+        "native/src/generation_spatial.cpp": {
+          "sealed_sha256": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "reviewed_sha256": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "equal": true
+        },
+        "native/src/generation_suspended_arcology.inc": {
+          "sealed_sha256": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "reviewed_sha256": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "equal": true
+        },
+        "native/src/generation_typed_fields.cpp": {
+          "sealed_sha256": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "reviewed_sha256": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "equal": true
+        },
+        "native/src/material_rules.cpp": {
+          "sealed_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "reviewed_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "equal": true
+        },
+        "native/src/object_shard.cpp": {
+          "sealed_sha256": "a21c4b21b57356865ac64cc2533d7af5dbb0b5c1665f07a64189dfbb8c9de8d3",
+          "reviewed_sha256": "a21c4b21b57356865ac64cc2533d7af5dbb0b5c1665f07a64189dfbb8c9de8d3",
+          "equal": true
+        },
+        "native/src/object_shard_coordinator.cpp": {
+          "sealed_sha256": "3643d0ae12eb77d4ea621cfae23232228c83d1e6d953140d6bf5f2dcabea4e4f",
+          "reviewed_sha256": "3643d0ae12eb77d4ea621cfae23232228c83d1e6d953140d6bf5f2dcabea4e4f",
+          "equal": true
+        },
+        "native/src/object_shard_fire.inc": {
+          "sealed_sha256": "27b0aa89e5c6d8afbf6c5feb14ff2a1da269aee3116fb1d783d886f8d96cc175",
+          "reviewed_sha256": "27b0aa89e5c6d8afbf6c5feb14ff2a1da269aee3116fb1d783d886f8d96cc175",
+          "equal": true
+        },
+        "native/src/render_snapshot.cpp": {
+          "sealed_sha256": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "reviewed_sha256": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "equal": true
+        },
+        "native/src/render_snapshot_internal.hpp": {
+          "sealed_sha256": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "reviewed_sha256": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "equal": true
+        },
+        "native/src/scheduler_geometry.cpp": {
+          "sealed_sha256": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "reviewed_sha256": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "equal": true
+        },
+        "native/src/settled_world_discovery.cpp": {
+          "sealed_sha256": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "reviewed_sha256": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "equal": true
+        },
+        "native/src/world.cpp": {
+          "sealed_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+          "reviewed_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+          "equal": true
+        },
+        "native/src/world_ballistic.inc": {
+          "sealed_sha256": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "reviewed_sha256": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "equal": true
+        },
+        "native/src/world_generation.cpp": {
+          "sealed_sha256": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "reviewed_sha256": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "equal": true
+        },
+        "native/src/world_inertial.inc": {
+          "sealed_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "reviewed_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "equal": true
+        },
+        "native/src/world_pressure.inc": {
+          "sealed_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "reviewed_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "equal": true
+        },
+        "native/src/world_pressure_cache.inc": {
+          "sealed_sha256": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "reviewed_sha256": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "equal": true
+        },
+        "native/src/world_pressure_cache_state.inc": {
+          "sealed_sha256": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "reviewed_sha256": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "equal": true
+        },
+        "native/src/world_pressure_column_failure.inc": {
+          "sealed_sha256": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "reviewed_sha256": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "equal": true
+        },
+        "native/src/world_pressure_gas_cache.inc": {
+          "sealed_sha256": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "reviewed_sha256": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "equal": true
+        },
+        "native/src/world_pressure_state.inc": {
+          "sealed_sha256": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "reviewed_sha256": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "equal": true
+        },
+        "native/src/world_quantity.inc": {
+          "sealed_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "reviewed_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "equal": true
+        },
+        "native/src/world_wave.inc": {
+          "sealed_sha256": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+          "reviewed_sha256": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+          "equal": true
+        }
+      }
+    },
+    "build_contract_inputs": {
+      "compared_to": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+      "count": 5,
+      "mismatches": [],
+      "files": {
+        "third_party/native-toolchain.lock.json": {
+          "sealed_sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+          "reviewed_sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+          "equal": true
+        },
+        "tools/build_native_extension.sh": {
+          "sealed_sha256": "17d817129260e4b99a64a1e3008a7e36b1c4ac29e83357fe109528dd510231e9",
+          "reviewed_sha256": "17d817129260e4b99a64a1e3008a7e36b1c4ac29e83357fe109528dd510231e9",
+          "equal": true
+        },
+        "tools/build_pinned_godot_cpp.sh": {
+          "sealed_sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+          "reviewed_sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+          "equal": true
+        },
+        "tools/requirements-build.txt": {
+          "sealed_sha256": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+          "reviewed_sha256": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+          "equal": true
+        },
+        "tools/toolchains/g++": {
+          "sealed_sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+          "reviewed_sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+          "equal": true
+        }
+      }
+    }
+  },
+  "native_runtime_matches_seal": true,
+  "provenance_sha256": "a81d892bb7eb243b89c2478697bd23f85d0944624a43bbcb64162b4dc3e41480",
+  "post_execution_source_mismatches": []
+}

@@ -1,0 +1,40 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: real F2 requests close and disposes preexisting UI intents {"cancelled":0,"host_state":"Idle","queued_before":1}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:85)
+       [2] _launch (res://tests/review_navigation_reentry.gd:43)
+       [3] _idle (res://tests/review_navigation_reentry.gd:38)
+ERROR: support-cut button cannot admit unaccounted intents after explicit navigation {"closing":false,"host_state":"Idle","newly_admitted":44,"queued_intents":45,"ui_message":"Lower support: 44 requested, 44 admitted ordinary erases. Refused cells remain visible; repeat after pending input drains."}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:91)
+       [2] _launch (res://tests/review_navigation_reentry.gd:43)
+       [3] _idle (res://tests/review_navigation_reentry.gd:38)
+ERROR: repeated F2 is idempotent before Closed {}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:94)
+       [2] _launch (res://tests/review_navigation_reentry.gd:43)
+       [3] _idle (res://tests/review_navigation_reentry.gd:38)
+ERROR: reset cannot start replacement after exit request {}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:96)
+       [2] _launch (res://tests/review_navigation_reentry.gd:43)
+       [3] _idle (res://tests/review_navigation_reentry.gd:38)
+ERROR: F2 supersedes a pending preset replacement {}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:116)
+       [2] _launch (res://tests/review_navigation_reentry.gd:43)
+       [3] _idle (res://tests/review_navigation_reentry.gd:38)
+{"checks":17,"failures":5,"schema":"independent-navigation-reentry-v1"}

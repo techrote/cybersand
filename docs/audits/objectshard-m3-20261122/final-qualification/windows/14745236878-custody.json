@@ -1,0 +1,80 @@
+{
+  "schema": "objectshard-m3-downloaded-artifact-custody-v1",
+  "retrieved_utc": "2026-11-22T07:44:01.259066+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "artifact": {
+    "id": 14745236878,
+    "name": "objectshard-crossbuild-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+    "size_in_bytes": 13861,
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745236878",
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745236878/zip",
+    "expired": false,
+    "created_at": "2026-11-22T07:42:32Z",
+    "expires_at": "2027-02-20T07:38:00Z",
+    "updated_at": "2026-11-22T07:42:32Z",
+    "digest": "sha256:a641552a46f7b6db770732ca8293eb45b70dd53c6c2daedcaeb633c146ca7e0b",
+    "workflow_run": {
+      "id": 44999117090,
+      "repository_id": 1350077435,
+      "head_repository_id": 1350077435,
+      "head_branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "head_sha": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+    }
+  },
+  "file_id": "file_00000000095081f4a705b2e7c8f74c1a",
+  "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745236878.zip",
+  "archive_bytes": 13861,
+  "archive_sha256": "a641552a46f7b6db770732ca8293eb45b70dd53c6c2daedcaeb633c146ca7e0b",
+  "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745236878",
+  "members": [
+    {
+      "path": "bindings/performance.jsonl",
+      "bytes": 2733,
+      "extracted": true,
+      "sha256": "da80e553d607ae24709608b79145f66e330c1cf8d72a3bbe7e19d52d4c5777c4"
+    },
+    {
+      "path": "bindings/command.log",
+      "bytes": 60046,
+      "extracted": true,
+      "sha256": "eab4cee8aa6149d4e7cd7e8115239372ba4711534517235359bd1c0349ff9c27"
+    },
+    {
+      "path": "bindings/receipt.json",
+      "bytes": 2129,
+      "extracted": true,
+      "sha256": "7b3d81bdc4d92e3d0c617be3d1af4d88a35b9a4ddb01bfa6a56267839e53dc71"
+    },
+    {
+      "path": "extension/command.log",
+      "bytes": 2096,
+      "extracted": true,
+      "sha256": "818dfd12abf6901e113609fa6d4959ccfe1ad66588c55e450271e1f3a4520650"
+    },
+    {
+      "path": "extension/performance.jsonl",
+      "bytes": 2739,
+      "extracted": true,
+      "sha256": "254cfa964c9fe5aa4e2ae78fa1587854b904cf50b074cd14eb199cb175d48e03"
+    },
+    {
+      "path": "extension/receipt.json",
+      "bytes": 2129,
+      "extracted": true,
+      "sha256": "44df70cf300dd5810442618811761e66a1e6719dcdacbec05b455f346e4e15ff"
+    },
+    {
+      "path": "scons.log",
+      "bytes": 358,
+      "extracted": true,
+      "sha256": "c4c365baca74b128f2106c73b21d5aa5b4a1dd86b50069ce6891a3d9726907e8"
+    },
+    {
+      "path": "source-commit.txt",
+      "bytes": 41,
+      "extracted": true,
+      "sha256": "639f6b488488ab1dbd730bb99072617a500fbe97330b3abef571361105f9316b"
+    }
+  ],
+  "extraction_scope": "complete"
+}

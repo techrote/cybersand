@@ -1,0 +1,61 @@
+[
+  {
+    "artifact": {
+      "id": 14744390583,
+      "name": "objectshard-windows-evidence-68235b12d7f41f7b590456971f21dfc3f5c6d701-44995374918-1",
+      "size_in_bytes": 9929807,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14744390583",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14744390583/zip",
+      "expired": false,
+      "created_at": "2026-11-22T07:04:56Z",
+      "expires_at": "2027-02-20T06:48:23Z",
+      "updated_at": "2026-11-22T07:04:56Z",
+      "digest": "sha256:e2b10d5f114ebffd923f908972e2e4ccc4dd882bcc08f365f5d63d9e3375c9d7",
+      "workflow_run": {
+        "id": 44995374918,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+        "head_sha": "68235b12d7f41f7b590456971f21dfc3f5c6d701"
+      }
+    },
+    "download_file_id": "file_000000007ce882108429566282931bd8",
+    "local_archive": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/objectshard-m3-artifact-14744390583.zip",
+    "extracted_to": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583",
+    "verified_sha256": "e2b10d5f114ebffd923f908972e2e4ccc4dd882bcc08f365f5d63d9e3375c9d7",
+    "verified_bytes": 9929807,
+    "retrieved_at_utc": "2026-11-22T07:06:37.913573+00:00"
+  },
+  {
+    "artifact": {
+      "id": 14743829036,
+      "name": "objectshard-windows-lab-68235b12d7f41f7b590456971f21dfc3f5c6d701-44995374918-1",
+      "size_in_bytes": 92819530,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14743829036",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14743829036/zip",
+      "expired": false,
+      "created_at": "2026-11-22T07:04:53Z",
+      "expires_at": "2027-02-20T06:48:23Z",
+      "updated_at": "2026-11-22T07:04:53Z",
+      "digest": "sha256:821403aa2c70aca6d9842f4ebf6216716f87d84fe9be242ce05cfaea35e64202",
+      "workflow_run": {
+        "id": 44995374918,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+        "head_sha": "68235b12d7f41f7b590456971f21dfc3f5c6d701"
+      }
+    },
+    "download_file_id": "file_00000000f0788210b14e3fd144253828",
+    "local_archive": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/objectshard-m3-artifact-14743829036.zip",
+    "extracted_to": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14743829036",
+    "verified_sha256": "821403aa2c70aca6d9842f4ebf6216716f87d84fe9be242ce05cfaea35e64202",
+    "verified_bytes": 92819530,
+    "retrieved_at_utc": "2026-11-22T07:06:40.483543+00:00",
+    "owner_zip": {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14743829036/objectshard-windows-evaluator.zip",
+      "bytes": 93159740,
+      "sha256": "47c55fecfe27272c157c9c7bdbdb864bb78166415c61ea2d8ccc74f502df9015"
+    }
+  }
+]

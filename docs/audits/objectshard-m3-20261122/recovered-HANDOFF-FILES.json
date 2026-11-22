@@ -1,0 +1,163 @@
+{
+  "schema": "objectshard-m3-staged-handoff-v1",
+  "base_at_freeze": "28be5a4a8a023d466e642afaca767c0224de1ba3",
+  "scope": "Staged source handoff, not final committed qualification. Native exploratory runs use sealed514d component plus exact staged script hashes. Final PR2 must rebuild and qualify exact commit.",
+  "files": [
+    {
+      "target": "docs/operations/objectshard-m3-preflight-playtest.md",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/docs/operations/objectshard-m3-preflight-playtest.md",
+      "sha256": "171d5ef48c80688d728280bb50e187d504c1ffe0d9af642fd6ac8e2c486f6b7b",
+      "bytes": 6419
+    },
+    {
+      "target": "docs/research/objectshard-m3-preflight.md",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/docs/research/objectshard-m3-preflight.md",
+      "sha256": "a1a688b4a9b12f415ca56704a0958eef08a34abb7b4aa934ad07fbd3e6835920",
+      "bytes": 13229
+    },
+    {
+      "target": "docs/research/objectshard-m3-source-ownership.json",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/docs/research/objectshard-m3-source-ownership.json",
+      "sha256": "ec56e5afc600f8c9df3e61f46c8ded7ef169388312756addedae4f981657228b",
+      "bytes": 11425
+    },
+    {
+      "target": "godot/object_shard_worker_rehearsal.tscn",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/object_shard_worker_rehearsal.tscn",
+      "sha256": "ca4b3c8fada4a69ba61b5b27c6c32d14a611c7e9b480bfd91d3c4ad95ee28a64",
+      "bytes": 320
+    },
+    {
+      "target": "godot/scripts/object_shard_native_worker.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/object_shard_native_worker.gd",
+      "sha256": "9fccd356847071ea5428aa417d60cf7909f057fc1fe9f183559f04100aa50908",
+      "bytes": 16450
+    },
+    {
+      "target": "godot/scripts/object_shard_physics_bridge.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/scripts/object_shard_physics_bridge.gd",
+      "sha256": "8341084d8dfc76d9ee5ace7ffc2f39c338d284cbe8b029ca67b4cb81144d293a",
+      "bytes": 37370
+    },
+    {
+      "target": "godot/scripts/object_shard_worker_host.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/object_shard_worker_host.gd",
+      "sha256": "9828d57e3bffa56504697c1aa606a7fef39f210b72c697806ff385a54cb775e6",
+      "bytes": 28294
+    },
+    {
+      "target": "godot/scripts/object_shard_worker_rehearsal.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/object_shard_worker_rehearsal.gd",
+      "sha256": "c127c78ba517bd8b3bd7a0d24a5f55251cb0246f057fb4fe41839ba5750f2b3b",
+      "bytes": 9816
+    },
+    {
+      "target": "godot/tests/capture_object_shard_worker.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/capture_object_shard_worker.gd",
+      "sha256": "84f18b992101ab520d64b6e59d3ffd69e0c4eb88befae9efc7397436ebae9d0a",
+      "bytes": 3500
+    },
+    {
+      "target": "godot/tests/replay_object_shard_trace.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/replay_object_shard_trace.gd",
+      "sha256": "519b539b090054166da014038e213183eb72422912b9900a5b8b8ccf3a607846",
+      "bytes": 4763
+    },
+    {
+      "target": "godot/tests/replay_object_shard_worker_trace.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/replay_object_shard_worker_trace.gd",
+      "sha256": "63ecccd601038ed2ab8de399352ce4ff2b7f6014ec7432e40f683c75745f5389",
+      "bytes": 5882
+    },
+    {
+      "target": "godot/tests/test_object_shard_incremental_motion.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_incremental_motion.gd",
+      "sha256": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6",
+      "bytes": 11761
+    },
+    {
+      "target": "godot/tests/test_object_shard_motion_segments.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_motion_segments.gd",
+      "sha256": "41a726a4885c1c9aec9439a3ebe2ff26a28646cf14adb96adb54f8ced3679cf7",
+      "bytes": 7770
+    },
+    {
+      "target": "godot/tests/test_object_shard_native_worker.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_native_worker.gd",
+      "sha256": "a78bac83e92145699411b00ec3ba2fb9fb19998225e8fe950c3c48bea9178a4a",
+      "bytes": 7765
+    },
+    {
+      "target": "godot/tests/test_object_shard_workbench_contract.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_workbench_contract.gd",
+      "sha256": "d751d277b0fd6a5952c4ee0ba92bfe35acc0383fb57897eb112bea0bb3fae9bf",
+      "bytes": 5477
+    },
+    {
+      "target": "godot/tests/test_object_shard_worker_adverse.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_worker_adverse.gd",
+      "sha256": "490c6dc548d43f755de512cdb2f11891a52ba295ad27fa5a79b3619a4d3cbd25",
+      "bytes": 7150
+    },
+    {
+      "target": "godot/tests/test_object_shard_worker_package_boot.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_worker_package_boot.gd",
+      "sha256": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0",
+      "bytes": 1785
+    },
+    {
+      "target": "godot/tests/test_object_shard_worker_rehearsal.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_worker_rehearsal.gd",
+      "sha256": "e762d7c28611b618e76af15c9ae435e17924bcc5547ec37c69661e99a5fa8cac",
+      "bytes": 12174
+    },
+    {
+      "target": "godot/tests/test_object_shard_worker_resources.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_worker_resources.gd",
+      "sha256": "6da18fe3134e51755ff0696ecf1f43ffeedaf420e800898d05d13309f3cbb619",
+      "bytes": 5245
+    },
+    {
+      "target": "godot/tests/test_object_shard_worker_scene.gd",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/test_object_shard_worker_scene.gd",
+      "sha256": "810c5c5c41571c9e2c43ddd8b05a6aff9ca3958c189b49878a3569861ffc2691",
+      "bytes": 5383
+    },
+    {
+      "target": "tools/objectshard/package_windows_lab.py",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/tools/objectshard/package_windows_lab.py",
+      "sha256": "b3e193a43d0f6851475be23cb4428147716bce89d395a964339d9ea795e50ff4",
+      "bytes": 10170
+    },
+    {
+      "target": "tools/objectshard/qualify_lab.py",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/tools/objectshard/qualify_lab.py",
+      "sha256": "db2a4b6076b44327c96f4f7d0f0d1a02dcca7cf0086379f0cf43905f928f1877",
+      "bytes": 22144
+    },
+    {
+      "target": "tools/objectshard/qualify_windows_zip.py",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/tools/objectshard/qualify_windows_zip.py",
+      "sha256": "bc37a8e9817512bfe38f1ff3cff7351e92e301d10782ab09c47fce4ba005bee2",
+      "bytes": 9844
+    },
+    {
+      "target": "tools/objectshard/test_m3_package.py",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/tools/objectshard/test_m3_package.py",
+      "sha256": "b6499db830ff467a47097f2b3e70469a8b656dfb9ed2dc8f9834e89926e89345",
+      "bytes": 3633
+    },
+    {
+      "target": "tools/objectshard/verify_package.ps1",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/tools/objectshard/verify_package.ps1",
+      "sha256": "2d0127102160756d8a55a7a5cbf632b609af7176209a145ec09cee0fc14b755c",
+      "bytes": 6449
+    },
+    {
+      "target": "tools/objectshard/verify_package.py",
+      "source": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging/tools/objectshard/verify_package.py",
+      "sha256": "24a87feee32851fdcf60930c6e9a72233a49b9eb2013a2526dc11a867ac18713",
+      "bytes": 5863
+    }
+  ]
+}

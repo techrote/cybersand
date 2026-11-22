@@ -1,0 +1,202 @@
+{
+  "additional_scope_notes": [
+    "Worker command value payload now explicitly capped at64KiB in addition to item/depth/count limits.",
+    "Prospective trace must identify the exclusive-worker replay driver; synchronous replay cannot claim asynchronous receipt timing reproduction. Author preparing host-specific action replayer.",
+    "Two fresh minimal project editor imports returnedSIGABRT after normal completion logs; identical repeat and actual probes passed. These are retained local failures, not clean-import evidence. Final complete project import is a separate required gate."
+  ],
+  "artifacts": {
+    "m3-negative/import-repeat.log": {
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+    },
+    "m3-negative/import.log": {
+      "bytes": 2548,
+      "sha256": "ad653375bb7437f0d26ee94ea6834521cfab31a4ba5f03588ac195740517b2ae"
+    },
+    "m3-negative/inputs.json": {
+      "bytes": 5323,
+      "sha256": "b5993db7db975f334519a1baecacdef2dd860906ac0155236e09eb2ed2bf6446"
+    },
+    "m3-negative/late-shutdown.log": {
+      "bytes": 462,
+      "sha256": "864bd2c4b6bcc9b8508fea12f3e8efadeaaf3aff97601bd7c4b50fa1f93e5aa5"
+    },
+    "m3-negative/project/scripts/object_shard_native_worker.gd": {
+      "bytes": 13020,
+      "sha256": "94c320d1425a27c3a1a0ac501f3f6dc41d5aea7550517b347ba05e8cc69ba19a"
+    },
+    "m3-negative/project/scripts/object_shard_physics_bridge.gd": {
+      "bytes": 36726,
+      "sha256": "6de9a53650929b1d54d58d8131c4a85ee0c736ac0e45663ff271d0bc498fc5fa"
+    },
+    "m3-negative/project/scripts/object_shard_worker_host.gd": {
+      "bytes": 22267,
+      "sha256": "8ad25c5275a502a2f7201f5c0ca0e65f090b493fc20a919418cc0a65aaa128ff"
+    },
+    "m3-negative/project/tests/probe_late_shutdown_receipt.gd": {
+      "bytes": 2072,
+      "sha256": "8b125a5e67ea5197943cf260c2af6cbbe58c5bbd8aabd4e17b7f7b764ba406b9"
+    },
+    "m3-positive/duplicate-stop-negative.log": {
+      "bytes": 734,
+      "sha256": "1c4ca7c1ccd1d254253e38f7691add110bad6363a87f6633fb24c3e49fee45a0"
+    },
+    "m3-positive/inputs.json": {
+      "bytes": 5915,
+      "sha256": "b2dc92269c34c6fdbe56ef962112aa8cfd646e90f003a7c7e5437b964b727c0a"
+    },
+    "m3-positive/late-shutdown.log": {
+      "bytes": 476,
+      "sha256": "859b16b7dd63bc8fb3eea813dea1a8b48395638169a1121fc4bb03ccc2dad2ac"
+    },
+    "m3-positive/project/scripts/object_shard_native_worker.gd": {
+      "bytes": 16225,
+      "sha256": "beb7eaa0ac6cd30cc21e263d943e7877e7414d7f02a54a97b0cb84daee939fa9"
+    },
+    "m3-positive/project/scripts/object_shard_worker_host.gd": {
+      "bytes": 24812,
+      "sha256": "b8016cc461ee7ace4903faf3f23dabfce4a469c31ea08820f23e8a992e1388db"
+    },
+    "m3-positive/project/tests/probe_duplicate_stop.gd": {
+      "bytes": 939,
+      "sha256": "18a1a7bb0496bc95bc0b80869740f04d85b165d96a95f0358fae9f2331acb503"
+    },
+    "m3-positive/project/tests/probe_late_shutdown_receipt.gd": {
+      "bytes": 2072,
+      "sha256": "8b125a5e67ea5197943cf260c2af6cbbe58c5bbd8aabd4e17b7f7b764ba406b9"
+    },
+    "m3-stop-positive/duplicate-stop.log": {
+      "bytes": 1135,
+      "sha256": "ab117a71e7c49fbceab9caefdc6cf83023c8cca6f2650d66b0bb77df2eae04b3"
+    },
+    "m3-stop-positive/inputs.json": {
+      "bytes": 326,
+      "sha256": "5fbf73264dcecaa7955276bacdbd4c300db17dca9f6d256acc7c966cf2972939"
+    },
+    "m3-stop-positive/project/scripts/object_shard_native_worker.gd": {
+      "bytes": 16450,
+      "sha256": "9fccd356847071ea5428aa417d60cf7909f057fc1fe9f183559f04100aa50908"
+    },
+    "m3-stop-positive/project/tests/probe_duplicate_stop.gd": {
+      "bytes": 939,
+      "sha256": "18a1a7bb0496bc95bc0b80869740f04d85b165d96a95f0358fae9f2331acb503"
+    }
+  },
+  "findings": [
+    {
+      "classification": "Class B shutdown/physics ordering",
+      "disposition": "Fixed and independently delta-tested in staging; final commit binding pending.",
+      "id": "M3-R1",
+      "mechanism": "Valid late motion receipt accepted after close advanced real Rapier and changed Closing to Held, obstructing shutdown.",
+      "negative": {
+        "after_receipt_state": "Held",
+        "after_steps": 6,
+        "before_steps": 5,
+        "close_state": "Closing",
+        "failed": true,
+        "result": {
+          "ok": false,
+          "outcome": "ReceiptConsumed"
+        },
+        "schema": "objectshard-independent-late-shutdown-v1",
+        "unexpected_step_or_close_loss": true
+      },
+      "positive": {
+        "after_receipt_state": "Closing",
+        "after_steps": 5,
+        "before_steps": 5,
+        "close_state": "Closing",
+        "failed": false,
+        "result": {
+          "ok": false,
+          "outcome": "TransportClosingOrClosed"
+        },
+        "schema": "objectshard-independent-late-shutdown-v1",
+        "unexpected_step_or_close_loss": false
+      },
+      "repair": "Close retires outstanding sequences and accept_receipt refuses Closing/Closed/ShutdownHeld before mutation."
+    },
+    {
+      "classification": "Terminal receipt/idempotence defect in first shutdown repair",
+      "disposition": "Fixed and independently delta-tested in staging; final commit binding pending.",
+      "id": "M3-R2",
+      "mechanism": "Duplicate request_stop after successful disposal cleared the retained Stopped receipt; join_if_stopped then returned an empty dictionary.",
+      "negative": {
+        "duplicate": {},
+        "original": {
+          "cancelled_control": 0,
+          "cancelled_data": 0,
+          "disposal": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "disposed_session": 1,
+          "ok": true,
+          "outcome": "Stopped",
+          "owner_thread": 26,
+          "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+          "transport_generation": 9827
+        },
+        "schema": "objectshard-independent-duplicate-stop-v1",
+        "terminal_preserved": false
+      },
+      "positive": {
+        "duplicate": {
+          "cancelled_control": 0,
+          "cancelled_data": 0,
+          "disposal": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "disposed_session": 1,
+          "ok": true,
+          "outcome": "Stopped",
+          "owner_thread": 26,
+          "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+          "transport_generation": 9827
+        },
+        "original": {
+          "cancelled_control": 0,
+          "cancelled_data": 0,
+          "disposal": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "disposed_session": 1,
+          "ok": true,
+          "outcome": "Stopped",
+          "owner_thread": 26,
+          "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+          "transport_generation": 9827
+        },
+        "schema": "objectshard-independent-duplicate-stop-v1",
+        "terminal_preserved": true
+      },
+      "repair": "Stopped or already requested stop is a nonmutating no-op; only live retry clears the prior refusal."
+    }
+  ],
+  "native_runtime_sha256": "61cbc2229bd24e99d51cab55c26321706f322580a952a25cc705ab9bcab865be",
+  "rapier_runtime_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "reviewer": "Independent source reviewer; no implementation authorship",
+  "schema": "objectshard-m3-independent-staging-findings-v1",
+  "source_scope": "Uncommitted isolated M3 staging snapshots, exact hashes below. No final-source or Windows M3 qualification is implied.",
+  "utc": "2026-11-22T05:09:23.462575+00:00"
+}

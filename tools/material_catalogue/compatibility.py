@@ -534,6 +534,18 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 726},)
 
 
+# OBJECTSHARD-001R: one opt-in Fire opportunity cannot ignite both owners.
+# This appends the reviewed inherited consumer change; the frozen lock and
+# authentication rules are unchanged. Ordinary null-journal Worlds are identical.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214',
+  'to_lf_sha256': '5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1',
+  'source_commit': 'c06550371ac5448642bff7e4ecb64fe9cd1df728',
+  'record': 'docs/audits/2026-11-22-objectshard-external-fire-world-transition.md',
+  'issue': 281,
+  'pr': 741},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

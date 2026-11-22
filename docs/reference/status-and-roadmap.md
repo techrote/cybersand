@@ -10,7 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-## ObjectShard M0–M2 research candidate — 2026-11-22
+## ObjectShard M0–M3 research candidates — 2026-11-22
+
+The [M3 continuous-play candidate](../research/objectshard-m3-preflight.md) reconstructs the recovered exclusive-worker rehearsal and retains a separate World/Rapier scene. Mutable geometry cannot enter the ordinary immutable Workbench GCR roster; the current PUBPRES successor remains a separately owned interface. Full ordinary Workbench binding, persistence and owner acceptance remain Planned.
+
+The [M3 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
+delivers Draft/HOLD #741 at qualified source `e034f229`: fresh Linux/Windows
+execution, an actual verified Windows ZIP, controlled navigation disposal and
+three independent final reviews. Continuous editing, real detachment/motion and
+bounded capture are executable. The slower hosted timing observations, 1.93-second
+burst tail and production runtime-provenance failure remain explicit.
+
+The inherited Fire consumer's missing compatibility transition is completed at
+`73018218`, with 231 catalogue tests passing and the original lock/refusal rules
+preserved. This guard-only completion leaves the `e034f229` executable and ZIP
+unchanged; production runtime provenance remains unpassed.
 
 The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md)
 is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native,
