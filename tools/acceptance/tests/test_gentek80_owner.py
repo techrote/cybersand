@@ -25,8 +25,12 @@ def fixture(root):
     files = {
         "Godot_v4.7-stable_win64.exe": b"MZfake-GUI",
         "Godot_v4.7-stable_win64_console.exe": b"MZfake-console",
-        "Open Workbench.cmd": b"echo MOCK ONLY\r\n",
+        "Open Workbench.cmd": b"call verifier \\r\\n",
+        "Verify and Open Workbench.cmd": b"powershell.exe MOCK\r\n",
         "READ-ME.md": b"MOCK fixture; not real release",
+        "OWNER-ACCEPTANCE.md": b"MOCK owner guide",
+        "tools/acceptance/gentek80_owner.ps1": b"MOCK fixture; not real script",
+        "docs/operations/gentek80-physical-owner-acceptance.md": b"MOCK owner guide",
         "vcruntime140.dll": b"MZfake-VC",
         "godot/project.godot": b"[application]\n",
         NATIVE: b"MZfake-native",

@@ -14,7 +14,7 @@ This guide **supplements**, rather than replaces, [the current 80-Gentek catalog
 
 ## Source and archive trust
 
-The verifier is committed at tools/acceptance/gentek80_owner.ps1; its companion Verify and Open Workbench.cmd is staged by the existing source-aware packaging tool. The tool runs under Windows PowerShell 5.1 and requires no development checkout, separate Python/Godot/compiler installation, admin rights, network access or machine-global configuration changes.
+The verifier is committed at tools/acceptance/gentek80_owner.ps1; its companion Verify and Open Workbench.cmd is staged by the existing source-aware packaging tool. The final candidate also includes this complete guide as **OWNER-ACCEPTANCE.md**, alongside the existing **READ-ME.md** catalogue guide. The tool runs under Windows PowerShell 5.1 and requires no development checkout, separate Python/Godot/compiler installation, admin rights, network access or machine-global configuration changes.
 
 **Always obtain the 64-digit expected ZIP SHA-256 from a separate trusted handoff.** A hash embedded inside the same untrusted ZIP cannot authenticate that ZIP. Provide the exact 40-digit Git commit in -ExpectedSource. The owner verifier compares original ZIP hash, archive member safety, complete extracted SHA-256 inventory, source/build identity, Godot executable hashes, native GDExtension, Rapier, Visual C++ runtime and unexpected files. It refuses changed manifests, missing payload, ZipSlip, ZIP case collisions and manifest source mismatches.
 

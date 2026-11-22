@@ -106,7 +106,10 @@ function Verify([string]$root,[string]$expected){
  }
  $native='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
  $mandatory=@('Godot_v4.7-stable_win64.exe','Godot_v4.7-stable_win64_console.exe',
-   'Open Workbench.cmd','READ-ME.md','vcruntime140.dll','godot/project.godot',
+   'Open Workbench.cmd','Verify and Open Workbench.cmd','READ-ME.md',
+   'OWNER-ACCEPTANCE.md','tools/acceptance/gentek80_owner.ps1',
+   'docs/operations/gentek80-physical-owner-acceptance.md',
+   'vcruntime140.dll','godot/project.godot',
    'source-built-candidate-provenance.json',$native,
    'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll')
  foreach($name in $mandatory){if(-not $seen.Contains($name)){throw "Missing required component: $name"}}
