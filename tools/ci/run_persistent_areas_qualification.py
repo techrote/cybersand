@@ -349,6 +349,9 @@ class Campaign:
             # Reopen is repeated after crashes: retain each original receipt.
             write(self.output / (label + ".json"), receipt)
 
+    def additional_cases(self) -> None:
+        """An isolated successor may extend, never replace, the donor gates."""
+
     def execute(self) -> dict:
         try:
             self.run("import", [str(self.engine), "--headless", "--path", str(self.project), "--editor", "--import", "--quit"], timeout=120)
@@ -385,6 +388,7 @@ class Campaign:
                     for phase in ("source_durable", "candidate_durable"):
                         self.workbench("workbench-crash-"+phase, "crash", workers, phase)
                         self.workbench("workbench-recover-"+phase, "reopen", workers)
+            self.additional_cases()
             if not self.record_custody("after-campaign"):
                 raise RuntimeError("Source or executed binary changed during the campaign; see source-custody.json.")
             self.report.update(status="passed", completed=True, input_custody="passed")

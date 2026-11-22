@@ -97,6 +97,7 @@ NATIVE_MARKERS = (
 )
 require = engine.require
 sha = engine.runner.sha256
+CAMPAIGN_SCRIPT = "tools/ci/run_persistent_areas_qualification.py"
 
 
 def safe_relative(value: object) -> str:
@@ -281,7 +282,7 @@ def execute(args: argparse.Namespace) -> None:
         "native_build_ledger_sha256": sha(ledger_path)}
     report_path = args.bundle / "validation.json"
     engine.write_json(report_path, report)
-    campaign = [sys.executable, str(engine.ROOT / "tools/ci/run_persistent_areas_qualification.py"),
+    campaign = [sys.executable, str(engine.ROOT / CAMPAIGN_SCRIPT),
         "--godot", str(godot.resolve()), "--project", str(engine.ROOT / "godot"),
         "--evidence", str((args.bundle / "qualification").resolve()),
         "--require-clean-source", "--native-build-ledger", str(ledger_path.resolve())]
