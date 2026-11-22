@@ -1,0 +1,39 @@
+name: ObjectShard M4 isolated native coordinator verification
+on:
+  push:
+    branches:
+      - experiment/objectshard-m4-native-verify-*
+permissions:
+  contents: read
+concurrency:
+  group: objectshard-m4-coordinator-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  coordinator-sanitizers:
+    name: Exact-source coordinator C++ ASan UBSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Freeze source and run native coordinator
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          g++-13 --version > evidence/compiler.txt
+          python3 tools/objectshard/run_native_tests.py \
+            --output evidence/coordinator --compiler g++-13 \
+            --suite coordinator --sanitize
+      - name: Retain original compilation and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-m4-coordinator-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
