@@ -428,6 +428,16 @@ func _same_values(expected: Dictionary, actual: Dictionary) -> bool:
 		var b: Variant = actual[key]
 		if a is bool or b is bool:
 			if a != b: return false
+		elif key == "angle" and expected.has("x") and expected.has("y") \
+				and (a is float or a is int) and (b is float or b is int):
+			# The physical commit normalizes +180° to -180°. These are the
+			# same authored orientation, not a failed asynchronous Apply.
+			if absf(wrapf(float(a)-float(b),-180.0,180.0)) > 0.01: return false
+		elif key in ["x","y"] and expected.has("angle") \
+				and (a is float or a is int) and (b is float or b is int):
+			# Spawn controls offer quarter-cell precision even near the 16k
+			# canvas bound; relative float equality is too loose there.
+			if absf(float(a)-float(b)) > 0.01: return false
 		elif (a is float or a is int) and (b is float or b is int):
 			if not is_equal_approx(float(a),float(b)): return false
 		elif a != b:

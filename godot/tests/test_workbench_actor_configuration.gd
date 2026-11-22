@@ -217,6 +217,12 @@ func run() -> void:
 	panel.set_sandbox_state({"preparing":false})
 	panel.refresh()
 	check(not panel._placement_dirty and panel.apply_info.text.contains("Accepted"),"exact authored placement accepted with full position and angle precision")
+	check(panel._same_values({"x":500.25,"y":420.5,"angle":180.0},
+		{"x":500.25,"y":420.5,"angle":-180.0}),
+		"+180 and -180 are the same committed assembly heading")
+	check(not panel._same_values({"x":16000.25,"y":420.5,"angle":45.0},
+		{"x":16000.0,"y":420.5,"angle":45.0}),
+		"large-canvas placement still enforces exact quarter-cell precision")
 	panel.demo.select(1)
 	panel.demo_count.value = 64
 	find_button(panel,"Load playground").pressed.emit()
