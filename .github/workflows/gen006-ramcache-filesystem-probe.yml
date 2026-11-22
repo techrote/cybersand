@@ -1,0 +1,207 @@
+name: GEN-006 isolated Windows filesystem permission probe
+
+on:
+  push:
+    branches: [exp/gen006-ramcache-filesystem-probe-20261122]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  permission-probe:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/exp/gen006-ramcache-filesystem-probe-20261122'
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: false
+      - name: Extract and bind exact helper Git bytes
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / ('gen006-windows-acl-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          root.mkdir(exist_ok=False)
+          helper_path = 'tools/ci/gen006_windows_write_denial_probe.ps1'
+          helper = subprocess.check_output(['git', 'show', os.environ['GITHUB_SHA'] + ':' + helper_path])
+          expected = '86e3fd6190d31dbd52d26af065675595470ed787f31e2da78753c9021a038fc1'
+          assert hashlib.sha256(helper).hexdigest() == expected
+          (root / 'profile_write_denial.ps1').write_bytes(helper)
+          metadata = {'schema': 'gen006-windows-acl-probe-source-v1', 'source_commit': os.environ['GITHUB_SHA'], 'source_tree': subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip(), 'base_commit': '41208bb1ec0f2d56a9a375983f5d5c7c5193b36a', 'helper_path': helper_path, 'helper_sha256': expected, 'helper_bytes': len(helper), 'checkout_helper_sha256': hashlib.sha256(pathlib.Path(helper_path).read_bytes()).hexdigest(), 'workflow_sha256': hashlib.sha256(pathlib.Path('.github/workflows/gen006-ramcache-filesystem-probe.yml').read_bytes()).hexdigest(), 'scope': 'Actual Windows PowerShell 5 directory permission apparatus only; no native or application qualification'}
+          (root / 'source.json').write_text(json.dumps(metadata, indent=2) + '\n', encoding='utf-8')
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as out:
+              out.write('GEN006_ACL_PROBE_OUTPUT=' + str(root) + '\n')
+      - name: Actual PS5 denial, guarded refusals, exact restore and positive write
+        shell: powershell
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $out = $env:GEN006_ACL_PROBE_OUTPUT
+          $helper = Join-Path $out 'profile_write_denial.ps1'
+          $nonce = [Guid]::NewGuid().ToString('N')
+          $caseRoot = Join-Path $env:RUNNER_TEMP ('GEN006 directory ACL probe with spaces ' + $nonce)
+          $profilePath = Join-Path $caseRoot 'profile with spaces'
+          $otherProfile = Join-Path $caseRoot 'wrong profile with spaces'
+          [void][IO.Directory]::CreateDirectory($profilePath)
+          [void][IO.Directory]::CreateDirectory($otherProfile)
+          $sentinel = Join-Path $profilePath 'existing native placeholder.txt'
+          [IO.File]::WriteAllText($sentinel, 'Existing profile child remains untouched.', [Text.UTF8Encoding]::new($false))
+          $backup = Join-Path $out 'immutable-acl-backup.json'
+          $applyReceipt = Join-Path $out 'apply.json'
+          $script:checks = 0
+          $script:calls = [Collections.Generic.List[object]]::new()
+          $errorText = ''
+          $cleanupError = ''
+          $backupSha = ''
+          $restored = $false
+          $initialAcl = $null
+          $initialChildAcl = $null
+          $initialSentinelSha = ''
+          $source = Get-Content -Raw -LiteralPath (Join-Path $out 'source.json') | ConvertFrom-Json
+          function Assert-Probe([bool]$Value, [string]$Message) {
+              $script:checks++
+              if (!$Value) { throw $Message }
+          }
+          function Sha([string]$Path) {
+              return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
+          }
+          function AclIdentity([string]$Path) {
+              $acl = Get-Acl -LiteralPath $Path
+              return [ordered]@{ owner = $acl.GetOwner([Security.Principal.SecurityIdentifier]).Value
+                  access_sddl = $acl.GetSecurityDescriptorSddlForm([Security.AccessControl.AccessControlSections]::Access)
+                  protected = $acl.AreAccessRulesProtected; canonical = $acl.AreAccessRulesCanonical }
+          }
+          function EqualJson([object]$Left, [object]$Right) {
+              return (ConvertTo-Json -InputObject $Left -Compress -Depth 12) -ceq (ConvertTo-Json -InputObject $Right -Compress -Depth 12)
+          }
+          function QuoteArgument([string]$Value) {
+              # All arguments are controlled file/directory names or scalar IDs.
+              # Reject the only unsupported cases instead of hand-waving quoting.
+              if ($Value -match '[\r\n"]' -or $Value.EndsWith('\')) { throw 'Unsafe probe argument.' }
+              return '"' + $Value + '"'
+          }
+          function Invoke-Helper([string]$Label, [string]$Mode, [string]$Target, [string]$Token, [string]$Anchor, [int]$ExpectedExit) {
+              $receiptFile = Join-Path $out ($Label + '.json')
+              $arguments = @('-NoLogo','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',$helper,
+                  '-Mode',$Mode,'-ProfilePath',$Target,'-BackupPath',$backup,'-ReceiptPath',$receiptFile,'-Nonce',$Token)
+              if ($Anchor -ne '') { $arguments += @('-ExpectedBackupSha256',$Anchor) }
+              $start = [Diagnostics.ProcessStartInfo]::new()
+              $start.FileName = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+              $start.Arguments = (($arguments | ForEach-Object { QuoteArgument ([string]$_) }) -join ' ')
+              $start.UseShellExecute = $false
+              $start.CreateNoWindow = $true
+              $start.RedirectStandardOutput = $true
+              $start.RedirectStandardError = $true
+              $process = [Diagnostics.Process]::new()
+              $process.StartInfo = $start
+              $watch = [Diagnostics.Stopwatch]::StartNew()
+              [void]$process.Start()
+              $childPid = $process.Id
+              $stdoutTask = $process.StandardOutput.ReadToEndAsync()
+              $stderrTask = $process.StandardError.ReadToEndAsync()
+              $finished = $process.WaitForExit(30000)
+              if (!$finished) {
+                  $process.Kill()
+                  if (!$process.WaitForExit(5000)) { throw ('Probe child did not retire: ' + $childPid) }
+              }
+              $exitCode = $process.ExitCode
+              $watch.Stop()
+              [IO.File]::WriteAllText((Join-Path $out ($Label + '.stdout.log')), $stdoutTask.Result, [Text.UTF8Encoding]::new($false))
+              [IO.File]::WriteAllText((Join-Path $out ($Label + '.stderr.log')), $stderrTask.Result, [Text.UTF8Encoding]::new($false))
+              $script:calls.Add([ordered]@{label=$Label; mode=$Mode; observed_pid=$childPid; exit_code=$exitCode
+                  expected_exit=$ExpectedExit; timed_out=(!$finished); elapsed_ms=$watch.Elapsed.TotalMilliseconds
+                  receipt_file=($Label + '.json'); helper_sha256=(Sha $helper)})
+              $process.Dispose()
+              Assert-Probe $finished ('Probe child timed out: ' + $Label)
+              Assert-Probe ($exitCode -eq $ExpectedExit) ('Unexpected process exit: ' + $Label)
+              Assert-Probe (Test-Path -LiteralPath $receiptFile) ('Missing original receipt: ' + $Label)
+              $value = Get-Content -Raw -LiteralPath $receiptFile | ConvertFrom-Json
+              Assert-Probe ($value.helper_pid -eq $childPid -and $value.mode -ceq $Mode -and $value.nonce -ceq $Token) ('Receipt process or invocation differs: ' + $Label)
+              Assert-Probe ($value.ok -eq ($ExpectedExit -eq 0)) ('Receipt status differs: ' + $Label)
+              Assert-Probe ((Sha $helper) -ceq $source.helper_sha256) 'Helper changed during execution.'
+              return $value
+          }
+          try {
+              Assert-Probe ($PSVersionTable.PSVersion.Major -eq 5) 'Actual Windows PowerShell 5 is required.'
+              Assert-Probe ((Sha $helper) -ceq $source.helper_sha256) 'Executed helper bytes differ from Git source.'
+              $tokens = $null
+              $parseErrors = $null
+              [void][Management.Automation.Language.Parser]::ParseFile($helper, [ref]$tokens, [ref]$parseErrors)
+              Assert-Probe ($parseErrors.Count -eq 0) 'Helper does not parse in PowerShell 5.'
+              $initialAcl = AclIdentity $profilePath
+              $initialChildAcl = AclIdentity $sentinel
+              $initialSentinelSha = Sha $sentinel
+              $baseline = Invoke-Helper 'baseline-positive' 'positive-probe' $profilePath $nonce '' 0
+              Assert-Probe ($baseline.probe.created -and $baseline.probe.flushed_to_disk -and $baseline.probe.cleanup_ok) 'Initial real write/flush failed.'
+              $applied = Invoke-Helper 'apply' 'apply' $profilePath $nonce '' 0
+              $backupSha = [string]$applied.backup_sha256
+              Assert-Probe ($backupSha -match '^[0-9a-f]{64}$' -and (Sha $backup) -ceq $backupSha) 'Immutable backup anchor differs.'
+              Assert-Probe ($applied.probe.win32_error -eq 5 -and !$applied.probe.created -and $applied.probe.hresult -ceq '0x80070005') 'Apply did not cause actual access denial.'
+              $denied = Invoke-Helper 'denied-positive' 'denied-probe' $profilePath $nonce $backupSha 0
+              Assert-Probe ($denied.probe.win32_error -eq 5 -and !$denied.probe.created) 'Second real CREATE_NEW was not denied.'
+              $deniedAcl = AclIdentity $profilePath
+              $wrongNonce = [Guid]::NewGuid().ToString('N')
+              $badNonce = Invoke-Helper 'wrong-nonce' 'restore' $profilePath $wrongNonce $backupSha 1
+              Assert-Probe ($badNonce.error -match 'Backup nonce/profile/SID mismatch') 'Wrong nonce was not explicitly refused.'
+              Assert-Probe (EqualJson (AclIdentity $profilePath) $deniedAcl) 'Wrong nonce changed the denied ACL.'
+              $otherBefore = AclIdentity $otherProfile
+              $badProfile = Invoke-Helper 'wrong-profile' 'restore' $otherProfile $nonce $backupSha 1
+              Assert-Probe ($badProfile.error -match 'Backup nonce/profile/SID mismatch') 'Wrong profile was not explicitly refused.'
+              Assert-Probe (EqualJson (AclIdentity $profilePath) $deniedAcl) 'Wrong profile changed the real denied ACL.'
+              Assert-Probe (EqualJson (AclIdentity $otherProfile) $otherBefore) 'Wrong profile ACL was changed.'
+              $badHash = Invoke-Helper 'wrong-backup-hash' 'restore' $profilePath $nonce ('0' * 64) 1
+              Assert-Probe ($badHash.error -match 'Immutable ACL backup identity differs') 'Wrong backup hash was not explicitly refused.'
+              Assert-Probe (EqualJson (AclIdentity $profilePath) $deniedAcl) 'Wrong backup hash changed the denied ACL.'
+              $badApply = Invoke-Helper 'stale-apply' 'apply' $profilePath $nonce '' 1
+              Assert-Probe ($badApply.error -match 'Apply refuses an existing or stale backup') 'Repeated apply did not reject its old backup.'
+              Assert-Probe (EqualJson (AclIdentity $profilePath) $deniedAcl) 'Repeated apply changed the denied ACL.'
+              $restore = Invoke-Helper 'restore' 'restore' $profilePath $nonce $backupSha 0
+              $restored = $true
+              Assert-Probe (EqualJson (AclIdentity $profilePath) $initialAcl) 'Exact original profile owner/DACL was not restored.'
+              $positive = Invoke-Helper 'restored-positive' 'positive-probe' $profilePath $nonce $backupSha 0
+              Assert-Probe ($positive.probe.created -and $positive.probe.flushed_to_disk -and $positive.probe.cleanup_ok) 'Restored real create/write/flush failed.'
+              $repeatRestore = Invoke-Helper 'already-restored' 'restore' $profilePath $nonce $backupSha 0
+              Assert-Probe (EqualJson (AclIdentity $sentinel) $initialChildAcl) 'Existing child ACL or owner changed.'
+              Assert-Probe ((Sha $sentinel) -ceq $initialSentinelSha) 'Existing child bytes changed.'
+              Assert-Probe ((Sha $backup) -ceq $backupSha) 'Immutable backup was overwritten.'
+          } catch {
+              $errorText = $_.Exception.ToString()
+          } finally {
+              # Even nonzero apply/receipt failure must restore from the anchor
+              # written before Set-Acl. Never infer safety from stdout alone.
+              if (!$restored -and (Test-Path -LiteralPath $backup)) {
+                  try {
+                      Assert-Probe (Test-Path -LiteralPath $applyReceipt) 'No pre-denial control receipt for restoration.'
+                      $anchor = Get-Content -Raw -LiteralPath $applyReceipt | ConvertFrom-Json
+                      Assert-Probe ($anchor.nonce -ceq $nonce -and $anchor.profile -ceq $profilePath -and
+                          $anchor.sid -ceq [Security.Principal.WindowsIdentity]::GetCurrent().User.Value) 'Pre-denial anchor identity mismatch.'
+                      Assert-Probe ($anchor.backup_sha256 -match '^[0-9a-f]{64}$' -and (Sha $backup) -ceq $anchor.backup_sha256) 'Pre-denial immutable backup digest differs.'
+                      $cleanup = Invoke-Helper 'outer-finally-restore' 'restore' $profilePath $nonce $anchor.backup_sha256 0
+                      $restored = $true
+                  } catch { $cleanupError = $_.Exception.ToString() }
+              }
+              if ($null -ne $initialAcl) {
+                  try { Assert-Probe (EqualJson (AclIdentity $profilePath) $initialAcl) 'Final profile ACL differs from the original.' }
+                  catch { $cleanupError = $_.Exception.ToString() }
+              }
+              $result = [ordered]@{schema='gen006-windows-directory-permission-probe-v1'; source=$source
+                  parent_pid=$PID; powershell_version=$PSVersionTable.PSVersion.ToString(); os=[Environment]::OSVersion.ToString()
+                  profile=$profilePath; nonce=$nonce; checks=$script:checks; calls=$script:calls.ToArray()
+                  completed=($errorText -eq '' -and $cleanupError -eq '' -and $restored); restored=$restored
+                  error=$errorText; cleanup_error=$cleanupError; original_acl=$initialAcl
+                  original_child_acl=$initialChildAcl; sentinel_sha256=$initialSentinelSha
+                  scope='Actual Windows CREATE_NEW access denial and exact DACL restoration; no native simulation, package, disk-full or physical NVIDIA acceptance'}
+              [IO.File]::WriteAllText((Join-Path $out 'probe-result.json'), (ConvertTo-Json -InputObject $result -Depth 20), [Text.UTF8Encoding]::new($false))
+          }
+          if (!$result.completed) { throw ('Windows ACL probe failed: ' + $errorText + ' / cleanup: ' + $cleanupError) }
+          Write-Output ('GEN006_WINDOWS_WRITE_DENIAL_PROBE_PASS checks=' + $script:checks + ' processes=' + $script:calls.Count)
+      - name: Preserve exact source and original probe receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-windows-directory-permission-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.GEN006_ACL_PROBE_OUTPUT }}
+          if-no-files-found: error
+          retention-days: 30
