@@ -34,7 +34,7 @@ func ready() -> bool:
 
 func local(cell: Vector2i) -> Vector2:
 	var view: Rect2 = host.view_content_rect()
-	return view.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.camera_origin.floor()))*view.size/Vector2(host.current_view_size)
+	return view.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.presentation_camera_origin()))*view.size/Vector2(host.current_view_size)
 
 func select_area(a: Vector2i,b: Vector2i) -> void:
 	editor.select_tool("Select")

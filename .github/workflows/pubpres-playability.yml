@@ -1,0 +1,540 @@
+name: PUBPRES Playability source qualification
+
+on:
+  push:
+    branches: [experiment/pubpres-playability-001]
+    paths: ['.github/pubpres-playability-run.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+# This isolated programme never changes the ordinary Native/Godot pipelines.
+# A committed request explicitly distinguishes development from final evidence.
+env:
+  PUBPRES_MAIN: 846fe0533b3170e7b01f690518da49fc40cc24d1
+  PUBPRES_INTEGRATION: 8503ec19e4d620e125dc6df2c5c6571b1256cb92
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GIT_LFS_SKIP_SMUDGE: '1'
+
+jobs:
+  plan:
+    if: github.ref == 'refs/heads/experiment/pubpres-playability-001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      phase: ${{ steps.plan.outputs.phase }}
+      windows: ${{ steps.plan.outputs.windows }}
+      linux: ${{ steps.plan.outputs.linux }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - id: plan
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          request = json.loads(Path('.github/pubpres-playability-run.json').read_text())
+          assert request['schema'] == 'pubpres-playability-run-v1'
+          phase = request['phase']
+          assert phase in ('development', 'probes', 'final')
+          campaign_path = Path('tools/pubpres_playability/campaign.json')
+          assert hashlib.sha256(campaign_path.read_bytes()).hexdigest() == request['campaign_sha256']
+          entries = subprocess.check_output(['git', 'ls-tree', '-rz', 'HEAD']).split(b'\0')
+          payload = b'\0'.join(row for row in entries if row and row.split(b'\t',1)[1] != b'.github/pubpres-playability-run.json') + b'\0'
+          assert hashlib.sha256(payload).hexdigest() == request['frozen_payload_tree_sha256']
+          campaign = json.loads(campaign_path.read_text())
+          windows = [c['id'] for c in campaign['cases'] if c['primary']] if phase == 'final' else ['wave_512_follow', 'wave_2048_follow']
+          linux = ['wave_512_free', 'wave_512_follow', 'wave_2048_follow', 'wave_gameplay_2048_follow', 'pressure_512_follow', 'freemass_2048_follow', 'cellular_512_follow'] if phase == 'final' else ['wave_512_follow']
+          if phase == 'probes':
+              windows, linux = [], []
+          def matrix(cases):
+              rows = []
+              for case in cases:
+                  rows.append({'case': case, 'stage': 'source', 'job_minutes': 150})
+                  for stage, key in [('thread', 'render_thread_calibration'), ('observer', 'calibration'), ('native-probe', 'native_probe_calibration'), ('input', 'input_equivalence'), ('same-frame', 'same_frame_calibration')]:
+                      spec = campaign.get(key, {})
+                      if not spec.get('enabled', True):
+                          continue
+                      if phase == 'development' and campaign['schema'] == 'pubpres-playability-campaign-v3' and stage not in ('same-frame', 'observer'):
+                          continue
+                      if case in spec.get('cases', [spec.get('case')]):
+                          rows.append({'case': case, 'stage': stage, 'job_minutes': 120})
+              return {'include': rows}
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+              stream.write('phase=' + phase + '\n')
+              for key, values in [('windows', windows), ('linux', linux)]:
+                  stream.write(key + '=' + json.dumps(matrix(values), separators=(',', ':')) + '\n')
+          print(json.dumps({'source': os.environ['GITHUB_SHA'], 'request': request, 'windows': windows, 'linux': linux}))
+          PY
+      - name: Check scoped tooling and hosted provider policy
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/pubpres_playability/test_results.py
+          python3 tools/pubpres_playability/test_results_same_frame.py
+          python3 tools/pubpres_playability/test_protocol.py
+          python3 tools/pubpres_playability_windows/test_package_windows.py
+          python3 tools/pubpres_playability_build/test_helpers.py
+          python3 tools/pubpres_render_probes/test_probes.py
+          python3 -m py_compile tools/pubpres_playability_build/*.py
+
+  windows-process-ownership:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Actual Windows Python and PowerShell child lifecycle controls
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          [void][IO.Directory]::CreateDirectory('build/pubpres-process-ownership')
+          python tools/pubpres_playability_build/test_helpers.py *> build/pubpres-process-ownership/python.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows Python process ownership controls failed' }
+          python tools/pubpres_render_probes/test_probes.py *> build/pubpres-process-ownership/renderer-probe-helpers.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows renderer-probe process/identity controls failed' }
+          & "$env:SystemRoot/System32/WindowsPowerShell/v1.0/powershell.exe" -NoProfile -NonInteractive -File tools/pubpres_playability_windows/Test-ProcessOwner.ps1 -Output build/pubpres-process-ownership/powershell
+          if ($LASTEXITCODE -ne 0) { throw 'Windows PowerShell process ownership controls failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-windows-process-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-process-ownership/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux-process-ownership:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Process controls and actual private display lifecycle
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libx11-6
+          mkdir -p build/pubpres-linux-process
+          python3 tools/pubpres_playability_build/test_owned_xvfb.py -v > build/pubpres-linux-process/tests.log 2>&1
+          python3 tools/pubpres_playability_build/test_owned_xvfb.py --real "$PWD/build/pubpres-linux-process/display-owner.json" > build/pubpres-linux-process/real-display.log 2>&1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-linux-process-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-linux-process/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux-renderer-probes:
+    needs: [plan, linux-process-ownership]
+    if: needs.plan.outputs.phase == 'probes'
+    runs-on: ubuntu-24.04
+    # 8 x (180s outer deadline + 30s cleanup), plus engine preparation/upload.
+    # The actual Godot child deadline remains 60s per diagnostic arm.
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Prepare pinned engine and private graphical display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          python3 tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Bounded isolated font and queued-material observations
+        run: |
+          python3 tools/pubpres_render_probes/run_probes.py --source-root "$PWD" --source-sha "$GITHUB_SHA" --platform linux --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output build/pubpres-linux-renderer-probes --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-linux-renderer-probes-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-linux-renderer-probes/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-renderer-probes:
+    needs: [plan, windows-process-ownership]
+    if: needs.plan.outputs.phase == 'probes'
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Preserve canonical source newlines
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Prepare pinned actual Windows engine
+        shell: powershell
+        run: |
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned renderer-probe engine preparation failed' }
+      - name: Bounded isolated context and queued-material observations
+        shell: powershell
+        run: |
+          python tools/pubpres_render_probes/run_probes.py --source-root $PWD.Path --source-sha $env:GITHUB_SHA --platform windows --engine (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe') --output build/pubpres-windows-renderer-probes
+          if ($LASTEXITCODE -ne 0) { throw 'Original negative renderer probes retained' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-windows-renderer-probes-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-windows-renderer-probes/
+          if-no-files-found: error
+          retention-days: 90
+
+  runtimes:
+    needs: [plan, windows-process-ownership, linux-process-ownership]
+    if: needs.plan.outputs.phase != 'probes'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 155
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        platform: [linux, windows]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 64, persist-credentials: false}
+      - name: Prepare exact reference checkouts and compiler dependency
+        run: |
+          git fetch --no-tags --depth=1 origin "$PUBPRES_MAIN" "$PUBPRES_INTEGRATION"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-main" "$PUBPRES_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-integration" "$PUBPRES_INTEGRATION"
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+      - name: Prepare pinned Windows cross compiler
+        if: matrix.platform == 'windows'
+        run: |
+          curl --fail --location --retry 3 --max-time 300 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: Build three independent source-bound runtimes
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          PUBPRES_GODOT_CPP_BUILD_LOG: build/pubpres-runtime/godot-cpp.log
+        run: |
+          mkdir -p build/pubpres-runtime
+          timeout 2400 bash tools/build_pinned_godot_cpp.sh "$PLATFORM" > build/pubpres-runtime/godot-cpp.log 2>&1
+          python3 tools/pubpres_playability_build/build_runtime.py --source-root "$RUNNER_TEMP/pubpres-main" --source-sha "$PUBPRES_MAIN" --platform "$PLATFORM" --output-dir build/pubpres-runtime/M
+          python3 tools/pubpres_playability_build/build_runtime.py --source-root "$RUNNER_TEMP/pubpres-integration" --source-sha "$PUBPRES_INTEGRATION" --platform "$PLATFORM" --output-dir build/pubpres-runtime/I
+          python3 tools/pubpres_playability_build/build_runtime.py --source-root "$PWD" --source-sha "$GITHUB_SHA" --platform "$PLATFORM" --output-dir build/pubpres-runtime/C
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-runtime-${{ matrix.platform }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-runtime/
+          if-no-files-found: error
+          retention-days: 90
+
+  native-authority:
+    needs: plan
+    if: needs.plan.outputs.phase == 'final'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env: {CXX: g++-13, CC: gcc-13}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Exact-source C++20 normal and sanitizer controls
+        run: |
+          mkdir -p build/pubpres-native
+          git rev-parse HEAD > build/pubpres-native/source-sha.txt
+          timeout 2400 make test wave-flow-test wave-spill-test wave-body-boundary-test material-baseline-test > build/pubpres-native/normal.log 2>&1
+          timeout 2400 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize > build/pubpres-native/sanitizers.log 2>&1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-native/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux-correctness:
+    needs: [plan, runtimes]
+    runs-on: ubuntu-24.04
+    # 27 admitted cases: 23x300s + 4x600s, then owned display/process
+    # retirement, source/engine preparation and evidence upload.
+    timeout-minutes: 210
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-playability-runtime-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - name: Prepare real graphical Linux runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python3 tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Native ownership, authoring and actual GPU history gates
+        run: |
+          python3 tools/pubpres_playability_build/run_regressions.py --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --runtime build/runtime/C --output build/pubpres-linux-correctness --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-linux-correctness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-linux-correctness/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux-comparison:
+    needs: [plan, runtimes]
+    if: needs.plan.outputs.phase != 'probes'
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ matrix.job_minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.plan.outputs.linux) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 64, persist-credentials: false}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-playability-runtime-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - name: Prepare pinned source, runtime and real display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+          git fetch --no-tags --depth=1 origin "$PUBPRES_MAIN" "$PUBPRES_INTEGRATION"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-main" "$PUBPRES_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-integration" "$PUBPRES_INTEGRATION"
+          git lfs install --local
+          for source_root in "$PWD" "$RUNNER_TEMP/pubpres-main" "$RUNNER_TEMP/pubpres-integration"; do
+            git -C "$source_root" lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          done
+          python3 tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Matched physical progression and paired render-owner diagnostic
+        env: {PUBPRES_CASE: '${{ matrix.case }}', PUBPRES_STAGE: '${{ matrix.stage }}'}
+        run: |
+          python3 tools/pubpres_playability_build/run_comparisons.py --main "$RUNNER_TEMP/pubpres-main" --integration "$RUNNER_TEMP/pubpres-integration" --candidate "$PWD" --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --runtime-root build/runtime --output build/pubpres-linux-comparison --case "$PUBPRES_CASE" --stage "$PUBPRES_STAGE" --display-wrapper "$PWD/tools/pubpres_playability_build/owned_xvfb.py"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-linux-${{ matrix.case }}-${{ matrix.stage }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-linux-comparison/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-package:
+    needs: [plan, runtimes]
+    runs-on: windows-2022
+    # Source correctness 155m + installed OFF/ON 50m + seven bounded
+    # launcher import/start pairs 77m, plus ownership/preparation/upload.
+    # This parent allowance changes no capture, native or child deadline.
+    timeout-minutes: 360
+    defaults:
+      run: {shell: powershell}
+    steps:
+      - name: Preserve canonical source newlines
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 64, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-playability-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - name: Prepare independent source projects and signed dependencies
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git fetch --no-tags --depth=1 origin $env:PUBPRES_MAIN $env:PUBPRES_INTEGRATION
+          if ($LASTEXITCODE -ne 0) { throw 'Reference source fetch failed' }
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-main') $env:PUBPRES_MAIN
+          if ($LASTEXITCODE -ne 0) { throw 'Main source checkout failed' }
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-integration') $env:PUBPRES_INTEGRATION
+          if ($LASTEXITCODE -ne 0) { throw 'Integration source checkout failed' }
+          git lfs install --local
+          foreach ($SourceRoot in @($PWD.Path,(Join-Path $env:RUNNER_TEMP 'pubpres-main'),(Join-Path $env:RUNNER_TEMP 'pubpres-integration'))) {
+            git -C $SourceRoot lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+            if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
+          }
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot preparation failed' }
+          $Notices = Join-Path $env:RUNNER_TEMP 'pubpres-notices'
+          [void][IO.Directory]::CreateDirectory($Notices)
+          function Fetch([string]$Url,[string]$File) {
+            curl.exe --fail --location --retry 3 --max-time 300 --output $File $Url
+            if ($LASTEXITCODE -ne 0) { throw ('Dependency capture failed: '+$Url) }
+          }
+          foreach ($Name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            Fetch ('https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/'+$Name) (Join-Path $Notices $Name)
+          }
+          $RuntimeLicense = Join-Path $Notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $DeveloperLicense = Join-Path $Notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          Fetch 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx' $RuntimeLicense
+          Fetch 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx' $DeveloperLicense
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pubpres-vc') -License $RuntimeLicense -DeveloperLicense $DeveloperLicense
+      - name: Build a newly named exact-source Windows evaluator
+        id: package-build
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Archive = Join-Path $PWD ('delivery/CyberSand-PUBPRES-PLAYABILITY-001-'+$env:GITHUB_SHA.Substring(0,12)+'-Windows.zip')
+          python tools/pubpres_playability_windows/package_windows.py `
+            --candidate-root $PWD --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C `
+            --main-root (Join-Path $env:RUNNER_TEMP 'pubpres-main') --main-sha $env:PUBPRES_MAIN --main-runtime build/runtime/M `
+            --integration-root (Join-Path $env:RUNNER_TEMP 'pubpres-integration') --integration-sha $env:PUBPRES_INTEGRATION --integration-runtime build/runtime/I `
+            --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') `
+            --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-notices') `
+            --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-payload') --archive $Archive
+          if ($LASTEXITCODE -ne 0) { throw 'New independent-source evaluator build failed' }
+          Copy-Item tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1 delivery/
+      - name: Actual Windows corruption, stale source and process-failure gates
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Payload = Join-Path $env:RUNNER_TEMP 'pubpres-payload'
+          $Archive = Join-Path $PWD ('delivery/CyberSand-PUBPRES-PLAYABILITY-001-'+$env:GITHUB_SHA.Substring(0,12)+'-Windows.zip')
+          & (Join-Path $Payload 'tools/pubpres_playability_windows/Test-Package.ps1') -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Output (Join-Path $PWD 'build/pubpres-package-checks') -ArtifactZip $Archive
+      - name: Actual pristine-package graphical startup and profile reopening
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Payload = Join-Path $env:RUNNER_TEMP 'pubpres-payload'
+          $Launcher = Join-Path $Payload 'tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1'
+          foreach ($Source in @('Main','Integration','Candidate')) {
+            & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -Source $Source -RenderingDriver opengl3_angle -QuitAfterReady
+          }
+          & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -Source Candidate -StagingPools Reachable -RenderThread Safe -RenderingDriver opengl3_angle -QuitAfterReady
+          $Runs = Join-Path $env:RUNNER_TEMP 'Runs'
+          $Reopen = @(Get-ChildItem -LiteralPath $Runs -Directory | Where-Object {
+            $RunRecord = Get-Content -LiteralPath (Join-Path $_.FullName 'run.json') -Raw | ConvertFrom-Json
+            $RunRecord.source -eq 'C' -and $RunRecord.render_thread -eq 'safe' -and $RunRecord.staging_pools -eq 'reachable'
+          })
+          if ($Reopen.Count -ne 1) { throw 'Expected one exact candidate Safe/reachable run to reopen' }
+          & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -ReopenRun $Reopen[0].FullName -QuitAfterReady
+          python tools/pubpres_playability_windows/package_windows.py --verify --candidate-sha $env:GITHUB_SHA --output-dir $Payload
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine payload changed during installed qualification' }
+      - name: Independent continuation ON installed startup and same-profile reopening
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Payload = Join-Path $env:RUNNER_TEMP 'pubpres-payload'
+          $Launcher = Join-Path $Payload 'tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1'
+          $Runs = Join-Path $env:RUNNER_TEMP 'Runs'
+          if (-not (Test-Path -LiteralPath $Runs)) { New-Item -ItemType Directory -Path $Runs | Out-Null }
+          $BeforeContinuation = @(Get-ChildItem -LiteralPath $Runs -Directory | ForEach-Object { $_.FullName })
+          & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -Source Candidate -SameFrameContinuation On -RenderThread Safe -RenderingDriver opengl3_angle -QuitAfterReady
+          $ContinuationRun = @(Get-ChildItem -LiteralPath $Runs -Directory | Where-Object {
+            $RunRecord = Get-Content -LiteralPath (Join-Path $_.FullName 'run.json') -Raw | ConvertFrom-Json
+            $BeforeContinuation -cnotcontains $_.FullName -and $RunRecord.source -ceq 'C' -and
+              $RunRecord.same_frame_continuation -ceq 'on' -and $RunRecord.render_driver -ceq 'opengl3_angle' -and
+              $RunRecord.render_thread -ceq 'safe' -and $RunRecord.staging_pools -ceq 'eager'
+          })
+          if ($ContinuationRun.Count -ne 1) { throw 'Expected one exact continuation-On run to reopen' }
+          $VerifiedOn = @(Get-ChildItem -LiteralPath (Join-Path $ContinuationRun[0].FullName 'launches') -Filter 'verified-startup.json' -Recurse -File)
+          if ($VerifiedOn.Count -ne 1) { throw 'Fresh continuation-On run has no unique verified graphical startup' }
+          & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -ReopenRun $ContinuationRun[0].FullName -SameFrameContinuation On -QuitAfterReady
+          python tools/pubpres_playability_windows/package_windows.py --verify --candidate-sha $env:GITHUB_SHA --output-dir $Payload
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine payload changed during On startup qualification' }
+      - name: Exact-source Windows authoring, ownership and GPU history gates
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          python tools/pubpres_playability_build/run_regressions.py --engine (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe') --runtime build/runtime/C --output build/pubpres-windows-correctness
+          if ($LASTEXITCODE -ne 0) { throw 'Windows scoped source qualification failed' }
+      - name: Installed continuation OFF graphical Save and fresh-process native-plane reconstruction
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          python tools/pubpres_playability_build/run_installed_authoring.py --package (Join-Path $env:RUNNER_TEMP 'pubpres-payload') --candidate $env:GITHUB_SHA --output build/pubpres-installed-authoring-off --same-frame off
+          if ($LASTEXITCODE -ne 0) { throw 'Installed graphical author/Save/reopen failed' }
+      - name: Installed continuation ON graphical Save and fresh-process native-plane reconstruction
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          python tools/pubpres_playability_build/run_installed_authoring.py --package (Join-Path $env:RUNNER_TEMP 'pubpres-payload') --candidate $env:GITHUB_SHA --output build/pubpres-installed-authoring-on --same-frame on
+          if ($LASTEXITCODE -ne 0) { throw 'Installed continuation-On graphical author/Save/reopen failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-windows-package-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-windows-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-package-checks/
+            build/pubpres-windows-correctness/
+            build/pubpres-installed-authoring-off/
+            build/pubpres-installed-authoring-on/
+            ${{ runner.temp }}/Runs/
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows-comparison:
+    needs: [plan, runtimes]
+    if: needs.plan.outputs.phase != 'probes'
+    runs-on: windows-2022
+    timeout-minutes: ${{ matrix.job_minutes }}
+    defaults:
+      run: {shell: powershell}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.plan.outputs.windows) }}
+    steps:
+      - name: Preserve canonical source newlines
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 64, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-playability-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - name: Prepare independent native sources and actual Windows renderer
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git fetch --no-tags --depth=1 origin $env:PUBPRES_MAIN $env:PUBPRES_INTEGRATION
+          if ($LASTEXITCODE -ne 0) { throw 'Reference fetch failed' }
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-main') $env:PUBPRES_MAIN
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-integration') $env:PUBPRES_INTEGRATION
+          git lfs install --local
+          foreach ($SourceRoot in @($PWD.Path,(Join-Path $env:RUNNER_TEMP 'pubpres-main'),(Join-Path $env:RUNNER_TEMP 'pubpres-integration'))) {
+            git -C $SourceRoot lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+            if ($LASTEXITCODE -ne 0) { throw 'Own-source Rapier materialization failed' }
+          }
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned engine preparation failed' }
+      - name: Same-host matched progression and paired scheduling controls
+        env: {PUBPRES_CASE: '${{ matrix.case }}', PUBPRES_STAGE: '${{ matrix.stage }}'}
+        run: |
+          $Parameters = @('tools/pubpres_playability_build/run_comparisons.py',
+            '--main',(Join-Path $env:RUNNER_TEMP 'pubpres-main'),
+            '--integration',(Join-Path $env:RUNNER_TEMP 'pubpres-integration'),
+            '--candidate',$PWD.Path,'--engine',(Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe'),
+            '--runtime-root','build/runtime','--output','build/pubpres-windows-comparison','--case',$env:PUBPRES_CASE,'--stage',$env:PUBPRES_STAGE)
+          & python @Parameters
+          if ($LASTEXITCODE -ne 0) { throw 'Original incomplete or invalid comparison retained' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-playability-windows-${{ matrix.case }}-${{ matrix.stage }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-windows-comparison/
+          if-no-files-found: error
+          retention-days: 90

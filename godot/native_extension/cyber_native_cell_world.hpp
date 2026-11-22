@@ -223,6 +223,9 @@ private:
 
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
+    // Captured once by the external owner during adapter construction. Native
+    // pool tasks never access ProjectSettings or any Godot object.
+    bool pubpres_wave_column_probe_ = false;
     cybersand::TickStats last_stats_{};
     BodyStates current_bodies_{};
     BodyStates previous_bodies_{};

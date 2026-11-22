@@ -111,7 +111,7 @@ func _test_published_payload_ownership() -> void:
 	worker._append_native_render_packet({
 		"serial": 1,
 		"channels": 2,
-		"full_refresh": true,
+		"full_refresh": false,
 		"rectangles": PackedInt32Array([0, 0, 2, 1, 0, 4]),
 		"cells": PackedByteArray([1, 2, 3, 4]),
 	})

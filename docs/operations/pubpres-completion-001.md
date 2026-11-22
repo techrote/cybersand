@@ -1,0 +1,177 @@
+# PUBPRES-COMPLETION-001 — engineering handover
+
+**Status: active engineering; Draft/HOLD.** This file records the new integration,
+not a retrospective performance PASS. Production defaults, donor branches and
+owner merge authority remain unchanged. Owner Windows/NVIDIA acceptance has not
+been performed by this mission.
+
+## Contents
+
+1. **Source custody** — Accepted main, immutable donor identities and integration decisions.
+2. **Ownership and execution** — The actual worker, Main, physics and rendering boundaries.
+3. **Corrections and evidence** — Reproduced failures, repairs and qualified limitations.
+4. **Qualification protocol** — Source-matched physical, graphical and platform gates.
+5. **Delivery and owner acceptance** — Windows package, launch and practical decision gates.
+
+## 1. Source custody
+
+| Source | Exact identity | Disposition |
+| --- | --- | --- |
+| Accepted main at integration | `00cdb02f103265b6dc5224c68283e9a0c8cb449f`, tree `06b62d73138028d1f7615b83edc9810491bf6287` | New candidate starts here; preserve accepted actor, Art/session logging, Water and CI work. |
+| Original integration [#682](https://github.com/techrote/cybersand/pull/682) | `4302ba2058c1bdac1c3fc54540c078dfc9147573` | Preserved code/evidence donor; not an exact-head performance PASS. |
+| Protected archive | `archive/pubpres-integration-001-4302ba20-20261122` at the same `4302ba20` | Read only; no rewrite. |
+| Measured original integration I | `8503ec19e4d620e125dc6df2c5c6571b1256cb92` | Historical physical comparison source, only with its own native runtime. |
+| Playability D [#719](https://github.com/techrote/cybersand/pull/719) | `d316c281e0abb575eb6302afc12ec44f211460ba`, tree `7a57dc0873dd161abe165f3a60e14e64886d04a8` | Common implementation donor, integrated once. Its failed final campaign remains negative. |
+| Later recovered [#740](https://github.com/techrote/cybersand/pull/740) | `adedb2761bad6cce91002ffe50c50c39b5f63645`, tree `3eb5c0490aa29b4569ceebef48ccd338079b63b6` | Selective salvage: source custody, import fix, causal traces, mounted camera fixture and measured native correction. No wholesale second integration. |
+| New candidate C | `codex/pubpres-completion-001-20261122` | Dedicated branch. Read exact commit/tree from each build/qualification receipt. |
+
+The first local integration is a two-parent merge of accepted main and D:
+`5ecdc3ca97aaa862e842cee767b81c52927a24da`, tree
+`75c5899aecdf06812dc5f4b4a365366b97652554`. A connector-published commit may
+have different commit metadata; any such mapping must prove identical tree and
+parents rather than relabel local execution as execution of another commit.
+
+| Shared source | Reconciliation |
+| --- | --- |
+| `godot/scripts/main.gd` | Retain D's strict Workbench admission, separate physics publication, optional same-frame/rendezvous paths, dual-history publication and camera/presentation controls. Root owns this integration seam. Add bounded causal observation without changing authority. |
+| `godot/scripts/simulation_worker.gd` | Retain D's immutable health-first publications, native ownership and genuine sample wake. Specialist A owns changes. |
+| `godot/scripts/simulation_snapshot.gd` | Retain the donor's distinct native/physics/render identities and timestamps; no new mutable cross-thread state. |
+| `godot/scripts/rapier_physics_bridge.gd` and `workbench_physics_bridge.gd` | Preserve accepted manual stepping, exact actor/sample/terrain checks and response validation. |
+| `godot/scripts/shared_workbench.gd`, `art_batch_panel.gd` | Merge donor camera/Workbench controls with accepted session-only audit and actor composition. Do not restore persistent session-log duplication. |
+| `blit_material_publisher.gd`, presentation/coherence/pose modules | Reuse the integrated implementation and keep full-image fallback. Specialist B owns renderer fixes and independent byte oracles. |
+| Native adapter | Retain D's source-matched diagnostic/probe and reset failure-safety changes. No old native binary substituted. |
+| Windows/qualification tooling | Specialist C salvages the independently diagnosed import fix, repairs stale native-source guards and bounded workflow scheduling, then qualifies actual extracted packages. |
+
+Related programme and donors: [#717](https://github.com/techrote/cybersand/issues/717),
+[#577](https://github.com/techrote/cybersand/issues/577),
+[#609](https://github.com/techrote/cybersand/pull/609),
+[#628](https://github.com/techrote/cybersand/pull/628),
+[#651](https://github.com/techrote/cybersand/pull/651).
+The [306-artifact recovery handoff](https://github.com/techrote/cybersand/pull/682#issuecomment-7084581385)
+is the original evidence catalogue; do not duplicate its multi-gigabyte archive
+into source. SWARM, ObjectShard, Water-family, ACT composition, SCRIPT-HOTPATH and
+unrelated CI programmes retain their separate ownership.
+
+## 2. Ownership and execution
+
+```mermaid
+flowchart TD
+    Input["Accepted input and body sample"] --> Worker["Exclusive native World worker"]
+    Worker --> Health["Native health and complete sample"]
+    Health --> Physics["Immutable physics mailbox"]
+    Health --> Material["Immutable material publication"]
+    Physics --> Gate["Main: owner, sample and terrain gates"]
+    Gate --> Rapier["One genuine fixed Rapier step"]
+    Rapier --> Input
+    Material --> Upload["Main: current and previous histories"]
+    Upload --> Ack["CPU publication ACK"]
+    Ack --> Worker
+    Upload --> Present["Qualified pose and camera selection"]
+    Rapier --> Present
+    Present --> Render["Godot render submission and callback"]
+```
+
+Native World is owned by its worker. Rapier and scene/UI mutation are owned by
+Main. Publications are immutable and independently fenced. A rendering ACK
+releases retained CPU data after successful submission; it is not proof of GPU
+completion. Neither `frame_post_draw` nor a render FPS counter proves scanout or
+physical advancement.
+
+Full ImageTexture publication, legacy guarded presentation and disabled
+experimental continuations remain the conservative defaults. Every experiment
+has an explicit selector, a bounded trace and a source-matched OFF control.
+
+Causal observation joins sample acceptance, worker latch, native start/end,
+healthy mailbox handoff, Main observation, terrain installation, native response
+application, genuine manual steps, material consumption, ACK and Main callback
+boundaries. The trace records World/session/epoch/sample/revision identities.
+Observation does not authorize work, read World from Main, add mailbox polls,
+install extra terrain, accumulate time credits or create callbacks.
+
+## 3. Corrections and evidence
+
+### Preserved negative findings
+
+- Original Windows M–I–C run `44785110041` preserved the first 144 actual Rapier
+  outcomes but did not establish consistent C-over-I progression improvement.
+- Original installed qualification: 22 PASS / 5 FAIL; four Separate startup
+  failures and the rendezvous observation failure. These are not rewritten.
+- `4302ba20` packaging and documentation failures prevented exact-head
+  qualification; obsolete `de109d01` guards and missing matrix `max-parallel`
+  are plumbing defects, not passing gameplay evidence.
+- D's final run `44963596029` retained Windows import-custody and Linux GPU
+  first-read failures. Same-frame continuation did not establish Wave2048 gain.
+- Dense/sparse and fresh-storage experiments that moved work downstream remain
+  negative unless a new controlled experiment supplies contrary evidence.
+
+### Reproduced in this mission
+
+The pinned Godot 4.7 timer implementation subtracts the iteration's precomputed
+delta from timers created later in that iteration. A controlled reproduction
+with 175 ms preceding-frame work made a newly created 150 ms timer expire after
+33,460 wall microseconds and two genuine physics callbacks. This explains a
+mechanism for the original false observation window; original logs do not retain
+enough clocks to reconstruct its exact first decrement. The corrected gate must
+still require three callbacks within a real 150,000-microsecond observation and
+must preserve a failure for actual starvation. It must not simply await three
+callbacks without a deadline.
+
+The renderer specialist reproduced the Safe reachable/R8/two-slot failure on
+pinned Godot 4.7 with llvmpipe: the first current-history read contained four
+stale pixels; the immediate second read and previous-history read were exact.
+This is a real first-read correctness failure. A second-read-only oracle is not
+an acceptable repair.
+
+The recovered Radial2D descriptor issue is a specific CRLF-to-LF conversion,
+not permission to ignore source changes. Pinning canonical descriptor bytes must
+retain unexpected-change and tamper rejection.
+
+## 4. Qualification protocol
+
+Qualification separates source tests, headless native/Rapier, real graphical
+Linux software rendering, hosted Windows ANGLE/WARP, and owner NVIDIA gameplay.
+No category substitutes for another. Local GCC 14.2 development results must
+not be described as the pinned hosted compiler result.
+
+Before timing, require exact source/runtime/fixture identity, valid native health,
+actual worker participation, complete ordered input tape, identical completed-step
+actor/contact outcomes, bounded queues and complete histories. Preserve the
+original arm when an import, renderer startup, readback or timeout fails.
+
+Use same-host counterbalanced OFF/ON/ON/OFF or D/C/C/D arms. Fixed-first-144
+completed-step outcomes and equal wall-time windows answer different questions;
+report both without pooling unlike hosts or averaging percentile populations.
+Measure actual steps/s and physical-gap p50/p95/p99/max, native time and handoff,
+sample readiness-to-admission, terrain time, frame intervals, accepted revisions,
+material age, publication CPU time and memory. Add sustained playback beyond
+startup. Final acceptance requires repeatable representative Wave gameplay gains
+without equivalent downstream stalls, material corruption or non-Wave regression.
+Record exact numerical decision criteria before the frozen campaign.
+
+Required correctness includes delayed completion, reset/epoch/pause fences,
+stale/missing/advanced ACK, rejected material patches, history recovery,
+dense-to-sparse reuse, real save/fresh-process reopen and active shutdown.
+The transition oracle retains all 180 accepted revisions and both full histories.
+Independent review rotates A over B's coupling, B over A's temporal correctness,
+C over measurements/custody, with root reviewing every authority change.
+
+## 5. Delivery and owner acceptance
+
+The final evaluator must contain the pinned stock Godot 4.7 executable, exact
+native and Rapier DLLs, required runtime components/notices, project resources,
+every-file manifest/checksums and an obvious `Open Workbench.cmd`. Default launch
+is ordinary conservative Workbench. Experimental comparisons use separate labels.
+
+Extract into a fresh writable directory and actually launch, advance a native
+Wave/physical-actor workload, author, Save and reopen in a new process. Verify
+source immutability and result export after execution. A built ZIP alone is not
+installed-package qualification.
+
+Owner acceptance must cover sustained Wave/actor play, Follow and Free cameras,
+fast rotation/effects, dense transitions, painting, pause/reset/save/reopen and
+longer playback. Export timing and logs. Windows software-host success remains
+separate from the owner's TITAN RTX or other NVIDIA hardware decision.
+
+Final disposition remains **REPAIR/HOLD** until the source-matched progression,
+correctness, installed Windows and independent review gates have actual evidence.
+No merge, Ready promotion, automatic default change or donor closure is allowed.

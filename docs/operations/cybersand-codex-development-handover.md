@@ -40,6 +40,35 @@ shipped launchers. An independent final review and exact-source graphical result
 belong in the PR ledger. Keep Draft/HOLD until explicit owner approval; software
 rendering does not establish physical Windows/NVIDIA acceptance.
 
+## Workbench publication and progression repair — 2026-11-20
+
+PR #682 remains **Draft/HOLD; no merge or Ready promotion**. Continue from the
+[PUBPRES integration evaluation](pubpres-integration-evaluation.md), which owns
+the source/runtime controls, preserved negative renderer results and actual
+three-source Windows comparison. Matched gameplay rejected the temporary
+automatic Windows software-ANGLE full-upload override; the repair removes it
+and preserves explicit full selection. It bounds idle timer debt after completed
+physical samples. Accepted main and the previous integration are preserved as
+complete executable references. Owner physical Windows/NVIDIA acceptance is
+separate from hosted WARP and Linux software-renderer qualification.
+
+The dedicated [PUBPRES-PLAYABILITY-001 successor](pubpres-playability-evaluation.md)
+is issue #717 / Draft #719. Its a707 development campaign retains negative
+Windows512 progression, queued-pixel failures and distinct Separate-renderer
+crashes. Source-reviewed display/package harness repairs require fresh execution;
+they do not upgrade the failed original campaign. Keep the earlier #682 and its
+evidence unchanged, and keep the successor Draft/HOLD with ordinary defaults.
+The new default-off same-frame continuation has independent source-safety
+clearance and explicit v3 callback-credit measurement. Its prospective paired
+source/runtime campaign and versioned owner evaluator must establish graphical
+progression; headless positive admission does not establish a speed improvement.
+
+For the PUBPRES-PLAYABILITY successor, the
+[isolated renderer runbook](../../tools/pubpres_render_probes/README.md) provides
+finite font/startup/material controls before expensive native builds. It keeps
+the original first-read pixel oracle and all negative arm receipts. These
+diagnostics grant no native, package, pacing or gameplay acceptance; keep Draft/HOLD.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at
