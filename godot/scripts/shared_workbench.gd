@@ -1552,9 +1552,13 @@ func _world_input(event: InputEvent) -> void:
 	if not m4_moving_tool and not applied.is_empty() and paint_editor != null \
 			and paint_editor.world_input(event): return
 	if applied.is_empty() or busy():
-		if m4_moving_tool and event is InputEventMouseButton \
-				and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
-			refuse("ObjectShard M4: WorkbenchUnavailable")
+		if m4_moving_tool:
+			# A blocked or aborted pointer stroke cannot resume after Apply/F2.
+			_drag_button = 0
+			_last_cell = Vector2i(-1, -1)
+			if event is InputEventMouseButton and event.pressed \
+					and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+				refuse("ObjectShard M4: WorkbenchUnavailable")
 		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
