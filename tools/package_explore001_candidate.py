@@ -89,7 +89,7 @@ def main():
         raise ValueError("Candidate destination must be a new directory")
     # Read source from the Git tree. Never package editor imports, untracked
     # files, local source deltas, credentials or another worktree's DLL.
-    names = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json",
+    names = ["godot", "examples/worldgen", "tools/acceptance/gentek80_owner.ps1", "third_party/godot-runtime.lock.json",
              "third_party/native-toolchain.lock.json", "third_party/rapier-bvh-build.lock.json",
              "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
              "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md",
@@ -135,6 +135,16 @@ def main():
     # The guide follows the same committed source as the application payload;
     # a working-tree documentation edit must not enter a source-matched package.
     shutil.copyfile(args.output / args.readme, args.output / "READ-ME.md")
+    # The original legacy launcher is retained for historical compatibility.
+    # New packages expose a fail-closed owner launcher: pin source and check
+    # every immutable package file before importing or starting the GUI.
+    (args.output / "Verify and Open Workbench.cmd").write_text(
+        '@echo off\nsetlocal\ncd /d "%~dp0"\n'
+        'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File '
+        '"%~dp0tools\\acceptance\\gentek80_owner.ps1" -Action Launch -PackagePath "%~dp0" '
+        f'-ExpectedSource {manifest["source_commit"]}\n'
+        'exit /b %errorlevel%\n',
+        encoding="utf-8", newline="\r\n")
     files = {p.relative_to(args.output).as_posix(): native.sha(p)
              for p in sorted(args.output.rglob("*")) if p.is_file()}
     identity = {"schema": 1, "purpose": "owner desktop playtest candidate; not a production release",
