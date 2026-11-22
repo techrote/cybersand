@@ -86,3 +86,77 @@ jobs:
           path: evidence/
           if-no-files-found: warn
           retention-days: 60
+
+  windows:
+    name: Windows Godot 4.7 actual Workbench / Rapier pilot regression
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - name: Exact source checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Prove donor native source unchanged
+        shell: pwsh
+        run: |
+          git merge-base --is-ancestor a85b3a5655e7f711ce27fbfc8fee7819332006f0 HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Missing original integrated parent' }
+          $changes = @(git diff --name-only a85b3a5655e7f711ce27fbfc8fee7819332006f0 HEAD -- native/ third_party/ godot/addons/)
+          if ($changes.Count -ne 0) { throw "Donor native or addon bytes modified: $changes" }
+      - name: Fetch native Windows candidate from exact preceding qualification
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-runtime-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1
+          run-id: 45068056417
+          github-token: ${{ github.token }}
+          path: donor
+      - name: Install donor native DLL and matching Rapier
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Retained Windows Rapier library absent' }
+          $candidate = @(Get-ChildItem donor -Filter 'cybersand_native.windows.x86_64.dll' -File -Recurse)
+          if ($candidate.Count -ne 1) { throw 'Expected exactly one donor Windows DLL' }
+          $destination = 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
+          Copy-Item $candidate[0].FullName $destination -Force
+          if (!(Test-Path $destination) -or !(Test-Path 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll')) {
+            throw 'Native runtime or Rapier missing'
+          }
+          Get-FileHash $destination -Algorithm SHA256 | Format-List | Out-String | Set-Content evidence/native-identity.txt
+      - name: Fetch and authenticate pinned Windows Godot
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Pinned Godot archive mismatch' }
+          $output = Join-Path $env:RUNNER_TEMP 'godot-win47'
+          Expand-Archive -Path $zip -DestinationPath $output
+          'GODOT_EXE=' + (Join-Path $output 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Import Godot project and exact scripts
+        shell: pwsh
+        run: |
+          & $env:GODOT_EXE --headless --path godot --editor --quit *> evidence/godot-import.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/godot-import.log -Tail 100; throw 'Godot import failed' }
+      - name: Exercise actual Windows GUI input to Rapier under ANGLE
+        shell: pwsh
+        run: |
+          & $env:GODOT_EXE --path godot --rendering-driver opengl3_angle --script res://tests/test_workbench_actor_configuration_native.gd *> evidence/pilot-input-native.log
+          $exit = $LASTEXITCODE
+          Get-Content evidence/pilot-input-native.log -Tail 80
+          if ($exit -ne 0) { throw 'Windows pilot regression failed' }
+          $receipt = @(Select-String -Path evidence/pilot-input-native.log -SimpleMatch 'WB_ACTOR_CONFIGURATION_NATIVE ')
+          if ($receipt.Count -eq 0 -or $receipt[-1].Line -notmatch '"failures":\[\]') { throw 'Windows configuration native receipt absent or failed' }
+          if (Select-String -Path evidence/pilot-input-native.log -Pattern 'SCRIPT ERROR|Parse Error|ERROR:.*WB_ACTOR_CONFIGURATION_NATIVE') { throw 'Unreported Godot script/test failure' }
+      - name: Retain Windows raw output regardless of outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-pilot-759-windows-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 60
