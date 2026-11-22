@@ -15,7 +15,7 @@ on:
       - 'tools/ci/test_gen006_packaged_smoke.ps1'
       - 'tools/ci/test_gen006_ramcache_packaged_smoke.ps1'
   push:
-    branches: [exp/gen006-ramcache-001-20261122]
+    branches: [exp/gen006-ramcache-finisher-001-20261122]
     paths:
       - 'tools/ci/gen006_ramcache_publish_request.json'
       - '.github/workflows/gen006-ramcache-qualification.yml'
@@ -49,7 +49,7 @@ defaults:
 jobs:
   publisher-guards:
     name: validate isolated publication and evaluator guards
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-001-20261122') || (github.event_name == 'pull_request' && github.head_ref == 'exp/gen006-ramcache-001-20261122' && github.base_ref == 'exp/gen006-persistent-areas-001-20261121'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122') || (github.event_name == 'pull_request' && github.head_ref == 'exp/gen006-ramcache-finisher-001-20261122' && github.base_ref == 'main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -77,7 +77,7 @@ jobs:
 
   windows-smoke-guards:
     name: Windows PowerShell 5 portable smoke failure guards
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-001-20261122') || (github.event_name == 'pull_request' && github.head_ref == 'exp/gen006-ramcache-001-20261122' && github.base_ref == 'exp/gen006-persistent-areas-001-20261121'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122') || (github.event_name == 'pull_request' && github.head_ref == 'exp/gen006-ramcache-finisher-001-20261122' && github.base_ref == 'main'))
     runs-on: windows-2022
     timeout-minutes: 10
     steps:
@@ -120,7 +120,7 @@ jobs:
   admission:
     needs: [publisher-guards, windows-smoke-guards]
     name: require explicit request and unchanged GEN-006 branch
-    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-001-20261122'
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
@@ -516,7 +516,7 @@ jobs:
   publish:
     needs: [linux, windows-execution]
     name: append both qualified runtimes to unchanged GEN-006 branch
-    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-001-20261122'
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -560,7 +560,7 @@ jobs:
           test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
           # This lease only appends the verified single-child commit; concurrent
           # source changes or resets cause refusal, never an overwritten branch.
-          git push --force-with-lease="refs/heads/exp/gen006-ramcache-001-20261122:$GITHUB_SHA" origin HEAD:refs/heads/exp/gen006-ramcache-001-20261122
+          git push --force-with-lease="refs/heads/exp/gen006-ramcache-finisher-001-20261122:$GITHUB_SHA" origin HEAD:refs/heads/exp/gen006-ramcache-finisher-001-20261122
           {
             echo '### GEN-006 RAM cache — Draft/HOLD'
             echo "Exact implementation source: $GITHUB_SHA"
