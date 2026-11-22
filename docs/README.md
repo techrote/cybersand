@@ -47,6 +47,11 @@ physical NVIDIA acceptance remain pending.
 For native-independent font/startup and queued-history diagnosis before native
 builds, use [isolated render diagnostics](operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
 
+For the corrective PUBPRES-PLAYABILITY-003 mission, use its
+[live recovery handover](../RECOVERY_HANDOVER.md). The original final campaign's
+large-canvas progression, renderer and package failures remain retained; new
+source-matched qualification is required before a playable-successor claim.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
