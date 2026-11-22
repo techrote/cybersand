@@ -62,7 +62,7 @@ func run() -> void:
 	check(panel.conversation.is_empty() and not panel.provider.resume_active,"revealing Art cannot load previous session")
 	check(await wait_ready(host),"native Workbench ready")
 	check(panel.remember_turn("user","session marker A"),"new session begins with writable audit")
-	var first := panel.provider.log_path
+	var first: String = str(panel.provider.log_path)
 	check(not first.is_empty() and first != legacy and first != missing,"first event creates independent root JSONL")
 	check(panel.provider.parent_log_path.is_empty(),"first log has no parent")
 	var first_text := FileAccess.get_file_as_string(first)
@@ -87,7 +87,7 @@ func run() -> void:
 	panel.input.text = "Return []"
 	panel.turn_limit.value = 1
 	panel.seconds.value = 2
-	var before_serial := panel.provider.serial
+	var before_serial: int = int(panel.provider.serial)
 	panel.send_prompt()
 	check(panel.provider.serial == before_serial+1,"missing saved log cannot block Send")
 	panel.stop_all("Offline fixture cancelled")
@@ -113,7 +113,7 @@ func run() -> void:
 	check(panel2.conversation_loaded and panel2.conversation.is_empty(),"new Workbench never remembers previous model context")
 	check(panel2.provider.log_path.is_empty() and panel2.provider.parent_log_path.is_empty(),"new Workbench does not reuse prior file")
 	check(panel2.remember_turn("user","session marker B"),"new session opens its own root audit")
-	var second := panel2.provider.log_path
+	var second: String = str(panel2.provider.log_path)
 	check(second != first and not second.is_empty(),"distinct game sessions create distinct files")
 	var second_text := FileAccess.get_file_as_string(second)
 	check(second_text.contains("session_start") and not second_text.contains("session_parent") and second_text.contains("session marker B") and not second_text.contains("session marker A"),"second log is independent and contains only its own turns")
