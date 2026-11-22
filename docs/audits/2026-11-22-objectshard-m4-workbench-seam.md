@@ -100,10 +100,24 @@ competing source owners and **does not satisfy M4**.
   including original native Workbench refusal, optional ordinary Water/physics
   regressions and M3 standalone controls.
 
-### Required native-specialist handoff
+### Native-specialist contract and Godot worker ownership
 
-Implement three **value-only, mutex-safe methods on the existing
-CyberSimulationWorker**. Only its exclusive worker may call World methods:
+**Ownership split:** The native specialist must provide actual C++/registered
+same-World primitives on the **already existing CyberNativeCellWorld**
+for detached inventory, exact target edits, revisioned mutation/motion
+receipts, lifecycle disposal and compatibility with active Water. They
+must prove equality with the ordinary worker's _world instance rather
+than construct CyberObjectShardLab beside it. This specialist does NOT
+own godot/scripts/simulation_worker.gd.
+
+The three interface methods below belong on the existing
+CyberSimulationWorker as **Godot-side wrapper methods**, owned by this
+Workbench scope or its integration lead **after** the native API has been
+agreed and delivered. The current port detects their absence and refuses;
+we do not create speculative script stubs or call nonexistent native
+methods. Each wrapper must use copied, mutex-safe values; only the
+worker's exclusive thread may invoke native World methods:
+
 
 1. object_shard_same_world_capabilities() -> Dictionary. Must identify
    host=ordinary-workbench, owner=simulation-worker, mode=same-world,
