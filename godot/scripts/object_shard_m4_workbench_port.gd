@@ -301,14 +301,19 @@ func poll_results(worker: Object, maximum: int = 16) -> Dictionary:
 		return {"ok": false, "outcome": "InvalidReceiptLimit"}
 	var replies: Variant = worker.call(REQUIRED_METHODS[2], maximum)
 	if not replies is Array or replies.size() > maximum:
-		return _hold("InvalidReceiptBatch") if not _pending.is_empty() else \
-			{"ok": false, "outcome": "InvalidReceiptBatch"}
+		if not _pending.is_empty():
+			return _hold("InvalidReceiptBatch")
+		return {"ok": false, "outcome": "InvalidReceiptBatch"}
 	var accepted: int = 0
 	var refused: int = 0
 	for value: Variant in replies:
-		var disposition: Dictionary = consume_receipt(value) if value is Dictionary else \
-			_hold("InvalidReceipt") if not _pending.is_empty() else \
-			{"ok": false, "outcome": "InvalidReceipt"}
+		var disposition: Dictionary
+		if value is Dictionary:
+			disposition = consume_receipt(value)
+		elif not _pending.is_empty():
+			disposition = _hold("InvalidReceipt")
+		else:
+			disposition = {"ok": false, "outcome": "InvalidReceipt"}
 		if disposition.ok:
 			accepted += 1
 		else:
