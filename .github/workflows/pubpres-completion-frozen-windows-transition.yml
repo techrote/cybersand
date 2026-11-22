@@ -1,0 +1,201 @@
+name: PUBPRES Completion frozen Windows transition oracle
+
+on:
+  push:
+    branches: [codex/pubpres-completion-001-transition-qualification-20261122]
+    paths: ['.github/workflows/pubpres-completion-frozen-windows-transition.yml']
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  PUBPRES_CANDIDATE: c90dbc46e1f57f28e06b1f4205b83467335ff657
+  PUBPRES_EVALUATOR_SHA256: 4c81b8fc91f6cee6acb786d4b6ec077f6264addf59c3551136f83670c52c7a32
+  PUBPRES_MANIFEST_SHA256: 06de1d5fc355a4c005ef0823ee3db26e3638c1711444d171cba81f542e050a49
+  GIT_LFS_SKIP_SMUDGE: '1'
+
+jobs:
+  transition:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run: {shell: powershell}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        case: [transition_2048_w1]
+    env:
+      PUBPRES_CASE: ${{ matrix.case }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PUBPRES_CANDIDATE }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Verify original evaluator artifact identity
+        timeout-minutes: 3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ((git rev-parse HEAD) -cne $env:PUBPRES_CANDIDATE) { throw 'Frozen C source checkout differs' }
+          New-Item -ItemType Directory -Path 'build/frozen-transition' | Out-Null
+          $Raw = gh api "repos/$env:GITHUB_REPOSITORY/actions/artifacts/14777866285"
+          if ($LASTEXITCODE -ne 0) { throw 'Final evaluator artifact metadata unavailable' }
+          $Raw | Set-Content -Encoding UTF8 build/frozen-transition/original-artifact.json
+          $Artifact = $Raw | ConvertFrom-Json
+          if ($Artifact.id -ne 14777866285 -or $Artifact.expired -or $Artifact.size_in_bytes -ne 120419198 -or
+              $Artifact.workflow_run.id -ne 45078090513 -or $Artifact.workflow_run.head_sha -cne $env:PUBPRES_CANDIDATE -or
+              $Artifact.digest -cne 'sha256:1e0b5857351ad141b5117b0e2ca8be489583e47e6fa94a7aa868c93105e10cfd') {
+            throw 'Original final evaluator artifact differs'
+          }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 45078090513
+          name: pubpres-completion-windows-package-45078090513-1
+          path: ${{ runner.temp }}/pubpres-transition-download
+      - name: Strictly verify and install the frozen evaluator
+        timeout-minutes: 6
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Download = Join-Path $env:RUNNER_TEMP 'pubpres-transition-download'
+          $Archive = Join-Path $Download 'CyberSand-PUBPRES-COMPLETION-001-c90dbc46e1f5-Windows.zip'
+          $Launcher = Join-Path $PWD 'tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1'
+          $Install = Join-Path $env:RUNNER_TEMP 'pubpres-transition-installed'
+          if ((Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvariant() -cne $env:PUBPRES_EVALUATOR_SHA256) {
+            throw 'Inner evaluator archive digest differs'
+          }
+          $Options = @{ArtifactZip=$Archive;ExpectedArchiveSha256=$env:PUBPRES_EVALUATOR_SHA256;
+              ExpectedCandidate=$env:PUBPRES_CANDIDATE;ExpectedMission='PUBPRES-COMPLETION-001';
+              Destination=$Install;Action='Verify'}
+          & $Launcher @Options *>&1 | Tee-Object -FilePath build/frozen-transition/install.log
+          $LauncherCustody = @{checked_out_c90=(Get-FileHash -LiteralPath $Launcher).Hash.ToLowerInvariant();
+              downloaded=(Get-FileHash -LiteralPath (Join-Path $Download 'Start-PUBPRES-Playability.ps1')).Hash.ToLowerInvariant();
+              verified_payload=(Get-FileHash -LiteralPath (Join-Path $Install 'Payload/tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1')).Hash.ToLowerInvariant()}
+          $LauncherCustody | ConvertTo-Json | Set-Content -Encoding UTF8 build/frozen-transition/launcher-custody.json
+          if ($LauncherCustody.downloaded -cne $LauncherCustody.verified_payload) { throw 'Downloaded launcher differs from verified evaluator bytes' }
+      - name: Untimed actual Main full and target-retirement history
+        timeout-minutes: 39
+        run: |
+          $ErrorActionPreference = 'Stop'
+          @'
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import shutil
+          import sys
+          import uuid
+
+          root = Path.cwd()
+          output = root / "build/frozen-transition"
+          temp = Path(os.environ["RUNNER_TEMP"])
+          payload = temp / "pubpres-transition-installed/Payload"
+          source_sha = os.environ["PUBPRES_CANDIDATE"]
+          sys.dont_write_bytecode = True
+          sys.path.insert(0, str(payload / "tools/pubpres_playability_windows"))
+          sys.path.insert(0, str(payload / "tools/pubpres_playability"))
+          from package_windows import digest, need, verify
+          from run_campaign import execute
+
+          manifest_path = payload / "PUBPRES-PLAYABILITY-MANIFEST.json"
+          expected_manifest = os.environ["PUBPRES_MANIFEST_SHA256"]
+          need(digest(manifest_path) == expected_manifest, "Frozen manifest digest differs")
+          manifest = verify(payload, source_sha)
+          item = manifest["sources"]["C"]
+          need(item["source_commit"] == source_sha and item["source_tree"] == "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+               "Frozen C tree differs")
+          engine = payload / manifest["engine"]["gui"]["path"]
+          fixture = "tests/pubpres_source_transition_oracle.gd"
+          frozen = ("scripts/main.gd", fixture, "tests/pubpres_transition.gd", "tests/palette_qualification_context.gd",
+                    Path(item["native"]["path"]).relative_to(item["project"]).as_posix(),
+                    Path(item["rapier"]["path"]).relative_to(item["project"]).as_posix())
+          original = {name: manifest["files_sha256"][item["project"] + "/" + name] for name in frozen}
+          preregistered = json.loads((root / "tools/pubpres_integration/source_campaign.json").read_bytes())["transition_case"]
+          case = os.environ["PUBPRES_CASE"]
+          need(preregistered["id"] == case and case == "transition_2048_w1", "Frozen transition registration differs")
+          report = {"schema":"pubpres-frozen-windows-transition-v1","candidate":source_sha,"manifest_sha256":expected_manifest,
+                    "owner_zip_sha256":os.environ["PUBPRES_EVALUATOR_SHA256"],"engine_sha256":digest(engine),
+                    "exact_project_inputs_sha256":original,"case":case,"actual_host":"Windows hosted ANGLE software rendering",
+                    "scope":"Untimed detached production Main material publication; native and Rapier package bytes verified.",
+                    "physical_acceptance":"HOLD","outcomes":[],"complete":False}
+          for label, backend in (("full", "full"), ("target", "blit")):
+              record = {"arm":label,"complete":False}
+              report["outcomes"].append(record)
+              try:
+                  folder = output / label
+                  source_copy = temp / ("pubpres-transition-" + label)
+                  shutil.copytree(payload / item["root"], source_copy)
+                  project = source_copy / "godot"
+                  need(all(digest(project / name) == wanted for name, wanted in original.items()), "Staged C source/runtime bytes differ")
+                  args = ["--path", str(project), "--audio-driver", "Dummy"]
+                  execute(engine, [*args, "--headless", "--editor", "--import"], folder / "import", source_sha, {}, 180)
+                  process_folder = folder / "oracle"
+                  receipt = process_folder / "receipt.json"
+                  nonce = uuid.uuid4().hex
+                  settings = {"CYBERSAND_SHADER_NONCE":nonce,"CYBERSAND_SHADER_CACHE_STATE":"isolated-project-and-profile",
+                              "CYBERSAND_MATERIAL_PUBLICATION":backend,"CYBERSAND_MATERIAL_QUEUE_THREAD":"safe",
+                              "CYBERSAND_DIAG_MATERIAL_POOL_POLICY":"eager"}
+                  if label == "target":
+                      settings["CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE"] = "target"
+                  record["settings"] = settings
+                  process = execute(engine, [*args, "--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle",
+                      "--render-thread", "safe", "--log-file", str(process_folder / "godot.log"), "--script", "res://" + fixture,
+                      "--", "--material=" + backend, "--receipt=" + str(receipt)], process_folder, source_sha, settings, 900)
+                  logs = "\n".join((process_folder / name).read_text(encoding="utf-8-sig", errors="replace")
+                                   for name in ("stdout.log", "stderr.log", "godot.log"))
+                  need(not re.search(r"^(?:SCRIPT )?ERROR:", re.sub(r"\x1b\[[0-9;]*m", "", logs), re.M), "Godot reported a strict diagnostic")
+                  data = json.loads(receipt.read_bytes())
+                  context = data["context"]
+                  need(context["source_revision"] == source_sha and context["engine_sha256"] == digest(engine)
+                       and context["fixture"] == "res://" + fixture and context["fixture_sha256"] == original[fixture]
+                       and data["application_main_sha256"] == original["scripts/main.gd"] and context["nonce"] == nonce
+                       and context["process_id"] == process["observed_application_pid"] and context["platform"] == "Windows"
+                       and context["display_server"] != "headless" and context["backend"] == "opengl3_angle"
+                       and all(part in context["video_adapter"].lower() for part in ("microsoft basic render driver", "direct3d11"))
+                       and context["execution_policy"]["ok"], "Actual oracle process/source/display identity differs")
+                  need(Path(context["user_data_dir"]).resolve().is_relative_to((process_folder / "profile").resolve()), "Profile was not isolated")
+                  need(data["schema"] == "pubpres-source-transition-history-v1" and data["case"] == case and data["tape"] == "transition"
+                       and data["complete"] is True and data["failures"] == [] and data["initial_plane_sha256"] == preregistered["initial_plane_sha256"]
+                       and data["frames_checked"] == data["current_matches"] == data["previous_matches"] == len(data["admissions"]) == 180
+                       and data["sparse_entries"] == len(data["entry_history"]) == 15, "Missing completed 180-revision both-plane oracle")
+                  for key in ("history", "warmup_history"):
+                      need(all(data[key][side + "_matches"] is True and data[key][side + "_sha256"] == preregistered[key][side + "_sha256"]
+                               for side in ("current", "previous")), "Frozen warm-up or terminal history differs")
+                  for index, row in enumerate(data["admissions"], 30):
+                      material = row["material"]
+                      need(row["sequence"] == index and row["revision"] == index + 1 and row["current_matches"] is True
+                           and row["previous_matches"] is True and material["backend"] == material["requested_mode"] == backend
+                           and material["fallback_reason"] == "" and (label != "target" or material["retirement_source"] == "target"),
+                           "Incorrect admitted revision, first GPU read or actual material treatment")
+                  need([row["sequence"] for row in data["entry_history"]] == list(range(38, 210, 12))
+                       and all(re.fullmatch(r"[0-9a-f]{64}", row[side + "_sha256"]) for row in data["entry_history"] for side in ("current", "previous")),
+                       "Expected 15 exact dense-to-sparse re-entry receipts")
+                  need(all(digest(project / name) == wanted for name, wanted in original.items()), "Observed C fixture/source/runtime bytes changed")
+                  record.update(complete=True, process_id=context["process_id"], adapter=context["video_adapter"],
+                                receipt_sha256=digest(receipt), entry_history=data["entry_history"])
+              except (KeyError, OSError, RuntimeError, TypeError, ValueError) as error:
+                  record["failure"] = f"{type(error).__name__}: {error}"
+          full, target = report["outcomes"]
+          report["complete"] = (full["complete"] and target["complete"] and full["process_id"] != target["process_id"]
+                                and full["entry_history"] == target["entry_history"])
+          verify(payload, source_sha)
+          (output / "SUMMARY.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"complete":report["complete"],"outcomes":[{"arm":entry["arm"],"complete":entry["complete"],
+                            "failure":entry.get("failure")} for entry in report["outcomes"]]}))
+          sys.exit(not report["complete"])
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen Windows history oracle did not complete; original outcomes retained' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-completion-c90-windows-transition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/frozen-transition/
+            !build/frozen-transition/**/profile/**
+          if-no-files-found: error
+          retention-days: 90
