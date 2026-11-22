@@ -4,6 +4,7 @@ extends SceneTree
 # This synchronous qualification fixture does not claim desktop playfeel.
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Registry = preload("res://scripts/workbench_actor_catalog.gd")
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
 const Usables = preload("res://scripts/physical_usable_runtime.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const DT := 1.0 / 60.0
@@ -49,22 +50,39 @@ func prepare(sample: Dictionary, generic: PackedFloat32Array, rects: PackedInt32
 
 
 func capacity() -> void:
-	for count: int in [64,65]:
+	for count: int in [64,65,Capacity.MAX_BODIES,Capacity.MAX_BODIES+1]:
 		var sample := {"session":99, "epoch":99, "states":PackedFloat64Array(),
 			"geometry":PackedFloat64Array(), "bodies":[]}
 		var generic := PackedFloat32Array()
 		for index: int in count:
-			var position := Vector2(20 + (index % 16) * 28, 20 + (index / 16) * 20)
+			# All records, including the over-capacity adversary, have valid
+			# geometry inside the canvas. Refusal must be a resource boundary,
+			# not an accidental out-of-bounds placement at high population.
+			var position := Vector2(2 + (index % 128) * 4, 2 + (index / 128) * 4)
 			sample.states.append_array(PackedFloat64Array([index+1,position.x,position.y,0,4,4,0,0,0,1,1,2.6666667,position.x,position.y,0.4,DT,99]))
 			sample.geometry.append_array(PackedFloat64Array([0,0,4,4]))
 			sample.bodies.append({"id":index+1,"instance_id":9000+index,"generation":99,
 				"first_proxy":index+1,"count":1,"budget":20.0,"gravity":92.0,"external_drive":false})
 			generic.append_array(PackedFloat32Array([index+1,position.x,position.y,0,4,4,0,0,0,1,1]))
 		var old_revision: int = world.get_revision()
+		var old_result: Dictionary = world.workbench_coupling_results()
 		var token: int = prepare(sample,generic,PackedInt32Array([0,200,512,8,1]))
-		check(token > 0 if count == 64 else token == 0, "%d real body owners/masks explicitly %s" % [count,"admitted" if count == 64 else "refused"])
+		var admitted := count <= Capacity.MAX_BODIES
+		check(token > 0 if admitted else token == 0, "%d real body owners/masks explicitly %s" % [count,"admitted" if admitted else "refused"])
 		check(world.get_revision() == old_revision, "preparation preserves prior live World")
-		if token > 0: native_bridge.discard_liquid_world(world,token)
+		check(world.workbench_coupling_results() == old_result, "preparation preserves prior native registration map")
+		if token > 0:
+			if admitted:
+				check(native_bridge.commit_liquid_world(world,token),"%d native owners commit" % count)
+				var result: Dictionary = world.workbench_coupling_results()
+				check(int(result.body_limit)==Capacity.MAX_BODIES,"native reports its configured response ceiling")
+				check(int(result.active_bodies)==count,"%d actual native response owners registered" % count)
+				check(int(result.active_proxies)==count,"%d actual native occupancy proxies registered" % count)
+				check(world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,sample.session,sample.epoch,true),
+					"%d registered owners accept live native response calculation" % count)
+				check(world.workbench_coupling_results().rows.size()==count,"%d owners retain distinct native response rows" % count)
+			else:
+				native_bridge.discard_liquid_world(world,token)
 
 
 func sleeping_equipment_publication() -> void:
@@ -138,8 +156,12 @@ func run() -> void:
 		210,195,50,5,2, 275,182,6,18,1]))
 	check(token > 0 and native_bridge.commit_liquid_world(world,token), "native accepts actual heterogeneous prepared body map")
 	if token <= 0: quit(1); return
-	check(sample.bodies.size() > 8 and int(world.workbench_coupling_results().body_limit) == 64,
+	check(sample.bodies.size() > 8 and int(world.workbench_coupling_results().body_limit) == Capacity.MAX_BODIES,
 		"native owns every part beyond historical eight-body ceiling")
+	check(int(world.workbench_coupling_results().active_bodies)==sample.bodies.size(),
+		"native response owner count matches real heterogeneous bodies")
+	check(int(world.workbench_coupling_results().active_proxies)==sample.states.size()/17,
+		"native proxy count matches real heterogeneous occupancy geometry")
 	check(session.bridge.queue_hard_surface_chunk_snapshot(world.get_hard_surface_chunk_rectangles()), "actual native cell terrain enters Rapier bridge")
 	session.bridge.process_hard_surface_collider_budget(256,0)
 	check(session.bridge.hard_surface_shape_count() > 0, "cell floor has real Rapier contacts")

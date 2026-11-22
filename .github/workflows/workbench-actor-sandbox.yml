@@ -71,6 +71,7 @@ jobs:
           git rev-parse HEAD > evidence/source-commit.txt
           git rev-parse HEAD^{tree} > evidence/source-tree.txt
           python3 tools/ci/check_ci_provider_policy.py > evidence/provider.log
+          python3 -m unittest discover -s tools/ci -p test_workbench_actor_publication.py > evidence/runtime-publication-contract.log 2>&1
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
           python3 -m venv "$RUNNER_TEMP/scons"
@@ -125,6 +126,7 @@ jobs:
           path: build/actor-windows/
           if-no-files-found: error
           retention-days: 90
+
       - name: Execute native expanded ownership contract
         run: |
           set -euo pipefail
@@ -266,5 +268,130 @@ jobs:
         with:
           name: actor-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  publish:
+    name: Append the fully qualified sandbox runtime pair to the unchanged Draft branch
+    needs: [linux, windows]
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/experiment/wb-actor-compose-002r-20261122' && needs.linux.result == 'success' && needs.windows.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Check out the pinned companion documentation required by repository custody
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out the exact qualified source with ordinary Actions authentication
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+      - name: Require the dedicated Draft branch to remain at the built source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin refs/heads/experiment/wb-actor-compose-002r-20261122 | cut -f1)" = "$GITHUB_SHA"
+          git switch -c experiment/wb-actor-compose-002r-20261122 "$GITHUB_SHA"
+          git lfs install --local
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Restore same-run Linux candidate and complete receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-linux-${{ github.sha }}-${{ github.run_id }}-${{ needs.linux.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/linux
+      - name: Restore the same-run source-bound Windows candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-runtime-${{ github.sha }}-${{ github.run_id }}-${{ needs.linux.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/windows
+      - name: Restore Windows source and extracted-package qualification
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-${{ github.sha }}-${{ github.run_id }}-${{ needs.windows.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/windows-evidence
+      - name: Restore the exact delivered Windows ZIP
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-sandbox-windows-evaluation-${{ github.sha }}-${{ github.run_id }}-${{ needs.windows.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/windows-package
+      - name: Verify complete sandbox evidence before staging exactly four runtime paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox \
+            --linux build/actor-publish/linux/build/actor-linux \
+            --windows build/actor-publish/windows \
+            --linux-report build/actor-publish/linux/evidence/linux/qualification.json \
+            --windows-report build/actor-publish/windows-evidence/windows/qualification.json \
+            --windows-installed-report build/actor-publish/windows-evidence/installed-windows/qualification.json \
+            --windows-modules-report build/actor-publish/windows-evidence/installed-windows/runtime-modules.json \
+            --windows-extraction-report build/actor-publish/windows-evidence/windows-package-extraction.json \
+            --windows-package "build/actor-publish/windows-package/CyberSand-Actor-Sandbox-Windows-${GITHUB_SHA:0:12}.zip"
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 - <<'PY'
+          import hashlib,json,os,re,subprocess
+          from pathlib import Path
+          expected = {
+            'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+            'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+            'godot/addons/cybersand_native/runtime-provenance.linux.json',
+            'godot/addons/cybersand_native/runtime-provenance.json',
+          }
+          actual = set(subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
+          if actual != expected: raise SystemExit('Sandbox publication exceeded the exact four-file boundary')
+          for name in sorted(path for path in expected if path.endswith('.json')):
+              value = json.loads(subprocess.check_output(['git','show',':'+name]))
+              pointer = subprocess.check_output(['git','show',':'+value['artifact']])
+              match = re.fullmatch(rb'version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n',pointer)
+              if (not match or match[1].decode()!=value['sha256'] or int(match[2])!=value['size']
+                  or value['source_commit']!=os.environ['GITHUB_SHA']
+                  or value['publication_branch']!='experiment/wb-actor-compose-002r-20261122'
+                  or value['qualification']['status']!='passed' or value['status']!='evaluation-candidate-passed'
+                  or hashlib.sha256(Path(value['artifact']).read_bytes()).hexdigest()!=value['sha256']):
+                  raise SystemExit('Staged sandbox LFS/runtime/provenance identity mismatch')
+          PY
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit and upload only qualified runtimes with an exact source lease
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --exit-code origin refs/heads/experiment/wb-actor-compose-002r-20261122 | cut -f1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(native): publish qualified Draft sandbox runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
+          # A single child commit and exact expected-parent lease cannot replace
+          # concurrent source work. The LFS hook uploads only the two new objects.
+          git push --force-with-lease="refs/heads/experiment/wb-actor-compose-002r-20261122:$GITHUB_SHA" origin HEAD:refs/heads/experiment/wb-actor-compose-002r-20261122
+          {
+            echo '### Draft/HOLD sandbox runtime publication'
+            echo "Qualified source: $GITHUB_SHA"
+            echo "Four-file runtime publication: $(git rev-parse HEAD)"
+            echo 'Both complete sandbox campaigns, graphical captures, 16/32/64 matrices and extracted Windows package passed. Owner Windows 11/NVIDIA and playfeel acceptance remain outstanding. No Ready, merge or default promotion.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git rev-parse HEAD > build/actor-publish/publication-commit.txt
+      - name: Retain runtime publication and final repository verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-sandbox-publication-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            workspace/source/build/actor-publish/publication-commit.txt
+            workspace/source/build/actor-publish/final-repository-check.json
+            workspace/source/godot/addons/cybersand_native/runtime-provenance*.json
           if-no-files-found: warn
           retention-days: 90

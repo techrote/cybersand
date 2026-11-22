@@ -91,6 +91,10 @@ and applied authored composition intact.
 **Physics → Snap to grid** is optional and starts off. Grid size, rotation step
 and fine movement are adjustable; defaults are 8 cells, 15 degrees and 1 cell.
 Shift with Q/E always uses one-degree rotation.
+**Arrow keys** nudge the active preview by the grid size when snapping is on,
+or by 4 cells when it is off; **Shift + Arrow** uses **Fine move cells** (default
+1 cell) in either mode. Hold Shift while dragging and releasing to retain an
+off-grid placement, or press **Enter** to commit the displayed preview directly.
 For exact authored values, inspect the actor in **Actors**, edit **Spawn X**, **Y**
 and **Angle °**, and press **Apply authored placement (paused)**. **Read current
 pose** copies the current rigid pose into those staged fields; it does not itself
