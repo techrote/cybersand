@@ -568,10 +568,6 @@ def sandbox_package(args, manifest: dict, installed: dict) -> dict:
     included_pins = {"third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
                      "third_party/rapier-bvh-build.lock.json", "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
                      "docs/operations/workbench-actor-composition.md"}
-    for name, expected in manifest["build_inputs"].items():
-        if name.startswith(("godot/", "examples/worldgen/")) or name in included_pins:
-            if package["files_sha256"].get(name) != expected:
-                raise ValueError("Delivered project differs from qualified source input: " + name)
     with zipfile.ZipFile(args.windows_package) as archive:
         names = archive.namelist()
         files = {name for name in names if not name.endswith("/")}
@@ -593,6 +589,17 @@ def sandbox_package(args, manifest: dict, installed: dict) -> dict:
                     checksum.update(block)
             if checksum.hexdigest() != expected:
                 raise ValueError("Delivered ZIP payload differs from its extraction: " + name)
+        # Package payload hashes authenticate exact delivered bytes. The source
+        # ledger deliberately uses canonical LF (see project_inputs), including
+        # UID text that Windows Git can archive with CRLF. Compare like contracts
+        # only after every raw ZIP payload has passed its independent hash check.
+        for name, expected in manifest["build_inputs"].items():
+            if name.startswith(("godot/", "examples/worldgen/")) or name in included_pins:
+                if name not in package["files_sha256"]:
+                    raise ValueError("Delivered project is missing qualified source input: " + name)
+                canonical = archive.read(name).replace(b"\r\n", b"\n")
+                if hashlib.sha256(canonical).hexdigest() != expected:
+                    raise ValueError("Delivered project differs from qualified source input: " + name)
     expected_modules = {"vcruntime140.dll", NATIVE["windows"], RAPIER["windows"]}
     records = modules.get("modules", [])
     if (modules.get("status") != "passed" or modules.get("source_commit") != manifest["source_commit"]

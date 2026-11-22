@@ -38,7 +38,8 @@ class SandboxPublication(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.source = {"source_commit": "a" * 40, "source_tree": "b" * 40,
                        "source_inputs": {"native/src/example.cpp": "c" * 64}}
-        self.inputs = {"godot/scripts/example.gd": sha(b"unit fixture script")}
+        self.inputs = {"godot/scripts/example.gd": sha(b"unit fixture script"),
+                       "godot/scripts/example.gd.uid": sha(b"uid://unitfixture\n")}
         self.args = SimpleNamespace()
         self.candidates = {}
         self.rapier = {}
@@ -77,6 +78,7 @@ class SandboxPublication(unittest.TestCase):
             "Godot_v4.7-stable_win64_console.exe": b"console engine fixture",
             "Open Workbench.cmd": b"unit fixture launcher", "godot/project.godot": b"unit fixture project",
             "godot/scripts/example.gd": b"unit fixture script",
+            "godot/scripts/example.gd.uid": b"uid://unitfixture\n",
         }
         self.package = {"schema": 1, "source_commit": self.source["source_commit"],
                         "source_tree": self.source["source_tree"], "godot_version": gate.VERSION,
@@ -344,6 +346,25 @@ class SandboxPublication(unittest.TestCase):
     def test_zip_source_script_cannot_be_relabelled_as_candidate(self):
         name = "godot/scripts/example.gd"
         self.payload[name] = b"different application script"
+        self.package["files_sha256"][name] = sha(self.payload[name])
+        self.edit(self.args.windows_installed_report, lambda r: r.update(installed_package=self.package))
+        self.make_archive()
+        self.refuse()
+
+    def test_canonical_lf_source_accepts_authenticated_crlf_uid_payload(self):
+        name = "godot/scripts/example.gd.uid"
+        self.payload[name] = b"uid://unitfixture\r\n"
+        self.package["files_sha256"][name] = sha(self.payload[name])
+        self.assertNotEqual(self.package["files_sha256"][name], self.inputs[name])
+        self.edit(self.args.windows_installed_report, lambda r: r.update(installed_package=self.package))
+        self.make_archive()
+        gate.publish_sandbox(self.args)
+        for platform in gate.NATIVE:
+            self.assertEqual("evaluation-candidate-passed", json.loads((self.root / gate.PROVENANCE[platform]).read_text())["status"])
+
+    def test_canonical_lf_source_rejects_changed_uid_with_consistent_raw_hashes(self):
+        name = "godot/scripts/example.gd.uid"
+        self.payload[name] = b"uid://changedidentity\r\n"
         self.package["files_sha256"][name] = sha(self.payload[name])
         self.edit(self.args.windows_installed_report, lambda r: r.update(installed_package=self.package))
         self.make_archive()
