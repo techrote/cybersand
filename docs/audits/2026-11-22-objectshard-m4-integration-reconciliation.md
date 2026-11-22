@@ -58,3 +58,13 @@ These changes are incorporated as exact donor blobs with both donor commits reta
 An independent source-level review identified that the initial M4 ordinary Workbench port refused a malformed receipt for a **tracked pending action** without entering a held state. Further edits could have been admitted after an ambiguous native mutation; a batch containing invalid receipts reported overall success. The principal integration branch now preserves the pending identity and enters explicit Hold for tracked stale/foreign, unknown terminal, or unproved Applied receipts, unexpected current-generation replies, corrupt batches and disappearing result transport. Later replies cannot clear the hold; only explicit owner retirement resets its generation. The UI reports Held rather than a stale ready state.
 
 New value-only GDScript adversarial checks inject a pending witnessed action and corrupt completion, with negative controls for stale incarnation, forged applied success, and unexpected current-generation action IDs. These are **contract tests**, not real same-World physics evidence. Await source-matched execution on this new SHA; previous CI source does not qualify these changes.
+
+## CI failure and integration-tree correction
+
+Source-bound Linux qualification runs 45067880867 and 45068629049 failed to compile the coordinator suite. Their original archived linker log specifically showed native/include/cybersand/object_shard_m4_mutable_adapter.hpp invoking Coordinator::m4_owner_readback and OwnerReadback, while the integrated coordinator.hpp and coordinator.cpp unexpectedly retained their pre-M4 blobs.
+
+Root cause: the first combined integration tree used an earlier native intermediate tree as base despite recording a newer native donor commit as a parent. Commit ancestry alone does not imply file-tree equality. The native coordinator API was inadvertently lost from the tree, while later tests and adapter headers were incorporated. No acceptance of those failed runs is claimed.
+
+Repair: import the exact native donor PR #751 blobs for native/include/cybersand/object_shard_coordinator.hpp (Git blob 92b273dd106722c9c82d06116ae4d763eb176559), native/src/object_shard_coordinator.cpp (982bceb5b34a8011576636e9f164c3f1b6096acc) and its audit. The adapter and coordinator test files already match the frozen native donor. Existing Workbench donor GDScript and test divergences are intentional lead safety fixes and Art-session mainline reconciliation; no regression gate is relaxed.
+
+Re-run the coordinator compiler and tests against the actual corrected commit; the prior green 192 World tests and 90,409 other native assertions do not qualify the failed coordinator suite. This checkpoint still lacks real same-World attachment.
