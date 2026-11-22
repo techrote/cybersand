@@ -12,8 +12,8 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: gentek-final-b-${{ github.run_id }}
-  cancel-in-progress: false
+  group: gentek-final-b-${{ github.ref }}
+  cancel-in-progress: true
 env:
   ARCHITECTURE_BASE_SHA: ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
