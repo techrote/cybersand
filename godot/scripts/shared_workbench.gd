@@ -787,7 +787,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water)
 	if not ok: return refuse(host.microscenario_error)
 	object_shard_m4_port.retire("WorldReplacement")
-	if host.object_shard_m4_probe.enabled:
+	if host.has_method("object_shard_m4_latency_report") and host.object_shard_m4_probe.enabled:
 		host.object_shard_m4_probe.retire("WorkbenchReplacement")
 	_pending_staged_liquid_selection = retained_selection
 	_pending_generated = generated_packet.duplicate(true)
@@ -1513,14 +1513,15 @@ func _input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func object_shard_m4_status() -> Dictionary:
-	if host == null:
+	if host == null or not host.has_method("object_shard_m4_latency_report"):
 		return {"ok": false, "ready": false, "outcome": "OrdinaryWorkerRequired"}
 	return object_shard_m4_port.interface_status(host.simulation_worker, host.latest_snapshot)
 
 
 func object_shard_m4_action(pos: Vector2i, action: String,
 		observed: Dictionary = {}, witness: Dictionary = {}) -> Dictionary:
-	if host == null or applied.is_empty() or busy():
+	if host == null or not host.has_method("object_shard_m4_latency_report") \
+			or applied.is_empty() or busy():
 		refuse("ObjectShard M4: no installed or available ordinary Workbench.")
 		return {"ok": false, "outcome": "WorkbenchUnavailable"}
 	var uploaded: Dictionary = {"world_generation": host.last_uploaded_world_generation,
