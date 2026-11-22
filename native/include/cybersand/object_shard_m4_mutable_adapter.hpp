@@ -91,6 +91,7 @@ public:
             snapshot.world_incarnation == owner.world_incarnation &&
             std::addressof(coordinator.world()) == world_address_ &&
             !world.has_failed() && !world.is_tick_in_progress();
+        baseline_tick_ = world.completed_tick_index();
     }
 
     MutableBodyGate(const MutableBodyGate&) = delete;
@@ -179,9 +180,28 @@ public:
         const auto check = verify(world, coordinator, owner);
         if (check != Verdict::Accepted) return check;
         if (awaiting_motion_) return Verdict::Held;
-        if (!tick || tick <= permitted_tick_ || tick != world.completed_tick_index() ||
-            coordinator.snapshot().tick != tick)
-            return Verdict::Stale;
+        if (!tick || tick <= baseline_tick_ || tick <= permitted_tick_ ||
+            tick != world.completed_tick_index()) return Verdict::Stale;
+        const auto& snapshot = coordinator.snapshot();
+        if (snapshot.tick != tick || snapshot.quarantined) return Verdict::Fenced;
+        // Native semantic-step pose application is not a Rapier substep.
+        // Refresh only serials proven by the *one* completed World tick.
+        // Reject all geometry/material/body changes before changing any slot.
+        for (const auto& slot : slots_) if (slot.used && slot.ready) {
+            const auto* shard = coordinator.registry().find(slot.revision.shard);
+            const BodyView* body = view(snapshot, slot.revision.shard);
+            if (!shard || !body || !body->has_body || body->geometry_pending)
+                return Verdict::Fenced;
+            auto current = revision(*shard, *body);
+            const auto serial = current.pose_serial;
+            current.pose_serial = slot.revision.pose_serial;
+            if (!(current == slot.revision) || serial < slot.revision.pose_serial)
+                return Verdict::Fenced;
+        }
+        for (auto& slot : slots_) if (slot.used && slot.ready) {
+            const BodyView* body = view(snapshot, slot.revision.shard);
+            slot.revision.pose_serial = body->pose.pose_serial;
+        }
         permitted_tick_ = tick;
         segments_ = 0;
         return Verdict::Accepted;
@@ -289,7 +309,7 @@ private:
     std::thread::id owner_thread_{};
     std::array<Slot, kBodyLimit> slots_{};
     MotionTicket issued_{};
-    std::uint64_t next_sequence_{}, permitted_tick_{};
+    std::uint64_t next_sequence_{}, permitted_tick_{}, baseline_tick_{};
     std::uint32_t segments_{};
     bool valid_{}, awaiting_motion_{};
 
