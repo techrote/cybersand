@@ -27,6 +27,21 @@ and does not promote Workbench, Rapier, Water or renderer defaults.
 
 The M3 Windows owner guide, M3 final qualification, native source-ownership
 ledger and PUBPRES implementation/evaluation records were inspected.
+At the current ref refresh, immutable GCR source
+godot/native_extension/workbench_granular_coupling.inc has **the identical Git
+blob c0c8a8f2f927471cc57bd238ba37f7d9137cda9f** on accepted main,
+M3 #741 and PUBPRES #740. The existing workbench_physics_bridge.gd is
+also blob-identical (d82d511f112ebd37f18061bb9c9e21a88f662857).
+Main's simulation_worker.gd (522e55d4d2e4a42d6b2a6f628a791fa768821e03),
+main.gd (56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1)
+and simulation_snapshot.gd (5677152729f9676021e2d34945881e1a93dd7d48)
+match frozen M3 #741. All three **differ** on unmerged PUBPRES #740:
+worker 039eeb8723d20330ac6ca5300ec9416cc49bd649,
+Main b439e43dfcf94efa139f9aee1b62dc34abbc05a6,
+snapshot c6a4dbe3dae24c60598930d8710ebea1af80b708.
+Rebasing or cherry-picking donor publication/worker files into M4 is
+therefore not source-neutral and requires an integration lead's reconciliation.
+
 M3 qualified an **independent native World**, a separate worker and a real
 main-thread Rapier owner. It did **not** attach ObjectShard to ordinary
 Workbench. Its optional receipt pump averaged approximately 17.14 semantic
