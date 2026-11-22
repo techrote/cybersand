@@ -34,6 +34,12 @@ an older captured generation can finish saving while newer edits remain dirty.
 Cache accounting includes native/growth, warm/authoring and speculative reservations. Essential publication
 has separate bounded headroom. Process RSS also includes Godot, renderer, stacks and allocator retention.
 A too-small budget pins the mandatory active World and visibly reports the excess.
+The window shows HOT/WARM lookup counters and COLD misses, last observed native
+container-capacity estimates, measured encoded checkpoint/authoring bytes, growth
+headroom and preparation/publication reservations. Hover the summary for their scope:
+lookups can include catch-up and later cancellation/refusal, so they are not successful
+arrival counts. These values do not measure total process RSS or working set; the
+external evaluation report measures those separately.
 
 If a destination's publication fails after its simulation completed, validated WARM state can retain those
 completed ticks while the source remains HOT. Strict mode still requires saving before activation. Retry may

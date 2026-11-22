@@ -12,6 +12,7 @@ var cache_filesystem_after: Dictionary = {}
 var hot_sample_count := 30
 var warm_sample_count := 30
 var stage_one_only := false
+var cache_ui_observations: Array[Dictionary] = []
 
 
 func _initialize() -> void:
@@ -110,6 +111,8 @@ func exercise_write() -> void:
 		return
 	await exercise_warm_benchmark()
 	if not failures.is_empty(): return
+	await cache_layout_checks("after-travel",true)
+	if not failures.is_empty(): return
 	await exercise_live_retention()
 	if not failures.is_empty(): return
 	await exercise_pressure()
@@ -129,6 +132,7 @@ func exercise_live_retention() -> void:
 			if not check(bench.paint(Vector2i(fixture.empty_edit[0],fixture.empty_edit[1]),0),"paused Empty edit admitted before autosave dirtiness observation"): return
 			if not await until(func() -> bool:return bool(controller.status().areas.a.dirty),
 				"paused edit visibly becomes unsaved without waiting for a native tick"): return
+			cache_text_checks("paused-empty-edit")
 		if not await edit_area(id): return
 		if id=="c":
 			var native_before := str(controller.manifest.areas.c.native_sha256)
@@ -340,19 +344,85 @@ func exercise_prefetch() -> void:
 
 func layout_checks() -> void:
 	await super.layout_checks()
+	await cache_layout_checks("startup")
+
+
+func cache_text_checks(label: String) -> void:
+	var state: Dictionary = controller.status()
+	controller.panel.update_state(state)
+	var cache: Dictionary = state.cache
+	var counters: Dictionary = cache.counters
+	var configuration: Dictionary = state.cache_configuration
+	var summary: String = controller.panel._cache_summary.text
+	for expected_text: String in [
+		"HOT %d · WARM %d · COLD %d" % [cache.hot_count,cache.warm_count,cache.cold_count],
+		"%d HOT hits · %d WARM hits · %d COLD misses" % [counters.hot_hits,counters.warm_hits,counters.cold_misses],
+		"Native capacity estimate %.2f MiB (last observed)" % (float(cache.native_bytes)/1048576.0),
+		"growth reserve %.2f MiB" % (float(cache.native_headroom_bytes)/1048576.0),
+		"WARM %.2f MiB; authoring %.2f MiB" % [float(cache.warm_bytes)/1048576.0,float(cache.authoring_bytes)/1048576.0],
+		"preparation reserved %.2f MiB" % (float(cache.reserved_bytes)/1048576.0),
+		"publication %.2f / %.0f MiB" % [float(cache.essential_publication_reserved_bytes)/1048576.0,float(cache.essential_publication_cap_bytes)/1048576.0],
+		"not process RSS",
+	]:
+		check(summary.contains(expected_text),"actual cache UI observes "+expected_text)
+	var area_text: String = controller.panel._cache_areas.text
+	for area: Dictionary in Fixtures.AREAS:
+		var record: Dictionary = state.areas[area.id]
+		check(area_text.contains("%s · %s: %s\n  Behind game time %.2f s; %s" % [area.letter,area.label,
+			record.residency,float(record.debt_ticks)/60.0,record.durability]),
+			"actual area identity/tier/debt/unsaved state remains visible: "+str(area.id))
+	check(area_text.contains("Background publication: "+str(state.writeback.get("status","idle"))) \
+		and area_text.contains("Destination preparation: "+str(state.prefetch.get("message","idle"))),
+		"actual saving and destination readiness status remain visible")
+	check(controller.panel._cache_enabled.button_pressed==bool(configuration.enabled) \
+		and controller.panel._deferred.button_pressed==bool(configuration.deferred) \
+		and controller.panel._background.button_pressed==bool(configuration.background) \
+		and controller.panel._prefetch.button_pressed==bool(configuration.prefetch),
+		"cache and persistence controls reflect the actual configuration")
+	check(controller.panel._cache_save.disabled==(bool(state.busy) or not bool(state.ready)),
+		"Save availability reflects actual owner readiness")
+	cache_ui_observations.append({"label":label,"viewport":root.size,"summary":summary,"areas":area_text,
+		"cache":cache.duplicate(true),"configuration":configuration.duplicate(true),"ready":bool(state.ready)})
+
+
+func cache_layout_checks(label: String, verify_export: bool = false) -> void:
 	if not graphical: return
 	for dimensions: Vector2i in [Vector2i(1280,720),Vector2i(1920,1080)]:
 		root.size = dimensions
 		await process_frame
 		controller.panel._open_cache()
-		await process_frame
+		for frame: int in 2: await process_frame
 		var dialog: AcceptDialog = controller.panel._cache_dialog
+		cache_text_checks(label+"-"+str(dimensions.y))
 		check(dialog.visible,"RAM cache settings window is displayed at "+str(dimensions))
 		check(dialog.size.y<=dimensions.y-48 and dialog.size.x<=dimensions.x-32,
 			"cache modal stays within the usable viewport")
 		check(Rect2(Vector2.ZERO,Vector2(dialog.size)).encloses(dialog.get_ok_button().get_global_rect()),
 			"cache modal Close remains reachable in its fixed footer")
-		await screenshot("ramcache-controls-"+str(dimensions.y))
+		var scroll: ScrollContainer = dialog.find_children("*","ScrollContainer",true,false)[0]
+		check(scroll.get_global_rect().encloses(controller.panel._cache_save.get_global_rect()),
+			"Save all remains visible without scrolling at "+str(dimensions))
+		var export_button: Button
+		for button: Button in dialog.find_children("*","Button",true,false):
+			if button.text=="Export diagnostics": export_button = button
+		check(export_button!=null and scroll.get_global_rect().encloses(export_button.get_global_rect()),
+			"diagnostics export remains visible without scrolling")
+		if verify_export and dimensions.y==720:
+			var observed: Dictionary = controller.status().cache
+			check(int(observed.counters.hot_hits)>0 and int(observed.counters.warm_hits)>0 \
+				and int(observed.counters.cold_misses)>0,"visible counters include actual HOT/WARM/COLD lookups")
+			export_button.pressed.emit()
+			check(controller.message.begins_with("Diagnostics exported to "),"real diagnostics button exports the observed state")
+			var exported: Variant = JSON.parse_string(FileAccess.get_file_as_string(controller.message.trim_prefix("Diagnostics exported to ")))
+			check(exported is Dictionary,"exported cache diagnostics decode as a dictionary")
+			if exported is Dictionary:
+				for key: String in observed.counters:
+					check(int(exported.status.cache.counters.get(key,-1))==int(observed.counters[key]),
+						"exported "+key+" counter matches the actual UI owner")
+				for key: String in ["native_bytes","native_headroom_bytes","warm_bytes","authoring_bytes","reserved_bytes","essential_publication_reserved_bytes"]:
+					check(int(exported.status.cache[key])==int(observed[key]),"exported "+key+" matches actual accounting")
+				check(str(exported.memory_scope).contains("not process RSS"),"export distinguishes measured Godot bytes from process RSS")
+		await screenshot("ramcache-controls-"+str(dimensions.y)+( "" if label=="startup" else "-"+label))
 		dialog.hide()
 	root.size = Vector2i(1280,720)
 	await process_frame
@@ -414,6 +484,7 @@ func _finish() -> void:
 		write_json(output.path_join("ramcache-"+mode+".json"),{"schema":"gen006-ramcache-workbench-v1",
 			"mode":mode,"process_id":OS.get_process_id(),"graphical":graphical,"checks":checks,"failures":failures,
 			"hot_samples":hot_samples,"warm_samples":warm_samples,"native_before":cache_native_before,
+			"cache_ui_observations":cache_ui_observations,
 			"native_after":cache_native_after,"filesystem_before":cache_filesystem_before,
 			"filesystem_after":cache_filesystem_after,"evidence":controller.evidence()})
 	print("GEN006_RAMCACHE ",JSON.stringify({"checks":checks,"failures":failures,"mode":mode,

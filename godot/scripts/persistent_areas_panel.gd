@@ -370,9 +370,20 @@ func _refresh_cache() -> void:
 	var accounting: Dictionary = cache.get("accounting",{})
 	var retained := int(accounting.get("retained_bytes",cache.get("used_bytes",0)))
 	var reserved := int(accounting.get("reserved_bytes",cache.get("reserved_bytes",0)))
-	_cache_summary.text = "HOT %d · WARM %d · COLD %d\nAccounted cache %.2f MiB + preparation reservations %.2f MiB. Native growth headroom is included; process memory is reported separately in diagnostics." % [
-		int(cache.get("hot_count",0)),int(cache.get("warm_count",0)),int(cache.get("cold_count",3)),
-		float(retained)/1048576.0,float(reserved)/1048576.0]
+	var counters: Dictionary = cache.get("counters",{})
+	_cache_summary.text = "\n".join(PackedStringArray([
+		"HOT %d · WARM %d · COLD %d" % [int(cache.get("hot_count",0)),int(cache.get("warm_count",0)),int(cache.get("cold_count",3))],
+		"Cache lookups: %d HOT hits · %d WARM hits · %d COLD misses" % [int(counters.get("hot_hits",0)),int(counters.get("warm_hits",0)),int(counters.get("cold_misses",0))],
+		"Accounted %.2f MiB; preparation reserved %.2f MiB; publication %.2f / %.0f MiB." % [
+			float(retained)/1048576.0,float(reserved)/1048576.0,
+			float(cache.get("essential_publication_reserved_bytes",0))/1048576.0,float(cache.get("essential_publication_cap_bytes",0))/1048576.0],
+		"Native capacity estimate %.2f MiB (last observed); growth reserve %.2f MiB." % [
+			float(cache.get("native_bytes",0))/1048576.0,float(cache.get("native_headroom_bytes",0))/1048576.0],
+		"Measured encoded payloads: WARM %.2f MiB; authoring %.2f MiB." % [
+			float(cache.get("warm_bytes",0))/1048576.0,float(cache.get("authoring_bytes",0))/1048576.0],
+		"These values are not process RSS. The external evaluator measures working set / RSS.",
+	]))
+	_cache_summary.tooltip_text = "Cache lookups count admitted tier selections, including Ahead/catch-up and operations later cancelled or refused; they are not successful arrival counts. Native capacity is the last observed owned-container estimate, excluding allocator and external host/renderer overhead. Encoded payload sizes count bytes, not all host allocations. Growth, preparation and essential publication reservations are admitted headroom; they are not measured resident memory."
 	var lines := PackedStringArray()
 	for area: Dictionary in Fixtures.AREAS:
 		var record: Dictionary = state.get("areas",{}).get(area.id,{})
