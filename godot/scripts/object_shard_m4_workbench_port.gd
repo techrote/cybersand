@@ -224,16 +224,17 @@ static func _applied_receipt_error(receipt: Dictionary, request: Dictionary) -> 
 			return "NativeIdentityMismatch"
 	if native.get("operation") != request.operation or native.get("position") != request.position:
 		return "NativeOperationMismatch"
+	# Compare the immutable *pre-edit* witness separately from resulting
+	# incarnation/body/geometry revisions, which can legitimately advance.
+	if not native.get("source_target") is Dictionary or native.source_target != request.target:
+		return "NativeTargetMismatch"
 	for key: String in ["transaction_id", "material_revision", "geometry_revision",
 			"applied_physics_revision", "pose_serial", "body_generation",
 			"incarnation", "owner", "cell"]:
 		if not native.get(key) is int or int(native[key]) < 0:
 			return "IncompleteNativeMutationReceipt"
-	if int(native.transaction_id) <= 0 or int(native.owner) != int(request.target.owner) \
-			or int(native.cell) != int(request.target.cell) \
-			or int(native.body_generation) != int(request.target.body_generation) \
-			or int(native.incarnation) != int(request.target.incarnation):
-		return "NativeTargetMismatch"
+	if int(native.transaction_id) <= 0:
+		return "IncompleteNativeMutationReceipt"
 	return ""
 
 
