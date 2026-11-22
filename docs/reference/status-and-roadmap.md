@@ -14,6 +14,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) owns current evidence and remaining gates. Draft/HOLD; broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
 
+## CI-OPT-003 worldgen showcase execution — 2026-11-21
+
+The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
+runs seven independent worldgen showcases through the existing two-job Make
+budget. All seven remain required before the nine principal tests. The original
+compiler flags, scientific fixtures, sixteen executables and sanitizer coverage
+remain. Raw per-showcase output is retained before grouped replay, including
+flushed partial output from hung or cancelled peers; source/run/attempt checks
+reject stale or incomplete log inventories. The
+dedicated CI-only PR records source-matched execution, controlled performance
+and independent review before any merge or turnaround claim.
+
 ## CI-OPT-003 soliding compilation reuse — 2026-11-21
 
 The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)
