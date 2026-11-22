@@ -370,10 +370,12 @@ Dictionary CyberObjectShardLab::metrics() const {
 Dictionary CyberObjectShardLab::capabilities() const {
     Dictionary value;
     value["version"] = os::kCapabilityVersion;
-    value["implemented_milestone"] = 0; // Advanced only with the corresponding native stage.
-    value["qualification"] = "M0 source checkpoint; continuing chemistry and exchange await M1/M2";
+    value["implemented_milestone"] = 1; // Advanced only with the corresponding native stage.
+    value["qualification"] = "M1 source checkpoint; product delivery, ingress and external contact await M2";
     value["surface_contact"] = false;
-    value["reaction"] = false;
+    value["reaction"] = true;
+    value["selected_lifecycle"] = "Wood combustion; retained Fire to Smoke; Smoke expiry; no internal transport";
+    value["mutable_geometry"] = true;
     value["emission"] = false;
     value["ingestion"] = false;
     value["whole_cell_quantity"] = true;

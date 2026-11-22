@@ -4,6 +4,7 @@ const Session = preload("res://scripts/object_shard_lab_session.gd")
 var failures: int = 0
 var checks: int = 0
 var reports: Array[Dictionary] = []
+var test_stage: String = "m2"
 
 
 func _init() -> void:
@@ -22,13 +23,14 @@ func _run() -> void:
 		_expect(false, "exact-source ObjectShard native extension is loaded")
 		_finish()
 		return
-	await _ordinary()
-	var stage: String = "m2"
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--objectshard-stage="):
-			stage = argument.trim_prefix("--objectshard-stage=")
-	if stage != "m0":
-		await _burning()
+			test_stage = argument.trim_prefix("--objectshard-stage=")
+	await _ordinary()
+	if test_stage != "m0":
+		await _burning(test_stage == "m2")
+		await _perforated()
+	if test_stage == "m2":
 		await _multiple()
 	_finish()
 
@@ -102,7 +104,7 @@ func _ordinary() -> void:
 	await process_frame
 
 
-func _burning() -> void:
+func _burning(require_exchange: bool) -> void:
 	var session = Session.new()
 	_expect(session.open(2, 12).get("ok", false), "B: genuine Wood burning scenario opens")
 	if session.failed:
@@ -123,14 +125,32 @@ func _burning() -> void:
 		session.close()
 		return
 	var burning: bool = false
-	var first_revision: int = 0
+	var burning_cell: int = -1
 	for row: Dictionary in session.frame.shards:
-		first_revision = int(row.material_revision)
-		for state: int in row.states_b:
-			burning = burning or state > 0
+		for cell: int in range(row.states_b.size()):
+			if int(row.materials[cell]) == 7 and int(row.states_b[cell]) > 0:
+				burning = true
+				burning_cell = cell
 	_expect(burning, "B: burn state survives transfer")
+	# Rapier sleep and the semantic chemistry clock are independent. Freeze no
+	# native clock: the actual body sleeps while twenty native ticks continue.
+	var body_id: int = int(session.frame.shards[0].id)
+	var burn_before: int = int(session.frame.shards[0].states_b[burning_cell]) if burning_cell >= 0 else 0
+	var body_rid: RID = session.bridge.bodies[body_id].rid
+	PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_SLEEPING, true)
+	var sleep_observed: bool = false
+	for tick: int in range(20):
+		sleep_observed = sleep_observed or bool(PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_SLEEPING))
+		session.advance(true)
+		if session.failed:
+			break
+	var burn_after: int = int(session.frame.shards[0].states_b[burning_cell]) if burning_cell >= 0 else 0
+	_expect(sleep_observed and burn_after < burn_before and burn_after > 0, "B: actual sleeping body continues Wood lifecycle on semantic ticks")
+	PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 	var fire_seen: bool = false
 	var smoke_seen: bool = false
+	var retained_fire_seen: bool = false
+	var retained_smoke_seen: bool = false
 	var geometry_changed: bool = false
 	for tick: int in range(560):
 		session.advance(true)
@@ -140,15 +160,58 @@ func _burning() -> void:
 		smoke_seen = smoke_seen or _world_count(session.frame, 4) > 0
 		for row: Dictionary in session.frame.shards:
 			geometry_changed = geometry_changed or int(row.geometry_revision) > 1
+			retained_fire_seen = retained_fire_seen or row.materials.has(6)
+			retained_smoke_seen = retained_smoke_seen or row.materials.has(4)
 		if tick % 40 == 0:
 			await process_frame
 	_expect(not session.failed, "B: continuing chemistry and geometry remain operational")
 	_expect(int(session.frame.metrics.get("products_created", 0)) > 0, "B: native Wood creates authentic products")
-	var emitted: PackedInt64Array = session.frame.accounting.get("emitted", PackedInt64Array())
-	_expect(emitted.size() > 6 and emitted[6] > 0, "B: actual shard-owned Fire transfers into World")
-	_expect(fire_seen and smoke_seen, "B: actual World Fire and subsequent Smoke are observed")
+	if require_exchange:
+		var emitted: PackedInt64Array = session.frame.accounting.get("emitted", PackedInt64Array())
+		_expect(emitted.size() > 6 and emitted[6] > 0, "B: actual shard-owned Fire transfers into World")
+		_expect(fire_seen and smoke_seen, "B: actual World Fire and subsequent Smoke are observed")
+	else:
+		_expect(retained_fire_seen and retained_smoke_seen, "M1: retained authentic Fire executes selected Fire-to-Smoke lifecycle")
 	_expect(geometry_changed, "B: consumption changes exact rigid geometry")
-	reports.append(session.export_result())
+	var chemistry_report: Dictionary = session.export_result()
+	chemistry_report["evidence"] = {"burn_before_sleep": burn_before, "burn_after_sleep": burn_after,
+		"actual_sleep_observed": sleep_observed, "world_fire_seen": fire_seen, "world_smoke_seen": smoke_seen,
+		"retained_fire_seen": retained_fire_seen, "retained_smoke_seen": retained_smoke_seen,
+		"geometry_changed": geometry_changed, "exchange_required": require_exchange}
+	reports.append(chemistry_report)
+	session.close()
+	await process_frame
+
+
+func _perforated() -> void:
+	var session = Session.new()
+	_expect(session.open(1, 12).get("ok", false), "M1: mutable perforated native fixture opens")
+	if session.failed:
+		session.close()
+		return
+	var width: int = int(session.frame.width)
+	var cells: PackedByteArray = session.frame.world_materials
+	var holes: Array[Vector2i] = []
+	for y: int in range(2, int(session.frame.height) - 2, 3):
+		for x: int in range(2, width - 2, 3):
+			var at: int = y * width + x
+			if cells[at] == 7 and cells[at - 1] == 7 and cells[at + 1] == 7 and cells[at - width] == 7 and cells[at + width] == 7:
+				holes.append(Vector2i(x, y))
+	for position: Vector2i in holes:
+		session.edit(position, 0)
+	_erase_lowest_wood(session)
+	for tick: int in range(30):
+		session.advance(true)
+		if session.failed or not session.bridge.bodies.is_empty():
+			break
+	var shapes: int = 0
+	for row: Dictionary in session.frame.shards:
+		shapes += row.rectangles.size() / 4
+	_expect(not session.failed and not session.bridge.bodies.is_empty() and shapes > 8,
+		"M1: actual native perforated geometry exceeds eight shapes and activates with holes intact")
+	var report: Dictionary = session.export_result()
+	report["evidence"] = {"fixture": "ordinary native perforation", "holes": holes.size(), "actual_shape_count": shapes}
+	reports.append(report)
 	session.close()
 	await process_frame
 
@@ -211,7 +274,7 @@ func _erase_lowest_wood(session: CyberObjectShardLabSession) -> int:
 
 func _finish() -> void:
 	var result: Dictionary = {"schema": "objectshard-lab-integration-test-v1", "checks": checks,
-		"failures": failures, "engine": Engine.get_version_info(), "platform": OS.get_name(), "scenarios": reports}
+		"failures": failures, "stage": test_stage, "engine": Engine.get_version_info(), "platform": OS.get_name(), "scenarios": reports}
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--objectshard-report="):
 			var path: String = argument.trim_prefix("--objectshard-report=")

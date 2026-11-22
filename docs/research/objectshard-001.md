@@ -30,7 +30,7 @@ selection. This independent bounded Lab explicitly selects SerialInPlace.
 | Stage | Behavior | Qualification at the M0 checkpoint |
 | --- | --- | --- |
 | M0 | Compact inventory, ordinary-mutation discovery, exact promotion, actual collider switch and Rapier motion | Native and actual Linux iteration executed; independent scoped review passed |
-| M1 | Shared combustion, material products, mutable geometry and sleeping-body chemistry | World extraction parity passed; shard scheduler is subsequent work |
+| M1 | Shared combustion, material products, mutable geometry and sleeping-body chemistry | Native scheduler and actual Linux Rapier Lab executed; exact results below |
 | M2 | Authentic output, physical Sand lodging, historical Water exposure, Windows evaluator | Subsequent work; not advertised by M0 capabilities |
 
 ## Native contract
@@ -130,3 +130,42 @@ and owner Windows11/NVIDIA physical acceptance are separate statuses.
 Unsupported scope remains explicit: arbitrary material admission, fractional
 quantity transfers, Wave/pressure/inertial/ballistic sidecar transfer, general
 internal transport, consuming Acid reactions, fracture and durable persistence.
+
+## M1 executable checkpoint
+
+The registry scheduler now invokes the shared Wood/Fire/Smoke lifecycle
+decisions on the native semantic clock. It processes only due carriers, starts
+strictly after capture/birth, retains the original logical coordinate anchor
+through movement and does not depend on Rapier sleeping. Dormant Wood retains
+a deadline and is explicitly awakened by admitted ignition. The canonical
+`MaterialRules::pair_reaction` resolver is reused; none of the admitted local
+material pairs is a consuming pair, and newly introduced unsupported pairs
+fail closed instead of silently acquiring cross-domain authority.
+
+Products occupy actual local carriers. Wood emits Fire32 into an Empty
+neighbour; blocked Fire can transition to Smoke under shard ownership. Smoke
+has its own lifetime/crowding lane; no local gas transport is claimed. The
+same occupied product cannot also be duplicated in an outbox. Erosion changes
+exact occupied geometry and mass; disconnected islands remain an explicit
+`split_pending` compound while chemistry continues. Losing the final skeleton
+retains a draining product domain independently of body retirement.
+
+Native M1 qualification: **59,281 checks, zero failures** (storage8,125,
+contact44,727, coordinator1,957, original World oracle4,472). The frozen native
+input digest is `b3ad04377b1cca02bf1711fba33504546dc9c7bf2b00b9369fedfaa738bc4782`.
+It covers pre-transfer World burn, sleeping/moving logical-anchor continuity,
+retained Fire32→Smoke, final-skeleton draining and burning perforation beyond
+eight exact shapes. Native ACK fixtures do not substitute for Rapier tests.
+
+Actual Godot4.7.2 M1 iteration passed154 checks: Rapier was observed sleeping
+while the same Wood countdown progressed237→227 over20semantic ticks; three
+real retained Fire products were born, retained Fire→Smoke was observed and
+an81-shape perforated body activated. The iteration extension SHA256 is
+`4e3e18891d2b2f9c3d97e150bebc28778b13084dde3babfcc79fcad21f1137b5`.
+The initial enclosed-ignition fixture's two failures are retained; moving
+ignition to the genuine exposed crown edge repaired the fixture without
+changing chemistry. M1 output remains disabled: World Fire/Smoke created
+before transfer is not evidence of shard emission.
+
+These checkpoints are intentionally distinct from the later M2 candidate,
+whose outgoing/incoming transfers and Windows package require fresh execution.

@@ -146,8 +146,8 @@ void Coordinator::author_scenario(std::uint32_t scenario) {
                 for (auto x = trunk_x - 9; x < trunk_x + 14; x += 3) world_->set(x, y, Material::Empty);
         }
         if (scenario == 2 || scenario == 4) {
-            (void)world_->set_cell_state(trunk_x + 14, floor - 40, Material::Wood, 0, 240);
-            world_->set_temperature(trunk_x + 14, floor - 40, 650);
+            (void)world_->set_cell_state(trunk_x + 15, floor - 40, Material::Wood, 0, 240);
+            world_->set_temperature(trunk_x + 15, floor - 40, 650);
         }
         if (scenario == 3) {
             (void)world_->set_cell_state(trunk_x - 12, floor - 39, Material::Wood, 0, 240);
@@ -595,7 +595,111 @@ Result Coordinator::step(std::span<const PoseSample> poses) {
 }
 
 void Coordinator::capture_water(Shard&,const BodyView&,const PoseSample&) {}
-void Coordinator::advance_chemistry() {}
+void Coordinator::advance_chemistry() {
+    const auto start=now_ns();
+    const auto tick=world_->completed_tick_index();
+    namespace chemistry=material_lifecycle;
+    const auto require=[](Outcome result) {
+        if (result!=Outcome::Accepted) throw std::logic_error("reserved shard chemistry mutation refused");
+    };
+    for (const auto& view:registry_.shards()) {
+        auto* shard=registry_.find(view.handle());
+        if (!shard || !shard->chemistry_allowed()) continue;
+        const auto bounds=shard->bounds();
+        const auto neighbor=[&](std::size_t at,chemistry::NeighbourOffset offset) -> std::size_t {
+            const auto x=static_cast<int>(at%bounds.width)+offset.x;
+            const auto y=static_cast<int>(at/bounds.width)+offset.y;
+            return x>=0 && y>=0 && x<bounds.width && y<bounds.height
+                ? static_cast<std::size_t>(y)*bounds.width+static_cast<std::size_t>(x) : shard->area();
+        };
+        for (std::size_t at=0;at<shard->area();++at) {
+            if (!shard->occupied(at) || shard->schedule(at).birth_tick>=tick ||
+                shard->schedule(at).next_due_tick>tick) continue;
+            ++metrics_.chemistry_cells;
+            auto before=shard->payload(at);
+            const auto x=bounds.x+static_cast<std::int64_t>(at%bounds.width);
+            const auto y=bounds.y+static_cast<std::int64_t>(at/bounds.width);
+            // Reuse the canonical oriented resolver. None of the v1 admitted
+            // local material pairs consumes another cell. A future catalogue
+            // change must receive an explicit transactional adapter first.
+            if (chemistry::lane_due(tick,x,y,4,190) && MaterialRules::has_pair_reactions(before.material)) {
+                const auto first=chemistry::random(tick,x,y,200);
+                for (std::size_t n=0;n<chemistry::kNeighbours.size();++n) {
+                    const auto target=neighbor(at,chemistry::kNeighbours[(first+n)%8]);
+                    if (target<shard->area() && MaterialRules::pair_reaction(before.material,
+                        shard->payload(target).material,chemistry::random(tick,x,y,201)))
+                        throw std::logic_error("unadvertised local consuming reaction requires adapter");
+                }
+            }
+            chemistry::Transition transition{before.material,before.state_a,before.state_b};
+            std::uint64_t period=1,stream=0;
+            bool expiry=false;
+            if (before.material==Material::Wood) {
+                if (!before.state_b) {require(shard->set_due(at,std::numeric_limits<std::uint64_t>::max()));continue;}
+                period=chemistry::kCombustionPeriod;stream=chemistry::kCombustionStream;
+                const bool due=chemistry::lane_due(tick,x,y,period,static_cast<std::uint32_t>(stream));
+                bool water=false;
+                if (due) for (auto& exposure:exposures_) {
+                    if (!exposure.consumed && exposure.shard==shard->handle() && exposure.cell==at &&
+                        exposure.incarnation==shard->schedule(at).incarnation &&
+                        exposure.first_tick<=tick && exposure.expiry_tick>=tick) {
+                        exposure.consumed=true;water=true;++accounting_.consumed_exposures;
+                    }
+                }
+                transition=chemistry::combustible(before.material,before.state_a,before.state_b,due,water);
+                if (water) ++accounting_.extinguished;
+            } else if (before.material==Material::Fire) {
+                // The existing specialized ignition opportunity is separate
+                // from Fire lifetime. Ports do not simulate internal gas drift.
+                if (chemistry::lane_due(tick,x,y,120,10)) {
+                    const auto target=neighbor(at,chemistry::kNeighbours[chemistry::random(tick,x,y,10)%8]);
+                    if (target<shard->area() && shard->payload(target).material==Material::Wood) {
+                        auto wood=shard->payload(target);wood.state_b=std::max<std::uint8_t>(wood.state_b,240);
+                        require(shard->set_cell(target,wood,Role::Structural,tick));
+                    }
+                }
+                transition=chemistry::fire_lifetime(before.state_a);
+            } else if (before.material==Material::Smoke) {
+                period=chemistry::kSmokePeriod;stream=chemistry::kSmokeStream;
+                std::uint8_t crowd=0;
+                for (const auto offset:chemistry::kNeighbours) {
+                    const auto target=neighbor(at,offset);
+                    crowd+=static_cast<std::uint8_t>(target<shard->area() && shard->payload(target).material==Material::Smoke);
+                }
+                transition=chemistry::smoke_lifetime(before.material,before.state_a,crowd,
+                    chemistry::lane_due(tick,x,y,period,static_cast<std::uint32_t>(stream)));
+                expiry=transition.material==Material::Empty;
+            } else {
+                // Inert structural fixtures and lodged Sand have no internal
+                // transport. Their inventory still participates in geometry.
+                require(shard->set_due(at,std::numeric_limits<std::uint64_t>::max()));continue;
+            }
+            if (transition.write) {
+                const Payload after{transition.material,transition.state_a,transition.state_b,before.temperature};
+                require(shard->set_cell(at,after,after.material==Material::Empty ? Role::Empty : shard->role(at),tick));
+                record_transition(before,after,expiry);
+            }
+            if (transition.sample_fire_emission) {
+                const auto target=neighbor(at,chemistry::kNeighbours[chemistry::random(tick,x,y,12)%8]);
+                if (target<shard->area() && !shard->occupied(target)) {
+                    const auto empty=shard->payload(target);
+                    const Payload fire{Material::Fire,chemistry::kWoodFireLifetime,0,empty.temperature};
+                    require(shard->set_cell(target,fire,Role::Product,tick));
+                    record_transition(empty,fire);++metrics_.products_created;
+                }
+            }
+            if (shard->occupied(at)) {
+                const auto phase=chemistry::lane_phase(x,y,period,static_cast<std::uint32_t>(stream));
+                const auto distance=(phase+period-tick%period)%period;
+                require(shard->set_due(at,tick+(distance ? distance : period)));
+            }
+        }
+    }
+    // Bounded historical facts are consumed once or expire. A geometry revision
+    // does not erase a fact about the same surviving cell incarnation.
+    std::erase_if(exposures_,[&](const auto& e){return e.consumed || e.expiry_tick<tick || !registry_.find(e.shard);});
+    metrics_.chemistry_ns+=now_ns()-start;
+}
 void Coordinator::advance_products_and_exchange() {}
 void Coordinator::record_transition(Payload before,Payload after,bool expiry) noexcept {
     if (before.material==after.material) return;
