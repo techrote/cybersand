@@ -3,6 +3,8 @@
   "reviewed": "2026-11-20",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
+    "research/objectshard-001.md",
+    "operations/objectshard-lab-playtest.md",
     "operations/wb-art-paint-integrated-candidate.md",
     "operations/gen008-flatten-qualification.md",
     "systems/workbench-direct-art-batches.md",
@@ -147,7 +149,9 @@
     "tools/art-pipeline-unification.md",
     "tools/world-art-preview.md",
     "tools/world-art-capture.md",
-    "tools/world-art-evaluation.md"
+    "tools/world-art-evaluation.md",
+    "research/objectshard-m3-preflight.md",
+    "operations/objectshard-m3-preflight-playtest.md"
   ],
   "navigation": [
     "README.md",
@@ -662,39 +666,39 @@
     },
     {
       "path": "research/gentek-showcase-megatruss-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "research/gentek-showcase-cathedral-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "research/gentek-showcase-megablock-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "research/gentek-metabolist-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "operations/gentek-interlaced-viaduct.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "operations/gentek-rosework-showcase.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "research/gentek-interlock-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "research/gentek-suspended-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "operations/gentek-showcase-integration-001.md",
-      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663\u2013#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
+      "reason": "Draft/HOLD Gentek research/evidence on unmerged #624/#663–#671 branches; explicit retrieval via the integration record only, not accepted-main runtime authority."
     },
     {
       "path": "research/gentek-80-integration-001.md",

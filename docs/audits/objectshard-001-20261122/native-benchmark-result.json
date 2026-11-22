@@ -1,0 +1,1549 @@
+{
+  "allocation_scope": "requested_C++_new_bytes_not_RSS",
+  "cases": [
+    {
+      "memory": {
+        "construction_allocations": 1144,
+        "construction_requested_bytes": 13570423,
+        "cpp_live_max_bytes": 4520244,
+        "cpp_peak_max_bytes": 4520310,
+        "native_reported_retained_max_bytes": 4172576,
+        "registry_retained_max_bytes": 23960,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "empty_lab",
+      "observations": {
+        "chemistry_cells": 0,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 0,
+        "fire_emitted": 0,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 0.0,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 0,
+        "promotion_pause_max_us": 0.0,
+        "shapes_max_per_body": 0,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 0
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 24.46,
+          "mean_us": 0.166,
+          "p50_us": 0.147,
+          "p95_us": 0.191,
+          "p99_us": 0.237,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1998.426,
+          "mean_us": 1480.592,
+          "p50_us": 1426.993,
+          "p95_us": 1998.426,
+          "p99_us": 1998.426,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 90.414,
+          "mean_us": 0.217,
+          "p50_us": 0.136,
+          "p95_us": 0.205,
+          "p99_us": 0.273,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 1635.211,
+          "mean_us": 345.38,
+          "p50_us": 328.028,
+          "p95_us": 467.662,
+          "p99_us": 617.436,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 4714.82,
+          "mean_us": 566.228,
+          "p50_us": 536.356,
+          "p95_us": 722.631,
+          "p99_us": 877.126,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 2649.198,
+          "mean_us": 217.591,
+          "p50_us": 192.656,
+          "p95_us": 312.126,
+          "p99_us": 414.789,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 526.738,
+          "mean_us": 47.065,
+          "p50_us": 42.001,
+          "p95_us": 81.969,
+          "p99_us": 140.344,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 379.595,
+          "mean_us": 45.257,
+          "p50_us": 40.538,
+          "p95_us": 80.047,
+          "p99_us": 137.611,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 0.265,
+          "mean_us": 0.115,
+          "p50_us": 0.116,
+          "p95_us": 0.15,
+          "p99_us": 0.166,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 0.14,
+          "mean_us": 0.107,
+          "p50_us": 0.095,
+          "p95_us": 0.14,
+          "p99_us": 0.14,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 0.377,
+          "mean_us": 0.09,
+          "p50_us": 0.081,
+          "p95_us": 0.155,
+          "p99_us": 0.219,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 1370.465,
+          "mean_us": 290.185,
+          "p50_us": 267.123,
+          "p95_us": 401.081,
+          "p99_us": 540.704,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 155.275,
+          "mean_us": 3.416,
+          "p50_us": 2.279,
+          "p95_us": 3.113,
+          "p99_us": 33.548,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1146,
+        "construction_requested_bytes": 13718817,
+        "cpp_live_max_bytes": 4569620,
+        "cpp_peak_max_bytes": 4569620,
+        "native_reported_retained_max_bytes": 4222402,
+        "registry_retained_max_bytes": 73786,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "inert_stationary",
+      "observations": {
+        "chemistry_cells": 1650,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 1650,
+        "fire_emitted": 0,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 0.0,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 0,
+        "promotion_pause_max_us": 1621.081,
+        "shapes_max_per_body": 6,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 0
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 149.227,
+          "mean_us": 8.182,
+          "p50_us": 7.362,
+          "p95_us": 8.913,
+          "p99_us": 37.826,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1376.895,
+          "mean_us": 1298.903,
+          "p50_us": 1279.47,
+          "p95_us": 1376.895,
+          "p99_us": 1376.895,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 404.591,
+          "mean_us": 37.777,
+          "p50_us": 34.281,
+          "p95_us": 60.386,
+          "p99_us": 137.886,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 8759.423,
+          "mean_us": 585.693,
+          "p50_us": 538.921,
+          "p95_us": 769.899,
+          "p99_us": 1001.733,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 346.056,
+          "mean_us": 312.291,
+          "p50_us": 298.988,
+          "p95_us": 346.056,
+          "p99_us": 346.056,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 8998.769,
+          "mean_us": 811.133,
+          "p50_us": 750.298,
+          "p95_us": 1046.299,
+          "p99_us": 1316.746,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 612.139,
+          "mean_us": 222.879,
+          "p50_us": 196.323,
+          "p95_us": 318.273,
+          "p99_us": 417.321,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 2201.023,
+          "mean_us": 175.388,
+          "p50_us": 156.527,
+          "p95_us": 262.509,
+          "p99_us": 344.901,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 2170.3,
+          "mean_us": 145.793,
+          "p50_us": 129.025,
+          "p95_us": 216.073,
+          "p99_us": 317.623,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 352.326,
+          "mean_us": 6.179,
+          "p50_us": 5.088,
+          "p95_us": 6.689,
+          "p99_us": 26.714,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 3569.011,
+          "mean_us": 3128.287,
+          "p50_us": 3313.822,
+          "p95_us": 3569.011,
+          "p99_us": 3569.011,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 0.469,
+          "mean_us": 0.1,
+          "p50_us": 0.094,
+          "p95_us": 0.183,
+          "p99_us": 0.26,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 8472.917,
+          "mean_us": 307.864,
+          "p50_us": 279.558,
+          "p95_us": 423.767,
+          "p99_us": 613.526,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 525.465,
+          "mean_us": 52.023,
+          "p50_us": 43.522,
+          "p95_us": 85.433,
+          "p99_us": 182.147,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1146,
+        "construction_requested_bytes": 13718817,
+        "cpp_live_max_bytes": 4569620,
+        "cpp_peak_max_bytes": 4569620,
+        "native_reported_retained_max_bytes": 4222402,
+        "registry_retained_max_bytes": 73786,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "inert_moving",
+      "observations": {
+        "chemistry_cells": 1650,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 1650,
+        "fire_emitted": 0,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 0.0,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 0,
+        "promotion_pause_max_us": 1193.336,
+        "shapes_max_per_body": 6,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 0
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 193.734,
+          "mean_us": 8.807,
+          "p50_us": 7.348,
+          "p95_us": 8.14,
+          "p99_us": 56.265,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1101.474,
+          "mean_us": 1019.545,
+          "p50_us": 1000.987,
+          "p95_us": 1101.474,
+          "p99_us": 1101.474,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 497.506,
+          "mean_us": 40.049,
+          "p50_us": 34.382,
+          "p95_us": 72.573,
+          "p99_us": 180.3,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 3502.95,
+          "mean_us": 585.694,
+          "p50_us": 547.358,
+          "p95_us": 741.324,
+          "p99_us": 1080.16,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 257.506,
+          "mean_us": 245.941,
+          "p50_us": 249.111,
+          "p95_us": 257.506,
+          "p99_us": 257.506,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 5070.242,
+          "mean_us": 804.1,
+          "p50_us": 749.193,
+          "p95_us": 995.408,
+          "p99_us": 1576.677,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 3807.155,
+          "mean_us": 213.907,
+          "p50_us": 189.294,
+          "p95_us": 298.541,
+          "p99_us": 446.572,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 3125.175,
+          "mean_us": 198.081,
+          "p50_us": 170.969,
+          "p95_us": 301.242,
+          "p99_us": 544.519,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 3090.645,
+          "mean_us": 156.854,
+          "p50_us": 135.071,
+          "p95_us": 252.079,
+          "p99_us": 477.348,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 201.441,
+          "mean_us": 5.631,
+          "p50_us": 5.029,
+          "p95_us": 5.795,
+          "p99_us": 8.325,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 2703.759,
+          "mean_us": 2625.516,
+          "p50_us": 2605.561,
+          "p95_us": 2703.759,
+          "p99_us": 2703.759,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 0.338,
+          "mean_us": 0.114,
+          "p50_us": 0.112,
+          "p95_us": 0.194,
+          "p99_us": 0.252,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 2420.324,
+          "mean_us": 284.345,
+          "p50_us": 257.851,
+          "p95_us": 396.238,
+          "p99_us": 628.662,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 764.701,
+          "mean_us": 49.274,
+          "p50_us": 42.479,
+          "p95_us": 85.367,
+          "p99_us": 192.733,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1146,
+        "construction_requested_bytes": 13718817,
+        "cpp_live_max_bytes": 4569620,
+        "cpp_peak_max_bytes": 4569620,
+        "native_reported_retained_max_bytes": 4222402,
+        "registry_retained_max_bytes": 73786,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "reacting_one",
+      "observations": {
+        "chemistry_cells": 2412,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 1644,
+        "fire_emitted": 30,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 200.301,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 30,
+        "promotion_pause_max_us": 1563.441,
+        "shapes_max_per_body": 10,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 6561
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 195.95,
+          "mean_us": 8.628,
+          "p50_us": 7.682,
+          "p95_us": 8.864,
+          "p99_us": 47.723,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 982.738,
+          "mean_us": 973.45,
+          "p50_us": 980.105,
+          "p95_us": 982.738,
+          "p99_us": 982.738,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 2288.597,
+          "mean_us": 41.327,
+          "p50_us": 35.926,
+          "p95_us": 77.623,
+          "p99_us": 139.547,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 5144.755,
+          "mean_us": 578.975,
+          "p50_us": 552.037,
+          "p95_us": 714.182,
+          "p99_us": 921.771,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 256.075,
+          "mean_us": 249.709,
+          "p50_us": 248.5,
+          "p95_us": 256.075,
+          "p99_us": 256.075,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 5317.706,
+          "mean_us": 794.363,
+          "p50_us": 758.637,
+          "p95_us": 980.481,
+          "p99_us": 1199.836,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 2006.465,
+          "mean_us": 211.063,
+          "p50_us": 192.879,
+          "p95_us": 291.423,
+          "p99_us": 383.174,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 1339.777,
+          "mean_us": 172.37,
+          "p50_us": 155.987,
+          "p95_us": 245.382,
+          "p99_us": 307.716,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 660.677,
+          "mean_us": 140.391,
+          "p50_us": 127.13,
+          "p95_us": 202.883,
+          "p99_us": 271.656,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 153.1,
+          "mean_us": 5.85,
+          "p50_us": 5.028,
+          "p95_us": 7.307,
+          "p99_us": 28.854,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 2872.737,
+          "mean_us": 2665.86,
+          "p50_us": 2572.992,
+          "p95_us": 2872.737,
+          "p99_us": 2872.737,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 32.886,
+          "mean_us": 0.132,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 200.019,
+          "mean_us": 0.929,
+          "p50_us": 0.113,
+          "p95_us": 0.198,
+          "p99_us": 0.265,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 941.923,
+          "mean_us": 283.528,
+          "p50_us": 269.053,
+          "p95_us": 388.201,
+          "p99_us": 571.136,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 4716.967,
+          "mean_us": 69.836,
+          "p50_us": 60.788,
+          "p95_us": 110.159,
+          "p99_us": 204.195,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1194,
+        "construction_requested_bytes": 14017773,
+        "cpp_live_max_bytes": 4669272,
+        "cpp_peak_max_bytes": 4669272,
+        "native_reported_retained_max_bytes": 4322054,
+        "registry_retained_max_bytes": 173438,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "reacting_three",
+      "observations": {
+        "chemistry_cells": 7236,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 4932,
+        "fire_emitted": 102,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 1462.607,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 102,
+        "promotion_pause_max_us": 1370.47,
+        "shapes_max_per_body": 10,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 25368
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 180.474,
+          "mean_us": 24.599,
+          "p50_us": 22.416,
+          "p95_us": 24.678,
+          "p99_us": 111.092,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1752.25,
+          "mean_us": 1407.231,
+          "p50_us": 1266.144,
+          "p95_us": 1752.25,
+          "p99_us": 1752.25,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 419.04,
+          "mean_us": 115.642,
+          "p50_us": 106.213,
+          "p95_us": 165.115,
+          "p99_us": 258.35,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 1927.928,
+          "mean_us": 991.683,
+          "p50_us": 968.635,
+          "p95_us": 1174.513,
+          "p99_us": 1369.914,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 883.854,
+          "mean_us": 762.626,
+          "p50_us": 707.827,
+          "p95_us": 883.854,
+          "p99_us": 883.854,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 2691.28,
+          "mean_us": 1210.429,
+          "p50_us": 1178.263,
+          "p95_us": 1430.783,
+          "p99_us": 1750.145,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 690.004,
+          "mean_us": 209.629,
+          "p50_us": 194.627,
+          "p95_us": 303.838,
+          "p99_us": 406.729,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 929.722,
+          "mean_us": 416.026,
+          "p50_us": 398.112,
+          "p95_us": 531.334,
+          "p99_us": 678.916,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 853.626,
+          "mean_us": 330.723,
+          "p50_us": 312.642,
+          "p95_us": 434.205,
+          "p99_us": 562.003,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 237.015,
+          "mean_us": 16.376,
+          "p50_us": 14.555,
+          "p95_us": 17.313,
+          "p99_us": 63.783,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 8187.824,
+          "mean_us": 7853.476,
+          "p50_us": 8007.906,
+          "p95_us": 8187.824,
+          "p99_us": 8187.824,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 173.798,
+          "mean_us": 0.472,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 1462.072,
+          "mean_us": 5.66,
+          "p50_us": 0.115,
+          "p95_us": 0.176,
+          "p99_us": 0.292,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 1011.973,
+          "mean_us": 277.326,
+          "p50_us": 259.295,
+          "p95_us": 376.038,
+          "p99_us": 498.991,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 611.775,
+          "mean_us": 156.592,
+          "p50_us": 146.411,
+          "p95_us": 236.429,
+          "p99_us": 342.673,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1146,
+        "construction_requested_bytes": 13718817,
+        "cpp_live_max_bytes": 4569620,
+        "cpp_peak_max_bytes": 4569620,
+        "native_reported_retained_max_bytes": 4222402,
+        "registry_retained_max_bytes": 73786,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "perforated_reacting",
+      "observations": {
+        "chemistry_cells": 2226,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 1503,
+        "fire_emitted": 69,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 197.905,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 69,
+        "promotion_pause_max_us": 1233.823,
+        "shapes_max_per_body": 70,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 15729
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 428.983,
+          "mean_us": 9.43,
+          "p50_us": 7.815,
+          "p95_us": 8.77,
+          "p99_us": 53.487,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1430.552,
+          "mean_us": 1202.354,
+          "p50_us": 1145.825,
+          "p95_us": 1430.552,
+          "p99_us": 1430.552,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 652.112,
+          "mean_us": 44.676,
+          "p50_us": 39.569,
+          "p95_us": 77.536,
+          "p99_us": 156.618,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 2598.277,
+          "mean_us": 590.617,
+          "p50_us": 564.379,
+          "p95_us": 728.332,
+          "p99_us": 967.128,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 304.589,
+          "mean_us": 281.802,
+          "p50_us": 295.511,
+          "p95_us": 304.589,
+          "p99_us": 304.589,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 3982.476,
+          "mean_us": 815.674,
+          "p50_us": 775.007,
+          "p95_us": 989.379,
+          "p99_us": 1308.327,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 2221.424,
+          "mean_us": 220.311,
+          "p50_us": 197.845,
+          "p95_us": 305.89,
+          "p99_us": 439.334,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 1555.557,
+          "mean_us": 174.173,
+          "p50_us": 158.123,
+          "p95_us": 247.814,
+          "p99_us": 340.149,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 1530.242,
+          "mean_us": 142.254,
+          "p50_us": 129.694,
+          "p95_us": 199.996,
+          "p99_us": 287.62,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 118.839,
+          "mean_us": 5.767,
+          "p50_us": 5.028,
+          "p95_us": 7.439,
+          "p99_us": 26.568,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 2593.801,
+          "mean_us": 2542.501,
+          "p50_us": 2519.168,
+          "p95_us": 2593.801,
+          "p99_us": 2593.801,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 35.37,
+          "mean_us": 0.072,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 197.745,
+          "mean_us": 0.527,
+          "p50_us": 0.097,
+          "p95_us": 0.159,
+          "p99_us": 0.231,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 1128.701,
+          "mean_us": 283.462,
+          "p50_us": 262.789,
+          "p95_us": 386.77,
+          "p99_us": 490.149,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 666.172,
+          "mean_us": 75.896,
+          "p50_us": 68.749,
+          "p95_us": 119.059,
+          "p99_us": 224.882,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1146,
+        "construction_requested_bytes": 13718817,
+        "cpp_live_max_bytes": 4569620,
+        "cpp_peak_max_bytes": 4569620,
+        "native_reported_retained_max_bytes": 4222402,
+        "registry_retained_max_bytes": 73786,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "saturated_world_destinations",
+      "observations": {
+        "chemistry_cells": 3105,
+        "final_cargo_sum": 0,
+        "final_products_sum": 9,
+        "final_structural_sum": 1644,
+        "fire_emitted": 0,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 310.872,
+        "output_blocked_attempts": 3465,
+        "product_age_max_ticks": 416,
+        "products_created": 9,
+        "promotion_pause_max_us": 1255.714,
+        "shapes_max_per_body": 10,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 0
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 462.488,
+          "mean_us": 10.25,
+          "p50_us": 8.175,
+          "p95_us": 9.342,
+          "p99_us": 65.443,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1445.932,
+          "mean_us": 1212.605,
+          "p50_us": 1224.014,
+          "p95_us": 1445.932,
+          "p99_us": 1445.932,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 1436.493,
+          "mean_us": 43.236,
+          "p50_us": 37.178,
+          "p95_us": 69.776,
+          "p99_us": 143.669,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 3798.895,
+          "mean_us": 585.063,
+          "p50_us": 547.166,
+          "p95_us": 746.138,
+          "p99_us": 1123.114,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 252.387,
+          "mean_us": 247.996,
+          "p50_us": 248.14,
+          "p95_us": 252.387,
+          "p99_us": 252.387,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 4692.324,
+          "mean_us": 815.018,
+          "p50_us": 762.889,
+          "p95_us": 1029.108,
+          "p99_us": 1801.747,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 2813.867,
+          "mean_us": 225.563,
+          "p50_us": 198.488,
+          "p95_us": 324.263,
+          "p99_us": 568.607,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 2932.356,
+          "mean_us": 186.409,
+          "p50_us": 163.187,
+          "p95_us": 267.224,
+          "p99_us": 431.042,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 2904.898,
+          "mean_us": 152.872,
+          "p50_us": 134.333,
+          "p95_us": 234.09,
+          "p99_us": 319.501,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 126.354,
+          "mean_us": 5.791,
+          "p50_us": 5.284,
+          "p95_us": 5.942,
+          "p99_us": 8.532,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 243953.823,
+          "mean_us": 239467.038,
+          "p50_us": 243897.653,
+          "p95_us": 243953.823,
+          "p99_us": 243953.823,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 32.939,
+          "mean_us": 0.133,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 310.681,
+          "mean_us": 1.084,
+          "p50_us": 0.101,
+          "p95_us": 0.171,
+          "p99_us": 0.241,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 2392.061,
+          "mean_us": 293.125,
+          "p50_us": 267.007,
+          "p95_us": 412.123,
+          "p99_us": 580.34,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 442.647,
+          "mean_us": 50.244,
+          "p50_us": 43.686,
+          "p95_us": 85.865,
+          "p99_us": 187.947,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1410,
+        "construction_requested_bytes": 6413223,
+        "cpp_live_max_bytes": 2134422,
+        "cpp_peak_max_bytes": 2134422,
+        "native_reported_retained_max_bytes": 1787204,
+        "registry_retained_max_bytes": 22940,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "dormant_twelve",
+      "observations": {
+        "chemistry_cells": 324,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 324,
+        "fire_emitted": 0,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 0.0,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 0,
+        "promotion_pause_max_us": 3777.024,
+        "shapes_max_per_body": 1,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 0
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 165.477,
+          "mean_us": 2.649,
+          "p50_us": 2.461,
+          "p95_us": 2.772,
+          "p99_us": 3.029,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 1133.074,
+          "mean_us": 1031.769,
+          "p50_us": 982.269,
+          "p95_us": 1133.074,
+          "p99_us": 1133.074,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 120.97,
+          "mean_us": 8.05,
+          "p50_us": 7.448,
+          "p95_us": 8.295,
+          "p99_us": 11.696,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 2057.086,
+          "mean_us": 453.086,
+          "p50_us": 436.524,
+          "p95_us": 563.974,
+          "p99_us": 748.114,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 238.057,
+          "mean_us": 205.913,
+          "p50_us": 194.784,
+          "p95_us": 238.057,
+          "p99_us": 238.057,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 2565.753,
+          "mean_us": 671.042,
+          "p50_us": 646.997,
+          "p95_us": 806.038,
+          "p99_us": 1006.56,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 2117.191,
+          "mean_us": 215.001,
+          "p50_us": 199.213,
+          "p95_us": 289.584,
+          "p99_us": 414.456,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 939.637,
+          "mean_us": 76.998,
+          "p50_us": 69.747,
+          "p95_us": 112.616,
+          "p99_us": 210.332,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 434.603,
+          "mean_us": 65.931,
+          "p50_us": 60.496,
+          "p95_us": 97.257,
+          "p99_us": 198.028,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 36.807,
+          "mean_us": 2.084,
+          "p50_us": 1.97,
+          "p95_us": 2.287,
+          "p99_us": 2.52,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 73815.703,
+          "mean_us": 70366.646,
+          "p50_us": 70027.019,
+          "p95_us": 73815.703,
+          "p99_us": 73815.703,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 0.835,
+          "mean_us": 0.111,
+          "p50_us": 0.105,
+          "p95_us": 0.195,
+          "p99_us": 0.276,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 1810.593,
+          "mean_us": 281.477,
+          "p50_us": 263.376,
+          "p95_us": 373.769,
+          "p99_us": 488.676,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 0
+        },
+        "world": {
+          "max_us": 465.25,
+          "mean_us": 77.864,
+          "p50_us": 70.429,
+          "p95_us": 113.465,
+          "p99_us": 190.381,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "memory": {
+        "construction_allocations": 1410,
+        "construction_requested_bytes": 6413223,
+        "cpp_live_max_bytes": 2134422,
+        "cpp_peak_max_bytes": 2134422,
+        "native_reported_retained_max_bytes": 1787204,
+        "registry_retained_max_bytes": 22940,
+        "steady_allocations": 0,
+        "steady_requested_bytes": 0,
+        "world_cell_storage_max_bytes": 494592
+      },
+      "name": "wake_burst_twelve",
+      "observations": {
+        "chemistry_cells": 4656,
+        "final_cargo_sum": 0,
+        "final_products_sum": 0,
+        "final_structural_sum": 324,
+        "fire_emitted": 309,
+        "geometry_age_max_ticks": 0,
+        "geometry_wait_max_us": 0.0,
+        "output_blocked_attempts": 0,
+        "product_age_max_ticks": 0,
+        "products_created": 309,
+        "promotion_pause_max_us": 1289.943,
+        "shapes_max_per_body": 1,
+        "smoke_emitted": 0,
+        "world_smoke_cell_samples": 29817
+      },
+      "repetitions": 3,
+      "scope": "native_integrated_synthetic_pose_and_receipts",
+      "ticks_per_repetition": 480,
+      "timings": {
+        "chemistry": {
+          "max_us": 99.206,
+          "mean_us": 2.776,
+          "p50_us": 2.51,
+          "p95_us": 3.691,
+          "p99_us": 5.147,
+          "samples": 1440
+        },
+        "construction": {
+          "max_us": 918.401,
+          "mean_us": 889.491,
+          "p50_us": 905.487,
+          "p95_us": 918.401,
+          "p99_us": 918.401,
+          "samples": 3
+        },
+        "contact": {
+          "max_us": 174.551,
+          "mean_us": 12.093,
+          "p50_us": 9.534,
+          "p95_us": 17.94,
+          "p99_us": 58.504,
+          "samples": 1440
+        },
+        "coordinator_step": {
+          "max_us": 1832.896,
+          "mean_us": 442.279,
+          "p50_us": 448.04,
+          "p95_us": 588.461,
+          "p99_us": 776.391,
+          "samples": 1440
+        },
+        "discovery": {
+          "max_us": 183.589,
+          "mean_us": 173.527,
+          "p50_us": 171.861,
+          "p95_us": 183.589,
+          "p99_us": 183.589,
+          "samples": 3
+        },
+        "native_frame_including_snapshot_receipt": {
+          "max_us": 4976.136,
+          "mean_us": 648.332,
+          "p50_us": 659.526,
+          "p95_us": 845.498,
+          "p99_us": 1053.589,
+          "samples": 1440
+        },
+        "native_snapshot": {
+          "max_us": 4363.503,
+          "mean_us": 203.101,
+          "p50_us": 197.29,
+          "p95_us": 287.252,
+          "p99_us": 409.96,
+          "samples": 1440
+        },
+        "occupancy_inclusive": {
+          "max_us": 1044.657,
+          "mean_us": 77.755,
+          "p50_us": 71.826,
+          "p95_us": 115.877,
+          "p99_us": 210.651,
+          "samples": 1440
+        },
+        "overlap_relocation": {
+          "max_us": 829.077,
+          "mean_us": 63.049,
+          "p50_us": 59.45,
+          "p95_us": 96.943,
+          "p99_us": 181.138,
+          "samples": 1440
+        },
+        "product_exchange": {
+          "max_us": 111.014,
+          "mean_us": 2.319,
+          "p50_us": 1.95,
+          "p95_us": 4.173,
+          "p99_us": 8.045,
+          "samples": 1440
+        },
+        "promotion_and_fixture_admission": {
+          "max_us": 65259.597,
+          "mean_us": 64093.32,
+          "p50_us": 63958.158,
+          "p95_us": 65259.597,
+          "p99_us": 65259.597,
+          "samples": 3
+        },
+        "shard_geometry": {
+          "max_us": 0.0,
+          "mean_us": 0.0,
+          "p50_us": 0.0,
+          "p95_us": 0.0,
+          "p99_us": 0.0,
+          "samples": 1440
+        },
+        "synthetic_geometry_receipt": {
+          "max_us": 2.313,
+          "mean_us": 0.099,
+          "p50_us": 0.09,
+          "p95_us": 0.189,
+          "p99_us": 0.271,
+          "samples": 1440
+        },
+        "terrain_geometry": {
+          "max_us": 694.632,
+          "mean_us": 263.085,
+          "p50_us": 263.358,
+          "p95_us": 373.09,
+          "p99_us": 443.246,
+          "samples": 1440
+        },
+        "wake_burst": {
+          "max_us": 2.671,
+          "mean_us": 2.442,
+          "p50_us": 2.621,
+          "p95_us": 2.671,
+          "p99_us": 2.671,
+          "samples": 3
+        },
+        "world": {
+          "max_us": 533.117,
+          "mean_us": 84.911,
+          "p50_us": 73.846,
+          "p95_us": 140.728,
+          "p99_us": 214.038,
+          "samples": 1440
+        }
+      }
+    },
+    {
+      "equivalence": "every_local_and_external_payload_each_tick",
+      "memory": {
+        "compact_carrier_Cpp_live_bytes": 1112,
+        "compact_construction_allocations": 224,
+        "compact_registry_including_shared_scratch_bytes": 1112,
+        "compact_steady_allocations": 0,
+        "miniature_World_Cpp_live_bytes": 57002,
+        "miniature_cell_storage_bytes": 704,
+        "miniature_construction_allocations": 832,
+        "miniature_steady_allocations": 0
+      },
+      "miniature_configuration": {
+        "activity_block_size": 4,
+        "backend": "SerialInPlace",
+        "chunk_size": 8,
+        "deferred_events": 4,
+        "maximum_chunks": 16,
+        "workers": 1
+      },
+      "name": "compact_vs_tuned_serial_miniature",
+      "observations": {
+        "World_smoke_cell_samples": 736,
+        "fire_deliveries": 64
+      },
+      "repetitions": 16,
+      "scope": "native_material_domain_with_actual_output_excludes_common_World_physics_render",
+      "ticks_per_repetition": 64,
+      "timings": {
+        "actual_compact_chemistry_and_emission": {
+          "max_us": 20.672,
+          "mean_us": 0.449,
+          "p50_us": 0.306,
+          "p95_us": 1.155,
+          "p99_us": 2.976,
+          "samples": 1024
+        },
+        "actual_serial_World_and_minimal_boundary_adapter": {
+          "max_us": 21.35,
+          "mean_us": 0.854,
+          "p50_us": 0.781,
+          "p95_us": 1.372,
+          "p99_us": 2.25,
+          "samples": 1024
+        },
+        "common_external_World_tick": {
+          "max_us": 195.524,
+          "mean_us": 13.638,
+          "p50_us": 11.128,
+          "p95_us": 22.727,
+          "p99_us": 50.354,
+          "samples": 2048
+        },
+        "compact_carrier_construction_and_geometry": {
+          "max_us": 3.818,
+          "mean_us": 1.805,
+          "p50_us": 1.698,
+          "p95_us": 3.818,
+          "p99_us": 3.818,
+          "samples": 16
+        },
+        "miniature_construction": {
+          "max_us": 40.26,
+          "mean_us": 24.966,
+          "p50_us": 24.339,
+          "p95_us": 40.26,
+          "p99_us": 40.26,
+          "samples": 16
+        }
+      }
+    }
+  ],
+  "checks": 4237384,
+  "failures": 0,
+  "physics": "synthetic_pose_and_ACK_no_Rapier",
+  "schema": 1,
+  "scope": "Linux_or_Windows_native_CPP_only",
+  "timer_semantics": "nested_inclusive_counters_must_not_be_summed_as_disjoint_costs"
+}

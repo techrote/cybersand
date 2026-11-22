@@ -1,0 +1,16 @@
+{
+  "schema": "objectshard-independent-wrapper-equivalence-review-v1",
+  "review_date": "2026-11-22",
+  "actual_source_files_verified": {
+    "reference": 40,
+    "incremental": 40
+  },
+  "only_changed_inputs": [
+    "scripts/object_shard_physics_bridge.gd"
+  ],
+  "records_compared": 3599,
+  "all_tick_before_after_equal": true,
+  "all_native_accounting_equal": true,
+  "canonical_pose_sha256": "4b279dbb07364ae9560785fd22d9eac46460493de272fced098fd1ba2e47bdee",
+  "scope": "Independent recomputation of B-authored actual final514 paired controls; not a new asynchronous run or performance claim."
+}

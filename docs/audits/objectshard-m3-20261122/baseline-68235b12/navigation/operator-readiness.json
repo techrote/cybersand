@@ -1,0 +1,255 @@
+{
+  "schema": "objectshard-m3-operator-readiness-v1",
+  "reviewed_at_utc": "2026-11-22T07:19:08.401576+00:00",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "archive": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14743829036/objectshard-windows-evaluator.zip",
+    "bytes": 93159740,
+    "sha256": "47c55fecfe27272c157c9c7bdbdb864bb78166415c61ea2d8ccc74f502df9015"
+  },
+  "method": "Read-only inspection of actual immutable delivered ZIP members and manifest hashes; no new execution, package extraction mutation or source changes. Existing actual launcher self-tests and scene/render tests are distinct evidence.",
+  "checked_members": [
+    {
+      "path": "Open ObjectShard M3 Preflight.cmd",
+      "bytes": 1399,
+      "sha256": "f78e4895780b573a7c10df1d3fc9ccf7daec84fdc395a302b109d9c959c6e033",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "Open ObjectShard Lab.cmd",
+      "bytes": 1352,
+      "sha256": "b63797082b17089b7c3d74d250608a27326c640fa8cbbc26386388bb98a86b8d",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "Verify ObjectShard Lab.cmd",
+      "bytes": 456,
+      "sha256": "3b436d1f9c4942a71b65fb84933c07b63de16a351a8147e1b6dd90a68ea3e40d",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "READ-ME.md",
+      "bytes": 13921,
+      "sha256": "954a4b15116e1fc6c3ae3be4184d663498d806e55dfe942244d9b66d8da51571",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "docs/operations/objectshard-m3-preflight-playtest.md",
+      "bytes": 13921,
+      "sha256": "954a4b15116e1fc6c3ae3be4184d663498d806e55dfe942244d9b66d8da51571",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "objectshard-lab-manifest.json",
+      "bytes": 148734,
+      "sha256": "185afec8635899d4931ac447a85e5c32e637b6eb303f1228d3559baac7ad083c",
+      "manifest_verified": null,
+      "verification_scope": "Manifest bytes are bound by the independently verified immutable owner ZIP; manifest does not hash itself."
+    },
+    {
+      "path": "godot/project.godot",
+      "bytes": 905,
+      "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/object_shard_worker_rehearsal.tscn",
+      "bytes": 320,
+      "sha256": "ca4b3c8fada4a69ba61b5b27c6c32d14a611c7e9b480bfd91d3c4ad95ee28a64",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/object_shard_worker_rehearsal.gd",
+      "bytes": 31119,
+      "sha256": "e518d130d87184f21a326a76b75ab7aaf94285d81797c2c3d5aa6b1ae0df1350",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/object_shard_worker_host.gd",
+      "bytes": 47662,
+      "sha256": "aa7ddb16b584937c3859ffe4e463f4773c4192c82bd326177971cb4ff42a31ba",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/object_shard_native_worker.gd",
+      "bytes": 21755,
+      "sha256": "29c45f0a9744f226ce604dcd6ddc36f1b059cc10d76a143c3d6d3bf175bca7bf",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/object_shard_capture.gd",
+      "bytes": 8027,
+      "sha256": "13b0ec2462fc6e676c6cf9afb6f9f5b717bc1839dca16ecca4914af33838ed85",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/object_shard_lab_presets.gd",
+      "bytes": 6500,
+      "sha256": "13c97dee2ded48aef1b830599261bfa0fd78c4f5acd357936c5360a0006f5118",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/feature_launcher.gd",
+      "bytes": 6511,
+      "sha256": "bcb04de545ec429e6debac8a9f762a42aa9d9ac9c554d01bceff609b7c25de04",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/scripts/feature_navigation.gd",
+      "bytes": 1294,
+      "sha256": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    },
+    {
+      "path": "godot/tests/probe_object_shard_worker_package_boot.gd",
+      "bytes": 1785,
+      "sha256": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0",
+      "manifest_verified": true,
+      "verification_scope": "Exact member SHA-256 matches sealed manifest files_sha256."
+    }
+  ],
+  "checks": [
+    {
+      "id": "normal-m3-route",
+      "passed": true,
+      "detail": "Without arguments the launcher verifies the package, supplies source and manifest environment, performs editor import, then starts GUI Godot directly on the playable scene. The --self-test branch is separate."
+    },
+    {
+      "id": "source-environment",
+      "passed": true,
+      "detail": "Normal launch supplies the same source and manifest binding as the qualified probe."
+    },
+    {
+      "id": "lab-route-retained",
+      "passed": true,
+      "detail": "The original synchronous Lab shortcut remains a normal direct scene launch."
+    },
+    {
+      "id": "guide-bytes-match",
+      "passed": true,
+      "detail": "Top-level guide is byte-identical to bundled canonical playtest instructions."
+    },
+    {
+      "id": "configuration-and-tools",
+      "passed": true,
+      "detail": "Guide control labels match delivered UI; seed applies on reset, pump defaults4000us with0us control, hold is diagnostic."
+    },
+    {
+      "id": "report-and-trace",
+      "passed": true,
+      "detail": "Export captures host/session/preset/config/UI timing, flushes JSONL checkpoint, writes incident JSON, prints exact paths and opens their directory without toggling running."
+    },
+    {
+      "id": "source-identity-in-export",
+      "passed": true,
+      "detail": "Incident and trace retain actual manifest byte digest plus observed source identity; unchanged manifest carries tree/runtime/input hashes."
+    },
+    {
+      "id": "bounded-capture",
+      "passed": true,
+      "detail": "Prospective JSONL bounds32MiB/100000records; saturation is explicit and does not pause play."
+    }
+  ],
+  "configuration": {
+    "initial_preset": "A \u00b7 Ordinary detachment",
+    "initial_running": false,
+    "initial_brush": "Erase",
+    "initial_seed": 12,
+    "initial_receipt_pump_usec": 4000,
+    "configuration_button": "Configuration",
+    "available": [
+      "Shapes / centre of mass / pocket",
+      "External Fire burner",
+      "Hold worker receipts (diagnostic)",
+      "Scenario seed (applies on Reset)",
+      "Receipt work:0ms control or4ms soft budget"
+    ],
+    "hold_deadline_seconds": 15,
+    "recovery": "Reset or close the window after exporting; releasing a hold alone after deadline does not resume it."
+  },
+  "reports": {
+    "canonical_directory": "user://ObjectShardPreflightReports",
+    "application_name": "Cyber Sand Reference Sandbox",
+    "path_instructions": "Use Export bug report: it opens the actual OS directory; the footer shows full incident and trace paths. No guessed fixed drive/path is required.",
+    "incident_pattern": "incident-<unix-seconds>-<ticks-usec>.json",
+    "trace_pattern": "actions-<unix-seconds>-<ticks-usec>-session-<native-session>.jsonl",
+    "attach": [
+      "incident JSON",
+      "corresponding actions JSONL named in capture.path",
+      "unchanged objectshard-lab-manifest.json",
+      "brief expected-versus-observed description; optional screen recording"
+    ],
+    "completed_replay": "Pause, wait until pending input and the admitted interval drain, then Export. An active unresolved export remains incident evidence and may explicitly refuse standalone replay."
+  },
+  "five_minute_playtest": {
+    "precondition": "Extract whole ZIP into a new writable directory; allow first import before the five-minute play period. Keep hold receipts unchecked and receipt work at default. Do not use global F2 until OPERATOR-01 is resolved.",
+    "steps": [
+      {
+        "time": "0:00\u20130:45",
+        "action": "Run Verify ObjectShard Lab.cmd, then Open ObjectShard M3 Preflight.cmd without arguments. Wait for Native material ready. Open Configuration briefly; confirm seed12 and4ms soft budget, then collapse it.",
+        "pass": "Verifier succeeds and the ordinary playable A scene appears paused, with material and controls.",
+        "fail": "Hash mismatch, native/import error, blank scene, auto-exit into probe receipt, or wrong source."
+      },
+      {
+        "time": "0:45\u20131:45",
+        "action": "Click Resume. Left-drag Erase through the lower Wood support, or use Cut lower support. While the crown falls, paint a short Sand or Water stroke in empty World space; right-click a moving cell to inspect.",
+        "pass": "World clock advances; structure transfers once, falls and collides; edits enter the retained queue and apply or show explicit refusal; moving inspection identifies ObjectShard.",
+        "fail": "Floating main structure despite a complete accepted cut and free capacity, duplicate image/owner, invisible collision, silent edit loss, unexplained Held/fault, or stopped advertised progression."
+      },
+      {
+        "time": "1:45\u20133:00",
+        "action": "Try a fresh one-cell Erase on moving Wood; retry a TargetChanged refusal with a fresh stroke. Wait for the body to sleep naturally, then click Erode resting cell and continue observing.",
+        "pass": "Accepted cut removes real owned material; geometry stays associated with the body. After natural sleep and erosion there is no violent late rotation.",
+        "fail": "Fresh accepted cut damages a different owner/cell, ghost geometry, unexplained inventory loss, violent late twitch or inconsistent hold.",
+        "qualification": "A TargetChanged refusal is a safe stale witness result. If natural sleep has not occurred within this time allocation, extend observation and mark settling not yet established; do not force sleep."
+      },
+      {
+        "time": "3:00\u20134:00",
+        "action": "Pause and let pending operations drain; Single step, then Resume. Export once while running. Reset, wait for the fresh paused scene, then select J \u00b7 Sustained external flame and Resume for visible Fire/Smoke; return to A if desired.",
+        "pass": "Single step advances one requested interval after pending completion; export opens files without pausing; reset/scenario change cleanly replaces the session; J creates genuine visible external Fire.",
+        "fail": "Old moving bodies survive reset, controls stop responding, export claims success without files, or changed scenario retains stale owners."
+      },
+      {
+        "time": "4:00\u20135:00",
+        "action": "Pause and let queues drain, then Export bug report for a completed-input reproduction. Close the window normally, relaunch M3, and confirm a fresh A scene. Close it and open Open ObjectShard Lab.cmd to confirm the preserved control remains accessible.",
+        "pass": "Incident+JSONL exist, report source matches manifest, normal window close exits, relaunch is clean, and old Lab opens independently.",
+        "fail": "Missing/incomplete files without explicit reason, stale previous session on relaunch, shutdown hang or unavailable Lab shortcut."
+      }
+    ]
+  },
+  "renderer_scope": {
+    "normal_route": "Project gl_compatibility with ordinary driver selection; no launcher --rendering-driver override.",
+    "qualified_gui_probe": "--self-test uses explicit opengl3_angle. The actual owner hardware/default-driver path remains owner evaluation, not claimed as hosted NVIDIA acceptance."
+  },
+  "findings": [
+    {
+      "id": "OPERATOR-01",
+      "status": "source-confirmed route; runtime consequence pending targeted review",
+      "severity": "potential lifecycle defect",
+      "detail": "Global F2 navigation schedules direct scene replacement. Delivered rehearsal has only window-close and Reset shutdown paths, no navigation hook/_exit_tree; worker/host have no destructor stop/join. Thus F2 can remove the polling scene before exclusive native-owner and RID disposal. It also leaves SceneTree.auto_accept_quit=false set by the departed scene.",
+      "source_members": [
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/object_shard_worker_rehearsal.gd",
+        "godot/scripts/object_shard_worker_host.gd",
+        "godot/scripts/object_shard_native_worker.gd"
+      ],
+      "disposition": "Root notified before final readiness; no source/package mutation or execution in this review. Normal window-close and reset remain the intended reviewed routes; do not treat a workaround as resolution."
+    }
+  ],
+  "status": "normal-launch-export-guide-review-passed; full-navigation-readiness-pending-OPERATOR-01"
+}

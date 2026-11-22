@@ -1,0 +1,277 @@
+{
+  "runtime_source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "guard_only_descendant": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "native_test_input_count": 128,
+  "native_test_input_mismatches": [],
+  "native_compilation_input_count": 121,
+  "native_compilation_inputs_equal": true,
+  "lab_input_count": 51,
+  "qualification_tool_input_count": 19,
+  "lab_and_qualification_tool_inputs_equal": true,
+  "compatibility_tool_absent_from_all_these_inputs": true,
+  "native_input_digest": "c2174fb20087c5bab23f471d0d7864e49723b09db7ee8fe9b25f5dbc2fa99ace",
+  "sanitizers": true,
+  "leak_sanitizer": false,
+  "world_filter": "",
+  "summary": {
+    "path": "build/m3-platform/repair-linux/14746310288/native/20261122T073824.391790Z-c2174fb20087/summary.json",
+    "bytes": 19121,
+    "sha256": "15f57846425bf402b8ea9f8249605be1df2d7ffe6a9562ac553cba03aa34e47a"
+  },
+  "input_manifest": {
+    "path": "build/m3-platform/repair-linux/14746310288/native/20261122T073824.391790Z-c2174fb20087/inputs.json",
+    "bytes": 16281,
+    "sha256": "b769db999b0c0670b12a061e279ca8c38039e70a126d9a3cc77a745999e5573b"
+  },
+  "linux_provenance": {
+    "path": "build/m3-platform/repair-linux/14746310288/linux-native-provenance.json",
+    "bytes": 15178,
+    "sha256": "5b35b860c27f9f66df04f444039f4cc986ee39060bc91496505480ee991a7f48"
+  },
+  "linux_qualification": {
+    "path": "build/m3-platform/repair-linux/14746310288/lab/qualification.json",
+    "bytes": 647095,
+    "sha256": "e4df9dd01245272659ff528123f6d0d1b56b963cc9319d6c44fadad75ed059fd"
+  },
+  "suites": {
+    "external_fire": {
+      "status": "passed",
+      "checks": 3683,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "1f3f6003f097de93790f6efbf0774bf868c77d2efd1eaab39b110bf5374f5685",
+      "log": {
+        "path": "build/m3-platform/repair-linux/14746310288/native/20261122T073824.391790Z-c2174fb20087/logs/test-external_fire.log",
+        "bytes": 24,
+        "sha256": "022e98c847fec8901b60f726b9a700f33d76bf979f0c5a2a2db34e25ab569294"
+      },
+      "natural_exit_code": 0
+    },
+    "chemistry": {
+      "status": "passed",
+      "checks": 4472,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "943e45138b22583116512caa516e3724ae14b0be9d855baeba8e82a7c9e26cf0",
+      "log": {
+        "path": "build/m3-platform/repair-linux/14746310288/native/20261122T073824.391790Z-c2174fb20087/logs/test-chemistry.log",
+        "bytes": 3662,
+        "sha256": "06a8fc85daa6e3943d6b22f779c2e62bb84c745dcc8e0eeb0dd708fff3233bda"
+      },
+      "natural_exit_code": 0,
+      "frozen_oracle_records": {
+        "source_baseline": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+        "fixtures": [
+          {
+            "name": "sealed_wood_countdown",
+            "backend": 0,
+            "ticks": 90,
+            "tuples": 696560134201903317,
+            "accounting": 8478589081798612443,
+            "physical": 7495025039529568421,
+            "fire_samples": 0,
+            "smoke_samples": 0,
+            "wood_samples": 69,
+            "pair_events": 0
+          },
+          {
+            "name": "wood_emission_and_products",
+            "backend": 0,
+            "ticks": 192,
+            "tuples": 5839831428092041478,
+            "accounting": 4357082588986299519,
+            "physical": 18079868852383678880,
+            "fire_samples": 3294,
+            "smoke_samples": 10050,
+            "wood_samples": 1662,
+            "pair_events": 0
+          },
+          {
+            "name": "water_extinguishes_wood",
+            "backend": 0,
+            "ticks": 32,
+            "tuples": 13278900821021796051,
+            "accounting": 4429197230748566275,
+            "physical": 9811387371455260284,
+            "fire_samples": 0,
+            "smoke_samples": 0,
+            "wood_samples": 33,
+            "pair_events": 0
+          },
+          {
+            "name": "fire_expiry",
+            "backend": 0,
+            "ticks": 160,
+            "tuples": 4777073293096219322,
+            "accounting": 10581633867887538112,
+            "physical": 15193295293428992889,
+            "fire_samples": 1,
+            "smoke_samples": 160,
+            "wood_samples": 0,
+            "pair_events": 0
+          },
+          {
+            "name": "crowded_smoke",
+            "backend": 0,
+            "ticks": 192,
+            "tuples": 8369273419383457497,
+            "accounting": 13351936969552617926,
+            "physical": 17328091190029446653,
+            "fire_samples": 0,
+            "smoke_samples": 3095,
+            "wood_samples": 0,
+            "pair_events": 0
+          },
+          {
+            "name": "pair_precedence",
+            "backend": 0,
+            "ticks": 96,
+            "tuples": 16039525658929031671,
+            "accounting": 16666702268689922910,
+            "physical": 1986010265946479235,
+            "fire_samples": 97,
+            "smoke_samples": 237,
+            "wood_samples": 242,
+            "pair_events": 1
+          },
+          {
+            "name": "negative_logical_coordinates",
+            "backend": 0,
+            "ticks": 192,
+            "tuples": 260832018664934841,
+            "accounting": 9230241232283154301,
+            "physical": 9908478963579571654,
+            "fire_samples": 3008,
+            "smoke_samples": 9737,
+            "wood_samples": 1531,
+            "pair_events": 0
+          },
+          {
+            "name": "burn_across_epoch_wrap",
+            "backend": 0,
+            "ticks": 520,
+            "tuples": 12695958861557438906,
+            "accounting": 16895749110581388086,
+            "physical": 10437447394126641309,
+            "fire_samples": 255,
+            "smoke_samples": 266,
+            "wood_samples": 509,
+            "pair_events": 0
+          },
+          {
+            "name": "sealed_wood_countdown",
+            "backend": 1,
+            "ticks": 90,
+            "tuples": 696560134201903317,
+            "accounting": 8478589081798612443,
+            "physical": 11192219377850141224,
+            "fire_samples": 0,
+            "smoke_samples": 0,
+            "wood_samples": 69,
+            "pair_events": 0
+          },
+          {
+            "name": "wood_emission_and_products",
+            "backend": 1,
+            "ticks": 192,
+            "tuples": 14379627785132089748,
+            "accounting": 4357082588986299519,
+            "physical": 10651387148093695520,
+            "fire_samples": 3294,
+            "smoke_samples": 10050,
+            "wood_samples": 1662,
+            "pair_events": 0
+          },
+          {
+            "name": "water_extinguishes_wood",
+            "backend": 1,
+            "ticks": 32,
+            "tuples": 13278900821021796051,
+            "accounting": 4429197230748566275,
+            "physical": 18130917225667177167,
+            "fire_samples": 0,
+            "smoke_samples": 0,
+            "wood_samples": 33,
+            "pair_events": 0
+          },
+          {
+            "name": "fire_expiry",
+            "backend": 1,
+            "ticks": 160,
+            "tuples": 4777073293096219322,
+            "accounting": 10581633867887538112,
+            "physical": 16804675019495133161,
+            "fire_samples": 1,
+            "smoke_samples": 160,
+            "wood_samples": 0,
+            "pair_events": 0
+          },
+          {
+            "name": "crowded_smoke",
+            "backend": 1,
+            "ticks": 192,
+            "tuples": 6121205645387371745,
+            "accounting": 1117234305621800906,
+            "physical": 4405116412261868900,
+            "fire_samples": 0,
+            "smoke_samples": 3141,
+            "wood_samples": 0,
+            "pair_events": 0
+          },
+          {
+            "name": "pair_precedence",
+            "backend": 1,
+            "ticks": 96,
+            "tuples": 10267702091617186240,
+            "accounting": 16666702268689922910,
+            "physical": 1834804824362245059,
+            "fire_samples": 97,
+            "smoke_samples": 237,
+            "wood_samples": 242,
+            "pair_events": 1
+          },
+          {
+            "name": "negative_logical_coordinates",
+            "backend": 1,
+            "ticks": 192,
+            "tuples": 11600240701383245702,
+            "accounting": 4064363662676547356,
+            "physical": 16398493659801937234,
+            "fire_samples": 3040,
+            "smoke_samples": 9848,
+            "wood_samples": 1531,
+            "pair_events": 0
+          },
+          {
+            "name": "burn_across_epoch_wrap",
+            "backend": 1,
+            "ticks": 520,
+            "tuples": 12695958861557438906,
+            "accounting": 16895749110581388086,
+            "physical": 8166614909325151134,
+            "fire_samples": 255,
+            "smoke_samples": 266,
+            "wood_samples": 509,
+            "pair_events": 0
+          }
+        ],
+        "checks": 4472,
+        "failures": 0
+      },
+      "semantic_observations_including_initial": 2964
+    },
+    "world": {
+      "status": "passed",
+      "checks": 192,
+      "count_unit": "test_cases",
+      "failures": 0,
+      "binary_sha256": "c590db1f0808bc1d2fdaa0171ea30fe5c84581baabf526872dad2e144fbfce11",
+      "log": {
+        "path": "build/m3-platform/repair-linux/14746310288/native/20261122T073824.391790Z-c2174fb20087/logs/test-world.log",
+        "bytes": 15999,
+        "sha256": "9794cf406c935d99ac260b6d5fb1825963cd4195b2b011e7c102b62cb11ade08"
+      },
+      "natural_exit_code": 0
+    }
+  }
+}

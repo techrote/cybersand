@@ -1,0 +1,162 @@
+{
+  "schema": "objectshard-material-transition-delivery-retention-v1",
+  "source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "source_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "run_id": 45003383402,
+  "job_id": 137149569699,
+  "sealed_utc": "2026-11-22T08:45:04.785500+00:00",
+  "files": [
+    {
+      "path": "14745999101/ci-workflow-inventory.json",
+      "bytes": 296801,
+      "sha256": "64d4fa19e87cf7778afb504554026a102769b767fbe81a1d8b8f41420de2f793"
+    },
+    {
+      "path": "14745999101-custody.json",
+      "bytes": 1720,
+      "sha256": "2ac5b2d31d418b4a4578c4c491f6241ac707dd0d6b367a4ead52d73881c0e86a"
+    },
+    {
+      "path": "14746754332/native-parity.json",
+      "bytes": 35115,
+      "sha256": "0681d19649f98dd514d83f7aeae439438da59e09fc15f7e8bd867611b4093573"
+    },
+    {
+      "path": "14746754332-custody.json",
+      "bytes": 1709,
+      "sha256": "6da8d096c629f9306bf3546898125879192fb7a619f8b4ae4d9039024fc5c3e6"
+    },
+    {
+      "path": "14747025453/soliding-build-inventory.json",
+      "bytes": 14290,
+      "sha256": "ffb80519f0f146780460cb4dc5b82d4705e89499e2359aeb06f7538789c64523"
+    },
+    {
+      "path": "14747025453-custody.json",
+      "bytes": 1719,
+      "sha256": "d9bd0d285f77eb3904308ecb3b2cdc7305e920801211ad45eec7b7f92f7a7795"
+    },
+    {
+      "path": "14747056801/challenges.contexts.md",
+      "bytes": 2447600,
+      "sha256": "33f675996e5a3d602b905ecf09bca762b31ab51a5522003f2b0ad89814a9ea28"
+    },
+    {
+      "path": "14747056801/challenges.json",
+      "bytes": 2809219,
+      "sha256": "bdf1bb2cc542f95f685867d505c45de4c9d4222ea4063747cd35ddb9a3de0099"
+    },
+    {
+      "path": "14747056801/frozen.contexts.md",
+      "bytes": 351447,
+      "sha256": "7796ca96825cb963b0ee02b91f6a30b53abdc90ab8ba5cd7bccdc7c247ae3085"
+    },
+    {
+      "path": "14747056801/frozen.json",
+      "bytes": 442650,
+      "sha256": "90f4c42027025075c984e2ebf613600e5a23d3d00502279d77a4d365ed8fdd03"
+    },
+    {
+      "path": "14747056801-custody.json",
+      "bytes": 2234,
+      "sha256": "bc2915ee678aec0f35c55f1206149429d9ea3703e17bbfc5f4cdc32ac65fbc5f"
+    },
+    {
+      "path": "accepted-main-documentation-137039881988.log",
+      "bytes": 278605,
+      "sha256": "d2b60e29d27ef086728cac4490951c4a738cefedcdefad2eceb3b0ab342a3fff"
+    },
+    {
+      "path": "artifacts-final.json",
+      "bytes": 3457,
+      "sha256": "c8f8147651a1507a1e41d537ea8da26f207d89f3b65f4bc9d63b759403d52b3c"
+    },
+    {
+      "path": "assess_result.py",
+      "bytes": 6807,
+      "sha256": "47f63842255e6fa273373714c0624830cf7d72984e273dbb9d08b461ae9921ae"
+    },
+    {
+      "path": "catalogue-stage.log",
+      "bytes": 98064,
+      "sha256": "3d1e174ab16a1e0f29d1442318cc8f2010a21c7d87574c4f5e852d270a36d344"
+    },
+    {
+      "path": "checkout-merge-commit.json",
+      "bytes": 2844,
+      "sha256": "07f5880a2c5abbb011e51898577a1be96db2a6541fd37fbc19ba657655f2023c"
+    },
+    {
+      "path": "compatibility-receipt.json",
+      "bytes": 22988,
+      "sha256": "68149335117260753dfcfd6fdb1b2f77cff9dd9473c86774e5dcc64e64b9dadf"
+    },
+    {
+      "path": "delivery-assessment.json",
+      "bytes": 5794,
+      "sha256": "7b3f5ea79c73c62a73f4079377214d11a6081b5d4c827c3c1fcc1dd122fa2a3a"
+    },
+    {
+      "path": "documentation-45003383402-137149569699.log",
+      "bytes": 283319,
+      "sha256": "4f86b4ca9e599d6255b9ce80f2dcc47faebb0f1fefeb78382f61627067a36b3c"
+    },
+    {
+      "path": "download_artifact.py",
+      "bytes": 4093,
+      "sha256": "3d52c3fed8577cb043d4c8aa0b172ed09d9e696470a9e40c78c40d3e864f1a98"
+    },
+    {
+      "path": "jobs-final.json",
+      "bytes": 5166,
+      "sha256": "848f4c6f9ef0ea2af66d4bae8e982f13a6f6ee7358b4e8a4311cb6a31cfe44b6"
+    },
+    {
+      "path": "jobs-initial.json",
+      "bytes": 4902,
+      "sha256": "09ca4d7a1e56763a75b636f9f435184364ffd13dc9dd1a82a8d0269fb44a1044"
+    },
+    {
+      "path": "m3-transition-artifact-14746754332.zip",
+      "bytes": 8648,
+      "sha256": "d2507004699fb765c49c6a6bcf3958925e78d8e87eefb208a63e9e2b921efda8"
+    },
+    {
+      "path": "m3-transition-artifact-14747025453.zip",
+      "bytes": 1413,
+      "sha256": "707f355c51aa5d0bed16265fe90e820ae868dc13e5c31acf53e008b9326e4167"
+    },
+    {
+      "path": "m3-transition-artifact-14747056801.zip",
+      "bytes": 1493499,
+      "sha256": "055728a18749efacefa875ead555649bb96071125e09a2ed55855180c74499fa"
+    },
+    {
+      "path": "m3-transition-ci-inventory-14745999101.zip",
+      "bytes": 20111,
+      "sha256": "6d83743fb83d859abac46112c6ca0e23314e90b96fc03034e9af97140706001a"
+    },
+    {
+      "path": "run-final.json",
+      "bytes": 14205,
+      "sha256": "96bc58ab3d5bce3b3d256da915e84ed50c53110eac0e3dc088b21dad02e0fde7"
+    },
+    {
+      "path": "run-initial.json",
+      "bytes": 14202,
+      "sha256": "96ed26cf34f07f3be50709bce5e6d434fa2a0e625443769ee636f80803adae87"
+    },
+    {
+      "path": "runtime-preservation.json",
+      "bytes": 21915,
+      "sha256": "ac93977755d7fc27b930d4fd65cabcd1378d561db20bd7205bee3f673bc1735c"
+    },
+    {
+      "path": "source-inputs.json",
+      "bytes": 2825,
+      "sha256": "d3764e0485b0795e9f1447a8038093f96724474a6dbcb501c83cac3081a4aca4"
+    }
+  ],
+  "bytes": 8697361,
+  "note": "All four authenticated artifacts, actual log, API metadata, source/hash assessment and no-runtime-change proof retained. Production provenance remains skipped by unchanged Draft policy."
+}

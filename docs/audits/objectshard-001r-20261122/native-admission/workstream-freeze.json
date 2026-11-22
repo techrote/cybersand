@@ -1,0 +1,27 @@
+{
+  "head_metadata": "aa1002d2c070ebc41c5f443d27a2363323d8f2ab",
+  "latest_tests": {
+    "failures": 0,
+    "retry_admission_checks": 28092,
+    "retry_coordinator_checks": 3020,
+    "segmented_test_delta_coordinator_checks": 3069
+  },
+  "limits": "Working-tree source hashes, not a final commit qualification; root owns later integration.",
+  "qualification_inputs": {
+    "retry_delta": "76f97638957c09ba3ba3551096c89945e5f3de1ee2c76667b37907ad64de71ca",
+    "six_suite_sanitized": "7ad0cd16be190e7b4b0579592c429e7f92c7e1ebe92836450a8c8cff04c096ce"
+  },
+  "schema": "objectshard-001r-native-a-workstream-freeze-v1",
+  "source": {
+    "native/bench/object_shard_admission.cpp": "10a8e825ea13014c352d58e66668c605fa364812dca5162334bbfc59571987c7",
+    "native/include/cybersand/object_shard.hpp": "abec4e3c60bd40ad0500878ab8d90775e951cea731ff9fea468b94130c96519e",
+    "native/include/cybersand/object_shard_coordinator.hpp": "7ff8c9639194faaef99253e8861f1031bf437478182bf4cf9842ebb8ec7cac61",
+    "native/include/cybersand/object_shard_discovery.hpp": "2c1c8c62546f21d0659d223e17ae12d0a254e7e0d2ee86bb472477d06611d6ad",
+    "native/include/cybersand/object_shard_mutation.hpp": "191627479f5443bbb58d81b98ab327ad366a90a64530467a4bc648baff995e93",
+    "native/src/object_shard.cpp": "a21c4b21b57356865ac64cc2533d7af5dbb0b5c1665f07a64189dfbb8c9de8d3",
+    "native/src/object_shard_coordinator.cpp": "39f36c5d0320822e27361d7630c0800e2c75ea6fccc065b3128bed590ae3500f",
+    "native/tests/test_object_shard_admission.cpp": "4fde65b6ce062e306ecc599cfb10fd34765ed499e0e5ae24c994fecd4386a065",
+    "native/tests/test_object_shard_coordinator.cpp": "8e39935a25efe1afc05530af3a051ca8bd1fdf9c7780b072e4be5320aa657dca",
+    "tools/objectshard/run_native_tests.py": "c60fa0d33ade325af37d638d1ff8bfa35ad9deb2ff2fd80f16377af9bab5cdbb"
+  }
+}

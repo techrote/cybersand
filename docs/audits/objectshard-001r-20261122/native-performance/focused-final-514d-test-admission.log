@@ -1,0 +1,4 @@
+Admission ordering: [400,9,4], expected first=400
+Unchanged full-slot rediscovery over 128 calls: 0 cells
+400-cell component with 32-work budget: Accepted (complete priority-selected component)
+ObjectShard admission: 28092 checks, 0 failures

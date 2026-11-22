@@ -1,0 +1,25 @@
+{
+  "schema": "objectshard-independent-narrative-scope-review-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "narrative_sha256": "97b63a1ed41da1c4b90a4ef9b4d8c18cf50dd1d641e563af320322825affbe29",
+  "utc": "2026-11-22T08:17:28.143955+00:00",
+  "status": "Passed read-only verification of the final numeric prefix and stable narrative against independently audited e034 evidence; no additional unsupported scope or custody claim found.",
+  "findings": [],
+  "verified_claim_boundaries": [
+    "The separate-World exclusive native-worker rehearsal is explicitly distinguished from ordinary CyberSimulationWorker and Workbench adoption.",
+    "Precommit cancellation leaves native ownership intact; postcommit uncertain state quarantines inactive inventory rather than claiming rollback.",
+    "Host capacity is 32 queued actions plus one in flight; worker channels hold 32 data and eight control messages; the 64 KiB bound applies to parameter values, not whole-envelope allocator memory; UI capacity is 256 pending intents.",
+    "F2 requires native disposal, stopped-thread join and RID release; quit priority survives retry. No arbitrary forced-scene replacement guarantee is made.",
+    "Fresh 93,529 ASan/UBSan checks, 192 complete World cases, 41 source Godot cases per platform, 32 actual package cases, and each 135-parent/18-child navigation result match raw receipts. LeakSanitizer remains disabled.",
+    "All 56 headless and 80 rendered Lab limits pass unchanged. The separate 74-limit native matrix retains its actual historical source label and is not relabelled as a new CI execution.",
+    "Both negative cross-campaign throughput observations, Windows 1.929-second and Linux 1.838-second burst tails, and soft pump-budget overruns remain explicit. The retained records do not prove a CPU, runner or navigation-patch cause.",
+    "Actual frame_post_draw distributions are not raw per-presentation sequence logs or monitor scanout. Stage percentiles are not added across enclosing intervals.",
+    "Long-run Fire/Smoke, contact and three-body natural sleep are distinct from separate Sand-ingestion and Water-extinction fixtures. The long-run ingestion/extinction counters are zero.",
+    "The actual package has 1,099 verified members; its exact SHA, source, native runtime and manifest agree. Four path cases and 12 verifier/launcher self-tests passed; normal default-driver owner gameplay is not equated with ANGLE self-test qualification.",
+    "All seven M3 images were directly viewed. Priority and pocket image counters may precede their adjacent after-draw JSON diagnostics.",
+    "The superseded 682 source/package remains historical. Final production provenance has six unchanged failures; all merges, production runtime publication and physical owner acceptance remain outside this review."
+  ],
+  "remaining_checks": [],
+  "prefix_sha256": "09badc053dd0085727e74e87f6a4ebb8f5509001798d03748770ff8a3910ac88"
+}

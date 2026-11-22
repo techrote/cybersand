@@ -1,0 +1,320 @@
+{
+  "schema": "objectshard-independent-final-custody-review-v1",
+  "reviewer": "review_custody; independent of product implementation, CI execution and artifact acquisition",
+  "utc": "2026-11-22T08:17:28.143955+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "draft_pr": "https://github.com/techrote/cybersand/pull/741",
+  "base_commit": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "status": "passed for the scoped experimental source-matched delivery; performance limitations, future Workbench binding and production gates remain explicit",
+  "confirmed_unrepaired_class_a_b_findings_in_reviewed_scope": [],
+  "authority": "Review only. No merge, Ready transition, release, auto-merge, ordinary default change, retained runtime publication or physical owner acceptance.",
+  "protected_worktree_delta_at_closeout": [],
+  "scope": "Independent source/build/input custody, unchanged gate and budget integrity, native/sanitizer/World receipts, real Godot and extracted-package receipts, rendered evidence, performance reductions, negative drift investigation and owner-authorized mergedown checklist. This complements, rather than replaces, the separate ownership and physics reviews.",
+  "workflow": {
+    "run_id": 44999117090,
+    "attempt": 1,
+    "jobs": [
+      {
+        "name": "Windows crossbuild",
+        "id": 137136516082,
+        "conclusion": "success"
+      },
+      {
+        "name": "Windows source and delivered package",
+        "id": 137137548583,
+        "conclusion": "success"
+      },
+      {
+        "name": "Linux native and actual Godot",
+        "id": 137136516239,
+        "conclusion": "success"
+      }
+    ],
+    "source_bound_remote_readback": "remote-linux-readback.json"
+  },
+  "owner_zip": {
+    "artifact_id": 14745303779,
+    "url": "https://github.com/techrote/cybersand/actions/runs/44999117090/artifacts/14745303779",
+    "bytes": 93168827,
+    "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "manifest_sha256": "0bc0c8a23f341e8a356c87f8247767b6ead72ce371f77dcf529502555e481910",
+    "manifest_files": 1099,
+    "committed_source_files": 1084,
+    "native_inputs": 116,
+    "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+  },
+  "verification_summary": {
+    "unchanged_native_inputs": 116,
+    "protected_gate_build_budget_inputs": 21,
+    "ordinary_discovered_cases": 360,
+    "strict_package_probes_in_ordinary_discovery": 0,
+    "package_receipt_contract_tests": 50,
+    "linux_archive_members_stream_hashed": 327,
+    "windows_execution_archive_members_stream_hashed": 196,
+    "native_sanitizer_checks": 93529,
+    "native_sanitizers": [
+      "ASan",
+      "UBSan"
+    ],
+    "leak_sanitizer": false,
+    "world_cases": 192,
+    "world_seconds": 436.12575261899997,
+    "source_godot_cases_each_platform": 41,
+    "actual_extracted_package_cases": 32,
+    "navigation_parent_checks_each_mode": 135,
+    "navigation_real_exit_child_checks_each_mode": 18,
+    "launcher_path_cases": 4,
+    "successful_verifier_launcher_commands": 12,
+    "exact_tamper_reason": "Package file changed: READ-ME.md",
+    "tamper_exit_code": 1,
+    "get_file_hash_shadow_bypass_rejected": true,
+    "actual_source_bound_images": 22,
+    "m3_images_directly_viewed": 7
+  },
+  "performance": {
+    "unchanged_lab_limits_each_platform": {
+      "headless": 56,
+      "rendered": 80
+    },
+    "retained_native_matrix": {
+      "recorded_source": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "limits_passed": 74,
+      "checks": 4237399,
+      "inputs_identical_to_final": 94,
+      "peak_accounted_cpp_bytes": 6277280,
+      "budget_bytes": 6291456,
+      "margin_bytes": 14176,
+      "fresh_ci_matrix_claimed": false
+    },
+    "same_source_pairs": {
+      "windows": {
+        "matched_fields": [
+          "identity",
+          "engine",
+          "platform",
+          "publication_digests",
+          "native_accounting",
+          "completed_intervals",
+          "actual_live_inputs",
+          "actual_physics_steps"
+        ],
+        "publication_count": 240,
+        "actual_live_inputs": 60,
+        "actual_physics_steps": 954,
+        "control_wall_usec": 29069550,
+        "candidate_wall_usec": 14003797,
+        "control_semantic_ticks_per_wall_second": 8.25606175534193,
+        "candidate_semantic_ticks_per_wall_second": 17.138209015740518,
+        "wall_progression_ratio": 2.0758334328896657,
+        "candidate_soft_pump_budget_usec": 4000,
+        "candidate_actual_pump_call_usec": {
+          "count": 840,
+          "maximum": 5996,
+          "p50": 5089,
+          "p95": 5795,
+          "p99": 5914
+        },
+        "control_admission_to_publication_usec": {
+          "count": 60,
+          "maximum": 166718,
+          "p50": 116706,
+          "p95": 116757,
+          "p99": 166718,
+          "session_maximum": 166718,
+          "total_count": 60
+        },
+        "candidate_admission_to_publication_usec": {
+          "count": 60,
+          "maximum": 83408,
+          "p50": 50022,
+          "p95": 52399,
+          "p99": 83408,
+          "session_maximum": 83408,
+          "total_count": 60
+        },
+        "scope": "One source/runtime-matched same-platform pair; 240 canonical published World materials and shard material/state/temperature/pose/geometry digests plus quantity ledgers match. Not hidden full World state or a cross-platform Rapier identity proof. Pump budget includes a possibly-overrunning current handler."
+      },
+      "linux": {
+        "matched_fields": [
+          "identity",
+          "engine",
+          "platform",
+          "publication_digests",
+          "native_accounting",
+          "completed_intervals",
+          "actual_live_inputs",
+          "actual_physics_steps"
+        ],
+        "publication_count": 240,
+        "actual_live_inputs": 60,
+        "actual_physics_steps": 954,
+        "control_wall_usec": 29068255,
+        "candidate_wall_usec": 14451926,
+        "control_semantic_ticks_per_wall_second": 8.256429565517434,
+        "candidate_semantic_ticks_per_wall_second": 16.60678306822219,
+        "wall_progression_ratio": 2.0113758539865207,
+        "candidate_soft_pump_budget_usec": 4000,
+        "candidate_actual_pump_call_usec": {
+          "count": 867,
+          "maximum": 4517,
+          "p50": 4046,
+          "p95": 4353,
+          "p99": 4455
+        },
+        "control_admission_to_publication_usec": {
+          "count": 60,
+          "maximum": 166714,
+          "p50": 116738,
+          "p95": 116823,
+          "p99": 166714,
+          "session_maximum": 166714,
+          "total_count": 60
+        },
+        "candidate_admission_to_publication_usec": {
+          "count": 60,
+          "maximum": 66526,
+          "p50": 50065,
+          "p95": 52443,
+          "p99": 66526,
+          "session_maximum": 66526,
+          "total_count": 60
+        },
+        "scope": "One source/runtime-matched same-platform pair; 240 canonical published World materials and shard material/state/temperature/pose/geometry digests plus quantity ledgers match. Not hidden full World state or a cross-platform Rapier identity proof. Pump budget includes a possibly-overrunning current handler."
+      }
+    },
+    "rendered_153_input_burst_to_presented_usec": {
+      "windows": {
+        "count": 153,
+        "maximum": 1929452,
+        "p50": 763739,
+        "p95": 1753913,
+        "p99": 1913506,
+        "session_maximum": 1929452,
+        "total_count": 153
+      },
+      "linux": {
+        "count": 153,
+        "maximum": 1838490,
+        "p50": 786486,
+        "p95": 1702973,
+        "p99": 1838450,
+        "session_maximum": 1838490,
+        "total_count": 153
+      }
+    },
+    "negative_comparison_to_superseded_baseline": {
+      "windows_pump_throughput_change_percent": -12.2496063,
+      "linux_pump_throughput_change_percent": -10.8251869,
+      "windows_burst_p95_change_percent": 24.9828443,
+      "windows_burst_maximum_change_percent": 24.7114501,
+      "attribution": "Unresolved. Equal executed hot-path source, matching work/accounting, identical Windows text section and entire Linux native binary, and comparable reported renderers do not prove hardware equivalence or an external scheduling cause."
+    },
+    "interpretation": "Registered Lab limits pass, but the burst input tails remain a practical limitation. The 4 ms receipt setting is a soft loop budget with observed maximum calls of 5.996 ms on Windows and 4.517 ms on Linux. No target-hardware FPS or universal responsiveness claim is made."
+  },
+  "findings_disposition": {
+    "CUST-01": "Repaired and verified from original scene capture/admission/completion ledgers and actual rendered samples",
+    "CUST-02": "Strict probes excluded from ordinary discovery and independently executed from all four delivered paths",
+    "OPERATOR-01/02/03": "Maintained actual F2 lifecycle inventory, disposal/join/RID observations and real exit child pass on source and actual extracted package"
+  },
+  "remaining_boundaries": [
+    "The experimental scene owns a separate real native World on an exclusive thread. It does not attach to the ordinary Workbench CyberSimulationWorker World; immutable GCR and missing same-World facade attachment remain successor work.",
+    "Six unchanged full production provenance errors remain, across three native source paths for each platform. Both retained runtimes and complete 116-input manifests require a later owner-authorized exact-source publication and ordinary gates.",
+    "The source-matched hosted package and actual Windows ANGLE runs do not establish physical Windows 11/NVIDIA owner acceptance or normal-driver performance.",
+    "The final campaign is fresh; the 74-limit native matrix is a separately retained, source-identical local repeat with only 14,176 bytes of native allocator margin. It does not bound Godot, Rapier, GPU, mailbox memory or larger canvas totals.",
+    "The long three-body test has actual Fire/Smoke but zero ingestion and extinction counts; Sand capture and Water extinction are separately qualified fixtures.",
+    "Original timing and memory failures, old published candidate failures and final slower timing observations remain retained. No extra campaign replaced an inconvenient result.",
+    "Three bodies and existing material, geometry, motion and resident-area bounds remain. General fracture, recellularisation, durable persistence and ordinary production adoption are not qualified."
+  ],
+  "narrative_review": {
+    "prefix_sha256": "09badc053dd0085727e74e87f6a4ebb8f5509001798d03748770ff8a3910ac88",
+    "narrative_sha256": "97b63a1ed41da1c4b90a4ef9b4d8c18cf50dd1d641e563af320322825affbe29",
+    "additional_findings": []
+  },
+  "reports": {
+    "continuous-trace-review.json": {
+      "sha256": "c399013835eade8bc6f5cf3cf1d3c148ad7b06de3b16170b9bcd839cf0c89c9f",
+      "bytes": 1610
+    },
+    "linux-archive-members.json": {
+      "sha256": "8065ffc8b36ce281603c66cef0de5d1978d5de7aaebbed352fe8d8c0872ca550",
+      "bytes": 59276
+    },
+    "linux-execution-review.json": {
+      "sha256": "fae80b86b90ee523fef98b791d8bb4924d593427b81a8003df40d88183d53ff4",
+      "bytes": 11368
+    },
+    "linux-performance-drift-investigation.json": {
+      "sha256": "5d51f06fcf4823991ecc4021619698cb2985f977b7c1b0fa4174bf55d41c44cc",
+      "bytes": 67723
+    },
+    "linux-performance-review.json": {
+      "sha256": "8ac2cc6993ae79382fd99876d06e48252049c427feadf71e3fa513f3f4d0a6f4",
+      "bytes": 20262
+    },
+    "mergedown-gates.json": {
+      "sha256": "e2c56ad269386b2f59c3d9150fae5cc472574d2638aff65e51d5c29930116eda",
+      "bytes": 26650
+    },
+    "narrative-scope-review.json": {
+      "sha256": "5bb39e9f53979f0e4b0d6ebcb8fbecc558c59fa46b45e56bf93feceb65bbdc09",
+      "bytes": 3018
+    },
+    "remote-crossbuild-readback.json": {
+      "sha256": "baf962d4dd03128dd22a6acb0424db372ecdd04fe38315bf2fdd4dff7970e405",
+      "bytes": 8368
+    },
+    "remote-linux-readback.json": {
+      "sha256": "44dd84ccba13564600fdbb298a234f1865de6c57af2992d014b416a82d31f3f4",
+      "bytes": 11441
+    },
+    "remote-windows-delivery-readback.json": {
+      "sha256": "1897f10cdb89d3b0192e23d4ac2eedf3b22378a91db94ee80f187740a07e954e",
+      "bytes": 10364
+    },
+    "retained-native-matrix-review.json": {
+      "sha256": "2b2fab0234025458c00a2db75bd98d5d0b8bedba063c3bc1c651887e15131156",
+      "bytes": 1862
+    },
+    "source-inventory.json": {
+      "sha256": "5cc5accccb47cde97fcf90c8134d306dfc514152dbfe8667748af2188282511d",
+      "bytes": 150271
+    },
+    "source-review.json": {
+      "sha256": "1df77d5df2d2b5b74bba06c5fba0b9a660bd57a3a93ef8b64ec9d35d5e067efa",
+      "bytes": 4479
+    },
+    "windows-artifact-inventory.json": {
+      "sha256": "61f10ab7f91f5cb193ba8b7c679926ddf6ddd1bcbeba7b5335af9abaf66392c4",
+      "bytes": 40317
+    },
+    "windows-crossbuild-review.json": {
+      "sha256": "02e542d83267b9cb5e644001840dc1621604c68de8bd035530cd2654cdd1103a",
+      "bytes": 5239
+    },
+    "windows-delivered-archive-review.json": {
+      "sha256": "dcbeba51783c76eaab9ae31000fe81ba8a977988a223382a5ba07fb3e1e38b0a",
+      "bytes": 1293
+    },
+    "windows-execution-review.json": {
+      "sha256": "b27dbf774ac1e047c464a157820a7a2a90cc04ed06495a6c83deab23af6da623",
+      "bytes": 32057
+    },
+    "windows-performance-drift-investigation.json": {
+      "sha256": "2c492d470e2a0cd753d2e9b509635c80e9b249c306a9f04e4de65732891b34b5",
+      "bytes": 78822
+    },
+    "windows-performance-review.json": {
+      "sha256": "89b55ab2fda28b8dd781384f9c8742db3c3f9db6ea364aca25940afafb7249bf",
+      "bytes": 20271
+    },
+    "windows-render-review.json": {
+      "sha256": "a530dbc520f2bd67167d97040eb1d59f007c4c76a46e418a360f696cdf2acaf8",
+      "bytes": 7697
+    },
+    "windows-review-verdict.json": {
+      "sha256": "199ce9e969511dca5c03893bc1d74fc73429d05f0ddd7f10d4f54ed86f35a116",
+      "bytes": 6210
+    }
+  }
+}

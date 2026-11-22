@@ -1,0 +1,12 @@
+{
+  "initial_import_exit_code": -6,
+  "initial_import_log": "import.log",
+  "repeat_import_exit_code": 0,
+  "repeat_log": "import-repeat.log",
+  "repeat_elapsed_seconds": 6.239707009997801,
+  "independent_runtime_suites_exit_codes": [
+    0,
+    0
+  ],
+  "scope": "Retained local first-import anomaly after successful import/class registration/layout; no log diagnostic identifies a cause. Exact-byte repeat import and actual runtime suites are distinct evidence."
+}

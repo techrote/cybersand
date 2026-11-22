@@ -1,0 +1,52 @@
+{
+  "registered_utc": "2026-11-22T04:48:14.439065+00:00",
+  "purpose": "Bounded diagnosis of final dormant/wake increase, not replacement qualification or exclusive-host benchmark. Every result retained.",
+  "sources": {
+    "pre_timer": {
+      "input_digest": "b9fc822657c0762fea847ef28f8e9a1e60d2233283612916be334b379e015690",
+      "binary_sha256": "81b9b06218a6030ad14de46e0643c985fb3133faa77fc7360156eb7fdd33ffd0",
+      "executable": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark_object_shard"
+    },
+    "final": {
+      "input_digest": "1aab8c0f4ca49e4981697571e108e3bbf86ff2b0156416a5b737322702628ece",
+      "binary_sha256": "7d1ddcf453349b2458031fe66bb641f80c1617931e053a302bc11fa98dddcac0",
+      "executable": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-final-514d/20261122T043904.769231Z-1aab8c0f4ca4/benchmark_object_shard"
+    }
+  },
+  "sequence": [
+    [
+      "dormant_twelve",
+      "pre_timer"
+    ],
+    [
+      "dormant_twelve",
+      "final"
+    ],
+    [
+      "wake_burst_twelve",
+      "final"
+    ],
+    [
+      "wake_burst_twelve",
+      "pre_timer"
+    ],
+    [
+      "dormant_twelve",
+      "final"
+    ],
+    [
+      "dormant_twelve",
+      "pre_timer"
+    ],
+    [
+      "wake_burst_twelve",
+      "pre_timer"
+    ],
+    [
+      "wake_burst_twelve",
+      "final"
+    ]
+  ],
+  "ticks": 480,
+  "repetitions": 3
+}

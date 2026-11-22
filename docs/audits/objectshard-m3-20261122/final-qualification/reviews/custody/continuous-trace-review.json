@@ -1,0 +1,42 @@
+{
+  "schema": "objectshard-independent-final-trace-reduction-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "utc": "2026-11-22T08:17:28.143955+00:00",
+  "status": "passed",
+  "traces": [
+    {
+      "mode": "windows-lab",
+      "path": "build/m3-platform/repair-windows/14745662483/windows-lab/continuous-physics-session-1.jsonl",
+      "sha256": "47d32edd1220df83dd179df71a34414d986b7aa9934dfd289f532169fea0c6b7",
+      "rows": 44819,
+      "record_kinds": {
+        "header": 1,
+        "event": 37079,
+        "action": 540,
+        "step_requested": 3599,
+        "step_completed": 3599,
+        "footer": 1
+      },
+      "accepted_actions": 540,
+      "nonempty_applied_motion_acknowledgements": 14388
+    },
+    {
+      "mode": "package-replay",
+      "path": "build/m3-platform/repair-windows/14745662483/package-replay/continuous-physics-session-1.jsonl",
+      "sha256": "71c33b9953d4bb7412b4fa6b42f3b1d945e7c786edab88a49415b3be27154869",
+      "rows": 44819,
+      "record_kinds": {
+        "header": 1,
+        "event": 37079,
+        "action": 540,
+        "step_requested": 3599,
+        "step_completed": 3599,
+        "footer": 1
+      },
+      "accepted_actions": 540,
+      "nonempty_applied_motion_acknowledgements": 14388
+    }
+  ],
+  "scope": "Actual source/package JSONL reductions. The 14,390 physical-step total is separately in the qualified run summary; two steps have no body sample. This does not establish cross-platform bit-identical replay or Water extinction/Sand ingestion in the long run."
+}

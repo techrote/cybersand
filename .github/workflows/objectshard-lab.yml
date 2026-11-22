@@ -1,0 +1,287 @@
+name: ObjectShard requested source-bound Lab qualification
+on:
+  push:
+    branches: ['experiment/objectshard-001-*', 'experiment/objectshard-001r-*', 'experiment/objectshard-m3-preflight-*']
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact checked-out ObjectShard commit (40 hexadecimal characters)
+        required: true
+        type: string
+      stage:
+        description: Executable milestone to qualify
+        required: true
+        type: choice
+        options: [m0, m1, m2]
+        default: m2
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  # These are explicitly requested immutable candidates, not routine CI and not
+  # production publication. Never cancel a prior owner's qualification run.
+  group: objectshard-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  SOURCE_SHA: ${{ github.sha }}
+  REQUESTED_SOURCE_SHA: ${{ inputs.source_sha || github.sha }}
+  OBJECTSHARD_STAGE: ${{ github.event_name == 'workflow_dispatch' && inputs.stage || contains(github.event.head_commit.message, '[objectshard-m0]') && 'm0' || contains(github.event.head_commit.message, '[objectshard-m1]') && 'm1' || 'm2' }}
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+jobs:
+  linux:
+    # A marker requests one expensive campaign on this exact source. An ordinary
+    # push does not pretend to have executed these non-required research checks.
+    if: >-
+      (startsWith(github.ref_name, 'experiment/objectshard-001-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-001r-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-m3-preflight-')) &&
+      (github.event_name == 'workflow_dispatch' ||
+       contains(github.event.head_commit.message, '[objectshard-m0]') ||
+       contains(github.event.head_commit.message, '[objectshard-m1]') ||
+       contains(github.event.head_commit.message, '[objectshard-m2]') ||
+       contains(github.event.head_commit.message, '[objectshard-m3]'))
+    name: Linux exact native ownership and actual Lab
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate source and selected Linux Rapier
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$SOURCE_SHA" = "$REQUESTED_SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          python tools/ci/check_ci_provider_policy.py > evidence/provider.json
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+      - name: Focused native and package adversarial tests
+        run: |
+          set -euo pipefail
+          python tools/objectshard/run_native_tests.py --output evidence/native --compiler g++-13 --sanitize --suite all --suite world --timeout "$(python tools/ci/execution_policy.py seconds native_case_seconds)" --build-timeout "$(python tools/ci/execution_policy.py seconds native_compile_seconds)"
+          python -m unittest discover -s tools/objectshard -p 'test_*.py' -v > evidence/package-contracts.log 2>&1
+      - name: Prepare exact pinned bindings
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build current-source Linux extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python tools/objectshard/native_receipt.py snapshot --receipt evidence/linux-native-provenance.json --expected-source-sha "$SOURCE_SHA"
+          python tools/ci/run_timed_command.py --policy-key native_compile_seconds --label objectshard-bindings-linux --output-dir evidence/bindings -- tools/build_pinned_godot_cpp.sh linux
+          python tools/ci/run_timed_command.py --policy-key native_compile_seconds --label objectshard-extension-linux --output-dir evidence/extension -- tools/build_native_extension.sh
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > evidence/native.sha256
+          python tools/objectshard/native_receipt.py seal --receipt evidence/linux-native-provenance.json --runtime "$CYBERSAND_NATIVE_OUTPUT" --expected-source-sha "$SOURCE_SHA"
+          cp "$CYBERSAND_NATIVE_OUTPUT" evidence/libcybersand_native.linux.x86_64.so
+      - name: Authenticate pinned engine and execute actual rendered Lab
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          timeout "$(python tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+          objectshard_profile_args=()
+          if test "$OBJECTSHARD_STAGE" = m2; then objectshard_profile_args=(--profile); fi
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x840x24 -nolisten tcp' python tools/objectshard/qualify_lab.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --expected-source-sha "$SOURCE_SHA" --stage "$OBJECTSHARD_STAGE" --native-receipt evidence/linux-native-provenance.json --render "${objectshard_profile_args[@]}" --output evidence/lab
+      - name: Retain all Linux evidence including first failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-linux-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+  windows-build:
+    # Package-only repairs may explicitly request fresh Windows compilation,
+    # actual-host tests and delivered-ZIP replay without rerunning an unchanged
+    # Linux native campaign. The skipped Linux job is not a qualification pass.
+    if: >-
+      (startsWith(github.ref_name, 'experiment/objectshard-001-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-001r-') ||
+       startsWith(github.ref_name, 'experiment/objectshard-m3-preflight-')) &&
+      (github.event_name == 'workflow_dispatch' ||
+       contains(github.event.head_commit.message, '[objectshard-m0]') ||
+       contains(github.event.head_commit.message, '[objectshard-m1]') ||
+       contains(github.event.head_commit.message, '[objectshard-m2]') ||
+       contains(github.event.head_commit.message, '[objectshard-m3]') ||
+       contains(github.event.head_commit.message, '[objectshard-windows]'))
+    name: Pinned Windows candidate from identical source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - name: Prepare exact source and Windows toolchain
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$SOURCE_SHA" = "$REQUESTED_SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > evidence/source-commit.txt
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl -fL --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; fi
+      - name: Build and seal exact Windows candidate
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label objectshard-bindings-windows --output-dir evidence/bindings -- tools/build_pinned_godot_cpp.sh windows
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label objectshard-extension-windows --output-dir evidence/extension -- tools/build_native_extension_windows.sh
+          mkdir -p build/objectshard-windows
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/objectshard-windows/
+          python3 tools/ci/native_candidate_identity.py build/objectshard-windows --create
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-dll-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/objectshard-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve Windows compiler failure and source evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-crossbuild-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+  windows:
+    name: Actual Windows Lab, render and delivered-package replay
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 180
+    steps:
+      - name: Preserve exact source text bytes
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: objectshard-dll-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/objectshard-windows
+      - name: Install source-bound candidate and selected Rapier
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          if ((git rev-parse HEAD).Trim() -ne $env:SOURCE_SHA -or $env:SOURCE_SHA -ne $env:REQUESTED_SOURCE_SHA) { throw 'Unexpected source head' }
+          python tools/ci/native_candidate_identity.py build/objectshard-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate identity refused' }
+          Copy-Item build/objectshard-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
+          if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Selected Rapier mismatch' }
+      - name: Authenticate official Windows Godot and qualify actual Lab
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP 'objectshard-godot.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot archive mismatch' }
+          $engineRoot = Join-Path $env:RUNNER_TEMP 'objectshard-godot'
+          Expand-Archive $zip $engineRoot
+          $engine = Join-Path $engineRoot 'Godot_v4.7-stable_win64_console.exe'
+          'GODOT_EXE=' + $engine | Out-File -Append $env:GITHUB_ENV
+          'GODOT_ARCHIVE=' + $zip | Out-File -Append $env:GITHUB_ENV
+          $objectShardProfileArgs = @()
+          if ($env:OBJECTSHARD_STAGE -eq 'm2') { $objectShardProfileArgs += '--profile' }
+          python tools/objectshard/qualify_lab.py --godot $engine --expected-source-sha $env:SOURCE_SHA --stage $env:OBJECTSHARD_STAGE --native-candidate build/objectshard-windows --render @objectShardProfileArgs --output evidence/windows-lab
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows Lab qualification failed' }
+      - name: Stage licensed dependencies and source-bound owner package
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'objectshard-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Godot notices mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Redistribution licence download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'objectshard-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          python tools/objectshard/package_windows_lab.py --native-candidate build/objectshard-windows --godot-archive $env:GODOT_ARCHIVE --engine-notices $notices --vc-runtime $vc --output build/objectshard-desktop
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound packaging refused' }
+          & tools/objectshard/verify_package.ps1 -Package build/objectshard-desktop
+          $extractions = Join-Path $env:RUNNER_TEMP 'objectshard-delivered-zip'
+          python tools/objectshard/qualify_windows_zip.py --package build/objectshard-desktop --zip build/objectshard-windows-evaluator.zip --extract-root $extractions --output evidence/launcher-matrix --timeout (python tools/ci/execution_policy.py seconds graphical_case_seconds)
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP or shipped launcher path matrix failed' }
+          $copy = Join-Path $extractions 'ObjectShard Lab (1)'
+          $bundledEngine = Join-Path $copy 'Godot_v4.7-stable_win64_console.exe'
+          python tools/objectshard/qualify_lab.py --godot $bundledEngine --expected-source-sha $env:SOURCE_SHA --stage $env:OBJECTSHARD_STAGE --package $copy --output evidence/package-replay
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered package replay failed' }
+      - name: Retain qualified owner package, not a production release
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-windows-lab-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/objectshard-windows-evaluator.zip
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain all Windows process, render and package-replay evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-windows-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90

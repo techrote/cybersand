@@ -1,0 +1,21 @@
+# ObjectShard 001R boundary specialist review
+
+This review was performed by the physics specialist against the integration owner's independently authored native boundary code. It is cross-domain falsification, not the required fresh final-source review. Source snapshots, negative results and repaired runs are preserved in `review-ledger.json` and the listed per-case logs.
+
+| Finding | Demonstrated mechanism | Negative result | Repair delta |
+| --- | --- | --- | --- |
+| Fire opportunity duplicated after conservative relocation | One Fire inventory moved from (48,12) to (47,11) before semantic tick213; coordinate-only dedup allowed a second target | One owner225/1; two owners493/2, both Wood owners ignited | Stable source opportunity anchor and claimed token follows actual relocation;225/0 and493/0 |
+| Refused motion discarded Sand exclusion history | Proposed clear aperture retired an old fence, then relocation-capacity refusal restored only pose; next stationary step admitted the known invalid grain |32/2, cargo1 after refusal | Bounded entry-history backup restored alongside pose;32/0, cargo0 |
+| External Fire opportunity repeated in World | Recorded contact ignited moving Wood, then the same real Fire ignited newly authored World Wood during its ordinary kernel tick |485/1 | Scoped opt-in spent-opportunity guard suppresses only duplicate ignition;485/0 |
+| Fire reservation lost on expected refusal | Required claim rollback tested under exhausted relocation capacity | Adversarial delta |485/0; retry gets exactly one opportunity, original Fire still ages32→31 |
+| Water departs before pending Fire opportunity is consumed | Captured Fire+Water facts, erase actual Water, run zero-population contact fast path | Adversarial delta |489/0; same Wood ignites and is extinguished exactly once |
+
+The final six-case specialist delta total is **2,209 checks, zero failures**. The original failing logs remain retained. Three new adverse scenarios were ported into maintained native tests; the two relocation/cross-domain Fire regressions were independently added by the integration owner. Full maintained-suite results are recorded separately under `build/physics-maintained-delta`.
+
+The first Water obstruction fixture used zero quanta and was invalid as a blocking carrier; its negative log is explicitly excluded from validated results. Its accepted-but-normalized accounting mismatch was independently reported and the integration owner added a typed refusal plus regression. This correction changes neither ordinary Water defaults nor the general combustion law.
+
+Resource review: all motion/contact loops remain bounded by resident Lab extent, shard area, the swept sample cap and fixed-capacity histories. Opportunity storage is one shared four-byte field per resident World cell, not per shard. The claim view is lent only around a synchronous native tick and cleared on both normal return and exception. Historical Water facts survive the no-current-Water fast path. Ordinary World parity and final Windows qualification remain separate gates owned by the final integration campaign.
+
+## Maintained regression qualification
+
+The complete maintained coordinator and external Fire suites passed on source input `1379e94ef58fb12365781d86bbe82bba009a35d4c90a78b0c7c5023a12454b14`: **3,114 + 3,683 = 6,797 checks, zero failures**. This fresh build compiled all six required native translation units from its frozen source snapshot. Its source manifest, compiler commands, binaries and logs are under `build/physics-maintained-delta/20261122T042609.609545Z-1379e94ef58f/`. It includes the zero-quanta Water refusal and all three newly ported regressions. Ordinary World catalogue parity, sanitizer, final-source hosted platforms and physical owner acceptance are distinct gates.

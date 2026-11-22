@@ -1,0 +1,62 @@
+{
+  "checks": 29,
+  "failures": 0,
+  "schema": "objectshard-worker-command-test-v1",
+  "scope": "Real native worker ordered bounded editing and exact inspection; no ordinary Workbench attachment claim",
+  "transport": {
+    "byte_scope": "Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.",
+    "control_results": 0,
+    "data_results": 0,
+    "inflight_sequence": 0,
+    "last_native_call_usec": 6351,
+    "limits": {
+      "command_value_bytes": 65536,
+      "control": 8,
+      "control_results": 8,
+      "data": 32,
+      "data_results": 32,
+      "edit_batch": 32,
+      "native_total_shard_bbox_area": 12288,
+      "native_world_area": 262144
+    },
+    "maximum_godot_static_bytes": 33980474,
+    "maximum_native_execute_usec": 9869,
+    "maximum_pending": 31,
+    "maximum_queue_wait_usec": 74312,
+    "maximum_reply_age_usec": 101652,
+    "maximum_reply_value_bytes": 5234648,
+    "maximum_snapshot_usec": 7336,
+    "maximum_snapshot_value_bytes": 157548,
+    "owner_thread": 26,
+    "pending_control": 0,
+    "pending_data": 0,
+    "pending_reset_sequence": 0,
+    "retained_reply_value_bytes": 0,
+    "session": 2,
+    "snapshot_copies": 42,
+    "started": true,
+    "stop_requested": true,
+    "stopped": true,
+    "terminal": {
+      "cancelled_control": 0,
+      "cancelled_data": 0,
+      "disposal": {
+        "detail": "accepted",
+        "generation": 0,
+        "id": 0,
+        "ok": true,
+        "outcome": "Accepted",
+        "phase": "Empty",
+        "session": 0,
+        "transaction": 0
+      },
+      "disposed_session": 2,
+      "ok": true,
+      "outcome": "Stopped",
+      "owner_thread": 26,
+      "scope": "Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner",
+      "transport_generation": 14001
+    },
+    "transport_generation": 14001
+  }
+}

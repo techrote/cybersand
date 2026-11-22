@@ -1,0 +1,21 @@
+{
+  "schema": "objectshard-independent-delivered-archive-review-v1",
+  "archive": "build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+  "archive_sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+  "archive_bytes": 93168827,
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "failures": [],
+  "status": "passed",
+  "committed_source_members_verified": 1084,
+  "committed_lfs_payloads_verified": 1,
+  "exact_native_inputs_verified": 116,
+  "manifest_sha256": "0bc0c8a23f341e8a356c87f8247767b6ead72ce371f77dcf529502555e481910",
+  "verified_files": 1099,
+  "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+  "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "godot_gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "godot_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "qualification_sha256": "28122ce23131fbe8dfd85a4cf8c5a0d799dba1ac5b44bc7e5e8f6418be70d74c",
+  "scope": "Read-only archive/source byte custody. Actual Windows launches, displayed performance and owner physical acceptance remain separate evidence."
+}

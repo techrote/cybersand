@@ -1,0 +1,1559 @@
+#include "cybersand/object_shard_coordinator.hpp"
+#include "cybersand/object_shard_m4_mutable_adapter.hpp"
+#include "cybersand/object_shard_contact.hpp"
+#include "cybersand/material_lifecycle.hpp"
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <cstdio>
+#include <limits>
+#include <stdexcept>
+#include <vector>
+#include <thread>
+
+// Test-only friend seam. These mutations execute real World APIs while command
+// admission is paused, modelling an erroneous/stale external owner. Production
+// callers have no mutable World access through Coordinator.
+namespace cybersand::object_shard {
+struct CoordinatorTestAccess {
+    static World& world(Coordinator& coordinator) { return *coordinator.world_; }
+    static Registry& registry(Coordinator& coordinator) { return coordinator.registry_; }
+    static std::span<const Exposure> exposures(const Coordinator& coordinator) { return coordinator.exposures_; }
+    static std::size_t ingress_fences(const Coordinator& coordinator) { return coordinator.ingress_fences_.size(); }
+    static bool pocket_fenced(const Coordinator& coordinator,Handle handle,std::uint32_t cell) {
+        return coordinator.pocket_fenced(handle,cell);
+    }
+    static void remove_ingress_history_capacity(Coordinator& coordinator) {
+        decltype(coordinator.ingress_fences_) empty;
+        coordinator.ingress_fences_.swap(empty);
+    }
+    static auto remove_relocation_capacity(Coordinator& coordinator) {
+        decltype(coordinator.relocations_) previous;
+        previous.swap(coordinator.relocations_);
+        return previous;
+    }
+    template<class T> static void restore_relocation_capacity(Coordinator& coordinator, T& previous) {
+        coordinator.relocations_.swap(previous);
+    }
+};
+}
+
+namespace {
+using namespace cybersand;
+using namespace cybersand::object_shard;
+std::uint64_t checks{}, failures{};
+void check(bool pass, const char* description, int line) {
+    ++checks;
+    if (!pass) { ++failures; std::fprintf(stderr, "FAIL %d: %s\n", line, description); }
+}
+#define CHECK(expression) check((expression), #expression, __LINE__)
+
+Payload empty() { return {Material::Empty, 0, 0, 200}; }
+Config small_config() {
+    Config config;
+    config.scenario = 0;
+    config.world_bounds = {0, 0, 128, 96};
+    return config;
+}
+void make_supported(Coordinator& coordinator, std::int64_t x = 30, std::int64_t y = 30,
+        Material material = Material::Wood, std::uint8_t burn = 0) {
+    for (int row = 0; row < 3; ++row) for (int column = 0; column < 3; ++column)
+        CHECK(coordinator.edit(x + column, y + row,
+            {material, static_cast<std::uint16_t>(170 + row * 3 + column), burn,
+             static_cast<std::int16_t>(400 + row * 3 + column)}).outcome == Outcome::Accepted);
+    for (int column = 0; column < 3; ++column)
+        CHECK(coordinator.edit(x + column, y + 3, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+}
+void erase_support(Coordinator& coordinator, std::int64_t x = 30, std::int64_t y = 30) {
+    for (int column = 0; column < 3; ++column)
+        CHECK(coordinator.edit(x + column, y + 3, empty()).outcome == Outcome::Accepted);
+}
+Result discover(Coordinator& coordinator) {
+    Result result;
+    // Initial discovery and a deliberately tiny budget can span many calls.
+    // This is a work limit per call, never an implicit component-size limit.
+    const auto maximum_attempts = 3 * coordinator.config().world_bounds.area() /
+        coordinator.config().discovery_budget + 128;
+    for (unsigned attempt = 0; attempt < maximum_attempts; ++attempt) {
+        result = coordinator.prepare_next();
+        if (result.outcome == Outcome::Accepted) return result;
+        if (result.outcome != Outcome::Busy && result.outcome != Outcome::Anchored) break;
+    }
+    std::fprintf(stderr, "Discovery result: %s (%s)\n", outcome_name(result.outcome), result.detail);
+    return result;
+}
+Acknowledgement ack_for(Coordinator& coordinator, AckKind kind) {
+    const auto snapshot = coordinator.snapshot();
+    const auto& promotion = snapshot.promotion;
+    const auto* shard = coordinator.registry().find(promotion.shard);
+    CHECK(promotion.present && shard != nullptr);
+    if (!shard) return {};
+    const auto& geometry = shard->geometry();
+    return {promotion.shard, promotion.transaction, promotion.shard.generation,
+        promotion.payload_digest, geometry.revision, geometry.mask_digest,
+        geometry.shape_digest, kind, kind == AckKind::TerrainInstalled ? promotion.terrain : std::span<const TerrainReceipt>{}};
+}
+bool activate(Coordinator& coordinator, Handle expected) {
+    for (const auto kind : {AckKind::PhysicsReserved, AckKind::TerrainInstalled, AckKind::BodyActivated}) {
+        const auto ack = ack_for(coordinator, kind);
+        CHECK(ack.shard == expected);
+        const auto result = coordinator.acknowledge(ack);
+        CHECK(result.outcome == Outcome::Accepted);
+        if (result.outcome != Outcome::Accepted) return false;
+    }
+    CHECK(!coordinator.paused());
+    const auto* shard = coordinator.registry().find(expected);
+    CHECK(shard != nullptr && shard->phase() == Phase::Active && shard->owns_inventory());
+    return shard != nullptr && shard->phase() == Phase::Active;
+}
+std::vector<PoseSample> next_poses(Coordinator& coordinator) {
+    std::vector<PoseSample> poses;
+    for (const auto& body : coordinator.snapshot().bodies) if (body.has_body) {
+        poses.push_back(body.pose);
+        ++poses.back().pose_serial;
+    }
+    return poses;
+}
+std::uint64_t world_population(Coordinator& coordinator, Material material) {
+    return coordinator.world().quantity_ledger().material_cells[static_cast<std::uint8_t>(material)];
+}
+std::uint64_t owned_population(Coordinator& coordinator, Material material) {
+    auto count = world_population(coordinator, material);
+    for (const auto& shard : coordinator.registry().shards()) if (shard.owns_inventory())
+        for (std::size_t at = 0; at < shard.area(); ++at)
+            count += shard.occupied(at) && shard.payload(at).material == material;
+    return count;
+}
+void check_population_balance(Coordinator& coordinator) {
+    const auto& accounting = coordinator.accounting();
+    auto actual = coordinator.world().quantity_ledger().material_cells;
+    for (const auto& shard : coordinator.registry().shards()) if (shard.owns_inventory())
+        for (std::size_t at = 0; at < shard.area(); ++at) if (shard.occupied(at))
+            ++actual[static_cast<std::uint8_t>(shard.payload(at).material)];
+    bool balanced = true;
+    for (std::size_t index = 1; index < kQuantityMaterialSlots; ++index) {
+        const auto expected = static_cast<std::int64_t>(accounting.setup_created[index]) +
+            static_cast<std::int64_t>(accounting.authored_created[index]) -
+            static_cast<std::int64_t>(accounting.authored_destroyed[index]) +
+            accounting.world_tick_delta[index] + static_cast<std::int64_t>(accounting.created[index]) -
+            static_cast<std::int64_t>(accounting.destroyed[index]) -
+            static_cast<std::int64_t>(accounting.expired[index]) -
+            static_cast<std::int64_t>(accounting.reset_disposed[index]);
+        if (static_cast<std::int64_t>(actual[index]) != expected) {
+            balanced = false;
+            std::fprintf(stderr, "Population imbalance material %zu: actual %llu, accounted %lld\n", index,
+                static_cast<unsigned long long>(actual[index]), static_cast<long long>(expected));
+        }
+    }
+    CHECK(balanced);
+}
+Acknowledgement geometry_ack(Coordinator& coordinator, Handle handle, AckKind kind = AckKind::GeometryInstalled) {
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr);
+    for (const auto& body : coordinator.snapshot().bodies) if (body.shard == handle) {
+        const auto& geometry = shard->geometry();
+        return {handle, body.transaction, body.body_generation, shard->payload_digest(),
+            geometry.revision, geometry.mask_digest, geometry.shape_digest, kind, {}};
+    }
+    CHECK(false);
+    return {};
+}
+void install_geometry(Coordinator& coordinator) {
+    std::vector<Handle> pending;
+    for (const auto& body : coordinator.snapshot().bodies)
+        if (body.geometry_pending) pending.push_back(body.shard);
+    for (const auto handle : pending) {
+        const auto* shard = coordinator.registry().find(handle);
+        CHECK(shard != nullptr);
+        const auto kind = shard->counts().structural == 0 ? AckKind::BodyRetired : AckKind::GeometryInstalled;
+        CHECK(coordinator.acknowledge(geometry_ack(coordinator, handle, kind)).outcome == Outcome::Accepted);
+    }
+}
+void sleeping_step(Coordinator& coordinator) {
+    auto poses = next_poses(coordinator);
+    for (auto& pose : poses) pose.sleeping = true;
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    install_geometry(coordinator);
+}
+TransferRequest transfer_request(Coordinator& coordinator, Handle handle, std::uint32_t cell,
+        std::int64_t world_x, std::int64_t world_y, Payload expected) {
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr && cell < shard->area());
+    for (const auto& body : coordinator.snapshot().bodies) if (body.shard == handle) {
+        TransferRequest request{handle, coordinator.next_transaction(), body.body_generation,
+            shard->geometry().revision, body.pose.pose_serial, cell, shard->schedule(cell).incarnation,
+            world_x, world_y, expected};
+        request.world_witness = coordinator.world_witness(world_x, world_y);
+        return request;
+    }
+    CHECK(false);
+    return {};
+}
+Handle single_wood(Coordinator& coordinator, int x, int y, std::uint8_t burn) {
+    CHECK(coordinator.edit(x, y, {Material::Wood, 77, burn, 510}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome == Outcome::Accepted) CHECK(activate(coordinator, prepared.shard));
+    return prepared.shard;
+}
+Handle open_pocket(Coordinator& coordinator, int clear_width = 1, int center = 31) {
+    const int left = center - clear_width / 2 - 1, right = left + clear_width + 1;
+    for (int x : {left, right})
+        CHECK(coordinator.edit(x, 31, {Material::Wood, 0, 0, 200}).outcome == Outcome::Accepted);
+    for (int x = left; x <= right; ++x)
+        CHECK(coordinator.edit(x, 32, {Material::Wood, 0, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(center, 33, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(center, 33, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome == Outcome::Accepted) CHECK(activate(coordinator, prepared.shard));
+    return prepared.shard;
+}
+
+void finite_coordinate_configuration() {
+    for (const auto value : {std::numeric_limits<std::int64_t>::min(),
+                            std::numeric_limits<std::int64_t>::max(),
+                            std::int64_t{-262145}, std::int64_t{262144}}) {
+        for (const bool x_axis : {true, false}) {
+            auto config = small_config();
+            if (x_axis) config.world_bounds.x = value;
+            else config.world_bounds.y = value;
+            bool refused = false;
+            try { Coordinator coordinator(config); }
+            catch (const std::invalid_argument&) { refused = true; }
+            CHECK(refused);
+        }
+    }
+    for (const bool negative : {false, true}) {
+        auto config = small_config();
+        config.world_bounds.x = negative ? -262144 : 262144 - config.world_bounds.width;
+        config.world_bounds.y = negative ? -262144 : 262144 - config.world_bounds.height;
+        Coordinator coordinator(config);
+        CHECK(coordinator.step().outcome == Outcome::Accepted);
+        CHECK(!coordinator.world().has_failed());
+    }
+}
+
+void ordinary_support_loss_and_exact_capture() {
+    auto config = small_config(); config.world_bounds = {-64, -64, 128, 128};
+    Coordinator coordinator(config);
+    make_supported(coordinator, -1, -1);
+    for (unsigned i = 0; i < 16; ++i) {
+        const auto anchored = coordinator.prepare_next();
+        CHECK(anchored.outcome == Outcome::Busy || anchored.outcome == Outcome::Anchored);
+        CHECK(!coordinator.snapshot().promotion.present);
+    }
+    erase_support(coordinator, -1, -1);
+    const auto before = coordinator.world().quantity_ledger();
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(coordinator.paused());
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    CHECK(shard && !shard->owns_inventory());
+    CHECK(coordinator.registry().inventory_counts().total() == 0);
+    CHECK(shard->counts().structural == 9);
+    CHECK(shard->geometry().shapes.size() == 1);
+    const auto bounds = shard->bounds();
+    CHECK(bounds.x == -2 && bounds.y == -2 && bounds.width == 5 && bounds.height == 5);
+    std::array<Payload, 9> expected{};
+    for (int y = 0; y < 3; ++y) for (int x = 0; x < 3; ++x) {
+        const auto index = static_cast<std::size_t>(y * 3 + x);
+        expected[index] = coordinator.inspect_world(x - 1, y - 1);
+        CHECK(shard->payload(static_cast<std::size_t>(y + 1) * 5 + x + 1) == expected[index]);
+    }
+    CHECK(coordinator.edit(70, 70, empty()).outcome == Outcome::Fenced);
+    const auto tick = coordinator.world().completed_tick_index();
+    CHECK(coordinator.step().outcome == Outcome::Fenced);
+    CHECK(coordinator.world().completed_tick_index() == tick);
+    if (!activate(coordinator, prepared.shard)) return;
+    CHECK(coordinator.registry().inventory_counts().structural == 9);
+    CHECK(world_population(coordinator, Material::Wood) == 0);
+    const auto after = coordinator.world().quantity_ledger();
+    CHECK(after.water_visible == before.water_visible && after.water_overfill == before.water_overfill);
+    CHECK(after.kinds == before.kinds); // Non-Water ownership transfer is not a Water sink.
+    CHECK(coordinator.accounting().promoted[static_cast<std::uint8_t>(Material::Wood)] == 9);
+    for (int y = 0; y < 3; ++y) for (int x = 0; x < 3; ++x) {
+        CHECK(coordinator.inspect_world(x - 1, y - 1).material == Material::Empty);
+        CHECK(coordinator.world().transient_obstacle_at(x - 1, y - 1) != 0);
+        CHECK(shard->payload(static_cast<std::size_t>(y + 1) * 5 + x + 1) == expected[static_cast<std::size_t>(y * 3 + x)]);
+    }
+    auto poses = next_poses(coordinator);
+    CHECK(poses.size() == 1);
+    poses[0].x += 0.25; poses[0].rotation += 0.01;
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    CHECK(coordinator.world().completed_tick_index() == tick + 1);
+    CHECK(shard->bounds() == bounds);
+    CHECK(shard->counts().structural == 9);
+}
+
+void state_temperature_and_aba_refuse() {
+    for (unsigned mutation = 0; mutation < 5; ++mutation) {
+        Coordinator coordinator(small_config());
+        make_supported(coordinator); erase_support(coordinator);
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) continue;
+        const auto original = coordinator.inspect_world(31, 31);
+        auto& world = CoordinatorTestAccess::world(coordinator);
+        if (mutation == 0) CHECK(world.set_cell_state(31, 31, Material::Wood, original.state_a + 1, original.state_b));
+        if (mutation == 1) CHECK(world.set_cell_state(31, 31, Material::Wood, original.state_a, 3));
+        if (mutation == 2) world.set_temperature(31, 31, original.temperature + 1);
+        if (mutation == 3) {
+            CHECK(world.set_cell_state(31, 31, Material::RedBrick, 0, 0));
+            CHECK(world.set_cell_state(31, 31, Material::Wood, original.state_a, original.state_b));
+            CHECK(coordinator.inspect_world(31, 31) == original);
+        }
+        if (mutation == 4) {
+            world.set_temperature(31, 31, original.temperature + 1);
+            world.set_temperature(31, 31, original.temperature);
+            CHECK(coordinator.inspect_world(31, 31) == original);
+        }
+        const auto refused = coordinator.acknowledge(ack_for(coordinator, AckKind::PhysicsReserved));
+        CHECK(refused.outcome == Outcome::Stale);
+        CHECK(coordinator.registry().inventory_counts().total() == 0);
+        CHECK(world_population(coordinator, Material::Wood) == 9);
+        CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Cancelled);
+        CHECK(!coordinator.paused());
+    }
+}
+
+void pending_event_and_malformed_receipts() {
+    Coordinator coordinator(small_config());
+    make_supported(coordinator); erase_support(coordinator);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    const auto valid = ack_for(coordinator, AckKind::PhysicsReserved);
+    auto wrong = valid; wrong.kind = static_cast<AckKind>(255);
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Invalid);
+    wrong = valid; ++wrong.shard.generation;
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Stale);
+    wrong = valid; ++wrong.body_generation;
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Stale);
+    wrong = valid; ++wrong.payload_digest;
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Stale);
+    wrong = valid; ++wrong.shape_digest;
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Stale);
+    CHECK(coordinator.acknowledge(ack_for(coordinator, AckKind::BodyActivated)).outcome == Outcome::Stale);
+    CHECK(coordinator.acknowledge(ack_for(coordinator, AckKind::TerrainInstalled)).outcome == Outcome::Stale);
+    CHECK(CoordinatorTestAccess::world(coordinator).queue_explosion(31, 31, 2));
+    CHECK(coordinator.acknowledge(valid).outcome == Outcome::Stale);
+    CHECK(world_population(coordinator, Material::Wood) == 9);
+    CHECK(coordinator.registry().inventory_counts().total() == 0);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Cancelled);
+
+    Coordinator before_prepare(small_config());
+    make_supported(before_prepare); erase_support(before_prepare);
+    CHECK(CoordinatorTestAccess::world(before_prepare).queue_explosion(31, 31, 2));
+    const auto event_refusal = discover(before_prepare);
+    CHECK(event_refusal.outcome == Outcome::PendingEvent);
+    CHECK(world_population(before_prepare, Material::Wood) == 9);
+    CHECK(before_prepare.registry().inventory_counts().total() == 0);
+}
+
+void installed_receipts_and_chemistry_fence() {
+    Coordinator coordinator(small_config());
+    make_supported(coordinator, 30, 30, Material::Wood, 39); erase_support(coordinator);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    const auto reservation = ack_for(coordinator, AckKind::PhysicsReserved);
+    CHECK(coordinator.acknowledge(reservation).outcome == Outcome::Accepted);
+    auto* shard = coordinator.registry().find(prepared.shard);
+    CHECK(shard->phase() == Phase::CommittedInactive);
+    const auto digest = shard->payload_digest();
+    const auto tick = coordinator.world().completed_tick_index();
+    for (unsigned delay = 0; delay < 8; ++delay) CHECK(coordinator.step().outcome == Outcome::Fenced);
+    CHECK(shard->payload_digest() == digest && coordinator.world().completed_tick_index() == tick);
+    CHECK(coordinator.acknowledge(reservation).outcome == Outcome::Accepted);
+    CHECK(coordinator.registry().inventory_counts().structural == 9);
+    CHECK(coordinator.accounting().promoted[static_cast<std::uint8_t>(Material::Wood)] == 9);
+    CHECK(coordinator.acknowledge(ack_for(coordinator, AckKind::BodyActivated)).outcome == Outcome::Stale);
+    auto terrain = ack_for(coordinator, AckKind::TerrainInstalled);
+    std::vector<TerrainReceipt> corrupted(terrain.terrain.begin(), terrain.terrain.end());
+    CHECK(!corrupted.empty());
+    ++corrupted[0].digest;
+    auto wrong = terrain; wrong.terrain = corrupted;
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Stale);
+    wrong = terrain; wrong.terrain = {};
+    CHECK(coordinator.acknowledge(wrong).outcome == Outcome::Stale);
+    CHECK(shard->phase() == Phase::CommittedInactive);
+    terrain = ack_for(coordinator, AckKind::TerrainInstalled);
+    CHECK(coordinator.acknowledge(terrain).outcome == Outcome::Accepted);
+    CHECK(shard->phase() == Phase::ReadyToActivate);
+    CHECK(!shard->chemistry_allowed());
+    CHECK(coordinator.world().transient_obstacle_at(31, 31) != 0); // Applied mask, not queued receipt.
+    CHECK(coordinator.step().outcome == Outcome::Fenced);
+    CHECK(shard->payload_digest() == digest);
+    const auto activation = ack_for(coordinator, AckKind::BodyActivated);
+    CHECK(coordinator.acknowledge(activation).outcome == Outcome::Accepted);
+    CHECK(shard->phase() == Phase::Active && shard->chemistry_allowed());
+    CHECK(coordinator.acknowledge(activation).outcome == Outcome::Accepted);
+    CHECK(coordinator.acknowledge(reservation).outcome == Outcome::Accepted);
+    CHECK(coordinator.registry().inventory_counts().structural == 9);
+    auto stale = activation; ++stale.geometry_revision;
+    CHECK(coordinator.acknowledge(stale).outcome != Outcome::Accepted);
+}
+
+void cancellation_reset_and_old_control() {
+    Coordinator coordinator(small_config());
+    make_supported(coordinator); erase_support(coordinator);
+    auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    const auto before = coordinator.inspect_world(31, 31);
+    const auto old_ack = ack_for(coordinator, AckKind::PhysicsReserved);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Cancelled);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Cancelled);
+    CHECK(coordinator.inspect_world(31, 31) == before);
+    CHECK(coordinator.registry().inventory_counts().total() == 0);
+    CHECK(coordinator.acknowledge(old_ack).outcome != Outcome::Accepted);
+    const auto old_transaction = prepared.transaction;
+    const auto first_disposed = coordinator.accounting().reset_disposed[static_cast<std::uint8_t>(Material::Wood)];
+    const auto first_owned = owned_population(coordinator, Material::Wood);
+    CHECK(coordinator.reset(0, 12).outcome == Outcome::Accepted);
+    CHECK(coordinator.accounting().reset_disposed[static_cast<std::uint8_t>(Material::Wood)] == first_disposed + first_owned);
+    make_supported(coordinator); erase_support(coordinator);
+    prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(prepared.transaction != old_transaction);
+    CHECK(coordinator.cancel(old_transaction).outcome == Outcome::Expired);
+    CHECK(coordinator.snapshot().promotion.present);
+    CHECK(coordinator.acknowledge(old_ack).outcome == Outcome::Retired);
+    CHECK(coordinator.acknowledge(ack_for(coordinator, AckKind::PhysicsReserved)).outcome == Outcome::Accepted);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Quarantined);
+    CHECK(coordinator.snapshot().quarantined);
+    CHECK(coordinator.registry().inventory_counts().structural == 9);
+    CHECK(world_population(coordinator, Material::Wood) == 0);
+    CHECK(coordinator.step().outcome == Outcome::Quarantined);
+    const auto second_disposed = coordinator.accounting().reset_disposed[static_cast<std::uint8_t>(Material::Wood)];
+    const auto second_owned = owned_population(coordinator, Material::Wood);
+    CHECK(coordinator.reset(0, 13).outcome == Outcome::Accepted);
+    CHECK(coordinator.accounting().reset_disposed[static_cast<std::uint8_t>(Material::Wood)] == second_disposed + second_owned);
+    CHECK(coordinator.registry().find(prepared.shard) == nullptr);
+    CHECK(coordinator.registry().inventory_counts().total() == 0);
+}
+
+void capacities_epoch_wrap_and_three_owners() {
+    auto limited = small_config(); limited.limits.max_area = 16; limited.limits.max_total_area = 48;
+    Coordinator capacity(limited);
+    make_supported(capacity); erase_support(capacity);
+    CHECK(discover(capacity).outcome == Outcome::Capacity); // Nine cells need a 25-cell bbox+port ring.
+    CHECK(world_population(capacity, Material::Wood) == 9);
+    CHECK(capacity.registry().inventory_counts().total() == 0);
+
+    auto small_discovery = small_config(); small_discovery.discovery_budget = 4;
+    Coordinator incomplete(small_discovery);
+    make_supported(incomplete); erase_support(incomplete);
+    const auto resumed=discover(incomplete);
+    CHECK(resumed.outcome == Outcome::Accepted);
+    CHECK(incomplete.snapshot().admission.work_peak<=small_discovery.discovery_budget);
+    CHECK(world_population(incomplete, Material::Wood) == 9);
+    CHECK(incomplete.registry().inventory_counts().total() == 0);
+    if (resumed.outcome==Outcome::Accepted) CHECK(incomplete.cancel(resumed.transaction).outcome==Outcome::Cancelled);
+
+    Coordinator coordinator(small_config());
+    for (unsigned i = 0; i < 255; ++i) CHECK(coordinator.step().outcome == Outcome::Accepted);
+    CHECK(coordinator.world().completed_tick_index() >= 256);
+    for (int x : {20, 50, 80}) { make_supported(coordinator, x, 30); erase_support(coordinator, x, 30); }
+    std::array<Handle, 3> handles{};
+    for (auto& handle : handles) {
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) return;
+        handle = prepared.shard;
+        CHECK(activate(coordinator, handle));
+        const auto* shard = coordinator.registry().find(handle);
+        CHECK(shard->captured_tick() >= 256);
+        for (std::size_t index = 0; index < shard->area(); ++index) if (shard->occupied(index))
+            CHECK(shard->schedule(index).next_due_tick > shard->captured_tick());
+    }
+    CHECK(handles[0].id != handles[1].id && handles[1].id != handles[2].id);
+    CHECK(coordinator.registry().inventory_counts().structural == 27);
+    CHECK(world_population(coordinator, Material::Wood) == 0);
+    const auto tick = coordinator.world().completed_tick_index();
+    CHECK(coordinator.step().outcome == Outcome::Stale); // All live bodies must be represented.
+    CHECK(coordinator.world().completed_tick_index() == tick);
+    auto poses = next_poses(coordinator);
+    CHECK(poses.size() == 3);
+    auto duplicate = poses; duplicate[1] = duplicate[0];
+    CHECK(coordinator.step(duplicate).outcome == Outcome::Invalid);
+    auto fast = poses; fast[0].x += 10;
+    CHECK(coordinator.step(fast).outcome == Outcome::Unsupported);
+    CHECK(coordinator.world().completed_tick_index() == tick);
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    CHECK(coordinator.world().completed_tick_index() == tick + 1);
+    CHECK(coordinator.step(poses).outcome == Outcome::Stale); // Pose serial replay.
+}
+
+void pose_refusal_keeps_pose_and_mask_coherent() {
+    Coordinator coordinator(small_config());
+    make_supported(coordinator, 2, 30); erase_support(coordinator, 2, 30);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    auto poses = next_poses(coordinator);
+    const auto before = poses[0];
+    const auto tick = coordinator.world().completed_tick_index();
+    // This admitted translation has valid identity, but resulting occupancy is
+    // outside the resident Lab. The new pose must not partly commit.
+    poses[0].x -= 2.5;
+    const auto refusal = coordinator.step(poses);
+    CHECK(refusal.outcome == Outcome::NotResident || refusal.outcome == Outcome::Quarantined);
+    CHECK(coordinator.world().completed_tick_index() == tick);
+    if (refusal.outcome != Outcome::Quarantined) {
+        for (const auto& body : coordinator.snapshot().bodies) if (body.has_body) {
+            CHECK(body.pose.x == before.x && body.pose.y == before.y &&
+                body.pose.rotation == before.rotation && body.pose.pose_serial + 1 == before.pose_serial);
+        }
+    }
+    CHECK(coordinator.registry().inventory_counts().structural == 9);
+    CHECK(coordinator.world().transient_obstacle_at(2, 30) != 0);
+}
+
+void disjoint_shapes_can_share_a_raster_cell() {
+    Coordinator coordinator(small_config());
+    for (int x : {10, 12}) {
+        CHECK(coordinator.edit(x, 30, {Material::Wood, 0, 0, 200}).outcome == Outcome::Accepted);
+        CHECK(coordinator.edit(x, 31, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+        CHECK(coordinator.edit(x, 31, empty()).outcome == Outcome::Accepted);
+    }
+    for (unsigned i = 0; i < 2; ++i) {
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) return;
+        CHECK(activate(coordinator, prepared.shard));
+    }
+    auto poses = next_poses(coordinator);
+    CHECK(poses.size() == 2);
+    for (auto& pose : poses) {
+        const auto* shard = coordinator.registry().find(pose.shard);
+        // Unit squares [10.2,11.2] and [11.8,12.8] have a physical gap of .6,
+        // while both legitimately contribute to native raster cell 11.
+        pose.x += shard->bounds().x == 9 ? .2 : -.2;
+    }
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    CHECK(coordinator.world().transient_obstacle_at(11, 30) != 0);
+    CHECK(coordinator.registry().inventory_counts().structural == 2);
+    CHECK(world_population(coordinator, Material::Wood) == 0);
+    CHECK(coordinator.accounting().promoted[static_cast<std::uint8_t>(Material::Wood)] == 2);
+}
+
+void one_mutation_discovers_every_disconnected_component() {
+    Coordinator coordinator(small_config());
+    for (const auto point : std::array<std::array<int, 2>, 4>{{{30, 30}, {29, 30}, {31, 30}, {30, 29}}})
+        CHECK(coordinator.edit(point[0], point[1], {Material::Wood, 0, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(30, 31, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    // Consume all authoring dirty seeds while the single component is anchored.
+    for (unsigned i = 0; i < 32; ++i) {
+        const auto result = coordinator.prepare_next();
+        CHECK(result.outcome == Outcome::Busy || result.outcome == Outcome::Anchored);
+    }
+    CHECK(coordinator.edit(30, 30, empty()).outcome == Outcome::Accepted);
+    for (unsigned i = 0; i < 3; ++i) {
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) return;
+        CHECK(coordinator.registry().find(prepared.shard)->counts().structural == 1);
+        CHECK(activate(coordinator, prepared.shard));
+    }
+    CHECK(world_population(coordinator, Material::Wood) == 0);
+    CHECK(coordinator.registry().inventory_counts().structural == 3);
+}
+
+void burning_world_capture_continues_while_sleeping_and_moving() {
+    namespace chemistry = material_lifecycle;
+    Coordinator coordinator(small_config());
+    constexpr std::int64_t x = 31, y = 31;
+    CHECK(coordinator.edit(x, y, {Material::Wood, 219, 5, 654}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    // These are actual World opportunities before promotion, not an authored
+    // countdown substituted after the transfer.
+    for (unsigned i = 0; i < 2; ++i) CHECK(coordinator.step().outcome == Outcome::Accepted);
+    const auto captured = coordinator.inspect_world(x, y);
+    CHECK(captured.material == Material::Wood && captured.state_b == 4);
+    CHECK(captured.state_a == 219 && captured.temperature == 654);
+    CHECK(coordinator.edit(x, y + 1, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    const auto stable_bounds = shard->bounds();
+    constexpr std::size_t cell = 4; // Centre of the tight one-cell payload plus port ring.
+    CHECK(shard->payload(cell) == captured);
+    auto expected = captured;
+    for (unsigned i = 0; i < 12 && expected.material != Material::Empty; ++i) {
+        const auto next_tick = coordinator.world().completed_tick_index() + 1;
+        const auto transition = chemistry::combustible(expected.material, expected.state_a,
+            expected.state_b, chemistry::lane_due(next_tick, x, y, 2, 191), false);
+        if (transition.write) expected = {transition.material, transition.state_a, transition.state_b, expected.temperature};
+        auto poses = next_poses(coordinator);
+        CHECK(poses.size() == 1);
+        poses[0].sleeping = true;
+        poses[0].x += .15; poses[0].rotation += .01;
+        CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+        CHECK(coordinator.world().completed_tick_index() == next_tick);
+        CHECK(shard->payload(cell) == expected);
+        CHECK(shard->bounds() == stable_bounds); // Motion does not reseed logical lanes.
+        install_geometry(coordinator);
+    }
+    CHECK(expected.material == Material::Empty);
+    CHECK(shard->counts().structural == 0);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Wood)] == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Smoke)] == 0);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Fire)] == 0);
+}
+
+void blocked_product_lifetime_and_draining_inventory() {
+    auto config = small_config(); config.transfer_budget = 0;
+    Coordinator coordinator(config);
+    constexpr int x = 31, y = 31;
+    CHECK(coordinator.edit(x, y, {Material::Wood, 77, 8, 510}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(x, y + 1, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    // Actual resident occupied destinations prevent output. The product must
+    // still occupy one spatial local carrier; it is not an outbox copy.
+    for (int dy = -4; dy <= 4; ++dy) for (int dx = -4; dx <= 4; ++dx)
+        if (dx || dy) CHECK(coordinator.edit(x + dx, y + dy, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    for (unsigned i = 0; i < 3 && shard->counts().products == 0; ++i) sleeping_step(coordinator);
+    CHECK(shard->counts().products == 1);
+    std::size_t product = shard->area();
+    for (std::size_t at = 0; at < shard->area(); ++at) if (shard->role(at) == Role::Product) product = at;
+    CHECK(product < shard->area());
+    if (product >= shard->area()) return;
+    CHECK(shard->payload(product).material == Material::Fire && shard->payload(product).state_a == 32);
+    CHECK(shard->schedule(product).birth_tick == coordinator.world().completed_tick_index());
+    CHECK(shard->schedule(product).next_due_tick > shard->schedule(product).birth_tick);
+    const auto birth = shard->schedule(product).birth_tick;
+    const auto incarnation = shard->schedule(product).incarnation;
+    for (unsigned tick = 1; tick <= 32; ++tick) {
+        sleeping_step(coordinator);
+        CHECK(shard->counts().products == 1);
+        CHECK(shard->occupied(product) && !shard->structural(product));
+        CHECK(coordinator.world().completed_tick_index() == birth + tick);
+        if (tick < 32) {
+            CHECK(shard->payload(product).material == Material::Fire);
+            CHECK(shard->payload(product).state_a == 32 - tick);
+            CHECK(shard->schedule(product).incarnation == incarnation);
+        }
+    }
+    CHECK(shard->payload(product).material == Material::Smoke);
+    CHECK(shard->payload(product).state_a == material_definition(Material::Smoke).initial_state_a);
+    CHECK(shard->schedule(product).incarnation != incarnation);
+    CHECK(shard->counts().structural == 0 && shard->phase() == Phase::Draining);
+    CHECK(shard->owns_inventory() && shard->counts().products == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Fire)] == 1);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Fire)] == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Smoke)] == 1);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Wood)] == 1);
+    CHECK(coordinator.accounting().emitted[static_cast<std::uint8_t>(Material::Fire)] == 0);
+    CHECK(world_population(coordinator, Material::Fire) == 0);
+    CHECK(world_population(coordinator, Material::Smoke) == 0);
+}
+
+void chemistry_perforates_geometry_beyond_eight_shapes() {
+    Coordinator coordinator(small_config());
+    std::uint32_t removed = 0;
+    for (int y = 30; y < 45; ++y) for (int x = 30; x < 45; ++x) {
+        const bool hole = x == 37 || (x > 30 && x < 44 && y > 30 && y < 44 && x % 2 == 0 && y % 2 == 0);
+        removed += hole;
+        CHECK(coordinator.edit(x, y, {Material::Wood, 0, static_cast<std::uint8_t>(hole ? 1 : 0), 200}).outcome == Outcome::Accepted);
+    }
+    for (int x = 30; x < 45; ++x)
+        CHECK(coordinator.edit(x, 45, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    for (int x = 30; x < 45; ++x) CHECK(coordinator.edit(x, 45, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    const auto* shard = coordinator.registry().find(prepared.shard);
+    const auto origin = shard->bounds();
+    for (unsigned tick = 0; tick < 2; ++tick) {
+        const auto obsolete = geometry_ack(coordinator, prepared.shard);
+        CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Accepted);
+        CHECK(coordinator.paused());
+        const auto now = coordinator.world().completed_tick_index();
+        CHECK(coordinator.acknowledge(obsolete).outcome == Outcome::Stale);
+        CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Fenced);
+        CHECK(coordinator.world().completed_tick_index() == now);
+        install_geometry(coordinator);
+    }
+    CHECK(shard->counts().structural == 225 - removed);
+    CHECK(shard->geometry().shapes.size() > 8);
+    CHECK(shard->geometry().split_pending && shard->geometry().islands == 2);
+    CHECK(shard->geometry().mass.mass == 225 - removed);
+    CHECK(shard->bounds() == origin);
+    CHECK(shard->chemistry_allowed());
+    std::vector<unsigned> cover(shard->area());
+    for (const auto& shape : shard->geometry().shapes)
+        for (unsigned y = shape.y; y < shape.y + shape.height; ++y)
+            for (unsigned x = shape.x; x < shape.x + shape.width; ++x)
+                ++cover[static_cast<std::size_t>(y) * origin.width + x];
+    for (std::size_t at = 0; at < shard->area(); ++at)
+        CHECK(cover[at] == static_cast<unsigned>(shard->structural(at)));
+    const std::uint32_t surviving_cell = origin.width + 1;
+    CHECK(coordinator.ignite_shard(prepared.shard, surviving_cell).outcome == Outcome::Accepted);
+    sleeping_step(coordinator); sleeping_step(coordinator);
+    CHECK(shard->payload(surviving_cell).material == Material::Wood);
+    CHECK(shard->payload(surviving_cell).state_b < 240); // Split-pending does not freeze burning.
+}
+
+void authentic_fire_output_world_smoke_and_receipt_retirement() {
+    auto config = small_config(); config.transfer_budget = 0;
+    Coordinator coordinator(config);
+    const auto handle = single_wood(coordinator, 31, 31, 8);
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr);
+    if (!shard) return;
+    for (unsigned i = 0; i < 3 && shard->counts().products == 0; ++i) sleeping_step(coordinator);
+    std::uint32_t product = static_cast<std::uint32_t>(shard->area());
+    for (std::uint32_t at = 0; at < shard->area(); ++at)
+        if (shard->payload(at).material == Material::Fire) product = at;
+    CHECK(product < shard->area());
+    if (product >= shard->area()) return;
+    const auto payload = shard->payload(product);
+    CHECK(payload.material == Material::Fire && payload.state_a == 32);
+    const auto bounds = shard->bounds();
+    const auto wx = bounds.x + product % bounds.width, wy = bounds.y + product / bounds.width;
+    CHECK(coordinator.edit(wx, wy, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    const auto blocked = transfer_request(coordinator, handle, product, wx, wy, payload);
+    CHECK(coordinator.emit(blocked).outcome == Outcome::DestinationUnavailable);
+    CHECK(shard->payload(product) == payload && shard->counts().products == 1);
+    CHECK(coordinator.accounting().emitted[static_cast<std::uint8_t>(Material::Fire)] == 0);
+    CHECK(coordinator.edit(wx, wy, empty()).outcome == Outcome::Accepted);
+    // A prior refusal stays terminal even after its destination becomes empty.
+    CHECK(coordinator.emit(blocked).outcome == Outcome::DestinationUnavailable);
+    CHECK(coordinator.inspect_world(wx, wy).material == Material::Empty);
+    auto delivered = transfer_request(coordinator, handle, product, wx, wy, payload);
+    auto future = delivered; future.sequence += 17;
+    const auto sequence = coordinator.next_transaction();
+    CHECK(coordinator.emit(future).outcome == Outcome::Stale);
+    CHECK(coordinator.next_transaction() == sequence);
+    CHECK(coordinator.emit(delivered).outcome == Outcome::Accepted);
+    CHECK(coordinator.inspect_world(wx, wy) == payload);
+    CHECK(shard->role(product) == Role::Empty && !shard->occupied(product));
+    CHECK(coordinator.accounting().emitted[static_cast<std::uint8_t>(Material::Fire)] == 1);
+    CHECK(world_population(coordinator, Material::Fire) == 1);
+    CHECK(coordinator.emit(delivered).outcome == Outcome::Accepted);
+    CHECK(world_population(coordinator, Material::Fire) == 1);
+    check_population_balance(coordinator);
+    auto altered = delivered; --altered.expected.state_a;
+    CHECK(coordinator.emit(altered).outcome == Outcome::Stale);
+    bool world_smoke = false;
+    for (unsigned tick = 0; tick < 40 && !world_smoke; ++tick) {
+        sleeping_step(coordinator);
+        world_smoke = world_population(coordinator, Material::Smoke) != 0;
+    }
+    CHECK(world_smoke);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Smoke)] == 0);
+    check_population_balance(coordinator);
+    const auto population = coordinator.world().quantity_ledger().material_cells;
+    // Evict detailed receipts; the monotonic retired sequence may not reopen.
+    for (unsigned i = 0; i < 80; ++i) {
+        auto refused = delivered; refused.sequence = coordinator.next_transaction();
+        ++refused.capability_version;
+        CHECK(coordinator.emit(refused).outcome != Outcome::Accepted);
+    }
+    CHECK(coordinator.emit(delivered).outcome == Outcome::Expired);
+    CHECK(coordinator.world().quantity_ledger().material_cells == population);
+    CHECK(coordinator.reset(0, 1).outcome == Outcome::Accepted);
+    CHECK(coordinator.emit(delivered).outcome == Outcome::Retired);
+    check_population_balance(coordinator);
+}
+
+void real_falling_sand_ingress_aba_and_destroyed_pocket() {
+    auto config = small_config(); config.transfer_budget = 0;
+    Coordinator coordinator(config);
+    const auto handle = open_pocket(coordinator);
+    auto* shard = CoordinatorTestAccess::registry(coordinator).find(handle);
+    CHECK(shard != nullptr);
+    if (!shard) return;
+    const auto bounds = shard->bounds();
+    const auto pocket = static_cast<std::uint32_t>((31 - bounds.y) * bounds.width + 31 - bounds.x);
+    CHECK(shard->role(pocket) == Role::Empty);
+    const auto geometry_before = shard->geometry();
+    CHECK(coordinator.edit(31, 27, {Material::Sand, 213, 217, -470}).outcome == Outcome::Accepted);
+    bool arrived = false;
+    for (unsigned step = 0; step < 16 && !arrived; ++step) {
+        sleeping_step(coordinator);
+        arrived = coordinator.inspect_world(31, 31).material == Material::Sand;
+    }
+    CHECK(arrived);
+    CHECK(coordinator.inspect_world(31, 27).material == Material::Empty);
+    if (!arrived) return;
+    const auto payload = coordinator.inspect_world(31, 31);
+    CHECK(payload.temperature == -470);
+    auto unsupported = transfer_request(coordinator, handle, pocket, 31, 31, payload);
+    unsupported.expected.material = Material::Water;
+    CHECK(coordinator.ingest(unsupported).outcome == Outcome::Unsupported);
+    CHECK(coordinator.inspect_world(31, 31) == payload && shard->counts().cargo == 0);
+    const auto stale = transfer_request(coordinator, handle, pocket, 31, 31, payload);
+    auto& world = CoordinatorTestAccess::world(coordinator);
+    CHECK(world.set_cell_state(31, 31, Material::Dust, 0, 0));
+    CHECK(world.set_cell_state(31, 31, Material::Sand, payload.state_a, payload.state_b));
+    world.set_temperature(31, 31, payload.temperature);
+    CHECK(coordinator.inspect_world(31, 31) == payload);
+    CHECK(coordinator.ingest(stale).outcome == Outcome::Stale);
+    CHECK(world_population(coordinator, Material::Sand) == 1 && shard->counts().cargo == 0);
+    const auto request = transfer_request(coordinator, handle, pocket, 31, 31, payload);
+    CHECK(coordinator.ingest(request).outcome == Outcome::Accepted);
+    CHECK(coordinator.inspect_world(31, 31).material == Material::Empty);
+    CHECK(shard->payload(pocket) == payload && shard->role(pocket) == Role::Cargo);
+    CHECK(!shard->structural(pocket) && shard->counts().structural == 5 && shard->counts().cargo == 1);
+    CHECK(coordinator.accounting().ingested[static_cast<std::uint8_t>(Material::Sand)] == 1);
+    CHECK(coordinator.ingest(request).outcome == Outcome::Accepted);
+    CHECK(shard->counts().cargo == 1 && world_population(coordinator, Material::Sand) == 0);
+    check_population_balance(coordinator);
+    sleeping_step(coordinator);
+    CHECK(shard->geometry().mass.mass == 6);
+    CHECK(shard->geometry().mask_digest == geometry_before.mask_digest);
+    CHECK(shard->geometry().shape_digest != geometry_before.shape_digest); // Mass is bound to the receipt.
+    CHECK(coordinator.world().transient_obstacle_at(31, 31) != 0); // Cargo reserves native occupancy.
+    // A deterministic material-state fixture makes the next real combustion
+    // opportunities consume the retainers. The Sand is never a structural bond.
+    const auto tick = coordinator.world().completed_tick_index();
+    for (std::uint32_t at = 0; at < shard->area(); ++at) if (shard->structural(at)) {
+        auto burning = shard->payload(at); burning.state_b = 1;
+        CHECK(shard->set_cell(at, burning, Role::Structural, tick) == Outcome::Accepted);
+    }
+    sleeping_step(coordinator); sleeping_step(coordinator);
+    CHECK(shard->counts().structural == 0 && shard->counts().cargo == 1);
+    CHECK(shard->phase() == Phase::Draining && shard->owns_inventory());
+    CHECK(shard->payload(pocket) == payload);
+    sleeping_step(coordinator); // Retired body mask is now absent; release anchor remains.
+    CHECK(coordinator.world().transient_obstacle_at(31, 31) == 0);
+    CHECK(coordinator.edit(31, 31, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    auto release = transfer_request(coordinator, handle, pocket, 31, 31, payload);
+    CHECK(coordinator.emit(release).outcome == Outcome::DestinationUnavailable);
+    CHECK(shard->payload(pocket) == payload);
+    CHECK(coordinator.edit(31, 31, empty()).outcome == Outcome::Accepted);
+    release = transfer_request(coordinator, handle, pocket, 31, 31, payload);
+    CHECK(coordinator.emit(release).outcome == Outcome::Accepted);
+    CHECK(coordinator.inspect_world(31, 31) == payload && shard->counts().cargo == 0);
+    CHECK(coordinator.accounting().emitted[static_cast<std::uint8_t>(Material::Sand)] == 1);
+    CHECK(coordinator.emit(release).outcome == Outcome::Accepted);
+    CHECK(world_population(coordinator, Material::Sand) == 1);
+    check_population_balance(coordinator);
+}
+
+void wide_rotated_pocket_admits_real_falling_sand() {
+    Coordinator coordinator(small_config());
+    const auto handle = open_pocket(coordinator, 3);
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr);
+    if (!shard) return;
+    auto poses = next_poses(coordinator);
+    poses[0].x += .13; poses[0].y += .07; poses[0].rotation = .01;
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(31, 27, {Material::Sand, 213, 217, -470}).outcome == Outcome::Accepted);
+    Payload at_aperture{};
+    bool observed_world_arrival = false;
+    for (unsigned tick = 0; tick < 16 && shard->counts().cargo == 0; ++tick) {
+        sleeping_step(coordinator);
+        const auto source = coordinator.inspect_world(31, 31);
+        if (source.material == Material::Sand) {at_aperture = source; observed_world_arrival = true;}
+    }
+    CHECK(observed_world_arrival);
+    CHECK(shard->counts().cargo == 1);
+    CHECK(coordinator.accounting().ingested[static_cast<std::uint8_t>(Material::Sand)] == 1);
+    CHECK(world_population(coordinator, Material::Sand) == 0);
+    for (std::size_t at = 0; at < shard->area(); ++at) if (shard->role(at) == Role::Cargo) {
+        CHECK(shard->payload(at) == at_aperture);
+        CHECK(!shard->structural(at));
+    }
+    CHECK(shard->geometry().mass.mass == 8); // Seven retainers and one actual grain.
+}
+
+void overlap_relocation_cannot_create_a_pocket_entry_witness() {
+    Coordinator coordinator(small_config());
+    const auto handle = open_pocket(coordinator, 3);
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr);
+    if (!shard) return;
+    const auto before = next_poses(coordinator)[0];
+    std::array<std::pair<int, int>, 256> origins{};
+    std::array<Outcome, 256> entry_outcomes{};
+    unsigned next_identity = 1;
+    for (int y = 27; y <= 36; ++y) for (int x = 25; x <= 38; ++x) {
+        if (coordinator.world().transient_obstacle_at(x, y) || (y == 31 && x >= 30 && x <= 32)) continue;
+        CHECK(coordinator.edit(x, y, {Material::Sand, static_cast<std::uint16_t>(next_identity), 217, -470}).outcome
+            == Outcome::Accepted);
+        origins[next_identity++] = {x, y};
+    }
+    auto after = next_poses(coordinator);
+    after[0].x += .25;
+    for (unsigned id = 1; id < next_identity; ++id) {
+        const auto [x, y] = origins[id];
+        entry_outcomes[id] = contact::sand_pocket_witness(*shard,
+            {before.x, before.y, before.rotation}, {after[0].x, after[0].y, after[0].rotation},
+            {x + .5, y + .5}).outcome;
+    }
+    // Mechanical overlap resolution is conservative World relocation, never
+    // permission to create ingress through a retaining side/floor. Preserve
+    // each original World source witness before any relocation can erase it.
+    CHECK(coordinator.step(after).outcome == Outcome::Accepted);
+    for (std::size_t at = 0; at < shard->area(); ++at) if (shard->role(at) == Role::Cargo) {
+        const auto payload = shard->payload(at);
+        CHECK(payload.state_a > 0 && payload.state_a < next_identity);
+        if (payload.state_a > 0 && payload.state_a < next_identity)
+            CHECK(entry_outcomes[payload.state_a] == Outcome::Accepted);
+        CHECK(payload.state_b == 217 && payload.temperature == -470);
+    }
+    CHECK(owned_population(coordinator, Material::Sand) == next_identity - 1);
+    check_population_balance(coordinator);
+}
+
+void side_entry_refusal_cannot_be_laundered_by_a_stationary_pose() {
+    for (const bool reset : {false, true}) {
+        Coordinator coordinator(small_config());
+        auto handle = open_pocket(coordinator);
+        const Shard* shard = coordinator.registry().find(handle);
+        CHECK(shard != nullptr);
+        if (!shard) return;
+        auto right = next_poses(coordinator); right[0].x += 2;
+        CHECK(coordinator.step(right).outcome == Outcome::Accepted);
+        CHECK(coordinator.edit(31, 31, {Material::Sand, 213, 217, -470}).outcome == Outcome::Accepted);
+        const auto original_witness = coordinator.world_witness(31, 31);
+        auto left = next_poses(coordinator); left[0].x -= 2;
+        CHECK(coordinator.step(left).outcome == Outcome::Accepted);
+        CHECK(shard->counts().cargo == 0);
+        // If swept collision relocated the grain and ordinary World transport
+        // admitted it through the aperture afterward, that is legitimate. If
+        // the exact World carrier never moved, "already inside" cannot erase
+        // its known invalid entry on the next stationary pose.
+        const bool unchanged_enclosure = coordinator.inspect_world(31, 31).material == Material::Sand &&
+            coordinator.world_witness(31, 31) == original_witness;
+        for (unsigned tick = 0; tick < 4; ++tick) {
+            sleeping_step(coordinator);
+            CHECK(!unchanged_enclosure || shard->counts().cargo == 0);
+            CHECK(CoordinatorTestAccess::ingress_fences(coordinator) <= 1);
+        }
+        CHECK(world_population(coordinator, Material::Sand) + shard->counts().cargo == 1);
+        check_population_balance(coordinator);
+        if (reset) {
+            const auto retired_handle=handle;
+            CHECK(coordinator.reset(0, 18).outcome == Outcome::Accepted);
+            CHECK(CoordinatorTestAccess::ingress_fences(coordinator) == 0);
+            handle = open_pocket(coordinator);
+            shard = coordinator.registry().find(handle);
+            CHECK(handle.id>retired_handle.id && handle.session>retired_handle.session);
+            const auto pocket=static_cast<std::uint32_t>((31-shard->bounds().y)*shard->bounds().width+31-shard->bounds().x);
+            CHECK(!CoordinatorTestAccess::pocket_fenced(coordinator,handle,pocket));
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,retired_handle,pocket));
+            auto stale=handle;++stale.generation;
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,stale,pocket));
+            stale=handle;++stale.session;
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,stale,pocket));
+        } else {
+            CHECK(coordinator.edit(31, 31, empty()).outcome == Outcome::Accepted);
+            sleeping_step(coordinator); // An actually empty aperture clears its history.
+            CHECK(CoordinatorTestAccess::ingress_fences(coordinator) == 0);
+        }
+        CHECK(coordinator.edit(31, 27, {Material::Sand, 137, 41, 315}).outcome == Outcome::Accepted);
+        for (unsigned tick = 0; tick < 16 && shard->counts().cargo == 0; ++tick) sleeping_step(coordinator);
+        CHECK(shard->counts().cargo == 1 && world_population(coordinator, Material::Sand) == 0);
+        check_population_balance(coordinator);
+    }
+}
+
+void segmented_motion_preserves_invalid_pocket_entry_until_semantic_ingress() {
+    Coordinator coordinator(small_config());
+    const auto handle=open_pocket(coordinator);
+    const auto* shard=coordinator.registry().find(handle);CHECK(shard!=nullptr);
+    if (!shard) return;
+    const auto tick=coordinator.world().completed_tick_index();
+    auto right=next_poses(coordinator);right[0].x+=2;
+    CHECK(coordinator.accept_motion(right).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(31,31,{Material::Sand,213,217,-470}).outcome==Outcome::Accepted);
+    const auto source=coordinator.world_witness(31,31);
+    auto left=next_poses(coordinator);left[0].x-=2;
+    const auto contact_ns_before=coordinator.metrics().contact_ns;
+    CHECK(coordinator.accept_motion(left).outcome==Outcome::Accepted);
+    CHECK(coordinator.metrics().contact_ns>contact_ns_before);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    CHECK(shard->counts().cargo==0);
+    CHECK(coordinator.inspect_world(31,31).material==Material::Sand);
+    CHECK(coordinator.world_witness(31,31)==source);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    // Several accepted no-advance pose segments cannot relabel a known side
+    // entry as a legitimate stationary "already inside" carrier on next tick.
+    for (unsigned segment=0;segment<3;++segment) {
+        CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+        CHECK(coordinator.world().completed_tick_index()==tick);
+        CHECK(shard->counts().cargo==0);
+        CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    }
+    sleeping_step(coordinator);
+    CHECK(shard->counts().cargo==0);
+    CHECK(world_population(coordinator,Material::Sand)==1);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(31,31,empty()).outcome==Outcome::Accepted);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==0);
+}
+
+void refused_motion_preserves_existing_invalid_entry_history() {
+    Coordinator coordinator(small_config());
+    const auto handle=open_pocket(coordinator);
+    const auto* shard=coordinator.registry().find(handle);
+    CHECK(shard!=nullptr);
+    if (!shard) return;
+    auto right=next_poses(coordinator);right[0].x+=2;
+    CHECK(coordinator.accept_motion(right).outcome==Outcome::Accepted);
+    const Payload sand{Material::Sand,213,217,-470};
+    CHECK(coordinator.edit(31,31,sand).outcome==Outcome::Accepted);
+    auto left=next_poses(coordinator);left[0].x-=2;
+    CHECK(coordinator.accept_motion(left).outcome==Outcome::Accepted);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    const auto witness=coordinator.world_witness(31,31);
+    const auto original=coordinator.snapshot().bodies[0].pose;
+    const auto tick=coordinator.world().completed_tick_index();
+    CHECK(coordinator.edit(34,31,{Material::Sand,71,0,200}).outcome==Outcome::Accepted);
+    auto capacity=CoordinatorTestAccess::remove_relocation_capacity(coordinator);
+    right=next_poses(coordinator);right[0].x+=2;
+    // The proposed aperture is clear, but another grain blocks the proposed
+    // collider and forces precommit refusal. A discarded pose cannot erase
+    // the old aperture's still-applicable side-entry history.
+    CHECK(coordinator.accept_motion(right).outcome==Outcome::Capacity);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    CHECK(coordinator.snapshot().bodies[0].pose.x==original.x);
+    CHECK(coordinator.snapshot().bodies[0].pose.pose_serial==original.pose_serial);
+    CHECK(coordinator.inspect_world(31,31)==sand && coordinator.world_witness(31,31)==witness);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    CoordinatorTestAccess::restore_relocation_capacity(coordinator,capacity);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(coordinator.step(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(shard->counts().cargo==0);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator)==1);
+    CHECK(world_population(coordinator,Material::Sand)==2);
+    check_population_balance(coordinator);
+}
+
+void injected_ingress_history_capacity_keeps_inventory_and_reset_live() {
+    Coordinator coordinator(small_config());
+    const auto handle = open_pocket(coordinator);
+    auto right = next_poses(coordinator); right[0].x += 2;
+    CHECK(coordinator.step(right).outcome == Outcome::Accepted);
+    const Payload sand{Material::Sand, 213, 217, -470};
+    CHECK(coordinator.edit(31, 31, sand).outcome == Outcome::Accepted);
+    CoordinatorTestAccess::remove_ingress_history_capacity(coordinator);
+    const auto tick = coordinator.world().completed_tick_index();
+    auto left = next_poses(coordinator); left[0].x -= 2;
+    CHECK(coordinator.step(left).outcome == Outcome::Quarantined);
+    CHECK(coordinator.world().completed_tick_index() == tick);
+    CHECK(coordinator.inspect_world(31, 31) == sand);
+    CHECK(coordinator.registry().find(handle)->counts().cargo == 0);
+    CHECK(coordinator.registry().find(handle)->counts().structural == 5);
+    check_population_balance(coordinator);
+    CHECK(coordinator.reset(0, 19).outcome == Outcome::Accepted);
+    CHECK(coordinator.registry().find(handle) == nullptr);
+    CHECK(!coordinator.snapshot().quarantined);
+    check_population_balance(coordinator);
+}
+
+void zero_automatic_budget_cannot_bypass_history_through_public_ingress() {
+    auto config = small_config(); config.transfer_budget = 0;
+    Coordinator coordinator(config);
+    const auto handle = open_pocket(coordinator);
+    const auto* shard = coordinator.registry().find(handle);
+    CHECK(shard != nullptr);
+    if (!shard) return;
+    const auto bounds = shard->bounds();
+    const auto pocket = static_cast<std::uint32_t>((31 - bounds.y) * bounds.width + 31 - bounds.x);
+    auto right = next_poses(coordinator); right[0].x += 2;
+    CHECK(coordinator.step(right).outcome == Outcome::Accepted);
+    const Payload sand{Material::Sand, 213, 217, -470};
+    CHECK(coordinator.edit(31, 31, sand).outcome == Outcome::Accepted);
+    auto left = next_poses(coordinator); left[0].x -= 2;
+    CHECK(coordinator.step(left).outcome == Outcome::Accepted);
+    sleeping_step(coordinator);
+    CHECK(shard->counts().cargo == 0 && coordinator.inspect_world(31, 31) == sand);
+    const auto request = transfer_request(coordinator, handle, pocket, 31, 31, sand);
+    CHECK(coordinator.ingest(request).outcome == Outcome::Fenced);
+    CHECK(shard->counts().cargo == 0 && coordinator.inspect_world(31, 31) == sand);
+    CHECK(coordinator.ingest(request).outcome == Outcome::Fenced);
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(31, 31, empty()).outcome == Outcome::Accepted);
+    sleeping_step(coordinator);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator) == 0);
+    CHECK(coordinator.edit(31, 27, sand).outcome == Outcome::Accepted);
+    for (unsigned tick = 0; tick < 16 && coordinator.inspect_world(31, 31).material != Material::Sand; ++tick)
+        sleeping_step(coordinator);
+    CHECK(coordinator.inspect_world(31, 31).material == Material::Sand);
+    const auto fresh = transfer_request(coordinator, handle, pocket, 31, 31, coordinator.inspect_world(31, 31));
+    CHECK(coordinator.ingest(fresh).outcome == Outcome::Accepted);
+    CHECK(shard->counts().cargo == 1 && world_population(coordinator, Material::Sand) == 0);
+    check_population_balance(coordinator);
+}
+
+void exhausted_transfer_budget_still_records_later_body_entry_history() {
+    auto config = small_config(); config.transfer_budget = 1;
+    Coordinator coordinator(config);
+    const auto first_handle = open_pocket(coordinator, 1, 31);
+    const auto second_handle = open_pocket(coordinator, 1, 71);
+    const auto* first = coordinator.registry().find(first_handle);
+    const auto* second = coordinator.registry().find(second_handle);
+    CHECK(first && second);
+    if (!first || !second) return;
+    auto right = next_poses(coordinator);
+    for (auto& pose : right) if (pose.shard == second_handle) pose.x += 2;
+    CHECK(coordinator.step(right).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(31, 27, {Material::Sand, 213, 217, -470}).outcome == Outcome::Accepted);
+    for (unsigned tick = 0; tick < 16 && coordinator.inspect_world(31, 31).material != Material::Sand; ++tick)
+        sleeping_step(coordinator);
+    CHECK(coordinator.inspect_world(31, 31).material == Material::Sand && first->counts().cargo == 0);
+    CHECK(coordinator.edit(71, 31, {Material::Sand, 213, 217, -470}).outcome == Outcome::Accepted);
+    const auto witness = coordinator.world_witness(71, 31);
+    auto left = next_poses(coordinator);
+    for (auto& pose : left) if (pose.shard == second_handle) pose.x -= 2;
+    CHECK(coordinator.step(left).outcome == Outcome::Accepted);
+    CHECK(first->counts().cargo == 1 && second->counts().cargo == 0);
+    const bool unchanged_enclosure = coordinator.inspect_world(71, 31).material == Material::Sand &&
+        coordinator.world_witness(71, 31) == witness;
+    install_geometry(coordinator); sleeping_step(coordinator);
+    CHECK(!unchanged_enclosure || second->counts().cargo == 0);
+    CHECK(world_population(coordinator, Material::Sand) + first->counts().cargo + second->counts().cargo == 2);
+    CHECK(CoordinatorTestAccess::ingress_fences(coordinator) <= 1);
+    check_population_balance(coordinator);
+}
+
+void historical_water_exposure_survives_geometry_and_rejects_replacement() {
+    namespace chemistry = material_lifecycle;
+    for (const bool replace_cell : {false, true}) {
+        auto config = small_config(); config.transfer_budget = 0;
+        Coordinator coordinator(config);
+        constexpr int y = 31;
+        int x = 20;
+        while (x < 60 && !(chemistry::lane_phase(x, y, 2, 191) == 1 &&
+                          chemistry::lane_phase(x + 1, y, 2, 191) == 0)) ++x;
+        CHECK(x < 60);
+        CHECK(coordinator.edit(x, y, {Material::Wood, 177, 11, 520}).outcome == Outcome::Accepted);
+        CHECK(coordinator.edit(x + 1, y, {Material::Wood, 0, 1, 200}).outcome == Outcome::Accepted);
+        CHECK(coordinator.edit(x, y + 1, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+        CHECK(coordinator.edit(x, y + 1, empty()).outcome == Outcome::Accepted);
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) return;
+        CHECK(activate(coordinator, prepared.shard));
+        auto* shard = CoordinatorTestAccess::registry(coordinator).find(prepared.shard);
+        const auto bounds = shard->bounds();
+        const auto target = static_cast<std::uint32_t>((y - bounds.y) * bounds.width + x - bounds.x);
+        const auto incarnation = shard->schedule(target).incarnation;
+        const auto original_geometry = shard->geometry().revision;
+        CHECK(coordinator.edit(x - 1, y - 1, {Material::Water, 255, 0, 200}).outcome == Outcome::Accepted);
+        const auto quantity = coordinator.world().quantity_ledger().water_visible;
+        CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Accepted);
+        CHECK(shard->payload(target).state_b == 11); // Contact arrived on the off-lane tick.
+        CHECK(shard->geometry().revision > original_geometry);
+        CHECK(coordinator.accounting().accepted_exposures >= 1 && coordinator.accounting().consumed_exposures == 0);
+        CHECK(!CoordinatorTestAccess::exposures(coordinator).empty());
+        CHECK(CoordinatorTestAccess::exposures(coordinator).front().geometry_revision == original_geometry);
+        install_geometry(coordinator);
+        if (replace_cell) {
+            // The same historical fact may not act on a replacement owner.
+            const auto wb = coordinator.config().world_bounds;
+            for (auto wy = wb.y; wy < wb.y + wb.height; ++wy)
+                for (auto wx = wb.x; wx < wb.x + wb.width; ++wx)
+                    if (coordinator.inspect_world(wx, wy).material == Material::Water)
+                        CHECK(coordinator.edit(wx, wy, empty()).outcome == Outcome::Accepted);
+            CHECK(shard->set_cell(target, shard->payload(target), Role::Structural,
+                coordinator.world().completed_tick_index(), true) == Outcome::Accepted);
+            CHECK(shard->schedule(target).incarnation != incarnation);
+        }
+        auto departed = next_poses(coordinator);
+        departed[0].x += 3.0;
+        CHECK(coordinator.step(departed).outcome == Outcome::Accepted);
+        if (replace_cell) {
+            CHECK(shard->payload(target).state_b == 10);
+            CHECK(coordinator.accounting().extinguished == 0 && coordinator.accounting().consumed_exposures == 0);
+        } else {
+            CHECK(shard->payload(target).state_b == 0);
+            CHECK(shard->payload(target).state_a == 177 && shard->payload(target).temperature == 520);
+            CHECK(shard->schedule(target).incarnation == incarnation);
+            CHECK(coordinator.accounting().extinguished == 1 && coordinator.accounting().consumed_exposures == 1);
+            CHECK(coordinator.world().quantity_ledger().water_visible == quantity);
+            bool current_water = false;
+            for (int dy = -1; dy <= 1; ++dy) for (int dx = -1; dx <= 1; ++dx)
+                current_water = current_water || coordinator.inspect_world(x + 3 + dx, y + dy).material == Material::Water;
+            CHECK(!current_water); // The valid earlier exposure survived departure.
+            CHECK(coordinator.ignite_shard(prepared.shard, target).outcome == Outcome::Accepted);
+            auto further = next_poses(coordinator); further[0].x += 3.0;
+            CHECK(coordinator.step(further).outcome == Outcome::Accepted);
+            install_geometry(coordinator);
+            sleeping_step(coordinator);
+            CHECK(shard->payload(target).state_b > 0 && shard->payload(target).state_b < 240);
+            CHECK(coordinator.accounting().consumed_exposures == 1); // No stale replay after re-ignition.
+        }
+    }
+}
+
+void exposure_capacity_refuses_without_partial_pose_or_clock() {
+    auto config = small_config(); config.exposure_capacity = 1;
+    Coordinator coordinator(config);
+    make_supported(coordinator, 30, 30, Material::Wood, 11); erase_support(coordinator);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(coordinator, prepared.shard));
+    for (int x = 30; x <= 32; ++x)
+        CHECK(coordinator.edit(x, 29, {Material::Water, 255, 0, 200}).outcome == Outcome::Accepted);
+    auto poses = next_poses(coordinator);
+    const auto previous = poses[0];
+    poses[0].x += .25;
+    const auto tick = coordinator.world().completed_tick_index();
+    const auto inventory = coordinator.registry().find(prepared.shard)->payload_digest();
+    CHECK(coordinator.step(poses).outcome == Outcome::Capacity);
+    CHECK(coordinator.world().completed_tick_index() == tick);
+    CHECK(coordinator.registry().find(prepared.shard)->payload_digest() == inventory);
+    CHECK(CoordinatorTestAccess::exposures(coordinator).empty());
+    CHECK(coordinator.accounting().accepted_exposures == 0);
+    CHECK(coordinator.metrics().exposure_overflows == 1);
+    for (const auto& body : coordinator.snapshot().bodies) if (body.has_body)
+        CHECK(body.pose.x == previous.x && body.pose.pose_serial + 1 == previous.pose_serial);
+    CHECK(coordinator.reset(0, 4).outcome == Outcome::Accepted); // Control is live despite full data capacity.
+}
+
+void two_shards_contend_for_one_real_output_destination() {
+    auto config = small_config(); config.transfer_budget = 0;
+    Coordinator coordinator(config);
+    const std::array<Handle, 2> handles{single_wood(coordinator, 30, 30, 8), single_wood(coordinator, 34, 30, 8)};
+    sleeping_step(coordinator); sleeping_step(coordinator);
+    std::array<std::uint32_t, 2> products{};
+    std::array<std::array<std::int64_t, 2>, 2> ports{};
+    for (unsigned i = 0; i < 2; ++i) {
+        const auto* shard = coordinator.registry().find(handles[i]);
+        CHECK(shard != nullptr && shard->counts().products == 1);
+        if (!shard || shard->counts().products != 1) return;
+        for (std::uint32_t at = 0; at < shard->area(); ++at)
+            if (shard->role(at) == Role::Product) products[i] = at;
+        const auto bounds = shard->bounds();
+        ports[i] = {bounds.x + products[i] % bounds.width, bounds.y + products[i] / bounds.width};
+    }
+    const auto wx = (ports[0][0] + ports[1][0]) / 2, wy = (ports[0][1] + ports[1][1]) / 2;
+    auto poses = next_poses(coordinator);
+    for (auto& pose : poses) for (unsigned i = 0; i < 2; ++i) if (pose.shard == handles[i]) {
+        // Adversarial admitted pose samples align the two nonstructural ports.
+        // Inventory arbitration is under test; Rapier collision is a separate gate.
+        pose.x += wx - ports[i][0]; pose.y += wy - ports[i][1];
+    }
+    CHECK(coordinator.step(poses).outcome == Outcome::Accepted);
+    CHECK(coordinator.world().transient_obstacle_at(wx, wy) == 0);
+    const auto* first = coordinator.registry().find(handles[0]);
+    const auto* second = coordinator.registry().find(handles[1]);
+    const auto second_payload = second->payload(products[1]);
+    const auto first_request = transfer_request(coordinator, handles[0], products[0], wx, wy, first->payload(products[0]));
+    CHECK(coordinator.emit(first_request).outcome == Outcome::Accepted);
+    const auto second_request = transfer_request(coordinator, handles[1], products[1], wx, wy, second_payload);
+    CHECK(coordinator.emit(second_request).outcome == Outcome::DestinationUnavailable);
+    CHECK(first->counts().products == 0 && second->counts().products == 1);
+    CHECK(second->payload(products[1]) == second_payload);
+    CHECK(world_population(coordinator, Material::Fire) == 1);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Fire)] == 2);
+    CHECK(coordinator.accounting().emitted[static_cast<std::uint8_t>(Material::Fire)] == 1);
+    CHECK(coordinator.emit(second_request).outcome == Outcome::DestinationUnavailable);
+    CHECK(second->counts().products + world_population(coordinator, Material::Fire) == 2);
+}
+
+void three_independent_burning_owners() {
+    auto config = small_config(); config.transfer_budget = 0;
+    Coordinator coordinator(config);
+    std::array<Handle, 3> handles{};
+    for (unsigned i = 0; i < 3; ++i) handles[i] = single_wood(coordinator, 20 + static_cast<int>(30 * i), 31,
+        static_cast<std::uint8_t>(3 + 2 * i));
+    CHECK(handles[0].id != handles[1].id && handles[1].id != handles[2].id);
+    for (unsigned tick = 0; tick < 16; ++tick) sleeping_step(coordinator);
+    CHECK(coordinator.registry().inventory_counts().total() == 0);
+    CHECK(coordinator.accounting().promoted[static_cast<std::uint8_t>(Material::Wood)] == 3);
+    CHECK(coordinator.accounting().destroyed[static_cast<std::uint8_t>(Material::Wood)] == 3);
+    CHECK(coordinator.accounting().created[static_cast<std::uint8_t>(Material::Fire)] == 0);
+    for (const auto handle : handles) CHECK(coordinator.registry().find(handle) == nullptr);
+    check_population_balance(coordinator);
+}
+
+void population_accounting_covers_world_ticks_edits_transfers_and_resets() {
+    Coordinator coordinator(small_config());
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(12,14,{Material::Water,0,0,200}).outcome==Outcome::Unsupported);
+    CHECK(coordinator.inspect_world(12,14).material==Material::Empty);
+    CHECK(coordinator.edit(12,14,{Material::Wood,17,0,410}).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(12,14,{Material::Water,0,0,200}).outcome==Outcome::Unsupported);
+    CHECK(coordinator.inspect_world(12,14)==(Payload{Material::Wood,17,0,410}));
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(12,14,empty()).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(12, 15, {Material::Sand, 73, 14, -370}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(17, 15, {Material::Water, 255, 0, 200}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(40, 20, {Material::Wood, 55, 8, 510}).outcome == Outcome::Accepted);
+    CHECK(coordinator.edit(40, 21, {Material::Wall, 0, 0, 200}).outcome == Outcome::Accepted);
+    check_population_balance(coordinator);
+    CHECK(coordinator.step().outcome == Outcome::Accepted);
+    CHECK(coordinator.step().outcome == Outcome::Accepted);
+    check_population_balance(coordinator);
+    CHECK(coordinator.edit(40, 21, empty()).outcome == Outcome::Accepted);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    check_population_balance(coordinator); // Non-authoritative preparation counts once.
+    CHECK(activate(coordinator, prepared.shard));
+    check_population_balance(coordinator);
+    for (unsigned tick = 0; tick < 40; ++tick) {
+        sleeping_step(coordinator);
+        check_population_balance(coordinator);
+    }
+    const auto water = coordinator.world().quantity_ledger().water_visible;
+    const auto disposed_before = coordinator.accounting().reset_water_quanta;
+    CHECK(coordinator.reset(0, 21).outcome == Outcome::Accepted);
+    CHECK(coordinator.accounting().reset_water_quanta >= disposed_before + water);
+    check_population_balance(coordinator);
+}
+
+void m4_same_world_promotion_and_exact_motion() {
+    namespace gate = cybersand::object_shard::m4;
+    Coordinator coordinator(small_config());
+    World* const world = &cybersand::object_shard::CoordinatorTestAccess::world(coordinator);
+    const auto initial = coordinator.snapshot();
+    const gate::OwnerIdentity owner{11, 22, 33, initial.session, initial.world_incarnation};
+    gate::MutableBodyGate adapter(*world, coordinator, owner);
+    CHECK(adapter.initially_bound());
+    CHECK(&coordinator.world() == world);
+    CHECK(adapter.registered_bodies() == 0);
+    gate::MotionTicket motion{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, world->completed_tick_index()) == gate::Verdict::Stale);
+
+    make_supported(coordinator);
+    erase_support(coordinator);
+    const auto before = owned_population(coordinator, Material::Wood);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(adapter.registered_bodies() == 0); // Preparation never owns a physical body.
+    CHECK(activate(coordinator, prepared.shard));
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(&coordinator.world() == world);
+
+    gate::GeometryTicket installation{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, installation) == gate::Verdict::Accepted);
+    CHECK(adapter.registered_bodies() == 1);
+    auto forged = installation;
+    forged.body.mass += 1.;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    forged = installation;
+    forged.body.inertia += 1.;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    forged = installation;
+    ++forged.body.material_revision;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    forged = installation;
+    ++forged.body.geometry_revision;
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, forged) == gate::Verdict::Stale);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, installation) == gate::Verdict::Accepted);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, installation) == gate::Verdict::Stale);
+    gate::GeometryTicket duplicate{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, duplicate) == gate::Verdict::Busy);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
+
+    // The real coordinator advances exactly one semantic native tick.
+    const auto before_tick = world->completed_tick_index();
+    CHECK(coordinator.step(next_poses(coordinator)).outcome == Outcome::Accepted);
+    CHECK(world->completed_tick_index() == before_tick + 1);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick) == gate::Verdict::Stale);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Accepted);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Stale);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Accepted);
+    CHECK(motion.count == 1);
+    CHECK(motion.completed_tick == before_tick + 1);
+    CHECK(adapter.motion_outstanding());
+    gate::MotionTicket second{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, second) == gate::Verdict::Held);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Held);
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, motion) == gate::Verdict::Stale);
+    auto altered = motion;
+    ++altered.bodies[0].pose_serial;
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, altered) == gate::Verdict::Stale);
+    CHECK(adapter.motion_outstanding());
+    // Only the real M3 native application changes the accepted serial.
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, motion) == gate::Verdict::Accepted);
+    CHECK(!adapter.motion_outstanding());
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, motion) == gate::Verdict::Stale);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, second) == gate::Verdict::Accepted);
+    CHECK(second.sequence > motion.sequence);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+    CHECK(adapter.accept_applied_motion(*world, coordinator, owner, second) == gate::Verdict::Accepted);
+    // The M3 bridge retains its original 16-segment physical interval cap.
+    for (std::uint32_t segment = 2; segment < gate::kSegmentLimit; ++segment) {
+        gate::MotionTicket accepted_segment{};
+        CHECK(adapter.issue_motion(*world, coordinator, owner, accepted_segment) == gate::Verdict::Accepted);
+        CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome == Outcome::Accepted);
+        CHECK(adapter.accept_applied_motion(*world, coordinator, owner, accepted_segment) == gate::Verdict::Accepted);
+    }
+    gate::MotionTicket over_budget{};
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Capacity);
+    CHECK(world->completed_tick_index() == before_tick + 1);
+
+    // A real state-only Wood ignition increments material identity while
+    // preserving collider geometry. It must re-ticket the material and
+    // invalidate the old completed-tick motion permit.
+    const auto* physical = coordinator.registry().find(prepared.shard);
+    CHECK(physical != nullptr);
+    if (!physical) return;
+    std::uint32_t structural_cell = 0;
+    for (; structural_cell < physical->area(); ++structural_cell)
+        if (physical->structural(structural_cell)) break;
+    CHECK(structural_cell < physical->area());
+    if (structural_cell >= physical->area()) return;
+    const auto geometry_before = physical->geometry().revision;
+    const auto material_before = physical->material_revision();
+    CHECK(coordinator.ignite_shard(prepared.shard, structural_cell).outcome == Outcome::Accepted);
+    const auto* ignited = coordinator.registry().find(prepared.shard);
+    CHECK(ignited && ignited->geometry().revision == geometry_before);
+    CHECK(ignited && ignited->material_revision() > material_before);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Fenced);
+    gate::GeometryTicket state_only{};
+    CHECK(adapter.stage_geometry(*world, coordinator, owner, prepared.shard, state_only) == gate::Verdict::Accepted);
+    CHECK(state_only.body.geometry_revision == geometry_before);
+    CHECK(state_only.body.material_revision > material_before);
+    CHECK(adapter.acknowledge_geometry(*world, coordinator, owner, state_only) == gate::Verdict::Accepted);
+    CHECK(adapter.issue_motion(*world, coordinator, owner, over_budget) == gate::Verdict::Fenced);
+    CHECK(adapter.grant_completed_tick(*world, coordinator, owner, before_tick + 1) == gate::Verdict::Stale);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(adapter.release_when_empty(*world, coordinator, owner) == gate::Verdict::Held);
+    CHECK(&coordinator.world() == world);
+}
+
+void m4_cancel_does_not_consume_world_and_replacement_fences() {
+    namespace gate = cybersand::object_shard::m4;
+    Coordinator coordinator(small_config());
+    const auto initial = coordinator.snapshot();
+    const gate::OwnerIdentity owner{10, 4, 9, initial.session, initial.world_incarnation};
+    gate::MutableBodyGate adapter(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator, owner);
+    make_supported(coordinator);
+    erase_support(coordinator);
+    const auto before = owned_population(coordinator, Material::Wood);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    gate::GeometryTicket staged_not_active{};
+    CHECK(adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator,
+              owner, prepared.shard, staged_not_active) == gate::Verdict::Fenced);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Cancelled);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(adapter.registered_bodies() == 0);
+    CHECK(adapter.release_when_empty(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator,
+              owner) == gate::Verdict::Accepted);
+    CHECK(!adapter.initially_bound());
+    gate::GeometryTicket stale{};
+    CHECK(adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator,
+              owner, prepared.shard, stale) == gate::Verdict::Retired);
+
+    Coordinator another(small_config());
+    const auto other_stamp = another.snapshot();
+    const gate::OwnerIdentity other{10, 4, 10, other_stamp.session, other_stamp.world_incarnation};
+    gate::MutableBodyGate isolated(cybersand::object_shard::CoordinatorTestAccess::world(another), another, other);
+    CHECK(isolated.initially_bound());
+    CHECK(isolated.grant_completed_tick(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+              coordinator, other, 1) == gate::Verdict::WrongWorld);
+    gate::Verdict foreign = gate::Verdict::Accepted;
+    std::size_t foreign_count = 99;
+    bool foreign_bound = true;
+    World& live_other_world = cybersand::object_shard::CoordinatorTestAccess::world(another);
+    std::thread hostile([&] {
+        gate::MotionTicket ignored{};
+        foreign = isolated.issue_motion(live_other_world, another, other, ignored);
+        foreign_count = isolated.registered_bodies();
+        foreign_bound = isolated.initially_bound();
+    });
+    hostile.join();
+    CHECK(foreign == gate::Verdict::WrongOwner);
+    CHECK(foreign_count == 0 && !foreign_bound);
+    CHECK(another.reset(0, 888).outcome == Outcome::Accepted);
+    gate::MotionTicket after_reset{};
+    CHECK(isolated.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(another), another,
+              other, after_reset) == gate::Verdict::WrongWorld);
+}
+
+void m4_exclusive_mutable_capacity_refuses_fourth_real_owner() {
+    namespace gate = cybersand::object_shard::m4;
+    Config config = small_config();
+    config.limits.max_shards = 4;
+    Coordinator coordinator(config);
+    const auto native_stamp = coordinator.snapshot();
+    const gate::OwnerIdentity owner{17, 21, 31, native_stamp.session, native_stamp.world_incarnation};
+    gate::MutableBodyGate adapter(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator, owner);
+    CHECK(adapter.initially_bound());
+    constexpr std::array<std::int64_t, 4> columns{{16, 42, 68, 94}};
+    for (auto x : columns) {
+        make_supported(coordinator, x, 30);
+        erase_support(coordinator, x, 30);
+    }
+    for (std::size_t i = 0; i < columns.size(); ++i) {
+        const auto prepared = discover(coordinator);
+        CHECK(prepared.outcome == Outcome::Accepted);
+        if (prepared.outcome != Outcome::Accepted) break;
+        CHECK(activate(coordinator, prepared.shard));
+        gate::GeometryTicket ticket{};
+        const auto outcome = adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+            coordinator, owner, prepared.shard, ticket);
+        CHECK(outcome == (i < gate::kBodyLimit ? gate::Verdict::Accepted : gate::Verdict::Capacity));
+        if (outcome == gate::Verdict::Accepted)
+            CHECK(adapter.acknowledge_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+                coordinator, owner, ticket) == gate::Verdict::Accepted);
+    }
+    CHECK(adapter.registered_bodies() == gate::kBodyLimit);
+    gate::MotionTicket denied{};
+    CHECK(adapter.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner, denied) == gate::Verdict::Fenced);
+}
+
+} // namespace
+
+int main() {
+    m4_same_world_promotion_and_exact_motion();
+    m4_cancel_does_not_consume_world_and_replacement_fences();
+    m4_exclusive_mutable_capacity_refuses_fourth_real_owner();
+    finite_coordinate_configuration();
+    ordinary_support_loss_and_exact_capture();
+    state_temperature_and_aba_refuse();
+    pending_event_and_malformed_receipts();
+    installed_receipts_and_chemistry_fence();
+    cancellation_reset_and_old_control();
+    capacities_epoch_wrap_and_three_owners();
+    pose_refusal_keeps_pose_and_mask_coherent();
+    disjoint_shapes_can_share_a_raster_cell();
+    one_mutation_discovers_every_disconnected_component();
+    burning_world_capture_continues_while_sleeping_and_moving();
+    blocked_product_lifetime_and_draining_inventory();
+    chemistry_perforates_geometry_beyond_eight_shapes();
+    authentic_fire_output_world_smoke_and_receipt_retirement();
+    real_falling_sand_ingress_aba_and_destroyed_pocket();
+    wide_rotated_pocket_admits_real_falling_sand();
+    overlap_relocation_cannot_create_a_pocket_entry_witness();
+    side_entry_refusal_cannot_be_laundered_by_a_stationary_pose();
+    segmented_motion_preserves_invalid_pocket_entry_until_semantic_ingress();
+    refused_motion_preserves_existing_invalid_entry_history();
+    injected_ingress_history_capacity_keeps_inventory_and_reset_live();
+    zero_automatic_budget_cannot_bypass_history_through_public_ingress();
+    exhausted_transfer_budget_still_records_later_body_entry_history();
+    historical_water_exposure_survives_geometry_and_rejects_replacement();
+    exposure_capacity_refuses_without_partial_pose_or_clock();
+    two_shards_contend_for_one_real_output_destination();
+    three_independent_burning_owners();
+    population_accounting_covers_world_ticks_edits_transfers_and_resets();
+    std::printf("ObjectShard coordinator: %llu checks, %llu failures\n",
+        static_cast<unsigned long long>(checks), static_cast<unsigned long long>(failures));
+    return failures == 0 ? 0 : 1;
+}

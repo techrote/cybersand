@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "runtime_source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "native_input_digest": "ceb176f8b88b3de87a74a68dfc1a596d06c0d64f0d711067b9a8d7f92e6ce46e",
+  "qualification_status": "budget_failed",
+  "budget_failures": 10,
+  "registered_limits": 74,
+  "functional_assertions": 4237384,
+  "functional_failures": 0,
+  "matched_control_classification": "One bounded cohort of unchanged old/new empty and three-tree workloads; does not supersede full-matrix budget failure.",
+  "prior_architectural_experiment_source": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "prior_fulltree_experiment_repeated": false,
+  "files": {
+    "README.md": "08fe655f211dbb2991e368f792f13ec1a5bd54794d6599d0318b6a83b5be4594",
+    "commit-binding.json": "0843383a1914648d570662fa7c2385d3fb068e3797d6308202676540d8e24ffa",
+    "control-new-empty_lab.json": "98b36011180d44923d4b134ab2f4c04e74faaedd15c8e010321f12ba80b3aafb",
+    "control-new-reacting_three.json": "d2e768da014f67697d9b3213ba41e3b0bb1f125ae97c8b861574d3ef24e8f58e",
+    "control-old-empty_lab.json": "78b71dd7f49c29e2add81883ca369caf244b78dbb4a13a76054de14787e2150c",
+    "control-old-reacting_three.json": "7c4bb7d6a572ba3c1e9aaecb73b69e07b7b638757b6aeeeaac67d1831264d837",
+    "matched-control.json": "5fea6b117d1088c246b600350a5d85f7f8fc914c800a677ae789b1cb08096c08",
+    "native-inputs.json": "60ce7f3e23082e7fa98544b07e62e931cb0b12011554ca69d5a53fd655d1cf3b",
+    "native-result.json": "b057f69b8582fc300275dc29760cb025f2fe3496db359628e49b9bc8928e58ba",
+    "native-summary.json": "28bf043a7d615c41fe60444fe19077cc6aa4ac578d84081beb34c14377665bfc"
+  },
+  "report_sha256": "beacf6ffa0269c8cbcf0c905aaf9fc9b7a257d175a6a219753327e6873767b15"
+}

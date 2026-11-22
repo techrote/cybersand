@@ -4,11 +4,53 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-22
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## ObjectShard M0–M3 — 2026-11-22
+
+The [M3 recovery ledger](../audits/2026-11-22-objectshard-m3-recovery.md) identifies the recovered 26-file staging handoff and fresh implementation. Use the [continuous-play guide](objectshard-m3-preflight-playtest.md) for the opt-in worker scene, and the [contract](../research/objectshard-m3-preflight.md) for exact target fences, copied receipts and the ordinary Workbench seam.
+
+[Draft/HOLD #741 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
+binds runtime source `e034f2294663e0485cfb9adcc8ada46a6e977cee` to 41 Linux,
+41 Windows and 32 extracted-package cases, complete native/sanitizer World
+regressions and the repaired F2 lifecycle. Use its final owner ZIP, not the
+superseded `68235b12` M3 candidate. The unchanged 001R native matrix passes 74/74
+limits with only 14,176 bytes of margin. Rendered burst latency reaches 1.93
+seconds; the separate-World rehearsal is not ordinary Workbench attachment.
+Production provenance and physical Windows 11/NVIDIA owner acceptance remain
+unpassed/unrecorded respectively.
+
+The missing inherited Fire consumer transition is now reviewed and admitted by
+`73018218`; its 231-test ordinary catalogue workflow passes. Native/Godot/package
+inputs remain at `e034f229`. Carry the reviewed entry and audit to the appropriate
+#738 head before a future authorized mergedown, preserving source ancestry. The
+six production runtime-provenance errors remain a separate unpassed condition.
+
+The separate OBJECTSHARD-001R finisher #738 has a
+[source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
+and a verified corrected Windows ZIP. Follow its exact native/platform/package
+identities rather than substituting the historical M2 evaluator. M3 Workbench
+preflight follows as a separate executable preparation child. Historical M0/M1/M2
+heads and failures are preserved; all successor work remains Draft/HOLD with no
+merge authority.
+
+Evaluate the dedicated staged Draft/HOLD ObjectShard stack M0 #726 → M1 #728 →
+M2 #730; use the [implementation and evidence record](../research/objectshard-001.md)
+and [Windows Lab procedure](objectshard-lab-playtest.md). Shared World changes
+are limited to the opt-in mutation journal and behavior-preserving lifecycle
+seam; the Lab has a separate native facade and revisioned Rapier adapter.
+The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
+binds runtime source `8f55a4e...` to successful Linux/Windows execution and the
+verified Windows package. The separate native performance matrix retains ten
+failed timing limits. Owner physical acceptance and strict production runtime
+publication remain outstanding; do not infer merge readiness from the Lab pass.
+Preserve PUBPRES, GEN-006, SWARM and CI mission ownership. The owner authorized
+M0–M2 implementation and qualification, not Ready, merge, production defaults or
+release. Source-bound Windows automation does not establish physical acceptance.
 
 ## Workbench Art traffic lifetime — 2026-11-20
 

@@ -1,0 +1,30 @@
+{
+  "schema": "objectshard-m3-documentation-retrieval-review-v1",
+  "checked_utc": "2026-11-22T08:21:57.551804+00:00",
+  "fixture": "docs/reference/retrieval-questions-objectshard.json",
+  "fixture_sha256": "e9748e8656ef8daf4671e2972de393143d2b44c7f0fb0feb607575ed52d7fadd",
+  "lexical_report_sha256": "44a455097af4e5c8eb620b9076c81433d38482c31a47de45ec6c462f6350a67b",
+  "lexical_summary": {
+    "questions": 9,
+    "canonical_hit_at_1": 7,
+    "canonical_hit_at_k": 9,
+    "mrr_at_k": 0.837,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "interpretation": "All nine canonical destinations occur within top-k; seven rank first. New repaired-M3 OBJECTSHARD09 ranks first. Lexical discoverability is not proof of answer correctness. Historical M2 OBJECTSHARD06 retains its separate failed ten-of-74 matrix, which must not be applied to 001R or M3. Final facts were reviewed against exact-source campaign, independent reviews and current explicit rehearsal boundary.",
+  "new_fact_checks": {
+    "source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "run": 44999117090,
+    "windows_source_cases": 41,
+    "windows_package_cases": 32,
+    "linux_source_cases": 41,
+    "owner_zip_bytes": 93168827,
+    "owner_zip_sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "navigation_parent_checks": 135,
+    "actual_quit_child_checks": 18,
+    "burst_max_seconds": 1.929452,
+    "ordinary_workbench_attachment": "not_implemented",
+    "production_provenance": "unpassed_six_mismatches",
+    "physical_windows11_nvidia_acceptance": "unrecorded"
+  }
+}

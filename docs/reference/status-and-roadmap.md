@@ -4,11 +4,48 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-22
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## ObjectShard M0–M3 research candidates — 2026-11-22
+
+The [M3 continuous-play candidate](../research/objectshard-m3-preflight.md) reconstructs the recovered exclusive-worker rehearsal and retains a separate World/Rapier scene. Mutable geometry cannot enter the ordinary immutable Workbench GCR roster; the current PUBPRES successor remains a separately owned interface. Full ordinary Workbench binding, persistence and owner acceptance remain Planned.
+
+The [M3 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
+delivers Draft/HOLD #741 at qualified source `e034f229`: fresh Linux/Windows
+execution, an actual verified Windows ZIP, controlled navigation disposal and
+three independent final reviews. Continuous editing, real detachment/motion and
+bounded capture are executable. The slower hosted timing observations, 1.93-second
+burst tail and production runtime-provenance failure remain explicit.
+
+The inherited Fire consumer's missing compatibility transition is completed at
+`73018218`, with 231 catalogue tests passing and the original lock/refusal rules
+preserved. This guard-only completion leaves the `e034f229` executable and ZIP
+unchanged; production runtime provenance remains unpassed.
+
+The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md)
+is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native,
+actual Rapier rest/erosion, Linux/Windows and delivered-ZIP gates passed. Its
+size/age admission, wake-safe geometry, bounded motion and owner capture remain
+isolated Lab capabilities. Original M2 timing failures are retained. M3 preflight
+is a separate child; it does not authorize production Workbench changes or claim
+owner physical acceptance.
+
+The [implementation record](../research/objectshard-001.md) and
+[independent Lab procedure](../operations/objectshard-lab-playtest.md) describe
+the staged Draft/HOLD candidate, beginning with M0 #726 and M1 #728. The M2 child
+adds real product output, physical Sand lodging and selected Water extinction.
+The M2 [final delivery record](../audits/2026-11-22-objectshard-final-acceptance.md)
+records the completed exact-source Linux/Windows campaign, verified owner package
+and unresolved native timing gate. No Ready promotion or merge occurred.
+Native/local-Godot iteration, exact-source hosted Windows qualification and
+owner Windows11/NVIDIA physical acceptance are separate claims. The ordinary
+World/Workbench defaults and protected concurrent branches remain unchanged.
+Fracture, advanced solver transfers and durable persistence remain outside M0–M2.
+Do not infer production readiness or merge authority from a passing Lab probe.
 
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 

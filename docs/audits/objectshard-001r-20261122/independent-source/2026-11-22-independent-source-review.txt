@@ -1,0 +1,80 @@
+# OBJECTSHARD-001R independent source review — 22 November 2026
+
+## Verdict and scope
+
+**Conditional code approval for a frozen qualification candidate. No unresolved Class A/B material-ownership or physical-stability defect was found in this review.** This is not approval to merge, promote Ready, release, or claim owner physical acceptance. Final pinned-platform qualification and delivered-ZIP verification remain separate gates.
+
+The reviewer authored none of the implementation. This review examined the finisher against original M2 `dc4282e5f5f9b886315e8450613740d265f5fbc3`, initially at PR #738 commit `f11be5aa55babad3fbabe0471ae47517322989b1`, tree `bbde088be65bf503123644e0712a95300611b461`. It then independently reviewed the seven-file fence-storage, contact-timer, metric-label and regression delta committed as **`514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c`**, tree **`e2b0753b82650734b5738ff000be62a2c7db2abe`**. This is the code-approved candidate. `review-manifest.json` binds every changed path and every captured f11 native input to the final commit, without implying that earlier execution tested changed code.
+
+**Execution/source distinction:** the independent actual-Godot tests below executed frozen f11 scripts and the fresh f11 native extension. They do not qualify the later memory/timer/label delta. The final build must match commit 514d76fb, with focused delta tests and platform qualification recorded by the integration owner.
+
+## Concrete finding and repair
+
+**R1 — omitted motion-contact timing; reporting defect, not an inventory failure.** In f11, `Coordinator::automatic_ingress(false)` performed real pocket/fence/witness work on every accepted motion segment, then returned before adding the elapsed time to `contact_ns`. `refresh_ingress_fences()` also ran before that timer started. Overall operation wall time still included the work, but per-stage contact attribution was incomplete.
+
+The integration owner replaced the manual end-of-function addition with `ScopedTime timing{metrics_.contact_ns}` at function entry. This covers refresh, history-only sampling, capacity paths and early returns without double addition inside the function. The added regression checks that history-only Sand motion advances contact time without advancing the semantic clock or ingesting the Sand. The reviewer inspected this exact repair; the final-source execution receipt remains required.
+
+Two accompanying claim corrections were inspected: the Fire include now acknowledges the opt-in World spent-opportunity guard while preserving the selected ignition law; lifetime metrics are labelled as totals for the current native owner across resets, rather than process-global totals across owner replacement.
+
+## Independent falsification and execution
+
+| Evidence | Exact scope | Result |
+|---|---|---|
+| Independent connectivity oracle | 40 deterministic 64×64 grids, 6,000 mutations each; Empty/Wood/RedBrick/Wall; 1–31-node discovery budgets; edits while a census is incomplete; separate four-neighbour BFS, exact membership, anchor and resident-edge oracle | **2,237,430 checks, 0 failures** |
+| Same oracle under ASan and UBSan | Same native discovery header and probe, address/undefined checks enabled | **2,237,430 checks, 0 failures** |
+| Actual Rapier rest/contact negative controls | Natural rest, identical-publication shape identity, mass-only update, support-face erosion, future off-centre impact, static support removal | **34 checks, 0 failures** |
+| Actual Rapier shape-only intervention | Three naturally settled tree compounds, 1,800 pre- and 1,800 post-intervention steps; exact 8-to-10-shape change while holding mass properties fixed to isolate collider replacement | **27 checks, 0 failures** |
+| Retained owner-D actions on integrated f11 | 198 retained edits, real native chemistry and Rapier, through semantic tick 3,600 | **17 checks, 0 failures; 3 owners; no protective hold** |
+| Python package/receipt/performance tooling tests | Existing ObjectShard tools test discovery, independently executed | **33 tests passed** |
+
+The oracle is deliberately independent of production flood-fill implementation. It also compares full sets of components rather than only occupied totals or counts of candidates. It does not replace native World mutation-hook, transaction or actual-host tests.
+
+LeakSanitizer failed to initialize under the environment's ptrace restriction; that original log is retained as `discovery_fuzz_lsan_environment_failure.log`. The successful sanitizer run used `ASAN_OPTIONS=detect_leaks=0` and `UBSAN_OPTIONS=halt_on_error=1`. No leak-check pass is claimed. Compiler: GCC 14.2.0, Linux. This local compiler differs from the separately pinned hosted build toolchain.
+
+The independent real-host run loaded:
+
+- Godot `4.7.stable.official.5b4e0cb0f`, SHA-256 `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`.
+- Fresh f11 native extension SHA-256 `61cbc2229bd24e99d51cab55c26321706f322580a952a25cc705ab9bcab865be`.
+- Selected Linux Rapier SHA-256 `566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a`.
+
+Frozen scripts, runtime hashes, logs and process/watchdog receipts are retained. The stale earlier `cbaa727...` extension was not used.
+
+## Admission, ownership and failure review
+
+The replacement discovery catalogue preserves complete membership before admission, with a bounded resumable frontier and explicit unknown-boundary/capacity outcomes. Its invalidation paths distinguish structural topology from exact payload revision. The independent oracle found no component loss, invented bond, truncated successful membership or anchor misclassification in the exercised schedules.
+
+The size/age admission policy is coherent: scarce slots normally go to large eligible components, with age opportunities for smaller candidates. Complete discovery precedes selection. A structure may still remain deferred if all three slots are occupied by existing live owners; this is a visible resource limit, not a promise of preemption or demotion. Repeated changes can postpone completion, but do not authorize partially discovered promotion.
+
+The native owner retains the precommit/postcommit distinction, exact tuple and witness checks, installed-terrain receipts, applied occupancy, explicit activation acknowledgement, and quarantine after unexpected partial progress. Moving erasure uses the actual shard owner and revisioned transaction rather than painting World under an occupied body. Geometry is installed and acknowledged before further physical stepping. Products/cargo outlive disappearance of the rigid skeleton under draining ownership.
+
+The Fire opportunity repair maintains one carrier's logical source and spent status across conservative relocation within the semantic interval. The World wrapper's opt-in spent-opportunity check prevents a second ignition after external shard contact. Expected motion refusal restores ingress history as well as poses; the rollback arrays remain independently reserved. These were reviewed against the maintained regressions for relocated Fire, failed Sand-entry laundering and external-plus-World ignition.
+
+The memory delta replaces only a private fence's 24-byte Handle with an 8-byte monotonic shard ID. Registry IDs are not reused after reset, overflow refuses, and refreshing a fence first resolves the current body roster then validates the full Handle in authoritative storage. Public requests, poses and body records retain their complete identity. Both current and rollback fence capacities remain unchanged. The additional reset/retired/generation/session regression protects the assumption. No authority is inferred from a recycled occupancy slot or RID.
+
+## Physics and temporal order
+
+The bridge keeps unchanged colliders for identical occupied geometry. Required shape replacement remains exact; changed physical properties wake the body for genuine contact resolution instead of restoring a stale sleeping state. It preserves the local lattice transform and adjusts COM-point velocity according to the declared co-moving policy. It does not freeze bodies to manufacture rest.
+
+The independent support-removal/impact controls confirmed that this repair still permits real falls and future contact response. In the shape-only three-body experiment, maximum post-rest rotation was **0.003135 degrees**, maximum translation **0.001664 cells**, and there was no envelope hold. This is a controlled collider intervention, not a material-transfer proof.
+
+An independent calculation from all 3,599 recorded frames of the retained-D run measured excursions from tick 754 through tick 3,600. Maximum body excursions were **0.0003825, 0.0043577 and 0.0009904 degrees**, with maximum translations **0.0002121, 0.0016271 and 0.0003459 cells**. Later geometry revisions occurred and all three bodies ended naturally sleeping. This directly addresses the large late angular discontinuity; it does not reconstruct missing historical owner inputs or establish arbitrary-scene stability.
+
+The actual-motion segmentation is bounded by 16 real Rapier segments, preserves existing per-segment translation/rotation limits, and requires native applied receipts with matching identities before another segment. Rejected movement holds the Lab rather than clamping away velocity or reporting a false completed interval. No complete-turn alias or stale receipt bypass was identified in the reviewed path.
+
+## Capture, bounds and performance claims
+
+Prospective action capture is bounded and source-labelled. Replay validates named operation/refusal outcomes, semantic steps and unexpected holds/failures; it is not a full checkpoint-inventory comparator or a bit-identical cross-platform physics replay. The replay executable states this scope. A zero-difference result should retain that qualification in the handoff. The original six owner exports remain incomplete observations, not complete replays.
+
+Native and Godot queues, trace byte/record caps, diagnostic rings and sampled history are finite. The continuous stroke path resolves current ownership and provides a bounded pending queue. A queued brush operation is world-position scoped; it does not promise to remain attached to an old local material cell while its body moves.
+
+The historical M2 **10/74 timing failures remain valid evidence**. They are not erased by a later hosted budget pass. The new f11 full matrix additionally exposed **14 memory-limit failures**, with functional checks passing; the retained negative report remains present. The private fence compaction saves 393,216 bytes across both reserved arrays without raising budgets. Author-provided frozen repaired-memory results show 4,237,399 functional checks with zero failures and 74/74 limits passing on the measured host. Those runs use synthetic poses/ACKs and precede the subsequent timer/label delta; they are not actual Rapier or Windows playability measurements.
+
+The matched benchmark apparatus uses complete alternating cohorts and unchanged budgets, with shared-host variability acknowledged. Inclusive stage timers must not be summed as disjoint costs. This review makes no GPU claim and no performance improvement claim from its concurrently running local functional probes.
+
+## Packaging and remaining qualification gates
+
+The generator seals the final CMD launchers before computing manifests. `%~dp0.` avoids a root argument ending in backslash before a closing quote, with delayed expansion disabled. Package identity includes exact source/tree, native inputs and DLL identity, selected engine/Rapier, dependencies and file inventory. No reused binary from older native source is accepted by design.
+
+The Windows ZIP qualifier checks the actual delivered ZIP under spaces, an ending `(1)`, nested and Unicode paths, runs both shipped verification and actual boot paths, and re-verifies after launch. The reviewed Python tests are useful negative controls but are not Windows execution. **The reviewer has not yet observed a passing final-source delivered-ZIP qualification.** The final owner handoff must attach that receipt and the exact ZIP SHA-256; failure remains a delivery blocker.
+
+The reviewed delta is bound to commit 514d76fb. Before claiming final finisher qualification, record source-matched focused/native/sanitizer and final hosted results, inspect rendered evidence, and preserve the distinction between automated Windows execution and owner physical acceptance. M3 preflight is a separate stacked scope and is not approved by this review. All PRs remain Draft/HOLD; no merge or Ready promotion is authorized.

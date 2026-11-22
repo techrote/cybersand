@@ -1,0 +1,104 @@
+{
+  "schema": "objectshard-final-evidence-v1",
+  "runtime_source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "runtime_source_tree": "a0e3478c293908247bc5cdaab9497fc290a374c6",
+  "run_id": 44974395620,
+  "run_attempt": 1,
+  "artifacts": [
+    {
+      "id": 14735176557,
+      "role": "Windows owner package",
+      "sha256": "bb231a6eed49f097db59b350294a6fa8ec4fb26888b41860b457c40bb8a473b0"
+    },
+    {
+      "id": 14734604007,
+      "role": "Windows raw qualification, ten PNGs and full profiles",
+      "sha256": "c21e70c3d64dee92081272275db9c102b4c5f0848558eff2e6eca72ac223d3d6"
+    },
+    {
+      "id": 14735701464,
+      "role": "Linux raw native and Godot qualification, ten PNGs and full profiles",
+      "sha256": "afc8a4119f6ce0d08af76bc20b03e4877d06f6213b8a88bdf79254ee3adbdf86"
+    }
+  ],
+  "interpretation": [
+    "Later evidence/documentation commits do not re-label the packaged complete Git tree. Runtime, Lab, build, workflow, packaging-tool and qualification-tool files remain identical to the executed source.",
+    "Hosted Lab budgets pass on both platforms; the final complete native matrix retains ten of 74 timing failures.",
+    "Automated software-rendered Windows is not physical Windows 11/NVIDIA acceptance.",
+    "All PRs remain Draft/HOLD; production runtime publication is outstanding."
+  ],
+  "files": {
+    "independent-integrated/evidence-integrity.json": {
+      "sha256": "47a8bdd1cc58e9c9be5f90a49c711c96ab36380df3c199543156ee325466d01b",
+      "bytes": 34155
+    },
+    "independent-integrated/linux-abi-independent.json": {
+      "sha256": "48542fc38386f04be10722fc83a9b39f8d268fcf8ee0b66bcf5531124142a6d3",
+      "bytes": 457
+    },
+    "independent-integrated/review.json": {
+      "sha256": "a64e621fec752fccdbb14406193d7c0fd6ba7096962ce2d756947725de8f7e40",
+      "bytes": 8270
+    },
+    "independent-integrated/review.md": {
+      "sha256": "61c58ef0919ec49ad864f6ad8bc8aef5c80e10e487572ef4e3457ea0d1c570f2",
+      "bytes": 11833
+    },
+    "independent-performance-review.json": {
+      "sha256": "7f6c4483b645de7c053d58ba937c06d3bfbd7ce333b40190fdafca6d7347e0fc",
+      "bytes": 32008
+    },
+    "independent-performance-review.md": {
+      "sha256": "356d4463d2ba4d2a25d673efa5b1cc49426a729fc3d5068e01102a9c31701058",
+      "bytes": 5807
+    },
+    "linux-native-inputs.json": {
+      "sha256": "ebd743642051419c7216049d35b7bf27d64efe5390a0e9ac4882aaa55f7a964e",
+      "bytes": 11961
+    },
+    "linux-native-provenance.json": {
+      "sha256": "d7d1f9ffc0daaa79a09b6a70fcb77ee2bbefa04dacda6f2f67c8a424606fdda2",
+      "bytes": 14939
+    },
+    "linux-native-summary.json": {
+      "sha256": "ce887ac10732fc28cf2008438d03b762a546379d470a0ec6e7ce8237ea43f8e1",
+      "bytes": 9388
+    },
+    "linux-performance-summary.json": {
+      "sha256": "9ddf1f85becca14606345d629ff76189292c8c749d26b63223bbaeb5c10538c4",
+      "bytes": 93329
+    },
+    "linux-qualification.json": {
+      "sha256": "640f892a641ca58e290039d29016991bda9f1c1080ab90ae3a99adf9a2745e6a",
+      "bytes": 57454
+    },
+    "windows-native-provenance.json": {
+      "sha256": "9b91b425ceb369b6ab4feb86f3837112c510aee53db61bebdd1ed5660713b59b",
+      "bytes": 14207
+    },
+    "windows-observation-extract.json": {
+      "sha256": "f540fc0489c3a4d0b5694e571021995a134787977e48fce3c8519e7ea6f421ce",
+      "bytes": 6139
+    },
+    "windows-package-custody.json": {
+      "sha256": "f93fb0163de9cd2b76391ac110e38604d175ad1344f3e3881cbe8cdfb4c1899c",
+      "bytes": 650
+    },
+    "windows-package-manifest.json": {
+      "sha256": "893f11b3e9e40412a8023336766e83693bdabeb4f05d4435ef34ca64d4111149",
+      "bytes": 142760
+    },
+    "windows-package-replay.json": {
+      "sha256": "7c507b8b04407232106d2453645f6c4f9ae9098a3357c4a9df8ece3edb898036",
+      "bytes": 31483
+    },
+    "windows-performance-summary.json": {
+      "sha256": "0f348d5855481025c835ed8650837f871c4a61619baa03da308f79d8faf6a1d2",
+      "bytes": 92345
+    },
+    "windows-qualification.json": {
+      "sha256": "a3b8c82c9fcb15cf71646c9003cb596112476d56102f52a4adc5a0f1e88006e6",
+      "bytes": 42535
+    }
+  }
+}

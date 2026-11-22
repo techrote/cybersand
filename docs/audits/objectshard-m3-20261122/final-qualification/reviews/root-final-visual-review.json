@@ -1,0 +1,75 @@
+{
+  "schema": "objectshard-final-root-rendered-review-v1",
+  "reviewed_utc": "2026-11-22T08:00:28.235504+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "workflow_run": 44999117090,
+  "artifact_id": 14745662483,
+  "method": "All seven original source-bound Windows Godot PNGs independently viewed through image tool; actual report/trace findings assessed separately. Screenshots are not proof of scanout, sustained input responsiveness or human target-hardware acceptance.",
+  "status": "All seven are legible genuine distinct captured scenes/states; no illustrative mockups used",
+  "images": [
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-native-supported.png",
+      "sha256": "e1a1efba6b208fbe2fe050b60af37d4c3cc28e276840fb00274dda8691e1632f",
+      "bytes": 106896,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "Actual owner screen; initial supported Wood structure, zero shard slots, native/published tick1. Visible controls and experimental scope label are legible.",
+      "matches_qualification_image_hash": true
+    },
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-falling.png",
+      "sha256": "b91b2a27f38f2fed771f05ce91948133c6859c851a43f1b83edfa19065d28407",
+      "bytes": 128046,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "After44 ordinary support erases,526 structural cells occupy one awake shard with6 installed shapes; actualfall state at native/published tick 21,77 physical segments. Screenshot alone does not establish continuous input.",
+      "matches_qualification_image_hash": true
+    },
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png",
+      "sha256": "b8c0c6521caa679989a1cf144163e72288d8197ab705d9b96be2b5c0da80f289",
+      "bytes": 126100,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "Distinct rotated resting pose after erosion:525 cells,geometry revision 2,7 installed shapes,natural sleep,tick 471. No illustrated or scripted replacement imagery.",
+      "matches_qualification_image_hash": true
+    },
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-main-structure-priority.png",
+      "sha256": "c56bd279568b889267bc576179cc4d3408d5010b7eba8bff9be483b021abf418",
+      "bytes": 144391,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "817-cell main structure occupies first shard alongside admitted 72-cell offcuts;3 slots used and further 72-cell components visibly deferred for BodySlots. Snapshot is deliberately observed while waiting at applied motion receipt; native 7/published 6 is labelled.",
+      "matches_qualification_image_hash": true
+    },
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png",
+      "sha256": "79c75d9d2dcf6263e715127471670f4607672f7cb40641fcf3d59f5513459439",
+      "bytes": 132174,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "One actual cargo cell shown alongside 498 structural cells,mass 499. This capture shows Water extinctions 0 and does not prove extinction; separate native/host fixtures qualify that behaviour. Native 101/published 100 pending barrier label retained.",
+      "matches_qualification_image_hash": true
+    },
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-external-fire.png",
+      "sha256": "3917ce1bd90e621bcd3c5e926cdf855b3813f4088880e4a00fcd5f529ad01d18",
+      "bytes": 114592,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "Actual orange external Fire band in the 256 \u00d7 160 scene;83 accepted authored Fire cells; FixtureCellOccupied refusal visible. World anchored/no shard here. This is genuine material fixture evidence, not a detached-burning-body claim.",
+      "matches_qualification_image_hash": true
+    },
+    {
+      "file": "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-extended-320.png",
+      "sha256": "82a0e78874c4daf8bc3763b82b729b04f6782032b7439efa9c4c1c404d5eca18",
+      "bytes": 140102,
+      "width": 1280,
+      "height": 840,
+      "visual_observation": "320 \u00d7 192 scene shows three separate 775-cell structures at different settled/contact poses with asymmetric ledges;3 slots,331 physical segments, native/published 81. Scrollable diagnostic panel remains bounded.",
+      "matches_qualification_image_hash": true
+    }
+  ]
+}

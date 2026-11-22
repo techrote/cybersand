@@ -1,0 +1,194 @@
+[
+  {
+    "binary_sha256": "6697001acedb6e7ee66609f9ce21f7298020eaa247bfa85bc8fc00bb84b4a375",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4237384,
+    "cohort": "control",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-control/20261122T041659.764467Z-ceb176f8b88b/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "elapsed_seconds": 6.122553238004912,
+    "failures": 0,
+    "index": 1,
+    "load_after": [
+      1.173828125,
+      1.76171875,
+      3.2861328125
+    ],
+    "load_before": [
+      1.1015625,
+      1.75732421875,
+      3.29345703125
+    ],
+    "returncode": 0,
+    "started_utc": "2026-11-22T04:36:06.793258+00:00"
+  },
+  {
+    "binary_sha256": "81b9b06218a6030ad14de46e0643c985fb3133faa77fc7360156eb7fdd33ffd0",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4237399,
+    "cohort": "candidate",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "elapsed_seconds": 6.880704060000426,
+    "failures": 0,
+    "index": 2,
+    "load_after": [
+      1.15966796875,
+      1.7490234375,
+      3.2734375
+    ],
+    "load_before": [
+      1.173828125,
+      1.76171875,
+      3.2861328125
+    ],
+    "returncode": 0,
+    "started_utc": "2026-11-22T04:36:12.921945+00:00"
+  },
+  {
+    "binary_sha256": "81b9b06218a6030ad14de46e0643c985fb3133faa77fc7360156eb7fdd33ffd0",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4237399,
+    "cohort": "candidate",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "elapsed_seconds": 6.255481355001393,
+    "failures": 0,
+    "index": 3,
+    "load_after": [
+      1.146484375,
+      1.736328125,
+      3.2607421875
+    ],
+    "load_before": [
+      1.15966796875,
+      1.7490234375,
+      3.2734375
+    ],
+    "returncode": 0,
+    "started_utc": "2026-11-22T04:36:19.810851+00:00"
+  },
+  {
+    "binary_sha256": "6697001acedb6e7ee66609f9ce21f7298020eaa247bfa85bc8fc00bb84b4a375",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4237384,
+    "cohort": "control",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-control/20261122T041659.764467Z-ceb176f8b88b/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "elapsed_seconds": 6.218199109003763,
+    "failures": 0,
+    "index": 4,
+    "load_after": [
+      1.123046875,
+      1.71142578125,
+      3.236328125
+    ],
+    "load_before": [
+      1.146484375,
+      1.736328125,
+      3.2607421875
+    ],
+    "returncode": 0,
+    "started_utc": "2026-11-22T04:36:26.073162+00:00"
+  },
+  {
+    "binary_sha256": "6697001acedb6e7ee66609f9ce21f7298020eaa247bfa85bc8fc00bb84b4a375",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4237384,
+    "cohort": "control",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-control/20261122T041659.764467Z-ceb176f8b88b/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "elapsed_seconds": 6.153232644996024,
+    "failures": 0,
+    "index": 5,
+    "load_after": [
+      1.11279296875,
+      1.69921875,
+      3.22412109375
+    ],
+    "load_before": [
+      1.123046875,
+      1.71142578125,
+      3.236328125
+    ],
+    "returncode": 0,
+    "started_utc": "2026-11-22T04:36:32.297884+00:00"
+  },
+  {
+    "binary_sha256": "81b9b06218a6030ad14de46e0643c985fb3133faa77fc7360156eb7fdd33ffd0",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4237399,
+    "cohort": "candidate",
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "elapsed_seconds": 6.230349921999732,
+    "failures": 0,
+    "index": 6,
+    "load_after": [
+      1.103515625,
+      1.6875,
+      3.2119140625
+    ],
+    "load_before": [
+      1.11279296875,
+      1.69921875,
+      3.22412109375
+    ],
+    "returncode": 0,
+    "started_utc": "2026-11-22T04:36:38.456513+00:00"
+  }
+]

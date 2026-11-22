@@ -1,0 +1,119 @@
+{
+  "schema": "objectshard-independent-material-transition-final-completion-v1",
+  "reviewer": "review_custody; independent source, workflow and artifact audit",
+  "utc": "2026-11-22T08:46:21.590125+00:00",
+  "status": "passed: substantive reviewed transition completed and ordinary executed documentation/catalogue gates qualified; production runtime provenance remains unpassed",
+  "confirmed_unrepaired_findings_in_transition_scope": [],
+  "tool_source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "tool_source_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "qualified_runtime_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_review": {
+    "path": "source-review.json",
+    "sha256": "de1e48125bb56fe5117e900fae6b5095855b333b2e651c671f3f236d45132682"
+  },
+  "published_source_review": {
+    "path": "published-source-review.json",
+    "sha256": "7576160a6e39c1e0bdd94c06d24c158f4c570e3622dc59c239608cfdd4a6d8ff"
+  },
+  "precision_addendum": {
+    "path": "precision-and-local-guard-review.json",
+    "sha256": "54a1ced2ebaa40c099ae07c92d62fcb01143ea04ac64b9b8a039b5b78d0e4526"
+  },
+  "local_exact_committed_guard": {
+    "path": "build/m3-material-transition/compatibility.json",
+    "sha256": "68149335117260753dfcfd6fdb1b2f77cff9dd9473c86774e5dcc64e64b9dadf",
+    "status": "PASS",
+    "reviewed_transitions": 54,
+    "protected_sources": 27
+  },
+  "workflow": {
+    "run_id": 45003383402,
+    "job_id": 137149569699,
+    "conclusion": "success",
+    "raw_log": "documentation-45003383402-137149569699.log",
+    "raw_log_bytes": 283319,
+    "raw_log_sha256": "4f86b4ca9e599d6255b9ce80f2dcc47faebb0f1fefeb78382f61627067a36b3c",
+    "catalogue_tests": 231,
+    "catalogue_seconds": 438.57,
+    "catalogue_result": "OK",
+    "subsequent_executed_gates": "LCB scenarios/registry, M11, validation contracts, soliding contracts, lockstep reducer, retrieval, LFS and whitespace all succeeded",
+    "skipped_steps": [
+      "Validate dependency pins and published runtime provenance"
+    ],
+    "checkout_merge_commit": "bd8a9503507273c3348b2e711e6b3638860a9274",
+    "checkout_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+    "checkout_tree_equals_published_source": true,
+    "scope": "The GitHub pull-request merge checkout is a qualification ref with the same tree; no owner-authorized repository merge occurred."
+  },
+  "native_metadata_parity": {
+    "artifact_id": 14746754332,
+    "archive_bytes": 8648,
+    "archive_sha256": "d2507004699fb765c49c6a6bcf3958925e78d8e87eefb208a63e9e2b921efda8",
+    "member": "native-parity.json",
+    "member_bytes": 35115,
+    "member_sha256": "0681d19649f98dd514d83f7aeae439438da59e09fc15f7e8bd867611b4093573",
+    "member_equals_actual_logged_json": true,
+    "status": "PASS",
+    "source_tool_inputs_verified": [
+      {
+        "bytes": 195969,
+        "path": "materials/catalogue/catalogue.json",
+        "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+      },
+      {
+        "bytes": 53002,
+        "path": "materials/catalogue/generated/catalogue.shadow.hpp",
+        "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+      },
+      {
+        "bytes": 180360,
+        "path": "materials/catalogue/generated/catalogue_shadow.gd",
+        "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+      },
+      {
+        "bytes": 215517,
+        "path": "materials/catalogue/generated/inspection.json",
+        "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+      },
+      {
+        "bytes": 15569,
+        "path": "materials/catalogue/compatibility-lock.json",
+        "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+      },
+      {
+        "bytes": 23316,
+        "path": "tools/material_catalogue/native_oracle.cpp",
+        "sha256": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256"
+      },
+      {
+        "bytes": 22888,
+        "path": "tools/material_catalogue/check_native_parity.py",
+        "sha256": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696"
+      },
+      {
+        "bytes": 52680,
+        "path": "tools/material_catalogue/compatibility.py",
+        "sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302"
+      }
+    ],
+    "protected_result_equals_local_guard": true,
+    "world_executed": false,
+    "godot_executed": false,
+    "physics_qualification": false,
+    "source_commit_field_scope": "The parity receipt's source_commit names the immutable compatibility baseline, not the workflow checkout. Workflow/artifact identity, equal checkout tree, eight exact input facts and the 54-step protected result bind this run to the published guard.",
+    "production_cutover_field_scope": "The pre-existing true field describes the previously adopted material capability consumer (#563). It is not ObjectShard production adoption and was not changed by this transition."
+  },
+  "preserved_negatives": [
+    44989675198,
+    44999120750,
+    45002794045
+  ],
+  "final_disposition": [
+    "The omitted finisher compatibility step is repaired through the existing authenticated per-file mechanism, with one appended entry and substantive independent review. All 53 preceding entries, remaining guard AST, baseline, frozen lock and identity inputs remain unchanged.",
+    "The original predicate change is inherited from c065 and is already in qualified 001R and e034 runtime inputs. The new guard and record do not change the delivered native code, material laws or owner ZIP. No platform/package rebuild or repeated physics campaign was required or claimed.",
+    "The opportunity is claimed by recorded contact before the native tick; shard chemistry follows that tick. The claim helper checks watched bounds, not chunk residency. One claimed opportunity suppresses one ordinary ignite() attempt for any supported target, while source lifetime and transport continue.",
+    "Six ordinary retained-runtime provenance mismatches remain. Their Draft workflow step is skipped; the successful documentation result does not establish production publication or clear that separate gate.",
+    "Before future authorized mergedown, carry the reviewed step and record to the earliest dependent #738 head containing c065 and retain the ancestry through merge commits. No donor branch modification, Ready transition, merge, release or production-default adoption is authorized by this review.",
+    "The corrected audit wording and final evidence will be a later documentation descendant. Its exact published identity and input continuity must be reported separately; this completion qualifies the guard source at 73018218."
+  ]
+}

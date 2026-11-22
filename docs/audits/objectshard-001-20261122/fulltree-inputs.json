@@ -1,0 +1,38 @@
+{
+  "implementation_inputs": "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/inputs.json",
+  "implementation_commit": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "exploratory_only": true,
+  "prior_failed_fixture": "build/objectshard-fulltree-probe-v2/inputs.json",
+  "fixture_repair": "Ignite exposed x111 Wood instead of interior x110; use the exact eight neighboring emission ports for the mini-World boundary adapter. No whole-bounding-box output scan penalizes the alternative.",
+  "harness_sha256": "03ee85efeac3a5b35a5c37a5f5dfddab9fadfb7c808f7f0a5c0f716cdaab8c6f",
+  "object_hashes": {
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/world.o": "78e5e7d3d5b60338c8211a6e0d926ae1b3e523d692bd73105aea2b859ea975e2",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/material_rules.o": "94e24b81533d41ca2bc3c190b4b63ccf423d6aed79195fe5a63c5f9e0834fe61",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/scheduler_geometry.o": "c4b7e2b9f375158c3e09d6a49e215048e3d6300e8ffb6f0d51e8fb77edc1d19f",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/settled_world_discovery.o": "5c2ba4667738524ac93b333f365c40ef2c2be90c2adf1de72a0c77a50b8b33f3",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/object_shard.o": "4634554f9facea5917b8b56e4c2af86124796b5eb30604a0ed60b2ea6a745acd",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/object_shard_coordinator.o": "2edc507d879ff00fa05ec0228037d14a5d6628979be719f9f803ce13c3c30dab"
+  },
+  "command": [
+    "g++",
+    "-std=c++20",
+    "-O3",
+    "-DNDEBUG",
+    "-pthread",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "-I",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/source/native/include",
+    "build/objectshard-fulltree-probe-v3/benchmark.cpp",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/world.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/material_rules.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/scheduler_geometry.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/settled_world_discovery.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/object_shard.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/object_shard_coordinator.o",
+    "-o",
+    "build/objectshard-fulltree-probe-v3/benchmark"
+  ]
+}

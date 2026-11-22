@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+{"checks":17,"failed":false,"failures":0,"output":"/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/osr-final-review/retained-owner-d.json","owners":3,"schema":"objectshard-retained-action-probe-v1","status":"Tick 3600 · 3 moving owners · paused","tick":3600}

@@ -1,0 +1,12 @@
+{
+  "schema": "objectshard-m3-superseded-candidate-v1",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "classification": "Baseline platform pass with subsequently confirmed ClassB F2 ownership/navigation defect",
+  "qualified_cases": {
+    "linux": 40,
+    "windows": 40,
+    "delivered_zip": 31
+  },
+  "later_finding": "OPERATOR-01: globalF2 discards scene/host/bridge without nativeworkerstop andRIDrelease; reentryoverlapsWorlds and leavesauto_accept_quitfalse",
+  "disposition": "Preserve full baselineevidence and initialownerZIP, repairlifecycle andqualify successor source before finalowner delivery. Not finalnavigationacceptance."
+}

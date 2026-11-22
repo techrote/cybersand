@@ -1,0 +1,23 @@
+{
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "script": "test_object_shard_worker_commands.gd",
+  "script_sha256": "48341091e4099212cfc807bcebdc651f1c361e5ab12b87fbff489d69d6fa064e",
+  "argv": [
+    "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-ownership/navigation-final-e034f229/project",
+    "--script",
+    "res://tests/test_object_shard_worker_commands.gd"
+  ],
+  "environment_overrides": {
+    "CYBERSAND_SOURCE_REVISION": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "XDG_DATA_HOME": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-ownership/navigation-final-e034f229/worker_commands-data"
+  },
+  "started_utc": "2026-11-22T07:41:52.050567+00:00",
+  "elapsed_seconds": 0.571179,
+  "timeout_seconds": 180,
+  "timed_out": false,
+  "exit_code": 0,
+  "log_sha256": "93b98186c4e6de18a34ff93fc6d80090ab9391e1fbcdbe0be5da563e7c1a94d5"
+}

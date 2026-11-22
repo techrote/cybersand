@@ -1,0 +1,1015 @@
+{
+  "schema": "objectshard-independent-downloaded-windows-artifact-review-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "utc": "2026-11-22T07:58:59.584643+00:00",
+  "status": "passed",
+  "failures": [],
+  "job_id": 137137548583,
+  "run_id": 44999117090,
+  "remote_readback_sha256": "1897f10cdb89d3b0192e23d4ac2eedf3b22378a91db94ee80f187740a07e954e",
+  "artifacts": [
+    {
+      "id": 14745303779,
+      "archive_sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d",
+      "archive_bytes": 92828683,
+      "member_count": 1,
+      "members": [
+        {
+          "path": "objectshard-windows-evaluator.zip",
+          "bytes": 93168827,
+          "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b"
+        }
+      ],
+      "expires_at": "2027-02-20T07:38:00Z"
+    },
+    {
+      "id": 14745662483,
+      "archive_sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb",
+      "archive_bytes": 10028066,
+      "member_count": 196,
+      "members": [
+        {
+          "path": "launcher-matrix/nested-preflight.json",
+          "bytes": 798,
+          "sha256": "c780b91051eea0b331f372502328f747dd13db9bc06245d2732b8785ac4af51f"
+        },
+        {
+          "path": "launcher-matrix/nested-launch.log",
+          "bytes": 47352,
+          "sha256": "547b209ff3e648dbd87dce72576a6a1d1724cd1fa3828d0af974cc1f1593bab9"
+        },
+        {
+          "path": "launcher-matrix/nested-launch.json",
+          "bytes": 865,
+          "sha256": "1d6933f8e913ad34e8e51142c8694d2434f531d0daff54e5d21370bbf4a97cb2"
+        },
+        {
+          "path": "launcher-matrix/nested-preflight.log",
+          "bytes": 1344,
+          "sha256": "dd55a81ebd7ed81c1b300e1abd0dfdc9a66896e690c158a46ead3686482aa8d1"
+        },
+        {
+          "path": "launcher-matrix/nested-verify.log",
+          "bytes": 162,
+          "sha256": "680023ad6321add6e1609209036f2bf2961fd4cf2bc4c6e24913d4c5cae52329"
+        },
+        {
+          "path": "launcher-matrix/parentheses-launch.json",
+          "bytes": 794,
+          "sha256": "849dc50c285fd49ddd2a15e753ef45c665309c30e7ddf07ba03909da5e18347d"
+        },
+        {
+          "path": "launcher-matrix/parentheses-launch.log",
+          "bytes": 47352,
+          "sha256": "547b209ff3e648dbd87dce72576a6a1d1724cd1fa3828d0af974cc1f1593bab9"
+        },
+        {
+          "path": "launcher-matrix/parentheses-preflight.json",
+          "bytes": 726,
+          "sha256": "0487f7137fbe2206c8da58305bb2e22fb66d2fea97cc920e0276a6349f49c8d4"
+        },
+        {
+          "path": "launcher-matrix/parentheses-preflight.log",
+          "bytes": 1344,
+          "sha256": "dd55a81ebd7ed81c1b300e1abd0dfdc9a66896e690c158a46ead3686482aa8d1"
+        },
+        {
+          "path": "launcher-matrix/parentheses-verify.log",
+          "bytes": 162,
+          "sha256": "680023ad6321add6e1609209036f2bf2961fd4cf2bc4c6e24913d4c5cae52329"
+        },
+        {
+          "path": "launcher-matrix/result.json",
+          "bytes": 11710,
+          "sha256": "3dfe99de448174b3077d6def3962a4164a63123834ed44fbbf1dbe1944f9e67d"
+        },
+        {
+          "path": "launcher-matrix/spaces-launch.json",
+          "bytes": 808,
+          "sha256": "e87da9a9028ae39be93730c372919ac2355be11d8fd7e0ff0ffdc8ca99110249"
+        },
+        {
+          "path": "launcher-matrix/spaces-launch.log",
+          "bytes": 47352,
+          "sha256": "547b209ff3e648dbd87dce72576a6a1d1724cd1fa3828d0af974cc1f1593bab9"
+        },
+        {
+          "path": "launcher-matrix/spaces-preflight.json",
+          "bytes": 741,
+          "sha256": "07de020610a2a2d86a0ec431e2ef36d8fc9561b6f544a32f5300ff5d42702925"
+        },
+        {
+          "path": "launcher-matrix/spaces-preflight.log",
+          "bytes": 1344,
+          "sha256": "dd55a81ebd7ed81c1b300e1abd0dfdc9a66896e690c158a46ead3686482aa8d1"
+        },
+        {
+          "path": "launcher-matrix/unicode-launch.json",
+          "bytes": 799,
+          "sha256": "9858e171600da548d76d3b0a380e435d1410faa3f6dffb5912b2a68b2d943dd7"
+        },
+        {
+          "path": "launcher-matrix/spaces-verify.log",
+          "bytes": 162,
+          "sha256": "680023ad6321add6e1609209036f2bf2961fd4cf2bc4c6e24913d4c5cae52329"
+        },
+        {
+          "path": "launcher-matrix/unicode-launch.log",
+          "bytes": 47352,
+          "sha256": "547b209ff3e648dbd87dce72576a6a1d1724cd1fa3828d0af974cc1f1593bab9"
+        },
+        {
+          "path": "launcher-matrix/unicode-preflight.log",
+          "bytes": 1344,
+          "sha256": "dd55a81ebd7ed81c1b300e1abd0dfdc9a66896e690c158a46ead3686482aa8d1"
+        },
+        {
+          "path": "launcher-matrix/unicode-preflight.json",
+          "bytes": 731,
+          "sha256": "9d0aaecffc849f08511abbdb8df8ed41a3d1668db2cc3b082030a4b28515ed0d"
+        },
+        {
+          "path": "launcher-matrix/unicode-verify.log",
+          "bytes": 162,
+          "sha256": "680023ad6321add6e1609209036f2bf2961fd4cf2bc4c6e24913d4c5cae52329"
+        },
+        {
+          "path": "launcher-matrix/verifier-tamper-refusal.log",
+          "bytes": 491,
+          "sha256": "49d03fd087d3c2475d16cd0762d7c9c3f77e7bfdd0ba0216d9cd90e884c2e65e"
+        },
+        {
+          "path": "launcher-matrix/verifier-without-get-file-hash.log",
+          "bytes": 162,
+          "sha256": "680023ad6321add6e1609209036f2bf2961fd4cf2bc4c6e24913d4c5cae52329"
+        },
+        {
+          "path": "package-replay/continuous-physics-session-1.jsonl",
+          "bytes": 26439375,
+          "sha256": "71c33b9953d4bb7412b4fa6b42f3b1d945e7c786edab88a49415b3be27154869"
+        },
+        {
+          "path": "package-replay/continuous-physics.json",
+          "bytes": 363640,
+          "sha256": "cbde78160f964c204bd1fd584910508e56c30627240240b3a7fcd5e3b20d660f"
+        },
+        {
+          "path": "package-replay/continuous-play.json",
+          "bytes": 265481,
+          "sha256": "6f0e946ff568adc94fdd5d8311d47d80ebe5100be32f9ab53fc9832a933f97f9"
+        },
+        {
+          "path": "package-replay/continuous-play.json.jsonl",
+          "bytes": 517087,
+          "sha256": "dd5766f35b405b6edaa07c953c361576aa3e394928e27946017e8e3e4bfff552"
+        },
+        {
+          "path": "package-replay/continuous-replay.json",
+          "bytes": 848,
+          "sha256": "e4c1df6842a6c87b992aad18a12873c607b733ffef463f0400e829d5e927d7cb"
+        },
+        {
+          "path": "package-replay/lab-result.json",
+          "bytes": 2861268,
+          "sha256": "4e5cfdab69d6e26c2cdf5e1357a0db2ce2d895e6dc167a397815040f3b469b93"
+        },
+        {
+          "path": "package-replay/objectshard_action_replay.log",
+          "bytes": 305,
+          "sha256": "939899fd28d9a7371bc4e852ff84c43fff26bb4bfbabd17edda3fca2b20796fa"
+        },
+        {
+          "path": "package-replay/objectshard_boundary.log",
+          "bytes": 301,
+          "sha256": "8a46bf07d2ac097817e6cb71d249b0ad8696da3c4a80ffceaa33bf65eee06260"
+        },
+        {
+          "path": "package-replay/objectshard_bridge.log",
+          "bytes": 507,
+          "sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6"
+        },
+        {
+          "path": "package-replay/objectshard_capture.log",
+          "bytes": 300,
+          "sha256": "af07b42fc7db75183356ef511567c3b489e1245ae616b5f2351fad8ae055ae83"
+        },
+        {
+          "path": "package-replay/objectshard_continuous_physics.log",
+          "bytes": 2065,
+          "sha256": "b8fbe1ecd8e624be9bfed7cf653f9dead1f76aa385e940f6e47c4b77f97284f0"
+        },
+        {
+          "path": "package-replay/objectshard_continuous_play.log",
+          "bytes": 1919,
+          "sha256": "bed5e43f5c35f2ee967661a6064adccf4fd79712cdd3a23a2f10ec55779e738f"
+        },
+        {
+          "path": "package-replay/objectshard_continuous_replay.log",
+          "bytes": 1003,
+          "sha256": "76a35ad55892fcca713a5d5958d340fe83e9cbe8028f891756688d923bd72449"
+        },
+        {
+          "path": "package-replay/objectshard_import.log",
+          "bytes": 1182,
+          "sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59"
+        },
+        {
+          "path": "package-replay/objectshard_incremental_motion.log",
+          "bytes": 512,
+          "sha256": "ec453ab3d1d43f21c03634d61fe51992b58ef746cb03e7b29dc8d7bca2ae5e7d"
+        },
+        {
+          "path": "package-replay/objectshard_motion_segments.log",
+          "bytes": 507,
+          "sha256": "3b7b7a5ac0cc95751cd371864b148b7ab9d76d514f432b3627cd4bb883ccacea"
+        },
+        {
+          "path": "package-replay/objectshard_lab.log",
+          "bytes": 509,
+          "sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760"
+        },
+        {
+          "path": "package-replay/objectshard_native_worker.log",
+          "bytes": 1806,
+          "sha256": "3265dfbf61e78ac8cf0804cc6dfe47326f54c3bc09035781a4e1af7b32170bd0"
+        },
+        {
+          "path": "package-replay/objectshard_owner_d.log",
+          "bytes": 474,
+          "sha256": "844b5ef5f13f362bf1c2b4d2b905684f521647c8ef538a037e30803e2eb3a31d"
+        },
+        {
+          "path": "package-replay/objectshard_physics_identity.log",
+          "bytes": 509,
+          "sha256": "22b9d3aed5e0061d98197c773e21671f6bf1b7dc8b696438cd0afbf66a58cffd"
+        },
+        {
+          "path": "package-replay/objectshard_playability.log",
+          "bytes": 304,
+          "sha256": "f8773c8aab33a0027fb16c348c2271cd1d580a5b76986e2dc01521cec193c2dd"
+        },
+        {
+          "path": "package-replay/objectshard_rest_contacts.log",
+          "bytes": 648,
+          "sha256": "08f0d08772731285081abe2a92c7c0fdffa28abea7d35ea15969780e9131aa7b"
+        },
+        {
+          "path": "package-replay/objectshard_rest_erode.json",
+          "bytes": 8801,
+          "sha256": "802f22df7d867ac85d1923828305c14ff93626a4a45573ee1e79236111a52c04"
+        },
+        {
+          "path": "package-replay/objectshard_rest_erode.log",
+          "bytes": 421,
+          "sha256": "4d43e7c951b78e1e1431d7397e023c8a036be44a89b8ccd60abf68f31ab3e2da"
+        },
+        {
+          "path": "package-replay/objectshard_rest_erode.json.jsonl",
+          "bytes": 4767850,
+          "sha256": "7da550626ee7270c399b9c3a84d1e4af798d203ad666e8cd79c3b531a4a4c11d"
+        },
+        {
+          "path": "package-replay/objectshard_rest_mass_only.json",
+          "bytes": 8494,
+          "sha256": "0986b3919cdca84aa0d4fe246a2b7e6799fb107c2716bb92274dddc376d3365b"
+        },
+        {
+          "path": "package-replay/objectshard_rest_mass_only.json.jsonl",
+          "bytes": 4725712,
+          "sha256": "ce73ef642d7fd38740990f271481bf370209f5e4a68b1313cd4a01f1039dc771"
+        },
+        {
+          "path": "package-replay/objectshard_rest_mass_only.log",
+          "bytes": 429,
+          "sha256": "55b8abcf47fb7df6ac79bb076d03737ab4a7c4d640ceaf139c19ff78a97a5b11"
+        },
+        {
+          "path": "package-replay/objectshard_rest_replace_identical.json",
+          "bytes": 8756,
+          "sha256": "489af032c9e3d67a8d0c799595b7d68f2308ba6b6df087efe389cdcc530f6ff3"
+        },
+        {
+          "path": "package-replay/objectshard_rest_replace_identical.json.jsonl",
+          "bytes": 4872705,
+          "sha256": "62ee36bc0fb22d43ca00c613defbeff8b1bb02670cc95a2317dbcf3813dc4d49"
+        },
+        {
+          "path": "package-replay/objectshard_rest_replace_identical.log",
+          "bytes": 445,
+          "sha256": "3445c816e3bef0a21a29de44c245d02db2e1f9ea31d6a0a45e27a8c59c6c4c62"
+        },
+        {
+          "path": "package-replay/objectshard_workbench_contract.log",
+          "bytes": 412,
+          "sha256": "069cdc10958b0980da7bec32aa04375098db008c44250ff08354f38cf84ced3d"
+        },
+        {
+          "path": "package-replay/objectshard_worker_adverse.log",
+          "bytes": 864,
+          "sha256": "43c52f8b3db098128bce2e8fe941a99cef0671c94426466742c336c6961a22f4"
+        },
+        {
+          "path": "package-replay/objectshard_worker_commands.log",
+          "bytes": 1828,
+          "sha256": "1bb80918ee388a5534d696dd00f701a54283c909e233243aa2558761e42a364a"
+        },
+        {
+          "path": "package-replay/objectshard_worker_input_fences.log",
+          "bytes": 11296,
+          "sha256": "c6fb85287090a838ed11a30e3b60e24f8a6c9501f41168c288fbcf7aea6424e6"
+        },
+        {
+          "path": "package-replay/objectshard_worker_navigation.log",
+          "bytes": 45821,
+          "sha256": "f29fca534d42e2b227b6a44a9fc63fced27c17ca07459c2211118d02c6cd85cc"
+        },
+        {
+          "path": "package-replay/objectshard_worker_recovery.log",
+          "bytes": 4062,
+          "sha256": "6dd0ca532533ff21d281550996d277604dff374dee442de7fba46c2ed04e5fba"
+        },
+        {
+          "path": "package-replay/objectshard_worker_rehearsal.log",
+          "bytes": 44241,
+          "sha256": "7404355886c945b81bee64a85cf36f4d6f264fde7af1e19efd3011fe514f6073"
+        },
+        {
+          "path": "package-replay/objectshard_worker_replay.log",
+          "bytes": 1000,
+          "sha256": "82e137b4e79592979dac6fb64dc8407c26fd2df2079c1548b2d8addf1f733161"
+        },
+        {
+          "path": "package-replay/objectshard_worker_replay_admission.log",
+          "bytes": 3171,
+          "sha256": "d235c8e3a1399eed80ea34fc8383bf1b3754038b4d1d12d6560ffb2e52a3ea0d"
+        },
+        {
+          "path": "package-replay/objectshard_worker_scene.log",
+          "bytes": 65121,
+          "sha256": "0ac84e9935f9722d8713dea7f35514427b7b71bd48534bb608ed9d675e5d7718"
+        },
+        {
+          "path": "package-replay/objectshard_worker_resources.log",
+          "bytes": 8407,
+          "sha256": "8e43177a26f085d5947e82f2f2a13d470138ef4b5bb25a271b6d1b393c93fba7"
+        },
+        {
+          "path": "package-replay/owner-d-result.json",
+          "bytes": 12977550,
+          "sha256": "f2341397c2872d7d6e719ea859661e3e8fc8872c57473f28bcde1c4844219994"
+        },
+        {
+          "path": "package-replay/owner-d-result.json.jsonl",
+          "bytes": 7557607,
+          "sha256": "74ba8d78677090197f60343c65d939f139d615be729351b1a961c915d3f59a4a"
+        },
+        {
+          "path": "package-replay/performance.jsonl",
+          "bytes": 296313,
+          "sha256": "14ee689fd677aa9599db2a8b4dda2e8b24937c6714dd7b89382de2ef4efb42c5"
+        },
+        {
+          "path": "package-replay/playability-result.json",
+          "bytes": 1721319,
+          "sha256": "e99eba2fd6757069bcbac9da60394c49d658c51f49cf7928061611b71d2b7017"
+        },
+        {
+          "path": "package-replay/qualification.json",
+          "bytes": 611884,
+          "sha256": "28122ce23131fbe8dfd85a4cf8c5a0d799dba1ac5b44bc7e5e8f6418be70d74c"
+        },
+        {
+          "path": "package-replay/replay-result.json",
+          "bytes": 317335,
+          "sha256": "640277ef01020fb0c7b57f2660ca2911a1334c6efbe75f9dae83ca7fa39dc8a2"
+        },
+        {
+          "path": "package-replay/test_material_lab_experiment.log",
+          "bytes": 277,
+          "sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6"
+        },
+        {
+          "path": "package-replay/reproduction.trace.jsonl",
+          "bytes": 210826,
+          "sha256": "b08839bf1729c3e4a5b75c78232a7ad4085f0bb5d580c1a32050e304129386a2"
+        },
+        {
+          "path": "package-replay/test_rapier_manual_step.log",
+          "bytes": 270,
+          "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4"
+        },
+        {
+          "path": "package-replay/worker-navigation-quit-child.json",
+          "bytes": 8565,
+          "sha256": "626f702ac95a4773391dec8b4ef9d90ce47ce3745e80bb6a6895e935967f8937"
+        },
+        {
+          "path": "package-replay/worker-navigation-quit-child.json.log",
+          "bytes": 307,
+          "sha256": "ed3ec8cd4d5d88390f7c1292a9f3f54ce5afa59614a63c1041b06ac7c258e08a"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/fresh-replay.json",
+          "bytes": 845,
+          "sha256": "3a2d5081d85be5692f512e0039708b3bc277256d620982dc05beb95d9bd8d037"
+        },
+        {
+          "path": "package-replay/worker-navigation.json",
+          "bytes": 68447,
+          "sha256": "7766f1be18c2ce1061a89d0ba8c0941ffc859580c81395079248cdc3415e173c"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/fresh-replay.log",
+          "bytes": 1000,
+          "sha256": "f9619e9a814a0512183103122c4a14c01ce234d925010300ede4b751448ed394"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/fresh-session-4.jsonl",
+          "bytes": 39668,
+          "sha256": "240d25ee08071661c450a3b9786a03edceb9f0d856b8b2da8538692796a9f19d"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/inherited-replay.log",
+          "bytes": 1089,
+          "sha256": "1e9035de73ecc1c448bfebd6609ed564c97b2d5fe64deab663278343ecdc6649"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/inherited-replay.json",
+          "bytes": 971,
+          "sha256": "9784c8934938aa124d137bff8d34cc31c2ee4b56fe2c52dbe6edd7d0059af668"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/uncertain-replay.json",
+          "bytes": 1063,
+          "sha256": "b291b2c772a5ac77b49a117d80a0d2e6bb14328247f1f717221346762f0d722a"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/uncertain-replay.log",
+          "bytes": 1154,
+          "sha256": "d6292682389fd1cd165e4811995b0df1f5a06059d739f6518d7d8f91f4244348"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/uncertain-session-1.jsonl",
+          "bytes": 2513,
+          "sha256": "369046230aef1d96d42ca387081c25ed2a3ac6d30e52a6d899a68cff527721e1"
+        },
+        {
+          "path": "package-replay/worker-replay-admission/uncertain-session-2.jsonl",
+          "bytes": 1568,
+          "sha256": "8f4197429cb7a6e1ed332a977faef53896d93ad4cf990d78217351363b4d01e1"
+        },
+        {
+          "path": "package-replay/worker-replay.json",
+          "bytes": 845,
+          "sha256": "cbfa85cbaa9a186ab28ed12ce3318a0f054676d2e6355708377f7c27c3fe5806"
+        },
+        {
+          "path": "package-replay/worker-scene.json",
+          "bytes": 140088,
+          "sha256": "633d2823686a7b1a70026106b6c141e3b8faa7877b4e20b5e3165e18a04716ef"
+        },
+        {
+          "path": "package-replay/worker-scene.json.jsonl",
+          "bytes": 152876,
+          "sha256": "0b3fb0f49fea9bf9459c20ffca43e883ac3084bce553ef8c07a20ba775bdb90b"
+        },
+        {
+          "path": "windows-lab/continuous-physics-session-1.jsonl",
+          "bytes": 26439114,
+          "sha256": "47d32edd1220df83dd179df71a34414d986b7aa9934dfd289f532169fea0c6b7"
+        },
+        {
+          "path": "windows-lab/continuous-physics.json",
+          "bytes": 363380,
+          "sha256": "79a272c3ecb946e1e1724405bbdb8342d2db6daf11bfc2518b761212bf12d8a6"
+        },
+        {
+          "path": "windows-lab/continuous-play-rendered.json",
+          "bytes": 269508,
+          "sha256": "5270c51d40ab86ed852fb55c8b056047819504a89d7f425c868e97ebadf9b52b"
+        },
+        {
+          "path": "windows-lab/continuous-play-rendered.json.jsonl",
+          "bytes": 528633,
+          "sha256": "c1cdfd547c5239455889e6a30465f448d6802f0802b0df311bc35f465eda883a"
+        },
+        {
+          "path": "windows-lab/continuous-play.json",
+          "bytes": 267052,
+          "sha256": "9b0d44990a2f297a2b8f3af5c9e8f022931dc29772b661d2da730e209e418d8a"
+        },
+        {
+          "path": "windows-lab/continuous-play.json.jsonl",
+          "bytes": 512196,
+          "sha256": "640c113f3b1f8a502d686657fcb64a50ac77a35b5bba1ddfef93fb9038fae070"
+        },
+        {
+          "path": "windows-lab/continuous-rendered-replay.json",
+          "bytes": 848,
+          "sha256": "c953ab1210397bcea6fb93511594a7fc842b61cfd8a9b0ec1ea1ef74c671a8d3"
+        },
+        {
+          "path": "windows-lab/continuous-replay.json",
+          "bytes": 848,
+          "sha256": "9518999d4cc7bd6928b6e1093e61ef721e746f9be1ad5831e2acc89e8a104553"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-a-exact-shapes.png",
+          "bytes": 119894,
+          "sha256": "73465c2bc75a7efaf3fa2d8435b3551118e6022804008d5b2ea68f85c4b3ede8"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-a-impact.png",
+          "bytes": 119399,
+          "sha256": "1612fb33c37f3cee2f2813e1024ed55b1a033757c4f21dd296346564f643bb5b"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-a-native-supported.png",
+          "bytes": 120884,
+          "sha256": "194d8c4854bede02d1ba287b08f70c8f0edf1e22a365e8909f0493ede5a2943f"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-a-transferred-falling.png",
+          "bytes": 118603,
+          "sha256": "1053d86dab6f2677c21db23c9bec3fc758aa8ef9355fe4f87967ddce4bd4336f"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-b-consumed-geometry.png",
+          "bytes": 120480,
+          "sha256": "8b3cf6587f9ca0bc7abac9a4a61639ec704f19e2f55dd0fd45ac992aecc27471"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-b-real-combustion.png",
+          "bytes": 120188,
+          "sha256": "c06b120d67182f029f9131b9610f43292608812bc5a9640f6d4caab3edfc1c3d"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-c-carried-sand.png",
+          "bytes": 125328,
+          "sha256": "62c0563c8be37e29894109e125efd68eeac7db315c8d6b96edd89869cefc8984"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-c-water-extinction.png",
+          "bytes": 125533,
+          "sha256": "e4913b0c5b414e56a99154bd421e0214d3f2d90a1c16170f6eef480e97dcca1d"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-d-three-owners.png",
+          "bytes": 118445,
+          "sha256": "85b7131653ade70d920b9ca137614403b2e395d11f99c73f640b804a79ac43ab"
+        },
+        {
+          "path": "windows-lab/frames/objectshard-retired-material-anchor.png",
+          "bytes": 124828,
+          "sha256": "9a6912cafb5a42f5adf1a58926873d552afe2c1358c5047affc030d880a89f8a"
+        },
+        {
+          "path": "windows-lab/frames/render-campaign.json",
+          "bytes": 3444452,
+          "sha256": "d9a6d95acbed6051b4a4645964bfc72cf64a1a98e08e252b2cd5ed3ce3668c1a"
+        },
+        {
+          "path": "windows-lab/frames-finisher/objectshard-001r-extended-320.png",
+          "bytes": 120485,
+          "sha256": "14f82b8098b06fe69d7066998b011b541e102313399498d7e6060fd230f621a1"
+        },
+        {
+          "path": "windows-lab/frames-finisher/objectshard-001r-external-fire.png",
+          "bytes": 121826,
+          "sha256": "986d07d0d88e17dd56386143dac0cdd16ff161a398f33e0484b5fce8bb5fbc72"
+        },
+        {
+          "path": "windows-lab/frames-finisher/objectshard-001r-irregular-256.png",
+          "bytes": 122156,
+          "sha256": "996db6f765685dfb8a595ebf7814ee9b8332cdfdd05b8f29f02d50319bdb6f49"
+        },
+        {
+          "path": "windows-lab/frames-finisher/objectshard-001r-main-priority.png",
+          "bytes": 131571,
+          "sha256": "06ff42a20a9c76b59cd3cdce820186f73eacd85fdb9535f13a0e7fc9fbb1a4b6"
+        },
+        {
+          "path": "windows-lab/frames-finisher/objectshard-001r-resting-erosion.png",
+          "bytes": 123400,
+          "sha256": "3f495454f1545640629552f22421144aac9b64ddae574e44efd9b23f801cb049"
+        },
+        {
+          "path": "windows-lab/frames-finisher/render-campaign.json",
+          "bytes": 11387634,
+          "sha256": "648ac2067b2f01d7027ef4ef3b11e1f08c032b7a785e80f5db115fea80105410"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-extended-320.png",
+          "bytes": 140102,
+          "sha256": "82a0e78874c4daf8bc3763b82b729b04f6782032b7439efa9c4c1c404d5eca18"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-external-fire.png",
+          "bytes": 114592,
+          "sha256": "3917ce1bd90e621bcd3c5e926cdf855b3813f4088880e4a00fcd5f529ad01d18"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-falling.png",
+          "bytes": 128046,
+          "sha256": "b91b2a27f38f2fed771f05ce91948133c6859c851a43f1b83edfa19065d28407"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-main-structure-priority.png",
+          "bytes": 144391,
+          "sha256": "c56bd279568b889267bc576179cc4d3408d5010b7eba8bff9be483b021abf418"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-native-supported.png",
+          "bytes": 106896,
+          "sha256": "e1a1efba6b208fbe2fe050b60af37d4c3cc28e276840fb00274dda8691e1632f"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png",
+          "bytes": 126100,
+          "sha256": "b8c0c6521caa679989a1cf144163e72288d8197ab705d9b96be2b5c0da80f289"
+        },
+        {
+          "path": "windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png",
+          "bytes": 132174,
+          "sha256": "79c75d9d2dcf6263e715127471670f4607672f7cb40641fcf3d59f5513459439"
+        },
+        {
+          "path": "windows-lab/lab-result.json",
+          "bytes": 2860713,
+          "sha256": "1939052cf3505d3af15dde9c659a8f0c74f0024ab0f7223accaa65610aa053a0"
+        },
+        {
+          "path": "windows-lab/frames-worker/render-campaign.json",
+          "bytes": 1991844,
+          "sha256": "d589ca9c5cc3887fe1e35a1eb7fe07b355679692d6a777b5318c74308187d5e8"
+        },
+        {
+          "path": "windows-lab/objectshard_action_replay.log",
+          "bytes": 305,
+          "sha256": "939899fd28d9a7371bc4e852ff84c43fff26bb4bfbabd17edda3fca2b20796fa"
+        },
+        {
+          "path": "windows-lab/objectshard_boundary.log",
+          "bytes": 301,
+          "sha256": "8a46bf07d2ac097817e6cb71d249b0ad8696da3c4a80ffceaa33bf65eee06260"
+        },
+        {
+          "path": "windows-lab/objectshard_capture.log",
+          "bytes": 300,
+          "sha256": "af07b42fc7db75183356ef511567c3b489e1245ae616b5f2351fad8ae055ae83"
+        },
+        {
+          "path": "windows-lab/objectshard_bridge.log",
+          "bytes": 507,
+          "sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6"
+        },
+        {
+          "path": "windows-lab/objectshard_continuous_physics.log",
+          "bytes": 2065,
+          "sha256": "2e938a2c9acdf30dcad8026b6311cd7bd8cb4a04ed78fa42477f5728f52d5c83"
+        },
+        {
+          "path": "windows-lab/objectshard_continuous_play.log",
+          "bytes": 1918,
+          "sha256": "88cf3e0e4dcbf805679f9a072ea5cd708c0729630ef0e7753f9cc2102b99e6af"
+        },
+        {
+          "path": "windows-lab/objectshard_continuous_play_rendered.log",
+          "bytes": 2149,
+          "sha256": "03c8959e0610d61226a7a31cf30374eddbdbbdb4b628ef96333a4ee8f4495b56"
+        },
+        {
+          "path": "windows-lab/objectshard_continuous_rendered_replay.log",
+          "bytes": 1003,
+          "sha256": "b820b8101228cb97ca1baa7f7b91dd5d726df69f795975ad3e7515112654a150"
+        },
+        {
+          "path": "windows-lab/objectshard_continuous_replay.log",
+          "bytes": 1003,
+          "sha256": "8f3140165b1dc31566162df3757a382885df8e2f419abb3e045800b156d80d32"
+        },
+        {
+          "path": "windows-lab/objectshard_import.log",
+          "bytes": 47190,
+          "sha256": "77b5989425673cb0bfb64636d7111598d200fee490fa22800580c28f9eb7fdcf"
+        },
+        {
+          "path": "windows-lab/objectshard_finisher_render.log",
+          "bytes": 535,
+          "sha256": "324721c911a9e0023f452b75fc495d4499ddcdbd8c14138a936489fffda5e3f0"
+        },
+        {
+          "path": "windows-lab/objectshard_incremental_motion.log",
+          "bytes": 512,
+          "sha256": "ec453ab3d1d43f21c03634d61fe51992b58ef746cb03e7b29dc8d7bca2ae5e7d"
+        },
+        {
+          "path": "windows-lab/objectshard_lab.log",
+          "bytes": 509,
+          "sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760"
+        },
+        {
+          "path": "windows-lab/objectshard_motion_segments.log",
+          "bytes": 507,
+          "sha256": "3b7b7a5ac0cc95751cd371864b148b7ab9d76d514f432b3627cd4bb883ccacea"
+        },
+        {
+          "path": "windows-lab/objectshard_native_worker.log",
+          "bytes": 1806,
+          "sha256": "9d34e162df3f99e88ca07b6e051f2ac9ac16baf8a277687cfd4635257081e057"
+        },
+        {
+          "path": "windows-lab/objectshard_owner_d.log",
+          "bytes": 471,
+          "sha256": "401cb4a4e5b4d6626cc447873db1e4e3ee013dd4458482d82f4f999b606f3bd7"
+        },
+        {
+          "path": "windows-lab/objectshard_physics_identity.log",
+          "bytes": 509,
+          "sha256": "22b9d3aed5e0061d98197c773e21671f6bf1b7dc8b696438cd0afbf66a58cffd"
+        },
+        {
+          "path": "windows-lab/objectshard_playability.log",
+          "bytes": 304,
+          "sha256": "f8773c8aab33a0027fb16c348c2271cd1d580a5b76986e2dc01521cec193c2dd"
+        },
+        {
+          "path": "windows-lab/objectshard_profile_headless.log",
+          "bytes": 1786,
+          "sha256": "766a450eaef1bf568ee86762ac02d5da8004705794638da238cb58526c61d7c2"
+        },
+        {
+          "path": "windows-lab/objectshard_profile_headless.json",
+          "bytes": 33193518,
+          "sha256": "8c73a941c410f6a00a05f1a96ee6a884923d22851e09afb0d969fef58d54948d"
+        },
+        {
+          "path": "windows-lab/objectshard_profile_rendered.json",
+          "bytes": 34902949,
+          "sha256": "2dea0262bf7a82fd7030f45aceded1fcc15ccf8a98935a1b4b6a33bfe3856490"
+        },
+        {
+          "path": "windows-lab/objectshard_profile_rendered.log",
+          "bytes": 2029,
+          "sha256": "7304ed23b9852012be9ab65d55395997ec73dc9d1b448002a0868ca4005d77c7"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_contacts.log",
+          "bytes": 648,
+          "sha256": "08f0d08772731285081abe2a92c7c0fdffa28abea7d35ea15969780e9131aa7b"
+        },
+        {
+          "path": "windows-lab/objectshard_render.log",
+          "bytes": 745,
+          "sha256": "9066c15ef09ba839869585bbb82212498bb195363b27fb5b8aa7c59d431a4b0f"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_erode.json",
+          "bytes": 8801,
+          "sha256": "802f22df7d867ac85d1923828305c14ff93626a4a45573ee1e79236111a52c04"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_erode.json.jsonl",
+          "bytes": 4767850,
+          "sha256": "7da550626ee7270c399b9c3a84d1e4af798d203ad666e8cd79c3b531a4a4c11d"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_erode.log",
+          "bytes": 418,
+          "sha256": "34861f1415465b599de4c569f2a5491b2261682512ba729ec6e4c19aec281bdd"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_mass_only.json",
+          "bytes": 8494,
+          "sha256": "0986b3919cdca84aa0d4fe246a2b7e6799fb107c2716bb92274dddc376d3365b"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_mass_only.json.jsonl",
+          "bytes": 4725712,
+          "sha256": "ce73ef642d7fd38740990f271481bf370209f5e4a68b1313cd4a01f1039dc771"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_mass_only.log",
+          "bytes": 426,
+          "sha256": "3ad9d2cbd77c2f9a5f6bca5dbdbc45f58319222d8173fde13e8da01563ebb2d7"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_replace_identical.json",
+          "bytes": 8756,
+          "sha256": "489af032c9e3d67a8d0c799595b7d68f2308ba6b6df087efe389cdcc530f6ff3"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_replace_identical.json.jsonl",
+          "bytes": 4872705,
+          "sha256": "62ee36bc0fb22d43ca00c613defbeff8b1bb02670cc95a2317dbcf3813dc4d49"
+        },
+        {
+          "path": "windows-lab/objectshard_rest_replace_identical.log",
+          "bytes": 442,
+          "sha256": "ada014fba07f8ceb8a2e8c2f6666043c98b6fc9d1f1b1d8e3ffe08c6180a7d20"
+        },
+        {
+          "path": "windows-lab/objectshard_workbench_contract.log",
+          "bytes": 412,
+          "sha256": "069cdc10958b0980da7bec32aa04375098db008c44250ff08354f38cf84ced3d"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_adverse.log",
+          "bytes": 864,
+          "sha256": "43c52f8b3db098128bce2e8fe941a99cef0671c94426466742c336c6961a22f4"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_commands.log",
+          "bytes": 1829,
+          "sha256": "77d2fe53bdec0aac39e40efe1dfa48c0336a8b77bb76b8710329d514aa48f752"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_navigation.log",
+          "bytes": 45820,
+          "sha256": "979ed6d775cdf9630f21fe8643a6ca10ff9b05f1086d26b673c6a4cfe098e8f3"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_input_fences.log",
+          "bytes": 11035,
+          "sha256": "9259f63212a3ebdfac2dccb6a426e9cd255bea12f64deba953d45d2110365c1b"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_profile_0.json",
+          "bytes": 330687,
+          "sha256": "543ffd2fc19668755e47b0b1b94906c15cd915136661efffb376253746b9af9c"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_profile_4000.json",
+          "bytes": 331091,
+          "sha256": "5f561eea0ebba655d038ac08202c08530e7fd7ef49ad9f46163043840f64087c"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_profile_0.log",
+          "bytes": 2787,
+          "sha256": "15fa6a2ccac74109a908615c87d69c2fb80d1a9a27e6083a3acb0275e70ae247"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_profile_4000.log",
+          "bytes": 2895,
+          "sha256": "bf696db2c0416ead59a5c5cd7b59a74a2706d7ce4811eb0969163d780ac95e45"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_recovery.log",
+          "bytes": 4062,
+          "sha256": "181fca8b036d5c870803264cfc857410ce278825249e588243f4f506aa7341fd"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_rehearsal.log",
+          "bytes": 43978,
+          "sha256": "3030cbcc0a08bbb9247e11c7af3f94fc7057d5dc5f0e25a92203ba4e280315ba"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_render.log",
+          "bytes": 533,
+          "sha256": "6a3c487a2c0886db0010ebbadeae59fd4998dd7f11a035a31581a7c6ec48526e"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_replay.log",
+          "bytes": 1000,
+          "sha256": "82e137b4e79592979dac6fb64dc8407c26fd2df2079c1548b2d8addf1f733161"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_replay_admission.log",
+          "bytes": 3171,
+          "sha256": "d235c8e3a1399eed80ea34fc8383bf1b3754038b4d1d12d6560ffb2e52a3ea0d"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_scene.log",
+          "bytes": 65082,
+          "sha256": "4f19fc73adee25b3fa8ffc24c0e9bf7c404385022fe2490be0237504a5297496"
+        },
+        {
+          "path": "windows-lab/owner-d-result.json",
+          "bytes": 12980251,
+          "sha256": "708f07426da44643460c405ad86fac944ee2cdd5042586a9e1a0b1b6e8fdc99a"
+        },
+        {
+          "path": "windows-lab/objectshard_worker_resources.log",
+          "bytes": 8409,
+          "sha256": "9f705baa47c9e6b4e82e74b4982daf7d481512e3456333f022698aeff572017a"
+        },
+        {
+          "path": "windows-lab/owner-d-result.json.jsonl",
+          "bytes": 7557608,
+          "sha256": "f2086758e7b8dbd51daed61ac752a9f21f77d8f458cd9648adb8eb2d174263eb"
+        },
+        {
+          "path": "windows-lab/performance.jsonl",
+          "bytes": 329764,
+          "sha256": "6e2cdd16a5dfdc57ff1eb054d17db47a64b21eca6f7edaefa3f7ea20100b1d7c"
+        },
+        {
+          "path": "windows-lab/playability-result.json",
+          "bytes": 1721322,
+          "sha256": "4d1504d9066ca37d6d683faa89554045a0a1f06bff1937f43360ab1c86bb8729"
+        },
+        {
+          "path": "windows-lab/qualification.json",
+          "bytes": 650666,
+          "sha256": "64331b1a300151c783a79b96a982dab41eabd277c579ec3cb45d45ebb6370e76"
+        },
+        {
+          "path": "windows-lab/replay-result.json",
+          "bytes": 317331,
+          "sha256": "5251e753ba6f654e8d9329e3b5f44e8d3d24fbc747c58ed87e5671ed592bfa12"
+        },
+        {
+          "path": "windows-lab/reproduction.trace.jsonl",
+          "bytes": 210826,
+          "sha256": "b08839bf1729c3e4a5b75c78232a7ad4085f0bb5d580c1a32050e304129386a2"
+        },
+        {
+          "path": "windows-lab/test_rapier_manual_step.log",
+          "bytes": 270,
+          "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4"
+        },
+        {
+          "path": "windows-lab/test_material_lab_experiment.log",
+          "bytes": 277,
+          "sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6"
+        },
+        {
+          "path": "windows-lab/worker-navigation-quit-child.json",
+          "bytes": 8565,
+          "sha256": "493e946960b69966da86fcb030c9df35b1d795967d7cbc3acb727cc12f939fb6"
+        },
+        {
+          "path": "windows-lab/worker-navigation-quit-child.json.log",
+          "bytes": 307,
+          "sha256": "ed3ec8cd4d5d88390f7c1292a9f3f54ce5afa59614a63c1041b06ac7c258e08a"
+        },
+        {
+          "path": "windows-lab/worker-navigation.json",
+          "bytes": 68446,
+          "sha256": "b094252dd4973df701b5eeb2c6034ab3ba3928ef26b9df80fdd3d4fab3620929"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/fresh-replay.json",
+          "bytes": 845,
+          "sha256": "3a2d5081d85be5692f512e0039708b3bc277256d620982dc05beb95d9bd8d037"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/fresh-replay.log",
+          "bytes": 1000,
+          "sha256": "f9619e9a814a0512183103122c4a14c01ce234d925010300ede4b751448ed394"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/fresh-session-4.jsonl",
+          "bytes": 39407,
+          "sha256": "0ffe4e0a65f07a75851e4a6ef0bde78015c09c38a441e8a107488a290a729afd"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/inherited-replay.log",
+          "bytes": 1089,
+          "sha256": "1e9035de73ecc1c448bfebd6609ed564c97b2d5fe64deab663278343ecdc6649"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/inherited-replay.json",
+          "bytes": 971,
+          "sha256": "9784c8934938aa124d137bff8d34cc31c2ee4b56fe2c52dbe6edd7d0059af668"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/uncertain-replay.json",
+          "bytes": 1063,
+          "sha256": "b291b2c772a5ac77b49a117d80a0d2e6bb14328247f1f717221346762f0d722a"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/uncertain-replay.log",
+          "bytes": 1154,
+          "sha256": "d6292682389fd1cd165e4811995b0df1f5a06059d739f6518d7d8f91f4244348"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/uncertain-session-2.jsonl",
+          "bytes": 1307,
+          "sha256": "df50e41985b745c9c85d23f5b5a206d8f87b50e1a051df324c1e4ef23b4ea961"
+        },
+        {
+          "path": "windows-lab/worker-replay-admission/uncertain-session-1.jsonl",
+          "bytes": 2252,
+          "sha256": "3fbc0af60156e66394675355cbc815fe475768a6f52e6cac0a284e3cbd27e092"
+        },
+        {
+          "path": "windows-lab/worker-replay.json",
+          "bytes": 845,
+          "sha256": "cbfa85cbaa9a186ab28ed12ce3318a0f054676d2e6355708377f7c27c3fe5806"
+        },
+        {
+          "path": "windows-lab/worker-scene.json",
+          "bytes": 140099,
+          "sha256": "2800fdb6adb3b9eff649f045b65fd33dbb8958ef4b31e98852bbd2f4559d7a66"
+        },
+        {
+          "path": "windows-lab/worker-scene.json.jsonl",
+          "bytes": 152808,
+          "sha256": "640bd835e93a49ac5276628464c16900e6f013b191baeec109d3c0f97163c450"
+        }
+      ],
+      "expires_at": "2027-02-20T07:38:00Z"
+    }
+  ]
+}

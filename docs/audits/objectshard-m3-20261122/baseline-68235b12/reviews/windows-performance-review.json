@@ -1,0 +1,903 @@
+{
+  "schema": "objectshard-independent-windows-performance-custody-review-v1",
+  "utc": "2026-11-22T07:09:28.814629+00:00",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "artifacts": [
+    {
+      "id": 14744390583,
+      "archive_sha256": "e2b10d5f114ebffd923f908972e2e4ccc4dd882bcc08f365f5d63d9e3375c9d7",
+      "archive_bytes": 9929807,
+      "verified_members": 188,
+      "expires_at": "2027-02-20T06:48:23Z"
+    },
+    {
+      "id": 14743829036,
+      "archive_sha256": "821403aa2c70aca6d9842f4ebf6216716f87d84fe9be242ce05cfaea35e64202",
+      "archive_bytes": 92819530,
+      "verified_members": 1,
+      "expires_at": "2027-02-20T06:48:23Z"
+    }
+  ],
+  "actual_windows_job_verified": 137126167188,
+  "lab_profiles": {
+    "objectshard_profile_headless": {
+      "budget_checks": 56,
+      "rendered": false,
+      "workloads": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 1153,
+            "p95": 1226,
+            "p99": 1320,
+            "maximum": 1872
+          },
+          "promotion_pause_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 1978,
+            "p95": 2096,
+            "p99": 2145,
+            "maximum": 2309
+          },
+          "promotion_pause_max_usec": 1550,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 1975,
+            "p95": 2096,
+            "p99": 2161,
+            "maximum": 2829
+          },
+          "promotion_pause_max_usec": 1524,
+          "geometry_install_max_usec": 94,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 749.4
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2947,
+            "p95": 3141,
+            "p99": 3211,
+            "maximum": 4236
+          },
+          "promotion_pause_max_usec": 1775,
+          "geometry_install_max_usec": 100,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1444.1
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2006,
+            "p95": 2099,
+            "p99": 2189,
+            "maximum": 2439
+          },
+          "promotion_pause_max_usec": 1777,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2039,
+            "p95": 2173,
+            "p99": 2285,
+            "maximum": 3161
+          },
+          "promotion_pause_max_usec": 1440,
+          "geometry_install_max_usec": 101,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 802.4
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2937,
+            "p95": 3115,
+            "p99": 3250,
+            "maximum": 4146
+          },
+          "promotion_pause_max_usec": 1786,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2995,
+            "p95": 3212,
+            "p99": 3296,
+            "maximum": 4600
+          },
+          "promotion_pause_max_usec": 1761,
+          "geometry_install_max_usec": 92,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1247.9
+        }
+      ],
+      "source_revision": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+      "platform": "Windows",
+      "display": "headless",
+      "memory_scope": "Native counters are an accounted lower bound; separate native allocator experiment measures C++ construction/steady allocations. Godot/Rapier/GPU allocation churn is not measured here."
+    },
+    "objectshard_profile_rendered": {
+      "budget_checks": 80,
+      "rendered": true,
+      "workloads": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2150,
+            "p95": 2692,
+            "p99": 2808,
+            "maximum": 3591
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15993,
+            "p95": 16233,
+            "p99": 31733,
+            "maximum": 32412
+          },
+          "promotion_pause_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3665,
+            "p95": 4770,
+            "p99": 4936,
+            "maximum": 7096
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15993,
+            "p95": 16210,
+            "p99": 31716,
+            "maximum": 31821
+          },
+          "promotion_pause_max_usec": 1644,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3671,
+            "p95": 4775,
+            "p99": 4935,
+            "maximum": 6405
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15996,
+            "p95": 16203,
+            "p99": 31766,
+            "maximum": 31991
+          },
+          "promotion_pause_max_usec": 1671,
+          "geometry_install_max_usec": 125,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1225.2
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5245,
+            "p95": 5760,
+            "p99": 6023,
+            "maximum": 7742
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15995,
+            "p95": 16170,
+            "p99": 31694,
+            "maximum": 32046
+          },
+          "promotion_pause_max_usec": 1883,
+          "geometry_install_max_usec": 148,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1879.6
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4526,
+            "p95": 5018,
+            "p99": 5232,
+            "maximum": 7534
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15997,
+            "p95": 16219,
+            "p99": 31734,
+            "maximum": 31964
+          },
+          "promotion_pause_max_usec": 1742,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3721,
+            "p95": 4891,
+            "p99": 5102,
+            "maximum": 7465
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15998,
+            "p95": 16214,
+            "p99": 31768,
+            "maximum": 32049
+          },
+          "promotion_pause_max_usec": 1669,
+          "geometry_install_max_usec": 125,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1221.1
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5302,
+            "p95": 5730,
+            "p99": 6213,
+            "maximum": 12343
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15995,
+            "p95": 16182,
+            "p99": 31690,
+            "maximum": 32067
+          },
+          "promotion_pause_max_usec": 1822,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 5391,
+            "p95": 5926,
+            "p99": 6232,
+            "maximum": 8310
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 15997,
+            "p95": 16184,
+            "p99": 31768,
+            "maximum": 32072
+          },
+          "promotion_pause_max_usec": 1909,
+          "geometry_install_max_usec": 116,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 2001.2
+        }
+      ],
+      "source_revision": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+      "platform": "Windows",
+      "display": "Windows",
+      "memory_scope": "Native counters are an accounted lower bound; separate native allocator experiment measures C++ construction/steady allocations. Godot/Rapier/GPU allocation churn is not measured here."
+    }
+  },
+  "paired_worker_profile": {
+    "matched_fields": [
+      "identity",
+      "engine",
+      "platform",
+      "publication_digests",
+      "native_accounting",
+      "completed_intervals",
+      "actual_live_inputs",
+      "actual_physics_steps"
+    ],
+    "publication_count": 240,
+    "control_elapsed_usec": 29069018,
+    "candidate_elapsed_usec": 12288387,
+    "progression_ratio": 2.365568239346629,
+    "control_semantic_ticks_per_wall_second": 8.25621285177229,
+    "candidate_semantic_ticks_per_wall_second": 19.53063489943798,
+    "control_host_admission_to_publication_usec": {
+      "count": 60,
+      "maximum": 166864,
+      "p50": 116702,
+      "p95": 116817,
+      "p99": 166864,
+      "session_maximum": 166864,
+      "total_count": 60
+    },
+    "candidate_host_admission_to_publication_usec": {
+      "count": 60,
+      "maximum": 66702,
+      "p50": 37089,
+      "p95": 50052,
+      "p99": 66702,
+      "session_maximum": 66702,
+      "total_count": 60
+    },
+    "actual_pump_call_usec": {
+      "count": 737,
+      "maximum": 5783,
+      "p50": 4255,
+      "p95": 5578,
+      "p99": 5712
+    },
+    "scope": "Single source/platform paired hosted observation, 240 canonical published material/pose/accounting comparisons. No full hidden native-state or cross-platform determinism claim. Four-millisecond pump is a soft loop budget; current receipt may exceed it."
+  },
+  "rendered_continuous_ui": {
+    "pointer": {
+      "dispatched": 153,
+      "explicitly_cancelled_by_reset": 0,
+      "pending": 0,
+      "queued": 153,
+      "refused": 0,
+      "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+    },
+    "raw_ui_distributions_recomputed": {
+      "frame_callback_usec": {
+        "count": 131,
+        "p50": 5938,
+        "p95": 7117,
+        "p99": 8251,
+        "maximum": 9535
+      },
+      "input_to_host_usec": {
+        "count": 153,
+        "p50": 301923,
+        "p95": 859562,
+        "p99": 989913,
+        "maximum": 1003052
+      },
+      "publication_interval_usec": {
+        "count": 104,
+        "p50": 16001,
+        "p95": 46523,
+        "p99": 50985,
+        "maximum": 124248
+      },
+      "publication_upload_usec": {
+        "count": 105,
+        "p50": 86,
+        "p95": 1653,
+        "p99": 2531,
+        "maximum": 7110
+      }
+    },
+    "host_timings_usec": {
+      "geometry_install_usec": {
+        "count": 3,
+        "maximum": 140,
+        "p50": 113,
+        "p95": 140,
+        "p99": 140,
+        "session_maximum": 140,
+        "total_count": 3
+      },
+      "host_admission_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 543617,
+        "p50": 294182,
+        "p95": 516090,
+        "p99": 532250,
+        "session_maximum": 543617,
+        "total_count": 153
+      },
+      "host_admission_to_presented_usec": {
+        "count": 153,
+        "maximum": 559617,
+        "p50": 319407,
+        "p95": 541872,
+        "p99": 559058,
+        "session_maximum": 559617,
+        "total_count": 153
+      },
+      "host_admission_to_publication_usec": {
+        "count": 153,
+        "maximum": 545662,
+        "p50": 304951,
+        "p95": 528859,
+        "p99": 544162,
+        "session_maximum": 545662,
+        "total_count": 153
+      },
+      "host_admission_to_result_usec": {
+        "count": 153,
+        "maximum": 545526,
+        "p50": 304870,
+        "p95": 528609,
+        "p99": 544004,
+        "session_maximum": 545526,
+        "total_count": 153
+      },
+      "input_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 1522473,
+        "p50": 597560,
+        "p95": 1389820,
+        "p99": 1518161,
+        "session_maximum": 1522473,
+        "total_count": 153
+      },
+      "input_to_presented_usec": {
+        "count": 153,
+        "maximum": 1547133,
+        "p50": 621226,
+        "p95": 1403323,
+        "p99": 1531200,
+        "session_maximum": 1547133,
+        "total_count": 153
+      },
+      "input_to_publication_usec": {
+        "count": 153,
+        "maximum": 1534770,
+        "p50": 608084,
+        "p95": 1391774,
+        "p99": 1522504,
+        "session_maximum": 1534770,
+        "total_count": 153
+      },
+      "input_to_result_usec": {
+        "count": 153,
+        "maximum": 1534567,
+        "p50": 608004,
+        "p95": 1391625,
+        "p99": 1522297,
+        "session_maximum": 1534567,
+        "total_count": 153
+      },
+      "main_receipt_pump_usec": {
+        "count": 126,
+        "maximum": 5676,
+        "p50": 5209,
+        "p95": 5526,
+        "p99": 5651,
+        "session_maximum": 5676,
+        "total_count": 126
+      },
+      "native_execute_usec": {
+        "count": 284,
+        "maximum": 416,
+        "p50": 148,
+        "p95": 262,
+        "p99": 390,
+        "session_maximum": 416,
+        "total_count": 284
+      },
+      "physics_segment_usec": {
+        "count": 52,
+        "maximum": 2247,
+        "p50": 118,
+        "p95": 1404,
+        "p99": 2247,
+        "session_maximum": 2247,
+        "total_count": 52
+      },
+      "publication_to_presented_usec": {
+        "count": 105,
+        "maximum": 21423,
+        "p50": 11584,
+        "p95": 15375,
+        "p99": 15505,
+        "session_maximum": 21423,
+        "total_count": 105
+      },
+      "queue_wait_usec": {
+        "count": 284,
+        "maximum": 1988,
+        "p50": 17,
+        "p95": 979,
+        "p99": 1741,
+        "session_maximum": 1988,
+        "total_count": 284
+      },
+      "receipt_delivery_usec": {
+        "count": 284,
+        "maximum": 77680,
+        "p50": 1792,
+        "p95": 11496,
+        "p99": 13917,
+        "session_maximum": 77680,
+        "total_count": 284
+      },
+      "receipt_roundtrip_usec": {
+        "count": 284,
+        "maximum": 80268,
+        "p50": 3329,
+        "p95": 12318,
+        "p99": 15225,
+        "session_maximum": 80268,
+        "total_count": 284
+      },
+      "receipt_value_accounting_usec": {
+        "count": 284,
+        "maximum": 1337,
+        "p50": 159,
+        "p95": 230,
+        "p99": 252,
+        "session_maximum": 1337,
+        "total_count": 284
+      },
+      "semantic_interval_usec": {
+        "count": 38,
+        "maximum": 116225,
+        "p50": 15728,
+        "p95": 52600,
+        "p99": 116225,
+        "session_maximum": 116225,
+        "total_count": 38
+      },
+      "snapshot_usec": {
+        "count": 284,
+        "maximum": 1179,
+        "p50": 874,
+        "p95": 1079,
+        "p99": 1139,
+        "session_maximum": 1179,
+        "total_count": 284
+      },
+      "terrain_install_usec": {
+        "count": 230,
+        "maximum": 342,
+        "p50": 70,
+        "p95": 169,
+        "p99": 223,
+        "session_maximum": 342,
+        "total_count": 230
+      }
+    },
+    "original_input_rows": 153,
+    "original_input_result_distributions_recomputed": true,
+    "interpretation": "Adversarial live scene includes a 96-point burst and backlog fairness. Input-to-frame_post_draw p99/max exceeds 1.5 s, even though main callback p99 is under 9 ms. These are visible queue-delay tails; disclose separately from CPU callback cost. Hosted Microsoft Basic Render Driver, no target NVIDIA acceptance or physical monitor scanout timing."
+  },
+  "long_runs": {
+    "windows-lab": {
+      "checks": 22513,
+      "failures": 0,
+      "tick": 3600,
+      "completed_ticks": 3599,
+      "actions_queued": 540,
+      "moving_owners": 3,
+      "sleeping_owners": 3,
+      "maximum_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "physics_steps": 14390,
+      "real_contacts": true,
+      "fire_seen": true,
+      "smoke_seen": true,
+      "post_settle_edit_tick": 2400,
+      "post_erosion_maximum_rotation": 3.58819670509547e-06,
+      "post_erosion_maximum_translation": 6.7918750573881e-05,
+      "elapsed_usec": 50842097,
+      "post_erosion_maximum_rotation_degrees": 0.00020558852726471852
+    },
+    "package-replay": {
+      "checks": 22513,
+      "failures": 0,
+      "tick": 3600,
+      "completed_ticks": 3599,
+      "actions_queued": 540,
+      "moving_owners": 3,
+      "sleeping_owners": 3,
+      "maximum_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "physics_steps": 14390,
+      "real_contacts": true,
+      "fire_seen": true,
+      "smoke_seen": true,
+      "post_settle_edit_tick": 2400,
+      "post_erosion_maximum_rotation": 3.58819670509547e-06,
+      "post_erosion_maximum_translation": 6.7918750573881e-05,
+      "elapsed_usec": 50649115,
+      "post_erosion_maximum_rotation_degrees": 0.00020558852726471852
+    }
+  },
+  "screenshots": [
+    {
+      "path": "windows-lab/frames/objectshard-a-native-supported.png",
+      "sha256": "194d8c4854bede02d1ba287b08f70c8f0edf1e22a365e8909f0493ede5a2943f",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-a-transferred-falling.png",
+      "sha256": "1053d86dab6f2677c21db23c9bec3fc758aa8ef9355fe4f87967ddce4bd4336f",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-a-impact.png",
+      "sha256": "1612fb33c37f3cee2f2813e1024ed55b1a033757c4f21dd296346564f643bb5b",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-a-exact-shapes.png",
+      "sha256": "73465c2bc75a7efaf3fa2d8435b3551118e6022804008d5b2ea68f85c4b3ede8",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-b-real-combustion.png",
+      "sha256": "c06b120d67182f029f9131b9610f43292608812bc5a9640f6d4caab3edfc1c3d",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-b-consumed-geometry.png",
+      "sha256": "8b3cf6587f9ca0bc7abac9a4a61639ec704f19e2f55dd0fd45ac992aecc27471",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-c-carried-sand.png",
+      "sha256": "62c0563c8be37e29894109e125efd68eeac7db315c8d6b96edd89869cefc8984",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-c-water-extinction.png",
+      "sha256": "e4913b0c5b414e56a99154bd421e0214d3f2d90a1c16170f6eef480e97dcca1d",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-d-three-owners.png",
+      "sha256": "85b7131653ade70d920b9ca137614403b2e395d11f99c73f640b804a79ac43ab",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames/objectshard-retired-material-anchor.png",
+      "sha256": "9a6912cafb5a42f5adf1a58926873d552afe2c1358c5047affc030d880a89f8a",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames-finisher/objectshard-001r-main-priority.png",
+      "sha256": "06ff42a20a9c76b59cd3cdce820186f73eacd85fdb9535f13a0e7fc9fbb1a4b6",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames-finisher/objectshard-001r-irregular-256.png",
+      "sha256": "996db6f765685dfb8a595ebf7814ee9b8332cdfdd05b8f29f02d50319bdb6f49",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames-finisher/objectshard-001r-external-fire.png",
+      "sha256": "986d07d0d88e17dd56386143dac0cdd16ff161a398f33e0484b5fce8bb5fbc72",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames-finisher/objectshard-001r-resting-erosion.png",
+      "sha256": "3f495454f1545640629552f22421144aac9b64ddae574e44efd9b23f801cb049",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames-finisher/objectshard-001r-extended-320.png",
+      "sha256": "14f82b8098b06fe69d7066998b011b541e102313399498d7e6060fd230f621a1",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": null
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-native-supported.png",
+      "sha256": "91eda840c2b8e56fbe7df0f272e484ce51b97a4cd569fef584d58f1585ccbbea",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {}
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-falling.png",
+      "sha256": "5740187e2ef1994fbdfaa502cfefb4f996590e2ae24a824be68331d1ac7a40f2",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {}
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png",
+      "sha256": "34e1b7c788df2a8cc8a61ca8ec6b833a681f81f180414d92d6cf1a17c5ec32ed",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {
+        "continued_semantic_ticks_after_edit": 120,
+        "natural_sleep_observed_before_edit": true
+      }
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-main-structure-priority.png",
+      "sha256": "a56fe308fd50606375be177e9a702588ee5d87752dd367235b12991a5aee7109",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {
+        "largest_admitted_structural_cells": 817
+      }
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png",
+      "sha256": "403f22f94e4dfa18a974e6ec62b55c56e89f2c7d7593c30094b3852e99c3c122",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {}
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-external-fire.png",
+      "sha256": "2162ba0c094f0c494a5034af506e69a4c3f35474cf55dbe8cd951f4c23bb364c",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {
+        "accepted_fixture_actions": 84,
+        "native_world_fire_cells": 84
+      }
+    },
+    {
+      "path": "windows-lab/frames-worker/objectshard-m3-extended-320.png",
+      "sha256": "fc52b4f724431cbce75f4e8340736ee5de6a25cdde1612c419e0ecbb2ca3d203",
+      "size": [
+        1280,
+        840
+      ],
+      "physical_detail": {}
+    }
+  ],
+  "inputs_sha256": {
+    "windows-lab/objectshard_profile_headless.json": "030966c1ebe018e49da7f4bda52a93d2eddbb3b10b511678b9177cac03f9fe81",
+    "windows-lab/objectshard_profile_rendered.json": "fd51db4f6d1fcd24b38d891b42b7fa312037a1a96c827a8bd0a0bb1ff2cee2a2",
+    "windows-lab/objectshard_worker_profile_0.json": "b3cfdaac3d9d3edb1faba6993d076a6091be675890ec721bc58a5c248d8f494f",
+    "windows-lab/objectshard_worker_profile_4000.json": "a180202f4f03b898f332bf1b7ec7abc47f58d1f6324d70ac81ac2822c6c242bf",
+    "windows-lab/continuous-play-rendered.json": "0a25eb439b83322c52f1fb3798e26bf1ee35d768882cbc6754bcaf6354be1fd0",
+    "windows-lab/continuous-physics.json": "5b384213dcd04c7d08a14bf6c7f81209d93db8916710eff7bb9dd9172561437d",
+    "package-replay/continuous-physics.json": "fe0bb9eacdf596566ac8a78cbdf511222e2a2c6f736d231066f063267d30a8cb",
+    "windows-lab/frames/render-campaign.json": "1802b99edf59bcb198c1e4d33d6fe0f5fc8098669d8b3b3eabea7ad574cb9c9f",
+    "windows-lab/frames/objectshard-a-native-supported.png": "194d8c4854bede02d1ba287b08f70c8f0edf1e22a365e8909f0493ede5a2943f",
+    "windows-lab/frames/objectshard-a-transferred-falling.png": "1053d86dab6f2677c21db23c9bec3fc758aa8ef9355fe4f87967ddce4bd4336f",
+    "windows-lab/frames/objectshard-a-impact.png": "1612fb33c37f3cee2f2813e1024ed55b1a033757c4f21dd296346564f643bb5b",
+    "windows-lab/frames/objectshard-a-exact-shapes.png": "73465c2bc75a7efaf3fa2d8435b3551118e6022804008d5b2ea68f85c4b3ede8",
+    "windows-lab/frames/objectshard-b-real-combustion.png": "c06b120d67182f029f9131b9610f43292608812bc5a9640f6d4caab3edfc1c3d",
+    "windows-lab/frames/objectshard-b-consumed-geometry.png": "8b3cf6587f9ca0bc7abac9a4a61639ec704f19e2f55dd0fd45ac992aecc27471",
+    "windows-lab/frames/objectshard-c-carried-sand.png": "62c0563c8be37e29894109e125efd68eeac7db315c8d6b96edd89869cefc8984",
+    "windows-lab/frames/objectshard-c-water-extinction.png": "e4913b0c5b414e56a99154bd421e0214d3f2d90a1c16170f6eef480e97dcca1d",
+    "windows-lab/frames/objectshard-d-three-owners.png": "85b7131653ade70d920b9ca137614403b2e395d11f99c73f640b804a79ac43ab",
+    "windows-lab/frames/objectshard-retired-material-anchor.png": "9a6912cafb5a42f5adf1a58926873d552afe2c1358c5047affc030d880a89f8a",
+    "windows-lab/frames-finisher/render-campaign.json": "1172bedb1306dcdbd0cb7559632e6916a017168258851f81511fd169ec546f0c",
+    "windows-lab/frames-finisher/objectshard-001r-main-priority.png": "06ff42a20a9c76b59cd3cdce820186f73eacd85fdb9535f13a0e7fc9fbb1a4b6",
+    "windows-lab/frames-finisher/objectshard-001r-irregular-256.png": "996db6f765685dfb8a595ebf7814ee9b8332cdfdd05b8f29f02d50319bdb6f49",
+    "windows-lab/frames-finisher/objectshard-001r-external-fire.png": "986d07d0d88e17dd56386143dac0cdd16ff161a398f33e0484b5fce8bb5fbc72",
+    "windows-lab/frames-finisher/objectshard-001r-resting-erosion.png": "3f495454f1545640629552f22421144aac9b64ddae574e44efd9b23f801cb049",
+    "windows-lab/frames-finisher/objectshard-001r-extended-320.png": "14f82b8098b06fe69d7066998b011b541e102313399498d7e6060fd230f621a1",
+    "windows-lab/frames-worker/render-campaign.json": "96acba4a33473dc33cece1361c8e1504360126ea8170c0cccf22b0a905814599",
+    "windows-lab/frames-worker/objectshard-m3-native-supported.png": "91eda840c2b8e56fbe7df0f272e484ce51b97a4cd569fef584d58f1585ccbbea",
+    "windows-lab/frames-worker/objectshard-m3-falling.png": "5740187e2ef1994fbdfaa502cfefb4f996590e2ae24a824be68331d1ac7a40f2",
+    "windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png": "34e1b7c788df2a8cc8a61ca8ec6b833a681f81f180414d92d6cf1a17c5ec32ed",
+    "windows-lab/frames-worker/objectshard-m3-main-structure-priority.png": "a56fe308fd50606375be177e9a702588ee5d87752dd367235b12991a5aee7109",
+    "windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png": "403f22f94e4dfa18a974e6ec62b55c56e89f2c7d7593c30094b3852e99c3c122",
+    "windows-lab/frames-worker/objectshard-m3-external-fire.png": "2162ba0c094f0c494a5034af506e69a4c3f35474cf55dbe8cd951f4c23bb364c",
+    "windows-lab/frames-worker/objectshard-m3-extended-320.png": "fc52b4f724431cbce75f4e8340736ee5de6a25cdde1612c419e0ecbb2ca3d203"
+  },
+  "retained_native_budget": "Unchanged native74/74 matrix;6,277,280 accounted C++ peak,14,176 below6MiB. Native-only, excludes Godot/Rapier/GPU/mailboxes. Historical10/74 timing and14/74 memory failures retained.",
+  "failures": [],
+  "status": "passed",
+  "scope": "Independent read-only recomputation of raw hosted Windows Lab budgets, same-source paired profile agreement, complete actual rendered UI timestamp accounting, immutable artifact wrappers and long-play evidence. UI queue tail is a retained limitation, not an unregistered performance gate pass."
+}

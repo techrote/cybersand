@@ -1,0 +1,3 @@
+event source=(48,12) tick=213 shard=1 cell=4
+external_ignitions=1 burnA=239 burnB=0
+493 checks, 0 failures
