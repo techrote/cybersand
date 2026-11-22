@@ -60,6 +60,50 @@ class SchedulingPolicyTests(unittest.TestCase):
                 strategy['max-parallel'] = value
             self.assertTrue(check(report))
 
+    def test_only_gdextension_regression_matrices_allow_sixteen_slots(self):
+        report = self.report()
+        workflow = report["workflows"][0]
+        workflow["file"] = ".github/workflows/gdextension.yml"
+        workflow["concurrency"] = routine_concurrency("gdextension")
+        job = workflow["jobs"][0]
+        for job_name in ("linux-regression", "windows-regression"):
+            with self.subTest(job=job_name):
+                job["id"] = job_name
+                for allowed in ("8", "12", "16"):
+                    job["strategy"]["max-parallel"] = allowed
+                    self.assertEqual(check(report), [])
+                for rejected in ("0", "17", "40", "${{ inputs.slots }}", "true"):
+                    job["strategy"]["max-parallel"] = rejected
+                    self.assertTrue(check(report), rejected)
+                job["strategy"]["max-parallel"] = "16"
+                job["strategy"]["fail-fast"] = "true"
+                self.assertTrue(check(report))
+                job["strategy"]["fail-fast"] = "false"
+        # A different matrix in the same workflow must not inherit the exception.
+        job["id"] = "execution-plan"
+        job["strategy"]["max-parallel"] = "16"
+        self.assertTrue(check(report))
+        job["id"] = "windows-regression"
+        for filename, group in (
+                ("native.yml", "native"),
+                ("palette-shader-qualification.yml", None),
+                ("experimental.yml", None)):
+            with self.subTest(workflow=filename):
+                workflow["file"] = ".github/workflows/" + filename
+                workflow["concurrency"] = routine_concurrency(group) if group else None
+                self.assertTrue(check(report))
+
+    def test_source_gdextension_fanout_is_bounded_and_fail_fast_disabled(self):
+        report = inventory(Path(__file__).resolve().parents[2])
+        gdextension = next(w for w in report["workflows"]
+                           if w["file"] == ".github/workflows/gdextension.yml")
+        for job_name in ("linux-regression", "windows-regression"):
+            with self.subTest(job=job_name):
+                job = next(j for j in gdextension["jobs"] if j["id"] == job_name)
+                self.assertEqual(job["strategy"]["max-parallel"], "16")
+                self.assertEqual(job["strategy"]["fail-fast"], "false")
+                self.assertEqual(job["runner_slots_upper_bound"], 16)
+
     def test_manual_cancellation_and_matrix_fail_fast_are_rejected(self):
         report = self.report()
         self.assertEqual(check(report), [])

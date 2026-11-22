@@ -42,6 +42,14 @@ RUN_ISOLATED_CAMPAIGNS = {
     "play-busy001b-host.yml", "play-desktop-packet.yml", "play-life009.yml",
 }
 
+# Only these two source-bound regression matrices are admitted above the
+# ordinary eight-job limit. This is a per-matrix ceiling, not an account-wide
+# runner budget; all other hosted matrices retain their original bound.
+GDEXTENSION_HIGH_FANOUT = frozenset({
+    ("gdextension.yml", "linux-regression"),
+    ("gdextension.yml", "windows-regression"),
+})
+
 
 def routine_concurrency(prefix: str) -> dict[str, str]:
     return {
@@ -155,8 +163,10 @@ def check(report: dict[str, Any]) -> list[str]:
                 count = job["literal_matrix_jobs"]
                 if filename != "rapier-bvh-build.yml" or count is None or count > 2:
                     errors.append(f"{label}: matrix requires an explicit max-parallel")
-            elif not isinstance(cap, str) or not cap.isdigit() or not 1 <= int(cap) <= 8:
-                errors.append(f"{label}: matrix max-parallel must be a literal integer in 1..8")
+            else:
+                limit = 16 if (filename, job["id"]) in GDEXTENSION_HIGH_FANOUT else 8
+                if not isinstance(cap, str) or not cap.isdigit() or not 1 <= int(cap) <= limit:
+                    errors.append(f"{label}: matrix max-parallel must be a literal integer in 1..{limit}")
     return errors
 
 
