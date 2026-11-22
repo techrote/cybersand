@@ -95,6 +95,11 @@ competing source owners and **does not satisfy M4**.
   structures. Reports ZERO real same-World physics assertions.
 - godot/tests/test_object_shard_m4_latency_probe.gd: value-only negative
   timing, stage overlap, bounded-resource, re-entry and deferred post-draw tests.
+- godot/tests/test_object_shard_m4_workbench_scene_refusal.gd: actual mounted
+  ordinary Workbench + native World; opt-in pointer controls refuse both while
+  paused and during real semantic progression. No positive moving-body
+  claim, no second World or mock physics. The source-matched runner exercises
+  this real scene with the flag enabled.
 - tools/objectshard/qualify_m4_workbench.py: source-exact Godot 4.7 test
   subprocess runner, case-by-case raw logs and JSON completion validation,
   including original native Workbench refusal, optional ordinary Water/physics
@@ -124,19 +129,25 @@ worker's exclusive thread may invoke native World methods:
    attached=true, worker_exclusive=true; positive worker_instance_id (equal
    to the current CyberSimulationWorker.get_instance_id()),
    native_instance_id (identity of **its actual _world**), world_generation
-   (matching snapshot.render_world_generation), session,
-   transport_generation and operations erase, ignite, inspect.
+   (matching snapshot.render_world_generation), session, owner_epoch,
+   shard_session, world_incarnation, transport_generation and operations
+   erase, ignite, inspect. These additional native identity dimensions
+   correspond to the five-field OwnerIdentity used by #751's native M4 gate;
+   World generation alone does not prove that the Coordinator incarnation
+   survived a candidate-and-swap or exceptional reset.
    The native specialist must prove source equivalence inside the worker;
    a self-reported field alone is not sufficient evidence.
 2. object_shard_queue_workbench_action(request: Dictionary) -> Dictionary.
    Queue copied input only, bounded, using action_id, port_generation, native
-   and worker owner identity, World/session/generation, uploaded observation
+   and worker owner identity, World/session/owner epoch/shard session/incarnation,
+   uploaded observation
    and exact native moving-cell target. Return fenced affirmative admission
    or fenced refusal; malformed/uncertain delivery must HOLD rather than retry.
 3. object_shard_take_workbench_results(maximum: int) -> Array[Dictionary].
    One terminal action receipt, with explicit Applied, TargetChanged,
    Capacity, Refused, Cancelled or Failed; matching session,
-   transport_generation, World/native instance, action_id and port_generation.
+   transport_generation, owner_epoch, shard_session, world_incarnation,
+   World/native instance, action_id and port_generation.
    A claimed Applied also needs an accepted same-World native_receipt
    matching operation/position, an exact copied pre-mutation source_target
    witness, positive transaction_id and revisioned resulting native material,
