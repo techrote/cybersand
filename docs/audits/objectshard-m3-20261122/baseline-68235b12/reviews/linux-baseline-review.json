@@ -1,0 +1,960 @@
+{
+  "schema": "objectshard-independent-linux-baseline-review-v1",
+  "utc": "2026-11-22T07:21:09.554355+00:00",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "artifact_id": 14744731008,
+  "artifact_sha256": "f1fd406265dc8331bed088ad56103051da846764a135506d67142a6d058f094d",
+  "artifact_bytes": 140411476,
+  "archive_member_count": 323,
+  "all_members_stream_hashed": true,
+  "expanded_bytes": 812001073,
+  "native_sanitizer": {
+    "source_inputs": 128,
+    "input_digest": "c2174fb20087c5bab23f471d0d7864e49723b09db7ee8fe9b25f5dbc2fa99ace",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiled_objects": 22,
+    "checks": 93529,
+    "world_test_cases": 192,
+    "suites": [
+      {
+        "suite": "admission",
+        "checks": 28092,
+        "unit": "checks",
+        "seconds": 4.636809277999987,
+        "binary_sha256": "5c4eed3ac924dc093ee4b9e9ecf57d7ab1f35f6d07b6b0d534d48281cb75e898"
+      },
+      {
+        "suite": "chemistry",
+        "checks": 4472,
+        "unit": "checks",
+        "seconds": 1.2856162530000574,
+        "binary_sha256": "a08e3bb6918272687b4989adb2dc27b538ec55a2e933b89bb0918bbcd1384917"
+      },
+      {
+        "suite": "contact",
+        "checks": 46037,
+        "unit": "checks",
+        "seconds": 0.010061383999982354,
+        "binary_sha256": "ef492e74562b74e0e3f8b2bcd501ac18c53f90f2ac6ee0c05555ade9eeb5aee2"
+      },
+      {
+        "suite": "coordinator",
+        "checks": 3120,
+        "unit": "checks",
+        "seconds": 1.9874221380000563,
+        "binary_sha256": "d6f1faab2ec790daad5236c3eebf5a65e2853689c8c01d2434faf563ef70eccc"
+      },
+      {
+        "suite": "external_fire",
+        "checks": 3683,
+        "unit": "checks",
+        "seconds": 1.7972085679999736,
+        "binary_sha256": "5d4729278d97f040059335ef55e9ea6c9dcbb4785ffead22f21e161bf68f92e7"
+      },
+      {
+        "suite": "storage",
+        "checks": 8125,
+        "unit": "checks",
+        "seconds": 0.09094120600002498,
+        "binary_sha256": "e8805e6462aef8338b0141ccdd2d2ae463fde25d1193d30af28d05afb3575ff4"
+      },
+      {
+        "suite": "world",
+        "checks": 192,
+        "unit": "test_cases",
+        "seconds": 429.318008988,
+        "binary_sha256": "dce90178a14b8059ccc8d2349437f68120fd07807e7679a7a0087e3481ccb5d6"
+      }
+    ],
+    "asan": true,
+    "ubsan": true,
+    "leak_sanitizer": false,
+    "world_filter": null,
+    "native_suite_elapsed_seconds": 593.849251844
+  },
+  "runtime": {
+    "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+    "bytes": 5573096,
+    "native_inputs": 116,
+    "build_contract_inputs": 5,
+    "fresh_builds": [
+      {
+        "stage": "bindings",
+        "seconds": 288.59033458700003,
+        "log_sha256": "08bd3bf675944d61970b8f3c61e51313df7dc35ad12943d40ab24af822a64ca6"
+      },
+      {
+        "stage": "extension",
+        "seconds": 87.7162417850002,
+        "log_sha256": "ad06bb285a4f6d850cae6585cb6c5fb2cd8ef48bad065302bc57522210fb0e98"
+      }
+    ],
+    "same_bytes_as_prior_sealed_native": "Reproducible native inputs produced identical bytes; new exact-source compilation is proved by fresh build receipts and logs, not by expecting a new hash."
+  },
+  "godot": {
+    "runtime": {
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "native_sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+      "platform": "linux",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "lab_source_inputs": 49,
+    "qualification_tool_inputs": 19,
+    "cases": [
+      {
+        "name": "objectshard_import",
+        "seconds": 8.604,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "test_rapier_manual_step",
+        "seconds": 1.94,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "test_material_lab_experiment",
+        "seconds": 13.089,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_bridge",
+        "seconds": 0.265,
+        "checks": 28,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_lab",
+        "seconds": 3.88,
+        "checks": 379,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_capture",
+        "seconds": 0.265,
+        "checks": 20,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_motion_segments",
+        "seconds": 0.265,
+        "checks": 47,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_contacts",
+        "seconds": 0.265,
+        "checks": 34,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_boundary",
+        "seconds": 0.165,
+        "checks": 42,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_playability",
+        "seconds": 4.535,
+        "checks": 33,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_action_replay",
+        "seconds": 4.082,
+        "checks": null,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_erode",
+        "seconds": 0.534,
+        "checks": 27,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_replace_identical",
+        "seconds": 0.534,
+        "checks": 27,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_rest_mass_only",
+        "seconds": 0.534,
+        "checks": 27,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_owner_d",
+        "seconds": 17.936,
+        "checks": 17,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_incremental_motion",
+        "seconds": 0.265,
+        "checks": 137,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_native_worker",
+        "seconds": 0.265,
+        "checks": 31,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_workbench_contract",
+        "seconds": 0.366,
+        "checks": 29,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_rehearsal",
+        "seconds": 16.268,
+        "checks": 41,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_adverse",
+        "seconds": 0.811,
+        "checks": 23,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_recovery",
+        "seconds": 0.811,
+        "checks": 63,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_replay_admission",
+        "seconds": 1.57,
+        "checks": 57,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_resources",
+        "seconds": 2.511,
+        "checks": 43,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_commands",
+        "seconds": 0.366,
+        "checks": 29,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_physics_identity",
+        "seconds": 0.265,
+        "checks": 70,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_input_fences",
+        "seconds": 0.811,
+        "checks": 46,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_continuous_play",
+        "seconds": 6.426,
+        "checks": 76,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_continuous_replay",
+        "seconds": 2.113,
+        "checks": 363,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_continuous_physics",
+        "seconds": 70.806,
+        "checks": 22513,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_scene",
+        "seconds": 0.535,
+        "checks": 13,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_replay",
+        "seconds": 0.719,
+        "checks": 97,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_render",
+        "seconds": 9.842,
+        "checks": null,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_finisher_render",
+        "seconds": 20.285,
+        "checks": null,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_continuous_play_rendered",
+        "seconds": 11.984,
+        "checks": 77,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_continuous_rendered_replay",
+        "seconds": 2.311,
+        "checks": 389,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_render",
+        "seconds": 67.39,
+        "checks": null,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_profile_headless",
+        "seconds": 42.949,
+        "checks": 719,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_profile_rendered",
+        "seconds": 198.502,
+        "checks": 719,
+        "requires_display": true
+      },
+      {
+        "name": "objectshard_worker_profile_0",
+        "seconds": 30.293,
+        "checks": 1102,
+        "requires_display": false
+      },
+      {
+        "name": "objectshard_worker_profile_4000",
+        "seconds": 14.112,
+        "checks": 1887,
+        "requires_display": false
+      }
+    ],
+    "screenshots": 22
+  },
+  "profiles": {
+    "objectshard_profile_headless": {
+      "budget_checks": 56,
+      "workloads": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2136,
+            "p95": 2344,
+            "p99": 2473,
+            "maximum": 2540
+          },
+          "promotion_pause_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3225,
+            "p95": 3728,
+            "p99": 4092,
+            "maximum": 5433
+          },
+          "promotion_pause_max_usec": 2574,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3231,
+            "p95": 3781,
+            "p99": 4106,
+            "maximum": 5897
+          },
+          "promotion_pause_max_usec": 2536,
+          "geometry_install_max_usec": 98,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1270.984
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4619,
+            "p95": 5326,
+            "p99": 5500,
+            "maximum": 7710
+          },
+          "promotion_pause_max_usec": 3080,
+          "geometry_install_max_usec": 97,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 2203.325
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3385,
+            "p95": 3790,
+            "p99": 4176,
+            "maximum": 7136
+          },
+          "promotion_pause_max_usec": 2798,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3393,
+            "p95": 3894,
+            "p99": 4146,
+            "maximum": 6861
+          },
+          "promotion_pause_max_usec": 2589,
+          "geometry_install_max_usec": 92,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1281.319
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4595,
+            "p95": 5193,
+            "p99": 5366,
+            "maximum": 8189
+          },
+          "promotion_pause_max_usec": 3107,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4880,
+            "p95": 5447,
+            "p99": 5615,
+            "maximum": 9370
+          },
+          "promotion_pause_max_usec": 3106,
+          "geometry_install_max_usec": 100,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1893.03
+        }
+      ],
+      "display": "headless",
+      "platform": "Linux"
+    },
+    "objectshard_profile_rendered": {
+      "budget_checks": 80,
+      "workloads": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 2269,
+            "p95": 2366,
+            "p99": 2442,
+            "maximum": 2531
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 17579,
+            "p95": 23018,
+            "p99": 23814,
+            "maximum": 24312
+          },
+          "promotion_pause_max_usec": 0,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3343,
+            "p95": 3587,
+            "p99": 3724,
+            "maximum": 4254
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 18762,
+            "p95": 24465,
+            "p99": 25035,
+            "maximum": 26061
+          },
+          "promotion_pause_max_usec": 2834,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3374,
+            "p95": 3550,
+            "p99": 3707,
+            "maximum": 4810
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 18782,
+            "p95": 23143,
+            "p99": 24850,
+            "maximum": 25224
+          },
+          "promotion_pause_max_usec": 2756,
+          "geometry_install_max_usec": 105,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1296.349
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4870,
+            "p95": 5101,
+            "p99": 5377,
+            "maximum": 7699
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 20981,
+            "p95": 26133,
+            "p99": 27265,
+            "maximum": 28074
+          },
+          "promotion_pause_max_usec": 3440,
+          "geometry_install_max_usec": 120,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 2461.778
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3372,
+            "p95": 3770,
+            "p99": 3876,
+            "maximum": 4231
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 18725,
+            "p95": 20205,
+            "p99": 24774,
+            "maximum": 25327
+          },
+          "promotion_pause_max_usec": 3119,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 3384,
+            "p95": 3544,
+            "p99": 3641,
+            "maximum": 5159
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 18717,
+            "p95": 24209,
+            "p99": 24765,
+            "maximum": 26196
+          },
+          "promotion_pause_max_usec": 2754,
+          "geometry_install_max_usec": 88,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1248.289
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4813,
+            "p95": 5116,
+            "p99": 5289,
+            "maximum": 6626
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 20778,
+            "p95": 25731,
+            "p99": 27250,
+            "maximum": 29117
+          },
+          "promotion_pause_max_usec": 3438,
+          "geometry_install_max_usec": 0,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 0.0
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "count": 1200,
+            "p50": 4937,
+            "p95": 5336,
+            "p99": 5570,
+            "maximum": 7340
+          },
+          "present_interval_usec": {
+            "count": 1199,
+            "p50": 21080,
+            "p95": 26627,
+            "p99": 27382,
+            "maximum": 28067
+          },
+          "promotion_pause_max_usec": 3407,
+          "geometry_install_max_usec": 94,
+          "geometry_age_max_ticks": 0,
+          "geometry_wait_max_usec": 1985.216
+        }
+      ],
+      "display": "X11",
+      "platform": "Linux"
+    }
+  },
+  "worker_pair": {
+    "matched_fields": [
+      "identity",
+      "engine",
+      "platform",
+      "publication_digests",
+      "native_accounting",
+      "completed_intervals",
+      "actual_live_inputs",
+      "actual_physics_steps"
+    ],
+    "publication_count": 240,
+    "control_elapsed_usec": 29067814,
+    "candidate_elapsed_usec": 12887478,
+    "ratio": 2.255508331420624,
+    "control_semantic_ticks_per_second": 8.256554827273906,
+    "candidate_semantic_ticks_per_second": 18.622728201747464,
+    "control_admission_to_publication_usec": {
+      "count": 60,
+      "maximum": 166716,
+      "p50": 116712,
+      "p95": 116781,
+      "p99": 166716,
+      "session_maximum": 166716,
+      "total_count": 60
+    },
+    "candidate_admission_to_publication_usec": {
+      "count": 60,
+      "maximum": 54377,
+      "p50": 37730,
+      "p95": 50072,
+      "p99": 54377,
+      "session_maximum": 54377,
+      "total_count": 60
+    },
+    "pump_call_usec": {
+      "count": 773,
+      "maximum": 4470,
+      "p50": 4060,
+      "p95": 4323,
+      "p99": 4396
+    }
+  },
+  "rendered_ui": {
+    "pointer": {
+      "dispatched": 153,
+      "explicitly_cancelled_by_reset": 0,
+      "pending": 0,
+      "queued": 153,
+      "refused": 0,
+      "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+    },
+    "ui_raw_distributions_recomputed": {
+      "frame_callback_usec": {
+        "count": 112,
+        "p50": 4736,
+        "p95": 5256,
+        "p99": 5367,
+        "maximum": 5476
+      },
+      "input_to_host_usec": {
+        "count": 153,
+        "p50": 369314,
+        "p95": 1008510,
+        "p99": 1157585,
+        "maximum": 1184585
+      },
+      "publication_interval_usec": {
+        "count": 89,
+        "p50": 24345,
+        "p95": 55725,
+        "p99": 118647,
+        "maximum": 118647
+      },
+      "publication_upload_usec": {
+        "count": 90,
+        "p50": 168,
+        "p95": 279,
+        "p99": 507,
+        "maximum": 507
+      }
+    },
+    "host_timings_usec": {
+      "geometry_install_usec": {
+        "count": 3,
+        "maximum": 112,
+        "p50": 107,
+        "p95": 112,
+        "p99": 112,
+        "session_maximum": 112,
+        "total_count": 3
+      },
+      "host_admission_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 643756,
+        "p50": 357064,
+        "p95": 625504,
+        "p99": 642300,
+        "session_maximum": 643756,
+        "total_count": 153
+      },
+      "host_admission_to_presented_usec": {
+        "count": 153,
+        "maximum": 690224,
+        "p50": 386704,
+        "p95": 653431,
+        "p99": 680505,
+        "session_maximum": 690224,
+        "total_count": 153
+      },
+      "host_admission_to_publication_usec": {
+        "count": 153,
+        "maximum": 665465,
+        "p50": 364365,
+        "p95": 628100,
+        "p99": 653590,
+        "session_maximum": 665465,
+        "total_count": 153
+      },
+      "host_admission_to_result_usec": {
+        "count": 153,
+        "maximum": 665320,
+        "p50": 364225,
+        "p95": 627922,
+        "p99": 653414,
+        "session_maximum": 665320,
+        "total_count": 153
+      },
+      "input_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 1823009,
+        "p50": 701848,
+        "p95": 1638030,
+        "p99": 1801326,
+        "session_maximum": 1823009,
+        "total_count": 153
+      },
+      "input_to_presented_usec": {
+        "count": 153,
+        "maximum": 1847797,
+        "p50": 748166,
+        "p95": 1689005,
+        "p99": 1847758,
+        "session_maximum": 1847797,
+        "total_count": 153
+      },
+      "input_to_publication_usec": {
+        "count": 153,
+        "maximum": 1824943,
+        "p50": 723798,
+        "p95": 1662090,
+        "p99": 1823038,
+        "session_maximum": 1824943,
+        "total_count": 153
+      },
+      "input_to_result_usec": {
+        "count": 153,
+        "maximum": 1824811,
+        "p50": 723723,
+        "p95": 1661914,
+        "p99": 1822893,
+        "session_maximum": 1824811,
+        "total_count": 153
+      },
+      "main_receipt_pump_usec": {
+        "count": 107,
+        "maximum": 4116,
+        "p50": 4041,
+        "p95": 4105,
+        "p99": 4113,
+        "session_maximum": 4116,
+        "total_count": 107
+      },
+      "native_execute_usec": {
+        "count": 290,
+        "maximum": 502,
+        "p50": 202,
+        "p95": 328,
+        "p99": 478,
+        "session_maximum": 502,
+        "total_count": 290
+      },
+      "physics_segment_usec": {
+        "count": 56,
+        "maximum": 211,
+        "p50": 102,
+        "p95": 188,
+        "p99": 211,
+        "session_maximum": 211,
+        "total_count": 56
+      },
+      "publication_to_presented_usec": {
+        "count": 90,
+        "maximum": 61832,
+        "p50": 17959,
+        "p95": 24484,
+        "p99": 61832,
+        "session_maximum": 61832,
+        "total_count": 90
+      },
+      "queue_wait_usec": {
+        "count": 290,
+        "maximum": 123,
+        "p50": 16,
+        "p95": 22,
+        "p99": 38,
+        "session_maximum": 123,
+        "total_count": 290
+      },
+      "receipt_delivery_usec": {
+        "count": 290,
+        "maximum": 75950,
+        "p50": 114,
+        "p95": 21355,
+        "p99": 22532,
+        "session_maximum": 75950,
+        "total_count": 290
+      },
+      "receipt_roundtrip_usec": {
+        "count": 290,
+        "maximum": 77942,
+        "p50": 1532,
+        "p95": 23052,
+        "p99": 24110,
+        "session_maximum": 77942,
+        "total_count": 290
+      },
+      "receipt_value_accounting_usec": {
+        "count": 290,
+        "maximum": 217,
+        "p50": 132,
+        "p95": 187,
+        "p99": 211,
+        "session_maximum": 217,
+        "total_count": 290
+      },
+      "semantic_interval_usec": {
+        "count": 39,
+        "maximum": 102888,
+        "p50": 24546,
+        "p95": 65083,
+        "p99": 102888,
+        "session_maximum": 102888,
+        "total_count": 39
+      },
+      "snapshot_usec": {
+        "count": 290,
+        "maximum": 1613,
+        "p50": 1074,
+        "p95": 1497,
+        "p99": 1599,
+        "session_maximum": 1613,
+        "total_count": 290
+      },
+      "terrain_install_usec": {
+        "count": 232,
+        "maximum": 219,
+        "p50": 59,
+        "p95": 153,
+        "p99": 190,
+        "session_maximum": 219,
+        "total_count": 232
+      }
+    },
+    "original_input_rows": 153,
+    "input_result_distributions_recomputed": true
+  },
+  "long_run": {
+    "checks": 22513,
+    "failures": 0,
+    "tick": 3600,
+    "completed_ticks": 3599,
+    "actions_queued": 540,
+    "moving_owners": 3,
+    "sleeping_owners": 3,
+    "maximum_displacements": {
+      "1": 19.9768753051758,
+      "2": 19.9768753051758,
+      "3": 20.1384086608887
+    },
+    "physics_steps": 14390,
+    "real_contacts": true,
+    "fire_seen": true,
+    "smoke_seen": true,
+    "post_settle_edit_tick": 2400,
+    "post_erosion_maximum_rotation": 3.58819670509547e-06,
+    "post_erosion_maximum_translation": 6.7918750573881e-05,
+    "elapsed_usec": 70505879
+  },
+  "status": "passed",
+  "failures": [],
+  "scope": "Completed exact682 baseline native/runtime/Godot/performance custody only. The separately reported possible F2 navigation cleanup defect is under investigation; this report does not extend a no-finding claim to navigation or a successor runtime source.",
+  "remaining_limits": [
+    "Physical target hardware/monitor acceptance unestablished",
+    "Six production retained-runtime provenance mismatches unpassed",
+    "Native74 matrix unchanged from separately reviewed source-identical baseline; no expensive matrix repeated",
+    "Host/rendered metrics do not establish target NVIDIA performance; queue tails retained",
+    "AddressSanitizer and UBSan ran; LeakSanitizer was explicitly disabled by preserved harness"
+  ]
+}

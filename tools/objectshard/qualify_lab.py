@@ -100,6 +100,32 @@ def compare_worker_profiles(control: dict, candidate: dict, source_commit: str) 
             "scope": "Same source/runtime and 240 per-interval material/pose publication digests. Timing is a paired hosted observation, not a new pass threshold or target GPU frame-rate claim."}
 
 
+def validate_navigation_receipt(receipt: dict, source_commit: str) -> dict:
+    expected_cases = ["active_pending_repeated", "naturally_sleeping", "opening", "reset_superseded",
+                      "held_interval", "stop_delivery_faults", "already_closed_prior_policy", "window_close_upgrade"]
+    if (receipt.get("schema") != "objectshard-worker-navigation-test-v1"
+            or receipt.get("source_revision") != source_commit
+            or type(receipt.get("checks")) is not int or receipt["checks"] < 100
+            or type(receipt.get("failures")) is not int or receipt["failures"] != 0
+            or receipt.get("cases") != expected_cases):
+        raise ValueError("Incomplete or unbound actual navigation lifecycle qualification")
+    children = [row for row in receipt.get("observations", []) if isinstance(row, dict)
+                and row.get("case") == "window_close_upgrade"]
+    if len(children) != 1:
+        raise ValueError("Missing or duplicate actual window-close child receipt")
+    row = children[0]
+    child = row.get("child_report", {})
+    if (type(row.get("child_exit_code")) is not int or row["child_exit_code"] != 0
+            or not isinstance(child, dict) or child.get("schema") != "objectshard-worker-navigation-quit-child-v1"
+            or child.get("source_revision") != source_commit
+            or type(child.get("checks")) is not int or child["checks"] < 18
+            or type(child.get("failures")) is not int or child["failures"] != 0):
+        raise ValueError("Unsuccessful or incomplete actual window-close child")
+    return {"status": "passed", "cases": expected_cases, "checks": receipt["checks"],
+            "child_checks": child["checks"], "child_exit_code": row["child_exit_code"],
+            "scope": "Actual F2/autoload navigation and real owner disposal; window-close process exit executes in a separate source-matched child. Stop-delivery fault injection is explicitly labelled."}
+
+
 def qualify(args: argparse.Namespace) -> dict:
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -114,7 +140,7 @@ def qualify(args: argparse.Namespace) -> dict:
         if commit != args.expected_source_sha:
             raise ValueError("Checked-out source differs from requested source")
         report.update(source_tree=tree, native_source_inputs=inputs)
-        lab_sources = ["godot/project.godot", "godot/scripts/feature_launcher.gd"]
+        lab_sources = ["godot/project.godot", "godot/scripts/feature_launcher.gd", "godot/scripts/feature_navigation.gd"]
         lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot").glob("object_shard_*.tscn"))]
         preflight = (ROOT / "godot/object_shard_worker_rehearsal.tscn").is_file()
         report["m3_preflight"] = preflight
@@ -214,6 +240,7 @@ def qualify(args: argparse.Namespace) -> dict:
                     ("worker_rehearsal", "objectshard-worker-rehearsal-test-v1"),
                     ("worker_adverse", "objectshard-worker-adverse-test-v1"),
                     ("worker_recovery", "objectshard-worker-recovery-test-v1"),
+                    ("worker_navigation", "objectshard-worker-navigation-test-v1"),
                     ("worker_replay_admission", "objectshard-worker-replay-admission-test-v1"),
                     ("worker_resources", "objectshard-worker-resource-test-v1"),
                     ("worker_commands", "objectshard-worker-command-test-v1"),
@@ -225,6 +252,8 @@ def qualify(args: argparse.Namespace) -> dict:
                     command += ("--", "--report-copy=" + str(output / "continuous-play.json"))
                 elif name == "worker_replay_admission":
                     command += ("--", "--output-dir=" + str(output / "worker-replay-admission"))
+                elif name == "worker_navigation":
+                    command += ("--", "--output=" + str(output / "worker-navigation.json"))
                 cases.append((runner.Case("objectshard_" + name, command,
                     int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
             cases.append((runner.Case("objectshard_continuous_replay",
@@ -297,6 +326,7 @@ def qualify(args: argparse.Namespace) -> dict:
                 receipt = footer(output / record["log"], schema)
                 minimum_checks = {"objectshard-worker-adverse-test-v1": 23,
                                   "objectshard-worker-recovery-test-v1": 63,
+                                  "objectshard-worker-navigation-test-v1": 100,
                                   "objectshard-worker-replay-admission-test-v1": 57,
                                   "objectshard-worker-input-fences-v1": 34,
                                   "objectshard-worker-resource-test-v1": 19,
@@ -307,6 +337,8 @@ def qualify(args: argparse.Namespace) -> dict:
                 if (schema.endswith("test-v1") or schema == "objectshard-worker-input-fences-v1") and (type(receipt.get("checks")) is not int or receipt["checks"] < minimum_checks):
                     raise ValueError("Incomplete assertion inventory: " + case.name)
                 record["completion_receipt"] = receipt
+                if schema == "objectshard-worker-navigation-test-v1":
+                    record["navigation_lifecycle"] = validate_navigation_receipt(receipt, args.expected_source_sha)
                 if case.name == "objectshard_continuous_play_rendered":
                     live = json.loads((output / "continuous-play-rendered.json").read_text(encoding="utf-8"))
                     stages = live.get("timings_usec", {})

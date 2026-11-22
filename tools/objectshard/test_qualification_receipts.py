@@ -141,6 +141,49 @@ class ExecutedSourceCustody(unittest.TestCase):
 
 
 
+class NavigationCompletionReceipts(unittest.TestCase):
+    def receipt(self) -> dict:
+        return {"schema": "objectshard-worker-navigation-test-v1", "source_revision": "a" * 40,
+                "checks": 100, "failures": 0,
+                "cases": ["active_pending_repeated", "naturally_sleeping", "opening", "reset_superseded",
+                          "held_interval", "stop_delivery_faults", "already_closed_prior_policy", "window_close_upgrade"],
+                "observations": [{"case": "window_close_upgrade", "child_exit_code": 0,
+                                  "child_report": {"schema": "objectshard-worker-navigation-quit-child-v1",
+                                                   "source_revision": "a" * 40, "checks": 18, "failures": 0}}]}
+
+    def test_complete_source_bound_parent_and_child_are_required(self) -> None:
+        result = qualify_lab.validate_navigation_receipt(self.receipt(), "a" * 40)
+        self.assertEqual(result["status"], "passed")
+        self.assertEqual(result["child_checks"], 18)
+
+    def test_incomplete_case_inventory_or_changed_source_is_refused(self) -> None:
+        for delta in ({"cases": []}, {"source_revision": "b" * 40}, {"checks": 99},
+                      {"checks": True}, {"failures": False}, {"observations": []}):
+            value = self.receipt()
+            value.update(delta)
+            with self.subTest(delta=delta), self.assertRaises(ValueError):
+                qualify_lab.validate_navigation_receipt(value, "a" * 40)
+
+    def test_child_exit_failure_short_checks_and_wrong_identity_are_refused(self) -> None:
+        for delta in ({"checks": 17}, {"failures": 1}, {"source_revision": "b" * 40},
+                      {"schema": "wrong"}, {"failures": False}):
+            value = self.receipt()
+            value["observations"][0]["child_report"].update(delta)
+            with self.subTest(delta=delta), self.assertRaises(ValueError):
+                qualify_lab.validate_navigation_receipt(value, "a" * 40)
+        for exit_code in (1, False):
+            value = self.receipt()
+            value["observations"][0]["child_exit_code"] = exit_code
+            with self.subTest(exit_code=exit_code), self.assertRaises(ValueError):
+                qualify_lab.validate_navigation_receipt(value, "a" * 40)
+
+    def test_duplicate_window_close_child_is_refused(self) -> None:
+        value = self.receipt()
+        value["observations"].append(copy.deepcopy(value["observations"][0]))
+        with self.assertRaises(ValueError):
+            qualify_lab.validate_navigation_receipt(value, "a" * 40)
+
+
 class WorkerSchedulingComparison(unittest.TestCase):
     def profiles(self) -> tuple[dict, dict]:
         control = {"schema": "objectshard-worker-scheduling-profile-v1", "failures": 0,

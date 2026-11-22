@@ -30,6 +30,9 @@ var pump_selector: OptionButton
 var receipt_pump_usec: int = 4000
 var running: bool = false
 var closing: bool = false
+var close_destination: String = ""
+var close_dispatched: bool = false
+var previous_auto_accept_quit: bool = true
 var queued_cuts: Array[Dictionary] = []
 var last_publication: int = -1
 var opened_usec: int = 0
@@ -62,6 +65,7 @@ var ui_sample_totals: Dictionary = {}
 
 
 func _ready() -> void:
+	previous_auto_accept_quit = get_tree().auto_accept_quit
 	get_tree().auto_accept_quit = false
 	get_window().title = "CyberSand · ObjectShard continuous play · Draft / HOLD"
 	get_window().size = Vector2i(1280, 840)
@@ -232,6 +236,8 @@ func _begin_owner(preset: Dictionary) -> void:
 	var previous_generation: int = int(host.generation)
 	if host.state == "Closed":
 		host = Host.new()
+	close_destination = ""
+	close_dispatched = false
 	selected_preset = preset.duplicate(true)
 	opened_usec = Time.get_ticks_usec()
 	last_publication = -1
@@ -269,10 +275,10 @@ func _process(_delta: float) -> void:
 	host.poll(not delay_box.button_pressed or closing or replacing_owner or loading or host.state == "Resetting")
 	if closing:
 		if host.state == "Closed":
-			get_tree().quit()
+			_finish_exit()
 		elif host.state == "ShutdownHeld":
 			closing = false
-			report_label.text = host.status + " · Export evidence before retrying shutdown."
+			report_label.text = host.status + " · Owner retained. Export evidence, then retry F2 or window close."
 		return
 	if replacing_owner:
 		if host.state == "Closed":
@@ -430,6 +436,8 @@ func _reset() -> void:
 		return
 	running = false
 	run_button.text = "Resume"
+	# An explicit Reset is a new owner decision after a held shutdown.
+	close_destination = ""
 	delay_box.set_pressed_no_signal(false)
 	pointer_cancelled += queued_cuts.size()
 	host.capture.write("event", int(host.frame.get("tick", 0)), {"kind": "ExplicitUIReset", "cancelled_pointer_intents": queued_cuts.size()})
@@ -470,6 +478,10 @@ func _stroke(cells: Array[Vector2i], button: int) -> void:
 
 
 func _queue_intent(position: Vector2i, action: String, material: int, fixture: bool = false) -> bool:
+	if not _accepting_play_input():
+		pointer_refused += 1
+		_refuse_unavailable_input(action)
+		return false
 	# Pointer intent belongs to the material snapshot the view actually observed.
 	# Deferred host receipts may already have published a newer, unseen pose.
 	var observed: Dictionary = host.publication if fixture else view.frame
@@ -494,7 +506,10 @@ func _queue_intent(position: Vector2i, action: String, material: int, fixture: b
 
 
 func _cut_support() -> void:
-	if loading or host.publication.is_empty():
+	if not _accepting_play_input():
+		_refuse_unavailable_input("cut_support")
+		return
+	if host.publication.is_empty():
 		return
 	var source: Dictionary = host.publication
 	var lowest: int = -1
@@ -513,7 +528,10 @@ func _cut_support() -> void:
 
 
 func _erode_resting_cell() -> void:
-	if loading or host.bridge == null:
+	if not _accepting_play_input():
+		_refuse_unavailable_input("erode_resting_cell")
+		return
+	if host.bridge == null:
 		return
 	var physical: Dictionary = host.bridge.diagnostics()
 	for body: Dictionary in physical.get("bodies", []):
@@ -534,6 +552,17 @@ func _erode_resting_cell() -> void:
 					report_label.text = "One sleeping structural cell queued; real Rapier determines the response."
 					return
 	report_label.text = "No sleeping structural body yet. Let a detached structure settle naturally."
+
+
+func _accepting_play_input() -> bool:
+	return not loading and not replacing_owner and not closing and not close_dispatched \
+		and not host.failed and host.state not in ["Closing", "Closed", "ShutdownHeld"]
+
+
+func _refuse_unavailable_input(action: String) -> void:
+	report_label.text = "Input refused: owner is loading, replacing, closing or held. No new material command was admitted."
+	host.capture.write("event", int(host.frame.get("tick", 0)), {"kind": "UIInputUnavailable", "action": action,
+		"state": host.state, "closing": closing, "replacing_owner": replacing_owner, "loading": loading, "failed": host.failed})
 
 
 func _feed_burner() -> void:
@@ -682,7 +711,62 @@ func _export_and_open() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST and not closing:
-		closing = true
-		running = false
-		host.close()
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_request_exit("quit")
+
+
+func request_feature_launcher_navigation() -> void:
+	_request_exit("launcher")
+
+
+func feature_launcher_navigation_ready() -> bool:
+	return closing and close_destination == "launcher" and host.state == "Closed" and not close_dispatched
+
+
+func _request_exit(destination: String) -> void:
+	if close_dispatched:
+		return
+	if closing:
+		# Process exit takes precedence over an already-requested launcher handoff.
+		if destination == "quit":
+			close_destination = "quit"
+		return
+	# A retry after a held shutdown must not downgrade a window-close request.
+	if close_destination != "quit" or host.state != "ShutdownHeld":
+		close_destination = destination
+	closing = true
+	running = false
+	run_button.text = "Resume"
+	# Navigation supersedes a pending reset. Never open an intermediate owner
+	# after the user has asked to leave this scene.
+	replacing_owner = false
+	pending_preset.clear()
+	delay_box.set_pressed_no_signal(false)
+	pointer_cancelled += queued_cuts.size()
+	host.capture.write("event", int(host.frame.get("tick", 0)),
+		{"kind": "ExplicitUIExit", "destination": close_destination, "cancelled_pointer_intents": queued_cuts.size()})
+	queued_cuts.clear()
+	host.close()
+	report_label.text = "Disposing the native owner before " + ("returning to the launcher." if close_destination == "launcher" else "closing the window.")
+
+
+func _finish_exit() -> void:
+	if close_dispatched or host.state != "Closed":
+		return
+	if close_destination == "launcher":
+		var navigation: Node = get_node_or_null("/root/FeatureNavigation")
+		if navigation == null or get_tree().current_scene != self:
+			closing = false
+			report_label.text = "Owner disposed; launcher handoff refused because this is no longer the current scene."
+			return
+		if not navigation.complete_feature_launcher_navigation(self):
+			closing = false
+			report_label.text = "Owner disposed; launcher handoff refused. Retry F2."
+			return
+		close_dispatched = true
+		get_tree().auto_accept_quit = previous_auto_accept_quit
+		set_process(false)
+	else:
+		close_dispatched = true
+		get_tree().auto_accept_quit = previous_auto_accept_quit
+		get_tree().quit()

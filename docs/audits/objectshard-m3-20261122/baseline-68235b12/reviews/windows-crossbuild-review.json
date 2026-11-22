@@ -1,0 +1,97 @@
+{
+  "schema": "objectshard-independent-windows-crossbuild-review-v1",
+  "utc": "2026-11-22T06:55:40.567177+00:00",
+  "reviewer": "review_custody independent of implementation and download workstream",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44995374918",
+  "build_job": 137125163578,
+  "remote_readback": "windows-crossbuild-remote.json",
+  "remote_readback_sha256": "6da09e91cbc8e597fc5c928d07f81fbc7daa487141dca89865d40e5b8f0a8ce5",
+  "artifacts": [
+    {
+      "id": 14743743167,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14743743167",
+      "name": "objectshard-dll-68235b12d7f41f7b590456971f21dfc3f5c6d701-44995374918-1",
+      "archive_sha256": "403dbe33213d5715a3d51aa730801f9dfb9eb74526f1a26410b6ace6109550c3",
+      "archive_bytes": 2217475,
+      "members": [
+        "cybersand_native.windows.x86_64.dll",
+        "candidate-provenance.json"
+      ]
+    },
+    {
+      "id": 14743399251,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14743399251",
+      "name": "objectshard-crossbuild-68235b12d7f41f7b590456971f21dfc3f5c6d701-44995374918-1",
+      "archive_sha256": "336d54633e159407d6b4f15f17428b8b95ba6c24ece1e491db1f8897a0738685",
+      "archive_bytes": 13883,
+      "members": [
+        "bindings/performance.jsonl",
+        "extension/command.log",
+        "bindings/command.log",
+        "bindings/receipt.json",
+        "extension/performance.jsonl",
+        "extension/receipt.json",
+        "scons.log",
+        "source-commit.txt"
+      ]
+    }
+  ],
+  "candidate_provenance_sha256": "b1d9de1513d7c07509046e1d212d1054f5a8eed541b56fc54dbfce352069311e",
+  "native_sha256": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+  "native_bytes": 6075904,
+  "native_inputs_verified": 116,
+  "native_pe": {
+    "machine": "0x8664",
+    "optional_magic": "0x20b",
+    "dll_flag": true
+  },
+  "build_receipts": [
+    {
+      "stage": "bindings",
+      "source": {
+        "commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+        "job": "windows-build",
+        "run_attempt": "1",
+        "run_id": "44995374918",
+        "runner_name_sha256": "fc6e9ba114f756c6aece822bfe22d1fa71142633071ad0d013c87024921b69d2",
+        "tracked_delta_sha256": null,
+        "tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112"
+      },
+      "elapsed_seconds": 185.52510957099997,
+      "receipt_sha256": "4927333f5e6ee5ff764f895919948eb6e532f6a27b3f33eac5fbbb4b692c6d6e",
+      "log_sha256": "98bbac6425be2046adf3379ee18bdb3e01f6b28f92f342e55961205481387b80",
+      "build_complete": true,
+      "resource_scope": "direct_process_only"
+    },
+    {
+      "stage": "extension",
+      "source": {
+        "commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+        "job": "windows-build",
+        "run_attempt": "1",
+        "run_id": "44995374918",
+        "runner_name_sha256": "fc6e9ba114f756c6aece822bfe22d1fa71142633071ad0d013c87024921b69d2",
+        "tracked_delta_sha256": null,
+        "tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112"
+      },
+      "elapsed_seconds": 54.40514866100003,
+      "receipt_sha256": "8ec4b70f792044d5da330c3daf13ff04af0d1ac4d59c4e3010085061d6072fea",
+      "log_sha256": "b99399e64f95eb89ee22c0df606fef1ca4084320dfb986469f70910b21a9057e",
+      "build_complete": true,
+      "resource_scope": "direct_process_only"
+    }
+  ],
+  "build_contract_inputs": {
+    "tools/build_native_extension_windows.sh": "fe592da436240d0dbbe550dc50a51dd8ffa1eb060550c8033bd16e57d93476c8",
+    "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+    "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+    "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+    ".github/workflows/objectshard-lab.yml": "e282f78cab2921d6699e1a14f1e01ec008e62d2465a01a1a70cdc24c8b2d0a24"
+  },
+  "failures": [],
+  "status": "passed",
+  "scope": "Fresh exact-source Windows cross-compilation and candidate artifact custody only. Actual Windows execution, owner evaluator ZIP, launcher extraction matrix, performance and physical owner acceptance remain separate.",
+  "measurement_caveat": "Compiler process receipts report direct_process_only RSS/CPU; these are not total compiler-child resource measurements or gameplay measurements."
+}

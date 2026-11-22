@@ -1,0 +1,8 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+SCRIPT ERROR: Parse Error: Identifier "NOTIFICATION_WM_CLOSE_REQUEST" not declared in the current scope.
+          at: GDScript::reload (res://tests/review_navigation_held.gd:70)
+ERROR: Failed to load script "res://tests/review_navigation_held.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)

@@ -55,6 +55,14 @@ A successful verifier checks custody, not physical gameplay acceptance.
    the old owner before constructing another World, including when the canvas
    dimensions change.
 
+**F2** returns to the feature launcher only after the worker disposes its native
+session and main releases the physics bodies. The screen stays present during
+that handoff. Repeated F2 is harmless; closing the window during the handoff
+requests process exit instead. A pending Reset does not open another World after
+navigation begins. If shutdown enters an explicit Held state, export evidence
+and retry F2 or window close; the owner remains retained until disposal succeeds.
+The launcher regains its previous window-close policy after the handoff.
+
 **PASS:** the loop continues without duplicate material, stale colliders,
 unexplained inventory loss, unintended motion bursts or a stopped advertised
 clock. Legitimate component/body/geometry capacity refusal is distinct from a

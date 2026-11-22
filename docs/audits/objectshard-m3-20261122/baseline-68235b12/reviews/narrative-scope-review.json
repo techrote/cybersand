@@ -1,0 +1,74 @@
+{
+  "schema": "objectshard-independent-narrative-scope-review-v1",
+  "utc": "2026-11-22T07:14:12.774608+00:00",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "reviewed_document": "build/final-audit-narrative.md",
+  "reviewed_document_sha256": "7c13d058f49ae4eadd09467590ce8c677cbf38593d2b1cfc6256d890d7b64baf",
+  "verdict": "Substantive ownership and integration scope accurate; precision corrections recommended, with no product code changes",
+  "checks": [
+    {
+      "claim": "The opt-in scene constructs one real native World inside an exclusive worker, with Rapier on main.",
+      "verdict": "accurate",
+      "evidence": "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_native_worker.gd",
+      "detail": "Worker._run constructs and exclusively calls CyberObjectShardLab; this is explicitly separate from CyberSimulationWorker and ordinary Workbench attachment."
+    },
+    {
+      "claim": "Promotion activates only after required geometry, terrain and occupancy evidence.",
+      "verdict": "accurate; make cancellation semantics explicit",
+      "evidence": [
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_host.gd",
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/native/src/object_shard_coordinator.cpp"
+      ],
+      "suggested_addition": "Precommit cancellation leaves material with World and completes the already-started physical interval for existing bodies. Cancellation after the debit quarantines and retains inactive shard inventory; explicit disposal recovery is required. The exact terrain acknowledgement applies the native occupancy mask before ReadyToActivate."
+    },
+    {
+      "claim": "Host actions are bounded to 32; pure-value requests are bounded to 64 KiB.",
+      "verdict": "clarify queue versus in-flight operation and value payload versus allocation",
+      "evidence": [
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_host.gd",
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_native_worker.gd"
+      ],
+      "suggested_replacement": "The host queues at most 32 named actions in addition to its single in-flight operation. Worker command parameters have a 64 KiB value-payload limit with bounded nesting and node counts; envelope and allocator overhead are separate. Worker request and reply channels each have separate capacities of 32 data entries and eight control entries."
+    },
+    {
+      "claim": "Reset/stop records terminal dispositions for queued and uncertain in-flight actions.",
+      "verdict": "accurate for host-admitted actions; qualify UI intent distinction",
+      "evidence": [
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_host.gd",
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_rehearsal.gd"
+      ],
+      "suggested_replacement": "Reset/stop records bounded per-action terminal dispositions for host-admitted inputs, distinguishing queued cancellation from uncertain in-flight outcomes. UI reset also records the explicit cancellation count for pointer intents not yet admitted to the host."
+    },
+    {
+      "claim": "Timing rings retain 2,048 samples per stage with counts and whole-session maxima.",
+      "verdict": "host-only; UI differs",
+      "evidence": [
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_host.gd",
+        "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_rehearsal.gd"
+      ],
+      "suggested_replacement": "Host timing rings retain 2,048 samples per stage, total counts and whole-session maxima. UI timing rings retain 4,096 raw samples with total observation counts and maxima over the retained window."
+    },
+    {
+      "claim": "Export bug report writes an incident plus the bounded prospective JSONL trace.",
+      "verdict": "clarify the trace already exists",
+      "evidence": "https://github.com/techrote/cybersand/blob/68235b12d7f41f7b590456971f21dfc3f5c6d701/godot/scripts/object_shard_worker_rehearsal.gd",
+      "suggested_replacement": "Export bug report writes incident JSON, appends a diagnostic checkpoint to the already-running bounded JSONL trace, and opens the report directory without toggling the play state. The incident identifies its associated trace."
+    },
+    {
+      "claim": "Independent ownership and physics reviews passed 180 and 467 checks.",
+      "verdict": "verified against retained exact-source review JSON",
+      "evidence": [
+        "build/review-ownership/final-review-68235b12.json",
+        "build/review-physics/final-68235b12/review-final.json"
+      ],
+      "detail": "Counts 63+57+31+29=180 and 52+24+70+137+46+63+75=467. Reused sealed source-equivalent native runtime limitation is properly disclosed."
+    },
+    {
+      "claim": "Owner-authorized mergedown and production provenance gate remain separate.",
+      "verdict": "accurate",
+      "evidence": "build/review-custody/mergedown-gates.json",
+      "detail": "Dependency order, exact per-head publication, complete 116-input inventory, ordinary gates and Draft full-provenance skip are preserved. Six current mismatches remain unpassed."
+    }
+  ],
+  "required_results_caveat": "Windows rendered adversarial input-to-frame_post_draw p99/max of 1.531200/1.547133 seconds must remain visible and separate from 8.251 ms main callback p99. Same-source pair and software renderer limitations remain."
+}

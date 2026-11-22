@@ -97,3 +97,44 @@ It is neither success nor an observed 1800-second timeout. The first observed
 preserves the original failures, source hashes, repaired local results and
 mergedown-gate audit. Final Windows and Linux execution, actual ZIP custody,
 rendered timing and exact published-source review remain the critical path.
+
+## Published baseline and navigation findings
+
+PR #741 was published Draft/HOLD at `68235b12d7f41f7b590456971f21dfc3f5c6d701`,
+tree `f533105e41b33e75c07c93aa0c8c40438e7bc112`. Its first exact-source campaign
+passed 40 Linux and 40 Windows cases, all 192 existing World cases, 93,529 focused
+ASan/UBSan checks, and 31 cases from the delivered Windows ZIP. Four extraction
+paths and specific tamper refusal passed. These remain valid executed baseline
+results, preserved in [baseline custody](objectshard-m3-20261122/baseline-68235b12/custody.json).
+
+Final operator review subsequently exposed an uncovered global F2 route. An
+independent actual-host reproduction failed eight of 22 lifecycle assertions:
+the scene/host/bridge disappeared, while the worker still owned 526 Wood cells
+and its six-shape Rapier body remained allocated. Launcher re-entry overlapped
+another native World, and the launcher inherited `auto_accept_quit=false`.
+The original Windows ZIP is therefore preserved as a superseded candidate;
+passing its earlier cases does not establish navigation readiness.
+
+The repair adds an optional asynchronous navigation hook. The current scene
+remains until native disposal, stopped-thread join and main-thread RID release
+reach `Closed`. Completion is current-scene fenced, including the deferred
+handoff. Ordinary Workbench recovery/navigation retains its previous ordering;
+its real-native LIFE008 regression passes 62 assertions. F2 supersedes a pending
+Reset, and window close upgrades the handoff to process exit.
+
+Two further adversaries exposed post-exit button admission (44 newly queued
+intents silently discarded by navigation) and quit-priority loss after a held
+shutdown. Central input admission and both shortcut buttons now refuse while
+closing/replacing/held; quit priority survives a held retry. Explicit Reset is a
+new owner decision. Original failures and repaired 17/17 and 9/9 probes remain
+separate. The independent lifecycle/completion/policy probes pass 49 checks on
+the repaired local bytes.
+
+The maintained regression executes all eight required navigation cases, passing
+135 parent assertions plus an 18-assertion child that actually exits through
+window close. Its receipt validates exact source identity, complete case
+inventory and successful child completion. This new case is registered for both
+source and extracted-package qualification, and the global navigation script is
+now explicitly included in the executed-source ledger. A fresh committed-source
+campaign and final-source reviews are required for the successor; the original
+40-case campaign is not relabelled as that qualification.
