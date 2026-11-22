@@ -202,7 +202,9 @@ contact problems. A protective hold also exports an incident automatically.
 The observation contains source/manifest identity, scenario and seed, numeric
 poses, actual Rapier sleep/velocity, geometry installation events, native
 ownership, candidate/admission reasons, pending edits and scoped metrics. Native
-session counters and maxima are separate from lifetime totals. Cumulative
+session counters and maxima are separate from totals for the current native
+owner instance, including its resets. Replacing the canvas creates a new native
+owner; these are not claimed to be process-global totals. Cumulative
 material-accounting/disposal history is explicitly labelled. Timing includes
 owner-thread operating-system preemption and is not process CPU utilization.
 

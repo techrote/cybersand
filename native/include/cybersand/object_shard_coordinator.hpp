@@ -104,7 +104,7 @@ struct Snapshot {
     std::span<const BodyView> bodies{};
     Accounting accounting{};
     Metrics metrics{};
-    Metrics lifetime_metrics{}; // Explicit process totals, including this session.
+    Metrics lifetime_metrics{}; // This owner instance, including its reset sessions.
     AdmissionStatus admission{};
 };
 enum class ExposureKind : std::uint8_t { WaterExtinction, FireIgnition };
@@ -193,7 +193,11 @@ private:
     // the high bit records its single accepted ignition opportunity.
     std::vector<std::uint32_t> fire_opportunities_;
     std::uint64_t fire_opportunity_tick_{};
-    struct PocketFence { Handle shard{};std::uint16_t min_x{},max_x{},row{}; };
+    // Private derived history: Registry IDs are never reused, even on reset.
+    // Public operations still validate full Handles; refresh resolves this ID
+    // through the current body roster before consulting authoritative storage.
+    struct PocketFence { std::uint64_t shard_id{};std::uint16_t min_x{},max_x{},row{}; };
+    static_assert(sizeof(PocketFence)==16);
     std::vector<PocketFence> ingress_fences_;
     std::vector<PocketFence> ingress_fences_backup_;
     std::vector<TransferRequest> ingress_proposals_;

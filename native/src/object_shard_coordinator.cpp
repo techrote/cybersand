@@ -1114,7 +1114,7 @@ bool Coordinator::pocket_fenced(Handle handle,std::uint32_t cell) const noexcept
     if (!shard || cell>=shard->area()) return true;
     const auto x=cell%shard->bounds().width;
     return std::any_of(ingress_fences_.begin(),ingress_fences_.end(),[&](const auto& fence){
-        return fence.shard==handle && x>=fence.min_x && x<fence.max_x;
+        return fence.shard_id==handle.id && x>=fence.min_x && x<fence.max_x;
     });
 }
 Outcome Coordinator::fence_invalid_entry(Handle handle,std::uint32_t cell) {
@@ -1122,13 +1122,13 @@ Outcome Coordinator::fence_invalid_entry(Handle handle,std::uint32_t cell) {
     if (!shard) return Outcome::Stale;
     const auto opening=contact::pocket_opening(*shard,cell);
     if (opening.outcome!=Outcome::Accepted) return opening.outcome;
-    for (auto& fence:ingress_fences_) if (fence.shard==handle &&
+    for (auto& fence:ingress_fences_) if (fence.shard_id==handle.id &&
         fence.min_x<opening.max_x && opening.min_x<fence.max_x) {
         fence.min_x=std::min(fence.min_x,opening.min_x);fence.max_x=std::max(fence.max_x,opening.max_x);
         fence.row=std::max(fence.row,opening.row);return Outcome::Accepted;
     }
     if (ingress_fences_.size()==ingress_fences_.capacity()) return Outcome::Capacity;
-    ingress_fences_.push_back({handle,opening.min_x,opening.max_x,opening.row});return Outcome::Accepted;
+    ingress_fences_.push_back({handle.id,opening.min_x,opening.max_x,opening.row});return Outcome::Accepted;
 }
 void Coordinator::refresh_ingress_fences() {
     // A failed swept entry must not become "already inside" on the next pose.
@@ -1136,7 +1136,9 @@ void Coordinator::refresh_ingress_fences() {
     // World Sand, or its owner is retired. This conservative historical guard
     // stores no duplicate material and follows the stable local lattice.
     std::erase_if(ingress_fences_,[&](const PocketFence& fence) {
-        const auto* shard=registry_.find(fence.shard);const auto* b=body(fence.shard);
+        const BodyView* b=nullptr;
+        for (const auto& current:bodies_) if (current.shard.id==fence.shard_id) { b=&current;break; }
+        const auto* shard=b ? registry_.find(b->shard) : nullptr;
         if (!shard || !shard->owns_inventory() || !b || !b->has_body) return true;
         const auto frame=contact::frame(contact_pose(b->pose));
         const auto origin=contact::to_world(frame,{static_cast<double>(fence.min_x),0});
@@ -1153,13 +1155,13 @@ void Coordinator::refresh_ingress_fences() {
 }
 
 void Coordinator::automatic_ingress(bool transfer) {
+    ScopedTime timing{metrics_.contact_ns};
     if (!transfer && world_->quantity_ledger().material_cells[static_cast<std::uint8_t>(Material::Sand)]==0) {
         ingress_fences_.clear();
         return;
     }
     refresh_ingress_fences();
     ingress_proposals_.clear();
-    const auto started=now_ns();
     // Stable registry order resolves two-shard source contention. Native
     // ownership, not a transient raster ID, decides who can debit Sand.
     for (auto& b:bodies_) {
@@ -1206,7 +1208,6 @@ void Coordinator::automatic_ingress(bool transfer) {
         request.sequence=next_transaction_;(void)ingest(request);
         if (quarantined_) return;
     }
-    metrics_.contact_ns+=now_ns()-started;
 }
 
 void Coordinator::advance_products_and_exchange() {

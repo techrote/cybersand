@@ -493,6 +493,7 @@ Dictionary CyberObjectShardLab::snapshot() {
         output["accounting"] = accounting; output["metrics"] = metrics_value(source.metrics);
         output["metrics_scope"] = "Current session counters and maxima, reset at native reset";
         output["lifetime_metrics"] = metrics_value(source.lifetime_metrics);
+        output["lifetime_metrics_scope"] = "This native owner instance including reset sessions; canvas replacement creates a new owner";
         return output;
     } catch (const std::exception& error) { return fail(error.what()); }
 }

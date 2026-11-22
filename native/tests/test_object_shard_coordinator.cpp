@@ -19,6 +19,9 @@ struct CoordinatorTestAccess {
     static Registry& registry(Coordinator& coordinator) { return coordinator.registry_; }
     static std::span<const Exposure> exposures(const Coordinator& coordinator) { return coordinator.exposures_; }
     static std::size_t ingress_fences(const Coordinator& coordinator) { return coordinator.ingress_fences_.size(); }
+    static bool pocket_fenced(const Coordinator& coordinator,Handle handle,std::uint32_t cell) {
+        return coordinator.pocket_fenced(handle,cell);
+    }
     static void remove_ingress_history_capacity(Coordinator& coordinator) {
         decltype(coordinator.ingress_fences_) empty;
         coordinator.ingress_fences_.swap(empty);
@@ -938,10 +941,19 @@ void side_entry_refusal_cannot_be_laundered_by_a_stationary_pose() {
         CHECK(world_population(coordinator, Material::Sand) + shard->counts().cargo == 1);
         check_population_balance(coordinator);
         if (reset) {
+            const auto retired_handle=handle;
             CHECK(coordinator.reset(0, 18).outcome == Outcome::Accepted);
             CHECK(CoordinatorTestAccess::ingress_fences(coordinator) == 0);
             handle = open_pocket(coordinator);
             shard = coordinator.registry().find(handle);
+            CHECK(handle.id>retired_handle.id && handle.session>retired_handle.session);
+            const auto pocket=static_cast<std::uint32_t>((31-shard->bounds().y)*shard->bounds().width+31-shard->bounds().x);
+            CHECK(!CoordinatorTestAccess::pocket_fenced(coordinator,handle,pocket));
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,retired_handle,pocket));
+            auto stale=handle;++stale.generation;
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,stale,pocket));
+            stale=handle;++stale.session;
+            CHECK(CoordinatorTestAccess::pocket_fenced(coordinator,stale,pocket));
         } else {
             CHECK(coordinator.edit(31, 31, empty()).outcome == Outcome::Accepted);
             sleeping_step(coordinator); // An actually empty aperture clears its history.
@@ -965,7 +977,9 @@ void segmented_motion_preserves_invalid_pocket_entry_until_semantic_ingress() {
     CHECK(coordinator.edit(31,31,{Material::Sand,213,217,-470}).outcome==Outcome::Accepted);
     const auto source=coordinator.world_witness(31,31);
     auto left=next_poses(coordinator);left[0].x-=2;
+    const auto contact_ns_before=coordinator.metrics().contact_ns;
     CHECK(coordinator.accept_motion(left).outcome==Outcome::Accepted);
+    CHECK(coordinator.metrics().contact_ns>contact_ns_before);
     CHECK(coordinator.world().completed_tick_index()==tick);
     CHECK(shard->counts().cargo==0);
     CHECK(coordinator.inspect_world(31,31).material==Material::Sand);

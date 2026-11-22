@@ -379,6 +379,7 @@ func export_result() -> Dictionary:
 		"native_metric_scope": "native_metrics are current-session counters and maxima when lifetime_metrics is present; otherwise native_session_counters supplies additive deltas. Maxima are never subtracted.",
 		"native_session_counters": _session_counters(), "native_process_totals_at_session_start": session_metrics_start,
 		"native_lifetime_metrics": frame.get("lifetime_metrics", {}),
+		"native_lifetime_metric_scope": frame.get("lifetime_metrics_scope", "Native owner instance; canvas replacement starts a new owner"),
 		"physics_diagnostics": _physics_diagnostics(), "admission": frame.get("admission", {}),
 		"capture": capture.metadata(), "named_actions": capture.actions.duplicate(true),
 		"observation_window": {"events_retained": events.size(), "events_total": total_events,

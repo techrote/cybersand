@@ -1,6 +1,7 @@
 // Selected external Fire ignition for OBJECTSHARD-001R. Included in the one
 // coordinator translation unit: no extra simulation owner, Fire inventory or
-// parallel chemistry clock. World::RuleKernel::Fire remains unchanged.
+// parallel chemistry clock. World's selected ignition law is unchanged; its
+// opt-in spent-opportunity guard prevents a second effect in that same tick.
 std::uint32_t& Coordinator::fire_opportunity(std::int64_t x,std::int64_t y) noexcept {
     const auto tick=world_->completed_tick_index()+1;
     if (fire_opportunity_tick_!=tick) {
