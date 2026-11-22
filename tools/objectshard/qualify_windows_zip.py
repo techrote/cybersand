@@ -154,8 +154,10 @@ def main() -> None:
     args = parser.parse_args()
     if args.package:
         create_archive(args.package, args.zip)
+    # The retained UTF-8 report preserves literal paths. Console JSON must also
+    # survive Windows' legacy code page after successful Unicode-path probes.
     print(json.dumps(qualify(args.zip.resolve(), args.output.resolve(), args.timeout,
-                             args.extract_root.resolve() if args.extract_root else None), indent=2, ensure_ascii=False))
+                             args.extract_root.resolve() if args.extract_root else None), indent=2, ensure_ascii=True))
 
 
 if __name__ == "__main__":

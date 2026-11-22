@@ -1,5 +1,7 @@
 """Archive admission tests; actual command-line qualification runs on Windows."""
 from pathlib import Path
+import io
+import json
 import subprocess
 import tempfile
 import unittest
@@ -51,6 +53,20 @@ class WindowsZipTests(unittest.TestCase):
         with mock.patch.object(probe.sys, "platform", "linux"):
             with self.assertRaisesRegex(ValueError, "actual Windows"):
                 probe.qualify(self.root / "missing.zip", self.root / "output")
+
+    def test_successful_unicode_report_survives_windows_legacy_console(self):
+        report = {"status": "passed", "root": "ObjectShard_日本語_é (1)"}
+        output = io.BytesIO()
+        console = io.TextIOWrapper(output, encoding="cp1252")
+        try:
+            with mock.patch.object(probe, "qualify", return_value=report), \
+                 mock.patch.object(probe.sys, "argv", ["qualify_windows_zip.py", "--zip", "fixture.zip", "--output", str(self.root)]), \
+                 mock.patch.object(probe.sys, "stdout", console):
+                probe.main()
+            console.flush()
+            self.assertEqual(json.loads(output.getvalue().decode("cp1252")), report)
+        finally:
+            console.detach()
 
     def _verifier_fixture(self):
         # Reuse the deliberately synthetic inventory; these tests establish
