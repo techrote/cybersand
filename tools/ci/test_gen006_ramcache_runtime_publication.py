@@ -48,14 +48,14 @@ def valid_guard_fixture() -> dict:
             target_area=("b","c","a")[i%3]) for i in range(30)], native_before=native,
         native_after=dict(native, hot_activations=33), filesystem_before=filesystem, filesystem_after=filesystem,
         evidence={"cache_io": {"prefetch_completed": 2, "prefetch_hits": 1, "background_publications": 1}})
-    value = {"ramcache_schema": "gen006-ramcache-qualification-v1", "native_sha256": "a"*64,
+    value = {"ramcache_schema": "gen006-ramcache-qualification-v1", "platform":"linux", "native_sha256": "a"*64,
         "engine_sha256": "b"*64, "source_commit": "c"*40, "source_tree": "d"*40,
         "local_delta": [], "missing_source_inputs": [], "source_inputs_sha256": {
             "tools/ci/run_persistent_area_residency_memory.py": "e"*64,
             "godot/tests/test_persistent_area_residency_memory.gd": "f"*64},
         "ramcache": {}, "ramcache_memory": {}, "ramcache_performance": {}}
     before = {key:copy.deepcopy(value[key]) for key in ("source_commit", "source_tree", "local_delta", "missing_source_inputs", "source_inputs_sha256")}
-    proof = dict(ok=True, qualified_source=True, diagnostic=False, source_unchanged=True,
+    proof = dict(ok=True, qualified_source=True, diagnostic=False, source_unchanged=True, platform="posix",
         source_before=before, source_after=copy.deepcopy(before), rows=[],
         source_commit=value["source_commit"], source_tree=value["source_tree"],
         engine_sha256=value["engine_sha256"], native_sha256=value["native_sha256"],
@@ -82,15 +82,17 @@ def valid_guard_fixture() -> dict:
             authoring_sha256="1"*64,authored_source_sha256="2"*64,
             physics_profile_sha256="3"*64,policy_sha256="4"*64) for id in ("a","b","c")}
         oracle = dict(revision=revision,game_ticks=expected,clock=clock,areas=records)
-        death = dict(kind="intentional_process_death",pid=pid,exit_code=-9,ok=True,
-            boundary=phase,forced_termination=True,observed_barrier=marker,barrier_witnesses=witness)
+        death = dict(kind="intentional_process_death",pid=pid,launcher_pid=pid,
+            native_identity=dict(native_pid=pid,launcher_pid=pid,relationship="direct"),
+            exit_code=-9,ok=True,boundary=phase,forced_termination=True,
+            observed_barrier=marker,barrier_witnesses=witness)
         if phase == "newer_dirty_after_durable":
-            baseline = dict(kind="fresh_process_recovery",pid=501,session_id="a"*32,
+            baseline = dict(kind="fresh_process_recovery",pid=501,launcher_pid=501,session_id="a"*32,
                 native_sha256="c"*64, durable_oracle=copy.deepcopy(oracle))
-            death["seed"] = dict(ok=True,pid=500,exit_code=0,log_sha256="8"*64,baseline=baseline)
+            death["seed"] = dict(ok=True,pid=500,launcher_pid=500,exit_code=0,log_sha256="8"*64,baseline=baseline)
         proof["rows"].append(death)
         for offset in (1, 2):
-            proof["rows"].append(dict(kind="fresh_process_recovery",pid=pid+offset,observed_pid=pid+offset,
+            proof["rows"].append(dict(kind="fresh_process_recovery",pid=pid+offset,launcher_pid=pid+offset,observed_pid=pid+offset,
                 exit_code=0,ok=True,boundary=phase,expected_tick=expected,checks=8,
                 session_id="a"*32,native_sha256="c"*64,physical_hash="d"*16,
                 durable_oracle=copy.deepcopy(oracle)))
@@ -370,6 +372,38 @@ class QualificationGuards(unittest.TestCase):
             elif fault == "death": value["ramcache_recovery"]["rows"].pop()
             else: value["ramcache_recovery"]["qualified_source"] = False
             with self.subTest(fault=fault), self.assertRaises(RuntimeError): profile.verify_ramcache(value)
+
+
+    def test_windows_console_child_identity_is_source_bound(self):
+        value = valid_guard_fixture()
+        value["platform"] = "windows"
+        proof = value["ramcache_recovery"]
+        proof["platform"] = "nt"
+        for index in range(len(profile.BOUNDARIES)):
+            death, first, repeat = proof["rows"][index*3:index*3+3]
+            launcher = death["pid"] + 50000
+            death["launcher_pid"] = launcher
+            death["native_identity"] = dict(native_pid=death["pid"],launcher_pid=launcher,
+                                             parent_pid=launcher,relationship="windows-console-child")
+            for child in (first,repeat):
+                child["launcher_pid"] = child["pid"] + 50000
+            if "seed" in death:
+                seed = death["seed"]
+                seed["launcher_pid"] = seed["pid"] + 50000
+                seed["baseline"]["launcher_pid"] = seed["baseline"]["pid"] + 50000
+        profile.verify_ramcache(value)
+        invalid = copy.deepcopy(value)
+        invalid["ramcache_recovery"]["rows"][0]["native_identity"]["parent_pid"] = 99
+        with self.assertRaises(RuntimeError):
+            profile.verify_ramcache(invalid)
+        invalid = copy.deepcopy(value)
+        invalid["ramcache_recovery"]["rows"][0]["native_identity"]["native_pid"] = 99
+        with self.assertRaises(RuntimeError):
+            profile.verify_ramcache(invalid)
+        invalid = copy.deepcopy(value)
+        invalid["ramcache_recovery"]["rows"][1]["launcher_pid"] = invalid["ramcache_recovery"]["rows"][1]["pid"]
+        with self.assertRaises(RuntimeError):
+            profile.verify_ramcache(invalid)
 
 
     def test_additional_lifecycle_death_oracles_fail_closed(self):

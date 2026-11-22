@@ -357,6 +357,9 @@ def verify_recovery(parent: dict, proof: dict) -> None:
         "Recovery native/engine identity differs from qualification")
     require(all(proof.get(key) == parent.get(key) for key in ("source_commit", "source_tree", "engine_sha256", "native_sha256")),
         "Recovery top-level source/runtime identity differs")
+    platform = proof.get("platform")
+    require(platform in ("nt", "posix") and platform == ("nt" if parent.get("platform") == "windows" else "posix"),
+        "Recovery OS identity differs from graphical campaign")
     rows = proof.get("rows", [])
     require(isinstance(rows, list) and len(rows) == len(BOUNDARIES)*3,
         "Nine actual OS deaths and eighteen independent native restores are mandatory")
@@ -368,6 +371,16 @@ def verify_recovery(parent: dict, proof: dict) -> None:
         barrier = death.get("observed_barrier", {})
         witnesses = death.get("barrier_witnesses", [])
         phases = {"before_snapshot", "queued_dirty"} if phase == "queued_dirty" else {phase}
+        native_identity = death.get("native_identity", {})
+        launcher_pid = death.get("launcher_pid")
+        require(type(launcher_pid) is int and launcher_pid > 0
+            and native_identity.get("native_pid") == death["pid"]
+            and native_identity.get("launcher_pid") == launcher_pid
+            and ((platform == "posix" and native_identity.get("relationship") == "direct"
+                  and launcher_pid == death["pid"])
+                 or (platform == "nt" and native_identity.get("relationship") == "windows-console-child"
+                     and death["pid"] != launcher_pid and native_identity.get("parent_pid") == launcher_pid)),
+            "Native process-death witness is not the tracked real engine process")
         require(isinstance(witnesses, list) and len(witnesses) == len(phases)
             and {w.get("phase") for w in witnesses if isinstance(w, dict)} == phases
             and all(w.get("pid") == death["pid"] and w.get("session_id") == barrier.get("session_id")
@@ -393,6 +406,9 @@ def verify_recovery(parent: dict, proof: dict) -> None:
             area = oracle.get("areas", {}) if isinstance(oracle, dict) else {}
             require(child.get("kind") == "fresh_process_recovery" and child["exit_code"] == 0
                 and child.get("observed_pid") == child["pid"] and child.get("expected_tick") == expected
+                and type(child.get("launcher_pid")) is int and child["launcher_pid"] > 0
+                and ((platform == "nt" and child["pid"] != child["launcher_pid"])
+                     or (platform == "posix" and child["pid"] == child["launcher_pid"]))
                 and child.get("checks", 0) >= 8 and child.get("session_id") == barrier["session_id"]
                 and re.fullmatch(r"[0-9a-f]{64}", str(child.get("native_sha256", ""))) is not None
                 and re.fullmatch(r"[0-9a-f]{16}", str(child.get("physical_hash", ""))) is not None
@@ -411,6 +427,12 @@ def verify_recovery(parent: dict, proof: dict) -> None:
             baseline = seed.get("baseline", {}) if isinstance(seed, dict) else {}
             require(seed.get("ok") is True and seed.get("exit_code") == 0
                 and type(seed.get("pid")) is int and seed.get("pid") > 0
+                and type(seed.get("launcher_pid")) is int and seed.get("launcher_pid") > 0
+                and ((platform == "nt" and seed["pid"] != seed["launcher_pid"])
+                     or (platform == "posix" and seed["pid"] == seed["launcher_pid"]))
+                and type(baseline.get("launcher_pid")) is int
+                and ((platform == "nt" and baseline["pid"] != baseline["launcher_pid"])
+                     or (platform == "posix" and baseline["pid"] == baseline["launcher_pid"]))
                 and len({seed["pid"], baseline.get("pid"), death["pid"], first["pid"], repeat["pid"]}) == 5
                 and baseline.get("kind") == "fresh_process_recovery"
                 and baseline.get("session_id") == barrier["session_id"]

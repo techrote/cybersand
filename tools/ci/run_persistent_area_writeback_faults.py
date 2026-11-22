@@ -26,6 +26,24 @@ ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|(?m:^ERRO
 MARKER = "GEN006_RAMCACHE_BARRIER "
 
 
+def live_native_identity(launcher_pid: int, observed_pid: int) -> dict:
+    """Prove whether stdout came from Godot itself or its Windows console child."""
+    if type(observed_pid) is not int or observed_pid < 1:
+        raise RuntimeError("Native Godot stdout has no valid native operating-system PID")
+    if observed_pid == launcher_pid:
+        return {"launcher_pid":launcher_pid,"native_pid":observed_pid,"relationship":"direct"}
+    if os.name != "nt":
+        raise RuntimeError("Native PID differs from the launched Linux process")
+    query = f"(Get-CimInstance Win32_Process -Filter 'ProcessId = {observed_pid}').ParentProcessId"
+    parent = subprocess.run(["powershell.exe","-NoProfile","-NonInteractive","-Command",query],
+                            stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=20)
+    if parent.returncode or not parent.stdout.strip().isdigit() or int(parent.stdout.strip()) != launcher_pid:
+        raise RuntimeError("Observed Windows Godot PID is not the live native child of its console launcher")
+    return {"launcher_pid":launcher_pid,"native_pid":observed_pid,
+            "parent_pid":int(parent.stdout.strip()),"relationship":"windows-console-child"}
+
+
+
 def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -58,8 +76,13 @@ def recover(engine: Path, project: Path, profile: Path, directory: Path, expecte
         raise RuntimeError(f"Fresh native recovery failed: exit {child.returncode}")
     receipt = completion(text, "GEN006_RAMCACHE_WRITEBACK")
     values = json.loads(evidence.read_text(encoding="utf-8"))
+    native_pid = values.get("pid")
+    printed_pid = re.search(r"\bpid=(\d+)\b", str(receipt.get("original","")))
     if values.get("failures") != 0 or values.get("mode") != "verify" or values.get("checks", 0) < 8 \
-            or values.get("pid") != child.pid or values.get("checks") != receipt["checks"]:
+            or type(native_pid) is not int or native_pid < 1 \
+            or printed_pid is None or int(printed_pid[1]) != native_pid \
+            or (os.name != "nt" and native_pid != child.pid) \
+            or values.get("checks") != receipt["checks"]:
         raise RuntimeError("Fresh recovery receipt is incomplete")
     native = values["events"][-1]
     manifest = native["fresh_owner_manifest"]
@@ -87,7 +110,7 @@ def recover(engine: Path, project: Path, profile: Path, directory: Path, expecte
               "areas":{id:{k:areas[id][k] for k in ("area_id","generation","incarnation",
                   "mutation_generation","completed_tick","native_sha256","authoring_sha256",
                   "authored_source_sha256","physics_profile_sha256","policy_sha256")} for id in ("a","b","c")}}
-    return {"kind":"fresh_process_recovery", "pid":child.pid, "observed_pid":values["pid"], "argv":argv,
+    return {"kind":"fresh_process_recovery", "pid":native_pid, "launcher_pid":child.pid, "observed_pid":native_pid, "argv":argv,
             "exit_code":child.returncode, "elapsed_s":time.monotonic()-started, "checks":receipt["checks"],
             "expected_tick":expected, "native_sha256":native["native_sha256"], "physical_hash":native["physical_hash"],
             "session_id":manifest["session_id"], "durable_oracle":stable, "evidence_sha256":sha(evidence),
@@ -112,10 +135,16 @@ def seed_published_checkpoint(engine: Path, project: Path, profile: Path, direct
     if child.returncode != 0 or ERRORS.search(text):
         raise RuntimeError("Independent durable seed failed before process-death qualification")
     receipt = completion(text, "GEN006_RAMCACHE_WRITEBACK")
+    seed_pid_match = re.search(r"\bpid=(\d+)\b",str(receipt.get("original","")))
+    if seed_pid_match is None:
+        raise RuntimeError("Native durable seed has no independently printed process identity")
+    seed_native_pid = int(seed_pid_match[1])
+    if seed_native_pid < 1 or (os.name != "nt" and seed_native_pid != child.pid):
+        raise RuntimeError("Durable seed native process differs from its actual launcher")
     baseline = recover(engine, project, profile, folder, 4, timeout)
     if baseline["pid"] == child.pid or baseline["durable_oracle"]["revision"] != 2:
         raise RuntimeError("Seed's acknowledged native checkpoint was not independently durable")
-    return {"pid":child.pid, "argv":argv, "exit_code":child.returncode,
+    return {"pid":seed_native_pid, "launcher_pid":child.pid, "argv":argv, "exit_code":child.returncode,
             "checks":receipt["checks"], "log_sha256":sha(folder/"seed.log"),
             "baseline":baseline, "ok":True}
 
@@ -142,6 +171,7 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
     witnesses: dict[str,dict] = {}
     failure: str | None = None
     forced_termination = False
+    native_identity: dict = {}
     try:
         while time.monotonic()-started < timeout:
             try:
@@ -158,8 +188,10 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
             if text.startswith(MARKER):
                 marker = json.loads(text[len(MARKER):])
                 phase = marker.get("phase")
-                if phase not in needed or phase in witnesses or marker.get("pid") != child.pid \
-                        or not re.fullmatch(r"[0-9a-f]{32}", marker.get("session_id", "")):
+                if phase not in needed or phase in witnesses \
+                        or type(marker.get("pid")) is not int or marker["pid"] < 1 \
+                        or (os.name != "nt" and marker["pid"] != child.pid) \
+                        or not re.fullmatch(r"[0-9a-f]{32}", str(marker.get("session_id", ""))):
                     failure = "Process-death barrier has mismatched phase/session/process identity"
                     break
                 if witnesses and marker["session_id"] != next(iter(witnesses.values()))["session_id"]:
@@ -170,9 +202,20 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
                     break
         else:
             failure = "Publisher never reached the complete requested crash boundaries"
+        if failure is None and boundary in witnesses:
+            try:
+                native_identity = live_native_identity(child.pid,int(witnesses[boundary]["pid"]))
+            except Exception as error:
+                failure = str(error)
     finally:
         if child.poll() is None:
-            child.kill()
+            if os.name == "nt":
+                killed = subprocess.run(["taskkill.exe","/F","/T","/PID",str(child.pid)],
+                                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=30)
+                if killed.returncode != 0:
+                    failure = "Windows process-tree kill failed: " + killed.stderr.decode(errors="replace")
+            else:
+                child.kill()
             forced_termination = True
         child.wait(timeout=30)
         reader.join(timeout=10)
@@ -192,7 +235,8 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
         raise RuntimeError("Prepublication crash did not witness actual newer dirty native work")
     if boundary == "queued_dirty" and marker.get("queued_requests") != 1:
         raise RuntimeError("Queued write-behind crash lacks coalesced unacknowledged work")
-    value = {"kind":"intentional_process_death", "pid":child.pid, "argv":argv, "forced_termination":True,
+    value = {"kind":"intentional_process_death", "pid":marker["pid"], "launcher_pid":child.pid,
+            "native_identity":native_identity, "argv":argv, "forced_termination":True,
             "exit_code":child.returncode, "elapsed_s":time.monotonic()-started, "observed_barrier":marker,
             "barrier_witnesses":list(witnesses.values()), "log_sha256":sha(log), "ok":True}
     if seed:
