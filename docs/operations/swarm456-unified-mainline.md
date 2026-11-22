@@ -64,7 +64,8 @@ independent reviews are retained in consolidated qualification evidence.
 | Protocol identity | Preserve V1/V2, independent V3 SWARM-005 controls and opt-in V4 recovery. Only original reviewed SWARM-004 schema5 may omit the two later option fields. | Current strict decode, exact historical schema whitelist and malformed/forged evidence. |
 | Territory/numeric input | Keep #715 coherent press/release/global-release and numeric commitment with #716 immutable captured requests and stale-authority retirement. | Actual pending typing, buttons, outside-canvas release, source changes and cancellation. |
 | Busy World | Keep #716 guard before Paint and shared history guard, including hidden/OFF preparation. | Paint/Undo exclusion while busy and ordinary authoring after retirement. |
-| Actual input dispatch | Flush synthetic input before yielding; observe the real canvas signal and retained native owner at dispatch. Do not fabricate a busy phase or freeze the worker. | Live child or unjoined preparation thread, Paint exclusion and complete unchanged material planes; idle Paint/Undo/Redo still work. |
+| Actual input dispatch | Flush synthetic input before yielding; observe actual input and its retained native owner at dispatch. Do not yield through a disabled history button before the busy keyboard shortcut, fabricate a busy phase or freeze the worker. | Live child or unjoined preparation thread, Paint/history exclusion and complete unchanged material planes; idle Paint/Undo/Redo still work. |
+| Process-fixture cleanup | Ignore only an already-retired POSIX PID when the fixture's cleanup signal races process exit. Keep every actual descendant-retirement assertion and production ownership path unchanged. | The original hosted cleanup failure, four real process tests and the complete ordinary Documentation gate. |
 | Runtime lookup | Keep #715 platform-first fail-closed loader. Refresh every advertised package binding with the new CLI. | Ordinary startup without developer overrides; source/pristine equality and stale-binding refusals. |
 | Scoped fixtures | Route controls to `swarm45_reciprocal_controls.gd` and all nine graphical examples to `swarm456_reciprocal_ui.gd`. Retain `SWARM004_CONTROLS` and #716 inspector evidence. Refuse missing explicit graphical mode/example/evidence before World creation. | Exact mandatory graphical inventory; both donors' assertions; no unconfigured fixture in ordinary headless discovery. |
 | Package custody | Keep canonical committed archive text and explicit Windows attributes with #716 raw asset/import byte inventories and before/after checks. | Source stage, pristine extraction, executable hashes, sidecars and terminal recheck. |
@@ -154,6 +155,30 @@ graphical preflight passed 102 assertions with the real hidden cancellation thre
 live child cases and ordinary idle Paint/Undo/Redo. These are qualification-harness
 repairs, not production input or solver changes. Both failed hosted runs remain
 failed evidence; a complete new source-matched run is required.
+
+The third run,
+[44980706584](https://github.com/techrote/cybersand/actions/runs/44980706584),
+executed source `b34cf57bb8ce0c71d009ec3b922e85426e366b29`. Its Linux graphical
+fixture completed the three real busy-canvas dispatch cases without changing
+their material planes, then failed before dispatching the busy Undo shortcut:
+the disabled-button click yielded two frames after observing a live native child.
+That child had finished before the subsequent liveness assertion. Synchronous
+button and key delivery repairs this test interval; it does not alter production
+history guards, loosen live-child requirements or erase the failed execution.
+The successor's single full local graphical preflight passed 108 assertions,
+including actual disabled-button and Ctrl-Z/Y callbacks with the same live native
+child, all 20 complete material planes and exact idle Paint Undo/Redo. Independent
+source/raw review passed 87 checks. This reused-runtime preflight remains separate
+from the required new hosted qualification.
+
+The ordinary Documentation run at that source also recorded one inherited
+process-fixture cleanup error among 231 tests. A process retired between the
+liveness check and its cleanup signal. Independent triage found no body assertion
+or production ownership error; the fixture and production helpers were unchanged
+from accepted main. Catching only `ProcessLookupError` in POSIX fixture cleanup
+preserves all descendant-retirement assertions and other exceptions. The repaired
+four-test real-process suite passed locally, but the full ordinary Documentation
+gate still requires a successful final-source execution.
 
 ## Physical owner acceptance
 

@@ -94,6 +94,27 @@ def input_report_errors(directory: Path, report: dict, source: str, cli_sha: str
         if (dispatch.get("paint_dragging_at_dispatch") is not False
                 or dispatch.get("paint_dragging_after_dispatch") is not False):
             errors.append("Busy input dispatch entered Paint: " + kind)
+    keyboard = legacy.object_dict(cases.get("keyboard"))
+    for label, keycode in (("undo", ord("Z")), ("redo", ord("Y"))):
+        for action in ("button", "shortcut"):
+            dispatch = legacy.object_dict(keyboard.get(label + "_" + action + "_dispatch"))
+            if (type(dispatch.get("press_count")) is not int or dispatch["press_count"] != 1
+                    or dispatch.get("busy") is not True or dispatch.get("phase") != "running"
+                    or dispatch.get("child_alive") is not True
+                    or not legacy.positive_integer(dispatch.get("child_pid"))
+                    or dispatch["child_pid"] != keyboard.get(label + "_child_pid")):
+                errors.append("Busy history input lacks actual dispatch with the same live child: " + label + "/" + action)
+            if (dispatch.get("paint_dragging_at_dispatch") is not False
+                    or dispatch.get("paint_dragging_after_dispatch") is not False):
+                errors.append("Busy history input dispatch entered Paint: " + label + "/" + action)
+            if action == "button":
+                if dispatch.get("button_disabled") is not True:
+                    errors.append("Busy history button was not disabled at dispatch: " + label)
+            elif (type(dispatch.get("keycode")) is not int or dispatch["keycode"] != keycode
+                    or dispatch.get("ctrl_pressed") is not True or dispatch.get("pressed") is not True
+                    or dispatch.get("echo") is not False or dispatch.get("history_unchanged_after_dispatch") is not True
+                    or type(dispatch.get("apply_delta_after_dispatch")) is not int or dispatch["apply_delta_after_dispatch"] != 0):
+                errors.append("Busy history shortcut lacks exact non-mutating Ctrl-key delivery: " + label)
     return errors
 
 

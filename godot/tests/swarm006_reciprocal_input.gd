@@ -12,6 +12,14 @@ var planes:Dictionary={}
 var native_records:Dictionary={}
 var complete:=false
 
+class ShortcutObserver:
+	extends Node
+	var key:Key
+	var observe:Callable
+	func _input(event:InputEvent)->void:
+		if event is InputEventKey and event.keycode==key and event.ctrl_pressed and event.pressed and not event.echo:
+			observe.call(event)
+
 func _initialize()->void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
 	destination=OS.get_environment("SWARM004_UI_EVIDENCE")
@@ -54,6 +62,10 @@ func input_dispatch_state()->Dictionary:
 func click(button:Control)->void:
 	var point:=button.get_global_rect().get_center()
 	await mouse(point,true);await mouse(point,false)
+
+func dispatch_click(button:Control)->void:
+	var point:=button.get_global_rect().get_center()
+	dispatch_mouse(point,true);dispatch_mouse(point,false)
 
 func point_for(cell:Vector2i)->Vector2:
 	var content:Rect2=host.view_content_rect()
@@ -131,6 +143,13 @@ func shortcut(code:Key)->void:
 	for down:bool in [true,false]:
 		var event:=InputEventKey.new();event.keycode=code;event.ctrl_pressed=true;event.pressed=down
 		Input.parse_input_event(event);await process_frame
+
+func dispatch_shortcut(code:Key)->void:
+	var focus:=root.gui_get_focus_owner()
+	if focus!=null:focus.release_focus()
+	for down:bool in [true,false]:
+		var event:=InputEventKey.new();event.keycode=code;event.ctrl_pressed=true;event.pressed=down
+		Input.parse_input_event(event);Input.flush_buffered_events()
 
 func numeric_case(independent:bool)->void:
 	var label:="independent" if independent else "shared"
@@ -235,12 +254,14 @@ func keyboard_case()->void:
 	if not await until(settled,"ordinary idle Paint completes"):return
 	var painted:=await capture("idle-painted")
 	var item:Dictionary={"idle_paint_changes_world":baseline.cells!=painted.cells,"idle_paint_history":bench.paint_editor._undo_stack.size()>0}
+	observations["keyboard"]=item
 	require(item.idle_paint_changes_world and item.idle_paint_history,"ordinary idle Paint remains admitted and undoable")
 	for code:Key in [KEY_Z,KEY_Y]:
 		var label:="undo" if code==KEY_Z else "redo"
 		var before:=await capture("keyboard-"+label+"-before")
 		var edits:Array=bench.applied.edits.duplicate(true)
 		var history:Array=[bench.paint_editor._undo_stack.size(),bench.paint_editor._redo_stack.size()]
+		var applies:int=panel.completed_applies
 		if not require(panel.generate(),"keyboard "+label+" real generation admitted"):return
 		if not await until(func()->bool:return panel.phase=="running" and OS.is_process_running(panel._pid),"keyboard "+label+" actual live child observed"):return
 		item[label+"_child_pid"]=panel._pid;item[label+"_child_live"]=OS.is_process_running(panel._pid)
@@ -248,10 +269,44 @@ func keyboard_case()->void:
 		var button:Button=bench.paint_editor._undo_button if code==KEY_Z else bench.paint_editor._redo_button
 		item[label+"_button_disabled"]=button.disabled
 		require(item[label+"_callback_refused"] and item[label+"_button_disabled"],"busy "+label+" refuses its direct history callback and disables its button")
-		await click(button)
+		var button_dispatch:Dictionary={"press_count":0}
+		var observe_button:Callable=func(event:InputEvent)->void:
+			if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+				button_dispatch["press_count"]+=1;button_dispatch.merge(input_dispatch_state(),true)
+				button_dispatch["button_disabled"]=button.disabled
+		button.gui_input.connect(observe_button)
+		dispatch_click(button)
+		button.gui_input.disconnect(observe_button)
+		button_dispatch["paint_dragging_after_dispatch"]=bench.paint_editor.dragging
+		item[label+"_button_dispatch"]=button_dispatch
+		require(button_dispatch.press_count==1 and button_dispatch.get("button_disabled",false)
+			and button_dispatch.get("busy",false) and button_dispatch.get("phase","")=="running"
+			and button_dispatch.get("child_alive",false) and button_dispatch.get("child_pid",-1)==item[label+"_child_pid"],
+			"busy "+label+" button dispatch observes the same live native child")
 		item[label+"_child_live_before_shortcut"]=panel._pid>0 and OS.is_process_running(panel._pid)
 		if not require(item[label+"_child_live_before_shortcut"],"actual child remains live immediately before "+label+" shortcut"):return
-		await shortcut(code)
+		var key_dispatch:Dictionary={"press_count":0}
+		var observer:=ShortcutObserver.new();observer.key=code
+		observer.observe=func(event:InputEventKey)->void:
+			key_dispatch["press_count"]+=1;key_dispatch.merge(input_dispatch_state(),true)
+			key_dispatch.merge({"keycode":int(event.keycode),"ctrl_pressed":event.ctrl_pressed,"pressed":event.pressed,"echo":event.echo})
+		# This last-added, read-only observer sees the actual key before the
+		# Workbench handles it. Button and key delivery never yield ownership.
+		root.add_child(observer)
+		dispatch_shortcut(code)
+		root.remove_child(observer);observer.free()
+		key_dispatch["paint_dragging_after_dispatch"]=bench.paint_editor.dragging
+		key_dispatch["history_unchanged_after_dispatch"]=bench.applied.edits==edits \
+			and history==[bench.paint_editor._undo_stack.size(),bench.paint_editor._redo_stack.size()]
+		key_dispatch["apply_delta_after_dispatch"]=panel.completed_applies-applies
+		item[label+"_shortcut_dispatch"]=key_dispatch
+		require(key_dispatch.press_count==1 and key_dispatch.get("busy",false) and key_dispatch.get("phase","")=="running"
+			and key_dispatch.get("child_alive",false) and key_dispatch.get("child_pid",-1)==item[label+"_child_pid"],
+			"busy "+label+" shortcut dispatch observes the same live native child")
+		require(not button_dispatch.get("paint_dragging_at_dispatch",true) and not button_dispatch.paint_dragging_after_dispatch
+			and not key_dispatch.get("paint_dragging_at_dispatch",true) and not key_dispatch.paint_dragging_after_dispatch
+			and key_dispatch.history_unchanged_after_dispatch and key_dispatch.apply_delta_after_dispatch==0,
+			"busy "+label+" button and shortcut preserve history and Apply authority before yielding")
 		if not await until(settled,"keyboard "+label+" work settles"):return
 		var after:=await capture("keyboard-"+label+"-after")
 		item[label+"_blocked"]=before.cells==after.cells and bench.applied.edits==edits and history==[bench.paint_editor._undo_stack.size(),bench.paint_editor._redo_stack.size()]
@@ -261,7 +316,6 @@ func keyboard_case()->void:
 		var restored:=await capture("idle-"+label)
 		item["idle_"+label+"_works"]=restored.cells==(baseline.cells if code==KEY_Z else painted.cells)
 		require(item["idle_"+label+"_works"],"ordinary idle Paint "+label+" remains functional")
-	observations["keyboard"]=item
 
 func run()->void:
 	root.size=Vector2i(1920,1080);set_meta("cybersand_feature","shared_workbench")
