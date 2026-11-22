@@ -109,9 +109,11 @@ CyberSimulationWorker**. Only its exclusive worker may call World methods:
    Capacity, Refused, Cancelled or Failed; matching session,
    transport_generation, World/native instance, action_id and port_generation.
    A claimed Applied also needs an accepted same-World native_receipt
-   matching operation/position, positive transaction_id and native material,
+   matching operation/position, an exact copied pre-mutation source_target
+   witness, positive transaction_id and revisioned resulting native material,
    geometry, body generation, cell incarnation, owner/cell, pose and applied
-   physics revisions. The native owner must revalidate expected material,
+   physics revisions. Resulting incarnations may legitimately differ from the
+   source witness. The native owner must revalidate expected material,
    state_a, state_b, temperature and incarnation at execution time.
 
 The lead must separately reconcile actual promotion and material/physics:
