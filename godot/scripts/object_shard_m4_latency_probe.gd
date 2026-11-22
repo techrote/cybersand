@@ -19,7 +19,7 @@ var _samples: Dictionary = {}
 var _last_snapshot_serial: int = 0
 var _last_upload: Dictionary = {}
 var _last_worker_metrics: Dictionary = {}
-var _presentation_count: int = 0
+var _post_draw_candidate_count: int = 0
 var _input_sequence: int = 0
 
 
@@ -128,14 +128,18 @@ func observe_post_draw(now_usec: int = 0) -> Dictionary:
 		return {"ok": false, "outcome": "InvalidPostDrawClock"}
 	var observed: Dictionary = _last_upload.duplicate()
 	_last_upload.clear()
-	_presentation_count += 1
+	_post_draw_candidate_count += 1
 	record_duration("upload_to_post_draw", int(observed.completed_usec), finished,
-		{"render_serial": observed.render_serial, "world_generation": observed.world_generation,
+		{"candidate_render_serial": observed.render_serial,
+			"world_generation": observed.world_generation,
 			"world_revision": observed.world_revision,
-			"scope": "Godot_frame_post_draw_not_physical_scanout"})
-	return {"ok": true, "outcome": "PostDrawObserved", "render_serial": observed.render_serial,
-		"world_generation": observed.world_generation,
-		"world_revision": observed.world_revision}
+			"scope": "deferred_post_draw_callback_after_upload_no_exact_frame_identity",
+			"causal_frame_identity_proven": false})
+	# The signal carries no exact material/pose serial. It is not evidence of
+	# completed presentation of this particular submission or GPU scanout.
+	return {"ok": true, "outcome": "PostDrawCallbackObserved",
+		"candidate_render_serial": observed.render_serial,
+		"causal_frame_identity_proven": false}
 
 
 func uploaded_identity() -> Dictionary:
@@ -156,10 +160,12 @@ func summary() -> Dictionary:
 			"p95_usec": sorted[p95], "maximum_usec": sorted.back()}
 	return {"schema": "objectshard-m4-workbench-latency-v1", "enabled": enabled,
 		"epoch": epoch, "events_retained": events.size(),
-		"presented_uploads": _presentation_count, "stages": stages,
+		"post_draw_callbacks_after_upload": _post_draw_candidate_count,
+		"proven_presented_uploads": 0, "stages": stages,
 		"worker_metrics": _last_worker_metrics.duplicate(),
 		"no_additive_stage_total": true,
 		"input_to_post_draw_causally_proven": false,
+		"frame_serial_coherence_proven": false,
 		"scope": "ordinary_Workbench_opt_in_main_thread_observation"}
 
 
