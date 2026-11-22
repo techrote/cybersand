@@ -1,0 +1,75 @@
+name: GENTEK integrator seven-refusal security and mixed-fresh-process Windows retest (TEMP HOLD)
+on:
+  push:
+    branches: [qualification/gentek-windows-final-integrator-20261122]
+permissions:
+  contents: read
+jobs:
+  refusal:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Real Windows PowerShell 5.1 grammar and 7 synthetic refusal/admission tests
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          $tokens=$null;$errors=$null
+          [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path tools/acceptance/gentek80_owner.ps1).Path,[ref]$tokens,[ref]$errors)
+          if ($errors.Count -gt 0) { $errors | Out-String | Set-Content evidence/parser.txt; throw 'Verifier has syntax errors' }
+          powershell.exe -NoProfile -NonInteractive -Command '$PSVersionTable.PSVersion.ToString()' | Set-Content evidence/windows-ps.txt
+          python -m unittest discover -s tools/acceptance/tests -p test_gentek80_owner.py -v 2>&1 | Tee-Object evidence/refusals.log
+          if ($LASTEXITCODE -ne 0) { throw 'Real Windows offline adversarial tests failed' }
+          if (-not (Select-String -Path evidence/refusals.log -Pattern 'Ran 7 tests')) { throw 'Seven tests not executed' }
+          if (Select-String -Path evidence/refusals.log -Pattern 'skipped|SKIP') { throw 'Suite skipped a Windows adversary' }
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-integrator-seven-refusals-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+  mixed:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Restore accepted native and Rapier runtime
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          python -m py_compile tools/architecture/gentek80_advanced_mixed.py
+          if ($LASTEXITCODE -ne 0) { throw 'Mixed Python syntax invalid' }
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned LFS restore failed' }
+          $n=(Get-FileHash 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($n -ne '668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e') { throw "Wrong accepted native: $n" }
+      - name: Fetch and check official Godot 4.7
+        shell: pwsh
+        run: |
+          $zip=Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Official engine unavailable' }
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot archive differs' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+          $exe=Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe'
+          "GODOT_EXE=$exe" | Out-File -Append $env:GITHUB_ENV
+      - name: Execute both advanced compositions and check clean GUI plus console exits
+        shell: pwsh
+        run: |
+          python tools/architecture/gentek80_advanced_mixed.py --godot $env:GODOT_EXE --project godot --output evidence/advanced-mixed --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Advanced mixed GUI and process qualification FAILED' }
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-integrator-final-recheck-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
