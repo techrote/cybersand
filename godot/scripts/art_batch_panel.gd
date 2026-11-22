@@ -1138,6 +1138,13 @@ func _drain_history_journal() -> void:
 
 # Append a new human result; never rewrite the model's historical receipts or
 # use model_feedback(), which can schedule another request in an active run.
+func _record_history_receipt(_receipt: Dictionary, _epoch: int, _frozen_turn: Dictionary = {}) -> bool:
+	# Compatibility with the dormant legacy journal drain method. Never
+	# attach old pending receipts to a fresh game-session conversation.
+	# Old journal files remain untouched for separate forensic inspection.
+	_history_persistence_error = "Legacy cross-session Art receipt replay is retired. Original journal preserved."
+	return false
+
 func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
 	# A PAINT Undo/Redo completed in this live session is recorded once in this
 	# session's log. No receipt journal or prior-session transcript is required
