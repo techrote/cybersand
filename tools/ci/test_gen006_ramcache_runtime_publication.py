@@ -62,12 +62,38 @@ def valid_guard_fixture() -> dict:
         binaries_before={"/engine": "b"*64, "/native": "a"*64}, binaries_after={"/engine": "b"*64, "/native": "a"*64})
     for index, phase in enumerate(profile.BOUNDARIES):
         pid = 100+index*3
-        proof["rows"].append(dict(kind="intentional_process_death", pid=pid, exit_code=-9, ok=True,
-            boundary=phase, forced_termination=True, observed_barrier={"pid": pid, "phase": phase, "session_id": "a"*32}))
+        expected = 4 if phase in ("after_publish","newer_dirty_after_durable") else 0
+        revision = 2 if expected == 4 else 1
+        marker = dict(pid=pid,phase=phase,session_id="a"*32,
+            revision=2 if phase in ("after_publish","newer_dirty_after_durable") else 1)
+        if phase in ("before_capture","queued_dirty","newer_dirty_after_durable"):
+            marker.update(live_native_tick=4 if phase == "before_capture" else 6,
+                durable_native_tick=4 if phase == "newer_dirty_after_durable" else 0)
+        if phase == "queued_dirty":
+            marker["queued_requests"] = 1
+        witness = [dict(marker,phase="before_snapshot"),marker] if phase == "queued_dirty" else [marker]
+        clock = dict(version=1,game_ticks=expected,areas={
+            id:dict(accounted_ticks=expected if id=="a" else 0,
+                native_ticks=expected if id=="a" else 0,origin_game_tick=0) for id in ("a","b","c")})
+        records = {id:dict(area_id=id,generation=revision if id=="a" else 1,
+            incarnation="d"*32, mutation_generation=1 if id=="a" and expected==4 else 0,
+            completed_tick=expected if id=="a" else 0,
+            native_sha256="c"*64 if id=="a" else "e"*64,
+            authoring_sha256="1"*64,authored_source_sha256="2"*64,
+            physics_profile_sha256="3"*64,policy_sha256="4"*64) for id in ("a","b","c")}
+        oracle = dict(revision=revision,game_ticks=expected,clock=clock,areas=records)
+        death = dict(kind="intentional_process_death",pid=pid,exit_code=-9,ok=True,
+            boundary=phase,forced_termination=True,observed_barrier=marker,barrier_witnesses=witness)
+        if phase == "newer_dirty_after_durable":
+            baseline = dict(kind="fresh_process_recovery",pid=501,session_id="a"*32,
+                native_sha256="c"*64, durable_oracle=copy.deepcopy(oracle))
+            death["seed"] = dict(ok=True,pid=500,exit_code=0,log_sha256="8"*64,baseline=baseline)
+        proof["rows"].append(death)
         for offset in (1, 2):
-            proof["rows"].append(dict(kind="fresh_process_recovery", pid=pid+offset, observed_pid=pid+offset,
-                exit_code=0, ok=True, boundary=phase, expected_tick=4 if phase == "after_publish" else 0,
-                checks=8, session_id="a"*32, native_sha256="c"*64, physical_hash="d"*16))
+            proof["rows"].append(dict(kind="fresh_process_recovery",pid=pid+offset,observed_pid=pid+offset,
+                exit_code=0,ok=True,boundary=phase,expected_tick=expected,checks=8,
+                session_id="a"*32,native_sha256="c"*64,physical_hash="d"*16,
+                durable_oracle=copy.deepcopy(oracle)))
     value["ramcache_recovery"] = proof
     for workers in (1, 4):
         value["ramcache"][f"ramcache-write-w{workers}"] = copy.deepcopy(receipt)
