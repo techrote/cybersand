@@ -197,6 +197,7 @@ func run() -> void:
 	check(not writer.start(store,unsafe_selection,next_updates,int(manifest.revision)).ok,"selected area cannot smuggle a live object into immutable I/O state")
 	live.free()
 	var starts_before := int(writer.status().metrics.started)
+	var encodes_before := int(writer.status().metrics.metadata_encodes)
 	malicious = next_updates.duplicate(true)
 	malicious.a.capture.bytes = PackedByteArray()
 	check(not writer.start(store,next_state,malicious,int(manifest.revision)).ok,"empty native capsule refuses before I/O Thread creation")
@@ -209,6 +210,15 @@ func run() -> void:
 	for index: int in 129: metadata.append("x".repeat(65536))
 	malicious.a.authoring.camera["oversized_metadata"] = metadata
 	check(not writer.start(store,next_state,malicious,int(manifest.revision)).ok,"bounded pure-value items cannot evade combined metadata byte capacity")
+	var shared := PackedByteArray()
+	shared.resize(5*1024*1024)
+	malicious = next_updates.duplicate(true)
+	malicious.a.authoring.camera["repeated_packed_bytes"] = [shared,shared]
+	check(Store._pure(malicious.a.authoring,[Store.MAX_VALUE_ITEMS]),"repeated packed-byte attack fits the old pure-item contract")
+	check(not writer.start(store,next_state,malicious,int(manifest.revision)).ok,
+		"aggregate packed payload refuses before allocating its full encoded bytes")
+	check(int(writer.status().metrics.metadata_encodes)==encodes_before,
+		"oversized native, string and repeated-packed inputs perform no full metadata encoding")
 	check(int(writer.status().metrics.started)==starts_before and not writer.busy(),"invalid buffer bounds allocate no publication Thread")
 	var fence := Store.snapshot_fence(manifest,next_state,next_updates,Store.new_nonce())
 	check(fence.ok,"immutable batch identity can be explicitly checked")

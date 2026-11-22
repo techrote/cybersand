@@ -151,7 +151,8 @@ func native_cell(point: Vector2i) -> int:
 	if not await until(settled,"native material readback boundary"): return -1
 	var source: Dictionary = worker.paint_state()
 	var admitted: Dictionary = worker.paint_queue({"kind":"capture","region":Rect2i(point,Vector2i.ONE),
-		"expected_generation":int(source.generation),"expected_revision":int(source.revision),"expected_tick":int(source.tick)})
+		"expected_generation":int(source.generation),"expected_revision":int(source.revision),"expected_tick":int(source.tick),
+		"expected_authoring_generation":int(source.authoring_generation)})
 	if not check(admitted.get("status","")=="queued","actual stored-cell readback admitted"): return -1
 	if not await until(func() -> bool: return worker.paint_state().get("receipt_ready",false),"stored-cell readback completes"): return -1
 	var receipt: Dictionary = worker.paint_take_result()

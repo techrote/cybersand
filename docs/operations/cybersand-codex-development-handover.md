@@ -12,6 +12,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## GEN-006 persistent authored-area milestone
 
+The current isolated successor is [Draft PR #734](https://github.com/techrote/cybersand/pull/734), branch `exp/gen006-ramcache-001-20261122`, stacked on the unchanged #725 donor at `d0d043f4740ffed5f0dbb4120e437458d7a9bd57`. Read the [residency/ownership contract](../systems/persistent-area-residency.md), [cache evaluator guide](persistent-area-ramcache-evaluation.md) and [new source/performance ledger](../audits/2026-11-22-gen006-ramcache.md) before extending its native ownership. Do not conflate RAM-only state, durable acknowledgement, prepared readiness and unpaid game-time debt.
+
 The owner-authorised #591 candidate is isolated on `exp/gen006-persistent-areas-001-20261121` and remains Draft/HOLD. Read the [native/profile/time contract](../systems/persistent-authored-areas.md), [owner evaluation guide](persistent-areas-evaluation.md) and [dated source/platform ledger](../audits/2026-11-21-gen006-persistent-areas.md). One fixed active canvas, three native continuation checkpoints and bounded completed game time do not complete broader #194 streaming, selective eviction, actor persistence or recipe reconciliation. Preserve the ordinary Workbench defaults and other active missions.
 
 ## Workbench Art traffic lifetime — 2026-11-20

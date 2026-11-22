@@ -14,7 +14,7 @@ var _queued: Dictionary = {}
 var _last_result: Dictionary = {}
 var _sequence := 0
 var _metrics := {"started":0,"completed":0,"failed":0,"coalesced":0,"cancelled_requests":0,
-	"peak_batch_bytes":0,"completed_batches":[]}
+	"peak_batch_bytes":0,"metadata_encodes":0,"completed_batches":[]}
 
 
 func busy() -> bool:
@@ -52,13 +52,16 @@ func start(store: RefCounted, next_state: Dictionary, updates: Dictionary, expec
 	if store == null or expected_revision < 1 or updates.size() > 3 \
 		or not Store._keys(next_state,["active_area","clock"]) or not Clock.validate(next_state.clock).is_empty() \
 		or not next_state.active_area is String or not next_state.active_area in Clock.AREA_IDS \
-		or not Store._pure(immutable_fence,[1024]) or not Store._hex(immutable_fence.get("snapshot_id"),32):
+		or not Store.metadata_size(immutable_fence,16384,1024).get("ok",false) \
+		or not Store._hex(immutable_fence.get("snapshot_id"),32):
 		return {"ok":false,"error":"Write-behind batch has an invalid store, revision, clock or immutable fence"}
 	var started := Time.get_ticks_usec()
 	# Deep-duplicated containers isolate GDScript edits. Packed arrays are copied
 	# on mutation by Godot; no native/scene/Rapier object enters this value batch.
-	# Bounded metadata encoding here measures exact admission size and belongs
-	# to detach_us. Complete checkpoint encoding, hashing, semantic validation
+	# Bounded metadata traversal admits a conservative aggregate byte
+	# bound before any full encoding. The subsequent bounded metadata encoding
+	# measures exact admission size and belongs to detach_us. Complete checkpoint
+	# encoding, hashing, semantic validation
 	# and filesystem publication run on the I/O thread below. Native capture
 	# itself remains a separate measured exclusive-owner boundary.
 	var bytes := 0
@@ -73,8 +76,9 @@ func start(store: RefCounted, next_state: Dictionary, updates: Dictionary, expec
 			return {"ok":false,"error":"Write-behind received an unsupported capture update"}
 		var metadata: Dictionary = updates[id].capture.duplicate()
 		metadata.erase("bytes")
-		if not Store._pure(metadata,[Store.MAX_VALUE_ITEMS]) or not Store._pure(updates[id].authoring,[Store.MAX_VALUE_ITEMS]):
-			return {"ok":false,"error":"Live objects or unbounded metadata cannot enter the immutable I/O batch"}
+		if not Store.metadata_size([metadata,updates[id].authoring],Store.MAX_METADATA_BYTES-4096).get("ok",false):
+			return {"ok":false,"error":"Live objects or oversized aggregate metadata cannot enter the immutable I/O batch"}
+		_metrics.metadata_encodes += 2
 		var metadata_bytes := var_to_bytes(metadata).size()
 		var authoring_bytes := var_to_bytes(updates[id].authoring).size()
 		if metadata_bytes+authoring_bytes+4096>Store.MAX_METADATA_BYTES:

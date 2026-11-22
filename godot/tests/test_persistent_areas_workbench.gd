@@ -84,6 +84,7 @@ func run() -> void:
 	root.content_scale_size = Vector2i.ZERO
 	root.size = Vector2i(1280,720)
 	host = PersistentScene.instantiate()
+	configure_host()
 	root.add_child(host)
 	current_scene = host
 	controller = host.persistent_areas
@@ -119,6 +120,10 @@ func run() -> void:
 		"crash": await tagged_qualification("forced_transition_crash",exercise_crash)
 		"faults": await tagged_qualification("publication_faults",publication_fault_checks)
 	await _finish()
+
+
+func configure_host() -> void:
+	pass
 
 
 func exercise_write() -> void:
@@ -409,8 +414,9 @@ func native_materials(region: Rect2i) -> Dictionary:
 	if not await until(settled,"native stored-material readback boundary"): return {}
 	var source: Dictionary = worker.paint_state()
 	var admission: Dictionary = worker.paint_queue({"kind":"capture","region":region,
-		"expected_generation":int(source.generation),"expected_revision":int(source.revision),"expected_tick":int(source.tick)})
-	if not check(admission.get("status","")=="queued","actual native stored-cell readback admitted"): return {}
+		"expected_generation":int(source.generation),"expected_revision":int(source.revision),"expected_tick":int(source.tick),
+		"expected_authoring_generation":int(source.authoring_generation)})
+	if not check(admission.get("status","")=="queued","actual native stored-cell readback admitted: "+str(admission.get("reason",""))): return {}
 	if not await until(func() -> bool: return worker.paint_state().receipt_ready,"stored-cell readback completes"): return {}
 	var receipt: Dictionary = worker.paint_take_result()
 	if not check(receipt.get("status","")=="completed" and receipt.get("materials",PackedInt32Array()).size()==region.get_area(),

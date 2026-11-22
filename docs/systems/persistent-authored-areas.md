@@ -17,6 +17,14 @@ complete the general streaming and recipe-reconciliation programme in
 [#194](https://github.com/techrote/cybersand/issues/194). The ordinary application
 and Workbench Water defaults are unchanged. The candidate remains Draft/HOLD.
 
+The stacked [native RAM residency extension](persistent-area-residency.md), implemented in
+[Draft PR #734](https://github.com/techrote/cybersand/pull/734), adds real inactive HOT Worlds,
+WARM checkpoints, asynchronous durability and predictive preparation. This document owns
+the common native continuation/time/profile domain. Its synchronous lifecycle below
+describes the cache-disabled conservative path; strict cache-enabled travel also requires
+durability but can transfer an existing HOT World without reconstructing it. The extension
+contract owns those residency and write-behind differences.
+
 The implementation owners are
 `native/include/cybersand/persistent_area_continuation.hpp` (native domain),
 `godot/native_extension/cyber_persistent_area_continuation.hpp` (bridge/candidate),
@@ -39,8 +47,8 @@ camera travel; this prototype has no persistent traveller actor.
 | State | Authority and retention |
 | --- | --- |
 | Live cellular state | The existing simulation worker exclusively owns one active `CyberNativeCellWorld`. |
-| Inactive area continuation | A complete admitted native CYPS2 checkpoint, verified by checksum, physical hash, completed tick, configuration and area/session identity. |
-| Target being loaded or advanced | At most one privately prepared native World. It cannot mutate the retained live World. |
+| Inactive area continuation | HOT native World, WARM complete admitted CYPS2 checkpoint, or COLD durable checkpoint under the [residency contract](persistent-area-residency.md). Checkpoints retain checksum, physical hash, completed tick, configuration and area/session identity. |
+| Target being loaded or advanced | One bounded private preparation at a time; retained HOT Worlds have separate fenced ownership. A private target cannot mutate the active World. |
 | Latest authored starting map | The existing Workbench Setup, generated baseline or Flatten material baseline, retained separately from live CYPS. |
 | Original native construction | The complete validated MicroScenario definition and digest; subsequent authoring edits do not rewrite this provenance. |
 | Game time | A versioned profile clock with global completed game ticks and an independent accounted/native tick frontier for every area. |
@@ -75,7 +83,7 @@ before a persistent capture can acquire its lease.
 
 ## Lifecycle and atomic handoff
 
-The visible lifecycle is Active → Transition requested → Capturing → Durable →
+The conservative cache-disabled lifecycle is Active → Transition requested → Capturing → Durable →
 Loading → Catching up → Capturing → Durable → Ready for activation → Active.
 Inactive areas retain their independent durable checkpoint. A failed operation
 retains the previous World; ambiguous publication or incompatible/corrupt state

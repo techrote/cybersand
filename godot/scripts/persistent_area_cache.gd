@@ -24,7 +24,7 @@ var _reservations: Dictionary = {}
 var _publication: Dictionary = {}
 var _sequence := 0
 var _counters := {"hot_hits":0,"warm_hits":0,"cold_misses":0,"reservation_refusals":0,
-	"hot_admissions":0,"warm_admissions":0,"evictions":0,"stale_acks":0}
+	"hot_admissions":0,"warm_admissions":0,"evictions":0,"stale_acks":0,"hot_refresh_encodes":0}
 
 
 static func _fail(reason: String) -> Dictionary:
@@ -251,7 +251,8 @@ func refresh_hot(area_id: String, receipt: Dictionary, mutation_generation: int,
 	if not _entries.has(area_id) or _entries[area_id].hot.is_empty(): return _fail("Hot refresh requires an already admitted resident World")
 	var item: Dictionary = _entries[area_id]
 	if receipt.get("schema") != 1 or receipt.get("identity") != item.hot.identity \
-		or receipt.get("handle") != item.hot.handle or receipt.get("physics_profile_sha256") != item.physics_profile_sha256:
+		or receipt.get("handle") != item.hot.handle or receipt.get("physics_profile_sha256") != item.physics_profile_sha256 \
+		or not receipt.get("active") is bool:
 		return _fail("Hot refresh cannot replace a native handle or its admitted identity")
 	for key: String in ["resident_generation","mutation_generation","completed_tick","native_bytes"]:
 		if not Clock._integer(receipt.get(key)): return _fail("Hot refresh has an invalid numeric native fence")
@@ -260,18 +261,31 @@ func refresh_hot(area_id: String, receipt: Dictionary, mutation_generation: int,
 		return _fail("Hot native allocation exceeds its admitted growth reservation")
 	if int(receipt.resident_generation) < int(item.resident_generation) or int(receipt.completed_tick) < int(item.completed_tick) \
 		or mutation_generation < int(item.mutation_generation): return _fail("Hot refresh cannot roll back resident authority")
-	if not authoring.is_empty() and authoring != item.authoring:
+	var authoring_changed: bool = not authoring.is_empty() and authoring != item.authoring
+	var authoring_bytes := int(item.authoring_bytes)
+	var encoded_authoring := PackedByteArray()
+	if authoring_changed:
 		if not Store._keys(authoring,["setup","definition","generated_packet","material_baseline","camera"]) \
+			or not authoring.setup is Dictionary or not authoring.generated_packet is Dictionary \
+			or not authoring.material_baseline is Dictionary or not authoring.camera is Dictionary \
 			or authoring.definition != item.authoring.definition:
 			return _fail("Hot authoring update cannot replace its original admitted construction")
-		var changed := authoring.duplicate()
-		changed.erase("definition")
-		if not Store._pure(changed,[Store.MAX_VALUE_ITEMS]): return _fail("Hot authoring changes exceed their pure-value boundary")
-		var authoring_bytes := var_to_bytes(authoring).size()
+		# A packed buffer is charged for every serialized occurrence. The item
+		# budget alone cannot bound aliased payload expansion before encoding.
+		if not Store.metadata_size(authoring).get("ok",false): return _fail("Hot authoring changes exceed their bounded metadata boundary")
+		_counters.hot_refresh_encodes += 1
+		encoded_authoring = var_to_bytes(authoring)
+		authoring_bytes = encoded_authoring.size()
 		if authoring_bytes > Store.MAX_METADATA_BYTES: return _fail("Hot authoring envelope exceeds its metadata bound")
+	var additional := int(native_reservation)-int(item.native_bytes)-int(item.native_headroom_bytes) \
+		+authoring_bytes-int(item.authoring_bytes)
+	if additional>0:
+		var error := _admission(area_id,additional,"",area_id==active_area and bool(receipt.active))
+		if not error.is_empty(): return _fail(error)
+	if authoring_changed:
 		item.authoring = authoring.duplicate(true)
 		item.authoring_bytes = authoring_bytes
-		item.authoring_sha256 = Store.digest(var_to_bytes(authoring))
+		item.authoring_sha256 = Store.digest(encoded_authoring)
 	item.hot = receipt.duplicate(true)
 	item.native_bytes = int(receipt.native_bytes)
 	item.native_headroom_bytes = int(native_reservation)-int(receipt.native_bytes)
@@ -340,9 +354,14 @@ func mark_dirty(area_id: String, native_tick: int, mutation_generation: int, aut
 		if not error.is_empty(): return _fail(error)
 		if Store.Contract.validate(authoring.definition).hash != item.authored_source_sha256:
 			return _fail("An authoring update cannot replace the original construction identity")
+		var encoded := var_to_bytes(authoring)
+		var additional := encoded.size()-int(item.authoring_bytes)
+		if additional>0:
+			error = _admission(area_id,additional,"",area_id==active_area and bool(item.hot.get("active",false)))
+			if not error.is_empty(): return _fail(error)
 		item.authoring = authoring.duplicate(true)
-		item.authoring_bytes = var_to_bytes(authoring).size()
-		item.authoring_sha256 = Store.digest(var_to_bytes(authoring))
+		item.authoring_bytes = encoded.size()
+		item.authoring_sha256 = Store.digest(encoded)
 	item.completed_tick = native_tick
 	item.mutation_generation = mutation_generation
 	item.dirty = _is_dirty(item)

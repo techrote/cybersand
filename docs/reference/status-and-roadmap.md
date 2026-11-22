@@ -12,6 +12,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## GEN-006 persistent authored areas candidate
 
+The [stacked Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cybersand/pull/734) implements [native HOT ownership, bounded WARM/COLD caching, explicit asynchronous durability and real destination prefetch](../systems/persistent-area-residency.md). The [November 22 ledger](../audits/2026-11-22-gen006-ramcache.md) separates implementation, exact-source platform qualification, performance targets and pending physical owner acceptance. It changes no ordinary production default and does not complete broader GEN-006.
+
 The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) owns current evidence and remaining gates. Draft/HOLD; broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
 
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21

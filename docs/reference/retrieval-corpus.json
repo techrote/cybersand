@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-21",
+  "reviewed": "2026-11-22",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
@@ -150,7 +150,10 @@
     "tools/world-art-evaluation.md",
     "systems/persistent-authored-areas.md",
     "decisions/ADR-015-persistent-authored-areas.md",
-    "operations/persistent-areas-evaluation.md"
+    "operations/persistent-areas-evaluation.md",
+    "systems/persistent-area-residency.md",
+    "operations/persistent-area-ramcache-evaluation.md",
+    "decisions/ADR-016-persistent-area-native-residency.md"
   ],
   "navigation": [
     "README.md",

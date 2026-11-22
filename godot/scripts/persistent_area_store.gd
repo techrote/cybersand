@@ -105,6 +105,96 @@ static func _pure(value: Variant, budget: Array, depth: int = 0) -> bool:
 	return false # Objects, Callable, RID and NodePath are never persisted.
 
 
+static func metadata_size(value: Variant, limit_bytes: int = MAX_METADATA_BYTES,
+		remaining_items: int = MAX_VALUE_ITEMS) -> Dictionary:
+	## Admission without payload-sized allocation before Variant encoding. The returned
+	## byte count is a conservative upper bound (including UTF-8, alignment and
+	## typed builtin-container headers), not an encoded payload or an RSS value.
+	## Repeated packed buffers are charged for every serialized occurrence even
+	## when Godot currently shares their underlying storage.
+	if limit_bytes<1 or limit_bytes>MAX_METADATA_BYTES or remaining_items<1 or remaining_items>MAX_VALUE_ITEMS:
+		return _fail("Metadata admission requires finite byte and item bounds")
+	var budget := [limit_bytes,remaining_items]
+	if not _metadata_consume(value,budget,0):
+		return _fail("Metadata contains unsupported values or exceeds its bounded encoding capacity",
+			{"visited_items":remaining_items-int(budget[1])})
+	return {"ok":true,"bytes":limit_bytes-int(budget[0]),"visited_items":remaining_items-int(budget[1])}
+
+
+static func _metadata_charge(budget: Array, bytes: int, items: int = 0) -> bool:
+	if bytes<0 or items<0 or bytes>int(budget[0]) or items>int(budget[1]): return false
+	budget[0] = int(budget[0])-bytes
+	budget[1] = int(budget[1])-items
+	return true
+
+
+static func _metadata_consume(value: Variant, budget: Array, depth: int) -> bool:
+	if depth>24 or not _metadata_charge(budget,0,1): return false
+	match typeof(value):
+		TYPE_NIL: return _metadata_charge(budget,4)
+		TYPE_BOOL: return _metadata_charge(budget,8)
+		TYPE_INT: return _metadata_charge(budget,12)
+		TYPE_FLOAT: return is_finite(value) and _metadata_charge(budget,12)
+		TYPE_STRING:
+			# UTF-8 needs at most four bytes per Unicode scalar. Counting the
+			# existing string avoids allocating a large temporary UTF-8 buffer.
+			return value.length()<=65536 and _metadata_charge(budget,16+4*value.length())
+		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
+			return value.is_finite() and _metadata_charge(budget,36)
+		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I, TYPE_RECT2I:
+			return _metadata_charge(budget,20)
+		TYPE_RECT2:
+			return value.position.is_finite() and value.size.is_finite() and _metadata_charge(budget,36)
+		TYPE_COLOR:
+			return is_finite(value.r) and is_finite(value.g) and is_finite(value.b) and is_finite(value.a) \
+				and _metadata_charge(budget,20)
+		TYPE_PACKED_BYTE_ARRAY:
+			return _metadata_charge(budget,16+value.size())
+		TYPE_PACKED_INT32_ARRAY:
+			return _metadata_charge(budget,16+4*value.size(),value.size())
+		TYPE_PACKED_INT64_ARRAY:
+			return _metadata_charge(budget,16+8*value.size(),value.size())
+		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY:
+			if not _metadata_charge(budget,16+8*value.size(),value.size()): return false
+			for item: float in value:
+				if not is_finite(item): return false
+			return true
+		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY:
+			if not _metadata_charge(budget,16+24*value.size(),value.size()): return false
+			for item: Variant in value:
+				if not item.is_finite(): return false
+			return true
+		TYPE_PACKED_COLOR_ARRAY:
+			if not _metadata_charge(budget,16+16*value.size(),value.size()): return false
+			for item: Color in value:
+				if not is_finite(item.r) or not is_finite(item.g) or not is_finite(item.b) or not is_finite(item.a): return false
+			return true
+		TYPE_PACKED_STRING_ARRAY:
+			if value.size()>int(budget[1]) or not _metadata_charge(budget,16): return false
+			for item: String in value:
+				if not _metadata_consume(item,budget,depth+1): return false
+			return true
+		TYPE_ARRAY:
+			# Empty typed Object arrays still carry class/script metadata. They
+			# must not transfer a hidden live type through a value-only interface.
+			if value.get_typed_builtin()==TYPE_OBJECT or value.get_typed_class_name()!=&"" \
+					or value.get_typed_script()!=null or value.size()>int(budget[1]) \
+					or not _metadata_charge(budget,32): return false
+			for item: Variant in value:
+				if not _metadata_consume(item,budget,depth+1): return false
+			return true
+		TYPE_DICTIONARY:
+			if value.get_typed_key_builtin()==TYPE_OBJECT or value.get_typed_value_builtin()==TYPE_OBJECT \
+					or value.get_typed_key_class_name()!=&"" or value.get_typed_value_class_name()!=&"" \
+					or value.get_typed_key_script()!=null or value.get_typed_value_script()!=null \
+					or value.size()>int(budget[1])/2 or not _metadata_charge(budget,48): return false
+			for key: Variant in value:
+				if not key is String or not _metadata_consume(key,budget,depth+1) \
+						or not _metadata_consume(value[key],budget,depth+1): return false
+			return true
+	return false
+
+
 static func _detached(value: Variant) -> Variant:
 	# Object serialization stays disabled. This also detaches packed-array aliases.
 	return bytes_to_var(var_to_bytes(value))
@@ -283,7 +373,7 @@ static func _capture_error(capture: Variant) -> String:
 		return "Persistent area requires the admitted 512 by 512 native domain"
 	var metadata: Dictionary = capture.duplicate()
 	metadata.erase("bytes")
-	if not _pure(metadata, [MAX_VALUE_ITEMS]): return "Native continuation metadata is not bounded pure values"
+	if not metadata_size(metadata).get("ok",false): return "Native continuation metadata is not bounded pure values"
 	return ""
 
 
@@ -292,7 +382,7 @@ static func _authoring_error(authoring: Variant) -> String:
 		or not authoring.setup is Dictionary or not authoring.generated_packet is Dictionary \
 		or not authoring.material_baseline is Dictionary or not authoring.camera is Dictionary or not authoring.definition is Dictionary:
 		return "Persistent authoring envelope is unsupported"
-	if not _pure(authoring, [MAX_VALUE_ITEMS]) or var_to_bytes(authoring).size() > MAX_METADATA_BYTES:
+	if not metadata_size(authoring).get("ok",false) or var_to_bytes(authoring).size() > MAX_METADATA_BYTES:
 		return "Persistent authoring envelope exceeds the supported pure-value capacity"
 	var checked := Contract.validate(authoring.definition)
 	if not checked.get("ok", false): return "Persistent original native definition is invalid: " + str(checked.get("error", ""))
@@ -314,6 +404,7 @@ func _encode_area(id: String, update: Dictionary, generation: int) -> Dictionary
 	var metadata := {"version":VERSION, "profile_id":_profile_id, "session_id":_manifest.session_id,
 		"area_id":id, "generation":generation, "mutation_generation":int(update.mutation_generation),
 		"incarnation":update.incarnation, "capture":capture, "authoring":update.authoring}
+	if not metadata_size(metadata).get("ok",false): return _fail("Combined persistent metadata exceeds its bounded capacity")
 	var encoded := var_to_bytes(metadata)
 	if encoded.size() > MAX_METADATA_BYTES: return _fail("Combined persistent metadata exceeds its bounded capacity")
 	var bytes := _wrap(AREA_MAGIC, encoded, native_bytes)
@@ -439,7 +530,8 @@ func prepare_commit(next_state: Dictionary, updates: Dictionary, expected_revisi
 	if _io == null or _quarantined: return _fail("Persistent profile is unavailable or quarantined")
 	if not _pending.is_empty(): return _fail("A persistent publication is already prepared")
 	if expected_revision != int(_manifest.revision) or not _hex(operation_nonce, 32) \
-		or operation_nonce == _manifest.operation_nonce or not _pure(owner_fence, [1024]) or var_to_bytes(owner_fence).size() > 16384:
+		or operation_nonce == _manifest.operation_nonce or not metadata_size(owner_fence,16384,1024).get("ok",false) \
+		or var_to_bytes(owner_fence).size() > 16384:
 		return _fail("Persistent prepare rejected a stale revision or invalid operation/owner fence")
 	if not _keys(next_state, ["active_area", "clock"]) or not next_state.active_area in Clock.AREA_IDS:
 		return _fail("Persistent next-state selection is invalid")

@@ -248,7 +248,10 @@ static func _persistent_build_prefetch(request: Dictionary) -> Dictionary:
 	var authoring: Dictionary = request.authoring
 	var identity: Dictionary = request.identity
 	var candidate: Dictionary = authoring.get("setup",{})
-	var error: String = preload("res://scripts/persistent_area_store.gd")._authoring_error(authoring)
+	const Store = preload("res://scripts/persistent_area_store.gd")
+	var error: String = Store._capture_error(request.capture)
+	if error.is_empty(): error = Store._authoring_error(authoring)
+	if error.is_empty(): error = preload("res://scripts/workbench_setup.gd").validate(candidate)
 	if not error.is_empty(): return {"ok":false,"error":error}
 	var private_world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 	var private_host: CyberMicroScenarioHost = MicroHost.new()
@@ -287,8 +290,10 @@ static func _persistent_build_prefetch(request: Dictionary) -> Dictionary:
 	var reserved := int(request.get("max_native_bytes",request.get("reservation_bytes",0)))
 	if reserved<1 or int(bound.receipt.native_bytes)>reserved:
 		return {"ok":false,"error":"Private native preparation exceeded its explicit memory reservation."}
+	var finished := Time.get_ticks_usec()
 	return {"ok":true,"world":private_world,"host":private_host,"receipt":bound.receipt,
-		"authoring":authoring,"prepare_us":Time.get_ticks_usec()-start,
+		"authoring":authoring,"prepare_us":finished-start,
+		"prepare_started_usec":start,"prepare_completed_usec":finished,
 		"workbench_sample":settings.workbench_sample.duplicate(true),
 		"completed_ticks":completed,"current_tick":int(private_world.tick_index),"elapsed_us":step_us}
 
@@ -315,10 +320,13 @@ func _consume_persistent_prefetch() -> void:
 			_resident_prefetch_committing = may_advance
 			_mutex.unlock()
 			if not may_advance: return
+			var work_started := Time.get_ticks_usec()
 			var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 			var advanced: Dictionary = bridge.resident_advance(_world,request.receipt,
 				mini(2,int(request.get("max_ticks",1))),mini(5000,int(request.get("max_us",5000))))
 			if advanced.get("ok",false): advanced["current_tick"] = int(advanced.completed_tick)
+			advanced["work_started_usec"] = work_started
+			advanced["work_completed_usec"] = Time.get_ticks_usec()
 			_mutex.lock()
 			_resident_prefetch_result = {"ok":bool(advanced.get("ok",false)),"token":int(request.token),
 				"status":"ready" if advanced.get("ok",false) else "failed","result":advanced,
@@ -385,6 +393,8 @@ func _consume_persistent_prefetch() -> void:
 			result = {"ok":true,"status":"ready","token":int(request.token),
 				"result":{"receipt":imported.receipt,"prepare_us":int(prepared.prepare_us),
 					"import_us":Time.get_ticks_usec()-started,"prepared_before_activation":true,
+					"prepare_started_usec":int(prepared.prepare_started_usec),"prepare_completed_usec":int(prepared.prepare_completed_usec),
+					"import_started_usec":started,"import_completed_usec":Time.get_ticks_usec(),
 					"completed_ticks":int(prepared.completed_ticks),"current_tick":int(prepared.current_tick),
 					"elapsed_us":int(prepared.elapsed_us)}}
 		else: result.error = str(imported.get("error","Prefetch import refused."))
@@ -1429,6 +1439,7 @@ func stop_worker() -> void:
 	if not _thread.is_started():
 		_persistent_retire_candidate()
 		_retire_prepared_physical_liquid()
+		_persistent_finish_stopped_prefetch()
 		return
 	_thread.wait_to_finish()
 	# A preparation owns no active World. Join before releasing its private
@@ -1436,8 +1447,19 @@ func stop_worker() -> void:
 	if _resident_prefetch_thread != null:
 		_resident_prefetch_thread.wait_to_finish()
 		_resident_prefetch_thread = null
-	_resident_prefetch_request = {}
+	_persistent_finish_stopped_prefetch()
 	_actor_session.set_suspended(true)
+
+
+func _persistent_finish_stopped_prefetch() -> void:
+	# A terminal cancellation is published only after all owners have joined.
+	_mutex.lock()
+	_resident_prefetch_request = {}
+	_resident_prefetch_committing = false
+	if _resident_prefetch_sequence>0 and _resident_prefetch_result.is_empty():
+		_resident_prefetch_result = {"ok":true,"status":"cancelled","token":_resident_prefetch_sequence,
+			"reason":"Simulation worker stopped","result":{}}
+	_mutex.unlock()
 
 
 func submit_actor_action(

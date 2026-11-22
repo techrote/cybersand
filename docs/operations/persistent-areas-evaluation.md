@@ -18,6 +18,12 @@ outside this milestone. The [qualification ledger](../audits/2026-11-21-gen006-p
 records actual tested source, platform and package identities; this procedure
 does not itself establish a platform PASS.
 
+For the stacked RAM-cache evaluator in [Draft PR #734](https://github.com/techrote/cybersand/pull/734),
+use the [RAM cache owner guide](persistent-area-ramcache-evaluation.md) for cache budgets,
+strict/deferred durability, predictive preparation and failed-area recovery. The
+November 21 ledger retains the original #725 measurements; it is not current cache
+performance evidence.
+
 ## Launch and profile isolation
 
 Extract the complete Windows evaluator into a writable folder. Double-click

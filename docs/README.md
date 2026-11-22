@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Persistent authored areas · GEN-006
 
+The stacked [Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cybersand/pull/734) extends #725 with [actual native HOT residency, WARM/COLD tiers, bounded write-behind and predictive preparation](systems/persistent-area-residency.md). Use the [RAM-cache owner guide](operations/persistent-area-ramcache-evaluation.md) and [source/performance ledger](audits/2026-11-22-gen006-ramcache.md). The broader #194 actor, streaming and recipe programme remains unfinished.
+
 The opt-in Draft/HOLD [three-area native continuation contract](systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).

@@ -2,7 +2,12 @@ extends RefCounted
 
 # Bounded pure values are checked before they cross a native-owner thread.
 const Store = preload("res://scripts/persistent_area_store.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
 const MAX_RESERVATION_BYTES := 8*1024*1024*1024
+const EXECUTION_KEYS := ["worker_threads","chunk_size","activity_block_size","scheduling_core_size",
+	"maximum_rule_radius","initial_chunk_reserve","parallel_job_threshold","active_core_capacity",
+	"active_chunk_capacity","maximum_chunk_count","deferred_event_capacity","maximum_explosion_radius","backend"]
+const HOST_KEYS := ["response","simulation_window_enabled","cadence_lod_enabled","liquid_surface_adhesion_enabled","region"]
 
 static func prefetch_error(value: Dictionary) -> String:
 	for key: Variant in value:
@@ -51,9 +56,35 @@ static func checkpoint_error(value: Dictionary) -> String:
 		return "Prefetch checkpoint or authoring exceeds its bounded value contract."
 	var metadata: Dictionary = value.capture.duplicate(false)
 	metadata.erase("bytes")
-	if not Store._pure(metadata,[4096]) or not Store._pure(value.authoring,[Store.MAX_VALUE_ITEMS]) \
-			or var_to_bytes(value.authoring).size()>Store.MAX_METADATA_BYTES:
+	if not Store.metadata_size([metadata,value.authoring],Store.MAX_METADATA_BYTES-4096).get("ok",false):
 		return "Prefetch can transfer only bounded pure authoring and checkpoint metadata."
+	# Check fields dereferenced by the private owner before a Thread is launched.
+	# Complete source/capsule validation and hashing stay on that private owner.
+	var setup: Variant = value.authoring.get("setup")
+	if not setup is Dictionary or not Store._keys(setup,Setup.ROOT_KEYS + \
+			([Setup.EQUIPMENT_KEY] if setup.has(Setup.EQUIPMENT_KEY) else [])) \
+			or not setup.rule_radius is int or not setup.response is String or not setup.liquid_policy is Array:
+		return "Prefetch requires a complete typed Workbench setup."
+	var execution: Variant = value.capture.get("execution")
+	if not execution is Dictionary or not Store._keys(execution,EXECUTION_KEYS) or not execution.get("worker_threads") is int \
+			or execution.worker_threads<1 or execution.worker_threads>32 \
+			or not value.capture.get("host_settings") is Dictionary:
+		return "Prefetch native execution metadata is malformed."
+	for key: String in EXECUTION_KEYS:
+		if key=="backend":
+			if not execution[key] is String or execution[key]!="phased_in_place": return "Prefetch native backend is unsupported."
+		elif not execution[key] is int: return "Prefetch execution fields must be exact integers."
+	var host: Dictionary = value.capture.host_settings
+	if not Store._keys(host,HOST_KEYS) or not host.response is String or not host.response in Setup.RESPONSES \
+			or not host.simulation_window_enabled is bool or not host.cadence_lod_enabled is bool \
+			or not host.liquid_surface_adhesion_enabled is bool or not host.region is PackedInt32Array or host.region.size()!=4:
+		return "Prefetch native host metadata is malformed."
+	for key: String in ["schema","format_version","physical_hash_version","completed_tick","native_chunks","native_resident_cell_bytes"]:
+		if not value.capture[key] is int: return "Prefetch native capture integers are malformed."
+	for key: String in ["sha256","policy_sha256","authored_source_sha256","physics_profile_sha256"]:
+		if not Store._hex(value.capture[key],64): return "Prefetch native capture digest is malformed."
+	if not Store._hex(value.capture.physical_hash,16) or not value.capture.extent is Vector2i:
+		return "Prefetch native physical identity or extent is malformed."
 	var native_bytes := int(value.get("max_native_bytes",0))
 	var reserved := int(value.get("reservation_bytes",0))
 	if native_bytes<1 or native_bytes>MAX_RESERVATION_BYTES or reserved<native_bytes or reserved>MAX_RESERVATION_BYTES:

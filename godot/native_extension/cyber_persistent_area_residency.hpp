@@ -107,7 +107,8 @@ CyberDemoBridge::resident_stage_departure(CyberNativeCellWorld& adapter) {
     staged->window=adapter.simulation_window_enabled_; staged->cadence=adapter.cadence_lod_enabled_;
     staged->adhesion=adapter.liquid_surface_adhesion_enabled_;
     staged->retained_revision=adapter.revision_;
-    // No full native scan/hash, encoded checkpoint or constructed World occurs.
+    // The dependency guard scans occupancy, but departure performs no full
+    // physical-state hash, encoded checkpoint, World copy or reconstruction.
     return staged;
 }
 

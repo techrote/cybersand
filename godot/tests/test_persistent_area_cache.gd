@@ -168,7 +168,80 @@ func run() -> void:
 		"final native admission consumes only the matching remaining preparation reservation")
 	check(not staged.retain_warm("c",capture,authoring,0,manifest.areas.c.incarnation,"",false,true).ok,
 		"preserving an absent candidate reservation refuses")
+	exercise_authoring_refresh()
 	finish()
+
+
+func exercise_authoring_refresh() -> void:
+	var cache := Cache.new()
+	check(cache.open(manifest,40*1024*1024).ok,"authoring refresh admission fixture opens")
+	var active := receipt("a",3001)
+	active.active = true
+	var inactive := receipt("b",3002)
+	check(cache.admit_hot("a",active,authoring,0).ok and cache.set_active("a").ok \
+		and cache.admit_hot("b",inactive,authoring,0).ok,"two admitted identities establish active and inactive authority")
+	var used := int(cache.status().used_bytes)
+	cache.configure(true,used)
+	var original := cache.entry("b")
+	var edited := authoring.duplicate(true)
+	edited.camera["note"] = "bounded authored change"
+	var refreshed := inactive.duplicate(true)
+	refreshed.resident_generation = 2
+	check(not cache.refresh_hot("b",refreshed,1,edited).ok,
+		"inactive changed authoring cannot exceed the retained cache budget")
+	check(cache.entry("b")==original and int(cache.status().used_bytes)==used,
+		"refused inactive refresh preserves receipt, authoring, mutation and byte authority")
+	refreshed.active = true
+	check(not cache.refresh_hot("b",refreshed,1,edited).ok,
+		"inactive area cannot acquire a growth exception by claiming an active receipt")
+	refreshed.active = false
+	check(not cache.mark_dirty("b",0,1,edited).ok and cache.entry("b")==original,
+		"authoring-only dirty API applies the same inactive admission fence atomically")
+	var larger_native := refreshed.duplicate(true)
+	larger_native.native_bytes = int(larger_native.native_bytes)+64
+	check(not cache.refresh_hot("b",larger_native,0).ok and cache.entry("b")==original,
+		"inactive refresh cannot increase native reservation beyond its admitted budget")
+	cache.configure(true,40*1024*1024)
+	check(cache.refresh_hot("b",refreshed,1,edited).ok and cache.entry("b").dirty,
+		"bounded inactive authoring is admitted when retained capacity exists")
+	cache.configure(false,1)
+	active.resident_generation = 2
+	check(cache.refresh_hot("a",active,1,edited).ok and cache.status().over_budget,
+		"matching active native authority can retain edits after its budget is lowered")
+	edited.camera.note = "longer retained active authoring ".repeat(16)
+	check(cache.mark_dirty("a",0,2,edited).ok,
+		"active authoring-only dirty observation retains its explicit budget exception")
+	refreshed.resident_generation = 3
+	check(cache.refresh_hot("b",refreshed,1).ok,
+		"existing inactive receipt may refresh without allocating while cache admission is disabled")
+	var shared := PackedByteArray()
+	shared.resize(5*1024*1024)
+	var aliases: Array = []
+	aliases.resize(4096)
+	aliases.fill(shared)
+	var oversized := edited.duplicate(true)
+	oversized.camera["aliases"] = aliases
+	check(Store._pure(oversized,[Store.MAX_VALUE_ITEMS]),
+		"logical twenty-GiB repeated packed payload fits the old pure-item boundary without encoding")
+	var encodes := int(cache.status().counters.hot_refresh_encodes)
+	original = cache.entry("a")
+	active.resident_generation = 3
+	check(not cache.refresh_hot("a",active,3,oversized).ok,
+		"aggregate metadata refuses before aliased payload expansion even for active authority")
+	check(int(cache.status().counters.hot_refresh_encodes)==encodes and cache.entry("a")==original,
+		"oversized alias refusal performs no full authoring encoding and preserves resident state")
+	var wrong_definition := edited.duplicate(true)
+	wrong_definition.definition["unexpected_source_change"] = true
+	check(not cache.refresh_hot("a",active,3,wrong_definition).ok \
+		and int(cache.status().counters.hot_refresh_encodes)==encodes,
+		"unchanged original-construction equality fence still refuses before encoding")
+	var wrong_shape := edited.duplicate(true)
+	wrong_shape.camera = "unsupported camera shape"
+	check(not cache.refresh_hot("a",active,3,wrong_shape).ok,
+		"pure values cannot replace required admitted host envelope dictionaries")
+	active.active = "true"
+	check(not cache.refresh_hot("a",active,3,edited).ok,
+		"active growth exception requires a boolean native active receipt")
 
 
 func finish() -> void:
