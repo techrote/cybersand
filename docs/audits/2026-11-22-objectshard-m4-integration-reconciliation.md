@@ -37,3 +37,12 @@ The native owner-bound `MutableBodyGate` is a versioned value protocol with exac
 No executable combined-source native/Godot/Windows campaign is claimed by this merge. Rebuild and test the exact resulting SHA: native sanitizer coordinator+World, legacy 192 World regression, M4 Workbench qualifier, ordinary actor/equipment/Water/camera/PUBPRES compatibility, performance, Godot Windows package and non-skipped production provenance. The six historic native runtime source mismatches remain a gate. No NVIDIA physical acceptance is recorded. The M3 throughput (~17 semantic ticks/s), deliberate-burst p95 (~1.75s) and 14,176-byte native matrix headroom are historical warnings, not M4 results. All prior negative evidence and test budgets remain intact.
 
 **Decision:** preserve source reconciliation as a distinct Draft/HOLD integration candidate, proceed with genuine one-World implementation and independent qualification before any owner merge.
+
+## Donor continuation incorporated after initial merge
+
+The integration lead incorporated later native and Workbench donor corrections without modifying either branch:
+
+- Native follow-up 11b4d565d7d6973c925644208b078c75b9e3802e extends native coordinator regression. The existing M3 material World is still standalone and no native same-World attachment is claimed.
+- Workbench follow-up f1ffbf89894ec0a3421108e63b5a52086a38cb5a adds owner-identity pinning in the M4 port, explicit pointer-state reset on unavailable Workbench, and corresponding refusal tests/audit wording.
+- Changed donor files were imported by exact source Git blob identities; shared_workbench.gd received only the frozen additive B continuation patch on top of the previously verified Art-session reconciliation.
+- Execution results must be evaluated against the new exact integration SHA. Donor ordinary CI success is a source-specific scope result, not proof of positive same-World attachment.

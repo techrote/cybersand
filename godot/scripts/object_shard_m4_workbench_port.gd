@@ -25,6 +25,7 @@ var results: Array[Dictionary] = []
 var _next_action: int = 0
 var _pending: Dictionary = {}
 var _held_reason: String = ""
+var _pinned_owner: Dictionary = {}
 
 
 func _init(requested: bool = false) -> void:
@@ -84,6 +85,15 @@ func interface_status(worker: Object, snapshot: CyberSimulationSnapshot) -> Dict
 	for action: String in ACTIONS:
 		if action not in capabilities.operations:
 			return _refusal("IncompleteActionCapabilities")
+	var candidate_owner: Dictionary = {}
+	for key: String in ["worker_instance_id", "native_instance_id", "world_generation",
+			"session", "transport_generation"]:
+		candidate_owner[key] = capabilities[key]
+	if not _pinned_owner.is_empty() and _pinned_owner != candidate_owner:
+		_held_reason = "OwnerChangedWithoutRetirement"
+		return _refusal(_held_reason)
+	if _pinned_owner.is_empty():
+		_pinned_owner = candidate_owner.duplicate()
 	last_status = {"ready": true, "ok": true, "outcome": "SameWorldCandidate",
 		"world_generation": capabilities.world_generation,
 		"native_instance_id": capabilities.native_instance_id,
@@ -266,6 +276,7 @@ func retire(reason: String = "OwnerRetired") -> void:
 			"port_generation": generation, "may_have_executed": true})
 	_pending.clear()
 	_held_reason = ""
+	_pinned_owner.clear()
 	generation += 1
 	last_status = {"ready": false, "outcome": reason}
 

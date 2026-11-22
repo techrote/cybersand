@@ -1329,6 +1329,15 @@ void m4_same_world_promotion_and_exact_motion() {
     CHECK(adapter.initially_bound());
     CHECK(&coordinator.world() == world);
     CHECK(adapter.registered_bodies() == 0);
+    const auto snapshot_time_before = coordinator.metrics().snapshot_ns;
+    for (unsigned repeat = 0; repeat < 20; ++repeat) {
+        const auto proof = coordinator.m4_owner_readback();
+        CHECK(proof.world_available && proof.session == initial.session);
+        CHECK(proof.tick == world->completed_tick_index());
+        CHECK(proof.active_count == 0 && !proof.truncated);
+    }
+    // The fixed-size M4 proof must never rebuild the presentation snapshot.
+    CHECK(coordinator.metrics().snapshot_ns == snapshot_time_before);
     gate::MotionTicket motion{};
     CHECK(adapter.issue_motion(*world, coordinator, owner, motion) == gate::Verdict::Fenced);
     CHECK(adapter.grant_completed_tick(*world, coordinator, owner, world->completed_tick_index()) == gate::Verdict::Stale);
@@ -1505,6 +1514,9 @@ void m4_exclusive_mutable_capacity_refuses_fourth_real_owner() {
         CHECK(prepared.outcome == Outcome::Accepted);
         if (prepared.outcome != Outcome::Accepted) break;
         CHECK(activate(coordinator, prepared.shard));
+        const auto proof = coordinator.m4_owner_readback();
+        CHECK(proof.active_count == i + 1);
+        CHECK(proof.truncated == (i >= gate::kBodyLimit));
         gate::GeometryTicket ticket{};
         const auto outcome = adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
             coordinator, owner, prepared.shard, ticket);
@@ -1519,12 +1531,48 @@ void m4_exclusive_mutable_capacity_refuses_fourth_real_owner() {
         coordinator, owner, denied) == gate::Verdict::Fenced);
 }
 
+
+void m4_partial_physics_commit_is_still_exclusive_material() {
+    namespace gate = cybersand::object_shard::m4;
+    Coordinator coordinator(small_config());
+    const auto initial = coordinator.snapshot();
+    const gate::OwnerIdentity owner{31, 37, 41, initial.session, initial.world_incarnation};
+    gate::MutableBodyGate adapter(cybersand::object_shard::CoordinatorTestAccess::world(coordinator), coordinator, owner);
+    make_supported(coordinator);
+    erase_support(coordinator);
+    const auto before = owned_population(coordinator, Material::Wood);
+    const auto prepared = discover(coordinator);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    const auto reserve_receipt = ack_for(coordinator, AckKind::PhysicsReserved);
+    CHECK(coordinator.acknowledge(reserve_receipt).outcome == Outcome::Accepted);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    const auto* captured = coordinator.registry().find(prepared.shard);
+    CHECK(captured && captured->owns_inventory());
+    CHECK(captured && captured->phase() == Phase::CommittedInactive);
+    gate::GeometryTicket blocked{};
+    CHECK(adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner, prepared.shard, blocked) == gate::Verdict::Fenced);
+    CHECK(coordinator.cancel(prepared.transaction).outcome == Outcome::Quarantined);
+    CHECK(owned_population(coordinator, Material::Wood) == before);
+    CHECK(adapter.release_when_empty(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner) == gate::Verdict::Held);
+    CHECK(coordinator.reset(0, 426).outcome == Outcome::Accepted);
+    CHECK(coordinator.accounting().reset_disposed[static_cast<std::uint8_t>(Material::Wood)] >= before);
+    CHECK(owned_population(coordinator, Material::Wood) == 0);
+    gate::MotionTicket old{};
+    CHECK(adapter.issue_motion(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
+        coordinator, owner, old) == gate::Verdict::WrongWorld);
+    CHECK(adapter.registered_bodies() == 0);
+}
+
 } // namespace
 
 int main() {
     m4_same_world_promotion_and_exact_motion();
     m4_cancel_does_not_consume_world_and_replacement_fences();
     m4_exclusive_mutable_capacity_refuses_fourth_real_owner();
+    m4_partial_physics_commit_is_still_exclusive_material();
     finite_coordinate_configuration();
     ordinary_support_loss_and_exact_capture();
     state_temperature_and_aba_refuse();
