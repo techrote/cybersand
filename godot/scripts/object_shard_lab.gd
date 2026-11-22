@@ -5,12 +5,15 @@ const View = preload("res://scripts/object_shard_lab_view.gd")
 const SCENARIOS: Array[String] = ["A · Ordinary detachment", "B · Burning Wood tree", "C · Water and Sand exchange", "D · Three independent shards"]
 const BRUSHES: Array[String] = ["Erase", "Ignite", "Sand", "Water", "Wood", "Inspect"]
 const MATERIALS: Array[int] = [0, 6, 2, 3, 7, -1]
+const ADMITTED_MATERIAL_NAMES: Dictionary = {0: "Empty", 1: "Wall", 2: "Sand", 3: "Water", 4: "Smoke", 6: "Fire", 7: "Wood"}
+const INSPECTION_HINT: String = "Inspect a cell to see its actual owner, material, burn state and temperature."
 
 var session: CyberObjectShardLabSession
 var canvas: CyberObjectShardLabView
 var scenario_select: OptionButton
 var brush_select: OptionButton
 var pause_button: Button
+var overlay_toggle: CheckButton
 var status_label: Label
 var subtitle_label: Label
 var inventory_label: RichTextLabel
@@ -89,10 +92,10 @@ func _build_interface() -> void:
 	pointer_label.text = "Right click inspects exact inventory."
 	pointer_label.add_theme_color_override("font_color", Color("a5b5c5"))
 	tools.add_child(pointer_label)
-	var overlay := CheckButton.new()
-	overlay.text = "Shapes / centre of mass / pocket"
-	overlay.toggled.connect(func(value: bool) -> void: canvas.overlays = value; canvas.queue_redraw())
-	tools.add_child(overlay)
+	overlay_toggle = CheckButton.new()
+	overlay_toggle.text = "Shapes / centre of mass / pocket"
+	overlay_toggle.toggled.connect(func(value: bool) -> void: canvas.overlays = value; canvas.queue_redraw())
+	tools.add_child(overlay_toggle)
 	var body := HBoxContainer.new()
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_theme_constant_override("separation", 14)
@@ -123,7 +126,7 @@ func _build_interface() -> void:
 	inspection_label.fit_content = false
 	inspection_label.custom_minimum_size = Vector2(285, 110)
 	inspection_label.add_theme_font_size_override("normal_font_size", 13)
-	inspection_label.text = "Inspect a cell to see its actual owner, material, burn state and temperature."
+	inspection_label.text = INSPECTION_HINT
 	side.add_child(inspection_label)
 	var scope := Label.new()
 	scope.text = "This slice keeps disconnected islands\nin one compound (split_pending).\n\nNo general fracture, internal fluid\nsolver, or durable save/restore."
@@ -165,6 +168,10 @@ func _open(scenario: int) -> void:
 	if not result.get("ok", false):
 		status_label.text = session.status
 		return
+	scenario_select.select(scenario - 1)
+	inspection_label.text = INSPECTION_HINT
+	inspection_label.scroll_to_line(0)
+	inventory_label.scroll_to_line(0)
 	var hints: Array[String] = [
 		"A · Erase through a Wood support, then Resume. Discovery uses ordinary committed material changes. The freed inventory becomes one Rapier body.",
 		"B · The genuine Wood tree begins burning. Resume, then remove its lower support. Inspect Wood state_b before and after promotion; emitted Fire remains native material.",
@@ -230,7 +237,8 @@ func _cell_pressed(position: Vector2i, button: int) -> void:
 	if session == null:
 		return
 	if button == MOUSE_BUTTON_RIGHT or brush_select.selected == 5:
-		inspection_label.text = "[b]Exact cell[/b]\n" + JSON.stringify(session.inspect(position), "  ")
+		inspection_label.text = _inspection_text(session.inspect(position))
+		inspection_label.scroll_to_line(0)
 		return
 	if brush_select.selected == 1:
 		var result: Dictionary = session.ignite(position)
@@ -245,12 +253,26 @@ func _cell_pressed(position: Vector2i, button: int) -> void:
 	_present()
 
 
+func _inspection_text(cell: Dictionary) -> String:
+	if not cell.get("ok", false):
+		return "[b]Inspection unavailable[/b]\n" + JSON.stringify(cell, "  ")
+	var material: int = int(cell.get("material", -1))
+	var material_name: String = str(cell.get("material_name", ADMITTED_MATERIAL_NAMES.get(material, "Material %d" % material))).capitalize()
+	var owner: String = str(cell.get("owner", "unknown"))
+	if owner == "ObjectShard":
+		owner += " %d · cell %d" % [int(cell.id), int(cell.cell)]
+	return "[b]%s[/b] · %s\nstate_a %d · state_b %d\ntemperature %d · incarnation %d\n\n[b]Exact cell[/b]\n%s" % [
+		material_name, owner, int(cell.get("state_a", 0)), int(cell.get("state_b", 0)),
+		int(cell.get("temperature", 0)), int(cell.get("incarnation", 0)), JSON.stringify(cell, "  ")]
+
+
 func _present() -> void:
 	if session == null or session.frame.is_empty():
 		return
 	var started: int = Time.get_ticks_usec()
 	var poses: Array = session.bridge.sample_poses() if session.bridge != null else []
 	canvas.present(session.frame, poses)
+	overlay_toggle.set_pressed_no_signal(canvas.overlays)
 	status_label.text = session.status
 	if session.failed:
 		status_label.add_theme_color_override("font_color", Color("ff9b89"))

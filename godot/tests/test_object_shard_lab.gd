@@ -35,6 +35,7 @@ func _run() -> void:
 		await _exchange()
 		await _multiple()
 		await _draining_anchor()
+	await _scene_presentation()
 	_finish()
 
 
@@ -421,6 +422,36 @@ func _draining_anchor() -> void:
 		"retained_domain": not draining.is_empty(), "inspected_product": inspected}
 	reports.append(report)
 	session.close()
+	await process_frame
+
+
+func _scene_presentation() -> void:
+	var scene: PackedScene = load("res://object_shard_lab.tscn")
+	var lab = scene.instantiate()
+	root.add_child(lab)
+	await process_frame
+	_expect(not lab.session.failed, "Scene: ordinary owner Lab opens with actual native and Rapier adapters")
+	if test_stage != "m0":
+		lab._open(2)
+		_expect(lab.scenario_select.selected == 1 and lab.session.scenario == 2,
+			"Scene: programmatic scenario change updates the visible selected scenario")
+	lab.inspection_label.text = "obsolete previous owner"
+	lab._open(1)
+	_expect(not lab.inspection_label.text.contains("obsolete previous owner"), "Scene: reset clears stale inventory inspection")
+	var wood: Vector2i = Vector2i(-1, -1)
+	for cell: int in range(lab.session.frame.world_materials.size()):
+		if int(lab.session.frame.world_materials[cell]) == 7:
+			wood = Vector2i(cell % int(lab.session.frame.width), cell / int(lab.session.frame.width))
+			break
+	_expect(wood.x >= 0, "Scene: inspectable Wood belongs to the actual World")
+	lab._cell_pressed(wood, MOUSE_BUTTON_RIGHT)
+	var summary: String = lab.inspection_label.text.get_slice("{", 0)
+	_expect(summary.contains("Wood") and summary.contains("World") and summary.contains("state_b") and summary.contains("temperature"),
+		"Scene: material, owner, chemical state and temperature precede the scrollable exact tuple")
+	lab.canvas.overlays = true
+	lab._present()
+	_expect(lab.overlay_toggle.button_pressed, "Scene: overlay control matches actual visible shapes")
+	lab.queue_free()
 	await process_frame
 
 

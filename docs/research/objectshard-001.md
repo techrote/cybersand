@@ -347,3 +347,34 @@ exact project/runtime/dependencies, then replays that delivered package. Missing
 native receipts, ambiguous custody or modified delivered scripts are refusals.
 Partial failure logs remain artifacts. See the [owner procedure](../operations/objectshard-lab-playtest.md)
 for the verified launcher, scenarios, inspection and result export.
+
+## First hosted campaign and portability repair
+
+Campaign [44972695658](https://github.com/techrote/cybersand/actions/runs/44972695658)
+executed source `1bb6185be05f5ef838543a0e13c81428b751d969`. Actual Windows Godot4.7,
+all ten ANGLE-rendered PNGs, the headless/rendered performance matrices and
+delivered-package replay passed. Those results remain attached to that source.
+The Linux native sanitizer tests and extension compilation passed, but the
+unchanged runtime-floor gate correctly rejected the new `hypot@GLIBC_2.35`
+dependency against the selected GLIBC2.34 floor. No Linux actual-Godot pass is
+inferred from compilation.
+
+The subsequent narrow repair replaces five contact magnitude calls with a
+finite scaled-square-root helper, following the repository's existing portable
+numeric pattern. It preserves bounds and meaningful tiny/subnormal components.
+The affected normal and ASan/UBSan suites each passed49,055 checks, including
+1,220 new numerical checks; the applicable ObjectShard catalogue is61,652.
+An independent 100-digit reference comparison passed4,006 pairs, with at most
+two ULP observed error. Deliberately pathological diagonal boundary inputs can
+differ from `hypot` by less than9e-16; this is not bit-identical floating-point
+math, and it is far below the existing1e-9 contact padding. Full rebuilt ELF
+floor verification and fresh Linux/Windows execution remain required.
+
+Visual review of the first Windows PNGs confirmed actual rotated shapes,
+burning material/products, consumed holes, carried Sand and retained draining
+products. It also found stale scenario-selection and inspection presentation.
+The repaired scene keeps the dropdown and overlay state synchronized, clears
+obsolete inspection on reset, and places material/owner/state/temperature before
+the exact JSON. The capture now inspects the extinguished Wood instead of stale
+Sand. Added actual-scene assertions raise the integrated inventory to379 checks;
+the new source must execute them with its rebuilt runtime before qualification.

@@ -679,7 +679,7 @@ Outcome Coordinator::apply_poses(std::span<const PoseSample> poses) {
             p.geometry_revision!=shard->applied_physics_revision() || p.pose_serial<=b->pose.pose_serial ||
             !std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.rotation) ||
             !std::isfinite(p.vx) || !std::isfinite(p.vy) || !std::isfinite(p.angular_velocity)) return Outcome::Stale;
-        if (std::hypot(p.x-b->pose.x,p.y-b->pose.y)>config_.max_translation_per_step ||
+        if (contact::magnitude(p.x-b->pose.x,p.y-b->pose.y)>config_.max_translation_per_step ||
             std::abs(p.rotation-b->pose.rotation)>config_.max_rotation_per_step) return Outcome::Unsupported;
         contact::Envelope envelope;envelope.max_translation=config_.max_translation_per_step;
         envelope.max_rotation=config_.max_rotation_per_step;

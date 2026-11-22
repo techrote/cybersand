@@ -12,6 +12,20 @@ namespace cybersand::object_shard::contact {
 
 inline constexpr double kEpsilon = 1e-9;
 inline constexpr double kCoordinateLimit = 1'000'000.0;
+
+// Two-component magnitude for already validated finite contact coordinates.
+// Scaling preserves tiny/subnormal axes that would disappear when squared.
+// Components here are bounded by twice kCoordinateLimit (or uint16 extents),
+// so the final product cannot overflow. Use sqrt to preserve the Linux GLIBC
+// 2.34 runtime floor: the build host's std::hypot imports GLIBC_2.35.
+[[nodiscard]] inline double magnitude(double x, double y) noexcept {
+    const double scale = std::max(std::abs(x), std::abs(y));
+    if (scale == 0.0) return 0.0;
+    x /= scale;
+    y /= scale;
+    return scale * std::sqrt(x * x + y * y);
+}
+
 struct Vec { double x{}, y{}; };
 struct Pose { double x{}, y{}, angle{}; };
 struct Frame {
@@ -121,11 +135,11 @@ struct PocketWitness {
         envelope.max_translation < 0.0 || envelope.max_rotation < 0.0 ||
         envelope.max_corner_motion < 0.0 || envelope.sample_spacing <= 0.0 ||
         envelope.max_samples < 2 || envelope.max_samples > 128) return {};
-    const auto translation = std::hypot(after.x - before.x, after.y - before.y);
+    const auto translation = magnitude(after.x - before.x, after.y - before.y);
     // Use the actual supplied angular interval. Do not alias an unobserved
     // complete revolution into zero motion by taking angle modulo 2*pi.
     const auto rotation = std::abs(after.angle - before.angle);
-    const auto corner_motion = translation + std::hypot(static_cast<double>(width),
+    const auto corner_motion = translation + magnitude(static_cast<double>(width),
         static_cast<double>(height)) * rotation;
     if (translation > envelope.max_translation || rotation > envelope.max_rotation ||
         corner_motion > envelope.max_corner_motion)
@@ -243,8 +257,8 @@ namespace detail {
 
     const auto angle_delta = after.angle - before.angle;
     const auto steps = static_cast<double>(sweep.samples - 1);
-    const auto radius = std::max(std::hypot(world_sand_center.x - before.x, world_sand_center.y - before.y),
-        std::hypot(world_sand_center.x - after.x, world_sand_center.y - after.y));
+    const auto radius = std::max(magnitude(world_sand_center.x - before.x, world_sand_center.y - before.y),
+        magnitude(world_sand_center.x - after.x, world_sand_center.y - after.y));
     // For q(t)=R(-angle(t))*(grain-origin(t)), the second derivative norm is
     // bounded by a²*radius+2*|a|*translation. The /8*steps² interpolation bound
     // expands each tested chord, covering the curved local trajectory between

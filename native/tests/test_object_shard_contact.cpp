@@ -16,6 +16,60 @@ void check(bool pass, const char* description, int line) {
 }
 #define CHECK(expression) check((expression), #expression, __LINE__)
 
+void portable_magnitude_matches_independent_reference() {
+    const auto tiny = std::numeric_limits<double>::denorm_min();
+    const auto normal_min = std::numeric_limits<double>::min();
+    const std::array<double, 20> components{0.0, -0.0, tiny, -tiny, 3 * tiny,
+        normal_min, -normal_min, std::nextafter(normal_min, 0.0), 1e-200, -1e-100,
+        1e-9, -0.125, 1.0, -3.0, 4.0, 65'535.0,
+        kCoordinateLimit, -kCoordinateLimit, 2 * kCoordinateLimit, -2 * kCoordinateLimit};
+    // std::hypot is an independent test-only reference. Production contact
+    // code intentionally avoids its build-host GLIBC_2.35 symbol dependency.
+    for (double x : components) for (double y : components) {
+        const auto expected = std::hypot(x, y);
+        const auto actual = magnitude(x, y);
+        const auto tolerance = 3 * std::numeric_limits<double>::epsilon() * expected + 2 * tiny;
+        CHECK(std::isfinite(actual) && actual >= 0.0);
+        CHECK(std::abs(actual - expected) <= tolerance);
+        CHECK(actual == magnitude(y, x));
+    }
+    CHECK(magnitude(0.0, -0.0) == 0.0 && !std::signbit(magnitude(-0.0, -0.0)));
+    CHECK(magnitude(tiny, 0.0) == tiny);
+    CHECK(magnitude(0.0, -tiny) == tiny);
+    CHECK(magnitude(tiny, tiny) != 0.0);
+    CHECK(magnitude(3.0, 4.0) == 5.0);
+    CHECK(magnitude(-3.0, -4.0) == 5.0);
+}
+
+void portable_magnitude_preserves_admitted_envelope_boundaries() {
+    const Pose origin{};
+    const auto below = std::nextafter(4.0, 0.0);
+    const auto above = std::nextafter(4.0, std::numeric_limits<double>::infinity());
+    CHECK(plan_sweep(origin, {below, 0, 0}, 1, 1).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {4, 0, 0}, 1, 1).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {above, 0, 0}, 1, 1).outcome == Outcome::Unsupported);
+    CHECK(plan_sweep(origin, {-4, 0, 0}, 1, 1).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {-above, 0, 0}, 1, 1).outcome == Outcome::Unsupported);
+    Envelope diagonal;
+    diagonal.max_translation = 5.0; diagonal.max_corner_motion = 5.0;
+    CHECK(plan_sweep(origin, {3, 4, 0}, 1, 1, diagonal).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {3, 4 + 1e-12, 0}, 1, 1, diagonal).outcome == Outcome::Unsupported);
+    diagonal.max_samples = 9;
+    CHECK(plan_sweep(origin, {4, 0, 0}, 1, 1, diagonal).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {above, 0, 0}, 1, 1, diagonal).outcome == Outcome::Capacity);
+    Envelope rotating;
+    rotating.max_corner_motion = 1.0;
+    CHECK(plan_sweep(origin, {0, 0, .2}, 3, 4, rotating).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {0, 0, std::nextafter(.2, 0.0)}, 3, 4, rotating).outcome == Outcome::Accepted);
+    CHECK(plan_sweep(origin, {0, 0, std::nextafter(.2, 1.0)}, 3, 4, rotating).outcome == Outcome::Unsupported);
+    const auto tiny = std::numeric_limits<double>::denorm_min();
+    const auto subnormal = plan_sweep(origin, {tiny, tiny, 0}, 1, 1);
+    CHECK(subnormal.outcome == Outcome::Accepted && subnormal.translation > 0.0 && subnormal.samples == 2);
+    const auto extent = plan_sweep({-kCoordinateLimit, -kCoordinateLimit, 0},
+        {kCoordinateLimit, kCoordinateLimit, 0}, 65'535, 65'535);
+    CHECK(extent.outcome == Outcome::Unsupported && std::isfinite(extent.translation));
+}
+
 // Independent Sutherland-Hodgman polygon clipping oracle. It uses vertices and
 // area, rather than the tested SAT centre/projection implementation.
 double clipped_area(Frame value, int local_x, int local_y, int world_x, int world_y) {
@@ -262,6 +316,8 @@ void curved_trajectory_has_no_hidden_wall_crossing() {
 } // namespace
 
 int main() {
+    portable_magnitude_matches_independent_reference();
+    portable_magnitude_preserves_admitted_envelope_boundaries();
     sat_matches_polygon_oracle();
     aperture_and_motion_contract();
     bounded_wide_aperture_and_rotated_world_carriers();

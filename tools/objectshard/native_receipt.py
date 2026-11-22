@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "tools/ci"))
 from native_candidate_identity import source
 
 CONTRACT = ("tools/build_native_extension.sh", "tools/build_pinned_godot_cpp.sh",
+            "tools/toolchains/g++",
             "third_party/native-toolchain.lock.json", "tools/requirements-build.txt")
 
 

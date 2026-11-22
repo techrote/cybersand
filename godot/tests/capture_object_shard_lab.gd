@@ -100,6 +100,12 @@ func _run() -> void:
 		if not water.get("ok", false) or not extinguished:
 			failures += 1
 			push_error("Rendered C scenario did not extinguish the same Wood incarnation")
+		else:
+			for shard: Dictionary in lab.session.frame.shards:
+				if int(shard.id) == int(water.id):
+					var center: Vector2 = lab.session._pose(shard) * Vector2(float(int(water.cell) % int(shard.width)) + 0.5,
+						float(int(water.cell) / int(shard.width)) + 0.5)
+					lab._cell_pressed(Vector2i(floori(center.x), floori(center.y)), MOUSE_BUTTON_RIGHT)
 		lab._present()
 		await _capture(lab, "objectshard-c-water-extinction", {"water_contact": water, "same_wood_extinguished": extinguished})
 		lab._open(4)
@@ -128,6 +134,12 @@ func _run() -> void:
 
 
 func _capture(lab: Node, name: String, evidence: Dictionary = {}) -> void:
+	if lab.session.scenario > 0 and lab.scenario_select.selected + 1 != lab.session.scenario:
+		failures += 1
+		push_error("Displayed scenario does not match the actual native session")
+	if lab.overlay_toggle.button_pressed != lab.canvas.overlays:
+		failures += 1
+		push_error("Overlay control does not describe the rendered geometry")
 	await process_frame
 	await RenderingServer.frame_post_draw
 	var picture: Image = root.get_texture().get_image()
