@@ -1323,6 +1323,11 @@ func send_next(expected_epoch: int) -> void:
 	request_url = endpoint.text.strip_edges()
 	sent_input_price = input_price.value
 	sent_output_price = output_price.value
+	# Register the currently selected secret BEFORE the reproducibility
+	# snapshot: guidance, prompts and even JSON field names can echo a key.
+	var request_key: String = str(keys.get(current_provider,""))
+	if not request_key.is_empty() and not provider.secrets.has(request_key):
+		provider.secrets.append(request_key)
 	# The snapshot is sufficient to manually reproduce the request from this
 	# session's standalone JSONL, without an old chat transcript or profile link.
 	provider.log_event("request_parameters",{
@@ -1338,7 +1343,7 @@ func send_next(expected_epoch: int) -> void:
 		"turns":int(turn_limit.value),"run_seconds":run_seconds.value,
 		"minimum_interval_seconds":minimum_interval.value,"spend_limit":spend_limit.value,
 		"world_epoch":request_epoch})
-	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),keys.get(current_provider,""),prompt,instructions,int(tokens.value),seconds.value,png,context)
+	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),request_key,prompt,instructions,int(tokens.value),seconds.value,png,context)
 	if input_error.is_empty(): remember_turn("user",prompt,provider.last_request_offset if not png.is_empty() else -1)
 	else: remaining_turns = 0
 

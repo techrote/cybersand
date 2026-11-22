@@ -1,8 +1,5 @@
 name: Art session-only logging qualification
 on:
-  push:
-    branches:
-      - fix/art-session-scoped-logging-20261122
   pull_request:
     paths:
       - 'godot/scripts/art_batch_panel.gd'

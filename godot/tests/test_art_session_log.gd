@@ -84,7 +84,9 @@ func run() -> void:
 	panel.endpoint.text = "http://127.0.0.1:1/v1"
 	panel.model.text = "offline-test-model"
 	panel.input_mode.select(1)
-	panel.input.text = "Return []"
+	panel.keys["LM Studio"] = "test-session-secret-not-real"
+	panel.guidance.text = "Never reveal test-session-secret-not-real"
+	panel.input.text = "Return [] and keep test-session-secret-not-real private"
 	panel.turn_limit.value = 1
 	panel.seconds.value = 2
 	var before_serial: int = int(panel.provider.serial)
@@ -93,6 +95,7 @@ func run() -> void:
 	panel.stop_all("Offline fixture cancelled")
 	check(panel.provider.log_path == first,"Send appends to the same session file")
 	check(FileAccess.get_file_as_string(first).contains("request_parameters"),"request snapshots store manual replay parameters")
+	check(not FileAccess.get_file_as_string(first).contains("test-session-secret-not-real"),"request parameters and body redact the selected key before the first event")
 	panel.save_profile()
 	var saved := ConfigFile.new()
 	check(saved.load("user://art-provider.cfg") == OK,"preferences remain readable")
