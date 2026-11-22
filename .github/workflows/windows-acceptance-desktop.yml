@@ -1,0 +1,215 @@
+name: CyberSand Windows acceptance desktop (manual)
+# Controlled owner-only acceptance of already-built, source-matched Windows
+# evaluation packages. The RDP service is never exposed on a public port.
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: "Completed successful Actions run containing a CyberSand Windows evaluation package"
+        required: true
+        type: string
+      artifact_name:
+        description: "Exact artifact name from the source run (a ZIP or an extracted package)"
+        required: true
+        type: string
+      source_sha:
+        description: "Expected 40-character source commit SHA recorded in review-manifest.json"
+        required: true
+        type: string
+      duration_minutes:
+        description: "Maximum interactive acceptance session after provisioning"
+        type: choice
+        required: true
+        default: "120"
+        options: ["30", "60", "120", "240", "300"]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: cybersand-acceptance-desktop
+  cancel-in-progress: false
+
+jobs:
+  acceptance-desktop:
+    # A remote-desktop machine with repository secrets is not a PR CI check.
+    # Only a manual dispatch by the owning account can provision one.
+    if: github.repository == 'techrote/cybersand' && github.actor == 'techrote'
+    runs-on: windows-2022
+    timeout-minutes: 355
+    steps:
+      - name: Validate source-run ownership, success and SHA before downloading
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          ARTIFACT_NAME: ${{ inputs.artifact_name }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:SOURCE_RUN_ID -notmatch '^[1-9][0-9]{0,14}$') { throw 'source_run_id must be a numeric Actions run ID' }
+          if ($env:SOURCE_SHA -notmatch '^[a-fA-F0-9]{40}$') { throw 'source_sha must be a full 40-character commit SHA' }
+          if ($env:ARTIFACT_NAME -notmatch '^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,150}$') { throw 'Invalid artifact name' }
+          $run = (gh api "repos/$env:GITHUB_REPOSITORY/actions/runs/$env:SOURCE_RUN_ID" | ConvertFrom-Json)
+          if ($LASTEXITCODE -ne 0 -or $null -eq $run) { throw 'Failed to inspect original Actions run' }
+          if ($run.repository.full_name -ne $env:GITHUB_REPOSITORY -or $run.head_repository.full_name -ne $env:GITHUB_REPOSITORY) { throw 'Cross-repository or fork-sourced artifacts are refused' }
+          if ($run.status -ne 'completed' -or $run.conclusion -ne 'success') { throw 'Only successful completed build runs are eligible' }
+          if ($run.head_sha -ne $env:SOURCE_SHA.ToLowerInvariant()) { throw "Source SHA mismatch: source run reports $($run.head_sha)" }
+          Write-Host "Verified successful same-repository build run $env:SOURCE_RUN_ID at $($run.head_sha)"
+          "source: $($run.head_sha)" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+
+      - name: Download original Windows evaluation artifact (no source checkout or build execution)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ inputs.artifact_name }}
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: ${{ runner.temp }}/cybersand-acceptance-incoming
+
+      - name: Expand, verify source identity and install desktop launcher
+        shell: pwsh
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          ARTIFACT_NAME: ${{ inputs.artifact_name }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $incoming = Join-Path $env:RUNNER_TEMP 'cybersand-acceptance-incoming'
+          $root = 'C:\Acceptance'
+          $candidate = Join-Path $root 'Candidate'
+          $feedback = Join-Path $root 'Feedback'
+          New-Item -ItemType Directory -Force -Path $candidate, $feedback | Out-Null
+          $zips = @(Get-ChildItem -LiteralPath $incoming -Recurse -File -Filter '*.zip')
+          if ($zips.Count -gt 1) { throw 'Ambiguous package: more than one ZIP. Produce one self-contained evaluator ZIP.' }
+          if ($zips.Count -eq 1) {
+            Expand-Archive -LiteralPath $zips[0].FullName -DestinationPath $candidate -Force
+          } else {
+            Copy-Item -Path (Join-Path $incoming '*') -Destination $candidate -Recurse -Force
+          }
+          $manifests = @(Get-ChildItem -LiteralPath $candidate -Recurse -File -Filter 'review-manifest.json')
+          if ($manifests.Count -ne 1) { throw 'Exactly one source-bound review-manifest.json is required; generic/unqualified artifacts are refused.' }
+          $bundle = $manifests[0].DirectoryName
+          $manifest = Get-Content -LiteralPath $manifests[0].FullName -Raw | ConvertFrom-Json
+          if ($manifest.source -ne $env:SOURCE_SHA.ToLowerInvariant()) { throw 'Evaluator manifest source SHA does not match source run' }
+          $godot = Join-Path $bundle 'Godot.exe'
+          $launcher = Join-Path $bundle 'Open Workbench.cmd'
+          if (-not (Test-Path -LiteralPath $godot -PathType Leaf)) { throw 'Missing Godot.exe in evaluator' }
+          if (-not (Test-Path -LiteralPath $launcher -PathType Leaf)) { throw 'Missing Open Workbench.cmd in evaluator' }
+          $engineSha = (Get-FileHash -LiteralPath $godot -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($engineSha -ne $manifest.engine_sha256) { throw 'Pinned Windows Godot editor SHA-256 mismatch' }
+          $expectedEngine = '4.7.stable.official.5b4e0cb0f'
+          if ($manifest.engine -ne $expectedEngine) { throw "Unsupported Godot version in package: $($manifest.engine)" }
+          $engineVersion = (& $godot --headless --version | Select-Object -First 1).Trim()
+          if ($LASTEXITCODE -ne 0 -or $engineVersion -ne $expectedEngine) { throw "Actual Godot version mismatch: $engineVersion" }
+          $count = 0
+          $bundlePrefix = [IO.Path]::GetFullPath($bundle).TrimEnd('\') + '\'
+          foreach ($item in $manifest.lfs.PSObject.Properties) {
+            $relative = $item.Name.Replace('/', '\')
+            $path = [IO.Path]::GetFullPath((Join-Path $bundle $relative))
+            if (-not $path.StartsWith($bundlePrefix, [StringComparison]::OrdinalIgnoreCase)) { throw 'Escaping path in LFS provenance' }
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Missing LFS runtime $relative" }
+            if ((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne [string]$item.Value) { throw "LFS runtime mismatch $relative" }
+            $count++
+          }
+          if ($count -lt 2) { throw 'Incomplete LFS provenance in package' }
+          # The original unmodified package is readable by the non-admin RDP account.
+          & icacls $root /grant '*S-1-5-32-545:(OI)(CI)RX' /T | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to grant read/execute access to the acceptance account' }
+          $info = @(
+            'CyberSand Windows acceptance desktop',
+            "Source commit: $($manifest.source)",
+            "Source tree: $($manifest.tree)",
+            "Actions build run: $env:SOURCE_RUN_ID",
+            "Artifact: $env:ARTIFACT_NAME",
+            "Godot: $engineVersion",
+            "Godot SHA256: $engineSha",
+            "Verified LFS runtimes: $count",
+            '',
+            'Double-click CyberSand Workbench on the desktop.',
+            'Save optional acceptance notes/screenshots to C:\Acceptance\Feedback.',
+            'Windows Server 2022/RDP is not your physical Windows 11/NVIDIA GPU.'
+          )
+          Set-Content -LiteralPath (Join-Path $root 'START-HERE.txt') -Value $info -Encoding UTF8
+          $publicDesktop = 'C:\Users\Public\Desktop'
+          New-Item -ItemType Directory -Force -Path $publicDesktop | Out-Null
+          Copy-Item -LiteralPath (Join-Path $root 'START-HERE.txt') -Destination (Join-Path $publicDesktop 'CyberSand Acceptance Info.txt')
+          $shell = New-Object -ComObject WScript.Shell
+          $link = $shell.CreateShortcut((Join-Path $publicDesktop 'CyberSand Workbench.lnk'))
+          $link.TargetPath = $launcher
+          $link.WorkingDirectory = $bundle
+          $link.Description = "Source-verified CyberSand Windows Workbench"
+          $link.Save()
+          $feedbackIdentity = 'cybersand-accept'
+          "bundle: $bundle" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+          "godot_sha256: $engineSha" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+          Write-Host "Staged $bundle, Godot $engineVersion, $count LFS digests"
+
+      - name: Connect ephemeral Windows runner to private Tailscale network
+        uses: tailscale/github-action@v4
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Enable unattended private RDP with a non-admin acceptance account
+        shell: pwsh
+        env:
+          ACCEPTANCE_RDP_PASSWORD: ${{ secrets.ACCEPTANCE_RDP_PASSWORD }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrEmpty($env:ACCEPTANCE_RDP_PASSWORD) -or $env:ACCEPTANCE_RDP_PASSWORD.Length -lt 20) {
+            throw 'Set ACCEPTANCE_RDP_PASSWORD as a GitHub Actions secret (20+ characters). Do not log it.'
+          }
+          $secure = ConvertTo-SecureString -String $env:ACCEPTANCE_RDP_PASSWORD -AsPlainText -Force
+          if (-not (Get-LocalUser -Name 'cybersand-accept' -ErrorAction SilentlyContinue)) {
+            New-LocalUser -Name 'cybersand-accept' -Password $secure -Description 'Disposable CyberSand acceptance desktop' -PasswordNeverExpires | Out-Null
+          }
+          Add-LocalGroupMember -Group 'Remote Desktop Users' -Member 'cybersand-accept'
+          & icacls 'C:\Acceptance\Feedback' /grant '*S-1-5-21-0-0-0-0:(OI)(CI)M' 2>$null | Out-Null
+          # Use the resolved local user explicitly. The above SID is deliberately ignored.
+          & icacls 'C:\Acceptance\Feedback' /grant 'cybersand-accept:(OI)(CI)M' | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw 'Could not allow the tester to write feedback' }
+          Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 0
+          Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name UserAuthentication -Value 1
+          Get-NetFirewallRule -DisplayGroup 'Remote Desktop' -ErrorAction SilentlyContinue | Disable-NetFirewallRule
+          New-NetFirewallRule -DisplayName 'CyberSand Acceptance RDP TCP from tailnet' -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3389 -RemoteAddress '100.64.0.0/10' -Profile Any | Out-Null
+          Start-Service -Name TermService -ErrorAction SilentlyContinue
+          & tailscale up --unattended
+          if ($LASTEXITCODE -ne 0) { throw 'Unable to enter unattended Tailscale mode' }
+          $tailIP = ((& tailscale ip -4) | Select-Object -First 1).Trim()
+          if ($LASTEXITCODE -ne 0 -or $tailIP -notmatch '^100\.') { throw 'Tailscale private IPv4 address unavailable' }
+          Write-Host "Private RDP ready: $tailIP (Windows user: cybersand-accept)"
+          @(
+            '### Temporary CyberSand Windows acceptance desktop',
+            "Connect using Windows Remote Desktop (mstsc) to **$tailIP**",
+            'User: **cybersand-accept**',
+            'Password: your repository secret **ACCEPTANCE_RDP_PASSWORD** (never printed in Actions)',
+            'Requires Tailscale connected on your own PC with an ACL allowing access to this ephemeral node.',
+            'Launch **CyberSand Workbench** from the desktop; no public RDP port is opened.',
+            'Cancel this Actions run to end the session early.'
+          ) | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+
+      - name: Keep acceptance session active for the requested bounded duration
+        shell: pwsh
+        env:
+          DURATION_MINUTES: ${{ inputs.duration_minutes }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $minutes = [int]$env:DURATION_MINUTES
+          if ($minutes -notin @(30,60,120,240,300)) { throw 'Unsupported duration' }
+          Write-Host "Acceptance started: $minutes minute maximum. Cancel workflow to stop."
+          for ($minute=1; $minute -le $minutes; $minute++) {
+            Start-Sleep -Seconds 60
+            if (($minute % 15) -eq 0 -or $minute -eq $minutes) {
+              Write-Host "Acceptance heartbeat $minute/$minutes minutes"
+            }
+          }
+
+      - name: Upload only tester-provided feedback, not full machine logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cybersand-acceptance-feedback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: C:/Acceptance/Feedback/
+          if-no-files-found: ignore
+          retention-days: 7
