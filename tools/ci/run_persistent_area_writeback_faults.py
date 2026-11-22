@@ -21,7 +21,7 @@ import time
 from run_persistent_areas_qualification import completion, source_identity
 
 ROOT = Path(__file__).resolve().parents[2]
-BOUNDARIES = ("before_snapshot", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish")
+BOUNDARIES = ("before_capture", "before_snapshot", "queued_dirty", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish", "newer_dirty_after_durable")
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|(?m:^ERROR:)")
 MARKER = "GEN006_RAMCACHE_BARRIER "
 
@@ -40,6 +40,7 @@ def command(engine: Path, project: Path, profile: Path, mode: str, extra: list[s
 
 
 def recover(engine: Path, project: Path, profile: Path, directory: Path, expected: int, timeout: int) -> dict:
+    """Restore and independently inspect the manifest and actual native bytes."""
     evidence = directory / "recovered.json"
     argv = command(engine, project, profile, "verify", [f"--writeback-expected-tick={expected}", f"--writeback-evidence={evidence}"])
     started = time.monotonic()
@@ -61,16 +62,67 @@ def recover(engine: Path, project: Path, profile: Path, directory: Path, expecte
             or values.get("pid") != child.pid or values.get("checks") != receipt["checks"]:
         raise RuntimeError("Fresh recovery receipt is incomplete")
     native = values["events"][-1]
-    if native.get("native_tick") != expected or native["fresh_owner_manifest"]["clock"]["game_ticks"] != expected:
-        raise RuntimeError("Recovered native/accounted frontier differs from the requested publication boundary")
-    return {"kind":"fresh_process_recovery", "pid":child.pid, "observed_pid":values["pid"], "argv":argv, "exit_code":child.returncode,
-            "elapsed_s":time.monotonic()-started, "checks":receipt["checks"], "expected_tick":expected,
-            "native_sha256":native["native_sha256"], "physical_hash":native["physical_hash"],
-            "session_id":native["fresh_owner_manifest"]["session_id"], "evidence_sha256":sha(evidence),
+    manifest = native["fresh_owner_manifest"]
+    area_clock, areas = manifest["clock"]["areas"], manifest["areas"]
+    revision = 2 if expected == 4 else 1
+    if native.get("native_tick") != expected or manifest["clock"]["game_ticks"] != expected \
+            or manifest.get("revision") != revision or set(areas) != {"a", "b", "c"} \
+            or set(area_clock) != {"a", "b", "c"}:
+        raise RuntimeError("Recovered durable revision/native/game-time boundary differs from independent oracle")
+    for id in ("a", "b", "c"):
+        entry, clock = areas[id], area_clock[id]
+        target_tick = expected if id == "a" else 0
+        mutation = 1 if id == "a" and expected == 4 else 0
+        if entry.get("area_id") != id or entry.get("completed_tick") != target_tick \
+                or entry.get("mutation_generation") != mutation or clock.get("native_ticks") != target_tick \
+                or clock.get("accounted_ticks") != target_tick \
+                or re.fullmatch(r"[0-9a-f]{32}", str(entry.get("incarnation", ""))) is None \
+                or any(re.fullmatch(r"[0-9a-f]{64}", str(entry.get(field, ""))) is None
+                    for field in ("native_sha256", "authoring_sha256", "authored_source_sha256",
+                                  "physics_profile_sha256", "policy_sha256")):
+            raise RuntimeError(f"Durable area {id} identity, mutation or clock oracle failed")
+    if areas["a"]["native_sha256"] != native["native_sha256"]:
+        raise RuntimeError("Restored real native capsule differs from manifest's immutable checkpoint")
+    stable = {"revision":revision, "game_ticks":expected, "clock":manifest["clock"],
+              "areas":{id:{k:areas[id][k] for k in ("area_id","generation","incarnation",
+                  "mutation_generation","completed_tick","native_sha256","authoring_sha256",
+                  "authored_source_sha256","physics_profile_sha256","policy_sha256")} for id in ("a","b","c")}}
+    return {"kind":"fresh_process_recovery", "pid":child.pid, "observed_pid":values["pid"], "argv":argv,
+            "exit_code":child.returncode, "elapsed_s":time.monotonic()-started, "checks":receipt["checks"],
+            "expected_tick":expected, "native_sha256":native["native_sha256"], "physical_hash":native["physical_hash"],
+            "session_id":manifest["session_id"], "durable_oracle":stable, "evidence_sha256":sha(evidence),
             "log_sha256":sha(directory/"reopen.log"), "ok":True}
 
 
+def seed_published_checkpoint(engine: Path, project: Path, profile: Path, directory: Path, timeout: int) -> dict:
+    """Produce a real acknowledged tick-4 checkpoint in its own successful process."""
+    folder = directory / "seed"
+    folder.mkdir()
+    argv = command(engine, project, profile, "seed", [])
+    child = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    try:
+        output, _ = child.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        child.kill()
+        output, _ = child.communicate()
+        (folder / "seed.log").write_bytes(output)
+        raise RuntimeError("Independent native seed process exceeded watchdog")
+    (folder / "seed.log").write_bytes(output)
+    text = output.decode("utf-8", errors="replace")
+    if child.returncode != 0 or ERRORS.search(text):
+        raise RuntimeError("Independent durable seed failed before process-death qualification")
+    receipt = completion(text, "GEN006_RAMCACHE_WRITEBACK")
+    baseline = recover(engine, project, profile, folder, 4, timeout)
+    if baseline["pid"] == child.pid or baseline["durable_oracle"]["revision"] != 2:
+        raise RuntimeError("Seed's acknowledged native checkpoint was not independently durable")
+    return {"pid":child.pid, "argv":argv, "exit_code":child.returncode,
+            "checks":receipt["checks"], "log_sha256":sha(folder/"seed.log"),
+            "baseline":baseline, "ok":True}
+
+
 def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path, boundary: str, timeout: int) -> dict:
+    seed = seed_published_checkpoint(engine,project,profile,directory,timeout) \
+        if boundary == "newer_dirty_after_durable" else None
     argv = command(engine, project, profile, "crash", [f"--writeback-barrier={boundary}"])
     started = time.monotonic()
     child = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -86,7 +138,8 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
 
     reader = threading.Thread(target=read_output, daemon=True)
     reader.start()
-    marker: dict | None = None
+    needed = {"before_snapshot","queued_dirty"} if boundary == "queued_dirty" else {boundary}
+    witnesses: dict[str,dict] = {}
     failure: str | None = None
     forced_termination = False
     try:
@@ -96,7 +149,7 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
             except queue.Empty:
                 continue
             if line is None:
-                failure = "Publisher ended before the required crash boundary"
+                failure = "Publisher ended before all required real process-death barriers"
                 break
             text = line.decode("utf-8", errors="replace")
             if ERRORS.search(text):
@@ -104,12 +157,19 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
                 break
             if text.startswith(MARKER):
                 marker = json.loads(text[len(MARKER):])
-                if marker.get("phase") != boundary or marker.get("pid") != child.pid \
+                phase = marker.get("phase")
+                if phase not in needed or phase in witnesses or marker.get("pid") != child.pid \
                         or not re.fullmatch(r"[0-9a-f]{32}", marker.get("session_id", "")):
-                    failure = "Publisher barrier has a mismatched phase/session/process identity"
-                break
+                    failure = "Process-death barrier has mismatched phase/session/process identity"
+                    break
+                if witnesses and marker["session_id"] != next(iter(witnesses.values()))["session_id"]:
+                    failure = "Asynchronous and Main process-death barriers identify different sessions"
+                    break
+                witnesses[phase] = marker
+                if set(witnesses) == needed:
+                    break
         else:
-            failure = "Publisher never reached the requested crash boundary"
+            failure = "Publisher never reached the complete requested crash boundaries"
     finally:
         if child.poll() is None:
             child.kill()
@@ -118,12 +178,26 @@ def kill_at_boundary(engine: Path, project: Path, profile: Path, directory: Path
         reader.join(timeout=10)
         log = directory / "killed.log"
         log.write_bytes(b"".join(chunks))
-    if failure or marker is None or child.returncode == 0 or not forced_termination \
+    marker = witnesses.get(boundary)
+    if failure or marker is None or set(witnesses) != needed or child.returncode == 0 or not forced_termination \
             or reader.is_alive() or ERRORS.search(log.read_text(encoding="utf-8",errors="replace")):
-        raise RuntimeError(failure or "Missing observed process-death boundary")
-    return {"kind":"intentional_process_death", "pid":child.pid, "argv":argv, "forced_termination":True,
+        raise RuntimeError(failure or "Missing positively observed real process-death boundary")
+    if seed and (seed["baseline"]["session_id"] != marker["session_id"] \
+            or marker.get("revision") != 2 or marker.get("live_native_tick") != 6 \
+            or marker.get("durable_native_tick") != 4):
+        raise RuntimeError("Post-seed crash did not establish a newer dirty native generation")
+    if boundary in ("before_capture","queued_dirty") and (
+            marker.get("live_native_tick") != (6 if boundary == "queued_dirty" else 4) \
+            or marker.get("durable_native_tick") != 0):
+        raise RuntimeError("Prepublication crash did not witness actual newer dirty native work")
+    if boundary == "queued_dirty" and marker.get("queued_requests") != 1:
+        raise RuntimeError("Queued write-behind crash lacks coalesced unacknowledged work")
+    value = {"kind":"intentional_process_death", "pid":child.pid, "argv":argv, "forced_termination":True,
             "exit_code":child.returncode, "elapsed_s":time.monotonic()-started, "observed_barrier":marker,
-            "log_sha256":sha(log), "ok":True}
+            "barrier_witnesses":list(witnesses.values()), "log_sha256":sha(log), "ok":True}
+    if seed:
+        value["seed"] = seed
+    return value
 
 
 def main() -> int:
@@ -157,7 +231,7 @@ def main() -> int:
             death = kill_at_boundary(engine,project,profile,directory,boundary,args.timeout)
             death["boundary"] = boundary
             result["rows"].append(death)
-            expected = 4 if boundary == "after_publish" else 0
+            expected = 4 if boundary in ("after_publish", "newer_dirty_after_durable") else 0
             recovered = recover(engine,project,profile,directory,expected,args.timeout)
             recovered["boundary"] = boundary
             if recovered["session_id"] != death["observed_barrier"]["session_id"]:
@@ -169,7 +243,7 @@ def main() -> int:
             repeated.mkdir()
             repeat = recover(engine,project,profile,repeated,expected,args.timeout)
             repeat["boundary"] = boundary
-            if (repeat["session_id"],repeat["native_sha256"]) != (recovered["session_id"],recovered["native_sha256"]):
+            if (repeat["session_id"],repeat["native_sha256"],repeat["durable_oracle"]) != (recovered["session_id"],recovered["native_sha256"],recovered["durable_oracle"]):
                 raise RuntimeError("Repeated fresh recovery changed native authority")
             if len({death["pid"],recovered["pid"],repeat["pid"]}) != 3:
                 raise RuntimeError("Process-death recovery did not retain three distinct observed process identities")
