@@ -84,6 +84,7 @@ func run() -> void:
 	root.content_scale_size = Vector2i.ZERO
 	root.size = Vector2i(1280,720)
 	host = PersistentScene.instantiate()
+	configure_host()
 	root.add_child(host)
 	current_scene = host
 	controller = host.persistent_areas
@@ -119,6 +120,10 @@ func run() -> void:
 		"crash": await tagged_qualification("forced_transition_crash",exercise_crash)
 		"faults": await tagged_qualification("publication_faults",publication_fault_checks)
 	await _finish()
+
+
+func configure_host() -> void:
+	pass
 
 
 func exercise_write() -> void:
@@ -191,6 +196,23 @@ func exercise_write() -> void:
 	check(controller.manifest.areas.a.physical_hash != a_before.physical_hash,
 		"returning to the fire produces progressed full native physical state")
 	if not await verify_edits("a"): return
+	# Travel has a finite native work budget. A loaded machine may leave
+	# legitimate debt even though the retained interval was accounted once.
+	# Establish zero debt through actual completed work before testing replay.
+	for attempt: int in 16:
+		var debt_before := AreaClock.debt(controller.clock,"a")
+		if debt_before==0: break
+		var game_before := int(controller.clock.game_ticks)
+		var native_before := int(controller.clock.areas.a.native_ticks)
+		if not check(controller.request_catch_up(),"remaining travel debt is explicitly admitted"): return
+		if not await operation_finished("bounded remaining travel debt %d" % attempt): return
+		var completed := int(controller.operation.completed_ticks)
+		if not check(completed>0 and completed<=debt_before \
+			and int(controller.clock.game_ticks)==game_before \
+			and int(controller.clock.areas.a.native_ticks)==native_before+completed \
+			and AreaClock.debt(controller.clock,"a")==debt_before-completed,
+			"remaining catch-up accounts only actual native ticks and never advances global time"): return
+	if not check(AreaClock.debt(controller.clock,"a")==0,"finite repeated catch-up reaches the current global frontier"): return
 	check(not controller.request_catch_up(),"an already accounted interval is not advanced twice")
 	# Repeated Ahead commits distinct future intervals. A cancellation has a
 	# bounded actual result and never credits unperformed requested duration.
@@ -409,8 +431,9 @@ func native_materials(region: Rect2i) -> Dictionary:
 	if not await until(settled,"native stored-material readback boundary"): return {}
 	var source: Dictionary = worker.paint_state()
 	var admission: Dictionary = worker.paint_queue({"kind":"capture","region":region,
-		"expected_generation":int(source.generation),"expected_revision":int(source.revision),"expected_tick":int(source.tick)})
-	if not check(admission.get("status","")=="queued","actual native stored-cell readback admitted"): return {}
+		"expected_generation":int(source.generation),"expected_revision":int(source.revision),"expected_tick":int(source.tick),
+		"expected_authoring_generation":int(source.authoring_generation)})
+	if not check(admission.get("status","")=="queued","actual native stored-cell readback admitted: "+str(admission.get("reason",""))): return {}
 	if not await until(func() -> bool: return worker.paint_state().receipt_ready,"stored-cell readback completes"): return {}
 	var receipt: Dictionary = worker.paint_take_result()
 	if not check(receipt.get("status","")=="completed" and receipt.get("materials",PackedInt32Array()).size()==region.get_area(),

@@ -50,6 +50,7 @@ var _timings: Array[float] = []
 var _timing_total_ms: float = 0.0
 var _timing_count: int = 0
 var _last_completed_tick: int = 0
+var _resident_observation: Dictionary = {}
 
 func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true,
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, commit_guard: Callable = Callable(),
@@ -201,6 +202,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	_world = world
 	_host_observation = staged_observation
 	_host_observation_identity = staged_identity
+	_resident_observation = {}
 	_inspection_bridge = bridge if int(candidate.schema_version) == 2 else null
 	_telemetry = Telemetry.new()
 	_before_elapsed_us = 0
@@ -281,6 +283,28 @@ func persistent_continuation_refusal() -> String:
 			or not _definition.conditions.is_empty():
 		return "Host event, observation and condition cursors pin this area; their continuation is unsupported."
 	return ""
+
+# Only the existing exclusive worker calls these methods. A retained host is
+# kept beside the native residency handle; it is never reconstructed from an
+# untrusted claim or shared with the main thread. This narrow domain has no
+# host events/cursors to replay after private native catch-up.
+func persistent_resident_refusal(source_sha256: String) -> String:
+	var reason := persistent_continuation_refusal()
+	if not reason.is_empty(): return reason
+	if _failed or _definition_hash != source_sha256:
+		return "Retained host source identity changed or its host is quarantined."
+	return ""
+
+func persistent_resume_resident(world: Variant, receipt: Dictionary) -> void:
+	_world = world
+	_last_completed_tick = int(receipt.completed_tick)
+	# Construction/continuation observations keep their original immutable
+	# provenance. They are not relabelled as a fresh checkpoint or applied run.
+	# The separate current observation identifies the actual retained owner.
+	_resident_observation = _frozen({"schema_version":1,
+		"kind":"workbench_resident_owner_observation", "receipt":receipt.duplicate(true),
+		"definition_hash":_definition_hash,"checkpoint_durability":"not_asserted",
+		"full_native_state_revalidated":false,"exclusive_owner":"simulation_worker"})
 
 # The live World's applied liquid solver policy receipt, read from native.
 func liquid_solver_policy() -> Dictionary:
@@ -373,6 +397,7 @@ func liquid_host_observation_record() -> Dictionary:
 
 func clear() -> void:
 	_world = null
+	_resident_observation = {}
 	_host_observation = null
 	_host_observation_identity = {}
 	_inspection_bridge = null
@@ -580,6 +605,7 @@ static func _frozen(value: Variant) -> Variant:
 func summary() -> Dictionary:
 	if not active(): return {}
 	return {"id":_definition.id, "schema_version":_definition.schema_version,
+		"resident_owner_observation":_resident_observation,
 		"liquid_host_observation":liquid_host_observation(),
 		"completed_tick":int(_world.get_tick_index()),
 		"presentation":_definition.get("presentation", {}).duplicate(true),

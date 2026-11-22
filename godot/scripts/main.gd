@@ -965,6 +965,68 @@ func persistent_install_area(authoring: Dictionary, capsule: Dictionary, identit
 	pending_microscenario_apply["persistent_authoring"] = authoring.duplicate(true)
 	return true
 
+# A resident receipt is issued only after the exclusive native owner admitted
+# the complete World. This stages Main's ordinary serial/generation ACK without
+# reconstructing its source or deserializing a checkpoint. The worker still
+# performs fresh ownership admission before it may publish this serial.
+func persistent_stage_hot_area(authoring: Dictionary, resident: Dictionary, identity: Dictionary) -> Dictionary:
+	if not has_method(&"persistent_operation_allowed") or shared_workbench == null \
+			or not pending_microscenario_apply.is_empty() or simulation_worker.has_failed():
+		return {"ok":false,"error":"The persistent Main owner is not available for a resident handoff."}
+	var bound: Dictionary = resident.get("identity",{})
+	for key: String in ["session_id","area_id","incarnation","runtime_sha256","authored_source_sha256"]:
+		if str(bound.get(key,"")).is_empty() or bound.get(key) != identity.get(key):
+			return {"ok":false,"error":"Resident authoring identity differs at " + key + "."}
+	var candidate: Dictionary = authoring.get("setup",{})
+	var definition: Dictionary = authoring.get("definition",{})
+	if int(resident.get("handle",0)) <= 0 or int(resident.get("resident_generation",0)) <= 0 \
+			or str(identity.get("operation_id","")).is_empty() \
+			or definition.get("id","") != CyberMicroScenarioContract.WORKBENCH_ID \
+			or definition.get("extent",[]) != [512,512] \
+			or not candidate.has("actors") or not candidate.actors.is_empty() \
+			or not candidate.has("source") or not candidate.source.is_empty():
+		return {"ok":false,"error":"The resident handoff requires an admitted actor-free authored area."}
+	var previous_generation := int(latest_snapshot.render_world_generation) if latest_snapshot != null else -1
+	var handoff: Dictionary = simulation_worker.persistent_stage_resident_handoff({
+		"serial":_microscenario_request_serial+1,"expected_generation":previous_generation,
+		"operation_id":str(identity.operation_id),"target_receipt":resident})
+	if not handoff.get("ok",false): return handoff
+	_microscenario_request_serial += 1
+	var settings := {"intent":"exploratory","maximum_rule_radius":int(candidate.rule_radius),
+		"workbench_response":str(candidate.response),"workbench_retain_cells":false,
+		"workbench_wave_flow":false,"workbench_ballistic":false,"workbench_face_release":false,
+		"workbench_inertial_signed":false,"persistent_operation_id":str(identity.operation_id),
+		"workbench_sample":{"session":_microscenario_request_serial,"epoch":_physical_epoch+1,
+			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	pending_microscenario_apply = {"serial":_microscenario_request_serial,
+		"hash":str(bound.authored_source_sha256),"definition":definition.duplicate(true),
+		"previous_paused":paused,"previous_mode":microscenario_mode,
+		"player_configuration":{"actor_model":"","physical_rig":"","actor_producer":"human",
+			"representation":"sampled","workbench_actors":[]},
+		"liquid_policy":PackedInt32Array(candidate.liquid_policy),"controlled_liquid_setup":settings,
+		"retain_trial_input":false,"trial_source":{},"workbench":candidate.duplicate(true),
+		"workbench_resume":false,"workbench_adopt_authored_law":false,
+		"persistent_hot_stage":true,"persistent_authoring":authoring.duplicate(true),
+		"persistent_resident_handle":int(resident.handle),"persistent_worker_ticket":handoff.ticket}
+	shared_workbench.persistent_stage_authoring(authoring)
+	microscenario_error = ""
+	microscenario_mode = "Play"
+	paused = true
+	update_worker_frame_state()
+	return {"ok":true,"serial":_microscenario_request_serial,"previous_generation":previous_generation,
+		"worker_ticket":handoff.ticket}
+
+
+func persistent_cancel_hot_stage(serial: int, reason: String) -> void:
+	if not pending_microscenario_apply.get("persistent_hot_stage",false) \
+			or int(pending_microscenario_apply.get("serial",-1)) != serial:
+		return
+	# Native refusal leaves the source intact. No installed/camera callback has
+	# run, so clearing this exact pending serial cannot restore another area.
+	simulation_worker.persistent_cancel_resident_handoff(pending_microscenario_apply.get("persistent_worker_ticket",0))
+	pending_microscenario_apply.clear()
+	microscenario_error = reason
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, retain_trial_motion: bool = false) -> bool:
 	if has_method(&"persistent_operation_allowed") and str(controlled_setup.get("persistent_operation_id","")).is_empty():

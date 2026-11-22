@@ -11,6 +11,16 @@ last-reviewed: 2026-11-21
 
 # ADR-015 — Opt-in persistent authored areas
 
+## Subsequent extension
+
+[ADR-016](ADR-016-persistent-area-native-residency.md) extends the inactive storage and
+exclusive handoff decision with real HOT native ownership, bounded WARM caching,
+asynchronous durable publication and predictive preparation. The native domain,
+completed-time accounting, original-source identity and unsupported dependency
+refusals below remain authoritative. The synchronous baseline remains available
+with caching disabled. This historical decision does not imply all inactive areas
+in the successor exist only as checkpoints.
+
 ## Context
 
 The owner authorised implementation of the three-area milestone in

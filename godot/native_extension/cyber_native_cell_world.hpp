@@ -354,6 +354,22 @@ private:
         bool retained_cadence = false, retained_window = true;
     };
     std::unique_ptr<PendingLiquidWorld> pending_liquid_world_;
+    // The same exclusive desktop owner owns every inactive native allocation.
+    // An active record has no payload; exactly one bundle is installed in this
+    // adapter. Handles are never reused, including after eviction.
+    struct ResidentArea {
+        Dictionary identity;
+        String physics_profile;
+        std::unique_ptr<PendingLiquidWorld> payload;
+        std::uint64_t handle = 0, generation = 1, mutation = 0;
+        std::uint64_t active_construction_generation = 0;
+    };
+    std::vector<std::unique_ptr<ResidentArea>> resident_areas_;
+    std::uint64_t active_resident_handle_ = 0, next_resident_handle_ = 0;
+    std::uint64_t resident_hot_activations_ = 0, resident_captures_ = 0, resident_steps_ = 0;
+    std::uint64_t resident_admissions_ = 0, resident_releases_ = 0, resident_imports_ = 0;
+    std::uint64_t resident_source_constructions_ = 0, resident_native_restorations_ = 0;
+    String resident_last_operation_;
     std::uint64_t next_liquid_preparation_token_ = 0;
     cybersand::setup::SetupDescriptor applied_liquid_setup_ = [] {
         cybersand::setup::SetupDescriptor value;

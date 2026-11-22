@@ -2,7 +2,8 @@ extends RefCounted
 ## Three-area desktop continuation store. Native CYPS is authoritative; the
 ## Workbench envelope preserves authoring identity and camera state separately.
 ## One controller serializes this object's I/O calls on its private I/O thread.
-## The native owner remains frozen until commit_prepared returns a durable ACK.
+## Strict publication retains the frozen owner fence. Deferred publication owns
+## an immutable captured batch; its ACK describes durable state, never newer RAM.
 
 const Clock = preload("res://scripts/persistent_area_clock.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
@@ -37,6 +38,8 @@ var _pending: Dictionary = {}
 var _last_commit: Dictionary = {}
 var _quarantined := false
 var _test_fault := ""
+var _test_barrier_phase := ""
+var _test_barrier_gate: Semaphore
 
 
 static func new_nonce() -> String:
@@ -102,6 +105,96 @@ static func _pure(value: Variant, budget: Array, depth: int = 0) -> bool:
 	return false # Objects, Callable, RID and NodePath are never persisted.
 
 
+static func metadata_size(value: Variant, limit_bytes: int = MAX_METADATA_BYTES,
+		remaining_items: int = MAX_VALUE_ITEMS) -> Dictionary:
+	## Admission without payload-sized allocation before Variant encoding. The returned
+	## byte count is a conservative upper bound (including UTF-8, alignment and
+	## typed builtin-container headers), not an encoded payload or an RSS value.
+	## Repeated packed buffers are charged for every serialized occurrence even
+	## when Godot currently shares their underlying storage.
+	if limit_bytes<1 or limit_bytes>MAX_METADATA_BYTES or remaining_items<1 or remaining_items>MAX_VALUE_ITEMS:
+		return _fail("Metadata admission requires finite byte and item bounds")
+	var budget := [limit_bytes,remaining_items]
+	if not _metadata_consume(value,budget,0):
+		return _fail("Metadata contains unsupported values or exceeds its bounded encoding capacity",
+			{"visited_items":remaining_items-int(budget[1])})
+	return {"ok":true,"bytes":limit_bytes-int(budget[0]),"visited_items":remaining_items-int(budget[1])}
+
+
+static func _metadata_charge(budget: Array, bytes: int, items: int = 0) -> bool:
+	if bytes<0 or items<0 or bytes>int(budget[0]) or items>int(budget[1]): return false
+	budget[0] = int(budget[0])-bytes
+	budget[1] = int(budget[1])-items
+	return true
+
+
+static func _metadata_consume(value: Variant, budget: Array, depth: int) -> bool:
+	if depth>24 or not _metadata_charge(budget,0,1): return false
+	match typeof(value):
+		TYPE_NIL: return _metadata_charge(budget,4)
+		TYPE_BOOL: return _metadata_charge(budget,8)
+		TYPE_INT: return _metadata_charge(budget,12)
+		TYPE_FLOAT: return is_finite(value) and _metadata_charge(budget,12)
+		TYPE_STRING:
+			# UTF-8 needs at most four bytes per Unicode scalar. Counting the
+			# existing string avoids allocating a large temporary UTF-8 buffer.
+			return value.length()<=65536 and _metadata_charge(budget,16+4*value.length())
+		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_VECTOR4:
+			return value.is_finite() and _metadata_charge(budget,36)
+		TYPE_VECTOR2I, TYPE_VECTOR3I, TYPE_VECTOR4I, TYPE_RECT2I:
+			return _metadata_charge(budget,20)
+		TYPE_RECT2:
+			return value.position.is_finite() and value.size.is_finite() and _metadata_charge(budget,36)
+		TYPE_COLOR:
+			return is_finite(value.r) and is_finite(value.g) and is_finite(value.b) and is_finite(value.a) \
+				and _metadata_charge(budget,20)
+		TYPE_PACKED_BYTE_ARRAY:
+			return _metadata_charge(budget,16+value.size())
+		TYPE_PACKED_INT32_ARRAY:
+			return _metadata_charge(budget,16+4*value.size(),value.size())
+		TYPE_PACKED_INT64_ARRAY:
+			return _metadata_charge(budget,16+8*value.size(),value.size())
+		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY:
+			if not _metadata_charge(budget,16+8*value.size(),value.size()): return false
+			for item: float in value:
+				if not is_finite(item): return false
+			return true
+		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY:
+			if not _metadata_charge(budget,16+24*value.size(),value.size()): return false
+			for item: Variant in value:
+				if not item.is_finite(): return false
+			return true
+		TYPE_PACKED_COLOR_ARRAY:
+			if not _metadata_charge(budget,16+16*value.size(),value.size()): return false
+			for item: Color in value:
+				if not is_finite(item.r) or not is_finite(item.g) or not is_finite(item.b) or not is_finite(item.a): return false
+			return true
+		TYPE_PACKED_STRING_ARRAY:
+			if value.size()>int(budget[1]) or not _metadata_charge(budget,16): return false
+			for item: String in value:
+				if not _metadata_consume(item,budget,depth+1): return false
+			return true
+		TYPE_ARRAY:
+			# Empty typed Object arrays still carry class/script metadata. They
+			# must not transfer a hidden live type through a value-only interface.
+			if value.get_typed_builtin()==TYPE_OBJECT or value.get_typed_class_name()!=&"" \
+					or value.get_typed_script()!=null or value.size()>int(budget[1]) \
+					or not _metadata_charge(budget,32): return false
+			for item: Variant in value:
+				if not _metadata_consume(item,budget,depth+1): return false
+			return true
+		TYPE_DICTIONARY:
+			if value.get_typed_key_builtin()==TYPE_OBJECT or value.get_typed_value_builtin()==TYPE_OBJECT \
+					or value.get_typed_key_class_name()!=&"" or value.get_typed_value_class_name()!=&"" \
+					or value.get_typed_key_script()!=null or value.get_typed_value_script()!=null \
+					or value.size()>int(budget[1])/2 or not _metadata_charge(budget,48): return false
+			for key: Variant in value:
+				if not key is String or not _metadata_consume(key,budget,depth+1) \
+						or not _metadata_consume(value[key],budget,depth+1): return false
+			return true
+	return false
+
+
 static func _detached(value: Variant) -> Variant:
 	# Object serialization stays disabled. This also detaches packed-array aliases.
 	return bytes_to_var(var_to_bytes(value))
@@ -115,6 +208,15 @@ static func _fail(message: String, extra: Dictionary = {}) -> Dictionary:
 
 func current_manifest() -> Dictionary:
 	return _detached(_manifest)
+
+
+func io_telemetry() -> Dictionary:
+	## Read through the same serialized I/O owner as all other Store methods.
+	if _io == null: return {"available":false,"error":"Persistent storage is closed"}
+	if not _io.has_method("telemetry"): return {"available":false,"error":"Runtime has no profile I/O instrumentation"}
+	var result: Dictionary = _io.call("telemetry")
+	result["available"] = true
+	return result
 
 
 func open_profile(absolute_path: String, profile_id: String, compatibility: String) -> Dictionary:
@@ -188,7 +290,25 @@ func set_test_fault(phase: String) -> void:
 	_test_fault = phase if phase in ["", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish"] else ""
 
 
+func set_test_barrier(phase: String, gate: Semaphore) -> void:
+	## Process-death qualification only. No interactive setting enables this.
+	## The external harness waits for the marker then terminates the process;
+	## callers may instead post the gate to let this exact boundary continue.
+	_test_barrier_phase = phase if phase in ["before_snapshot","after_checkpoint","after_stage","after_previous","before_publish","after_publish"] else ""
+	_test_barrier_gate = gate if not _test_barrier_phase.is_empty() else null
+
+
+func _test_barrier(phase: String) -> void:
+	if phase != _test_barrier_phase or _test_barrier_gate == null: return
+	print("GEN006_RAMCACHE_BARRIER ",JSON.stringify({"phase":phase,"session_id":_manifest.get("session_id",""),
+		"revision":_manifest.get("revision",0),"pid":OS.get_process_id()}))
+	_test_barrier_gate.wait()
+	_test_barrier_phase = ""
+	_test_barrier_gate = null
+
+
 func _fault(phase: String) -> bool:
+	_test_barrier(phase)
 	if _test_fault != phase: return false
 	_test_fault = ""
 	return true
@@ -253,7 +373,7 @@ static func _capture_error(capture: Variant) -> String:
 		return "Persistent area requires the admitted 512 by 512 native domain"
 	var metadata: Dictionary = capture.duplicate()
 	metadata.erase("bytes")
-	if not _pure(metadata, [MAX_VALUE_ITEMS]): return "Native continuation metadata is not bounded pure values"
+	if not metadata_size(metadata).get("ok",false): return "Native continuation metadata is not bounded pure values"
 	return ""
 
 
@@ -262,7 +382,7 @@ static func _authoring_error(authoring: Variant) -> String:
 		or not authoring.setup is Dictionary or not authoring.generated_packet is Dictionary \
 		or not authoring.material_baseline is Dictionary or not authoring.camera is Dictionary or not authoring.definition is Dictionary:
 		return "Persistent authoring envelope is unsupported"
-	if not _pure(authoring, [MAX_VALUE_ITEMS]) or var_to_bytes(authoring).size() > MAX_METADATA_BYTES:
+	if not metadata_size(authoring).get("ok",false) or var_to_bytes(authoring).size() > MAX_METADATA_BYTES:
 		return "Persistent authoring envelope exceeds the supported pure-value capacity"
 	var checked := Contract.validate(authoring.definition)
 	if not checked.get("ok", false): return "Persistent original native definition is invalid: " + str(checked.get("error", ""))
@@ -284,6 +404,7 @@ func _encode_area(id: String, update: Dictionary, generation: int) -> Dictionary
 	var metadata := {"version":VERSION, "profile_id":_profile_id, "session_id":_manifest.session_id,
 		"area_id":id, "generation":generation, "mutation_generation":int(update.mutation_generation),
 		"incarnation":update.incarnation, "capture":capture, "authoring":update.authoring}
+	if not metadata_size(metadata).get("ok",false): return _fail("Combined persistent metadata exceeds its bounded capacity")
 	var encoded := var_to_bytes(metadata)
 	if encoded.size() > MAX_METADATA_BYTES: return _fail("Combined persistent metadata exceeds its bounded capacity")
 	var bytes := _wrap(AREA_MAGIC, encoded, native_bytes)
@@ -409,7 +530,8 @@ func prepare_commit(next_state: Dictionary, updates: Dictionary, expected_revisi
 	if _io == null or _quarantined: return _fail("Persistent profile is unavailable or quarantined")
 	if not _pending.is_empty(): return _fail("A persistent publication is already prepared")
 	if expected_revision != int(_manifest.revision) or not _hex(operation_nonce, 32) \
-		or operation_nonce == _manifest.operation_nonce or not _pure(owner_fence, [1024]) or var_to_bytes(owner_fence).size() > 16384:
+		or operation_nonce == _manifest.operation_nonce or not metadata_size(owner_fence,16384,1024).get("ok",false) \
+		or var_to_bytes(owner_fence).size() > 16384:
 		return _fail("Persistent prepare rejected a stale revision or invalid operation/owner fence")
 	if not _keys(next_state, ["active_area", "clock"]) or not next_state.active_area in Clock.AREA_IDS:
 		return _fail("Persistent next-state selection is invalid")
@@ -537,6 +659,69 @@ func commit_prepared(receipt: Dictionary, current_owner_fence: Dictionary) -> Di
 	var collected := _collect_garbage()
 	return {"ok":true, "idempotent":false, "manifest":current_manifest(),
 		"cleanup_warning":"" if collected.get("ok", false) else str(collected.error)}
+
+
+static func snapshot_fence(manifest: Dictionary, next_state: Dictionary, updates: Dictionary, snapshot_id: String) -> Dictionary:
+	## The caller has acquired capture authority and detached the complete batch.
+	## A later active edit does not revoke ownership of these immutable bytes. It
+	## makes RAM newer than this durable snapshot and must remain visibly dirty.
+	if not _hex(snapshot_id,32) or not _hex(manifest.get("session_id"),32) \
+		or not manifest.get("compatibility") is String or not manifest.get("areas") is Dictionary \
+		or not _keys(manifest.areas,Clock.AREA_IDS) or not _keys(next_state,["active_area","clock"]) \
+		or not next_state.active_area in Clock.AREA_IDS or not Clock.validate(next_state.clock).is_empty():
+		return _fail("Immutable capture batch has an invalid session, clock or snapshot identity")
+	var areas := {}
+	for id: String in Clock.AREA_IDS:
+		var record: Dictionary = manifest.areas[id]
+		if updates.has(id):
+			var value: Variant = updates[id]
+			if not value is Dictionary or not _keys(value,["capture","authoring","mutation_generation","incarnation"]):
+				return _fail("Immutable capture batch has an unsupported area update")
+			var error := _capture_error(value.capture)
+			if error.is_empty(): error = _authoring_error(value.authoring)
+			if not error.is_empty(): return _fail(error)
+			if not _hex(value.incarnation,32) or not Clock._integer(value.mutation_generation):
+				return _fail("Immutable capture batch has an invalid area mutation/incarnation")
+			areas[id] = {"area_id":id,"incarnation":value.incarnation,"mutation_generation":int(value.mutation_generation),
+				"completed_tick":int(value.capture.completed_tick),"native_sha256":value.capture.sha256,
+				"authoring_sha256":digest(var_to_bytes(value.authoring)),"authored_source_sha256":value.capture.authored_source_sha256,
+				"physics_profile_sha256":value.capture.physics_profile_sha256,"policy_sha256":value.capture.policy_sha256}
+		else:
+			areas[id] = {}
+			for key: String in ["area_id","incarnation","mutation_generation","completed_tick","native_sha256",
+				"authoring_sha256","authored_source_sha256","physics_profile_sha256","policy_sha256"]:
+				if not record.has(key): return _fail("Immutable capture batch has an incomplete unchanged durable area")
+				areas[id][key] = record[key]
+		if int(areas[id].completed_tick) != int(next_state.clock.areas[id].native_ticks):
+			return _fail("Immutable snapshot clock requires a matching capture for every changed area")
+	for key: Variant in updates:
+		if not key is String or not key in Clock.AREA_IDS: return _fail("Immutable capture batch identifies an unknown area")
+	return {"ok":true,"fence":{"schema":"gen006-immutable-capture-v1","session_id":manifest.session_id,
+		"compatibility":manifest.compatibility,"snapshot_id":snapshot_id,"clock_sha256":Clock.identity(next_state.clock),
+		"active_area":next_state.active_area,"areas":areas}}
+
+
+func publish_snapshot(next_state: Dictionary, updates: Dictionary, expected_revision: int,
+		operation_nonce: String, immutable_fence: Dictionary) -> Dictionary:
+	## Single store-owner thread only. The immutable batch is the authority for
+	## this publication; it does not assert equality with a subsequently edited
+	## live World. Existing revision/CAS/generation/full-byte checks remain intact.
+	if _io == null or _quarantined: return _fail("Persistent profile is unavailable or quarantined")
+	_test_barrier("before_snapshot")
+	if expected_revision != int(_manifest.revision): return _fail("Immutable publication rejected a stale durable revision")
+	var rebuilt := snapshot_fence(_manifest,next_state,updates,operation_nonce)
+	if not rebuilt.get("ok",false): return rebuilt
+	if rebuilt.fence != immutable_fence: return _fail("Immutable publication rejected a changed capture/session/clock fence")
+	var prepared := prepare_commit(next_state,updates,expected_revision,operation_nonce,immutable_fence)
+	if not prepared.get("ok",false): return prepared
+	var committed := commit_prepared(prepared.receipt,immutable_fence)
+	if not committed.get("ok",false):
+		if not _quarantined and not bool(committed.get("published",false)):
+			var aborted := abort_prepared(prepared.receipt)
+			if not aborted.get("ok",false): committed["cleanup_warning"] = str(aborted.get("error",""))
+		return committed
+	committed["snapshot_fence"] = _detached(immutable_fence)
+	return committed
 
 
 func abort_prepared(receipt: Dictionary) -> Dictionary:

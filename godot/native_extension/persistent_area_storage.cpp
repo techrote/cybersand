@@ -7,6 +7,7 @@
 #include <vector>
 #include <cerrno>
 #include <cstring>
+#include <chrono>
 
 #if defined(_WIN32)
 #ifndef WIN32_LEAN_AND_MEAN
@@ -29,6 +30,15 @@ namespace {
 constexpr int64_t file_limit = 64LL * 1024 * 1024;
 constexpr int64_t profile_limit = 512LL * 1024 * 1024;
 constexpr int64_t entry_limit = 64;
+
+struct PhaseTimer {
+    int64_t& elapsed;
+    std::chrono::steady_clock::time_point started = std::chrono::steady_clock::now();
+    ~PhaseTimer() {
+        elapsed += std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::steady_clock::now() - started).count();
+    }
+};
 
 Dictionary failure(const String& error, bool published = false) {
     Dictionary result;
@@ -103,6 +113,29 @@ struct CyberPersistentAreaStorage::Impl {
     int directory = -1;
 #endif
     bool acquired = false;
+    // Guarded by this storage owner's mutex, including the telemetry snapshot.
+    // No global counters can mix this profile with another application's work.
+    int64_t read_requests = 0, read_open_attempts = 0, read_system_calls = 0, read_bytes = 0;
+    int64_t checkpoint_read_requests = 0, checkpoint_read_bytes = 0;
+    int64_t write_requests = 0, write_create_attempts = 0, write_system_calls = 0, write_bytes = 0;
+    int64_t checkpoint_write_bytes = 0, file_flush_calls = 0, directory_flush_calls = 0;
+    int64_t publication_requests = 0, publication_calls = 0, removal_requests = 0, enumeration_requests = 0;
+    int64_t read_us = 0, write_us = 0, publication_us = 0, flush_us = 0, hash_us = 0, enumeration_us = 0;
+
+    String hash(const PackedByteArray& bytes) {
+        PhaseTimer timer{hash_us};
+        return sha256(bytes);
+    }
+
+    void read_count(const String& name, int64_t bytes) {
+        read_bytes += bytes;
+        if (name.begins_with("area-") && name.ends_with(".cypa")) checkpoint_read_bytes += bytes;
+    }
+
+    void write_count(const String& name, int64_t bytes) {
+        write_bytes += bytes;
+        if (name.begins_with("area-") && name.ends_with(".cypa")) checkpoint_write_bytes += bytes;
+    }
 
     String directory_identity() {
 #if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
@@ -116,13 +149,15 @@ struct CyberPersistentAreaStorage::Impl {
     }
 
     String sync_file(const String& name) {
+        PhaseTimer timer{flush_us};
 #if defined(_WIN32)
         const auto path = native_path(root.path_join(name));
         HANDLE file = CreateFileW(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING,
                                  FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
         if (file == INVALID_HANDLE_VALUE) return os_error("Cannot open persistent file for flush");
         uint64_t length = 0;
-        const bool okay = regular_handle(file, length) && FlushFileBuffers(file);
+        bool okay = regular_handle(file, length);
+        if (okay) { ++file_flush_calls; okay = FlushFileBuffers(file); }
         const auto error = okay ? String() : os_error("Cannot flush existing persistent file");
         CloseHandle(file);
         return error;
@@ -130,6 +165,7 @@ struct CyberPersistentAreaStorage::Impl {
         const auto utf8 = name.utf8();
         const int file = ::openat(directory, utf8.get_data(), O_RDONLY | O_CLOEXEC | O_NOFOLLOW);
         if (file == -1) return os_error("Cannot open persistent file for flush");
+        ++file_flush_calls;
         const auto error = ::fsync(file) == 0 ? String() : os_error("Cannot flush existing persistent file");
         ::close(file);
         return error;
@@ -159,12 +195,17 @@ struct CyberPersistentAreaStorage::Impl {
         // process-crash/I/O qualification, not a hardware power-loss promise.
         return {};
 #elif !defined(__EMSCRIPTEN__)
+        PhaseTimer timer{flush_us};
+        ++directory_flush_calls;
         if (::fsync(directory) != 0) return os_error("Cannot sync persistent profile directory");
 #endif
         return {};
     }
 
     Dictionary read(const String& name, int64_t maximum_bytes) {
+        PhaseTimer timer{read_us};
+        ++read_requests;
+        if (name.begins_with("area-") && name.ends_with(".cypa")) ++checkpoint_read_requests;
         if (!acquired) return failure("Persistent profile is not locked");
         if (const auto error = directory_identity(); !error.is_empty()) return failure(error);
         if (!valid_name(name) || maximum_bytes < 0 || maximum_bytes > file_limit)
@@ -172,6 +213,7 @@ struct CyberPersistentAreaStorage::Impl {
         PackedByteArray bytes;
 #if defined(_WIN32)
         const auto path = native_path(root.path_join(name));
+        ++read_open_attempts;
         HANDLE file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
                                  FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
         if (file == INVALID_HANDLE_VALUE) {
@@ -185,12 +227,15 @@ struct CyberPersistentAreaStorage::Impl {
         }
         bytes.resize(int64_t(length));
         DWORD count = 0;
-        const BOOL read_ok = length == 0 || ReadFile(file, bytes.ptrw(), DWORD(length), &count, nullptr);
+        BOOL read_ok = true;
+        if (length != 0) { ++read_system_calls; read_ok = ReadFile(file, bytes.ptrw(), DWORD(length), &count, nullptr); }
+        read_count(name,count);
         const auto error = read_ok && count == length ? String() : os_error("Cannot read complete persistent file");
         CloseHandle(file);
         if (!error.is_empty()) return failure(error);
 #elif !defined(__EMSCRIPTEN__)
         const auto utf8 = name.utf8();
+        ++read_open_attempts;
         const int file = ::openat(directory, utf8.get_data(), O_RDONLY | O_CLOEXEC | O_NOFOLLOW);
         if (file == -1) {
             if (errno == ENOENT) { auto r = success(); r["exists"] = false; return r; }
@@ -205,13 +250,17 @@ struct CyberPersistentAreaStorage::Impl {
         bytes.resize(info.st_size);
         int64_t offset = 0;
         while (offset < bytes.size()) {
+            ++read_system_calls;
             const auto count = ::read(file, bytes.ptrw() + offset, size_t(bytes.size() - offset));
             if (count < 0 && errno == EINTR) continue;
             if (count <= 0) { const auto error = os_error("Cannot read complete persistent file"); ::close(file); return failure(error); }
             offset += count;
+            read_count(name,count);
         }
         uint8_t extra = 0;
+        ++read_system_calls;
         const auto tail = ::read(file, &extra, 1);
+        if (tail > 0) read_count(name,tail);
         ::close(file);
         if (tail != 0) return failure("Persistent file changed during read");
 #else
@@ -220,11 +269,13 @@ struct CyberPersistentAreaStorage::Impl {
         auto result = success();
         result["exists"] = true;
         result["bytes"] = bytes;
-        result["sha256"] = sha256(bytes);
+        result["sha256"] = hash(bytes);
         return result;
     }
 
     Dictionary inventory() {
+        PhaseTimer timer{enumeration_us};
+        ++enumeration_requests;
         if (!acquired) return failure("Persistent profile is not locked");
         if (const auto error = directory_identity(); !error.is_empty()) return failure(error);
         Array entries;
@@ -291,6 +342,7 @@ void CyberPersistentAreaStorage::_bind_methods() {
     ClassDB::bind_method(D_METHOD("publish", "stage", "target", "expected_target_sha256", "expected_stage_sha256"), &CyberPersistentAreaStorage::publish);
     ClassDB::bind_method(D_METHOD("remove_file", "name"), &CyberPersistentAreaStorage::remove_file);
     ClassDB::bind_method(D_METHOD("list_files"), &CyberPersistentAreaStorage::list_files);
+    ClassDB::bind_method(D_METHOD("telemetry"), &CyberPersistentAreaStorage::telemetry);
 }
 
 Dictionary CyberPersistentAreaStorage::acquire(const String& profile_directory) {
@@ -354,8 +406,31 @@ Dictionary CyberPersistentAreaStorage::read_file(const String& name, int64_t max
 }
 Dictionary CyberPersistentAreaStorage::list_files() { std::lock_guard guard(impl_->mutex); return impl_->inventory(); }
 
+Dictionary CyberPersistentAreaStorage::telemetry() {
+    std::lock_guard guard(impl_->mutex);
+    Dictionary result;
+    result["schema"] = 1;
+    result["storage_owner_id"] = int64_t(get_instance_id());
+    result["profile_directory"] = impl_->root;
+    result["acquired"] = impl_->acquired;
+    result["scope"] = "application filesystem calls including kernel-cache hits and integrity readback; not physical device I/O";
+    result["timing_scope"] = "inclusive phases; read/write/publication/hash/flush durations can overlap and must not be summed";
+#define CYPA_COUNTER(field) result[#field] = impl_->field
+    CYPA_COUNTER(read_requests); CYPA_COUNTER(read_open_attempts); CYPA_COUNTER(read_system_calls); CYPA_COUNTER(read_bytes);
+    CYPA_COUNTER(checkpoint_read_requests); CYPA_COUNTER(checkpoint_read_bytes);
+    CYPA_COUNTER(write_requests); CYPA_COUNTER(write_create_attempts); CYPA_COUNTER(write_system_calls); CYPA_COUNTER(write_bytes);
+    CYPA_COUNTER(checkpoint_write_bytes); CYPA_COUNTER(file_flush_calls); CYPA_COUNTER(directory_flush_calls);
+    CYPA_COUNTER(publication_requests); CYPA_COUNTER(publication_calls); CYPA_COUNTER(removal_requests); CYPA_COUNTER(enumeration_requests);
+    CYPA_COUNTER(read_us); CYPA_COUNTER(write_us); CYPA_COUNTER(publication_us); CYPA_COUNTER(flush_us);
+    CYPA_COUNTER(hash_us); CYPA_COUNTER(enumeration_us);
+#undef CYPA_COUNTER
+    return result;
+}
+
 Dictionary CyberPersistentAreaStorage::write_new(const String& name, const PackedByteArray& bytes) {
     std::lock_guard guard(impl_->mutex);
+    PhaseTimer timer{impl_->write_us};
+    ++impl_->write_requests;
     if (!impl_->acquired || !valid_name(name) || bytes.size() > file_limit)
         return failure("Immutable persistent write has invalid lock, name or capacity");
     const auto existing = impl_->read(name, file_limit);
@@ -365,7 +440,7 @@ Dictionary CyberPersistentAreaStorage::write_new(const String& name, const Packe
         if (previous != bytes) return failure("Immutable persistent file already has different bytes");
         if (const auto error = impl_->sync_file(name); !error.is_empty()) return failure(error);
         if (const auto error = impl_->sync_directory(); !error.is_empty()) return failure(error);
-        auto result = success(); result["sha256"] = sha256(bytes); result["idempotent"] = true; return result;
+        auto result = success(); result["sha256"] = impl_->hash(bytes); result["idempotent"] = true; return result;
     }
     const auto inventory = impl_->inventory();
     if (!bool(inventory["ok"])) return inventory;
@@ -374,25 +449,42 @@ Dictionary CyberPersistentAreaStorage::write_new(const String& name, const Packe
     String error;
 #if defined(_WIN32)
     const auto path = native_path(impl_->root.path_join(name));
+    ++impl_->write_create_attempts;
     HANDLE file = CreateFileW(path.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW, FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
     if (file == INVALID_HANDLE_VALUE) return failure(os_error("Cannot create immutable persistent file"));
     DWORD written = 0;
-    if ((!bytes.is_empty() && (!WriteFile(file, bytes.ptr(), DWORD(bytes.size()), &written, nullptr) || written != bytes.size())) ||
-        !FlushFileBuffers(file)) error = os_error("Cannot write and flush complete persistent file");
+    if (!bytes.is_empty()) {
+        ++impl_->write_system_calls;
+        const bool okay = WriteFile(file, bytes.ptr(), DWORD(bytes.size()), &written, nullptr);
+        impl_->write_count(name,written);
+        if (!okay || written != bytes.size()) error = os_error("Cannot write and flush complete persistent file");
+    }
+    if (error.is_empty()) {
+        PhaseTimer flush_timer{impl_->flush_us};
+        ++impl_->file_flush_calls;
+        if (!FlushFileBuffers(file)) error = os_error("Cannot write and flush complete persistent file");
+    }
     if (!CloseHandle(file) && error.is_empty()) error = os_error("Cannot close persistent file");
     if (!error.is_empty()) { DeleteFileW(path.c_str()); return failure(error); }
 #elif !defined(__EMSCRIPTEN__)
     const auto utf8 = name.utf8();
+    ++impl_->write_create_attempts;
     const int file = ::openat(impl_->directory, utf8.get_data(), O_WRONLY | O_CREAT | O_EXCL | O_CLOEXEC | O_NOFOLLOW, 0600);
     if (file == -1) return failure(os_error("Cannot create immutable persistent file"));
     int64_t offset = 0;
     while (offset < bytes.size()) {
+        ++impl_->write_system_calls;
         const auto count = ::write(file, bytes.ptr() + offset, size_t(bytes.size() - offset));
         if (count < 0 && errno == EINTR) continue;
         if (count <= 0) { error = os_error("Cannot write complete persistent file"); break; }
         offset += count;
+        impl_->write_count(name,count);
     }
-    if (error.is_empty() && ::fsync(file) != 0) error = os_error("Cannot flush persistent file");
+    if (error.is_empty()) {
+        PhaseTimer flush_timer{impl_->flush_us};
+        ++impl_->file_flush_calls;
+        if (::fsync(file) != 0) error = os_error("Cannot flush persistent file");
+    }
     if (::close(file) != 0 && error.is_empty()) error = os_error("Cannot close persistent file");
     if (!error.is_empty()) { ::unlinkat(impl_->directory, utf8.get_data(), 0); return failure(error); }
 #else
@@ -409,6 +501,8 @@ Dictionary CyberPersistentAreaStorage::write_new(const String& name, const Packe
 
 Dictionary CyberPersistentAreaStorage::publish(const String& stage, const String& target, const String& expected_target_sha256, const String& expected_stage_sha256) {
     std::lock_guard guard(impl_->mutex);
+    PhaseTimer timer{impl_->publication_us};
+    ++impl_->publication_requests;
     if (!impl_->acquired || !valid_name(stage) || !valid_name(target) || stage == target || !valid_digest(expected_target_sha256) ||
         expected_stage_sha256.is_empty() || !valid_digest(expected_stage_sha256))
         return failure("Persistent publication has invalid lock, names or expected identity");
@@ -422,11 +516,13 @@ Dictionary CyberPersistentAreaStorage::publish(const String& stage, const String
 #if defined(_WIN32)
     const auto source_path = native_path(impl_->root.path_join(stage));
     const auto target_path = native_path(impl_->root.path_join(target));
+    ++impl_->publication_calls;
     if (!MoveFileExW(source_path.c_str(), target_path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
         return failure(os_error("Cannot atomically publish persistent manifest"));
 #elif !defined(__EMSCRIPTEN__)
     const auto source_name = stage.utf8();
     const auto target_name = target.utf8();
+    ++impl_->publication_calls;
     if (::renameat(impl_->directory, source_name.get_data(), impl_->directory, target_name.get_data()) != 0)
         return failure(os_error("Cannot atomically publish persistent manifest"));
 #else
@@ -440,6 +536,7 @@ Dictionary CyberPersistentAreaStorage::publish(const String& stage, const String
 
 Dictionary CyberPersistentAreaStorage::remove_file(const String& name) {
     std::lock_guard guard(impl_->mutex);
+    ++impl_->removal_requests;
     if (!impl_->acquired || !valid_name(name)) return failure("Persistent removal has invalid lock or name");
     const auto file = impl_->read(name, file_limit);
     if (!bool(file["ok"])) return file;
