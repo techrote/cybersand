@@ -30,6 +30,7 @@ namespace cybersand {
 
 class RenderSnapshotExchange;
 class PreparedWorldBuilder;
+namespace object_shard { class Coordinator; class MutationJournal; }
 
 enum class SimulationBackend : std::uint8_t {
     SerialInPlace = 0,
@@ -523,6 +524,13 @@ private:
         std::optional<LiquidStateProjection> projection) const;
     friend class PreparedWorldBuilder;
     friend class RenderSnapshotExchange;
+    friend class object_shard::Coordinator;
+
+    // Optional standalone ObjectShard Lab witness. Disabled in ordinary Worlds.
+    // It observes committed serial writes and owner-merged worker effects only;
+    // it never grants a worker transfer or Godot authority.
+    std::unique_ptr<object_shard::MutationJournal> object_shard_mutations_;
+    void enable_object_shard_mutation_watch(RectI64 bounds);
 
     struct Chunk;
     struct PressureChunk;

@@ -4,6 +4,8 @@
 #include <exception>
 
 #include "cybersand/material_rules.hpp"
+#include "cybersand/material_lifecycle.hpp"
+#include "cybersand/object_shard_mutation.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/render_snapshot.hpp"
@@ -82,9 +84,7 @@ constexpr auto kPairPartners = cybersand::InteractionRules::build_partner_sets()
 [[nodiscard]] constexpr std::uint64_t temporal_lane_phase(
     std::int64_t x, std::int64_t y, std::uint64_t period,
     std::uint32_t stream) noexcept {
-    return mix64(static_cast<std::uint64_t>(x) * 0x9e3779b185ebca87ULL ^
-                 std::rotl(static_cast<std::uint64_t>(y), 23) ^
-                 static_cast<std::uint64_t>(stream) * 0xa0761d6478bd642fULL) % period;
+    return material_lifecycle::lane_phase(x, y, period, stream);
 }
 
 void hash_byte(std::uint64_t& hash, std::uint8_t byte) noexcept {
@@ -311,6 +311,8 @@ struct World::PressureChunk {
 
 struct World::Chunk {
     using Cell = detail::PrecisionStorage;
+    // Owner metadata for the optional bounded mutation observer; not cell state.
+    ChunkCoord coordinate{};
 
     struct ActivityBlock {
         std::uint64_t next_interaction_tick = 0;
@@ -949,6 +951,24 @@ World::World(WorldConfig config)
 World::~World() = default;
 World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
+
+void World::enable_object_shard_mutation_watch(RectI64 bounds) {
+    require_healthy();
+    if (tick_in_progress_ || object_shard_mutations_ != nullptr ||
+        bounds.width <= 0 || bounds.height <= 0 || bounds.width > 1024 || bounds.height > 1024 ||
+        bounds.x < std::numeric_limits<std::int64_t>::min() + 1024 ||
+        bounds.y < std::numeric_limits<std::int64_t>::min() + 1024 ||
+        bounds.x > std::numeric_limits<std::int64_t>::max() - bounds.width - 1024 ||
+        bounds.y > std::numeric_limits<std::int64_t>::max() - bounds.height - 1024)
+        throw std::invalid_argument("invalid ObjectShard mutation-watch admission");
+    auto journal = std::make_unique<object_shard::MutationJournal>(bounds.x, bounds.y,
+        static_cast<std::uint32_t>(bounds.width), static_cast<std::uint32_t>(bounds.height));
+    for (auto& [coordinate, chunk] : chunks_) chunk->coordinate = coordinate;
+    for (auto y = bounds.y; y < bounds.y + bounds.height; ++y)
+        for (auto x = bounds.x; x < bounds.x + bounds.width; ++x)
+            journal->observe(x, y, stored_material(x, y));
+    object_shard_mutations_ = std::move(journal);
+}
 
 void World::initialize_settled_discovery() {
     // Replacement is retire-first: construction below may allocate or exhaust the
@@ -1758,6 +1778,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         throw std::runtime_error("maximum chunk capacity exhausted");
     }
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
+    chunk->coordinate = coord;
     if (pressure_ != nullptr) {
         chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size(), pressure_->cache != nullptr,
             pressure_->cache != nullptr && pressure_->cache->dormant);
@@ -1973,12 +1994,7 @@ std::uint8_t World::state_b(std::int64_t x, std::int64_t y) const noexcept {
 
 std::uint8_t World::deterministic_random(std::int64_t x, std::int64_t y,
                                          std::uint32_t stream) const noexcept {
-    return static_cast<std::uint8_t>(
-        mix64(static_cast<std::uint64_t>(x) * 0x9e3779b185ebca87ULL ^
-              std::rotl(static_cast<std::uint64_t>(y), 23) ^
-              tick_index_ * 0xd6e8feb86659fd93ULL ^
-              static_cast<std::uint64_t>(stream) * 0xa0761d6478bd642fULL) &
-        0xffU);
+    return material_lifecycle::random(tick_index_, x, y, stream);
 }
 
 bool World::rule_is_active(Material material, std::uint16_t state_a_value,
@@ -2146,6 +2162,13 @@ void World::mark_hard_surface_dirty(const Address& target) noexcept {
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
+    if (object_shard_mutations_ != nullptr) {
+        const auto x = chunk.coordinate.x * config_.chunk_size + local_x;
+        const auto y = chunk.coordinate.y * config_.chunk_size + local_y;
+        const auto at = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(config_.chunk_size) +
+            static_cast<std::size_t>(local_x);
+        object_shard_mutations_->observe(x, y, chunk.cells[at].material_value());
+    }
     wake_wave_chunk(chunk);
     if (chunk.pressure != nullptr)
         invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
@@ -3088,6 +3111,7 @@ void World::apply_pending_explosions(TickStats& stats) {
 void World::clear() {
     if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
+    if (object_shard_mutations_ != nullptr) object_shard_mutations_->reset_empty();
 
     // Retire every observation before destructive World reset begins. reset() is
     // allocation-free; if replacement construction later throws, discovery stays
@@ -3833,25 +3857,20 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         case RuleKernel::Gas: {
             bool changed = false;
             if (slow_lifecycle_due) {
-                auto lifetime = state_a(x, y);
-                if (lifetime == 0U) {
-                    lifetime = MaterialRules::descriptor(material).initial_state_a;
-                }
+                const auto lifetime = state_a(x, y);
                 std::uint8_t smoke_neighbours = 0;
                 for (const auto offset : kMooreNeighbours) {
                     smoke_neighbours += static_cast<std::uint8_t>(
                         cursor.visible(x + offset.x, y + offset.y) == Material::Smoke);
                 }
-                // Dense clouds thin from within twice as quickly, producing a
-                // slow collapsing-bubble texture without a separate gas field.
-                const auto decay = static_cast<std::uint8_t>(
-                    smoke_neighbours >= 5U ? 2U : 1U);
-                if (lifetime <= decay) {
-                    return write_kernel_cell(x, y, Material::Empty, 0, 0, effects);
+                const auto step = material_lifecycle::smoke_lifetime(
+                    material, lifetime, smoke_neighbours, true);
+                if (step.material == Material::Empty) {
+                    return write_kernel_cell(x, y, step.material, step.state_a,
+                                             step.state_b, effects);
                 }
-                changed = write_kernel_cell(
-                    x, y, material, static_cast<std::uint8_t>(lifetime - decay), 0,
-                    effects);
+                changed = write_kernel_cell(x, y, step.material, step.state_a,
+                                             step.state_b, effects);
             }
             if (try_move(material, x, y, x, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y - 1, true, effects)) return true;
@@ -3869,16 +3888,13 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 changed = ignite(sample_x, sample_y, 240) || changed;
             }
 
-            const auto lifetime = state_a(x, y);
-            if (lifetime <= 1U) {
-                const auto& smoke = MaterialRules::descriptor(Material::Smoke);
-                return write_kernel_cell(x, y, Material::Smoke, smoke.initial_state_a,
-                                  smoke.initial_state_b, effects) ||
-                       changed;
+            const auto step = material_lifecycle::fire_lifetime(state_a(x, y));
+            if (step.material == Material::Smoke) {
+                return write_kernel_cell(x, y, step.material, step.state_a,
+                                         step.state_b, effects) || changed;
             }
-            changed = write_kernel_cell(x, y, Material::Fire,
-                                 static_cast<std::uint8_t>(lifetime - 1U), 0, effects) ||
-                      changed;
+            changed = write_kernel_cell(x, y, step.material, step.state_a,
+                                         step.state_b, effects) || changed;
 
             const auto drift = kMooreNeighbours[static_cast<std::size_t>(
                 deterministic_random(x, y, 11U) % kMooreNeighbours.size())];
@@ -3896,20 +3912,18 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 keep_cell_active(x, y, effects);
                 return false;
             }
-            if (find_neighbour([](Material candidate, auto, auto) {
-                    return candidate == Material::Water;
-                })) {
-                return write_kernel_cell(x, y, material, state_a(x, y), 0, effects);
-            }
-            if (burn <= 1U) return write_kernel_cell(x, y, Material::Empty, 0, 0, effects);
-
-            bool changed = write_kernel_cell(x, y, material, state_a(x, y),
-                                      static_cast<std::uint8_t>(burn - 1U), effects);
-            if ((burn & 7U) == 0U) {
+            const bool water_neighbour = find_neighbour([](Material candidate, auto, auto) {
+                return candidate == Material::Water;
+            }).has_value();
+            const auto step = material_lifecycle::combustible(
+                material, state_a(x, y), burn, true, water_neighbour);
+            bool changed = write_kernel_cell(x, y, step.material, step.state_a,
+                                             step.state_b, effects);
+            if (step.sample_fire_emission) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 12U));
                 if (cursor.visible(target_x, target_y) == Material::Empty) {
-                    changed = write_kernel_cell(target_x, target_y, Material::Fire, 32, 0, effects) ||
-                              changed;
+                    changed = write_kernel_cell(target_x, target_y, Material::Fire,
+                        material_lifecycle::kWoodFireLifetime, 0, effects) || changed;
                 }
             }
             return changed;
@@ -4934,6 +4948,15 @@ void World::merge_job_effects(const JobEffects& effects) {
         auto* chunk = find_chunk(effect.chunk);
         if (chunk == nullptr) {
             throw std::logic_error("job effect references missing chunk");
+        }
+        if (object_shard_mutations_ != nullptr) {
+            for (auto y = effect.minimum_y; y <= effect.maximum_y; ++y)
+                for (auto x = effect.minimum_x; x <= effect.maximum_x; ++x) {
+                    const auto at = static_cast<std::size_t>(y) * static_cast<std::size_t>(config_.chunk_size) +
+                        static_cast<std::size_t>(x);
+                    object_shard_mutations_->observe(effect.chunk.x * config_.chunk_size + x,
+                        effect.chunk.y * config_.chunk_size + y, chunk->cells[at].material_value());
+                }
         }
         wake_wave_chunk(*chunk);
         if (!hard_surface_full_refresh_required_) {
