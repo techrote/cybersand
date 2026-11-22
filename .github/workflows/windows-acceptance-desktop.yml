@@ -171,7 +171,7 @@ jobs:
           Get-NetFirewallRule -DisplayGroup 'Remote Desktop' -ErrorAction SilentlyContinue | Disable-NetFirewallRule
           New-NetFirewallRule -DisplayName 'CyberSand Acceptance RDP TCP from tailnet' -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3389 -RemoteAddress '100.64.0.0/10' -Profile Any | Out-Null
           Start-Service -Name TermService -ErrorAction SilentlyContinue
-          & tailscale up --unattended
+          & tailscale set --unattended=true
           if ($LASTEXITCODE -ne 0) { throw 'Unable to enter unattended Tailscale mode' }
           $tailIP = ((& tailscale ip -4) | Select-Object -First 1).Trim()
           if ($LASTEXITCODE -ne 0 -or $tailIP -notmatch '^100\.') { throw 'Tailscale private IPv4 address unavailable' }
