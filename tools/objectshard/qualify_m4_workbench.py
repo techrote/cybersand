@@ -45,6 +45,8 @@ PROTECTED_SOURCES = (
     "godot/scripts/object_shard_m4_latency_probe.gd",
     "godot/tests/test_object_shard_m4_workbench_port.gd",
     "godot/tests/test_object_shard_m4_latency_probe.gd",
+    "godot/tests/test_object_shard_workbench_contract.gd",
+    "tools/objectshard/qualify_m4_workbench.py",
 )
 
 
@@ -59,12 +61,20 @@ def source_identity(expected_sha: str) -> dict:
         ["git", "-C", str(ROOT), "rev-parse", "HEAD^{tree}"],
         capture_output=True, text=True, check=True, timeout=30,
     ).stdout.strip()
+    # A matching HEAD SHA alone does not identify tests executed from a
+    # dirty checkout. Fail closed on staged, unstaged or untracked source edits.
+    dirty = subprocess.run(
+        ["git", "-C", str(ROOT), "status", "--porcelain=v1", "--", *PROTECTED_SOURCES],
+        capture_output=True, text=True, check=True, timeout=30,
+    ).stdout.strip()
+    if dirty:
+        raise ValueError("M4 executable source is dirty; commit or restore changes:\n" + dirty)
     files = {}
     for path in PROTECTED_SOURCES:
         content = (ROOT / path).read_bytes()
         files[path] = hashlib.sha256(content).hexdigest()
     return {"commit": revision, "tree": tree, "files": files,
-            "native_build_claimed": False}
+            "protected_source_clean": True, "native_build_claimed": False}
 
 
 def complete_receipt(text: str, schema: str) -> dict:
