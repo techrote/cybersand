@@ -1,0 +1,81 @@
+---
+title: GENTEK-WINDOWS-FINAL-B physical owner acceptance
+status: Draft
+document-kind: guide
+scope: Source-bound portable Windows evaluator, physical acceptance and no-upload evidence export
+canonical-for: [gentek-windows-final-owner-acceptance]
+last-reviewed: 2026-11-22
+related-documents: [gentek80-evaluation.md, architectural-generator-playtest.md]
+---
+
+# GENTEK-WINDOWS-FINAL-B — physical owner acceptance
+
+This guide **supplements**, rather than replaces, [the current 80-Gentek catalogue and Test It procedure](gentek80-evaluation.md). The historical #673 candidate is preserved. PR #684's Windows ZIP is a qualified historical-source artifact, **not** automatically a current-main build. The acceptance owner must pin the **exact** source, original archive hash and build evidence of the chosen release.
+
+## Source and archive trust
+
+The verifier is committed at tools/acceptance/gentek80_owner.ps1; its companion Verify and Open Workbench.cmd is staged by the existing source-aware packaging tool. The tool runs under Windows PowerShell 5.1 and requires no development checkout, separate Python/Godot/compiler installation, admin rights, network access or machine-global configuration changes.
+
+**Always obtain the 64-digit expected ZIP SHA-256 from a separate trusted handoff.** A hash embedded inside the same untrusted ZIP cannot authenticate that ZIP. Provide the exact 40-digit Git commit in -ExpectedSource. The owner verifier compares original ZIP hash, archive member safety, complete extracted SHA-256 inventory, source/build identity, Godot executable hashes, native GDExtension, Rapier, Visual C++ runtime and unexpected files. It refuses changed manifests, missing payload, ZipSlip, ZIP case collisions and manifest source mismatches.
+
+The project can regenerate cache files inside godot/.godot/; this is the only expected unlisted mutable project subtree. Capture results **outside** the package. The existing Open Workbench.cmd is retained for backwards compatibility, but new owner deliveries should use **Verify and Open Workbench.cmd** to fail closed before import or GUI startup.
+
+## Verify, extract and run
+
+Use a trusted, separately obtained copy of gentek80_owner.ps1, or the script in an already authenticated archive. Replace the placeholders with the exact published source and ZIP digest. Example (PowerShell):
+
+~~~powershell
+$kit = 'C:\OwnerKit\gentek80_owner.ps1'
+$archive = 'C:\Downloads\CyberSand-Gentek80-Windows-SOURCE.zip'
+$sha = 'PASTE_64_DIGIT_PUBLISHED_SHA256'
+$source = 'PASTE_40_DIGIT_PUBLISHED_SOURCE_SHA'
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyArchive -ArchivePath $archive -ExpectedArchiveSha256 $sha
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Extract -ArchivePath $archive -ExpectedArchiveSha256 $sha -ExpectedSource $source -Destination 'D:\Gentek test (外部)\nested\candidate'
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyPayload -PackagePath 'D:\Gentek test (外部)\nested\candidate' -ExpectedSource $source
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Launch -PackagePath 'D:\Gentek test (外部)\nested\candidate' -ExpectedSource $source
+~~~
+
+Extraction **must target a new directory**. Launch uses only the bundled pinned Godot 4.7 GUI/console, verifies again after import, opens the ordinary Shared Workbench and waits for its process. It **never** kills other Godot processes or silently invokes a system-installed engine. Close all Godot processes associated with the extracted package by inspecting executable paths in Task Manager before the fresh-process replay. Do not kill unrelated Godot instances.
+
+Repeat clean extraction and tamper-refusal tests under spaces, parentheses, Unicode, nested directories and a non-default user-profile path. Intentionally corrupt only *copies* of the archive/package (missing Rapier, changed executable/DLL, truncated ZIP, altered manifest/source, unlisted GDScript, ZIP traversal). Keep exact failure messages and do not bypass a refusal with the legacy launcher. tools/acceptance/tests/test_gentek80_owner.py contains strictly synthetic Windows admission adversaries; they **do not prove actual generator quality or physical GUI interaction**.
+
+## Owner graphical acceptance
+
+Run the actual candidate on **Windows 11 with a local NVIDIA graphics driver and physical keyboard/mouse**. Record OS build, GPU, graphics driver, renderer and DPI/scaling. Hosted Windows Server 2022/ANGLE, headless, RDP software rendering and simulated input are *not* equivalent to this gate.
+
+Use the standard [80-Gentek Test It instructions](gentek80-evaluation.md) alongside this additional explicit checklist. Check all eight advanced showcases and the six repaired CLASSIC structures (Ring Pier, Tripod Frame, Cascade Terrace, Scalloped Vault, Suspended Deck and Buttress Wall). Perform individual generation, preview, Stop/cancellation, native install, paint/erase, reseed and identical-seed restoration, meaningful Room/bay/floor/wall changes, invalid-input refusal and existing legacy regression examples.
+
+Create **two different five-style projects**, with one signed negative-coordinate origin. Record all ten module selections, both seeds, exact geometry/material parameters, the selected Room/bay variance and project names. Save the **two editable projects and two named starting maps**, not simply screenshots. Close *every* packaged engine/editor process, launch a genuinely new app process, reopen both projects and both named starts, compare original identities/parameters and inspect the restored painted material. Preserve genuine screenshots that clearly identify case, software build, original source and result.
+
+Manual physical judgments remain explicit **PASS, FAIL or SKIP**; a missing observation is never automated into a PASS. Record natural gameplay feel, freezing/stalls, preview stability and generator legibility without deleting negative results.
+
+For quantitative performance, measure generation/preview/install wall times and sample real frame intervals with a declared capture tool. The optional -FrameIntervalsCsv expects 100+ positive frame_ms values; it reports nearest-rank p50/p95/p99 and worst interval **from the owner-supplied CSV**. The harness does not measure frames itself, and missing measurements remain **NOT RUN**.
+
+## Export evidence locally, with no uploads
+
+Run these commands in PowerShell **after** a full physical acceptance session:
+
+~~~powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action NewChecklist -ResultsDirectory 'D:\GentekAcceptance\form'
+
+# Edit all 20 entries in owner-decisions.json:
+# Set decision to PASS, FAIL or SKIP and record real notes, two five-style projects and two saved maps.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Collect -PackagePath 'D:\Gentek test (外部)\nested\candidate' -ExpectedSource $source -DecisionsPath 'D:\GentekAcceptance\form\owner-decisions.json' -ResultsDirectory 'D:\GentekAcceptance\result-001' -Renderer 'OWNER OBSERVED RENDERER' -EvidenceFiles @('D:\Captures\showcase.png','D:\Captures\reopened-map.png','D:\Logs\workbench.log')
+~~~
+
+Optional, explicitly supplied profiler evidence: -FrameIntervalsCsv 'D:\Captures\real-frames.csv' -FrameCaptureTool 'tool and version'.
+
+The output includes a structured gentek80-owner-report.json, OS/driver/DPI information and SHA-256 hashes of *only the evidence files explicitly selected*. It performs no uploads, credentials collection, desktop capture, synthetic screenshots or mouse/keyboard trace fabrication. Inspect and redact selected logs before sharing. The report distinguishes OWNER-PASS-RECORDED, OWNER-FAILED, INCOMPLETE and PACKAGE-REJECTED; owner statements remain subject to independent review.
+
+## Outstanding gates
+
+| Gate | Requirement | Initial status |
+| --- | --- | --- |
+| Exact current-source Windows package | Newly produced native library, Godot 4.7, Rapier, full inventory, SHA manifest, same-source graphical replay | Requires current branch CI |
+| Eight showcase / six repair / 80 distinct output suite | Actual Workbench, native project material identity, saved map fresh-process reopening and original frames | Requires current branch CI |
+| Adversarial archive and process handling | Windows PowerShell synthetic corruptions, safe extraction and no global process termination | Requires Windows CI |
+| Local owner Windows 11/NVIDIA performance and physical input | Owner's genuine decisions, screenshots, GPU/renderer/DPI, measured stalls | **NOT RUN** |
+| Integrator/owner merge gate | Review exact source and runtime, accept outstanding failures, explicit merge authority | **HOLD** |
+
+This guide does not itself grant merge, auto-merge or Ready promotion authority.
