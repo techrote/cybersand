@@ -540,6 +540,7 @@ func pilot_instance(id: int) -> bool:
 	select_instance(id)
 	_sync_roster()
 	message = "Piloting %s. Other actors keep their own controllers." % pilot_description()
+	if host.paused: message += " Press Play / Pause [P] to enable movement."
 	return true
 
 

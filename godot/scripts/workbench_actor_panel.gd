@@ -78,7 +78,7 @@ func mount(workbench: Control) -> void:
 	min_size = Vector2i(600,440)
 	transient = true
 	exclusive = false
-	close_requested.connect(hide)
+	close_requested.connect(_close_and_focus)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side: String in ["left","top","right","bottom"]: margin.add_theme_constant_override("margin_"+side,12)
@@ -96,7 +96,7 @@ func mount(workbench: Control) -> void:
 	interaction_mode.item_selected.connect(func(index: int) -> void:
 		interaction_mode_requested.emit(str(interaction_mode.get_item_metadata(index))))
 	wb._button(row,"Play / Pause",wb.toggle_pause)
-	wb._button(row,"Close",hide)
+	wb._button(row,"Close",_close_and_focus)
 	pilot_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(pilot_info)
 	operation_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -118,6 +118,14 @@ func mount(workbench: Control) -> void:
 	column.add_child(status)
 	_fill_models()
 	refresh(true)
+
+
+func _close_and_focus() -> void:
+	# After closing a native Configuration window, restore keyboard focus
+	# explicitly to the playable parent. Do not steal focus on app switching.
+	hide()
+	if wb != null and is_instance_valid(wb.host):
+		wb.host.get_window().grab_focus()
 
 
 func _page(caption: String) -> void:
