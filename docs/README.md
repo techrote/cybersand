@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -35,6 +35,22 @@ Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-compos
 for ordinary UI controls, policy testing and authored saves; the
 [dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
 separates actual platform evidence from owner playfeel acceptance.
+
+The [Workbench publication and progression evaluation](operations/pubpres-integration-evaluation.md) tracks PUBPRES-INTEGRATION-001 and its Draft/HOLD gates.
+
+The separate [PUBPRES-PLAYABILITY-001 evaluation](operations/pubpres-playability-evaluation.md)
+owns the opt-in staging change, default-off same-frame continuation, prospective
+v3 matched progression campaign and new Windows evaluator. The original negative
+v2 results remain preserved. Draft/HOLD; continuation graphical timing and
+physical NVIDIA acceptance remain pending.
+
+For native-independent font/startup and queued-history diagnosis before native
+builds, use [isolated render diagnostics](operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
+
+For the corrective PUBPRES-PLAYABILITY-003 mission, use its
+[live recovery handover](../RECOVERY_HANDOVER.md). The original final campaign's
+large-canvas progression, renderer and package failures remain retained; new
+source-matched qualification is required before a playable-successor claim.
 
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded

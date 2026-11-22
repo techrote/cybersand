@@ -1,0 +1,51 @@
+{
+  "schema": "pubpres003-independent-renderer-delta-review-v1",
+  "reviewed_commit": "380ad3418119a4f2b76563ef46e640fc172d3992",
+  "included_renderer_commit": "f6aaae018fd6f34df6865c1abc4161469dc87e28",
+  "reviewer_role": "Performance/science specialist; did not implement renderer or Windows source",
+  "status": "NO_SOURCE_BLOCKER_FOUND; hosted execution pending",
+  "source_hashes": {
+    "tools/pubpres003/run_safe_baseline.py": "69869f4299238034e87623e3e5e72781649b8cf1f57cc0bdde67afdc44a69381",
+    "godot/tests/test_native_pixel_camera.gd": "e82d14e1f05c1ab7021d468e5b17380492c5a086683c39d6d904d922905b3c40",
+    "tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1": "3091cb2f7e070f350b83345bbc8930506bf34e4a6be3e1bd752ee9aa95599a71",
+    "tools/pubpres_playability_windows/Test-PristineReplay.ps1": "a45032a07ca5c89030b8c8d8f39396378739c876e0e4b64cb5b71262f3438a5c",
+    "tools/pubpres_playability_windows/package_windows.py": "410750307b318ac3c05da3def237c6c72019bd9ad991c8b5eb7b7e64e5c87633",
+    "tools/pubpres_playability_windows/test_package_windows.py": "d1482259f12e6f5348cb3fd378582d5240ff881fa6e8facc932df5a1d5373dd0"
+  },
+  "actual_negative_camera_replay": {
+    "log_sha256": "df6179fb7f2c94a1b2de9b510d34fbf9ee2a2f60472ff9c8dfe0721b5a20fdc4",
+    "original_source": "d316c281e0abb575eb6302afc12ec44f211460ba",
+    "actual_original_exit_code": 0,
+    "original_script_error_present": true,
+    "original_footer_failures": [],
+    "original_moving_follow_receipts": 0,
+    "original_root_stretch_receipts": 0,
+    "strict_completion_errors": [
+      "Process or strict Godot diagnostic failure"
+    ],
+    "new_camera_gate": "REFUSED",
+    "new_camera_gate_reason": "Native camera source/runtime or genuine moving Follow evidence differs"
+  },
+  "executed_checks": [
+    {
+      "command": "python -m unittest discover -s tools/pubpres_playability_windows -p test_package_windows.py -v",
+      "source": "380ad3418119a4f2b76563ef46e640fc172d3992",
+      "tests": 32,
+      "status": "PASS"
+    }
+  ],
+  "source_findings": [
+    "Lazy Art panel fixture now calls the existing ordinary open_art_batches action; it does not change production UI defaults.",
+    "Camera helper requires all six root-stretch and twelve genuine completed moving-Follow observations plus strictly increasing physical steps, changing poses, source/engine/native hashes. Awaited coroutine abort can no longer leave an apparently valid partial footer.",
+    "Safe runner retains original strict full-byte graphical assertions and diagnostic rejection, actual Compatibility-device startup, exact source/native dependency/engine identity, and separately labels optional Separate/reachable modes as untested.",
+    "PUBPRES003 is an explicit package profile; build default remains001. Manifest mission and archive basename are checked together after exact digest and package verification, including nested artifacts.",
+    "Replay saves input arguments before dot-sourcing launcher; prefix-specific variables avoid the launcher parameter defaults overwriting required values. Each fresh process goes through existing owned Job startup/runtime hashes and post-import source hashing.",
+    "Committed import descriptor remains hashed and the original real CRLF-to-LF false refusal is addressed by canonical export, not an ignore rule."
+  ],
+  "remaining_gates": [
+    "Execute actual hosted Windows pristine import, startup and same-run fresh-process reopen; static PowerShell review does not establish runtime success.",
+    "Separate installed-author Save/native-plane fresh-process reopen gate remains required; pristine replay deliberately makes no persistence claim.",
+    "Run primary Safe/eager graphical gates with exact final candidate native runtime; Linux environment lacked Xorg socket capability locally.",
+    "Final-source independent review and physical Windows/NVIDIA owner acceptance remain separate."
+  ]
+}

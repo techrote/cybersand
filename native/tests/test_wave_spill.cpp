@@ -256,6 +256,53 @@ void worker_counts_and_repeats_are_identical() {
         }
 }
 
+void wide_current_gameplay_keeps_exact_parallel_state() {
+    // Wide enough to exercise complete chunk-column group dispatch with four
+    // workers. Retain current gameplay's two rounds, sheet/crest discharge and
+    // ballistic parcels, including partial viewport pause/resume boundaries.
+    constexpr int width = 1024, height = 256, ox = -128, oy = -64;
+    const RectI64 all{ox, oy, width, height};
+    std::vector<std::uint64_t> reference;
+    for (const auto workers : {1U, 2U, 4U, 8U}) {
+        auto cfg = config(Mode::Hybrid, workers, 2);
+        auto& wave = cfg.wave_flow;
+        wave.deep_gain = 32; wave.floor_gain = 1024; wave.flux_smoothing = 16;
+        wave.coast = 32; wave.damp_shift = 16; wave.calm_damp_shift = 8;
+        wave.calm = 128; wave.stick = 128; wave.sleep_after = 90;
+        wave.body_push_by_mass = 1;
+        wave.spill.sheet_rate = 64; wave.spill.coyote_ticks = 4;
+        wave.spill.full_face = 1; wave.spill.draw = 127;
+        wave.spill.draw_head = 255; wave.spill.deep_draw = 64;
+        wave.spill.launch_budget = 128;
+        World world(cfg);
+        box(world, width, height, ox, oy);
+        rect(world, ox + 1, oy + 64, 640, 3, Material::Wall);
+        rect(world, ox + 1, oy + 16, 640, 48, Material::Water);
+        rect(world, ox + 1, oy + 208, width - 2, 47, Material::Water);
+        const auto expected = owned(world, all);
+        std::vector<std::uint64_t> hashes;
+        std::uint32_t maximum_participants = 0;
+        for (int tick = 1; tick <= 96; ++tick) {
+            if (tick == 33) world.set_simulation_region(RectI64{ox + 9, oy + 3, 739, 231});
+            if (tick == 49) world.set_simulation_region(std::nullopt);
+            const auto stats = world.tick();
+            maximum_participants = std::max(maximum_participants, stats.worker_threads_observed);
+            require(!world.has_failed(), "wide current-gameplay World failed");
+            if (tick % 16 != 0) continue;
+            require_ledger_closes(world, all, expected, "wide current-gameplay tick " + std::to_string(tick));
+            hashes.push_back(world.physical_state_hash());
+            std::printf("WAVE_WIDE_CHECKPOINT workers=%u tick=%d physical=%016llx water=%llu parcels=%u\n",
+                workers, tick, static_cast<unsigned long long>(hashes.back()),
+                static_cast<unsigned long long>(expected), world.ballistic_water_snapshot().live);
+        }
+        require(world.wave_flow_diagnostics().launched_parcels > 0,
+                "wide current-gameplay fixture did not execute ballistic spill");
+        if (workers > 1) require(maximum_participants > 1, "wide fixture did not use actual native workers");
+        if (workers == 1) reference = hashes;
+        else require(hashes == reference, "wide current-gameplay state depends on worker/task grouping");
+    }
+}
+
 void waterfall_lands_fills_and_rejoins() {
     // A platform lip over open air with a receiving basin under it, across
     // chunk seams (128-cell chunks): Water must leave, land and accumulate.
@@ -1958,6 +2005,7 @@ int main(int argc, char** argv) {
         {"stream draw zero is the earlier spill World", stream_draw_zero_is_the_earlier_spill_world},
         {"exposed reservoir collapses and conserves", exposed_reservoir_collapses_and_conserves},
         {"worker counts and repeats are identical", worker_counts_and_repeats_are_identical},
+        {"wide current gameplay keeps exact parallel state", wide_current_gameplay_keeps_exact_parallel_state},
         {"waterfall lands fills and rejoins", waterfall_lands_fills_and_rejoins},
         {"sealed reservoir is untouched", sealed_reservoir_is_untouched},
         {"contained pool still waves and rests", contained_pool_still_waves_and_rests},

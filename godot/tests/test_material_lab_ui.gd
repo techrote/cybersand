@@ -16,8 +16,13 @@ var capture_source_hashes: Dictionary = {}
 var capture_manifest: Dictionary = {}
 var directory_custody_only: bool = false
 var workbench_mount_only: bool = false
+var window_observations: Array[Dictionary] = []
+var window_capture_directory: String = ""
+var window_source_hashes: Dictionary = {}
+var window_ids_before: PackedInt32Array = PackedInt32Array()
 
 func _initialize() -> void:
+	window_capture_directory = OS.get_environment("CYBERSAND_MATERIAL_LAB_WINDOW_OUTPUT")
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-output="): capture_directory = argument.trim_prefix("--capture-output=")
 		if argument == "--directory-custody-only": directory_custody_only = true
@@ -368,14 +373,204 @@ func popup_bounds(popup: Window, bounds: Rect2i, native: bool, context: String) 
 		expect(bounds.encloses(Rect2i(popup.get_position_with_decorations(),popup.get_size_with_decorations())),
 			"Lab native borders and title bar fit the usable work area: " + context)
 
+func physical_control_transform(control: Control) -> Transform2D:
+	# CanvasItem.get_screen_transform() uses popup-base coordinates, which stop
+	# at an embedding root. Window's version includes the ancestor stretch.
+	return control.get_viewport().get_screen_transform() * control.get_global_transform_with_canvas()
+
+func composited_pixel_probe(popup: Window, mounted: Control, context: String) -> Dictionary:
+	# A child of an actual input control shares that control's rendering and
+	# input coordinates. Read the native-owner framebuffer, not just the Lab's
+	# offscreen texture, and derive the click from observed pixels.
+	var target: Control = (popup as FileDialog).get_cancel_button() if popup is FileDialog else mounted.get("_search")
+	var marker := ColorRect.new()
+	marker.name = "MaterialLabPixelOracle"
+	marker.color = Color(1,0,1,1)
+	marker.position = Vector2(3,3)
+	marker.size = Vector2(41,13)
+	marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	marker.z_index = 4095
+	target.add_child(marker)
+	var owner: Window = popup
+	while owner.is_embedded():
+		owner = owner.get_parent().get_window()
+	for frame: int in range(2): await process_frame
+	await RenderingServer.frame_post_draw
+	var capture: Image = owner.get_texture().get_image()
+	var result := {"native_owner_window_id":owner.get_window_id(),"is_root_capture":owner == root,
+		"marker_ui_size":[41,13],"marker_rgba":[255,0,255,255],"target_class":target.get_class(),
+		"target_popup_base_scale":target.get_screen_transform().get_scale(),
+		"target_composed_scale":physical_control_transform(target).get_scale()}
+	expect(capture != null and not capture.is_empty(),"Native-owner composite exists: " + context)
+	if capture != null and not capture.is_empty():
+		capture.convert(Image.FORMAT_RGBA8)
+		var bytes: PackedByteArray = capture.get_data()
+		var width: int = capture.get_width()
+		var low := Vector2i(width,capture.get_height())
+		var high := Vector2i(-1,-1)
+		var count: int = 0
+		for index: int in range(0,bytes.size(),4):
+			if bytes[index] == 255 and bytes[index + 1] == 0 and bytes[index + 2] == 255:
+				var point := Vector2i((index / 4) % width,(index / 4) / width)
+				low = low.min(point)
+				high = high.max(point)
+				count += 1
+		var observed := Rect2i(low,high - low + Vector2i.ONE) if count else Rect2i()
+		var expected: Rect2 = physical_control_transform(marker) * Rect2(Vector2.ZERO,marker.size)
+		result["framebuffer_size"] = [capture.get_width(),capture.get_height()]
+		result["marker_pixel_bounds"] = [observed.position.x,observed.position.y,observed.size.x,observed.size.y]
+		result["marker_pixels"] = count
+		result["predicted_bounds"] = [expected.position.x,expected.position.y,expected.size.x,expected.size.y]
+		expect(observed.size == Vector2i(41,13) and count == 41 * 13,
+			"Actual composited control spans exactly 41 by 13 physical pixels: " + context)
+		expect(Vector2(observed.position).distance_to(expected.position) <= 1.5 \
+			and Vector2(observed.size).distance_to(expected.size) <= 0.01,
+			"Composed Window transform predicts actual visible control bounds: " + context)
+		if owner == root:
+			expect(capture.get_size() == root.size,"Root-composited screenshot retains the actual parent pixel extent: " + context)
+		if not window_capture_directory.is_empty():
+			var path: String = window_capture_directory.path_join(context + "-composited.png")
+			expect(capture.save_png(path) == OK,"Actual native-owner composite is retained: " + context)
+			result["framebuffer_png_sha256"] = FileAccess.get_sha256(path)
+		if count:
+			var received := {"pressed":0,"local_positions":[]}
+			var listen: Callable = func(event: InputEvent) -> void:
+				if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+					received.pressed += 1
+					received.local_positions.append(event.position)
+			target.gui_input.connect(listen)
+			var position: Vector2 = Rect2(observed).get_center()
+			var move := InputEventMouseMotion.new()
+			move.position = position
+			move.global_position = position
+			move.window_id = owner.get_window_id()
+			owner.push_input(move,false)
+			for pressed: bool in [true,false]:
+				var click := InputEventMouseButton.new()
+				click.button_index = MOUSE_BUTTON_LEFT
+				click.pressed = pressed
+				click.position = position
+				click.global_position = position
+				click.window_id = owner.get_window_id()
+				owner.push_input(click,false)
+			for frame: int in range(2): await process_frame
+			result["physical_click"] = position
+			result["received_input"] = received.duplicate(true)
+			expect(received.pressed == 1 and received.local_positions.size() == 1 \
+				and Rect2(marker.position,marker.size).has_point(received.local_positions[0]),
+				"Click derived from composited pixels reaches the same actual Lab control: " + context)
+			target.gui_input.disconnect(listen)
+			if target is LineEdit: target.release_focus()
+	marker.queue_free()
+	await process_frame
+	return result
+
+func record_window_frame(popup: Window, mounted: Control, context: String, expect_unit_pixels: bool = true) -> void:
+	var row := {"context":context,"separate_render_owner":not RenderingServer.is_on_render_thread(),
+		"embedded":popup.is_embedded(),"force_native":popup.force_native,
+		"window_id":popup.get_window_id(),"root_window_id":root.get_window_id(),
+		"native_window_ids":DisplayServer.get_window_list(),"parent_size":root.size,
+		"parent_visible_rect":root.get_visible_rect(),"client_size":popup.size,
+		"visible_rect":popup.get_visible_rect(),"content_scale_factor":popup.content_scale_factor,
+		"control_popup_base_scale":mounted.get_screen_transform().get_scale(),
+		"control_composed_scale":physical_control_transform(mounted).get_scale(),
+		"font_oversampling":popup.get_oversampling(),"font_oversampling_enabled":popup.is_using_oversampling(),
+		"root_font_oversampling":root.get_oversampling(),
+		"physical_unit_gate":expect_unit_pixels}
+	if not RenderingServer.is_on_render_thread():
+		expect(is_equal_approx(popup.get_oversampling(),1.0) and not popup.is_using_oversampling(),
+			"Compensated Lab uses a physical-size font atlas: " + context)
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		var capture: Image = popup.get_texture().get_image()
+		expect(capture != null and not capture.is_empty(),"Actual Lab framebuffer exists: " + context)
+		if capture != null and not capture.is_empty():
+			capture.convert(Image.FORMAT_RGBA8)
+			var bytes: PackedByteArray = capture.get_data()
+			var hashing := HashingContext.new()
+			hashing.start(HashingContext.HASH_SHA256)
+			hashing.update(bytes)
+			row.framebuffer_sha256 = hashing.finish().hex_encode()
+			row.framebuffer_size = capture.get_size()
+			var colours := {}
+			var stride: int = maxi(1,bytes.size() / 4 / 4096)
+			for index: int in range(0,bytes.size() / 4,stride):
+				colours[bytes.decode_u32(index * 4)] = true
+			row.sampled_colours = colours.size()
+			expect(colours.size() >= 8,"Lab framebuffer has nontrivial visible UI: " + context)
+			if expect_unit_pixels:
+				expect(Vector2(capture.get_size()).distance_to(popup.get_visible_rect().size) <= 2.0,
+					"Lab viewport renders one physical pixel per UI unit: " + context)
+			if not window_capture_directory.is_empty():
+				expect(capture.save_png(window_capture_directory.path_join(context + ".png")) == OK,
+					"Lab framebuffer is retained: " + context)
+		row["native_composite"] = await composited_pixel_probe(popup,mounted,context)
+	window_observations.append(row)
+	print("MATERIAL_LAB_WINDOW_FRAME ",JSON.stringify(row))
+
+func dropdown_font_controls(mounted: Control) -> void:
+	var before: Dictionary = {}
+	for picker: OptionButton in mounted.find_children("*","OptionButton",true,false):
+		before[str(mounted.get_path_to(picker))] = picker.get_popup().get_instance_id()
+		if not RenderingServer.is_on_render_thread():
+			expect(not picker.get_popup().is_using_oversampling(),"Each constructed Materials dropdown keeps its physical font atlas")
+	expect(before.size() >= 18,"The popup policy covers catalogue, candidate, reaction and World controls")
+	find_button(mounted,"Reload materials").pressed.emit()
+	for frame: int in range(2): await process_frame
+	var after: Dictionary = {}
+	for picker: OptionButton in mounted.find_children("*","OptionButton",true,false):
+		after[str(mounted.get_path_to(picker))] = picker.get_popup().get_instance_id()
+	expect(before == after,"Ordinary catalogue refresh retains every configured dropdown resource")
+	for selector: OptionButton in [mounted.get("_filter"),mounted.get("_experiment_partner")]:
+		var windows: PackedInt32Array = DisplayServer.get_window_list()
+		selector.show_popup()
+		for frame: int in range(3): await process_frame
+		var menu: PopupMenu = selector.get_popup()
+		var context: String = "dropdown-filter" if selector == mounted.get("_filter") else "dropdown-materials"
+		expect(menu.visible,"Ordinary Materials dropdown opens: " + context)
+		if DisplayServer.get_name() != "headless":
+			expect(menu.get_screen_transform().get_scale().is_equal_approx(Vector2.ONE),
+				"Ordinary Materials dropdown has physical-size rows: " + context)
+			expect(DisplayServer.get_window_list() == windows,"Materials dropdown shares the current rendering context: " + context)
+			if not RenderingServer.is_on_render_thread():
+				expect(menu.is_embedded() and menu.get_window_id() == root.get_window_id() \
+					and is_equal_approx(menu.get_oversampling(),1.0) and not menu.is_using_oversampling(),
+					"Separate Materials dropdown has a full-size font atlas on the root surface: " + context)
+		var row := {"context":context,"items":menu.item_count,"embedded":menu.is_embedded(),
+			"window_id":menu.get_window_id(),"native_window_ids":DisplayServer.get_window_list(),
+			"composed_scale":menu.get_screen_transform().get_scale(),"font_oversampling":menu.get_oversampling(),
+			"font_oversampling_enabled":menu.is_using_oversampling(),"configured_popup_count":before.size()}
+		if DisplayServer.get_name() != "headless":
+			await RenderingServer.frame_post_draw
+			var owner: Window = menu
+			while owner.is_embedded(): owner = owner.get_parent().get_window()
+			var capture: Image = owner.get_texture().get_image()
+			expect(capture != null and not capture.is_empty(),"Dropdown native-owner framebuffer exists: " + context)
+			if capture != null and not capture.is_empty():
+				row["framebuffer_size"] = [capture.get_width(),capture.get_height()]
+				row["is_root_capture"] = owner == root
+				if not window_capture_directory.is_empty():
+					var path: String = window_capture_directory.path_join(context + "-composited.png")
+					expect(capture.save_png(path) == OK,"Actual Materials dropdown composite is retained: " + context)
+					row["framebuffer_png_sha256"] = FileAccess.get_sha256(path)
+		window_observations.append(row)
+		menu.hide()
+		for frame: int in range(2): await process_frame
+
 func workbench_popup_controls(workbench: Variant, main: Control) -> void:
 	var popup: Window = workbench._materials_lab_window
 	var mounted: Variant = workbench._materials_lab_panel
-	var native: bool = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
-	expect(popup.force_native == native and popup.is_embedded() != native,"Lab uses a native desktop window only when the display supports subwindows")
+	var native: bool = RenderingServer.is_on_render_thread() and not OS.has_feature("web") \
+		and DisplayServer.get_name() != "headless" and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+	expect(popup.force_native == native and popup.is_embedded() != native,
+		"Lab uses native Safe windows and embeds under a separate rendering owner")
+	if not native:
+		expect(popup.get_window_id() == root.get_window_id() and DisplayServer.get_window_list() == window_ids_before,
+			"Embedded Lab shares the existing native window without a second GL context")
 	expect(popup.content_scale_mode == Window.CONTENT_SCALE_MODE_DISABLED and popup.handle_input_locally,
 		"Lab owns its pixel scaling and local input without changing the game")
-	expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.content_scale_size == Vector2i(1920,1080),
+	expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.content_scale_size == Vector2i(1920,1080) \
+		and root.gui_embed_subwindows,
 		"Opening Lab preserves the stretched game canvas")
 	var bounds: Rect2i = DisplayServer.screen_get_usable_rect(root.current_screen) if native else Rect2i(Vector2i.ZERO,Vector2i(root.get_visible_rect().size))
 	popup_bounds(popup,bounds,native,"initial")
@@ -408,12 +603,15 @@ func workbench_popup_controls(workbench: Variant, main: Control) -> void:
 	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
 		if native:
 			expect(workbench._fit_materials_lab_native(bounds,dimensions),"Requested native size is admitted within measured work-area capacity")
+		elif not RenderingServer.is_on_render_thread():
+			preload("res://scripts/workbench_lab_window_policy.gd").fit_embedded(popup,dimensions)
 		else: popup.size = dimensions
 		for frame: int in range(3): await process_frame
 		if native: popup_bounds(popup,bounds,true,"requested-%s" % dimensions)
-		var scale: Vector2 = mounted.get_screen_transform().get_scale()
-		if native: expect(scale.is_equal_approx(Vector2.ONE),"Native Lab controls remain physical pixels at %s" % dimensions)
-		expect(Rect2(Vector2.ZERO,Vector2(popup.size)).encloses(mounted.get_global_rect()),"Lab content fits its %s client area" % dimensions)
+		var scale: Vector2 = physical_control_transform(mounted).get_scale()
+		if DisplayServer.get_name() != "headless":
+			expect(scale.is_equal_approx(Vector2.ONE),"Lab controls remain physical pixels at %s" % dimensions)
+		expect(popup.get_visible_rect().encloses(mounted.get_global_rect()),"Lab content fits its %s client area" % dimensions)
 		mounted._tabs.current_tab = 3
 		for frame: int in range(2): await process_frame
 		var scroll: ScrollContainer = mounted._tabs.get_current_tab_control()
@@ -423,6 +621,47 @@ func workbench_popup_controls(workbench: Variant, main: Control) -> void:
 		expect(scroll.get_global_rect().has_point(contact.get_global_rect().get_center()),"Native contact action remains reachable at %s" % dimensions)
 		scroll.scroll_vertical = 0
 		print("MATERIAL_LAB_POPUP_GEOMETRY ",JSON.stringify({"display":DisplayServer.get_name(),"native":native,"embedded":popup.is_embedded(),"requested_size":[dimensions.x,dimensions.y],"size":[popup.size.x,popup.size.y],"control_screen_scale":[scale.x,scale.y]}))
+		await record_window_frame(popup,mounted,"lab-%dx%d" % [dimensions.x,dimensions.y])
+	if not RenderingServer.is_on_render_thread():
+		for dimensions: Vector2i in [Vector2i(1600,900),Vector2i(1280,720)]:
+			root.size = dimensions
+			for frame: int in range(4): await process_frame
+			expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.content_scale_size == Vector2i(1920,1080),
+				"Resizing an embedded Lab preserves the game's declared canvas")
+			if DisplayServer.get_name() != "headless":
+				expect(physical_control_transform(mounted).get_scale().is_equal_approx(Vector2.ONE),
+					"Parent resize preserves actual Lab physical-pixel scale at %s" % dimensions)
+			popup_bounds(popup,Rect2i(Vector2i.ZERO,Vector2i(root.get_visible_rect().size)),false,"parent-%s" % dimensions)
+			await record_window_frame(popup,mounted,"parent-%dx%d" % [dimensions.x,dimensions.y])
+		var identity: int = popup.get_instance_id()
+		root.size = Vector2i(800,600)
+		for frame: int in range(4): await process_frame
+		expect(not popup.visible and not popup.get_meta("lab_window_placement",{}).get("admitted",true),
+			"Insufficient parent capacity refuses the existing physical minimum instead of shrinking controls")
+		root.size = Vector2i(1280,720)
+		for frame: int in range(3): await process_frame
+		workbench.open_materials_lab()
+		for frame: int in range(3): await process_frame
+		expect(popup.visible and popup.get_instance_id() == identity,
+			"Embedded Lab reopens the retained panel after a capacity refusal")
+		expect(root.gui_embed_subwindows,"Lab sizing never changes the parent's embedding policy")
+	await dropdown_font_controls(mounted)
+	# The ordinary nested picker must remain in the same context too. Opening
+	# and cancelling it creates no experiment, preset or native authoring write.
+	var save_experiment: Button = find_button(mounted,"Save experiment…")
+	expect(save_experiment != null,"Ordinary experiment file picker action remains mounted")
+	if save_experiment != null:
+		var windows: PackedInt32Array = DisplayServer.get_window_list()
+		save_experiment.pressed.emit()
+		for frame: int in range(3): await process_frame
+		expect(mounted._file.visible and mounted._file.is_embedded(),"Experiment picker remains an embedded descendant")
+		expect(DisplayServer.get_window_list() == windows,"Experiment picker creates no additional native rendering context")
+		if DisplayServer.get_name() != "headless" and not RenderingServer.is_on_render_thread():
+			expect(physical_control_transform(mounted._file.get_vbox()).get_scale().is_equal_approx(Vector2.ONE),
+				"Nested experiment picker retains physical-pixel controls")
+		await record_window_frame(mounted._file,mounted._file.get_vbox(),"experiment-picker",not RenderingServer.is_on_render_thread())
+		mounted._file.hide()
+		for frame: int in range(2): await process_frame
 	mounted._tabs.current_tab = 0
 	for frame: int in range(2): await process_frame
 	var paused: bool = main.paused
@@ -488,6 +727,7 @@ func workbench_mount() -> void:
 		var open_button: Button = find_button(workbench,"Materials Lab…")
 		expect(open_button != null,"Existing shared Workbench has a mounted Materials Lab button")
 		if open_button != null:
+			window_ids_before = DisplayServer.get_window_list()
 			open_button.pressed.emit()
 			await process_frame
 			var mounted: Variant = workbench._materials_lab_panel
@@ -546,6 +786,9 @@ func workbench_mount() -> void:
 	else: set_meta("cybersand_feature",former_feature)
 
 func run() -> void:
+	if not window_capture_directory.is_empty():
+		expect(DirAccess.make_dir_recursive_absolute(window_capture_directory) == OK,"Lab window evidence directory exists")
+	window_source_hashes = _capture_sources()
 	if not capture_directory.is_empty():
 		root.size = Vector2i(1680,1050)
 		root.content_scale_size = Vector2i(1680,1050)
@@ -555,6 +798,19 @@ func run() -> void:
 	expect(DirAccess.make_dir_recursive_absolute(output_directory) == OK,"Acceptance export directory created")
 	if workbench_mount_only:
 		await workbench_mount()
+		expect(window_source_hashes == _capture_sources(),"Lab window source remains unchanged through the actual UI gate")
+		var receipt := {"schema":"material-lab-window-mode-v1","assertions":assertions,"failures":failures,
+			"display":DisplayServer.get_name(),"engine":Engine.get_version_info(),
+			"separate_render_owner":not RenderingServer.is_on_render_thread(),
+			"source_hashes":window_source_hashes,"observations":window_observations}
+		if not window_capture_directory.is_empty():
+			var file := FileAccess.open(window_capture_directory.path_join("result.json"),FileAccess.WRITE)
+			expect(file != null,"Lab window receipt can be opened")
+			if file != null:
+				receipt.assertions = assertions
+				receipt.failures = failures
+				file.store_string(JSON.stringify(receipt,"\t") + "\n")
+		print("MATERIAL_LAB_WINDOW_PUBLICATION ",JSON.stringify(receipt))
 		print("MATERIAL_LAB_WORKBENCH_MOUNT: %d assertions; %d failures" % [assertions,failures])
 		quit(1 if failures else 0)
 		return
@@ -905,6 +1161,7 @@ func _capture_sources() -> Dictionary:
 	var hashes: Dictionary = {}
 	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
 		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","scripts/shared_workbench.gd","tests/test_material_lab_ui.gd",
+		"scripts/main.gd","scripts/workbench_lab_window_policy.gd",
 		"tests/support/ci_execution_policy.gd","tests/support/ci_execution_policy.json"]:
 		hashes[path] = FileAccess.get_sha256("res://" + path)
 	return hashes

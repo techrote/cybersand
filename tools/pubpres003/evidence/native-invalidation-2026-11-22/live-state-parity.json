@@ -1,0 +1,35 @@
+{
+  "schema": "pubpres003-native-live-state-parity-v1",
+  "recorded_utc": "2026-11-22T06:01:24.282534+00:00",
+  "sources": {
+    "D0": {
+      "native_source": "1dc272df857407187596bbdc52b4125e2252551c",
+      "native_sha256": "a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae",
+      "receipt_sha256": "a65ba355cd657104c178f1a89519c3a9f7f99749dc51701135aca8a9dba5021d"
+    },
+    "C1": {
+      "native_source": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+      "native_sha256": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+      "receipt_sha256": "6804d26f8513bfa59904a4b82b756e3bef9b50281559f9e708bf1cc7fd2f85e1"
+    }
+  },
+  "equal_checkpoints": 24,
+  "workers": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "ticks": [
+    16,
+    32,
+    48,
+    64,
+    80,
+    96
+  ],
+  "configuration": "1024x256, negative global origin, current two-round Wave with full-face sheet/crest spill and ballistic parcels; partial viewport pause/resume; unchanged Water quantity independently scanned",
+  "full_live_physical_hashes_equal": true,
+  "independent_inventory_and_parcels_equal": true,
+  "scope": "Native correctness, not gameplay timing or graphical qualification"
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Actual pinned Godot script parsing only; no graphical/gameplay qualification",
+  "application_source": "d316c281e0abb575eb6302afc12ec44f211460ba",
+  "development_runtime_manifest": "/workspace/scratch/d425b9146667/pubpres003-evidence/native-baseline/runtime-F/PUBPRES-RUNTIME.json",
+  "overlay_sha256": {
+    "owner_scenario.gd": "591b1eaf666a3782c4d02c3c76670f6a426239cb3285b11c54777181f9c14b81",
+    "owner_start_003.gd": "e7d085e180e2db4a5373481cbf212ca069386c2b51b0afcb747a48604dc1ca93"
+  },
+  "results": [
+    {
+      "label": "import",
+      "returncode": 0,
+      "strict_errors": []
+    },
+    {
+      "label": "parse",
+      "returncode": 0,
+      "strict_errors": []
+    }
+  ]
+}

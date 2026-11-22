@@ -1,0 +1,126 @@
+{
+  "schema": "pubpres003-native-invalidation-evidence-v1",
+  "created_utc": "2026-11-22T06:05:34.323873+00:00",
+  "archive": "native-live-state-raw.zip",
+  "archive_bytes": 252532,
+  "archive_sha256": "9a8ca36dcf6ac42e7c7fec322fc297a3ca2b3e489181beee394be595f292976c",
+  "members": {
+    "C1-wave_write_mass.objdump.txt": {
+      "bytes": 2756,
+      "sha256": "a55237681e89f30b96c9c6099e0a3cad298939d6ccc2708885d8a1a1c7e566e1"
+    },
+    "EXPERIMENT.json": {
+      "bytes": 2242,
+      "sha256": "d2fc98c5554829d3581006a2770b0e9bfde795d72f13f5facef5f2b83e97519d"
+    },
+    "F-wave_write_mass.objdump.txt": {
+      "bytes": 2481,
+      "sha256": "e8986d09beeceed6370e98d4765b360b7bc0baf948aad2bc05e306c51a7d09dc"
+    },
+    "LIVE-STATE-PARITY-D0-C1.json": {
+      "bytes": 1193,
+      "sha256": "544db37f092348640f13f841e203222f16b360e4060387d18a6928abae7c61f4"
+    },
+    "native-parity-C1/linked-modules.txt": {
+      "bytes": 561,
+      "sha256": "0dbad5a4b8296e25dcd24a0f7ee8df1e5145c2eb7f09de7baf6abab4f3945681"
+    },
+    "native-parity-C1/receipt.json": {
+      "bytes": 4453,
+      "sha256": "6804d26f8513bfa59904a4b82b756e3bef9b50281559f9e708bf1cc7fd2f85e1"
+    },
+    "native-parity-C1/run/process.json": {
+      "bytes": 398,
+      "sha256": "8e4abcb1f65e1b2f0ea0cc37fd8559aef4c7493a41c224a6322709591e1acb5f"
+    },
+    "native-parity-C1/run/stdout.log": {
+      "bytes": 2330,
+      "sha256": "bb6944e23d0565e98e65471d2bd26eb2e25fcc013493c2d8e1b1ba364608ae50"
+    },
+    "native-parity-D0/linked-modules.txt": {
+      "bytes": 561,
+      "sha256": "fca99a6e79c81896060a761438ce10cf7da49c2c297874bbf98a7361f5f74b54"
+    },
+    "native-parity-D0/receipt.json": {
+      "bytes": 4453,
+      "sha256": "a65ba355cd657104c178f1a89519c3a9f7f99749dc51701135aca8a9dba5021d"
+    },
+    "native-parity-D0/run/process.json": {
+      "bytes": 398,
+      "sha256": "5aaf75f8e12d628cd025c913e082d9c318184847df1738bae37785068bb79d70"
+    },
+    "native-parity-D0/run/stdout.log": {
+      "bytes": 2330,
+      "sha256": "bb6944e23d0565e98e65471d2bd26eb2e25fcc013493c2d8e1b1ba364608ae50"
+    },
+    "native-parity-compile/process.json": {
+      "bytes": 795,
+      "sha256": "e9c6037dba0557e4fbb69b34ff636564b2cfcb04d081645a7c8f1f3dfb04b5b9"
+    },
+    "native-parity-compile/receipt.json": {
+      "bytes": 1189,
+      "sha256": "3238baadecf30bfd65e0ed480618f44ea9bea9e7a8d0fbe6ffa4e63950f86194"
+    },
+    "native-parity-compile/stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run-native-parity.py": {
+      "bytes": 2932,
+      "sha256": "e743f45b56ad6c2b5dd02242ace41c7d0b5ebb3d5b3c030e8c3ec66cfc1fc9f9"
+    },
+    "runtime-C1/GODOT-CPP-BUILD.log": {
+      "bytes": 734,
+      "sha256": "e559e4f924fcfab0206240c0a47564321cae9940a3b100c23165fc84a658bcb0"
+    },
+    "runtime-C1/GODOT-CPP-BUILD.sh": {
+      "bytes": 6807,
+      "sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea"
+    },
+    "runtime-C1/GODOT-CPP-CXX.sh": {
+      "bytes": 668,
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+    },
+    "runtime-C1/GODOT-CPP-DEPENDENCY.json": {
+      "bytes": 277457,
+      "sha256": "d31d2310963a2bbdbaaa8854fc6774e4bc3f7c447085f6b3896912d1f2a4997a"
+    },
+    "runtime-C1/PUBPRES-RUNTIME.json": {
+      "bytes": 14531,
+      "sha256": "e495796238fd29863208d105027f9c399594a08f0db3b2e52d0d516ff8283c5f"
+    },
+    "runtime-C1/build.log": {
+      "bytes": 23429,
+      "sha256": "c71bde073e84f0396865442af484fa54328d92ae9b257d24274a82a5ad28e3da"
+    },
+    "runtime-D0/GODOT-CPP-BUILD.log": {
+      "bytes": 734,
+      "sha256": "e559e4f924fcfab0206240c0a47564321cae9940a3b100c23165fc84a658bcb0"
+    },
+    "runtime-D0/GODOT-CPP-BUILD.sh": {
+      "bytes": 6807,
+      "sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea"
+    },
+    "runtime-D0/GODOT-CPP-CXX.sh": {
+      "bytes": 668,
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+    },
+    "runtime-D0/GODOT-CPP-DEPENDENCY.json": {
+      "bytes": 277465,
+      "sha256": "f581fe1425698040089369591dbbfdd8cee76608bc17b3133141bc84429c3bb5"
+    },
+    "runtime-D0/PUBPRES-RUNTIME.json": {
+      "bytes": 14539,
+      "sha256": "1690a753b02bfe8b53cb7d0dfd3316e83b9be8cbfa84a81ef15daeac87bdfa12"
+    },
+    "runtime-D0/build.log": {
+      "bytes": 23933,
+      "sha256": "c772593d706484f8c64e5fe1b81b0dfa70a404f955ac3ad60883fdc663e72e9e"
+    }
+  },
+  "native_binaries": "Not embedded in this small source evidence archive; exact independently-built native binaries and dependency closure are retained in the native-column-abba01 scientific artifact. Hashes/build receipts are included here.",
+  "harness_source": "1e912084362ea92f03f226e0409573086983d6e2",
+  "harness_file": "native/tests/test_wave_spill.cpp",
+  "harness_sha256": "fd680e8eec09e35dc34134dca9eb14382b1793ea53ba2593a9fe5f67da7f579d",
+  "scope": "Live native correctness only; source-matched local GCC14.2 development toolchain with declared drift. No graphical, Windows or NVIDIA qualification. Original commands, process records, complete stdout, linked-module resolution and source/runtime identities retained without rewriting originals."
+}

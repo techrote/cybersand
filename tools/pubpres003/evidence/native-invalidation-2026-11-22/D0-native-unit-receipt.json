@@ -1,0 +1,189 @@
+{
+  "command": [
+    "/workspace/scratch/d425b9146667/pubpres003-evidence/native-column-invalidation/test_wave_spill_runtime_v2",
+    "--filter",
+    "wide current gameplay keeps exact parallel state"
+  ],
+  "timeout_seconds": 180,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 4.785918904992286,
+  "log_sha256": "bb6944e23d0565e98e65471d2bd26eb2e25fcc013493c2d8e1b1ba364608ae50",
+  "source": "1e912084362ea92f03f226e0409573086983d6e2",
+  "harness_sha256": "5992fbe00426515052fcaeadae5a33e3580429ecdea4c7e8a31f99ef435894e6",
+  "native_source": "1dc272df857407187596bbdc52b4125e2252551c",
+  "native_tree": "77ea076649fc3ee207e116a0431cf436a950a92e",
+  "native_sha256": "a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae",
+  "checkpoints": [
+    {
+      "workers": "1",
+      "tick": "16",
+      "physical": "87ac2bb83ec4a7ad",
+      "water": "20082270",
+      "parcels": "610"
+    },
+    {
+      "workers": "1",
+      "tick": "32",
+      "physical": "dafb7552d732736a",
+      "water": "20082270",
+      "parcels": "1064"
+    },
+    {
+      "workers": "1",
+      "tick": "48",
+      "physical": "aa24d69c9e7ef945",
+      "water": "20082270",
+      "parcels": "1504"
+    },
+    {
+      "workers": "1",
+      "tick": "64",
+      "physical": "10705eea6a713daa",
+      "water": "20082270",
+      "parcels": "1966"
+    },
+    {
+      "workers": "1",
+      "tick": "80",
+      "physical": "533d324e47811ade",
+      "water": "20082270",
+      "parcels": "2189"
+    },
+    {
+      "workers": "1",
+      "tick": "96",
+      "physical": "6fe7ceac04263f66",
+      "water": "20082270",
+      "parcels": "2063"
+    },
+    {
+      "workers": "2",
+      "tick": "16",
+      "physical": "87ac2bb83ec4a7ad",
+      "water": "20082270",
+      "parcels": "610"
+    },
+    {
+      "workers": "2",
+      "tick": "32",
+      "physical": "dafb7552d732736a",
+      "water": "20082270",
+      "parcels": "1064"
+    },
+    {
+      "workers": "2",
+      "tick": "48",
+      "physical": "aa24d69c9e7ef945",
+      "water": "20082270",
+      "parcels": "1504"
+    },
+    {
+      "workers": "2",
+      "tick": "64",
+      "physical": "10705eea6a713daa",
+      "water": "20082270",
+      "parcels": "1966"
+    },
+    {
+      "workers": "2",
+      "tick": "80",
+      "physical": "533d324e47811ade",
+      "water": "20082270",
+      "parcels": "2189"
+    },
+    {
+      "workers": "2",
+      "tick": "96",
+      "physical": "6fe7ceac04263f66",
+      "water": "20082270",
+      "parcels": "2063"
+    },
+    {
+      "workers": "4",
+      "tick": "16",
+      "physical": "87ac2bb83ec4a7ad",
+      "water": "20082270",
+      "parcels": "610"
+    },
+    {
+      "workers": "4",
+      "tick": "32",
+      "physical": "dafb7552d732736a",
+      "water": "20082270",
+      "parcels": "1064"
+    },
+    {
+      "workers": "4",
+      "tick": "48",
+      "physical": "aa24d69c9e7ef945",
+      "water": "20082270",
+      "parcels": "1504"
+    },
+    {
+      "workers": "4",
+      "tick": "64",
+      "physical": "10705eea6a713daa",
+      "water": "20082270",
+      "parcels": "1966"
+    },
+    {
+      "workers": "4",
+      "tick": "80",
+      "physical": "533d324e47811ade",
+      "water": "20082270",
+      "parcels": "2189"
+    },
+    {
+      "workers": "4",
+      "tick": "96",
+      "physical": "6fe7ceac04263f66",
+      "water": "20082270",
+      "parcels": "2063"
+    },
+    {
+      "workers": "8",
+      "tick": "16",
+      "physical": "87ac2bb83ec4a7ad",
+      "water": "20082270",
+      "parcels": "610"
+    },
+    {
+      "workers": "8",
+      "tick": "32",
+      "physical": "dafb7552d732736a",
+      "water": "20082270",
+      "parcels": "1064"
+    },
+    {
+      "workers": "8",
+      "tick": "48",
+      "physical": "aa24d69c9e7ef945",
+      "water": "20082270",
+      "parcels": "1504"
+    },
+    {
+      "workers": "8",
+      "tick": "64",
+      "physical": "10705eea6a713daa",
+      "water": "20082270",
+      "parcels": "1966"
+    },
+    {
+      "workers": "8",
+      "tick": "80",
+      "physical": "533d324e47811ade",
+      "water": "20082270",
+      "parcels": "2189"
+    },
+    {
+      "workers": "8",
+      "tick": "96",
+      "physical": "6fe7ceac04263f66",
+      "water": "20082270",
+      "parcels": "2063"
+    }
+  ],
+  "passed": true,
+  "scope": "Correctness only; runs may overlap compilation, never a timing comparison. Full live native physical-state hashes and independently scanned cell/parcel inventory, not prepared-source identity."
+}

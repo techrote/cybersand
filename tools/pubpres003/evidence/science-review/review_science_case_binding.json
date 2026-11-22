@@ -1,0 +1,32 @@
+{
+  "schema": "pubpres003-independent-case-binding-adversary-v1",
+  "reviewed_commit": "0fc3adc48b7e25c39a2211989169c1e43d46639f",
+  "reviewed_runner_sha256": "de716f3cb40a06bf175e09cd9635ce5db8981c7a2642eac4a47a89561d0179af",
+  "original_receipt": "/workspace/scratch/d425b9146667/pubpres003-science-recovery/extracted/pubpres-playability-linux-wave_512_follow-same-frame-44963596029-1/same-frame-abba/wave_512_follow/0-C/receipt.json",
+  "original_receipt_sha256": "71c2f9979aa6c6afbf287f25befae4f7da66fc1c1344611d209be86be791f56d",
+  "original_trace_sha256": "c2005e013fb5264dfa817fc27850e9a131aac05fe5e27c1b12ed16b5c940ca7b",
+  "requested_case": {
+    "id": "wave_2048_follow",
+    "fixture": "reference2048",
+    "camera": "follow",
+    "workers": 4,
+    "water_law": "wave_flow_v1",
+    "water_variant": "reference",
+    "input_mode": "tape",
+    "primary": true
+  },
+  "actual_fixture": {
+    "extent": [
+      512,
+      512
+    ],
+    "name": "basin512",
+    "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+    "source": "authored_setup_v2"
+  },
+  "existing_request_predicate_accepts_wrong_fixture": true,
+  "frozen_v3_reduction_of_original_receipt_passes": true,
+  "actual_completed_first_144_step_count": 144,
+  "disposition": "FAIL: requested 2048 workload is not bound to actual valid 512 receipt",
+  "scope": "Offline validator adversary only. Original source, source hashes, receipt and trace were not modified. Source/nonce bind as recorded for this same original run; the requested case identity alone is changed."
+}

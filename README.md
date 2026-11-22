@@ -137,6 +137,14 @@ infer order from GitHub issue numbers; use the
 [Current validation and retained M11 integrity](docs/operations/current-and-historical-validation.md)
 explain the independent source/runtime and historical checks.
 
+The [PUBPRES-PLAYABILITY-001 evaluation](docs/operations/pubpres-playability-evaluation.md)
+routes the opt-in staging change, matched progression measurements and new
+Windows evaluator. Draft/HOLD; graphical and physical NVIDIA acceptance remain pending.
+
+The corrective PUBPRES-PLAYABILITY-003 mission continues that frozen donor on a
+dedicated Draft branch. Its [live recovery handover](RECOVERY_HANDOVER.md) records
+source custody, actual gates and the native/renderer/science workstreams.
+
 The active Windows workspace is `C:/kybersand`; from there:
 
 ```text

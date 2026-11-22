@@ -1,0 +1,604 @@
+{
+  "schema": "pubpres003-recovered-renderer-classification-v1",
+  "new_graphical_execution": false,
+  "original_probe_source": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+  "engine_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "strict_oracle_sha256": "282e3bc9945330a0eaecda1f8f6cf27346c8051ff60cfc844727865e9f37d7fb",
+  "scope": "Independent reclassification of original retained source-bound probe receipts. It does not qualify successor software or physical NVIDIA hardware.",
+  "isolated_probe_arms": [
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "font-safe-text",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": true,
+      "receipt_sha256": "6b846e7c2122b251611ba6d89afe8e710a6424afd092b51b076e2a25187d82ec",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae",
+        "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3"
+      },
+      "log_sha256": {
+        "stdout.log": "5e447223c98f4110b752005870657c6b2909b3ae61a025060ba82383143e3b4f",
+        "stderr.log": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+        "godot.log": "7140e550c487da02e125d4d3e9a67adbb9161fb8c8d7ed1958b5007463a20748"
+      },
+      "process_json_sha256": "794fa1f96a8a08c447929c1911667f05a40aea333634da8281674444dc487d76",
+      "request_json_sha256": "1112b35851fa859c57f84e9ab992aad14c85f2fb8384076693504eb9307d07db",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ]
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "font-separate-empty",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": true,
+      "receipt_sha256": "1b3c393ada0acfd01f4cbb06d51fa8eb9e444e53c547c4f72debad91a8f9a1dd",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae",
+        "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3"
+      },
+      "log_sha256": {
+        "stdout.log": "913ef878836d4c6723ba61a1218bf096d5f3207ef37252f59258848684aa6da6",
+        "stderr.log": "37b2c1cd778f97479ede72fbd4d1a402518a32e9997d9f60cedb5d5200cd064f",
+        "godot.log": "4c303bff3653dfa08dbf952c006dc09dbaa96586e54373e2042c103d102590d6"
+      },
+      "process_json_sha256": "8f5e441176dcfcd53676f811fec02d24bb1cd933fdfe35c0726144e887628fb8",
+      "request_json_sha256": "4dc875daec271d15cfc76be4040c1f84d9387e3cc325fedac7a26313e63d297a",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ]
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "font-separate-text",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "FAIL",
+      "errors": [
+        "Actual Godot process returned nonzero",
+        "No completed probe receipt"
+      ],
+      "process_returncode": -6,
+      "process_returncode_hex32": "0xFFFFFFFA",
+      "process_cleanup_complete": true,
+      "script_started": true,
+      "receipt_sha256": null,
+      "adapter": null,
+      "loaded_extensions": null,
+      "project_inputs_sha256": {
+        "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae",
+        "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3"
+      },
+      "log_sha256": {
+        "stdout.log": "c4c090aae1ca7626319ca19655b68f617d32eba8ff88c01340fd3ac088f96cca",
+        "stderr.log": "adb42e07989650ee700847c1ffb54cf045edc9bbaef8b43ecc889ff842832833",
+        "godot.log": "640d4e968e7549bf46bbe3d44737dfc6a21ce6e5fa919048e4495d51d9b1d005"
+      },
+      "process_json_sha256": "dd6b8bcfe0cf21698afe750bc5e9b343fab102b401f4f4cb149689399d90d898",
+      "request_json_sha256": "dbc1740a52f547fa0432a8350dde825bda0812b3e1c2b16a4dd85ff5b107da0c",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "ERROR: FATAL: Index p_index = 0 is out of bounds (size() = 0).",
+        "handle_crash: Program crashed with signal 4",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "ERROR: FATAL: Index p_index = 0 is out of bounds (size() = 0).",
+        "handle_crash: Program crashed with signal 4"
+      ]
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "font-separate-text-mipmaps",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": true,
+      "receipt_sha256": "a7c85dc10785770b005e9b9e34fab25f85365968e0548bd5253aa04eed04f9fc",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae",
+        "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3"
+      },
+      "log_sha256": {
+        "stdout.log": "7f60009a1cf8324fbe410afe55c81aa8b6eaee2f5bef0d18e17035172647b87b",
+        "stderr.log": "37b2c1cd778f97479ede72fbd4d1a402518a32e9997d9f60cedb5d5200cd064f",
+        "godot.log": "62a53e779f03f09457ff06fb414f863dc3690038a937cd5c3fb95dea05148923"
+      },
+      "process_json_sha256": "1162547db6e2bdd82c9734aa4943fa6f6adfc78476742eb567a2fd06fc6dab3b",
+      "request_json_sha256": "5a76988faed9fce8f8b2e89d35685405cd798b2cb45d8cb60d9cd2491dc3b7c1",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ]
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "material-safe-r8-slots2-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": "fb4b834d590b085d242c8956bc708a2b54d8a345a38e79fb692f6a1da79109cd",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "75d54fd0536af1275dd0936ff819c2e26231df5a40b14c6fbacef9d13f570ace",
+        "stderr.log": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+        "godot.log": "80c6aa3a688847bae45c2a476ccf2785e06485dee9b7adf351510c1ba1b17b91"
+      },
+      "process_json_sha256": "7e2a530189819d97a0b19cac231c05e051e9e8f7f4394f563748570e6c0da167",
+      "request_json_sha256": "c0422fe1c1a327d6dd5bb17852dcab0fdd3765ef9b527e70ec5e1e562fbbed85",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ],
+      "first_read": {
+        "verified": true,
+        "current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "expected_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "previous_sha256": "15f6174e4a43f67142ecfad0194be85994dfd8128cc22b8f6a95cd221964506c",
+        "expected_previous_sha256": "15f6174e4a43f67142ecfad0194be85994dfd8128cc22b8f6a95cd221964506c"
+      },
+      "later_diagnostic_only": {
+        "immediate_repeat_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "later_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "scope": "Later correct bytes do not change failed first-read disposition."
+      }
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "material-safe-r8-slots3-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": "20220d00ac6722245160112538979bcb1a39ceab27c725c7dc70bc0c15fe2829",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "081f52e8ef86c363f4f7ccb998e484ba9ec0bcfef190ce0962473b1189120867",
+        "stderr.log": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+        "godot.log": "e2f1d284d8ef02c52f8b81313204136b21c3da6d2d11b843a788fd949b82b062"
+      },
+      "process_json_sha256": "68683922040d764bae47156e0d1031d35f3085d32b203dbfdbd0a82716d754f7",
+      "request_json_sha256": "ff1e92aa31474aa7f388e581d82f50256feed10f31786fc7c670326ba332667d",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ],
+      "first_read": {
+        "verified": true,
+        "current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "expected_current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "previous_sha256": "f088180896d4f461b07589b480b833c4788f337987277ab871d1f7b0a03afe79",
+        "expected_previous_sha256": "f088180896d4f461b07589b480b833c4788f337987277ab871d1f7b0a03afe79"
+      },
+      "later_diagnostic_only": {
+        "immediate_repeat_current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "later_current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "scope": "Later correct bytes do not change failed first-read disposition."
+      }
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "material-separate-r8-slots1-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": "4ed6eab08eae6fcdc189449d6c93feb3d172c78754025d98a400943745ee796e",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "c553a8a82bcb47393a50e01885d6775b5d7bddfa7bb0f87fc2adb2738b6926bd",
+        "stderr.log": "37b2c1cd778f97479ede72fbd4d1a402518a32e9997d9f60cedb5d5200cd064f",
+        "godot.log": "06b8723a7d30efc88fc215ddc276562d9696cda09fafdf377c411a70f9be4e13"
+      },
+      "process_json_sha256": "d3e1088f41f2b056b0b1d9effdd83373a3526692b1c639dfed64fc076c39d5a6",
+      "request_json_sha256": "b6057528716428c80bcde3a33d8ab9b5c9ff90ac950f0c6c6dba15bf8372e9c5",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ],
+      "first_read": {
+        "verified": true,
+        "current_sha256": "13f20c2a10ed6b83313ec5c9391e0bab862c18e95d1270529365060db73a0a8e",
+        "expected_current_sha256": "13f20c2a10ed6b83313ec5c9391e0bab862c18e95d1270529365060db73a0a8e",
+        "previous_sha256": "56a6da8261029120b95fefc3848e2872713c19516ffdeaabc087a09bc1fce868",
+        "expected_previous_sha256": "56a6da8261029120b95fefc3848e2872713c19516ffdeaabc087a09bc1fce868"
+      },
+      "later_diagnostic_only": {
+        "immediate_repeat_current_sha256": "13f20c2a10ed6b83313ec5c9391e0bab862c18e95d1270529365060db73a0a8e",
+        "later_current_sha256": "13f20c2a10ed6b83313ec5c9391e0bab862c18e95d1270529365060db73a0a8e",
+        "scope": "Later correct bytes do not change failed first-read disposition."
+      }
+    },
+    {
+      "platform": "linux",
+      "archive": "pubpres-playability-linux-renderer-probes-44962312107-1",
+      "arm": "material-separate-r8-slots2-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "status": "FAIL",
+      "errors": [
+        "Actual Godot process returned nonzero",
+        "Material fixture assertions failed or absent",
+        "Original first-read current/previous byte oracle failed"
+      ],
+      "process_returncode": 1,
+      "process_returncode_hex32": "0x00000001",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": "9f85d5f67606144aed50453846c1bd1a01ce17242ca8f8b095ed4c3d78c8a743",
+      "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "5487240f533657de88c2a133b1bc6ed4c3c956e518eda8ae6334356742f61efc",
+        "stderr.log": "f995b11e38c1e06ddafb9f8e222cf53d400c340be0d481e80eb1abd8143fd9ac",
+        "godot.log": "2b70c046316ab2252e01ab77e4e42eb02695ba164019367de85f568efb2b9d54"
+      },
+      "process_json_sha256": "e20e092a3f4bacb430451fb1e90e81688cc732e7dfb564f7ce123c17837ed120",
+      "request_json_sha256": "3e17dbeeebd660c479c6608e5377b7aa9adebfcea80cb5e881574f0873ba293a",
+      "notable_log_lines": [
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+        "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+      ],
+      "first_read": {
+        "verified": false,
+        "current_sha256": "d0cbbe1153a738d094ebf131a9e715794e05b3ef9da03ba95da02bbcfc5e679e",
+        "expected_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "previous_sha256": "15f6174e4a43f67142ecfad0194be85994dfd8128cc22b8f6a95cd221964506c",
+        "expected_previous_sha256": "15f6174e4a43f67142ecfad0194be85994dfd8128cc22b8f6a95cd221964506c"
+      },
+      "later_diagnostic_only": {
+        "immediate_repeat_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "later_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "scope": "Later correct bytes do not change failed first-read disposition."
+      }
+    },
+    {
+      "platform": "windows",
+      "archive": "pubpres-playability-windows-renderer-probes-44962312107-1",
+      "arm": "font-safe-empty",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": true,
+      "receipt_sha256": "a15a3aec628a8f8d0866e4c386c589b840ff0cdb8d353b4e76ee5ada42eac867",
+      "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae",
+        "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3"
+      },
+      "log_sha256": {
+        "stdout.log": "7a3f1ae36d917deb9d1d35e32ec0466e4dc8c1ea347538ef0ebadc8d01d40f03",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "godot.log": "577744875a8fefae2ffee15e7feaea06522c66b4c10e2e2b4fadb1bf98bc3222"
+      },
+      "process_json_sha256": "20f023044bcff027d1eb12659c4f54fb35f941e42e21f8d8bf827933d77276ad",
+      "request_json_sha256": "3b36461e75469d1111d621a14fa42623b7c14d2da5faaf715554dfe0de2a5c4d",
+      "notable_log_lines": [
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ]
+    },
+    {
+      "platform": "windows",
+      "archive": "pubpres-playability-windows-renderer-probes-44962312107-1",
+      "arm": "font-separate-empty",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "status": "FAIL",
+      "errors": [
+        "Actual Godot process returned nonzero",
+        "No completed probe receipt"
+      ],
+      "process_returncode": 3221225477,
+      "process_returncode_hex32": "0xC0000005",
+      "process_cleanup_complete": true,
+      "script_started": false,
+      "receipt_sha256": null,
+      "adapter": null,
+      "loaded_extensions": null,
+      "project_inputs_sha256": {
+        "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae",
+        "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3"
+      },
+      "log_sha256": {
+        "stdout.log": "a7c0110f1ead5db6f3bf19c72b88599b3e54fca65f5c98a29738226097cc0a38",
+        "stderr.log": "25a8d93d324803cf61d116499f9038fde855ff21ed8be524a9ef19c5a878c913",
+        "godot.log": "ee00113eb001df74e9f6eb21c6631096799c6938c8636a9d4c69a511717db6c9"
+      },
+      "process_json_sha256": "a29506e32911bc5f2e8025464c5e9746079a2b4809e5319a0bdeaa1e4c2d0586",
+      "request_json_sha256": "128bb57d76aa6cb1839f8d7b0c1b5a5b0ef82fe6366f6ea2946bd78fe5e9a111",
+      "notable_log_lines": [
+        "ERROR: Error initializing GLAD.",
+        "ERROR: Error initializing GLAD."
+      ]
+    },
+    {
+      "platform": "windows",
+      "archive": "pubpres-playability-windows-renderer-probes-44962312107-1",
+      "arm": "material-safe-r8-slots2-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": "239fee5966074bb1a93bfc86fe1d953cb046cc6d794dc900031deaba3a3086d4",
+      "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "af1f8e0f836e8ffaaca5af221be9f21cc6a6f98cc07fd90cdc771b1200b7bc0b",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "godot.log": "dc6149afdb8d7b2dfa021c689275d4ae26e6d0df7d66115ca2665035d480cac8"
+      },
+      "process_json_sha256": "7d827d4b8c38e9fe46ab251f6844b78d9919ba6cfb5d6dca6937973d297b948b",
+      "request_json_sha256": "2430048d58aaf4c1d7488a232e9961197e682835c997e160791503aeaecde482",
+      "notable_log_lines": [
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ],
+      "first_read": {
+        "verified": true,
+        "current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "expected_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "previous_sha256": "15f6174e4a43f67142ecfad0194be85994dfd8128cc22b8f6a95cd221964506c",
+        "expected_previous_sha256": "15f6174e4a43f67142ecfad0194be85994dfd8128cc22b8f6a95cd221964506c"
+      },
+      "later_diagnostic_only": {
+        "immediate_repeat_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "later_current_sha256": "d04fd79c20949cf1cbf243bf3be6b497caaedb88ddc29e0b7648e3d07f85eea3",
+        "scope": "Later correct bytes do not change failed first-read disposition."
+      }
+    },
+    {
+      "platform": "windows",
+      "archive": "pubpres-playability-windows-renderer-probes-44962312107-1",
+      "arm": "material-safe-r8-slots3-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "status": "PASS",
+      "errors": [],
+      "process_returncode": 0,
+      "process_returncode_hex32": "0x00000000",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": "76b5e1c1354fa21170833b2a626e6e01bf0eed5e52a2116bd48520c63055cdd1",
+      "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "loaded_extensions": [],
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "f2d446c2d236db84d86390992d305a7aced774cf9d49bbb18b3da651fc9ee7d6",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "godot.log": "ab5101869a512f093ab4c36977ddc4c1fc92e681eb4c17b2ece396e2cec602e4"
+      },
+      "process_json_sha256": "1708319645a3f4a900700aa8c22337539847b725eff7e0784c71cf3f966ea23d",
+      "request_json_sha256": "9a8c039d88858835f23a3ef9e3bdaefc848d0ccff73e04c0f618b369dccb1d57",
+      "notable_log_lines": [
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ],
+      "first_read": {
+        "verified": true,
+        "current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "expected_current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "previous_sha256": "f088180896d4f461b07589b480b833c4788f337987277ab871d1f7b0a03afe79",
+        "expected_previous_sha256": "f088180896d4f461b07589b480b833c4788f337987277ab871d1f7b0a03afe79"
+      },
+      "later_diagnostic_only": {
+        "immediate_repeat_current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "later_current_sha256": "2c82448599f28bfffbb08e1862e003e3b5b9f7dccbe48558c096052d283d470f",
+        "scope": "Later correct bytes do not change failed first-read disposition."
+      }
+    },
+    {
+      "platform": "windows",
+      "archive": "pubpres-playability-windows-renderer-probes-44962312107-1",
+      "arm": "material-separate-r8-slots1-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "status": "FAIL",
+      "errors": [
+        "Actual Godot process returned nonzero",
+        "No completed probe receipt"
+      ],
+      "process_returncode": 3221225477,
+      "process_returncode_hex32": "0xC0000005",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": null,
+      "adapter": null,
+      "loaded_extensions": null,
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "a7c0110f1ead5db6f3bf19c72b88599b3e54fca65f5c98a29738226097cc0a38",
+        "stderr.log": "25a8d93d324803cf61d116499f9038fde855ff21ed8be524a9ef19c5a878c913",
+        "godot.log": "ee00113eb001df74e9f6eb21c6631096799c6938c8636a9d4c69a511717db6c9"
+      },
+      "process_json_sha256": "7b2e282224b4af0d73ab6c428ea18241fd46a36a8839ea5d27592935ce3a58f2",
+      "request_json_sha256": "08509fd944dfaeba599f204f251231eea6aeed7ec6495e238db19fe38e6a676f",
+      "notable_log_lines": [
+        "ERROR: Error initializing GLAD.",
+        "ERROR: Error initializing GLAD."
+      ]
+    },
+    {
+      "platform": "windows",
+      "archive": "pubpres-playability-windows-renderer-probes-44962312107-1",
+      "arm": "material-separate-r8-slots2-reachable",
+      "source_commit": "0940114ddf8ef65b1f7b088dc5812776a1c02e25",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "status": "FAIL",
+      "errors": [
+        "Actual Godot process returned nonzero",
+        "No completed probe receipt"
+      ],
+      "process_returncode": 3221225477,
+      "process_returncode_hex32": "0xC0000005",
+      "process_cleanup_complete": true,
+      "script_started": null,
+      "receipt_sha256": null,
+      "adapter": null,
+      "loaded_extensions": null,
+      "project_inputs_sha256": {
+        "copied-source-manifest.json": "81e75c7a9eef985932eef3c76d4f0cdbfdb4f653e0e823f0e32d4ba1265b0dd7",
+        "project.godot": "5475d179b33de7d187f84966ee38b98bf876ebfc6707aaf8ce3a9195639fb460",
+        "scripts/blit_material_publisher.gd": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b",
+        "shaders/material_publication_blit.gdshader": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd",
+        "tests/diagnose_queued_material.gd": "88b2977635a4825d64f29a36aee3974ab5f4c998a3222d870aa516e0ea9d1e25",
+        "tests/test_material_staging_reachability.gd": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+      },
+      "log_sha256": {
+        "stdout.log": "a7c0110f1ead5db6f3bf19c72b88599b3e54fca65f5c98a29738226097cc0a38",
+        "stderr.log": "25a8d93d324803cf61d116499f9038fde855ff21ed8be524a9ef19c5a878c913",
+        "godot.log": "ee00113eb001df74e9f6eb21c6631096799c6938c8636a9d4c69a511717db6c9"
+      },
+      "process_json_sha256": "29f7ebd1816eef7917196f5d9fe5b2d83fcb87bf29347a805b0f34714a05d4cc",
+      "request_json_sha256": "dcb0519c250e916e279755a11f296c589fd52c703f15f0558bc261c32a4bc663",
+      "notable_log_lines": [
+        "ERROR: Error initializing GLAD.",
+        "ERROR: Error initializing GLAD."
+      ]
+    }
+  ],
+  "mixed_policy_original_regressions": [
+    {
+      "archive": "pubpres-playability-linux-correctness-44963596029-1",
+      "arm": "test_material_staging_reachability-safe-eager",
+      "status": "FAIL",
+      "cases": 23,
+      "checks": 3237,
+      "failures": [
+        "queued-history/reachable/R8/2 burst completion exact current GPU bytes",
+        "queued policies preserve submissions and both complete GPU histories"
+      ],
+      "process_json_sha256": "23d5bc6beb3e1ee89f177c931af453d54dca8bcfa296fe720fa24e5db8e34122",
+      "stdout_sha256": "a8a94a13559d4e42d9bbbd1a1be8a996e034cb5d3a43c4609a98f02546e50759",
+      "scope": "The named eager launcher exercises both eager and reachable policies internally."
+    },
+    {
+      "archive": "pubpres-playability-linux-correctness-44963596029-1",
+      "arm": "test_material_staging_reachability-separate-eager",
+      "status": "FAIL",
+      "cases": 23,
+      "checks": 3249,
+      "failures": [
+        "queued-history/eager/R8/2 burst completion exact current GPU bytes",
+        "queued-history/reachable/R8/2 burst completion exact current GPU bytes",
+        "queued-history/eager/R8/3 burst completion exact current GPU bytes",
+        "queued-history/reachable/R8/3 burst completion exact current GPU bytes",
+        "queued-history/eager/R16/2 burst completion exact current GPU bytes",
+        "queued-history/reachable/R16/2 burst completion exact current GPU bytes",
+        "queued-history/eager/R16/3 burst completion exact current GPU bytes",
+        "queued-history/reachable/R16/3 burst completion exact current GPU bytes"
+      ],
+      "process_json_sha256": "9119b56788b19a7152d00e65cf4c61510200a34033b96cea09ff45334e91f363",
+      "stdout_sha256": "b6f4f7dd58246719d6188fed395ccadb4486289d76c606ef5538c0e1294f699d",
+      "scope": "The named eager launcher exercises both eager and reachable policies internally."
+    }
+  ]
+}

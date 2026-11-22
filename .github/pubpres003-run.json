@@ -1,0 +1,6 @@
+{
+  "schema": "pubpres003-focus-request-v1",
+  "phase": "baseline-and-causal",
+  "frozen_payload_tree_sha256": "6feefa59bc074d3d43614abf054a62676cf3e2336829afcab25ac85f99ca56cb",
+  "purpose": "Reproduce frozen Safe/eager and three genuine gameplay baselines; correlate bounded successor native/Main causal observations; qualify new003 Windows import/reopen and Save with fresh exact-source binaries. Sequential development gates, not final owner acceptance or a speedup claim."
+}

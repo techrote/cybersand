@@ -1,0 +1,1082 @@
+{
+  "schema": "pubpres003-native-column-abba-v1",
+  "status": "PASS_NATIVE_DIAGNOSTIC_IDENTITY",
+  "physical_acceptance": "HOLD",
+  "scope": "Four sequential exact-source headless native-phase diagnostic arms, D0/C1/C1/D0; no graphical playability or full live-material outcome parity claim. Per-run native wall-phase measurements use the same first144 physical steps.",
+  "matching_fields": [
+    "driver",
+    "workers",
+    "body_sha256",
+    "moves_sha256",
+    "fixture",
+    "water_options",
+    "apparatus"
+  ],
+  "matching_fields_equal": true,
+  "runs": [
+    {
+      "index": 0,
+      "label": "D0",
+      "source": "1dc272df857407187596bbdc52b4125e2252551c",
+      "binary_sha256": "a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae",
+      "driver": "7e75e5352889982b6c59f55608557c1297d63aa4",
+      "workers": [
+        4
+      ],
+      "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+      "moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "water_options": {
+        "workbench_ballistic": true,
+        "workbench_face_release": false,
+        "workbench_fine_cores": false,
+        "workbench_inertial_signed": false,
+        "workbench_wave_active_rows": 32,
+        "workbench_wave_adhesion_shift": 1,
+        "workbench_wave_body_push": 256,
+        "workbench_wave_body_push_by_mass": 1,
+        "workbench_wave_calm": 128,
+        "workbench_wave_calm_damp_shift": 8,
+        "workbench_wave_coast": 32,
+        "workbench_wave_damp_shift": 16,
+        "workbench_wave_deep_gain": 32,
+        "workbench_wave_empty_pour_shift": 2,
+        "workbench_wave_floor_gain": 1024,
+        "workbench_wave_flow": true,
+        "workbench_wave_flow_share_shift": 1,
+        "workbench_wave_flux_smoothing": 16,
+        "workbench_wave_gain": 32,
+        "workbench_wave_gain_confined": 4,
+        "workbench_wave_level_shift": 3,
+        "workbench_wave_maximum_mass": 32000,
+        "workbench_wave_rest_head": 1,
+        "workbench_wave_sleep_after": 90,
+        "workbench_wave_spill": true,
+        "workbench_wave_spill_coyote_ticks": 4,
+        "workbench_wave_spill_deep_draw": 64,
+        "workbench_wave_spill_draw": 127,
+        "workbench_wave_spill_draw_head": 255,
+        "workbench_wave_spill_fall": 3,
+        "workbench_wave_spill_full_face": true,
+        "workbench_wave_spill_launch_budget": 128,
+        "workbench_wave_spill_parcels": true,
+        "workbench_wave_spill_sheet_rate": 64,
+        "workbench_wave_stick": 128,
+        "workbench_wave_stiffness": 256,
+        "workbench_wave_substeps": 2,
+        "workbench_wave_wake_peak": 1
+      },
+      "apparatus": {
+        "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "logical_processors": 9,
+        "camera": "follow",
+        "workers": 4,
+        "display": {
+          "fps_cap": 60,
+          "physics_callbacks_hz": 60,
+          "server": "headless",
+          "vsync_mode": -1,
+          "window": [
+            1600,
+            900
+          ]
+        },
+        "water_law": "wave_flow_v1",
+        "water_profile": "gameplay_main846f",
+        "water_variant": "reference",
+        "input_mode": "tape",
+        "command_mode": "repeated_callback",
+        "observer_mode": "full",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "input_tape": [
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 0
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 2
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 4
+          },
+          {
+            "move": [
+              -1.0,
+              0.0
+            ],
+            "tick": 6
+          },
+          {
+            "move": [
+              0.0,
+              1.0
+            ],
+            "tick": 8
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 10
+          },
+          {
+            "move": [
+              0.70710678,
+              -0.70710678
+            ],
+            "tick": 12
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 14
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 30
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 90
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 120
+          }
+        ]
+      },
+      "phases": {
+        "first_10s": {
+          "ticks": 61,
+          "prepare_ns": 52131040,
+          "column_ns": 5678754615,
+          "flux_ns": 897467438,
+          "apply_ns": 746041096,
+          "merge_ns": 2776807,
+          "launch_ns": 3077691,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.8546072131147541,
+            "column_ns": 93.09433795081966,
+            "flux_ns": 14.712580950819673,
+            "apply_ns": 12.230181901639344,
+            "merge_ns": 0.045521426229508194,
+            "launch_ns": 0.050453950819672126
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 81101907,
+          "column_ns": 8495365658,
+          "flux_ns": 1347484269,
+          "apply_ns": 1105842343,
+          "merge_ns": 5383951,
+          "launch_ns": 5701024,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.5632076875,
+            "column_ns": 58.99559484722222,
+            "flux_ns": 9.357529645833335,
+            "apply_ns": 7.679460715277778,
+            "merge_ns": 0.03738854861111111,
+            "launch_ns": 0.03959044444444444
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 81101907,
+          "column_ns": 8495365658,
+          "flux_ns": 1347484269,
+          "apply_ns": 1105842343,
+          "merge_ns": 5383951,
+          "launch_ns": 5701024,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.5632076875,
+            "column_ns": 58.99559484722222,
+            "flux_ns": 9.357529645833335,
+            "apply_ns": 7.679460715277778,
+            "merge_ns": 0.03738854861111111,
+            "launch_ns": 0.03959044444444444
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 61,
+          "max": 234.795992,
+          "p50": 143.781801,
+          "p95": 164.894637,
+          "p99": 198.0609049999999
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 234.795992,
+          "p50": 122.660926,
+          "p95": 155.04842874999997,
+          "p99": 171.71424115999997
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 234.795992,
+          "p50": 122.660926,
+          "p95": 155.04842874999997,
+          "p99": 171.71424115999997
+        }
+      },
+      "scope": "Native-phase diagnostic only. Headless progression is not graphical playability evidence.",
+      "source_files_sha256": {
+        "receipt-events.jsonl": "9dc67f6c4fa42aee9a9120981d3e587b699e7ed197308cbdaee6ac58588fee57",
+        "receipt.json": "460dd0bd1ec9d4f38b8cce5919c4e64bc084a7e86c8e0a97499e751e9b93d89b",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "d59f31b805d4fdf9b3418df980d523279883cd80032490027aa56ae0dbe0ddc5",
+        "request.json": "4830fb47f10dc39481e3860d1b9a8bddf0806eaf1a079c5a8884d858903c3e94",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "acd4e0e3dae85dc4550bbf53ac7d156c86c9412ae9b34b003ee0982212f9518c",
+        "process-memory.json": "8e61c3424affa6849775e7c5cc8c1e89639dc886bf78563d9a2136bf597b81e5",
+        "import/stdout.log": "a7238f8e5b5c4a18d5b942268c05f78890f4af773c8be0541ec2474884601d9f",
+        "import/process.json": "b2b00db484027cb3f13c4249a1fa6e17deaaa179c1be913a8202f9bad3831df3",
+        "import/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "import/process-memory.json": "f2cca2c426da5274258f19045c5668a453659bb76a74f560972e9acc583e16ff",
+        "import/profile/XDG_CACHE_HOME/godot/editor_doc_cache-4.7.res": "b4b668163e12bc6f795d7a94c87dca5efcf371c8239f3ef64b3beec6ac43900f",
+        "import/profile/XDG_CONFIG_HOME/godot/editor_settings-4.7.tres": "58ea4e6fd55b9bf30090bad0dc7d64438a060f01f5698bb4ab6ba2dd2cb378b7"
+      }
+    },
+    {
+      "index": 1,
+      "label": "C1",
+      "source": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+      "binary_sha256": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+      "driver": "7e75e5352889982b6c59f55608557c1297d63aa4",
+      "workers": [
+        4
+      ],
+      "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+      "moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "water_options": {
+        "workbench_ballistic": true,
+        "workbench_face_release": false,
+        "workbench_fine_cores": false,
+        "workbench_inertial_signed": false,
+        "workbench_wave_active_rows": 32,
+        "workbench_wave_adhesion_shift": 1,
+        "workbench_wave_body_push": 256,
+        "workbench_wave_body_push_by_mass": 1,
+        "workbench_wave_calm": 128,
+        "workbench_wave_calm_damp_shift": 8,
+        "workbench_wave_coast": 32,
+        "workbench_wave_damp_shift": 16,
+        "workbench_wave_deep_gain": 32,
+        "workbench_wave_empty_pour_shift": 2,
+        "workbench_wave_floor_gain": 1024,
+        "workbench_wave_flow": true,
+        "workbench_wave_flow_share_shift": 1,
+        "workbench_wave_flux_smoothing": 16,
+        "workbench_wave_gain": 32,
+        "workbench_wave_gain_confined": 4,
+        "workbench_wave_level_shift": 3,
+        "workbench_wave_maximum_mass": 32000,
+        "workbench_wave_rest_head": 1,
+        "workbench_wave_sleep_after": 90,
+        "workbench_wave_spill": true,
+        "workbench_wave_spill_coyote_ticks": 4,
+        "workbench_wave_spill_deep_draw": 64,
+        "workbench_wave_spill_draw": 127,
+        "workbench_wave_spill_draw_head": 255,
+        "workbench_wave_spill_fall": 3,
+        "workbench_wave_spill_full_face": true,
+        "workbench_wave_spill_launch_budget": 128,
+        "workbench_wave_spill_parcels": true,
+        "workbench_wave_spill_sheet_rate": 64,
+        "workbench_wave_stick": 128,
+        "workbench_wave_stiffness": 256,
+        "workbench_wave_substeps": 2,
+        "workbench_wave_wake_peak": 1
+      },
+      "apparatus": {
+        "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "logical_processors": 9,
+        "camera": "follow",
+        "workers": 4,
+        "display": {
+          "fps_cap": 60,
+          "physics_callbacks_hz": 60,
+          "server": "headless",
+          "vsync_mode": -1,
+          "window": [
+            1600,
+            900
+          ]
+        },
+        "water_law": "wave_flow_v1",
+        "water_profile": "gameplay_main846f",
+        "water_variant": "reference",
+        "input_mode": "tape",
+        "command_mode": "repeated_callback",
+        "observer_mode": "full",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "input_tape": [
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 0
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 2
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 4
+          },
+          {
+            "move": [
+              -1.0,
+              0.0
+            ],
+            "tick": 6
+          },
+          {
+            "move": [
+              0.0,
+              1.0
+            ],
+            "tick": 8
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 10
+          },
+          {
+            "move": [
+              0.70710678,
+              -0.70710678
+            ],
+            "tick": 12
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 14
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 30
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 90
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 120
+          }
+        ]
+      },
+      "phases": {
+        "first_10s": {
+          "ticks": 66,
+          "prepare_ns": 45074840,
+          "column_ns": 5720687005,
+          "flux_ns": 853415538,
+          "apply_ns": 676226434,
+          "merge_ns": 2735691,
+          "launch_ns": 1850541,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.6829521212121212,
+            "column_ns": 86.67707583333333,
+            "flux_ns": 12.930538454545456,
+            "apply_ns": 10.245855060606061,
+            "merge_ns": 0.04144986363636364,
+            "launch_ns": 0.0280385
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 64673311,
+          "column_ns": 8306183688,
+          "flux_ns": 1294536052,
+          "apply_ns": 1020832134,
+          "merge_ns": 4973763,
+          "launch_ns": 3909984,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.44912021527777773,
+            "column_ns": 57.68183116666666,
+            "flux_ns": 8.989833694444444,
+            "apply_ns": 7.089112041666667,
+            "merge_ns": 0.03454002083333334,
+            "launch_ns": 0.02715266666666667
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 64673311,
+          "column_ns": 8306183688,
+          "flux_ns": 1294536052,
+          "apply_ns": 1020832134,
+          "merge_ns": 4973763,
+          "launch_ns": 3909984,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.44912021527777773,
+            "column_ns": 57.68183116666666,
+            "flux_ns": 8.989833694444444,
+            "apply_ns": 7.089112041666667,
+            "merge_ns": 0.03454002083333334,
+            "launch_ns": 0.02715266666666667
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 66,
+          "max": 150.655775,
+          "p50": 127.3082105,
+          "p95": 143.53442825,
+          "p99": 148.83277524999997
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 169.465722,
+          "p50": 125.0898775,
+          "p95": 143.15895179999998,
+          "p99": 153.51080695999997
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 169.465722,
+          "p50": 125.0898775,
+          "p95": 143.15895179999998,
+          "p99": 153.51080695999997
+        }
+      },
+      "scope": "Native-phase diagnostic only. Headless progression is not graphical playability evidence.",
+      "source_files_sha256": {
+        "receipt-events.jsonl": "f633ac249dc1a2b78a45228d29406507ae2f3212c6093f7b62a3aa4732623275",
+        "receipt.json": "e8b5c0050c5217a91d5434d105675d3566cc8a70c1589e2e7df18168960b10cf",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "651173fce0c0ae82ca945dd7f9cb8fe24ef2892df1d962ff103d5cbf1ce06007",
+        "request.json": "ed0606ccbabe061282fed92fa89bf72ac0bca198441f77fb0266bea28e708959",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "a95c8a1c0e5d8aff8fde5b3789ff60e94b4f00f94fc6cdc354e478de9b359f0f",
+        "process-memory.json": "bd5f617e3537541f8fddbc69dd3f2822d8d074b614d6e4033e61b5c73c20879f",
+        "import/stdout.log": "a7238f8e5b5c4a18d5b942268c05f78890f4af773c8be0541ec2474884601d9f",
+        "import/process.json": "ce14686fc3de0c690e1953068214efa2104316ec705c54b2602321445a5e4dd9",
+        "import/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "import/process-memory.json": "77942c110745803d90c3203663d14c27ac69e8aba53e28d080e9d1d354b3c035",
+        "import/profile/XDG_CACHE_HOME/godot/editor_doc_cache-4.7.res": "0c948ec72d08be5d7510939ee38338120cfe34f9cd54a1783e52a35fce270fc8",
+        "import/profile/XDG_CONFIG_HOME/godot/editor_settings-4.7.tres": "a05eb3206be7e78861b01df636a42b61edc3748520af8d669084b3b5d5604d0f"
+      }
+    },
+    {
+      "index": 2,
+      "label": "C1",
+      "source": "4215a9b2b3681b11a0115fc896c23fbde3d6ed6f",
+      "binary_sha256": "f4b4ab71d4900a9244d76253cf5294f774b6e15a70ebb181fef50b660f44ca71",
+      "driver": "7e75e5352889982b6c59f55608557c1297d63aa4",
+      "workers": [
+        4
+      ],
+      "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+      "moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "water_options": {
+        "workbench_ballistic": true,
+        "workbench_face_release": false,
+        "workbench_fine_cores": false,
+        "workbench_inertial_signed": false,
+        "workbench_wave_active_rows": 32,
+        "workbench_wave_adhesion_shift": 1,
+        "workbench_wave_body_push": 256,
+        "workbench_wave_body_push_by_mass": 1,
+        "workbench_wave_calm": 128,
+        "workbench_wave_calm_damp_shift": 8,
+        "workbench_wave_coast": 32,
+        "workbench_wave_damp_shift": 16,
+        "workbench_wave_deep_gain": 32,
+        "workbench_wave_empty_pour_shift": 2,
+        "workbench_wave_floor_gain": 1024,
+        "workbench_wave_flow": true,
+        "workbench_wave_flow_share_shift": 1,
+        "workbench_wave_flux_smoothing": 16,
+        "workbench_wave_gain": 32,
+        "workbench_wave_gain_confined": 4,
+        "workbench_wave_level_shift": 3,
+        "workbench_wave_maximum_mass": 32000,
+        "workbench_wave_rest_head": 1,
+        "workbench_wave_sleep_after": 90,
+        "workbench_wave_spill": true,
+        "workbench_wave_spill_coyote_ticks": 4,
+        "workbench_wave_spill_deep_draw": 64,
+        "workbench_wave_spill_draw": 127,
+        "workbench_wave_spill_draw_head": 255,
+        "workbench_wave_spill_fall": 3,
+        "workbench_wave_spill_full_face": true,
+        "workbench_wave_spill_launch_budget": 128,
+        "workbench_wave_spill_parcels": true,
+        "workbench_wave_spill_sheet_rate": 64,
+        "workbench_wave_stick": 128,
+        "workbench_wave_stiffness": 256,
+        "workbench_wave_substeps": 2,
+        "workbench_wave_wake_peak": 1
+      },
+      "apparatus": {
+        "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "logical_processors": 9,
+        "camera": "follow",
+        "workers": 4,
+        "display": {
+          "fps_cap": 60,
+          "physics_callbacks_hz": 60,
+          "server": "headless",
+          "vsync_mode": -1,
+          "window": [
+            1600,
+            900
+          ]
+        },
+        "water_law": "wave_flow_v1",
+        "water_profile": "gameplay_main846f",
+        "water_variant": "reference",
+        "input_mode": "tape",
+        "command_mode": "repeated_callback",
+        "observer_mode": "full",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "input_tape": [
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 0
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 2
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 4
+          },
+          {
+            "move": [
+              -1.0,
+              0.0
+            ],
+            "tick": 6
+          },
+          {
+            "move": [
+              0.0,
+              1.0
+            ],
+            "tick": 8
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 10
+          },
+          {
+            "move": [
+              0.70710678,
+              -0.70710678
+            ],
+            "tick": 12
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 14
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 30
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 90
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 120
+          }
+        ]
+      },
+      "phases": {
+        "first_10s": {
+          "ticks": 74,
+          "prepare_ns": 61702442,
+          "column_ns": 5872388872,
+          "flux_ns": 845644777,
+          "apply_ns": 646661367,
+          "merge_ns": 3046519,
+          "launch_ns": 2576043,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.8338167837837838,
+            "column_ns": 79.35660637837837,
+            "flux_ns": 11.427632121621622,
+            "apply_ns": 8.738667121621623,
+            "merge_ns": 0.04116917567567567,
+            "launch_ns": 0.03481139189189189
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 79135414,
+          "column_ns": 7516989769,
+          "flux_ns": 1110459530,
+          "apply_ns": 842716499,
+          "merge_ns": 4262695,
+          "launch_ns": 4586458,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.5495514861111112,
+            "column_ns": 52.201317840277774,
+            "flux_ns": 7.711524513888889,
+            "apply_ns": 5.852197909722222,
+            "merge_ns": 0.02960204861111111,
+            "launch_ns": 0.03185040277777778
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 79135414,
+          "column_ns": 7516989769,
+          "flux_ns": 1110459530,
+          "apply_ns": 842716499,
+          "merge_ns": 4262695,
+          "launch_ns": 4586458,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.5495514861111112,
+            "column_ns": 52.201317840277774,
+            "flux_ns": 7.711524513888889,
+            "apply_ns": 5.852197909722222,
+            "merge_ns": 0.02960204861111111,
+            "launch_ns": 0.03185040277777778
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 74,
+          "max": 165.59496,
+          "p50": 114.7742595,
+          "p95": 136.3143145,
+          "p99": 150.33339238999991
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 165.59496,
+          "p50": 110.920884,
+          "p95": 129.1051465,
+          "p99": 150.85771438999993
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 165.59496,
+          "p50": 110.920884,
+          "p95": 129.1051465,
+          "p99": 150.85771438999993
+        }
+      },
+      "scope": "Native-phase diagnostic only. Headless progression is not graphical playability evidence.",
+      "source_files_sha256": {
+        "receipt-events.jsonl": "b1924b95ccbeb05e032dd8076073e0ad9ec749651cb099e3d9580b412af234b9",
+        "receipt.json": "0299ef6fcfd03069e0b37d92ffdda40eaba1b0008d8c1d2dfa3277dcbedf795e",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "383982b70459eeff5190cfe14880a2b3c4557e3851e7ff7dd475fb1cb3fc8c33",
+        "request.json": "8ea682433550a903e1a0e93e97dfb554cfbb9f1591211ff2b1b7626f8eeaa6b7",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "fa19ae802bcf59a2ce57e3a067b03936cb918137ae2114b62a23f9a7b41de023",
+        "process-memory.json": "32284a2fe317a6daa89f22b43380fcbbcf52cc8a8f918b99a76498fd5ae7effe",
+        "import/stdout.log": "a7238f8e5b5c4a18d5b942268c05f78890f4af773c8be0541ec2474884601d9f",
+        "import/process.json": "d46cfaee5d2e5dd71ec325e924eb5ac98a52dd825e4f95761fe2ebf111e8582e",
+        "import/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "import/process-memory.json": "8501236b1066717ef6c9f2964700ae71340804e2be5f2a7f074ea545d0e4565b",
+        "import/profile/XDG_CACHE_HOME/godot/editor_doc_cache-4.7.res": "b0424f6b14fda91d2d0c7ea5eed8dd7797e369fa775134e21642c685342d2343",
+        "import/profile/XDG_CONFIG_HOME/godot/editor_settings-4.7.tres": "f9bd7a460be13ce6a03c8102c3e43c985f1a266373efea7f22c6f83162f3734e"
+      }
+    },
+    {
+      "index": 3,
+      "label": "D0",
+      "source": "1dc272df857407187596bbdc52b4125e2252551c",
+      "binary_sha256": "a842d77977644ea330d826710ac7cf50a7b1150f0e8b65a27101e481e73b06ae",
+      "driver": "7e75e5352889982b6c59f55608557c1297d63aa4",
+      "workers": [
+        4
+      ],
+      "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+      "moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      },
+      "water_options": {
+        "workbench_ballistic": true,
+        "workbench_face_release": false,
+        "workbench_fine_cores": false,
+        "workbench_inertial_signed": false,
+        "workbench_wave_active_rows": 32,
+        "workbench_wave_adhesion_shift": 1,
+        "workbench_wave_body_push": 256,
+        "workbench_wave_body_push_by_mass": 1,
+        "workbench_wave_calm": 128,
+        "workbench_wave_calm_damp_shift": 8,
+        "workbench_wave_coast": 32,
+        "workbench_wave_damp_shift": 16,
+        "workbench_wave_deep_gain": 32,
+        "workbench_wave_empty_pour_shift": 2,
+        "workbench_wave_floor_gain": 1024,
+        "workbench_wave_flow": true,
+        "workbench_wave_flow_share_shift": 1,
+        "workbench_wave_flux_smoothing": 16,
+        "workbench_wave_gain": 32,
+        "workbench_wave_gain_confined": 4,
+        "workbench_wave_level_shift": 3,
+        "workbench_wave_maximum_mass": 32000,
+        "workbench_wave_rest_head": 1,
+        "workbench_wave_sleep_after": 90,
+        "workbench_wave_spill": true,
+        "workbench_wave_spill_coyote_ticks": 4,
+        "workbench_wave_spill_deep_draw": 64,
+        "workbench_wave_spill_draw": 127,
+        "workbench_wave_spill_draw_head": 255,
+        "workbench_wave_spill_fall": 3,
+        "workbench_wave_spill_full_face": true,
+        "workbench_wave_spill_launch_budget": 128,
+        "workbench_wave_spill_parcels": true,
+        "workbench_wave_spill_sheet_rate": 64,
+        "workbench_wave_stick": 128,
+        "workbench_wave_stiffness": 256,
+        "workbench_wave_substeps": 2,
+        "workbench_wave_wake_peak": 1
+      },
+      "apparatus": {
+        "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "logical_processors": 9,
+        "camera": "follow",
+        "workers": 4,
+        "display": {
+          "fps_cap": 60,
+          "physics_callbacks_hz": 60,
+          "server": "headless",
+          "vsync_mode": -1,
+          "window": [
+            1600,
+            900
+          ]
+        },
+        "water_law": "wave_flow_v1",
+        "water_profile": "gameplay_main846f",
+        "water_variant": "reference",
+        "input_mode": "tape",
+        "command_mode": "repeated_callback",
+        "observer_mode": "full",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "input_tape": [
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 0
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 2
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 4
+          },
+          {
+            "move": [
+              -1.0,
+              0.0
+            ],
+            "tick": 6
+          },
+          {
+            "move": [
+              0.0,
+              1.0
+            ],
+            "tick": 8
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 10
+          },
+          {
+            "move": [
+              0.70710678,
+              -0.70710678
+            ],
+            "tick": 12
+          },
+          {
+            "move": [
+              0.0,
+              0.0
+            ],
+            "tick": 14
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 30
+          },
+          {
+            "move": [
+              0.0,
+              -1.0
+            ],
+            "tick": 90
+          },
+          {
+            "move": [
+              1.0,
+              0.0
+            ],
+            "tick": 120
+          }
+        ]
+      },
+      "phases": {
+        "first_10s": {
+          "ticks": 64,
+          "prepare_ns": 67821065,
+          "column_ns": 5731877465,
+          "flux_ns": 866503758,
+          "apply_ns": 672173600,
+          "merge_ns": 3524888,
+          "launch_ns": 2428572,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 1.059704140625,
+            "column_ns": 89.560585390625,
+            "flux_ns": 13.53912121875,
+            "apply_ns": 10.5027125,
+            "merge_ns": 0.055076375,
+            "launch_ns": 0.0379464375
+          }
+        },
+        "first_144_steps": {
+          "ticks": 144,
+          "prepare_ns": 106290403,
+          "column_ns": 8691130140,
+          "flux_ns": 1389030006,
+          "apply_ns": 1056837213,
+          "merge_ns": 6036467,
+          "launch_ns": 4949286,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.7381277986111111,
+            "column_ns": 60.35507041666666,
+            "flux_ns": 9.646041708333334,
+            "apply_ns": 7.3391473125,
+            "merge_ns": 0.04191990972222222,
+            "launch_ns": 0.03437004166666666
+          }
+        },
+        "whole_capture": {
+          "ticks": 144,
+          "prepare_ns": 106290403,
+          "column_ns": 8691130140,
+          "flux_ns": 1389030006,
+          "apply_ns": 1056837213,
+          "merge_ns": 6036467,
+          "launch_ns": 4949286,
+          "storage_bytes": 70440064,
+          "column_slots": 1,
+          "scope": "Existing cumulative native stage counters, initial probe to last observed snapshot in window. Missing legacy probes are null, not zero.",
+          "per_tick_ms": {
+            "prepare_ns": 0.7381277986111111,
+            "column_ns": 60.35507041666666,
+            "flux_ns": 9.646041708333334,
+            "apply_ns": 7.3391473125,
+            "merge_ns": 0.04191990972222222,
+            "launch_ns": 0.03437004166666666
+          }
+        }
+      },
+      "native_tick_ms": {
+        "first_10s": {
+          "count": 64,
+          "max": 273.147749,
+          "p50": 130.0785745,
+          "p95": 179.88905630000005,
+          "p99": 235.15844092999984
+        },
+        "first_144_steps": {
+          "count": 144,
+          "max": 273.147749,
+          "p50": 125.08346549999999,
+          "p95": 167.62436044999998,
+          "p99": 231.49436938999978
+        },
+        "whole_capture": {
+          "count": 144,
+          "max": 273.147749,
+          "p50": 125.08346549999999,
+          "p95": 167.62436044999998,
+          "p99": 231.49436938999978
+        }
+      },
+      "scope": "Native-phase diagnostic only. Headless progression is not graphical playability evidence.",
+      "source_files_sha256": {
+        "receipt-events.jsonl": "033f9e10bedf3f88fbc45f53c7fad1b3d889e98d11fcac410e401a7df81aa8cd",
+        "receipt.json": "6d6df1ac07205b553bab486eb0184c87bbb97a9c1dd3bcb0769fe477008be3bd",
+        "stdout.log": "96e24345c0217ef66f7a57cf9b5157248dcccfca9db54f33e500b2ec03301386",
+        "process.json": "c08b9c3b699755b82024ff491996cacd5f31ff9380855da9d2a172bcefc037c2",
+        "request.json": "c97c168ece0797fb143ace09354c68c048d0d0f7a2c967f6fd646000b3b3ff70",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-phase-analysis.json": "898e7b031ec8e3400736c5458da45df9164b76b21c1c6a9540dce9d1e543d068",
+        "process-memory.json": "2a15539795e038c27a8bc8a5e7c0728883cff38d50249b0c47ea0bf2983e05e4",
+        "import/stdout.log": "a7238f8e5b5c4a18d5b942268c05f78890f4af773c8be0541ec2474884601d9f",
+        "import/process.json": "b8413d67ff3f144f33a7a4b2849e66f6fe08045473448628235d33930ab2dbbc",
+        "import/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "import/process-memory.json": "45bd21d357253a5a6a1d3358ff8d6d87cdbcde0559c4d64b4c1cc1f51bf0e75e",
+        "import/profile/XDG_CACHE_HOME/godot/editor_doc_cache-4.7.res": "0dae7e99e1575c6b0ff5a237171d2682e4070313849ea7194776409e049f4a74",
+        "import/profile/XDG_CONFIG_HOME/godot/editor_settings-4.7.tres": "4269674841ee3cf8c09b9364657155cee66bef397a04cec14cc137dad0cbf377"
+      }
+    }
+  ]
+}
