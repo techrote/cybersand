@@ -254,11 +254,11 @@ class Campaign(donor.Campaign):
             arguments.append("--diagnostic")
         self.helper("tools/ci/run_persistent_area_writeback_faults.py", arguments, "ramcache-writeback-faults.log")
         proof = json.loads((folder/"results.json").read_text())
-        if not proof.get("ok") or not proof.get("source_unchanged") or len(proof.get("rows", [])) != 18:
-            raise RuntimeError("Six process-death boundaries and twelve fresh restores did not pass")
+        if not proof.get("ok") or not proof.get("source_unchanged") or len(proof.get("rows", [])) != 27:
+            raise RuntimeError("Nine genuine OS process-death boundaries and eighteen fresh native restores did not pass")
         if self.args.require_clean_source and not proof.get("qualified_source"):
             raise RuntimeError("Diagnostic writeback recovery cannot qualify publication")
-        boundaries = ["before_snapshot", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish"]
+        boundaries = ["before_capture", "before_snapshot", "queued_dirty", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish", "newer_dirty_after_durable"]
         for index, original in enumerate(proof["rows"]):
             boundary, position = boundaries[index//3], index % 3
             label = "ramcache-crash-"+boundary if position == 0 else f"ramcache-recover-{boundary}-{position}"
