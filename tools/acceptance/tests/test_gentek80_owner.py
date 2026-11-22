@@ -170,6 +170,33 @@ class WindowsAdmission(unittest.TestCase):
         self.assertEqual(dishonest["status"], "INCOMPLETE")
         self.assertTrue(dishonest["owner_metadata_issues"])
 
+    def test_failed_payload_extraction_is_atomic(self):
+        corrupt = self.root / "corrupt"
+        shutil.copytree(self.src, corrupt)
+        (corrupt / NATIVE).write_bytes(b"MZcorrupt-but-valid-ZIP")
+        bad = self.root / "bad-payload.zip"
+        sha = zipup(corrupt, bad)
+        destination = self.root / "staged parent (Ω)" / "final candidate"
+        self.run_ps("Extract", False, ArchivePath=bad, ExpectedArchiveSha256=sha,
+                    ExpectedSource=SOURCE, Destination=destination)
+        self.assertFalse(destination.exists(), "partial final candidate must be absent")
+        self.assertEqual(list(destination.parent.glob(".gentek80-staging-*")), [])
+
+    def test_independent_manifest_pin_rejects_self_consistent_tamper(self):
+        mf = self.src / "candidate-manifest.json"
+        external_pin = digest(mf.read_bytes())
+        self.run_ps("VerifyPayload", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256=external_pin)
+        engine = self.src / "Godot_v4.7-stable_win64_console.exe"
+        engine.write_bytes(b"MZattacker-mutated-engine")
+        manifest = json.loads(mf.read_text())
+        manifest["files_sha256"]["Godot_v4.7-stable_win64_console.exe"] = digest(engine.read_bytes())
+        mf.write_text(json.dumps(manifest), encoding="utf8")
+        # Deliberately prove why an externally authenticated pin is essential.
+        self.run_ps("VerifyPayload", True, PackagePath=self.src, ExpectedSource=SOURCE)
+        self.run_ps("VerifyPayload", False, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256=external_pin)
+
 
 if __name__ == "__main__":
     unittest.main()

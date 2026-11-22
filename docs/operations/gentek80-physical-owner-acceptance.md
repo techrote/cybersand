@@ -16,7 +16,7 @@ This guide **supplements**, rather than replaces, [the current 80-Gentek catalog
 
 The verifier is committed at tools/acceptance/gentek80_owner.ps1; its companion Verify and Open Workbench.cmd is staged by the existing source-aware packaging tool. The final candidate also includes this complete guide as **OWNER-ACCEPTANCE.md**, alongside the existing **READ-ME.md** catalogue guide. The tool runs under Windows PowerShell 5.1 and requires no development checkout, separate Python/Godot/compiler installation, admin rights, network access or machine-global configuration changes.
 
-**Always obtain the 64-digit expected ZIP SHA-256 from a separate trusted handoff.** A hash embedded inside the same untrusted ZIP cannot authenticate that ZIP. Provide the exact 40-digit Git commit in -ExpectedSource. The owner verifier compares original ZIP hash, archive member safety, complete extracted SHA-256 inventory, source/build identity, Godot executable hashes, native GDExtension, Rapier, Visual C++ runtime and unexpected files. It refuses changed manifests, missing payload, ZipSlip, ZIP case collisions and manifest source mismatches.
+**Always obtain the 64-digit expected ZIP SHA-256 from a separate trusted handoff.** A hash embedded inside the same untrusted ZIP cannot authenticate that ZIP. Provide the exact 40-digit Git commit in -ExpectedSource. The owner verifier compares original ZIP hash, archive member safety, complete extracted SHA-256 inventory, source/build identity, Godot executable hashes, native GDExtension, Rapier, Visual C++ runtime and unexpected files. It refuses inconsistent manifests, missing payload, ZipSlip, ZIP case collisions and manifest source mismatches. **Trust boundary:** a party able to rewrite both an extracted binary and the manifest can pass self-consistency checks while preserving the apparent source SHA. Neither an embedded manifest nor a bundled launcher authenticates itself. Obtain the independently published `*.zip.manifest.sha256` for this exact build and supply `-ExpectedManifestSha256` to subsequent VerifyPayload/Launch calls, or re-extract from the separately authenticated ZIP. The externally obtained ZIP digest remains the primary trust anchor.
 
 The project can regenerate cache files inside godot/.godot/; this is the only expected unlisted mutable project subtree. Capture results **outside** the package. The familiar Open Workbench.cmd name is retained for backwards compatibility, but in **new** deliveries it delegates to Verify and Open Workbench.cmd. Both entry points now fail closed before import or GUI startup; previously published historical ZIPs retain their historical launcher behavior.
 
@@ -29,14 +29,15 @@ $kit = 'C:\OwnerKit\gentek80_owner.ps1'
 $archive = 'C:\Downloads\CyberSand-Gentek80-Windows-SOURCE.zip'
 $sha = 'PASTE_64_DIGIT_PUBLISHED_SHA256'
 $source = 'PASTE_40_DIGIT_PUBLISHED_SOURCE_SHA'
+$manifestSha = 'PASTE_64_DIGIT_INDEPENDENT_MANIFEST_SHA256'
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyArchive -ArchivePath $archive -ExpectedArchiveSha256 $sha
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Extract -ArchivePath $archive -ExpectedArchiveSha256 $sha -ExpectedSource $source -Destination 'D:\Gentek test (外部)\nested\candidate'
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyPayload -PackagePath 'D:\Gentek test (外部)\nested\candidate' -ExpectedSource $source
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Extract -ArchivePath $archive -ExpectedArchiveSha256 $sha -ExpectedSource $source -ExpectedManifestSha256 $manifestSha -Destination 'D:\Gentek test (外部)\nested\candidate'
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyPayload -PackagePath 'D:\Gentek test (外部)\nested\candidate' -ExpectedSource $source -ExpectedManifestSha256 $manifestSha
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File $kit -Action Launch -PackagePath 'D:\Gentek test (外部)\nested\candidate' -ExpectedSource $source
 ~~~
 
-Extraction **must target a new directory**. Launch uses only the bundled pinned Godot 4.7 GUI/console, verifies again after import, opens the ordinary Shared Workbench and waits for its process. It **never** kills other Godot processes or silently invokes a system-installed engine. Close all Godot processes associated with the extracted package by inspecting executable paths in Task Manager before the fresh-process replay. Do not kill unrelated Godot instances.
+Extraction **must target a new directory**. The verifier stages the entire payload in a random sibling on the same destination volume and moves it atomically into place only after verifying hashes, files, source and native build identity. A failed extraction cleans its staging tree and never leaves a partial final installation. Launch uses only the bundled pinned Godot 4.7 GUI/console, verifies again after import, opens the ordinary Shared Workbench and waits for its process. It **never** kills other Godot processes or silently invokes a system-installed engine. Close all Godot processes associated with the extracted package by inspecting executable paths in Task Manager before the fresh-process replay. Do not kill unrelated Godot instances.
 
 Repeat clean extraction and tamper-refusal tests under spaces, parentheses, Unicode, nested directories and a non-default user-profile path. Intentionally corrupt only *copies* of the archive/package (missing Rapier, changed executable/DLL, truncated ZIP, altered manifest/source, unlisted GDScript, ZIP traversal). Keep exact failure messages and do not bypass a refusal with the legacy launcher. tools/acceptance/tests/test_gentek80_owner.py contains strictly synthetic Windows admission adversaries; they **do not prove actual generator quality or physical GUI interaction**.
 
@@ -76,6 +77,7 @@ The output includes a structured gentek80-owner-report.json, OS/driver/DPI infor
 | --- | --- | --- |
 | Exact current-source Windows package | Newly produced native library, Godot 4.7, Rapier, full inventory, SHA manifest, same-source graphical replay | Requires current branch CI |
 | Eight showcase / six repair / 80 distinct output suite | Actual Workbench, native project material identity, saved map fresh-process reopening and original frames | Requires current branch CI |
+| Two advanced five-style Workbench compositions | Two independent editable project files, two named starting maps, paint/erase, negative origin, source/native identity, genuine frames and fresh-process replay, on source tree and pristine ZIP | Requires new exact-source Windows CI; not physical acceptance |
 | Adversarial archive and process handling | Windows PowerShell synthetic corruptions, safe extraction and no global process termination | Requires Windows CI |
 | Local owner Windows 11/NVIDIA performance and physical input | Owner's genuine decisions, screenshots, GPU/renderer/DPI, measured stalls | **NOT RUN** |
 | Integrator/owner merge gate | Review exact source and runtime, accept outstanding failures, explicit merge authority | **HOLD** |

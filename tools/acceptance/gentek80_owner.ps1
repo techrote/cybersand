@@ -3,7 +3,7 @@
 param(
  [Parameter(Mandatory=$true)][ValidateSet('VerifyArchive','Extract','VerifyPayload','Launch','NewChecklist','Collect')][string]$Action,
  [string]$ArchivePath, [string]$ExpectedArchiveSha256, [string]$Destination,
- [string]$PackagePath, [string]$ExpectedSource, [string]$ResultsDirectory,
+ [string]$PackagePath, [string]$ExpectedSource, [string]$ExpectedManifestSha256, [string]$ResultsDirectory,
  [string]$DecisionsPath, [string[]]$EvidenceFiles=@(), [string]$Renderer='NOT RECORDED',
  [string]$FrameIntervalsCsv, [string]$FrameCaptureTool='NOT RECORDED'
 )
@@ -82,10 +82,15 @@ function Zip-Checked([string]$archive,[string]$expected){
    return @{zip=$z; path=$p; count=$count}
  }catch{$z.Dispose();throw}
 }
-function Verify([string]$root,[string]$expected){
+function Verify([string]$root,[string]$expected,[string]$manifestPin=''){
  Require-Commit $expected 'ExpectedSource'
  $base=(Resolve-Path -LiteralPath $root).Path
  $manifest=Safe-Path $base 'candidate-manifest.json'
+ # Separately pinning the manifest prevents payload + manifest co-tampering.
+ if(-not [string]::IsNullOrWhiteSpace($manifestPin)){
+   Require-Hash $manifestPin 'ExpectedManifestSha256'
+   if((Hash $manifest) -ne $manifestPin.ToLowerInvariant()){throw 'Independently pinned candidate-manifest SHA-256 mismatch'}
+ }
  $m=Get-Content -LiteralPath $manifest -Raw -Encoding UTF8 | ConvertFrom-Json
  if($m.schema -ne 1 -or $m.godot_version -cne '4.7.stable.official.5b4e0cb0f'){throw 'Godot/manifest schema mismatch'}
  if($m.source_commit -cne $expected){throw 'Source revision differs from owner-pinned accepted SHA'}
@@ -150,7 +155,7 @@ function Collect([string]$root,[string]$dst,[string]$source,[string]$decisions){
    }
  }
  $identity=$null;$identityError=$null
- try{$identity=Verify $root $source}catch{$identityError=$_.Exception.Message}
+ try{$identity=Verify $root $source $ExpectedManifestSha256}catch{$identityError=$_.Exception.Message}
  $frameStats=$null
  if($FrameIntervalsCsv){
    $rows=@(Import-Csv -LiteralPath $FrameIntervalsCsv)
@@ -255,13 +260,20 @@ switch($Action){
  'Extract'{
    if(-not $Destination -or (Test-Path -LiteralPath $Destination)){throw 'Extract destination must be new'}
    $z=Zip-Checked $ArchivePath $ExpectedArchiveSha256
+   $stage=$null
    try{
-     $base=[IO.Path]::GetFullPath($Destination)
-     [IO.Directory]::CreateDirectory($base)|Out-Null
+     # Stage on the destination volume. Validate every byte and source receipt
+     # before a single directory rename makes the final installation visible.
+     $final=[IO.Path]::GetFullPath($Destination).TrimEnd('\')
+     $parent=[IO.Path]::GetDirectoryName($final)
+     if([string]::IsNullOrWhiteSpace($parent)){throw 'Destination parent is required'}
+     [IO.Directory]::CreateDirectory($parent)|Out-Null
+     $stage=Join-Path $parent ('.gentek80-staging-'+[Guid]::NewGuid().ToString('N'))
+     [IO.Directory]::CreateDirectory($stage)|Out-Null
      foreach($e in $z.zip.Entries){
        $dir=$e.FullName.EndsWith('/') -or $e.FullName.EndsWith('\')
        $name=Member $e.FullName $dir
-       $path=Safe-Path $base $name
+       $path=Safe-Path $stage $name
        if($dir){[IO.Directory]::CreateDirectory($path)|Out-Null;continue}
        [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($path))|Out-Null
        $out=[IO.File]::Open($path,[IO.FileMode]::CreateNew)
@@ -269,13 +281,22 @@ switch($Action){
        try{$input.CopyTo($out)}finally{$input.Dispose();$out.Dispose()}
      }
      if((Hash $z.path) -ne $ExpectedArchiveSha256.ToLowerInvariant()){throw 'ZIP changed during extraction'}
-     $x=Verify $base $ExpectedSource
+     $x=Verify $stage $ExpectedSource $ExpectedManifestSha256
+     if(Test-Path -LiteralPath $final){throw 'Destination appeared during verification; refusing overwrite'}
+     [IO.Directory]::Move($stage,$final)
+     $stage=$null
      Write-Output "EXTRACTED AND VERIFIED: source=$($x.source) files=$($x.files)"
-   }finally{$z.zip.Dispose()}
+   }finally{
+     $z.zip.Dispose()
+     if($stage -and (Test-Path -LiteralPath $stage)){[IO.Directory]::Delete($stage,$true)}
+   }
  }
- 'VerifyPayload'{$x=Verify $PackagePath $ExpectedSource;Write-Output "PAYLOAD VERIFIED: source=$($x.source) native=$($x.native)"}
+ 'VerifyPayload'{
+   if(-not $ExpectedManifestSha256){Write-Warning 'No external manifest pin: self-consistency check only; authenticate the original ZIP independently'}
+   $x=Verify $PackagePath $ExpectedSource $ExpectedManifestSha256;Write-Output "PAYLOAD VERIFIED: source=$($x.source) native=$($x.native)"}
  'Launch'{
-   $x=Verify $PackagePath $ExpectedSource
+   if(-not $ExpectedManifestSha256){Write-Warning 'Embedded launcher cannot authenticate itself: use an independently pinned original ZIP or manifest hash'}
+   $x=Verify $PackagePath $ExpectedSource $ExpectedManifestSha256
    $gui=Safe-Path $x.root 'Godot_v4.7-stable_win64.exe'
    $console=Safe-Path $x.root 'Godot_v4.7-stable_win64_console.exe'
    $project=Safe-Path $x.root 'godot'
@@ -283,7 +304,7 @@ switch($Action){
    if($LASTEXITCODE -ne 0 -or $v -cne $x.godot){throw "Wrong Godot binary/version: $v"}
    & $console --headless --path $project --editor --quit
    if($LASTEXITCODE -ne 0){throw 'Bundled Godot import failed, no GUI started'}
-   $null=Verify $x.root $ExpectedSource
+   $null=Verify $x.root $ExpectedSource $ExpectedManifestSha256
    # Isolate only this evaluator's child processes. The stable source + native
    # identity makes two fresh launches reopen the same test starts without
    # reading or modifying another CyberSand user's ordinary save directory.

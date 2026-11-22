@@ -24,7 +24,7 @@ jobs:
           persist-credentials: false
       - name: Syntax and bounded package-stage contract
         run: |
-          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py
+          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py tools/architecture/gentek80_compositions.py
           python3 - <<'PY'
           from pathlib import Path
           s = Path('tools/package_explore001_candidate.py').read_text(encoding='utf8')
@@ -65,7 +65,7 @@ jobs:
         run: |
           python -m unittest discover -s tools/acceptance/tests -p test_gentek80_owner.py -v 2>&1 | Tee-Object evidence/windows-adversaries.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows admission adversaries failed' }
-          if (-not (Select-String -Path evidence/windows-adversaries.log -Pattern 'Ran 6 tests')) { throw 'Missing Windows test cases' }
+          if (-not (Select-String -Path evidence/windows-adversaries.log -Pattern 'Ran 8 tests')) { throw 'Missing Windows test cases' }
           if (Select-String -Path evidence/windows-adversaries.log -Pattern 'skipped|SKIP') { throw 'Windows admission cases were unexpectedly skipped' }
       - name: Preserve original hosted Windows outcome
         if: always()

@@ -8,13 +8,15 @@ on:
       - '.github/workflows/gentek-windows-final-source.yml'
       - 'docs/operations/gentek80-physical-owner-acceptance.md'
       - 'docs/reference/retrieval-corpus.json'
+      - 'godot/tools/qualify_gentek80_compositions.gd'
+      - 'tools/architecture/gentek80_compositions.py'
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
   group: gentek-final-b-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'push' }}
+  cancel-in-progress: false # preserve source-exact in-flight qualification while final fixes queue
 env:
   ARCHITECTURE_BASE_SHA: ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
@@ -39,7 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py
+          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py tools/architecture/gentek80_compositions.py
           python3 tools/ci/test_gentek80_runtime_publication.py
           python3 tools/architecture/test_gentek80_reference_inputs.py
           python3 tools/ci/check_ci_provider_policy.py
@@ -199,6 +201,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Complete Windows catalogue campaign failed' }
           python tools/architecture/gentek80_workbench.py --godot $env:GODOT_EXE --output evidence/gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 Windows Workbench author/reopen failed' }
+          python tools/architecture/gentek80_compositions.py --godot $env:GODOT_EXE --output evidence/gentek80-five-style-projects --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Two advanced five-style editable projects, maps and fresh-process reopen failed' }
       - name: Package source-matched Windows owner candidate
         shell: pwsh
         run: |
@@ -226,6 +230,10 @@ jobs:
           (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + (Split-Path $archive -Leaf) | Set-Content "$archive.sha256"
           $validation = Join-Path $env:RUNNER_TEMP 'architecture-package-validation'
           Expand-Archive $archive $validation
+          # This SHA is retained OUTSIDE the archive; owner must obtain it in
+          # an independently authenticated exact-source build handoff.
+          $manifestHash = (Get-FileHash (Join-Path $validation 'candidate-manifest.json') -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$manifestHash  candidate-manifest.json" | Set-Content "$archive.manifest.sha256"
           $manifest = Get-Content (Join-Path $validation 'candidate-manifest.json') -Raw | ConvertFrom-Json
           if ($manifest.source_commit -ne $env:GITHUB_SHA) { throw 'Extracted package source mismatch' }
           foreach ($entry in $manifest.files_sha256.PSObject.Properties) {
@@ -246,23 +254,28 @@ jobs:
           Expand-Archive $archive $gentekValidation
           python tools/architecture/gentek80_workbench.py --godot (Join-Path $gentekValidation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $gentekValidation 'godot') --package $gentekValidation --output evidence/package-gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 extracted Windows package replay failed' }
+          $mixedValidation = Join-Path $env:RUNNER_TEMP 'gentek80-five-style-package-validation'
+          Expand-Archive $archive $mixedValidation
+          python tools/architecture/gentek80_compositions.py --godot (Join-Path $mixedValidation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $mixedValidation 'godot') --package $mixedValidation --output evidence/package-gentek80-five-style-projects --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine ZIP failed both five-style editable project and named-map reopens' }
       - name: Verify entire original archive and extracted package with source-pinned offline owner verifier
         shell: pwsh
         run: |
           $zip = Get-ChildItem -Path build -File -Filter 'CyberSand-Gentek80-Windows-*.zip' | Select-Object -First 1
           if (-not $zip) { throw 'Original owner ZIP not produced' }
           $publishedHash = ((Get-Content -LiteralPath ($zip.FullName + '.sha256') -Raw).Trim() -split '\s+')[0]
+          $publishedManifestHash = ((Get-Content -LiteralPath ($zip.FullName + '.manifest.sha256') -Raw).Trim() -split '\s+')[0]
           $kit = 'tools/acceptance/gentek80_owner.ps1'
           $out = Join-Path $env:RUNNER_TEMP 'Gentek (本地) spaces/owner'
           & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyArchive -ArchivePath $zip.FullName -ExpectedArchiveSha256 $publishedHash
           if ($LASTEXITCODE -ne 0) { throw 'Original owner ZIP hash/inventory refused' }
-          & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $kit -Action Extract -ArchivePath $zip.FullName -ExpectedArchiveSha256 $publishedHash -ExpectedSource $env:GITHUB_SHA -Destination $out
+          & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $kit -Action Extract -ArchivePath $zip.FullName -ExpectedArchiveSha256 $publishedHash -ExpectedSource $env:GITHUB_SHA -ExpectedManifestSha256 $publishedManifestHash -Destination $out
           if ($LASTEXITCODE -ne 0) { throw 'Exact-source Unicode+parentheses extraction refused' }
-          & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyPayload -PackagePath $out -ExpectedSource $env:GITHUB_SHA
+          & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyPayload -PackagePath $out -ExpectedSource $env:GITHUB_SHA -ExpectedManifestSha256 $publishedManifestHash
           if ($LASTEXITCODE -ne 0) { throw 'Exact-source packaged runtime refused' }
           $packageIdentity = Get-Content -LiteralPath (Join-Path $out 'candidate-manifest.json') -Raw | ConvertFrom-Json
           @{schema='gentek-final-b-archive-acceptance-v1';source_commit=$env:GITHUB_SHA;
-            original_zip_sha256=$publishedHash;files=@($packageIdentity.files_sha256.PSObject.Properties).Count;
+            original_zip_sha256=$publishedHash;manifest_sha256=$publishedManifestHash;files=@($packageIdentity.files_sha256.PSObject.Properties).Count;
             owner_nvidia_physical='NOT RUN';actual_windows_runner=$env:RUNNER_OS} |
             ConvertTo-Json | Set-Content -LiteralPath 'evidence/gentek-final-b-owner-package.json' -Encoding UTF8
       - name: Retain Windows owner evaluation ZIP and exact archive hash
@@ -275,6 +288,7 @@ jobs:
           path: |
             build/CyberSand-Gentek80-Windows-*.zip
             build/CyberSand-Gentek80-Windows-*.zip.sha256
+            build/CyberSand-Gentek80-Windows-*.zip.manifest.sha256
           if-no-files-found: warn
           retention-days: 90
       - name: Retain original Windows process evidence and captured frames
