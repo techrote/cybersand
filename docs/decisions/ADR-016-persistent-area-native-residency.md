@@ -29,6 +29,12 @@ Keep residency, durability, readiness and eviction independent. Preserve full na
 current/previous manifest transaction. Deferred travel is an explicit experimental session option; Save all
 and normal exit retain acknowledged durability semantics.
 
+A fully validated, budgeted WARM candidate and its verified accounted clock become retained RAM authority
+together. Publication failure preserves that completed work and the active source HOT World. Strict mode
+still requires a durable ACK before destination activation. Lost-ACK Retry reconciles exact publication
+identities against those retained authorities, rather than reconstructing an older checkpoint. Native discard
+and lease acknowledgement precede retirement of the associated preparation reservation.
+
 Use one immutable I/O batch plus bounded metadata coalescing. Capture stays at the exclusive owner boundary;
 expensive publication runs on the I/O owner. An older Save ACK advances durable metadata only, never newer RAM.
 Predict the A/B/C graph from destination intent and editor/camera signals. One private preparation thread owns

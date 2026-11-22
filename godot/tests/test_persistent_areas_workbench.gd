@@ -196,6 +196,23 @@ func exercise_write() -> void:
 	check(controller.manifest.areas.a.physical_hash != a_before.physical_hash,
 		"returning to the fire produces progressed full native physical state")
 	if not await verify_edits("a"): return
+	# Travel has a finite native work budget. A loaded machine may leave
+	# legitimate debt even though the retained interval was accounted once.
+	# Establish zero debt through actual completed work before testing replay.
+	for attempt: int in 16:
+		var debt_before := AreaClock.debt(controller.clock,"a")
+		if debt_before==0: break
+		var game_before := int(controller.clock.game_ticks)
+		var native_before := int(controller.clock.areas.a.native_ticks)
+		if not check(controller.request_catch_up(),"remaining travel debt is explicitly admitted"): return
+		if not await operation_finished("bounded remaining travel debt %d" % attempt): return
+		var completed := int(controller.operation.completed_ticks)
+		if not check(completed>0 and completed<=debt_before \
+			and int(controller.clock.game_ticks)==game_before \
+			and int(controller.clock.areas.a.native_ticks)==native_before+completed \
+			and AreaClock.debt(controller.clock,"a")==debt_before-completed,
+			"remaining catch-up accounts only actual native ticks and never advances global time"): return
+	if not check(AreaClock.debt(controller.clock,"a")==0,"finite repeated catch-up reaches the current global frontier"): return
 	check(not controller.request_catch_up(),"an already accounted interval is not advanced twice")
 	# Repeated Ahead commits distinct future intervals. A cancellation has a
 	# bounded actual result and never credits unperformed requested duration.

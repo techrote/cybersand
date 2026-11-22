@@ -98,6 +98,8 @@ var _last_dirty_authoring_generation := -1
 var _last_camera_stamp: Array = []
 var _publication_reservation_id := ""
 var _resident_handoff: Dictionary = {}
+var _resident_publication_pending: Dictionary = {}
+var _resident_storage_recovery_required := false
 var _recovery_save_summary: Dictionary = {}
 var _recovery_save_pending: Dictionary = {}
 var _uncached_authoring_dirty := false
@@ -252,6 +254,8 @@ func status() -> Dictionary:
 		"quarantined":_quarantined,"publication_uncertain":_publication_uncertain,
 		"owner_cleanup_required":_owner_cleanup_required,"unresolved_worker":_unresolved_worker.duplicate(true),
 		"resident_handoff":_resident_handoff.duplicate(true),
+		"resident_storage_recovery_required":_resident_storage_recovery_required,
+		"resident_publication_pending":_resident_publication_pending.duplicate(true),
 		"recoverable_save_available":native_failed and healthy_retained and _recovery_save_summary.is_empty() and _recovery_save_pending.is_empty(),
 		"recovery_save":_recovery_save_summary.duplicate(true),
 		"recovery_save_pending":_recovery_save_pending.duplicate(true),
@@ -414,7 +418,7 @@ func request_retry() -> bool:
 			return true
 		return _refuse("The failed native World remains quarantined. Use the available recovery controls; closing requires explicit acknowledgement of its unsaved state.")
 	if _cache_open and not active_area.is_empty() and not _cache.entry(active_area).hot.is_empty() \
-			and _writeback_state.get("status","")=="failed":
+			and (_resident_storage_recovery_required or _writeback_state.get("status","")=="failed"):
 		_begin("retry_storage",active_area)
 		_retry_resident_storage.call_deferred()
 		return true
@@ -684,6 +688,17 @@ func _open_profile() -> void:
 	if not activated.get("ok",false):
 		await _fail(str(activated.error),true)
 		return
+	if _cache_open and not _cache_configuration.enabled:
+		# Cache-off restoration publications refresh their metadata ledger.
+		# Reinitialize only that disabled, resource-free ledger before opening
+		# the restored manifest; resident authorities must remain retained.
+		var metadata: Dictionary = _cache.status()
+		if int(metadata.hot_count)>0 or int(metadata.warm_count)>0 \
+				or int(metadata.pending_reservations)>0 or int(metadata.essential_publication_reserved_bytes)>0:
+			await _fail("The disabled cache still owns retained resources; profile reopening cannot replace its ledger.",true)
+			return
+		_cache = AreaCache.new()
+		_cache_open = false
 	var cached := _cache.open(manifest,int(_cache_configuration.budget_bytes))
 	if not cached.get("ok",false):
 		await _fail(str(cached.error),true)
@@ -1191,12 +1206,20 @@ func _restore_cached_target(target: String, future_ticks: int) -> Dictionary:
 	if not _cache_configuration.deferred:
 		var captured := await _worker({"kind":"capture_prepared","operation_id":operation.operation_id})
 		if not captured.get("ok",false): return captured
+		if int(captured.result.capsule.completed_tick)!=int(accounted.clock.areas[target].native_ticks):
+			return _error("The retained destination capture differs from its verified completed native interval.")
 		var mutation := maxi(int(entry.mutation_generation)+1,int(captured.result.get("mutation_generation",0)))
 		var warmed := _cache.retain_warm(target,captured.result.capsule,loaded.authoring,mutation,
 			str(entry.incarnation),str(operation.operation_id),false,true)
 		if not warmed.get("ok",false): return warmed
-		var stored := await _publish(accounted.clock,{target:{"capture":captured.result.capsule,
-			"authoring":loaded.authoring,"mutation_generation":mutation,"incarnation":entry.incarnation}},active_area)
+		# The complete validated WARM capsule now owns the completed target
+		# interval in RAM. Keep its accounted frontier with those bytes even if
+		# disk publication fails. The source HOT World stays active, and strict
+		# destination activation still waits for a positive durable ACK.
+		clock = accounted.clock
+		_resident_clock_dirty = true
+		var stored := await _publish_resident_state({target:{"capture":captured.result.capsule,
+			"authoring":loaded.authoring,"mutation_generation":mutation,"incarnation":entry.incarnation}})
 		if not stored.get("ok",false): return stored
 		_candidate_durable = true
 		await _qualification_boundary("candidate_durable")
@@ -1300,9 +1323,7 @@ func _capture_and_flush_residents(background: bool) -> Dictionary:
 	if updates.is_empty() and not _resident_clock_dirty and str(manifest.active_area)==active_area:
 		return {"ok":true,"unchanged":true}
 	if not background:
-		var published := await _publish(clock,updates,active_area)
-		if published.get("ok",false): _resident_clock_dirty = false
-		return published
+		return await _publish_resident_state(updates)
 	var started: Dictionary = _writeback.start(_store,{"active_area":active_area,"clock":clock},updates,int(manifest.revision))
 	if not started.get("ok",false): return started
 	_cache.resize_publication(_publication_reservation_id,maxi(1024*1024,3*int(started.batch_bytes)))
@@ -1311,6 +1332,53 @@ func _capture_and_flush_residents(background: bool) -> Dictionary:
 		"clock":clock.duplicate(true),"active_area":active_area}
 	_resident_clock_dirty = false
 	return {"ok":true,"pending":true,"snapshot_id":started.snapshot_id}
+
+
+func _publish_resident_state(updates: Dictionary) -> Dictionary:
+	# Every updated interval is already retained by an admitted HOT World or
+	# complete validated WARM capsule, with the matching current RAM clock.
+	# Retain bounded identity metadata rather than the encoded payloads.
+	var pending := _resident_publication_identity(updates)
+	var published := await _publish(clock,updates,active_area)
+	if published.get("ok",false):
+		_resident_clock_dirty = false
+	elif _publication_uncertain or _force_profile_reopen or bool(published.get("quarantined",false)):
+		_resident_publication_pending = pending
+		_resident_storage_recovery_required = true
+	return published
+
+
+func _resident_publication_identity(updates: Dictionary) -> Dictionary:
+	var expected_updates := {}
+	for id: String in updates:
+		expected_updates[id] = {"native_sha256":str(updates[id].capture.sha256),
+			"authoring_sha256":str(_cache.entry(id).authoring_sha256),
+			"mutation_generation":int(updates[id].mutation_generation),"incarnation":str(updates[id].incarnation),
+			"completed_tick":int(updates[id].capture.completed_tick),"generation":int(manifest.areas[id].generation)+1,
+			"native_format_version":int(updates[id].capture.format_version),
+			"physical_hash_version":int(updates[id].capture.physical_hash_version)}
+		for field: String in ["physical_hash","policy_sha256","authored_source_sha256","physics_profile_sha256"]:
+			expected_updates[id][field] = updates[id].capture[field]
+	return {"session_id":str(manifest.session_id),"operation_id":str(operation.operation_id),
+		"previous_manifest":manifest.duplicate(true),"expected_revision":int(manifest.revision)+1,
+		"expected_state":{"active_area":active_area,"clock":clock.duplicate(true)},
+		"active_receipt":_cache.entry(active_area).hot.duplicate(true),"expected_updates":expected_updates}
+
+
+func _resident_publication_error(value: Dictionary, pending: Dictionary) -> String:
+	if pending.is_empty() or str(value.get("session_id",""))!=str(pending.session_id) \
+			or int(value.get("revision",-1))!=int(pending.expected_revision) \
+			or str(value.get("active_area",""))!=str(pending.expected_state.active_area) \
+			or value.get("clock",{})!=pending.expected_state.clock:
+		return "The resident publication differs from its retained session, revision, selection or game-time frontier."
+	for id: String in Fixtures.IDS:
+		if not pending.expected_updates.has(id):
+			if value.areas[id]!=pending.previous_manifest.areas[id]: return "Resident publication changed an area outside its captured set."
+			continue
+		for field: String in pending.expected_updates[id]:
+			if value.areas[id].get(field)!=pending.expected_updates[id][field]:
+				return "The resident checkpoint differs from its retained "+field+"."
+	return ""
 
 
 func _poll_writeback() -> void:
@@ -1741,19 +1809,50 @@ func _retire_unadmitted_prediction(receipt: Dictionary, spec: Dictionary, advanc
 
 
 func _retry_resident_storage() -> void:
+	# This guard outlives the storage ACK until the native release ACK. A late
+	# owner cleanup must never fall back to reconstructing an older checkpoint.
+	_resident_storage_recovery_required = true
 	await _wait_writeback()
 	await _wait_prefetch()
 	var frozen := await _freeze_live()
 	if not frozen.get("ok",false):
 		await _fail(str(frozen.error),true)
 		return
+	if not _resident_publication_pending.is_empty():
+		var pending: Dictionary = _resident_publication_pending
+		var observed := await _worker({"kind":"resident_status","operation_id":operation.operation_id})
+		var actual: Dictionary = observed.get("result",{}).get("active",{})
+		var expected: Dictionary = pending.active_receipt
+		if not observed.get("ok",false) or clock!=pending.expected_state.clock \
+				or active_area!=str(pending.expected_state.active_area) or actual.get("identity",{})!=expected.identity \
+				or int(actual.get("handle",-1))!=int(expected.handle) \
+				or int(actual.get("completed_tick",-1))!=int(expected.completed_tick) \
+				or int(actual.get("mutation_generation",-1))!=int(expected.mutation_generation):
+			await _fail("The pending resident publication no longer matches its retained native authority or game clock; no World was restored.",true)
+			return
+		for id: String in pending.expected_updates:
+			var entry: Dictionary = _cache.entry(id)
+			var expected_area: Dictionary = pending.expected_updates[id]
+			if str(entry.incarnation)!=str(expected_area.incarnation) \
+					or int(entry.mutation_generation)!=int(expected_area.mutation_generation) \
+					or int(entry.completed_tick)!=int(expected_area.completed_tick) \
+					or str(entry.authoring_sha256)!=str(expected_area.authoring_sha256) \
+					or (entry.hot.is_empty() and str(entry.warm.get("sha256",""))!=str(expected_area.native_sha256)):
+				await _fail("A captured resident area changed outside its pending publication; the retained authorities stay quarantined.",true)
+				return
 	await _io("close_profile",[])
+	_profile_open = false
 	var opened := await _io("_open_with_identity",[profile_path,_native_library])
 	if not opened.get("ok",false) or opened.get("fresh",false):
 		await _fail(str(opened.get("error","The existing durable profile is unavailable; resident Worlds remain retained.")),true)
 		return
 	if str(opened.manifest.session_id)!=str(manifest.session_id):
 		await _fail("Storage recovery found another session; resident Worlds remain retained.",true)
+		return
+	if not _resident_publication_pending.is_empty() \
+			and not _resident_publication_error(opened.manifest,_resident_publication_pending).is_empty() \
+			and opened.manifest!=_resident_publication_pending.previous_manifest:
+		await _fail("Reopened storage matches neither the retained resident publication nor its previous acknowledged manifest.",true)
 		return
 	var acknowledged := _cache.durable_ack(opened.manifest)
 	if not acknowledged.get("ok",false):
@@ -1763,8 +1862,11 @@ func _retry_resident_storage() -> void:
 	_profile_open = true
 	_publication_uncertain = false
 	_force_profile_reopen = false
+	_owner_recovery_requires_restore = false
 	_quarantined = false
 	_writeback_state = {"status":"idle"}
+	_resident_publication_pending = {}
+	_resident_clock_dirty = clock!=manifest.clock or active_area!=str(manifest.active_area)
 	var remembered := await _remember_active()
 	if not remembered.get("ok",false):
 		await _fail(str(remembered.error),true)
@@ -2118,6 +2220,8 @@ func _finish(detail: String) -> void:
 			await _fail("Native release did not acknowledge retirement of its resident owner lease.",true,false)
 			return
 	_retire_acknowledged_handoff()
+	_resident_publication_pending = {}
+	_resident_storage_recovery_required = false
 	active_ready = true
 	busy = false
 	_quarantined = false
@@ -2166,6 +2270,9 @@ func _close_without_save() -> void:
 
 
 func _retry_profile() -> void:
+	if _resident_storage_recovery_required:
+		await _fail("The retained resident publication must reconcile its storage and native release acknowledgements before any disk restore.",true,false)
+		return
 	if not _resident_handoff.is_empty():
 		await _fail("The retained resident handoff must reconcile its original native and Main acknowledgement before any disk restore.",true,false)
 		return
@@ -2209,6 +2316,11 @@ func _retry_owner() -> void:
 		await _fail(str(cleaned.error),false,false)
 		return
 	_owner_cleanup_required = false
+	if _resident_storage_recovery_required:
+		_owner_recovery_requires_restore = false
+		_begin("retry_storage",active_area)
+		await _retry_resident_storage()
+		return
 	if hot_recovery:
 		_owner_recovery_requires_restore = false
 		if _publication_uncertain or _force_profile_reopen:
@@ -2251,6 +2363,7 @@ func _cleanup_owner() -> Dictionary:
 	if not _lease_held:
 		if not host.pending_microscenario_apply.is_empty():
 			return _error("Main still has an unresolved area installation; the World remains paused.")
+		if _cache_open: _cache.release_reservation(str(operation.operation_id))
 		_retire_acknowledged_handoff()
 		return {"ok":true}
 	if _candidate_committed:
@@ -2270,6 +2383,7 @@ func _cleanup_owner() -> Dictionary:
 	var released := await _worker({"kind":"release","operation_id":operation.operation_id})
 	if not released.get("ok",false): return released
 	if _lease_held: return _error("The native completion did not acknowledge release of its owner lease.")
+	if _cache_open: _cache.release_reservation(str(operation.operation_id))
 	_retire_acknowledged_handoff()
 	return {"ok":true}
 

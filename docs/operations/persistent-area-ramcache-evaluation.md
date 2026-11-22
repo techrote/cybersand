@@ -35,6 +35,12 @@ Cache accounting includes native/growth, warm/authoring and speculative reservat
 has separate bounded headroom. Process RSS also includes Godot, renderer, stacks and allocator retention.
 A too-small budget pins the mandatory active World and visibly reports the excess.
 
+If a destination's publication fails after its simulation completed, validated WARM state can retain those
+completed ticks while the source remains HOT. Strict mode still requires saving before activation. Retry may
+read and validate storage to resolve a lost acknowledgement; it preserves the retained World and does not repeat
+its simulation. **Run Automated Smoke.cmd** explicitly tests the original cache-disabled persistence path;
+**Run RAM Cache Smoke.cmd** exercises the separate cache, deferred-save and predictive-preparation paths.
+
 ## Owner scenarios
 
 1. **Hot return:** Pause A, enable deferred travel and disable background saving/prefetch for measurement.

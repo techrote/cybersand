@@ -104,6 +104,20 @@ After publication but before ACK, a fresh process validates the manifest to disc
 Uncertain publication quarantines the operation. Repeated/stale writes cannot move manifest generations backward.
 Runtime/schema incompatibility and corrupt/missing checkpoints refuse without seed regeneration.
 
+Synchronous retained-state publication carries a bounded identity record through storage and native-release
+acknowledgements. Retry validates the intended snapshot or its previous acknowledged manifest against the
+retained native owner, complete capture/authoring identities and accounted clock. It does not reconstruct the
+active World or repeat completed ticks. Reopening storage performs real filesystem validation; this recovery
+path is separate from the zero-filesystem-I/O guarantee for an ordinary qualified deferred HOT transition.
+
+In cached strict mode, successful validation and budgeted admission of a complete WARM candidate also admits
+its verified accounted native interval, without an intervening asynchronous boundary. A publication failure
+keeps that WARM authority and the source HOT World. Strict destination activation still waits for durability.
+Retry plans from the retained native tick, so it cannot repeat completed candidate work. An abandoned preparation
+reservation retires only after candidate discard and native owner release have actually acknowledged.
+Cache-disabled restoration preserves the original private-candidate atomicity contract; its empty disabled
+metadata ledger may be reinitialized after successful restoration, without clearing enabled resident authority.
+
 ## Predictive preparation and game-time admission
 
 `persistent_area_connectivity.gd` declares the A/B/C graph, authored exit regions and directional priorities.

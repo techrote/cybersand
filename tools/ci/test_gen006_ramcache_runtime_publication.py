@@ -2,6 +2,7 @@
 """Reject synthetic cache-hit claims and unsafe successor publication routing."""
 from __future__ import annotations
 
+import ast
 import copy
 import inspect
 import json
@@ -318,6 +319,23 @@ class QualificationGuards(unittest.TestCase):
 
 
 class PublicationGuards(unittest.TestCase):
+    def test_inherited_portable_smoke_explicitly_qualifies_only_the_cold_path(self):
+        source = ast.parse((ROOT/"tools/package_gen006_persistent_areas.py").read_text())
+        values = [ast.literal_eval(node.value) for node in source.body if isinstance(node, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == "SMOKE" for target in node.targets)]
+        self.assertEqual(len(values), 1)
+        original = values[0]
+        changed = package._legacy_cold_smoke(original)
+        self.assertEqual(changed, package.donor.SMOKE)
+        self.assertEqual(changed.count("--persistent-cache-off"), 1)
+        self.assertEqual(changed.replace(",'--persistent-cache-off'", "", 1), original)
+        self.assertNotIn("--persistent-cache-off", package.RAM_SMOKE)
+        anchor = "'--persistent-start-paused','--persistent-require-graphics')"
+        for invalid in (original.replace(anchor, ""), original+anchor, changed,
+                original.replace("res://tests/test_persistent_areas_workbench.gd", "res://tests/another.gd")):
+            with self.subTest(invalid=invalid[-70:]), self.assertRaises(RuntimeError):
+                package._legacy_cold_smoke(invalid)
+
     def test_separate_engine_and_all_donor_fences(self):
         self.assertIsNot(profile.engine, original.engine)
         self.assertEqual(original.engine.BRANCH, "exp/gen006-persistent-areas-001-20261121")

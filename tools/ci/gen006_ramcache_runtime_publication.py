@@ -54,6 +54,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {old_workflow, old_request}) | E
 BOUNDARIES = ("before_snapshot", "after_checkpoint", "after_stage", "after_previous", "before_publish", "after_publish")
 RAMCACHE_LABELS = frozenset({"ramcache-native", "ramcache-clock", "ramcache-ledger", "ramcache-writeback", "ramcache-owner-review", "ramcache-prefetch-concurrency", "donor-cold", "successor-cold"}
     | {"ramcache-hot-recovery", "ramcache-healthy-seed", "ramcache-healthy-verify", "ramcache-metadata-bounds"}
+    | {"ramcache-resident-storage-write", "ramcache-resident-storage-reopen"}
     | {"ramcache-independent-"+mode for mode in ("healthy", "missing_setup", "wrong_setup_types", "wrong_execution_type", "missing_worker_type", "stop",
             "runtime_mismatch", "session_mismatch", "source_identity_mismatch", "physics_mismatch", "policy_mismatch",
             "authoring_changed", "warm_corruption", "warm_wrong_tick", "short_native_reservation",
@@ -431,6 +432,180 @@ def verify_ramcache(value: dict) -> None:
     verify_recovery(value, value.get("ramcache_recovery", {}))
 
 
+def verify_resident_storage_recovery(parent: dict, pair: dict) -> None:
+    """Bind storage Retry to retained native authority and independent restart."""
+    require(isinstance(pair, dict) and set(pair) == {"write", "reopen"},
+        "Resident storage recovery needs a writer and independent reopening")
+    writer, reopened = pair["write"], pair["reopen"]
+    valid_hash = lambda value, size=64: isinstance(value, str) and re.fullmatch(r"[0-9a-f]{%d}" % size, value)
+    integer = lambda value: type(value) is int and 0 <= value <= 9007199254740991
+
+    def validate_clock(value: dict) -> None:
+        require(isinstance(value, dict) and set(value) == {"version", "game_ticks", "areas"}
+            and integer(value.get("version")) and value["version"] == 1 and integer(value.get("game_ticks"))
+            and set(value.get("areas", {})) == {"a", "b", "c"}, "Recovery clock has an invalid shape or game frontier")
+        for frontier in value["areas"].values():
+            require(set(frontier) == {"accounted_ticks", "native_ticks", "origin_game_tick"}
+                and all(integer(tick) for tick in frontier.values())
+                and frontier["accounted_ticks"] <= value["game_ticks"]
+                and frontier["origin_game_tick"]+frontier["native_ticks"] == frontier["accounted_ticks"],
+                "Recovery native, origin and accounted clock disagree")
+    writer_pid = writer.get("process_id")
+    require(type(writer_pid) is int and writer_pid > 0 and type(reopened.get("process_id")) is int
+        and reopened["process_id"] > 0 and reopened["process_id"] != writer_pid,
+        "Resident recovery must execute in two distinct actual processes")
+    for mode, proof in pair.items():
+        require(proof.get("schema") == "gen006-resident-storage-recovery-v1" and proof.get("mode") == mode
+            and proof.get("graphical") is True and proof.get("completed") is True and proof.get("failures") == []
+            and type(proof.get("checks")) is int and proof["checks"] > 0
+            and proof.get("originating_write_process_id") == writer_pid
+            and valid_hash(proof.get("session_id"), 32)
+            and valid_hash(proof.get("expected_reopen_sha256")),
+            "Resident recovery lacks a successful graphical process receipt")
+    expected = writer.get("expected_reopen", {})
+    require(expected == reopened.get("expected_reopen") and expected.get("session_id") == writer["session_id"]
+        == reopened["session_id"] and expected.get("originating_write_process_id") == writer_pid
+        and writer["expected_reopen_sha256"] == reopened["expected_reopen_sha256"]
+        and set(expected.get("areas", {})) == {"a", "b", "c"}
+        and set(reopened.get("actual_areas", {})) == {"a", "b", "c"},
+        "Independent resident recovery differs from its acknowledged writer oracle")
+    clock = expected.get("clock", {})
+    validate_clock(clock)
+    for proof in pair.values():
+        evidence = proof.get("evidence", {})
+        manifest = evidence.get("manifest", {})
+        require(evidence.get("process_id") == proof["process_id"] and evidence.get("clock") == clock
+            and manifest.get("clock") == clock and manifest.get("session_id") == expected["session_id"]
+            and set(manifest.get("areas", {})) == {"a", "b", "c"},
+            "Recovery oracle contradicts the actual process clock or acknowledged manifest")
+        for area in ("a", "b", "c"):
+            require(all(manifest["areas"][area].get(key) == expected["areas"][area].get(key)
+                for key in ("native_sha256", "physical_hash", "completed_tick", "authoring_sha256", "authored_source_sha256")),
+                "Recovery oracle contradicts its actual saved native or authoring identity")
+    require(type(clock.get("game_ticks")) is int and clock["game_ticks"] > 0
+        and set(clock.get("areas", {})) == {"a", "b", "c"}, "Recovery oracle has no completed game-time frontier")
+    for area in ("a", "b", "c"):
+        wanted, actual, frontier = expected["areas"][area], reopened["actual_areas"][area], clock["areas"][area]
+        require(all(valid_hash(wanted.get(key), size) and actual.get(key) == wanted[key]
+            for key, size in (("native_sha256", 64), ("physical_hash", 16), ("authoring_sha256", 64),
+                              ("authored_source_sha256", 64)))
+            and type(wanted.get("completed_tick")) is int and wanted["completed_tick"] >= 0
+            and actual.get("completed_tick") == wanted["completed_tick"] == frontier.get("native_ticks")
+            and frontier.get("accounted_ticks") == clock["game_ticks"],
+            "Independent restart lost native, authored or accounted state for area "+area)
+    cases = writer.get("cases", [])
+    require(isinstance(cases, list) and [(row.get("kind"), row.get("residency"), row.get("fault")) for row in cases] == [
+        ("ahead", None, None), ("unpublished_save", None, None), ("save", None, None),
+        ("destination", "COLD", "before_publish"), ("destination", "COLD", "after_publish"),
+        ("destination", "WARM", "after_publish")], "Resident publication failure cases are incomplete or duplicated")
+    for case in cases:
+        source = case.get("source_area", "a")
+        before, after = case.get("before_native", {}), case.get("after_native", {})
+        left, right = before.get("active", {}), after.get("active", {})
+        resident_clock = case.get("retained_clock" if case["kind"] == "destination" else "clock", {})
+        validate_clock(resident_clock)
+        for snapshot in (before, after):
+            entries = snapshot.get("entries", [])
+            require(snapshot.get("ok") is True and isinstance(entries, list) and 1 <= len(entries) <= 3
+                and snapshot.get("active") in entries and sum(entry.get("active") is True for entry in entries) == 1
+                and snapshot.get("inactive") == [entry for entry in entries if entry.get("active") is False]
+                and len({entry.get("handle") for entry in entries}) == len(entries)
+                and len({entry.get("identity", {}).get("area_id") for entry in entries}) == len(entries),
+                "Resident Retry snapshot has a failed, missing or duplicated native registry owner")
+            for entry in entries:
+                identity = entry.get("identity", {})
+                area = identity.get("area_id")
+                require(area in ("a", "b", "c") and entry.get("schema") == 1 and entry.get("failed") is False
+                    and type(entry.get("active")) is bool and integer(entry.get("handle")) and entry["handle"] > 0
+                    and integer(entry.get("resident_generation")) and entry["resident_generation"] > 0
+                    and integer(entry.get("mutation_generation")) and entry["mutation_generation"] > 0
+                    and entry.get("worker_threads") == 1 and type(entry.get("worker_threads")) is int
+                    and integer(entry.get("native_bytes")) and entry["native_bytes"] > 0
+                    and entry.get("completed_tick") == resident_clock["areas"][area]["native_ticks"]
+                    and identity.get("session_id") == writer["session_id"]
+                    and identity.get("runtime_sha256") == parent.get("native_sha256")
+                    and identity.get("authored_source_sha256") == expected["areas"][area]["authored_source_sha256"]
+                    and identity.get("incarnation") == writer["evidence"]["manifest"]["areas"][area].get("incarnation")
+                    and entry.get("physics_profile_sha256") == writer["evidence"]["manifest"]["areas"][area].get("physics_profile_sha256"),
+                    "Resident native registry contradicts its session, source, physics or completed time")
+            owner = snapshot.get("owner_fence", {})
+            require(owner.get("completed_tick") == snapshot["active"].get("completed_tick")
+                and owner.get("mutation_generation") == snapshot["active"].get("mutation_generation")
+                and owner.get("operation_id") == "" and integer(owner.get("world_generation"))
+                and owner["world_generation"] > 0
+                and snapshot.get("native_bytes") == sum(entry["native_bytes"] for entry in entries),
+                "Recovery observation contradicts its acknowledged native lease or registry memory")
+        require(all(before.get(key) == after.get(key) for key in ("entries", "inactive", "owner_fence", "native_bytes")),
+            "Storage Retry changed the retained registry or its owner fence")
+        counter_keys = {"admissions", "captures", "hot_activations", "imports", "native_restorations",
+            "private_ticks", "releases", "source_constructions"}
+        require(set(before.get("counters", {})) == set(after.get("counters", {})) == counter_keys
+            and all(integer(before["counters"][key]) and integer(after["counters"][key])
+                and after["counters"][key] == before["counters"][key]+(2 if key == "captures" and case["kind"] == "unpublished_save" else 0)
+                for key in counter_keys), "Recovery executed unexpected native work or changed registry lifetime")
+        require(source in ("a", "b", "c") and left == right and left.get("active") is True
+            and left.get("failed") is False and type(left.get("handle")) is int and left["handle"] > 0
+            and type(left.get("completed_tick")) is int and left["completed_tick"] >= 0
+            and type(left.get("mutation_generation")) is int and left["mutation_generation"] > 0
+            and left.get("identity", {}).get("area_id") == source
+            and left["identity"].get("session_id") == writer["session_id"]
+            and left["identity"].get("runtime_sha256") == parent.get("native_sha256")
+            and left["identity"].get("authored_source_sha256") == expected["areas"][source]["authored_source_sha256"],
+            "Storage Retry replaced or changed the retained source native authority")
+        for counter in ("native_restorations", "source_constructions"):
+            count = before.get("counters", {}).get(counter)
+            require(type(count) is int and count >= 0 and after.get("counters", {}).get(counter) == count,
+                "Storage reconciliation performed another native restoration or source construction")
+        if case["kind"] != "unpublished_save":
+            for counter in ("profile_read_calls", "native_deserializations", "source_constructions", "synchronous_publications"):
+                count = case.get("io_before", {}).get(counter)
+                require(type(count) is int and count >= 0 and case.get("io_after", {}).get(counter) == count,
+                    "Resident Retry repeated target loading, restoration or publication")
+        if case["kind"] != "destination":
+            require(valid_hash(case.get("published_native_sha256")) and valid_hash(case.get("previous_native_sha256"))
+                and case["published_native_sha256"] != case["previous_native_sha256"]
+                and case.get("clock", {}).get("areas", {}).get(source, {}).get("native_ticks") == left["completed_tick"],
+                "Resident publication did not preserve a real edited or progressed native snapshot")
+            if case["kind"] != "unpublished_save":
+                completed = case.get("completed_ticks")
+                require(type(completed) is int and (0 < completed <= 12 if case["kind"] == "ahead" else completed == 0)
+                    and type(case.get("published_revision")) is int and case["published_revision"] > 0,
+                    "Lost-ACK recovery reports an invalid actual native interval or publication revision")
+            continue
+        target, old, retained = case.get("target_area"), case.get("clock_before", {}), case.get("retained_clock", {})
+        completed = case.get("completed_ticks")
+        validate_clock(old)
+        validate_clock(retained)
+        require(target in ("a", "b", "c") and target != source and type(completed) is int and completed > 0
+            and old.get("game_ticks") == retained.get("game_ticks")
+            and set(old.get("areas", {})) == set(retained.get("areas", {})) == {"a", "b", "c"}
+            and all(old["areas"][area] == retained["areas"][area] for area in ("a", "b", "c") if area != target)
+            and retained["areas"][target].get("native_ticks") == old["areas"][target].get("native_ticks", -1)+completed
+            and retained["areas"][target].get("accounted_ticks") == old["areas"][target].get("accounted_ticks", -1)+completed
+            and retained["areas"][target]["accounted_ticks"] <= retained["game_ticks"]
+            and case.get("retained_native_tick") == retained["areas"][target]["native_ticks"]
+            and valid_hash(case.get("retained_native_sha256"))
+            and valid_hash(case.get("source_native_sha256"))
+            and case["source_native_sha256"] == case.get("source_native_sha256_after")
+            and type(case.get("pending_reservations")) is int and case["pending_reservations"] == 0,
+            "Retained WARM publication lost native work, changed source, duplicated time or leaked reservations")
+        activation = case.get("activation", {})
+        extra = activation.get("completed_ticks")
+        require(activation.get("residency") == "WARM" and activation.get("target_area") == target
+            and activation.get("source_area") == source and type(extra) is int and extra >= 0
+            and activation.get("kind") == "travel" and activation.get("requested_future_ticks") == 0
+            and activation.get("remaining_future_ticks") == 0
+            and activation.get("game_tick_before") == retained["game_ticks"]
+            and activation.get("debt_before_ticks") == retained["game_ticks"]-retained["areas"][target]["accounted_ticks"]
+            and extra <= activation["debt_before_ticks"]
+            and activation.get("native_ticks_executed") == extra
+            and activation.get("plan_source_native_tick") == case["retained_native_tick"]
+            and case.get("activated_native_tick") == case["retained_native_tick"]+extra
+            and valid_hash(case.get("activated_native_sha256"))
+            and (extra > 0 or case["activated_native_sha256"] == case["retained_native_sha256"]),
+            "Later WARM activation repeated the already retained native interval")
+
+
 def verify_qualification(*args, **kwargs) -> None:
     _verify_donor_qualification(*args, **kwargs)
     value = args[1] if len(args) > 1 else kwargs["value"]
@@ -503,6 +678,24 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
             (directory/log).read_text(encoding="utf-8"), receipt, seed)
         require(complete == child["completion"], "Healthy recovery completion differs from original log")
         if child["mode"] == "seed": seed = receipt
+    resident_pair = value.get("ramcache_resident_storage_recovery", {})
+    verify_resident_storage_recovery(value, resident_pair)
+    oracle_path = "ramcache-resident-storage/expected-reopen.json"
+    require(value["files_sha256"].get(oracle_path) == resident_pair["write"]["expected_reopen_sha256"]
+        and json.loads((directory/oracle_path).read_text(encoding="utf-8")) == resident_pair["write"]["expected_reopen"],
+        "Resident recovery oracle is not bound to its original acknowledged writer file")
+    for mode, proof in resident_pair.items():
+        label = "ramcache-resident-storage-"+mode
+        relative = "ramcache-resident-storage/resident-storage-recovery-"+mode+".json"
+        require(relative in value["files_sha256"]
+            and json.loads((directory/relative).read_text(encoding="utf-8")) == proof
+            and proof["process_id"] == rows[label]["pid"] and rows[label].get("exit_code") == 0,
+            "Resident recovery receipt differs from its original successful process")
+        done = completion(logs[label], "GEN006_RAMCACHE_RESIDENT_STORAGE_RECOVERY")
+        require(done == rows[label].get("completion") and done.get("mode") == mode
+            and done.get("graphical") is True and done.get("pid") == proof["process_id"]
+            and done.get("failures") == 0 and done.get("checks") == proof["checks"]+1,
+            "Resident storage recovery completion differs from original process and receipt")
     for case in ("deferred", "strict", "first"):
         pair = []
         for mode in ("write", "reopen"):

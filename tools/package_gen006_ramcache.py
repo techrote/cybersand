@@ -20,6 +20,20 @@ donor.engine = publication.engine
 donor.ROOT = publication.engine.ROOT
 engine, require, sha = publication.engine, publication.require, publication.sha
 
+
+def _legacy_cold_smoke(source: str) -> str:
+    """Preserve the inherited private-candidate smoke contract in this package."""
+    anchor = "'--persistent-start-paused','--persistent-require-graphics')"
+    require(source.count(anchor) == 1 and source.count("res://tests/test_persistent_areas_workbench.gd") == 1
+        and "--persistent-cache-off" not in source, "Inherited Workbench smoke argument boundary changed")
+    return source.replace(anchor,
+        "'--persistent-start-paused','--persistent-require-graphics','--persistent-cache-off')", 1)
+
+
+# This is the successor's private donor module, not the donor package source.
+# The dedicated RAM smoke below independently qualifies real cache behavior.
+donor.SMOKE = _legacy_cold_smoke(donor.SMOKE)
+
 # Direct-launch the GUI executable: the console wrapper otherwise hides its
 # real engine child PID. Preserve both original output streams and actual
 # process measurements; never infer a fresh process merely from two receipts.
@@ -231,7 +245,7 @@ def build(args: argparse.Namespace) -> None:
         "The experimental profile starts with strict durability; read and acknowledge deferred mode before enabling it.\n\n"
         "Follow **RAM-CACHE-OWNER-GUIDE.md** for hot returns, state retention, memory pressure, background Save, "
         "prefetch and reversal. **Run RAM Cache Smoke.cmd** executes the real graphical scenario and a new-process restore "
-        "in an isolated smoke profile. **Run Automated Smoke.cmd** retains the donor persistence regression. "
+        "in an isolated smoke profile. **Run Automated Smoke.cmd** checks the cache-disabled persistence path. "
         "**Open Workbench.cmd** launches ordinary Workbench.\n\n"
         "**Save all areas** must acknowledge before closing. In deferred mode, resident changes are not durable until "
         "publication acknowledges; a process crash may lose newer RAM-only work. **Capture Failure Evidence.cmd** "

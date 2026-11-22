@@ -29,7 +29,8 @@
       "facts": [
         "Residency, readiness, game-time debt and durability are independent. HOT plus dirty is legitimate in explicitly selected deferred mode.",
         "One immutable bounded snapshot publishes on a serialized I/O thread; its ACK cannot overwrite newer resident mutations or clocks. Explicit Save all waits for the matching area and global-clock durable boundary.",
-        "Crash recovery restores the last valid published manifest. Unacknowledged RAM-only work is not promised to survive. Strict mode and cache-disabled fallback remain available."
+        "Crash recovery restores the last valid published manifest. Unacknowledged RAM-only work is not promised to survive. Strict mode and cache-disabled fallback remain available.",
+        "Validated and budgeted WARM admission retains its verified accounted native interval even if publication fails. Strict activation still awaits durability; Retry reconciles the exact retained publication without rebuilding the active World or replaying ticks."
       ],
       "sources": [
         "../godot/native_extension/cyber_persistent_area_residency.hpp",
