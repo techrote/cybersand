@@ -57,8 +57,9 @@ func _run() -> void:
 	_expect(port.results.is_empty(), "No fictitious native result was fabricated")
 
 	var observed: Dictionary = {"world_generation": 7, "world_revision": 90,
-		"render_serial": 8, "session": 12, "transport_generation": 3,
-		"publication_sequence": 45}
+		"render_serial": 8, "session": 12, "owner_epoch": 9,
+		"shard_session": 14, "world_incarnation": 5,
+		"transport_generation": 3, "publication_sequence": 45}
 	var uploaded: Dictionary = {"world_generation": 7, "world_revision": 90, "render_serial": 8}
 	_expect(Port.visible_error(observed, uploaded).is_empty(),
 		"Value-only visible publication contract accepts a matching displayed receipt")
@@ -72,7 +73,8 @@ func _run() -> void:
 	observed.publication_sequence = 45
 
 	var position := Vector2i(61, 42)
-	var target: Dictionary = {"position": position, "session": 12, "transport_generation": 3,
+	var target: Dictionary = {"position": position, "session": 12, "owner_epoch": 9,
+		"shard_session": 14, "world_incarnation": 5, "transport_generation": 3,
 		"publication_sequence": 45, "owner": 4, "cell": 61, "generation": 2,
 		"body_generation": 2, "geometry_revision": 3, "applied_physics_revision": 4,
 		"pose_serial": 15, "material_revision": 9, "incarnation": 21,
@@ -83,6 +85,10 @@ func _run() -> void:
 	stale.pose_serial = "15"
 	_expect(Port.target_error(stale, position, observed) == "IncompleteMovingTarget",
 		"Non-integer pose witness cannot be converted into new target authority")
+	stale = target.duplicate(true)
+	stale.world_incarnation = 4
+	_expect(Port.target_error(stale, position, observed) == "TargetObservationChanged",
+		"Previous native World incarnation cannot target the new owner")
 	stale = target.duplicate(true)
 	stale.publication_sequence = 44
 	_expect(Port.target_error(stale, position, observed) == "TargetObservationChanged",
