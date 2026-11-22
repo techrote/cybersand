@@ -8,6 +8,7 @@ native generator, Shared Workbench and native material host.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -36,27 +37,39 @@ def sha(path: Path) -> str:
 
 
 def processes_using_engine(exe: Path) -> dict:
-    """Windows process-path inspection; never kill or change unrelated processes."""
+    """Inventory both source-matched Godot processes; never kill unrelated tasks.
+
+    Pass Windows path inputs via opaque UTF-8/base64 JSON inside the script,
+    not powershell.exe -Command trailing argv (unsupported by Windows PS 5.1).
+    """
     if os.name != "nt":
-        return {"supported": False, "reason": "Windows process-path inspection unavailable"}
+        return {"supported": False, "reason": "Windows process-path inventory unavailable"}
+    gui = exe.with_name(exe.name.replace("_console.exe", ".exe"))
+    target_paths = [str(exe), str(gui)]
+    encoded = base64.b64encode(json.dumps(target_paths, ensure_ascii=False).encode("utf-8")).decode("ascii")
     script = (
-        "$targets=@([IO.Path]::GetFullPath($args[0]),[IO.Path]::GetFullPath($args[1]));"
-        "$p=@(Get-CimInstance Win32_Process | Where-Object "
+        "$ErrorActionPreference='Stop';"
+        "$raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" + encoded + "'));"
+        "$targets=@(ConvertFrom-Json -InputObject $raw);"
+        "if($targets.Count -ne 2){throw 'Two process paths required'};"
+        "$ids=@(Get-CimInstance Win32_Process | Where-Object "
         "{ $_.ExecutablePath -and ($targets -contains $_.ExecutablePath) }"
         " | ForEach-Object { $_.ProcessId });"
-        "ConvertTo-Json -Compress -InputObject $p"
+        "[PSCustomObject]@{paths=$targets;pids=$ids} | ConvertTo-Json -Compress -Depth 4"
     )
-    run = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive",
-                          "-Command", script, str(exe),
-                          str(exe.with_name(exe.name.replace("_console.exe", ".exe")))], text=True,
-                         capture_output=True, timeout=90)
-    if run.returncode:
-        return {"supported": False, "error": run.stderr.strip()}
+    completed = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive",
+                                "-Command", script], text=True, capture_output=True, timeout=90)
+    if completed.returncode:
+        return {"supported": False, "error": completed.stderr.strip(),
+                "returncode": completed.returncode}
     try:
-        return {"supported": True, "pids": json.loads(run.stdout.strip()),
-                "checked_console_and_gui": True}
+        content = json.loads(completed.stdout.strip())
+        if not isinstance(content, dict) or not isinstance(content.get("pids"), list):
+            raise ValueError("Powershell process inventory did not return a PID list")
+        return {"supported": True, "pids": content["pids"],
+                "checked_console_and_gui": True, "paths": content.get("paths")}
     except (json.JSONDecodeError, ValueError) as exc:
-        return {"supported": False, "error": str(exc), "stdout": run.stdout.strip()}
+        return {"supported": False, "error": str(exc), "stdout": completed.stdout.strip()}
 
 
 def main() -> int:
@@ -110,7 +123,7 @@ def main() -> int:
             before = processes_using_engine(engine)
             process_checks.append({"phase": environment_phase, "boundary": "before", **before})
             if os.name == "nt" and not before.get("supported"):
-                raise RuntimeError("Windows pre-phase console/GUI process-path inventory unavailable")
+                raise RuntimeError("Windows pre-phase console/GUI process-path inventory unavailable: " + str(before))
             if before.get("supported") and before.get("pids"):
                 raise RuntimeError("Packaged engine process already running at fresh-process boundary")
             env["CYBERSAND_ARCHITECTURE_PHASE"] = environment_phase
