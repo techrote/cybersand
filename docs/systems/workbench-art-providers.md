@@ -113,6 +113,12 @@ URL userinfo are redacted before display/disk/export. Authorization request
 headers are never added to the logged request object. No log can identify every
 arbitrary secret the user invents; do not put unrelated credentials in prompts.
 
+### Lazy reopening and traffic storage
+
+**Retired on 22 November 2026.** This anchor is retained for historical
+documentation links only. The former cross-session transcript-restoration
+contract has been replaced by the session-scoped design immediately below.
+
 ### Session-scoped, write-only Art traffic — 22 November 2026
 
 Each **new Workbench game session begins with an empty in-memory Art conversation**.
