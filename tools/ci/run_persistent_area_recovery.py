@@ -100,7 +100,7 @@ def main() -> int:
 
     def identities() -> dict:
         return {"godot_sha256": digest(args.godot), "native_sha256": digest(args.native),
-                "source_files": {str(path.relative_to(args.repo)): digest(path) for path in source_files}}
+                "source_files": {path.relative_to(args.repo).as_posix(): digest(path) for path in source_files}}
 
     before = identities()
     source_before = source_identity(args.repo / "godot")
