@@ -252,7 +252,7 @@ class Sprocket:
         class NoRedirect(request.HTTPRedirectHandler):
             def redirect_request(self, req, fp, code, msg, headers, newurl):
                 raise ValueError("redirect_refused")
-        opener = request.build_opener(NoRedirect)
+        opener = request.build_opener(request.ProxyHandler({}), NoRedirect)
         try:
             with opener.open(req, timeout=self.timeout) as response:
                 if response.status != 200:
@@ -282,7 +282,7 @@ class Sprocket:
             return None, "unavailable_or_malformed:" + type(exc).__name__
 
 
-def choose_sequence(mode, seed, count, fault=None, sprocket=None, actions=None):
+def choose_sequence(mode, seed, count, fault=None, sprocket=None, actions=None, max_seconds=120.0):
     world = ContractWorld(fault)
     randomizer = random.Random(seed)
     receipts, proposal_rejections, coverage = [], [], set()
@@ -313,6 +313,8 @@ def choose_sequence(mode, seed, count, fault=None, sprocket=None, actions=None):
         after = world.snapshot()
         elapsed = time.perf_counter_ns() - t0
         broken = violations(before, action, result, after)
+        if (time.perf_counter_ns() - started) / 1e9 > max_seconds:
+            broken = sorted(set(broken + ["runner_watchdog_timeout"]))
         previous = receipts[-1]["action"]["kind"] if receipts else "START"
         coverage.add(previous + ">" + action.get("kind", "INVALID"))
         fact = {"index": index, "action": action,
@@ -438,6 +440,7 @@ def main(argv=None):
     p.add_argument("--mode", choices=("control", "chaos", "sprocket", "all"), default="all")
     p.add_argument("--seed", type=int, default=13)
     p.add_argument("--steps", type=int, default=64)
+    p.add_argument("--max-campaign-seconds", type=int, default=120, help="Wall watchdog, 1..600 seconds per campaign")
     p.add_argument("--out", type=Path, help="New, non-existing evidence directory (default: new OS temp directory)")
     p.add_argument("--replay", type=Path, help="Replay a previously recorded transcript, verifying every fingerprint")
     p.add_argument("--runtime-file", type=Path, help="Optional exact native/runtime binary to SHA256")
@@ -453,6 +456,8 @@ def main(argv=None):
     args = p.parse_args(argv)
     if not 1 <= args.steps <= 500 or not -2147483648 <= args.seed <= 2147483647:
         p.error("steps 1..500 and seed signed int32 required")
+    if not 1 <= args.max_campaign_seconds <= 600:
+        p.error("campaign watchdog must be 1..600 seconds")
     if args.ceremonial_delay_seconds < 0 or args.ceremonial_delay_seconds > 780:
         p.error("ceremonial delay must be 0..780 seconds")
     if args.ceremonial_delay_seconds and args.activate_immediately:
@@ -464,14 +469,18 @@ def main(argv=None):
     ident["sprocket_model_sha256"] = sha_file(args.sprocket_model_file) if args.sprocket_model_file else None
     notes, summaries = [], []
     if args.replay:
+        if args.replay.stat().st_size > 5_000_000:
+            p.error("replay transcript exceeds 5 MB")
         transcript = json.loads(args.replay.read_text(encoding="utf-8"))
+        if not isinstance(transcript.get("actions"), list) or not 1 <= len(transcript["actions"]) <= 500:
+            p.error("replay must contain 1..500 bounded actions")
         if transcript.get("schema") != SCHEMA or transcript.get("adapter") != "reference-contract-model":
             p.error("unsupported or unauthenticated transcript adapter/schema")
         fault = transcript.get("fault_injection")
         if fault is not None and fault not in FAULTS:
             p.error("unrecognized reference fault in transcript")
         run = choose_sequence(transcript["mode"], transcript["seed"], 0, fault=fault,
-                              actions=transcript["actions"])
+                              actions=transcript["actions"], max_seconds=args.max_campaign_seconds)
         actual = [r["fingerprint"] for r in run["receipts"]]
         match = actual == transcript["fingerprints"] and run["failure"] == transcript["failure"]
         summaries.append(save_run(out, run, ident, fault))
@@ -493,7 +502,8 @@ def main(argv=None):
                 while time.monotonic() - preflight_started < args.ceremonial_delay_seconds:
                     time.sleep(min(0.1, args.ceremonial_delay_seconds - (time.monotonic() - preflight_started)))
             count = args.steps
-        run = choose_sequence(mode, args.seed, count, fault=args.inject_fault, sprocket=sprocket)
+        run = choose_sequence(mode, args.seed, count, fault=args.inject_fault, sprocket=sprocket,
+                              max_seconds=args.max_campaign_seconds)
         summaries.append(save_run(out, run, ident, args.inject_fault))
     atomic_json(out / "campaign-summary.json", {"schema": SCHEMA, "identity": ident,
                 "campaigns": summaries, "notes": notes})

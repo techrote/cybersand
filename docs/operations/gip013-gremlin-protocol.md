@@ -18,7 +18,7 @@ python3 tools/gip013/gremlin.py --mode all --seed 13 --steps 96 --activate-immed
 python3 tools/gip013/gremlin.py --replay /tmp/gip013-run-13/chaos/transcript.json --out /tmp/gip013-replay-13
 ```
 
-Use *new, nonexistent* output directories. The runner refuses to overwrite any existing evidence. Without `--out`, it creates a new OS temporary directory and reports the exact path. The canonical seed is **13**; arbitrary signed int32 seeds are admitted. Maximum 500 actions per campaign, with a fixed action vocabulary and fixed parameter choices. `--mode all` runs CONTROL and CHAOS; SPROCKET is **skipped**, not simulated, unless a loopback inference endpoint is explicitly provided. The deterministic CONTROL sequence includes a deliberately rejected capacity Apply, simulated physical-grab cancellation, authored save/restore and running paint.
+Use *new, nonexistent* output directories. The runner refuses to overwrite any existing evidence. Without `--out`, it creates a new OS temporary directory and reports the exact path. The canonical seed is **13**; arbitrary signed int32 seeds are admitted. Maximum 500 actions per campaign and a 120-second default wall watchdog (configurable 1–600 seconds via `--max-campaign-seconds`), with a fixed action vocabulary and fixed parameter choices. A timeout is classified as `runner_watchdog_timeout` and stops dispatch after the current action. Replayed tapes are capped at 500 actions and 5 MB. `--mode all` runs CONTROL and CHAOS; SPROCKET is **skipped**, not simulated, unless a loopback inference endpoint is explicitly provided. The deterministic CONTROL sequence includes a deliberately rejected capacity Apply, simulated physical-grab cancellation, authored save/restore and running paint.
 
 ### Thirteenth-minute ceremony
 
@@ -36,7 +36,7 @@ python3 tools/gip013/gremlin.py --mode sprocket --seed 13 --steps 96 \
   --out /tmp/gip013-sprocket-13
 ```
 
-The prompt consists of a short gremlin persona plus the current compact state and numbered **legal** action objects. Sprocket can only return `{"choice": 4}`. The trusted controller resolves that index and validates the action against the current legal set again before dispatch. Redirects, non-loopback endpoints, oversized responses, malformed JSON, out-of-range indices and repetitive proposals are rejected. If the server fails, the seeded selector takes over without granting additional privileges. Only **actually Sprocket-selected** actions count toward model-guided coverage; a wholly offline run is a seeded fallback, not an Sprocket experiment. No paid API or model download is needed for CONTROL/CHAOS.
+The prompt consists of a short gremlin persona plus the current compact state and numbered **legal** action objects. Sprocket can only return `{"choice": 4}`. The trusted controller resolves that index and validates the action against the current legal set again before dispatch. Redirects, proxies, non-loopback endpoints, oversized responses, malformed JSON, out-of-range indices and repetitive proposals are rejected. If the server fails, the seeded selector takes over without granting additional privileges. Only **actually Sprocket-selected** actions count toward model-guided coverage; a wholly offline run is a seeded fallback, not an Sprocket experiment. No paid API or model download is needed for CONTROL/CHAOS.
 
 ## Evidence and safety
 
