@@ -1,0 +1,42 @@
+{
+  "schema": "objectshard-independent-retained-d-analysis-v1",
+  "source": "f11be5aa55babad3fbabe0471ae47517322989b1",
+  "reference_tick": 754,
+  "end_tick": 3600,
+  "samples": 3599,
+  "owner_action_count": 198,
+  "failures": 0,
+  "scope": "Actual final-source session after retained owner actions; these are not the complete original owner inputs. Excursion from tick754 onward, including all later geometry updates.",
+  "owners": {
+    "1": {
+      "maximum_angle_radians": 6.675720219950776e-06,
+      "maximum_step_angle_radians": 6.675720219950776e-06,
+      "maximum_translation_cells": 0.0002121191219185772,
+      "last_sleeping": true,
+      "minimum_revision": 3,
+      "maximum_revision": 5,
+      "maximum_angle_degrees": 0.0003824905938133251,
+      "maximum_step_angle_degrees": 0.0003824905938133251
+    },
+    "2": {
+      "maximum_angle_radians": 7.605552674005978e-05,
+      "maximum_step_angle_radians": 2.7298927310015486e-05,
+      "maximum_translation_cells": 0.0016270656489443924,
+      "last_sleeping": true,
+      "minimum_revision": 1,
+      "maximum_revision": 2,
+      "maximum_angle_degrees": 0.004357660690849802,
+      "maximum_step_angle_degrees": 0.0015641133200983088
+    },
+    "3": {
+      "maximum_angle_radians": 1.72853469799783e-05,
+      "maximum_step_angle_radians": 5.722045889999805e-06,
+      "maximum_translation_cells": 0.0003459406753109838,
+      "last_sleeping": true,
+      "minimum_revision": 1,
+      "maximum_revision": 2,
+      "maximum_angle_degrees": 0.00099037742937196,
+      "maximum_step_angle_degrees": 0.00032784907967716776
+    }
+  }
+}

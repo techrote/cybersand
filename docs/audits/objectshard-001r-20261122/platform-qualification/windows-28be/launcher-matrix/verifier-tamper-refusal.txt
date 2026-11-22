@@ -1,0 +1,8 @@
+Package file changed: READ-ME.md
+At D:\a\_temp\objectshard-delivered-zip\ObjectShard evaluation with spaces\tools\objectshard\verify_package.ps1:46 
+char:37
++ ... $actual -ne $entry.Value) { throw "Package file changed: $relative" }
++                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Package file changed: READ-ME.md:String) [], RuntimeException
+    + FullyQualifiedErrorId : Package file changed: READ-ME.md
+ 

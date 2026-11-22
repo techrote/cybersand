@@ -1,0 +1,69 @@
+{
+  "schema": "objectshard-boundary-specialist-review-v1",
+  "role": "Cross-domain specialist falsification; contributing physics author, not independent final-source reviewer",
+  "historical_negative_results": [
+    {
+      "case": "Fire relocation same owner",
+      "checks": 225,
+      "failures": 1,
+      "log": "fire_relocation_probe.log",
+      "source": "../objectshard-001r-fire-check/20261122T040533.151763Z-1923c3bcdcea/inputs.json"
+    },
+    {
+      "case": "Fire relocation two owners",
+      "checks": 493,
+      "failures": 2,
+      "log": "fire_relocation_two_shards.log",
+      "source": "../objectshard-001r-fire-check/20261122T040533.151763Z-1923c3bcdcea/inputs.json"
+    },
+    {
+      "case": "Refused motion erases Sand entry history",
+      "checks": 32,
+      "failures": 2,
+      "log": "sand_refusal_probe_v2.log",
+      "source": "sand-source/source-binding.json"
+    },
+    {
+      "case": "Fire opportunity repeats against World",
+      "checks": 485,
+      "failures": 1,
+      "log": "fire_crossdomain_probe.log",
+      "source": "repaired-source/source-binding.json"
+    }
+  ],
+  "fixture_correction": {
+    "log": "sand_refusal_probe.log",
+    "reason": "Zero-quanta Water was not a physical obstruction; replaced with genuine Sand for the validated negative. Separately exposed accepted zero-quanta Water accounting defect; reported to root and explicitly rejected by its later coordinator fix."
+  },
+  "repaired_results_file": "final-delta-results.json",
+  "repaired_source": "crossdomain-repaired-source/source-binding.json",
+  "limits": [
+    "Native coordinator tests do not establish actual Rapier contact behavior or owner Windows acceptance.",
+    "Local GCC14.2 build is a specialist delta fixture; final hosted platform/source qualification belongs to integration owner.",
+    "Later production changes require final-source rerun.",
+    "Original native performance matrix 10/74 timing failures remains historical evidence; no resolution claimed."
+  ],
+  "artifact_sha256": {
+    "fire_crossdomain_probe_finaldelta.log": "4a81b1c74c4623fca7c89a68af62385c13815b139e93d368af5cf6f2f2b4f73b",
+    "fire_relocation_probe_repaired_finaldelta.log": "f945169d62d7b98ba58e7b44227dddef88a6776b26cf593e9be166402a84f788",
+    "sand_refusal_probe_v2.log": "f484075e02b94d582dd2d96ba56e4fff4ae317656fe1d9aa3102c3e99238adc0",
+    "water_fastpath_probe.log": "e78fc63851d18e61121f567f069056ecd6eee3bb0619ffb3d07affc66ae67887",
+    "sand_refusal_probe_v2_repaired_finaldelta.log": "cee6885b73bf40af2eaa9ed11bdb4b1d92957ffafa130b788a3bfcaf60bbb067",
+    "fire_relocation_two_shards_repaired.log": "ab73dad536039bd2ff697e5513a73124bba109edfef9ab8350feff353cc51d40",
+    "fire_relocation_two_shards.log": "74956991bc014e2bf27684aef945ddf0969b9f866d93d452faf5016c79ee7b1d",
+    "sand_refusal_probe_v2_repaired.log": "cee6885b73bf40af2eaa9ed11bdb4b1d92957ffafa130b788a3bfcaf60bbb067",
+    "sand_refusal_probe.log": "17d1a0c0a42fa08b1662ecfc588d5f5d5c13091cbad8058b0dd5c2ac763e4370",
+    "fire_relocation_two_shards_repaired_finaldelta.log": "ab73dad536039bd2ff697e5513a73124bba109edfef9ab8350feff353cc51d40",
+    "fire_crossdomain_probe.log": "4820fca4a11a27e580c138e2a2af81f2ddb41b4fca365f783026752e8cde21de",
+    "fire_relocation_probe_repaired.log": "f945169d62d7b98ba58e7b44227dddef88a6776b26cf593e9be166402a84f788",
+    "fire_refusal_retry_probe.log": "6209046e69b5c9dd98884aef3bd150e12eff0e2cd96531d7580d2fadb0023e29",
+    "fire_relocation_probe.log": "be5207ee4237afac35741364dc52557d0600528e1609419e2d1c689b803ce5bf"
+  },
+  "maintained_suite_run": {
+    "input_sha256": "1379e94ef58fb12365781d86bbe82bba009a35d4c90a78b0c7c5023a12454b14",
+    "summary": "../physics-maintained-delta/20261122T042609.609545Z-1379e94ef58f/summary.json",
+    "coordinator_checks": 3114,
+    "external_fire_checks": 3683,
+    "failures": 0
+  }
+}

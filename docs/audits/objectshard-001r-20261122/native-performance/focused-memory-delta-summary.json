@@ -1,0 +1,155 @@
+{
+  "checks_reported": 34894,
+  "counts_complete": true,
+  "elapsed_seconds": 31.09968299599859,
+  "failures_reported": 0,
+  "git_head": "f11be5aa55babad3fbabe0471ae47517322989b1",
+  "input_digest": "3883feb890f3f6d0dcf9582c4d0572bd71ac41ece780ea50de0224b4a1738da9",
+  "leak_sanitizer": false,
+  "qualification_scope": "Native C++ only; no rendered, Rapier or owner physical acceptance claim.",
+  "run_directory": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3",
+  "sanitizers": false,
+  "schema": 1,
+  "status": "passed",
+  "suites": {
+    "admission": {
+      "binary_sha256": "2772757825a0b123a9d975cbd0df080686f9ba5993abc973fe5e99ec0ae126bc",
+      "checks": 28092,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/test_object_shard_admission"
+        ],
+        "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source",
+        "elapsed_seconds": 0.9365308489941526,
+        "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/logs/test-admission.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-I",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source/native/include",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source/native/tests/test_object_shard_admission.cpp",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/world.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/material_rules.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/scheduler_geometry.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/settled_world_discovery.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/object_shard.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/object_shard_coordinator.o",
+          "-o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/test_object_shard_admission"
+        ],
+        "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+        "elapsed_seconds": 2.4169407790031983,
+        "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/logs/link-admission.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "coordinator": {
+      "binary_sha256": "ccc9ab1effc7899cf0799bdcc6312362922dcbfeb0317428a326a2addc7d0313",
+      "checks": 3119,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/test_object_shard_coordinator"
+        ],
+        "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source",
+        "elapsed_seconds": 0.37735296800383367,
+        "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/logs/test-coordinator.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-I",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source/native/include",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source/native/tests/test_object_shard_coordinator.cpp",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/world.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/material_rules.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/scheduler_geometry.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/settled_world_discovery.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/object_shard.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/object_shard_coordinator.o",
+          "-o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/test_object_shard_coordinator"
+        ],
+        "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+        "elapsed_seconds": 3.100368997998885,
+        "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/logs/link-coordinator.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "external_fire": {
+      "binary_sha256": "9bdcb6dd701005a796eb322137a99208beda3455838b4dcd8cb7a3d0c12cebec",
+      "checks": 3683,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/test_object_shard_external_fire"
+        ],
+        "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source",
+        "elapsed_seconds": 0.36616158799733967,
+        "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/logs/test-external_fire.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-I",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source/native/include",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/source/native/tests/test_object_shard_external_fire.cpp",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/world.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/material_rules.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/scheduler_geometry.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/settled_world_discovery.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/object_shard.o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/objects/object_shard_coordinator.o",
+          "-o",
+          "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/test_object_shard_external_fire"
+        ],
+        "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+        "elapsed_seconds": 2.1248860570049146,
+        "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-fence-memory-delta/20261122T043405.505718Z-3883feb890f3/logs/link-external_fire.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    }
+  },
+  "test_cases_reported": 0
+}

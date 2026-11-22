@@ -10,22 +10,24 @@ related-documents: [../operations/objectshard-lab-playtest.md, ../architecture/r
 
 # OBJECTSHARD-001 — compact moving material domains
 
-**001R finisher in progress, 22 November 2026:** owner Windows testing exposed
-component-admission starvation and late resting-body rotation. The
-[001R forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md)
-records verified original exports, controlled negative admission experiments and
-an actual Godot 4.7/Rapier reproduction of the owner's tick-970 hold. Its initial
-bridge repair is separately identified from the original M2 native runtime and
-from the later integrated candidate. M3 preparation and owner acceptance remain
-separate gates; the original native 10/74 timing-limit failure is retained.
+**001R finisher qualified as a Draft/HOLD evaluation candidate, 22 November 2026.**
+The [final finisher record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
+binds native/host source `514d76fb...`, corrected Windows package source
+`28be5a4a...`, actual Linux/Windows qualification, independent review and the
+verified delivered ZIP. It repairs component-admission starvation, late
+resting-body rotation, repeated-edit ownership, bounded motion progression and
+diagnostic/capture deficiencies. Ordinary Workbench defaults are unchanged.
 
-The [001R implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md)
-describes resumable component census and scarce-slot admission, source-owned
-moving cuts, actual bounded Rapier segments with native application receipts,
-one-opportunity external Fire contact, and prospective playtest capture. These
-are isolated Lab capabilities on the child branch, not ordinary Workbench
-defaults. The improved launcher and delivered-ZIP path matrix require their own
-exact-source Windows result; an earlier M2 package does not qualify these changes.
+The [forensic checkpoint](../audits/2026-11-22-objectshard-001r-forensics.md)
+preserves the original owner exports and controlled negative results. The
+[implementation checkpoint](../audits/2026-11-22-objectshard-001r-repairs.md)
+explains resumable component census, size/age admission, source-owned moving
+cuts, native-applied Rapier segments and one-opportunity external Fire contact.
+The [native performance record](../audits/2026-11-22-objectshard-001r-native-performance.md)
+retains the original M2 10/74 timing failures and the repaired finisher's earlier
+14/74 memory failures. Final same-host source passes 74/74; no general frame-rate
+improvement is claimed. M3 executable preparation and owner physical acceptance
+remain separately qualified gates.
 
 Status: M0–M2 implemented and delivered as staged Draft/HOLD research, with an
 exact-source Windows evaluator. The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)

@@ -1,0 +1,5 @@
+FAIL 16: CoordinatorTestAccess::ingress_fences(c)==1
+FAIL 21: c.registry().find(h)->counts().cargo==0
+refusal=Capacity fences=0 pose_x=29.000 original_x=29.000
+cargo=1 fences=0
+32 checks, 2 failures

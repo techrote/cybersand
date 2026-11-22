@@ -1,0 +1,8 @@
+FAIL 15: result.outcome==Outcome::Capacity
+FAIL 15: c.snapshot().bodies[0].pose.x==pose.x
+FAIL 16: CoordinatorTestAccess::ingress_fences(c)==1
+Population imbalance material 3: actual 0, accounted 1
+FAIL 139: balanced
+refusal=Accepted fences=0 pose_x=31.000 original_x=29.000
+cargo=0 fences=0
+32 checks, 4 failures

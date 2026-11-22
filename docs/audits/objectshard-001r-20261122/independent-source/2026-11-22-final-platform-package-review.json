@@ -1,0 +1,299 @@
+{
+  "schema": "objectshard-independent-final-package-review-v1",
+  "review_date": "2026-11-22",
+  "reviewer": "independent osr_final_review",
+  "source_commit": "28be5a4a8a023d466e642afaca767c0224de1ba3",
+  "native_source_checkpoint": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "zip_sha256": "c6a4d79e95295e91228d161591554136dec6d73438f184ab1e48ebfc507e83d4",
+  "zip_bytes": 93056059,
+  "evidence_archive_sha256": "9738a2dd8560e008d85f37b89bc758d90c9d5c3a6d9c87d6cd9e097d4c499ed2",
+  "runtime_source_subtrees_equal": {
+    "native": "86f4996cdfbbed01624d33115a64bd888af25f3a",
+    "godot": "117cf90dcadc52b2b2a3de01b3935d9b88550008"
+  },
+  "qualification": {
+    "windows-lab": {
+      "cases": [
+        {
+          "name": "objectshard_import",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "ad3b3b4157096c4df3abb64416b9a845ca4f2d078ae693f5799ea2c315867867"
+        },
+        {
+          "name": "test_rapier_manual_step",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4"
+        },
+        {
+          "name": "test_material_lab_experiment",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6"
+        },
+        {
+          "name": "objectshard_bridge",
+          "status": "passed",
+          "checks": 28,
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6"
+        },
+        {
+          "name": "objectshard_lab",
+          "status": "passed",
+          "checks": 379,
+          "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760"
+        },
+        {
+          "name": "objectshard_capture",
+          "status": "passed",
+          "checks": 20,
+          "log_sha256": "af07b42fc7db75183356ef511567c3b489e1245ae616b5f2351fad8ae055ae83"
+        },
+        {
+          "name": "objectshard_motion_segments",
+          "status": "passed",
+          "checks": 47,
+          "log_sha256": "3b7b7a5ac0cc95751cd371864b148b7ab9d76d514f432b3627cd4bb883ccacea"
+        },
+        {
+          "name": "objectshard_rest_contacts",
+          "status": "passed",
+          "checks": 34,
+          "log_sha256": "08f0d08772731285081abe2a92c7c0fdffa28abea7d35ea15969780e9131aa7b"
+        },
+        {
+          "name": "objectshard_boundary",
+          "status": "passed",
+          "checks": 42,
+          "log_sha256": "8a46bf07d2ac097817e6cb71d249b0ad8696da3c4a80ffceaa33bf65eee06260"
+        },
+        {
+          "name": "objectshard_playability",
+          "status": "passed",
+          "checks": 33,
+          "log_sha256": "f8773c8aab33a0027fb16c348c2271cd1d580a5b76986e2dc01521cec193c2dd"
+        },
+        {
+          "name": "objectshard_action_replay",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "939899fd28d9a7371bc4e852ff84c43fff26bb4bfbabd17edda3fca2b20796fa"
+        },
+        {
+          "name": "objectshard_rest_erode",
+          "status": "passed",
+          "checks": 27,
+          "log_sha256": "34861f1415465b599de4c569f2a5491b2261682512ba729ec6e4c19aec281bdd"
+        },
+        {
+          "name": "objectshard_rest_replace_identical",
+          "status": "passed",
+          "checks": 27,
+          "log_sha256": "ada014fba07f8ceb8a2e8c2f6666043c98b6fc9d1f1b1d8e3ffe08c6180a7d20"
+        },
+        {
+          "name": "objectshard_rest_mass_only",
+          "status": "passed",
+          "checks": 27,
+          "log_sha256": "3ad9d2cbd77c2f9a5f6bca5dbdbc45f58319222d8173fde13e8da01563ebb2d7"
+        },
+        {
+          "name": "objectshard_owner_d",
+          "status": "passed",
+          "checks": 17,
+          "log_sha256": "401cb4a4e5b4d6626cc447873db1e4e3ee013dd4458482d82f4f999b606f3bd7"
+        },
+        {
+          "name": "objectshard_render",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "9066c15ef09ba839869585bbb82212498bb195363b27fb5b8aa7c59d431a4b0f"
+        },
+        {
+          "name": "objectshard_finisher_render",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "324721c911a9e0023f452b75fc495d4499ddcdbd8c14138a936489fffda5e3f0"
+        },
+        {
+          "name": "objectshard_profile_headless",
+          "status": "passed",
+          "checks": 719,
+          "log_sha256": "7e57e88c173bab1a635eaf4bb77a4d012ef0416e5581e3bc740747a0a8242739"
+        },
+        {
+          "name": "objectshard_profile_rendered",
+          "status": "passed",
+          "checks": 719,
+          "log_sha256": "f97e464dffe33bb9742b4778f8882c741eb827ad54f9bbb668e3a1f7e353df4a"
+        }
+      ],
+      "source_input_counts": {
+        "native_source_inputs": 116,
+        "lab_source_inputs": 26,
+        "qualification_tool_inputs": 18
+      }
+    },
+    "package-replay": {
+      "cases": [
+        {
+          "name": "objectshard_import",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59"
+        },
+        {
+          "name": "test_rapier_manual_step",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4"
+        },
+        {
+          "name": "test_material_lab_experiment",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6"
+        },
+        {
+          "name": "objectshard_bridge",
+          "status": "passed",
+          "checks": 28,
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6"
+        },
+        {
+          "name": "objectshard_lab",
+          "status": "passed",
+          "checks": 379,
+          "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760"
+        },
+        {
+          "name": "objectshard_capture",
+          "status": "passed",
+          "checks": 20,
+          "log_sha256": "af07b42fc7db75183356ef511567c3b489e1245ae616b5f2351fad8ae055ae83"
+        },
+        {
+          "name": "objectshard_motion_segments",
+          "status": "passed",
+          "checks": 47,
+          "log_sha256": "3b7b7a5ac0cc95751cd371864b148b7ab9d76d514f432b3627cd4bb883ccacea"
+        },
+        {
+          "name": "objectshard_rest_contacts",
+          "status": "passed",
+          "checks": 34,
+          "log_sha256": "08f0d08772731285081abe2a92c7c0fdffa28abea7d35ea15969780e9131aa7b"
+        },
+        {
+          "name": "objectshard_boundary",
+          "status": "passed",
+          "checks": 42,
+          "log_sha256": "8a46bf07d2ac097817e6cb71d249b0ad8696da3c4a80ffceaa33bf65eee06260"
+        },
+        {
+          "name": "objectshard_playability",
+          "status": "passed",
+          "checks": 33,
+          "log_sha256": "f8773c8aab33a0027fb16c348c2271cd1d580a5b76986e2dc01521cec193c2dd"
+        },
+        {
+          "name": "objectshard_action_replay",
+          "status": "passed",
+          "checks": null,
+          "log_sha256": "939899fd28d9a7371bc4e852ff84c43fff26bb4bfbabd17edda3fca2b20796fa"
+        },
+        {
+          "name": "objectshard_rest_erode",
+          "status": "passed",
+          "checks": 27,
+          "log_sha256": "4d43e7c951b78e1e1431d7397e023c8a036be44a89b8ccd60abf68f31ab3e2da"
+        },
+        {
+          "name": "objectshard_rest_replace_identical",
+          "status": "passed",
+          "checks": 27,
+          "log_sha256": "3445c816e3bef0a21a29de44c245d02db2e1f9ea31d6a0a45e27a8c59c6c4c62"
+        },
+        {
+          "name": "objectshard_rest_mass_only",
+          "status": "passed",
+          "checks": 27,
+          "log_sha256": "55b8abcf47fb7df6ac79bb076d03737ab4a7c4d640ceaf139c19ff78a97a5b11"
+        },
+        {
+          "name": "objectshard_owner_d",
+          "status": "passed",
+          "checks": 17,
+          "log_sha256": "844b5ef5f13f362bf1c2b4d2b905684f521647c8ef538a037e30803e2eb3a31d"
+        }
+      ],
+      "source_input_counts": {
+        "native_source_inputs": 116,
+        "lab_source_inputs": 26,
+        "qualification_tool_inputs": 18
+      }
+    }
+  },
+  "failures": [],
+  "source_tree": "d734a7acd6429fe1182d856a78f49efd36d99758",
+  "manifest_sha256": "a999a3354321d4f0d23a5fb84bd88f1535d5cbfab3b6f9b642e8da670c32bd10",
+  "manifest_files_verified": 1073,
+  "native_source_inputs_verified": 116,
+  "native_dll_sha256": "bcf74222e97f4714f1c2ce4fbb083f577e5a5e1fac2b80ed662e9ec8a13489a2",
+  "godot": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "archive_size": 83764371,
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "rapier": {
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "provenance_sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0",
+    "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "launcher_paths": [
+    {
+      "case": "spaces",
+      "characters": 71,
+      "checks": 6,
+      "failures": 0
+    },
+    {
+      "case": "parentheses",
+      "characters": 56,
+      "checks": 6,
+      "failures": 0
+    },
+    {
+      "case": "nested",
+      "characters": 124,
+      "checks": 6,
+      "failures": 0
+    },
+    {
+      "case": "unicode",
+      "characters": 54,
+      "checks": 6,
+      "failures": 0
+    }
+  ],
+  "verifier_adversaries": {
+    "get_file_hash_shadow_exit_code": 0,
+    "tamper_exit_code": 1,
+    "tamper_path": "READ-ME.md",
+    "specific_hash_failure_observed": true,
+    "restored_sha256": "d140a0c1dd0454da9f16e555734a2a719e96c68961150b4fed59da14ae648a72",
+    "after_restoration_inventory_verified": true,
+    "scope": "Unchanged delivered ZIP; explicit adversarial extraction restored and fully reverified"
+  },
+  "verdict": "APPROVE retained 001R ZIP for Draft/HOLD owner evaluation; no unresolved Class A/B package or source-custody finding",
+  "limits": [
+    "Independent reviewer recomputed package and evidence hashes and inspected actual hosted receipts/logs; did not personally operate a Windows 11/NVIDIA PC.",
+    "Windows graphical runner used ANGLE/Microsoft Basic Render Driver; no GPU performance or owner physical acceptance claim.",
+    "Nested path probe root is 124 characters; it is not a proof of every Windows long-path configuration.",
+    "Original M2 10/74 timing failures, intermediate f11 memory failures, and f480 CP1252 console failure remain historical results.",
+    "No merge, Ready promotion, release, or production-default authorization is implied."
+  ]
+}

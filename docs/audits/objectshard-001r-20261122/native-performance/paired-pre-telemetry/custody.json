@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "sha256": {
+    "01-control.json": "7cec03ce57419634d2eab38bb4a2026e62e2ab0fb3d6c1de13fed6968e17d2e6",
+    "02-candidate.json": "88f5ec68653e7347943ebcf3c5093ea242a2962233c02368de467da7e3fef60b",
+    "03-candidate.json": "23fbc724d3de1a557773edf99fb09c29a37ac43f7e3c8645f6999e8099a9f0c7",
+    "04-control.json": "fc5f4497d8c83dbfdcba5f4bd6f5958d0c1116472472bac9b4981a2355ee60e0",
+    "05-control.json": "7bc510b8596164d436dcab3129e1680d28c75b4a96af1d66ffed645bc7794628",
+    "06-candidate.json": "02edd19e6eb9d6ef72f75a6268f4373892daf4c761111f550cce57b9ea0c803f",
+    "comparison.json": "5c31d566d6671cd6a0fd28e16dc4554fffbfbbd5223d6a0306daff498fa0e64f",
+    "completion.json": "fe0c712c5ad8bfae12e2582c116c218168477db588ce9ddd8073447ea6c031ff",
+    "plan.json": "7f53ab59c691d7227e4ee42b0642344d7e61b4125d435a031c42141c4e31fef4",
+    "run-paired-matrix.py": "3ddb246ddc6edcc88adc5aa9fcd3b1c7ecbc3748f5b85aae556e1b819a83c4b2",
+    "runs.json": "5b91b807d043bb8ec1bf957b890cc5c6075c80f02229ab03633193f88ab7c98a"
+  }
+}
