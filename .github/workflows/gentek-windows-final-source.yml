@@ -97,29 +97,6 @@ jobs:
           timeout 3600 bash "$RUNNER_TEMP/architecture-immutable-base/tools/build_native_extension_windows.sh" > evidence/build-immutable-base.log 2>&1 || { tail -160 evidence/build-immutable-base.log; exit 1; }
           python3 "$RUNNER_TEMP/architecture-immutable-base/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/architecture-windows-base" --create
           sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a" > evidence/shared-godot-cpp.sha256
-      - name: Bind cross-compiled Windows binary to pinned compiler and source
-        if: github.event_name == 'push'
-        run: |
-          set -euo pipefail
-          {
-            echo "Ubuntu 24.04 cross-target Windows x86_64; godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
-            "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++" --version | head -n 1
-            echo "LLVM-MinGW archive SHA-256=$LLVM_MINGW_SHA256"
-            find "$RUNNER_TEMP/godot-cpp/bin" -maxdepth 1 -name 'libgodot-cpp*.a' -exec sha256sum '{}' ';'
-            sha256sum build/architecture-windows/cybersand_native.windows.x86_64.dll
-          } > evidence/native-publisher-toolchain.txt
-          python3 tools/ci/gentek80_water_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform windows \
-            --bundle build/gentek80-publish-windows \
-            --runtime build/architecture-windows/cybersand_native.windows.x86_64.dll \
-            --toolchain evidence/native-publisher-toolchain.txt
-      - name: Retain Windows source-bound prepublication custody
-        if: github.event_name == 'push'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: gentek80-prepublish-windows-${{ github.run_id }}
-          path: build/gentek80-publish-windows/
-          if-no-files-found: error
-          retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: architecture-windows-runtime-${{ github.run_id }}
@@ -161,12 +138,6 @@ jobs:
         with:
           name: architecture-windows-base-${{ github.run_id }}
           path: build/architecture-windows-base
-      - name: Restore independently recorded Windows build custody
-        if: github.event_name == 'push'
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: gentek80-prepublish-windows-${{ github.run_id }}
-          path: build/gentek80-publish-windows
       - name: Verify and install same-source native runtime and official Godot
         shell: pwsh
         run: |
@@ -279,7 +250,7 @@ jobs:
         run: |
           $zip = Get-ChildItem -Path build -File -Filter 'CyberSand-Gentek80-Windows-*.zip' | Select-Object -First 1
           if (-not $zip) { throw 'Original owner ZIP not produced' }
-          $publishedHash = ((Get-Content -LiteralPath ($zip.FullName + '.sha256') -Raw).Trim() -split '\\s+')[0]
+          $publishedHash = ((Get-Content -LiteralPath ($zip.FullName + '.sha256') -Raw).Trim() -split '\s+')[0]
           $kit = 'tools/acceptance/gentek80_owner.ps1'
           $out = Join-Path $env:RUNNER_TEMP 'Gentek (本地) spaces/owner'
           & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $kit -Action VerifyArchive -ArchivePath $zip.FullName -ExpectedArchiveSha256 $publishedHash
