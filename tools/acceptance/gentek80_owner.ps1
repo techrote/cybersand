@@ -300,11 +300,6 @@ switch($Action){
    $gui=Safe-Path $x.root 'Godot_v4.7-stable_win64.exe'
    $console=Safe-Path $x.root 'Godot_v4.7-stable_win64_console.exe'
    $project=Safe-Path $x.root 'godot'
-   $v=(& $console --version|Out-String).Trim()
-   if($LASTEXITCODE -ne 0 -or $v -cne $x.godot){throw "Wrong Godot binary/version: $v"}
-   & $console --headless --path $project --editor --quit
-   if($LASTEXITCODE -ne 0){throw 'Bundled Godot import failed, no GUI started'}
-   $null=Verify $x.root $ExpectedSource $ExpectedManifestSha256
    # Isolate only this evaluator's child processes. The stable source + native
    # identity makes two fresh launches reopen the same test starts without
    # reading or modifying another CyberSand user's ordinary save directory.
@@ -319,6 +314,11 @@ switch($Action){
    $env:LOCALAPPDATA=$local
    $env:APPDATA=$roaming
    $env:CYBERSAND_SOURCE_REVISION=$ExpectedSource
+   $v=(& $console --version|Out-String).Trim()
+   if($LASTEXITCODE -ne 0 -or $v -cne $x.godot){throw "Wrong Godot binary/version: $v"}
+   & $console --headless --path $project --editor --quit
+   if($LASTEXITCODE -ne 0){throw 'Bundled Godot import failed, no GUI started'}
+   $null=Verify $x.root $ExpectedSource $ExpectedManifestSha256
    Write-Output "ISOLATED OWNER PROFILE: $profileRoot (source/native matched)"
    $p=Start-Process -FilePath $gui -WorkingDirectory $x.root -ArgumentList @('--path',('"'+$project+'"'),'--','--workbench') -PassThru
    Write-Output "PACKAGED WORKBENCH STARTED: PID=$($p.Id); close this GUI to finish"

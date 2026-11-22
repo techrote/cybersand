@@ -182,6 +182,17 @@ class WindowsAdmission(unittest.TestCase):
         self.assertFalse(destination.exists(), "partial final candidate must be absent")
         self.assertEqual(list(destination.parent.glob(".gentek80-staging-*")), [])
 
+    def test_version_import_and_gui_use_isolated_owner_profile(self):
+        # No import or version probe may write to the caller's ordinary Godot
+        # user profile. This checks ordering without opening any real GUI.
+        body = (Path(__file__).resolve().parents[1] / "gentek80_owner.ps1").read_text(encoding="utf8")
+        launch = body.split(" 'Launch'{", 1)[1].split(" 'NewChecklist'{", 1)[0]
+        for setting in ("$env:APPDATA=$roaming", "$env:LOCALAPPDATA=$local",
+                        "$env:CYBERSAND_SOURCE_REVISION=$ExpectedSource"):
+            self.assertLess(launch.index(setting), launch.index("& $console --version"))
+            self.assertLess(launch.index(setting), launch.index("& $console --headless"))
+            self.assertLess(launch.index(setting), launch.index("Start-Process -FilePath $gui"))
+
     def test_independent_manifest_pin_rejects_self_consistent_tamper(self):
         mf = self.src / "candidate-manifest.json"
         external_pin = digest(mf.read_bytes())

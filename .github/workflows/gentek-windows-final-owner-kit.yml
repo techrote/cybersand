@@ -65,7 +65,7 @@ jobs:
         run: |
           python -m unittest discover -s tools/acceptance/tests -p test_gentek80_owner.py -v 2>&1 | Tee-Object evidence/windows-adversaries.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows admission adversaries failed' }
-          if (-not (Select-String -Path evidence/windows-adversaries.log -Pattern 'Ran 8 tests')) { throw 'Missing Windows test cases' }
+          if (-not (Select-String -Path evidence/windows-adversaries.log -Pattern 'Ran 9 tests')) { throw 'Missing Windows test cases' }
           if (Select-String -Path evidence/windows-adversaries.log -Pattern 'skipped|SKIP') { throw 'Windows admission cases were unexpectedly skipped' }
       - name: Preserve original hosted Windows outcome
         if: always()
