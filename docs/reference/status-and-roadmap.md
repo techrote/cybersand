@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## CI-OPT-003 worldgen showcase execution — 2026-11-21
+
+The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
+runs seven independent worldgen showcases through the existing two-job Make
+budget. All seven remain required before the nine principal tests. The original
+compiler flags, scientific fixtures, sixteen executables and sanitizer coverage
+remain. Raw per-showcase output is retained before grouped replay, including
+flushed partial output from hung or cancelled peers; source/run/attempt checks
+reject stale or incomplete log inventories. The
+dedicated CI-only PR records source-matched execution, controlled performance
+and independent review before any merge or turnaround claim.
+
 ## CI-OPT-003 soliding compilation reuse — 2026-11-21
 
 The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)

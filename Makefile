@@ -452,11 +452,25 @@ $(BUILD_DIR)/test_suspended_arcology: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) 
 $(BUILD_DIR)/test_suspended_arcology_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_suspended_arcology.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_suspended_arcology.cpp -o $@
 
-gentek-showcases-test: $(GENTEK_SHOWCASE_TEST_BINS)
-	@set -eu; for binary in $(GENTEK_SHOWCASE_TEST_BINS); do echo "Running $$binary"; "$$binary"; done
+# Independent no-argument suites share make's existing jobserver with builds.
+# Phony executions also run for warm binaries; every showcase must pass before
+# the nine ordered worldgen tests. Write raw output before grouped replay so a
+# watchdog kill retains flushed diagnostics even while make buffers the target.
+GENTEK_SHOWCASE_TEST_RUNS := $(addsuffix .run,$(GENTEK_SHOWCASE_TEST_BINS))
+GENTEK_SHOWCASE_SANITIZED_RUNS := $(addsuffix .run,$(GENTEK_SHOWCASE_SANITIZED_BINS))
+.PHONY: $(GENTEK_SHOWCASE_TEST_RUNS) $(GENTEK_SHOWCASE_SANITIZED_RUNS)
 
-gentek-showcases-sanitize: $(GENTEK_SHOWCASE_SANITIZED_BINS)
-	@set -eu; for binary in $(GENTEK_SHOWCASE_SANITIZED_BINS); do echo "Running sanitized $$binary"; ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$$binary"; done
+$(GENTEK_SHOWCASE_TEST_RUNS): %.run: %
+	@echo "Running $<"
+	@set -eu; log="$(BUILD_DIR)/worldgen-showcase-logs/$(notdir $<).log"; mkdir -p "$${log%/*}"; printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\n' "$${GITHUB_SHA:-unqualified}" "$${GITHUB_RUN_ID:-unqualified}" "$${GITHUB_RUN_ATTEMPT:-unqualified}" "$(notdir $<)" > "$$log"; status=0; "$<" >> "$$log" 2>&1 || status=$$?; capture=0; cat "$$log" || capture=$$?; if [ "$$status" -ne 0 ]; then exit "$$status"; fi; exit "$$capture"
+
+$(GENTEK_SHOWCASE_SANITIZED_RUNS): %.run: %
+	@echo "Running sanitized $<"
+	@set -eu; log="$(BUILD_DIR)/worldgen-showcase-logs/$(notdir $<).log"; mkdir -p "$${log%/*}"; printf 'source_sha=%s run_id=%s run_attempt=%s binary=%s\n' "$${GITHUB_SHA:-unqualified}" "$${GITHUB_RUN_ID:-unqualified}" "$${GITHUB_RUN_ATTEMPT:-unqualified}" "$(notdir $<)" > "$$log"; status=0; ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$<" >> "$$log" 2>&1 || status=$$?; capture=0; cat "$$log" || capture=$$?; if [ "$$status" -ne 0 ]; then exit "$$status"; fi; exit "$$capture"
+
+gentek-showcases-test: $(GENTEK_SHOWCASE_TEST_RUNS)
+
+gentek-showcases-sanitize: $(GENTEK_SHOWCASE_SANITIZED_RUNS)
 
 # Include every showcase-specific native test in the ordinary generation gate.
 worldgen-test: gentek-showcases-test

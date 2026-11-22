@@ -70,6 +70,9 @@ class NativeEvidenceTests(unittest.TestCase):
                 report = {"invocations": [{"name": "control", "stdout_sha256": gate.digest(b'{}\n'),
                                            "stderr_sha256": gate.digest(b"")}]}
                 outputs["physics-cli-validation/sanitized/results.json"] = json.dumps(report).encode()
+                outputs.update({name:(f"source_sha={self.source} run_id=1234 run_attempt=1 "
+                                      f"binary={Path(name).stem}\noriginal showcase stdout/stderr\n").encode()
+                                for name in gate.SHOWCASE_OUTPUTS})
             elif suite == "soliding-normal":
                 outputs = {name: b'{}\n' for name in gate.STAGE_OUTPUTS}
             for name, data in outputs.items():
@@ -293,6 +296,80 @@ class NativeEvidenceTests(unittest.TestCase):
         (path.parents[2] / name).unlink()
         path.write_text(json.dumps(receipt))
         self.assert_failed(self.verify(), "invocation output is absent or differs")
+
+    def reseal_worldgen_outputs(self):
+        path = self.receipts["worldgen"]
+        receipt = json.loads(path.read_text())
+        receipt["scientific_outputs"] = gate.scientific_inventory(path.parents[2])
+        path.write_text(json.dumps(receipt))
+
+    def test_exact_fourteen_showcase_logs_cannot_be_omitted_after_resealing(self):
+        self.assertEqual(len(gate.SHOWCASE_OUTPUTS), 14)
+        self.assertEqual(self.verify()["status"], "passed")
+        root = self.receipts["worldgen"].parents[2]
+        for name in sorted(gate.SHOWCASE_OUTPUTS):
+            with self.subTest(name=name):
+                path = root / name
+                original = path.read_bytes()
+                path.unlink()
+                self.reseal_worldgen_outputs()
+                self.assert_failed(self.verify(), "Required fourteen raw showcase logs")
+                path.write_bytes(original)
+                self.reseal_worldgen_outputs()
+
+    def test_resealed_stale_or_wrong_showcase_identity_and_empty_payload_are_rejected(self):
+        path = self.receipts["worldgen"].parents[2] / sorted(gate.SHOWCASE_OUTPUTS)[0]
+        original = path.read_bytes()
+        for before, after in ((self.source.encode(), b"c" * 40), (b"run_id=1234", b"run_id=9999"),
+                              (b"run_attempt=1", b"run_attempt=2"),
+                              (Path(path).stem.encode(), b"test_wrong_showcase"),
+                              (b"original showcase stdout/stderr\n", b"")):
+            with self.subTest(before=before):
+                path.write_bytes(original.replace(before, after))
+                self.reseal_worldgen_outputs()
+                self.assert_failed(self.verify(), "Showcase log source/run/attempt/binary identity differs")
+        path.write_bytes(original)
+        self.reseal_worldgen_outputs()
+
+    def test_resealed_extra_showcase_log_is_rejected(self):
+        root = self.receipts["worldgen"].parents[2]
+        extra = root / "worldgen-showcase-logs/test_unregistered.log"
+        extra.write_bytes((root / sorted(gate.SHOWCASE_OUTPUTS)[0]).read_bytes())
+        self.reseal_worldgen_outputs()
+        self.assert_failed(self.verify(), "Unexpected or missing worldgen scientific output")
+
+    def test_worldgen_verification_requires_explicit_context_not_reader_environment(self):
+        root = self.receipts["worldgen"].parents[2]
+        outputs = gate.scientific_inventory(root)
+        with mock.patch.dict(os.environ, {"GITHUB_SHA":self.source, "GITHUB_RUN_ID":"1234", "GITHUB_RUN_ATTEMPT":"1"}):
+            with self.assertRaisesRegex(ValueError, "requires explicit source/run/attempt"):
+                gate.validate_scientific_outputs(root, "worldgen", outputs)
+
+    def test_failed_worldgen_record_preserves_partial_raw_showcase_output(self):
+        output = self.root / "partial-native-parallel"
+        folder = output / "worldgen"
+        folder.mkdir(parents=True)
+        (folder / "run.log").write_bytes(b"grouped timeout output\n")
+        (folder / gate.EXIT_FILES["family"]).write_bytes(b"124\n")
+        (folder / gate.EXIT_FILES["log_capture"]).write_bytes(b"0\n")
+        name = sorted(gate.SHOWCASE_OUTPUTS)[0]
+        raw = b"partial flushed stdout\npartial flushed stderr\n"
+        path = output.parent / name
+        path.parent.mkdir(parents=True)
+        path.write_bytes(raw)
+        with mock.patch.object(gate, "source_identity", return_value=self.identity), \
+             mock.patch.dict(os.environ, {"RUNNER_OS":"Linux"}):
+            result = gate.record_shard(self.root, output, "worldgen", "failure", self.source, 1234, 1)
+        self.assertTrue(result["errors"])
+        self.assertEqual(result["scientific_outputs"][name], {"bytes":len(raw), "sha256":gate.digest(raw)})
+        self.assertEqual(path.read_bytes(), raw)
+
+    def test_workflow_always_uploads_the_original_raw_showcase_directory(self):
+        workflow = (gate.ROOT / ".github/workflows/native.yml").read_text()
+        upload = workflow.split("      - name: Preserve original family logs and scientific outputs\n", 1)[1]
+        upload = upload.split("\n  native:", 1)[0]
+        self.assertIn("        if: always()", upload)
+        self.assertIn("            build/worldgen-showcase-logs/", upload)
 
     def test_required_stage_outputs_cannot_be_removed_from_file_and_receipt(self):
         path = self.receipts["soliding-normal"]
