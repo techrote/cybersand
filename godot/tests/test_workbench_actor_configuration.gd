@@ -145,6 +145,7 @@ func run() -> void:
 	check(panel.stiffness.value == 350,"periodic diagnostics do not overwrite staged manipulation settings")
 	find_button(panel,"Apply manipulation settings").pressed.emit()
 	check(signals_seen.settings.stiffness == 350 and not signals_seen.settings.snap_enabled,"explicit Apply emits staged force and snapping settings")
+	check(panel._settings_dirty and panel.apply_info.text.contains("awaiting"),"signal emission alone does not acknowledge settings")
 	panel.tabs.current_tab = 3
 	await process_frame
 	panel.stiffness.get_line_edit().grab_focus()
@@ -153,18 +154,51 @@ func run() -> void:
 	check(panel.stiffness.get_line_edit().text == "425","focused numeric text survives periodic state refresh before commit")
 	find_button(panel,"Apply manipulation settings").pressed.emit()
 	check(signals_seen.settings.stiffness == 425,"Apply commits focused numeric text before emitting settings")
+	panel.set_sandbox_state({"settings":panel._staged_values("settings")})
+	check(not panel._settings_dirty and panel.apply_info.text.contains("Accepted"),"observed synchronous settings are accepted and clear only committed staging")
 	check(panel.tuning.mass_multiplier.editable and not panel.tuning.thrust_multiplier.editable,"physical tuning exposes only model-compatible settings")
 	panel.tuning.mass_multiplier.value = 1.25
 	panel.refresh()
 	check(panel.tuning.mass_multiplier.value == 1.25,"live refresh preserves staged actor tuning")
 	find_button(panel,"Apply actor tuning / restart").pressed.emit()
 	check(signals_seen.tuning[0] == 1 and signals_seen.tuning[1].mass_multiplier == 1.25,"actor tuning requests target selected identity with complete options")
+	check(panel._tuning_dirty,"emitted tuning signal does not clear staging")
+	wb.message = "Preparing physical tuning for #1 · controller restart."
+	panel.set_sandbox_state({"preparing":true})
+	check(panel.apply_info.text.contains("Pending"),"tuning owner preparation is pending, not installed")
+	wb.applied.actors[0]["options"] = signals_seen.tuning[1].duplicate(true)
+	panel.set_sandbox_state({"preparing":false})
+	panel.refresh()
+	check(not panel._tuning_dirty and panel.apply_info.text.contains("Accepted"),"tuning requires accepted actor options after preparation")
 	panel.stage_capacity_preset(64)
 	check(panel.logical_limit.value == 64 and panel.body_limit.value >= 512,"capacity preset stages independent budgets")
 	check(not signals_seen.has("capacity"),"capacity presets wait for explicit Apply")
 	panel.logical_limit.value = 137
 	find_button(panel,"Apply capacity").pressed.emit()
 	check(signals_seen.capacity.logical_limit == 137 and signals_seen.capacity.version == 1,"numeric capacity emits versioned nonpreset configuration")
+	check(panel._capacity_dirty,"capacity remains staged after emitted signal")
+	var admitted_capacity: Dictionary = signals_seen.capacity.duplicate(true)
+	wb.message = "Preparing capacity · 137 actors."
+	panel.set_sandbox_state({"preparing":true,"capacity":{"version":1,"logical_limit":64,"body_limit":256,"proxy_limit":300}})
+	check(panel._capacity_dirty and panel.apply_info.text.contains("Pending"),"asynchronous capacity not reported installed during preparation")
+	panel.set_sandbox_state({"preparing":false,"capacity":admitted_capacity})
+	check(not panel._capacity_dirty and panel.apply_info.text.contains("Accepted"),"capacity cleared only when the accepted limits match the proposal")
+	panel.logical_limit.value = 150
+	find_button(panel,"Apply capacity").pressed.emit()
+	var previous_capacity: Dictionary = signals_seen.capacity.duplicate(true)
+	panel.set_sandbox_state({"preparing":true,"capacity":admitted_capacity})
+	wb.message = "Refused · Unrelated tuning while capacity prepares."
+	panel.set_sandbox_state({"preparing":true,"capacity":admitted_capacity})
+	check(panel._apply_requests.capacity.phase == "pending",
+		"another Apply refusal cannot cancel an already-admitted capacity preparation")
+	wb.message = "Preparing capacity · 150 actors."
+	panel.logical_limit.value = 166
+	panel.set_sandbox_state({"preparing":false,"capacity":previous_capacity})
+	check(panel.logical_limit.value == 166 and panel._capacity_dirty and panel.apply_info.text.contains("newer"),"late first-request acceptance cannot replace newer typed capacity")
+	find_button(panel,"Apply capacity").pressed.emit()
+	panel.set_sandbox_state({"preparing":true})
+	panel.set_sandbox_state({"preparing":false,"capacity":signals_seen.capacity.duplicate(true)})
+	check(panel.logical_limit.value == 166 and not panel._capacity_dirty,"reapplying newer capacity accepts without lost updates")
 	panel.placement_x.value = 222.25
 	panel.placement_y.value = 333.5
 	panel.placement_angle.value = -45.25
@@ -172,6 +206,15 @@ func run() -> void:
 	check(panel.placement_x.value == 222.25,"live roster refresh preserves uncommitted precision values")
 	find_button(panel,"Apply authored placement (paused)").pressed.emit()
 	check(signals_seen.placement == [1,Vector2(222.25,333.5),-45.25],"authored placement request includes full precision and orientation")
+	check(panel._placement_dirty,"placement Apply remains staged before owner acknowledgement")
+	wb.message = "Preparing #1 placement once."
+	panel.set_sandbox_state({"preparing":true})
+	check(panel.apply_info.text.contains("Pending"),"placement preparation is not completed installation")
+	wb.applied.actors[0].spawn = [222.25,333.5]
+	wb.applied.actors[0].spawn_rotation_degrees = -45.25
+	panel.set_sandbox_state({"preparing":false})
+	panel.refresh()
+	check(not panel._placement_dirty and panel.apply_info.text.contains("Accepted"),"exact authored placement accepted with full position and angle precision")
 	panel.demo.select(1)
 	panel.demo_count.value = 64
 	find_button(panel,"Load playground").pressed.emit()
@@ -185,6 +228,40 @@ func run() -> void:
 	wb.placement_pose.rotation = 7.0*PI/4.0
 	panel._read_current_pose()
 	check(is_equal_approx(panel.placement_angle.value,-45.0),"current continuous body rotation is wrapped instead of clamped by the angle field")
+	# Controlled refusal cases: the real Workbench lifecycle is exercised by
+	# test_workbench_actor_configuration_native.gd, not inferred from these mocks.
+	panel.set_sandbox_state({"preparing":false,"capacity":{"version":1,"logical_limit":64,
+		"body_limit":128,"proxy_limit":128,"actors":64}})
+	wb.message = "Ready."
+	panel.capacity_requested.connect(func(value: Dictionary) -> void:
+		if int(value.logical_limit) < 64: wb.refuse("64 installed barrels exceed requested capacity."))
+	panel.logical_limit.value = 32
+	find_button(panel,"Apply capacity").pressed.emit()
+	panel.set_sandbox_state({"preparing":false,"capacity":{"version":1,"logical_limit":64,
+		"body_limit":128,"proxy_limit":128,"actors":64}})
+	panel.refresh()
+	check(panel.logical_limit.value == 32 and panel._capacity_dirty,"rejected 64-to-32 capacity stays visibly staged after refresh")
+	check(panel.apply_info.text.contains("Refused") and panel.apply_info.text.contains("retained"),"rejected capacity is visibly acknowledged as a refusal")
+	panel.tuning_requested.connect(func(_id: int,options: Dictionary) -> void:
+		if is_equal_approx(float(options.mass_multiplier),1.75): wb.refuse("Changed equipment topology requires Reset."))
+	panel.tuning.mass_multiplier.value = 1.75
+	find_button(panel,"Apply actor tuning / restart").pressed.emit()
+	panel.refresh()
+	check(panel.tuning.mass_multiplier.value == 1.75 and panel._tuning_dirty and panel.apply_info.text.contains("Refused"),
+		"denied physical tuning retains staged value and explicit topology refusal")
+	wb.applied.actors.append({"id":2,"model":"runner","spawn":[420.0,430.0],
+		"spawn_rotation_degrees":5.0,"options":{"mass_multiplier":2.0},
+		"control":Catalog.default_control("runner")})
+	panel.tuning.mass_multiplier.value = 1.8
+	find_button(panel,"Apply actor tuning / restart").pressed.emit()
+	panel.placement_x.value = 340.25
+	wb.select_instance(2)
+	panel.refresh()
+	check(panel._apply_requests.tuning.phase == "invalidated","pending first-actor Apply invalidates explicitly on inspection change")
+	check(panel.placement_x.value == 420.0 and panel.tuning.mass_multiplier.value == 2.0,
+		"staged fields from actor #1 never silently apply to inspected actor #2")
+	check(wb.pilot_transfers == 0 and wb.pause_calls == 0 and not wb.host.paused,
+		"refusals, pending acknowledgements and inspector switches never transfer pilot or pause Play")
 	panel.tabs.current_tab = 3
 	await process_frame
 	await process_frame

@@ -33,6 +33,7 @@ var tabs := TabContainer.new()
 var pages: Dictionary = {}
 var interaction_mode := OptionButton.new()
 var operation_info := Label.new()
+var apply_info := Label.new()
 var demo := OptionButton.new()
 var demo_count := SpinBox.new()
 var stiffness := SpinBox.new()
@@ -65,6 +66,9 @@ var _shown_id := -1
 var _shown_control: Dictionary = {}
 var _roster_key := ""
 var _issued: Dictionary = {}
+var _apply_requests: Dictionary = {}
+var _edit_versions := {"settings":0,"capacity":0,"tuning":0,"placement":0}
+var _last_apply_kind := ""
 
 
 func mount(workbench: Control) -> void:
@@ -97,6 +101,8 @@ func mount(workbench: Control) -> void:
 	column.add_child(pilot_info)
 	operation_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(operation_info)
+	apply_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(apply_info)
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(tabs)
 	for caption: String in ["Actors","Controllers","Equipment","Physics","Capacity","Diagnostics"]:
@@ -186,7 +192,7 @@ func _build_actors(column: Control) -> void:
 	wb._spin(row,"Y",placement_y,0,16384,0.25,0)
 	wb._spin(row,"Angle °",placement_angle,-180,180,0.25,0)
 	for field: SpinBox in [placement_x,placement_y,placement_angle]:
-		field.value_changed.connect(func(_value: float) -> void: _placement_dirty = true)
+		field.value_changed.connect(func(_value: float) -> void: _mark_dirty("placement"))
 	row = wb._row(column)
 	wb._button(row,"Apply authored placement (paused)",_apply_placement)
 	wb._button(row,"Read current pose",_read_current_pose)
@@ -268,8 +274,8 @@ func _build_physics(column: Control) -> void:
 	wb._spin(row,"Rotate step °",rotation_step,0.25,180,0.25,15)
 	wb._spin(row,"Fine move cells",fine_step,0.01,16,0.01,1)
 	for field: SpinBox in [stiffness,damping,max_force,grid_size,rotation_step,fine_step]:
-		field.value_changed.connect(func(_value: float) -> void: _settings_dirty = true)
-	snap.toggled.connect(func(_pressed: bool) -> void: _settings_dirty = true)
+		field.value_changed.connect(func(_value: float) -> void: _mark_dirty("settings"))
+	snap.toggled.connect(func(_pressed: bool) -> void: _mark_dirty("settings"))
 	row = wb._row(column)
 	wb._button(row,"Apply manipulation settings",_apply_settings)
 	_note(column,"Inspected actor tuning — changes prepare a replacement owner and restart controller/resource state. Model-incompatible controls are disabled. The shared material response law stays unchanged.")
@@ -280,7 +286,7 @@ func _build_physics(column: Control) -> void:
 		var field := SpinBox.new()
 		tuning[key] = field
 		wb._spin(row,key.replace("_multiplier"," ×").capitalize(),field,low,high,1.0 if key == "budget" else 0.01,Setup.DEFAULT_OPTIONS[key])
-		field.value_changed.connect(func(_value: float) -> void: _tuning_dirty = true)
+		field.value_changed.connect(func(_value: float) -> void: _mark_dirty("tuning"))
 	row = wb._row(column)
 	wb._button(row,"Apply actor tuning / restart",_apply_tuning)
 	_note(column,"Live Paint retains the existing Brush, Eraser and right-button erasing. Pause for Line, Rectangle, Fill, selection, Paste and Undo/Redo. Grab and Place own the pointer exclusively; close this window to interact with the canvas.")
@@ -294,7 +300,7 @@ func _build_capacity(column: Control) -> void:
 	wb._spin(row,"Response bodies",body_limit,1,4096,1,64)
 	wb._spin(row,"Native masks",proxy_limit,1,4096,1,64)
 	for field: SpinBox in [logical_limit,body_limit,proxy_limit]:
-		field.value_changed.connect(func(_value: float) -> void: _capacity_dirty = true)
+		field.value_changed.connect(func(_value: float) -> void: _mark_dirty("capacity"))
 	row = wb._row(column)
 	wb._label(row,"Stage preset")
 	for count: int in [16,32,64,128,256]:
@@ -320,32 +326,37 @@ func stage_capacity_preset(count: int) -> void:
 	logical_limit.value = count
 	body_limit.value = mini(int(body_limit.max_value),maxi(int(body_limit.value),count * Catalog.MAX_PARTS))
 	proxy_limit.value = mini(int(proxy_limit.max_value),maxi(int(proxy_limit.value),count * Catalog.MAX_PARTS))
-	_capacity_dirty = true
+	_mark_dirty("capacity")
 
 
 func _apply_settings() -> void:
-	manipulation_settings_requested.emit({"stiffness":stiffness.value,"damping":damping.value,
-		"max_force":max_force.value,"snap_enabled":snap.button_pressed,"grid_size":grid_size.value,
-		"rotation_step":rotation_step.value,"fine_step":fine_step.value})
-	_settings_dirty = false
+	var values := _staged_values("settings")
+	_begin_apply("settings",values)
+	manipulation_settings_requested.emit(values.duplicate(true))
+	_poll_apply("settings")
 
 
 func _apply_capacity() -> void:
-	capacity_requested.emit({"version":1,"logical_limit":int(logical_limit.value),"body_limit":int(body_limit.value),
-		"proxy_limit":int(proxy_limit.value)})
-	_capacity_dirty = false
+	var values := _staged_values("capacity")
+	_begin_apply("capacity",values)
+	capacity_requested.emit(values.duplicate(true))
+	_poll_apply("capacity")
 
 
 func _apply_tuning() -> void:
-	var options: Dictionary = {}
-	for key: String in tuning: options[key] = tuning[key].value
-	tuning_requested.emit(wb.selected_id(),options)
-	_tuning_dirty = false
+	var id: int = wb.selected_id()
+	var values := _staged_values("tuning")
+	_begin_apply("tuning",values,id)
+	tuning_requested.emit(id,values.duplicate(true))
+	_poll_apply("tuning")
 
 
 func _apply_placement() -> void:
-	placement_requested.emit(wb.selected_id(),Vector2(placement_x.value,placement_y.value),placement_angle.value)
-	_placement_dirty = false
+	var id: int = wb.selected_id()
+	var values := _staged_values("placement")
+	_begin_apply("placement",values,id)
+	placement_requested.emit(id,Vector2(values.x,values.y),float(values.angle))
+	_poll_apply("placement")
 
 
 func _read_current_pose() -> void:
@@ -357,13 +368,170 @@ func _read_current_pose() -> void:
 	placement_x.value = position.x
 	placement_y.value = position.y
 	placement_angle.value = wrapf(rad_to_deg(float(state.get("rotation",0.0))),-180.0,180.0)
-	_placement_dirty = true
+	_mark_dirty("placement")
 
 
 func _editing(fields: Array) -> bool:
 	for field: SpinBox in fields:
 		if field.get_line_edit().has_focus(): return true
 	return false
+
+
+func _mark_dirty(kind: String) -> void:
+	_edit_versions[kind] = int(_edit_versions[kind])+1
+	match kind:
+		"settings": _settings_dirty = true
+		"capacity": _capacity_dirty = true
+		"tuning": _tuning_dirty = true
+		"placement": _placement_dirty = true
+	if _last_apply_kind == kind:
+		apply_info.text = "%s · New values staged; Apply again to request them." % kind.capitalize()
+
+
+func _staged_values(kind: String) -> Dictionary:
+	match kind:
+		"settings":
+			return {"stiffness":stiffness.value,"damping":damping.value,
+				"max_force":max_force.value,"snap_enabled":snap.button_pressed,"grid_size":grid_size.value,
+				"rotation_step":rotation_step.value,"fine_step":fine_step.value}
+		"capacity":
+			return {"version":1,"logical_limit":int(logical_limit.value),"body_limit":int(body_limit.value),
+				"proxy_limit":int(proxy_limit.value)}
+		"tuning":
+			var options: Dictionary = {}
+			for key: String in tuning: options[key] = tuning[key].value
+			return options
+		"placement":
+			return {"x":placement_x.value,"y":placement_y.value,"angle":placement_angle.value}
+	return {}
+
+
+func _accepted_values(kind: String, state: Dictionary, id: int) -> Dictionary:
+	match kind:
+		"settings": return state.get("settings",{})
+		"capacity": return state.get("capacity",{})
+		"tuning", "placement":
+			var actor_data: Dictionary = wb.actor(wb.applied,id)
+			if actor_data.is_empty(): return {}
+			if kind == "tuning": return actor_data.get("options",Setup.DEFAULT_OPTIONS)
+			if not actor_data.has("spawn"): return {}
+			return {"x":float(actor_data.spawn[0]),"y":float(actor_data.spawn[1]),
+				"angle":float(actor_data.get("spawn_rotation_degrees",0.0))}
+	return {}
+
+
+func _same_values(expected: Dictionary, actual: Dictionary) -> bool:
+	if expected.is_empty(): return false
+	for key: String in expected:
+		if not actual.has(key): return false
+		var a: Variant = expected[key]
+		var b: Variant = actual[key]
+		if a is bool or b is bool:
+			if a != b: return false
+		elif (a is float or a is int) and (b is float or b is int):
+			if not is_equal_approx(float(a),float(b)): return false
+		elif a != b:
+			return false
+	return true
+
+
+func _owner_run_id() -> String:
+	if wb == null or wb.host == null or wb.host.physical_actor_session == null: return ""
+	return str(wb.host.physical_actor_session.run_id)
+
+
+func _begin_apply(kind: String, values: Dictionary, id: int = -1) -> void:
+	_last_apply_kind = kind
+	_apply_requests[kind] = {"values":values.duplicate(true),"actor_id":id,
+		"edit_version":int(_edit_versions[kind]),"phase":"issued","saw_preparing":false,
+		"run_id":_owner_run_id(),"message_before":str(wb.message)}
+	apply_info.text = "%s · Requested; awaiting actual adoption acknowledgement." % kind.capitalize()
+
+
+func _preparation_message_matches(kind: String, id: int, message: String) -> bool:
+	match kind:
+		"capacity": return message.begins_with("Preparing capacity")
+		"tuning": return message.begins_with("Preparing physical tuning for #%d" % id)
+		"placement": return message.begins_with("Preparing #%d placement" % id)
+	return false
+
+
+func _poll_apply(kind: String) -> void:
+	if wb.has_method("actor_sandbox_state"):
+		set_sandbox_state(wb.call("actor_sandbox_state"))
+	else:
+		_observe_apply(kind,_sandbox_state)
+
+
+func _focused_apply(kind: String) -> bool:
+	match kind:
+		"settings": return _editing([stiffness,damping,max_force,grid_size,rotation_step,fine_step])
+		"capacity": return _editing([logical_limit,body_limit,proxy_limit])
+		"tuning": return _editing(tuning.values())
+		"placement": return _editing([placement_x,placement_y,placement_angle])
+	return false
+
+
+func _clear_adopted_stage(kind: String, request: Dictionary) -> bool:
+	# An earlier acknowledgement must never erase an edit made while it was pending.
+	if int(request.edit_version) != int(_edit_versions[kind]) or _focused_apply(kind):
+		return false
+	if not _same_values(request.values,_staged_values(kind)): return false
+	match kind:
+		"settings": _settings_dirty = false
+		"capacity": _capacity_dirty = false
+		"tuning": _tuning_dirty = false
+		"placement": _placement_dirty = false
+	return true
+
+
+func _apply_feedback(kind: String, detail: String) -> void:
+	if _last_apply_kind == kind: apply_info.text = "%s · %s" % [kind.capitalize(),detail]
+
+
+func _observe_apply(kind: String, state: Dictionary) -> void:
+	if not _apply_requests.has(kind): return
+	var request: Dictionary = _apply_requests[kind]
+	if str(request.phase) in ["accepted","rejected","failed","invalidated"]: return
+	if kind in ["tuning","placement"] and int(request.actor_id) != wb.selected_id():
+		_last_apply_kind = kind
+		request.phase = "invalidated"
+		_apply_feedback(kind,"Inspection changed; request for #%d is not an acknowledgement for #%d. New actor fields are independent." % [int(request.actor_id),wb.selected_id()])
+		return
+	var message := str(wb.message)
+	# A second Apply can be synchronously refused while an unrelated owner
+	# transaction is already pending; only a request not yet admitted can
+	# receive that synchronous refusal. Later unrelated refusals cannot
+	# cancel a request whose own preparation has already started.
+	if not bool(request.saw_preparing) and message.begins_with("Refused") and message != str(request.message_before):
+		request.phase = "rejected"
+		_apply_feedback(kind,"%s · Proposed values retained." % message)
+		return
+	var pending := bool(state.get("preparing",false))
+	if pending and kind != "settings" and (\
+		bool(request.saw_preparing) or _preparation_message_matches(kind,int(request.actor_id),message)):
+		request.phase = "pending"
+		request.saw_preparing = true
+		_apply_feedback(kind,"Pending prepared-owner transaction; nothing installed yet.")
+		return
+	var accepted: Dictionary = _accepted_values(kind,state,int(request.actor_id))
+	var owner_changed := not str(request.run_id).is_empty() and not _owner_run_id().is_empty() and _owner_run_id() != str(request.run_id)
+	# Capacity/tuning/placement are asynchronous: matching old data alone is
+	# not a receipt. The corresponding owner preparation must have been observed.
+	var adopted := kind == "settings" or bool(request.saw_preparing)
+	if not pending and adopted and _same_values(request.values,accepted):
+		request.phase = "accepted"
+		var cleared := _clear_adopted_stage(kind,request)
+		_apply_feedback(kind,"Accepted in applied configuration." if cleared else "Previous Apply accepted; newer/focused edits remain staged.")
+		return
+	if bool(request.saw_preparing):
+		request.phase = "failed"
+		_apply_feedback(kind,"Owner did not adopt the proposal; staged values retained. "+message)
+	elif owner_changed:
+		request.phase = "invalidated"
+		_apply_feedback(kind,"Owner/session changed without matching adoption; staged values retained.")
+	else:
+		_apply_feedback(kind,"Issued; awaiting accepted configuration or a preparation receipt.")
 
 
 func set_sandbox_state(state: Dictionary) -> void:
@@ -398,6 +566,10 @@ func set_sandbox_state(state: Dictionary) -> void:
 		maxi(0,int(capacity.get("proxy_limit",0))-int(capacity.get("proxies",0)))]
 	capacity_limit_info.text = str(capacity.get("limit_reason","Budgets are checked before preparation; rejected changes keep the current world."))
 	diagnostics.text = JSON.stringify(_json(state),"  ")
+	_observe_apply("settings",state)
+	_observe_apply("capacity",state)
+	_observe_apply("tuning",state)
+	_observe_apply("placement",state)
 
 
 func _fill_models() -> void:
@@ -452,6 +624,12 @@ func refresh(force: bool = false) -> void:
 			instances.add_item("#%d · %s" % [a.id,Catalog.entry(a.model).get("name",a.model)],a.id)
 	instances.select(maxi(0,instances.get_item_index(inspected)))
 	var a: Dictionary = wb.actor(wb.applied,inspected)
+	if _tuning_id > 0 and _tuning_id != inspected and _tuning_dirty:
+		_last_apply_kind = "tuning"
+		_apply_feedback("tuning","Unapplied tuning for #%d was discarded when inspecting #%d." % [_tuning_id,inspected])
+	if _placement_id > 0 and _placement_id != inspected and _placement_dirty:
+		_last_apply_kind = "placement"
+		_apply_feedback("placement","Unapplied placement for #%d was discarded when inspecting #%d." % [_placement_id,inspected])
 	if _tuning_id != inspected or (not _tuning_dirty and not _editing(tuning.values())):
 		_tuning_id = inspected
 		var options: Dictionary = a.get("options",Setup.DEFAULT_OPTIONS)
@@ -470,6 +648,8 @@ func refresh(force: bool = false) -> void:
 		_placement_dirty = false
 	if wb.has_method("actor_sandbox_state"):
 		set_sandbox_state(wb.call("actor_sandbox_state"))
+	_observe_apply("tuning",_sandbox_state)
+	_observe_apply("placement",_sandbox_state)
 	if _shown_id != inspected:
 		_issued.clear()
 		observation.text = "No inspected actor." if a.is_empty() else ""
