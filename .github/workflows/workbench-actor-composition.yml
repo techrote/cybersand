@@ -188,7 +188,7 @@ jobs:
           python tools/ci/check_ci_provider_policy.py *> evidence/provider.log
           if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
           python tools/ci/run_workbench_actor_qualification.py install --platform windows --candidate build/actor-windows
           if ($LASTEXITCODE -ne 0) { throw 'Native candidate source/byte identity mismatch' }

@@ -142,6 +142,13 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             throw std::invalid_argument("Workbench inventory conversion intent must be boolean");
         const bool convert = options.get("workbench_convert_liquid_inventory",false);
         const bool retain = options.get("workbench_retain_cells",false);
+        const bool authoring_patch = options.has("workbench_authoring_patch");
+        Dictionary authoring_patch_receipt;
+        if (authoring_patch && (!workbench || !retain || convert || !adapter->workbench_ ||
+            options["workbench_authoring_patch"].get_type() != Variant::DICTIONARY ||
+            extent != adapter->extent_ || !rectangles.is_empty() || !water_fills.is_empty() ||
+            decoded.policy->policy_hash() != adapter->world_->liquid_solver_policy().policy_hash()))
+            throw std::invalid_argument("Authoring patch requires unchanged retained Workbench settings and no alternate terrain");
         // EXPLORE-001: copied GEN-007 play-plane bytes are construction-only.
         // Nothing in this input exposes a mutable World, or admits post-commit
         // chunk mutation. Edits are ordered starting-map marks, not live state.
@@ -275,6 +282,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (convert && (!changed_policy || intent != "exploratory"))
             throw std::invalid_argument("Explicit inventory conversion requires a retained workbench and changed liquid policy");
         const String rule = options.get("normalization", String());
+        if (authoring_patch && !rule.is_empty())
+            throw std::invalid_argument("Authoring patch may not normalize retained native quantities");
         if (!rule.is_empty() && rule != "water-normalize-v1")
             throw std::invalid_argument("Unknown normalization rule");
         const auto seed = static_cast<std::int64_t>(options.get("seed", std::int64_t{0}));
@@ -502,6 +511,19 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             else c.face_min_height = static_cast<std::int32_t>(value);
         }
 
+        if (authoring_patch) {
+            const auto retained_region = adapter->world_->simulation_region();
+            if (!retained_region || retained_region->x != region[0] || retained_region->y != region[1] ||
+                retained_region->width != region[2] || retained_region->height != region[3])
+                throw std::invalid_argument("Authoring patch may not change the retained simulation region");
+        }
+        if (authoring_patch &&
+            (!prepared_liquid_detail::workbench_same_authoring_physics(adapter->world_->config(), *config) ||
+             response != adapter->workbench_->response || window != adapter->simulation_window_enabled_ ||
+             static_cast<bool>(options.get("cadence_lod_enabled", false)) != adapter->cadence_lod_enabled_ ||
+             static_cast<bool>(options.get("liquid_surface_adhesion_enabled", true)) != adapter->liquid_surface_adhesion_enabled_))
+            throw std::invalid_argument("Authoring patch may not change the retained physical configuration");
+
         cybersand::normalization::FinalSetupInput input;
         if (default_demo) {
             // Resolve the same ordered native recipe before normalization. The
@@ -544,6 +566,10 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             input.setup.domain={0,0,static_cast<std::uint32_t>(extent.x),static_cast<std::uint32_t>(extent.y)};
             input.setup.seed=static_cast<std::uint64_t>(seed);
             prepared_liquid_detail::workbench_copy_retained_cells(*adapter->world_,input);
+            if (authoring_patch)
+                authoring_patch_receipt = prepared_liquid_detail::workbench_stage_authoring_patch(
+                    *adapter->world_, input, options["workbench_authoring_patch"], extent,
+                    adapter->liquid_policy_session_generation_, adapter->revision_);
         } else {
             // Resolve rectangle and nonzero-fill overwrite order once, before the
             // native normalization law sees any tuple. The dense four-lane staging
@@ -843,6 +869,16 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             CyberNativeCellWorld::rasterize_transform_in(*pending->world, extent, nullptr,
                 body.id, body.center, body.rotation, body.half_size);
 
+        if (authoring_patch) {
+            // Main may stage a fresh physical sample while native preparation
+            // waits. The source-mask check alone cannot certify that new sample.
+            const Dictionary patch = options["workbench_authoring_patch"];
+            const PackedInt32Array cells = patch["cells"];
+            for (std::int64_t i = 0; i < cells.size(); i += 3)
+                if (pending->world->transient_obstacle_at(cells[i], cells[i + 1]) != 0)
+                    throw std::invalid_argument("Authoring patch intersects the prepared physical owner");
+        }
+
         Dictionary conversion_receipt;
         if (retain) {
             const auto transfer = pending->world->inherit_workbench_liquid_state(*adapter->world_,
@@ -952,6 +988,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 pending->receipt["material_baseline_edit_count"] = generated_edits.size();
             }
             if (retain) pending->receipt["workbench_conversion"] = conversion_receipt;
+            if (authoring_patch) pending->receipt["workbench_authoring_patch"] = authoring_patch_receipt;
             pending->receipt["workbench_extent"] = extent;
             pending->receipt["workbench_initial_sample_sha256"] = pending->workbench_initial_digest;
         }
@@ -1071,6 +1108,17 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         return false;
     }
     auto pending = std::move(adapter->pending_liquid_world_); // One use, also on refusal.
+    if (pending->receipt.has("workbench_authoring_patch")) {
+        // The physical hash binds scheduling-core coverage, which can remain
+        // unchanged when the exact simulation rectangle moves within a core.
+        // An authoring patch was admitted against this exact retained region.
+        const auto region = adapter->world_->simulation_region();
+        if (!region || region->x != pending->origin.x || region->y != pending->origin.y ||
+            region->width != pending->size.x || region->height != pending->size.y) {
+            error_ = "Retained authoring simulation region changed after preparation";
+            return false;
+        }
+    }
     if (adapter->world_->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
         pending->retained_revision != adapter->revision_ || pending->retained_hash != adapter->world_->physical_state_hash() ||
         pending->retained_cadence != adapter->cadence_lod_enabled_ || pending->retained_window != adapter->simulation_window_enabled_) {

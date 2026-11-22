@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-20
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -52,6 +52,48 @@ extracted bytes, repeats the largest landscape's install/reopen there and runs
 the ordinary interactive Workbench launcher. Its success is Windows native
 process evidence; physical GPU/display feel and owner acceptance remain separate.
 Neither the workflow nor the packaging tool merges or promotes the Draft PR.
+
+## SWARM-004 native recovery and qualification — 2026-11-20
+
+The [experimental reciprocal contract](../systems/gentek-reciprocal-assembly.md)
+and [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+separate recovered known evidence from final source qualification. Keep both
+implementation PRs Draft/HOLD. The native grammar, solver, candidate policies
+and registered resource ceilings are unchanged by the recovery reporting fixes.
+
+From a clean committed source, use fresh output directories outside the repo:
+
+```bash
+python3 native/experiments/gentek_swarm/run_reciprocal.py \
+  --out /tmp/swarm004-known-evidence --build /tmp/swarm004-builds \
+  --qualification --sanitize
+```
+
+This rebuilds the focused native suites, repeats them under ASan/UBSan, reproduces
+frozen B171/C72 and E8/hard-only controls, retains every registered known case,
+runs both-direction counterfactual controls and audits/renders the native arrays.
+Leak checking is disabled under the retained host-instrumentation configuration;
+the receipt makes no leak pass claim. No Windows or Godot acceptance is inferred.
+All source inputs, commands, binary hashes and lossless raw evidence remain bound
+to the committed source. An unevaluated final closure is exported as unknown.
+
+Only after the committed source-input fingerprint matches
+`native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json`, open the registered
+holdouts with the already selected policy and same-seed controls:
+
+```bash
+python3 native/experiments/gentek_swarm/run_reciprocal.py \
+  --out /tmp/swarm004-holdout-evidence --build /tmp/swarm004-builds \
+  --lane holdout --selected-policy fixed_territory --qualification --sanitize \
+  --frozen-evidence /tmp/swarm004-known-evidence/frozen-controls/manifest.json
+```
+
+The reused B/C receipt must pass exact-source verification; E8/hard-only is
+reproduced again. Holdout seeds 19457/32771 do not permit parameter or policy
+tuning after opening. Changed source, dirty worktrees and existing nonempty
+evidence directories are refused. Native causal-control work has its own
+remaining-budget counterfactual or full frozen-peer execution and is excluded
+from the candidate's charged work totals.
 
 ## Source-built Windows candidate validation — 2026-11-08
 

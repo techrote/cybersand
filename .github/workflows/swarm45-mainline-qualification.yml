@@ -1,0 +1,257 @@
+name: SWARM-004/005 mainline bounded qualification
+
+# Explicit source-bound qualification while the integration remains Draft/HOLD.
+# Ordinary source pushes do not trigger this workflow. Nothing commits, pushes,
+# marks Ready, merges, or accepts the required physical owner playtest.
+on:
+  push:
+    branches: [integration/swarm004-005-mainline-20261121]
+    paths: ['.github/swarm45-mainline-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: swarm45-mainline-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  TARGET_SOURCE: ${{ github.sha }}
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  request:
+    name: Explicit frozen-source request and helper guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify request, source and no paid-provider routing
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/request
+          python3 tools/swarm45/run_request.py --output evidence/request/request.json
+          python3 -m unittest discover -s tools/swarm45 -p 'test_*.py' -v > evidence/request/helper-tests.log 2>&1
+          python3 -m unittest discover -s tools/ci -p 'test_swarm_runtime.py' -v > evidence/request/runtime-binding-tests.log 2>&1
+          python3 -m unittest discover -s tools/ci -p 'test_swarm_package.py' -v > evidence/request/runtime-package-tests.log 2>&1
+          python3 tools/swarm004/test_qualify_workbench.py > evidence/request/swarm004-helper-tests.log 2>&1
+          python3 tools/swarm005/test_qualify_workbench.py > evidence/request/swarm005-helper-tests.log 2>&1
+          python3 tools/ci/check_ci_provider_policy.py > evidence/request/provider.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-request-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/request/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux:
+    name: Linux full-source strict, sanitizers, graphical and known360
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Validate request and prepare compiler inputs
+        run: |
+          set -euo pipefail
+          python3 tools/swarm45/run_request.py --output evidence/linux-build/request.json
+          bash tools/swarm45/prepare_build.sh linux
+      - name: Build source-matched native payload once
+        run: python3 tools/swarm45/build_runtime.py --platform linux --output build/swarm45-linux --evidence evidence/linux-build
+      - name: Execute strict native, ASan/UBSan and fixed V3 request
+        run: python3 tools/swarm45/native_checks.py --runtime build/swarm45-linux --output evidence/linux-native
+      - name: Replay all360 revealed controls with full native JSON
+        run: python3 tools/swarm45/replay_known_controls.py --exe build/swarm45-linux/replay_swarm005_known --workers 2 --output evidence/known-controls
+      - name: Restore verified official graphical engine and Rapier
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          python3 tools/swarm45/stage_source.py --runtime build/swarm45-linux --output "$RUNNER_TEMP/swarm45-source"
+          echo "SWARM45_SOURCE_PROJECT=$RUNNER_TEMP/swarm45-source/godot" >> "$GITHUB_ENV"
+          curl -fL --retry 3 -o "$RUNNER_TEMP/swarm45-godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/swarm45-godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/swarm45-godot.zip" -d "$RUNNER_TEMP/swarm45-godot"
+          echo "GODOT_EXE=$RUNNER_TEMP/swarm45-godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Real graphical Generate Preview Apply Undo Save quit reopen
+        run: xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/swarm45/qualify_workbench.py --godot "$GODOT_EXE" --project "$SWARM45_SOURCE_PROJECT" --runtime build/swarm45-linux --output evidence/linux-source
+      - name: Accepted-main Paint Water Art Flatten and actors
+        run: xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/swarm45/accepted_main_smokes.py --godot "$GODOT_EXE" --project "$SWARM45_SOURCE_PROJECT" --runtime build/swarm45-linux --evidence evidence/linux-smokes
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm45-linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-linux/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-linux-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows_build:
+    name: Windows full-source cross build once
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Validate request and prepare pinned compiler
+        run: |
+          set -euo pipefail
+          python3 tools/swarm45/run_request.py --output evidence/windows-build/request.json
+          bash tools/swarm45/prepare_build.sh windows
+      - name: Build Windows adapter CLI process fixture and strict tests
+        run: python3 tools/swarm45/build_runtime.py --platform windows --output build/swarm45-windows --evidence evidence/windows-build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm45-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-windows-build-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows_source:
+    name: Actual Windows native and graphical source gates
+    needs: windows_build
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: swarm45-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-windows
+      - name: Verify request runtime and official engine
+        shell: pwsh
+        run: |
+          python tools/swarm45/run_request.py --output evidence/windows-source-request.json
+          if ($LASTEXITCODE -ne 0) { throw 'Request validation failed' }
+          & tools/swarm45/prepare_windows.ps1
+      - name: Execute all strict native tests on actual Windows
+        shell: pwsh
+        run: |
+          python tools/swarm45/native_checks.py --runtime build/swarm45-windows --output evidence/windows-native
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows native tests failed' }
+      - name: Source graphical authoring and lifecycle
+        shell: pwsh
+        run: |
+          python tools/swarm45/qualify_workbench.py --godot $env:GODOT_EXE --project $env:SWARM45_SOURCE_PROJECT --runtime build/swarm45-windows --output evidence/windows-source
+          if ($LASTEXITCODE -ne 0) { throw 'Source graphical qualification failed' }
+      - name: Accepted-main Paint Water Art Flatten and actors
+        shell: pwsh
+        run: |
+          python tools/swarm45/accepted_main_smokes.py --godot $env:GODOT_EXE --project $env:SWARM45_SOURCE_PROJECT --runtime build/swarm45-windows --evidence evidence/windows-smokes
+          if ($LASTEXITCODE -ne 0) { throw 'Accepted-main source smoke failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-windows-source-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows_package:
+    name: Real extracted Windows evaluator and accepted-main smokes
+    needs: windows_build
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: swarm45-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-windows
+      - name: Verify request and construct the licensed evaluator ZIP
+        shell: pwsh
+        run: |
+          python tools/swarm45/run_request.py --output evidence/windows-package-request.json
+          if ($LASTEXITCODE -ne 0) { throw 'Request validation failed' }
+          & tools/swarm45/prepare_windows.ps1 -Package
+      - name: Pristine extracted graphical authoring and lifecycle
+        shell: pwsh
+        run: |
+          python tools/swarm45/qualify_workbench.py --godot $env:SWARM45_PACKAGE_ENGINE --project (Join-Path $env:SWARM45_PACKAGE 'godot') --runtime build/swarm45-windows --package $env:SWARM45_PACKAGE --package-zip $env:SWARM45_PACKAGE_ZIP --output evidence/windows-package
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator graphical qualification failed' }
+      - name: Extracted evaluator Paint Water Art Flatten and actors
+        shell: pwsh
+        run: |
+          python tools/swarm45/accepted_main_smokes.py --godot $env:SWARM45_PACKAGE_ENGINE --project (Join-Path $env:SWARM45_PACKAGE 'godot') --runtime build/swarm45-windows --package $env:SWARM45_PACKAGE --evidence evidence/windows-package-smokes
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator accepted-main smoke failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-windows-package-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm45-owner-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/CyberSand-SWARM45-Draft-HOLD-Windows-*.zip
+            build/CyberSand-SWARM45-Draft-HOLD-Windows-*.zip.sha256
+          if-no-files-found: error
+          retention-days: 90
+
+  publication_candidate:
+    name: Verify every scoped gate and stage eight reviewable runtime paths
+    needs: [linux, windows_source, windows_package]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: swarm45-linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-linux
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: swarm45-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-windows
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: swarm45-*-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence
+          merge-multiple: true
+      - name: Revalidate and prepare manual publication candidate
+        run: |
+          set -euo pipefail
+          python3 tools/swarm45/run_request.py --output evidence/publication-request.json
+          python3 tools/swarm45/publication_candidate.py --linux-runtime build/swarm45-linux --windows-runtime build/swarm45-windows --evidence evidence --output build/swarm45-publication
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm45-runtime-publication-candidate-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-publication/
+          if-no-files-found: error
+          retention-days: 90

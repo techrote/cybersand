@@ -10,6 +10,31 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SWARM-004/005 mainline reconciliation — 2026-11-21
+
+The [dedicated integration runbook](swarm45-mainline-integration.md) binds accepted main `0f0161af` to frozen donors #692/#693/#696/#697/#700. The donor graph is imported through #700, preserving main's current authoring, actor and Water behavior. Original 004/005 holdouts are complete and negative; previously unopened wording below retains its 20 November checkpoint scope. New-source native, graphical, package, provenance, independent review and physical-owner acceptance are separate admission gates. Keep Draft/HOLD until all pass. The concurrent SWARM-006 source and evidence remain untouched.
+
+## SWARM-004 reciprocal assembly — 2026-11-20
+
+**Experimental implementation / Draft / HOLD:** owner-authorized [programme #687](https://github.com/techrote/cybersand/issues/687)
+continues the verified SWARM-003 parent `cd0de74b83a66b5408668f81c82d854db45479ce`.
+Read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md)
+and its machine-readable native preregistration. The [native recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+verifies the surviving V1 implementation and known corpus instead of treating
+historical progress prose as engineering completion. The frozen native selection
+is `fixed_territory`, two rounds; matched controls distinguish causal exchange
+from mask-driven nominal changes. Native source qualification and unopened
+registered holdouts precede the dependent Workbench acceptance record. The
+Workbench lane was initially audited at accepted main
+`7b03aa437561ec63e31fd09531171360ab60eeb4` and explicitly reconciles accepted
+Water main `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
+#684/#685 remain separate.
+The owner authorized both implementation stages, not merge or Ready promotion.
+Development two-sided geometry witnesses do not establish full hard closure,
+Windows graphical acceptance or physical stability. No final closure ledger
+means unknown requirements, never a zero-required success. Keep frozen B/C/E8
+evidence, registered holdouts, failed cases and exact-source receipts intact.
+
 ## Workbench Art traffic lifetime — 2026-11-20
 
 [Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the

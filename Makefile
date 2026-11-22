@@ -139,6 +139,27 @@ material-baseline-test: $(BUILD_DIR)/test_material_baseline
 material-baseline-sanitize: $(BUILD_DIR)/test_material_baseline_sanitized
 	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_material_baseline_sanitized
 
+# The experimental authoring patch is strict-warning checked independently;
+# unchanged simulation translation units retain the repository warning policy.
+.PHONY: workbench-authoring-patch-test workbench-authoring-patch-sanitize
+
+$(BUILD_DIR)/test_workbench_authoring_patch: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_authoring_patch.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -Werror -fsyntax-only native/tests/test_workbench_authoring_patch.cpp
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_workbench_authoring_patch.cpp -o $@
+
+$(BUILD_DIR)/test_workbench_authoring_patch_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_authoring_patch.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -Werror -fsyntax-only native/tests/test_workbench_authoring_patch.cpp
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_workbench_authoring_patch.cpp -o $@
+
+workbench-authoring-patch-test: $(BUILD_DIR)/test_workbench_authoring_patch
+	./$(BUILD_DIR)/test_workbench_authoring_patch
+
+workbench-authoring-patch-sanitize: $(BUILD_DIR)/test_workbench_authoring_patch_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_workbench_authoring_patch_sanitized
+
+$(BUILD_DIR)/workbench_process_fixture: native/tests/workbench_process_fixture.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -pthread -Werror $< -o $@
+
 .PHONY: physics-characterisation-test physics-characterisation-sanitize
 
 $(BUILD_DIR)/physics_characterisation: $(PHYSICS_CHARACTERISATION_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)

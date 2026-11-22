@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SWARM-004/005 mainline integration
+
+For the current donor map, source-identity correction, default-OFF Experimental controls, V1/V2/V3 compatibility, known-matrix replay and the reconstructed package's physical-owner gate, read the [integration runbook](../operations/swarm45-mainline-integration.md). [Focused questions](retrieval-questions-swarm45.json) are additive to the unchanged frozen set.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |
@@ -40,6 +44,18 @@ native preview co-existence, read the
 [integration research record](../operations/gentek-showcase-integration-001.md).
 This is an explicit research route, **not** a current-main architectural
 generator behaviour claim.
+
+## Reciprocal FRAMEWEAVER × MOSAIC construction
+
+For SWARM-004 component grammar, independent shared-zone revisions, retained hard
+obligations, Stone13 versus solid-bearing semantics, exact-source controls and
+separate Windows Workbench acceptance, read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md).
+It distinguishes nominal footprint revisions from matched offer causality,
+unknown closure from zero obligations, and the frozen fixed-territory selection
+from the original shared-territory hypothesis. The [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+retains the source identities, causal comparison and negative results.
+[Focused questions](retrieval-questions-swarm004.json) are an additive development
+set; the frozen retrieval questions are unchanged.
 
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
@@ -80,6 +96,16 @@ Donor manifests and source-specific historical galleries remain explicit researc
 references; only a current candidate's source-matched receipts qualify its runtime.
 
 ## Generated terrain in the playable workbench
+
+For SWARM-004 FRAMEWEAVER × MOSAIC reciprocal composition, finite territory and
+rounds, exact native-cell Apply, fresh inverse Undo and child cancellation, use
+the [experimental retained-patch contract](../architecture/experimental-workbench-authoring-patch.md).
+The [Windows owner guide](../operations/swarm004-workbench-playtest.md) separates
+Draft/HOLD implementation from required graphical and pristine-package
+qualification. Saved round/provenance sidecars are historical evidence; the
+ordinary starting map remains reconstruction authority. The
+[focused SWARM-004 questions](retrieval-questions-swarm004-workbench.json) are
+additive to the frozen retrieval evaluation.
 
 For shared baseline/edits/actors versus live session, Save versus Flatten,
 desktop/agent/remote convergence and the required combined regression, retrieve
