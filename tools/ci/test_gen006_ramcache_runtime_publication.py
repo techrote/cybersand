@@ -375,6 +375,12 @@ class QualificationGuards(unittest.TestCase):
 
 
     def test_windows_console_child_identity_is_source_bound(self):
+        # The producer also permits a direct Windows native process when the
+        # actual Godot PID equals the launched handle; prove both arrangements.
+        direct = valid_guard_fixture()
+        direct["platform"] = "windows"
+        direct["ramcache_recovery"]["platform"] = "nt"
+        profile.verify_ramcache(direct)
         value = valid_guard_fixture()
         value["platform"] = "windows"
         proof = value["ramcache_recovery"]
@@ -401,7 +407,15 @@ class QualificationGuards(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             profile.verify_ramcache(invalid)
         invalid = copy.deepcopy(value)
-        invalid["ramcache_recovery"]["rows"][1]["launcher_pid"] = invalid["ramcache_recovery"]["rows"][1]["pid"]
+        invalid["ramcache_recovery"]["rows"][1]["launcher_pid"] = 0
+        with self.assertRaises(RuntimeError):
+            profile.verify_ramcache(invalid)
+        invalid = copy.deepcopy(direct)
+        invalid["ramcache_recovery"]["rows"][0]["native_identity"]["native_pid"] += 1
+        with self.assertRaises(RuntimeError):
+            profile.verify_ramcache(invalid)
+        invalid = copy.deepcopy(direct)
+        invalid["ramcache_recovery"]["rows"][0]["native_identity"]["relationship"] = "windows-console-child"
         with self.assertRaises(RuntimeError):
             profile.verify_ramcache(invalid)
 

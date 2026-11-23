@@ -294,6 +294,34 @@ jobs:
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
           xvfb-run -a -s '-screen 0 1600x1000x24' python3 tools/ci/gen006_ramcache_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/gen006-ramcache-linux
+      - name: Source-exact Linux failed Save and Menu must refuse exit and permit healthy retry
+        run: |
+          set -euo pipefail
+          folder="$PWD/build/gen006-ramcache-exit-linux"
+          mkdir -p "$folder"
+          "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" --headless --path "$PWD/godot" --audio-driver Dummy \
+            --script res://tests/test_persistent_areas_workbench.gd -- \
+            "--persistent-profile=$folder/profile" "--persistent-evidence=$folder" \
+            --persistent-test-mode=exit_fault --persistent-start-paused >"$folder/engine.log" 2>&1 || { cat "$folder/engine.log"; exit 1; }
+          python3 - "$folder" <<'PY'
+          import json,pathlib,sys
+          d=pathlib.Path(sys.argv[1])
+          value=json.loads((d/'workbench-exit_fault.json').read_text(encoding='utf-8'))
+          log=(d/'engine.log').read_text(encoding='utf-8')
+          assert value.get('mode')=='exit_fault' and value.get('failures')==[] and value.get('assertions',0)>=16
+          assert value.get('graphical') is False
+          assert 'failure of real native Save during normal Save & Menu exit' in log
+          assert 'PERSISTENT_AREAS_WORKBENCH' in log and 'SCRIPT ERROR:' not in log
+          print('GEN006_RAMCACHE_SOURCE_EXACT_EXIT_FAULT_LINUX_PASS')
+          PY
+      - name: Retain source-exact Linux Save-failure refusal and recovery receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-exit-fault-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-exit-linux/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Record artifact attempt
         if: always()
         id: artifact
@@ -430,6 +458,33 @@ jobs:
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
           python tools/ci/gen006_ramcache_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen006-ramcache-windows
+      - name: Source-exact Windows failed Save and Menu must refuse exit and permit healthy retry
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $folder = Join-Path (Get-Location) 'build/gen006-ramcache-exit-windows'
+          New-Item -ItemType Directory -Path $folder -Force | Out-Null
+          $engine = Join-Path $env:RUNNER_TEMP 'godot-windows/Godot_v4.7-stable_win64_console.exe'
+          & $engine --headless --path godot --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- `
+            "--persistent-profile=$(Join-Path $folder 'profile')" "--persistent-evidence=$folder" `
+            '--persistent-test-mode=exit_fault' '--persistent-start-paused' *> (Join-Path $folder 'engine.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Source-exact native Save failure / exit refusal failed' }
+          $value = Get-Content (Join-Path $folder 'workbench-exit_fault.json') -Raw | ConvertFrom-Json
+          $log = Get-Content (Join-Path $folder 'engine.log') -Raw
+          if ($value.mode -ne 'exit_fault' -or $value.failures.Count -ne 0 -or $value.assertions -lt 16 -or $value.graphical `
+            -or !$log.Contains('failure of real native Save during normal Save & Menu exit') `
+            -or !$log.Contains('PERSISTENT_AREAS_WORKBENCH') -or $log.Contains('SCRIPT ERROR:')) {
+            throw 'Native Save & Menu did not prove refusal, live authority and healthy retry'
+          }
+          'GEN006_RAMCACHE_SOURCE_EXACT_EXIT_FAULT_WINDOWS_PASS'
+      - name: Retain source-exact Windows Save-failure refusal and recovery receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-exit-fault-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-exit-windows/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Stage pinned portable engine and signed VC runtime with notices
         shell: pwsh
         run: |

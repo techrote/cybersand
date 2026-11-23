@@ -373,11 +373,13 @@ def verify_recovery(parent: dict, proof: dict) -> None:
         phases = {"before_snapshot", "queued_dirty"} if phase == "queued_dirty" else {phase}
         native_identity = death.get("native_identity", {})
         launcher_pid = death.get("launcher_pid")
+        # The real Windows engine may run in the tracked launcher PID or a
+        # verified console-child PID. Both forms are admitted by the producer;
+        # the final verifier must apply that same exact, fail-closed contract.
         require(type(launcher_pid) is int and launcher_pid > 0
             and native_identity.get("native_pid") == death["pid"]
             and native_identity.get("launcher_pid") == launcher_pid
-            and ((platform == "posix" and native_identity.get("relationship") == "direct"
-                  and launcher_pid == death["pid"])
+            and ((native_identity.get("relationship") == "direct" and launcher_pid == death["pid"])
                  or (platform == "nt" and native_identity.get("relationship") == "windows-console-child"
                      and death["pid"] != launcher_pid and native_identity.get("parent_pid") == launcher_pid)),
             "Native process-death witness is not the tracked real engine process")
@@ -407,8 +409,7 @@ def verify_recovery(parent: dict, proof: dict) -> None:
             require(child.get("kind") == "fresh_process_recovery" and child["exit_code"] == 0
                 and child.get("observed_pid") == child["pid"] and child.get("expected_tick") == expected
                 and type(child.get("launcher_pid")) is int and child["launcher_pid"] > 0
-                and ((platform == "nt" and child["pid"] != child["launcher_pid"])
-                     or (platform == "posix" and child["pid"] == child["launcher_pid"]))
+                and (platform == "nt" or child["pid"] == child["launcher_pid"])
                 and child.get("checks", 0) >= 8 and child.get("session_id") == barrier["session_id"]
                 and re.fullmatch(r"[0-9a-f]{64}", str(child.get("native_sha256", ""))) is not None
                 and re.fullmatch(r"[0-9a-f]{16}", str(child.get("physical_hash", ""))) is not None
@@ -428,11 +429,9 @@ def verify_recovery(parent: dict, proof: dict) -> None:
             require(seed.get("ok") is True and seed.get("exit_code") == 0
                 and type(seed.get("pid")) is int and seed.get("pid") > 0
                 and type(seed.get("launcher_pid")) is int and seed.get("launcher_pid") > 0
-                and ((platform == "nt" and seed["pid"] != seed["launcher_pid"])
-                     or (platform == "posix" and seed["pid"] == seed["launcher_pid"]))
+                and (platform == "nt" or seed["pid"] == seed["launcher_pid"])
                 and type(baseline.get("launcher_pid")) is int
-                and ((platform == "nt" and baseline["pid"] != baseline["launcher_pid"])
-                     or (platform == "posix" and baseline["pid"] == baseline["launcher_pid"]))
+                and (platform == "nt" or baseline["pid"] == baseline["launcher_pid"])
                 and len({seed["pid"], baseline.get("pid"), death["pid"], first["pid"], repeat["pid"]}) == 5
                 and baseline.get("kind") == "fresh_process_recovery"
                 and baseline.get("session_id") == barrier["session_id"]

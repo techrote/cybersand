@@ -67,7 +67,7 @@ func operation_finished(label: String) -> bool:
 func run() -> void:
 	graphical = DisplayServer.get_name() != "headless"
 	phase("starting "+mode)
-	if not check(mode in ["write","reopen","crash","faults"],"known qualification mode"):
+	if not check(mode in ["write","reopen","crash","faults","exit_fault"],"known qualification mode"):
 		await _finish()
 		return
 	if not check(not output.is_empty(),"explicit evidence directory required"):
@@ -119,6 +119,7 @@ func run() -> void:
 		"reopen": await exercise_reopen()
 		"crash": await tagged_qualification("forced_transition_crash",exercise_crash)
 		"faults": await tagged_qualification("publication_faults",publication_fault_checks)
+		"exit_fault": await tagged_qualification("failed_normal_exit_save",exit_fault_checks)
 	await _finish()
 
 
@@ -526,6 +527,40 @@ func phase(label: String) -> void:
 	print("PERSISTENT_AREAS_TEST_PHASE ",JSON.stringify({"mode":mode,"phase":label,"msec":Time.get_ticks_msec()}))
 
 
+func exit_fault_checks() -> void:
+	phase("failure of real native Save during normal Save & Menu exit")
+	if not await until(settled,"ready before normal Save & Menu failure"): return
+	var revision := int(controller.manifest.revision)
+	var durable_clock: Dictionary = controller.clock.duplicate(true)
+	var active_id: String = str(controller.active_area)
+	var native_tick := int(worker.paint_state().tick)
+	var durable_hash: String = controller.manifest.areas[active_id].physical_hash
+	if not check(not controller._io_busy and not controller.busy,
+			"native Save & Menu fault starts with idle owner and storage"): return
+	controller._store.set_test_fault("before_publish")
+	if not check(controller.request_exit("launcher"),"Save & Menu attempts real durable publication"): return
+	if not await until(func() -> bool: return not controller.busy,
+			"actual Save & Menu publication failure reaches terminal acknowledgement"): return
+	if not check(not controller.last_result.get("ok",true) and controller.active_ready
+			and not controller._quarantined and current_scene==host
+			and controller.active_area==active_id,
+			"failed Save & Menu preserves same live native World, stays in editor and refuses exit"): return
+	if not check(int(controller.manifest.revision)==revision
+			and controller.clock==durable_clock
+			and int(worker.paint_state().tick)==native_tick
+			and controller.manifest.areas[active_id].physical_hash==durable_hash,
+			"failed Save & Menu retains durable generation, live native tick and full clock"): return
+	# Actual native read after failed Exit, not a self-reported UI status.
+	if not check((await native_materials(Rect2i(0,0,512,512))).has("materials"),
+			"same native World remains readable and editable after failed exit"): return
+	if not await save_current("healthy real Save after failed normal exit"): return
+	check(int(controller.manifest.revision)>revision and controller.active_ready
+		and int(worker.paint_state().tick)==native_tick
+		and controller.manifest.areas[active_id].physical_hash==durable_hash,
+		"successful retry durably acknowledges the original retained native authority")
+	# Normal scene-exit is exercised by _finish() after this method returns.
+
+
 func publication_fault_checks() -> void:
 	phase("unpublished checkpoint failure and retry")
 	if not await until(settled,"before publication fault cases"): return
@@ -565,8 +600,20 @@ func publication_fault_checks() -> void:
 	check(not controller.active_ready and controller._quarantined and controller._publication_uncertain \
 		and controller._force_profile_reopen and host.paused,
 		"ambiguous publication keeps the old live World paused and requires profile reopening")
-	check(int(worker.paint_state().tick)==native_before and int(controller.clock.game_ticks)==game_before,
-		"failed ACK neither resumes nor falsely advances the older live World/clock")
+	# COLD donor Ahead prepares an unadopted private candidate; its live source
+	# must remain at the old frontier. RAMCACHE resident Ahead advances the
+	# existing native owner *before* the failed durable ACK. All genuinely
+	# completed ticks MUST remain accounted, even while publication is
+	# quarantined and the older durable manifest is independently reconciled.
+	if controller._cache_open and controller._cache_configuration.enabled:
+		check(int(worker.paint_state().tick)==native_before+actual
+			and int(controller.clock.game_ticks)==game_before+actual
+			and int(controller.operation.native_ticks_executed)==actual,
+			"failed ACK retains exactly once all completed resident native ticks and their game-time debt")
+	else:
+		check(int(worker.paint_state().tick)==native_before
+			and int(controller.clock.game_ticks)==game_before,
+			"unadopted private candidate failed ACK leaves the original live World and clock unchanged")
 	var published: Dictionary = await controller._io("current_manifest",[])
 	if not check(published.has("areas") and int(published.clock.game_ticks)==game_before+actual,
 		"lost ACK fixture actually published the advanced checkpoint and matching accounted time"): return
