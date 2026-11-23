@@ -10,6 +10,7 @@ on:
       - 'docs/reference/retrieval-corpus.json'
       - 'godot/tools/qualify_gentek80_compositions.gd'
       - 'tools/architecture/gentek80_compositions.py'
+      - 'tools/architecture/gentek80_workbench.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -43,6 +44,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py tools/architecture/gentek80_compositions.py tools/acceptance/stage_gentek80_examples.py tools/acceptance/tests/test_stage_gentek80_examples.py
           python3 -m unittest discover -s tools/acceptance/tests -p test_stage_gentek80_examples.py -v
+          python3 -m unittest discover -s tools/acceptance/tests -p test_gentek80_workbench_process.py -v
           python3 tools/ci/test_gentek80_runtime_publication.py
           python3 tools/architecture/test_gentek80_reference_inputs.py
           python3 tools/ci/check_ci_provider_policy.py
