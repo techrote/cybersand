@@ -448,6 +448,19 @@ func _process(_delta: float) -> void:
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
 		if provider.active or capturing or executor.active or remaining_turns != 0: stop_all("Run time limit reached")
 		run_deadline_ms = 0
+	# Native receipts and model-turn chaining must continue even while Art is
+	# hidden. Handle them before skipping the window-only controls below.
+	if log_draw and not executor.active:
+		provider.log_event("native_result",executor.result)
+		log_draw = false
+		model_feedback(JSON.stringify(executor.result))
+	if remaining_turns == 0 and not provider.active and not capturing and not log_draw:
+		run_deadline_ms = 0
+	# Closing Art is Hide, not Stop. Keep HTTP/authoritative native work live,
+	# but avoid repeatedly rebuilding model controls, tooltips and status text
+	# while the model-mode window is invisible.
+	if not visible and input_mode.selected != 0:
+		return
 	draw.disabled = executor.active
 	var history_replaying: bool = wb.paint_editor != null and wb.paint_editor.history_replaying()
 	stop.disabled = not executor.active and not provider.active and not capturing \
@@ -469,12 +482,6 @@ func _process(_delta: float) -> void:
 	for control: Control in model_controls: control.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
 	input_mode.tooltip_text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
-	if log_draw and not executor.active:
-		provider.log_event("native_result",executor.result)
-		log_draw = false
-		model_feedback(JSON.stringify(executor.result))
-	if remaining_turns == 0 and not provider.active and not capturing and not log_draw:
-		run_deadline_ms = 0
 	var status_text := "Idle"
 	if provider.active: status_text = "Waiting for model · Stop available"
 	elif waiting_until_ms > Time.get_ticks_msec():
