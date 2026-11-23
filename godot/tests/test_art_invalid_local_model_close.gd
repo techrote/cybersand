@@ -1,4 +1,6 @@
 extends SceneTree
+class FocusHost extends "res://scripts/main.gd":
+	func _actor_window_has_focus() -> bool: return true
 ## #744: real localhost HTTP failure + X/Hide while request remains active.
 ## Uses the ordinary Workbench/Art panel and no paid, external, or model API.
 var checks := 0
@@ -20,7 +22,7 @@ func check(value: bool, label: String) -> void:
 	print("ART_INVALID_MODEL_CHECK ",label," ",value)
 
 func ready() -> bool:
-	return not wb.applied.is_empty() and not wb.busy() and not wb.paint_editor.busy() \
+	return wb != null and not wb.applied.is_empty() and not wb.busy() and not wb.paint_editor.busy() \
 		and host.pending_microscenario_apply.is_empty() and not host.simulation_worker.paint_state().busy
 
 func until(predicate: Callable, limit_ms: int = 15000) -> bool:
@@ -66,6 +68,7 @@ func serve_invalid_model(listener: TCPServer) -> void:
 func run() -> void:
 	root.size = Vector2i(1280,900)
 	host = load("res://main.tscn").instantiate()
+	host.set_script(FocusHost)
 	root.add_child(host)
 	wb = host.shared_workbench
 	if not await until(ready,60000):
