@@ -1023,6 +1023,19 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 			finished.emit(id,"",{},"Connection/timeout failure (%d). Check endpoint/server; inspect Traffic." % result)
 			return
 		if code < 200 or code >= 300:
+			# Preserve OpenAI 429 pacing and insufficient-quota refusal even
+			# though failed responses are not assistant/usage records.
+			if provider == "OpenAI" and code == 429:
+				var failure_parser := JSON.new()
+				var failure_data: Dictionary = {}
+				if failure_parser.parse(raw) == OK and failure_parser.data is Dictionary:
+					failure_data = failure_parser.data
+				var detail: Variant = failure_data.get("error",{})
+				var kind := str(detail.get("code","")) if detail is Dictionary else ""
+				if kind in ["insufficient_quota","credit_balance_exhausted","organization_spend_limit_exceeded","project_spend_limit_exceeded"]:
+					retry_after_seconds = 0.0
+				else:
+					retry_after_seconds = maxf(retry_after_seconds,quota_reset_seconds(headers))
 			# Full error bytes remain in the response event. Bound only the UI/
 			# conversation projection to avoid copying huge error bodies repeatedly.
 			var excerpt := raw.left(512).replace("\r"," ").replace("\n"," ")
