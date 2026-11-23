@@ -1,0 +1,29 @@
+name: ObjectShard M4 exact-source engineering snapshot
+on:
+  push:
+    branches:
+      - experiment/objectshard-m4-physical-completion-20261123
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preserve exact source for independent native and Godot qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p m4-snapshot
+          git rev-parse HEAD | tee m4-snapshot/HEAD
+          git ls-files -z native godot tools .github Makefile README.md | tar --null -czf m4-snapshot/cybersand-objectshard-m4-source.tar.gz -T -
+          sha256sum m4-snapshot/cybersand-objectshard-m4-source.tar.gz > m4-snapshot/SHA256SUMS
+          du -h m4-snapshot/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: objectshard-m4-source-${{ github.sha }}
+          path: m4-snapshot/
+          retention-days: 7
