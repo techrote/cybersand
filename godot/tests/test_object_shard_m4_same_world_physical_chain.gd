@@ -204,6 +204,17 @@ func _run() -> void:
                 "state_a":int(settled.states_a[target]),"state_b":int(settled.states_b[target]),
                 "temperature":int(settled.temperature[target])}}
         var erased: Dictionary = world.object_shard_erase_shard(request)
+        if not erased.get("ok", false):
+            # Retain exact native refusal evidence. Never retry a possibly
+            # executed edit or substitute a terrain brush.
+            print("M4_ERASE_FAILURE_EVIDENCE " + JSON.stringify({
+                "result": erased, "request": request,
+                "phase": settled.get("lifecycle", ""),
+                "native_applied_physics_revision": settled.get("applied_physics_revision", -1),
+                "native_geometry_revision": settled.get("geometry_revision", -1),
+                "geometry_pending": settled.get("geometry_pending", false),
+                "native_pose_serial": settled.get("pose_serial", -1),
+                "world_tick": world.get_tick_index()}))
         if expect(erased.get("ok",false),"real applied-pose moving Wood cell erased through native shard receipt"):
             expect(_wood_count()==8,"precisely one Wood cell removed, no other World inventory lost")
             var changed: Dictionary = _current_shard(id)

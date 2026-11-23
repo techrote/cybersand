@@ -359,11 +359,26 @@ Result Coordinator::erase_shard(const ShardEditRequest& r) {
     };
     if (paused()) return done(Outcome::Fenced,"material/physics installation barrier");
     auto* shard=registry_.find(r.shard);auto* b=body(r.shard);
-    if (!shard || !b || !b->has_body || shard->phase()!=Phase::Active || r.cell>=shard->area() ||
-        r.body_generation!=b->body_generation || r.geometry_revision!=shard->geometry().revision ||
-        r.geometry_revision!=shard->applied_physics_revision() || r.pose_serial!=b->pose.pose_serial ||
-        r.material_revision!=shard->material_revision() || r.incarnation!=shard->schedule(r.cell).incarnation ||
-        r.expected!=shard->payload(r.cell)) return done(Outcome::Stale,"shard erase identity/payload changed");
+    // Keep stale/refusal semantics; identify exactly which native witness
+    // failed instead of misclassifying an uncertain material edit.
+    if (!shard || !b || !b->has_body || shard->phase()!=Phase::Active)
+        return done(Outcome::Stale, "no active installed shard body");
+    if (r.cell>=shard->area())
+        return done(Outcome::Stale, "shard cell outside owned inventory");
+    if (r.body_generation!=b->body_generation)
+        return done(Outcome::Stale, "body incarnation changed");
+    if (r.geometry_revision!=shard->geometry().revision)
+        return done(Outcome::Stale, "native geometry revision changed");
+    if (r.geometry_revision!=shard->applied_physics_revision())
+        return done(Outcome::Stale, "geometry not acknowledged by Rapier");
+    if (r.pose_serial!=b->pose.pose_serial)
+        return done(Outcome::Stale, "native applied pose serial changed");
+    if (r.material_revision!=shard->material_revision())
+        return done(Outcome::Stale, "native material revision changed");
+    if (r.incarnation!=shard->schedule(r.cell).incarnation)
+        return done(Outcome::Stale, "cell incarnation changed");
+    if (r.expected!=shard->payload(r.cell))
+        return done(Outcome::Stale, "exact cell material/state/temperature changed");
     if (r.capability_version!=kCapabilityVersion || shard->role(r.cell)!=Role::Structural)
         return done(Outcome::Unsupported,"only explicitly owned structural cells admit erase");
     const auto tick=world_->completed_tick_index();
