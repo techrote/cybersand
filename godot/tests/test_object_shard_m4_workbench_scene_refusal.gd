@@ -70,7 +70,7 @@ func _run() -> void:
 	_expect(bench.object_shard_m4_port.enabled and host.object_shard_m4_probe.enabled,
 		"Both optional modules obey the owner-provided flag")
 	var capability: Dictionary = bench.object_shard_m4_status()
-	_expect(capability.get("outcome") == "SameWorldAdapterMissing" and
+	_expect(capability.get("outcome") == "CompetingOrUnattachedWorld" and
 		not capability.get("ready", true), "No fake same-World adapter is reported as ready")
 	_expect(host.paused, "Fresh ordinary Workbench remains paused before test input")
 	var before_revision: int = int(host.latest_snapshot.simulation_world_revision)
@@ -78,12 +78,12 @@ func _run() -> void:
 	_expect(not bool(brush_before.get("legacy_busy", true)),
 		"No ordinary brush is pending at the negative-input checkpoint")
 	_pointer(MOUSE_BUTTON_RIGHT, 5)
-	_expect(bench.message.contains("SameWorldAdapterMissing"),
+	_expect(bench.message.contains("CompetingOrUnattachedWorld"),
 		"Right-click M4 erase visibly refuses rather than invoking ordinary erase")
 	_expect(bench.object_shard_m4_port.pending_count() == 0,
 		"Refused moving erase never enters native queue")
 	_pointer(MOUSE_BUTTON_LEFT, 6)
-	_expect(bench.message.contains("SameWorldAdapterMissing"),
+	_expect(bench.message.contains("CompetingOrUnattachedWorld"),
 		"Left-click M4 ignite visibly refuses rather than emitting Fire")
 	_expect(bench.object_shard_m4_port.pending_count() == 0,
 		"Refused moving ignition never enters native queue")
@@ -110,7 +110,7 @@ func _run() -> void:
 	_expect(host.latest_snapshot.tick_index > before_live_tick and not worker.has_failed(),
 		"Real ordinary World advances a semantic tick while M4 seam is unavailable")
 	_pointer(MOUSE_BUTTON_RIGHT, 5)
-	_expect(bench.message.contains("SameWorldAdapterMissing") \
+	_expect(bench.message.contains("CompetingOrUnattachedWorld") \
 			and bench.object_shard_m4_port.pending_count() == 0,
 		"Running World refuses moving-cell edit without routing it into terrain")
 	_expect(not worker.paint_state().get("legacy_busy", true),
@@ -136,6 +136,6 @@ func _finish() -> void:
 	print(JSON.stringify({"schema": "objectshard-m4-ordinary-scene-refusal-v1",
 		"checks": checks, "failures": failures,
 		"actual_ordinary_native_world_used": true,
-		"same_world_mutation_integration": "BLOCKED_UNTIL_NATIVE_ADAPTER",
+		"same_world_mutation_integration": "NATIVE_ADAPTER_PRESENT_PHYSICS_UNBOUND",
 		"scope": "actual ordinary Workbench negative pointer routing; no body physics proven"}))
 	quit(1 if failures else 0)

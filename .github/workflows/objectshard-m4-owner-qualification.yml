@@ -118,6 +118,8 @@ jobs:
           cat evidence/m4-attached-godot.log
           xvfb-run --auto-servernum "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --headless --path godot --script res://tests/test_object_shard_m4_shared_main_rapier.gd > evidence/m4-shared-main-rapier.log 2>&1
           cat evidence/m4-shared-main-rapier.log
+          xvfb-run --auto-servernum "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --headless --path godot --script res://tests/test_object_shard_m4_same_world_physical_chain.gd > evidence/m4-sameworld-physical-chain.log 2>&1
+          cat evidence/m4-sameworld-physical-chain.log
       - name: Retain all Linux evidence including first failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -252,6 +254,9 @@ jobs:
           & $engine --headless --path godot --script res://tests/test_object_shard_m4_shared_main_rapier.gd *> evidence/windows-m4-shared-main-rapier.log
           if ($LASTEXITCODE -ne 0) { Get-Content evidence/windows-m4-shared-main-rapier.log; throw 'Actual Windows M4 Main-owned Rapier shared-space motion failed' }
           Get-Content evidence/windows-m4-shared-main-rapier.log
+          & $engine --headless --path godot --script res://tests/test_object_shard_m4_same_world_physical_chain.gd *> evidence/windows-m4-sameworld-physical-chain.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/windows-m4-sameworld-physical-chain.log; throw 'Actual Windows native World / Rapier physical chain failed' }
+          Get-Content evidence/windows-m4-sameworld-physical-chain.log
       - name: Stage licensed dependencies and source-bound owner package
         shell: pwsh
         run: |

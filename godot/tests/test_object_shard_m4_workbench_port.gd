@@ -49,7 +49,7 @@ func _run() -> void:
 		"Non-Workbench scenes cannot borrow an ObjectShard attachment")
 	snapshot.lab_context.workbench_gcr = {"response": "LA-SELECTIVE"}
 	var capability: Dictionary = port.interface_status(worker, snapshot)
-	_expect(not capability.ready and capability.outcome == "SameWorldAdapterMissing",
+	_expect(not capability.ready and capability.outcome == "CompetingOrUnattachedWorld",
 		"Current ordinary Workbench refuses an absent same-World native/worker interface")
 	_expect(worker._world == original_world and worker._world.get_instance_id() == original_world_instance,
 		"Refusal preserves the exact already-owned ordinary native World")
@@ -104,7 +104,7 @@ func _run() -> void:
 
 	var queued: Dictionary = port.queue_intent(worker, snapshot, uploaded, observed,
 		"erase", position, target, Time.get_ticks_usec())
-	_expect(not queued.ok and queued.outcome == "SameWorldAdapterMissing",
+	_expect(not queued.ok and queued.outcome == "CompetingOrUnattachedWorld",
 		"An edit cannot silently fall through to existing terrain painting")
 	_expect(port.pending_count() == 0 and worker._world == original_world,
 		"Failed moving-cell admission changes neither queue nor World")
@@ -169,6 +169,6 @@ func _run() -> void:
 	print(JSON.stringify({"schema": "objectshard-m4-workbench-contract-v1",
 		"checks": checks, "failures": failures,
 		"scope": "real ordinary worker identity, negative same-World admission and value-only witness validation",
-		"same_world_mutation_integration": "BLOCKED_UNTIL_NATIVE_ADAPTER",
+		"same_world_mutation_integration": "NATIVE_ADAPTER_PRESENT_PHYSICS_UNBOUND",
 		"real_physics_assertions": 0}))
 	quit(0 if failures == 0 else 1)

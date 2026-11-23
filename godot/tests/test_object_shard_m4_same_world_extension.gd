@@ -53,6 +53,7 @@ func _run() -> void:
     expect(world.get_instance_id() == identity, "Workbench facade instance not replaced")
     expect(world.has_method(&"object_shard_attach") and world.has_method(&"object_shard_status"),
         "owner-local same-World native methods actually registered")
+    expect(world.simulation_tick(),"ordinary World preattachment baseline tick")
     var before: int = world.get_tick_index()
     var attached: Dictionary = world.object_shard_attach(Rect2i(0, 0, 256, 256))
     expect(attached.get("ok", false), "owner-local coordinator attaches without private World")
