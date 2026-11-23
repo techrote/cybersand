@@ -67,6 +67,9 @@ func serve_invalid_model(listener: TCPServer) -> void:
 
 func run() -> void:
 	root.size = Vector2i(1280,900)
+	# Select the same ordinary Shared Workbench route as the established
+	# test_art_panel_ui suite; a bare main.tscn otherwise starts another mode.
+	set_meta("cybersand_feature","shared_workbench")
 	host = load("res://main.tscn").instantiate()
 	host.set_script(FocusHost)
 	root.add_child(host)
