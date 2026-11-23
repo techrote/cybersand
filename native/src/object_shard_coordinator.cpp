@@ -86,9 +86,15 @@ struct Coordinator::Receipt {
     std::array<std::uint64_t, 3> acknowledgements{};
 };
 
-Coordinator::Coordinator(Config config)
+Coordinator::Coordinator(Config config) : Coordinator(config, nullptr) {}
+
+Coordinator::Coordinator(World& attached_world, Config config)
+    : Coordinator(config, &attached_world) {}
+
+Coordinator::Coordinator(Config config, World* owner_world)
     : config_(config), session_(new_session()), world_incarnation_(session_),
       registry_(config.limits, session_, world_incarnation_), pending_(std::make_unique<Pending>()) {
+    attached_ = owner_world != nullptr;
     const auto area = config_.world_bounds.area();
     // Reject before halo arithmetic or floating point conversion. The Lab's
     // declared finite coordinate envelope also preserves exact cell centres.
@@ -119,18 +125,21 @@ Coordinator::Coordinator(Config config)
     const auto tiles = ((config_.world_bounds.width + 63U) / 64U) * ((config_.world_bounds.height + 63U) / 64U);
     pending_->terrain.reserve(tiles); terrain_.resize(tiles); terrain_scratch_.resize(4096);
     for (auto& tile : terrain_) tile.rectangles.reserve(4096);
-    initialize_world();
+    if (attached_) initialize_attached_world(*owner_world);
+    else initialize_world();
 }
 Coordinator::~Coordinator() = default;
 
 void Coordinator::initialize_world() {
+    if (attached_) throw std::logic_error("ordinary owner cannot initialize a second shard World");
     WorldConfig wc;
     wc.chunk_size = 32; wc.activity_block_size = 16; wc.scheduling_core_size = 32;
     wc.backend = SimulationBackend::SerialInPlace; wc.worker_threads = 1;
     wc.initial_chunk_reserve = 128; wc.maximum_chunk_count = 1024;
     wc.active_chunk_capacity = 1024; wc.active_core_capacity = 1024;
     wc.deferred_event_capacity = 32;
-    world_ = std::make_unique<World>(wc);
+    owned_world_ = std::make_unique<World>(wc);
+    world_ = owned_world_.get();
     const auto b = config_.world_bounds;
     const RectI64 bounds{b.x, b.y, b.width, b.height};
     world_->reserve_region({b.x - 32, b.y - 32, b.width + 64, b.height + 64});
@@ -144,6 +153,31 @@ void Coordinator::initialize_world() {
     (void)world_->tick();
     const auto baseline=world_->quantity_ledger();
     for (std::size_t m=1;m<kQuantityMaterialSlots;++m) accounting_.setup_created[m]+=baseline.material_cells[m];
+    rebuild_terrain();
+}
+
+void Coordinator::initialize_attached_world(World& owner) {
+    // The host created, reserved, configured and ticked this same World. No
+    // scenario authoring, tick, simulation-region change or private World.
+    if (owner.has_failed() || owner.is_tick_in_progress() ||
+        owner.completed_tick_index() == 0 || owner.config().chunk_size < 1 ||
+        !owner.simulation_region().has_value() ||
+        config_.limits.max_shards > 3 ||
+        owner.transient_occupancy_capacity() < config_.limits.max_total_area)
+        throw std::invalid_argument("ObjectShard attachment requires a prepared bounded owner World");
+    const auto bounds = owner.simulation_region().value();
+    const auto region = config_.world_bounds;
+    if (region.x < bounds.x || region.y < bounds.y ||
+        region.x + region.width > bounds.x + bounds.width ||
+        region.y + region.height > bounds.y + bounds.height)
+        throw std::invalid_argument("ObjectShard attachment region outside owner simulation");
+    world_ = &owner;
+    immutable_occupancy_.reserve(config_.limits.max_total_area * 2U);
+    shard_occupancy_.reserve(config_.limits.max_total_area * 4U);
+    // This watch listens to the *existing* World and its real native tick.
+    owner.enable_object_shard_mutation_watch({region.x, region.y, region.width, region.height});
+    last_owner_tick_ = owner.completed_tick_index();
+    last_owner_population_ = owner.quantity_ledger().material_cells;
     rebuild_terrain();
 }
 
@@ -845,11 +879,31 @@ Outcome Coordinator::reconcile_overlap() {
                 }
         if (!found) return Outcome::DestinationUnavailable;
     }
-    world_->clear_transient_obstacles();
-    for (std::size_t at=0;at<proposed_mask_.size();++at) if (proposed_mask_[at]) {
-        const auto x=wb.x+static_cast<std::int64_t>(at%wb.width),y=wb.y+static_cast<std::int64_t>(at/wb.width);
-        if (!world_->set_transient_obstacle(x,y,proposed_mask_[at])) return Outcome::Quarantined;
-        ++metrics_.mask_cells;
+    if (attached_) {
+        shard_occupancy_.clear();
+        for (std::size_t at = 0; at < proposed_mask_.size(); ++at) if (proposed_mask_[at]) {
+            if (shard_occupancy_.size() >= shard_occupancy_.capacity()) return Outcome::Capacity;
+            shard_occupancy_.push_back({
+                wb.x + static_cast<std::int64_t>(at % wb.width),
+                wb.y + static_cast<std::int64_t>(at / wb.width),
+                static_cast<std::uint16_t>(kFirstMutableBodyId + proposed_mask_[at] - 1U)});
+        }
+        // One native ownership transaction, including the GCR domain. A GCR
+        // proxy and mutable shard cannot silently claim the same cell.
+        auto receipt = world_->compose_transient_obstacles(immutable_occupancy_,
+            shard_occupancy_, kFirstMutableBodyId);
+        if (receipt.outcome != World::TransientCompositionOutcome::Applied ||
+            !world_->transient_composition_current(receipt))
+            return receipt.outcome == World::TransientCompositionOutcome::Quarantined
+                ? Outcome::Quarantined : Outcome::DestinationUnavailable;
+        metrics_.mask_cells += shard_occupancy_.size();
+    } else {
+        world_->clear_transient_obstacles();
+        for (std::size_t at=0;at<proposed_mask_.size();++at) if (proposed_mask_[at]) {
+            const auto x=wb.x+static_cast<std::int64_t>(at%wb.width),y=wb.y+static_cast<std::int64_t>(at/wb.width);
+            if (!world_->set_transient_obstacle(x,y,proposed_mask_[at])) return Outcome::Quarantined;
+            ++metrics_.mask_cells;
+        }
     }
     try {
         for (const auto& move:relocations_) {
@@ -907,7 +961,73 @@ Result Coordinator::accept_motion(std::span<const PoseSample> poses) {
         "motion segment occupancy and contact applied; semantic tick unchanged"});
 }
 
+Result Coordinator::after_owner_world_tick(std::span<const PoseSample> poses) {
+    if (!attached_) return finish({Outcome::Unsupported, {}, 0, Phase::Suspended,
+        "only the owner-local attachment accepts external World ticks"});
+    if (quarantined_ || world_->has_failed() || world_->is_tick_in_progress())
+        return finish({Outcome::Quarantined});
+    if (world_->completed_tick_index() != last_owner_tick_ + 1)
+        return finish({Outcome::Stale, {}, 0, Phase::Suspended,
+            "an exact single native owner tick is required"});
+    if (paused()) return finish({Outcome::Fenced, {}, 0, Phase::Suspended,
+        "physics/geometry owner barrier cannot be bypassed by a World tick"});
+    const auto accepted = apply_poses(poses);
+    if (accepted != Outcome::Accepted)
+        return accepted == Outcome::Quarantined
+            ? quarantine({}, "owner post-tick motion occupancy partial")
+            : finish({accepted, {}, 0, Phase::Suspended});
+    // No second tick occurs here; world material laws (including Water)
+    // executed once in CyberNativeCellWorld::simulation_tick().
+    const auto current = world_->quantity_ledger().material_cells;
+    for (std::size_t m = 1; m < kQuantityMaterialSlots; ++m)
+        accounting_.world_tick_delta[m] += static_cast<std::int64_t>(current[m]) -
+            static_cast<std::int64_t>(last_owner_population_[m]);
+    last_owner_population_ = current;
+    last_owner_tick_ = world_->completed_tick_index();
+    ++metrics_.steps;
+    try {
+        automatic_ingress();
+        if (quarantined_) return last_result_;
+        advance_chemistry();
+        advance_products_and_exchange();
+        rebuild_terrain();
+        for (const auto& shard : registry_.shards())
+            if (shard.owns_inventory() && shard.geometry_dirty()) {
+                const auto result = registry_.rebuild_geometry(shard.handle(), last_owner_tick_);
+                if (result != Outcome::Accepted) return quarantine(shard.handle(),
+                    "owner geometry rebuild capacity; inventory retained");
+                if (auto* b = body(shard.handle())) {
+                    b->geometry_pending = b->has_body;
+                    b->geometry_pending_tick = last_owner_tick_;
+                    b->geometry_pending_ns = b->geometry_pending ? now_ns() : 0;
+                }
+            }
+    } catch (...) {
+        return quarantine({}, "owner post-tick shard service failed");
+    }
+    return finish({});
+}
+
+Result Coordinator::set_immutable_occupancy(
+    std::span<const World::TransientCompositionCell> cells) {
+    if (!attached_) return finish({Outcome::Unsupported});
+    if (paused() || world_->has_failed() || world_->is_tick_in_progress())
+        return finish({Outcome::Fenced});
+    if (cells.size() > immutable_occupancy_.capacity())
+        return finish({Outcome::Capacity});
+    immutable_occupancy_.assign(cells.begin(), cells.end());
+    // Workbench supplies sorted values with body IDs strictly below the
+    // reserved mutable range. The World composer checks all coordinates,
+    // collisions, capacity and receipt identity without modifying on refusal.
+    const auto verdict = rebuild_mask(false);
+    if (verdict != Outcome::Accepted)
+        return quarantine({}, "immutable/mutable occupancy cannot be composed");
+    return finish({});
+}
+
 Result Coordinator::step(std::span<const PoseSample> poses) {
+    if (attached_) return finish({Outcome::Unsupported, {}, 0, Phase::Suspended,
+        "ordinary World must be ticked only by CyberSimulationWorker"});
     if (quarantined_) return finish({Outcome::Quarantined});
     if (paused()) {
         ++metrics_.paused_calls;
@@ -1395,6 +1515,8 @@ Result Coordinator::emit(const TransferRequest& r) {
 }
 
 Result Coordinator::reset(std::uint32_t scenario,std::uint64_t seed) {
+    if (attached_) return finish({Outcome::Unsupported, {}, 0, Phase::Suspended,
+        "ordinary World replacement belongs solely to CyberNativeCellWorld"});
     if (scenario>6) return finish({Outcome::Invalid});
     // Reset is also the recovery control for a quarantined World. The public
     // healthy-ledger API intentionally refuses that state; this exclusive
