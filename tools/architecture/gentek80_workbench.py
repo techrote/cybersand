@@ -8,8 +8,12 @@ from pathlib import Path
 import sys
 import subprocess
 import qualify
+from gentek80_compositions import inventory_packaged_godot
 
 ROOT = Path(__file__).resolve().parents[2]
+# The Windows console launcher may leave a separate GUI engine process.
+# Keep this gate independent for adversarial tests without platform spoofing.
+REQUIRE_ENGINE_EXIT_CHECK = os.name == "nt"
 
 
 def main() -> int:
@@ -45,9 +49,18 @@ def main() -> int:
     base = [str(engine), "--audio-driver", "Dummy", "--path", str(project)]
     results = [qualify.run("import", [*base, "--headless", "--editor", "--quit"], env, output, args.timeout)]
     phases = {}
+    process_boundaries = []
     expected = args.smoke or 80
     if results[0]["passed"]:
         for phase in ("author", "reopen"):
+            # Inspect BOTH exact engine paths. Never terminate unrelated Godot
+            # processes or assume the console wrapper's exit implies GUI exit.
+            before_phase = inventory_packaged_godot(engine)
+            process_boundaries.append({"phase": phase, "when": "before", **before_phase})
+            if REQUIRE_ENGINE_EXIT_CHECK and (not before_phase.get("supported") or before_phase.get("pids")):
+                results.append({"case": phase + "-preexisting-engine-process", "passed": False,
+                                "inventory": before_phase})
+                break
             env["CYBERSAND_GENTEK80_WB_PHASE"] = phase
             display = ["--headless"]
             if args.graphical:
@@ -62,6 +75,12 @@ def main() -> int:
             else:
                 result["passed"] = False
             results.append(result)
+            after_phase = inventory_packaged_godot(engine)
+            process_boundaries.append({"phase": phase, "when": "after", **after_phase})
+            if REQUIRE_ENGINE_EXIT_CHECK and (not after_phase.get("supported") or after_phase.get("pids")):
+                results.append({"case": phase + "-surviving-engine-process", "passed": False,
+                                "inventory": after_phase})
+                break
             if not result["passed"]:
                 break
     after = qualify.source_identity(project)
@@ -74,7 +93,8 @@ def main() -> int:
     passed = all(row["passed"] for row in results) and fresh and comparable
     report = {"schema": "gentek80-workbench-qualification-v1", "source_commit": before["source_commit"], "source_tree": before["source_tree"], "runtime_sha256": before["runtime_sha256"], "graphical_requested": args.graphical,
               "platform": "windows" if os.name == "nt" else "linux", "smoke": args.smoke, "passed": passed, "failures": sum(not r["passed"] for r in results) + int(not fresh) + int(not comparable), "results": results,
-              "independent_processes": fresh, "material_and_recipe_replay": comparable, **phases}
+              "independent_processes": fresh, "material_and_recipe_replay": comparable,
+              "matching_engine_process_boundaries": process_boundaries, **phases}
     (output / "source-runtime-identity.json").write_text(json.dumps(before, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (output / "qualification.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"passed": passed, "styles": expected, "fresh_process": fresh, "source": before["source_commit"]}))
