@@ -4187,10 +4187,21 @@ func _workbench_key(key: Key) -> bool:
 
 func _publish_workbench_keyboard() -> void:
 	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
+	var gesture: bool = shared_workbench.actor_interaction != null \
+		and shared_workbench.actor_interaction.actively_manipulating()
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
 		or (shared_workbench.actor_interaction != null and shared_workbench.actor_interaction.blocks_human_input()) \
 		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
-		if not _actor_input_rearm: cancel_playable_course_input()
+		if not _actor_input_rearm:
+			if gesture:
+				# The generic cancel path also ends live grabs. Neutralize the
+				# pilot once without revoking the grabbed body's ownership.
+				_actor_input_rearm = true
+				var slot: int = shared_workbench.pilot_slot
+				if physical_actor_session.workbench_control(shared_workbench.pilot_id()).get("status","") != "physically grabbed":
+					physical_actor_session.cancel_input(slot,_physical_epoch,&"human")
+			else:
+				cancel_playable_course_input()
 		return
 	var slot: int = shared_workbench.pilot_slot
 	var observed: Dictionary = physical_actor_session._view(slot,false)

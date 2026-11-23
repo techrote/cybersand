@@ -62,6 +62,80 @@ func install() -> bool:
 	return await until(func() -> bool: return not wb.busy() and wb.applied.actors.size() == 3,"small cast installed")
 
 
+func keyboard_edge(key: Key, down: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = key
+	event.physical_keycode = key
+	event.pressed = down
+	Input.parse_input_event(event)
+	# Headless skips normal DisplayServer event pumping; the graphical
+	# regression still flushes to make the sampled key state deterministic.
+	Input.flush_buffered_events()
+
+
+func exercise_pilot_input() -> void:
+	# Real configuration button -> sampled keyboard -> live Rapier actuator.
+	# Mock-only signal and submit_workbench_action tests miss the input gate.
+	if not check(not host.paused and not wb.busy(),"piloting regression starts playing"): return
+	wb.select_instance(2)
+	wb.open_actor_composition()
+	panel = wb._actor_panel
+	panel.tabs.current_tab = 1
+	var pilot_button := find_button(panel,"Pilot inspected")
+	if not check(pilot_button != null,"actual Controllers pilot button"): return
+	var session = host.physical_actor_session
+	var run_id: String = session.run_id
+	var slot: int = session.slot_for_instance(2)
+	if not check(slot >= 0,"Runner has a real actor slot"): return
+	var rid: RID = session._rigs[slot].bodies()[0].get_rid()
+	pilot_button.pressed.emit()
+	check(wb.pilot_id() == 2 and wb.pilot_slot == slot and session.workbench_control(2).source == "human",
+		"panel handoff installs human controller and slot")
+	check(session.run_id == run_id and session._rigs[slot].bodies()[0].get_rid() == rid,
+		"handoff keeps the same actual Rapier body and native owner")
+	panel.close_requested.emit()
+	keyboard_edge(KEY_D,false)
+	if not await ticks(3,"keyboard idle after closing configuration"): return
+	check(not host._actor_input_rearm,"Configuration close requires a fresh neutral keyboard sample")
+	wb.actor_interaction.set_mode("grab")
+	check(not wb.actor_interaction.blocks_human_input(),
+		"selected Grab mode does not disable an idle pilot")
+	if not await ticks(3,"idle Grab mode stays playable"): return
+	check(not host._actor_input_rearm,"idle Grab retains keyboard rearm state")
+	var before: Vector2 = wb.body_state(2).position
+	var accepted: int = int(session.workbench_control(2).accepted)
+	keyboard_edge(KEY_D,true)
+	check(host._workbench_key(KEY_D),"Godot Input receives real D event, not a mocked command")
+	if await ticks(24,"native/Rapier ticks while pilot holds D"):
+		var drive: Dictionary = session._rigs[slot]._action
+		check(int(session.workbench_control(2).accepted) > accepted 			and Vector2(drive.get("move",Vector2.ZERO)).x > 0.5,
+			"sampled keyboard D reaches real active physical controller")
+		check(wb.body_state(2).position.x > before.x + 0.1,
+			"piloted Rapier body physically advances right, not merely accepted UI input")
+	keyboard_edge(KEY_D,false)
+	if not await ticks(3,"key release before live grab"): return
+	var pose: Transform2D = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var grab = session.manipulator()
+	var started: Dictionary = grab.begin_grab(pose.origin)
+	if check(bool(started.get("active",false)) and int(started.get("instance_id",-1)) == 2,
+		"actual human-piloted body can be grabbed"):
+		check(wb.actor_interaction.blocks_human_input(),
+			"active physical grab suppresses pilot drive")
+		if await ticks(3,"active grab across repeated physics input polls"):
+			check(grab.active() and session._rigs[slot].bodies()[0].get_rid() == rid,
+				"pilot neutralization does not cancel grab or replace body")
+		grab.end_grab("pilot_input_regression")
+	wb.actor_interaction.set_mode("paint")
+	wb.open_actor_composition()
+	panel = wb._actor_panel
+	var back_button := find_button(panel,"Hand back")
+	if check(back_button != null,"actual Controllers Hand back button"):
+		back_button.pressed.emit()
+	check(session.workbench_control(2).source == "scripted" and wb.pilot_id() == 0,
+		"Hand back restores autonomous Runner and releases human pilot")
+	panel.close_requested.emit()
+
+
 func exercise() -> void:
 	if not await install(): return
 	check(wb.pilot_instance(1),"explicitly pilot initial monowheel")
@@ -160,6 +234,7 @@ func exercise() -> void:
 	check(wb.actor_interaction.mode() == "paint","return to existing live PAINT mode")
 	if check(wb.toggle_pause(),"resume after exact placement"):
 		await ticks(8,"new owner and NPC resume after precision placement")
+	await exercise_pilot_input()
 	# An independently installed 64-barrel population exercises the exact
 	# reported failure in the ordinary Workbench, not a mocked signal handler.
 	if not check(wb.toggle_pause(),"pause before population acceptance test"): return
