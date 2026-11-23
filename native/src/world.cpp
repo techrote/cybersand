@@ -2486,6 +2486,9 @@ World::TransientCompositionReceipt World::compose_transient_obstacles(
         receipt.outcome = TransientCompositionOutcome::Held;
         return receipt;
     }
+    // A rejected attempted update is not a licence to consume an old contact
+    // mask. Leave its cells untouched, but fence the prior successful receipt.
+    state.composition_live = false;
     if (first_shard_body_id < 2 || first_shard_body_id > kMaximumTransientBodies ||
         state.region.width <= 0 || state.region.height <= 0 ||
         state.composition_revision == std::numeric_limits<std::uint64_t>::max())

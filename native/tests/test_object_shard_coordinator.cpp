@@ -1592,11 +1592,13 @@ void m4_composed_transient_collision_is_atomic() {
     const auto rejected = world.compose_transient_obstacles(gcr, overlap, 62);
     CHECK(rejected.outcome == Outcome::Overlap && rejected.revision == applied.revision);
     CHECK(world.transient_obstacle_at(5, 6) == 1 && world.transient_obstacle_at(6, 6) == 62);
+    CHECK(!world.transient_composition_current(applied.revision));
     CHECK(!world.has_failed());
     const std::array<Cell, 1> bad_domain{{{10, 6, 62}}};
     const auto invalid = world.compose_transient_obstacles(bad_domain, shards, 62);
     CHECK(invalid.outcome == Outcome::Invalid && invalid.revision == applied.revision);
     CHECK(world.transient_obstacle_at(9, 6) == 63);
+    CHECK(!world.transient_composition_current(applied.revision));
     const std::array<Cell, 2> duplicate{{{5, 6, 1}, {5, 6, 2}}};
     CHECK(world.compose_transient_obstacles(duplicate, shards, 62).outcome == Outcome::Invalid);
     CHECK(world.transient_obstacle_at(5, 6) == 1);
@@ -1606,6 +1608,16 @@ void m4_composed_transient_collision_is_atomic() {
     CHECK(world.transient_composition_current(cleared.revision));
     CHECK(world.set_transient_obstacle(20, 8, 1));
     CHECK(!world.transient_composition_current(cleared.revision));
+    // Executable negative: the still-unmodified Workbench GCR clear-and-
+    // rebuild procedure erases any shard occupancy left by a prior publication.
+    // Do not enable both producers until the owner switches to composition.
+    const auto before_legacy = world.compose_transient_obstacles(gcr, shards, 62);
+    CHECK(before_legacy.outcome == Outcome::Applied);
+    world.clear_transient_obstacles();
+    CHECK(world.set_transient_obstacle(5, 6, 1));
+    CHECK(world.set_transient_obstacle(8, 6, 2));
+    CHECK(world.transient_obstacle_at(6, 6) == 0 && world.transient_obstacle_at(9, 6) == 0);
+    CHECK(!world.transient_composition_current(before_legacy.revision));
     CHECK(!world.has_failed());
 }
 
