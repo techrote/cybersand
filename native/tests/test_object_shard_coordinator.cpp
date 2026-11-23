@@ -1658,6 +1658,7 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     CHECK(owner.completed_tick_index() == created_tick);
     make_supported(attached);
     erase_support(attached);
+    CHECK(attached.begin_owner_world_tick().outcome == Outcome::Accepted);
     (void)owner.tick();
     CHECK(owner.completed_tick_index() == created_tick + 1);
     CHECK(attached.after_owner_world_tick().outcome == Outcome::Accepted);
@@ -1687,6 +1688,7 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     const auto water_before = owned_population(attached, Material::Water);
     CHECK(water_before >= 1);
     const auto before_physics_tick = owner.completed_tick_index();
+    CHECK(attached.begin_owner_world_tick().outcome == Outcome::Accepted);
     (void)owner.tick();
     poses = next_poses(attached);
     CHECK(attached.after_owner_world_tick(poses).outcome == Outcome::Accepted);
