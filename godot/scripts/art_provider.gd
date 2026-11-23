@@ -5,6 +5,9 @@ signal traffic_changed
 var active := false
 var serial := 0
 var request: HTTPRequest
+# Constant-size, credential-free timing of the last request only. Never audit raw
+# timing into Art JSONL: a diagnostic probe must not add more disk traffic.
+var last_request_timing: Dictionary = {}
 var secrets: Array[String] = []
 var traffic := ""
 var readable := ""
@@ -956,11 +959,15 @@ func _exit_tree() -> void:
 	cancel_resume()
 
 func cancel(reason: String = "Human Stop") -> void:
+	var begin_usec := Time.get_ticks_usec()
 	serial += 1
 	if request != null:
 		request.cancel_request(); request.queue_free(); request = null
 	if active: log_event("cancelled",reason)
 	active = false
+	if not last_request_timing.is_empty():
+		last_request_timing["status"] = "cancelled"
+		last_request_timing["cancel_usec"] = Time.get_ticks_usec() - begin_usec
 
 static func quota_reset_seconds(headers: PackedStringArray) -> float:
 	var values: Dictionary = {}
@@ -991,12 +998,20 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 	if provider != "LM Studio" and key.is_empty(): return "Enter your "+provider+" key in Key."
 	serial += 1
 	var id := serial
+	var began_usec := Time.get_ticks_usec()
+	last_request_timing = {"schema":1, "serial":id, "provider":provider,
+		"status":"preparing", "response_bytes":0, "http_code":0,
+		"request_log_usec":0, "dispatch_usec":0, "response_wait_usec":0,
+		"response_log_usec":0, "json_parse_usec":0, "other_log_usec":0,
+		"callback_usec":0, "cancel_usec":0}
 	requested_model = model
 	usage = {}; returned_model = ""
 	retry_after_seconds = 0.0
 	var url := endpoint.trim_suffix("/")+ ("/responses" if provider=="OpenAI" else "/chat/completions")
 	var body := payload(provider,model,prompt,instructions,tokens,png,context)
+	var request_log_begin_usec := Time.get_ticks_usec()
 	log_event("request",{"url":url,"provider":provider,"body":body})
+	last_request_timing["request_log_usec"] = Time.get_ticks_usec() - request_log_begin_usec
 	request = HTTPRequest.new()
 	request.use_threads = true
 	request.timeout = seconds
@@ -1005,9 +1020,15 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 	add_child(request)
 	var current := request
 	request.request_completed.connect(func(result: int, code: int, headers: PackedStringArray, bytes: PackedByteArray) -> void:
+		var callback_begin_usec := Time.get_ticks_usec()
 		current.queue_free()
 		if id != serial: return
 		request = null; active = false
+		last_request_timing["status"] = "completing"
+		last_request_timing["http_code"] = code
+		last_request_timing["transport_result"] = result
+		last_request_timing["response_bytes"] = bytes.size()
+		last_request_timing["response_wait_usec"] = callback_begin_usec - began_usec
 		if code == 429:
 			for header: String in headers:
 				if header.get_slice(":",0).to_lower() == "retry-after":
@@ -1015,10 +1036,14 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 					if value.is_valid_float() and is_finite(value.to_float()):
 						retry_after_seconds = maxf(0.0,value.to_float())
 		var raw := bytes.get_string_from_utf8()
+		var response_log_begin_usec := Time.get_ticks_usec()
 		log_event("response",{"transport":result,"http":code,"headers":headers,"body":raw})
+		last_request_timing["response_log_usec"] = Time.get_ticks_usec() - response_log_begin_usec
+		var parse_begin_usec := Time.get_ticks_usec()
 		var parser := JSON.new()
 		var valid_json := parser.parse(raw)==OK
 		var data: Dictionary = parser.data if valid_json and parser.data is Dictionary else {}
+		last_request_timing["json_parse_usec"] = Time.get_ticks_usec() - parse_begin_usec
 		if provider == "OpenAI" and (code == 429 or (code >= 200 and code < 300)):
 			var details: Variant = data.get("error",{})
 			var error_code := str(details.get("code","")) if details is Dictionary else ""
@@ -1028,13 +1053,17 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 				retry_after_seconds = maxf(retry_after_seconds,quota_reset_seconds(headers))
 		usage = data.get("usage",{}) if data.get("usage") is Dictionary else {}
 		returned_model = str(data.get("model","unknown"))
+		var other_log_begin_usec := Time.get_ticks_usec()
 		log_event("usage",{"requested_model":requested_model,"returned_model":returned_model,"usage":usage,"cost":null})
 		var decoded := decode(provider,data)
 		log_event("assistant",decoded.text)
+		last_request_timing["other_log_usec"] = Time.get_ticks_usec() - other_log_begin_usec
 		var error: String = decoded.error
 		if result != HTTPRequest.RESULT_SUCCESS: error = "Connection/timeout failure (%d). Check endpoint/server; inspect Traffic." % result
 		elif code < 200 or code >= 300: error = "HTTP %d: %s" % [code,raw]
-		finished.emit(id,redact(decoded.text),data,redact(error)))
+		finished.emit(id,redact(decoded.text),data,redact(error))
+		last_request_timing["callback_usec"] = Time.get_ticks_usec() - callback_begin_usec
+		last_request_timing["status"] = "completed")
 	var headers := PackedStringArray(["Content-Type: application/json"])
 	if not key.is_empty(): headers.append("Authorization: Bearer "+key)
 	var err := request.request(url,headers,HTTPClient.METHOD_POST,JSON.stringify(body))
@@ -1042,4 +1071,6 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 		cancel("Request start failed")
 		return "Could not start HTTP request (%d). Check the endpoint URL." % err
 	active = true
+	last_request_timing["dispatch_usec"] = Time.get_ticks_usec() - began_usec
+	last_request_timing["status"] = "in_flight"
 	return ""

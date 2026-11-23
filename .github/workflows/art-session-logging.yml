@@ -10,6 +10,9 @@ on:
       - 'godot/tests/test_art_traffic_panel_safety.gd'
       - 'godot/tests/test_art_history_durability.gd'
       - 'godot/tests/test_art_panel_ui.gd'
+      - 'godot/tests/test_art_local_close.gd'
+      - 'tools/ci/run_art_local_close.py'
+      - 'docs/audits/2026-11-23-art-local-close/**'
       - 'godot/tests/test_art_traffic_integrity.gd'
       - 'godot/tests/test_art_history_receipt_identity.gd'
       - 'godot/tests/test_art_batch_native.gd'
@@ -75,6 +78,7 @@ jobs:
           done
           grep -F 'ART_SESSION_RESULT ' evidence/test_art_session_log.log
           grep -F 'ART_STAGE1_RESULT ' evidence/test_art_batch_native.log
+          python3 tools/ci/run_art_local_close.py --godot "$GODOT" --project godot --output evidence/art-close-fixture
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -137,6 +141,8 @@ jobs:
             Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") 240
           }
           if ((Get-Content evidence/test_art_session_log.stdout.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing session test receipt' }
+          python tools/ci/run_art_local_close.py --godot $env:GODOT_EXE --project godot --output evidence/art-close-fixture
+          if ($LASTEXITCODE -ne 0) { throw 'ART-LOCAL-CLOSE fixture failed' }
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

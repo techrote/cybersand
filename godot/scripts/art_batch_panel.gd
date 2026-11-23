@@ -18,6 +18,9 @@ var request_material := 58
 var erase := CheckBox.new()
 const Provider = preload("res://scripts/art_provider.gd")
 var provider := Provider.new()
+# Last close/stop operation only; no unbounded UI event journal or credentials.
+var last_close_timing: Dictionary = {}
+var last_stop_timing: Dictionary = {}
 var input_mode := OptionButton.new()
 var source := OptionButton.new()
 var model := LineEdit.new()
@@ -144,7 +147,7 @@ func _ready() -> void:
 	min_size = Vector2i(520,320)
 	transient = true
 	exclusive = false
-	close_requested.connect(hide)
+	close_requested.connect(_close_art_window)
 	visibility_changed.connect(_selection_visibility_changed)
 	var dense := Theme.new()
 	dense.default_font_size = 14
@@ -233,6 +236,18 @@ func _bind_selection() -> void:
 		selection_editor.selection_changed.disconnect(focus_selection)
 	selection_editor = wb.paint_editor
 	selection_editor.selection_changed.connect(focus_selection)
+
+func _close_art_window() -> void:
+	# Preserve the existing policy: closing hides the window but does not Stop.
+	# This diagnostic measures just the synchronous UI close path, not the first
+	# responsive subsequent frame; the isolated regression measures that gap.
+	var began_usec := Time.get_ticks_usec()
+	var pending_request: bool = provider.active
+	hide()
+	last_close_timing = {"close_usec":Time.get_ticks_usec() - began_usec,
+		"hidden":not visible, "provider_active_before":pending_request,
+		"provider_active_after":provider.active}
+
 
 func _selection_visibility_changed() -> void:
 	# A new Workbench session never reopens an earlier model conversation.
@@ -800,6 +815,7 @@ func load_profile() -> void:
 	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
 
 func stop_all(reason: String = "Human Stop") -> void:
+	var began_usec := Time.get_ticks_usec()
 	if provider.resume_active:
 		provider.cancel_resume()
 		history_load_error = "Conversation restoration cancelled; saved history preserved. Reopen Art or Conversation to retry."
@@ -814,6 +830,9 @@ func stop_all(reason: String = "Human Stop") -> void:
 		wb.paint_editor.cancel()
 	provider_message = reason
 	input_error = history_load_error if not history_load_error.is_empty() else reason
+	last_stop_timing = {"stop_usec":Time.get_ticks_usec() - began_usec,
+		"provider_cancel_usec":int(provider.last_request_timing.get("cancel_usec",0)),
+		"active_after":provider.active}
 
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
