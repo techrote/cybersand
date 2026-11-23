@@ -1025,7 +1025,7 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 		if code < 200 or code >= 300:
 			# Full error bytes remain in the response event. Bound only the UI/
 			# conversation projection to avoid copying huge error bodies repeatedly.
-			var excerpt := raw.left(512).replace("\\r"," ").replace("\\n"," ")
+			var excerpt := raw.left(512).replace("\r"," ").replace("\n"," ")
 			var suffix := " … (full response in Traffic)" if raw.length() > 512 else ""
 			finished.emit(id,"",{},redact("HTTP %d: %s%s" % [code,excerpt,suffix]))
 			return
