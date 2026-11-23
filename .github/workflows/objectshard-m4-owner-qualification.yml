@@ -114,6 +114,8 @@ jobs:
           objectshard_profile_args=()
           if test "$OBJECTSHARD_STAGE" = m2; then objectshard_profile_args=(--profile); fi
           xvfb-run --auto-servernum --server-args='-screen 0 1280x840x24 -nolisten tcp' python tools/objectshard/qualify_lab.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --expected-source-sha "$SOURCE_SHA" --stage "$OBJECTSHARD_STAGE" --native-receipt evidence/linux-native-provenance.json --render "${objectshard_profile_args[@]}" --output evidence/lab
+          xvfb-run --auto-servernum "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --headless --path godot --script res://tests/test_object_shard_m4_same_world_extension.gd > evidence/m4-attached-godot.log 2>&1
+          cat evidence/m4-attached-godot.log
       - name: Retain all Linux evidence including first failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -242,6 +244,9 @@ jobs:
           if ($env:OBJECTSHARD_STAGE -eq 'm2') { $objectShardProfileArgs += '--profile' }
           python tools/objectshard/qualify_lab.py --godot $engine --expected-source-sha $env:SOURCE_SHA --stage $env:OBJECTSHARD_STAGE --native-candidate build/objectshard-windows --render @objectShardProfileArgs --output evidence/windows-lab
           if ($LASTEXITCODE -ne 0) { throw 'Actual Windows Lab qualification failed' }
+          & $engine --headless --path godot --script res://tests/test_object_shard_m4_same_world_extension.gd *> evidence/windows-m4-attached-godot.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/windows-m4-attached-godot.log; throw 'Actual Windows ordinary Workbench M4 attachment failed' }
+          Get-Content evidence/windows-m4-attached-godot.log
       - name: Stage licensed dependencies and source-bound owner package
         shell: pwsh
         run: |
