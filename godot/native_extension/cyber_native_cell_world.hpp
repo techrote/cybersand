@@ -51,6 +51,10 @@ public:
     [[nodiscard]] Dictionary object_shard_attach(Rect2i bounds);
     [[nodiscard]] Dictionary object_shard_status() const;
     [[nodiscard]] Dictionary object_shard_snapshot();
+    // Worker-only native edits and exact payload inspections in this SAME World.
+    [[nodiscard]] Dictionary object_shard_edit_cell(Vector2i cell, std::int64_t material,
+        std::int64_t state_a, std::int64_t state_b, std::int64_t temperature);
+    [[nodiscard]] Dictionary object_shard_inspect_cell(Vector2i cell) const;
     [[nodiscard]] Dictionary object_shard_prepare_next();
     [[nodiscard]] Dictionary object_shard_acknowledge(const Dictionary& receipt);
     [[nodiscard]] Dictionary object_shard_accept_motion(const Array& poses);

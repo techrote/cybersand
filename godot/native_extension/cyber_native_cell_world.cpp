@@ -165,6 +165,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("object_shard_attach", "bounds"), &CyberNativeCellWorld::object_shard_attach);
     ClassDB::bind_method(D_METHOD("object_shard_status"), &CyberNativeCellWorld::object_shard_status);
     ClassDB::bind_method(D_METHOD("object_shard_snapshot"), &CyberNativeCellWorld::object_shard_snapshot);
+    ClassDB::bind_method(D_METHOD("object_shard_edit_cell", "cell", "material", "state_a", "state_b", "temperature"), &CyberNativeCellWorld::object_shard_edit_cell);
+    ClassDB::bind_method(D_METHOD("object_shard_inspect_cell", "cell"), &CyberNativeCellWorld::object_shard_inspect_cell);
     ClassDB::bind_method(D_METHOD("object_shard_prepare_next"), &CyberNativeCellWorld::object_shard_prepare_next);
     ClassDB::bind_method(D_METHOD("object_shard_acknowledge", "receipt"), &CyberNativeCellWorld::object_shard_acknowledge);
     ClassDB::bind_method(D_METHOD("object_shard_accept_motion", "poses"), &CyberNativeCellWorld::object_shard_accept_motion);
@@ -574,6 +576,19 @@ Dictionary CyberNativeCellWorld::object_shard_status() const {
 
 Dictionary CyberNativeCellWorld::object_shard_snapshot() {
     return shard_owner() ? shard_lab_->snapshot() : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_edit_cell(Vector2i cell,
+    std::int64_t material, std::int64_t state_a, std::int64_t state_b, std::int64_t temperature) {
+    if (!shard_owner() || !world_ || world_->has_failed()) {
+        Dictionary refused;
+        refused["ok"] = false;
+        refused["outcome"] = "SameWorldWorkerRequired";
+        return refused;
+    }
+    return shard_lab_->edit_cell(cell, material, state_a, state_b, temperature);
+}
+Dictionary CyberNativeCellWorld::object_shard_inspect_cell(Vector2i cell) const {
+    return shard_owner() ? shard_lab_->inspect(cell) : Dictionary{};
 }
 Dictionary CyberNativeCellWorld::object_shard_prepare_next() {
     return shard_owner() ? shard_lab_->prepare_next() : Dictionary{};
