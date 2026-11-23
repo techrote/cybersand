@@ -1630,7 +1630,75 @@ void m4_composed_transient_collision_is_atomic() {
     CHECK(replacement.transient_composition_current(new_receipt));
 }
 
+
+// Positive owner-local proof: this is the exact same native World before and
+// after authoritative transfer; only the external owner advances its tick.
+// Rapier installation is a SEPARATE Godot integration gate, not asserted here.
+void m4_attached_owner_one_world_native_material_and_mask() {
+    using Cell = World::TransientCompositionCell;
+    WorldConfig wc;
+    wc.chunk_size = 32;
+    wc.activity_block_size = 16;
+    wc.scheduling_core_size = 32;
+    wc.backend = SimulationBackend::SerialInPlace;
+    wc.worker_threads = 1;
+    World owner(wc);
+    const RectI64 domain{0, 0, 128, 96};
+    owner.reserve_region({-32, -32, 192, 160});
+    owner.reserve_temperature_region({-32, -32, 192, 160});
+    owner.set_simulation_region(domain);
+    owner.configure_transient_obstacles(domain, true);
+    (void)owner.tick();
+    const auto created_tick = owner.completed_tick_index();
+    Coordinator attached(owner, small_config());
+    CHECK(attached.same_world_attached(owner));
+    CHECK(&attached.world() == &owner);
+    CHECK(owner.completed_tick_index() == created_tick);
+    CHECK(attached.step().outcome == Outcome::Unsupported);
+    CHECK(owner.completed_tick_index() == created_tick);
+    make_supported(attached);
+    erase_support(attached);
+    (void)owner.tick();
+    CHECK(owner.completed_tick_index() == created_tick + 1);
+    CHECK(attached.after_owner_world_tick().outcome == Outcome::Accepted);
+    CHECK(attached.after_owner_world_tick().outcome == Outcome::Stale);
+    CHECK(owner.completed_tick_index() == created_tick + 1);
+    const auto wood_before = owned_population(attached, Material::Wood);
+    CHECK(wood_before >= 9);
+    const auto prepared = discover(attached);
+    CHECK(prepared.outcome == Outcome::Accepted);
+    if (prepared.outcome != Outcome::Accepted) return;
+    CHECK(activate(attached, prepared.shard));
+    CHECK(attached.same_world_attached(owner));
+    CHECK(owned_population(attached, Material::Wood) == wood_before);
+    CHECK(attached.registry().find(prepared.shard)->owns_inventory());
+    const std::array<Cell, 1> immutable{{{6, 7, 1}}};
+    CHECK(attached.set_immutable_occupancy(immutable).outcome == Outcome::Accepted);
+    CHECK(owner.transient_obstacle_at(6, 7) == 1);
+    CHECK(owner.transient_obstacle_at(31, 31) >= 62);
+    auto poses = next_poses(attached);
+    for (auto& pose: poses) { pose.y += 1.0; pose.pose_serial += 1; }
+    CHECK(attached.accept_motion(poses).outcome == Outcome::Accepted);
+    CHECK(owner.transient_obstacle_at(6, 7) == 1);
+    CHECK(owned_population(attached, Material::Wood) == wood_before);
+    // Dynamic Water remains native World-owned and is not silently imported
+    // into the shard's structural inventory.
+    CHECK(attached.edit(60, 38, {Material::Water, 128, 0, 350}).outcome == Outcome::Accepted);
+    const auto water_before = owned_population(attached, Material::Water);
+    CHECK(water_before >= 1);
+    const auto before_physics_tick = owner.completed_tick_index();
+    (void)owner.tick();
+    poses = next_poses(attached);
+    CHECK(attached.after_owner_world_tick(poses).outcome == Outcome::Accepted);
+    CHECK(owner.completed_tick_index() == before_physics_tick + 1);
+    CHECK(owned_population(attached, Material::Wood) == wood_before);
+    CHECK(attached.reset(0, 55).outcome == Outcome::Unsupported);
+    CHECK(attached.same_world_attached(owner));
+    CHECK(owner.completed_tick_index() == before_physics_tick + 1);
+}
+
 int main() {
+    m4_attached_owner_one_world_native_material_and_mask();
     m4_composed_transient_collision_is_atomic();
     m4_same_world_promotion_and_exact_motion();
     m4_cancel_does_not_consume_world_and_replacement_fences();
