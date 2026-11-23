@@ -275,6 +275,31 @@ public:
     void set_liquid_surface_adhesion_enabled(bool enabled) noexcept;
     [[nodiscard]] bool liquid_surface_adhesion_enabled() const noexcept;
 
+    // M4 opt-in value-only composition. Both sources supply a complete, strictly
+    // increasing row-major list; the two body-ID namespaces must not overlap.
+    // Validation finishes before the existing mask is modified. A failed
+    // installation quarantines this World rather than publishing partial contact.
+    // Legacy GCR calls remain unchanged until their owner wires this transaction.
+    struct TransientCompositionCell {
+        std::int64_t x{}, y{};
+        std::uint16_t body_id{};
+    };
+    enum class TransientCompositionOutcome : std::uint8_t {
+        Applied, Invalid, Overlap, Capacity, Held, Quarantined
+    };
+    struct TransientCompositionReceipt {
+        TransientCompositionOutcome outcome{TransientCompositionOutcome::Invalid};
+        std::uint64_t revision{}, completed_tick{};
+        std::size_t gcr_cells{}, shard_cells{};
+    };
+    [[nodiscard]] TransientCompositionReceipt compose_transient_obstacles(
+        std::span<const TransientCompositionCell> immutable_gcr,
+        std::span<const TransientCompositionCell> mutable_shards,
+        std::uint16_t first_shard_body_id);
+    // A legacy GCR or Lab clear/set invalidates even an earlier successful
+    // composition receipt. Does not borrow the mask or its scratch storage.
+    [[nodiscard]] bool transient_composition_current(std::uint64_t revision) const noexcept;
+
     // Dynamic rigid bodies are represented by a transient collision field,
     // separate from authoritative material storage. The field is immutable
     // during tick() and therefore safe for phased worker reads without locks.

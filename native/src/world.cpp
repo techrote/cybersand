@@ -727,6 +727,10 @@ struct World::TransientObstacleState {
     RectI64 region{};
     std::vector<std::uint16_t> body_ids;
     std::vector<std::size_t> occupied_indices;
+    // A successfully composed mask is one source-bound occupancy publication.
+    // Legacy clear/set calls deliberately do not impersonate this receipt.
+    std::uint64_t composition_revision{};
+    bool composition_live{}, composing{};
     std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> contacts{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_x{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_y{};
@@ -2468,9 +2472,115 @@ void World::configure_transient_obstacles(RectI64 region, bool reserve_full_occu
         region, soliding::ProducerReason::TransientMask, 0);
 }
 
+World::TransientCompositionReceipt World::compose_transient_obstacles(
+    std::span<const TransientCompositionCell> immutable_gcr,
+    std::span<const TransientCompositionCell> mutable_shards,
+    std::uint16_t first_shard_body_id) {
+    TransientCompositionReceipt receipt{};
+    // The one World owner must call this only between ticks, after collecting
+    // *both* sources. Nothing is written during admission, including on overlap.
+    auto& state = *transient_obstacles_;
+    receipt.revision = state.composition_revision;
+    receipt.completed_tick = completed_tick_index();
+    if (tick_failed_ || tick_in_progress_) {
+        receipt.outcome = TransientCompositionOutcome::Held;
+        return receipt;
+    }
+    if (first_shard_body_id < 2 || first_shard_body_id > kMaximumTransientBodies ||
+        state.region.width <= 0 || state.region.height <= 0 ||
+        state.composition_revision == std::numeric_limits<std::uint64_t>::max())
+        return receipt;
+    const auto count = immutable_gcr.size() + mutable_shards.size();
+    if (count < immutable_gcr.size() || count > state.occupied_indices.capacity()) {
+        receipt.outcome = TransientCompositionOutcome::Capacity;
+        return receipt;
+    }
+    // Every input is row-major strictly increasing. This admits a streaming
+    // merge and detects cross-domain overlap with no heap allocation or full
+    // canvas scan on the ordinary owner thread.
+    const auto index_of = [&](const TransientCompositionCell& cell) -> std::size_t {
+        return (static_cast<std::size_t>(static_cast<std::uint64_t>(cell.y) -
+                static_cast<std::uint64_t>(state.region.y)) *
+                static_cast<std::size_t>(state.region.width)) +
+               static_cast<std::size_t>(static_cast<std::uint64_t>(cell.x) -
+                static_cast<std::uint64_t>(state.region.x));
+    };
+    const auto valid_cell = [&](const TransientCompositionCell& cell, bool shard) {
+        if (cell.body_id == 0 || cell.body_id > kMaximumTransientBodies ||
+            (shard ? cell.body_id < first_shard_body_id
+                   : cell.body_id >= first_shard_body_id) ||
+            cell.x < state.region.x || cell.y < state.region.y) return false;
+        const auto dx = static_cast<std::uint64_t>(cell.x) - static_cast<std::uint64_t>(state.region.x);
+        const auto dy = static_cast<std::uint64_t>(cell.y) - static_cast<std::uint64_t>(state.region.y);
+        return dx < static_cast<std::uint64_t>(state.region.width) &&
+               dy < static_cast<std::uint64_t>(state.region.height);
+    };
+    const auto valid_list = [&](std::span<const TransientCompositionCell> cells, bool shard) {
+        std::size_t previous{};
+        bool first = true;
+        for (const auto& cell : cells) {
+            if (!valid_cell(cell, shard)) return false;
+            const auto index = index_of(cell);
+            if (!first && index <= previous) return false;
+            previous = index;
+            first = false;
+        }
+        return true;
+    };
+    if (!valid_list(immutable_gcr, false) || !valid_list(mutable_shards, true))
+        return receipt;
+    std::size_t g = 0, s = 0;
+    while (g < immutable_gcr.size() && s < mutable_shards.size()) {
+        const auto gi = index_of(immutable_gcr[g]);
+        const auto si = index_of(mutable_shards[s]);
+        if (gi == si) {
+            receipt.outcome = TransientCompositionOutcome::Overlap;
+            return receipt;
+        }
+        gi < si ? ++g : ++s;
+    }
+    state.composing = true;
+    try {
+        clear_transient_obstacles();
+        for (const auto& cell : immutable_gcr)
+            if (!set_transient_obstacle(cell.x, cell.y, cell.body_id)) {
+                state.composing = false;
+                quarantine_external_coupling();
+                receipt.outcome = TransientCompositionOutcome::Quarantined;
+                return receipt;
+            }
+        for (const auto& cell : mutable_shards)
+            if (!set_transient_obstacle(cell.x, cell.y, cell.body_id)) {
+                state.composing = false;
+                quarantine_external_coupling();
+                receipt.outcome = TransientCompositionOutcome::Quarantined;
+                return receipt;
+            }
+    } catch (...) {
+        state.composing = false;
+        quarantine_external_coupling();
+        receipt.outcome = TransientCompositionOutcome::Quarantined;
+        return receipt;
+    }
+    state.composing = false;
+    state.composition_live = true;
+    receipt.revision = ++state.composition_revision;
+    receipt.gcr_cells = immutable_gcr.size();
+    receipt.shard_cells = mutable_shards.size();
+    receipt.outcome = TransientCompositionOutcome::Applied;
+    return receipt;
+}
+
+bool World::transient_composition_current(std::uint64_t revision) const noexcept {
+    const auto& state = *transient_obstacles_;
+    return !tick_failed_ && state.composition_live && revision != 0 &&
+        revision == state.composition_revision;
+}
+
 void World::clear_transient_obstacles() {
     require_healthy();
     auto& state = *transient_obstacles_;
+    state.composition_live = false;
     const auto width = state.region.width;
     if (width > 0) {
         for (const auto index : state.occupied_indices) {
@@ -2515,6 +2625,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
                                    std::uint16_t body_id) {
     if (tick_failed_) return false;
     auto& state = *transient_obstacles_;
+    if (!state.composing) state.composition_live = false;
     if (body_id == 0U || body_id > kMaximumTransientBodies ||
         state.region.width <= 0 || state.region.height <= 0 ||
         x < state.region.x || y < state.region.y) {

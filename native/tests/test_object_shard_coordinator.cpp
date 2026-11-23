@@ -1568,7 +1568,49 @@ void m4_partial_physics_commit_is_still_exclusive_material() {
 
 } // namespace
 
+// M4 native arbitration runs against the real World field, not a mock mask.
+// The ordinary GCR and mutable shard domain must submit one combined owner
+// publication. Rejected composition cannot clear or perturb an active mask.
+void m4_composed_transient_collision_is_atomic() {
+    using Cell = World::TransientCompositionCell;
+    using Outcome = World::TransientCompositionOutcome;
+    World world;
+    world.configure_transient_obstacles({0, 0, 64, 64}, true);
+    const std::array<Cell, 2> gcr{{{5, 6, 1}, {8, 6, 2}}};
+    const std::array<Cell, 2> shards{{{6, 6, 62}, {9, 6, 63}}};
+    const auto initial_tick = world.completed_tick_index();
+    const auto applied = world.compose_transient_obstacles(gcr, shards, 62);
+    CHECK(applied.outcome == Outcome::Applied);
+    CHECK(applied.revision == 1 && applied.completed_tick == initial_tick);
+    CHECK(applied.gcr_cells == 2 && applied.shard_cells == 2);
+    CHECK(world.transient_composition_current(applied.revision));
+    CHECK(world.transient_obstacle_at(5, 6) == 1 && world.transient_obstacle_at(8, 6) == 2);
+    CHECK(world.transient_obstacle_at(6, 6) == 62 && world.transient_obstacle_at(9, 6) == 63);
+    // Cross-domain occupation of one cell is prohibited even if both source
+    // lists individually satisfy strict ordering and valid ID partitions.
+    const std::array<Cell, 1> overlap{{{5, 6, 62}}};
+    const auto rejected = world.compose_transient_obstacles(gcr, overlap, 62);
+    CHECK(rejected.outcome == Outcome::Overlap && rejected.revision == applied.revision);
+    CHECK(world.transient_obstacle_at(5, 6) == 1 && world.transient_obstacle_at(6, 6) == 62);
+    CHECK(!world.has_failed());
+    const std::array<Cell, 1> bad_domain{{{10, 6, 62}}};
+    const auto invalid = world.compose_transient_obstacles(bad_domain, shards, 62);
+    CHECK(invalid.outcome == Outcome::Invalid && invalid.revision == applied.revision);
+    CHECK(world.transient_obstacle_at(9, 6) == 63);
+    const std::array<Cell, 2> duplicate{{{5, 6, 1}, {5, 6, 2}}};
+    CHECK(world.compose_transient_obstacles(duplicate, shards, 62).outcome == Outcome::Invalid);
+    CHECK(world.transient_obstacle_at(5, 6) == 1);
+    const auto cleared = world.compose_transient_obstacles({}, {}, 62);
+    CHECK(cleared.outcome == Outcome::Applied && cleared.revision == 2);
+    CHECK(world.transient_obstacle_at(5, 6) == 0 && world.transient_obstacle_at(9, 6) == 0);
+    CHECK(world.transient_composition_current(cleared.revision));
+    CHECK(world.set_transient_obstacle(20, 8, 1));
+    CHECK(!world.transient_composition_current(cleared.revision));
+    CHECK(!world.has_failed());
+}
+
 int main() {
+    m4_composed_transient_collision_is_atomic();
     m4_same_world_promotion_and_exact_motion();
     m4_cancel_does_not_consume_world_and_replacement_fences();
     m4_exclusive_mutable_capacity_refuses_fourth_real_owner();
