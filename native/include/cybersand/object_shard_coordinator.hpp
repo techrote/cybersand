@@ -155,6 +155,7 @@ public:
     }
     // Ordinary Worker calls after its existing exclusive World tick. The M3
     // standalone path continues to use Coordinator::step() unchanged.
+    [[nodiscard]] Result begin_owner_world_tick();
     [[nodiscard]] Result after_owner_world_tick(std::span<const PoseSample> poses = {});
     // GCR owner supplies exact immutable occupancy as a copy before contact.
     // No raw World, node or RID aliases cross this API.
@@ -204,6 +205,7 @@ private:
     World* world_ = nullptr; // borrowed only while attached_; never outlives owner
     bool attached_ = false;
     std::uint64_t last_owner_tick_{};
+    bool owner_tick_admitted_{};
     std::array<std::uint64_t, kQuantityMaterialSlots> last_owner_population_{};
     static constexpr std::uint16_t kFirstMutableBodyId = World::kMaximumTransientBodies - 2;
     std::vector<World::TransientCompositionCell> immutable_occupancy_;
