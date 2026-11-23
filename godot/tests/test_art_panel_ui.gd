@@ -119,15 +119,27 @@ func layout_checks() -> void:
 		panel.conversation_error = ("A long validation notice must scroll, not resize the footer. ").repeat(70)
 		panel._update_conversation_guard()
 		for i: int in range(3): await process_frame
-		var apply_rect: Rect2 = conversation_dialog.get_ok_button().get_global_rect()
-		var cancel_rect: Rect2 = conversation_dialog.get_cancel_button().get_global_rect()
+		# Test the popup and its buttons in the SAME screen coordinate space.
+		# Control.get_global_rect() uses the containing canvas, which is not a
+		# reliable Window-local reference for an embedded nested subwindow.
+		var popup_origin := Vector2(conversation_dialog.position)
+		if root.gui_embed_subwindows:
+			popup_origin += Vector2(panel.position)
+		var popup_rect := Rect2(popup_origin,Vector2(conversation_dialog.size))
+		var ok_button: Button = conversation_dialog.get_ok_button()
+		var cancel_button: Button = conversation_dialog.get_cancel_button()
+		var apply_rect := Rect2(ok_button.get_screen_position(),ok_button.size)
+		var cancel_rect := Rect2(cancel_button.get_screen_position(),cancel_button.size)
+		print("ART_CONVERSATION_LAYOUT ",JSON.stringify({
+			"art_size":art_size,"embedded":root.gui_embed_subwindows,
+			"popup_position":conversation_dialog.position,"popup_size":conversation_dialog.size,
+			"popup_screen_rect":popup_rect,"apply_screen_rect":apply_rect,"cancel_screen_rect":cancel_rect,
+			"apply_visible":ok_button.is_visible_in_tree(),"cancel_visible":cancel_button.is_visible_in_tree()}))
 		check(conversation_dialog.size.y <= art_size.y+1,
 			"Conversation stays within small Art window height: "+str(art_size))
-		check(conversation_dialog.get_ok_button().is_visible_in_tree() and
-			apply_rect.position.y >= 0 and apply_rect.end.y <= conversation_dialog.size.y+1,
+		check(ok_button.is_visible_in_tree() and popup_rect.encloses(apply_rect),
 			"Apply footer remains clickable after long Note: "+str(art_size))
-		check(conversation_dialog.get_cancel_button().is_visible_in_tree() and
-			cancel_rect.position.y >= 0 and cancel_rect.end.y <= conversation_dialog.size.y+1,
+		check(cancel_button.is_visible_in_tree() and popup_rect.encloses(cancel_rect),
 			"Cancel footer remains clickable after long Note: "+str(art_size))
 		conversation_dialog.get_cancel_button().pressed.emit()
 		panel.conversation_error = ""
