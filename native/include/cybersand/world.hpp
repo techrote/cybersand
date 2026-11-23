@@ -289,7 +289,8 @@ public:
     };
     struct TransientCompositionReceipt {
         TransientCompositionOutcome outcome{TransientCompositionOutcome::Invalid};
-        std::uint64_t revision{}, completed_tick{};
+        // A native World token prevents same-revision ABA after replacement.
+        std::uint64_t world_token{}, revision{}, completed_tick{};
         std::size_t gcr_cells{}, shard_cells{};
     };
     [[nodiscard]] TransientCompositionReceipt compose_transient_obstacles(
@@ -298,7 +299,8 @@ public:
         std::uint16_t first_shard_body_id);
     // A legacy GCR or Lab clear/set invalidates even an earlier successful
     // composition receipt. Does not borrow the mask or its scratch storage.
-    [[nodiscard]] bool transient_composition_current(std::uint64_t revision) const noexcept;
+    [[nodiscard]] bool transient_composition_current(
+        const TransientCompositionReceipt& receipt) const noexcept;
 
     // Dynamic rigid bodies are represented by a transient collision field,
     // separate from authoritative material storage. The field is immutable

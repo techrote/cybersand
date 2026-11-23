@@ -1583,7 +1583,7 @@ void m4_composed_transient_collision_is_atomic() {
     CHECK(applied.outcome == Outcome::Applied);
     CHECK(applied.revision == 1 && applied.completed_tick == initial_tick);
     CHECK(applied.gcr_cells == 2 && applied.shard_cells == 2);
-    CHECK(world.transient_composition_current(applied.revision));
+    CHECK(world.transient_composition_current(applied));
     CHECK(world.transient_obstacle_at(5, 6) == 1 && world.transient_obstacle_at(8, 6) == 2);
     CHECK(world.transient_obstacle_at(6, 6) == 62 && world.transient_obstacle_at(9, 6) == 63);
     // Cross-domain occupation of one cell is prohibited even if both source
@@ -1592,22 +1592,22 @@ void m4_composed_transient_collision_is_atomic() {
     const auto rejected = world.compose_transient_obstacles(gcr, overlap, 62);
     CHECK(rejected.outcome == Outcome::Overlap && rejected.revision == applied.revision);
     CHECK(world.transient_obstacle_at(5, 6) == 1 && world.transient_obstacle_at(6, 6) == 62);
-    CHECK(!world.transient_composition_current(applied.revision));
+    CHECK(!world.transient_composition_current(applied));
     CHECK(!world.has_failed());
     const std::array<Cell, 1> bad_domain{{{10, 6, 62}}};
     const auto invalid = world.compose_transient_obstacles(bad_domain, shards, 62);
     CHECK(invalid.outcome == Outcome::Invalid && invalid.revision == applied.revision);
     CHECK(world.transient_obstacle_at(9, 6) == 63);
-    CHECK(!world.transient_composition_current(applied.revision));
+    CHECK(!world.transient_composition_current(applied));
     const std::array<Cell, 2> duplicate{{{5, 6, 1}, {5, 6, 2}}};
     CHECK(world.compose_transient_obstacles(duplicate, shards, 62).outcome == Outcome::Invalid);
     CHECK(world.transient_obstacle_at(5, 6) == 1);
     const auto cleared = world.compose_transient_obstacles({}, {}, 62);
     CHECK(cleared.outcome == Outcome::Applied && cleared.revision == 2);
     CHECK(world.transient_obstacle_at(5, 6) == 0 && world.transient_obstacle_at(9, 6) == 0);
-    CHECK(world.transient_composition_current(cleared.revision));
+    CHECK(world.transient_composition_current(cleared));
     CHECK(world.set_transient_obstacle(20, 8, 1));
-    CHECK(!world.transient_composition_current(cleared.revision));
+    CHECK(!world.transient_composition_current(cleared));
     // Executable negative: the still-unmodified Workbench GCR clear-and-
     // rebuild procedure erases any shard occupancy left by a prior publication.
     // Do not enable both producers until the owner switches to composition.
@@ -1617,8 +1617,17 @@ void m4_composed_transient_collision_is_atomic() {
     CHECK(world.set_transient_obstacle(5, 6, 1));
     CHECK(world.set_transient_obstacle(8, 6, 2));
     CHECK(world.transient_obstacle_at(6, 6) == 0 && world.transient_obstacle_at(9, 6) == 0);
-    CHECK(!world.transient_composition_current(before_legacy.revision));
+    CHECK(!world.transient_composition_current(before_legacy));
     CHECK(!world.has_failed());
+    // Two distinct World generations can issue the same numeric revision.
+    // Never let the new owner accept a previous incarnation's receipt.
+    World replacement;
+    replacement.configure_transient_obstacles({0, 0, 64, 64}, true);
+    const auto new_receipt = replacement.compose_transient_obstacles(gcr, shards, 62);
+    CHECK(new_receipt.outcome == Outcome::Applied && new_receipt.revision == applied.revision);
+    CHECK(new_receipt.world_token != applied.world_token);
+    CHECK(!replacement.transient_composition_current(applied));
+    CHECK(replacement.transient_composition_current(new_receipt));
 }
 
 int main() {

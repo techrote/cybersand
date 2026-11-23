@@ -724,6 +724,13 @@ struct World::ParallelState {
 };
 
 struct World::TransientObstacleState {
+    // Immutable lifetime token shared by moves of this World, never derived
+    // from an address that may be recycled by a later World replacement.
+    TransientObstacleState() noexcept {
+        static std::atomic<std::uint64_t> next_token{1};
+        world_token = next_token.fetch_add(1, std::memory_order_relaxed);
+    }
+    std::uint64_t world_token{};
     RectI64 region{};
     std::vector<std::uint16_t> body_ids;
     std::vector<std::size_t> occupied_indices;
@@ -2480,6 +2487,7 @@ World::TransientCompositionReceipt World::compose_transient_obstacles(
     // The one World owner must call this only between ticks, after collecting
     // *both* sources. Nothing is written during admission, including on overlap.
     auto& state = *transient_obstacles_;
+    receipt.world_token = state.world_token;
     receipt.revision = state.composition_revision;
     receipt.completed_tick = completed_tick_index();
     if (tick_failed_ || tick_in_progress_) {
@@ -2489,7 +2497,7 @@ World::TransientCompositionReceipt World::compose_transient_obstacles(
     // A rejected attempted update is not a licence to consume an old contact
     // mask. Leave its cells untouched, but fence the prior successful receipt.
     state.composition_live = false;
-    if (first_shard_body_id < 2 || first_shard_body_id > kMaximumTransientBodies ||
+    if (state.world_token == 0 || first_shard_body_id < 2 || first_shard_body_id > kMaximumTransientBodies ||
         state.region.width <= 0 || state.region.height <= 0 ||
         state.composition_revision == std::numeric_limits<std::uint64_t>::max())
         return receipt;
@@ -2574,10 +2582,14 @@ World::TransientCompositionReceipt World::compose_transient_obstacles(
     return receipt;
 }
 
-bool World::transient_composition_current(std::uint64_t revision) const noexcept {
+bool World::transient_composition_current(
+    const TransientCompositionReceipt& receipt) const noexcept {
     const auto& state = *transient_obstacles_;
-    return !tick_failed_ && state.composition_live && revision != 0 &&
-        revision == state.composition_revision;
+    return !tick_failed_ && state.composition_live &&
+        receipt.outcome == TransientCompositionOutcome::Applied &&
+        receipt.world_token != 0 && receipt.world_token == state.world_token &&
+        receipt.completed_tick == completed_tick_index() && receipt.revision != 0 &&
+        receipt.revision == state.composition_revision;
 }
 
 void World::clear_transient_obstacles() {
