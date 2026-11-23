@@ -257,10 +257,31 @@ jobs:
           $receipt = @(Get-ChildItem -LiteralPath (Join-Path $package 'Actor-Acceptance-Results') -Recurse -Filter acceptance-collector.json)
           if ($receipt.Count -ne 1) { throw 'Missing source-matched packaged collector receipt' }
           $collector = Get-Content -LiteralPath $receipt[0].FullName -Raw | ConvertFrom-Json
-          if ($collector.status -ne 'passed' -or $collector.package_identity -ne 'passed' -or $collector.native_identity -ne 'passed' -or $collector.source_commit -ne $env:GITHUB_SHA) {
-            throw 'Packaged acceptance collector did not verify exact source and binary'
+          $declared = @(($packageManifest = Get-Content -LiteralPath (Join-Path $package 'candidate-manifest.json') -Raw | ConvertFrom-Json).files_sha256.PSObject.Properties).Count
+          if ($collector.status -ne 'passed' -or $collector.package_identity -ne 'passed' -or $collector.native_identity -ne 'passed' -or $collector.source_commit -ne $env:GITHUB_SHA -or
+              $collector.manifest_files_expected -ne $declared -or $collector.manifest_files_verified -ne $declared -or $declared -lt 100) {
+            throw 'Packaged collector did not verify the complete source-bound payload'
           }
           Copy-Item -LiteralPath $receipt[0].FullName -Destination evidence/installed-windows/actor-collector-smoke.json
+          # Adversarial proof: a harmless modification to a NON-native source
+          # script must make local -EvidenceOnly verification fail. Always
+          # restore the actual extracted bytes before the package is used again.
+          $tampered = Join-Path $package 'godot/scripts/workbench_actor_panel.gd'
+          $original = [IO.File]::ReadAllBytes($tampered)
+          try {
+            [IO.File]::AppendAllText($tampered, "`n# deliberate collector integrity negative test`n")
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $package 'Actor Results Collector.ps1') -EvidenceOnly *> evidence/actor-collector-tamper.log
+            $denied = $LASTEXITCODE
+            if ($denied -eq 0 -or -not (Select-String -Path evidence/actor-collector-tamper.log -SimpleMatch 'Packaged file differs from manifest: godot/scripts/workbench_actor_panel.gd')) {
+              throw 'Collector failed to refuse a modified non-native Workbench script'
+            }
+          } finally {
+            [IO.File]::WriteAllBytes($tampered,$original)
+          }
+          if ((Get-FileHash -LiteralPath $tampered -Algorithm SHA256).Hash.ToLowerInvariant() -ne
+              [string]$packageManifest.files_sha256.PSObject.Properties['godot/scripts/workbench_actor_panel.gd'].Value) {
+            throw 'Non-native tamper probe did not restore original source bytes'
+          }
           if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $archiveHash) { throw 'Delivered ZIP changed after extraction qualification' }
           @{ status='passed'; source_commit=$env:GITHUB_SHA; archive=(Split-Path $archive -Leaf); sha256=$archiveHash;
             procedure='Exact delivered ZIP extracted into fresh non-checkout directory; manifest, graphical gameplay, Save/Load and actual DLL paths verified';

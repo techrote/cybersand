@@ -13,6 +13,7 @@ var panel: Window
 var checks := 0
 var failures: Array[String] = []
 var report: Dictionary = {}
+var pilot_drive_evidence: Dictionary = {}
 
 
 func _initialize() -> void: run.call_deferred()
@@ -102,16 +103,28 @@ func exercise_pilot_input() -> void:
 		"selected Grab mode does not disable an idle pilot")
 	if not await ticks(3,"idle Grab mode stays playable"): return
 	check(not host._actor_input_rearm,"idle Grab retains keyboard rearm state")
-	var before: Vector2 = wb.body_state(2).position
+	var physical_before: Dictionary = session.workbench_actor_state(2)
+	var before: Vector2 = Vector2(physical_before.position)
+	var velocity_before: Vector2 = Vector2(physical_before.linear_velocity)
 	var accepted: int = int(session.workbench_control(2).accepted)
+	var tick_before: int = session.tick
 	keyboard_edge(KEY_D,true)
 	check(host._workbench_key(KEY_D),"Godot Input receives real D event, not a mocked command")
-	if await ticks(24,"native/Rapier ticks while pilot holds D"):
+	if await ticks(48,"sustained native/Rapier pilot drive while holding D"):
 		var drive: Dictionary = session._rigs[slot]._action
+		var physical_after: Dictionary = session.workbench_actor_state(2)
+		var after: Vector2 = Vector2(physical_after.position)
+		var velocity_after: Vector2 = Vector2(physical_after.linear_velocity)
+		pilot_drive_evidence = {"before_x":before.x,"after_x":after.x,"delta_x":after.x-before.x,
+			"before_velocity_x":velocity_before.x,"after_velocity_x":velocity_after.x,
+			"ticks":session.tick-tick_before,"accepted_delta":int(session.workbench_control(2).accepted)-accepted,
+			"command_x":Vector2(drive.get("move",Vector2.ZERO)).x,
+			"same_rid":session._rigs[slot].bodies()[0].get_rid()==rid}
 		check(int(session.workbench_control(2).accepted) > accepted 			and Vector2(drive.get("move",Vector2.ZERO)).x > 0.5,
 			"sampled keyboard D reaches real active physical controller")
-		check(wb.body_state(2).position.x > before.x + 0.1,
-			"piloted Rapier body physically advances right, not merely accepted UI input")
+		check(after.x > before.x + 0.1,
+			"piloted Rapier body actually moves right (dx=%.3f, v0=%.3f, v1=%.3f, ticks=%d)" %
+			[after.x-before.x,velocity_before.x,velocity_after.x,session.tick-tick_before])
 	keyboard_edge(KEY_D,false)
 	if not await ticks(3,"key release before live grab"): return
 	var pose: Transform2D = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
@@ -141,6 +154,12 @@ func exercise() -> void:
 	check(wb.pilot_instance(1),"explicitly pilot initial monowheel")
 	if not check(wb.toggle_pause(),"Play starts installed session"): return
 	if not await ticks(8,"NPC starts before configuration"): return
+	# Pilot the real Runner while it is still near the authored clear-space spawn.
+	# Running the pilot probe after multiple owner restarts allowed autonomous
+	# patrol to collide with distant terrain on hosted software-rendered Windows.
+	# We still require physical rightward displacement, not merely a routed command.
+	await exercise_pilot_input()
+	check(wb.pilot_instance(1),"restore explicit monowheel pilot after Runner hand-back")
 	var session = host.physical_actor_session
 	var run_id: String = session.run_id
 	var accepted_before := int(session.workbench_control(2).accepted)
@@ -234,7 +253,6 @@ func exercise() -> void:
 	check(wb.actor_interaction.mode() == "paint","return to existing live PAINT mode")
 	if check(wb.toggle_pause(),"resume after exact placement"):
 		await ticks(8,"new owner and NPC resume after precision placement")
-	await exercise_pilot_input()
 	# An independently installed 64-barrel population exercises the exact
 	# reported failure in the ordinary Workbench, not a mocked signal handler.
 	if not check(wb.toggle_pause(),"pause before population acceptance test"): return
@@ -280,7 +298,8 @@ func exercise() -> void:
 		"successful capacity preserves all 64 actors, pilot identity, and pause state")
 	panel.hide()
 	report = {"native_tick":host.latest_snapshot.tick_index,"rapier_tick":host.physical_actor_session.tick,
-		"actors":wb.applied.actors.size(),"source":"actual-ordinary-workbench","renderer":DisplayServer.get_name()}
+		"actors":wb.applied.actors.size(),"source":"actual-ordinary-workbench","renderer":DisplayServer.get_name(),
+		"pilot_drive":pilot_drive_evidence}
 
 
 func run() -> void:
