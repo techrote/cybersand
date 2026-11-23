@@ -440,6 +440,15 @@ func accept_receipt(receipt: Dictionary) -> Dictionary:
 	if not receipt.get("requested_session") is int or int(receipt.requested_session) != int(pending.session):
 		return _hold("WorkerSessionMismatch", {"receipt": receipt.get("requested_session"), "pending": pending.session})
 	var purpose: String = str(pending.purpose)
+	# Compact applied motion is never allowed to become a visible World frame.
+	var expected_compact: bool = purpose == "motion" and pending.get("final_segment", true) == false
+	var actual_compact: bool = receipt.frame.get("transient_motion_receipt", false) == true
+	if actual_compact != expected_compact and receipt.result.get("ok", false):
+		return _hold("MotionPresentationBoundaryMismatch", {"expected_compact": expected_compact,
+			"actual_compact": actual_compact, "sequence": sequence})
+	if actual_compact and (int(receipt.frame.get("tick", -1)) != _last_tick + 1 or
+			int(receipt.frame.get("session", -1)) != session):
+		return _hold("IntermediateMotionIdentityMismatch", receipt.frame)
 	if purpose != "reset" and int(receipt.frame.get("session", 0)) != session:
 		return _hold("PublicationSessionMismatch", {"session": receipt.frame.get("session", 0)})
 	var wait_usec: int = Time.get_ticks_usec() - int(pending.sent_usec)
@@ -452,7 +461,10 @@ func accept_receipt(receipt: Dictionary) -> Dictionary:
 		_sample("receipt_delivery_usec", maxi(0, Time.get_ticks_usec() - int(receipt.finished_usec)))
 	last_receipt_sequence = sequence
 	pending.clear()
-	frame = receipt.frame
+	# Keep the last complete material/pose frame until the final motion
+	# acknowledgement publishes the next. Compact packets have no edit witness.
+	if not actual_compact:
+		frame = receipt.frame
 	var result: Dictionary = receipt.result
 	_event("NativeReceipt", {"purpose": purpose, "operation": receipt.operation, "sequence": sequence,
 		"result": result.duplicate(true), "requested_session": receipt.requested_session,
@@ -771,7 +783,11 @@ func _next_segment() -> void:
 		_finish_tick()
 		return
 	_event("PhysicsSegmentAwaitingNative", {"segment_sequence": segment.segment_sequence, "delta": segment.delta})
-	_send("motion", {"poses": segment.poses}, "motion")
+	# One complete World raster per semantic tick, not one per Rapier substep.
+	# Every substep still requires its exact native applied-motion receipt.
+	var final_segment: bool = (float(segment.get("motion", {}).get("completed_delta", 0.0)) >=
+		Bridge.FIXED_DELTA - 0.000000001)
+	_send("motion", {"poses": segment.poses, "final_segment": final_segment}, "motion")
 
 
 func _finish_tick() -> void:
@@ -873,6 +889,8 @@ func _send(operation: String, parameters: Dictionary, purpose: String) -> Dictio
 		return _hold("WorkerAdmissionRefused", ticket)
 	pending = ticket.duplicate(true)
 	pending["purpose"] = purpose
+	if purpose == "motion":
+		pending["final_segment"] = parameters.get("final_segment", true)
 	pending["sent_usec"] = Time.get_ticks_usec()
 	state = "Awaiting:" + purpose
 	status = "Waiting for applied " + purpose + " receipt; Rapier is not advancing"

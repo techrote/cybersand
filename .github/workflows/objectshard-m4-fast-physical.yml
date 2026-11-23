@@ -75,6 +75,7 @@ jobs:
           for test in \
              test_object_shard_m4_same_world_extension.gd \
              test_object_shard_m4_shared_main_rapier.gd \
+             test_object_shard_m4_compact_motion_packets.gd \
              test_object_shard_m4_same_world_physical_chain.gd \
              test_object_shard_m4_workbench_port.gd \
              test_object_shard_workbench_contract.gd; do

@@ -60,7 +60,10 @@ var pointer_queued: int = 0
 var pointer_refused: int = 0
 var pointer_cancelled: int = 0
 var pointer_dispatched: int = 0
-var ui_samples: Dictionary = {"input_to_host_usec": [], "publication_upload_usec": [], "frame_callback_usec": [], "publication_interval_usec": []}
+var ui_samples: Dictionary = {"input_to_host_usec": [], "publication_upload_usec": [],
+	"frame_callback_usec": [], "publication_interval_usec": [],
+	"frame_interval_usec": [], "active_rapier_frame_interval_usec": []}
+var _last_process_start_usec: int = 0
 var ui_sample_totals: Dictionary = {}
 
 
@@ -240,6 +243,7 @@ func _begin_owner(preset: Dictionary) -> void:
 	close_dispatched = false
 	selected_preset = preset.duplicate(true)
 	opened_usec = Time.get_ticks_usec()
+	_last_process_start_usec = 0
 	last_publication = -1
 	last_publication_usec = 0
 	last_burner_tick = -1
@@ -268,6 +272,12 @@ func _begin_owner(preset: Dictionary) -> void:
 
 func _process(_delta: float) -> void:
 	var started: int = Time.get_ticks_usec()
+	if _last_process_start_usec > 0:
+		var elapsed_usec: int = started - _last_process_start_usec
+		_sample("frame_interval_usec", elapsed_usec)
+		if host.bridge != null and not host.bridge.bodies.is_empty():
+			_sample("active_rapier_frame_interval_usec", elapsed_usec)
+	_last_process_start_usec = started
 	# Admit newly observed pointer intent before a poll can schedule another
 	# interval. The next interval is requested once its predecessor was shown.
 	if not loading and not replacing_owner and not closing and not host.failed:
@@ -615,8 +625,9 @@ func _update_hud() -> void:
 	var transport: Dictionary = host.worker.diagnostics() if host.worker != null else {}
 	var physics: Dictionary = host.bridge.diagnostics() if host.bridge != null else {}
 	var elapsed: float = maxf(0.001, float(now - opened_usec) / 1000000.0)
-	metrics_label.text = "Native %d / published %d · %.1f ticks/s elapsed · input %d/256 + host %d/32 · worker %d data + %d control · physics %d segments · publication age %.1f ms" % [
-		int(host.frame.get("tick", 0)), int(host.publication.get("tick", 0)), float(host.completed_ticks) / elapsed,
+	metrics_label.text = "Display %.1f FPS · Native %d / published %d · %.1f semantic ticks/s elapsed · input %d/256 + host %d/32 · worker %d data + %d control · physics %d segments · publication age %.1f ms" % [
+		Engine.get_frames_per_second(), int(host.frame.get("tick", 0)),
+		int(host.publication.get("tick", 0)), float(host.completed_ticks) / elapsed,
 		queued_cuts.size(), host.actions.size(), int(transport.get("pending_data", 0)), int(transport.get("pending_control", 0)),
 		int(physics.get("physics_steps", 0)), float(now - last_publication_usec) / 1000.0 if last_publication_usec > 0 else 0.0]
 	var source: Dictionary = host.publication

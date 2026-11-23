@@ -267,7 +267,16 @@ func _run() -> void:
 		else:
 			result = _execute(native, str(request.operation), request.parameters)
 		var executed: int = Time.get_ticks_usec()
-		frame = _snapshot(native) if configured else {}
+		# Intermediate applied Rapier segments have exact native pose receipts
+		# but no new semantic tick. Avoid redundant full World snapshots.
+		var intermediate_motion: bool = configured and _compact_motion_packet_eligible(
+			str(request.operation), request.parameters, result)
+		if intermediate_motion:
+			frame = {"session": _session,
+				"tick": int(result.semantic_tick),
+				"quarantined": false, "transient_motion_receipt": true}
+		else:
+			frame = _snapshot(native) if configured else {}
 		if str(request.operation) == "inspect" and result.get("ok", false):
 			# The facade reads World only. Resolve moving inventory from the
 			# same authoritative native publication on its exclusive worker.
@@ -351,6 +360,16 @@ func _execute(native: RefCounted, operation: String, parameters: Dictionary) -> 
 		"reset": return native.reset(int(parameters.get("scenario", 0)), int(parameters.get("seed", 12)))
 		"snapshot", "observe": return {"ok": true, "outcome": "Observed"}
 	return {"ok": false, "outcome": "UnsupportedTransportOperation"}
+
+
+static func _compact_motion_packet_eligible(operation: String, parameters: Dictionary,
+		result: Dictionary) -> bool:
+	# Only an exact native applied-pose receipt can authorize the abbreviated
+	# non-renderable packet; any refusal receives the full diagnostic snapshot.
+	return operation == "motion" and parameters.get("final_segment", true) == false \
+		and result.get("ok", false) == true and result.get("applied", false) == true \
+		and result.get("semantic_tick") is int and int(result.semantic_tick) >= 0 \
+		and result.get("accepted_pose_serials") is Array
 
 
 static func _inspect_snapshot(frame: Dictionary, position: Vector2i, world_result: Dictionary) -> Dictionary:
@@ -482,6 +501,9 @@ static func _typed_parameters(operation: String, parameters: Dictionary) -> bool
 		"cancel": integers = ["transaction"]
 		"reset": integers = ["scenario", "seed"]
 		"tick", "motion":
+			if operation == "motion" and parameters.has("final_segment") \
+					and not parameters.final_segment is bool:
+				return false
 			return parameters.get("poses") is Array and parameters.poses.size() <= 3
 	for key: String in integers:
 		if parameters.has(key) and not parameters[key] is int:
