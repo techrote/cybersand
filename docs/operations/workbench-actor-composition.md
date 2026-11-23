@@ -338,3 +338,39 @@ Windows graphical execution and owner acceptance remain explicit requirements
 when the build environment cannot run a Windows desktop. A portable package
 must contain the source-matched native/Rapier runtimes, pinned Godot, project
 resources and this example; its launcher must open interactive Shared Workbench.
+
+
+## ACTOR-COMPOSE-FINAL-001 corrected pilot acceptance and local diagnostics
+
+**Use the latest exact-source integrated evaluator, not the superseded #742
+archive.** Its manifest names the exact commit, native runtime and packaged
+files. Old binaries cannot qualify the updated pilot or stack-footprint code.
+
+Load **Living Mixed Workshop**, start progression with **Play / Pause [P]**,
+and in Configuration → Actors select **Runner #2** and **Inspect**. Under
+Controllers press **Pilot inspected**, close Configuration with **Close** or
+the window X, allow one neutral keyboard sample, then use **A / D** to run
+and **Space** to jump. The Workbench window needs keyboard focus; a focused
+editable field intentionally blocks movement. Selecting Grab/Place while
+idle must not block pilot input; an active gesture owns it exclusively.
+A paused simulation is not a broken pilot.
+
+Use **Hand back** to restore Runner's scripted controller without replacing
+its Rapier body or resetting other NPCs; exercise the explicit pilot picker,
+focus loss/recovery and pause/resume. Owner Windows 11/NVIDIA focus and
+playfeel remain separate from hosted CI acceptance.
+
+The extracted Actor evaluator also contains **Collect Actor Results.cmd**.
+Run it after closing Workbench to verify the manifest, native/Rapier hashes,
+and exercise the actual graphical Godot Workbench keyboard-to-Rapier test.
+The local **Actor-Acceptance-Results** folder contains JSON pass/fail,
+original logs, elapsed time, GPU/CPU data and a fillable owner observations
+template, with a ZIP attempted automatically. Nothing is uploaded.
+Run this on a disposable extracted evaluator: it imports the project and
+creates temporary actor worlds. Synthetic keyboard tests are not a substitute
+for manual piloting, manipulation or measuring NVIDIA frame pacing.
+
+The full source-qualified campaign rebuilds both native candidates. Git LFS
+publication accepts unchanged pointers only after runtime-byte hashes/sizes
+agree with new provenance; the Windows package is independently extracted,
+launched and re-opened. Keep Draft/HOLD without merging or changing defaults.

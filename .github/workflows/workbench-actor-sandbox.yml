@@ -151,7 +151,7 @@ jobs:
           set -euo pipefail
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_workbench_actor_qualification.py test --godot "$GODOT_BIN" \
-            --candidate build/actor-linux --output evidence/linux --graphical --sandbox
+            --candidate build/actor-linux --output evidence/linux --graphical --sandbox --measure
       - name: Retain Linux candidate and every original build/test failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -213,7 +213,7 @@ jobs:
       - name: Execute Windows source-matched actor and authoring regressions
         shell: pwsh
         run: |
-          python tools/ci/run_workbench_actor_qualification.py test --godot $env:GODOT_EXE --candidate build/actor-windows --output evidence/windows --graphical --sandbox
+          python tools/ci/run_workbench_actor_qualification.py test --godot $env:GODOT_EXE --candidate build/actor-windows --output evidence/windows --graphical --sandbox --measure
           if ($LASTEXITCODE -ne 0) { throw 'Windows coupled actor qualification failed' }
       - name: Stage signed redistributable, notices and committed portable Workbench
         shell: pwsh
@@ -250,6 +250,17 @@ jobs:
           python tools/ci/run_workbench_actor_qualification.py test --godot $engine --candidate build/actor-windows --package $package --output evidence/installed-windows --graphical --sandbox
           if ($LASTEXITCODE -ne 0) { throw 'Installed Windows Workbench failed' }
           ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence evidence/installed-windows/runtime-modules.json
+          # Validate the packaged collector in hosted Windows without rerunning
+          # the same extensive fixture during extraction qualification.
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $package 'Actor Results Collector.ps1') -EvidenceOnly *> evidence/actor-collector-smoke.log
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged Windows acceptance collector failed identity smoke test' }
+          $receipt = @(Get-ChildItem -LiteralPath (Join-Path $package 'Actor-Acceptance-Results') -Recurse -Filter acceptance-collector.json)
+          if ($receipt.Count -ne 1) { throw 'Missing source-matched packaged collector receipt' }
+          $collector = Get-Content -LiteralPath $receipt[0].FullName -Raw | ConvertFrom-Json
+          if ($collector.status -ne 'passed' -or $collector.package_identity -ne 'passed' -or $collector.native_identity -ne 'passed' -or $collector.source_commit -ne $env:GITHUB_SHA) {
+            throw 'Packaged acceptance collector did not verify exact source and binary'
+          }
+          Copy-Item -LiteralPath $receipt[0].FullName -Destination evidence/installed-windows/actor-collector-smoke.json
           if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $archiveHash) { throw 'Delivered ZIP changed after extraction qualification' }
           @{ status='passed'; source_commit=$env:GITHUB_SHA; archive=(Split-Path $archive -Leaf); sha256=$archiveHash;
             procedure='Exact delivered ZIP extracted into fresh non-checkout directory; manifest, graphical gameplay, Save/Load and actual DLL paths verified';
