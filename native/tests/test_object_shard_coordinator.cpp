@@ -1653,11 +1653,13 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     Coordinator attached(owner, small_config());
     CHECK(attached.same_world_attached(owner));
     CHECK(&attached.world() == &owner);
+    check_population_balance(attached);
     CHECK(owner.completed_tick_index() == created_tick);
     CHECK(attached.step().outcome == Outcome::Unsupported);
     CHECK(owner.completed_tick_index() == created_tick);
     make_supported(attached);
     erase_support(attached);
+    check_population_balance(attached);
     CHECK(attached.begin_owner_world_tick().outcome == Outcome::Accepted);
     (void)owner.tick();
     CHECK(owner.completed_tick_index() == created_tick + 1);
@@ -1673,6 +1675,7 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     CHECK(attached.same_world_attached(owner));
     CHECK(owned_population(attached, Material::Wood) == wood_before);
     CHECK(attached.registry().find(prepared.shard)->owns_inventory());
+    check_population_balance(attached);
     const std::array<Cell, 1> immutable{{{6, 7, 1}}};
     CHECK(attached.set_immutable_occupancy(immutable).outcome == Outcome::Accepted);
     CHECK(owner.transient_obstacle_at(6, 7) == 1);
@@ -1682,6 +1685,7 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     CHECK(attached.accept_motion(poses).outcome == Outcome::Accepted);
     CHECK(owner.transient_obstacle_at(6, 7) == 1);
     CHECK(owned_population(attached, Material::Wood) == wood_before);
+    check_population_balance(attached);
     // Dynamic Water remains native World-owned and is not silently imported
     // into the shard's structural inventory.
     CHECK(attached.edit(60, 38, {Material::Water, 128, 0, 350}).outcome == Outcome::Accepted);
@@ -1694,6 +1698,7 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     CHECK(attached.after_owner_world_tick(poses).outcome == Outcome::Accepted);
     CHECK(owner.completed_tick_index() == before_physics_tick + 1);
     CHECK(owned_population(attached, Material::Wood) == wood_before);
+    check_population_balance(attached);
     CHECK(attached.reset(0, 55).outcome == Outcome::Unsupported);
     CHECK(attached.same_world_attached(owner));
     CHECK(owner.completed_tick_index() == before_physics_tick + 1);
