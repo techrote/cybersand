@@ -14,7 +14,9 @@ const TIMING_CAPACITY: int = 2048
 const NOTIFICATION_RECEIPTS_PER_FRAME: int = 16
 const NOTIFICATION_BUDGET_USEC: int = 2000
 const RECEIPT_DEADLINE_USEC: int = 15000000
-const MAX_RECEIPT_PUMP_USEC: int = 4000
+# Diagnostic upper bound only: the same one authoritative Rapier Main and
+# exclusive native worker remain. Never spin without an explicit wall budget.
+const MAX_RECEIPT_PUMP_USEC: int = 12000
 
 var worker
 var bridge

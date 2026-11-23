@@ -173,8 +173,10 @@ func _build_interface() -> void:
 	pump_selector = OptionButton.new()
 	pump_selector.add_item("0 ms (control)", 0)
 	pump_selector.add_item("4 ms soft budget", 4000)
+	pump_selector.add_item("8 ms bounded rendezvous", 8000)
+	pump_selector.add_item("12 ms bounded rendezvous", 12000)
 	pump_selector.select(1)
-	pump_selector.tooltip_text = "A receipt handler already in progress may finish beyond 4 ms. Actual elapsed time is measured; this is not a hard frame-time cap."
+	pump_selector.tooltip_text = "Explicit soft rendezvous budget. A handler already executing may exceed it; results include real elapsed work and host retains all motion fences."
 	seed_row.add_child(pump_selector)
 	pump_selector.item_selected.connect(_select_receipt_pump)
 	var limits := Label.new()
@@ -229,7 +231,7 @@ func _build_interface() -> void:
 
 
 func _select_receipt_pump(index: int) -> void:
-	receipt_pump_usec = 4000 if pump_selector.get_item_id(index) == 4000 else 0
+	receipt_pump_usec = clampi(pump_selector.get_item_id(index), 0, Host.MAX_RECEIPT_PUMP_USEC)
 	if host.session > 0:
 		host.capture.write("event", int(host.frame.get("tick", 0)),
 			{"kind": "ReceiptPumpSetting", "loop_budget_usec": receipt_pump_usec, "notifications": false})

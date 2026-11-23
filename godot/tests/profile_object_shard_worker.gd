@@ -40,7 +40,7 @@ func _init() -> void:
 
 func _run() -> void:
 	var started: int = Time.get_ticks_usec()
-	_expect(pump_usec in [0, 2000, 4000], "only an explicit preflight pump budget selected")
+	_expect(pump_usec in [0, 2000, 4000, 8000, 12000], "only an explicit bounded receipt-pump budget selected")
 	if failures:
 		quit(1)
 		return
