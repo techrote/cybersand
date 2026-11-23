@@ -1,0 +1,78 @@
+name: PUBPRES #757 Wave512 exact-C Full Target ABBA
+
+on:
+  push:
+    branches: [evidence/pubpres757-wave512-full-target-20261123]
+    paths: ['.github/workflows/pubpres757-wave512-abba.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  windows-wave512:
+    runs-on: windows-2022
+    timeout-minutes: 105
+    defaults:
+      run:
+        shell: powershell
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+      PUBPRES_FROZEN_SOURCE: c90dbc46e1f57f28e06b1f4205b83467335ff657
+      PUBPRES_RUNTIME_RUN: '45078090513'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - name: Preserve exact source newlines on Windows
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: c90dbc46e1f57f28e06b1f4205b83467335ff657
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 45078090513
+          name: pubpres-completion-runtime-windows-45078090513-1
+          path: build/pubpres-frozen-runtime
+      - name: Verify original native source, runtime receipt and pinned Godot engine
+        timeout-minutes: 25
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ((git rev-parse HEAD).Trim() -cne $env:PUBPRES_FROZEN_SOURCE) { throw 'Not executing original frozen application source' }
+          $ReceiptPath = 'build/pubpres-frozen-runtime/C/PUBPRES-RUNTIME.json'
+          $Receipt = Get-Content -LiteralPath $ReceiptPath -Raw | ConvertFrom-Json
+          if ($Receipt.source_commit -cne $env:PUBPRES_FROZEN_SOURCE -or $Receipt.returncode -ne 0 -or $Receipt.platform -cne 'windows' -or $Receipt.production_runtime_promotion -ne $false) {
+            throw 'Previous runtime does not belong to frozen C application'
+          }
+          $Dll = 'build/pubpres-frozen-runtime/C/cybersand_native.windows.x86_64.dll'
+          $Sha = (Get-FileHash -LiteralPath $Dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($Sha -cne $Receipt.runtime_sha256) { throw 'Downloaded runtime bytes differ from original receipt' }
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS initialization failed' }
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Original Rapier binary is unavailable' }
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'pubpres-godot')
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot 4.7 download failed' }
+          [IO.Directory]::CreateDirectory('build/pubpres-wave512-abba') | Out-Null
+          @{ kind = 'read-only-detached-evidence'; evidence_workflow_source = $env:GITHUB_SHA; frozen_application_source = $env:PUBPRES_FROZEN_SOURCE; original_runtime_run = $env:PUBPRES_RUNTIME_RUN; actual_runtime_sha256 = $Sha; physical_acceptance = 'HOLD'; purpose = 'Windows same-source Full Target Target Full, not source promotion' } | ConvertTo-Json | Out-File -Encoding utf8 'build/pubpres-wave512-abba/IDENTITY.json'
+      - name: Real Windows Safe/ANGLE Wave512 Full Target Target Full
+        timeout-minutes: 75
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Engine = Join-Path $env:RUNNER_TEMP 'pubpres-godot/Godot_v4.7-stable_win64.exe'
+          python tools/pubpres003/run_focus.py --source $PWD.Path --runtime 'build/pubpres-frozen-runtime/C' --engine $Engine --case wave_512_follow --mode renderer-abba --material full --retirement-source target --output 'build/pubpres-wave512-abba/wave512'
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen-source Wave512 comparison failed; preserve original negative captures' }
+      - name: Preserve original raw traces, receipts and independent interpretation
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres757-exact-c-wave512-full-target-abba-${{ github.run_id }}
+          path: |
+            build/pubpres-wave512-abba/
+            !build/pubpres-wave512-abba/**/template/**
+          if-no-files-found: warn
+          retention-days: 90
