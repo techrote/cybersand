@@ -27,7 +27,7 @@ var burner_box: CheckBox
 var config_panel: VBoxContainer
 var seed_box: SpinBox
 var pump_selector: OptionButton
-var receipt_pump_usec: int = 4000
+var receipt_pump_usec: int = 8000 # Experimental evaluator default; no normal Workbench default change.
 var running: bool = false
 var closing: bool = false
 var close_destination: String = ""
@@ -175,7 +175,7 @@ func _build_interface() -> void:
 	pump_selector.add_item("4 ms soft budget", 4000)
 	pump_selector.add_item("8 ms bounded rendezvous", 8000)
 	pump_selector.add_item("12 ms bounded rendezvous", 12000)
-	pump_selector.select(1)
+	pump_selector.select(2)
 	pump_selector.tooltip_text = "Explicit soft rendezvous budget. A handler already executing may exceed it; results include real elapsed work and host retains all motion fences."
 	seed_row.add_child(pump_selector)
 	pump_selector.item_selected.connect(_select_receipt_pump)
