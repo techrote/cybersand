@@ -19,8 +19,18 @@ func _ready() -> void:
 	dialog_hide_on_ok = false
 	get_ok_button().text = "Apply"
 	close_requested.connect(hide)
+	# Bound custom content so long notes/notices cannot push Apply/Cancel
+	# outside the visible dialog. The standard ConfirmationDialog footer
+	# remains outside this vertically scrollable content region.
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.custom_minimum_size.y = 160
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	add_child(scroll)
 	var box := VBoxContainer.new()
-	add_child(box)
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(box)
 	notice.text = HELP
 	notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(notice)
@@ -47,6 +57,7 @@ func _ready() -> void:
 	actions.add_child(clear)
 	box.add_child(actions)
 	var split := HSplitContainer.new()
+	split.custom_minimum_size.y = 150
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(split)
 	messages.custom_minimum_size.x = 170
@@ -68,7 +79,8 @@ func open_history(turns: Array) -> void:
 	draft = turns.duplicate(true)
 	notice.text = HELP
 	_rebuild(0 if not draft.is_empty() else -1)
-	popup_centered()
+	# Stay inside the parent Art window at small resolutions and DPI scales.
+	popup_centered_clamped(Vector2i(760,480),0.9)
 
 func _caption(index: int) -> String:
 	var turn: Dictionary = draft[index]

@@ -105,6 +105,34 @@ func layout_checks() -> void:
 			check(rect.position.x >= 0 and rect.end.x <= panel.size.x+1,"compact control fits window width: "+str(width)+" / "+control.get_class())
 		check(panel.input.size.y >= 64 and panel.state.get_global_rect().end.y <= panel.size.y+1,"prompt and status fit compact window")
 	panel.size = Vector2i(640,400)
+	# Owner regression #713: long Note content and notices must never move the
+	# ConfirmationDialog Apply/Cancel footer outside small Art windows.
+	var original_root_size: Vector2i = root.size
+	root.size = Vector2i(1280,720)
+	var conversation_dialog = panel.conversation_editor
+	for art_size: Vector2i in [Vector2i(520,320),Vector2i(640,400)]:
+		panel.size = art_size
+		panel._open_conversation()
+		for i: int in range(3): await process_frame
+		conversation_dialog.draft.append({"role":"user","content":("long note content\n").repeat(400)})
+		conversation_dialog._rebuild(conversation_dialog.draft.size()-1)
+		panel.conversation_error = ("A long validation notice must scroll, not resize the footer. ").repeat(70)
+		panel._update_conversation_guard()
+		for i: int in range(3): await process_frame
+		var apply_rect: Rect2 = conversation_dialog.get_ok_button().get_global_rect()
+		var cancel_rect: Rect2 = conversation_dialog.get_cancel_button().get_global_rect()
+		check(conversation_dialog.size.y <= art_size.y+1,
+			"Conversation stays within small Art window height: "+str(art_size))
+		check(conversation_dialog.get_ok_button().is_visible_in_tree() and
+			apply_rect.position.y >= 0 and apply_rect.end.y <= conversation_dialog.size.y+1,
+			"Apply footer remains clickable after long Note: "+str(art_size))
+		check(conversation_dialog.get_cancel_button().is_visible_in_tree() and
+			cancel_rect.position.y >= 0 and cancel_rect.end.y <= conversation_dialog.size.y+1,
+			"Cancel footer remains clickable after long Note: "+str(art_size))
+		conversation_dialog.get_cancel_button().pressed.emit()
+		panel.conversation_error = ""
+	root.size = original_root_size
+	panel.size = Vector2i(640,400)
 
 func conversation_checks() -> void:
 	panel.conversation.clear()
