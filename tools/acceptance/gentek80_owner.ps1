@@ -193,6 +193,32 @@ function Collect([string]$root,[string]$dst,[string]$source,[string]$decisions){
  try{$dpi=(Get-ItemProperty -LiteralPath 'HKCU:\Control Panel\Desktop' -Name LogPixels -ErrorAction Stop).LogPixels}catch{$dpi=$null}
  # PASS labels alone do not establish physical owner acceptance.
  $metadataIssues=New-Object 'System.Collections.Generic.List[string]'
+ # A self-consistent package is not evidence of independent archive provenance.
+ # This is an owner-PASS admission guard, not a requirement for SKIP/FAIL reports.
+ if([string]::IsNullOrWhiteSpace($ExpectedManifestSha256)){
+   $metadataIssues.Add('Independently authenticated manifest SHA-256 not supplied')
+ }
+ if($ArchivePath -and -not $ExpectedArchiveSha256){
+   $metadataIssues.Add('Original archive supplied without independently authenticated ZIP SHA-256')
+ }
+ if(-not $ArchivePath -and $ExpectedArchiveSha256){
+   $metadataIssues.Add('Expected ZIP SHA-256 supplied without the original archive')
+ }
+ $archiveDigest=$null; $archiveError=$null
+ if($ArchivePath){
+   try {
+     $archiveDigest=Hash ((Resolve-Path -LiteralPath $ArchivePath).Path)
+     if($ExpectedArchiveSha256){
+       Require-Hash $ExpectedArchiveSha256 'ExpectedArchiveSha256'
+       if($archiveDigest -ne $ExpectedArchiveSha256.ToLowerInvariant()){
+         throw 'Original archive differs from independently authenticated ZIP SHA-256'
+       }
+       $checkedArchive=Zip-Checked $ArchivePath $ExpectedArchiveSha256
+       try{ $archiveDigest=Hash $checkedArchive.path }
+       finally{ $checkedArchive.zip.Dispose() }
+     }
+   }catch{ $archiveError=$_.Exception.Message }
+ }
  $projects=@($d.projects); $maps=@($d.maps)
  if($projects.Count -ne 2 -or $maps.Count -ne 2){
    $metadataIssues.Add('Two projects and two named starts not recorded')
@@ -240,13 +266,16 @@ function Collect([string]$root,[string]$dst,[string]$source,[string]$decisions){
  if(@($cases | Where-Object {$_.decision -eq 'SKIP'}).Count -gt 0 -or
     $metadataIssues.Count -gt 0){$status='INCOMPLETE'}
  if(@($cases | Where-Object {$_.decision -eq 'FAIL'}).Count -gt 0){$status='OWNER-FAILED'}
- if($identityError){$status='PACKAGE-REJECTED'}
+ if($identityError -or $archiveError){$status='PACKAGE-REJECTED'}
  Write-Json (Join-Path $dst 'gentek80-owner-report.json') @{
    schema='gentek80-physical-owner-evidence-v1';created_utc=(Get-Date).ToUniversalTime().ToString('o');
    status=$status;source_pinned=$source;verification=$identity;verification_error=$identityError;
    decisions=$d;owner_metadata_issues=@($metadataIssues);operating_system=$os;graphics_devices=$gpu;dpi_logical=$dpi;
    renderer_owner_entered=$Renderer;owner_supplied_frame_intervals=$frameStats;evidence_files=$copy;
-   archive_sha256=$(if($ArchivePath){Hash ((Resolve-Path -LiteralPath $ArchivePath).Path)}else{$null});
+   archive_sha256=$archiveDigest;
+   independent_archive_pin=$(if($ExpectedArchiveSha256){$ExpectedArchiveSha256.ToLowerInvariant()}else{$null});
+   archive_verification_error=$archiveError;
+   independently_pinned_manifest=(-not [string]::IsNullOrWhiteSpace($ExpectedManifestSha256));
    notice='No upload, synthesized input, screenshot or frame measurements; owner selects files and decisions'
  }
  Write-Output "OWNER EVIDENCE EXPORTED: $dst status=$status"

@@ -169,6 +169,47 @@ class WindowsAdmission(unittest.TestCase):
         dishonest = json.loads((self.root / "unsubstantiated-pass" / "gentek80-owner-report.json").read_text())
         self.assertEqual(dishonest["status"], "INCOMPLETE")
         self.assertTrue(dishonest["owner_metadata_issues"])
+        self.assertIn("Independently authenticated manifest SHA-256 not supplied",
+                      dishonest["owner_metadata_issues"])
+
+        external_manifest_pin = digest((self.src / "candidate-manifest.json").read_bytes())
+        # A wrong independent manifest pin is PACKAGE-REJECTED even for all-PASS declarations.
+        self.run_ps("Collect", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256="0" * 64, DecisionsPath=form,
+                    ResultsDirectory=self.root / "wrong-manifest-pin")
+        mismatch = json.loads((self.root / "wrong-manifest-pin" / "gentek80-owner-report.json").read_text())
+        self.assertEqual(mismatch["status"], "PACKAGE-REJECTED")
+        self.assertIn("manifest", mismatch["verification_error"].lower())
+
+        # An original ZIP requires its own external hash pin, not merely a manifest pin.
+        self.run_ps("Collect", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256=external_manifest_pin, ArchivePath=self.zip,
+                    DecisionsPath=form, ResultsDirectory=self.root / "missing-zip-pin")
+        no_archive_pin = json.loads((self.root / "missing-zip-pin" / "gentek80-owner-report.json").read_text())
+        self.assertEqual(no_archive_pin["status"], "INCOMPLETE")
+        self.assertTrue(any("authenticated ZIP SHA-256" in issue
+                            for issue in no_archive_pin["owner_metadata_issues"]))
+
+        # Deliberately wrong ZIP pin is a package rejection, never an owner PASS.
+        self.run_ps("Collect", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256=external_manifest_pin, ArchivePath=self.zip,
+                    ExpectedArchiveSha256="0" * 64, DecisionsPath=form,
+                    ResultsDirectory=self.root / "wrong-zip-pin")
+        wrong_zip_pin = json.loads((self.root / "wrong-zip-pin" / "gentek80-owner-report.json").read_text())
+        self.assertEqual(wrong_zip_pin["status"], "PACKAGE-REJECTED")
+        self.assertIn("archive", wrong_zip_pin["archive_verification_error"].lower())
+
+        # Both externally supplied hashes are accepted as provenance, but these
+        # synthetic PASS declarations still lack physical Windows/NVIDIA evidence.
+        self.run_ps("Collect", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256=external_manifest_pin, ArchivePath=self.zip,
+                    ExpectedArchiveSha256=self.sha, DecisionsPath=form,
+                    ResultsDirectory=self.root / "authentic-but-not-physical")
+        pinned = json.loads((self.root / "authentic-but-not-physical" / "gentek80-owner-report.json").read_text())
+        self.assertEqual(pinned["status"], "INCOMPLETE")
+        self.assertTrue(pinned["independently_pinned_manifest"])
+        self.assertEqual(pinned["archive_sha256"], self.sha)
+        self.assertIsNone(pinned["archive_verification_error"])
 
     def test_failed_payload_extraction_is_atomic(self):
         corrupt = self.root / "corrupt"
