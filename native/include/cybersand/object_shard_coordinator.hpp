@@ -146,6 +146,20 @@ struct ShardEditRequest {
 class Coordinator {
 public:
     explicit Coordinator(Config config = {});
+    // Ordinary Workbench attachment: BORROWS the one owner-owned World without
+    // constructing, stepping, resetting, or deleting it. Owner must dispose this
+    // coordinator before replacing its World.
+    explicit Coordinator(World& attached_world, Config config = {});
+    [[nodiscard]] bool same_world_attached(const World& owner) const noexcept {
+        return attached_ && world_ == &owner;
+    }
+    // Ordinary Worker calls after its existing exclusive World tick. The M3
+    // standalone path continues to use Coordinator::step() unchanged.
+    [[nodiscard]] Result after_owner_world_tick(std::span<const PoseSample> poses = {});
+    // GCR owner supplies exact immutable occupancy as a copy before contact.
+    // No raw World, node or RID aliases cross this API.
+    [[nodiscard]] Result set_immutable_occupancy(
+        std::span<const World::TransientCompositionCell> cells);
     ~Coordinator();
     Coordinator(const Coordinator&) = delete;
     Coordinator& operator=(const Coordinator&) = delete;
@@ -181,11 +195,19 @@ public:
 
 private:
     friend struct CoordinatorTestAccess;
+    Coordinator(Config config, World* owner_world);
     struct Pending;
     struct Receipt;
     Config config_;
     std::uint64_t session_{1}, world_incarnation_{1}, next_transaction_{1};
-    std::unique_ptr<World> world_;
+    std::unique_ptr<World> owned_world_;
+    World* world_ = nullptr; // borrowed only while attached_; never outlives owner
+    bool attached_ = false;
+    std::uint64_t last_owner_tick_{};
+    std::array<std::uint64_t, kQuantityMaterialSlots> last_owner_population_{};
+    static constexpr std::uint16_t kFirstMutableBodyId = World::kMaximumTransientBodies - 2;
+    std::vector<World::TransientCompositionCell> immutable_occupancy_;
+    std::vector<World::TransientCompositionCell> shard_occupancy_;
     Registry registry_;
     std::unique_ptr<Pending> pending_;
     std::vector<BodyView> bodies_;
@@ -231,6 +253,7 @@ private:
     std::uint64_t pause_started_ns_{};
 
     void initialize_world();
+    void initialize_attached_world(World& owner);
     void author_scenario(std::uint32_t scenario);
     [[nodiscard]] Result finish(Result result) noexcept;
     [[nodiscard]] bool resident(std::int64_t x, std::int64_t y) const noexcept;
