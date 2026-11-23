@@ -961,17 +961,31 @@ Result Coordinator::accept_motion(std::span<const PoseSample> poses) {
         "motion segment occupancy and contact applied; semantic tick unchanged"});
 }
 
+Result Coordinator::begin_owner_world_tick() {
+    if (!attached_ || quarantined_ || paused() || world_->has_failed() ||
+        world_->is_tick_in_progress() || owner_tick_admitted_ ||
+        world_->completed_tick_index() != last_owner_tick_)
+        return finish({Outcome::Fenced, {}, 0, Phase::Suspended,
+            "only an idle exact same-World owner may authorize its next native tick"});
+    last_owner_population_ = world_->quantity_ledger().material_cells;
+    owner_tick_admitted_ = true;
+    return finish({});
+}
+
 Result Coordinator::after_owner_world_tick(std::span<const PoseSample> poses) {
     if (!attached_) return finish({Outcome::Unsupported, {}, 0, Phase::Suspended,
         "only the owner-local attachment accepts external World ticks"});
     if (quarantined_ || world_->has_failed() || world_->is_tick_in_progress())
         return finish({Outcome::Quarantined});
-    if (world_->completed_tick_index() != last_owner_tick_ + 1)
+    if (!owner_tick_admitted_ || world_->completed_tick_index() != last_owner_tick_ + 1)
         return finish({Outcome::Stale, {}, 0, Phase::Suspended,
             "an exact single native owner tick is required"});
     if (paused()) return finish({Outcome::Fenced, {}, 0, Phase::Suspended,
         "physics/geometry owner barrier cannot be bypassed by a World tick"});
-    const auto accepted = apply_poses(poses);
+    // Actual physics segments have already been applied through accept_motion.
+    // An empty batch does NOT manufacture a zero-motion receipt for active RIDs.
+    const auto accepted = poses.empty() && std::any_of(bodies_.begin(), bodies_.end(),
+        [](const auto& b) { return b.has_body; }) ? Outcome::Accepted : apply_poses(poses);
     if (accepted != Outcome::Accepted)
         return accepted == Outcome::Quarantined
             ? quarantine({}, "owner post-tick motion occupancy partial")
@@ -984,6 +998,7 @@ Result Coordinator::after_owner_world_tick(std::span<const PoseSample> poses) {
             static_cast<std::int64_t>(last_owner_population_[m]);
     last_owner_population_ = current;
     last_owner_tick_ = world_->completed_tick_index();
+    owner_tick_admitted_ = false;
     ++metrics_.steps;
     try {
         automatic_ingress();
