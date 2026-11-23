@@ -190,7 +190,23 @@ func _run() -> void:
         "all chemistry, material transfer and physical motion share one native World identity")
     # Edit the MOVING inventory after actual applied pose, not ordinary terrain.
     if not settled.is_empty() and full_motion:
-        var target: int = 4
+        # Native component discovery reserves a one-cell Empty ring around
+        # the captured 3x3 Wood. The old test's hard-coded index 4 addressed
+        # the ring (role Empty), NOT an owned structural Wood cell.
+        # Choose an actual current, fully witnessed Wood structural cell.
+        var structural_wood: Array[int] = []
+        for cell_index: int in range(settled.roles.size()):
+            if int(settled.roles[cell_index]) == 1 and int(settled.materials[cell_index]) == 7:
+                structural_wood.append(cell_index)
+        if not expect(structural_wood.size() == 9,
+            "all nine moving Wood cells retain exact native Structural role"):
+            _finish()
+            return
+        # Middle cell of the retained raster order gives the centre of the
+        # authored 3x3; erasing it changes real geometry without disconnection.
+        var target: int = structural_wood[structural_wood.size() / 2]
+        expect(int(settled.roles[target]) == 1 and int(settled.materials[target]) == 7,
+            "moving-cell erase target is Wood owned by the current native shard")
         var request: Dictionary = {"session":int(settled.session),"id":int(settled.id),
             "generation":int(settled.generation),
             "sequence":int(world.object_shard_snapshot().next_transaction),
