@@ -142,6 +142,12 @@ func layout_checks() -> void:
 		check(cancel_button.is_visible_in_tree() and popup_rect.encloses(cancel_rect),
 			"Cancel footer remains clickable after long Note: "+str(art_size))
 		conversation_dialog.get_cancel_button().pressed.emit()
+		# Closing a nested Window can be deferred to a later frame. Drain that
+		# lifecycle before the next iteration opens it again; otherwise the
+		# previous Cancel can hide the freshly opened dialog.
+		for i: int in range(2): await process_frame
+		conversation_dialog.hide()
+		for i: int in range(2): await process_frame
 		panel.conversation_error = ""
 	root.size = original_root_size
 	panel.size = Vector2i(640,400)
