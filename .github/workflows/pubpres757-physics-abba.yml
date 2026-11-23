@@ -76,6 +76,40 @@ jobs:
           [IO.Directory]::CreateDirectory('build/pubpres757-physics-abba') | Out-Null
           $Experiment = @{ schema = 'pubpres757-physics-only-experiment-v1'; frozen_application_source = $env:PUBPRES_FROZEN_SOURCE; exact_frozen_runtime_sha256 = $Sha; wrapper_evidence_commit = $env:GITHUB_SHA; wrapper_sha256 = (Get-Content (Join-Path $env:RUNNER_TEMP 'pubpres757-wrapper-sha256.txt')).Trim(); treatment_order = @('early','combined','combined','early'); source_selection = 'Original committed run_focus.py with detached wrapper selectively patching treatment sequence and environment only'; material = 'full'; presentation = 'coherent'; camera = 'follow'; mode = 'safe-ANGLE'; expected_real_rapier_steps_per_arm = 144; acceptance = 'HOLD'; purpose = 'isolate physics mailbox coupling after failed Target-upload experiment'; policy = 'no merge, source promotion or production default change' }
           $Experiment | ConvertTo-Json -Depth 6 | Out-File -Encoding utf8 'build/pubpres757-physics-abba/IDENTITY.json'
+      - name: Preflight corrected expected physics treatment metadata
+        timeout-minutes: 3
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Script = @'
+          import hashlib, importlib.util, json
+          from pathlib import Path
+          root = Path.cwd()
+          wrapper = Path(__import__("os").environ["RUNNER_TEMP"]) / "pubpres757_physics_abba.py"
+          spec = importlib.util.spec_from_file_location("pubpres757_physics_abba", wrapper)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          campaign = json.loads((root / "tools/pubpres_playability/campaign.json").read_bytes())
+          arms = module.planned_arms("renderer-abba")
+          assert [a["physics"] for a in arms] == ["early", "combined", "combined", "early"]
+          assert [a["physics_mode"] for a in arms] == ["early", "combined", "combined", "early"]
+          records = []
+          for i, arm in enumerate(arms):
+              requested = {"material": "full", **arm}
+              effective = {**campaign["arms"]["C"], **{k:v for k,v in requested.items() if k != "causal"}}
+              env = module.selectors(requested, "frozen-preflight-"+str(i), "stage")
+              assert effective["physics"] == env["CYBERSAND_DIAG_PHYSICS_PUBLICATION"]
+              assert effective["physics_mode"] == effective["physics"]
+              assert env["CYBERSAND_MATERIAL_PUBLICATION"] == effective["material"] == "full"
+              assert env["CYBERSAND_DIAG_PRESENTATION"] == "coherent"
+              assert env["CYBERSAND_DIAG_SAME_FRAME_CONTINUATION"] == "0"
+              records.append({"index":i,"expected_physics":effective["physics"],"requested_physics":env["CYBERSAND_DIAG_PHYSICS_PUBLICATION"],"material":effective["material"]})
+          result={"schema":"pubpres757-physics-selector-preflight-v1","application_commit":"c90dbc46e1f57f28e06b1f4205b83467335ff657","wrapper_sha256":hashlib.sha256(wrapper.read_bytes()).hexdigest(),"bound_arms":records}
+          (root/"build/pubpres757-physics-abba/WRAPPER-PREFLIGHT.json").write_text(json.dumps(result,indent=2)+"\\n")
+          print(json.dumps(result,indent=2))
+          '@
+          $Script | Set-Content -LiteralPath 'build/pubpres757-physics-abba/preflight.py' -Encoding ascii
+          python 'build/pubpres757-physics-abba/preflight.py'
+          if ($LASTEXITCODE -ne 0) { throw 'Corrected wrapper preflight failed before costly renderer comparison' }
       - name: Real source-exact Windows Wave512 Full-only early combined combined early
         timeout-minutes: 60
         run: |
