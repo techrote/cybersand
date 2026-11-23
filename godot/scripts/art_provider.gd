@@ -1015,7 +1015,20 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 					if value.is_valid_float() and is_finite(value.to_float()):
 						retry_after_seconds = maxf(0.0,value.to_float())
 		var raw := bytes.get_string_from_utf8()
+		# Preserve the complete, redacted provider response in the session audit.
+		# In particular, invalid-model HTTP errors are not assistant replies and
+		# must not trigger redundant usage/assistant archive flushes on the UI thread.
 		log_event("response",{"transport":result,"http":code,"headers":headers,"body":raw})
+		if result != HTTPRequest.RESULT_SUCCESS:
+			finished.emit(id,"",{},"Connection/timeout failure (%d). Check endpoint/server; inspect Traffic." % result)
+			return
+		if code < 200 or code >= 300:
+			# Full error bytes remain in the response event. Bound only the UI/
+			# conversation projection to avoid copying huge error bodies repeatedly.
+			var excerpt := raw.left(512).replace("\\r"," ").replace("\\n"," ")
+			var suffix := " … (full response in Traffic)" if raw.length() > 512 else ""
+			finished.emit(id,"",{},redact("HTTP %d: %s%s" % [code,excerpt,suffix]))
+			return
 		var parser := JSON.new()
 		var valid_json := parser.parse(raw)==OK
 		var data: Dictionary = parser.data if valid_json and parser.data is Dictionary else {}
@@ -1031,10 +1044,7 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 		log_event("usage",{"requested_model":requested_model,"returned_model":returned_model,"usage":usage,"cost":null})
 		var decoded := decode(provider,data)
 		log_event("assistant",decoded.text)
-		var error: String = decoded.error
-		if result != HTTPRequest.RESULT_SUCCESS: error = "Connection/timeout failure (%d). Check endpoint/server; inspect Traffic." % result
-		elif code < 200 or code >= 300: error = "HTTP %d: %s" % [code,raw]
-		finished.emit(id,redact(decoded.text),data,redact(error)))
+		finished.emit(id,redact(decoded.text),data,redact(str(decoded.error))))
 	var headers := PackedStringArray(["Content-Type: application/json"])
 	if not key.is_empty(): headers.append("Authorization: Bearer "+key)
 	var err := request.request(url,headers,HTTPClient.METHOD_POST,JSON.stringify(body))
