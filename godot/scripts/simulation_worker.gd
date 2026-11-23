@@ -41,6 +41,14 @@ var _gameplay_water: bool
 
 func _init(gameplay_water: bool = false) -> void:
 	_gameplay_water = gameplay_water
+	# PAINT-END2END-002: completely opt-in. An empty environment preserves the
+	# production one-chunk-per-turn behaviour byte-for-byte at the call boundary.
+	var configured_paint_burst: int = int(OS.get_environment("CYBERSAND_PAINT_BURST_SLICES"))
+	_paint_burst_slices = configured_paint_burst if configured_paint_burst in [2, 4, 8] else 1
+	var configured_paint_budget: int = int(OS.get_environment("CYBERSAND_PAINT_BURST_BUDGET_USEC"))
+	_paint_burst_budget_usec = clampi(configured_paint_budget if configured_paint_budget > 0 else 6000, 1000, 8000)
+	_paint_profile_enabled = OS.get_environment("CYBERSAND_PAINT_BURST_PROFILE") == "1"
+	_paint_test_gates_enabled = OS.get_environment("CYBERSAND_PAINT_TEST_GATES") == "1"
 	_world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
 var _actor_session: CyberActorPrototypeSession = ActorSession.new()
@@ -124,6 +132,28 @@ var _paint_progress: Dictionary = {"status":"idle"}
 var _paint_context: Dictionary = {"generation":-1,"revision":-1,"tick":-1,"paused":false,"extent":Vector2i.ZERO}
 var _paint_materials: PackedInt32Array = PaintEditorExecutor.native_materials()
 var _paint_owner: RefCounted
+# Each native executor step still processes at most 4,096 cells and checks
+# all protected materials/bodies/revision/cancellation. The burst merely
+# repeats already-admitted steps on the exclusive worker, never the UI.
+var _paint_burst_slices: int = 1
+var _paint_burst_budget_usec: int = 6000
+var _paint_profile_enabled: bool = false
+var _paint_profile_cycles: int = 0
+var _paint_profile_step_usec: int = 0
+var _paint_profile_max_cycle_usec: int = 0
+var _paint_profile_gap_usec: int = 0
+var _paint_profile_max_gap_usec: int = 0
+var _paint_profile_last_end_usec: int = 0
+var _paint_profile_max_chunks: int = 0
+# Exact boundary barriers are confined to the experimental test process. They
+# cannot be armed in normal Workbench runs; the owner never calls into the UI.
+var _paint_test_gates_enabled: bool = false
+var _paint_test_gate_phase: String = ""
+var _paint_test_gate_entered: bool = false
+var _paint_test_gate_released: bool = false
+# Separate source-fence injection; the real World transition lifecycle owns
+# _world_change_inflight and rewrites it each worker turn.
+var _paint_test_world_change_fence: bool = false
 
 # WB-ART-002: one bounded chunk/result, ordinary owner loop; no authorizing session.
 var _art_epoch := 1
@@ -2268,9 +2298,85 @@ func paint_stop() -> Dictionary:
 	return result
 
 
+# Deterministic tests use the real owner thread, not a mock native World.
+# A gate is armed only by an explicit test-process environment opt-in. Waiting
+# never holds _mutex: Stop, setting changes and reset can be admitted normally.
+func paint_test_arm_gate(phase: String) -> bool:
+	if not _paint_test_gates_enabled or phase not in ["before_consume", "after_validation_slice", "after_first_write"]:
+		return false
+	_mutex.lock()
+	var allowed: bool = _running and _paint_test_gate_phase.is_empty() and not _paint_test_gate_entered
+	if allowed:
+		_paint_test_gate_phase = phase
+		_paint_test_gate_entered = false
+		_paint_test_gate_released = false
+	_mutex.unlock()
+	return allowed
+
+
+func paint_test_gate_engaged() -> bool:
+	_mutex.lock()
+	var entered: bool = _paint_test_gate_entered
+	_mutex.unlock()
+	return entered
+
+
+func paint_test_release_gate() -> bool:
+	_mutex.lock()
+	var entered: bool = _paint_test_gate_entered
+	if entered: _paint_test_gate_released = true
+	_mutex.unlock()
+	return entered
+
+
+# Simulate the real, mutex-owned World-transition admission fence without
+# resetting a 512-cell Workbench behind its rendered owner (the full native
+# contract suite separately exercises actual Workbench replacement).
+func paint_test_begin_world_change_fence() -> bool:
+	if not _paint_test_gates_enabled: return false
+	_mutex.lock()
+	var allowed: bool = _paint_test_gate_entered and _paint_test_gate_phase == "after_validation_slice" \
+		and not _paint_test_world_change_fence and not _world_change_inflight and not _reset_requested
+	if allowed: _paint_test_world_change_fence = true
+	_mutex.unlock()
+	return allowed
+
+
+func paint_test_end_world_change_fence() -> bool:
+	if not _paint_test_gates_enabled: return false
+	_mutex.lock()
+	var was_active: bool = _paint_test_world_change_fence
+	if was_active: _paint_test_world_change_fence = false
+	_mutex.unlock()
+	return was_active
+
+
+func _paint_test_wait_gate(phase: String) -> void:
+	_mutex.lock()
+	var armed: bool = _paint_test_gate_phase == phase
+	if armed: _paint_test_gate_entered = true
+	_mutex.unlock()
+	if not armed: return
+	# Tests are explicitly bounded; a failed main-thread assertion must not
+	# strand the simulation worker indefinitely.
+	var deadline_usec: int = Time.get_ticks_usec() + 15000000
+	while Time.get_ticks_usec() < deadline_usec:
+		_mutex.lock()
+		var released: bool = _paint_test_gate_released or not _running
+		_mutex.unlock()
+		if released: break
+		OS.delay_usec(250)
+	_mutex.lock()
+	_paint_test_gate_phase = ""
+	_paint_test_gate_entered = false
+	_paint_test_gate_released = false
+	_mutex.unlock()
+
+
 func _consume_paint(local_paused: bool) -> void:
 	# This method runs only on the existing exclusive simulation thread, after
 	# ordinary emissions/ticks. No caller can read or own the mutable World.
+	if _paint_test_gates_enabled: _paint_test_wait_gate("before_consume")
 	_mutex.lock()
 	var context := {"epoch":_paint_epoch,"generation":_world_generation,
 		"revision":int(_world.revision),"tick":int(_world.tick_index),
@@ -2281,7 +2387,7 @@ func _consume_paint(local_paused: bool) -> void:
 		"erase_allowed":not _micro_active or _scenario_host.allows_tool("erase")}
 	if _simulation_failed: context.error = "The native simulation failed."
 	elif _water_lab_active: context.error = "Controlled Water experiments do not admit construction edits."
-	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): context.error = "The canvas is changing."
+	elif _world_change_inflight or _paint_test_world_change_fence or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): context.error = "The canvas is changing."
 	elif _workbench_extent == Vector2i.ZERO: context.error = "The Workbench World was replaced."
 	elif not _workbench_refusal.is_empty(): context.error = _workbench_refusal
 	_paint_context = context.duplicate()
@@ -2294,7 +2400,78 @@ func _consume_paint(local_paused: bool) -> void:
 	if not candidate.is_empty():
 		_paint_owner = PaintEditorExecutor.new()
 		_paint_owner.begin(candidate, _workbench_extent, _paint_materials)
-	var receipt: Dictionary = _paint_owner.step(_world, context)
+		_paint_profile_cycles = 0
+		_paint_profile_step_usec = 0
+		_paint_profile_max_cycle_usec = 0
+		_paint_profile_gap_usec = 0
+		_paint_profile_max_gap_usec = 0
+		_paint_profile_last_end_usec = 0
+		_paint_profile_max_chunks = 0
+	var started_usec: int = Time.get_ticks_usec()
+	if _paint_profile_enabled and _paint_profile_last_end_usec > 0:
+		var gap_usec: int = maxi(0, started_usec - _paint_profile_last_end_usec)
+		_paint_profile_gap_usec += gap_usec
+		_paint_profile_max_gap_usec = maxi(_paint_profile_max_gap_usec, gap_usec)
+	var receipt: Dictionary = {}
+	var chunks_this_cycle := 0
+	# Baseline: exactly one PaintEditorExecutor.step() per worker turn.
+	# Experimental: up to 8 of the unchanged 4,096-cell steps per turn.
+	# Finite time + chunk limits protect the main/physics publishing cadence.
+	var quantum: int = _paint_burst_slices if context.paused and context.error.is_empty() else 1
+	for index: int in quantum:
+		if index > 0:
+			if Time.get_ticks_usec() - started_usec >= _paint_burst_budget_usec: break
+			# Stop, reset, authoring changes and settings can arrive from the main
+			# thread while the worker owns the World. Refresh the immutable fence
+			# before EVERY extra 4096-cell step, not once per burst.
+			_mutex.lock()
+			context.epoch = _paint_epoch
+			context.authoring_generation = _authoring_generation
+			context.settings_revision = _construction_settings_revision
+			context.paused = local_paused and _paused
+			if _simulation_failed: context.error = "The native simulation failed."
+			elif _water_lab_active: context.error = "Controlled Water experiments do not admit construction edits."
+			elif _world_change_inflight or _paint_test_world_change_fence or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
+				context.error = "The canvas is changing."
+			elif _workbench_extent == Vector2i.ZERO: context.error = "The Workbench World was replaced."
+			elif not _workbench_refusal.is_empty(): context.error = _workbench_refusal
+			_mutex.unlock()
+		receipt = _paint_owner.step(_world, context)
+		chunks_this_cycle += 1
+		if _paint_test_gates_enabled and receipt.is_empty():
+			# Hold exactly after the first validation or application chunk,
+			# before the next refreshed Stop/settings/reset fence.
+			var step_progress: Dictionary = _paint_owner.progress()
+			if int(step_progress.get("applied",0)) == PaintEditorExecutor.SLICE_CELLS:
+				_paint_test_wait_gate("after_first_write")
+			elif int(step_progress.get("checked",0)) == PaintEditorExecutor.SLICE_CELLS:
+				_paint_test_wait_gate("after_validation_slice")
+		if not receipt.is_empty(): break
+	var finished_usec: int = Time.get_ticks_usec()
+	if _paint_profile_enabled:
+		_paint_profile_cycles += 1
+		_paint_profile_step_usec += finished_usec - started_usec
+		_paint_profile_max_cycle_usec = maxi(_paint_profile_max_cycle_usec, finished_usec - started_usec)
+		_paint_profile_max_chunks = maxi(_paint_profile_max_chunks, chunks_this_cycle)
+		_paint_profile_last_end_usec = finished_usec
+		if not receipt.is_empty():
+			var profile: Dictionary = {
+				"schema": "paint-end2end-002-worker-profile-v1",
+				"kind": str(receipt.get("kind","")),
+				"status": str(receipt.get("status","")),
+				"requested_cells": int(receipt.get("requested_cells",0)),
+				"burst_slices_limit": _paint_burst_slices,
+				"budget_usec": _paint_burst_budget_usec,
+				"executor_steps": int(receipt.get("slices",0)),
+				"worker_cycles": _paint_profile_cycles,
+				"worker_cpu_wall_usec": _paint_profile_step_usec,
+				"inter_cycle_gap_usec": _paint_profile_gap_usec,
+				"max_gap_usec": _paint_profile_max_gap_usec,
+				"max_cycle_usec": _paint_profile_max_cycle_usec,
+				"max_chunks_per_cycle": _paint_profile_max_chunks,
+				"executor_elapsed_usec": int(receipt.get("elapsed_usec",-1))}
+			receipt.paint_throughput_profile = profile
+			print("PAINT_END2END_002_PROFILE ", JSON.stringify(profile))
 	var progress: Dictionary = _paint_owner.progress()
 	_mutex.lock()
 	_paint_inflight = false

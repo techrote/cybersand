@@ -2,6 +2,7 @@ extends SceneTree
 
 # Actual existing worker/native World. No RG8 render samples are material identity.
 const Setup = preload("res://scripts/workbench_setup.gd")
+const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
 var host: Control
@@ -12,6 +13,7 @@ var checks := 0
 var measurements: Array = []
 var witnesses: Array = []
 var source_identity: Dictionary = {}
+var fence_cases: int = 0
 func sources() -> Dictionary:
 	var out := {}
 	for name: String in ["main.gd","simulation_worker.gd","shared_workbench.gd","workbench_setup.gd","workbench_paint_editor_executor.gd","workbench_paint_editor_controller.gd","workbench_paint_editor_history.gd","workbench_paint_editor_shapes.gd","workbench_paint_editor_overlay.gd"]:
@@ -103,24 +105,37 @@ func test_native() -> void:
 		var stale := request({"kind":"edit","cells":PackedInt32Array([100,100,58])})
 		stale[field]-=1
 		check(worker.paint_queue(stale).status=="refused","stale "+field+" refused")
-	var large := rectangle(Rect2i(120,120,128,128),2)
+	# 16,384 cells can finish between two rendered-frame polls on a busy
+	# software renderer, making a late Stop race indistinguishable from a
+	# cancellation defect. Use a 65,536-cell request so completion cannot
+	# overtake the first recorded native 4,096-cell prefix within one frame.
+	var large := rectangle(Rect2i(120,120,256,256),2)
+	# Explicitly hold the owner before taking its next request; a rendered
+	# frame between queue and Stop is not a valid preflight synchronization.
+	var test_gates: bool = OS.get_environment("CYBERSAND_PAINT_TEST_GATES") == "1"
+	if test_gates:
+		check(worker.paint_test_arm_gate("before_consume"),"preflight barrier armed")
+		check(await wait_for(func()->bool:return worker.paint_test_gate_engaged()),
+			"native worker acknowledged pre-consume barrier")
 	check(worker.paint_queue(request({"kind":"edit","cells":large})).status=="queued","large shape admitted")
 	check(not worker.queue_emit_cells(PackedInt32Array([2,2]),58),"legacy brush cannot interleave")
 	check(worker.paint_queue(request({"kind":"edit","cells":large})).status=="refused","single bounded operation slot")
 	worker.paint_stop()
+	if test_gates: check(worker.paint_test_release_gate(),"preflight barrier released")
 	edit=await result()
 	check(edit.get("status")=="cancelled" and edit.get("applied")==0,"Stop during preflight writes nothing")
 	check(worker.paint_queue(request({"kind":"edit","cells":large})).status=="queued","large shape retry admitted")
 	check(await wait_for(func()->bool:return int(worker.paint_state().get("applied",0))>=4096),"native application prefix observed")
 	worker.paint_stop()
 	edit=await result()
-	check(edit.get("status")=="partial" and edit.get("applied",0)>=4096 and edit.get("applied",0)<16384,"Stop reports truthful partial prefix")
+	check(edit.get("status")=="partial" and edit.get("applied",0)>=4096 and edit.get("applied",0)<65536,
+		"Stop reports truthful partial prefix: status=%s applied=%s" % [edit.get("status","?"), edit.get("applied",-1)])
 	var recovery: PackedInt32Array = edit.cells.duplicate()
 	for i: int in range(recovery.size()/3): recovery[i*3+2]=edit.before[i]
 	inverse=await submit({"kind":"edit","cells":recovery,"expected_before":edit.after})
 	check(inverse.get("status")=="completed","partial prefix can be reversed safely")
-	capture=await submit({"kind":"capture","region":Rect2i(120,120,128,128)})
-	var empty := PackedInt32Array(); empty.resize(16384); empty.fill(0)
+	capture=await submit({"kind":"capture","region":Rect2i(120,120,256,256)})
+	var empty := PackedInt32Array(); empty.resize(65536); empty.fill(0)
 	check(capture.get("materials")==empty,"recovered cancellation has no hidden tail")
 	for size: int in [512,1024,2048]:
 		if not await install(size): return
@@ -159,6 +174,68 @@ func test_native() -> void:
 	if not started: check(wb.apply(replacement),"replacement admitted after Stop")
 	check(await wait_for(func()->bool:return not wb.busy() and worker.paint_state().generation>int(stale_source.expected_generation)),"new native World installed")
 	check(worker.paint_queue(stale_source).status=="refused","old source remains invalid after replacement")
+func test_burst_fence_controls() -> void:
+	if OS.get_environment("CYBERSAND_PAINT_TEST_GATES") != "1": return
+	for mode: String in ["stop", "settings", "world_change"]:
+		if not await install(512): return
+		var phase: String = "after_first_write" if mode == "stop" else "after_validation_slice"
+		if not check(worker.paint_test_arm_gate(phase),mode+" boundary armed"): return
+		var area := Rect2i(120,120,256,256)
+		var admitted: Dictionary = worker.paint_queue(request({
+			"kind":"edit","cells":rectangle(area,2)}))
+		if not check(admitted.get("status","") == "queued",mode+" admitted"): return
+		if not check(await wait_for(func()->bool:return worker.paint_test_gate_engaged(),60000),
+				mode+" reached exact native chunk boundary"):
+			worker.paint_stop()
+			worker.paint_test_release_gate()
+			return
+		match mode:
+			"stop":
+				var stop_request: Dictionary = worker.paint_stop()
+				check(not bool(stop_request.get("acknowledged",true)),
+					"Stop sees an executing and acknowledged native prefix")
+			"settings":
+				check(worker.queue_player_environment_profile(
+					PlayerEnvironmentProfiles.preset(PlayerEnvironmentProfiles.PRESET_CURRENT)),
+					"real settings change admitted while native validation is held")
+			"world_change":
+				check(worker.paint_test_begin_world_change_fence(),
+					"real World-transition exclusion fence raised without changing canvas extent")
+		check(worker.paint_test_release_gate(),mode+" boundary released")
+		var interrupted: Dictionary = await result()
+		if mode == "world_change":
+			check(worker.paint_test_end_world_change_fence(),
+				"World-transition exclusion fence cleared after acknowledgement")
+		var prefix: int = int(interrupted.get("applied",-1))
+		if mode == "stop":
+			check(interrupted.get("status","")=="partial" and
+				interrupted.get("termination","")=="cancelled" and prefix==4096,
+				"Stop at first native write boundary retains exactly one 4096-cell prefix")
+			var inverse: PackedInt32Array = interrupted.get("cells",PackedInt32Array()).duplicate()
+			var before: PackedInt32Array = interrupted.get("before",PackedInt32Array())
+			var after: PackedInt32Array = interrupted.get("after",PackedInt32Array())
+			if not check(inverse.size()==prefix*3 and before.size()==prefix and after.size()==prefix,
+					"bounded Stop complete exact-prefix receipt"): return
+			for i: int in prefix: inverse[i*3+2]=before[i]
+			var undone: Dictionary = await submit({"kind":"edit","cells":inverse,
+				"expected_before":after})
+			check(undone.get("status","")=="completed" and int(undone.get("applied",0))==prefix,
+				"bounded Stop prefix exact inverse recovery")
+			var capture: Dictionary = await submit({"kind":"capture","region":area})
+			var empty := PackedInt32Array()
+			empty.resize(65536)
+			empty.fill(0)
+			check(capture.get("status","")=="completed" and capture.get("materials",PackedInt32Array())==empty,
+				"bounded Stop leaves no hidden native write tail")
+		else:
+			check(interrupted.get("status","") in ["cancelled","invalidated"] and prefix==0,
+				mode+" retires mid-validation before any material write")
+			check(interrupted.get("cells",PackedInt32Array()).is_empty()
+				and interrupted.get("before",PackedInt32Array()).is_empty(),
+				mode+" produces no phantom write receipt")
+		fence_cases+=1
+
+
 func run() -> void:
 	source_identity=sources()
 	var configured := int(OS.get_environment("PAINT_TEST_WORKERS"))
@@ -179,9 +256,12 @@ func run() -> void:
 		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
 		check(snapshot != null and (configured not in [1,4] or snapshot.scheduler_thread_capacity_hint==configured),"actual native worker capacity matches requested run")
 		await test_native()
+		await test_burst_fence_controls()
 	host.queue_free()
 	await process_frame
 	await process_frame
 	check(source_identity==sources(),"tested source and native bytes unchanged during execution")
-	print("PAINT_EDITOR_NATIVE ",JSON.stringify({"checks":checks,"failures":failures,"workers":configured,"measurements":measurements,"native_material_witnesses":witnesses,"witness_sha256":JSON.stringify(witnesses).sha256_text(),"source_identity":source_identity}))
+	print("PAINT_EDITOR_NATIVE ",JSON.stringify({"checks":checks,"failures":failures,"workers":configured,"measurements":measurements,"native_material_witnesses":witnesses,"witness_sha256":JSON.stringify(witnesses).sha256_text(),"source_identity":source_identity,
+		"test_gates":OS.get_environment("CYBERSAND_PAINT_TEST_GATES") == "1",
+		"fence_cases":fence_cases}))
 	quit(int(not failures.is_empty()))

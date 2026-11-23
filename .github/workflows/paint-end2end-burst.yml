@@ -1,0 +1,262 @@
+name: PAINT-END2END-002 isolated owner-worker burst pilot
+
+# Research-only; preserve default production behaviour and source-pinned LFS.
+on:
+  push:
+    branches: [exp/paint-end2end-002-bounded-burst]
+    paths:
+      - ".github/workflows/paint-end2end-burst.yml"
+      - "godot/scripts/simulation_worker.gd"
+      - "godot/scripts/workbench_paint_editor_executor.gd"
+      - "godot/native_extension/cyber_native_cell_world.cpp"
+      - "godot/native_extension/cyber_native_cell_world.hpp"
+      - "godot/tests/test_paint_end2end_burst.gd"
+      - "godot/tests/test_paint_editor_native.gd"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # Branch pushes supersede older copies; manually dispatched evidence stays independent.
+  group: paint-end2end-002-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+jobs:
+  actual-worker:
+    name: Actual Workbench PAINT ${{ matrix.slices }} slice budget
+    if: github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        slices: [1, 4, 8]
+    env:
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      NATIVE_SHA256: cf2a3f05f30fa5aee6b4b07a67613de75313b96a1e29ceb3a5f6566ded6502c9
+      RAPIER_SHA256: 566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a
+      CYBERSAND_PAINT_BURST_SLICES: "${{ matrix.slices }}"
+      CYBERSAND_PAINT_BURST_BUDGET_USEC: "6000"
+      CYBERSAND_PAINT_BURST_PROFILE: "1"
+      GODOT_SILENCE_ROOT_WARNING: "1"
+    steps:
+      - name: Source checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Install actual retained native and Rapier from Git LFS
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "$NATIVE_SHA256  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
+          echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+      - name: Install pinned Godot 4.7 and import Workbench
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "4.7.stable.official.5b4e0cb0f"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          timeout 240 "$GODOT_BIN" --headless --editor --path godot --import
+          bash tools/ci/prepare_linux_display.sh
+      - name: Exercise installed source with real rendered Workbench/worker
+        timeout-minutes: 20
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p "build/paint-burst-${{ matrix.slices }}"
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+            timeout 16m "$GODOT_BIN" --rendering-method gl_compatibility \
+            --display-driver x11 --audio-driver Dummy --path godot \
+            -s res://tests/test_paint_end2end_burst.gd \
+            2>&1 | tee "build/paint-burst-${{ matrix.slices }}/owner.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          size=os.environ["CYBERSAND_PAINT_BURST_SLICES"]
+          lines=(pathlib.Path("build")/f"paint-burst-{size}"/"owner.log").read_text().splitlines()
+          rows=[json.loads(x.partition("PAINT_BURST_PILOT ")[2])
+                for x in lines if x.startswith("PAINT_BURST_PILOT ")]
+          assert len(rows)==1, f"Expected one real owner receipt: {len(rows)}"
+          r=rows[0]
+          assert r["failures"]==[] and r["checks"]>=24, r
+          assert r["mode_slices"]==int(size) and len(r["profiles"])>=2, r
+          for p in r["profiles"]:
+              assert p["executor_steps"]>=1 and p["worker_cycles"]>=1,p
+              assert p["max_chunks_per_cycle"]<=int(size),p
+              if int(size)==1: assert p["max_chunks_per_cycle"]==1,p
+          path=pathlib.Path("build")/f"paint-burst-{size}"/"profile.json"
+          path.write_text(json.dumps(r,indent=2)+"\n")
+          print("PAINT_BURST_PILOT_RECEIPT_PASS",size,
+                [(p["kind"],p["worker_cycles"],p["executor_steps"],p["worker_cpu_wall_usec"])
+                 for p in r["profiles"]])
+          PY
+      - name: Preserve source-bound owner logs/profiles on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-002-${{ matrix.slices }}-${{ github.sha }}-${{ github.run_id }}
+          path: build/paint-burst-${{ matrix.slices }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  native-bulk-capture:
+    name: Compile exact-head GDExtension and A/B real native bulk source capture
+    if: github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      RAPIER_SHA256: 566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a
+      CYBERSAND_PAINT_BURST_PROFILE: '1'
+      CYBERSAND_PAINT_BURST_SLICES: '1'
+      CYBERSAND_PAINT_BURST_BUDGET_USEC: '6000'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Checkout exact immutable experimental source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Install actual Rapier and pin toolchain
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir -p "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 15m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Compile the exact source-matched native Linux GDExtension
+        timeout-minutes: 55
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          mkdir -p build/paint-burst-native
+          tools/build_pinned_godot_cpp.sh linux 2>&1 | tee build/paint-burst-native/build-godot-cpp.log
+          tools/build_native_extension.sh 2>&1 | tee build/paint-burst-native/build-cybersand.log
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee build/paint-burst-native/native-type.txt
+          grep -q 'ELF 64-bit.*x86-64' build/paint-burst-native/native-type.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" | tee build/paint-burst-native/native.sha256
+          git rev-parse HEAD | tee build/paint-burst-native/source-sha.txt
+      - name: Install and import pinned Godot 4.7
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "4.7.stable.official.5b4e0cb0f"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          timeout 240 "$GODOT_BIN" --headless --editor --path godot --import
+          bash tools/ci/prepare_linux_display.sh
+      - name: Test native material capture and time-budgeted bursts together
+        timeout-minutes: 35
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          # Control, native read-only bulk, then two combinations with 6ms
+          # bounded bursts. Every case runs the same actual Workbench pilot.
+          for variant in 0-1 1-1 1-4 1-8; do
+            bulk="${variant%-*}"
+            slices="${variant#*-}"
+            mkdir -p "build/paint-burst-native/user-${variant}"
+            export XDG_DATA_HOME="$PWD/build/paint-burst-native/user-${variant}"
+            export CYBERSAND_PAINT_BULK_CAPTURE="$bulk"
+            export CYBERSAND_PAINT_BURST_SLICES="$slices"
+            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+              timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
+              --display-driver x11 --audio-driver Dummy --path godot \
+              -s res://tests/test_paint_end2end_burst.gd \
+              2>&1 | tee "build/paint-burst-native/burst-${variant}.log"
+            # Exercise the complete negative-case oracle on the combined four-slice
+            # candidate too, with deterministic test-only worker boundary gates.
+            if [ "$slices" = 1 ] || [ "$variant" = "1-4" ]; then
+              CYBERSAND_PAINT_TEST_GATES=1 xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+                timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
+                --display-driver x11 --audio-driver Dummy --path godot \
+                -s res://tests/test_paint_editor_native.gd \
+                2>&1 | tee "build/paint-burst-native/contracts-${variant}.log"
+            fi
+          done
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("build/paint-burst-native")
+          def parse(log,marker):
+              lines=(root/log).read_text(errors="replace").splitlines()
+              values=[json.loads(x.partition(marker)[2]) for x in lines if x.startswith(marker)]
+              assert len(values)==1,(log,len(values))
+              return values[0]
+          summaries={}
+          for variant in ("0-1","1-1","1-4","1-8"):
+              bulk,slices=map(int,variant.split("-"))
+              pilot=parse(f"burst-{variant}.log","PAINT_BURST_PILOT ")
+              assert pilot["failures"]==[] and pilot["checks"]>=49,pilot
+              assert pilot["bulk_capture"] == bool(bulk) and pilot["mode_slices"]==slices,pilot
+              assert pilot["rendered_frame_samples"]>12 and pilot["frame_gap_p95_usec"]>0,pilot
+              assert pilot["frame_gap_p99_usec"]>=pilot["frame_gap_p95_usec"],pilot
+              assert len(pilot["profiles"])>=2,pilot
+              capture,edit=pilot["profiles"][:2]
+              assert capture["kind"]=="capture" and edit["kind"]=="edit",pilot
+              for profile in (capture,edit):
+                  assert profile["requested_cells"]==262144,profile
+                  assert profile["executor_steps"]>0 and profile["worker_cycles"]>0,profile
+                  assert profile["max_chunks_per_cycle"]<=slices,profile
+              summary={"pilot":pilot}
+              if slices==1 or variant=="1-4":
+                  native=parse(f"contracts-{variant}.log","PAINT_EDITOR_NATIVE ")
+                  assert native["failures"]==[] and native["checks"]>=25,native
+                  assert len(native["measurements"])>=4,native
+                  assert native["test_gates"] is True and native["fence_cases"]==3,native
+                  summary["native_contract_checks"]=native["checks"]
+                  summary["native_fence_cases"]=native["fence_cases"]
+              summaries[variant]=summary
+          base=summaries["0-1"]["pilot"]["profiles"][0]
+          native=summaries["1-1"]["pilot"]["profiles"][0]
+          assert base["executor_steps"] == native["executor_steps"] == 64
+          print("PAINT_BULK_CAPTURE_AB_PASS",json.dumps({
+              "bulk_off_capture_elapsed_usec":base["executor_elapsed_usec"],
+              "bulk_on_capture_elapsed_usec":native["executor_elapsed_usec"],
+              "bulk_off_inside_worker_usec":base["worker_cpu_wall_usec"],
+              "bulk_on_inside_worker_usec":native["worker_cpu_wall_usec"],
+              "bulk_4_capture_elapsed_usec":summaries["1-4"]["pilot"]["profiles"][0]["executor_elapsed_usec"],
+              "bulk_8_capture_elapsed_usec":summaries["1-8"]["pilot"]["profiles"][0]["executor_elapsed_usec"],
+              "source_bound":True}))
+          (root/"summary.json").write_text(json.dumps(summaries,indent=2)+"\n")
+          PY
+      - name: Retain native build logs and both complete A/B trial receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-bulk-${{ github.sha }}-${{ github.run_id }}
+          path: build/paint-burst-native/
+          retention-days: 90
+          if-no-files-found: warn

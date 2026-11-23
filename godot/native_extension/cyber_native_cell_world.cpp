@@ -188,6 +188,8 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::material_at);
     ClassDB::bind_method(D_METHOD("stored_material_at", "x", "y"),
                          &CyberNativeCellWorld::stored_material_at);
+    ClassDB::bind_method(D_METHOD("paint_read_stored_slice", "origin", "size", "offset", "length"),
+                         &CyberNativeCellWorld::paint_read_stored_slice);
     ClassDB::bind_method(D_METHOD("box_collides", "origin", "size"),
                          &CyberNativeCellWorld::box_collides);
     ClassDB::bind_method(D_METHOD("character_box_collides", "origin", "size", "mode"),
@@ -1096,6 +1098,65 @@ std::int64_t CyberNativeCellWorld::stored_material_at(std::int64_t x, std::int64
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
     return static_cast<std::int64_t>(world_->stored_material(x, y));
+}
+
+Dictionary CyberNativeCellWorld::paint_read_stored_slice(
+    Vector2i origin, Vector2i size, std::int64_t offset, std::int64_t length) const try {
+    Dictionary result;
+    result["ok"] = false;
+    // This is an experimental source-only *read*. Fences, guards, validation,
+    // mutation and history remain in the unchanged PAINT owner/executor.
+    if (world_ == nullptr || has_failed()) {
+        result["error"] = "Native World failed or unavailable.";
+        return result;
+    }
+    constexpr std::int64_t kMaximumSlice = 4096;
+    constexpr std::int64_t kMaximumCapture = 262144;
+    if (size.x <= 0 || size.y <= 0 || size.x > 2048 || size.y > 2048 ||
+        origin.x < 0 || origin.y < 0 ||
+        static_cast<std::int64_t>(origin.x) + size.x > extent_.x ||
+        static_cast<std::int64_t>(origin.y) + size.y > extent_.y) {
+        result["error"] = "Native paint capture region is invalid or out of bounds.";
+        return result;
+    }
+    const auto total = static_cast<std::int64_t>(size.x) * size.y;
+    if (total > kMaximumCapture || offset < 0 || length <= 0 ||
+        length > kMaximumSlice || offset >= total || length > total - offset) {
+        result["error"] = "Native paint slice exceeds the capture or per-step budget.";
+        return result;
+    }
+    PackedInt32Array stored, body_ids;
+    stored.resize(length);
+    body_ids.resize(length);
+    auto* materials = stored.ptrw();
+    auto* obstacles = body_ids.ptrw();
+    for (std::int64_t i = 0; i < length; ++i) {
+        const auto linear = offset + i;
+        const auto x = static_cast<std::int64_t>(origin.x) + linear % size.x;
+        const auto y = static_cast<std::int64_t>(origin.y) + linear / size.x;
+        materials[i] = static_cast<std::int32_t>(world_->stored_material(x, y));
+        obstacles[i] = static_cast<std::int32_t>(world_->transient_obstacle_at(x, y));
+    }
+    result["ok"] = true;
+    result["materials"] = stored;
+    result["body_ids"] = body_ids;
+    result["revision"] = static_cast<std::int64_t>(revision_);
+    result["tick"] = static_cast<std::int64_t>(world_->tick_index());
+    result["offset"] = offset;
+    result["length"] = length;
+    return result;
+} catch (const std::exception& error) {
+    record_native_failure("paint_read_stored_slice", error.what());
+    Dictionary result;
+    result["ok"] = false;
+    result["error"] = "Native capture failed.";
+    return result;
+} catch (...) {
+    record_native_failure("paint_read_stored_slice", "unknown native exception");
+    Dictionary result;
+    result["ok"] = false;
+    result["error"] = "Native capture failed.";
+    return result;
 }
 
 std::int64_t CyberNativeCellWorld::rigid_body_id_at(std::int64_t x, std::int64_t y) const {
