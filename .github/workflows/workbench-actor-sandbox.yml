@@ -257,7 +257,8 @@ jobs:
           $receipt = @(Get-ChildItem -LiteralPath (Join-Path $package 'Actor-Acceptance-Results') -Recurse -Filter acceptance-collector.json)
           if ($receipt.Count -ne 1) { throw 'Missing source-matched packaged collector receipt' }
           $collector = Get-Content -LiteralPath $receipt[0].FullName -Raw | ConvertFrom-Json
-          $declared = @(($packageManifest = Get-Content -LiteralPath (Join-Path $package 'candidate-manifest.json') -Raw | ConvertFrom-Json).files_sha256.PSObject.Properties).Count
+          $packageManifest = Get-Content -LiteralPath (Join-Path $package 'candidate-manifest.json') -Raw | ConvertFrom-Json
+          $declared = @($packageManifest.files_sha256.PSObject.Properties).Count
           if ($collector.status -ne 'passed' -or $collector.package_identity -ne 'passed' -or $collector.native_identity -ne 'passed' -or $collector.source_commit -ne $env:GITHUB_SHA -or
               $collector.manifest_files_expected -ne $declared -or $collector.manifest_files_verified -ne $declared -or $declared -lt 100) {
             throw 'Packaged collector did not verify the complete source-bound payload'
