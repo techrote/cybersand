@@ -204,7 +204,7 @@ func _run() -> void:
             return
         # Middle cell of the retained raster order gives the centre of the
         # authored 3x3; erasing it changes real geometry without disconnection.
-        var target: int = structural_wood[structural_wood.size() / 2]
+        var target: int = structural_wood[int(structural_wood.size() / 2)]
         expect(int(settled.roles[target]) == 1 and int(settled.materials[target]) == 7,
             "moving-cell erase target is Wood owned by the current native shard")
         var request: Dictionary = {"session":int(settled.session),"id":int(settled.id),
