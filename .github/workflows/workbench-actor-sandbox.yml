@@ -288,6 +288,11 @@ jobs:
             procedure='Exact delivered ZIP extracted into fresh non-checkout directory; manifest, graphical gameplay, Save/Load and actual DLL paths verified';
             installed_report='installed-windows/qualification.json'; modules_report='installed-windows/runtime-modules.json' } |
             ConvertTo-Json | Set-Content evidence/windows-package-extraction.json
+          # The negative tamper probe is expected to exit nonzero. GitHub's pwsh
+          # wrapper propagates its LASTEXITCODE even after later successful
+          # PowerShell operations. Clear it only AFTER verifying refusal,
+          # restoring the script, rehashing the ZIP, and recording the receipt.
+          $global:LASTEXITCODE = 0
       - name: Retain qualified portable Windows evaluation ZIP
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
