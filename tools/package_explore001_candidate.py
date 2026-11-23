@@ -103,6 +103,12 @@ def main():
         for entry in archive:
             if not entry.isfile() or entry.name.startswith("godot/.godot/"):
                 continue
+            # Godot regenerates *.import metadata during initial editor import.
+            # It is derived, mutable editor state, not an authenticated project
+            # input. Keep its source asset (SVG/PNG), but never seal the derived
+            # metadata into the Actor evaluator's immutable payload manifest.
+            if actor_evaluator and entry.name.startswith("godot/") and entry.name.endswith(".import"):
+                continue
             if "/bin/" in entry.name and entry.name not in (native.NATIVE, RAPIER):
                 continue
             stream = archive.extractfile(entry)
