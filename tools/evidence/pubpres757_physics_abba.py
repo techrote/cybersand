@@ -29,7 +29,7 @@ def planned_arms(mode):
         raise ValueError("Diagnostic requires exactly the four-arm runner container")
     return [
         {"same_frame_continuation": False, "wave_column_probe": False,
-         "causal": False, "material": "full", "physics_mode": setting}
+         "causal": False, "material": "full", "physics": setting, "physics_mode": setting}
         for setting in ORDER
     ]
 
