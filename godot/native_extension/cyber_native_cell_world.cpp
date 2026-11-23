@@ -162,6 +162,15 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_default_demo_identity"), &CyberNativeCellWorld::get_default_demo_identity);
     ClassDB::bind_method(D_METHOD("simulation_tick"),
                          &CyberNativeCellWorld::simulation_tick);
+    ClassDB::bind_method(D_METHOD("object_shard_attach", "bounds"), &CyberNativeCellWorld::object_shard_attach);
+    ClassDB::bind_method(D_METHOD("object_shard_status"), &CyberNativeCellWorld::object_shard_status);
+    ClassDB::bind_method(D_METHOD("object_shard_snapshot"), &CyberNativeCellWorld::object_shard_snapshot);
+    ClassDB::bind_method(D_METHOD("object_shard_prepare_next"), &CyberNativeCellWorld::object_shard_prepare_next);
+    ClassDB::bind_method(D_METHOD("object_shard_acknowledge", "receipt"), &CyberNativeCellWorld::object_shard_acknowledge);
+    ClassDB::bind_method(D_METHOD("object_shard_accept_motion", "poses"), &CyberNativeCellWorld::object_shard_accept_motion);
+    ClassDB::bind_method(D_METHOD("object_shard_erase_shard", "receipt"), &CyberNativeCellWorld::object_shard_erase_shard);
+    ClassDB::bind_method(D_METHOD("object_shard_ignite_shard", "id", "generation", "cell"), &CyberNativeCellWorld::object_shard_ignite_shard);
+    ClassDB::bind_method(D_METHOD("object_shard_retire"), &CyberNativeCellWorld::object_shard_retire);
     ClassDB::bind_method(D_METHOD("has_failed"), &CyberNativeCellWorld::has_failed);
     ClassDB::bind_method(D_METHOD("get_attempted_tick_index"),
                          &CyberNativeCellWorld::get_attempted_tick_index);
@@ -304,6 +313,7 @@ std::int64_t CyberNativeCellWorld::logical_processor_count() {
 }
 
 void CyberNativeCellWorld::create_world() {
+    retire_shard_for_world_replacement();
     try {
         const auto processors = std::max(1U, std::thread::hardware_concurrency());
         const auto automatic_threads = static_cast<std::uint32_t>(auto_worker_threads(processors));
@@ -436,6 +446,7 @@ bool CyberNativeCellWorld::reset_demo_world(bool gameplay_water) {
         });
 
         candidate->set_simulation_region(world_->simulation_region());
+        retire_shard_for_world_replacement();
         world_.swap(candidate);
         committed = true;
         tick_failure_count_ = 0; last_tick_error_ = String{};
@@ -491,12 +502,141 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     density_limit_ = 1.6;
 }
 
+void CyberNativeCellWorld::retire_shard_for_world_replacement() noexcept {
+    // Must happen before World pointer swap or owner destruction.
+    shard_lab_.unref();
+    shard_owner_thread_ = {};
+    shard_quarantined_ = false;
+}
+
+bool CyberNativeCellWorld::object_shard_retire() {
+    if (!shard_owner()) return false;
+    retire_shard_for_world_replacement();
+    return true;
+}
+
+Dictionary CyberNativeCellWorld::object_shard_attach(Rect2i bounds) {
+    Dictionary refused;
+    refused["ok"] = false;
+    refused["outcome"] = "SameWorldAttachmentRefused";
+    if (world_ == nullptr || world_->has_failed() || world_->is_tick_in_progress() ||
+        !workbench_ || shard_lab_.is_valid() ||
+        bounds.size.x < 64 || bounds.size.y < 64 ||
+        bounds.size.x > 512 || bounds.size.y > 512 ||
+        static_cast<std::int64_t>(bounds.size.x) * bounds.size.y > 262144 ||
+        bounds.position.x < 0 || bounds.position.y < 0 ||
+        bounds.get_end().x > extent_.x || bounds.get_end().y > extent_.y ||
+        world_->completed_tick_index() == 0)
+        return refused;
+    try {
+        cybersand::object_shard::Config config;
+        config.scenario = 0; // Do not create or paint a competing Lab World.
+        config.world_bounds = {bounds.position.x, bounds.position.y,
+            static_cast<std::uint16_t>(bounds.size.x),
+            static_cast<std::uint16_t>(bounds.size.y)};
+        Ref<CyberObjectShardLab> pending = Ref<CyberObjectShardLab>(memnew(CyberObjectShardLab));
+        auto receipt = pending->attach_owner_world(*world_, config);
+        if (!receipt.get("ok", false)) return receipt;
+        shard_lab_ = pending;
+        shard_owner_thread_ = std::this_thread::get_id();
+        shard_quarantined_ = false;
+        receipt["native_instance_id"] = static_cast<std::int64_t>(get_instance_id());
+        receipt["same_world"] = true;
+        receipt["worker_exclusive"] = true;
+        return receipt;
+    } catch (const std::exception& error) {
+        refused["detail"] = String(error.what());
+        return refused;
+    }
+}
+
+Dictionary CyberNativeCellWorld::object_shard_status() const {
+    Dictionary status;
+    status["attached"] = false;
+    status["outcome"] = "SameWorldAdapterMissing";
+    if (!shard_owner() || !shard_lab_->coordinator_ || world_ == nullptr) return status;
+    const auto proof = shard_lab_->coordinator_->m4_owner_readback();
+    const bool attached = shard_lab_->coordinator_->same_world_attached(*world_) &&
+        proof.world_available && !world_->has_failed() && !shard_quarantined_;
+    status["attached"] = attached;
+    status["outcome"] = attached ? "AttachedSameWorld" : "OwnerHeld";
+    status["native_instance_id"] = static_cast<std::int64_t>(get_instance_id());
+    status["session"] = static_cast<std::int64_t>(proof.session);
+    status["shard_session"] = static_cast<std::int64_t>(proof.session);
+    status["world_incarnation"] = static_cast<std::int64_t>(proof.world_incarnation);
+    status["tick"] = static_cast<std::int64_t>(proof.tick);
+    status["paused"] = proof.paused;
+    status["promotion_pending"] = proof.promotion_pending;
+    status["quarantined"] = proof.quarantined || shard_quarantined_;
+    status["active_bodies"] = proof.active_count;
+    return status;
+}
+
+Dictionary CyberNativeCellWorld::object_shard_snapshot() {
+    return shard_owner() ? shard_lab_->snapshot() : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_prepare_next() {
+    return shard_owner() ? shard_lab_->prepare_next() : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_acknowledge(const Dictionary& receipt) {
+    return shard_owner() ? shard_lab_->acknowledge(receipt) : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_accept_motion(const Array& poses) {
+    return shard_owner() ? shard_lab_->accept_motion(poses) : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_erase_shard(const Dictionary& receipt) {
+    return shard_owner() ? shard_lab_->erase_shard(receipt) : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_ignite_shard(
+    std::int64_t id, std::int64_t generation, std::int64_t cell) {
+    return shard_owner() ? shard_lab_->ignite_shard(id, generation, cell) : Dictionary{};
+}
+
+// Material and shard collision domains join inside the authoritative World.
+bool CyberNativeCellWorld::compose_shard_with_workbench_occupancy() {
+    if (!shard_owner()) return true;
+    std::vector<cybersand::World::TransientCompositionCell> gcr;
+    gcr.reserve(raster_indices_.size());
+    for (const auto index : raster_indices_) {
+        if (index < 0 || index >= extent_.x * extent_.y) return false;
+        const auto x = index % extent_.x, y = index / extent_.x;
+        const auto id = world_->transient_obstacle_at(x, y);
+        if (id == 0) continue;
+        if (id >= cybersand::World::kMaximumTransientBodies - 2U) return false;
+        gcr.push_back({x, y, id});
+    }
+    std::sort(gcr.begin(), gcr.end(), [](const auto& a, const auto& b) {
+        return a.y != b.y ? a.y < b.y : a.x < b.x;
+    });
+    gcr.erase(std::unique(gcr.begin(), gcr.end(), [](const auto& a, const auto& b) {
+        return a.x == b.x && a.y == b.y;
+    }), gcr.end());
+    return shard_lab_->coordinator_->set_immutable_occupancy(gcr).outcome ==
+        cybersand::object_shard::Outcome::Accepted;
+}
+
 bool CyberNativeCellWorld::simulation_tick() {
     if (world_ == nullptr || world_->has_failed()) return false;
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
     try {
+        if (shard_owner()) {
+            const auto admission = shard_lab_->coordinator_->begin_owner_world_tick();
+            if (admission.outcome != cybersand::object_shard::Outcome::Accepted) {
+                shard_quarantined_ = true;
+                record_native_failure("ObjectShard owner tick admission", "physics or ownership barrier");
+                return false;
+            }
+        }
         last_stats_ = world_->tick();
+        if (shard_owner()) {
+            const auto advanced = shard_lab_->after_owner_tick();
+            if (!advanced.get("ok", false)) {
+                shard_quarantined_ = true;
+                record_native_failure("ObjectShard after owner tick", "exact owner-local service refused");
+                return false;
+            }
+        }
         if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U) ++revision_;
         succeeded = true;
     } catch (const std::exception& error) {
@@ -610,6 +750,10 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
         if (previous.valid) rasterize_body_sweep(body, previous);
         else rasterize_body(body);
     }
+    if (!compose_shard_with_workbench_occupancy()) {
+        record_native_failure("ObjectShard GCR swept compose", "shared occupancy refused");
+        return;
+    }
     if (resolve_overlaps) {
         coupling_failure_context_ = {"reconcile overlaps"};
         reconcile_swept_overlaps();
@@ -621,6 +765,10 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         coupling_failure_context_ = {"raster final mask", static_cast<std::uint16_t>(body_id)};
         if (current_bodies_[body_id].valid) rasterize_body(current_bodies_[body_id]);
+    }
+    if (!compose_shard_with_workbench_occupancy()) {
+        record_native_failure("ObjectShard GCR final compose", "shared occupancy refused");
+        return;
     }
     if (resolve_overlaps) {
         coupling_failure_context_ = {"boundary pressure"};
@@ -2049,6 +2197,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         }
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
+        retire_shard_for_world_replacement();
         world_.swap(candidate);
         committed = true;
         tick_failure_count_ = 0; last_tick_error_ = String{};

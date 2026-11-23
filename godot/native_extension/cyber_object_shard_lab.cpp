@@ -192,6 +192,28 @@ Dictionary CyberObjectShardLab::configure(const Dictionary& configuration) {
     } catch (const std::exception& error) { return fail(error.what()); }
 }
 
+Dictionary CyberObjectShardLab::attach_owner_world(cybersand::World& world, os::Config config) {
+    if (owner_ != std::this_thread::get_id()) return refusal("ExclusiveOwnerRequired");
+    if (coordinator_) return refusal("AlreadyConfiguredUseReset");
+    try {
+        coordinator_ = std::make_unique<os::Coordinator>(world, config);
+        const auto proof = coordinator_->m4_owner_readback();
+        Dictionary receipt;
+        receipt["ok"] = coordinator_->same_world_attached(world) && proof.world_available;
+        receipt["outcome"] = receipt["ok"] ? "AttachedSameWorld" : "AttachmentRefused";
+        receipt["session"] = static_cast<std::int64_t>(proof.session);
+        receipt["world_incarnation"] = static_cast<std::int64_t>(proof.world_incarnation);
+        receipt["tick"] = static_cast<std::int64_t>(proof.tick);
+        return receipt;
+    } catch (const std::exception& error) { return fail(error.what()); }
+}
+
+Dictionary CyberObjectShardLab::after_owner_tick() {
+    if (!owned() || !coordinator_->same_world_attached(coordinator_->world()))
+        return refusal("SameWorldOwnerRequired");
+    return result(coordinator_->after_owner_world_tick());
+}
+
 Dictionary CyberObjectShardLab::reset(std::int64_t scenario, std::int64_t seed) {
     if (owner_ != std::this_thread::get_id() || !coordinator_) return refusal("ExclusiveOwnerRequired");
     if (scenario < 0 || scenario > 6 || seed < 0) return refusal("InvalidConfiguration");

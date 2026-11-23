@@ -38,6 +38,11 @@ protected:
     static void _bind_methods();
 
 private:
+    friend class CyberNativeCellWorld;
+    // Bound exclusively to the existing Workbench native World.
+    [[nodiscard]] Dictionary attach_owner_world(cybersand::World& world,
+        cybersand::object_shard::Config config);
+    [[nodiscard]] Dictionary after_owner_tick();
     std::thread::id owner_;
     std::unique_ptr<cybersand::object_shard::Coordinator> coordinator_;
     bool failed_{};
