@@ -275,7 +275,7 @@ def publish(args) -> None:
                       "source_commit": candidates["linux"]["source_commit"], "state": "Draft/HOLD"}))
 
 
-SANDBOX_BRANCH = "recovery/actor-compose-002r-final-20261122"
+SANDBOX_BRANCH = "integration/actor-compose-final-001-20261123"
 SANDBOX_CAPTURE_FILES = {
     "01-living-mixed-workshop.png", "02-running-controllers.png", "03-physics-configuration.png",
     "04-paused-assembly-preview.png", "05-live-physical-grab.png", "06-barrel-crowd-64.png",
