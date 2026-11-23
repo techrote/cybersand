@@ -214,8 +214,23 @@ function Collect([string]$root,[string]$dst,[string]$source,[string]$decisions){
          throw 'Original archive differs from independently authenticated ZIP SHA-256'
        }
        $checkedArchive=Zip-Checked $ArchivePath $ExpectedArchiveSha256
-       try{ $archiveDigest=Hash $checkedArchive.path }
-       finally{ $checkedArchive.zip.Dispose() }
+       try{
+         # The independently authenticated original ZIP must be the archive
+         # that supplied THIS verified extracted package, not merely a second
+         # unrelated (but correctly hashed) ZIP from a different build.
+         $zipManifest=$checkedArchive.zip.GetEntry('candidate-manifest.json')
+         if($null -eq $zipManifest){throw 'Original ZIP lacks root candidate-manifest.json'}
+         $stream=$zipManifest.Open()
+         $algorithm=[Security.Cryptography.SHA256]::Create()
+         try{
+           $zipManifestSha=([BitConverter]::ToString($algorithm.ComputeHash($stream))).Replace('-','').ToLowerInvariant()
+         }finally{$stream.Dispose();$algorithm.Dispose()}
+         $installedManifestSha=Hash (Safe-Path $root 'candidate-manifest.json')
+         if($zipManifestSha -ne $installedManifestSha){
+           throw 'Original ZIP manifest does not match verified extracted package manifest'
+         }
+         $archiveDigest=Hash $checkedArchive.path
+       }finally{ $checkedArchive.zip.Dispose() }
      }
    }catch{ $archiveError=$_.Exception.Message }
  }

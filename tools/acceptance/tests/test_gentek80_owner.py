@@ -211,6 +211,26 @@ class WindowsAdmission(unittest.TestCase):
         self.assertEqual(pinned["archive_sha256"], self.sha)
         self.assertIsNone(pinned["archive_verification_error"])
 
+        # An unrelated independently hashed ZIP is not provenance for this
+        # extracted package, even if both independent pins are individually valid.
+        unrelated = self.root / "unrelated-payload"
+        shutil.copytree(self.src, unrelated)
+        changed = unrelated / "godot/fixtures/part_000.txt"
+        changed.write_bytes(b"different but self-consistent original ZIP")
+        modified = unrelated / "candidate-manifest.json"
+        data = json.loads(modified.read_text(encoding="utf8"))
+        data["files_sha256"]["godot/fixtures/part_000.txt"] = digest(changed.read_bytes())
+        modified.write_text(json.dumps(data), encoding="utf8")
+        foreign_archive = self.root / "unrelated-source.zip"
+        foreign_pin = zipup(unrelated, foreign_archive)
+        self.run_ps("Collect", True, PackagePath=self.src, ExpectedSource=SOURCE,
+                    ExpectedManifestSha256=external_manifest_pin,
+                    ArchivePath=foreign_archive, ExpectedArchiveSha256=foreign_pin,
+                    DecisionsPath=form, ResultsDirectory=self.root / "foreign-archive-refused")
+        foreign = json.loads((self.root / "foreign-archive-refused" / "gentek80-owner-report.json").read_text())
+        self.assertEqual(foreign["status"], "PACKAGE-REJECTED")
+        self.assertIn("manifest", foreign["archive_verification_error"].lower())
+
     def test_failed_payload_extraction_is_atomic(self):
         corrupt = self.root / "corrupt"
         shutil.copytree(self.src, corrupt)
