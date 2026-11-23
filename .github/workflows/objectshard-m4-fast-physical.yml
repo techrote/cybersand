@@ -86,6 +86,12 @@ jobs:
             tail -n 40 "evidence/$name.log" || true
             if (( status != 0 )); then failed=1; fi
           done
+          echo 'Running the same 240-tick, 3-Rapier-body native worker workload under the pinned engine'
+          xvfb-run --auto-servernum timeout 300s "$engine" --headless --path godot --script res://tests/profile_object_shard_worker.gd -- --notifications=off --pump-usec=0 --output="$PWD/evidence/active-body-profile.json" > evidence/active-body-profile.log 2>&1
+          profile_status=$?
+          grep 'objectshard-worker-scheduling-profile-v1' evidence/active-body-profile.log | tail -n 1 || true
+          echo "active_body_performance $profile_status" >> evidence/test-results.txt
+          if (( profile_status != 0 )); then failed=1; fi
           exit "$failed"
       - name: Retain exact-source original logs including failures
         if: always()
