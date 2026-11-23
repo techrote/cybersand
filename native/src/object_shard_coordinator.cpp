@@ -178,6 +178,10 @@ void Coordinator::initialize_attached_world(World& owner) {
     owner.enable_object_shard_mutation_watch({region.x, region.y, region.width, region.height});
     last_owner_tick_ = owner.completed_tick_index();
     last_owner_population_ = owner.quantity_ledger().material_cells;
+    // Existing World inventory predated this attached coordinator. Account
+    // for it as the inherited setup baseline, never as new shard material.
+    for (std::size_t m = 1; m < kQuantityMaterialSlots; ++m)
+        accounting_.setup_created[m] += last_owner_population_[m];
     rebuild_terrain();
 }
 
@@ -968,11 +972,17 @@ Result Coordinator::begin_owner_world_tick() {
         return finish({Outcome::Fenced, {}, 0, Phase::Suspended,
             "only an idle exact same-World owner may authorize its next native tick"});
     last_owner_population_ = world_->quantity_ledger().material_cells;
+    // The normal material tick consumes pre-existing Fire opportunity claims
+    // exactly once. The Coordinator does NOT call World::tick() here.
+    world_->object_shard_mutations_->set_external_fire_claims(
+        fire_opportunities_, fire_opportunity_tick_);
     owner_tick_admitted_ = true;
     return finish({});
 }
 
 Result Coordinator::after_owner_world_tick(std::span<const PoseSample> poses) {
+    if (attached_ && owner_tick_admitted_)
+        world_->object_shard_mutations_->set_external_fire_claims({}, 0);
     if (!attached_) return finish({Outcome::Unsupported, {}, 0, Phase::Suspended,
         "only the owner-local attachment accepts external World ticks"});
     if (quarantined_ || world_->has_failed() || world_->is_tick_in_progress())
