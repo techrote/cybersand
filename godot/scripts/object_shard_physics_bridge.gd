@@ -16,6 +16,10 @@ const MAX_SEGMENT_ROTATION: float = 0.20
 const MAX_SEGMENT_CORNER_MOTION: float = 8.0
 
 var session: int = 0
+# M4 may borrow the existing Main Rapier space; it must never create, step,
+# destroy or pretend to own that space. M3 standalone retains its private mode.
+var _adopted_main_space: bool = false
+var _last_main_step_serial: int = 0
 var space: RID
 var bodies: Dictionary = {}
 var terrain: Dictionary = {}
@@ -55,7 +59,7 @@ func begin_frame() -> void:
 		timings[key] = 0
 
 
-func initialize(incarnation: int) -> Dictionary:
+func initialize(incarnation: int, existing_main_space: RID = RID()) -> Dictionary:
 	if not _main_owner():
 		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
 	if incarnation <= 0:
@@ -71,10 +75,13 @@ func initialize(incarnation: int) -> Dictionary:
 	if incarnation <= 0:
 		return _refuse("InvalidSession")
 	session = incarnation
-	space = PhysicsServer2D.space_create()
+	_adopted_main_space = existing_main_space.is_valid()
+	_last_main_step_serial = 0
+	space = existing_main_space if _adopted_main_space else PhysicsServer2D.space_create()
 	if not space.is_valid():
 		return _refuse("SpaceReservationFailed")
-	PhysicsServer2D.space_set_active(space, false)
+	if not _adopted_main_space:
+		PhysicsServer2D.space_set_active(space, false)
 	return {"ok": true, "session": session}
 
 
@@ -288,6 +295,25 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 	return _body_receipt(shard, body)
 
 
+# Called ONLY by ordinary Main after its existing rapier_bridge.step()
+# completed. A monotonic Main serial cannot replace the native applied-pose
+# receipt, but rejects duplicate/stale sampling. This function does not step.
+func capture_completed_main_step(main_step_serial: int) -> Dictionary:
+	if not _main_owner() or not _adopted_main_space or not space.is_valid():
+		return {"ok":false,"outcome":"MainRapierSpaceRequired"}
+	if main_step_serial <= _last_main_step_serial or main_step_serial <= 0:
+		return {"ok":false,"outcome":"StaleMainPhysicsStep"}
+	if motion_refused or _motion_in_progress():
+		return {"ok":false,"outcome":"PendingUnacknowledgedMotion"}
+	var poses: Array = _sample_poses_unfenced()
+	if motion_refused:
+		return {"ok":false,"outcome":last_error}
+	_last_main_step_serial = main_step_serial
+	steps += 1
+	return {"ok":true,"outcome":"RealMainSpacePoseReadback",
+		"main_step_serial":main_step_serial,"poses":poses,
+		"body_count":poses.size(),"session":session}
+
 func sample_poses() -> Array:
 	if not _main_owner() or _motion_in_progress():
 		return []
@@ -386,6 +412,8 @@ func step_motion(accept_segment: Callable, expected_semantic_tick: int = -1) -> 
 
 
 func begin_motion_tick(expected_semantic_tick: int = -1) -> Dictionary:
+	if _adopted_main_space:
+		return {"ok":false,"outcome":"MainOwnsRapierStep"}
 	if not _main_owner():
 		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
 	if not space.is_valid() or motion_refused:
@@ -421,6 +449,8 @@ func begin_motion_tick(expected_semantic_tick: int = -1) -> Dictionary:
 
 
 func advance_motion_segment() -> Dictionary:
+	if _adopted_main_space:
+		return {"ok":false,"outcome":"MainOwnsRapierStep"}
 	if not _main_owner():
 		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
 	if motion_phase == "AwaitingNative":
@@ -625,9 +655,11 @@ func shutdown() -> void:
 		_destroy_compound(row)
 	bodies.clear()
 	terrain.clear()
-	if space.is_valid():
+	if space.is_valid() and not _adopted_main_space:
 		PhysicsServer2D.free_rid(space)
 	space = RID()
+	_adopted_main_space = false
+	_last_main_step_serial = 0
 	session = 0
 	_last_reserved_body_id = 0
 	# Serials are monotonic for the bridge object's lifetime. Explicit session
