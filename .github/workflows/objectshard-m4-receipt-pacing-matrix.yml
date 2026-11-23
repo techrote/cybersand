@@ -1,5 +1,6 @@
 name: ObjectShard M4 real Windows receipt-pacing matrix
 on:
+  workflow_dispatch:
   push:
     branches: [experiment/objectshard-m4-main-receipt-pacing-20261123]
 permissions:
@@ -7,6 +8,7 @@ permissions:
   actions: read
 jobs:
   physical-pacing:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-pump-matrix]') }}
     runs-on: windows-2022
     timeout-minutes: 24
     steps:
