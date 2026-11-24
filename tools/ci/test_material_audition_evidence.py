@@ -25,6 +25,10 @@ class EvidenceTests(unittest.TestCase):
         self.root = Path(self.temporary.name) / "source"
         self.root.mkdir()
         self.git("init", "-q")
+        # Fixture construction and verification must use the same Git authority.
+        # Windows' global autocrlf plus write_text's native CRLF otherwise make
+        # this freshly committed synthetic repository dirty to the isolated guard.
+        self.git("config", "--local", "core.autocrlf", "false")
         for relative in ("native/include/example.hpp", "native/src/example.cpp",
                          "godot/native_extension/example.cpp", "godot/scripts/example.gd",
                          "godot/tests/example.gd", "godot/feature_launcher.tscn",
@@ -35,7 +39,7 @@ class EvidenceTests(unittest.TestCase):
                          "tools/package_materials_lab_candidate.py", "tools/ci/run_material_audition_qualification.py"):
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text("source fixture\n", encoding="utf-8")
+            path.write_bytes(b"source fixture\n")
         self.git("add", ".")
         self.commit()
         self.runtime = Path(self.temporary.name) / "fixture-runtime.so"
@@ -47,7 +51,7 @@ class EvidenceTests(unittest.TestCase):
         self.temporary.cleanup()
 
     def git(self, *args):
-        return subprocess.check_output(["git", "-C", str(self.root), *args], stderr=subprocess.PIPE)
+        return subject.git(self.root, *args)
 
     def commit(self):
         return self.git("-c", "user.name=CustodyFixture", "-c", "user.email=fixture@example.invalid",

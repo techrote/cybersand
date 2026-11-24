@@ -30,7 +30,7 @@ class Owner extends RefCounted:
 		state.profile = submitted.profile.duplicate(true)
 		for row: Dictionary in state.capabilities:
 			if row.change_class == "live": row.effective = Profiles.value_for(state.profile,row)
-		completion = {"ok":true,"status":"active","request_id":request_id,"state":state.duplicate(true)}
+		completion = {"ok":true,"status":"active","request_id":request_id,"session_id":state.session_id,"world_id":state.world_id,"revision":state.revision,"state":state.duplicate(true)}
 		return completion.duplicate(true)
 
 func expect(value: bool, message: String) -> void:
@@ -41,6 +41,109 @@ func expect(value: bool, message: String) -> void:
 
 func _initialize() -> void:
 	run.call_deferred()
+
+func late_receipts() -> void:
+	for change: String in ["world","session","revision","unavailable"]:
+		for refreshed: bool in [false,true]:
+			var context := "%s / explicit refresh=%s" % [change,refreshed]
+			var panel := PanelScript.new()
+			root.add_child(panel)
+			panel.set_process(false)
+			var owner := Owner.new()
+			panel.bind_current_scene(owner)
+			panel.select_material(2)
+			panel._controls["material:2:density"].value = 400
+			panel.apply_draft()
+			panel._complete(owner.activate())
+			owner.completion.clear()
+			panel._controls["material:2:density"].value = 500
+			panel.apply_draft()
+			var receipt := owner.activate()
+			panel._controls["material:2:density"].value = 700
+			var draft_binding: Dictionary = panel._draft_binding.duplicate(true)
+			if change == "unavailable":
+				owner.state = {"ok":false,"status":"unavailable","error":"The native owner retired after activation."}
+			else:
+				owner.state.profile = Profiles.defaults("later-authority")
+				if change == "world": owner.state.world_id = "replacement-world"
+				elif change == "session": owner.state.session_id = "replacement-session"
+				else: owner.state.profile.materials = [{"material_id":2,"density":900}]
+				owner.state.revision = int(owner.state.revision)+1 if change == "revision" else 0
+				for row: Dictionary in owner.state.capabilities:
+					if row.change_class == "live": row.effective = Profiles.value_for(owner.state.profile,row)
+			var current: Dictionary = owner.state.duplicate(true)
+			if refreshed: panel.refresh_scene()
+			panel._complete(receipt)
+			expect(panel.active_state==current,"late activation cannot overwrite current owner authority: " + context)
+			expect(panel.last_receipt==receipt and panel._pending.is_empty(),"valid older receipt remains historical activation evidence: " + context)
+			expect(panel._previous_profile.is_empty() and panel._buttons.revert.disabled,"late receipt cannot resurrect old Revert history: " + context)
+			expect(int(panel.draft_profile.materials[0].density)==700 and panel._draft_binding==draft_binding,"genuine newer draft and its unreconciled binding survive: " + context)
+			expect(panel._status.text.contains("Earlier activation acknowledged") and not panel._status.text.contains("refused"),"committed older transaction is not reported as refused: " + context)
+			expect(owner.requests==2 and panel._buttons.apply.disabled,"later authority requires deliberate reconciliation, never automatic reapplication: " + context)
+			panel.queue_free()
+			await process_frame
+
+func restored_controls() -> void:
+	for action: String in ["revert","reset"]:
+		var panel := PanelScript.new()
+		root.add_child(panel)
+		panel.set_process(false)
+		var owner := Owner.new()
+		panel.bind_current_scene(owner)
+		panel.select_material(2)
+		for density: int in [500,700]:
+			panel._controls["material:2:density"].value = density
+			panel.apply_draft()
+			panel._complete(owner.activate())
+			owner.completion.clear()
+		if action == "revert": panel.revert_configuration()
+		else: panel.reset_configuration()
+		var restored: Dictionary = owner.submitted.profile.duplicate(true)
+		panel._complete(owner.activate())
+		var row: Dictionary = panel._capabilities["material:2:density"]
+		var value: int = Profiles.value_for(restored,row)
+		expect(panel.active_state.profile==restored and panel.draft_profile==restored,"acknowledged restoration becomes both active and draft: " + action)
+		expect(int(panel._controls["material:2:density"].value)==value,"restoration updates the numeric control alongside the draft: " + action)
+		expect(panel._controls["material:2:density"].get_line_edit().text==str(value),"restored draft is what the owner sees in the field: " + action)
+		owner.completion.clear()
+		panel.apply_draft()
+		expect(owner.submitted.profile==restored,"next unchanged Apply cannot resurrect the pre-restoration value: " + action)
+		panel._complete(owner.activate())
+		expect(panel.active_state.profile==restored and panel.draft_profile==restored,"unchanged repeat preserves the restored profile: " + action)
+		panel.queue_free()
+		await process_frame
+
+func failed_readback_correlation() -> void:
+	for change: String in ["later_same_profile","receipt_revision","receipt_world","receipt_session"]:
+		var panel := PanelScript.new()
+		root.add_child(panel)
+		panel.set_process(false)
+		var owner := Owner.new()
+		panel.bind_current_scene(owner)
+		panel.select_material(2)
+		panel._controls["material:2:density"].value = 400
+		panel.apply_draft()
+		panel._complete(owner.activate())
+		owner.completion.clear()
+		panel._controls["material:2:density"].value = 500
+		panel.apply_draft()
+		owner.activate()
+		var receipt := {"ok":false,"accepted":true,"status":"active_readback_failed","request_id":owner.request_id,"session_id":owner.state.session_id,"world_id":owner.state.world_id,"revision":owner.state.revision,"error":"Receipt readback failed after commit"}
+		panel._controls["material:2:density"].value = 700
+		var draft_binding: Dictionary = panel._draft_binding.duplicate(true)
+		if change == "later_same_profile": owner.state.revision += 1
+		elif change == "receipt_revision": receipt.revision += 1
+		elif change == "receipt_world": receipt.world_id = "different-world"
+		else: receipt.session_id = "different-session"
+		panel._complete(receipt)
+		expect(panel.active_state==owner.state,"failed receipt retains the current owner readback: " + change)
+		expect(panel.last_receipt==receipt and panel._pending.is_empty(),"failed readback retains the activation evidence: " + change)
+		expect(panel._previous_profile.is_empty() and panel._buttons.revert.disabled,"an uncorrelated activation cannot acquire old Revert history: " + change)
+		expect(int(panel.draft_profile.materials[0].density)==700 and panel._draft_binding==draft_binding,"uncorrelated receipt preserves newer draft and its original binding: " + change)
+		expect(not panel._status.text.contains("refused") and not panel._status.text.contains("refreshed native values confirm activation"),"later or conflicting receipt is not described as refused or successfully correlated: " + change)
+		expect(owner.requests==2 and panel._buttons.apply.disabled,"failed correlation requires deliberate draft reconciliation: " + change)
+		panel.queue_free()
+		await process_frame
 
 func run() -> void:
 	root.size = Vector2i(1000,650)
@@ -182,5 +285,8 @@ func run() -> void:
 	expect(panel._status.text.contains("outcome unavailable") and not panel._status.text.contains("refused"),"host retirement reports the unobserved outcome rather than inventing a pre-commit refusal")
 	panel.queue_free()
 	await process_frame
+	await late_receipts()
+	await restored_controls()
+	await failed_readback_correlation()
 	print("MAT_AUDITION_UI_CONTRACT: %d checks, %d failures; fake-owner state machine only" % [checks,failures])
 	quit(1 if failures else 0)

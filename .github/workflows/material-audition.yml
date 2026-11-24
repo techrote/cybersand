@@ -245,7 +245,8 @@ jobs:
       - name: Execute target-OS native and graphical current-scene tests
         shell: pwsh
         run: |
-          python tools/ci/test_material_audition_evidence.py
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          python tools/ci/test_material_audition_evidence.py > evidence/evidence-guards.log 2>&1
           if ($LASTEXITCODE -ne 0) { throw 'Evidence guards failed' }
           python tools/ci/material_audition_publication.py run-windows-probe --source-sha $env:GITHUB_SHA --windows-candidate build/audition-windows --windows-evidence evidence/windows-native
           if ($LASTEXITCODE -ne 0) { throw 'Expanded native Windows consumer suite failed' }

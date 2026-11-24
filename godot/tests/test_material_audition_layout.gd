@@ -31,7 +31,9 @@ func run() -> void:
 		row.consumer = "Compiled native catalogue"
 		owner.state.capabilities.append(row)
 	panel.bind_current_scene(owner)
+	panel.policy_context = "Workbench owner snapshot at opening; reopen to refresh"
 	panel.select_material(2)
+	expect(panel._summary.text.contains("Inspect and isolated comparison"),"common snapshot guidance explicitly excludes current-scene effective readback")
 	panel._tabs.current_tab = 5
 	var audition: Control = panel.audition_panel
 	var scroll: ScrollContainer = panel._tabs.get_child(5)

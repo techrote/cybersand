@@ -531,7 +531,7 @@ func select_material(id: int) -> void:
 		return
 	_summary.text = "%03d / %s · built-in material" % [id,info.name]
 	_summary.tooltip_text = policy_context + "\n" + JSON.stringify(info.get("solver",{}))
-	_summary.text += "\n" + ("Movement settings copied from the Workbench; reopen to refresh." if policy_context.begins_with("Workbench") else ("Showing settings from this separate experiment." if not applied_policy.is_empty() else "Showing built-in movement settings; no running game has been inspected."))
+	_summary.text += "\n" + ("Inspect and isolated comparison copy Workbench movement settings; reopen to refresh those settings." if policy_context.begins_with("Workbench") else ("Showing settings from this separate experiment." if not applied_policy.is_empty() else "Showing built-in movement settings; no running game has been inspected."))
 	_property_tree.clear()
 	var root := _property_tree.create_item()
 	for record: Dictionary in info.get("rows",[]):

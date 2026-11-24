@@ -223,8 +223,15 @@ def build(args: argparse.Namespace) -> Path:
             "Open Materials Lab in Workbench, then Current scene. Select a supported property,\n"
             "edit its draft value and Apply. The current native World continues. Revert\n"
             "configuration restores settings, not cells consumed or moved by simulation.\n"
-            "Use the supplied demonstration starts, or experiment in your own authored scene.\n"
-            "Save a named material profile explicitly. Authored scene saves and material\n"
+            "Quick trial: select 024 / brine, scroll to Demonstration scene and choose\n"
+            "Brine flow channels. Load demo asks for confirmation because it replaces the\n"
+            "scene. Wait for its acknowledgement, then choose Use active as draft. Apply\n"
+            "viscosity 240, start Play, then Apply 0 while playing and watch the covered\n"
+            "channels and drops. Apply keeps the same World; Revert restores 240 without\n"
+            "moving flowed cells back. Reset to accepted defaults restores Brine 32.\n\n"
+            "Save named profile saves the draft; first use Active as draft to save active\n"
+            "values. Load named profile prepares a draft and still requires Apply.\n"
+            "Authored scene saves and material\n"
             "profiles are separate; a scene save is not a live simulation checkpoint.\n\n"
             "The existing Inspect and isolated comparison facilities are retained. Python,\n"
             "Git history and a C++ compiler are included for isolated candidate authoring.\n"
@@ -232,7 +239,9 @@ def build(args: argparse.Namespace) -> Path:
             f"Source: {candidate['source_commit']}\nNative DLL SHA-256: {candidate['native_sha256']}\n"
             "Original Windows qualification: qualification/source-execution/.\n"
             "This is a Draft/HOLD evaluator. Physical Windows/GPU playfeel and owner\n"
-            "acceptance remain separate. Canonical material defaults are unchanged.\n", encoding="utf-8")
+            "acceptance remain separate. Canonical material defaults are unchanged.\n"
+            "Implementation and decision packet: https://github.com/techrote/cybersand/pull/768\n"
+            "Consumer map: source/docs/systems/material-audition-consumers.md\n", encoding="utf-8")
         identity = {"schema": "cybersand.material-audition.evaluator", "schema_version": 1,
                     "platform": "windows", "source_commit": candidate["source_commit"],
                     "source_tree": candidate["source_tree"], "native_sha256": candidate["native_sha256"],

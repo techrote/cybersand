@@ -419,12 +419,17 @@ func _complete(result: Dictionary) -> void:
 			refresh_scene()
 		return
 	var state: Dictionary = result.get("state",result).duplicate(true)
+	var activated_revision: int = int(submitted.request.expected_revision)+1
+	var receipt_matches: bool = (not result.has("world_id") or str(result.world_id) == str(submitted.request.world_id)) and (not result.has("session_id") or str(result.session_id) == str(submitted.request.session_id)) and (not result.has("revision") or int(result.revision) == activated_revision)
 	if readback_failed:
 		refresh_scene()
 		state = active_state.duplicate(true)
-	if not state.get("ok",false) or not state.get("capabilities") is Array or not _same_world(submitted.request,state) or int(state.get("revision",-1)) <= int(submitted.request.expected_revision) or not state.get("profile") is Dictionary or state.profile != submitted.request.profile:
+	if not receipt_matches or not state.get("ok",false) or not state.get("capabilities") is Array or not _same_world(submitted.request,state) or int(state.get("revision",-1)) != activated_revision or not state.get("profile") is Dictionary or state.profile != submitted.request.profile:
+		_previous_profile.clear()
 		if readback_failed:
 			var message := "Configuration activated, but native readback failed. Refresh active values before another change. Simulation consequences remain in the current World."
+			if _available() and (not _same_world(submitted.request,state) or int(state.revision) > activated_revision):
+				message = "Earlier activation acknowledged. Native readback failed for that transaction; a newer World or revision is now authoritative. Your draft was retained and old Revert history retired. Review Active versus Draft before another Apply."
 			# A stale pre-commit cache is not current effective-value evidence.
 			if _same_world(submitted.request,state) and int(state.get("revision",-1)) <= int(submitted.request.expected_revision):
 				active_state = {"ok":false,"error":message}
@@ -434,12 +439,30 @@ func _complete(result: Dictionary) -> void:
 			_set_status("Native activation receipt does not match the submitted World, revision and profile. Refresh active values; no successful application is claimed.")
 			refresh_scene()
 		return
+	# A native receipt records an activation, not necessarily the current owner.
+	# The cached owner read is cheap and also covers retirement/replacement before
+	# the panel had an opportunity to refresh. Never resurrect a retired World,
+	# publish an older revision, or infer current values from a historical receipt.
+	if not readback_failed: refresh_scene()
+	var current_matches: bool = _available() and _same_world(active_state,state) and int(active_state.revision) == int(state.revision) and active_state.profile == state.profile
+	if not current_matches:
+		_previous_profile.clear()
+		var newer_available: bool = _available() and (not _same_world(active_state,state) or int(active_state.revision) > int(state.revision))
+		if _available() and not newer_available:
+			active_state = {"ok":false,"error":"Native activation was acknowledged, but current effective values could not be confirmed."}
+			_refresh_fields()
+		var authority := "A newer World or revision is now authoritative." if newer_available else "The current native owner readback is unavailable."
+		_set_status("Earlier activation acknowledged. %s The draft was retained and old Revert history retired. Review Active versus Draft before another Apply." % authority)
+		return
 	_previous_profile = submitted.previous.duplicate(true)
 	# Preserve edits made while native admission was pending. They become a
 	# new draft against the acknowledged revision, never the active receipt.
 	if _draft_revision == int(submitted.draft_revision): draft_profile = state.profile.duplicate(true)
 	_draft_binding = _binding(state)
 	_accept_state(state)
+	# refresh_scene() may already have published this binding before the restored
+	# profile became the draft. Keep the numeric controls consistent with adoption.
+	_refresh_fields()
 	configuration_changed.emit(active_state.duplicate(true))
 	var recovery := "The initial readback failed; refreshed native values confirm activation. " if readback_failed else ""
 	_set_status("Configuration activated at revision %d. %s%s Simulation consequences remain in the current World." % [int(state.revision),recovery,"Your newer draft is still unapplied." if _draft_revision != int(submitted.draft_revision) else "You may continue editing or revert the configuration."])
