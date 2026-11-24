@@ -327,7 +327,7 @@
       "original_failure_population_recovered_exactly": true,
       "original_result": "FAIL",
       "original_result_reclassified": false,
-      "raw_8cf_f9_reaudit_in_other_session": "Not claimed complete here; retain original report and exact ledger regardless of that re-audit status",
+      "raw_8cf_f9_reaudit_in_other_session": "Preserved original primary-lane checkpoint: \"Not claimed complete here; retain original report and exact ledger regardless of that re-audit status\". The later completed closure review in evidence/closure-historical-science.json independently rechecked all 1,920 original 8cf93e48/f9ddbf2 pairs, preserving the exact 138 classifications and zero Apply changes. The original FAIL disposition, report, inventory and archived primary-lane scientific review remain unchanged.",
       "retained_inventory_classifications": {
         "accounting_only_unchanged_geometry_and_endpoint": 127,
         "already_exhausted_changed_refusal_stage_and_accounting": 1,
@@ -715,7 +715,6 @@
     "outer_sha256": "9db077d7be6ba1173a63f0f869fea88c4c0c844471b504da6cbe972b9b1a47c4",
     "payload_files": 1093,
     "files_including_manifest": 1094,
-    "exact_original_Git_source_entries": 1059,
     "graphical_engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
     "sealed_launcher_sha256": "a9eef83475b4ae836fbfb52fd7f09efc6bbef17a8d14ff1ed5b60c920caca684",
     "guide_sha256": "742e7ec82cdf67f49e400e97fdb88e4f96b130e22a8b48e49a9787eb798f9efb",
@@ -744,7 +743,18 @@
     },
     "private_map_upload_required": false,
     "physical_owner_acceptance": "owner_pending",
-    "optional_collector": "Frozen v2 input: a 2048-square map with rectangular stamps, no actors and no sources. A private crop stays local; nothing uploads. This collector is optional and does not restrict GUI acceptance."
+    "optional_collector": "Frozen v2 input: a 2048-square map with rectangular stamps, no actors and no sources. A private crop stays local; nothing uploads. This collector is optional and does not restrict GUI acceptance.",
+    "source_derived_paths": 1059,
+    "same_path_exact_Git_blobs": 1057,
+    "materialized_Rapier_LFS_paths": 1,
+    "renamed_retained_provenance_paths": 1,
+    "renamed_retained_provenance": {
+      "payload_path": "godot/addons/cybersand_native/retained-runtime-provenance.reference.json",
+      "qualified_source_path": "godot/addons/cybersand_native/runtime-provenance.json"
+    },
+    "root_repository_README_in_payload": false,
+    "delivered_guide_path": "READ-ME.md",
+    "delivered_guide_qualified_source": "docs/operations/swarm456-owner-acceptance.md"
   },
   "owner_acceptance": {
     "guide": "../../operations/swarm456-owner-acceptance.md",
@@ -755,7 +765,7 @@
     },
     "workflow": [
       "Verify and extract the exact portable ZIP; open the ordinary Workbench",
-      "Back up the original map and sidecars; Load start; choose a new valid copy name; Save start",
+      "Back up the original map and sidecars; Load start. For a generated start, wait for automatic generator preview verification to finish, then choose Install into workbench. Choose a new valid copy name and Save start before editing.",
       "Configure existing presets; hold source and seed fixed; compare recovery OFF and ON",
       "Inspect Final and provisional rounds, joints, obligations, clearance and revisions",
       "Native Apply of a valid complete composition; construction Undo; regenerate and reapply",
@@ -766,7 +776,8 @@
       "Record physical Windows 11/NVIDIA appearance, responsiveness, sound, usability and preference; the private map stays local"
     ],
     "save_semantics": "Save the authored start, recipe or baseline. To author a live result, exercise supported Flatten separately after history tests under another new name.",
-    "physical_acceptance_replaced_by_hosted_CI": false
+    "physical_acceptance_replaced_by_hosted_CI": false,
+    "delivery_routes": "See owner_delivery: the GitHub outer artifact includes the sealed PowerShell launcher; the separately saved exact inner ZIP is extracted directly and started with Open Workbench.cmd."
   },
   "independent_review": {
     "native_source": {
@@ -827,11 +838,107 @@
       "The precise API and cause of the original Q6 attempt 1 AccessDenied remain undetermined. Subsequent passing attempts do not reclassify it.",
       "Hosted ANGLE/Microsoft Basic Render Driver and the explicit Dummy audio fallback do not establish physical NVIDIA rendering, physical audio or owner-perceived responsiveness.",
       "All 63 authoritative Q7 receipts use strict integers. Thirty-three redundant projections contain integral floats; original receipts contain no booleans. Redundant numeric comparison cannot authorize alternate geometry or a different transaction."
-    ]
+    ],
+    "closure_cross_reviews": {
+      "closure_historical_recovery": {
+        "path": "evidence/closure-historical-recovery.json",
+        "sha256": "33c4a1cd46cef9e32760c69d5acea6e4b872b5279d600cc74100cfa39da78ddb",
+        "bytes": 60241
+      },
+      "closure_historical_science": {
+        "path": "evidence/closure-historical-science.json",
+        "sha256": "47f58c1e063dcf569676f6c2054e09b749c1d52df1963def4a75c360f0728d5a",
+        "bytes": 17735
+      },
+      "closure_historical73_custody": {
+        "path": "evidence/closure-historical73-custody.json",
+        "sha256": "b8514f894ef11585921d55e992c7a7c991bbcb14447d3812d1254d3cbf53d653",
+        "bytes": 4402
+      },
+      "closure_science_cross_review": {
+        "path": "evidence/closure-science-cross-review.json",
+        "sha256": "81a00a9dc18666e8111a0a0622869fe014fac371c02e3210dd8f0084c3d52ef7",
+        "bytes": 9488
+      },
+      "closure_independent_review": {
+        "path": "evidence/closure-independent-review.json",
+        "sha256": "d833813fccf91f05355c9a5f64b40513a1e0506811f1ce9f4e2b8f236702929e",
+        "bytes": 5158
+      },
+      "owner_delivery_access_review": {
+        "path": "evidence/owner-delivery-access-review.json",
+        "sha256": "e2102225a930c686b5049d56ea4f5fd37d3d9954a1bf75a931bc6c058c800c3e",
+        "bytes": 4516
+      },
+      "closure_recovery_join_review_b": {
+        "path": "evidence/closure-recovery-join-review-b.json",
+        "sha256": "354c84508b435ed894d468de1310daaa815009d8c86ef9c17d681466fa464468",
+        "bytes": 27340
+      },
+      "closure_docs_readback_review_b": {
+        "path": "evidence/closure-docs-readback-review-b.json",
+        "sha256": "b99d72d9f2707772871dfe99c1e857215ae9e3b495de66aaac002c2b9cd2cf80",
+        "bytes": 8042
+      },
+      "closure_play_readback_review_b": {
+        "path": "evidence/closure-play-readback-review-b.json",
+        "sha256": "5f0344511a7f4d6098ca47011c2b344f95f85be891e05e069906fc0e76c3cd27",
+        "bytes": 14023
+      },
+      "closure_source_overlay_review_b": {
+        "path": "evidence/closure-source-overlay-review-b.json",
+        "sha256": "d4c480c832506b30d2ffc58c4e34264f1cf299662449f2b783d03b636f5a7cbb",
+        "bytes": 3616
+      },
+      "closure_cache_lifecycle_review_b": {
+        "path": "evidence/closure-cache-lifecycle-review-b.json",
+        "sha256": "7a5a1e41746606dfbf70ea3fa115d93a4fe01f3212cc9ea1d4db52db13b97460",
+        "bytes": 8630
+      },
+      "closure_windows_final_review_b": {
+        "path": "evidence/closure-windows-final-review-b.json",
+        "sha256": "a33058f8300b0f90da5a807bfff14fd067c22baa908ba8df57ec00bd6007f28d",
+        "bytes": 8325
+      },
+      "closure_recovery_union_review_a": {
+        "path": "evidence/closure-recovery-union-review-a.json",
+        "sha256": "e85d2ed9c9530e736953bb25d212b0dff42ee081f7ec54d10f3b4fe5a5d7ce5b",
+        "bytes": 3032
+      },
+      "closure_final_gde_review_a": {
+        "path": "evidence/closure-final-gde-review-a.json",
+        "sha256": "d5e06487135ca9f176957ca1f1d2d03bce9837f3c68c9e07908572060e151faf",
+        "bytes": 8718
+      }
+    },
+    "historical73_attribution_resolution": "The earlier attribution question in closure-independent-review.json is resolved by the later exact original inventories in closure-historical73-custody.json; it is not an open engineering finding.",
+    "closure_late_custody_reviews": {
+      "prior_Q6_receipt_join": {
+        "path": "evidence/closure-q6-prior-custody-classification-a.json",
+        "sha256": "c73d8fcc2afdf4e1d41bb181dd5e757d129b0e3686c9bc8eb603f6e659fa0630",
+        "bytes": 23274
+      },
+      "new_original_archive_recovery": {
+        "path": "evidence/closure-late-original-archive-recovery.json",
+        "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+        "bytes": 505141
+      },
+      "independent_all_byte_review": {
+        "path": "evidence/closure-late-archive-independent-review-a.json",
+        "sha256": "76b18a7752db55219adc750e4369a9918247318b27b0e630317d4bbeda2f0a64",
+        "bytes": 24970
+      },
+      "preceding_noncount_packet_review": {
+        "path": "evidence/closure-packet-noncount-review-a.json",
+        "sha256": "1c1e30fccde42fca2374b5a3a0710ca26613f0fbfea3b3dba01cf7774dd9fa77",
+        "bytes": 3596
+      },
+      "resolution": "The dated Q6 classification identified four lost temporary archive receipts and 37 failed ordinary archives. The later all-byte recovery resolves all 41 custody gaps without changing those original outcomes. Eight further Q6 proofs are supplied by exact retained original receipts."
+    }
   },
   "recovery": {
     "authoritative_manifest": "evidence/recovery-manifest.json",
-    "manifest_sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
+    "manifest_sha256": "5cb3ebd24d559becce75b95701a65fe1c89f2f529681d8be2866e5536c6a1260",
     "whole_vs_partial_and_cache_availability_separate": true,
     "Q7_original_archive_count": 10,
     "Q7_original_bytes": 746421253,
@@ -840,7 +947,41 @@
     "selected_original_members": 25,
     "originals_edited": false,
     "durable_owner_and_Q7_originals_preserved": true,
-    "temporary_cache_loss": "Executor recovery cleared temporary caches. Historical verification events remain valid; the manifest separately records current availability and recovery of final ordinary originals."
+    "temporary_cache_loss": "Executor recovery cleared temporary caches. Historical verification events remain valid; the manifest separately records current availability and recovery of final ordinary originals.",
+    "manifest_bytes": 965413,
+    "final_github_artifact_records": 256,
+    "separate_scientific_original_archives": 3,
+    "final_unique_original_archive_records": 259,
+    "github_archives_with_completed_whole_archive_verification": 256,
+    "github_archives_without_completed_whole_archive_verification": 0,
+    "Q1_Q4_partial_recovery_count_scope": "The existing count of seven describes only the preserved primary-reader selected-member events. The complete closure supplement supplies separate completed whole-archive proofs for all seven; no earlier event is overwritten.",
+    "Q1_Q4_those_seven_with_closure_whole_archive_proof": 7,
+    "Q1_Q4_outstanding_whole_archive_proof_among_those_seven": 0,
+    "historical_closure_supplement": {
+      "path": "evidence/closure-historical-recovery.json",
+      "sha256": "33c4a1cd46cef9e32760c69d5acea6e4b872b5279d600cc74100cfa39da78ddb",
+      "bytes": 60241
+    },
+    "current_union_review": {
+      "path": "evidence/closure-recovery-union-review-a.json",
+      "sha256": "e85d2ed9c9530e736953bb25d212b0dff42ee081f7ec54d10f3b4fe5a5d7ce5b",
+      "bytes": 3032
+    },
+    "deduplicated_count_scope": "256 distinct GitHub artifact IDs plus three separate original scientific archives give 259 indexed original archive identities, all with completed whole-archive verification under their exact receipt scopes. Three pairs of byte-identical failed-shard archives remain six distinct GitHub/shard identities, so there are 253 distinct GitHub archive SHA-256 values and 256 including science. Counts are not claims of independent execution or uniform per-member receipt fields. All prior partial/metadata observations and dated cache states are preserved.",
+    "all_259_original_archive_identities_have_completed_whole_archive_proof": true,
+    "distinct_github_archive_sha256_values": 253,
+    "distinct_archive_sha256_values_including_scientific": 256,
+    "all_original_archive_bytes_summed_over_artifact_identities": 7168353251,
+    "late_archive_custody_completion": {
+      "path": "evidence/closure-late-original-archive-recovery.json",
+      "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+      "bytes": 505141
+    },
+    "late_archive_custody_independent_review": {
+      "path": "evidence/closure-late-archive-independent-review-a.json",
+      "sha256": "76b18a7752db55219adc750e4369a9918247318b27b0e630317d4bbeda2f0a64",
+      "bytes": 24970
+    }
   },
   "source_and_science_boundaries": {
     "solver_redesign": false,
@@ -851,5 +992,168 @@
     "original_failures_relabelled": false,
     "experimental_controls_default": "OFF/OFF/OFF",
     "owner_private_maps_uploaded": false
+  },
+  "closure_review_supplement": {
+    "historical_recovery": {
+      "evidence": "evidence/closure-historical-recovery.json",
+      "original_archives_fully_verified": 65,
+      "original_archive_bytes": 4748255185,
+      "github_archives": 62,
+      "github_archive_bytes": 3491359509,
+      "scientific_archives": 3,
+      "scientific_archive_bytes": 1256895676,
+      "pre_import_definitive_manifest_records": 118,
+      "pre_import_manifest_GitHub_overlap": 42,
+      "overlap_identity_conflicts": 0,
+      "overlap_matching_measured_whole_hashes": 35,
+      "overlap_whole_archive_verification_supplements_partial_lane": 7,
+      "additional_predecessor_donor_diagnostic_GitHub_archives": 20,
+      "count_scope": "Stable 65-original historical subset. Overlap figures describe the pre-import 118-record checkpoint; deduplicate by artifact identity and archive SHA, then derive any final global count from the actual final manifest including subsequent ordinary artifacts.",
+      "earlier_partial_recovery_events_preserved": true,
+      "verification_event_is_current_local_retention_claim": false,
+      "final_join_checkpoint": {
+        "recorded_at_utc": "2026-11-24T20:25:18.606796+00:00",
+        "base_manifest_records": 236,
+        "base_manifest_sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
+        "final_github_records": 256,
+        "separate_scientific_originals": 3,
+        "final_unique_original_archive_records": 259,
+        "github_completed_whole_archive_proofs": 256,
+        "github_metadata_only_records": 0,
+        "final_manifest_sha256": "5cb3ebd24d559becce75b95701a65fe1c89f2f529681d8be2866e5536c6a1260",
+        "late_archive_custody_completion": {
+          "path": "evidence/closure-late-original-archive-recovery.json",
+          "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+          "bytes": 505141
+        },
+        "distinct_github_archive_sha256_values": 253,
+        "distinct_archive_sha256_values_including_scientific": 256
+      }
+    },
+    "historical_science": {
+      "evidence": "evidence/closure-historical-science.json",
+      "original_reference_executions": 480,
+      "original_reference_split": {
+        "SWARM004": 96,
+        "SWARM005": 384
+      },
+      "separate_donor_controls": 360,
+      "revealed_candidate_executions": 1920,
+      "bilateral_qualified_R_cases": 18,
+      "original_foreign_joined_obligations_in_Apply_cases": 34,
+      "Apply_cases_with_those_original_obligations": 22,
+      "Apply_cases_without_original_mandatory_obligations": 60,
+      "FAIL138": {
+        "historical_result": "FAIL",
+        "unchanged": 1782,
+        "accounting_only": 127,
+        "already_exhausted_stage_and_accounting": 1,
+        "Blocked_to_Exhausted": 10,
+        "Apply_changes": 0,
+        "frozen_comparison_reviewer_sha256": "8818a1f197851d6bfaf9f08f160a3830cf55b0a9a684718bd58245af4949d69e"
+      },
+      "primary_paired_policy_loss": {
+        "case": "island--industrial--s1849470453",
+        "reference_source": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+        "recovery_source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+        "reference": {
+          "status": "Complete",
+          "A": true,
+          "R": true
+        },
+        "recovery": {
+          "status": "Exhausted",
+          "A": false,
+          "R": false
+        },
+        "reason": "final provenance ledger allowance",
+        "already_in_registered_82_A_81_R_of_96": true,
+        "already_present_in_corrected_8cf": true,
+        "part_of_FAIL138": false
+      },
+      "four_original_provisional_defects": {
+        "source": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+        "count": 4,
+        "accepted_or_Apply_authorized_plan_failures": 0,
+        "corrected_source": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+        "original_HOLD_preserved": true,
+        "selected_geometry_or_outer_Apply_changed": false
+      },
+      "missing_interrupted_attempt_raw_records": 96,
+      "missing_records_counted_as_qualified": false
+    },
+    "historical73": {
+      "evidence": "evidence/closure-historical73-custody.json",
+      "evidence_commit": "8a269bf42c0d5ac412bfdb70287194a5164788d8",
+      "actual_scientific_execution_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+      "a757_comparison_original_sha256": "111321183d77f08d9290607a611131e4a1b4d6923459ca5a02a7c89ae00fefcd",
+      "a757_pairs": 1920,
+      "a757_unchanged": 1847,
+      "a757_changed": 73,
+      "changed_histories_all_Exhausted_non_Apply": true,
+      "already_empty_status_or_termination_corrections": 40,
+      "copied_nonempty_failed_proposals_replaced": 33,
+      "endpoint_changes": 0,
+      "work_metric_changes": 0,
+      "selected_plan_changes": 0,
+      "corrected_8cf_comparison_original_sha256": "b215dacd42de13910e1cb90f84556983477fc2a4ad8d56b0cb7dbcfc9c8854e5",
+      "corrected_8cf_pairs": 1920,
+      "corrected_8cf_unchanged": 1920,
+      "original_comparison_reviewer_sha256": "101f818d585fb890e527adccdfeac2e553fa7884f5162ad5dd90e6f67a19d522",
+      "fresh_raw_a757_Ca_execution_claimed_by_C": false,
+      "donor_final_428_execution_relabelled": false
+    },
+    "Q7_C_scientific_review": {
+      "evidence": "evidence/closure-science-cross-review.json",
+      "complete_definitive_raw_review_cases": 1920,
+      "complete_definitive_raw_review_sha256": "608df7d7e677aa1c0b17566193959d102e59cf9c3ea49b6eb564bbd5d5c50bf5",
+      "full_source_hash_predicate_and_reduction_cross_review_cases": 1920,
+      "supplementary_first_C_invocation": "BrokenProcessPool after 1600 logged executions; no final serialized report; exact cause unproved",
+      "retained_sequential_tail_executions": 320,
+      "second_complete_1920_row_C_raw_report_claimed": false,
+      "scientific_driver_bytes_retained": false,
+      "scientific_compiler_bytes_retained": false,
+      "absent_executable_direct_rehash_claimed": false
+    }
+  },
+  "owner_delivery": {
+    "single_evaluator": true,
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "evidence": "evidence/owner-delivery-access-review.json",
+    "inner_archive": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "inner_bytes": 93903365,
+    "inner_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "github_outer_artifact": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "github_route": "Extract outer ZIP; keep inner ZIP/checksum/seal/PowerShell launcher together; run the sealed PowerShell launcher; subsequent starts use Open Workbench.cmd in its extracted application folder.",
+    "saved_inner_zip": "https://chatgpt.com/library?file_id=libfile_52bf61caf6d08191a679ac5c70bb9e90&account_id=personal",
+    "saved_inner_route": "Verify inner SHA-256; extract completely to a fresh folder; open Open Workbench.cmd. No adjacent PowerShell file is required or included in this inner-only download.",
+    "saved_exact_inner_zip_status": "succeeded",
+    "repacked": false,
+    "archive_members": 1094,
+    "manifest_listed_payload_files": 1093,
+    "same_path_exact_Git_blobs": 1057,
+    "materialized_Rapier_LFS_paths": 1,
+    "renamed_retained_provenance_paths": 1,
+    "source_derived_paths": 1059,
+    "root_repository_README_in_payload": false,
+    "generated_map_Load_start": "Starts generator preview verification automatically; after it is ready choose Install into workbench, then save under a new valid copy name.",
+    "physical_owner_acceptance": "pending"
+  },
+  "record_correction": {
+    "prepared_at_utc": "2026-11-24T20:03:30.734101+00:00",
+    "baseline_packet_sha256": "4426b4eade793f96620e69d45af77970293aaddd42d002cbdc80acb47a27d23d",
+    "baseline_packet_recorded_utc": "2026-11-24T19:52:48.519394+00:00",
+    "scope": "Evidence custody, precise payload attribution and owner instructions only. All terminal qualification, source, runtime, publication, ordinary-gate and owner-pending dispositions are preserved.",
+    "late_custody_join_prepared_at_utc": "2026-11-24T20:25:18.606796+00:00",
+    "baseline_commit": "7a3241a8be4362f27c667a62b0ddea66e38316f3",
+    "baseline_tree": "5717386ea76b3a330e4ba1bacdbdf585f0cc9f08",
+    "baseline_canonical_path": "docs/audits/swarm456-definitive-001/final-decision-packet.json",
+    "baseline_matches_exact_published_git_bytes": true,
+    "baseline_review": {
+      "path": "evidence/closure-published-baseline-review-a.json",
+      "sha256": "d13c95a390e9a2e948768fb5a2a1e06cf4065e4c8545cbc42e4275bd3735f675",
+      "bytes": 5858
+    },
+    "publication_scope": "Completion of the existing canonical decision packet through documentation and evidence records only. Qualified application/runtime/evaluator identities and historical dispositions remain unchanged; containing Git history and the final independent review bind the actual publication."
   }
 }

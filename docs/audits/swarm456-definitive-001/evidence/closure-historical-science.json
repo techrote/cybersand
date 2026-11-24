@@ -1,0 +1,530 @@
+{
+  "schema": "swarm456-closure-historical-science-supplement/v1",
+  "reviewer": "closure-independent-assurance-C",
+  "completed_utc": "2026-11-24T18:24:15.081743+00:00",
+  "result": "PASS_WITH_HISTORICAL_NEGATIVES_PRESERVED",
+  "purpose": "Compact attributable supplement for the sole definitive canonical packet; not a second programme decision packet. Current Q7 raw science is reviewed separately.",
+  "denominators": {
+    "revealed_cases": 96,
+    "registered_policy_combinations": 20,
+    "revealed_executions": 1920,
+    "original_reference_executions": 480,
+    "original_reference_split": {
+      "swarm004": 96,
+      "swarm005": 384
+    },
+    "separate_donor_controls": 360
+  },
+  "definitions": {
+    "A": "Successful native execution; Complete; Apply-valid; closure evaluated; zero still-required obligations.",
+    "R": "A plus at least one qualified foreign joint.",
+    "scope": "Revealed synthetic evaluation, not unseen validation or an owner-map success prediction."
+  },
+  "registered_primary": {
+    "source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+    "policy": "recovery@2",
+    "denominator": 96,
+    "A": 82,
+    "R": 81,
+    "status_counts": {
+      "complete": 82,
+      "exhausted": 12,
+      "blocked": 2
+    },
+    "total_charged_work": 566677700
+  },
+  "interpretation_limits": {
+    "bilateral_qualified_R_cases": 18,
+    "primary_policy_original_report": {
+      "n": 96,
+      "A": 82,
+      "R": 81,
+      "statuses": {
+        "complete": 82,
+        "exhausted": 12,
+        "blocked": 2
+      },
+      "unknown_closure": 12,
+      "raw_joints": 442,
+      "Apply_joints": 363,
+      "original_requirements_known": 63,
+      "original_requirements_unknown_cases": 0,
+      "original_requirements_with_unknown_final_closure": 27,
+      "evaluated_original_FOREIGN_JOINED": 34,
+      "Apply_original_FOREIGN_JOINED": 34,
+      "Apply_cases_with_original_FOREIGN_JOINED": 22,
+      "Apply_new_FOREIGN_JOINED": 78,
+      "Apply_cases_without_original_requirements": 60,
+      "source_time_compact_terminations_known": 0,
+      "source_time_compact_terminations_unknown_cases": 1,
+      "local_terminations_known": 921,
+      "work_sum": 566677700,
+      "review_failure_count": 0
+    },
+    "original_report_sha256": "86a0a8ed4e7278a399146dd92ed0317033bd3426fb4597d4530609019ea62225",
+    "explanation": "The 81 R cases are not 81 bilateral causal solves. There are 18 bilateral-qualified-R matched cases. The primary population contains 34 Apply-valid FOREIGN_JOINED original obligations across 22 Apply cases, and 60 Apply cases without an original mandatory obligation. Unknown final closure remains distinct from zero unresolved."
+  },
+  "all_twenty_integrated_policy_populations": {
+    "both@2": {
+      "n": 96,
+      "status": {
+        "complete": 14,
+        "blocked": 57,
+        "exhausted": 25
+      },
+      "A": 14,
+      "R": 3,
+      "total_charged_work": 587522286
+    },
+    "off@2": {
+      "n": 96,
+      "status": {
+        "blocked": 66,
+        "complete": 10,
+        "exhausted": 20
+      },
+      "A": 10,
+      "R": 2,
+      "total_charged_work": 589414836
+    },
+    "receptor_only@2": {
+      "n": 96,
+      "status": {
+        "blocked": 59,
+        "complete": 11,
+        "exhausted": 26
+      },
+      "A": 11,
+      "R": 3,
+      "total_charged_work": 586051260
+    },
+    "recovery@0": {
+      "n": 96,
+      "status": {
+        "complete": 62,
+        "blocked": 34
+      },
+      "A": 62,
+      "R": 0,
+      "total_charged_work": 361822555
+    },
+    "recovery@1": {
+      "n": 96,
+      "status": {
+        "complete": 92,
+        "blocked": 4
+      },
+      "A": 92,
+      "R": 87,
+      "total_charged_work": 470987654
+    },
+    "recovery@2": {
+      "n": 96,
+      "status": {
+        "complete": 82,
+        "exhausted": 12,
+        "blocked": 2
+      },
+      "A": 82,
+      "R": 81,
+      "total_charged_work": 566677700
+    },
+    "recovery@3": {
+      "n": 96,
+      "status": {
+        "exhausted": 90,
+        "complete": 6
+      },
+      "A": 6,
+      "R": 6,
+      "total_charged_work": 583407179
+    },
+    "recovery@4": {
+      "n": 96,
+      "status": {
+        "exhausted": 96
+      },
+      "A": 0,
+      "R": 0,
+      "total_charged_work": 582700975
+    },
+    "recovery+cancel@2": {
+      "n": 96,
+      "status": {
+        "cancelled": 96
+      },
+      "A": 0,
+      "R": 0,
+      "total_charged_work": 16023552
+    },
+    "recovery+fixed@2": {
+      "n": 96,
+      "status": {
+        "complete": 77,
+        "exhausted": 19
+      },
+      "A": 77,
+      "R": 77,
+      "total_charged_work": 542257873
+    },
+    "recovery+frame_budget@2": {
+      "n": 96,
+      "status": {
+        "exhausted": 96
+      },
+      "A": 0,
+      "R": 0,
+      "total_charged_work": 16023552
+    },
+    "recovery+frame_frozen@2": {
+      "n": 96,
+      "status": {
+        "complete": 82,
+        "exhausted": 10,
+        "blocked": 4
+      },
+      "A": 82,
+      "R": 77,
+      "total_charged_work": 552299607
+    },
+    "recovery+hard_only@2": {
+      "n": 96,
+      "status": {
+        "complete": 88,
+        "exhausted": 6,
+        "blocked": 2
+      },
+      "A": 88,
+      "R": 26,
+      "total_charged_work": 478865211
+    },
+    "recovery+memory_budget@2": {
+      "n": 96,
+      "status": {
+        "exhausted": 96
+      },
+      "A": 0,
+      "R": 0,
+      "total_charged_work": 0
+    },
+    "recovery+mosaic_budget@2": {
+      "n": 96,
+      "status": {
+        "exhausted": 96
+      },
+      "A": 0,
+      "R": 0,
+      "total_charged_work": 78049405
+    },
+    "recovery+mosaic_frozen@2": {
+      "n": 96,
+      "status": {
+        "complete": 62,
+        "exhausted": 6,
+        "blocked": 28
+      },
+      "A": 62,
+      "R": 0,
+      "total_charged_work": 471297561
+    },
+    "recovery+no_offers@2": {
+      "n": 96,
+      "status": {
+        "complete": 62,
+        "blocked": 34
+      },
+      "A": 62,
+      "R": 0,
+      "total_charged_work": 446644401
+    },
+    "recovery+reverse@2": {
+      "n": 96,
+      "status": {
+        "complete": 82,
+        "exhausted": 12,
+        "blocked": 2
+      },
+      "A": 82,
+      "R": 81,
+      "total_charged_work": 566677700
+    },
+    "recovery+solver_budget@2": {
+      "n": 96,
+      "status": {
+        "exhausted": 96
+      },
+      "A": 0,
+      "R": 0,
+      "total_charged_work": 101998371
+    },
+    "terminal_only@2": {
+      "n": 96,
+      "status": {
+        "complete": 13,
+        "blocked": 63,
+        "exhausted": 20
+      },
+      "A": 13,
+      "R": 2,
+      "total_charged_work": 589703044
+    }
+  },
+  "original_reference_policies": {
+    "swarm004:off@2": {
+      "denominator": 96,
+      "A": 10,
+      "R": 2,
+      "status_counts": {
+        "blocked": 66,
+        "complete": 10,
+        "exhausted": 20
+      }
+    },
+    "swarm005:off@2": {
+      "denominator": 96,
+      "A": 10,
+      "R": 2,
+      "status_counts": {
+        "blocked": 66,
+        "complete": 10,
+        "exhausted": 20
+      }
+    },
+    "swarm005:terminal_only@2": {
+      "denominator": 96,
+      "A": 13,
+      "R": 2,
+      "status_counts": {
+        "complete": 13,
+        "blocked": 63,
+        "exhausted": 20
+      }
+    },
+    "swarm005:receptor_only@2": {
+      "denominator": 96,
+      "A": 11,
+      "R": 3,
+      "status_counts": {
+        "blocked": 64,
+        "complete": 11,
+        "exhausted": 21
+      }
+    },
+    "swarm005:both@2": {
+      "denominator": 96,
+      "A": 14,
+      "R": 3,
+      "status_counts": {
+        "complete": 14,
+        "blocked": 62,
+        "exhausted": 20
+      }
+    }
+  },
+  "reference_endpoint_accounting": {
+    "original_swarm005_source": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+    "original_both_at_2": {
+      "n": 96,
+      "status": {
+        "complete": 14,
+        "blocked": 62,
+        "exhausted": 20
+      },
+      "A": 14,
+      "R": 3,
+      "total_charged_work": 595548714
+    },
+    "integrated_both_at_2": {
+      "n": 96,
+      "status": {
+        "complete": 14,
+        "blocked": 57,
+        "exhausted": 25
+      },
+      "A": 14,
+      "R": 3,
+      "total_charged_work": 587522286
+    },
+    "original_receptor_only_at_2": {
+      "n": 96,
+      "status": {
+        "blocked": 64,
+        "complete": 11,
+        "exhausted": 21
+      },
+      "A": 11,
+      "R": 3,
+      "total_charged_work": 594061676
+    },
+    "integrated_receptor_only_at_2": {
+      "n": 96,
+      "status": {
+        "blocked": 59,
+        "complete": 11,
+        "exhausted": 26
+      },
+      "A": 11,
+      "R": 3,
+      "total_charged_work": 586051260
+    },
+    "explanation": "Five of the ten original Blocked-to-Exhausted receiver-control changes occur in each enabled receptor policy. Both success criteria remain 14/96 and 3/96 for the original both@2 reference."
+  },
+  "historical_FAIL138": {
+    "original_result": "FAIL",
+    "original_failure_count": 138,
+    "original_report_sha256": "7404bb07d3552465c544d90d760f887bd7703d3937a9268a6f32355e4346df7f",
+    "comparison_sources": {
+      "before": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+      "after": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05"
+    },
+    "full_pairs_rechecked": 1920,
+    "classes": {
+      "full_normalized_unchanged": 1782,
+      "same_geometry_endpoint_accounting_changed": 127,
+      "already_exhausted_refusal_stage_accounting_changed": 1,
+      "blocked_to_exhausted_earlier_charged_scanner_refusal": 10
+    },
+    "changed_policies": {
+      "both@2": 69,
+      "receptor_only@2": 69
+    },
+    "apply_changes": 0,
+    "new_A_or_R_successes": 0,
+    "historical_disposition_reclassified": false,
+    "frozen_historical_comparison_reviewer_sha256": "8818a1f197851d6bfaf9f08f160a3830cf55b0a9a684718bd58245af4949d69e",
+    "normalization": "Only enumerated declared source/definition and their source-bound request/result digests; original strict empty-exhausted placeholder guards preserved. Materials, geometry, ledgers, policies, work, budgets, refusal reasons and outcomes are not normalized.",
+    "original_inventory_sha256": "69dfca22b5249ab63a1c47936a6252d51330f86e4ea260e68f0b6e212bf46ca6"
+  },
+  "separate_primary_paired_loss": {
+    "case": "island--industrial--s1849470453",
+    "original_swarm005_source": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+    "recovery_source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+    "reference": "both@2 Complete, A=true, R=true, three qualified joints, zero unresolved",
+    "recovery": "recovery@2 Exhausted, A=false, R=false, unknown final closure; final provenance ledger allowance",
+    "reference_native_raw_sha256": "13bc9edc81d58c38b81ee24a541efc606ff6ed717113b777a950e27d2543b052",
+    "recovery_native_raw_sha256": "dfaee8e6414b3b4646a87ce2cdfde5d5804490710b6f52e23c79b7957bc87563",
+    "already_in_registered_82_A_81_R_denominator96": true,
+    "already_present_in_corrected8cf": true,
+    "is_FAIL138_receiver_control_change": false,
+    "interim_joints_authorize_Apply": false
+  },
+  "separate_four_provisional_history_defects": {
+    "original_source": {
+      "git_sha": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+      "definition_sha256": "afbae85af2c44f1e539a154fbee622a3ee7533a6caab9ad1f9c5190a8e5803e4",
+      "harness_sha256": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+      "runner_sha256": "ea4c2161dc80a46a3a3faee6d158b5f23096090a40eac51b184f4b0aabb98868"
+    },
+    "original_disposition": "HOLD: strict all-evidence consistency gate failed",
+    "original_count": 4,
+    "accepted_or_apply_authorized_plan_failures": 0,
+    "corrected_source": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+    "corrected_original_strict_review_sha256": "6ef8f2ae3e2379f15bc39dbf05812053ef68cbec3afc52a49fde4cbefba61004",
+    "corrected_review_result": "PASS",
+    "corrected_failures": 0,
+    "four_original_corrected_case_pairs_rehashed": true,
+    "original_HOLD_preserved": true,
+    "attribution": "Original a757 SWARM006 provisional-history defect, not the c178 SWARM005 reference. Corrected 8cf records carry empty Exhausted nested native proposals with the truthful native receiver snapshot finalization refusal.",
+    "unchanged_corrected_native_files_in_current_Q7": {
+      "native/experiments/gentek_swarm/mosaic_recovery.cpp": "ec9dbe6dd227b7b376763961c51b12b94ff7cb143f43e4999d3a6e2eec678850",
+      "native/experiments/gentek_swarm/swarm006_recovery_tests.cpp": "f099a2841fdb78f5bbadfd418719a7ec04f7bf7cebfed776a85fcf3d2418ffc9"
+    }
+  },
+  "recovered_original_archives": [
+    {
+      "name": "CyberSand-SWARM456-f9ddbf2-Historical-Science-Evidence.zip",
+      "library_file_id": "libfile_925d17cde97481919a06dccfe4a8acbe",
+      "bytes": 430066468,
+      "sha256": "7ed29e2b32eca8caadaaa0c9bf148a75e50b0913e2b3ed526606ccd63e755e76",
+      "source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+      "members": 10498,
+      "all_member_crc_and_payload_sha256_size_verified": true,
+      "durable_original_unchanged": true,
+      "temporary_local_zip_retired_after_audit": true
+    },
+    {
+      "name": "CyberSand-SWARM006-8cf93e48-Science-Checkpoint.zip",
+      "library_file_id": "libfile_3a6a83d8c6608191b9270cad6ae82058",
+      "bytes": 360013677,
+      "sha256": "89a7566a2f44cbfae5483946c60c635148629c35854198ee245e955643ab5e1e",
+      "source": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+      "members": 9666,
+      "all_member_crc_and_payload_sha256_size_verified": true,
+      "durable_original_unchanged": true,
+      "temporary_local_zip_retired_after_audit": true
+    },
+    {
+      "name": "CyberSand-SWARM006-Holdout-001.zip",
+      "library_file_id": "libfile_2f271082943c81918267caa36cca2fb7",
+      "bytes": 466815531,
+      "sha256": "b46925296a2cdcd9a3a61c41cd9364623b7c30ae9c557f9b53ca98006d843085",
+      "candidate_source": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+      "reference_sources": {
+        "swarm004": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+        "swarm005": "c178feeb39899fd155b7deb9d5bde3f50ee28548"
+      },
+      "members": 12090,
+      "all_member_crc_and_payload_sha256_size_verified": true,
+      "durable_original_unchanged": true,
+      "temporary_local_zip_retired_after_audit": true
+    }
+  ],
+  "original_reference_executable_bytes": {
+    "swarm004": {
+      "source": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+      "definition": "07901d11889c217ebe61e9ab3562046914a1e9e31865281fe8667b4124adbc71",
+      "manifest_sha256": "dfc6ee8fb77c17dad0257f6774c83dc1c065d6d22cb1e9de97b47bb22e6cb907",
+      "build_receipt_sha256": "8cc53db96a232d768016f34d12affef1bf5c159724a5bd9e261295a10386e360",
+      "actual_binary_sha256": "6ffd2fa6a2cdb1c5b8584846cfece4a905fe4962e6b093b882b95aa83c1c15b6"
+    },
+    "swarm005": {
+      "source": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+      "definition": "4ef94e7b1b13506f50318791a2c9d3f632e3eccca3889c7d12b01e0e61759365",
+      "manifest_sha256": "d3dff8232947cc9a956d9c592163858483eabc7a8d8c2511f040ca671230097f",
+      "build_receipt_sha256": "99589239e529d021c57d41be1556d0a30b4463b66ec7f5467fe89160e9da3e82",
+      "actual_binary_sha256": "a656109b57de4449570029e9b603f99afb9032dc5e4c003f34c4c136c5c2d8f0"
+    }
+  },
+  "precise_missing_evidence": [
+    {
+      "original_f9_interrupted_attempt": "96 records marked RUNNING with a 622-file partial inventory. Metadata/logs/handoff were archived; raw execution payloads were intentionally omitted from that original archive. They cannot be reconstructed or counted as qualified.",
+      "completed_population": "The separately retained completed f9 root-r2 corpus has all 1,920 raw cases and remains independently rechecked."
+    },
+    {
+      "current_scientific_executable": "Q5/Q6/Q7 scientific archives retain original source/build/compiler identity and executable SHA-256 receipts, but do not contain the scientific executable bytes. A local independent rehash of those executable bytes is not claimed."
+    }
+  ],
+  "recovery_serialization_incident": "The first full C 1,920-pair pass could not serialize its final report when the shared disk filled. Its zero-byte result was retained as an explicit failed audit-output attempt; all 1,920 pairs were rerun to produce the valid retained report. No partial result was represented as complete.",
+  "audit_refs": [
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/fail138-recovery-audit.json",
+      "sha256": "f7dcb6c880f2dac6aa1d4914d017c62c689aea26808e199c716a6da8e04d3ac3"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/fail138-normalization-custody.json",
+      "sha256": "c9b389cbd5478e323f8f73c55ae43b11325db435e8895b31eb540ae9fe112c9d"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/scientific-population-custody.json",
+      "sha256": "ca7ce153e375195578dbdd0eddf750084cf1115ce31d6864b438a640289e7098"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/historical-four-provisional-fixes-audit.json",
+      "sha256": "84c6e3e36cc646cadccae7b08f8c7cbf2505dfcb156257f4417f8f7099067218"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/primary-paired-policy-negative-audit.json",
+      "sha256": "dc4cc8f7526f544e5d517cc02fa1c84c1bfdddec00616278800dfc01b49bc3ca"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/original480-reference-recovery-audit.json",
+      "sha256": "7eec58098f3300527623eb2babf83432076b9bcbdb62a1a29f4bcaa284f970fa"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/donor715-q5-equivalence-audit.json",
+      "sha256": "bc48a3e5b9a5103bf6a9c76d60c65082780b45c06c7e605a1033c2b3f202751e"
+    }
+  ],
+  "new_native_executions_by_this_historical_review": 0,
+  "private_owner_maps_used_or_uploaded": false
+}

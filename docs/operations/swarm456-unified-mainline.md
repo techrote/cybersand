@@ -298,7 +298,7 @@ The [owner launch guide](swarm456-owner-acceptance.md) accompanies one Windows a
 and simple launcher. Physical acceptance remains **pending** until the owner tests
 that exact package on the NVIDIA system.
 
-1. Verify/extract the exact evaluator and launch ordinary Workbench. Back up an original populated authored map and its sidecars, then use Load start and a new valid save name to make a local working copy. Confirm both SWARM-005 controls and recovery begin OFF.
+1. Verify/extract the exact evaluator and launch ordinary Workbench. Back up an original populated authored map and its sidecars, then use Load start. If a generated-map preview opens, wait for verification and choose Install into workbench. Then use a new valid name and Save start to make a local working copy. Confirm both SWARM-005 controls and recovery begin OFF.
 2. Configure existing compositions and compare recovery OFF/ON with map, seed, territory and other controls fixed. Inspect Final/provisional rounds, Joints, Unresolved, Clearance and Revisions; retain blocked/exhausted diagnostics.
 3. Apply a valid complete composition, inspect actual installed materials, exercise supported construction Undo and regenerate/reapply.
 4. Save this composition checkpoint, close and reopen in a fresh process, and inspect its historical read-only evidence **before ordinary editing changes the accepted history**.

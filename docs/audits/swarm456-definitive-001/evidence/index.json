@@ -3,6 +3,162 @@
   "scope": "Independent review records. Original review checkpoints retain their dated scope; terminal reviews supplement them after complete affected-gate admission. Internal filenames are observation locators; artifact IDs and hashes identify originals.",
   "records": [
     {
+      "file": "closure-cache-lifecycle-review-b.json",
+      "bytes": 8630,
+      "sha256": "7a5a1e41746606dfbf70ea3fa115d93a4fe01f3212cc9ea1d4db52db13b97460",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-docs-readback-review-b.json",
+      "bytes": 8042,
+      "sha256": "b99d72d9f2707772871dfe99c1e857215ae9e3b495de66aaac002c2b9cd2cf80",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-final-gde-review-a.json",
+      "bytes": 8718,
+      "sha256": "d5e06487135ca9f176957ca1f1d2d03bce9837f3c68c9e07908572060e151faf",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-historical-recovery.json",
+      "bytes": 60241,
+      "sha256": "33c4a1cd46cef9e32760c69d5acea6e4b872b5279d600cc74100cfa39da78ddb",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-historical-science.json",
+      "bytes": 17735,
+      "sha256": "47f58c1e063dcf569676f6c2054e09b749c1d52df1963def4a75c360f0728d5a",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-historical73-custody.json",
+      "bytes": 4402,
+      "sha256": "b8514f894ef11585921d55e992c7a7c991bbcb14447d3812d1254d3cbf53d653",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-independent-review.json",
+      "bytes": 5158,
+      "sha256": "d833813fccf91f05355c9a5f64b40513a1e0506811f1ce9f4e2b8f236702929e",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-late-archive-independent-review-a.json",
+      "bytes": 24970,
+      "sha256": "76b18a7752db55219adc750e4369a9918247318b27b0e630317d4bbeda2f0a64",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-late-original-archive-recovery.json",
+      "bytes": 505141,
+      "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-packet-noncount-review-a.json",
+      "bytes": 3596,
+      "sha256": "1c1e30fccde42fca2374b5a3a0710ca26613f0fbfea3b3dba01cf7774dd9fa77",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-play-readback-review-b.json",
+      "bytes": 14023,
+      "sha256": "5f0344511a7f4d6098ca47011c2b344f95f85be891e05e069906fc0e76c3cd27",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-published-baseline-review-a.json",
+      "bytes": 5858,
+      "sha256": "d13c95a390e9a2e948768fb5a2a1e06cf4065e4c8545cbc42e4275bd3735f675",
+      "copy_policy": "Byte-exact independent observation of the published baseline; its dated scope and original source hashes remain unchanged."
+    },
+    {
+      "file": "closure-q6-prior-archive-14943499390.json",
+      "bytes": 476153,
+      "sha256": "2f2c4f311bb5582f02114c97463c001cf45626438fa68f598bf95ad07e7e39a7",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14943589041.json",
+      "bytes": 5430,
+      "sha256": "955fdd473bed454137ef827fee730d0a4f46184e3c6999abd76eefc04a30c4a3",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14943898251.json",
+      "bytes": 4011,
+      "sha256": "5d27b12486ac25481b033358e7ab3d0cecaebe3a0698fcb35b8b0b8bb7bdadae",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14944089317.json",
+      "bytes": 3536,
+      "sha256": "50cea074308ce34a2e1089b77f5906d03ff4b43dde28818c6ef3587d5a8757c0",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14946969851.json",
+      "bytes": 5473,
+      "sha256": "424f98fd223b3773ebfb1228abf33731ff8c77795520f0cc9bdc7551c588a638",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14948323602.json",
+      "bytes": 361094,
+      "sha256": "4743fca37030746348b3bc2d6143306806180e4c36db6b88508644d7a5d2f613",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14948438367.json",
+      "bytes": 2761,
+      "sha256": "ea4f6cf798537d435388d7facf65da7eac4d29fb80c8a4fb98f66face2f1afec",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-archive-14948453672.json",
+      "bytes": 476483,
+      "sha256": "74ba6d1a7f78eb117088ec0a424919ae444f81d8016bdbb0322e9b8ad3b9ab30",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-q6-prior-custody-classification-a.json",
+      "bytes": 23274,
+      "sha256": "c73d8fcc2afdf4e1d41bb181dd5e757d129b0e3686c9bc8eb603f6e659fa0630",
+      "copy_policy": "Exact retained original receipt or independent review bytes; archive-recovery aggregate retains every original parsed receipt and its original byte hash. Dated local paths are observation locations, not availability promises."
+    },
+    {
+      "file": "closure-recovery-join-review-b.json",
+      "bytes": 27340,
+      "sha256": "354c84508b435ed894d468de1310daaa815009d8c86ef9c17d681466fa464468",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-recovery-union-review-a.json",
+      "bytes": 3032,
+      "sha256": "e85d2ed9c9530e736953bb25d212b0dff42ee081f7ec54d10f3b4fe5a5d7ce5b",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-science-cross-review.json",
+      "bytes": 9488,
+      "sha256": "81a00a9dc18666e8111a0a0622869fe014fac371c02e3210dd8f0084c3d52ef7",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-source-overlay-review-b.json",
+      "bytes": 3616,
+      "sha256": "d4c480c832506b30d2ffc58c4e34264f1cf299662449f2b783d03b636f5a7cbb",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
+      "file": "closure-windows-final-review-b.json",
+      "bytes": 8325,
+      "sha256": "a33058f8300b0f90da5a807bfff14fd067c22baa908ba8df57ec00bd6007f28d",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
       "file": "corrected-full-docs-review.json",
       "bytes": 3948,
       "sha256": "3174479dabb1a5ae9171cd0491cb4e3dcf47576b76ff6f984ee9aedf3f35698b",
@@ -135,6 +291,12 @@
       "copy_policy": "Exact review bytes. Publication-safe derivatives bind original source hashes and label observation-only paths."
     },
     {
+      "file": "owner-delivery-access-review.json",
+      "bytes": 4516,
+      "sha256": "e2102225a930c686b5049d56ea4f5fd37d3d9954a1bf75a931bc6c058c800c3e",
+      "copy_policy": "Byte-exact existing independent review. Original observation paths and dated scopes remain unchanged; no new cache availability is implied."
+    },
+    {
       "file": "owner-ergonomics-review.json",
       "bytes": 7113,
       "sha256": "c7e47eb9c99a0dc26eecd1193532773f897dabada0ed4a66c402026e8b043a6c",
@@ -160,9 +322,9 @@
     },
     {
       "file": "recovery-manifest.json",
-      "bytes": 741001,
-      "sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
-      "copy_policy": "Exact review bytes. Publication-safe derivatives bind original source hashes and label observation-only paths."
+      "bytes": 965413,
+      "sha256": "5cb3ebd24d559becce75b95701a65fe1c89f2f529681d8be2866e5536c6a1260",
+      "copy_policy": "Derived deduplicated union preserving all baseline records/events and exact closure receipt records; baseline manifest SHA is recorded inside."
     },
     {
       "file": "remote-lfs-review.json",
@@ -200,5 +362,9 @@
       "sha256": "2221a5df993d24f75a625c2137f163296da18df90235136a96abe1f71b48c9e2",
       "copy_policy": "Exact review bytes. Publication-safe derivatives bind original source hashes and label observation-only paths."
     }
-  ]
+  ],
+  "closure_correction_prepared_at_utc": "2026-11-24T20:03:30.734101+00:00",
+  "baseline_index_sha256": "7fa31256847d75701d19982ac5281eb6bcd02ef0be1d7de1a1d86b09862615db",
+  "late_custody_join_prepared_at_utc": "2026-11-24T20:25:18.606796+00:00",
+  "published_baseline_commit": "7a3241a8be4362f27c667a62b0ddea66e38316f3"
 }

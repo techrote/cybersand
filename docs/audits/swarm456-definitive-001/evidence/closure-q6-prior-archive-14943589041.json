@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-456-CLOSURE-001",
+  "run_id": 45437617377,
+  "attempt": 1,
+  "source_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+  "artifact_id": 14943589041,
+  "artifact_name": "swarm456-linux-runtime-45437617377-1",
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45437617377/artifacts/14943589041",
+  "archive_path": "/tmp/swarm456-q6-linux/14943589041.zip",
+  "extraction_path": "/tmp/swarm456-q6-linux/linux-runtime",
+  "zip_size": 139550719,
+  "zip_sha256": "6d1772a745e1170344536c281e73447f13cfc44ab093dfe29d2bc22a40e02fc3",
+  "github_digest_matched": true,
+  "github_size_matched": true,
+  "all_members_crc_read_and_sha256": true,
+  "safe_unique_member_paths": true,
+  "members_count": 24,
+  "members_uncompressed_bytes": 614992812,
+  "original_bytes_rewritten": false,
+  "verified_at_utc": "2026-11-24T17:05:43.567412+00:00",
+  "members": [
+    {
+      "path": "gentek_reciprocal",
+      "size": 1554128,
+      "crc32": "9a16171d",
+      "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+    },
+    {
+      "path": "libcybersand_native.linux.x86_64.so",
+      "size": 5278840,
+      "crc32": "44839124",
+      "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+    },
+    {
+      "path": "replay_swarm005_known",
+      "size": 1491696,
+      "crc32": "443425ba",
+      "sha256": "63d6ffc9d8b1bed5c500f7d8c285128aaaa10a4542d42d323c6f1c24609c2e6a"
+    },
+    {
+      "path": "sanitized/test_assembly",
+      "size": 10282256,
+      "crc32": "dc43ea4e",
+      "sha256": "42486cf5bdb058026e0369bb486a9c151c2c270c5313a9f60e1ce082dacc0138"
+    },
+    {
+      "path": "sanitized/test_custody_hash",
+      "size": 413960,
+      "crc32": "a3f0219a",
+      "sha256": "4677952493dafc6427cf7c86e82b552ef685468620006f1040d1269473846e0c"
+    },
+    {
+      "path": "sanitized/test_reciprocal",
+      "size": 104017040,
+      "crc32": "01019e6d",
+      "sha256": "eb33a44e278b96aaa01347826647866d60da02f93d1c512b02e11fa31b40da45"
+    },
+    {
+      "path": "sanitized/test_reciprocal_mosaic",
+      "size": 94741328,
+      "crc32": "c8d545ca",
+      "sha256": "2082b9faf9eed68017960bf4b87b4831d0882bddd517483ee71ffb10674229dc"
+    },
+    {
+      "path": "sanitized/test_swarm005",
+      "size": 98827608,
+      "crc32": "4112461a",
+      "sha256": "393a351c0fe2798f02cefd9665fe20ed331c43604585562a264348450ec00268"
+    },
+    {
+      "path": "sanitized/test_swarm006_admission",
+      "size": 23531608,
+      "crc32": "44038e41",
+      "sha256": "1ee9398d7744f06cc66d6d41d7e56a41a1400ee0603b4fa44cb541e07f2e2ad3"
+    },
+    {
+      "path": "sanitized/test_swarm006_recovery",
+      "size": 105002760,
+      "crc32": "3c74e61b",
+      "sha256": "95da723fdf76099d804f097cd8b6ebaf56d60a4043869a5026c482348854b8d3"
+    },
+    {
+      "path": "sanitized/test_swarm006_source",
+      "size": 93082312,
+      "crc32": "cb2accaf",
+      "sha256": "1d0857b41c9d3e327cfacdebee0815d8236e624329cf43f6e7a33597f96211a3"
+    },
+    {
+      "path": "sanitized/test_workbench_authoring_patch",
+      "size": 56429560,
+      "crc32": "c3f55bf8",
+      "sha256": "269ce36a7c7410550a2d5a3de7539595bf2eff1f4d07ff268f9303605ce6f167"
+    },
+    {
+      "path": "swarm45-runtime-provenance.json",
+      "size": 265191,
+      "crc32": "3543d4bb",
+      "sha256": "70f97092cb7af272eea0e9335a26c173d3df89e150590e6e5b5d4f1489099509"
+    },
+    {
+      "path": "test_assembly",
+      "size": 195176,
+      "crc32": "46334dec",
+      "sha256": "d109790d8a6463352eff20c3ab58e10d6b8988f0d0ac6867abceaf282fd51605"
+    },
+    {
+      "path": "test_custody_hash",
+      "size": 34392,
+      "crc32": "d223ad47",
+      "sha256": "8481d236ba4b053b89ea5778d3c1cb841144d35de295c1c8d8642bc0cd81c3d4"
+    },
+    {
+      "path": "test_reciprocal",
+      "size": 1634736,
+      "crc32": "c3cb8d65",
+      "sha256": "2c1cfe92f4f303363a546d2ee58d5519b77f3a92eb9c1c15e5ded8cad04bcc6a"
+    },
+    {
+      "path": "test_reciprocal_mosaic",
+      "size": 1541480,
+      "crc32": "8b8dfde1",
+      "sha256": "8c9caaa5da0b6e08b0ba23cb1f1a6c77f5920490f1b8a05bb91f0bed0471edc4"
+    },
+    {
+      "path": "test_swarm006_admission",
+      "size": 363072,
+      "crc32": "1d16d028",
+      "sha256": "7e2ef7633308e4a1d434793ccf7801a0f896adb87a00d16429f787358a9986d9"
+    },
+    {
+      "path": "test_swarm005",
+      "size": 1541888,
+      "crc32": "455cb4b3",
+      "sha256": "fe902344f56069080062feac6047a680d86f810a443db974dc4f27cb0840beaf"
+    },
+    {
+      "path": "test_swarm006_recovery",
+      "size": 1688912,
+      "crc32": "247a15cc",
+      "sha256": "a5fe8c5e37b0178e4283ad8777493f6f01aa12b1fdbb7e7a731beb2d73245960"
+    },
+    {
+      "path": "test_swarm006_source",
+      "size": 1507808,
+      "crc32": "fbe08447",
+      "sha256": "86e4cc556c60b3c16bc1b0a065c0fcbf1d1ce2e78cfada4a372619871ec44d59"
+    },
+    {
+      "path": "test_workbench_authoring_patch",
+      "size": 11550000,
+      "crc32": "77e128d3",
+      "sha256": "6dd5d204f98fb5934f0ef8dfcf02e1be1c90c3177de2bb92d9a5e64fc5aa7055"
+    },
+    {
+      "path": "toolchain.txt",
+      "size": 845,
+      "crc32": "eb2dcb8f",
+      "sha256": "6cdee3b993f3759690c024946d22a0d4b8f773f8d9f0cbc10af92ff755aede10"
+    },
+    {
+      "path": "workbench_process_fixture",
+      "size": 16216,
+      "crc32": "c8dc1db6",
+      "sha256": "05a3181e566276092b09bccba99712a4b7865b30959810b8e63f4647829a09e3"
+    }
+  ]
+}
