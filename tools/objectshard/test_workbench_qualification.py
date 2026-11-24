@@ -56,6 +56,7 @@ class ActualWorkloadTests(unittest.TestCase):
         return {"source_commit": "a" * 40, "scene": "tower", "camera": "overview",
                 "completed_semantic_ticks": 180, "actual_physics_steps": 720,
                 "native_pose_acknowledgements": 720, "active_body_count_max": 1,
+                "native_pose_echo_checks": 720,
                 "elapsed_usec": 10_000_000, "semantic_ticks_per_wall_second": 18.0,
                 "shard_dimensions": [{"width": 48, "height": 64}],
                 "active_body_cohorts": {"1": {"wall_usec": 1_000_000}},
@@ -70,6 +71,7 @@ class ActualWorkloadTests(unittest.TestCase):
         for mutation in ({"source_commit": "b" * 40}, {"scene": "lab"}, {"camera": "unknown"},
                          {"completed_semantic_ticks": 179}, {"actual_physics_steps": 0},
                          {"native_pose_acknowledgements": 0}, {"active_body_count_max": 0},
+                         {"native_pose_echo_checks": 719}, {"native_pose_echo_checks": True},
                          {"elapsed_usec": True}, {"semantic_ticks_per_wall_second": float("nan")},
                          {"shard_dimensions": []}, {"active_body_cohorts": {}}):
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):

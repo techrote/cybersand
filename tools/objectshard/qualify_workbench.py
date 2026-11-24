@@ -82,6 +82,8 @@ def validate_profile(value: dict, source: str, rendered: bool) -> None:
         raise ValueError("Invalid native progression rate")
     if not value.get("shard_dimensions") or not value.get("active_body_cohorts"):
         raise ValueError("Missing physical workload populations")
+    if type(value.get("native_pose_echo_checks")) is not int or value["native_pose_echo_checks"] != value["native_pose_acknowledgements"]:
+        raise ValueError("Native pose echoes do not cover every actual segment acknowledgement")
     submissions = value.get("render_submissions")
     if type(submissions) is not int or submissions < (1 if rendered else 0):
         raise ValueError("Missing renderer submission witness")

@@ -81,13 +81,14 @@ func _run() -> void:
 	if not await f.until(func(): return f.body_count() >= expected,"native promotion reaches authored body count"):
 		await _finish(result)
 		return
+	# A reserved RID precedes native inventory activation. Start the measured
+	# workload only after the actual ownership/geometry barrier is complete.
+	await f.pause()
+	await f.until(func(): return f.runtime().physics_ready() and f.coherent(),"profile begins with installed native inventory and exact Rapier geometry")
 	if scene_id == "timber":
-		await f.pause()
-		await f.until(f.coherent,"displayed moving Wood is available for source-bound ignition")
 		result.ignition_witnesses = await f.ignite_exposed_wood()
 		f.expect(result.ignition_witnesses.size() == 4,"timber profile genuinely ignites four exposed source-bound Wood cells")
 		result.products_before = int(f.frame().get("metrics",{}).get("products_created",0))
-		f.play()
 	var first: Dictionary = f.diagnostics()
 	active_max = _active_count(first)
 	active_bodies = -1 if sampling == "light" else active_max
@@ -97,6 +98,7 @@ func _run() -> void:
 	result.shard_dimensions = []
 	for shard: Dictionary in f.frame().get("shards",[]):
 		if shard.get("owns_inventory",false): result.shard_dimensions.append({"width":shard.width,"height":shard.height})
+	f.expect(result.shard_dimensions.size()>=expected,"timed workload has actual native inventory dimensions for every promoted body")
 	var initial_tick: int = f.tick()
 	var started: int = Time.get_ticks_usec()
 	var previous_usec: int = started
@@ -105,6 +107,7 @@ func _run() -> void:
 	var previous_acknowledgements: int = int(first.native_pose_acknowledgements)
 	var target: int = initial_tick + 180
 	var deadline: int = Time.get_ticks_msec()+Fixture.Watchdogs.milliseconds("operation_seconds")
+	f.play()
 	if DisplayServer.get_name() != "headless": RenderingServer.frame_post_draw.connect(_post_draw)
 	while f.tick() < target and Time.get_ticks_msec() < deadline and str(f.runtime().held_reason) == "":
 		await process_frame
