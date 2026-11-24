@@ -238,6 +238,10 @@ var _m4_motion_lease: int = 0 # mutex-owned exact-frame permit; zero means no Ma
 var _m4_motion_lease_serial: int = 0
 var _m4_interval_tick_due: bool = false # a completed physical interval still awaits its owner tick
 var _m4_interval_step_serial: int = 0
+var _m4_interval_sample: Dictionary = {} # exact ordinary publication pinned by a completed lease
+var _m4_interval_usables: Array = [] # bounded copied set admitted with that final publication
+var _m4_interval_effects: Array = []
+var _m4_reused_prepared_samples: int = 0
 var _m4_emissions_inflight: int = 0 # mutex-owned; included in bounded brush admission
 var _m4_cells_inflight: int = 0
 var _m4_snapshot_calls: int = 0
@@ -1258,12 +1262,23 @@ func object_shard_owner_frame(after_sequence: int = -1) -> Dictionary:
 
 func object_shard_owner_profile() -> Dictionary:
 	_mutex.lock()
+	var current_states: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
+	var due_states: PackedFloat64Array = _m4_interval_sample.get("states",PackedFloat64Array())
 	var result := {"snapshot_calls":_m4_snapshot_calls,"snapshot_usec":_m4_snapshot_usec,
 		"snapshot_max_usec":_m4_snapshot_max_usec,"frame_copy_calls":_m4_frame_copy_calls,
 		"frame_copy_usec":_m4_frame_copy_usec,"frame_copy_max_usec":_m4_frame_copy_max_usec,
 		"snapshot_scope":"native coordinator snapshot plus Godot dictionary and packed-array marshalling",
 		"frame_copy_scope":"Main copied publication including mutex wait; excludes control receipt copy",
-		"counter_scope":"cumulative ordinary worker lifetime"}
+		"counter_scope":"cumulative ordinary worker lifetime",
+		"motion_fence":{"lease":_m4_motion_lease,"tick_due":_m4_interval_tick_due,
+			"current_sample":int(current_states[10]) if current_states.size()>10 else -1,
+			"due_sample":int(due_states[10]) if due_states.size()>10 else -1,
+			"prepared_sample":_workbench_prepared_sample,"completed_sample":_workbench_completed_sample,
+			"reused_prepared_samples":_m4_reused_prepared_samples,"owner_busy":_m4_owner_busy,
+			"ordinary_refusal":_workbench_refusal},
+		"actor_work":{"pending_usables":_pending_physical_usables.size(),
+			"pending_effects":_pending_physical_effects.size(),
+			"due_usables":_m4_interval_usables.size(),"due_effects":_m4_interval_effects.size()}}
 	_mutex.unlock()
 	return result
 
@@ -1413,6 +1428,25 @@ func object_shard_submit_owner_control(command: String, values: Dictionary) -> D
 	var valid: bool = bool(_m4_capabilities.get("native_attached",false)) and _m4_held.is_empty() and _m4_control_queue.size() < M4_OWNER_QUEUE_LIMIT and _m4_control_results.size() < M4_OWNER_QUEUE_LIMIT and values.get("world_generation") == _m4_capabilities.get("world_generation") and values.get("shard_session") == _m4_capabilities.get("shard_session") and values.get("world_incarnation") == _m4_capabilities.get("world_incarnation")
 	if valid and _m4_motion_lease > 0:
 		valid = command in ["accept_motion","complete_motion"] and int(values.get("motion_lease",0))==_m4_motion_lease
+	var completion_sample: Dictionary = {}
+	var completion_usables: Array = []
+	var completion_effects: Array = []
+	if valid and command == "complete_motion" and _m4_motion_lease > 0:
+		# Main publishes its real final actor/equipment sample before completing
+		# a material interval. Bind that exact copied packet under the same
+		# mutex; the worker may already have captured an older turn's sample.
+		var states: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
+		var serial: int = int(states[10]) if states.size()>10 else -1
+		valid = not _m4_interval_tick_due and values.get("workbench_sample_serial") == serial \
+			and not _workbench_sample.is_empty() \
+			and (serial>=0 or _workbench_sample.get("bodies",[]).is_empty())
+		if valid:
+			completion_sample = _workbench_sample.duplicate(true)
+			# This private envelope owns the cutoff, without adding fields to
+			# the existing strict equipment/effect request schemas. Later Main
+			# observations cannot contribute work to this completed interval.
+			completion_usables = _pending_physical_usables.duplicate(true)
+			completion_effects = _pending_physical_effects.duplicate(true)
 	if valid and command == "prepare_reabsorb":
 		var request: Dictionary = values.get("request",{})
 		valid = _m4_motion_lease == 0 and _m4_action_payload_valid(request) and request.get("operation")=="reabsorb"
@@ -1421,7 +1455,9 @@ func object_shard_submit_owner_control(command: String, values: Dictionary) -> D
 	if valid:
 		_m4_serial += 1
 		_m4_control_queue.append({"serial":_m4_serial,"command":command,"values":values.duplicate(true),
-			"world_generation":_m4_capabilities.world_generation,"shard_session":_m4_capabilities.shard_session})
+			"world_generation":_m4_capabilities.world_generation,"shard_session":_m4_capabilities.shard_session,
+			"completion_sample":completion_sample,"completion_usables":completion_usables,
+			"completion_effects":completion_effects})
 	var ticket: Dictionary = {"ok":valid,"outcome":"M4ControlQueued" if valid else "M4OwnerOrCapacityRefused",
 		"serial":_m4_serial if valid else 0}
 	_mutex.unlock()
@@ -1468,6 +1504,9 @@ func _m4_retire_owner(reason: String) -> void:
 	_m4_motion_lease = 0
 	_m4_interval_tick_due = false
 	_m4_interval_step_serial = 0
+	_m4_interval_sample.clear()
+	_m4_interval_usables.clear()
+	_m4_interval_effects.clear()
 	_m4_emissions_inflight = 0
 	_m4_cells_inflight = 0
 	_m4_transport_generation += 1
@@ -1556,6 +1595,8 @@ func _m4_drain_controls() -> void:
 	_mutex.lock()
 	var pending: Array[Dictionary] = _m4_control_queue.duplicate(true)
 	_m4_control_queue.clear()
+	var current_workbench_session: int = int(_workbench_sample.get("session",-1))
+	var current_workbench_epoch: int = int(_workbench_sample.get("epoch",-1))
 	_mutex.unlock()
 	for row: Dictionary in pending:
 		var command: String = str(row.command)
@@ -1590,22 +1631,51 @@ func _m4_drain_controls() -> void:
 			# Main's assertion. The native snapshot must prove no barrier.
 			var proof: Dictionary = _world.object_shard_status()
 			if proof.get("attached",false) and not proof.get("paused",true) and not proof.get("quarantined",true) \
-				and int(values.get("main_space_id",0)) > 0 and int(values.get("motion_lease",0)) == _m4_motion_lease:
-				_mutex.lock()
+				and int(values.get("main_space_id",0)) > 0 and int(values.get("motion_lease",0)) == _m4_motion_lease \
+				and (_m4_motion_lease==0 or (not row.completion_sample.is_empty() \
+					and row.completion_sample.get("session")==current_workbench_session \
+					and row.completion_sample.get("epoch")==current_workbench_epoch)):
 				# Geometry/attachment acknowledgement is not physical time. An
 				# actorless canvas has no GCR sample serial to provide this fence.
 				# Only finishing a real leased interval releases one owner tick.
 				var completed_interval: bool = _m4_motion_lease > 0
-				_m4_motion_lease = 0
+				var prepared: bool = true
+				var tick_before: int = int(_world.get_tick_index())
+				var final_serial: int = -1
 				if completed_interval:
-					_m4_motion_barrier = false
-					_m4_interval_tick_due = true
-					_m4_interval_step_serial = int(values.get("workbench_step_serial",0))
-				_m4_physics_ready = true
-				_m4_capabilities.attached = true
-				_m4_capabilities.outcome = "AttachedToOrdinaryMainPhysics"
-				_mutex.unlock()
-				result = {"ok":true,"outcome":"NativeBarrierReleased"}
+					# This is the one ordinary final coupling preparation. Perform
+					# it under the still-live interval lease, after every real
+					# segment ACK. Native requires a newer serial than its last
+					# segment, so a repeated or older packet refuses safely.
+					_mutex.lock()
+					_m4_interval_sample = row.completion_sample
+					_m4_interval_usables = row.completion_usables
+					_m4_interval_effects = row.completion_effects
+					_mutex.unlock()
+					var sample: Dictionary = row.completion_sample
+					final_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
+					prepared = _workbench_sample_inside(sample.states,_workbench_extent) \
+						and _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
+							sample.session,sample.epoch,true)
+					if prepared:
+						_workbench_prepared_sample = final_serial
+						_workbench_consumed_sample = sample
+				if prepared:
+					_mutex.lock()
+					_m4_motion_lease = 0
+					if completed_interval:
+						_m4_motion_barrier = false
+						_m4_interval_tick_due = true
+						_m4_interval_step_serial = int(values.get("workbench_step_serial",0))
+					_m4_physics_ready = true
+					_m4_capabilities.attached = true
+					_m4_capabilities.outcome = "AttachedToOrdinaryMainPhysics"
+					_mutex.unlock()
+				result = {"ok":prepared,"outcome":"NativeBarrierReleased" if prepared else "FinalWorkbenchPreparationRefused",
+					"completed_interval":completed_interval,"workbench_sample_serial":final_serial,
+					"native_tick_before_prepare":tick_before,"native_tick_after_prepare":int(_world.get_tick_index()),
+					"captured_equipment_request_ids":row.completion_usables.map(func(request: Dictionary) -> String: return str(request.request_id)),
+					"captured_effect_count":row.completion_effects.size()}
 		if _m4_live:
 			_m4_publish_owner()
 		_mutex.lock()
@@ -1616,6 +1686,22 @@ func _m4_drain_controls() -> void:
 				"frame":_m4_last_frame.duplicate(true),"world_generation":row.world_generation,
 				"shard_session":row.shard_session})
 		_mutex.unlock()
+
+func _m4_take_interval_actor_work() -> Dictionary:
+	# Exclusive worker, only after successful final preparation. Remove exactly
+	# the pinned set; a newer publication's queued work stays for its own lease.
+	# Actual Pause/cancellation still wins in the existing inflight/generation
+	# checks immediately before native application, even after this extraction.
+	_mutex.lock()
+	var result := {"usables":_m4_interval_usables,"effects":_m4_interval_effects}
+	for request: Dictionary in _m4_interval_usables:
+		_pending_physical_usables.erase(request)
+	for packet: Dictionary in _m4_interval_effects:
+		_pending_physical_effects.erase(packet)
+	_m4_interval_usables = []
+	_m4_interval_effects = []
+	_mutex.unlock()
+	return result
 
 func start_worker(spawn_position: Vector2) -> Error:
 	if _thread.is_started():
@@ -3009,6 +3095,7 @@ func _worker_loop() -> void:
 		var local_physical_effects: Array = []
 		var local_physical_usables: Array = []
 		var local_physical_usable_frame: Dictionary = {}
+		var local_m4_completed_interval: bool = false
 		var local_workbench_sample: Dictionary = {}
 		var local_emissions: Array[Vector4i] = []
 		var local_cell_emissions: Array[Dictionary] = []
@@ -3042,15 +3129,19 @@ func _worker_loop() -> void:
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
 		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
+		# An internal M4 segment/geometry wait is not the user's Pause. Actor
+		# requests remain in their existing bounded queues until the exact
+		# completed interval selects them, including attachment in this turn.
+		var m4_actor_wait: bool = _m4_live or _m4_attach_requested
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
 		local_body_publication = _rigid_body_publication
-		if not physical_wait:
+		if not physical_wait and not m4_actor_wait:
 			local_physical_effects = _pending_physical_effects
 			_pending_physical_effects = []
 		local_physical_usable_frame = _physical_usable_frame.duplicate(true)
 		local_workbench_sample = _workbench_sample
-		if not physical_wait:
+		if not physical_wait and not m4_actor_wait:
 			local_physical_usables = _pending_physical_usables
 			_pending_physical_usables = []
 		var retain_cells: bool = _workbench_extent != Vector2i.ZERO and _lab_request.get("controlled_liquid_setup",{}).get("workbench_retain_cells",false)
@@ -3260,11 +3351,27 @@ func _worker_loop() -> void:
 				# interval, including a pause that arrived during its substeps.
 				if _m4_live and _m4_interval_tick_due and not _m4_motion_barrier and _m4_held.is_empty(): local_paused = false
 				if _m4_live and (_m4_motion_barrier or _m4_motion_lease != 0 or not _m4_held.is_empty()): local_paused = true
-				var sample: Dictionary = local_workbench_sample
+				var completed_m4_interval: bool = _m4_live and _m4_interval_tick_due \
+					and not _m4_motion_barrier and _m4_held.is_empty() and not _m4_interval_sample.is_empty()
+				local_m4_completed_interval = completed_m4_interval
+				# A real completed interval owns one native tick. Its ordinary
+				# final sample was prepared before releasing the physical lease.
+				# Use the pinned final packet, never this turn's possibly older
+				# capture or a later unrelated Main publication. Ordinary duplicate
+				# samples and zero-lease binding retain their existing fence.
+				var sample: Dictionary = _m4_interval_sample if completed_m4_interval else local_workbench_sample
 				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
-				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
+				if completed_m4_interval:
+					_m4_reused_prepared_samples += 1
+					local_physical_usable_frame = sample.get("equipment_frame",{}).duplicate(true)
+					local_rigid_body_epoch = int(sample.epoch)
+				elif workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
-				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+				# Combined native motion owns GCR poses during the lease. Never
+				# overwrite its newer actual segment with a turn-local old sample,
+				# and never submit the already prepared final packet a second time.
+				if not completed_m4_interval and not (_m4_live and _m4_motion_lease!=0) \
+					and _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
 					if not _workbench_sample_inside(sample.states,_workbench_extent):
 						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
@@ -3292,9 +3399,17 @@ func _worker_loop() -> void:
 				and (not _lab_active or (_micro_active
 					and CyberMicroScenarioCatalogue.exploratory_actor_map(_scenario_host.definition())
 					and not _scenario_host.fixed_execution())))
+			if local_m4_completed_interval and not local_paused:
+				var actor_work: Dictionary = _m4_take_interval_actor_work()
+				local_physical_usables = actor_work.usables
+				local_physical_effects = actor_work.effects
 			if physical_effects_allowed and not local_physical_effects.is_empty():
 				_consume_physical_effects(local_physical_effects, local_rigid_body_epoch)
-			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
+			# Skip even an empty suspended adapter step during an internal wait:
+			# its frame, cooldowns and autonomous devices belong to the due tick.
+			# A genuine user Pause keeps the ordinary suspended-frame behavior.
+			if not (_m4_live or _m4_attach_requested) or local_m4_completed_interval or pause_requested_at_entry:
+				_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			_apply_emissions(local_emissions,local_cell_emissions)
 			if _world.has_method(&"has_failed") and _world.has_failed():
 				_simulation_failed = true
@@ -3386,7 +3501,9 @@ func _worker_loop() -> void:
 		)
 		_m4_consume_inventory_inspection()
 		_mutex.lock()
-		if native_ticked_this_turn and _m4_live: _m4_interval_tick_due = false
+		if native_ticked_this_turn and not _simulation_failed and _m4_live:
+			_m4_interval_tick_due = false
+			_m4_interval_sample.clear()
 		_m4_owner_busy = false
 		_mutex.unlock()
 

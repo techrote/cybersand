@@ -68,6 +68,8 @@ def qualify(args: argparse.Namespace) -> dict:
                         type(value.get("failures")) is not int or value["failures"] != 0 or
                         type(value.get("checks")) is not int or value["checks"] < 8 or
                         value.get("source_commit") != identity["source_commit"] or value.get("host") != "ordinary-workbench" or
+                        value.get("rendering_driver") != identity["entry"]["rendering_driver"] or
+                        value.get("rendering_method") != "gl_compatibility" or
                         value.get("startup_scene") != "res://feature_launcher.tscn" or value.get("scene_id") != "tower" or
                         not {"--shared-workbench", "--objectshard-m4-workbench", "--object-shard-scene=tower"}.issubset(value.get("launch_arguments", []))):
                         raise ValueError("Missing exact-source ordinary Workbench launch receipt")

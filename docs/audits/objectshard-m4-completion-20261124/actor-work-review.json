@@ -1,0 +1,364 @@
+{
+  "actual_cutoff": {
+    "completion_receipt": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [
+        "ceb96098f63829494483c0e39c4caf4d:1:1:equipment:1:1"
+      ],
+      "completed_interval": true,
+      "native_tick_after_prepare": 23,
+      "native_tick_before_prepare": 23,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 121
+    },
+    "later_delivery": {
+      "admission": {
+        "accepted": true,
+        "capacity": 8,
+        "effects": {
+          "epoch": 1,
+          "queued": 0,
+          "reason": "",
+          "refused": 0,
+          "requested": 0,
+          "status": "no_effects"
+        },
+        "epoch": 1,
+        "frame_admitted": true,
+        "pending": 2,
+        "queued": 1,
+        "reason": "",
+        "refused": 0,
+        "requested": 1,
+        "run_id": "ceb96098f63829494483c0e39c4caf4d",
+        "status": "queued"
+      },
+      "delivered_request_ids": [
+        "ceb96098f63829494483c0e39c4caf4d:1:1:equipment:1:1"
+      ],
+      "held_request_ids": [],
+      "physical_effects": [],
+      "sample": 116
+    },
+    "receipt": {
+      "accepted": true,
+      "actor_id": 1,
+      "body_id": 12,
+      "changed_cells": 0,
+      "charge": 93.5,
+      "consumed": true,
+      "cooldown": 0.38,
+      "epoch": 1,
+      "equipment_epoch": 1,
+      "generation": 6,
+      "instance_id": "ceb96098f63829494483c0e39c4caf4d:1:1:equipment",
+      "operation": "use",
+      "power": 0.75,
+      "reason": "launched",
+      "request_id": "ceb96098f63829494483c0e39c4caf4d:1:1:equipment:1:1",
+      "run_id": "ceb96098f63829494483c0e39c4caf4d",
+      "sequence": 1,
+      "tick": 23,
+      "usable_index": 16,
+      "version": 1
+    },
+    "scope": "only one genuine request's transport was delayed; packet poses and all physical/control ticks remain production; no assertion that the later packet won the worker scheduling race"
+  },
+  "actual_pause": {
+    "adapter_suspended": true,
+    "after": {
+      "actor": 25,
+      "material": 96,
+      "native": 25,
+      "rapier": 97
+    },
+    "before": {
+      "actor": 24,
+      "material": 92,
+      "native": 24,
+      "rapier": 93
+    },
+    "cancelled_request_id": "ceb96098f63829494483c0e39c4caf4d:1:0:equipment:1:2",
+    "completion_receipt": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 24,
+      "native_tick_before_prepare": 24,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 126
+    }
+  },
+  "actual_surface_blast": {
+    "admission": {
+      "accepted_batches": 1,
+      "accepted_requests": 1,
+      "capacity": 8,
+      "epoch": 1,
+      "last_batch": {
+        "epoch": 1,
+        "queued": 1,
+        "reason": "",
+        "refused": 0,
+        "requested": 1,
+        "status": "queued"
+      },
+      "overflow_batches": 0,
+      "pending_requests": 1,
+      "refused_batches": 0,
+      "refused_requests": 0
+    },
+    "after": {
+      "actor": 27,
+      "material": 104,
+      "native": 27,
+      "rapier": 105
+    },
+    "applied": {
+      "actor": 26,
+      "material": 100,
+      "native": 26,
+      "rapier": 101
+    },
+    "before": {
+      "actor": 25,
+      "material": 96,
+      "native": 25,
+      "rapier": 97
+    },
+    "command": {
+      "action": {
+        "aim": "(0.0, 1.0)",
+        "effort": 0.75,
+        "primary": true
+      },
+      "actor_id": 2,
+      "epoch": 1,
+      "kind": "physical_wire_action",
+      "lease_ticks": 18,
+      "observation_id": "ceb96098f63829494483c0e39c4caf4d:1:2:8:25",
+      "observed_tick": 25,
+      "run_id": "ceb96098f63829494483c0e39c4caf4d",
+      "sequence": 0,
+      "version": 2
+    },
+    "completion_receipt": {
+      "captured_effect_count": 1,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 25,
+      "native_tick_before_prepare": 25,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 132
+    },
+    "following_completion": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 26,
+      "native_tick_before_prepare": 26,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 137
+    },
+    "held": {
+      "actor": 26,
+      "material": 100,
+      "native": 25,
+      "rapier": 101
+    },
+    "packet": {
+      "admission": {
+        "accepted": true,
+        "capacity": 8,
+        "effects": {
+          "epoch": 1,
+          "queued": 1,
+          "reason": "",
+          "refused": 0,
+          "requested": 1,
+          "status": "queued"
+        },
+        "epoch": 1,
+        "frame_admitted": true,
+        "pending": 0,
+        "queued": 0,
+        "reason": "",
+        "refused": 0,
+        "requested": 0,
+        "run_id": "ceb96098f63829494483c0e39c4caf4d",
+        "status": "no_requests"
+      },
+      "delivered_request_ids": [],
+      "held_request_ids": [],
+      "physical_effects": [
+        {
+          "actor_slot": 2,
+          "epoch": 1,
+          "kind": "blast",
+          "material": 0,
+          "origin": "(100.2418, 462.75)",
+          "pattern": "rocket_charge",
+          "radius": 3,
+          "sequence": 1,
+          "source": "(100.2418, 455.9531)",
+          "source_body_id": 13,
+          "source_part": 0,
+          "strength": 0.75
+        }
+      ],
+      "sample": 132
+    },
+    "receipts": [
+      {
+        "actor_slot": 2,
+        "attempted_writes": 4,
+        "changed_cells": 4,
+        "consumed": true,
+        "epoch": 1,
+        "reads": 91,
+        "reason": "",
+        "sequence": 1,
+        "status": "applied"
+      }
+    ]
+  },
+  "display_coherence": {
+    "between_callback_observations": 522,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "executed_script_head": "7b9cc120309288ee90e312657c726bb4080406f4",
+  "executed_script_tree": "43c781c44daa6d7f6019e647eca020973af7ed98",
+  "independent_inventory": {
+    "blast_material_positions": [
+      {
+        "material": 6,
+        "x": 99,
+        "y": 462
+      },
+      {
+        "material": 26,
+        "x": 100,
+        "y": 462
+      },
+      {
+        "material": 26,
+        "x": 98,
+        "y": 463
+      },
+      {
+        "material": 26,
+        "x": 102,
+        "y": 463
+      }
+    ],
+    "grid_ledger_histogram_match": true,
+    "material_projection_pixels_verified": 262144,
+    "raw_owned_counts": [
+      {
+        "body_generation": 1,
+        "counts": {
+          "0": 36,
+          "7": 64
+        },
+        "generation": 1,
+        "id": 1
+      }
+    ],
+    "raw_world_counts": {
+      "0": 234780,
+      "1": 27360,
+      "6": 1,
+      "26": 3
+    },
+    "source": {
+      "native_instance_id": -9223371954663193074,
+      "next_transaction": 2,
+      "owner_epoch": 2,
+      "publication_sequence": 54,
+      "session": 1,
+      "shard_session": 1,
+      "tick": 27,
+      "transport_generation": 2,
+      "world_generation": 3,
+      "world_incarnation": 1,
+      "world_revision": 14
+    },
+    "verified_binary_artifacts": [
+      {
+        "bytes": 262144,
+        "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/test_object_shard_m4_equipment_completion-artifacts/inventory-000-stored-materials.bin",
+        "retained": true,
+        "sha256": "585f5e821a2aa2d0061482f85bdd52ffdbfb277bc79fc426dd1e4ae44f6aad3f"
+      },
+      {
+        "bytes": 524288,
+        "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/test_object_shard_m4_equipment_completion-artifacts/inventory-000-rendered-rg8.bin",
+        "retained": true,
+        "sha256": "2831ac31c6c5d36e26c9b492dc1836d40cd8b771002f0cd3e696ea3fcf28045c"
+      },
+      {
+        "bytes": 0,
+        "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/test_object_shard_m4_equipment_completion-artifacts/inventory-000-parcels-float64.bin",
+        "retained": true,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 100,
+        "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/test_object_shard_m4_equipment_completion-artifacts/inventory-000-owner-1-materials.bin",
+        "retained": true,
+        "sha256": "ae1beedc4cb741970e9ec044112c9251d818643efc5cc63c0fa6dcb43efadfe1"
+      }
+    ],
+    "water_and_parcels": 0,
+    "world_plus_owned_histogram_match": true
+  },
+  "limitations": [
+    "This is a headless real-native/real-Rapier integration result, not displayed-frame or physical Windows/NVIDIA qualification.",
+    "The unchanged Timer Airburst device law and actor effects consumer remain in their existing programmes; the production change is the M4 worker scheduling envelope.",
+    "The actor effect has four native changed-cell readbacks and a matching final raw census. It is not a new force/chemistry law for moving material bodies.",
+    "The local native runtime is the sealed development GCC14.2 build with byte-matched native89 inputs; final hosted source/runtime custody remains a separate gate."
+  ],
+  "native_build_source": "ccdfde97c279d809eafbb6e74b880d14cfb2f60e",
+  "native_frozen_commit": "89aae6975a4f2fbf5ef7a2db5633a3bf10e6d847",
+  "native_runtime": {
+    "platform": "linux-x86_64",
+    "sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae",
+    "size": 5592272
+  },
+  "result": {
+    "checks": 99,
+    "failures": [],
+    "log_path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/test_object_shard_m4_equipment_completion.log",
+    "log_sha256": "454583b88df4ef7d208a6a90b46b8262b3603760b0c394055520c272b2a6d7aa",
+    "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/result.json",
+    "returncode": 0,
+    "seconds": 12.112,
+    "sha256": "93acd7ae89150e4eb499fab16ba73bf81c427077e2b2f52996b2e65ecbadf7a8"
+  },
+  "reviewer": "native_materials specialist A",
+  "schema": "objectshard-m4-independent-actor-work-review-v1",
+  "source_file_sha256": {
+    "godot/scripts/physical_actor_effects.gd": "e85b3902d753b207a4d3aea81c77e2034a97bb39e85cb0e263aeddffe8dc34da",
+    "godot/scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+    "godot/scripts/physical_actor_session.gd": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+    "godot/scripts/simulation_worker.gd": "c1715d303655500792ae52e65e4b1d1c7735fc8d7c98823590bdba8943f788d8",
+    "godot/tests/test_object_shard_m4_equipment_completion.gd": "478b81a238afeece67b320091770e71748ccb786ac10125b9278dd0bfaf9b8d6"
+  },
+  "source_review": [
+    "Existing Rocketjumper primary surface ray generates the unchanged bounded actor-effect request through actual Main/Rapier state and existing Workbench policy command. No fabricated effect packet or material-law change.",
+    "Completion admission captures bounded usable/effect queue sets under the same mutex as the exact final Workbench packet; later publications cannot join the completed interval.",
+    "Successful final preparation pins equipment_frame and epoch. Existing inflight/generation/cancellation checks remain at exclusive owner consume, and internal M4 waits do not advance the equipment adapter.",
+    "Actor-effect consumed/status/changed_cells is the existing receipt schema. EffectWorld increments changed_cells only after native emit_disc followed by successful native material_at readback.",
+    "The already-admitted physical interval may finish its native tick after actual Pause, while cancelled equipment requests remain cancelled."
+  ],
+  "status": "PASS",
+  "worker_repair_commit": "e7d5e34d7188516605a00c66b4fb85d54eb70d3a"
+}

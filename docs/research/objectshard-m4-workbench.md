@@ -64,8 +64,30 @@ The existing Main space executes the admitted interval in bounded physical
 segments. Native accepts the complete copied pose set for each real segment
 before Main proceeds. Translation, rotation and corner-motion bounds constrain
 the interval; exceeding them holds the candidate rather than inventing a pose.
-The final completion receipt releases the interval for the next ordinary
-native tick. A geometry edit preserves the body's angular velocity and adjusts
+The final completion command pins the exact copied ordinary GCR sample and
+its matching equipment frame under the worker mutex. After every real segment
+acknowledgement, the worker performs the final native coupling preparation
+while the physical lease is still held. That preparation advances no native
+time. Its positive receipt releases exactly one ordinary native tick, which
+consumes the already prepared packet even if a newer Main observation arrives.
+An older turn-local packet cannot replace it, and the final serial is not
+submitted to native preparation a second time. Successful native progression
+consumes this one-shot permission; a failed preparation retains the lease and
+packet, and World retirement clears both. Zero-lease readiness and ordinary
+duplicate samples grant no additional time.
+
+The same final envelope captures the bounded existing actor equipment and
+effect request sets. The worker consumes only those captured requests with the
+pinned frame and epoch on that interval's native tick. Newer publications keep
+their queued work for a later interval. An internal material-motion or geometry
+wait must not run the equipment adapter as if the user had pressed Pause, even
+with an empty request list: cooldowns and autonomous devices belong to the
+admitted tick. Genuine user Pause, cancellation, changed actor generations and
+World replacement retain the existing cancellation authority. This is shared
+worker ordering; equipment request schemas, recipes and material laws are
+unchanged, and no separate Equipment development branch is imported.
+
+A geometry edit preserves the body's angular velocity and adjusts
 linear velocity for the centre-of-mass shift; it must not restore an unrelated
 sleep state or manufacture angular energy.
 
@@ -161,6 +183,15 @@ remain in exactly one owned carrier until a validated native transfer commits
 them to World. Sand cargo, historical Water exposure and output transfers retain
 their existing bounded native contracts; this is not arbitrary fluid solver
 state transfer or an internal gas-transport simulation.
+
+The [ordinary long-burn witness](../../godot/tests/test_object_shard_m4_long_burn.gd)
+tracks an enclosed moving Wood cell through its full natural countdown and the
+resulting acknowledged geometry/mass change. The surrounding Brick prevents
+fresh emitted Fire from restarting that cell's lifetime. A separate four-cell
+structure is removed through exact displayed moving-cell cuts to verify final
+collider and inventory retirement. These are distinct observations: continuous
+combustion in a large building does not promise a fixed whole-building burnout
+time when neighbouring Fire can ignite surviving Wood again.
 
 The admitted material interaction is displacement/exclusion, bounded Sand
 lodging and its contribution to mass, and witnessed Water/Fire chemistry.
@@ -270,9 +301,13 @@ coordinates. The shard's private per-cell scheduling cache is retired with its
 owner; it is not installed as a second scheduler inside World. Fragmentation
 between shard owners, in contrast, copies the source reaction schedule.
 
-**Save start** persists the authored recipe, including supports before their
-interactive removal. Reopening reconstructs that start in a fresh World. Live
-body poses, evolved combustion, owned carriers and replay state are not saved.
+**Save start** persists the current authored recipe. Ordinary paint and Erase
+stamps remain part of that recipe, including support cuts made during play.
+Reopening or **Restore start** reconstructs those authored cells in a fresh
+World; a recipe with severed supports can detach again when resumed. Reload a
+named Structures scene to obtain its pristine uncut demonstration, or save a
+custom start before cutting it. Moving-body cuts, evolved combustion, live
+body poses, owned carriers and replay state are not saved as a live checkpoint.
 Flatten or preserve-cell operations that would omit shard material must refuse
 visibly. The candidate does not claim durable exact live-state persistence.
 

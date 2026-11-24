@@ -11,8 +11,9 @@ from verify_package import NATIVE, RAPIER, digest, safe_path
 
 MANIFEST = "objectshard-workbench-manifest.json"
 SCHEMA = "objectshard-m4-workbench-package-v1"
+RENDERING_DRIVER = "opengl3_angle"
 ENTRY = {"scene": "godot/main.tscn", "startup_scene": "godot/feature_launcher.tscn", "host": "ordinary-workbench",
-         "launcher": "Open Workbench.cmd", "opt_in": True,
+         "launcher": "Open Workbench.cmd", "opt_in": True, "rendering_driver": RENDERING_DRIVER,
          "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}
 REQUIRED = {
     NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe",
@@ -26,6 +27,9 @@ REQUIRED = {
     "godot/tests/test_object_shard_m4_material_only_workbench.gd",
     "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
     "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+    "godot/tests/test_object_shard_m4_completed_sample.gd",
+    "godot/tests/test_object_shard_m4_equipment_completion.gd",
+    "godot/tests/test_object_shard_m4_long_burn.gd",
     "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd",
     "godot/tests/test_object_shard_m4_overlay_identity.gd", "godot/tests/profile_object_shard_m4_render_control.gd",
     "godot/tests/probe_object_shard_workbench_package.gd", "godot/tests/profile_object_shard_m4_workbench.gd",

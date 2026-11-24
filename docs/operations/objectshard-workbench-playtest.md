@@ -23,6 +23,12 @@ together. The launcher verifies the delivered files before starting the
 interactive Workbench. The package manifest identifies the exact source,
 native runtime and selected Godot/Rapier dependencies.
 
+This evaluator explicitly selects Godot's **ANGLE** compatibility renderer
+(`opengl3_angle`). Its ordinary launch and shipped launch self-test use the same
+renderer arguments, and the manifest records that choice. Include the actual
+renderer and adapter in performance observations. The repository's ordinary
+project renderer defaults are preserved.
+
 The launcher exposes the experimental **Structures…** panel in ordinary
 Workbench. Select a demonstration or choose **Enable on current canvas** for
 your own authored scene. Ordinary launches keep their existing defaults.
@@ -38,7 +44,7 @@ sets up a supported canvas directly.
 From a qualified source checkout, the equivalent explicit entry is:
 
 ```text
-Godot_v4.7-stable_win64.exe --path godot -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower
+Godot_v4.7-stable_win64.exe --rendering-driver opengl3_angle --path godot -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower
 ```
 
 The source checkout still requires a source-matched native extension. The
@@ -93,14 +99,20 @@ animated shard bodies or substitute a scripted visual collapse for physics.
 
 **Play / Pause [P]** and **Step [.]** retain their ordinary Workbench meanings.
 Pause must leave the last acknowledged body/material state intact; resuming
-must continue that ownership. Use **Restore start** to rebuild the authored
-arrangement in a fresh World. **F2** closes the session and returns to the
+must continue that ownership. Use **Restore start** to rebuild the current
+authored recipe in a fresh World. Ordinary paint and Erase strokes update that
+recipe, including cuts through the original supports. Those cuts remain after
+Restore, so the rebuilt structure can detach again when you resume. Select the
+named demonstration in **Structures…** again to reload its intact original.
+**F2** closes the session and returns to the
 launcher. Reset/replacement must retire both the old native and physical owners
 before accepting new receipts.
 
-**Save start** saves the authored Workbench recipe. Reopening it reconstructs
-the original arrangement. It does not save moving body poses, live combustion,
-inventories or a physical replay. Operations that would silently omit shard-owned
+**Save start** saves the current authored Workbench recipe and its ordinary
+brush changes. Save before removing supports if you want that uncut custom
+construction available later. Reopening it reconstructs the saved recipe; it
+does not save moving-body cuts, moving poses, live combustion, inventories or
+a physical replay. Operations that would silently omit shard-owned
 material from a purported live save or flatten must refuse visibly. A refused
 same-World disable or reabsorption must not discard live material.
 

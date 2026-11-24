@@ -1,0 +1,71 @@
+{
+  "schema": "objectshard-m4-snapshot-cost-review-v1",
+  "decision": "INVESTIGATION_ONLY_NATIVE_FROZEN",
+  "native_commit": "89aae6975a4f2fbf5ef7a2db5633a3bf10e6d847",
+  "native_runtime_sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae",
+  "source_hashes": {
+    "godot/native_extension/cyber_object_shard_lab.cpp": "57095b29b0939aa79908b2eade7ae3da6ffbb9001011266eab5aec5896a76387",
+    "godot/native_extension/cyber_object_shard_lab.hpp": "2899da95d4a3d69dabcae4a8cf1e4ce03c44e598f88a5e45e36c04e907b9d612",
+    "native/src/object_shard.cpp": "7b2aa44190f0169929aed2adb97fdcd944dc976aeb88a5f8cc404bba23143f55",
+    "native/src/object_shard_coordinator.cpp": "871311b8d73fcb4717ac341b9d7e811ef25c5f0e64321818b2fcaf6f4d42e683"
+  },
+  "profile": {
+    "absolute_path": "/workspace/scratch/7a2d2d3cb075/objectshard-qualification/build/objectshard-m4-final89-census-mixed-overview-cohorts/profile.json",
+    "sha256": "e5a68f0b036ea8b4350af9d26e59f6df2dece0fdd5881dd6c39944ed247dc383",
+    "source_commit": "d106273e7adb70576dce104a339fc4ef6a0f3e94",
+    "scene": "mixed",
+    "camera": "overview",
+    "display_driver": "headless",
+    "elapsed_usec": 12364847,
+    "completed_semantic_ticks": 180,
+    "actual_physics_steps": 720,
+    "worker_stage_deltas": {
+      "frame_copy_calls": 180,
+      "frame_copy_usec": 57604,
+      "snapshot_calls": 1080,
+      "snapshot_usec": 1532854
+    },
+    "native_snapshot_ns": 8938645,
+    "terrain_ns": 0,
+    "shard_dimensions": [
+      {
+        "height": 125,
+        "width": 98
+      }
+    ],
+    "checks": 148,
+    "failures": []
+  },
+  "derived": {
+    "owner_snapshots_per_tick": 6.0,
+    "snapshot_usec_per_call": 1419.3092592592593,
+    "snapshot_stage_fraction_of_elapsed": 0.1239686993296399,
+    "coordinator_snapshot_fraction_of_snapshot_stage": 0.005831374025184395,
+    "snapshot_stage_minus_coordinator_usec": 1523915.355
+  },
+  "already_implemented": [
+    "Compact snapshot(false) omits full World material and RGBA rasterization.",
+    "CarrierCache reuses materials/RGBA/states/temperature/roles/incarnations by full handle plus material_revision, using Godot packed-value copy-on-write.",
+    "Native terrain reconstruction is guarded by hard-surface revision.",
+    "Main does not deep-copy an unchanged publication sequence."
+  ],
+  "source_grounded_repeated_work": [
+    "CyberObjectShardLab::snapshot serializes all terrain chunk rectangles on every compact snapshot.",
+    "CyberObjectShardLab::snapshot serializes each shard geometry rectangle array on every snapshot.",
+    "CyberObjectShardLab::snapshot calls Shard::payload_digest for every live shard; this walks the complete captured bbox.",
+    "Accounting arrays, admission, and current/lifetime metric dictionaries are rebuilt for each publication."
+  ],
+  "candidate_reuse_not_implemented": {
+    "payload_digest": "A bounded facade cache must include full handle, material_revision AND native tick (or a new exact schedule revision). The digest includes birth_tick and next_due_tick; Shard::set_due changes next_due_tick without incrementing material_revision. Reusing by material_revision alone is invalid.",
+    "terrain_rectangles": "Exact owner/session plus chunk id/revision/digest; reset/replacement must invalidate. Keep current chunk identity freshly published.",
+    "shard_rectangles": "Full handle plus exact geometry revision/mask/shape identity; geometry ACK, fragmentation and retirement still publish fresh state.",
+    "publication": "Keep every accepted native pose serial, native tick, transaction, lifecycle, geometry/applied revision and World revision fresh. Do not skip a physical receipt because cell arrays are unchanged."
+  },
+  "scope_limits": [
+    "The counters identify facade work as the dominant part of snapshot stage; no per-function facade timing isolates payload hashing from Variant/packed-array marshalling.",
+    "Coordinator snapshot timing is nested within owner snapshot stage. Receipt pump also nests stages and waits; these counters are not disjoint wall-time components.",
+    "Eliminating the entire measured snapshot stage would remove only 12.4% of this recorded wall interval; an actual optimization would save less and needs a matched run.",
+    "Headless process with one 98x125 shard, not physical GPU presentation and not a multi-body extrapolation.",
+    "This source investigation does not change the displayed-performance HOLD or justify late native modification."
+  ]
+}

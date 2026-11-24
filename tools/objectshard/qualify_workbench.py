@@ -36,6 +36,9 @@ FOCUSED = (
     ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
     ("test_object_shard_m4_fragment_reabsorption", "objectshard-m4-fragment-reabsorption-v1"),
     ("test_object_shard_m4_lifecycle_adverse", "objectshard-m4-lifecycle-adverse-v1"),
+    ("test_object_shard_m4_completed_sample", "objectshard-m4-completed-sample-v1"),
+    ("test_object_shard_m4_equipment_completion", "objectshard-m4-equipment-completion-v1"),
+    ("test_object_shard_m4_long_burn", "objectshard-m4-long-burn-v1"),
     ("test_object_shard_m4_lifecycle_fuzz", "objectshard-m4-lifecycle-fuzz-v1"),
 )
 REGRESSIONS = (
@@ -198,8 +201,10 @@ def qualify(args: argparse.Namespace) -> dict:
         cases = [(runner.Case("m4_workbench_import", ("--editor", "--quit"),
                               int(execution_policy.watchdog_seconds("godot_import_seconds")), 0), None)]
         for name, schema in FOCUSED:
+            if args.render and name.endswith("long_burn"):
+                continue # Natural lifetime/retirement is qualified in the headless lane.
             flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz")):
+            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz", "completed_sample", "equipment_completion", "long_burn")):
                 flags += ("--", "--objectshard-m4-workbench")
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
         if args.regressions:

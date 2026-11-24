@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from verify_workbench_package import verify_inventory
+from verify_workbench_package import ENTRY, RENDERING_DRIVER, verify_inventory
 from package_windows_workbench import launchers
 
 
@@ -35,6 +35,18 @@ class PackageInputTests(unittest.TestCase):
         normal = next(line for line in source.splitlines() if line.startswith('start "CyberSand Workbench"'))
         self.assertNotIn("res://main.tscn", normal)
         self.assertIn("-- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower", normal)
+
+    def test_normal_and_actual_selftest_share_manifest_bound_renderer_and_scene_arguments(self):
+        lines = launchers("a" * 40)["Open Workbench.cmd"].splitlines()
+        normal = next(line for line in lines if line.startswith('start "CyberSand Workbench"'))
+        probe = next(line for line in lines if line.startswith('start "Workbench launch qualification"'))
+        engine = '"%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe"'
+        normal_args = normal[normal.index(engine):]
+        probe_args = probe[probe.index(engine):].replace(' --script res://tests/probe_object_shard_workbench_package.gd', '')
+        self.assertEqual(normal_args, probe_args)
+        self.assertEqual(ENTRY["rendering_driver"], RENDERING_DRIVER)
+        self.assertEqual(normal_args.count("--rendering-driver"), 1)
+        self.assertIn("--rendering-driver " + RENDERING_DRIVER, normal_args)
 
 
 if __name__ == "__main__":

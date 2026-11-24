@@ -157,6 +157,7 @@ func pause() -> bool:
 	if not host.paused:
 		if not expect(bench.toggle_pause(), "ordinary Pause accepted"): return false
 	return await until(func(): return runtime().physics_ready() and coherent() \
+		and not bench.busy() \
 		and int(runtime().publication.get("publication_sequence",-1))==int(frame().get("publication_sequence",-2)) \
 		and bench.object_shard_m4_port.pending_count()==0 \
 		and not host.simulation_worker.paint_state().get("legacy_busy",true) \

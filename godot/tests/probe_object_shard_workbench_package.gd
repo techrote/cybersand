@@ -6,6 +6,11 @@ var f: RefCounted
 var startup_scene: String = ""
 
 func _launch_ordinary_entry() -> bool:
+	var manifest: Variant = JSON.parse_string(FileAccess.get_file_as_string(OS.get_environment("CYBERSAND_PACKAGE_MANIFEST")))
+	if not f.expect(manifest is Dictionary and manifest.get("entry",{}).get("rendering_driver")=="opengl3_angle",
+		"delivered manifest binds the common ordinary and self-test renderer"): return false
+	if not f.expect(RenderingServer.get_current_rendering_driver_name()==str(manifest.entry.rendering_driver),
+		"actual graphical backend equals the shipped ordinary launch renderer"): return false
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	if not f.expect("--shared-workbench" in arguments and "--objectshard-m4-workbench" in arguments \
 		and "--object-shard-scene=tower" in arguments,"shipped CMD supplies the actual ordinary opt-in and scene arguments"): return false
@@ -51,6 +56,8 @@ func _run() -> void:
 		"host":"ordinary-workbench","startup_scene":startup_scene,"scene_id":f.bench._object_shard_scene if f.bench != null else "",
 		"launch_arguments":OS.get_cmdline_user_args(),"checks":f.checks,"failures":f.failures.size(),"failure_details":f.failures,
 		"diagnostics":f.diagnostics(),"display_driver":DisplayServer.get_name(),"display_coherence":f.display_witness(),
+		"rendering_driver":RenderingServer.get_current_rendering_driver_name(),
+		"rendering_method":RenderingServer.get_current_rendering_method(),"engine_arguments":OS.get_cmdline_args(),
 		"scope":"immutable delivered ZIP / shipped CMD / actual ordinary Workbench; physical GPU acceptance separate"}
 	await f.close()
 	var path: String = OS.get_environment("OBJECTSHARD_LAUNCH_RECEIPT")

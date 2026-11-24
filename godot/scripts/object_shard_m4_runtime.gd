@@ -481,8 +481,10 @@ func _send(command: String, values: Dictionary, kind: String) -> bool:
 		request[key] = capabilities.get(key,-1)
 	request["main_space_id"] = bridge.space.get_id()
 	request["motion_lease"] = _motion_lease
-	if command == "complete_motion" and _motion_lease > 0 and _interval_single_step:
-		request["workbench_step_serial"] = int(_host.shared_workbench.step_serial)
+	if command == "complete_motion" and _motion_lease > 0:
+		request["workbench_sample_serial"] = int(_host._workbench_wait_sample) if _host.physical_actor_session != null else -1
+		if _interval_single_step:
+			request["workbench_step_serial"] = int(_host.shared_workbench.step_serial)
 	var result: Dictionary = _host.simulation_worker.object_shard_submit_owner_control(command,request)
 	_record_cost("owner_control_admission","queue_admission",admission_started,{"command":command,"scope":"bounded main-to-worker command copy and admission including mutex wait"})
 	if not result.get("ok",false):

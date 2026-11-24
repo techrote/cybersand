@@ -1,0 +1,85 @@
+{
+  "schema": "objectshard-m4-equipment-review-v1",
+  "product_fix": "e7d5e34d7188516605a00c66b4fb85d54eb70d3a",
+  "native_source": "89aae697",
+  "scope": "Existing ordinary Workbench actor/equipment completion transport; no Equipment law change. Final real delayed request, user Pause and Rocketjumper surface blast test passed.",
+  "results": [
+    {
+      "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-negative-0a8c817b-recovered-host/result.json",
+      "sha256": "10890d1144398fa536dae9b7669ed64c70b17b37349903e3f50619c46d52ee44",
+      "source_commit": "0a8c817b13ae690f62e6460480fcd56c4d222d85",
+      "status": "failed",
+      "seconds": 10.526,
+      "returncode": 1,
+      "checks": 63,
+      "failures": [
+        "internal motion lease retains the queued use without a premature suspended receipt",
+        "the same genuine equipment request launches exactly once on its due native tick / { \"version\": 1, \"run_id\": \"41b9abdedb0d225f2a18ce2854828d44\", \"epoch\": 1, \"actor_id\": 0, \"generation\": 6, \"equipment_epoch\": 1, \"instance_id\": \"41b9abdedb0d225f2a18ce2854828d44:1:0:equipment\", \"usable_index\": 16, \"body_id\": 6, \"sequence\": 1, \"request_id\": \"41b9abdedb0d225f2a18ce2854828d44:1:0:equipment:1:1\", \"operation\": \"use\", \"power\": 0.75, \"accepted\": false, \"consumed\": false, \"reason\": \"suspended\", \"changed_cells\": 0, \"charge\": 100.0, \"cooldown\": 0.0, \"tick\": 22 }",
+        "ordinary native equipment owns one actual launched payload",
+        "further internal owner turns neither replay the request nor advance unleased time"
+      ],
+      "log_sha256": "067d0769054481810d3af34b373b87179f13153d7082a27727d8373c7fde25f8"
+    },
+    {
+      "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-positive-e7d5e34d/result.json",
+      "sha256": "c8f4ed745ec5ab7beb2031f3175d30940ff266789becc2a1ac979a513d2c6500",
+      "source_commit": "e7d5e34d7188516605a00c66b4fb85d54eb70d3a",
+      "status": "passed",
+      "seconds": 9.68,
+      "returncode": 0,
+      "checks": 63,
+      "failures": [],
+      "log_sha256": "253c91182c4bfea111bb07564da943316ea8f10f6d7a50edd9e1ed738a88b7c1"
+    },
+    {
+      "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-cutoff-pause-final/result.json",
+      "sha256": "4ef67d83064106c75f373ff5121d2d859fbca126a79d49ea37e26f2d523e0010",
+      "source_commit": "85b5e304aaec4586ef897d69a90e73eedccba579",
+      "status": "failed",
+      "seconds": 9.851,
+      "returncode": 1,
+      "checks": 55,
+      "failures": [
+        "the delayed genuine request applies exactly on the next completed native interval",
+        "two source-bound requests create exactly two actual native payloads across two intervals"
+      ],
+      "log_sha256": "2f86827166ee5082d5519476da244ae7f4f7e0b457f1d086a4c8dee02a1de7f5"
+    },
+    {
+      "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-cutoff-pause-receipt/result.json",
+      "sha256": "e54f4ed29c3e0ce8961f663cfb56dc31e2997ae504c687f81336314f31fc5383",
+      "source_commit": "976ce03651ea9180b5919cf3de34f4c9edafd355",
+      "status": "passed",
+      "seconds": 10.274,
+      "returncode": 0,
+      "checks": 83,
+      "failures": [],
+      "log_sha256": "2c3c8998672fb6a1be5b7639555581454fdf239e2b3af35faea85efdf7fe6288"
+    },
+    {
+      "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-surface-blast/result.json",
+      "sha256": "30950262fe7e614a69c69c279dbcee6040d8bd7b1a55fd1667416f8621ff8d9a",
+      "source_commit": "859a3400acb88debce5ec8e2587d4d1203ae2944",
+      "status": "failed",
+      "seconds": 11.381,
+      "returncode": 1,
+      "checks": 64,
+      "failures": [
+        "the same actual surface-blast request changes native cells on its one due tick / [{ \"actor_slot\": 2, \"epoch\": 1, \"sequence\": 1, \"consumed\": true, \"status\": \"applied\", \"reason\": \"\", \"changed_cells\": 4, \"attempted_writes\": 4, \"reads\": 91 }]"
+      ],
+      "log_sha256": "219aec7690005d4683f9a8e82f6bbc11f29d7d76e1bd89ca90a91d87bc168bdf"
+    },
+    {
+      "path": "/workspace/scratch/7a2d2d3cb075/objectshard-gameplay/build/objectshard-m4-equipment-final/result.json",
+      "sha256": "93acd7ae89150e4eb499fab16ba73bf81c427077e2b2f52996b2e65ecbadf7a8",
+      "source_commit": "7b9cc120309288ee90e312657c726bb4080406f4",
+      "status": "passed",
+      "seconds": 12.112,
+      "returncode": 0,
+      "checks": 99,
+      "failures": [],
+      "log_sha256": "454583b88df4ef7d208a6a90b46b8262b3603760b0c394055520c272b2a6d7aa"
+    }
+  ],
+  "final_test_source": "7b9cc120309288ee90e312657c726bb4080406f4"
+}

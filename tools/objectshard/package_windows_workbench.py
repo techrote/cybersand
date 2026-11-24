@@ -10,7 +10,7 @@ import shutil
 import sys
 
 from package_windows_lab import ROOT, copy_committed_tree, git, native, sha, stage_vc_runtime, verify_vc_runtime, windows
-from verify_workbench_package import ENTRY, MANIFEST, SCHEMA, verify
+from verify_workbench_package import ENTRY, MANIFEST, RENDERING_DRIVER, SCHEMA, verify
 
 
 def launchers(source: str) -> dict[str, str]:
@@ -23,15 +23,18 @@ def launchers(source: str) -> dict[str, str]:
               'if errorlevel 1 goto failed\n')
     failure = ('\n:failed\necho Workbench could not start. See the message above.\n'
                'if /i not "%~1"=="--self-test" if /i not "%~1"=="--noninteractive" pause\nexit /b 1\n')
+    graphical = ('"%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" '
+                 f'--rendering-driver {RENDERING_DRIVER} --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot"')
+    workbench = '-- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower'
     launch = (common + f'set "CYBERSAND_SOURCE_REVISION={source}"\n'
               'set "CYBERSAND_PACKAGE_MANIFEST=%OBJECTSHARD_PACKAGE_ROOT%\\objectshard-workbench-manifest.json"\n'
               '"%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64_console.exe" --headless --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --editor --quit\n'
               'if errorlevel 1 goto failed\n'
               'if /i "%~1"=="--self-test" goto selftest\n'
-              'start "CyberSand Workbench" "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower\n'
+              f'start "CyberSand Workbench" {graphical} {workbench}\n'
               'exit /b %errorlevel%\n'
               '\n:selftest\nif not defined OBJECTSHARD_LAUNCH_RECEIPT goto failed\n'
-              'start "Workbench launch qualification" /wait "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --rendering-driver opengl3_angle --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --script res://tests/probe_object_shard_workbench_package.gd -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower\n'
+              f'start "Workbench launch qualification" /wait {graphical} --script res://tests/probe_object_shard_workbench_package.gd {workbench}\n'
               'if errorlevel 1 goto failed\nexit /b 0\n' + failure)
     verifier = common + 'if /i not "%~1"=="--noninteractive" pause\nexit /b 0\n' + failure
     return {"Open Workbench.cmd": launch, "Verify Workbench.cmd": verifier}

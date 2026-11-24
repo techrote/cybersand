@@ -143,6 +143,30 @@ terminated with signal 9; successful later runs do not repair that missing
 causal comparison. Registered native and standalone performance budgets remain
 unchanged and require their own complete final campaign.
 
+### Remaining serialization cost
+
+An [independent source and counter review](objectshard-m4-completion-20261124/snapshot-cost-review.json)
+examined the later 148-check mixed/overview profile at application source
+`d106273e7adb70576dce104a339fc4ef6a0f3e94`, with the final native development
+binary and one 98-by-125-cell shard. During 180 native ticks and 720 actual
+physical segments, the worker made 1,080 compact owner snapshots. The enclosing
+snapshot stage took 1.533 seconds of the 12.365-second observation; the native
+coordinator's nested snapshot counter accounted for only 8.94 milliseconds.
+
+The facade already reuses unchanged packed material arrays. Source review
+identifies remaining serialization of shape/terrain rectangles, current
+accounting dictionaries and a full bounding-box payload digest. The counters
+do not individually time those facade operations. Eliminating the entire
+measured snapshot stage would remove at most 12.4% of this recorded interval;
+that upper bound is not an achieved optimization or a displayed-FPS result.
+
+Further digest reuse cannot key only on material revision: the digest includes
+reaction scheduling, whose next-due tick can change independently of that
+revision. Any later cache needs an exact schedule or native-tick identity,
+full owner incarnation, and tests for motion, mutation and retirement. The
+candidate keeps fresh pose, transaction and tick publications. This
+finding neither changes the native source nor resolves physical GPU acceptance.
+
 ## Remaining physical owner decision
 
 The portable evaluator must first pass exact-source native, Linux, Windows,

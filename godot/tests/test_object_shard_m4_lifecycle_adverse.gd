@@ -11,7 +11,8 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 func _clocks() -> Dictionary:
-	return {"native_tick":f.tick(),"actor_tick":f.host.physical_actor_session.tick,
+	var actual_owner: Dictionary = f.host.simulation_worker.object_shard_owner_frame()
+	return {"native_tick":int(actual_owner.get("tick",-1)),"actor_tick":f.host.physical_actor_session.tick,
 		"rapier_steps":f.host.rapier_bridge.manual_step_count(),"material_steps":f.runtime().physical_steps}
 
 func _inventory_admission_negatives() -> int:
@@ -65,6 +66,7 @@ func _run() -> void:
 	await f.until(f.whole_canvas_coherent,"lifecycle baseline has exact native World and body publication")
 	var initial_wood: int = f.material_count(7)
 	var installed_sequence: int = int(f.frame().publication_sequence)
+	var native_tick: int = int(_clocks().native_tick)
 	var actor_tick: int = int(f.host.physical_actor_session.tick)
 	var rapier_steps: int = int(f.host.rapier_bridge.manual_step_count())
 	var material_steps: int = int(f.runtime().physical_steps)
@@ -83,30 +85,46 @@ func _run() -> void:
 	if not f.expect(not changed_frame.is_empty(),"real worker publishes a newer exact source while Main retains its prior installed frame"):
 		await _finish(); return
 	f.expect(int(f.frame().publication_sequence)==installed_sequence,"delayed Main has not silently consumed the new owner frame")
+	f.expect(int(changed_frame.get("tick",-1))==native_tick,
+		"actual worker's newer brush publication has not advanced native semantic time")
 	var attempts: Array[Dictionary] = []
+	var total_attempts: int = 0
+	var final_attempt: Dictionary = {}
+	var all_actor_ticks_unchanged: bool = true
+	var all_native_ticks_unchanged: bool = true
+	var all_rapier_steps_unchanged: bool = true
+	var all_material_steps_unchanged: bool = true
+	var attempt_deadline: int = Time.get_ticks_msec()+5000
 	# Publication can precede the end of that real worker turn. A busy-owner
 	# refusal is safe, but does not exercise exact installed-source comparison.
 	# Retry only that actual scheduling state, while Main polling stays off.
-	for attempt: int in range(128):
+	# The bound is wall time, not a platform-dependent count of render callbacks.
+	while Time.get_ticks_msec()<attempt_deadline and total_attempts<4096:
 		f.host._physics_process(1.0/60.0)
-		attempts.append({"refusal":f.runtime().last_motion_permit.duplicate(true),
-			"actor_tick":f.host.physical_actor_session.tick,
-			"rapier_steps":f.host.rapier_bridge.manual_step_count(),"material_steps":f.runtime().physical_steps})
-		var clocks_unchanged: bool = f.expect(int(f.host.physical_actor_session.tick)==actor_tick,
-			"delayed Main attempt %d consumes no actor tick"%attempt)
-		clocks_unchanged = f.expect(int(f.host.rapier_bridge.manual_step_count())==rapier_steps,
-			"delayed Main attempt %d consumes no shared Rapier step"%attempt) and clocks_unchanged
-		clocks_unchanged = f.expect(int(f.runtime().physical_steps)==material_steps,
-			"delayed Main attempt %d consumes no material physical time"%attempt) and clocks_unchanged
-		if not clocks_unchanged or f.runtime().last_motion_permit.get("outcome")!="OwnerBusy": break
+		final_attempt = _clocks()
+		final_attempt["refusal"] = f.runtime().last_motion_permit.duplicate(true)
+		total_attempts += 1
+		if attempts.size()<128: attempts.append(final_attempt.duplicate(true))
+		all_actor_ticks_unchanged = all_actor_ticks_unchanged and int(final_attempt.actor_tick)==actor_tick
+		all_native_ticks_unchanged = all_native_ticks_unchanged and int(final_attempt.native_tick)==native_tick
+		all_rapier_steps_unchanged = all_rapier_steps_unchanged and int(final_attempt.rapier_steps)==rapier_steps
+		all_material_steps_unchanged = all_material_steps_unchanged and int(final_attempt.material_steps)==material_steps
+		if not (all_native_ticks_unchanged and all_actor_ticks_unchanged and all_rapier_steps_unchanged and all_material_steps_unchanged) \
+			or f.runtime().last_motion_permit.get("outcome")!="OwnerBusy": break
 		await process_frame
+	f.expect(all_actor_ticks_unchanged,"every delayed Main attempt consumes no actor tick")
+	f.expect(all_native_ticks_unchanged,"every delayed Main attempt consumes no actual worker native tick")
+	f.expect(all_rapier_steps_unchanged,"every delayed Main attempt consumes no shared Rapier step")
+	f.expect(all_material_steps_unchanged,"every delayed Main attempt consumes no material physical time")
 	f.expect(int(f.runtime().motion_permits_refused)>refused and not f.runtime().last_motion_permit.get("ok",false),
 		"actual mutex-owned motion admission refuses the superseded installed source")
 	f.expect(f.runtime().last_motion_permit.get("outcome")=="InstalledFrameChanged",
 		"idle exclusive owner explicitly refuses the exact stale installed publication")
 	evidence.delayed_main = {"old_sequence":installed_sequence,"worker_sequence":changed_frame.get("publication_sequence"),
-		"refusal":f.runtime().last_motion_permit.duplicate(true),"actor_tick":actor_tick,"rapier_steps":rapier_steps,
-		"attempts":attempts,"attempt_limit":128}
+		"refusal":f.runtime().last_motion_permit.duplicate(true),"native_tick":native_tick,"actor_tick":actor_tick,"rapier_steps":rapier_steps,
+		"attempts":attempts,"final_attempt":final_attempt,"attempt_count":total_attempts,"retained_attempt_limit":128,
+		"attempt_limit":4096,"wall_time_limit_msec":5000,
+		"all_attempt_clocks_unchanged":all_native_ticks_unchanged and all_actor_ticks_unchanged and all_rapier_steps_unchanged and all_material_steps_unchanged}
 	f.host.set_process(true)
 	f.host.set_physics_process(true)
 	await f.advance(4,"ordinary Main recovers by polling and acknowledging the actual new source")

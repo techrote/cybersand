@@ -18,7 +18,7 @@ $manifest = Get-Content -LiteralPath (Join-Path $root 'objectshard-workbench-man
 if ($manifest.schema -ne 'objectshard-m4-workbench-package-v1') { throw 'Unsupported Workbench manifest' }
 if ($manifest.source_commit -notmatch '^[0-9a-f]{40}$' -or $manifest.source_tree -notmatch '^[0-9a-f]{40}$') { throw 'Missing exact source identity' }
 if ($manifest.entry.scene -ne 'godot/main.tscn' -or $manifest.entry.startup_scene -ne 'godot/feature_launcher.tscn' -or
-    $manifest.entry.host -ne 'ordinary-workbench' -or
+    $manifest.entry.host -ne 'ordinary-workbench' -or $manifest.entry.rendering_driver -ne 'opengl3_angle' -or
     $manifest.entry.launcher -ne 'Open Workbench.cmd' -or $manifest.entry.opt_in -isnot [bool] -or -not $manifest.entry.opt_in -or
     ($manifest.entry.scenario_ids -join ',') -ne 'tower,viaduct,timber,mixed,stress' -or
     $manifest.ordinary_production_defaults_changed -isnot [bool] -or $manifest.ordinary_production_defaults_changed) {
@@ -37,6 +37,9 @@ $required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', '
     'godot/tests/test_object_shard_m4_material_only_workbench.gd',
     'godot/tests/test_object_shard_m4_fragment_reabsorption.gd',
     'godot/tests/test_object_shard_m4_lifecycle_adverse.gd',
+    'godot/tests/test_object_shard_m4_completed_sample.gd',
+    'godot/tests/test_object_shard_m4_equipment_completion.gd',
+    'godot/tests/test_object_shard_m4_long_burn.gd',
     'godot/tests/test_object_shard_m4_lifecycle_fuzz.gd',
     'godot/tests/test_object_shard_m4_overlay_identity.gd', 'godot/tests/profile_object_shard_m4_render_control.gd',
     'godot/tests/probe_object_shard_workbench_package.gd', 'godot/tests/profile_object_shard_m4_workbench.gd',

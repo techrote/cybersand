@@ -107,6 +107,191 @@ established with fresh source-bound before/after runs.
 | Independent package review found that an explicit Main scene bypassed the ordinary launcher which consumes Workbench flags. | The evaluator now uses the ordinary project startup. Its self-test launches the actual FeatureLauncher with the real CLI flags and requires an attached ordinary Workbench and real collapse. Windows execution is a separate required qualification. |
 | Package review found that an unlisted loadable source could evade a manifest-only check. | Both verifiers now reject unlisted loadable inputs and links while allowing bounded generated caches and tracked-source sidecars. The shipped Windows launcher must refuse an added extension as well as changed listed bytes. |
 
+## Independent inventory and scheduling observations
+
+The later ordinary Workbench census is a paused, one-shot request executed by
+the existing exclusive worker. It returns raw stored materials, owned carrier
+arrays, independently scanned Water state and overfill, and the complete
+in-flight parcel list. It does not infer material inventory from display pixels
+or add full snapshots to the timed live-play path.
+
+| Observation | Correction or retained boundary |
+| --- | --- |
+| An intact-foundation assertion used the setup brush's Wall identifier for a demonstration whose native recipe uses material 1. | The witness now reads the demonstration's actual Wall identifier and checks every support cell in the coherent native image before any cut. The mixed replay observed 808 actual support cells and no prematurely detached body. |
+| A paused inventory check could read an earlier coherent presentation after the native operation completed. | Qualification now waits for the latest exact worker publication and its uploaded World/shard identity before capturing the independent census. Command completion alone is not a displayed-publication acknowledgement. |
+| A rendered Water pixel count differed from the native stored-cell ledger. | The new witness counts raw stored cells and all parcel quantities separately, then independently reproduces each parcel's material-pixel projection. Multiple parcels can project onto one previously Empty pixel. The earlier failed comparison remains a negative; its exact pixel difference is not retrospectively assigned to unrecorded parcels. |
+| A later Tower/zoom start stopped progressing at native tick 1, physical interval 1 and actor tick 2, with `AwaitingCompletedNativeTick` after `NativeBarrierReleased`. | The retained log reports Main sample 9 and native completed sample 2. This is a real incomplete-play observation, despite successful other scene replays. The partial log alone does not identify the internal scheduling branch. At approximately 148 seconds, evidence capture encountered `ENOSPC` and the runner terminated its child; this run is classified as interrupted by evidence-storage exhaustion, not as a pass, natural watchdog timeout or proved memory kill. |
+
+The new mixed replay at application source
+`d106273e7adb70576dce104a339fc4ef6a0f3e94` passed 148 checks, 180 native ticks
+and 720 actual Rapier segments with 720 exact native pose echoes. Its final
+independent census found 3,137 stored Water cells containing 745,666 quanta,
+zero overfill, and 14 parcels containing 767 quanta. Their total, 746,433,
+equals the native expected quantity at that boundary. Those parcels projected
+onto five distinct Empty pixels, producing the observed 3,142 rendered Water
+pixels with zero full-image material-projection mismatches. The profile JSON
+SHA-256 is
+`e5a68f0b036ea8b4350af9d26e59f6df2dece0fdd5881dd6c39944ed247dc383`.
+This replay establishes its own measured quantities; it does not relabel the
+earlier failed run or qualify the later scheduling repair.
+
+The repaired application at `2000d236938a17efe700a82d3d98d691f86925c0`
+subsequently completed the Tower/zoom workload: 146 checks, 180 native ticks,
+180 physical intervals and 720 exact pose acknowledgements/echoes, with no
+hold or display-identity mismatch. A separate 108-check adversarial run used a
+genuinely detached body, completed four real acknowledged segments, and withheld
+Main's completion for 32 observed callbacks. Native remained at tick 26 while
+the actor advanced 26 to 27 and the shared Rapier step count advanced 101 to
+105. The worker then prepared pinned final sample 134 without advancing time;
+although a newer real Main observation 135 existed, sample 134 alone completed
+native tick 27. Replaying the retired lease was refused. This establishes the
+tested packet-custody and one-tick ordering; it does not add missing internal
+diagnostics to the original interrupted run. Both runs are headless.
+
+## Second hosted campaign boundary
+
+Run [45457037610](https://github.com/techrote/cybersand/actions/runs/45457037610)
+uses source `0f013ba4826730cce64bd37cf9ca95f7dcaab603`, before the final-sample
+repair. Its Windows headless matrix passed 34 of 35 cases, including all twelve
+180-tick scene/camera/sampling profiles. The remaining adversarial case made
+128 actual requests that each returned `OwnerBusy`; it did not reach the
+required `InstalledFrameChanged` comparison within its callback-count bound.
+Its actor, Rapier and material-step clock checks passed, but that delayed-Main
+loop did not independently reread the worker's native tick on every attempt.
+The correction uses a bounded elapsed-time wait, retains the strict final
+refusal, and adds the actual worker tick to every attempt's invariants.
+
+The Windows evidence ZIP is artifact `14952377334`, SHA-256
+`c4e8cc308b25a75072ab53d51aa17699cb6d25753ec653dfc3f2e8f2015e3b00`.
+Its native DLL SHA-256 is
+`0c6d6ae114d5d4157416cc3c2eb049fbb22e1ecc0ff081054d568b09a81ae00e`.
+The twelve successful profiles measured 15.64–29.70 native ticks per wall
+second, submitted zero rendered frames, and used one, three or eight actual
+material bodies. Graphical qualification and portable packaging were skipped
+after the failed headless matrix. No portable evaluator or displayed-frame
+acceptance is attributed to this Windows campaign.
+
+The same source's Linux headless lane passed all 35 cases. Its second lane
+repeated eleven focused headless cases before fourteen actual X11 cases:
+twelve scene profiles, overlay identity and renderer controls. Ten repeated
+headless cases and all fourteen rendered cases passed. The remaining focused
+completion case was itself headless and naturally reached its 300-second
+fixture deadline at native tick 1, one physical interval and
+`AwaitingCompletedNativeTick` after `NativeBarrierReleased`. It submitted no
+rendered frames. This independently repeats the incomplete final-sample
+ordering signature; the aggregate second lane remains 24 of 25, not a pass.
+Linux artifact `14954007570` has SHA-256
+`8d11121e8448a656b307b4f82d87014bf6b4f66ce45d7dfbaa01726e6c8f1520`.
+
+Independent evaluator review also found that the normal launch had left the
+renderer at its project default while the shipped self-test explicitly selected
+ANGLE. Both paths now derive their graphical arguments from the same source,
+and the manifest and actual backend receipt must agree. This is an evaluator
+argument correction; actual Windows execution of that corrected launcher is
+still required.
+
+The [native independent review](objectshard-m4-completion-20261124/hosted-0f013-native-review.json),
+[Windows independent review](objectshard-m4-completion-20261124/hosted-0f013-windows-review.json),
+[Linux independent review](objectshard-m4-completion-20261124/hosted-0f013-linux-review.json)
+and [copied-record hash manifest](objectshard-m4-completion-20261124/hosted-0f013-evidence-manifest.json)
+retain this campaign's exact source, runtime, artifact and measured scope.
+The primary native lane itself passed 96,500 ObjectShard checks and 192 ordinary
+World cases under ASan/UBSan, all 74 retained standalone budget limits, and its
+material compatibility/parity checks. Leak detection was disabled. This native
+success does not override the failed Windows Workbench matrix or qualify later
+application changes.
+
+## Complete burn lifetime and equipment ordering
+
+The ordinary short combustion tests did not cover exhaustion of a full Wood
+lifetime. A new ordinary Workbench witness uses a moving 3-by-3 Brick enclosure
+with one real Wood cell, then a separate four-cell body for terminal Cut
+retirement. Its early fixture failures remain distinct from the reaction law:
+
+- A zero-radius support-cut assumption was outside the ordinary authored
+  brush contract. Supported radius-two stamps now remove the exact stem without
+  touching the enclosing Brick or floor.
+- A point query immediately after a paused shape replacement preceded the
+  backend's next solver synchronization. The witness now performs one genuine
+  paused Step, rereads the exact displayed cell, and requires a positive query
+  of the real last collider before the final Cut.
+- The next attempt reached that positive query but submitted its Cut while
+  the ordinary Step UI receipt was still pending. The action correctly refused
+  as busy. The fixture now waits for both native/display coherence and ordinary
+  authoring readiness; the admission gate was not relaxed.
+- A subsequent attempt ended with external signal 9 before a failing assertion.
+  Its recorded RSS and host availability do not establish the signal's cause.
+
+The unchanged corrected source
+`bfb237f2464034a4a2cbb8b1237db824027dc1c4` then passed all 231 checks.
+It witnessed all eight Brick neighbours, 480 consecutive native ticks, 480
+real physical intervals and 1,920 segments while the original Wood incarnation
+exhausted its 240-count period-two lifetime. Native mass changed from 9 to 8,
+geometry and applied revision both reached 2, and the independent raw census
+closed. Separately, four exact Cut transactions removed the last real collider
+and all owned inventory, followed by continued ordinary progression. The result
+JSON SHA-256 is
+`77734ac589ba9f6aa39058088dad8971972e6e0ef361a991423e024870e7c77d`.
+This is natural cell exhaustion plus explicit terminal retirement, not a
+promise of bounded natural burnout for a repeatedly reignited whole building.
+
+Independent worker review then found that existing actor equipment/effect
+queues could be extracted during a live material-motion lease. The later
+internal paused state could turn an admitted ordinary action into a
+`suspended` receipt before its one native tick. Two attempted reproductions
+ended with external signal 9 before reaching that phase; neither is a product
+negative. On the recovered host, source
+`0a8c817b13ae690f62e6460480fcd56c4d222d85` genuinely reproduced the defect:
+one actual Timer Airburst request was queued and then discarded as suspended
+while Play remained active and native tick 22 stayed fixed.
+
+The same fixture at worker-only repair
+`e7d5e34d7188516605a00c66b4fb85d54eb70d3a` passed 63 of 63 checks. Its
+final completion captured the original request, advanced native tick 22 to 23
+once, and received an accepted, consumed launch with one real payload and
+charge 100 to 93.5. No extra actor, material or Rapier interval was introduced.
+The failed result SHA-256 is
+`10890d1144398fa536dae9b7669ed64c70b17b37349903e3f50619c46d52ee44`;
+the positive result SHA-256 is
+`c8f4ed745ec5ab7beb2031f3175d30940ff266789becc2a1ac979a513d2c6500`.
+The repair pins the request set to the final frame, preserves existing
+cancellation authority and avoids treating internal lease waits as user Pause.
+It changes no native or separate Equipment programme law.
+
+The supplemental fixture at
+`7b9cc120309288ee90e312657c726bb4080406f4` passed 99 of 99 checks in
+12.112 seconds. A second actor's genuine request, delivered after completion
+admission, stayed pending for the next real interval. Actual user Pause
+cancelled a later action and preserved autonomous payload ages. A genuine
+Rocketjumper surface blast retained its original actor/epoch/sequence through
+the lease, changed four native cells on the one due tick, and produced a
+consumed, applied effect receipt. The following neutral interval captured
+zero effects. The first blast fixture incorrectly expected the Equipment
+receipt's `accepted` field; that schema-only negative is retained separately
+from the positive native write and subsequent corrected replay.
+
+The final result SHA-256 is
+`93acd7ae89150e4eb499fab16ba73bf81c427077e2b2f52996b2e65ecbadf7a8`.
+Independent review rehashed all four raw census binaries, recounted stored
+and owned material, and compared all 262,144 rendered material pixels. The
+blast had one stored Fire and three stored Gunpowder cells while the moving
+body retained its 64 Wood cells; no duplicated owned inventory or projection
+mismatch was observed. The supplemental source, clock and census review is
+preserved in `objectshard-m4-completion-20261124/actor-work-review.json`.
+
+The refined lifecycle adversity fixture also passed 122 of 122 checks on
+`56ef3e20` with the same worker repair. It made 119 actual Main admission
+attempts while Main polling stayed disabled: 118 returned `OwnerBusy`, then
+the exact installed publication 76 versus worker publication 77 returned
+`InstalledFrameChanged`. Every attempt independently reread the worker's
+actual native tick, which remained 26; actor, Rapier and material clocks also
+remained fixed. Malformed, stale and duplicate census admission, an unread
+old token across Restore, and raw conservation passed. Its result SHA-256 is
+`67883fdb14ca1d559a3ee45517e6a9466bedf6bb226bb7b4183cea9aae57bc2b`.
+These development-runtime positives close the focused source defects; the
+final exact-source platform and extracted-evaluator campaign is still a
+separate required witness.
+
 The final dense-fluid native build is independently sealed as
 `0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae`.
 Its receipt names original build source
