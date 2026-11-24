@@ -96,6 +96,29 @@
       "generator_version": 1,
       "semantic_limits": "Explicit decorative parts, no Play mutation and no load-bearing solver."
     },
+    "visual_proposal": {
+      "planes": [
+        {
+          "id": "scripted",
+          "opacity": 0.78,
+          "depth": 0.28
+        },
+        {
+          "id": "effects",
+          "opacity": 0.85,
+          "depth": 0.16
+        },
+        {
+          "id": "background",
+          "opacity": 0.4,
+          "depth": 0.82
+        }
+      ],
+      "presentation": {
+        "parallax_strength": 0.4,
+        "fog_strength": 0.3
+      }
+    },
     "atmosphere_proposal": {
       "scope": "Anchor-relative regions; separately review and apply; native plan does not apply atmosphere.",
       "configuration": {

@@ -107,11 +107,12 @@ func open_panel() -> void:
 		_window.add_child(scroll)
 		_panel = LayerPanel.new()
 		_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		scroll.add_child(_panel)
 		_panel.mount(self)
 		_window.close_requested.connect(_window.hide)
 	_refresh_panel()
-	_window.popup_centered_clamped(Vector2i(720,560),0.9)
+	_window.popup_centered_clamped(Vector2i(980,760),0.9)
 
 
 func _refresh_panel() -> void:
@@ -725,6 +726,10 @@ func module_catalogue() -> Array:
 
 func composition_catalogue() -> Array:
 	return _authoring_service().composition_catalogue()
+
+
+func apply_composition_settings(token: String) -> Dictionary:
+	return _authoring_service().apply_composition_settings(token)
 
 
 func import_fixture_catalogue() -> Array:

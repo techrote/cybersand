@@ -11,6 +11,7 @@ const TRANSFORM_LABELS := ["Unchanged", "Mirror horizontally", "Mirror verticall
 class PreviewSurface extends Control:
 
 	var image_texture: Texture2D
+	var image_reference: Variant
 	var image_extent := Vector2i.ZERO
 	var caption := "No proposed image"
 
@@ -18,8 +19,13 @@ class PreviewSurface extends Control:
 		custom_minimum_size = Vector2(180, 144)
 		size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 	func set_image(value: Variant) -> void:
+		# Proposals are copied immutable images. Status polling must not allocate
+		# a new GPU texture for the same image on every progress callback.
+		if value == image_reference: return
+		image_reference = value
 		if value is Image and not value.is_empty():
 			image_texture = ImageTexture.create_from_image(value)
 			image_extent = value.get_size()
@@ -86,6 +92,17 @@ var _compose_approve := Button.new()
 var _compose_stop := Button.new()
 var _compose_status := Label.new()
 var _compose_preview := PreviewSurface.new()
+var _compose_preview_scope := Label.new()
+var _stage_picker := OptionButton.new()
+var _stage_previews: Array = []
+var _stage_preview_key := ""
+var _stage_before := PreviewSurface.new()
+var _stage_after := PreviewSurface.new()
+var _history_warning := Label.new()
+var _compose_history_warning := Label.new()
+var _visual_settings_summary := Label.new()
+var _apply_visual_settings := Button.new()
+var _visual_review_token := ""
 var _browse: FileDialog
 var _module := OptionButton.new()
 var _modules: Array = []
@@ -100,6 +117,7 @@ var _harvest_region: Array[SpinBox] = []
 var _module_name := LineEdit.new()
 var _plan_rows := Label.new()
 var _effect_profile := OptionButton.new()
+var _effect_description := Label.new()
 var _effect_profiles: Array = []
 var _effect_list := OptionButton.new()
 var _effect_ids: Array[String] = []
@@ -296,6 +314,9 @@ func _build_import(rows: VBoxContainer) -> void:
 	_preview_box(previews, "Proposed material layout", _output_preview)
 	_preview_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_preview_summary)
+	_history_warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_history_warning.modulate = Color("e5c388")
+	rows.add_child(_history_warning)
 	_build_execution_controls(rows)
 	for spin: SpinBox in _crop + _origin + [_scale, _threshold, _distance]:
 		spin.value_changed.connect(func(_v: float) -> void: _invalidate_preview())
@@ -492,7 +513,9 @@ func _build_compose(rows: VBoxContainer) -> void:
 	_plane_picker(rows, _module_plane, true)
 	_module.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rows.add_child(_module)
-	_module_origin = _numbers(rows, ["Anchor X", "Anchor Y"], 0, 2047, [64, 64])
+	_module_origin = _numbers(rows, ["Origin X", "Origin Y"], 0, 2047, [64, 64])
+	for spin: SpinBox in _module_origin:
+		spin.tooltip_text = "Native parts place the transformed grid's top-left here; a part's own anchor is retained as metadata. Layered compositions use these coordinates as their common design anchor."
 	_transform_picker(rows, _module_transform)
 	var repeat_row := _row(rows)
 	_repeat = _spin(repeat_row, "Repeat count", 1, 16, 1)
@@ -511,7 +534,21 @@ func _build_compose(rows: VBoxContainer) -> void:
 		_show_plan())
 	_plan_rows.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_plan_rows)
-	_preview_box(rows, "Proposed native placement · review stage targets above", _compose_preview)
+	_compose_history_warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_compose_history_warning.modulate = Color("e5c388")
+	rows.add_child(_compose_history_warning)
+	_note(rows,"Inspect a proposed stage · copied native materials before / proposed after")
+	_stage_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rows.add_child(_stage_picker)
+	_stage_picker.item_selected.connect(func(_index: int) -> void: _show_stage_preview())
+	var stage_images := _row(rows)
+	_preview_box(stage_images,"Before · native ID observation",_stage_before)
+	_preview_box(stage_images,"After · native ID proposal",_stage_after)
+	_preview_box(rows, "Native ID proposal · fixed plane order, current opacity; actual Workbench rendering differs.", _compose_preview)
+	_compose_preview_scope.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	rows.add_child(_compose_preview_scope)
+	_visual_settings_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	rows.add_child(_visual_settings_summary)
 	_compose_progress.show_percentage = false
 	rows.add_child(_compose_progress)
 	var approval := _row(rows)
@@ -528,6 +565,17 @@ func _build_compose(rows: VBoxContainer) -> void:
 	approval.add_child(_compose_stop)
 	_compose_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_compose_status)
+	_apply_visual_settings.text = "Apply reviewed depth and atmosphere"
+	_apply_visual_settings.disabled = true
+	_apply_visual_settings.tooltip_text = "Separate approval after all native stages complete. Preset atmosphere replaces the existing effect configuration. Current scene, revisions and visual settings are revalidated."
+	_apply_visual_settings.pressed.connect(func() -> void:
+		_commit_field()
+		var state := _dict_call("authoring_state")
+		if bool(state.get("can_apply_visual_settings",false)) and not _visual_review_token.is_empty() \
+				and _visual_review_token == str(state.get("visual_settings_token","")) and _preview_ui_revision == _configuration_revision:
+			_invoke("apply_composition_settings",[_visual_review_token])
+		refresh({},""))
+	rows.add_child(_apply_visual_settings)
 	rows.add_child(HSeparator.new())
 	_note(rows, "Harvest from the selected native plane · Play requires Pause; Empty defaults to transparent no-write")
 	_module_name.placeholder_text = "Name the harvested native part"
@@ -582,6 +630,9 @@ func _build_atmosphere(rows: VBoxContainer) -> void:
 	_button(flags, "Reset motion", func() -> void: _invoke("reset_atmosphere_phase"))
 	_effect_profile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rows.add_child(_effect_profile)
+	_effect_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	rows.add_child(_effect_description)
+	_effect_profile.item_selected.connect(func(_index: int) -> void: _refresh_profile_description())
 	_plane_picker(rows, _effect_plane)
 	_effect_region = _numbers(rows, ["Region X", "Region Y", "Width", "Height"], 0, 2048, [64, 64, 256, 128])
 	_effect_region[2].min_value = 1
@@ -670,6 +721,11 @@ func _refresh_atmosphere(rebuild: bool = true) -> void:
 		_select_plane(_effect_plane,str(effect.get("plane", "effects")))
 		var colour: Array = effect.get("colour", [0.6, 0.7, 0.8, 1.0])
 		if colour.size() == 4: _effect_colour.color = Color(float(colour[0]), float(colour[1]), float(colour[2]), float(colour[3]))
+		var beacon := str(effect.get("kind","")) == "beacon"
+		for spin: SpinBox in _effect_direction:
+			spin.editable = not beacon
+			spin.tooltip_text = "Direction is not used by beacon pulses." if beacon else "Direction of visual motion in native cell coordinates."
+		_effect_speed.tooltip_text = "Beacon pulse multiplier: 0.2 cycles per second × speed. Direction is not used." if beacon else "Native cells per second along the direction; presentation-only visual motion."
 	_effect_status.text = "%d regional effects · %s · %s" % [_effect_ids.size(), "enabled" if _effects_enabled.button_pressed else "disabled", "paused" if _effects_paused.button_pressed else "running when visible"]
 	_syncing = false
 
@@ -683,6 +739,47 @@ func refresh_catalogues() -> void:
 	_fill_catalogue(_composition, _compositions, "No layered composition presets")
 	_effect_profiles = _array_call("atmosphere_profiles")
 	_fill_catalogue(_effect_profile, _effect_profiles, "No atmosphere profiles")
+	_refresh_profile_description()
+
+
+func _refresh_profile_description() -> void:
+	_effect_description.text = str(_effect_profiles[_effect_profile.selected].get("description","")) \
+		if _effect_profile.selected >= 0 and _effect_profile.selected < _effect_profiles.size() else ""
+
+
+func _show_stage_preview() -> void:
+	if _stage_picker.selected < 0 or _stage_picker.selected >= _stage_previews.size():
+		_stage_before.set_image(null)
+		_stage_after.set_image(null)
+		return
+	var stage: Dictionary = _stage_previews[_stage_picker.selected]
+	_stage_before.set_image(stage.get("before_image"))
+	_stage_after.set_image(stage.get("output_image"))
+
+
+func _refresh_stage_previews(state: Dictionary) -> void:
+	var proposed: Array = state.get("preview_regions",[])
+	var identities: Array = []
+	for stage: Dictionary in proposed:
+		var before: Variant = stage.get("before_image")
+		var after: Variant = stage.get("output_image")
+		identities.append([stage.get("id"),stage.get("plane"),stage.get("region"),
+			str(before.get_instance_id()) if before is Image else "",str(after.get_instance_id()) if after is Image else ""])
+	var key := str(state.get("preview_serial",""))+":"+JSON.stringify(identities)
+	if key != _stage_preview_key:
+		_stage_preview_key = key
+		var selected := _stage_picker.selected
+		_stage_previews = proposed
+		_stage_picker.clear()
+		for stage: Dictionary in _stage_previews:
+			_stage_picker.add_item("%s · %s · %s" % [str(stage.get("id","stage")),str(stage.get("plane","")),str(stage.get("region",[]))])
+		_stage_picker.disabled = _stage_previews.is_empty()
+		if not _stage_previews.is_empty(): _stage_picker.select(clampi(selected,0,_stage_previews.size()-1))
+		_show_stage_preview()
+	_compose_preview.set_image(state.get("composite_image",state.get("output_image")))
+	_compose_preview_scope.text = str(state.get("composite_scope",""))
+	if state.has("composite_region"):
+		_compose_preview_scope.text += "\nNative proposal region: " + str(state.composite_region)
 
 
 func _fill_catalogue(picker: OptionButton, entries: Array, empty_text: String) -> void:
@@ -707,6 +804,7 @@ func refresh(_document: Dictionary, status: String) -> void:
 				and _preview_request_revision == _configuration_revision \
 				and not preview_identity.is_empty() and preview_identity != _previous_preview_identity:
 			_preview_ui_revision = _configuration_revision
+			_visual_review_token = str(state.get("visual_settings_token",""))
 		_approve.disabled = not bool(state.get("can_approve", false)) or _preview_ui_revision != _configuration_revision
 		_compose_approve.disabled = _approve.disabled
 		_stop.disabled = not bool(state.get("cancellable", false))
@@ -715,8 +813,22 @@ func refresh(_document: Dictionary, status: String) -> void:
 		_progress.value = int(state.get("processed", 0))
 		_compose_progress.max_value = _progress.max_value
 		_compose_progress.value = _progress.value
-		_authoring_status.text = str(state.get("error", state.get("message", state.get("status", ""))))
+		var message := str(state.get("message","")).strip_edges()
+		if message.is_empty(): message = str(state.get("status",""))
+		var error := str(state.get("error",""))
+		if not error.is_empty() and error != message and error != str(state.get("status","")): message += "\n"+error
+		_authoring_status.text = message
 		_compose_status.text = _authoring_status.text
+		var warnings := ""
+		for warning: Variant in state.get("history_warnings",[]): warnings += str(warning)+"\n"
+		_history_warning.text = warnings.strip_edges()
+		_compose_history_warning.text = _history_warning.text
+		_visual_settings_summary.text = str(state.get("visual_settings_summary",""))
+		if state.has("visual_settings_proposal"):
+			_visual_settings_summary.text += "\nDepth and atmosphere need separate approval after native construction. The preset replaces the existing atmosphere configuration."
+		_apply_visual_settings.disabled = not bool(state.get("can_apply_visual_settings",false)) or _visual_review_token.is_empty() \
+			or _visual_review_token != str(state.get("visual_settings_token","")) or _preview_ui_revision != _configuration_revision
+		_apply_visual_settings.visible = state.has("visual_settings_proposal")
 		var key := str(state.get("preview_serial", state.get("token", ""))) + ":" + str(state.get("status", ""))
 		if key != _last_state_key:
 			_last_state_key = key
@@ -724,7 +836,7 @@ func refresh(_document: Dictionary, status: String) -> void:
 			if state.has("mask_image"): _mask_preview.set_image(state.mask_image)
 			if state.has("output_image"):
 				_output_preview.set_image(state.output_image)
-				_compose_preview.set_image(state.output_image)
+		_refresh_stage_previews(state)
 		var stage_text := ""
 		for stage: Dictionary in state.get("stages", []):
 			stage_text += "%s · %s · %s · %s · applied %s / changed %s\n" % [str(stage.get("id", "stage")), str(stage.get("plane", "")), str(stage.get("region", [])), str(stage.get("status", "proposed")), str(stage.get("applied", 0)), str(stage.get("changed", stage.get("changed_cells", 0)))]
@@ -747,6 +859,8 @@ func _invalidate_preview() -> void:
 	_configuration_revision += 1
 	_approve.disabled = true
 	_compose_approve.disabled = true
+	_apply_visual_settings.disabled = true
+	_visual_review_token = ""
 	_token = null
 	_preview_summary.text = "Settings changed. Preview again before approval."
 

@@ -217,7 +217,7 @@ static func write_named(label: String, setup: Dictionary, generated: Dictionary,
 	if extent_of(document) != Setup.extent_of(setup): return "Play and Strata canvas dimensions differ."
 	var version := int(document.version)
 	var manifest := JSON.stringify({"format": FORMAT, "version": version,
-		"starting_setup": setup, "scene": document, "play_source": source.metadata}).to_utf8_buffer()
+		"starting_setup": setup, "scene": document, "play_source": source.metadata}, "", true, version == VERSION).to_utf8_buffer()
 	var payload: PackedByteArray = source.payload
 	if manifest.is_empty() or manifest.size() > MANIFEST_LIMIT or payload.size() > PAYLOAD_LIMIT:
 		return "The complete Strata scene exceeds its bounded save capacity."

@@ -7,6 +7,7 @@ extends RefCounted
 const Document = preload("res://scripts/depth/workbench_layer_document.gd")
 const PaintExecutor = preload("res://scripts/workbench_paint_editor_executor.gd")
 const PaintHistory = preload("res://scripts/workbench_paint_editor_history.gd")
+const Module = preload("res://scripts/depth/strata_native_module.gd")
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const IDS := ["scripted", "effects", "background"]
 const MAX_EDIT_CELLS := 16384
@@ -230,6 +231,40 @@ func update_extensions(patch: Dictionary) -> bool:
 	last_error = Document.validate(candidate)
 	if not last_error.is_empty(): return false
 	_document = Document.canonical(candidate)
+	return true
+
+
+func preview_visual_settings(patch: Dictionary) -> Dictionary:
+	# Validate one complete visual candidate before adopting any settings. This
+	# operation cannot replace native layouts, owners, revision or history.
+	if _document.is_empty() or not _pending.is_empty():
+		return {"ok":false,"error":"Finish scene admission before preparing visual settings."}
+	if not Module.keys(patch,["planes","presentation","atmosphere"]) \
+			or not patch.planes is Array or patch.planes.size() > 3 or not patch.presentation is Dictionary:
+		return {"ok":false,"error":"Visual settings have unsupported fields."}
+	var candidate := Document.upgraded(_document)
+	var seen := {}
+	for item: Variant in patch.planes:
+		if not Module.keys(item,["id","opacity","depth"]) or item.id not in IDS or seen.has(item.id):
+			return {"ok":false,"error":"A visual preset must name unique decorative planes and only opacity/depth."}
+		seen[item.id] = true
+		var row := Document.plane(candidate,item.id)
+		row.opacity = item.opacity
+		row.depth = item.depth
+	for key: Variant in patch.presentation:
+		if key not in ["parallax_strength","fog_strength"]:
+			return {"ok":false,"error":"A visual preset cannot change edit target, mode or visibility."}
+		candidate.presentation[key] = patch.presentation[key]
+	candidate.atmosphere = patch.atmosphere.duplicate(true) if patch.atmosphere is Dictionary else patch.atmosphere
+	var error := Document.validate(candidate)
+	return {"ok":error.is_empty(),"error":error,"document":Document.canonical(candidate) if error.is_empty() else {}}
+
+
+func apply_visual_settings(patch: Dictionary) -> bool:
+	var prepared := preview_visual_settings(patch)
+	last_error = str(prepared.error)
+	if not prepared.ok: return false
+	_document = prepared.document
 	return true
 
 

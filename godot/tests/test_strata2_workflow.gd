@@ -8,6 +8,35 @@ const Module = preload("res://scripts/depth/strata_native_module.gd")
 var _fixture_path := "user://strata2-alpha-input.png"
 
 
+func _play_chunk_trials() -> bool:
+	# Exercise real ordinary acknowledgements and history for a stage larger
+	# than one native request. The reviewed private Setup must predict the
+	# actual saved authoring result, including each chunk boundary.
+	var before := await play_bytes()
+	var owner := play_identity()
+	strata.preview_module("rear-truss-bay", {"plane":"play", "origin":[16,360],
+		"count":3, "step":[128,0], "transform":"identity"})
+	if not await until(_ready, "multi-chunk ordinary Play preview"): return false
+	var preview: Dictionary = strata.authoring_state()
+	if not check(preview.get("can_approve",false), "multi-chunk Play preview admitted: " + str(preview.get("error",""))): return false
+	check(preview.stages[0].chunks > 1, "ordinary Play construction spans multiple bounded requests")
+	check(await play_bytes() == before, "complete multi-chunk Play review wrote no native cells")
+	var reviewed_setup: Dictionary = strata._authoring._preflight_play_setup.duplicate(true)
+	if not await _approve(): return false
+	var complete: Dictionary = strata.authoring_state()
+	var after := await play_bytes()
+	check(after == _prefix(before, complete.receipts, "play"), "complete native Play layout equals independently reconstructed acknowledged cells")
+	check(wb.applied == reviewed_setup, "exact reviewed chunked Setup equals actual ordinary authored history result")
+	for _chunk: int in complete.stages[0].completed_chunks:
+		check(strata.undo_layer(), "ordinary Play chunk remains independently undoable")
+		if not await until(idle, "ordinary chunk Undo ACK"): return false
+	check(await play_bytes() == before, "all ordinary chunk Undo acknowledgements restore exact pre-plan native geometry")
+	stable_identity(owner, play_identity(), "multi-chunk ordinary construction and Undo")
+	record.play_chunked_construction = {"stages":complete.stages,
+		"before_sha256":digest(before), "after_sha256":digest(after), "restored_sha256":digest(await play_bytes())}
+	return true
+
+
 func _options(plane: String, origin: Array = [80,80]) -> Dictionary:
 	return {"plane":plane, "crop":[0,0,8,8], "origin":origin, "scale":1, "transform":"identity",
 		"alpha_mode":"overlay", "alpha_threshold":128,
@@ -36,6 +65,110 @@ func _approve() -> bool:
 	for stage: Dictionary in state.get("stages",[]):
 		check(stage.get("actual_sha256","") == stage.get("projected_sha256","") and str(stage.get("actual_sha256","")).length() == 64,
 			"actual target native material hash matches reviewed projection")
+	return true
+
+
+func _prefix(before: PackedByteArray, receipts: Array, plane: String) -> PackedByteArray:
+	var result := before.duplicate()
+	for receipt: Dictionary in receipts:
+		if receipt.get("plane") != plane: continue
+		var cells: PackedInt32Array = receipt.get("cells",PackedInt32Array())
+		for offset: int in range(0,cells.size(),3): result.encode_u16((cells[offset+1]*512+cells[offset])*2,cells[offset+2])
+	return result
+
+
+func _construction_trials() -> bool:
+	var play_before := await play_bytes()
+	var identity := play_identity()
+	strata.preview_composition("factory-service-bay",{"origin":[240,180]})
+	if not await until(_ready,"multi-plane copied native preview"): return false
+	var preview: Dictionary = strata.authoring_state()
+	if not check(preview.get("can_approve",false),"layered composition preview admitted: "+str(preview.get("error",""))): return false
+	check(preview.stages.size()==4 and preview.preview_regions.size()==4,"all native construction stages have independently inspectable projections")
+	check(preview.get("composite_image") is Image and preview.composite_image.get_width()<=256,"bounded composited native-ID proposal uses copied material context")
+	check(preview.has("visual_settings_proposal") and not preview.can_apply_visual_settings,"visual preset remains separate before native completion")
+	if not await _approve(): return false
+	var completed: Dictionary = strata.authoring_state()
+	check(completed.can_apply_visual_settings,"completed native construction enables separately reviewed visual settings")
+	var old_haze: float = strata.document().presentation.fog_strength
+	check(strata.set_presentation({"fog_strength":old_haze+0.01}),"change appearance after native completion")
+	var stale_visual: Dictionary = strata.apply_composition_settings(completed.visual_settings_token)
+	check(not stale_visual.get("ok",true) and str(stale_visual.get("error","")).contains("Visual settings changed"),"changed visual settings invalidate original appearance approval")
+	check(strata.set_presentation({"fog_strength":old_haze}),"restore exact reviewed appearance before independent native revision challenge")
+	strata.select_layer("background")
+	check(strata.edit_cells("background",PackedInt32Array([20,24,58])),"independent native edit after completed construction")
+	check(strata.undo_layer(),"undo independent native edit while retaining advanced authored revision")
+	stale_visual = strata.apply_composition_settings(completed.visual_settings_token)
+	check(not stale_visual.get("ok",true) and str(stale_visual.get("error","")).contains("Native geometry changed"),"even exact material Undo cannot resurrect a stale native-revision visual token")
+	strata.preview_composition("factory-service-bay",{"origin":[240,180]})
+	await until(_ready,"fresh review after native revision changed")
+	if not await _approve(): return false
+	completed = strata.authoring_state()
+	var native_before := {}
+	var histories := {}
+	for id: String in ["scripted","effects","background"]:
+		native_before[id] = digest(decorative_bytes(id))
+		histories[id] = strata.layer_owner.stats().layers[id].undo
+	check(not strata.apply_composition_settings("stale-review-token").get("ok",true),"incorrect visual approval token refused")
+	check(strata.set_layer_option("background","locked",true),"lock completed composition target")
+	check(not strata.apply_composition_settings(completed.visual_settings_token).get("ok",true),"locked target cannot receive preset settings")
+	check(strata.set_layer_option("background","locked",false),"unlock completed composition target")
+	var settings: Dictionary = strata.apply_composition_settings(completed.visual_settings_token)
+	check(settings.get("ok",false) and settings.get("material_writes",-1)==0,"reviewed visual settings commit without native writes")
+	for id: String in ["scripted","effects","background"]:
+		check(native_before[id]==digest(decorative_bytes(id)),"visual preset preserves complete native geometry on "+id)
+		check(histories[id]==strata.layer_owner.stats().layers[id].undo,"visual preset preserves native Undo on "+id)
+	check(strata.document().atmosphere==completed.visual_settings_proposal.atmosphere,"preset effect regions and authored settings are exact")
+	record.layered_construction = {"stages":completed.stages,"settings":completed.visual_settings_proposal,"native_hashes":native_before}
+	# Turning presentation off must not strand a preparation coroutine.
+	var options := {"plane":"scripted","origin":[16,360],"count":3,"step":[128,0],"transform":"identity"}
+	var before := decorative_bytes("scripted")
+	strata.preview_module("rear-truss-bay",options)
+	check(strata.set_enabled(false),"disable layered display during native preview preparation")
+	await until(_ready,"disabled preparation drains without writes")
+	check(not strata.authoring_busy(),"excluded preparation terminates while display stays disabled")
+	check(not strata.layer_owner.capture_region("scripted",Rect2i(16,360,1,1)).get("ok",true),"hidden plane capture follows explicit visibility policy")
+	check(strata.set_enabled(true),"enable existing composition after cancelled preparation")
+	check(before==decorative_bytes("scripted"),"re-enabled native readback proves cancelled preparation retained exact layout")
+	# Stop after one synchronous decorative chunk. Full-plane independent
+	# readback reconstructs only the acknowledged prefix, never the whole plan.
+	strata.preview_module("rear-truss-bay",options)
+	await until(_ready,"repeated native part preview")
+	preview = strata.authoring_state()
+	if not check(preview.get("can_approve",false),"repeat proposal ready: "+str(preview.get("error",""))): return false
+	check(strata.approve_plan(preview.token).get("ok",false),"repeat proposal approved")
+	await until(func()->bool:return int(strata.authoring_state().get("applied_cells",0))>0,"first native chunk ACK")
+	var at_stop: Dictionary = strata.authoring_state()
+	strata.stop_authoring()
+	await until(_ready,"Stop completes acknowledged prefix readback")
+	var stopped: Dictionary = strata.authoring_state()
+	check(stopped.status=="partial" and stopped.applied_cells==at_stop.applied_cells and stopped.applied_cells==4096,"Stop admits no later chunk after first4096-cell ACK")
+	check(decorative_bytes("scripted")==_prefix(before,stopped.receipts,"scripted"),"Stop complete native plane equals independent acknowledged prefix")
+	strata.select_layer("scripted")
+	check(strata.undo_layer() and decorative_bytes("scripted")==before,"existing per-plane Undo reverses stopped committed chunk")
+	record.stopped_construction = {"applied":stopped.applied_cells,"stages":stopped.stages}
+	# A visibility change may prevent final readback; committed writes must
+	# still remain explicit and the service must drain with display disabled.
+	options.plane = "background"
+	before = decorative_bytes("background")
+	strata.preview_module("rear-truss-bay",options)
+	await until(_ready,"background repeat preview")
+	preview = strata.authoring_state()
+	if not check(preview.get("can_approve",false),"background repeated part ready"): return false
+	strata.approve_plan(preview.token)
+	await until(func()->bool:return int(strata.authoring_state().get("applied_cells",0))>0,"background first native ACK")
+	at_stop = strata.authoring_state()
+	check(strata.set_enabled(false),"disable display after a real native prefix")
+	await until(_ready,"disabled native prefix is drained and reported")
+	stopped = strata.authoring_state()
+	check(not strata.authoring_busy() and not stopped.zero_writes and stopped.applied_cells==at_stop.applied_cells,"disabled display cannot strand or misreport committed native prefix")
+	check(strata.set_enabled(true),"resume presentation after bounded partial result")
+	check(decorative_bytes("background")==_prefix(before,stopped.receipts,"background"),"re-enabled independent readback matches exact disabled-operation prefix")
+	strata.select_layer("background")
+	check(strata.undo_layer() and decorative_bytes("background")==before,"partial native prefix remains ordinary decorative Undo")
+	check(await play_bytes()==play_before,"multi-plane construction and all stop/toggle trials leave complete Play materials untouched")
+	stable_identity(identity,play_identity(),"layered construction and disabled authoring")
+	record.disabled_construction = {"status":stopped.status,"applied":stopped.applied_cells,"stages":stopped.stages}
 	return true
 
 
@@ -140,10 +273,30 @@ func run() -> void:
 	options = _options("effects",[120,120])
 	if not await _preview(export_path,options) or not await _approve(): finish(); return
 	check(strata.layer_owner.material_at("effects",Vector2i(120,120)) == 58, "exported module places actual native material on independently selected plane")
+	if not await _construction_trials(): finish(); return
 
 	# Ordinary Play imports use its existing async paint/history owner, with no
 	# second result consumer and no direct World reference.
 	options = _options("play",[120,80])
+	wb.applied.brush = 2
+	if not await _preview(_fixture_path,options): finish(); return
+	var before_noop: Dictionary = strata.authoring_plane_state("play")
+	var noop_token: String = strata.authoring_state().token
+	check(wb.paint_editor.commit_cells(PackedInt32Array([300,459,58]),"No-op material history fence"), "ordinary no-op native edit admitted between preview and approval")
+	await until(idle, "ordinary no-op native ACK")
+	var after_noop: Dictionary = strata.authoring_plane_state("play")
+	check(after_noop.authored_serial > before_noop.authored_serial, "copied authored Setup serial advances after same-material ordinary edit")
+	check(await play_bytes() == initial_play, "same-material edit preserved complete actual native Play layout")
+	check(not strata.approve_plan(noop_token).get("ok",true), "old import approval refused after no-op authored history change")
+	if not await _preview(_fixture_path,options): finish(); return
+	before_noop = strata.authoring_plane_state("play")
+	noop_token = strata.authoring_state().token
+	check(wb.paint(Vector2i(304,459),58), "legacy ordinary no-op brush admitted through existing owner")
+	await until(func()->bool:return idle() and not bool(host.simulation_worker.paint_state().get("legacy_busy",false)), "legacy no-op native delivery")
+	after_noop = strata.authoring_plane_state("play")
+	check(after_noop.authored_serial > before_noop.authored_serial, "copied authored Setup observes legacy recorder without depending on editor counter")
+	check(await play_bytes() == initial_play, "legacy no-op brush preserves complete native Play layout")
+	check(not strata.approve_plan(noop_token).get("ok",true), "old approval refused after legacy no-op authored change")
 	if not await _preview(_fixture_path,options) or not await _approve(): finish(); return
 	var edited_play := await play_bytes()
 	check(edited_play.decode_u16((80*512+120)*2) == 58, "Play import actual native cell independently captured")
@@ -157,10 +310,14 @@ func run() -> void:
 	await until(idle, "ordinary Play Redo settles")
 	var redone_play := await play_bytes()
 	check(redone_play == edited_play, "ordinary Play Redo restored exact imported state")
+	if not await _play_chunk_trials(): finish(); return
 	check(strata.layer_owner.stats().native_world_count == 3, "all integrated authoring retains only three decorative Worlds")
 	var saved := "strata2-native-import-history"
 	check(strata.save_named(saved), "all planes and historical import provenance save")
 	var reopened := Document.read_named(saved)
+	if reopened.get("document",{}) != strata.document():
+		record.persistence_difference = _first_difference(strata.document(),reopened.get("document",{}),"scene")
+		print("STRATA2_PERSISTENCE_DIFFERENCE ",JSON.stringify(record.persistence_difference))
 	check(reopened.get("document",{}) == strata.document(), "saved authored geometry and provenance decode exactly")
 	record.play_identity_before = stable_play
 	record.play_identity_after = play_identity()
@@ -172,3 +329,15 @@ func run() -> void:
 	print("STRATA2_WORKFLOW ",JSON.stringify({"checks":checks,"failures":failures,"completed":true,
 		"play_hash_original":record.play_hash_original,"play_hash_restored":record.play_hash_restored}))
 	finish()
+
+
+func _first_difference(a: Variant,b: Variant,path: String) -> Dictionary:
+	if a is Dictionary and b is Dictionary:
+		for key: Variant in a:
+			if not b.has(key): return {"path":path+"."+str(key),"error":"missing"}
+			if a[key]!=b[key]: return _first_difference(a[key],b[key],path+"."+str(key))
+	elif a is Array and b is Array:
+		if a.size()!=b.size(): return {"path":path,"before_size":a.size(),"after_size":b.size()}
+		for index: int in a.size():
+			if a[index]!=b[index]: return _first_difference(a[index],b[index],path+"["+str(index)+"]")
+	return {"path":path,"before":a,"after":b,"before_type":typeof(a),"after_type":typeof(b),"before_full":JSON.stringify(a,"",true,true),"after_full":JSON.stringify(b,"",true,true)}

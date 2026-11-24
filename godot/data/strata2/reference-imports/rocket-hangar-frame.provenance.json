@@ -78,6 +78,18 @@
   },
   "proposed_uint16le_sha256": "a3df87bcdfd9ec8e8a7dc694906c7dcb3955c5299660acb90d913078f4e67650",
   "proposed_write_mask_sha256": "5d48a36f27a74049fd4777238deeb4b7382db393adf96f5ba995adc1dbf486e3",
+  "native_qualification": {
+    "canvas": [512, 512],
+    "selected_crop": [0, 0, 448, 320],
+    "origin": [32, 64],
+    "proposed_uint16le_sha256": "c13e45cf87cbe88908dc37c340d900de0382d8729552177c75c6594c86893584",
+    "proposed_write_mask_sha256": "a73f8dc48e3d5581078d028d9c9ee47fe10f6b751735092605fb9c5e2d45ece3",
+    "mapped": 24251,
+    "no_write": 119109,
+    "mask_no_write": 116708,
+    "unmapped_skipped": 2401,
+    "scope": "Explicit qualification crop within the unchanged shipped source; same mapping/mask; no resampling."
+  },
   "qualification": "Deterministic input/proposal fixture only; native receipt/readback and actual Godot framebuffer belong to the source-bound Workbench qualification.",
   "original_preservation": "The original is not copied into this small fixture bundle; exact source URL and SHA-256 identify the unmodified original. The shipped crop retains exact pixels and explicit crop coordinates."
 }

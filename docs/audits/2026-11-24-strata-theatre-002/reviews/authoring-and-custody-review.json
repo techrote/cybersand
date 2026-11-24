@@ -1,0 +1,205 @@
+{
+  "date": "2026-11-24",
+  "disposition": "Draft/HOLD",
+  "executions": [
+    {
+      "checks": 232,
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "label": "import-codec",
+      "passed": true,
+      "scope": "Copied value contract plus actual native admitted material catalogue; no native edit or framebuffer claim"
+    },
+    {
+      "checks": 74,
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "label": "construction-session",
+      "passed": true,
+      "scope": "Copied FixtureHost, no native mutation or actual actor claim"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "test_strata2_qualification",
+        "test_strata2_campaign_custody",
+        "-v"
+      ],
+      "exit_code": 0,
+      "label": "independent-python-custody",
+      "reviewed_files_equal_commit_after_execution": true,
+      "scope": "Synthetic receipt and rehashed adverse controls; no Godot execution",
+      "source_commit": "4161eb245907bacecfeca0c0defa15f465e01e6a",
+      "tests": 11,
+      "working_directory": "tools/ci"
+    }
+  ],
+  "findings": [
+    {
+      "disposition": "fixed-reviewed",
+      "finding": "Preserve original receipt.revision rather than substituting later worker revision",
+      "id": "original_ack_revision"
+    },
+    {
+      "disposition": "fixed-reviewed",
+      "finding": "Exact private copied Setup observer plus separate authored_serial covers same-material saved stamps",
+      "id": "noop_authored_fence"
+    },
+    {
+      "disposition": "fixed-source-reviewed-native-execution-separate",
+      "finding": "Continue process while authoring_busy even when presentation disabled",
+      "id": "disabled_authoring_driver"
+    },
+    {
+      "disposition": "defensive-addition-requested",
+      "finding": "Owner, generation, revision, region and final live fence reviewed; add per-tile authored_serial comparison",
+      "followup_disposition": "per-tile-authored-serial-added-and-source-reviewed-at-338be3e6b",
+      "id": "harvest_receipt_fences"
+    },
+    {
+      "disposition": "fixed-peer-execution-reviewed",
+      "finding": "Commit focused SpinBox text before preview/action",
+      "id": "focused_numeric_ui"
+    },
+    {
+      "disposition": "fixed-peer-execution-reviewed",
+      "finding": "Refresh completed harvest catalogue and changed stage progress",
+      "id": "async_ui_progress"
+    },
+    {
+      "disposition": "fixed-reviewed",
+      "finding": "Retire earlier proposal before validating a new attempted source/configuration",
+      "id": "failed_preview_token"
+    },
+    {
+      "disposition": "fixed-independently-exercised",
+      "finding": "Bind raw PNG map through source, loaded project, campaign start/end and package; rehashed mutation refuses",
+      "id": "raw_png_custody"
+    },
+    {
+      "disposition": "fixed-independently-exercised",
+      "finding": "Require proper material hashes and exact nonzero owner/actor identity witnesses",
+      "id": "native_report_shapes"
+    },
+    {
+      "disposition": "no-blocking-source-finding",
+      "finding": "Separate reviewed settings candidate with exact token, original visual identity, same scene, current permissions and completed native-stage revisions",
+      "id": "composition_settings"
+    },
+    {
+      "disposition": "additional-direct-exercise-recommended",
+      "finding": "Exercise changed visual settings and changed native revision after completion before final freeze",
+      "id": "stale_settings_execution"
+    },
+    {
+      "disposition": "open-confirmed-native-file-negative",
+      "finding": "Use full_precision only for v2 JSON writer; retain v1 writer semantics and add arithmetic-derived/nested metadata float regression",
+      "followup_disposition": "fixed-and-independently-reexecuted-at-338be3e6b",
+      "id": "exact_v2_float_persistence"
+    }
+  ],
+  "followup_resolution": {
+    "native_full_workflow_execution": "Separately owned by lead; not claimed by this fast contract exercise",
+    "original_negative_log_sha256": "4cfc3d7c0bf9b375c4bd517c9725be717a71f49c0fba96aeae7a4fe624c70ff9",
+    "original_process_evidence_directory": "/tmp/strata2-evidence/a-integrated-338be3e6b",
+    "passed": true,
+    "receipt": "integrated-fast-tests-338be3e6b.json",
+    "receipt_sha256": "976fda7fc744f4be7a01a05a3773ec7a208491d53dc120a169f3ffdaff96f5fa",
+    "resolved_findings": [
+      "exact_v2_float_persistence",
+      "harvest_receipt_fences"
+    ],
+    "scope": "Pinned Linux headless copied-value authoring/atmosphere contracts plus actual atomic file roundtrip; no native material mutation, display, actor or Windows qualification.",
+    "source_commit": "338be3e6b90cca45c2f9fdc8afe9cbe920dcd56f",
+    "source_tree": "0292028d2275dc05208dd2a647befda49877ad6c"
+  },
+  "independent_review_scope": [
+    "lead ordinary Workbench adapter and ACK custody",
+    "lead composition settings candidate and approval fences",
+    "lead disabled presentation and partial-prefix test design",
+    "C actual-control UX fixes",
+    "C source/runtime/PNG/payload qualification and package custody"
+  ],
+  "open_qualification_boundaries": [
+    "Exact final combined-source Linux and Windows graphical campaigns",
+    "Pristine extracted Windows launcher execution and complete payload inspection",
+    "Physical owner Windows/NVIDIA appearance, interaction, DPI, pacing and aesthetic acceptance",
+    "No dynamic native decorative simulation admitted by this review",
+    "Native donor attachment solver and cross-plane atomicity are unsupported"
+  ],
+  "retained_negative": {
+    "float_document_roundtrip": {
+      "default_json": "0.370370367037035",
+      "diagnostic": "/tmp/strata2-float-diagnostic.gd",
+      "expression": "0.123456789012345 * 3.0",
+      "field": "presentation.fog_strength",
+      "full_precision_document_equal": true,
+      "full_precision_json": "0.37037036703703496",
+      "original_float64_little_endian_hex": "a23875e925b4d73f",
+      "original_log": "/tmp/strata2-float-original-negative-expanded.log",
+      "reopened_float64_little_endian_hex": "a33875e925b4d73f",
+      "resolution": {
+        "atmosphere_numeric_canonicalization": "Float64 speed/strength/direction/colour; integer region/seed/count/version",
+        "document_equal": true,
+        "original_float64_hex": "a23875e925b4d73f",
+        "reopened_float64_hex": "a23875e925b4d73f",
+        "source_commit": "338be3e6b90cca45c2f9fdc8afe9cbe920dcd56f",
+        "v1_writer_precision_setting_unchanged": true
+      },
+      "scope": "Actual atomic document write/read via retained native file service; no World allocation or framebuffer qualification",
+      "source_commit": "b02e352508013ceb985e11d745f0d300389321bb",
+      "status": "open-at-review-checkpoint"
+    },
+    "json_palette_membership": "Real JSON numeric allowed IDs required canonical integer normalization before Godot Array membership; fixed 200e66c0d"
+  },
+  "reviewer": "specialist-A-native-authoring",
+  "schema": "strata2-authoring-cross-review-v1",
+  "self_implemented_scope_not_independent_review": [
+    "native module and raster codec",
+    "finite plan and owner-adapter session",
+    "historical provenance extension",
+    "synthetic alpha fixtures and value-owner tests"
+  ],
+  "source": {
+    "architecture_schema_donor": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "lead_review_checkpoint": {
+      "commit": "b02e352508013ceb985e11d745f0d300389321bb",
+      "files_sha256": {
+        "godot/scripts/depth/workbench_layer_owner.gd": "ec1b91eebfeb20b91a13f0d955b64702f71f7f5d6cc0fa2134f7f5185134daf4",
+        "godot/scripts/depth/workbench_strata_authoring.gd": "fa15de856aba0c54fdad5a2fab2ca9fc2f273ce22ebc9f615fb1b2bd790f5a67",
+        "godot/scripts/depth/workbench_strata_controller.gd": "7e7dee7c44c3a5dabd8a19590dd020e83481c3366df7d77cb5d22e3055d44003",
+        "godot/scripts/workbench_paint_editor_controller.gd": "cffd2e5e5002bcd2f6567f812ef75ca844664b2925cad84e804951b34755a48c",
+        "godot/tests/test_strata2_workflow.gd": "03f12ce1b18e943786ad8e66a35df2e309f83b1eb9c6aa563985ce4d24a8cb19"
+      },
+      "tree": "d7ffc24d5609acebdcfcf37844c8f7020e57f34f"
+    },
+    "owned_checkpoint": {
+      "commit": "46cd8e74d36afcd7d08ccbf7d603bb2f4228b2f8",
+      "files_sha256": {
+        "godot/data/strata2/imports/fixture-manifest.json": "93b835b0c72151c1e2f546a0eb4a6f99dc00a05e54d2950901efe6f804ce298a",
+        "godot/scripts/depth/strata_authoring_provenance.gd": "9535667c513bb02ff29f81195fd0361d4dac5441161ea1516059fddf70dcb520",
+        "godot/scripts/depth/strata_construction_plan.gd": "c7706fd6254eb558b6299b8c5d2dff287d4fc6a43c23c3b06b3aa56235aac78b",
+        "godot/scripts/depth/strata_construction_session.gd": "a248180efb231f4440b05191bc5157acb4a48ba5d00daa626f71fed8a2273407",
+        "godot/scripts/depth/strata_import_codec.gd": "a7eb2e86e91a37da3f43920a7c1c04ca5318cecbc0bab80f53abde4498d4f738",
+        "godot/scripts/depth/strata_native_module.gd": "ba5a0e560d59636d3d31d24ecd30880db0f32f671bd3240fc2c427d229ee24d7",
+        "godot/tests/test_strata_construction_session.gd": "0f477c2d8e0d33ae99287f7c26b5b439b951b16034aef6178f3b4afb77cc8a76",
+        "godot/tests/test_strata_import_codec.gd": "23c90e3dfcada3b735850f2cc3ed31128ca4d4431bd0c16cc4a653b5bf0faef7",
+        "tools/strata2_build_import_fixtures.py": "ce07cc1076f4bdb209052843b3681050c4fb473aef754e1d7246e1fc6f71a43e"
+      },
+      "tree": "36ddeee2ab4b5b082bce3abb3bdf813464993ab8"
+    },
+    "predecessor": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+    "qualification_review_checkpoint": {
+      "commit": "4161eb245907bacecfeca0c0defa15f465e01e6a",
+      "files_sha256": {
+        "tools/ci/qualify_strata2_workbench.py": "e8860d3de40b88aeaf76684a8919e9ee3e607a4f4b26d455cd103724deab4cf7",
+        "tools/ci/test_strata2_campaign_custody.py": "95b55c15331342fd8302367d5801b45acfac830fdf937dbab6e87cde142b333e",
+        "tools/ci/test_strata2_qualification.py": "243e51c1102331f6943beaf756f117ca0b9ab2f5fcdc526f7e05fc69e9aeafcd",
+        "tools/package_strata2_workbench.py": "e2cd31a83606d93bfa9c4e391abc15152b1042d92953836aaba5f077bb9e3ce4"
+      },
+      "tree": "fd341209731dd03c747e8ced1d20b6a799f3d16a"
+    }
+  }
+}

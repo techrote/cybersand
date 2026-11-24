@@ -1,3 +1,13 @@
+---
+title: Strata environments and visual atmosphere
+status: Current
+document-kind: contract
+scope: Draft opt-in native layered environment library, reusable parts and bounded presentation-only atmosphere in ordinary Workbench
+canonical-for: [strata-environment-library, strata-visual-atmosphere]
+last-reviewed: 2026-11-24
+related-documents: [strata-workbench.md, depth-layers-and-parallax.md, ../operations/strata-workbench-evaluation.md, ../architecture/shared-workbench-authoring-data.md]
+---
+
 # Strata environments and visual atmosphere — Draft/HOLD
 
 This document describes the successor's authored native environment library and bounded visual atmosphere. The ordinary Workbench owns Play, its actors, camera, worker and physical progression. The three decorative native planes remain independently owned, paused and static. The atmosphere renderer creates no World, native material, texture upload, collider or actor.
@@ -10,15 +20,15 @@ The five recipes in `godot/data/strata2/` are original, exact native material-ID
 
 | Scene ID | Native extent | Physical Play composition | Rear / effects / distant contribution |
 | --- | --- | --- | --- |
-| `orbital-terminal` | 2048 × 1024 | Suspended steel gantries, cargo landings, long lower flight corridor | Megatrusses and docking frames; sparse service panels and vents; separated orbital silhouettes and distant native signal pixels |
+| `orbital-terminal` | 2048 × 1024 | Suspended steel gantries, cargo landings, long lower flight corridor | Megatrusses and docking frames; sparse service panels and vents; connected distant dock arms, stepped towers and signal pixels |
 | `neon-rain-arcology` | 2048 × 1024 | Uneven rooftops, inhabited platform faces and open lower route | Separate rear towers and skybridges; native signs plus visual rain; isolated far towers with large gaps |
-| `industrial-underworks` | 1024 × 1024 | Alternating maintenance tiers and continuous central shaft | Hollow rear reactor windows and pipework; native vents plus visual steam; thin distant service frames |
-| `abyss-foundry` | 1024 × 1024 | Irregular basalt shelves and sparse industrial ledges around a large void | Rear maintenance structures; mineral details plus localized mist and motes; independent tapering rock forms |
-| `vertical-transfer-spine` | 1024 × 1536 | Alternating side landings around a tall clear transfer shaft | Repeated rear hoist frames; signal panels and visual movement; separated distant habitation |
+| `industrial-underworks` | 1024 × 1024 | Alternating maintenance tiers and continuous central shaft | Hollow rear reactor windows and pipework; native vents plus visual steam; a static native annular turbine and pressure columns |
+| `abyss-foundry` | 1024 × 1024 | Irregular basalt shelves and sparse industrial ledges around a large void | Rear maintenance structures; mineral details plus localized mist and motes; attached distant ceiling contours, cliffs and tapered formations |
+| `vertical-transfer-spine` | 1024 × 1536 | Alternating side landings around a tall clear transfer shaft | Rear carriage cages, continuous cables and a pulley; signal panels and visual movement; separated distant habitation |
 
 Each file includes the ordinary actor spawn, explicit geometric route proposals, two camera detail locations, individual plane roles, rectangle counts, write-cell bounds and ordered recipe digests. Play is never inferred from a composited screenshot. The large empty regions are deliberate: successive planes do not fill every opening with another opaque wall.
 
-The generator checks a 68 × 68 swept square for each declared route. That is a useful authoring constraint, **not a movement result**. Actual Midge control, clearance during rotation, collision, continuous traversal and high-speed readability require ordinary Workbench execution. No static mask proves load bearing or structural stability.
+The generator checks a radius-34 swept square for each declared route: 69 × 69 cells when both edge coordinates are included. That is a useful authoring constraint, **not a movement result**. Actual Midge control, clearance during rotation, collision, continuous traversal and high-speed readability require ordinary Workbench execution. No static mask proves load bearing or structural stability.
 
 Native scene source inspection is available through `strata_showcase_scenes.gd`. It checks fixed identities, exact known fields, admitted extents, native material validity, protected borders, recipe hashes, visual settings and metadata before producing the existing Setup/document candidate pair. It does not directly create or replace a live Play World.
 
@@ -38,7 +48,7 @@ The owner chooses a shared anchor. The library resolves fixed module identities,
 
 Transparent module cells preserve the existing target. None of these eight parts requests Empty-cell clearing. The reactor window and vent stack declare small required clearances; an occupied target clearance must refuse placement. A part's metadata describes authored intentions, not a solved attachment or load-bearing connection.
 
-Preset atmosphere settings are included as a separate, anchor-relative proposal. Approval of native construction does not silently enable those effects or change visual settings. Existing native Undo history is per plane and per acknowledged bounded chunk, with no cross-plane rollback promise.
+Preset atmosphere and depth settings are included as a separate, anchor-relative proposal. Approval of native construction does not silently enable those effects or change visual settings. The explicit reviewed settings action becomes available after native completion; it replaces the current atmosphere configuration as stated in the UI. Existing native Undo history is per plane and per acknowledged bounded chunk, with no cross-plane rollback promise.
 
 ## Atmosphere controls and exact meaning
 
@@ -57,13 +67,15 @@ Count is the actual seeded motif count, from 0 to 96 per effect and at most 384 
 
 All settings are applied live after validation. Changing a seed regenerates its deterministic motif positions; Reset motion returns presentation phase to zero. Save/Reopen restores seeds and settings, then starts the visual phase anew. It does not restore exact evolved multi-World physical continuation.
 
-Global Pause freezes all atmosphere. Hidden, Solo-excluded, Flat-excluded, zero-opacity or disabled Strata planes freeze their own visual clocks and stop recurring effect callbacks. A locked plane continues showing its existing atmosphere but refuses authored changes. Disabling one effect hides that effect; when other effects on the same plane continue, re-enabling it joins that plane's current phase. To freeze all motifs together, use Pause animation.
+Global Pause freezes all atmosphere. Hidden, Solo-excluded, Flat-excluded, zero-opacity or disabled Strata planes freeze their own visual clocks and stop recurring effect callbacks. A locked plane continues showing its existing atmosphere but refuses regional effect addition, removal or editing. Scene-wide Enable/Pause and Reset motion remain separate controls. Disabling one effect hides that effect; when other effects on the same plane continue, re-enabling it joins that plane's current phase. To freeze all motifs together, use Pause animation.
 
 The visual clock is deliberately independent of native physical time. A callback contributes at most 0.1 seconds. Excess elapsed display time is measured and discarded; resuming after a stall or hidden interval does not issue catch-up work. Zero-speed effects retain a static visual image. A plane with no enabled, positive-alpha, positive-strength moving motifs has no recurring atmosphere processing.
 
 ## Presentation seam and cost boundaries
 
 One lightweight native-coordinate CanvasItem renderer is a child of each existing decorative TextureRect. The existing presenter supplies scale from native extent to the current drawable size. Parent transforms supply the established camera/parallax relation, parent alpha supplies plane opacity, and the existing clipping ancestor supplies the Workbench content boundary. Drawing remains behind the ordinary Play image and actor presentation; nothing replaces the camera or public render scheduler.
+
+The visual plane order is fixed: Play, scripted architecture, effects, then background. Relative depth controls the existing parallax and distance-haze relation; it does not reorder planes or move collision. Reset presentation restores the layer/view defaults while preserving authored atmosphere. Reset motion only returns transient motif phase to zero. Neither control changes native geometry or physical ownership.
 
 Unchanged native decoration retains zero recurring native captures and uploads. Visual atmosphere queues CanvasItem redraws only for active moving motifs. It does not invalidate the baked native material surfaces. It can still consume presentation CPU and GPU work, and its actual cost must be measured alongside Play progression and frame callbacks. Constant zero-native counters in the renderer describe its code path; independent owner/publication witnesses establish the execution claim.
 
@@ -82,3 +94,5 @@ The synthetic alpha fixture in `data/strata2/imports/` exercises actual transpar
 Focused source/value tests cover strict profiles, clocks, native scene admission contracts, part masks/transforms, finite preset compilation, real PNG decoding and independent proposal digests. The first integration check exposed a JSON integer/float palette-membership defect; canonical normalization was repaired in the library and the generic codec, with real JSON roundtrip coverage. That original failure remains part of the mission record.
 
 Final graphical review must inspect actual full-stack, each isolated native plane, native-resolution details and matched atmosphere OFF/ON frames. It must check occlusion, readable collision-plane silhouettes, retained transparent openings, hidden/Solo/opacity behavior, route probes, imported material readback and saved settings in a fresh process. Software display captures and callback intervals cannot establish physical Windows/NVIDIA appearance, displayed GPU FPS or owner playfeel. Those remain separate owner gates.
+
+The portable `Gallery.html` is generated from the final admitted Windows campaign and retains only relative references to its original PNG files. The generator checks exact source inputs, original scene reports, capture hashes and any one-cell-per-framebuffer-pixel detail receipt before emitting the gallery and its input manifest. Full-stack and isolated reference views use the initial native showcase identities; matched atmosphere trial frames carry their own same-geometry identities because qualification edits can differ from the reference scene. The browser fits images by default; 100% image size means CSS pixels and does not override browser or OS display scaling. Gallery generation and Python tests do not themselves qualify browser appearance or Godot execution.

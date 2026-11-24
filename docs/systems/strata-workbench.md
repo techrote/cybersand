@@ -2,22 +2,27 @@
 title: Strata Theatre in the Shared Workbench
 status: Current
 document-kind: contract
-scope: Opt-in four-plane authored composition over the ordinary play owner; static decorative native Worlds, transforms, history and versioned persistence
+scope: Draft opt-in four-plane authored composition, native import and construction, presentation-only atmosphere, ownership and versioned persistence
 canonical-for: [workbench-strata-composition, workbench-strata-ownership, workbench-strata-persistence]
 last-reviewed: 2026-11-24
-related-documents: [depth-layers-and-parallax.md, ../architecture/shared-workbench-authoring-data.md, ../operations/strata-workbench-evaluation.md, ../decisions/2026-11-14-owner-authoring-intent.md]
+related-documents: [strata-authoring.md, strata-environments.md, depth-layers-and-parallax.md, ../architecture/shared-workbench-authoring-data.md, ../operations/strata-workbench-evaluation.md, ../decisions/2026-11-14-owner-authoring-intent.md]
 ---
 
 # Strata Theatre in the Shared Workbench
 
 ## Scope and disposition
 
-**Current candidate, Draft/HOLD:** STRATA-THEATRE-WORKBENCH-001 implements the
-scoped successor to [#588](https://github.com/techrote/cybersand/issues/588) on
-accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. The owner's 24 November
-execution brief authorizes this implementation and adopts all-plane authoring,
-play-only actor/collision authority and limited decorative/effect planes for
-evaluation. It does not authorize default activation, Ready promotion or merge.
+**Current successor, Draft/HOLD:** STRATA-THEATRE-002 in
+[PR #776](https://github.com/techrote/cybersand/pull/776) extends the immutable
+[#769 predecessor](https://github.com/techrote/cybersand/pull/769), whose archival
+head is `80623d039aa49bc0c1d84a9206d89812ffa99ea6`. Accepted main
+`00cdb02f103265b6dc5224c68283e9a0c8cb449f` is retained in its ancestry. This
+candidate adds reviewed local PNG/native import, reusable parts and finite
+layered construction, bounded visual atmosphere and five native environments.
+The [native authoring contract](strata-authoring.md) and
+[environment contract](strata-environments.md) define those extensions. The
+owner's brief authorizes implementation and evaluation; default activation,
+Ready promotion, merge and physical owner acceptance remain separate decisions.
 
 The **Strata Theatre…** action in ordinary Shared Workbench opens its composition
 panel. The default presentation, camera, simulation worker and render-publication
@@ -25,7 +30,7 @@ path remain unchanged until this option is enabled. Standalone Strata, Semantic
 Depth and Deepworks remain separate tools with their earlier capabilities.
 
 Source establishes implemented behavior. The
-[canonical decision packet](../audits/2026-11-24-strata-theatre-workbench/decision-packet.md) and the
+[successor decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md) and the
 [evaluation guide](../operations/strata-workbench-evaluation.md) distinguish
 source review, native tests, actual graphical platform execution and physical
 Windows 11/NVIDIA owner acceptance. Workflow existence is not platform evidence.
@@ -49,10 +54,11 @@ and atomic-adoption pattern without acquiring Play.
 | `shared_workbench.gd`, existing paint editor and native executor | Existing Play admission, camera, material semantics, actor ownership, Undo and named-save architecture |
 
 The accepted GEN-005/semantic-plane examples and atlas compositions remain
-available in their existing tools. These three new small native examples use the
-same material palette and explicit rectangle geometry, without importing an
-unaccepted Gold nomination or regenerating a map corpus. Accepted GEN-007 and
-GEN-008 play sources remain compatible through their existing owned baselines.
+available in their existing tools. The five successor examples use the same
+admitted material palette and explicit native geometry. Their curated parts and
+two source-pinned raster crops do not adopt an unaccepted Gold nomination or
+regenerate a map corpus. Accepted GEN-007 and GEN-008 play sources remain
+compatible through their existing owned baselines.
 
 | Plane | Authoritative owner | Simulation and physics | Presentation source |
 | --- | --- | --- | --- |
@@ -187,8 +193,9 @@ committed edit whose display publication fails is explicitly reported as committ
 with stale pixels; Save retains the actual authored revision and further edits
 wait for explicit reopen. The retained authored source remains available for explicit
 reconstruction; no cross-plane material transfer or automatic event forwarding
-is implemented. Atmospheric Steam/Spark-like decoration is visual material
-content, not real mass transfer into the playable World.
+is implemented. Native decorative material and animated visual motifs are separate categories.
+Presentation-only haze, steam, rain, dust, beacons and machinery do not claim
+native mass, hazards, physical lighting or transfer into the playable World.
 
 ## Versioned authored persistence
 
@@ -198,10 +205,17 @@ and GEN-008 readers. Older nonlayered files keep their original readers.
 
 | Envelope section | Meaning and limit |
 | --- | --- |
-| 52-byte header | Eight-byte magic, version 1, manifest/payload lengths, SHA-256 over both sections |
-| UTF-8 JSON manifest, at most 8 MiB | Exact keys; unchanged starting Setup, four explicit plane records and presentation settings, identified play source |
+| 52-byte header | Eight-byte magic, explicit version 1 or 2, manifest/payload lengths, SHA-256 over both sections |
+| UTF-8 JSON manifest, at most 8 MiB | Exact version-specific keys; unchanged starting Setup, four explicit plane records and presentation settings, identified play source; v2 adds authored atmosphere and operation provenance |
 | Optional play payload, at most 8 MiB | Existing copied generated material bytes or exact GEN-008 uint16 material baseline bytes |
 | Decorative layout | At most 32,768 existing material rectangles and 16,777,216 construction cell writes per plane |
+
+V1 retains its original meaning, strict fields and encoding behavior. Explicit
+upgrade to v2 supplies disabled empty atmosphere and empty authoring provenance.
+V2 preserves numeric settings with full floating-point JSON precision; canonical
+integer identities and floating visual parameters round-trip exactly. Unsupported
+versions or unknown fields are refused, never silently discarded. No legacy
+Setup, GEN-008 or RAMCACHE format is rewritten.
 
 The scene declares `content_domain: authored-material-layout`. It persists all
 four authored material layouts, settings and revisions, including when layered
@@ -227,8 +241,30 @@ Native ID/hash/extent admission still applies. The existing nonlayered
 generated-start reader keeps its recipe regeneration behavior.
 
 Model-assisted Art batches remain play-only in their existing subsystem. This
-milestone's all-plane authoring refers to the human tools in the Strata adapter;
-it does not authorize a provider to mutate decorative Worlds.
+successor's all-plane authoring refers to explicit human native proposals and tools
+in the Strata adapter; it does not authorize a provider to mutate decorative
+Worlds. Read-only #770 schema compatibility is a bounded layer adapter, not a
+qualification or absorption of the separate architecture application.
+
+## Native authoring and visual motion extensions
+
+The Import and Compose tabs use copied observations from the selected native
+plane. Review occurs before writes. Owner approval binds source bytes, masks,
+material permissions, plane ownership, native revision and authored Setup serial.
+Operations execute through existing native authority in at most 4096-cell
+chunks. Per-stage readback checks the complete region, including no-write cells.
+Play preflight runs its existing history admission over that exact chunk sequence.
+Stop retains and reports the acknowledged prefix; cross-plane atomicity is not
+claimed. History remains a 32-entry window per plane, with displacement warnings.
+
+Atmosphere is a child of the existing decorative drawable. It inherits the same
+transform, clipping, opacity and visibility. Six bounded motif kinds share at
+most twelve regions and 384 motifs; a plane has no recurring effect callback
+when excluded, disabled or paused. Geometry, native clocks, actor authority and
+material history are unchanged. Seeds and settings are authored and saved;
+visual phase is transient and starts fresh on reopen. The existing three native
+decorative Worlds remain static, paused and zero Hz. Optional native decorative
+dynamics are not delivered in this candidate.
 
 ## Cost boundary and qualification
 

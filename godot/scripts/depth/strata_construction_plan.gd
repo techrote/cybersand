@@ -63,8 +63,11 @@ static func from_composition(raw: Dictionary, anchor: Vector2i, modules: Array, 
 		if by_id.has(module.id): return Module.failure("Repeated composition module identity.")
 		by_id[module.id] = validated.module
 	if raw.modules.size() != by_id.size(): return Module.failure("Composition module dependencies are incomplete.")
+	var declared_modules: Dictionary = {}
 	for id: Variant in raw.modules:
 		if not Module.identifier(id) or not by_id.has(id): return Module.failure("Composition references an unavailable native part.")
+		if declared_modules.has(id): return Module.failure("Composition module dependencies must declare each supplied part exactly once.")
+		declared_modules[id] = true
 	var stages: Array = []
 	var scene_id := ""
 	for item: Variant in raw.stages:

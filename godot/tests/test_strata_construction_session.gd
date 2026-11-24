@@ -12,6 +12,7 @@ const Codec = preload("res://scripts/depth/strata_import_codec.gd")
 class FixtureHost extends RefCounted:
 	var planes: Dictionary = {}
 	var revisions: Dictionary = {}
+	var authored_serials: Dictionary = {}
 	var history: Dictionary = {}
 	var generation := 1
 	var visible := true
@@ -30,6 +31,7 @@ class FixtureHost extends RefCounted:
 	var capacity_bytes := 262144
 	var rectangles := 0
 	var max_rectangles := 32768
+	var prior_undo := 0
 	var calls: Array = []
 	var serial := 0
 	var pending: Dictionary = {}
@@ -38,13 +40,14 @@ class FixtureHost extends RefCounted:
 	func _init() -> void:
 		for id: String in ["play", "scripted", "effects", "background"]:
 			var cells := PackedInt32Array(); cells.resize(512 * 512)
-			planes[id] = cells; revisions[id] = 1; history[id] = []
+			planes[id] = cells; revisions[id] = 1; authored_serials[id] = 1; history[id] = []
 
 	func authoring_plane_state(id: String) -> Dictionary:
 		return {"ok": true, "error": "", "scene_id": "scene:1", "owner_id": id + ":owner", "generation": generation,
-			"revision": revisions[id], "extent": [512, 512], "paint_allowed": visible, "erase_allowed": visible,
+			"revision": revisions[id], "authored_serial": authored_serials[id], "extent": [512, 512], "paint_allowed": visible, "erase_allowed": visible,
 			"permission_sha256": permission, "authored_rectangles": rectangles, "authored_layout_writes": 0,
 			"max_rectangles": max_rectangles, "max_layout_writes": 16777216,
+			"history_limit": 32, "undo_count": prior_undo + history[id].size(),
 			"remaining_authoring_records": capacity_records - records.records.size(), "remaining_authoring_bytes": capacity_bytes}
 
 	func authoring_capture(id: String, region: Rect2i, expected: Dictionary) -> Dictionary:
@@ -60,7 +63,7 @@ class FixtureHost extends RefCounted:
 		for y: int in range(region.position.y, region.end.y):
 			for x: int in range(region.position.x, region.end.x): materials.append(planes[id][y * 512 + x])
 		var result := {"ok": true, "status": "completed", "region": region, "materials": materials,
-			"owner_id": id + ":owner", "authored_revision": revisions[id], "generation": generation}
+			"owner_id": id + ":owner", "authored_revision": revisions[id], "authored_serial": authored_serials[id], "generation": generation}
 		if bad_capture: result.erase("owner_id")
 		return result
 
@@ -83,12 +86,13 @@ class FixtureHost extends RefCounted:
 			if planes[id][key] != cells[i * 3 + 2]: changed += 1
 			planes[id][key] = cells[i * 3 + 2]
 		if limit > 0:
-			writes += limit; revisions[id] += 1
+			writes += limit
+			if limit == cells.size() / 3: revisions[id] += 1; authored_serials[id] += 1
 			history[id].append({"cells": cells.slice(0, limit * 3), "before": before.duplicate()})
 		if disturb_no_write: planes[id][65 * 512 + 65] = 77
 		var result := {"ok": limit == cells.size() / 3, "status": "completed" if limit == cells.size() / 3 else "partial",
 			"applied": limit, "changed": changed, "cells": cells.slice(0, limit * 3), "before": before, "after": after,
-			"owner_id": "retired-owner" if wrong_owner else id + ":owner", "generation": generation, "authored_revision": revisions[id],
+			"owner_id": "retired-owner" if wrong_owner else id + ":owner", "generation": generation, "authored_revision": revisions[id], "authored_serial": authored_serials[id],
 			"error": "" if limit == cells.size() / 3 else "injected acknowledged partial prefix"}
 		if bad_receipt: result.erase("after")
 		if bad_applied: result.applied = "1"
@@ -177,10 +181,11 @@ func run() -> void:
 	check(state.token != first_token and state.changed_cells == 0, "new preview token differs even when source geometry is unchanged")
 	recreated.session.begin(host, {}, admitted)
 	check(not recreated.session.state().can_approve and recreated.session.state().token.is_empty(), "failed replacement preview retires previous approval token")
-	for mutation: String in ["revision", "permission", "generation", "hidden"]:
+	for mutation: String in ["revision", "authored_serial", "permission", "generation", "hidden"]:
 		host = FixtureHost.new(); created = begin(host, part); session = created.session; state = drive(session)
 		match mutation:
 			"revision": host.revisions.scripted += 1
+			"authored_serial": host.authored_serials.scripted += 1 # No cell/native revision change.
 			"permission": host.permission = "b".repeat(64)
 			"generation": host.generation += 1
 			"hidden": host.visible = false
@@ -190,6 +195,16 @@ func run() -> void:
 	check(begin(host, part).state.status == "refused" and host.writes == 0, "record capacity refuses before any write")
 	host = FixtureHost.new(); host.capacity_bytes = 100
 	check(begin(host, part).state.status == "refused" and host.writes == 0, "record bytes refuse before any write")
+	host = FixtureHost.new(); created = begin(host, part)
+	var near_limit: Dictionary = created.plan.duplicate(true)
+	var basic := Plan.compile(near_limit, admitted)
+	near_limit.metadata.padding = "x".repeat(8170 - Module.json_bytes(basic.stages[0].metadata).size() - 13)
+	check(Plan.compile(near_limit, admitted).ok, "boundary provenance fixture fits the plain typed plan")
+	var boundary_session := Session.new()
+	check(boundary_session.begin(host, near_limit, admitted).status == "refused" and host.writes == 0, "worst-case terminal metadata refuses before the first native write")
+	host = FixtureHost.new(); host.prior_undo = 32
+	created = begin(host, part); state = drive(created.session)
+	check(state.can_approve and state.history_summary[0].displaced_entries == 1 and not state.history_warnings.is_empty(), "preview explicitly warns about inherited32-entry history displacement")
 	host = FixtureHost.new(); host.bad_capture = true
 	created = begin(host, part)
 	check(drive(created.session).status == "refused" and host.writes == 0, "copied native observation requires explicit owner identity")
@@ -253,6 +268,17 @@ func run() -> void:
 			"placements": [{"module_id": part.id, "origin": [0, 0], "transform": "identity", "palette": {}, "empty_mode": "preserve"}]}]}
 	var preset_roundtrip: Variant = JSON.parse_string(JSON.stringify(preset))
 	check(Plan.from_composition(preset_roundtrip, Vector2i(64, 64), [JSON.parse_string(JSON.stringify(part))], {"scripted": host.authoring_plane_state("scripted")}, admitted).ok, "real JSON composition/module bridge preserves palette permissions")
+	var two_parts: Dictionary = preset.duplicate(true)
+	two_parts.modules = [part.id, module_copy.id]
+	var second_preset_stage: Dictionary = two_parts.stages[0].duplicate(true)
+	second_preset_stage.id = "two"; second_preset_stage.depends_on = ["one"]
+	second_preset_stage.allowed_materials = [0, 66]
+	second_preset_stage.placements[0].module_id = module_copy.id
+	two_parts.stages.append(second_preset_stage)
+	var two_parts_roundtrip: Variant = JSON.parse_string(JSON.stringify(two_parts))
+	check(Plan.from_composition(two_parts_roundtrip, Vector2i(64, 64), [part, module_copy], {"scripted": host.authoring_plane_state("scripted")}, admitted).ok, "JSON composition declares the exact two-part dependency set")
+	two_parts_roundtrip.modules = [part.id, part.id]
+	check(not Plan.from_composition(two_parts_roundtrip, Vector2i(64, 64), [part, module_copy], {"scripted": host.authoring_plane_state("scripted")}, admitted).ok, "duplicate declared dependency cannot conceal a second supplied and used part")
 	preset_roundtrip.stages[0].allowed_materials = [0.0, 58.5]
 	check(not Plan.from_composition(preset_roundtrip, Vector2i(64, 64), [part], {"scripted": host.authoring_plane_state("scripted")}, admitted).ok, "fractional JSON material IDs still refuse")
 	var inspected := Codec.inspect_source("res://data/strata2/imports/alpha-cutout.png", admitted)

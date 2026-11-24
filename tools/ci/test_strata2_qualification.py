@@ -2,11 +2,14 @@
 """Adverse controls for Strata's source/evidence acceptance boundary."""
 from copy import deepcopy
 import io
+import hashlib
+import json
 from pathlib import Path
 import subprocess
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
 import qualify_strata2_workbench as gate
 import package_strata2_workbench as package
 
@@ -35,11 +38,19 @@ def successor_fields(data):
     after = dict(owner, native_tick=30, rapier_tick=60)
     phases = {name: {"phase_seconds": 1.0} for name in ("scripted", "effects", "background")}
     data.update(diagnostic_headless=False, document_version=2, authored_settings_sha256="f" * 64,
+                saved_authoring={"native_marker":{"plane":"background","point":[96,96],"material":131},
+                                 "authoring_sha256":"a"*64,"atmosphere_sha256":"b"*64,"authoring_records":0,"raster_imports":[],
+                                 "atmosphere":{"paused":True,"effects":[{"id":"fixture-effect","strength":0.43}]}},
+                authored_mutations={"plane":"background","point":[96,96],"before":0,"after":131,
+                                    "effect_id":"fixture-effect","effect_strength_before":0.5,"effect_strength_after":0.43},
+                native_grid_details=[{"plane":plane,"pixels_per_cell_x":1.0,"pixels_per_cell_y":1.0} for plane in ("play","scripted")],
                 admission_target_ms=45000, admission_elapsed_ms=400, admission_target_met=True,
                 cost_samples=[{"mode": mode, "atmosphere_enabled": animated,
                                "native_snapshots_during_sample": 0, "decorative_uploads_during_sample": 0}
                               for mode, animated in (("disabled", False), ("flat", False), ("stack", False), ("stack", True))],
                 atmosphere={"visual_difference": {"changed_samples": 20}, "solo_leakage": {"changed_samples": 0},
+                            "play_material_time":{"fixed":12.5,"original":-1.0,"shader_instance":"991","restored":True,
+                                                  "emission_shader_instance":"992","emission_original":-1.0,"emission_restored":True},
                             "native_hashes_before": deepcopy(data["plane_native_hashes"]),
                             "native_hashes_after": deepcopy(data["plane_native_hashes"]), "native_capture_delta": 0,
                             "paused_before": deepcopy(phases), "paused_after": deepcopy(phases),
@@ -47,7 +58,26 @@ def successor_fields(data):
                             "moving_before": deepcopy(phases),
                             "moving_after": {name: {"phase_seconds": 2.0} for name in phases}},
                 route_probe={"completed_rapier_ticks": 60, "completed_native_ticks": 30, "forward_cells": 8.0,
+                             "live_decorative_edit":{"plane":"background","committed":True,"marker":131,
+                                                     "native_before":0,"native_written":131,"native_restored":0,
+                                                     "receipt":{"ok":True,"published":True},
+                                                     "before":dict(owner,native_tick=5,rapier_tick=6),
+                                                     "after":dict(owner,native_tick=5,rapier_tick=6)},
                              "before": owner, "after": after, "samples": [{"rapier_tick": 60}]})
+    reference = gate.REFERENCE_FIXTURES.get(data["scene"])
+    if reference:
+        provenance = json.loads((gate.ROOT / "godot/data/strata2/reference-imports" / (reference+".provenance.json")).read_text())
+        data["reference_import"] = {"id":reference,"plane":"scripted","source_sha256":provenance["crop_file_sha256"],
+                                    "mask_sha256":provenance["mask_sha256"],"geometry_sha256":provenance["proposed_uint16le_sha256"],
+                                    "write_mask_sha256":provenance["proposed_write_mask_sha256"],
+                                    "mapped":provenance["proposal_counts"]["mapped"],
+                                    "no_write":provenance["proposal_counts"]["source_pixels"]-provenance["proposal_counts"]["mapped"],
+                                    "completed_status":"completed","approved_token":"synthetic-test-token","history_chunks":7,
+                                    "before_sha256":"1"*64,"expected_sha256":"2"*64,"actual_sha256":"2"*64,"restored_sha256":"1"*64,
+                                    "play_before_sha256":"3"*64,"play_after_sha256":"3"*64,"visual_difference":{"changed_samples":20}}
+        data["saved_authoring"]["authoring_records"] = 1
+        data["saved_authoring"]["raster_imports"] = [{"source_sha256":provenance["crop_file_sha256"],"plane":"scripted",
+                                                    "status":"completed","historical":True,"geometry_sha256":"2"*64,"actual_sha256":"3"*64}]
     return data
 
 
@@ -95,7 +125,20 @@ class Acceptance(unittest.TestCase):
             "bad_native_digest": lambda d: d["plane_native_hashes"].update(play="author-json-not-native"),
             "duplicate_play": lambda d: d["world_count"].update(play_borrowed=2),
             "invalid_save": lambda d: d["save"].update(sha256="bad"),
+            "baseline_only_save": lambda d: d["authored_mutations"].update(before=131),
+            "lost_saved_native_edit": lambda d: d["saved_authoring"]["native_marker"].update(material=0),
+            "lost_saved_import_history": lambda d: d["saved_authoring"].update(raster_imports=[]),
+            "lost_saved_effect_change": lambda d: d["saved_authoring"]["atmosphere"]["effects"][0].update(strength=0.5),
             "no_transitions": lambda d: d.update(transitions=[]),
+            "magnified_claimed_native_resolution": lambda d: d["native_grid_details"][0].update(pixels_per_cell_x=2.0),
+            "missing_native_resolution_detail": lambda d: d.pop("native_grid_details"),
+            "missing_native_reference": lambda d: d.pop("reference_import"),
+            "wrong_reference_mapping": lambda d: d["reference_import"].update(geometry_sha256="9"*64),
+            "reference_no_native_change": lambda d: d["reference_import"].update(actual_sha256="1"*64,expected_sha256="1"*64),
+            "reference_alpha_clears_play": lambda d: d["reference_import"].update(play_after_sha256="9"*64),
+            "reference_undo_loses_destination": lambda d: d["reference_import"].update(restored_sha256="9"*64),
+            "reference_without_owner_approval": lambda d: d["reference_import"].update(approved_token=""),
+            "reference_render_only": lambda d: d["reference_import"].update(actual_sha256="native-looking screenshot"),
             "world_replaced": lambda d: d["transitions"][5]["after"].update(world_generation=18),
             "actor_replaced": lambda d: d["transitions"][5]["after"].update(actor_session_id=222),
             "bodies_replaced": lambda d: d["transitions"][5]["after"].update(actor_body_ids=[1872, 1891]),
@@ -120,11 +163,20 @@ class Acceptance(unittest.TestCase):
             "recurring_native_capture": lambda d: d["cost_samples"][-1].update(native_snapshots_during_sample=1),
             "recurring_upload": lambda d: d["cost_samples"][-1].update(decorative_uploads_during_sample=1),
             "no_visible_atmosphere": lambda d: d["atmosphere"]["visual_difference"].update(changed_samples=0),
+            "unfrozen_play_material_time": lambda d: d["atmosphere"].pop("play_material_time"),
+            "engine_time_confound": lambda d: d["atmosphere"]["play_material_time"].update(fixed=-1),
+            "borrowed_shader_not_restored": lambda d: d["atmosphere"]["play_material_time"].update(restored=False),
+            "borrowed_emission_time_confound": lambda d: d["atmosphere"]["play_material_time"].pop("emission_shader_instance"),
             "solo_effect_leak": lambda d: d["atmosphere"]["solo_leakage"].update(changed_samples=1),
             "atmosphere_mutates_native": lambda d: d["atmosphere"]["native_hashes_after"].update(play="e"*64),
             "hidden_clock_advances": lambda d: d["atmosphere"]["hidden_after"]["effects"].update(phase_seconds=2),
             "pause_clock_advances": lambda d: d["atmosphere"]["paused_after"]["effects"].update(phase_seconds=2),
             "no_native_route_ticks": lambda d: d["route_probe"].update(completed_native_ticks=0),
+            "no_live_native_edit": lambda d: d["route_probe"].pop("live_decorative_edit"),
+            "live_edit_not_native": lambda d: d["route_probe"]["live_decorative_edit"].update(native_written=0),
+            "live_edit_did_not_restore": lambda d: d["route_probe"]["live_decorative_edit"].update(native_restored=131),
+            "live_edit_stopped_play": lambda d: d["route_probe"]["live_decorative_edit"]["after"].update(native_tick=30),
+            "live_edit_replaced_owner": lambda d: d["route_probe"]["live_decorative_edit"]["after"].update(worker_id="991"),
             "no_actual_route_progress": lambda d: d["route_probe"].update(forward_cells=0),
             "route_replaces_world": lambda d: d["route_probe"]["after"].update(world_generation=123),
             "claimed_ticks_disagree": lambda d: d["route_probe"].update(completed_rapier_ticks=61),
@@ -148,6 +200,12 @@ class Acceptance(unittest.TestCase):
             ("test_strata2_mounted_failures", lambda d: d["failed_play_ack"].update(pending_native_worlds=3)),
             ("test_strata2_workflow", lambda d: d.update(play_hash_imported=d["play_hash_original"])),
             ("test_strata2_workflow", lambda d: d["provenance"].update(records=[])),
+            ("test_strata2_workflow", lambda d: d.update(play_hash_original=None,play_hash_restored=None,play_hash_imported="placeholder")),
+            ("test_strata2_workflow", lambda d: d.update(play_hash_imported="not actual native readback")),
+            ("test_strata2_workflow", lambda d: [d[key].update(worker_id=None) for key in ("play_identity_before","play_identity_after")]),
+            ("test_strata2_workflow", lambda d: [d[key].update(world_generation=0) for key in ("play_identity_before","play_identity_after")]),
+            ("test_strata2_workflow", lambda d: [d[key].update(actor_body_ids=[]) for key in ("play_identity_before","play_identity_after")]),
+            ("test_strata2_mounted_failures", lambda d: [d["failed_play_ack"][key].update(actor_body_ids=[0]) for key in ("before","after")]),
         ]
         for label, mutate in controls:
             data = native_witness(label); mutate(data)
@@ -162,6 +220,60 @@ class Acceptance(unittest.TestCase):
 
 
 class ArchivedGeneratorProfiles(unittest.TestCase):
+    def test_gallery_recomputed_manifest_cannot_bless_changed_document(self):
+        # Reuse the explicitly synthetic gallery fixture only to exercise the
+        # package boundary. This is neither Godot nor Windows package evidence.
+        from test_strata2_gallery import GalleryCustody, SOURCE
+        fixture = GalleryCustody(methodName="test_deterministic_build_and_receipt")
+        fixture.setUp()
+        try:
+            with patch.object(package.gallery, "ROOT", fixture.root):
+                receipt = package.gallery.build(fixture.campaign, fixture.output, SOURCE)
+                record = {"gallery": receipt, "files_sha256": package.payload(fixture.package)}
+                source = {"source_commit": SOURCE}
+                package.verify_gallery(fixture.package, record, source)
+                original = fixture.output.read_bytes()
+                fixture.output.write_bytes(original + b"<!-- altered -->")
+                record["files_sha256"] = package.payload(fixture.package)
+                record["gallery"]["html_sha256"] = gate.sha(fixture.output)
+                with self.assertRaises(RuntimeError): package.verify_gallery(fixture.package, record, source)
+                fixture.output.write_bytes(original)
+                receipt = package.gallery.build(fixture.campaign, fixture.output, SOURCE)
+                record["gallery"] = receipt
+                inputs = fixture.output.with_suffix(".inputs.json")
+                altered = json.loads(inputs.read_text())
+                altered["source_commit"] = "f" * 40
+                inputs.write_text(json.dumps(altered, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+                record["files_sha256"] = package.payload(fixture.package)
+                record["gallery"]["inputs_sha256"] = gate.sha(inputs)
+                with self.assertRaises(RuntimeError): package.verify_gallery(fixture.package, record, source)
+        finally:
+            fixture.tearDown()
+
+    def test_raw_png_asset_custody_rejects_rehashed_package_mutation(self):
+        # The PNG signature itself contains CRLF; raw identity must preserve it.
+        original = b"\x89PNG\r\n\x1a\nraw-source-fixture"
+        name = "godot/data/strata2/imports/raw-fixture.png"
+        digest = hashlib.sha256(original).hexdigest()
+        source = {"source_assets_sha256":{name:digest}}
+        with tempfile.TemporaryDirectory(prefix="Strata raw PNG custody ") as temporary:
+            folder = Path(temporary)
+            path = folder / name
+            path.parent.mkdir(parents=True)
+            path.write_bytes(original)
+            record = dict(source, files_sha256={name:digest})
+            package.verify_native_import_assets(folder,record,source)
+            self.assertNotEqual(digest,hashlib.sha256(original.replace(b"\r\n",b"\n")).hexdigest())
+            path.write_bytes(original[:-1]+b"X")
+            record["files_sha256"][name] = gate.sha(path)
+            with self.assertRaises(RuntimeError): package.verify_native_import_assets(folder,record,source)
+            record["source_assets_sha256"] = {name:gate.sha(path)}
+            with self.assertRaises(RuntimeError): package.verify_native_import_assets(folder,record,source)
+            path.write_bytes(original)
+            extra = path.with_name("unrecorded.png")
+            extra.write_bytes(original)
+            with self.assertRaises(RuntimeError): gate.project_assets_identity(folder/"godot",source)
+
     def test_actual_source_profiles_and_adverse_copies(self):
         # Use the real canonical recipes and nested style/schema assets from
         # the committed source. The established stager defines the contract;

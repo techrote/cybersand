@@ -27,7 +27,7 @@ class Mediator extends Node:
 		return {"ok":true,"kind":"native_module" if path.ends_with(".json") else "png","extent":[64,48],"source_sha256":"synthetic-inspection"}
 	func composition_catalogue() -> Array: return [{"id":"layered-preset","label":"Layered preset"}]
 	func scene_catalogue() -> Array: return [{"id":"successor-scene","label":"Successor scene","description":"Synthetic UI fixture"}]
-	func atmosphere_profiles() -> Array: return [{"id":"vent_steam","label":"Vent steam"}]
+	func atmosphere_profiles() -> Array: return [{"id":"vent_steam","label":"Vent steam","description":"Seeded visual steam motifs, not native Steam mass."}]
 	func atmosphere_state() -> Dictionary: return effects.duplicate(true)
 	func preview_import(path: String, options: Dictionary) -> void:
 		calls.append({"method":"preview_import","path":path,"options":options})
@@ -35,6 +35,7 @@ class Mediator extends Node:
 		preview_serial += 1
 		state = {"status":"ready","token":"review-"+str(preview_serial),"busy":false,"can_approve":true,"cancellable":true,"plane":options.plane,"region":[32,32,64,64],"changed_cells":20,"mapped":20,"no_write":4076}
 	func approve_plan(token: Variant) -> void: calls.append({"method":"approve_plan","token":token})
+	func apply_composition_settings(token: String) -> void: calls.append({"method":"apply_composition_settings","token":token})
 	func stop_authoring() -> void: calls.append({"method":"stop_authoring"})
 	func update_atmosphere_effect(id: String, patch: Dictionary) -> void:
 		calls.append({"method":"update_atmosphere_effect","id":id,"patch":patch})
@@ -138,6 +139,48 @@ func _run() -> void:
 	field.text = "117"
 	ui._commit_field()
 	_check("focused typed number commits before reading controls", ui._origin[0].value == 117)
+	ui._preview_import()
+	var before_image := Image.create(4,4,false,Image.FORMAT_RGBA8)
+	before_image.fill(Color.RED)
+	var after_image := Image.create(4,4,false,Image.FORMAT_RGBA8)
+	after_image.fill(Color.GREEN)
+	mediator.state.merge({"message":"Native observation is ready for explicit approval.","error":"ready",
+		"history_warnings":["This placement exceeds the remaining 32-entry history; there is no group rollback."],
+		"preview_regions":[{"id":"rear-stage","plane":"scripted","region":[0,0,4,4],"before_image":before_image,"output_image":after_image},
+			{"id":"far-stage","plane":"background","region":[8,8,4,4],"before_image":after_image,"output_image":before_image}],
+		"composite_image":after_image,"visual_settings_proposal":{"atmosphere":mediator.effects},
+		"visual_settings_token":"visual-review-1","can_apply_visual_settings":false,
+		"visual_settings_summary":"Rear opacity 0.8; atmosphere has one visual effect."},true)
+	ui.refresh({},"")
+	_check("ready status preserves useful backend message", "Native observation" in ui._authoring_status.text)
+	_check("history capacity warnings visible before approval", "32-entry" in ui._history_warning.text and "no group rollback" in ui._compose_history_warning.text)
+	_check("all proposed stages can be independently inspected", ui._stage_picker.item_count == 2 and ui._stage_before.image_reference == before_image and ui._stage_after.image_reference == after_image)
+	ui._stage_picker.select(1)
+	ui._stage_picker.item_selected.emit(1)
+	_check("stage selector changes both native observations", ui._stage_before.image_reference == after_image and ui._stage_after.image_reference == before_image)
+	var texture_before: int = ui._compose_preview.image_texture.get_instance_id()
+	for _index: int in 5: ui.refresh({},"")
+	_check("progress polling reuses immutable proposal texture", ui._compose_preview.image_texture.get_instance_id() == texture_before)
+	_check("visual settings cannot apply before native completion", ui._apply_visual_settings.disabled)
+	mediator.state.status = "completed"
+	mediator.state.message = ""
+	mediator.state.error = "completed"
+	mediator.state.can_approve = false
+	mediator.state.can_apply_visual_settings = true
+	ui.refresh({},"")
+	_check("reviewed completed preset exposes separate settings approval", not ui._apply_visual_settings.disabled and "replaces the existing" in ui._visual_settings_summary.text)
+	_check("completed status remains visible without backend explanation", ui._authoring_status.text == "completed")
+	ui._apply_visual_settings.pressed.emit()
+	_check("settings approval dispatches its distinct reviewed token", mediator.calls.back() == {"method":"apply_composition_settings","token":"visual-review-1"})
+	ui._module_origin[0].value += 1
+	ui.refresh({},"")
+	before = mediator.calls.size()
+	ui._apply_visual_settings.pressed.emit()
+	_check("changed construction controls fence visual approval too", ui._apply_visual_settings.disabled and mediator.calls.size() == before)
+	_check("profile description explains visual category", "not native Steam" in ui._effect_description.text)
+	mediator.effects.effects[0].kind = "beacon"
+	ui._refresh_atmosphere()
+	_check("beacon direction controls visibly inactive", not ui._effect_direction[0].editable and "0.2 cycles" in ui._effect_speed.tooltip_text)
 	var failures := 0
 	for record: Dictionary in checks:
 		if not record.passed: failures += 1

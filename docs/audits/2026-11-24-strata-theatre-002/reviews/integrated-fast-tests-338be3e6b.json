@@ -1,0 +1,171 @@
+{
+  "cases": [
+    {
+      "command": [
+        "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/strata2-source/godot",
+        "--script",
+        "res://tests/test_strata_import_codec.gd"
+      ],
+      "exit_code": 0,
+      "label": "test_strata_import_codec",
+      "log_sha256": "4015dcb9f87b51d7e50c6fcff5171c0a447f147aaf37986844b588607b5e713c",
+      "passed": true,
+      "seconds": 0.5678584519992,
+      "summaries": [
+        {
+          "checks": 232,
+          "completed": true,
+          "failures": [],
+          "proposal_sha256": "9e72f400476382df9a2fd9c559d456fabf6bfc8f90955b9f16d15331ed61c3cb",
+          "scope": "value-only mapping; native/session and framebuffer qualify separately",
+          "source_sha256": "439c8223661a05702043320025a9ff13ae26f629dd99dd8feda099d857f650d5"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/strata2-source/godot",
+        "--script",
+        "res://tests/test_strata_construction_session.gd"
+      ],
+      "exit_code": 0,
+      "label": "test_strata_construction_session",
+      "log_sha256": "45631f2e1067d82334a4c56bfeb9a0c0b94964b43e0294af90533c5167a1bb19",
+      "passed": true,
+      "seconds": 1.1686738589996821,
+      "summaries": [
+        {
+          "checks": 74,
+          "completed": true,
+          "failures": [],
+          "scope": "adversarial owner-contract fixtures, actual native mutation and framebuffer qualified separately"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/strata2-source/godot",
+        "--script",
+        "res://tests/test_strata_atmosphere.gd"
+      ],
+      "exit_code": 0,
+      "label": "test_strata_atmosphere",
+      "log_sha256": "ef1bf6537821bee32c79d50a27866969a7fcb9d140d2c7e963b3231360178f36",
+      "passed": true,
+      "seconds": 0.31501802500133635,
+      "summaries": [
+        {
+          "checks": 55,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "command": [
+        "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/strata2-source/godot",
+        "--script",
+        "/tmp/strata2-evidence/a-integrated-338be3e6b/float-diagnostic.gd"
+      ],
+      "exit_code": 0,
+      "label": "float-diagnostic",
+      "log_sha256": "e9d57abeae69f75e201c4ded61f2d3612416ec976bbc124c51df7064c26ab778",
+      "passed": true,
+      "seconds": 0.6718279199994868,
+      "summaries": [
+        {
+          "canonical_equal": true,
+          "default_json": "{\"value\":0.123456789012345}",
+          "document_equal": true,
+          "float_fields": [
+            {
+              "default_json": "0.123456789012345",
+              "field": "parallax_strength",
+              "full_json": "0.123456789012345",
+              "original_hex": "2ef64637dd9abf3f",
+              "reopened_hex": "2ef64637dd9abf3f"
+            },
+            {
+              "default_json": "0.370370367037035",
+              "field": "fog_strength",
+              "full_json": "0.37037036703703496",
+              "original_hex": "a23875e925b4d73f",
+              "reopened_hex": "a23875e925b4d73f"
+            }
+          ],
+          "full_precision_document_equal": true,
+          "full_precision_json": "{\"value\":0.123456789012345}",
+          "full_precision_roundtrip_equal": true,
+          "original_float64_hex": "2ef64637dd9abf3f",
+          "read_error": "",
+          "reopened_float64_hex": "2ef64637dd9abf3f",
+          "scope": "Actual atomic document save/read using retained native file service; no World or graphical qualification.",
+          "write_error": ""
+        }
+      ]
+    }
+  ],
+  "completed": true,
+  "engine": {
+    "path": "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "external_diagnostic": {
+    "path": "float-diagnostic.gd",
+    "role": "Retained exact independent numeric roundtrip exercise; application source remains pinned separately",
+    "sha256": "14162f406527c17091387b8e7f3c03b9215253c427fb77567829c3fe23e1a466"
+  },
+  "passed": true,
+  "retained_bytes_unchanged": true,
+  "retained_runtimes": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+      "native_source_inputs_verified": 105,
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "size": 5253776,
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "manifest": "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
+      "manifest_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+      "native_source_inputs_verified": 4,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "size": 117275416,
+      "source_commit": null
+    }
+  },
+  "schema": "strata2-a-integrated-fast-tests-v1",
+  "scope": "Pinned Linux headless copied-value authoring/atmosphere contracts plus actual atomic file roundtrip; no native material mutation, display, actor or Windows qualification.",
+  "selected_inputs_sha256": {
+    "godot/scripts/depth/strata_atmosphere.gd": "b89342524493d7ad0d26316a78491f85a36888725666c18949d9a2bd7dcdca61",
+    "godot/scripts/depth/strata_atmosphere_profiles.gd": "321b6ef1fee155ad4677de0a380dd93b4c7fd20d87b829fd5047642a9b84472b",
+    "godot/scripts/depth/strata_authoring_provenance.gd": "9535667c513bb02ff29f81195fd0361d4dac5441161ea1516059fddf70dcb520",
+    "godot/scripts/depth/strata_construction_plan.gd": "c7706fd6254eb558b6299b8c5d2dff287d4fc6a43c23c3b06b3aa56235aac78b",
+    "godot/scripts/depth/strata_construction_session.gd": "a248180efb231f4440b05191bc5157acb4a48ba5d00daa626f71fed8a2273407",
+    "godot/scripts/depth/strata_import_codec.gd": "a7eb2e86e91a37da3f43920a7c1c04ca5318cecbc0bab80f53abde4498d4f738",
+    "godot/scripts/depth/strata_native_module.gd": "ba5a0e560d59636d3d31d24ecd30880db0f32f671bd3240fc2c427d229ee24d7",
+    "godot/scripts/depth/workbench_layer_document.gd": "25c4dbd5db0ae3f32f4e24edb39cff7ebb448c729daa6f89a9dc2c9c07ea70ec",
+    "godot/tests/test_strata_atmosphere.gd": "98507b850a1c46ff2a970d5058a5e523a0ec2f356c96ab3d1c53c1aa01980c19",
+    "godot/tests/test_strata_construction_session.gd": "0f477c2d8e0d33ae99287f7c26b5b439b951b16034aef6178f3b4afb77cc8a76",
+    "godot/tests/test_strata_import_codec.gd": "23c90e3dfcada3b735850f2cc3ed31128ca4d4431bd0c16cc4a653b5bf0faef7"
+  },
+  "source_commit": "338be3e6b90cca45c2f9fdc8afe9cbe920dcd56f",
+  "source_tree": "0292028d2275dc05208dd2a647befda49877ad6c",
+  "source_unchanged": true,
+  "time_utc": "2026-11-24T21:14:30.715712+00:00"
+}

@@ -2205,14 +2205,21 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
 
-**24 November 2026 scoped successor, Draft/HOLD:**
-[Strata in ordinary Workbench](../systems/strata-workbench.md) adds a borrowed-play
-presentation adapter, three static authorable native planes and explicit authored
-persistence. Its [owner evaluation](../operations/strata-workbench-evaluation.md)
-retains separate hosted-graphics and physical Windows/NVIDIA gates. Cross-plane
-transfer, independently simulated decoration, browser acceptance and automatic
-default activation remain outside this milestone. The standalone host retains
-its earlier capabilities and evidence scope.
+**24 November 2026 successors, Draft/HOLD:**
+[#769](https://github.com/techrote/cybersand/pull/769) established the ordinary
+borrowed-Play adapter, three static editable native planes and authored
+persistence. [STRATA-THEATRE-002 / #776](https://github.com/techrote/cybersand/pull/776)
+retains that ancestry and adds [native import and finite layered construction](../systems/strata-authoring.md),
+eight reusable parts, three layered presets, six bounded visual motif kinds and
+five substantial [native environments](../systems/strata-environments.md).
+[Ownership and persistence](../systems/strata-workbench.md) retain default-OFF,
+one Play authority, v1 compatibility and strict v2 authored metadata. The
+[decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md) and
+[owner evaluation](../operations/strata-workbench-evaluation.md) distinguish
+actual platform/package evidence from physical Windows/NVIDIA acceptance.
+Cross-plane transfer, independently simulated decoration, broad Art integration,
+browser acceptance and default activation remain outside this candidate.
+The standalone host retains its earlier capabilities and evidence scope.
 
 ## WORKBENCH-001 / #391 integration candidate
 

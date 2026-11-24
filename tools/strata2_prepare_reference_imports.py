@@ -105,6 +105,13 @@ def main() -> None:
                    "options": {"plane": "scripted", "crop": [0, 0, width, height], "origin": [128, 128],
                                "scale": 1, "transform": "identity", "alpha_mode": "overlay", "alpha_threshold": 128,
                                "mask_path": URI + mask_name, "palette": source["palette"], "color_distance": 64, "unmapped": "skip"}}
+        # A separately declared narrower crop fits the protected interior of
+        # the 512-square mounted native test. No input is silently rescaled.
+        native_width = min(width, 448)
+        native_cells = b"".join(materials[y * width * 2:(y * width + native_width) * 2] for y in range(height))
+        native_mask = b"".join(write_mask[y * width:y * width + native_width] for y in range(height))
+        native_included = sum(mask_bytes[(y * width + x) * 4 + 3] != 0 for y in range(height) for x in range(native_width))
+        native_mapped = sum(native_mask)
         receipt = {"format": "cybersand-strata-reference-import-v1", "id": source["id"],
                    "source_repository": "techrote/sandmapsreference", "source_commit": COMMIT,
                    "source_path": source["source_path"], "source_url": f"https://raw.githubusercontent.com/techrote/sandmapsreference/{COMMIT}/{source['source_path']}",
@@ -117,6 +124,11 @@ def main() -> None:
                    "mask_semantics": "Explicit authored selection proposal. White opaque rectangles include; all other pixels are transparent/no-write. This mask is not source alpha or inferred authoritative depth.",
                    "mapping_policy": fixture["options"], "proposal_counts": {"source_pixels": width * height, "mapped": mapped, "mask_no_write": no_write, "unmapped_skipped": unmapped, "explicit_empty": 0},
                    "proposed_uint16le_sha256": sha(materials), "proposed_write_mask_sha256": sha(write_mask),
+                   "native_qualification": {"canvas": [512, 512], "selected_crop": [0, 0, native_width, height], "origin": [32, 64],
+                                            "proposed_uint16le_sha256": sha(native_cells), "proposed_write_mask_sha256": sha(native_mask),
+                                            "mapped": native_mapped, "no_write": native_width * height - native_mapped,
+                                            "mask_no_write": native_width * height - native_included, "unmapped_skipped": native_included - native_mapped,
+                                            "scope": "Explicit qualification crop within the unchanged shipped source; same mapping/mask; no resampling."},
                    "qualification": "Deterministic input/proposal fixture only; native receipt/readback and actual Godot framebuffer belong to the source-bound Workbench qualification.",
                    "original_preservation": "The original is not copied into this small fixture bundle; exact source URL and SHA-256 identify the unmodified original. The shipped crop retains exact pixels and explicit crop coordinates."}
         for name, document in ((source["id"] + ".fixture.json", fixture), (source["id"] + ".provenance.json", receipt)):

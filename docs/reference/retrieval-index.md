@@ -12,6 +12,12 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 ## Editable Strata layers in ordinary Workbench
 
+For the **STRATA-THEATRE-002 Draft/HOLD successor** native scenes, reusable
+composition library, bounded presentation-only atmosphere and exact reference
+image/mask provenance, retrieve [Strata environments](../systems/strata-environments.md).
+For PNG alpha/mask policy, native modules, finite construction, exact approval
+fences, Stop/history and provenance, retrieve [native Strata authoring](../systems/strata-authoring.md).
+
 For the single play authority, three static native decorative planes, exact
 view/edit transforms, visibility/lock/solo, per-plane history and the authored
 save domain, retrieve [the Strata Workbench contract](../systems/strata-workbench.md).

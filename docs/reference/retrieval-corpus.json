@@ -149,6 +149,8 @@
     "tools/world-art-capture.md",
     "tools/world-art-evaluation.md",
     "systems/strata-workbench.md",
+    "systems/strata-environments.md",
+    "systems/strata-authoring.md",
     "operations/strata-workbench-evaluation.md"
   ],
   "navigation": [

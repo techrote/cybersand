@@ -116,6 +116,20 @@ class Layout:
             assert x0 == x1 or y0 == y1
             self.r(min(x0, x1), min(y0, y1), abs(x1 - x0) + thickness, abs(y1 - y0) + thickness, material)
 
+    def ring(self, cx: int, cy: int, rx: int, ry: int, thickness: int, material: str) -> None:
+        """Exact native-cell front elevation of an annulus, no image resampling."""
+        assert rx > 0 and ry > 0 and thickness > 0
+        inner_x, inner_y = rx - thickness, ry - thickness
+        for dy in range(-ry, ry + 1):
+            outer = math.floor(rx * math.sqrt(max(0.0, 1.0 - (dy / ry) ** 2)))
+            if inner_x > 0 and inner_y > 0 and abs(dy) <= inner_y:
+                inner = math.floor(inner_x * math.sqrt(max(0.0, 1.0 - (dy / inner_y) ** 2)))
+                if outer > inner:
+                    self.r(cx - outer, cy + dy, outer - inner, 1, material)
+                    self.r(cx + inner + 1, cy + dy, outer - inner, 1, material)
+            else:
+                self.r(cx - outer, cy + dy, 2 * outer + 1, 1, material)
+
 
 def effect(effect_id: str, kind: str, plane: str, region: list[int], *, seed: int,
            count: int, speed: float, strength: float, direction: list[float], colour: list[float]) -> dict:
@@ -139,7 +153,7 @@ def scene(identity: str, title: str, description: str, extent: tuple[int, int], 
         "atmosphere": {"version": 1, "enabled": True, "paused": False, "seed": seed, "effects": []},
         "route_probes": [], "detail_views": [],
         "provenance": {"kind": "original-native-material-construction", "generator": "tools/strata2_build_showcases.py",
-                       "generator_version": 1, "seed": seed, "source_art": "none",
+                       "generator_version": 2, "seed": seed, "source_art": "none",
                        "geometry_semantics": "Ordered exact material-ID rectangles, native grid, no raster resampling.",
                        "physical_claim": "One ordinary Play actor; rear native geometry remains static and noncolliding with Play.",
                        "plane_roles": {"play": "Physical traversal and collision", "scripted": "Rear architectural structure",
@@ -224,8 +238,30 @@ def orbital_terminal() -> dict:
         b.r(x + 14, top - 10, w - 28, 10, "steel")
         b.r(x + w // 2, top - 90, 7, 80, "aluminium")
         b.windows(x + 14, top + 18, w - 28, 110, x, "cyan", 32)
-    b.frame(760, 88, 480, 80, 7, "steel")
-    b.r(800, 119, 400, 4, "cyan")
+    # Connected orbital dock silhouette occupies a different architectural
+    # scale from the near truss bays. Its arms are anchored to distant towers;
+    # large real gaps remain above, below and between the docking fingers.
+    for x, y, w, h in ((302, 314, 124, 478), (1560, 286, 118, 494)):
+        b.r(x, y, w, h, "carbon")
+        b.r(x + 12, y - 34, w - 24, 34, "corrugated")
+        b.r(x + 30, y - 62, w - 60, 28, "steel")
+        b.r(x + 8, y + 10, 4, h - 20, "painted")
+        b.windows(x + 24, y + 56, w - 48, h - 100, x + 77, "cyan", 44)
+    b.r(400, 332, 1182, 42, "carbon")
+    b.r(400, 332, 1182, 5, "corrugated")
+    b.r(744, 266, 468, 66, "carbon")
+    b.r(782, 242, 392, 24, "steel")
+    b.r(812, 229, 332, 13, "corrugated")
+    b.r(772, 286, 412, 4, "painted")
+    for x in range(780, 1180, 58):
+        b.r(x, 305, 13, 3, "cyan")
+    for x, bottom in ((590, 514), (1320, 554)):
+        b.r(x, 374, 26, bottom - 374, "carbon")
+        b.r(x, 374, 4, bottom - 374, "steel")
+        b.r(x - 44, bottom, 114, 20, "corrugated")
+        b.r(x - 35, bottom + 20, 96, 14, "carbon")
+    b.r(1174, 392, 342, 24, "carbon")
+    b.r(1174, 392, 342, 4, "painted")
     rng = random.Random(113)
     for _ in range(75):
         b.r(rng.randrange(60, 1980), rng.randrange(45, 620), 1, 1, "white")
@@ -280,11 +316,27 @@ def neon_arcology() -> dict:
         for yy in range(y + 12, y + 112, 18):
             e.r(x + 10, yy, 25, 5, light)
         e.r(x + 18, y - 18, 7, 18, "steel")
-    for x, w, y in ((60, 200, 778), (340, 130, 670), (560, 240, 750), (910, 150, 650), (1180, 170, 735), (1450, 210, 675), (1790, 150, 730)):
-        b.r(x, y, w, 255 if y < 700 else 180, "carbon")
-        b.r(x + 16, y - 40, w - 32, 40, "steel")
-        b.windows(x + 10, y + 20, w - 20, 170, x + 8, "cyan", 32)
-        b.r(x + w // 2, y - 65, 3, 25, "aluminium")
+    # The far skyline rises through selected upper openings. Narrow stepped
+    # towers and smaller window marks distinguish it from the inhabited rear
+    # blocks; no opaque city wall fills the complete horizon.
+    for x, w, y in ((60, 200, 760), (340, 104, 294), (670, 102, 176),
+                    (992, 76, 424), (1304, 108, 216), (1662, 94, 338), (1800, 140, 722)):
+        b.r(x, y, w, 944 - y, "carbon")
+        b.r(x + 10, y - 28, w - 20, 28, "corrugated")
+        b.r(x + 22, y - 54, w - 44, 26, "steel")
+        b.r(x + w // 2, y - 88, 3, 34, "painted")
+        b.r(x + 6, y + 10, 3, 918 - y, "painted")
+        rng = random.Random(x + 81)
+        for wy in range(y + 20, 920, 26):
+            for wx in range(x + 18, x + w - 12, 22):
+                if rng.random() < 0.45:
+                    b.r(wx, wy, 3, 5, "cyan" if rng.random() < 0.8 else "amber")
+        for wy in range(y + 102, 930, 148):
+            b.r(x + 7, wy, w - 14, 3, "corrugated")
+    b.r(704, 591, 342, 13, "carbon")
+    b.r(704, 591, 342, 3, "steel")
+    b.r(1342, 709, 365, 17, "carbon")
+    b.r(1342, 709, 365, 3, "painted")
     raw["spawn"] = [160, 850]
     raw["route_probes"] = [route("street-flight", [160, 850], [1880, 850]), route("eastern-ascent", [1540, 850], [1540, 300])]
     raw["detail_views"] = [{"id": "rain-and-signs", "center": [1080, 460], "zoom": 1.5}, {"id": "inhabited-rear-block", "center": [470, 360], "zoom": 1.4}]
@@ -332,9 +384,28 @@ def industrial_underworks() -> dict:
         e.frame(x - 12, 580, 52, 68, 3, "steel")
         for yy in range(590, 636, 12):
             e.r(x - 3, yy, 30, 3, "cyan")
-    for x, y, w, h in ((100, 210, 144, 510), (330, 270, 96, 430), (586, 230, 106, 470), (786, 190, 126, 530)):
-        b.frame(x, y, w, h, 15, "corrugated")
-        b.r(x + w // 2 - 6, y + 16, 12, h - 32, "pipe")
+    # A large static rear turbine and pressure columns contrast with the
+    # rectilinear foreground service racks. Native annuli retain actual voids;
+    # neither the rotor nor the columns simulate motion or collide with Play.
+    for x, y, w, h in ((112, 196, 108, 534), (794, 182, 102, 552)):
+        b.r(x, y, w, h, "carbon")
+        b.r(x + 12, y - 20, w - 24, 20, "corrugated")
+        b.r(x + 20, y - 36, w - 40, 16, "steel")
+        for yy in range(y + 74, y + h - 30, 108):
+            b.r(x - 6, yy, w + 12, 8, "corrugated")
+            b.r(x + 10, yy + 8, 3, 36, "pipe")
+    b.ring(510, 598, 192, 178, 31, "carbon")
+    b.ring(510, 598, 192, 178, 7, "corrugated")
+    b.ring(510, 598, 143, 132, 4, "steel")
+    for angle in (0, 60, 120):
+        radians = math.radians(angle)
+        dx, dy = round(140 * math.cos(radians)), round(129 * math.sin(radians))
+        b.line(510 - dx, 598 - dy, 510 + dx, 598 + dy, 8, "painted")
+    b.ring(510, 598, 31, 29, 32, "carbon")
+    b.ring(510, 598, 31, 29, 5, "steel")
+    b.pipe([(511, 420), (511, 236), (748, 236)], 10, "pipe")
+    b.r(352, 782, 318, 22, "carbon")
+    b.r(366, 782, 290, 5, "corrugated")
     b.r(84, 805, 854, 8, "steel")
     raw["spawn"] = [512, 842]
     raw["route_probes"] = [route("central-service-shaft", [512, 842], [512, 180]), route("lower-cross-passage", [230, 870], [790, 870])]
@@ -385,12 +456,23 @@ def abyss_foundry() -> dict:
     for x in (352, 588):
         s.r(x, 380, 14, 270, "corrugated")
         s.r(x - 18, 380, 50, 15, "steel")
-    for x, top, base, width in ((110, 145, 840, 92), (380, 95, 380, 72), (600, 124, 470, 76), (814, 160, 852, 86)):
+    # Attached far geology reveals a second chamber contour instead of four
+    # disconnected rectangular rock strips. Every contour is native material.
+    for x in range(84, 944, 10):
+        bottom = 182 + round(38 * math.sin(x / 84) + 16 * math.cos(x / 31))
+        b.r(x, 70, 10, bottom - 70, "basalt")
+        b.r(x, bottom - 8, 10, 8, "obsidian")
+    for x, top, base, width in ((224, 146, 674, 126), (708, 154, 608, 118)):
         for y in range(top, base, 12):
-            # Independent tapering formations; their surrounding void is real.
-            delta = int((math.sin(y / 53 + x) + 1) * 12)
-            span = max(14, width - (y - top) // 20 + delta)
+            t = (y - top) / (base - top)
+            delta = round(13 * math.sin(y / 37 + x) + 7 * math.cos(y / 19))
+            span = max(8, round(width * (1.0 - t) ** 0.68) + delta)
             b.r(x - span // 2, y, span, min(12, base - y), "obsidian")
+    for y in range(190, 810, 12):
+        left = 124 + round(30 * math.sin(y / 82) + 12 * math.cos(y / 33))
+        right = 114 + round(24 * math.sin(y / 69) + 14 * math.cos(y / 29))
+        b.r(70, y, left, 12, "basalt")
+        b.r(944 - right, y, right, 12, "obsidian")
     for x in range(130, 910, 20):
         y = 842 + round(18 * math.sin(x / 49))
         b.r(x, y, 20, 100, "basalt")
@@ -435,15 +517,24 @@ def vertical_spine() -> dict:
     p.pipe([(944, 135), (944, 1370), (748, 1370)], 8, "pipe")
     for y in range(140, 1370, 240):
         s.truss(150, y, 720, 55, 8, "steel")
-        s.frame(355, y + 74, 316, 115, 9, "painted")
-        s.r(382, y + 93, 262, 5, "grating")
-        s.r(382, y + 160, 262, 5, "grating")
+        if y + 189 < 1430:
+            s.frame(355, y + 74, 316, 115, 7, "painted")
+            s.r(363, y + 151, 300, 30, "carbon")
+            s.r(382, y + 93, 262, 5, "grating")
+            s.r(382, y + 171, 262, 5, "grating")
+            for xx in range(390, 650, 44):
+                s.r(xx, y + 98, 4, 53, "steel")
+            s.r(488, y + 160, 48, 3, "cyan")
         rail_height = min(185, 1450 - y - 55)
         s.r(150, y + 55, 14, rail_height, "corrugated")
         s.r(856, y + 55, 14, rail_height, "corrugated")
-        e.frame(276, y + 78, 38, 52, 3, "steel")
-        e.r(285, y + 87, 20, 3, "cyan")
-        e.r(285, y + 98, 20, 3, "amber")
+        if y + 130 < 1430:
+            e.frame(276, y + 78, 38, 52, 3, "steel")
+            e.r(285, y + 87, 20, 3, "cyan")
+            e.r(285, y + 98, 20, 3, "amber")
+    s.r(363, 202, 4, 1188, "cable")
+    s.r(655, 202, 4, 1188, "cable")
+    s.ring(510, 161, 35, 31, 7, "corrugated")
     for x, y, w, h in ((204, 210, 120, 740), (714, 150, 122, 680), (310, 980, 140, 410), (580, 850, 126, 540)):
         b.r(x, y, w, h, "carbon")
         b.frame(x, y, w, h, 6, "steel")

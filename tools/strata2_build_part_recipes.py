@@ -129,11 +129,22 @@ def compositions(available: list[dict]) -> list[dict]:
                   strength=0.75, direction=[0.20, 1.0], colour=[0.40, 0.68, 0.90, 0.75])),
     ]
     for identity, name, stages, atmosphere in definitions:
+        visual_choices = {
+            "factory-service-bay": (0.82, 0.30, 0.82, 0.15, 0.45, 0.82, 0.45, 0.28),
+            "reactor-service-arch": (0.78, 0.28, 0.85, 0.16, 0.40, 0.82, 0.40, 0.30),
+            "inhabited-skybridge": (0.78, 0.31, 0.85, 0.16, 0.44, 0.86, 0.50, 0.34),
+        }
+        opacity_s, depth_s, opacity_e, depth_e, opacity_b, depth_b, parallax, haze = visual_choices[identity]
         result.append({"format": "cybersand-strata-composition-v1", "id": identity, "name": name,
                        "modules": sorted({placement["module_id"] for entry in stages for placement in entry["placements"]}),
                        "stages": stages, "metadata": {
                            "provenance": {"kind": "original-layered-design", "generator": "tools/strata2_build_part_recipes.py",
                                           "generator_version": 1, "semantic_limits": "Explicit decorative parts, no Play mutation and no load-bearing solver."},
+                           "visual_proposal": {"planes": [
+                               {"id": "scripted", "opacity": opacity_s, "depth": depth_s},
+                               {"id": "effects", "opacity": opacity_e, "depth": depth_e},
+                               {"id": "background", "opacity": opacity_b, "depth": depth_b}],
+                               "presentation": {"parallax_strength": parallax, "fog_strength": haze}},
                            "atmosphere_proposal": {"scope": "Anchor-relative regions; separately review and apply; native plan does not apply atmosphere.",
                                                    "configuration": {"version": 1, "enabled": True, "paused": False,
                                                                      "seed": 1207, "effects": [atmosphere]}}}})

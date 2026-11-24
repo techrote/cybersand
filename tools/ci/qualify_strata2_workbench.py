@@ -24,6 +24,7 @@ import qualify_workbench_landscapes as custody
 import strata_process_metrics as process_metrics
 
 SCENES = ("orbital-terminal", "neon-rain-arcology", "industrial-underworks", "abyss-foundry", "vertical-transfer-spine")
+REFERENCE_FIXTURES = {"orbital-terminal":"asteroid-service-gallery", "neon-rain-arcology":"rocket-hangar-frame"}
 HARNESS = "res://tools/qualify_workbench_strata2.gd"
 MAXIMUM_HARNESS = "res://tools/qualify_workbench_strata_maximum.gd"
 EXTRA_INPUTS = (
@@ -32,12 +33,15 @@ EXTRA_INPUTS = (
     "tools/ci/test_strata_process_metrics.py",
     "tools/package_strata2_workbench.py", ".github/workflows/strata-theatre-002.yml",
     "tools/strata2_build_showcases.py",
+    "tools/build_strata2_gallery.py", "tools/ci/test_strata2_gallery.py",
 )
 GODOT_SHA256 = {
     "linux": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
     "win32": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
 }
 GODOT_GUI_SHA256 = "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+BINARY_SOURCE_ROOT = "godot/data/strata2/"
+BINARY_SOURCE_SUFFIXES = {".png"}
 require, sha, write_json = custody.require, custody.sha, custody.write_json
 PROSPECTIVE_TARGETS = {
     "scene_admission_callback_ms": 45000,
@@ -65,9 +69,46 @@ def identity(allow_delta: bool = False) -> dict:
             committed = b""
         if data != committed and name not in result["local_delta"]:
             result["local_delta"].append(name)
+    # PNG signatures contain CRLF. Binary source artwork and masks must never
+    # pass through the inherited text-input newline normalization.
+    committed_assets = custody.git("ls-tree", "-r", "--name-only", "HEAD", "--", BINARY_SOURCE_ROOT).decode().splitlines()
+    asset_names = {name for name in committed_assets if Path(name).suffix.lower() in BINARY_SOURCE_SUFFIXES}
+    asset_names.update(path.relative_to(ROOT).as_posix() for path in (ROOT / BINARY_SOURCE_ROOT).rglob("*")
+                       if path.is_file() and path.suffix.lower() in BINARY_SOURCE_SUFFIXES)
+    assets = {}
+    for name in sorted(asset_names):
+        path = ROOT / name
+        require(path.is_file() and not path.is_symlink(), "Missing or linked binary source asset: " + name)
+        data = path.read_bytes()
+        assets[name] = hashlib.sha256(data).hexdigest()
+        committed = custody.git("show", "HEAD:" + name) if name in committed_assets else None
+        if data != committed and name not in result["local_delta"]:
+            result["local_delta"].append(name)
+    require(assets, "No committed Strata import artwork or masks were identified")
+    result["source_assets_sha256"] = assets
     result["local_delta"].sort()
     require(allow_delta or not result["local_delta"], "Commit qualification source changes before frozen execution")
     return result
+
+
+def project_assets_identity(project: Path, source: dict) -> dict:
+    """Raw-byte custody for actual loaded PNG artwork/masks, including packages."""
+    expected = source.get("source_assets_sha256")
+    require(isinstance(expected, dict) and expected, "Missing binary source asset identity")
+    loaded = {}
+    for name, digest in expected.items():
+        require(name.startswith(BINARY_SOURCE_ROOT) and Path(name).suffix.lower() in BINARY_SOURCE_SUFFIXES
+                and ".." not in Path(name).parts and "\\" not in name
+                and re.fullmatch(r"[0-9a-f]{64}", str(digest)), "Invalid binary source asset identity")
+        relative = name.removeprefix("godot/")
+        path = project / relative
+        require(path.is_file() and not path.is_symlink(), "Missing binary project asset: " + relative)
+        loaded[relative] = sha(path)
+        require(loaded[relative] == digest, "Loaded binary asset differs from committed raw bytes: " + relative)
+    actual = {path.relative_to(project).as_posix() for path in (project / BINARY_SOURCE_ROOT.removeprefix("godot/")).rglob("*")
+              if path.is_file() and path.suffix.lower() in BINARY_SOURCE_SUFFIXES}
+    require(actual == set(loaded), "Loaded project has missing or unrecorded binary import assets")
+    return loaded
 
 
 
@@ -104,7 +145,64 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
             "Wrong native ownership cardinality")
     require(re.fullmatch(r"[0-9a-f]{64}", str(result.get("save", {}).get("sha256", "")))
             and isinstance(result["save"].get("path"), str) and result["save"]["path"], "No authored composition save identity")
+    saved = result.get("saved_authoring", {})
+    marker = saved.get("native_marker", {})
+    require(marker.get("plane") == "background" and marker.get("point") == [96,96]
+            and type(marker.get("material")) is int and marker["material"] in (58,131),
+            "Fresh-save witness lacks its actual durable native edit")
+    require(all(re.fullmatch(r"[0-9a-f]{64}", str(saved.get(key,""))) for key in ("authoring_sha256","atmosphere_sha256"))
+            and type(saved.get("authoring_records")) is int and saved["authoring_records"] >= 0,
+            "Fresh-save witness lacks exact authored metadata/effect identities")
+    saved_atmosphere = saved.get("atmosphere", {})
+    require(saved_atmosphere.get("paused") is True and isinstance(saved_atmosphere.get("effects"),list)
+            and saved_atmosphere["effects"], "Fresh-save witness lost explicit authored atmosphere settings")
+    historical = saved.get("raster_imports", [])
+    require(isinstance(historical,list) and len(historical) <= saved["authoring_records"], "Invalid saved import history count")
+    if scene in REFERENCE_FIXTURES:
+        reference_provenance = json.loads((ROOT / "godot/data/strata2/reference-imports" / (REFERENCE_FIXTURES[scene]+".provenance.json")).read_text())
+        require(any(row.get("source_sha256") == reference_provenance["crop_file_sha256"]
+                    and row.get("plane") == "scripted" and row.get("status") == "completed"
+                    and row.get("historical") is True
+                    and all(re.fullmatch(r"[0-9a-f]{64}",str(row.get(key,""))) for key in ("geometry_sha256","actual_sha256"))
+                    for row in historical), "Fresh-save witness lost the admitted reference source/native history")
     if phase == "install":
+        mutation = result.get("authored_mutations", {})
+        require(mutation.get("plane") == marker["plane"] and mutation.get("point") == marker["point"]
+                and type(mutation.get("before")) is int and mutation["before"] != mutation.get("after") == marker["material"]
+                and type(mutation.get("effect_strength_before")) in (int,float)
+                and type(mutation.get("effect_strength_after")) in (int,float)
+                and mutation["effect_strength_before"] != mutation["effect_strength_after"]
+                and any(effect.get("id") == mutation.get("effect_id")
+                        and effect.get("strength") == mutation["effect_strength_after"] for effect in saved_atmosphere["effects"]),
+                "Only a baseline preset was saved; durable native/effect edits were not demonstrated")
+        native_details = result.get("native_grid_details", [])
+        require(len(native_details) == 2 and {row.get("plane") for row in native_details} == {"play","scripted"}
+                and all(type(row.get(key)) in (int,float) and math.isfinite(row[key]) and abs(row[key]-1.0) < 0.01
+                        for row in native_details for key in ("pixels_per_cell_x","pixels_per_cell_y")),
+                "Native-resolution detail captures lack actual one-cell/one-framebuffer-pixel transforms")
+        if scene in REFERENCE_FIXTURES:
+            imported = result.get("reference_import", {})
+            reference = REFERENCE_FIXTURES[scene]
+            provenance = json.loads((ROOT / "godot/data/strata2/reference-imports" / (reference + ".provenance.json")).read_text())
+            require(imported.get("id") == reference and imported.get("plane") == "scripted"
+                    and imported.get("source_sha256") == provenance["crop_file_sha256"]
+                    and imported.get("mask_sha256") == provenance["mask_sha256"]
+                    and imported.get("geometry_sha256") == provenance["proposed_uint16le_sha256"]
+                    and imported.get("write_mask_sha256") == provenance["proposed_write_mask_sha256"],
+                    "Actual reference import lacks source/mask/mapping fidelity")
+            require(imported.get("mapped") == provenance["proposal_counts"]["mapped"]
+                    and imported.get("no_write") == provenance["proposal_counts"]["source_pixels"]-imported["mapped"]
+                    and imported.get("completed_status") == "completed"
+                    and isinstance(imported.get("approved_token"),str) and imported["approved_token"]
+                    and type(imported.get("history_chunks")) is int and 0 < imported["history_chunks"] <= 8,
+                    "Actual reference import lacks explicit approval, bounded native completion and no-write accounting")
+            require(all(re.fullmatch(r"[0-9a-f]{64}",str(imported.get(key,""))) for key in
+                        ("before_sha256","expected_sha256","actual_sha256","restored_sha256","play_before_sha256","play_after_sha256"))
+                    and imported["actual_sha256"] == imported["expected_sha256"] != imported["before_sha256"]
+                    and imported["restored_sha256"] == imported["before_sha256"]
+                    and imported["play_before_sha256"] == imported["play_after_sha256"]
+                    and imported.get("visual_difference",{}).get("changed_samples",0) >= 8,
+                    "Actual reference import/Undo lacks independent native or framebuffer evidence")
         transitions = result.get("transitions", [])
         require(len(transitions) >= 12, "Insufficient mode/lifecycle transitions")
         for entry in transitions:
@@ -141,6 +239,12 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
                     and sample.get("decorative_uploads_during_sample") == 0,
                     "Unchanged static/animated decoration performed recurring native captures or uploads")
         atmosphere = result.get("atmosphere", {})
+        material_time = atmosphere.get("play_material_time", {})
+        require(type(material_time.get("fixed")) in (int, float) and math.isfinite(material_time["fixed"])
+                and material_time["fixed"] >= 0 and instance_id(material_time.get("shader_instance"))
+                and instance_id(material_time.get("emission_shader_instance"))
+                and material_time.get("restored") is True and material_time.get("emission_restored") is True,
+                "Atmosphere framebuffer comparison did not isolate and restore borrowed Play material animation")
         require(atmosphere.get("visual_difference", {}).get("changed_samples", 0) >= 8
                 and atmosphere.get("solo_leakage", {}).get("changed_samples") == 0,
                 "Atmosphere lacks actual framebuffer effect or leaks through excluded planes")
@@ -167,10 +271,22 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
         require(route["completed_rapier_ticks"] == route.get("after", {}).get("rapier_tick", -1) - route.get("before", {}).get("rapier_tick", 0)
                 and route["completed_native_ticks"] == route.get("after", {}).get("native_tick", -1) - route.get("before", {}).get("native_tick", 0),
                 "Claimed completed ticks disagree with actual before/after counters")
+        live_edit = route.get("live_decorative_edit", {})
+        require(live_edit.get("plane") == "background" and live_edit.get("committed") is True
+                and type(live_edit.get("marker")) is int and 0 < live_edit["marker"] <= 255
+                and live_edit.get("native_written") == live_edit["marker"] != live_edit.get("native_before")
+                and live_edit.get("native_restored") == live_edit.get("native_before")
+                and live_edit.get("receipt",{}).get("ok") is True
+                and live_edit.get("receipt",{}).get("published") is True
+                and route["after"]["native_tick"] > live_edit.get("after",{}).get("native_tick",2**63)
+                and route["after"]["rapier_tick"] > live_edit.get("after",{}).get("rapier_tick",2**63),
+                "No acknowledged decorative native edit/Undo with continued actual Play progression")
         for key in ("world_generation", "physical_epoch", "worker_id", "actor_session_id", "actor_body_ids"):
             require(route.get("before", {}).get(key) is not None
                     and route["before"][key] == route.get("after", {}).get(key),
                     "Live route toggles changed Play/actor ownership")
+            require(live_edit.get("before",{}).get(key) == route["before"][key] == live_edit.get("after",{}).get(key),
+                    "Live decorative edit changed Play/actor identity")
     else:
         require(result.get("fresh_process_reopen") is True, "Reopen did not use the authored composition loader")
 
@@ -245,7 +361,10 @@ REGRESSIONS = {
     "test_workbench_strata_layers": "STRATA_LAYER_REGRESSION ",
     "test_workbench_strata_document": "STRATA_DOCUMENT ",
     "test_depth_dimensions_render": "Depth dimension pixels:",
+    "test_workbench_edit_ordering": "EDIT_ORDER_RESULT ",
+    "test_workbench_deferred_paint": "WB_DEFERRED_PAINT ",
     "test_strata_import_codec": "STRATA_IMPORT ",
+    "test_strata_reference_imports": "STRATA_REFERENCE_IMPORTS ",
     "test_strata_construction_session": "STRATA_SESSION ",
     "test_strata_authoring_library": "STRATA_AUTHORING_LIBRARY ",
     "test_strata_atmosphere": "STRATA_ATMOSPHERE ",
@@ -253,6 +372,7 @@ REGRESSIONS = {
     "test_strata2_authoring_ui": "STRATA2_UI_RESULT ",
     "test_strata2_mounted_failures": "STRATA2_MOUNTED_FAILURES ",
     "test_strata2_workflow": "STRATA2_WORKFLOW ",
+    "test_strata2_actor_route": "STRATA2_ACTOR_ROUTE ",
 }
 
 NATIVE_REPORTS = {"test_strata2_mounted_failures", "test_strata2_workflow"}
@@ -285,6 +405,8 @@ def validate_native_report(result: dict, label: str, source: str) -> None:
     else:
         require(result.get("schema") == "strata2-workflow-v1", "Wrong native workflow schema")
         require(re.fullmatch(r"[0-9a-f]{64}", str(result.get("input_sha256", "")))
+                and all(re.fullmatch(r"[0-9a-f]{64}", str(result.get(key, "")))
+                        for key in ("play_hash_original", "play_hash_imported", "play_hash_restored"))
                 and result.get("play_hash_original") != result.get("play_hash_imported")
                 and result.get("play_hash_original") == result.get("play_hash_restored"),
                 "Play import/Undo lacks source and actual before/after readback")
@@ -292,6 +414,13 @@ def validate_native_report(result: dict, label: str, source: str) -> None:
         before, after = result.get("play_identity_before", {}), result.get("play_identity_after", {})
     for key in ("world_generation", "physical_epoch", "worker_id", "actor_session_id", "actor_body_ids"):
         require(key in before and before[key] == after.get(key), "Native exercise changed Play identity: " + key)
+        if key in ("world_generation", "physical_epoch"):
+            require(type(before[key]) is int and before[key] > 0, "Native exercise lacks actual Play generation/epoch")
+        elif key != "actor_body_ids":
+            require(instance_id(before[key]), "Native exercise lacks exact actual owner instance identity")
+    require(isinstance(before.get("actor_body_ids"), list) and before["actor_body_ids"]
+            and all(instance_id(value) for value in before["actor_body_ids"]),
+            "Native exercise lacks actual actor body identities")
 
 
 def retained_runtime_manifest(platform: str) -> dict:
@@ -323,7 +452,7 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
     require(report.get("prospective_targets") == PROSPECTIVE_TARGETS, "Qualification changed its predeclared targets")
     if expected is None:
         expected = identity()
-    for key in ("source_commit", "source_tree", "source_inputs_sha256"):
+    for key in ("source_commit", "source_tree", "source_inputs_sha256", "source_assets_sha256"):
         require(report.get(key) == expected[key], "Campaign differs from current source: " + key)
     platform = report.get("platform")
     require(platform in GODOT_SHA256, "Unknown campaign platform")
@@ -342,6 +471,9 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
     require(isinstance(project.get("path"), str) and project["path"]
             and project.get("inputs_sha256") == project_inputs and project_inputs,
             "Loaded project lacks complete source/runtime custody")
+    expected_assets = {name.removeprefix("godot/"): digest for name, digest in expected["source_assets_sha256"].items()}
+    require(expected_assets and project.get("assets_sha256") == expected_assets,
+            "Loaded project lacks exact raw-byte source artwork/mask custody")
     scenes = report.get("scenes", [])
     requested = list(SCENES) if full else report.get("selected_scenes", [])
     require(requested and set(requested) <= set(SCENES) and len(requested) == len(set(requested))
@@ -420,6 +552,8 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
         require(before["result"]["plane_native_hashes"] == after["result"]["plane_native_hashes"], "Native material planes differ across fresh processes")
         require(before["result"]["authored_settings_sha256"] == after["result"]["authored_settings_sha256"],
                 "Authored settings, effects or provenance differ across fresh processes")
+        require(before["result"]["saved_authoring"] == after["result"]["saved_authoring"],
+                "Explicit native edit, admitted import history or atmosphere settings differ across fresh processes")
     ledger = report.get("evidence_sha256", {})
     files = {p.relative_to(folder).as_posix():p for p in folder.rglob("*") if p.is_file()
              and p.name != "qualification.json" and "userdata" not in p.parts and "bootstrap-userdata" not in p.parts}
@@ -444,7 +578,7 @@ def main() -> int:
     report = {"schema": "strata2-workbench-qualification-v1", "status": "running", "platform": sys.platform,
               "cases": [], "scenes": [], "selected_scenes": args.scene or list(SCENES), "completed": False,
               "prospective_targets": PROSPECTIVE_TARGETS}
-    source = runtime = loaded = None
+    source = runtime = loaded = loaded_assets = None
     started = time.monotonic()
     deadline = started + args.campaign_timeout
     try:
@@ -453,8 +587,9 @@ def main() -> int:
         runtime = custody.verify_runtime_identity()
         project = args.project.resolve(strict=True)
         loaded = custody.project_identity(project, source, runtime)
+        loaded_assets = project_assets_identity(project, source)
         report.update(source)
-        report.update(runtime=runtime, project={"path": str(project), "inputs_sha256": loaded})
+        report.update(runtime=runtime, project={"path": str(project), "inputs_sha256": loaded, "assets_sha256": loaded_assets})
         godot = args.godot.resolve(strict=True)
         require(sys.platform in GODOT_SHA256, "Unsupported execution platform")
         version = subprocess.check_output([str(godot), "--version"], text=True, timeout=30).strip()
@@ -527,6 +662,8 @@ def main() -> int:
                         entry["phases"]["reopen"]["result"]["plane_native_hashes"], "Fresh process lost a native material plane")
                 require(entry["phases"]["install"]["result"]["authored_settings_sha256"] ==
                         entry["phases"]["reopen"]["result"]["authored_settings_sha256"], "Fresh process lost exact authored effects/settings/provenance")
+                require(entry["phases"]["install"]["result"]["saved_authoring"] ==
+                        entry["phases"]["reopen"]["result"]["saved_authoring"], "Fresh process lost explicit native edit, import history or authored atmosphere")
                 entry["status"] = "passed"
                 print("STRATA_PASS", scene, flush=True)
             except Exception as error:
@@ -547,6 +684,8 @@ def main() -> int:
                 require(custody.verify_runtime_identity() == runtime, "Runtime changed during campaign")
                 if loaded is not None:
                     require(custody.project_identity(project, source, runtime) == loaded, "Loaded project changed during campaign")
+                if loaded_assets is not None:
+                    require(project_assets_identity(project, source) == loaded_assets, "Loaded binary assets changed during campaign")
                 report["input_custody"] = "passed"
             except Exception as error:
                 report.update(status="failed", input_custody="failed", custody_error=str(error))

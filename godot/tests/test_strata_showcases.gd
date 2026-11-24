@@ -30,6 +30,12 @@ func _initialize() -> void:
 		bad.provenance.plane_geometry_sha256.play = "wrong"
 		check(not Scenes.validate_source(bad, id).is_empty(), id + " stale recipe digest refused")
 		bad = raw.duplicate(true)
+		bad.provenance.generator_version = 3
+		check(not Scenes.validate_source(bad, id).is_empty(), id + " unknown future recipe generator refused")
+		bad = raw.duplicate(true)
+		bad.provenance.generator_version = 1
+		check(Scenes.validate_source(bad, id).is_empty(), id + " previous generator provenance remains readable")
+		bad = raw.duplicate(true)
 		bad.atmosphere.effects[0].plane = "play"
 		check(not Scenes.validate_source(bad, id).is_empty(), id + " Play visual target refused")
 		if not source_only:

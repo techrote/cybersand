@@ -97,6 +97,12 @@ static func canonical(configuration: Dictionary) -> Dictionary:
 		effect.seed = int(effect.seed)
 		effect.count = int(effect.count)
 		effect.region = Array(PackedInt32Array(effect.region))
+		# Integer-valued JSON numbers and float32 UI colours must share one
+		# authored representation. Preserve each admitted value without rounding.
+		effect.speed = float(effect.speed)
+		effect.strength = float(effect.strength)
+		effect.direction = Array(PackedFloat64Array(effect.direction))
+		effect.colour = Array(PackedFloat64Array(effect.colour))
 	return result
 
 

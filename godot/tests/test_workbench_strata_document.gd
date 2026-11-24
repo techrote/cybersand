@@ -128,6 +128,31 @@ func run() -> void:
 		"migration adds only empty disabled extension defaults")
 	check(Document.write_named(label, setup, {}, {}, upgraded).is_empty(), "upgraded V2 saves through existing atomic replacement")
 	check(Document.read_named(label).get("document", {}) == upgraded, "V2 extensions round trip exactly")
+	# Full float64 precision matters for arithmetic-derived UI values, and JSON
+	# number types in direction/colour arrays need one canonical representation.
+	var precise := upgraded.duplicate(true)
+	var computed := 0.123456789012345 * 3.0
+	precise.presentation.fog_strength = computed
+	Document.plane(precise,"scripted").opacity = computed
+	var effect: Dictionary = Document.Atmosphere.make_effect("vent_steam","effects",Rect2i(16,16,48,48),42,"precision")
+	effect.strength = computed
+	effect.direction = [0.1,-1]
+	effect.colour[1] = computed
+	precise.atmosphere.effects = [effect]
+	var sha := "f".repeat(64)
+	precise.authoring.records = [{"version":1,"id":"precision-record","kind":"harvest","plane":"effects",
+		"scene_id":"precision-scene","owner_id":"precision-owner","generation":1,"before_revision":1,"after_revision":1,
+		"status":"completed","requested_cells":0,"applied_cells":0,"changed_cells":0,"requested_chunks":0,"completed_chunks":0,
+		"source_sha256":sha,"proposal_sha256":sha,"geometry_sha256":sha,"before_sha256":sha,"projected_sha256":sha,"actual_sha256":sha,
+		"published":true,"metadata":{"arithmetic_value":computed,"scope":"synthetic persistence fixture"},"error":"",
+		"historical":true,"scope":"authored-material-operation-history"}]
+	precise = Document.canonical(precise)
+	check(Document.validate(precise).is_empty(),"arithmetic float and mixed-number direction fixture admitted")
+	check(Document.write_named(label,setup,{},{},precise).is_empty(),"V2 saves full-precision atmosphere and provenance")
+	var precise_reopened: Dictionary = Document.read_named(label).get("document",{})
+	check(precise_reopened==precise,"V2 exact authored numeric values and array types survive save/reopen")
+	check(PackedFloat64Array([precise_reopened.get("presentation",{}).get("fog_strength",0.0)]).to_byte_array()==PackedFloat64Array([computed]).to_byte_array(),
+		"V2 arithmetic float64 bytes survive exact persistence without one-ULP drift")
 	owner.retire()
 	check(owner.stats().native_world_count == 0 and owner.stats().pending_native_world_count == 0,"all native owner references retire")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))

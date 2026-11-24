@@ -1,0 +1,12 @@
+{
+  "classification": "local diagnostic; not clean-source qualification",
+  "recorded_base": "eb67fc22336b89d79a8bfd160c2a48daa308f749",
+  "reason": "Root confirmed concurrent service/owner/controller edits just before start notice; compiled resource timing cannot be assumed.",
+  "original_receipts_preserved": true,
+  "original_failures": [
+    "asteroid-service-gallery actual imported layout and mapping provenance save",
+    "asteroid-service-gallery strict saved authored scene decodes exactly"
+  ],
+  "diagnosis": "The asteroid save fixture label had49 characters; existing Setup name limit is48. The rocket label waswithinlimit. Native fullreadback, exactmapping, nonselectedplanes, actoridentity andgenuine4096-cellStop prefix checks passed in this diagnostic.",
+  "planned_repair": "Shorten fixtureprefix tostrata2-ref-; rerunonlyagainst an agreed frozenapplication source."
+}

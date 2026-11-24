@@ -1,0 +1,75 @@
+{
+  "schema": "strata-theatre-002-decision-v1",
+  "mission": "STRATA-THEATRE-002",
+  "disposition": "Draft/HOLD",
+  "qualification_state": "corrected-source-campaign-pending",
+  "pull_request": "https://github.com/techrote/cybersand/pull/776",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "predecessor": {
+    "pull_request": 769,
+    "application": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "application_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "archival_head": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+    "qualification_run": 45457176340,
+    "evaluator_sha256": "344ff7de0caf120096baa377967585918fd985fd9d35ad7b7620e1c6c9b03a71",
+    "immutable": true
+  },
+  "qualified_successor_source": null,
+  "portable_evaluator": null,
+  "original_negative_campaigns": [
+    {
+      "run": 45484675371,
+      "source": "316020a4aa87ca7993716f00d714301884d580f7",
+      "source_tree": "50b0d869a84ff1ba4a3b3632aa433ff8b79a6268",
+      "linux_artifact": 14964647532,
+      "linux_archive_sha256": "5c34c69cffb87521ec1b7650fc3d84c919f7194020a22ff9d90769feee34b5fd",
+      "windows_artifact": 14965732536,
+      "windows_archive_sha256": "ec0b83d3f67cd5cef4e9892a4ef7be6fabbb81a951ba372cc203d7eb4a3e0509",
+      "qualification_passed": false,
+      "windows_admission_seconds": {
+        "orbital-terminal": 53.952,
+        "neon-rain-arcology": 49.52,
+        "industrial-underworks": 52.505,
+        "abyss-foundry": 63.373,
+        "vertical-transfer-spine": 57.991
+      },
+      "admission_target_seconds": 45,
+      "admission_target_misses": 5,
+      "package_executed": false
+    }
+  ],
+  "delivered_source_scope": [
+    "four-plane native ownership retained",
+    "strict v1 compatibility and CYSSTRAT v2 authored extensions",
+    "reviewed PNG alpha/mask/palette conversion",
+    "exact masked native modules and read-only frozen #770 adapter",
+    "bounded finite layered plans and native readback",
+    "per-plane history and honest Stop prefixes",
+    "six presentation-only motif kinds",
+    "five native showcase scenes",
+    "offline actual-capture gallery generator"
+  ],
+  "native_decorative_dynamics": {
+    "implemented": false,
+    "decision": "deferred",
+    "reason": "Static native owners and bounded visual motifs deliver the useful slice without introducing clocks/scheduling. Existing hosted cost and memory do not justify an unqualified extra native schedule. No native dynamic trial is claimed."
+  },
+  "physical_owner_acceptance": {
+    "status": "pending",
+    "platform": "Windows 11 / NVIDIA",
+    "scope": [
+      "appearance",
+      "interaction",
+      "real movement",
+      "pacing",
+      "aesthetic usefulness"
+    ]
+  },
+  "authorization": {
+    "draft": true,
+    "default_enabled": false,
+    "ready": false,
+    "merge": false,
+    "paid_inference": false
+  }
+}

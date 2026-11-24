@@ -120,7 +120,7 @@ static func validate_source(raw: Variant, expected_id: String) -> String:
 		return "Showcase provenance fields are unsupported."
 	if raw.provenance.kind != "original-native-material-construction" \
 			or raw.provenance.generator != "tools/strata2_build_showcases.py" \
-			or not Setup._integer(raw.provenance.generator_version, 1, 1) \
+			or not Setup._integer(raw.provenance.generator_version, 1, 2) \
 			or not Setup._integer(raw.provenance.seed, 0, 2147483647) \
 			or raw.provenance.source_art != "none":
 		return "Showcase provenance identity is invalid."

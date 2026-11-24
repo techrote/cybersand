@@ -1,6 +1,6 @@
 # STRATA-THEATRE-002 mission ledger
 
-Status: implementation in progress; Draft/HOLD. No owner acceptance, Ready promotion,
+Status: integrated successor; corrected hosted qualification pending; Draft/HOLD. No owner acceptance, Ready promotion,
 merge, production default activation or physical Windows/NVIDIA qualification.
 
 ## Source and ownership intake
@@ -10,7 +10,7 @@ merge, production default activation or physical Windows/NVIDIA qualification.
 - Successor ancestry begins at #769 archival head `80623d039aa49bc0c1d84a9206d89812ffa99ea6`; its application relationship remains documented in the original audit.
 - Successor branch: `feat/strata-theatre-002-20261124`. Accepted main is already an ancestor; no conflicting main change was present at intake.
 - #770 frozen native module schema is read-only donor knowledge, application `fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52`, archival head `f5f6e9f35727d81868bcced4da8b913b470ea635`. No moving architecture branch is imported.
-- PUBPRES #767 was refreshed at `d4f4afe93d02192d9165622b78b762d9fbf8dc3e`; the successor retains #769's borrowed ordinary Play interface. No camera, worker or render scheduler edits are authorized by this mission.
+- PUBPRES #767 was refreshed again at `f4089809c7294336db26cf576b0ac3c57fc54775`; the successor retains #769's borrowed ordinary Play interface. No camera, worker or render scheduler edits are authorized by this mission.
 - Active #773 Art, #774 DOCS-RENAISSANCE, #775 AMBIENT, #754 ObjectShard, #729 SWARM, Materials and RAMCACHE remain separate. Only explicit layer adapters and final handoff documentation belong here.
 - Original #769 run `45457176340`, evaluator and all dated receipts remain immutable. Its historical passes do not qualify this successor.
 
@@ -51,9 +51,11 @@ using its coordinates, clipping, parallax and opacity. Up to twelve regions and
 publication or physics. Visibility/pause freezes the visual phase; callback
 contributions are bounded to 0.1 seconds and do not catch up after a stall.
 
-Alternative considered: running decorative native clocks. This remains gated
-on matched measurements; presentation-only motion is the useful default. No
-dynamic-native capability will be claimed from visual smoke, rain or light.
+Alternative considered: running decorative native clocks. This candidate defers
+that optional extension. The measured hosted cost and memory, unchanged static
+publication behavior and useful bounded visual motion do not justify adding an
+unqualified native schedule. No dynamic-native trial or capability is claimed
+from visual smoke, rain or light.
 
 ## Prospective qualification and resource targets
 
@@ -91,15 +93,43 @@ required path, and the original local failure will be retained.
 
 | Milestone | State | Required remaining evidence |
 |---|---|---|
-| M1 foundation and faults | In implementation | Mounted ACK, partial native prefix and stale display cases |
-| M2 PNG/native import | In implementation | Deterministic alpha/mask mapping and native target readback |
-| M3 reusable architecture | In implementation | Layer-local library, staged preview/approval, stale/Stop cases |
-| M4 atmosphere | First focused component checks passed | Integrated framebuffer, pause/visibility and OFF/ON |
-| M5 resource budgets | Predeclared | Matched static/animated samples; dynamic decision |
-| M6 native showcases | In authoring | Four substantial scenes, isolated/detail captures and actor probes |
-| Persistence/UX | In implementation | V1 fixture, strict v2 fresh process and ordinary interaction |
-| Windows delivery | Not yet built | Source freeze, three qualifying jobs, archive/launcher/payload audit |
+| M1 foundation and faults | Implemented; actual local/native hosted regressions passed | Corrected exact-source graphical campaign |
+| M2 PNG/native import | Actual synthetic and two real-source native imports/readback passed | Corrected interactive Windows/Linux execution and packaged inputs |
+| M3 reusable architecture | Eight parts, three presets, native staged approval/Stop/history passed | Final independent source freeze and platform receipts |
+| M4 atmosphere | Bounded six-kind renderer and authoring integrated | Correct matched framebuffer comparisons after original TIME confound |
+| M5 resource budgets | First matched observations retained; native dynamics deferred | Final callback/native-progress/RSS samples; admission misses remain explicit |
+| M6 native showcases | Five native scenes; independent first captures critiqued, decorative v2 refinement integrated | Actual refined full/isolated/native-pixel captures and controlled actor routes |
+| Persistence/UX | V1/v2 strict tests, exact local authored decode and five-tab controls passed | Fresh-process native marker/import metadata/atmosphere witness |
+| Windows delivery | Source-bound package and offline gallery generators implemented | Corrected three-job execution, archive/launcher/payload audit |
 
 The final decision packet will replace pending entries with exact observations,
 limitations, original run links and source/tree/runtime identities. This ledger
 is a development checkpoint, not a completion claim.
+
+## First campaign and repaired findings
+
+Original run45484675371 at316020a4 failed graphical assertions on both platforms;
+all twelve native regressions and paused2048² probes passed. The original
+artifacts14964647532/14965732536 are retained byte-for-byte with SHA-256s in the
+[decision packet](decision-packet.json). The two original archives are also
+persistently saved as user deliverables. No predecessor or failed capture is
+relabeled as new qualification.
+
+Every original Windows scene admission missed the prospective45-second target
+(49.520–63.373s); Linux admissions took about13.7–14.6s. The45-second target
+remains unchanged. Harness fixes isolate ordinary palette/glow TIME for matched
+framebuffer assertions, separate native background colour from atmosphere, and
+apply actual yaw/thrust feedback for actor progress. Additional real defects
+fixed during independent review include full-precision settings persistence,
+canonical visual tokens, exact module dependency sets and cumulative Play
+history preflight over the same4096-cell partitions as execution. Original
+failures and repaired receipts remain separate.
+
+The actual ordinary workflow atda34aa108 passed404 aggregate native checks,
+including multi-chunk reviewed Setup equality, independent material readback and
+per-chunk Undo. Local stdout/process metadata were retained; that particular
+run omitted STRATA_REPORT, so it has no fabricated full JSON receipt. The hosted
+campaign writes complete original reports. A controlled local actor witness
+completed60 native and60 Rapier ticks while a decorative edit/Undo preserved
+all owner and body identities. Local headless evidence does not establish
+graphical or physical owner acceptance.

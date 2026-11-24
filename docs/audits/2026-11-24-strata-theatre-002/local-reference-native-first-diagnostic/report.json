@@ -1,0 +1,874 @@
+{
+	"checks": 326,
+	"completed": true,
+	"display_server": "headless",
+	"failures": [
+		"asteroid-service-gallery actual imported layout and mapping provenance save",
+		"asteroid-service-gallery strict saved authored scene decodes exactly"
+	],
+	"reference_imports": [
+		{
+			"actual_native_sha256": "4263c104bb36a3d3417b5341fc29cc16d7fca498294dda500ffc473c435bc297",
+			"apply_and_verify_usec": 2002196,
+			"background_sha256": "aef4560aac465071ea1d73045e2ed36ed4111f76bf5833fab2611704dc57bdaa",
+			"before_native_sha256": "b04f17498b96718bdfe2a5ad5980de7d2942d6048ff74f5cf8c75db65def6eb7",
+			"completed_chunks": 5,
+			"effects_sha256": "fded00ccf220624a5126eb7114d645b25463f4ee9a4af5acc57f1be5e947bcad",
+			"explicit_trial": {
+				"canvas": [
+					512.0,
+					512.0
+				],
+				"mapped": 19552.0,
+				"mask_no_write": 103156.0,
+				"no_write": 103328.0,
+				"origin": [
+					32.0,
+					64.0
+				],
+				"proposed_uint16le_sha256": "1c4f7f23c9356ecb170be460dc23eb92b8793b88b8768ac5181a0d7a59667740",
+				"proposed_write_mask_sha256": "8ac096a521e8f28aad3bdf1de8af3572bc31e42565b2c37c9bff7b773df3c674",
+				"scope": "Explicit qualification crop within the unchanged shipped source; same mapping/mask; no resampling.",
+				"selected_crop": [
+					0.0,
+					0.0,
+					384.0,
+					320.0
+				],
+				"unmapped_skipped": 172.0
+			},
+			"id": "asteroid-service-gallery",
+			"identity_after": {
+				"actor_body_ids": [
+					"309036328061"
+				],
+				"actor_session_id": "308902110325",
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": "-9223371955938261505",
+				"world_generation": 3
+			},
+			"identity_before": {
+				"actor_body_ids": [
+					"309036328061"
+				],
+				"actor_session_id": "308902110325",
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": "-9223371955938261505",
+				"world_generation": 3
+			},
+			"mask_sha256": "e2de46497c90616aa6fda207ca6b16b5fac805682e446d34d3549bb5db239605",
+			"native_stage_receipts": [
+				{
+					"actual_sha256": "de01a1d8d8da115162f677473abf179c2a20934b01f7ad4a94458fb3c9cef0dd",
+					"after_revision": 6,
+					"applied": 19552,
+					"before_revision": 1,
+					"before_sha256": "6c98aa6f977837da20846ae2731f0b3fa56f8b4c9651ec4191cbb3a7ae753a42",
+					"changed": 19552,
+					"chunks": 5,
+					"completed_chunks": 5,
+					"error": "",
+					"id": "place",
+					"plane": "scripted",
+					"projected_sha256": "de01a1d8d8da115162f677473abf179c2a20934b01f7ad4a94458fb3c9cef0dd",
+					"published": true,
+					"recorded": true,
+					"region": [
+						32,
+						64,
+						384,
+						320
+					],
+					"status": "completed",
+					"total": 19552
+				}
+			],
+			"play_sha256_after": "c3538604b1ad48f748a2e577beff3f445710e69a9578eb53fc74ca857a0888fd",
+			"play_sha256_before": "c3538604b1ad48f748a2e577beff3f445710e69a9578eb53fc74ca857a0888fd",
+			"preview_usec": 1596623,
+			"projected_native_sha256": "4263c104bb36a3d3417b5341fc29cc16d7fca498294dda500ffc473c435bc297",
+			"retained_authoring": {
+				"records": [
+					{
+						"actual_sha256": "de01a1d8d8da115162f677473abf179c2a20934b01f7ad4a94458fb3c9cef0dd",
+						"after_revision": 6,
+						"applied_cells": 19552,
+						"before_revision": 1,
+						"before_sha256": "6c98aa6f977837da20846ae2731f0b3fa56f8b4c9651ec4191cbb3a7ae753a42",
+						"changed_cells": 19552,
+						"completed_chunks": 5,
+						"error": "",
+						"generation": 1,
+						"geometry_sha256": "7e08bbee91d5043944757e5be52d465ff7df122d872885dd78ca0a1e640cd4e8",
+						"historical": true,
+						"id": "strata-585583afaf516d6e2f55a4c6-81df63580cc9ff15",
+						"kind": "raster_import",
+						"metadata": {
+							"allowed_materials": [
+								0,
+								62,
+								63,
+								68,
+								79,
+								100,
+								114
+							],
+							"authored_serial_after": 6,
+							"authored_serial_before": 1,
+							"depends_on": [],
+							"history": "One existing owner history operation per acknowledged <=4096-cell chunk; no group rollback or physical continuation.",
+							"placements": [
+								{
+									"empty_mode": "preserve",
+									"module_id": "raster-3c4236e732a9ffa1",
+									"module_sha256": "537366a97485b33a833f15c30e56285e748025595f83190f521bd1abb4792b4d",
+									"origin": [
+										32,
+										64
+									],
+									"palette": {},
+									"transform": "identity"
+								}
+							],
+							"plan_id": "place-537366a97485b33a833f",
+							"plan_metadata": {
+								"scope": "Owner-reviewed native material placement; no physics or structural solver claim."
+							},
+							"protected_regions": [],
+							"readback_scope": "actual full stage-region native readback after the acknowledged operation",
+							"region": [
+								32,
+								64,
+								384,
+								320
+							],
+							"source_modules": [
+								{
+									"module_id": "raster-3c4236e732a9ffa1",
+									"module_sha256": "537366a97485b33a833f15c30e56285e748025595f83190f521bd1abb4792b4d",
+									"provenance": {
+										"colour_distance": "Euclidean RGB bytes; equal-distance ties use earlier palette row",
+										"counts": {
+											"alpha_skipped": 0,
+											"explicit_empty": 0,
+											"mapped": 19552,
+											"mask_skipped": 103156,
+											"no_write": 103328,
+											"output_cells": 122880,
+											"source_pixels": 122880,
+											"unmapped": 172
+										},
+										"counts_domain": "output grid cells except source_pixels",
+										"decoded_rgba_sha256": "1917bbc35e8cb5a1cb654509fdd07318ee5c6e935a5ed654fdd2d705271392ae",
+										"mapping_sha256": "94212e179a37cd615fb8bba73655a8eae00d94160178bd0fc627a2dcf243d870",
+										"mask_policy": "nonzero alpha and RGB mean at least128; excluded mask pixels always no-write",
+										"mask_sha256": "e2de46497c90616aa6fda207ca6b16b5fac805682e446d34d3549bb5db239605",
+										"options": {
+											"alpha_mode": "overlay",
+											"alpha_threshold": 128,
+											"color_distance": 64,
+											"crop": [
+												0,
+												0,
+												384,
+												320
+											],
+											"origin": [
+												32,
+												64
+											],
+											"palette": [
+												{
+													"material": 62,
+													"rgb": [
+														96,
+														96,
+														108
+													],
+													"role": "grey structure"
+												},
+												{
+													"material": 63,
+													"rgb": [
+														55,
+														66,
+														72
+													],
+													"role": "dark structure"
+												},
+												{
+													"material": 114,
+													"rgb": [
+														160,
+														160,
+														168
+													],
+													"role": "bright metal"
+												},
+												{
+													"material": 79,
+													"rgb": [
+														204,
+														152,
+														64
+													],
+													"role": "amber marking"
+												},
+												{
+													"material": 68,
+													"rgb": [
+														72,
+														91,
+														76
+													],
+													"role": "pipe colour"
+												},
+												{
+													"material": 100,
+													"rgb": [
+														38,
+														39,
+														43
+													],
+													"role": "dark rock"
+												}
+											],
+											"scale": 1,
+											"transform": "identity",
+											"unmapped": "skip"
+										},
+										"sampling": "RGBA8 source pixels; crop then exact orthogonal transform then nearest-neighbour integer replication",
+										"scope": "Proposed material mapping; native application and actual target readback require separate owner approval.",
+										"source_extent": [
+											384,
+											320
+										],
+										"source_kind": "raster-proposal",
+										"source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+										"unknown_rgb_first32": {
+											"8a9165": 1,
+											"8b9068": 1,
+											"8b9661": 1,
+											"8f5e40": 1,
+											"966948": 1,
+											"c7cac6": 1,
+											"caccca": 1,
+											"cbc9c9": 1,
+											"cbcbc6": 1,
+											"cccbcb": 2,
+											"cccecc": 1,
+											"ccd0c9": 1,
+											"cfd2d0": 1,
+											"d0d1ce": 1,
+											"d1d0d0": 1,
+											"d2d0cf": 1,
+											"d2d2d1": 1,
+											"d3d4d1": 1,
+											"d3d6d0": 1,
+											"d4d1d0": 1,
+											"d4d2d2": 1,
+											"d5d4d2": 1,
+											"d7d9d9": 1,
+											"d8dcd4": 1,
+											"dbd7d6": 1,
+											"dcdad7": 1,
+											"dcddda": 1,
+											"dde2d8": 1,
+											"e0e0dc": 1,
+											"e1dfd5": 1,
+											"e2e2de": 1,
+											"e6e8e2": 1
+										}
+									}
+								}
+							],
+							"stage_id": "place",
+							"verified_prefix_sha256": "de01a1d8d8da115162f677473abf179c2a20934b01f7ad4a94458fb3c9cef0dd"
+						},
+						"owner_id": "c820561e6e8f9826007606e4d8eac393:1:scripted",
+						"plane": "scripted",
+						"projected_sha256": "de01a1d8d8da115162f677473abf179c2a20934b01f7ad4a94458fb3c9cef0dd",
+						"proposal_sha256": "466869a1a732846f71e9c4827b68b62f8033062751cb1a081a3c6c0f3b66a13e",
+						"published": true,
+						"requested_cells": 19552,
+						"requested_chunks": 5,
+						"scene_id": "c820561e6e8f9826007606e4d8eac393:1",
+						"scope": "authored-material-operation-history",
+						"source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+						"status": "completed",
+						"version": 1
+					}
+				],
+				"version": 1
+			},
+			"source_crop_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+			"source_original_sha256": "e663ce4379554b49c168447b023f24481ad7df3dc9106bddcd29ed40c952cf28",
+			"stop_trial": {}
+		},
+		{
+			"actual_native_sha256": "46c868511656118d12138ffcdfdc717d0e2ba583b74a8ecf6b2389a57e51d381",
+			"apply_and_verify_usec": 2161950,
+			"background_sha256": "aef4560aac465071ea1d73045e2ed36ed4111f76bf5833fab2611704dc57bdaa",
+			"before_native_sha256": "b04f17498b96718bdfe2a5ad5980de7d2942d6048ff74f5cf8c75db65def6eb7",
+			"completed_chunks": 6,
+			"effects_sha256": "fded00ccf220624a5126eb7114d645b25463f4ee9a4af5acc57f1be5e947bcad",
+			"explicit_trial": {
+				"canvas": [
+					512.0,
+					512.0
+				],
+				"mapped": 24251.0,
+				"mask_no_write": 116708.0,
+				"no_write": 119109.0,
+				"origin": [
+					32.0,
+					64.0
+				],
+				"proposed_uint16le_sha256": "c13e45cf87cbe88908dc37c340d900de0382d8729552177c75c6594c86893584",
+				"proposed_write_mask_sha256": "a73f8dc48e3d5581078d028d9c9ee47fe10f6b751735092605fb9c5e2d45ece3",
+				"scope": "Explicit qualification crop within the unchanged shipped source; same mapping/mask; no resampling.",
+				"selected_crop": [
+					0.0,
+					0.0,
+					448.0,
+					320.0
+				],
+				"unmapped_skipped": 2401.0
+			},
+			"id": "rocket-hangar-frame",
+			"identity_after": {
+				"actor_body_ids": [
+					"397116712160"
+				],
+				"actor_session_id": "396982494425",
+				"native_tick": 0,
+				"physical_epoch": 2,
+				"rapier_tick": 0,
+				"worker_id": "-9223371955938261505",
+				"world_generation": 4
+			},
+			"identity_before": {
+				"actor_body_ids": [
+					"397116712160"
+				],
+				"actor_session_id": "396982494425",
+				"native_tick": 0,
+				"physical_epoch": 2,
+				"rapier_tick": 0,
+				"worker_id": "-9223371955938261505",
+				"world_generation": 4
+			},
+			"mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+			"native_stage_receipts": [
+				{
+					"actual_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf",
+					"after_revision": 9,
+					"applied": 24251,
+					"before_revision": 3,
+					"before_sha256": "e6f45b8e6123e9ab6cfd4e642762f62b6d062c77cf5af7112994b87b1bd30450",
+					"changed": 24251,
+					"chunks": 6,
+					"completed_chunks": 6,
+					"error": "",
+					"id": "place",
+					"plane": "scripted",
+					"projected_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf",
+					"published": true,
+					"recorded": true,
+					"region": [
+						32,
+						64,
+						448,
+						320
+					],
+					"status": "completed",
+					"total": 24251
+				}
+			],
+			"play_sha256_after": "c3538604b1ad48f748a2e577beff3f445710e69a9578eb53fc74ca857a0888fd",
+			"play_sha256_before": "c3538604b1ad48f748a2e577beff3f445710e69a9578eb53fc74ca857a0888fd",
+			"preview_usec": 1782474,
+			"projected_native_sha256": "46c868511656118d12138ffcdfdc717d0e2ba583b74a8ecf6b2389a57e51d381",
+			"retained_authoring": {
+				"records": [
+					{
+						"actual_sha256": "d3f3016526f896cc1a6d9e9fad5c7f9bf21fe652a0510bcfc1a50ab7a4be8c74",
+						"after_revision": 2,
+						"applied_cells": 4096,
+						"before_revision": 1,
+						"before_sha256": "e6f45b8e6123e9ab6cfd4e642762f62b6d062c77cf5af7112994b87b1bd30450",
+						"changed_cells": 4096,
+						"completed_chunks": 1,
+						"error": "",
+						"generation": 2,
+						"geometry_sha256": "c31d246c893af60bba0a041aafb780b727f9de423cc456bd34cbd2d70c5991e7",
+						"historical": true,
+						"id": "strata-ef53bd7e3e491cdf5e777386-81df63580cc9ff15",
+						"kind": "raster_import",
+						"metadata": {
+							"allowed_materials": [
+								0,
+								62,
+								76,
+								77,
+								79,
+								114,
+								130
+							],
+							"authored_serial_after": 2,
+							"authored_serial_before": 1,
+							"depends_on": [],
+							"history": "One existing owner history operation per acknowledged <=4096-cell chunk; no group rollback or physical continuation.",
+							"placements": [
+								{
+									"empty_mode": "preserve",
+									"module_id": "raster-7ae95ab333cf4789",
+									"module_sha256": "2a1174a993f36355c0b196e13be897f08cf7c811f247ea5b92bb35ff59088135",
+									"origin": [
+										32,
+										64
+									],
+									"palette": {},
+									"transform": "identity"
+								}
+							],
+							"plan_id": "place-2a1174a993f36355c0b1",
+							"plan_metadata": {
+								"scope": "Owner-reviewed native material placement; no physics or structural solver claim."
+							},
+							"protected_regions": [],
+							"readback_scope": "actual full stage-region native readback after the acknowledged operation",
+							"region": [
+								32,
+								64,
+								448,
+								320
+							],
+							"source_modules": [
+								{
+									"module_id": "raster-7ae95ab333cf4789",
+									"module_sha256": "2a1174a993f36355c0b196e13be897f08cf7c811f247ea5b92bb35ff59088135",
+									"provenance": {
+										"colour_distance": "Euclidean RGB bytes; equal-distance ties use earlier palette row",
+										"counts": {
+											"alpha_skipped": 0,
+											"explicit_empty": 0,
+											"mapped": 24251,
+											"mask_skipped": 116708,
+											"no_write": 119109,
+											"output_cells": 143360,
+											"source_pixels": 143360,
+											"unmapped": 2401
+										},
+										"counts_domain": "output grid cells except source_pixels",
+										"decoded_rgba_sha256": "dc193a5e207479a1a47841a7e92a70fefb3e8728b222fc2f8ec2d0c4c8c0209e",
+										"mapping_sha256": "be5e226b1381af7c91da0178ce96fcc8520ff1b56c225a1cc1d48e10c539c292",
+										"mask_policy": "nonzero alpha and RGB mean at least128; excluded mask pixels always no-write",
+										"mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+										"options": {
+											"alpha_mode": "overlay",
+											"alpha_threshold": 128,
+											"color_distance": 64,
+											"crop": [
+												0,
+												0,
+												448,
+												320
+											],
+											"origin": [
+												32,
+												64
+											],
+											"palette": [
+												{
+													"material": 62,
+													"rgb": [
+														57,
+														70,
+														89
+													],
+													"role": "dark steel"
+												},
+												{
+													"material": 114,
+													"rgb": [
+														92,
+														102,
+														115
+													],
+													"role": "bright steel"
+												},
+												{
+													"material": 130,
+													"rgb": [
+														22,
+														35,
+														51
+													],
+													"role": "deep frame"
+												},
+												{
+													"material": 76,
+													"rgb": [
+														126,
+														84,
+														22
+													],
+													"role": "gold crane paint"
+												},
+												{
+													"material": 79,
+													"rgb": [
+														198,
+														150,
+														61
+													],
+													"role": "amber detail"
+												},
+												{
+													"material": 77,
+													"rgb": [
+														126,
+														208,
+														244
+													],
+													"role": "cyan signal"
+												}
+											],
+											"scale": 1,
+											"transform": "identity",
+											"unmapped": "skip"
+										},
+										"sampling": "RGBA8 source pixels; crop then exact orthogonal transform then nearest-neighbour integer replication",
+										"scope": "Proposed material mapping; native application and actual target readback require separate owner approval.",
+										"source_extent": [
+											512,
+											320
+										],
+										"source_kind": "raster-proposal",
+										"source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+										"unknown_rgb_first32": {
+											"689ec5": 1,
+											"878993": 1,
+											"878a92": 1,
+											"8a8d95": 1,
+											"8b898d": 1,
+											"8c8c94": 1,
+											"8c8d95": 3,
+											"8f939e": 1,
+											"9094a2": 2,
+											"91929d": 1,
+											"9196a2": 2,
+											"928f93": 1,
+											"9398a3": 1,
+											"9398a6": 1,
+											"9598a6": 1,
+											"9696a3": 1,
+											"979ba8": 3,
+											"9c9ea7": 2,
+											"9d999c": 1,
+											"a2a5b2": 1,
+											"a9adb3": 1,
+											"acb0ba": 1,
+											"adb2bd": 1,
+											"b0aebb": 1,
+											"b1b1c0": 1,
+											"b1b9c2": 1,
+											"b3b6bc": 1,
+											"b4b7c0": 1,
+											"b5b5bd": 3,
+											"b8bbc1": 1,
+											"b8bfc1": 1,
+											"bbc1c9": 1
+										}
+									}
+								}
+							],
+							"stage_id": "place",
+							"verified_prefix_sha256": "d3f3016526f896cc1a6d9e9fad5c7f9bf21fe652a0510bcfc1a50ab7a4be8c74"
+						},
+						"owner_id": "c820561e6e8f9826007606e4d8eac393:2:scripted",
+						"plane": "scripted",
+						"projected_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf",
+						"proposal_sha256": "e4b467f9260d2aff0745cbb3dc391d965884e6f13dc0105f5146a64666f8b434",
+						"published": true,
+						"requested_cells": 24251,
+						"requested_chunks": 6,
+						"scene_id": "c820561e6e8f9826007606e4d8eac393:2",
+						"scope": "authored-material-operation-history",
+						"source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+						"status": "partial",
+						"version": 1
+					},
+					{
+						"actual_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf",
+						"after_revision": 9,
+						"applied_cells": 24251,
+						"before_revision": 3,
+						"before_sha256": "e6f45b8e6123e9ab6cfd4e642762f62b6d062c77cf5af7112994b87b1bd30450",
+						"changed_cells": 24251,
+						"completed_chunks": 6,
+						"error": "",
+						"generation": 2,
+						"geometry_sha256": "c31d246c893af60bba0a041aafb780b727f9de423cc456bd34cbd2d70c5991e7",
+						"historical": true,
+						"id": "strata-b4947c321630808e9d622292-81df63580cc9ff15",
+						"kind": "raster_import",
+						"metadata": {
+							"allowed_materials": [
+								0,
+								62,
+								76,
+								77,
+								79,
+								114,
+								130
+							],
+							"authored_serial_after": 9,
+							"authored_serial_before": 3,
+							"depends_on": [],
+							"history": "One existing owner history operation per acknowledged <=4096-cell chunk; no group rollback or physical continuation.",
+							"placements": [
+								{
+									"empty_mode": "preserve",
+									"module_id": "raster-7ae95ab333cf4789",
+									"module_sha256": "2a1174a993f36355c0b196e13be897f08cf7c811f247ea5b92bb35ff59088135",
+									"origin": [
+										32,
+										64
+									],
+									"palette": {},
+									"transform": "identity"
+								}
+							],
+							"plan_id": "place-2a1174a993f36355c0b1",
+							"plan_metadata": {
+								"scope": "Owner-reviewed native material placement; no physics or structural solver claim."
+							},
+							"protected_regions": [],
+							"readback_scope": "actual full stage-region native readback after the acknowledged operation",
+							"region": [
+								32,
+								64,
+								448,
+								320
+							],
+							"source_modules": [
+								{
+									"module_id": "raster-7ae95ab333cf4789",
+									"module_sha256": "2a1174a993f36355c0b196e13be897f08cf7c811f247ea5b92bb35ff59088135",
+									"provenance": {
+										"colour_distance": "Euclidean RGB bytes; equal-distance ties use earlier palette row",
+										"counts": {
+											"alpha_skipped": 0,
+											"explicit_empty": 0,
+											"mapped": 24251,
+											"mask_skipped": 116708,
+											"no_write": 119109,
+											"output_cells": 143360,
+											"source_pixels": 143360,
+											"unmapped": 2401
+										},
+										"counts_domain": "output grid cells except source_pixels",
+										"decoded_rgba_sha256": "dc193a5e207479a1a47841a7e92a70fefb3e8728b222fc2f8ec2d0c4c8c0209e",
+										"mapping_sha256": "be5e226b1381af7c91da0178ce96fcc8520ff1b56c225a1cc1d48e10c539c292",
+										"mask_policy": "nonzero alpha and RGB mean at least128; excluded mask pixels always no-write",
+										"mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+										"options": {
+											"alpha_mode": "overlay",
+											"alpha_threshold": 128,
+											"color_distance": 64,
+											"crop": [
+												0,
+												0,
+												448,
+												320
+											],
+											"origin": [
+												32,
+												64
+											],
+											"palette": [
+												{
+													"material": 62,
+													"rgb": [
+														57,
+														70,
+														89
+													],
+													"role": "dark steel"
+												},
+												{
+													"material": 114,
+													"rgb": [
+														92,
+														102,
+														115
+													],
+													"role": "bright steel"
+												},
+												{
+													"material": 130,
+													"rgb": [
+														22,
+														35,
+														51
+													],
+													"role": "deep frame"
+												},
+												{
+													"material": 76,
+													"rgb": [
+														126,
+														84,
+														22
+													],
+													"role": "gold crane paint"
+												},
+												{
+													"material": 79,
+													"rgb": [
+														198,
+														150,
+														61
+													],
+													"role": "amber detail"
+												},
+												{
+													"material": 77,
+													"rgb": [
+														126,
+														208,
+														244
+													],
+													"role": "cyan signal"
+												}
+											],
+											"scale": 1,
+											"transform": "identity",
+											"unmapped": "skip"
+										},
+										"sampling": "RGBA8 source pixels; crop then exact orthogonal transform then nearest-neighbour integer replication",
+										"scope": "Proposed material mapping; native application and actual target readback require separate owner approval.",
+										"source_extent": [
+											512,
+											320
+										],
+										"source_kind": "raster-proposal",
+										"source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+										"unknown_rgb_first32": {
+											"689ec5": 1,
+											"878993": 1,
+											"878a92": 1,
+											"8a8d95": 1,
+											"8b898d": 1,
+											"8c8c94": 1,
+											"8c8d95": 3,
+											"8f939e": 1,
+											"9094a2": 2,
+											"91929d": 1,
+											"9196a2": 2,
+											"928f93": 1,
+											"9398a3": 1,
+											"9398a6": 1,
+											"9598a6": 1,
+											"9696a3": 1,
+											"979ba8": 3,
+											"9c9ea7": 2,
+											"9d999c": 1,
+											"a2a5b2": 1,
+											"a9adb3": 1,
+											"acb0ba": 1,
+											"adb2bd": 1,
+											"b0aebb": 1,
+											"b1b1c0": 1,
+											"b1b9c2": 1,
+											"b3b6bc": 1,
+											"b4b7c0": 1,
+											"b5b5bd": 3,
+											"b8bbc1": 1,
+											"b8bfc1": 1,
+											"bbc1c9": 1
+										}
+									}
+								}
+							],
+							"stage_id": "place",
+							"verified_prefix_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf"
+						},
+						"owner_id": "c820561e6e8f9826007606e4d8eac393:2:scripted",
+						"plane": "scripted",
+						"projected_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf",
+						"proposal_sha256": "c5b36ed512c913990d88d9a18a5c284ea0fdbcd65601aea72f719e9730c7a6d8",
+						"published": true,
+						"requested_cells": 24251,
+						"requested_chunks": 6,
+						"scene_id": "c820561e6e8f9826007606e4d8eac393:2",
+						"scope": "authored-material-operation-history",
+						"source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+						"status": "completed",
+						"version": 1
+					}
+				],
+				"version": 1
+			},
+			"source_crop_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+			"source_original_sha256": "033534dc0971a8250f27a7d9a91e60af6230559a872107505f574c33e1420fef",
+			"stop_trial": {
+				"applied_cells": 4096,
+				"completed_chunks": 1,
+				"native_sha256": "d86c321ce92becb63e8c2c8db7d269f95fe8fca191c69e8c2d2d06edc8a5eae0",
+				"scope": "Stop retains native prefix; no rollback inferred.",
+				"stage_receipts": [
+					{
+						"actual_sha256": "d3f3016526f896cc1a6d9e9fad5c7f9bf21fe652a0510bcfc1a50ab7a4be8c74",
+						"after_revision": 2,
+						"applied": 4096,
+						"before_revision": 1,
+						"before_sha256": "e6f45b8e6123e9ab6cfd4e642762f62b6d062c77cf5af7112994b87b1bd30450",
+						"changed": 4096,
+						"chunks": 6,
+						"completed_chunks": 1,
+						"error": "",
+						"id": "place",
+						"plane": "scripted",
+						"projected_sha256": "e4a9554381c487d4e4917bda477b9ecdf04c006001712fd25064a31ad98b50bf",
+						"published": true,
+						"recorded": true,
+						"region": [
+							32,
+							64,
+							448,
+							320
+						],
+						"status": "partial",
+						"total": 24251
+					}
+				],
+				"status": "partial",
+				"stop_to_verified_readback_usec": 821743
+			}
+		}
+	],
+	"schema": "strata2-reference-native-v1",
+	"scope": "Actual ordinary Main/Workbench, real reference crops, explicit masks, native ACK/history and complete independent material readback; framebuffer appearance is a separate gate.",
+	"source_revision": "eb67fc22336b89d79a8bfd160c2a48daa308f749",
+	"teardown": {
+		"cache_hits": 0,
+		"construction_usec": 271669,
+		"generation": 3,
+		"last_edit_usec": 21190,
+		"layers": {},
+		"native_snapshot_calls": 10,
+		"native_world_count": 0,
+		"owns_play_world": false,
+		"pending_native_world_count": 0,
+		"pending_token": -1,
+		"retired_worlds": 6,
+		"session_id": "c820561e6e8f9826007606e4d8eac393"
+	}
+}

@@ -10,7 +10,7 @@ const History = preload("res://scripts/workbench_paint_editor_history.gd")
 const Codec = preload("res://scripts/depth/strata_import_codec.gd")
 const TILE_SIDE := 64
 const ACK_NOTICE_USEC := 15000000
-const FENCE_KEYS := ["scene_id", "owner_id", "generation", "revision", "permission_sha256"]
+const FENCE_KEYS := ["scene_id", "owner_id", "generation", "revision", "authored_serial", "permission_sha256"]
 
 var _host: Object
 var _compiled: Dictionary = {}
@@ -40,6 +40,8 @@ var _capture_count := 0
 var _apply_count := 0
 var _record_bytes := 0
 var _unverified_outcome := false
+var _history_summary: Array = []
+var _history_warnings: Array[String] = []
 var _source_image: Image
 var _output_image: Image
 
@@ -89,19 +91,23 @@ func begin(host: Object, plan: Dictionary, admitted: PackedInt32Array) -> Dictio
 		stage.readback_error = ""
 		stage.metadata["verified_prefix_sha256"] = ""
 		stage.metadata["readback_scope"] = "pending actual native capture"
+		stage.metadata["authored_serial_before"] = int(_initial[id].authored_serial)
+		stage.metadata["authored_serial_after"] = int(_initial[id].authored_serial)
 		var budget_record := _record(stage, "refused")
+		budget_record.metadata.verified_prefix_sha256 = "f".repeat(64)
+		budget_record.metadata.readback_scope = "actual full stage-region native readback after the acknowledged operation"
+		budget_record.metadata.authored_serial_before = 2147483647
+		budget_record.metadata.authored_serial_after = 2147483647
 		var record_error := Provenance.validate_record(budget_record)
 		if not record_error.is_empty(): return _refuse("Retained stage provenance is invalid before writing: " + record_error)
 		# Reserve complete fixed-width hashes/revisions before writes. The final
 		# record only replaces these values; it never grows unbounded diagnostics.
 		for key: String in ["source_sha256", "proposal_sha256", "geometry_sha256", "before_sha256", "projected_sha256", "actual_sha256"]: budget_record[key] = "f".repeat(64)
 		for key: String in ["generation", "before_revision", "after_revision", "requested_cells", "applied_cells", "changed_cells", "requested_chunks", "completed_chunks"]: budget_record[key] = 2147483647
-		budget_record.metadata.verified_prefix_sha256 = "f".repeat(64)
-		budget_record.metadata.readback_scope = "actual full stage-region native readback after the acknowledged operation"
 		# Final diagnostics retain at most512 codepoints. JSON's longest escaped
 		# codepoint needs6 bytes; reserve that representation prospectively.
 		budget_record.error = String.chr(1).repeat(512)
-		_record_bytes += Module.json_bytes(budget_record).size() + 2
+		_record_bytes += Module.json_bytes(budget_record).size() + 64 # Longest terminal status and array punctuation.
 	for id: String in _initial:
 		if int(_initial[id].get("remaining_authoring_bytes", Provenance.MAX_BYTES)) < _record_bytes: return _refuse("Retained provenance byte budget cannot cover this complete finite plan.")
 	_status = "preparing"
@@ -116,13 +122,14 @@ func _reset() -> void:
 	_processed = 0; _inspected = 0; _changed = 0; _receipts = []; _started_usec = 0
 	_maximum_step_usec = 0; _capture_count = 0; _apply_count = 0; _record_bytes = 0
 	_unverified_outcome = false
+	_history_summary.clear(); _history_warnings.clear()
 	_source_image = null; _output_image = null
 
 
 func _state_error(source: Dictionary) -> String:
 	if not source.get("ok", false): return str(source.get("error", "The native target is unavailable."))
 	if not source.has_all(FENCE_KEYS + ["extent", "paint_allowed", "erase_allowed"]): return "The owner adapter returned incomplete source fences."
-	if not source.scene_id is String or source.scene_id.is_empty() or not source.owner_id is String or source.owner_id.is_empty() or not Module.integer(source.generation, 0, 2147483647) or not Module.integer(source.revision, 0, 2147483647) or not Module.hex_digest(source.permission_sha256) or not Module.pair(source.extent, 512, 2048): return "The owner adapter returned malformed source identity."
+	if not source.scene_id is String or source.scene_id.is_empty() or not source.owner_id is String or source.owner_id.is_empty() or not Module.integer(source.generation, 0, 2147483647) or not Module.integer(source.revision, 0, 2147483647) or not Module.integer(source.authored_serial, 0, 2147483647) or not Module.hex_digest(source.permission_sha256) or not Module.pair(source.extent, 512, 2048): return "The owner adapter returned malformed source identity."
 	if not source.paint_allowed is bool or not source.erase_allowed is bool or (not source.paint_allowed and not source.erase_allowed): return _receipt_error(source, "The plane is hidden, locked or otherwise excluded from editing.")
 	return ""
 
@@ -170,6 +177,15 @@ func _image(materials: PackedInt32Array, size: Vector2i) -> Image:
 
 func _prepare_stage() -> void:
 	if _index >= _stages.size():
+		for id: String in _initial:
+			var limit := int(_initial[id].get("history_limit", 32))
+			var existing := int(_initial[id].get("undo_count", 0))
+			var chunks := int(_budgets[id].chunks)
+			var displaced := maxi(0, existing + chunks - limit)
+			_history_summary.append({"plane": id, "limit": limit, "existing_entries": existing if _initial[id].has("undo_count") else -1,
+				"proposed_entries": chunks, "displaced_entries": displaced, "retained_plan_entries": mini(chunks, limit)})
+			if displaced > 0:
+				_history_warnings.append("%s needs %d history chunks; the existing %d-entry window will displace at least %d earlier entries. Undo retains the newest chunks only." % [id.capitalize(), chunks, limit, displaced])
 		var identities: Array = []
 		for stage: Dictionary in _stages: identities.append({"id": stage.id, "plane": stage.plane, "before": stage.before_sha256, "projected": stage.projected_sha256})
 		_token = Module.digest(Module.json_bytes({"proposal": _compiled.proposal_sha256, "sources": _initial, "observations": identities, "job": _job_id}))
@@ -214,6 +230,7 @@ func _handle_capture(receipt: Dictionary, operation: Dictionary) -> void:
 	elif not receipt.get("owner_id") is String or receipt.owner_id != operation.expected.owner_id: error = "Native capture returned a retired or unspecified owner identity."
 	elif not Module.integer(receipt.get("generation"), 0, 2147483647) or int(receipt.generation) != int(operation.expected.generation): error = "Native capture returned a stale or unspecified generation."
 	elif not Module.integer(receipt.get("authored_revision"), 0, 2147483647) or int(receipt.authored_revision) != int(operation.expected.revision): error = "Native capture returned a stale or unspecified authored revision."
+	elif not Module.integer(receipt.get("authored_serial"), 0, 2147483647) or int(receipt.authored_serial) != int(operation.expected.authored_serial): error = "Native capture returned a stale or unspecified authored history serial."
 	else: error = _fence_error(stage.plane, operation.expected)
 	if not error.is_empty():
 		if operation.kind == "preview": _refuse(error)
@@ -310,6 +327,8 @@ func _start_stage() -> void:
 	if not error.is_empty(): _error = error; _status = "partial" if _processed > 0 else "refused"; _phase = ""; return
 	stage.before_revision = int(_live[stage.plane].revision)
 	stage.after_revision = int(_live[stage.plane].revision)
+	stage.metadata.authored_serial_before = int(_live[stage.plane].authored_serial)
+	stage.metadata.authored_serial_after = int(_live[stage.plane].authored_serial)
 	stage.status = "applying"
 	stage.prefix_region = stage.before_region.duplicate()
 	_phase = "apply_chunk"
@@ -375,6 +394,15 @@ func _handle_apply(receipt: Dictionary, operation: Dictionary) -> void:
 		stage.after_revision = int(current.revision)
 		if receipt.has("authored_revision") and int(receipt.authored_revision) != int(current.revision): complete = false; receipt_error = "Native ACK authored revision is stale."
 	else: complete = false; receipt_error = "Native owner lost its acknowledged authored revision."
+	if not Module.integer(current.get("authored_serial"), int(operation.expected.authored_serial), 2147483647):
+		complete = false; receipt_error = "The owner lost its authored history serial."
+	elif applied > 0 and (not Module.integer(receipt.get("authored_serial"), int(operation.expected.authored_serial), 2147483647) or int(receipt.authored_serial) != int(current.authored_serial)):
+		complete = false; receipt_error = "An authored operation changed outside this native ACK."
+	elif applied == 0 and int(current.authored_serial) != int(operation.expected.authored_serial):
+		complete = false; receipt_error = "An unrelated authored operation changed during a refused chunk."
+	else:
+		_live[stage.plane].authored_serial = int(current.authored_serial)
+		stage.metadata.authored_serial_after = int(current.authored_serial)
 	var retained := receipt.duplicate(true)
 	retained.stage_id = stage.id; retained.plane = stage.plane
 	retained.session_applied = applied; retained.session_changed = actual_changed
@@ -518,9 +546,10 @@ func state() -> Dictionary:
 		"source_sha256": _compiled.get("plan", {}).get("source_sha256", ""), "proposal_sha256": _compiled.get("proposal_sha256", ""),
 		"geometry_sha256": _stages[0].geometry_sha256 if _stages.size() == 1 else "",
 		"source_image": _source_image, "output_image": _output_image, "stages": stages, "preview_regions": previews, "receipts": _receipts.duplicate(true),
+		"history_summary": _history_summary.duplicate(true), "history_warnings": _history_warnings.duplicate(),
 		"zero_writes": not _approved, "native_outcome_unverified": _unverified_outcome, "pixels_pending": _approved and busy and _processed > 0,
 		"phase": _phase, "pending_owner_ack": not _pending.is_empty(), "error": _error,
-		"message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk." if _status == "ready" else "",
+		"message": ("Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. " + " ".join(_history_warnings)) if _status == "ready" else "",
 		"preview_kind": "Copied native materials and projected material-ID colours; production framebuffer appearance qualifies separately.",
 		"metrics": {"capture_calls": _capture_count, "apply_calls": _apply_count, "maximum_step_usec": _maximum_step_usec,
 			"elapsed_usec": Time.get_ticks_usec() - _started_usec if _started_usec > 0 else 0, "reserved_provenance_bytes": _record_bytes}}

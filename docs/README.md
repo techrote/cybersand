@@ -12,6 +12,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Strata Theatre in ordinary Workbench
 
+The separately developed **STRATA-THEATRE-002 Draft/HOLD successor** adds a
+[native environment and atmosphere library](systems/strata-environments.md).
+Its five scenes, reusable parts and explicit raster masks are candidate content;
+predecessor #769 evidence does not qualify the successor.
+The [native authoring contract](systems/strata-authoring.md) explains PNG/native
+import, bounded preview and approval, reusable parts, Stop and historical records.
+
 The Draft/HOLD [four-plane composition contract](systems/strata-workbench.md)
 owns the borrowed play presentation, three static native decorative Worlds,
 input/history boundaries and versioned authored envelope. Use the

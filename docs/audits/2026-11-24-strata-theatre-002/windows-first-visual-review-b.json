@@ -1,0 +1,84 @@
+{
+  "schema": "strata2-original-windows-visual-review-v1",
+  "reviewer": "specialist B",
+  "source_commit": "316020a4aa87ca7993716f00d714301884d580f7",
+  "source_tree": "50b0d869a84ff1ba4a3b3632aa433ff8b79a6268",
+  "original_campaign_status": "failed",
+  "original_input_custody": "passed",
+  "original_report_sha256": "58fda13d063993f672964993ee643758a7d0e205966eecd65856e6c503e6a948",
+  "run": "https://github.com/techrote/cybersand/actions/runs/45484675371",
+  "scope": "Independent inspection of all five original actual Windows full-stack PNGs; no final application, physical GPU or aesthetic acceptance claim.",
+  "observations": [
+    "All five actual captures retain true orthographic side elevation, crisp native material edges and bright physical Play silhouettes separated from darker rear geometry.",
+    "The same design weaknesses observed on Linux remain visible: sparse disconnected orbital horizon, low far skyline, repeated hollow machinery rectangles, detached far cavern strips and portrait lower rear-panel overshoot.",
+    "Presentation-only haze and steam are restrained and sometimes difficult to discern at whole-scene scale; final matched details and owner interaction must judge whether their strength is useful.",
+    "Generator-v2 decorative refinements address the observed geometry weaknesses but require a new exact-source Windows execution; the original frames cannot certify those revisions.",
+    "Every recorded Windows admission exceeded the predeclared45second target. These original misses are retained rather than recast as success or hidden by a new target.",
+    "The reported adapter is ANGLE over Microsoft Basic Render Driver. This is hosted software-rendering evidence, not a physical Windows11/NVIDIA performance or appearance decision."
+  ],
+  "scenes": [
+    {
+      "id": "orbital-terminal",
+      "image": "orbital-terminal/reference-composite.png",
+      "image_sha256": "6ca70038bab21b751d22a3df1803e625822985f377608e8be9077062d2fcbd28",
+      "admission_elapsed_ms": 53952,
+      "admission_target_ms": 45000,
+      "admission_target_met": false,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "reported_failures": [
+        "background remains visible with exact opaque source colour",
+        "excluded decorative animation contributes no framebuffer pixels",
+        "ordinary piloted actor makes measurable forward route progress"
+      ]
+    },
+    {
+      "id": "neon-rain-arcology",
+      "image": "neon-rain-arcology/reference-composite.png",
+      "image_sha256": "df542cd78aa11bc1e3733d5ecbe32d0b539d70a4988184fb9950a67ea16d33cd",
+      "admission_elapsed_ms": 49520,
+      "admission_target_ms": 45000,
+      "admission_target_met": false,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "reported_failures": [
+        "excluded decorative animation contributes no framebuffer pixels",
+        "ordinary piloted actor makes measurable forward route progress"
+      ]
+    },
+    {
+      "id": "industrial-underworks",
+      "image": "industrial-underworks/reference-composite.png",
+      "image_sha256": "a071af87244c819370e69bb7cfbfde594a915da6eb088c3d648acb9bf36ad172",
+      "admission_elapsed_ms": 52505,
+      "admission_target_ms": 45000,
+      "admission_target_met": false,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "reported_failures": [
+        "excluded decorative animation contributes no framebuffer pixels"
+      ]
+    },
+    {
+      "id": "abyss-foundry",
+      "image": "abyss-foundry/reference-composite.png",
+      "image_sha256": "75d2be40844bf8391ec1f1177d75b50bd2f7d50059a1c3166d9e665bb12ef98c",
+      "admission_elapsed_ms": 63373,
+      "admission_target_ms": 45000,
+      "admission_target_met": false,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "reported_failures": [
+        "excluded decorative animation contributes no framebuffer pixels"
+      ]
+    },
+    {
+      "id": "vertical-transfer-spine",
+      "image": "vertical-transfer-spine/reference-composite.png",
+      "image_sha256": "75df8130f69b6d64a349f61a0c8112ab05bef64c0d6c3f537aaeb86bba25284d",
+      "admission_elapsed_ms": 57991,
+      "admission_target_ms": 45000,
+      "admission_target_met": false,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "reported_failures": [
+        "excluded decorative animation contributes no framebuffer pixels"
+      ]
+    }
+  ]
+}

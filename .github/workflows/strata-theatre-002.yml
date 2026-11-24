@@ -11,6 +11,8 @@ on:
       - 'godot/data/strata/**'
       - 'godot/data/strata2/**'
       - 'tools/strata2_build_*.py'
+      - 'tools/build_strata2_gallery.py'
+      - 'tools/ci/test_strata2_gallery.py'
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/scripts/workbench_paint_editor_controller.gd'
       - 'godot/tools/qualify_workbench_strata*.gd'
@@ -62,6 +64,7 @@ jobs:
           python3 tools/ci/test_strata2_qualification.py
           python3 tools/ci/test_strata2_campaign_custody.py
           python3 tools/ci/test_strata_process_metrics.py
+          python3 tools/ci/test_strata2_gallery.py
           git lfs install --local
           git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
       - name: Prepare official pinned Godot and graphical display
@@ -116,6 +119,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Independent campaign custody controls failed' }
           python tools/ci/test_strata_process_metrics.py
           if ($LASTEXITCODE -ne 0) { throw 'Process resource observation controls failed' }
+          python tools/ci/test_strata2_gallery.py
+          if ($LASTEXITCODE -ne 0) { throw 'Offline native gallery custody controls failed' }
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
           git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''

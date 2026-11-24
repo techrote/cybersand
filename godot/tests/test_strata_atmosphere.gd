@@ -27,6 +27,30 @@ func run() -> void:
 		check(not effect.is_empty(), "each offered preset has an implementation")
 		config.effects.append(effect)
 	check(Profiles.validate(config, extent).is_empty(), "all six authored presets fit the shared budget")
+	var numeric: Dictionary = config.duplicate(true)
+	numeric.effects[0].speed = 18
+	numeric.effects[0].strength = 1
+	numeric.effects[0].direction = [0.1 + 0.2, -1]
+	numeric.effects[0].colour = [Color(0.17, 0.31, 0.71, 1.0).r, 0, 0.1 + 0.2, 1]
+	var canonical: Dictionary = Profiles.canonical(numeric)
+	check(Profiles.validate(canonical, extent).is_empty(), "mixed valid JSON and UI numeric values canonicalize safely")
+	check(typeof(canonical.effects[0].speed) == TYPE_FLOAT and typeof(canonical.effects[0].strength) == TYPE_FLOAT,
+		"authored continuous scalar settings have stable floating-point types")
+	var vector_components_are_float := true
+	for component: Variant in canonical.effects[0].direction + canonical.effects[0].colour:
+		vector_components_are_float = vector_components_are_float and typeof(component) == TYPE_FLOAT
+	check(vector_components_are_float, "direction and RGBA retain floating-point components even at integer values")
+	check(typeof(canonical.effects[0].count) == TYPE_INT and typeof(canonical.effects[0].seed) == TYPE_INT \
+		and typeof(canonical.effects[0].region[0]) == TYPE_INT, "counts, seeds and native regions retain exact integer types")
+	check(typeof(numeric.effects[0].speed) == TYPE_INT and typeof(numeric.effects[0].direction[1]) == TYPE_INT,
+		"canonicalization never mutates the source proposal")
+	check(Profiles.canonical(canonical) == canonical, "canonicalization is idempotent")
+	var parsed: Variant = JSON.parse_string(JSON.stringify(canonical, "", true, true))
+	var reopened: Dictionary = Profiles.canonical(parsed)
+	check(reopened == canonical, "full-precision JSON roundtrip preserves the complete authored numeric state")
+	check(reopened.effects[0].direction[0] == 0.1 + 0.2 \
+		and reopened.effects[0].colour[0] == Color(0.17, 0.31, 0.71, 1.0).r,
+		"arithmetic floats and float32 UI colour values reopen without decimal rounding")
 	for entry: Array in [["version", 2], ["enabled", 1], ["paused", "false"], ["seed", -1], ["unexpected", true]]:
 		var bad: Dictionary = config.duplicate(true)
 		bad[entry[0]] = entry[1]
@@ -74,6 +98,15 @@ func run() -> void:
 	refused.effects[0].plane = "play"
 	check(not node.configure(refused, extent, "effects"), "renderer refuses invalid candidate")
 	check(node.diagnostics().configuration_sha256 == retained.configuration_sha256, "refused candidate retains previous configuration")
+	var precise: Dictionary = config.duplicate(true)
+	precise.effects[0].colour[0] = 0.3
+	check(node.configure(precise, extent, "effects"), "first exact colour proposal is admitted")
+	var first_precision_digest: String = node.diagnostics().configuration_sha256
+	precise.effects[0].colour[0] = 0.1 + 0.2
+	check(node.configure(precise, extent, "effects"), "adjacent arithmetic colour proposal is admitted")
+	check(node.diagnostics().configuration_sha256 != first_precision_digest \
+		and node._configuration.effects[0].colour[0] == 0.1 + 0.2,
+		"renderer configuration cache never aliases distinct admitted float values")
 	config.paused = false
 	config.enabled = false
 	node.configure(config, extent, "effects")

@@ -10,16 +10,27 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## Strata Theatre Workbench candidate — 2026-11-24
+## Strata Theatre 002 successor — 2026-11-24
 
-The owner-authorized #588 successor starts from accepted main `00cdb02f` and
-adds [ordinary four-plane composition](../systems/strata-workbench.md) behind a
-lazy Strata action. The existing play owner, actor session, publication and camera
-stay authoritative; three static decorative native Worlds own their layouts.
-The [owner guide](strata-workbench-evaluation.md) separates authored Save/reopen,
-platform qualification and physical Windows/NVIDIA acceptance. Keep Draft/HOLD;
-no Ready, merge or default activation. PUBPRES and all other active feature
-branches remain independently owned and unimported.
+[Draft PR #776](https://github.com/techrote/cybersand/pull/776) retains immutable
+#769 archival ancestry `80623d039aa49bc0c1d84a9206d89812ffa99ea6` over accepted
+main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. It extends the ordinary borrowed-Play
+[composition contract](../systems/strata-workbench.md) with reviewed local
+[native/raster import and layered construction](../systems/strata-authoring.md),
+bounded presentation-only atmosphere and five [native environments](../systems/strata-environments.md).
+The ordinary World, worker, camera, actor session and publication remain owned
+by Workbench. Three decorative native Worlds remain static at zero Hz.
+
+Read the [successor decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md)
+for source/runtime/package custody and exact qualification status; the
+[owner guide](strata-workbench-evaluation.md) covers import, composition,
+atmosphere and fresh-process authored Save. The original #769 application and
+acceptance package are preserved; their passes cannot qualify this union.
+#770 contributes a source-pinned read-only module schema adapter, not its moving
+application. Art #773 remains Play-only and no model-provider permission is
+extended. PUBPRES, AMBIENT and all other active programmes remain independently
+owned and unimported. Keep Draft/HOLD: no Ready, merge, default activation or
+physical Windows/NVIDIA acceptance is implied.
 
 ## Workbench Art traffic lifetime — 2026-11-20
 

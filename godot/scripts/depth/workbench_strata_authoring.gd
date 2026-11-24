@@ -25,6 +25,8 @@ var _harvest: Dictionary = {}
 var _harvested: Dictionary = {}
 var _issuing_native := false
 var _preflight_play_setup: Dictionary = {}
+var _observed_play_setup: Dictionary = {}
+var _play_authored_serial := 0
 
 
 func mount(value: Node) -> void:
@@ -45,6 +47,17 @@ func authoring_materials() -> Array[Dictionary]:
 	for id: int in _materials():
 		result.append({"id":id, "label":controller.wb.host.material_name(id)})
 	return result
+
+
+func _observe_play_authored_layout() -> int:
+	# Native revision can remain unchanged after a no-op material write while
+	# the ordinary saved Setup/history still changes. Compare exact copied
+	# authored state, including legacy and Art recorders, without modifying any
+	# of their authorities. Equality is checked natively; copies occur on change.
+	if _observed_play_setup != controller.wb.applied:
+		_observed_play_setup = controller.wb.applied.duplicate(true)
+		_play_authored_serial += 1
+	return _play_authored_serial
 
 
 func authoring_plane_state(id: String) -> Dictionary:
@@ -85,6 +98,8 @@ func authoring_plane_state(id: String) -> Dictionary:
 		elif rectangle.size() == 4: writes += (int(rectangle[2]) * 2 + 1) * (int(rectangle[2]) * 2 + 1)
 	return {"ok":true, "error":error, "scene_id":"%s:%d" % [owner.session_id, owner.generation],
 		"owner_id":owner_id, "generation":generation, "revision":revision,
+		"authored_serial":_observe_play_authored_layout() if id == "play" else revision,
+		"history_limit":32, "undo_count":controller.wb.paint_editor._undo_stack.size() if id == "play" else int(source.get("undo",0)),
 		"extent":doc.extent.duplicate(), "paint_allowed":permission.paint, "erase_allowed":permission.erase,
 		"permission_sha256":Module.digest(Module.json_bytes(permission)),
 		"authored_rectangles":rectangles.size(), "authored_layout_writes":writes,
@@ -101,7 +116,7 @@ func _fence_error(id: String, expected: Dictionary) -> String:
 	if not current.get("ok", false): return str(current.get("error", "Native plane unavailable."))
 	if not current.paint_allowed and not current.erase_allowed:
 		return str(current.error) if not str(current.get("error", "")).is_empty() else "The target is excluded or locked."
-	for key: String in ["scene_id", "owner_id", "generation", "revision", "permission_sha256"]:
+	for key: String in ["scene_id", "owner_id", "generation", "revision", "authored_serial", "permission_sha256"]:
 		if not expected.has(key) or expected[key] != current[key]: return "Native target or permission changed after preview: " + key
 	return ""
 
@@ -110,7 +125,10 @@ func authoring_capture(id: String, region: Rect2i, expected: Dictionary) -> Dict
 	var error := _fence_error(id, expected)
 	if not error.is_empty(): return _error(error)
 	if region.get_area() < 1 or region.get_area() > 4096: return _error("Native preview captures are bounded to 4096 cells.")
-	if id != "play": return controller.layer_owner.capture_region(id, region)
+	if id != "play":
+		var captured: Dictionary = controller.layer_owner.capture_region(id, region)
+		captured.authored_serial = int(captured.get("authored_revision", -1))
+		return captured
 	_serial += 1
 	var token := _serial
 	_pending_operations[token] = {"plane":id, "kind":"capture", "expected":expected.duplicate(true)}
@@ -130,6 +148,7 @@ func authoring_apply(id: String, cells: PackedInt32Array, expected: Dictionary) 
 		return _error("Native import chunks contain at most 4096 complete cells.")
 	if id != "play":
 		var receipt: Dictionary = controller.layer_owner.paint_cells(id, cells, int(expected.generation), expected.get("before", PackedInt32Array()))
+		receipt.authored_serial = int(receipt.get("authored_revision", Document.plane(controller.layer_owner.document(), id).revision))
 		controller._document = controller.layer_owner.document()
 		controller.last_edit_receipt = receipt.duplicate(true)
 		return receipt
@@ -150,9 +169,18 @@ func authoring_preflight(id: String, cells: PackedInt32Array, expected: Dictiona
 	if not error.is_empty(): return _error(error)
 	if id != "play": return {"ok":true, "error":""}
 	var setup: Dictionary = _preflight_play_setup if not _preflight_play_setup.is_empty() else controller.wb.applied
-	var prepared: Dictionary = History.prepare(setup, cells, controller.wb._generated_active, controller.wb._material_baseline)
-	if prepared.get("accepted", false): _preflight_play_setup = prepared.setup.duplicate(true)
-	return {"ok":bool(prepared.get("accepted", false)), "error":str(prepared.get("error", ""))}
+	# The existing history authority records each acknowledged bounded chunk.
+	# A whole-stage stamp can coalesce across those boundaries and understate
+	# the eventual Setup byte/rectangle cost. Replay the exact write partition
+	# against a private cumulative Setup before any owner approval or mutation.
+	for offset: int in range(0, cells.size(), Plan.CHUNK_CELLS * 3):
+		var chunk: PackedInt32Array = cells.slice(offset, mini(cells.size(), offset + Plan.CHUNK_CELLS * 3))
+		var prepared: Dictionary = History.prepare(setup, chunk, controller.wb._generated_active, controller.wb._material_baseline)
+		if not prepared.get("accepted", false):
+			return _error("Play chunk %d exceeds the existing authored Setup admission: %s" % [offset / (Plan.CHUNK_CELLS * 3) + 1, str(prepared.get("error", ""))])
+		setup = prepared.setup
+	_preflight_play_setup = setup.duplicate(true)
+	return {"ok":true, "error":""}
 
 
 func _play_finished(token: int, receipt: Dictionary) -> void:
@@ -167,6 +195,9 @@ func _play_finished(token: int, receipt: Dictionary) -> void:
 	# Preserve the original ACK fence. A later worker state must not make an old
 	# receipt appear to acknowledge unrelated native changes.
 	result.authored_revision = int(receipt.get("revision", -1))
+	# The existing editor has synchronously accepted/refused the original ACK
+	# and recorded its authored Setup before emitting this owned completion.
+	result.authored_serial = _observe_play_authored_layout()
 	_results[token] = result
 
 
@@ -390,7 +421,79 @@ func preview_composition(id: String, options: Dictionary) -> Dictionary:
 	for plane: String in Document.IDS: states[plane] = authoring_plane_state(plane)
 	var planned: Dictionary = Library.composition(id, Vector2i(int(options.origin[0]), int(options.origin[1])), states, _materials())
 	if not planned.get("ok", false): return _fail_preview(str(planned.get("error", "Composition refused.")))
+	var metadata: Dictionary = planned.plan.metadata.composition
+	var visual: Dictionary = metadata.get("visual_proposal", {"planes":[],"presentation":{}}).duplicate(true)
+	if not Module.keys(visual,["planes","presentation"]): return _fail_preview("Composition visual proposal contains unsupported fields.")
+	visual.atmosphere = metadata.get("atmosphere_proposal",{}).get("configuration",controller.atmosphere_state()).duplicate(true)
+	if not visual.atmosphere is Dictionary or not visual.atmosphere.get("effects") is Array:
+		return _fail_preview("Composition atmosphere proposal is invalid.")
+	for effect: Variant in visual.atmosphere.effects:
+		if not effect is Dictionary or not effect.get("region") is Array or effect.region.size() != 4:
+			return _fail_preview("Composition atmosphere region is invalid.")
+		effect.region[0] += int(options.origin[0])
+		effect.region[1] += int(options.origin[1])
+	var prepared: Dictionary = controller.layer_owner.preview_visual_settings(visual)
+	if not prepared.ok: return _fail_preview(str(prepared.error))
+	# Review and hash the exact admitted representation, including canonical
+	# float types in direction/colour arrays, rather than the source JSON types.
+	visual.atmosphere = prepared.document.atmosphere.duplicate(true)
+	for row: Dictionary in visual.planes:
+		var admitted: Dictionary = Document.plane(prepared.document,row.id)
+		row.opacity = admitted.opacity
+		row.depth = admitted.depth
+	for key: String in visual.presentation: visual.presentation[key] = prepared.document.presentation[key]
+	_preview.visual_settings_proposal = visual
+	_preview.visual_settings_token = Module.digest(Module.json_bytes({"source":planned.plan.source_sha256,
+		"settings":visual,"serial":_preview_serial,"scene":states.scripted.scene_id}))
+	_preview.visual_settings_applied = false
+	_preview.visual_settings_original_sha256 = _visual_settings_identity()
+	_preview.visual_settings_scene_id = states.scripted.scene_id
+	_preview.visual_settings_summary = "%d layer opacity/depth settings, parallax %.2f, haze %.2f and %d presentation-only regions. This separate approval replaces the current atmosphere configuration; it writes no material cells." % [
+		visual.planes.size(),float(visual.presentation.get("parallax_strength",controller.document().presentation.parallax_strength)),
+		float(visual.presentation.get("fog_strength",controller.document().presentation.fog_strength)),visual.atmosphere.effects.size()]
 	return _start_plan(planned.plan)
+
+
+func _visual_settings_identity() -> String:
+	var doc: Dictionary = controller.document()
+	var rows: Array = []
+	for id: String in ["scripted","effects","background"]:
+		var row: Dictionary = Document.plane(doc,id)
+		rows.append({"id":id,"opacity":row.opacity,"depth":row.depth})
+	return Module.digest(Module.json_bytes({"planes":rows,"parallax":doc.presentation.parallax_strength,
+		"haze":doc.presentation.fog_strength,"atmosphere":controller.atmosphere_state()}))
+
+
+func _visual_settings_error() -> String:
+	if _session == null or not _preview.has("visual_settings_proposal"): return "Preview a layered composition first."
+	if _preview.get("visual_settings_applied",false): return "These reviewed visual settings have already been applied."
+	var state: Dictionary = _session.state()
+	if state.status != "completed": return "Complete and read back all native composition stages before applying visual settings."
+	if _visual_settings_identity() != _preview.visual_settings_original_sha256: return "Visual settings changed after preview; review the composition again."
+	var latest := {}
+	for stage: Dictionary in state.stages: latest[stage.plane] = stage.after_revision
+	for id: String in ["scripted","effects","background"]:
+		var current := authoring_plane_state(id)
+		if not current.ok or current.scene_id != _preview.visual_settings_scene_id: return "The reviewed composition belongs to a retired scene."
+		if not current.paint_allowed: return "Show and unlock each decorative target before applying its preset settings."
+		if latest.has(id) and current.revision != latest[id]: return "Native geometry changed after the completed composition; review again."
+	return ""
+
+
+func apply_composition_settings(token: String) -> Dictionary:
+	if token.is_empty() or token != str(_preview.get("visual_settings_token","")): return _error("Approve the current exact visual settings proposal.")
+	var error := _visual_settings_error()
+	if not error.is_empty():
+		controller._refuse(error)
+		return _error(error)
+	if not controller.layer_owner.apply_visual_settings(_preview.visual_settings_proposal): return _error(controller.layer_owner.last_error)
+	controller._document = controller.layer_owner.document()
+	_preview.visual_settings_applied = true
+	var published: bool = controller.presenter.apply_document(controller._document)
+	controller.presenter.sync_view()
+	controller._say("Reviewed depth and atmosphere settings committed; authored geometry and Undo history are unchanged." if published else "Visual settings committed but display update failed; save and reopen the composition.")
+	controller._refresh_panel()
+	return {"ok":true,"published":published,"applied":true,"material_writes":0,"error":"" if published else controller.presenter.last_error}
 
 
 func approve_plan(token: String) -> Dictionary:
@@ -424,6 +527,8 @@ func step() -> void:
 			_fail_preview(str(converted.get("error", "Raster proposal refused.")))
 	elif _session != null and bool(_session.state().get("busy", false)):
 		_session.step()
+		if _session.state().get("status", "") == "ready" and not _preview.has("composite_image"):
+			_build_composite_preview()
 	elif not _harvest.is_empty(): _step_harvest()
 
 
@@ -436,7 +541,52 @@ func authoring_state() -> Dictionary:
 	state.preview_serial = _preview_serial
 	if state.get("error", "") == "": state.error = str(state.get("status", "idle"))
 	state.harvested_modules = _harvested.keys()
+	if _preview.has("visual_settings_proposal"):
+		state.can_apply_visual_settings = _visual_settings_error().is_empty()
 	return state
+
+
+func _build_composite_preview() -> void:
+	# Reuse the current copied material images. This is an explicitly labelled
+	# native-ID proposal, not a GPU readback or the production palette shader.
+	var projections: Array = _session.projections()
+	if projections.is_empty(): return
+	var bounds: Rect2i = Module.rectangle(projections[0].region)
+	for projection: Dictionary in projections: bounds = bounds.merge(Module.rectangle(projection.region))
+	var stride := maxi(1, int(ceil(maxi(bounds.size.x, bounds.size.y) / 256.0)))
+	var size := Vector2i(int(ceil(bounds.size.x / float(stride))), int(ceil(bounds.size.y / float(stride))))
+	var composite := Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
+	composite.fill(Color.TRANSPARENT)
+	var document: Dictionary = controller.document()
+	var images := {"play":controller.wb.host.image}
+	for id: String in ["scripted", "effects", "background"]:
+		images[id] = controller.presenter._surfaces[id].cell_image
+	var colours := {}
+	var start := Time.get_ticks_usec()
+	for id: String in ["background", "effects", "scripted", "play"]:
+		var plane: Dictionary = Document.plane(document, id)
+		if not controller.presenter.effective_visible(id): continue
+		var source: Image = images[id]
+		var local: Array = []
+		for projection: Dictionary in projections:
+			if projection.plane == id: local.append(projection)
+		for y: int in size.y:
+			for x: int in size.x:
+				var point := bounds.position + Vector2i(x, y) * stride
+				var material := int(round(source.get_pixelv(point).r * 255.0)) if source != null and Rect2i(Vector2i.ZERO, source.get_size()).has_point(point) else 0
+				for projection: Dictionary in local:
+					var region: Rect2i = Module.rectangle(projection.region)
+					if region.has_point(point): material = projection.after[(point.y - region.position.y) * region.size.x + point.x - region.position.x]
+				if material == 0: continue
+				if not colours.has(material): colours[material] = Codec._colour(material)
+				var colour: Color = colours[material]
+				colour.a *= float(plane.opacity)
+				composite.set_pixel(x, y, composite.get_pixel(x, y).blend(colour))
+	_preview.composite_image = composite
+	_preview.composite_region = Module.rect_array(bounds)
+	_preview.composite_sampling_stride = stride
+	_preview.composite_usec = Time.get_ticks_usec() - start
+	_preview.composite_scope = "Native ID proposal and current copied context; fixed plane order/visibility/opacity. One displayed sample per %d native cells. Depth, haze, glow and atmosphere are inspected in Workbench after approval." % stride
 
 
 func harvest_module(plane: String, raw_region: Array, title: String) -> Dictionary:
@@ -495,7 +645,8 @@ func _step_harvest() -> void:
 	if receipt.get("status", "") != "completed" or receipt.get("region") != tile \
 			or receipt.get("owner_id", "") != job.expected.owner_id \
 			or int(receipt.get("generation", -1)) != int(job.expected.generation) \
-			or int(receipt.get("authored_revision", -1)) != int(job.expected.revision):
+			or int(receipt.get("authored_revision", -1)) != int(job.expected.revision) \
+			or int(receipt.get("authored_serial", -1)) != int(job.expected.authored_serial):
 		_harvest.clear()
 		_fail_preview("Stale or misdirected native harvest receipt; no reusable part was adopted.")
 		return

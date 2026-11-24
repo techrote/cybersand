@@ -32,7 +32,7 @@ func configure(configuration: Dictionary, extent: Vector2i, plane: String) -> bo
 		last_error = reason if not reason.is_empty() else "Atmosphere cannot target the physical Play plane."
 		return false
 	var canonical: Dictionary = Profiles.canonical(configuration)
-	var digest: String = JSON.stringify(canonical).sha256_text()
+	var digest: String = JSON.stringify(canonical, "", true, true).sha256_text()
 	if digest == _configuration_digest and _extent == extent and _plane == plane:
 		last_error = ""
 		return true

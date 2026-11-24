@@ -58,7 +58,8 @@ class CampaignFixture:
         inputs.update(self.runtime["native_source_inputs"])
         inputs[self.runtime["runtime_provenance"]["path"]] = self.runtime["runtime_provenance"]["sha256"]
         self.source = {"source_commit": "a" * 40, "source_tree": "b" * 40,
-                       "source_inputs_sha256": inputs}
+                       "source_inputs_sha256": inputs,
+                       "source_assets_sha256":{"godot/data/strata2/imports/fixture.png":digest("raw PNG")}}
         project_inputs = {name.removeprefix("godot/"): value for name, value in inputs.items()
                           if name.startswith("godot/")}
         for kind in ("cybersand_runtime", "rapier_runtime"):
@@ -70,7 +71,8 @@ class CampaignFixture:
                            godot={"path": str(folder / "pinned engine" / "Godot"),
                                   "version": gate.custody.windows.GODOT_VERSION,
                                   "sha256": gate.GODOT_SHA256[platform]},
-                           project={"path": str(folder / "qualified project"), "inputs_sha256": project_inputs},
+                           project={"path": str(folder / "qualified project"), "inputs_sha256": project_inputs,
+                                    "assets_sha256":{"data/strata2/imports/fixture.png":digest("raw PNG")}},
                            selected_scenes=list(gate.SCENES), cases=[], scenes=[], prospective_targets=gate.PROSPECTIVE_TARGETS)
         self.add_case("import", ["--headless", "--editor", "--quit"], "Import completed")
         for name, marker in gate.REGRESSIONS.items():
@@ -274,6 +276,10 @@ class CampaignCustody(unittest.TestCase):
             "missing_runtime_receipt": lambda f: f.report.pop("runtime"),
             "uncommitted_runtime": lambda f: f.report["runtime"]["cybersand_runtime"].update(sha256="9" * 64),
             "missing_loaded_source": lambda f: f.report["project"]["inputs_sha256"].pop("tools/qualify_workbench_strata2.gd"),
+            "missing_binary_source_custody": lambda f: f.report.pop("source_assets_sha256"),
+            "wrong_binary_source_custody": lambda f: f.report["source_assets_sha256"].update({"godot/data/strata2/imports/fixture.png":"9"*64}),
+            "missing_loaded_binary_source": lambda f: f.report["project"].pop("assets_sha256"),
+            "changed_loaded_binary_source": lambda f: f.report["project"]["assets_sha256"].update({"data/strata2/imports/fixture.png":"9"*64}),
             "failed_fixture": lambda f: f.change_case("test_workbench_strata_layers", status="failed", exit_code=1),
             "skipped_fixture": lambda f: f.change_case("test_workbench_strata_layers", status="skipped"),
             "timed_out_fixture": lambda f: f.change_case("test_depth_compositor", status="timeout", seconds=421),
