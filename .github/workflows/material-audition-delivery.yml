@@ -1,0 +1,112 @@
+name: Transport exact qualified material audition evaluator
+
+on:
+  push:
+    branches: [mat/audition-delivery-001]
+    paths: [.github/workflows/material-audition-delivery.yml]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  split:
+    name: Verify and split the previously tested ZIP
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Download the exact source3 owner artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: 45465121123
+          name: material-audition-owner-windows-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1
+          github-token: ${{ github.token }}
+          path: original
+      - name: Authenticate the ZIP and create exact byte parts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          archive = Path("original/CyberSand-Material-Audition-Windows.zip")
+          expected_size = 754138787
+          expected_sha = "cb4c67025fb1de64b3f647d70873421cf9be601372fccd2a915791222d94bb96"
+          chunk_size = 400 * 1024 * 1024
+          if archive.is_symlink() or not archive.is_file():
+              raise SystemExit("The exact evaluator ZIP is missing or is a symbolic link")
+          if archive.stat().st_size != expected_size:
+              raise SystemExit("The evaluator ZIP size does not match the qualified original")
+          with archive.open("rb") as source:
+              actual_sha = hashlib.file_digest(source, "sha256").hexdigest()
+          if actual_sha != expected_sha:
+              raise SystemExit("The evaluator ZIP SHA-256 does not match the qualified original")
+
+          output = Path("delivery-parts")
+          output.mkdir()
+          parts = []
+          offset = 0
+          combined = hashlib.sha256()
+          with archive.open("rb") as source:
+              for index in range(2):
+                  name = f"{archive.name}.part{index + 1:02d}"
+                  expected_part_size = min(chunk_size, expected_size - offset)
+                  part_digest = hashlib.sha256()
+                  written = 0
+                  with (output / name).open("xb") as target:
+                      while written < expected_part_size:
+                          data = source.read(min(1024 * 1024, expected_part_size - written))
+                          if not data:
+                              raise SystemExit("Unexpected end of the qualified archive")
+                          target.write(data)
+                          part_digest.update(data)
+                          combined.update(data)
+                          written += len(data)
+                  parts.append({"name": name, "offset": offset, "bytes": written,
+                                "sha256": part_digest.hexdigest()})
+                  offset += written
+              if source.read(1) or offset != expected_size or combined.hexdigest() != expected_sha:
+                  raise SystemExit("Split coverage or reassembled SHA-256 differs from the original")
+
+          manifest = {
+              "schema_version": 1,
+              "operation": "byte_split_only",
+              "repository": "techrote/cybersand",
+              "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+              "source_run_id": 45465121123,
+              "source_run_attempt": 1,
+              "source_artifact": "material-audition-owner-windows-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1",
+              "archive": {"name": archive.name, "bytes": expected_size, "sha256": expected_sha},
+              "chunk_bytes": chunk_size,
+              "reassembly": "Concatenate the parts as binary bytes in ascending offset order; verify archive size and SHA-256 before extraction.",
+              "parts": parts,
+          }
+          (output / "manifest.json").write_bytes((json.dumps(manifest, indent=2) + "\n").encode("utf-8"))
+          print(json.dumps(manifest, indent=2))
+          PY
+      - name: Upload first exact byte part
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: material-audition-owner-windows-part01-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery-parts/CyberSand-Material-Audition-Windows.zip.part01
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Upload second exact byte part
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: material-audition-owner-windows-part02-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery-parts/CyberSand-Material-Audition-Windows.zip.part02
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Upload reassembly manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: material-audition-owner-windows-parts-manifest-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery-parts/manifest.json
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
