@@ -6,8 +6,8 @@ import qualify_strata_workbench as gate
 
 
 def witness():
-    identity = {"world_generation": 17, "physical_epoch": 8, "worker_id": 991,
-                "actor_session_id": 221, "actor_body_ids": [1871, 1872]}
+    identity = {"world_generation": 17, "physical_epoch": 8, "worker_id": "-9223371958320626182",
+                "actor_session_id": "221", "actor_body_ids": ["1871", "1872"]}
     return {"schema": "strata-workbench-execution-v1", "completed": True,
             "failures": [], "checks": 81, "scene": "industrial-assembly", "phase": "install",
             "source_revision": "a"*40, "display_server": "Windows", "rendering_method": "gl_compatibility",

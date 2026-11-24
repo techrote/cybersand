@@ -983,7 +983,9 @@ func _report_launch_admission() -> void:
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"workbench_script":get_script().resource_path,
 		"world_generation":generation,
-		"worker_id":host.simulation_worker.get_instance_id(),
+		# Godot's RefCounted identity can have its signed 64-bit high bit set.
+		# Text preserves every bit across JSON readers; zero remains invalid.
+		"worker_id":str(host.simulation_worker.get_instance_id()),
 		"extent":[extent.x,extent.y],
 		"strata_enabled":is_instance_valid(strata) and strata.enabled(),
 	}))
@@ -1330,7 +1332,9 @@ func load_setup() -> bool:
 
 func art_authoring_state() -> Dictionary:
 	var layer_guard := strata_play_edit_reason()
-	if not layer_guard.is_empty(): return {"busy":true,"reason":"Art authoring targets Play. " + layer_guard}
+	# A target restriction is a refusal, not an in-flight transaction. Existing
+	# Art polling must be able to drain/refuse queued work and honour Stop.
+	if not layer_guard.is_empty(): return {"busy":false,"reason":"Art authoring targets Play. " + layer_guard}
 	if is_flatten_pending(): return {"busy":true,"reason":"Wait for Flatten material capture and baseline adoption."}
 	if paint_editor == null: return {"busy":false,"reason":""}
 	if paint_editor.recovery_required():

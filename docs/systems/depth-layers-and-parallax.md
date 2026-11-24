@@ -198,7 +198,11 @@ admitted changed packet: **2 MiB per changed layer upload**. Region texture
 uploads or a smaller presentation backing are the clearest follow-up
 optimizations.
 
-## Strata Theatre controls
+## Standalone Strata Theatre controls
+
+These are the separate prototype's controls and immutable-background policy.
+The ordinary Workbench's opt-in all-plane editing, clocks and save behavior are
+defined in [Strata Theatre in the Shared Workbench](strata-workbench.md).
 
 - **1-5** — Flat / Relief / Four layers / Hybrid / Diorama.
 - **WASD / arrows** — camera pan.

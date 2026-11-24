@@ -26,8 +26,8 @@ complete payload manifest accompany the qualified package when published.
 2. Load **Industrial assembly hall**, **Science-fiction arcology** or
    **Organic / industrial cavern**. These replace the authored scene through
    ordinary Workbench admission. Save your current scene first if wanted.
-3. Select **Overview** in the ordinary camera picker to see the complete scene,
-   then use the existing zoom and middle-mouse pan controls to inspect details.
+3. Examples open in **Overview** after admission. Use the existing camera picker,
+   zoom and middle-mouse pan controls to inspect details.
 4. Compare **Stack**, **Flat active plane**, individual visibility and Solo.
    Disable Strata and enable it again while observing the same active actors.
 
@@ -73,6 +73,10 @@ current play material occupancy its new authored baseline before Save; it never
 merges visual planes. Saving alone leaves this session's Undo intact. Undo stacks
 are not promised across restart. Ordinary old Setup/generated/Flatten saves keep
 their existing nonlayered readers.
+
+Select an editable **Play** plane before Flatten or model-assisted Art authoring;
+both retain their Play-only authority. Disabling Strata restores ordinary Play
+editing while retaining the saved layered locks/visibility for the next enable.
 
 ## Owner appearance and interaction gate
 

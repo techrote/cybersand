@@ -31,6 +31,28 @@ Windows 11/NVIDIA owner acceptance. Workflow existence is not platform evidence.
 
 ## Ownership and integration seam
 
+The implementation choice was to adapt the existing presentation mechanisms at
+the ordinary host boundary. Mounting `depth_lab.gd` would bring its independent
+play owner and prototype controls with it. A new shared renderer or camera would
+overlap the accepted-main/PUBPRES seam unnecessarily. The narrow adapter reuses
+the depth compositor's transform math and native material surfaces, while a
+three-plane owner adapts the existing runtime's private-candidate, copied-packet
+and atomic-adoption pattern without acquiring Play.
+
+| Recovered source | Reused mechanism and deliberate boundary |
+| --- | --- |
+| `depth_lab.gd` | Layer selection and presentation semantics informed the ordinary panel; the standalone host is never mounted |
+| `semantic_depth_demo.gd`, `semantic_plane_runtime.gd` | Four explicit plane identities and separate owner/publication identities; no second semantic play World |
+| `depth_layer_runtime.gd` | Candidate validation, generation/token fencing, copied publications and retirement pattern; historical clocks/events are not adopted |
+| `depth_compositor.gd`, `depth_layer_surface.gd` | Reversible layer transforms and native material texture/shader composition; existing standalone defaults are retained |
+| `shared_workbench.gd`, existing paint editor and native executor | Existing Play admission, camera, material semantics, actor ownership, Undo and named-save architecture |
+
+The accepted GEN-005/semantic-plane examples and atlas compositions remain
+available in their existing tools. These three new small native examples use the
+same material palette and explicit rectangle geometry, without importing an
+unaccepted Gold nomination or regenerating a map corpus. Accepted GEN-007 and
+GEN-008 play sources remain compatible through their existing owned baselines.
+
 | Plane | Authoritative owner | Simulation and physics | Presentation source |
 | --- | --- | --- | --- |
 | `play` | Existing Workbench simulation worker and existing physical actor session | Ordinary configured native simulation and play-only Rapier actors | Existing play TextureRect, current/previous textures and shader parameters |
@@ -53,10 +75,21 @@ of 64, including rectangular canvases. No scaling or truncation of authored
 material data is hidden in the adapter.
 
 The existing play drawable and actor overlays stay in the existing host. While
-enabled, a private material sharing the original shader makes Empty transparent;
-the host's normal shader alias continues receiving current texture, actor and
-camera updates. Disable restores the original material identity with the current
-frame parameters. No second play upload, render ACK, worker scheduling policy or
+enabled, a private material derives its program from the accepted palette shader:
+its copied LUT makes Empty transparent, and a validated final-fragment opacity
+uniform hides or fades Play after material and sampled-actor shading. This is
+necessary because the existing palette output does not consume Control alpha.
+The shared shader file is unchanged. A second small private program scales the
+existing additive Play glow's final RGB by the same opacity, so hidden emissive
+Play cells leave no halo. The host's glow enable flag and viewport update policy
+stay unchanged. Unknown insertion seams are refused during preparation, and
+diagnostics retain source/variant hashes. One current derived program per kind
+is cached; a staged replacement resolves the original sources instead of
+wrapping an earlier Strata variant again.
+
+The host's normal shader alias continues receiving current texture, actor and
+camera updates. Disable restores both exact original material/program pairs and
+host aliases with the current frame parameters. No second play upload, render ACK, worker scheduling policy or
 global clock is introduced. PUBPRES #566/#609/#682/#757/#767 remains independently
 owned and unimported. A future accepted presentation change needs qualification
 at this adapter seam, not adoption of Strata's historical prototype clocks.
@@ -112,6 +145,9 @@ contract; unsupported clock fields are currently rejected.
 
 Flatten retains its accepted GEN-008 meaning: a material-only play baseline
 and explicit play-history replacement. It never merges the four visual planes.
+While layered editing is enabled, select an editable Play plane before invoking
+Flatten or Play-only Art authoring. Those actions refuse a hidden, locked or
+non-Play edit target instead of silently acting on another plane's history.
 Restore start reconstructs the existing play authored source while retaining
 the decorative composition. An acknowledged ordinary new/loaded nonlayered
 start clears its old decorative composition; a rejected replacement retains it.

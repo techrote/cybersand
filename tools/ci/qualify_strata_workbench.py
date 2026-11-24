@@ -21,11 +21,15 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 import qualify_workbench_landscapes as custody
+import strata_process_metrics as process_metrics
 
 SCENES = ("industrial-assembly", "arcology", "cavern")
 HARNESS = "res://tools/qualify_workbench_strata.gd"
+MAXIMUM_HARNESS = "res://tools/qualify_workbench_strata_maximum.gd"
 EXTRA_INPUTS = (
     "tools/ci/qualify_strata_workbench.py", "tools/ci/test_strata_qualification.py",
+    "tools/ci/test_strata_campaign_custody.py", "tools/ci/strata_process_metrics.py",
+    "tools/ci/test_strata_process_metrics.py",
     "tools/package_strata_workbench.py", ".github/workflows/strata-theatre-workbench.yml",
 )
 GODOT_SHA256 = {
@@ -55,6 +59,13 @@ def identity(allow_delta: bool = False) -> dict:
     return result
 
 
+
+def instance_id(value) -> bool:
+    # RefCounted IDs set the high bit and appear as signed int64 in GDScript.
+    # Decimal strings preserve all64bits across JSON consumers.
+    return (isinstance(value, str) and re.fullmatch(r"-?[1-9][0-9]{0,18}", value) is not None
+            and -(1 << 63) <= int(value) < (1 << 63))
+
 def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
     """Read actual witnesses independently of the GDScript assertions."""
     require(result.get("schema") == "strata-workbench-execution-v1", "Wrong Strata execution schema")
@@ -81,9 +92,12 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
             before, after = entry.get("before", {}), entry.get("after", {})
             for key in ("world_generation", "physical_epoch", "worker_id", "actor_session_id", "actor_body_ids"):
                 require(key in before and before[key] == after.get(key), "Presentation replaced play authority: " + key)
-                if key != "actor_body_ids":
+                if key in ("world_generation", "physical_epoch"):
                     require(type(before[key]) is int and before[key] > 0, "Invalid actual play identity: " + key)
-            require(before.get("actor_body_ids"), "Identity witness has no actual actor body")
+                elif key != "actor_body_ids":
+                    require(instance_id(before[key]), "Invalid exact actual instance identity: " + key)
+            require(isinstance(before.get("actor_body_ids"), list) and before["actor_body_ids"]
+                    and all(instance_id(value) for value in before["actor_body_ids"]), "Identity witness has no exact actual actor body")
         require(type(result.get("edit_readback", {}).get("material")) is int
                 and 0 < result["edit_readback"]["material"] <= 255
                 and re.fullmatch(r"[0-9a-f]{64}", str(result["edit_readback"].get("play_hash_before", "")))
@@ -101,6 +115,71 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
         require(len(result.get("cost_samples", [])) >= 3, "Missing matched disabled/flat/stack observation")
     else:
         require(result.get("fresh_process_reopen") is True, "Reopen did not use the authored composition loader")
+
+
+def validate_maximum(result: dict, source: str) -> None:
+    require(result.get("schema") == "strata-maximum-execution-v1" and result.get("completed") is True
+            and result.get("failures") == [] and result.get("checks", 0) > 0 and result.get("source_revision") == source,
+            "Maximum extent execution is incomplete, failed or unbound")
+    require(type(result.get("process_id")) is int and result["process_id"] > 0, "Maximum lacks actual engine PID")
+    require(result.get("ordinary_workbench") is True and result.get("extent") == [2048,2048]
+            and result.get("display_server") in ("X11", "Wayland", "Windows")
+            and result.get("rendering_method") == "gl_compatibility", "Maximum extent was not actually rendered in ordinary Workbench")
+    require(result.get("world_count") == {"play_borrowed":1, "decorative_owned":3}, "Maximum extent has wrong native ownership")
+    before, after = (result.get("identity", {}).get(key, {}) for key in ("before", "after"))
+    for key in ("world_generation", "physical_epoch", "worker_id", "actor_session_id", "actor_body_ids"):
+        require(key in before and before[key] == after.get(key), "Maximum extent changed live play identity")
+    require(all(type(before[k]) is int and before[k] > 0 for k in ("world_generation", "physical_epoch"))
+            and all(instance_id(before[k]) for k in ("worker_id", "actor_session_id"))
+            and isinstance(before["actor_body_ids"], list) and before["actor_body_ids"]
+            and all(instance_id(x) for x in before["actor_body_ids"]),
+            "Maximum extent lacks exact actual World and actor instance IDs")
+    require(re.fullmatch(r"[0-9a-f]{64}", str(result.get("play_hash_before", "")))
+            and result.get("play_hash_after") == result["play_hash_before"], "Maximum extent edits changed Play materials")
+    planes = result.get("planes", {})
+    require(set(planes) == {"scripted", "effects", "background"}, "Maximum extent omits a native plane")
+    for plane in planes.values():
+        require(plane.get("extent") == [2048,2048] and plane.get("native_material") == 131
+                and type(plane.get("pixel_delta")) in (int, float) and math.isfinite(plane["pixel_delta"])
+                and plane["pixel_delta"] > 0.025 and instance_id(plane.get("owner")),
+                "Maximum plane dimensions, native material or actual pixel witness is absent")
+    require(result.get("teardown", {}).get("native_world_count") == 0
+            and result.get("teardown", {}).get("pending_native_world_count") == 0, "Maximum owners did not retire")
+
+
+def verify_resource_receipt(folder: Path, case: dict, engine_pid: int | None = None) -> None:
+    path = folder / case["label"] / "resources.json"
+    require(sha(path) == case.get("resources_sha256"), "Original resource samples changed")
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    require(raw.get("schema") == "strata-process-resources-v1" and raw.get("root_pid") == case["pid"]
+            and {k:v for k,v in raw.items() if k != "samples"} == case.get("resources"), "Resource receipt differs from original samples")
+    latest, sampled_pids = {}, set()
+    peak_rss = 0
+    samples = raw.get("samples", [])
+    require(isinstance(samples, list) and len(samples) == raw.get("sample_count"), "Resource sample count differs from original rows")
+    for sample in samples:
+        rss = 0
+        for row in sample.get("processes", []):
+            require(type(row.get("pid")) is int and row["pid"] > 0 and type(row.get("start_id")) is int
+                    and row["start_id"] > 0 and type(row.get("rss_bytes")) is int and row["rss_bytes"] >= 0
+                    and type(row.get("cpu_seconds")) in (int, float) and math.isfinite(row["cpu_seconds"])
+                    and row["cpu_seconds"] >= 0, "Malformed observed process counter")
+            key = (row["pid"], row["start_id"])
+            require(row["cpu_seconds"] >= latest.get(key, 0), "Observed process CPU counter regressed")
+            latest[key] = row["cpu_seconds"]
+            sampled_pids.add(row["pid"])
+            rss += row["rss_bytes"]
+        require(sample.get("tree_rss_bytes") == rss and math.isclose(sample.get("tree_cpu_seconds_observed", -1),
+                sum(latest.values()), rel_tol=1e-9, abs_tol=1e-9), "Resource sample aggregate differs from actual process rows")
+        peak_rss = max(peak_rss, rss)
+    require(raw.get("process_identities") == [list(key) for key in sorted(latest)]
+            and raw.get("peak_observed_tree_rss_bytes") == peak_rss
+            and type(raw.get("observed_cpu_seconds")) in (int, float) and math.isfinite(raw["observed_cpu_seconds"])
+            and math.isclose(raw["observed_cpu_seconds"], sum(latest.values()), rel_tol=1e-9, abs_tol=1e-9),
+            "Resource summary differs from actual sampled counters")
+    if engine_pid is not None:
+        require(raw.get("available") is True and len(samples) >= 2 and engine_pid in sampled_pids and peak_rss > 0,
+                "CPU/memory observation did not include the actual Godot engine")
 
 
 REGRESSIONS = {
@@ -164,7 +243,7 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
             and set(report.get("selected_scenes", [])) == set(requested)
             and {r["name"] for r in scenes} == set(requested)
             and len(scenes) == len(requested), "Wrong/duplicate scene coverage")
-    expected_labels = {"import", *REGRESSIONS, *(scene + "/" + phase for scene in requested for phase in ("install", "reopen"))}
+    expected_labels = {"import", "maximum", *REGRESSIONS, *(scene + "/" + phase for scene in requested for phase in ("install", "reopen"))}
     cases = report.get("cases", [])
     require(len(cases) == len(expected_labels) and {r.get("label") for r in cases} == expected_labels,
             "Missing or duplicate import/regression/execution cases")
@@ -182,15 +261,29 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
                 and 0 < raw["seconds"] <= raw["timeout_seconds"] + 5,
                 "Original bounded Godot process did not succeed: " + label)
         flags = (["--headless", "--editor", "--quit"] if label == "import" else
-                 ["--script", "res://tests/" + label + ".gd"] if label in REGRESSIONS else ["--script", HARNESS])
+                 ["--script", "res://tests/" + label + ".gd"] if label in REGRESSIONS else
+                 ["--script", MAXIMUM_HARNESS if label == "maximum" else HARNESS])
         require(raw.get("command") == base + flags, "Wrong actual Godot command: " + label)
         log = path.with_name("process.log")
         text = log.read_text(encoding="utf-8")
         require(sha(log) == raw["log_sha256"] and not custody.ERRORS.search(text)
                 and "Godot Engine v" + custody.windows.GODOT_VERSION in text,
                 "Original Godot log changed, lacks engine identity, or contains an error: " + label)
-        marker = REGRESSIONS.get(label, "STRATA_WORKBENCH " if label != "import" else "Godot Engine v")
+        marker = REGRESSIONS.get(label, "STRATA_MAXIMUM " if label == "maximum" else "STRATA_WORKBENCH " if label != "import" else "Godot Engine v")
         require(marker in text, "Required actual execution marker absent: " + label)
+        verify_resource_receipt(folder, embedded)
+    maximum = report.get("maximum", {})
+    maximum_path = folder / "maximum" / "maximum.json"
+    require(sha(maximum_path) == maximum.get("report_sha256"), "Maximum original result changed")
+    maximum_result = json.loads(maximum_path.read_text(encoding="utf-8"))
+    require(maximum_result == maximum.get("result") and maximum.get("process") == cases_by_label["maximum"],
+            "Maximum embedded receipt differs from its original process/result")
+    validate_maximum(maximum_result, report["source_commit"])
+    require(maximum_result["display_server"] in (("Windows",) if platform == "win32" else ("X11", "Wayland")),
+            "Maximum display differs from its platform")
+    if platform == "linux":
+        require(maximum_result["process_id"] == cases_by_label["maximum"]["pid"], "Maximum Linux engine PID differs from process owner")
+    verify_resource_receipt(folder, cases_by_label["maximum"], maximum_result.get("process_id"))
     for entry in scenes:
         require(entry.get("status") == "passed" and set(entry["phases"]) == {"install", "reopen"}, "Incomplete scene phases")
         for phase, receipt in entry["phases"].items():
@@ -203,6 +296,7 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
                     "Graphical display differs from claimed platform")
             process = cases_by_label[entry["name"] + "/" + phase]
             require(receipt["process"] == process, "Scene process differs from campaign case")
+            verify_resource_receipt(folder, process, result.get("process_id"))
             require(type(result.get("process_id")) is int and result["process_id"] > 0,
                     "Missing actual Godot process identity")
             if platform == "linux":
@@ -259,7 +353,7 @@ def main() -> int:
         def run(label: str, flags: list[str], environment: dict) -> dict:
             remaining = deadline - time.monotonic()
             require(remaining > 1, "Campaign deadline exhausted")
-            record = custody.execute(base + flags, output / label, environment, min(args.process_timeout, remaining))
+            record = process_metrics.execute(base + flags, output / label, environment, min(args.process_timeout, remaining))
             record["label"] = label
             report["cases"].append(record)
             write_json(output / "qualification.json", report)
@@ -271,6 +365,21 @@ def main() -> int:
         for script, marker in REGRESSIONS.items():
             row = run(script, ["--script", "res://tests/" + script + ".gd"], env)
             require(marker in (output / script / "process.log").read_text(encoding="utf-8"), "Missing retained depth regression marker")
+        maximum_path = output / "maximum" / "maximum.json"
+        maximum_env = custody.case_environment(output / "maximum" / "userdata")
+        maximum_env.update(CYBERSAND_SOURCE_REVISION=source["source_commit"], STRATA_EVIDENCE=str(output / "maximum"),
+                           STRATA_REPORT=str(maximum_path))
+        report["maximum"] = {"status":"running"}
+        try:
+            maximum_process = run("maximum", ["--script", MAXIMUM_HARNESS], maximum_env)
+            maximum_result = json.loads(maximum_path.read_text(encoding="utf-8"))
+            validate_maximum(maximum_result, source["source_commit"])
+            verify_resource_receipt(output, maximum_process, maximum_result.get("process_id"))
+            report["maximum"] = {"status":"passed", "report_sha256":sha(maximum_path), "result":maximum_result, "process":maximum_process}
+        except Exception as error:
+            report["maximum"].update(status="failed", error=str(error))
+            print("STRATA_MAXIMUM_FAIL", str(error), flush=True)
+        write_json(output / "qualification.json", report)
         for scene in report["selected_scenes"]:
             entry = {"name": scene, "status": "running", "phases": {}}
             report["scenes"].append(entry)
@@ -285,6 +394,7 @@ def main() -> int:
                               dict(environment, STRATA_PHASE=phase, STRATA_REPORT=str(path)))
                     result = json.loads(path.read_text(encoding="utf-8"))
                     validate_result(result, scene, phase, source["source_commit"])
+                    verify_resource_receipt(output, row, result.get("process_id"))
                     saved = Path(result["save"]["path"]).resolve()
                     require(saved.is_relative_to(userdata.resolve()) and sha(saved) == result["save"]["sha256"],
                             "Saved composition is absent, changed, or outside isolated user data")
@@ -302,6 +412,7 @@ def main() -> int:
                 print("STRATA_FAIL", scene, str(error), flush=True)
             finally:
                 write_json(output / "qualification.json", report)
+        require(report["maximum"]["status"] == "passed", "Maximum extent qualification failed")
         require(all(row["status"] == "passed" for row in report["scenes"]), "One or more scenes failed")
         report["status"] = "passed"
     except Exception as error:

@@ -10,11 +10,21 @@ const Document = preload("res://scripts/depth/workbench_layer_document.gd")
 const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const REAR_IDS: Array[String] = ["background", "effects", "scripted"]
 const HAZE_SHADER: String = "shader_type canvas_item; render_mode unshaded; uniform float haze = 0.0; varying vec4 vertex_colour; void vertex() { vertex_colour = COLOR; } void fragment() { vec4 c = texture(TEXTURE, UV); c.rgb = mix(c.rgb, vec3(0.055,0.105,0.15), haze); COLOR = c * vertex_colour; }"
+const PLAY_SOURCE_META: StringName = &"strata_play_palette_source"
+const GLOW_SOURCE_META: StringName = &"strata_play_glow_source"
+const PLAY_OPACITY_UNIFORM: StringName = &"strata_play_opacity"
+# One current private program per kind is shared across staged/replaced
+# compositions. Existing adapters retain their reference until retirement.
+static var _cached_play_source: Shader
+static var _cached_play_variant: Shader
+static var _cached_glow_source: Shader
+static var _cached_glow_variant: Shader
 
 var last_error: String = ""
 var extent: Vector2i = Vector2i.ZERO
 var host: Control
 var _view: TextureRect
+var _glow_view: TextureRect
 var _clip: Control
 var _surfaces: Dictionary = {}
 var _drawables: Dictionary = {}
@@ -23,9 +33,13 @@ var _expected: Dictionary = {}
 var _accepted: Dictionary = {}
 var _original_shader: ShaderMaterial
 var _private_shader: ShaderMaterial
+var _original_glow_shader: ShaderMaterial
+var _private_glow_shader: ShaderMaterial
 var _prepared_host_id: int = 0
 var _prepared_view_id: int = 0
 var _prepared_shader: Shader
+var _prepared_glow_view_id: int = 0
+var _prepared_glow_shader: Shader
 var _original_modulate: Color = Color.WHITE
 var _overlay_modulates: Dictionary = {}
 var _enabled: bool = false
@@ -97,34 +111,61 @@ func prepare_host(controller_host: Control) -> bool:
 		return _reject("Workbench play drawable is unavailable")
 	if controller_host.get("world_shader") != candidate.material or candidate.material.shader == null:
 		return _reject("Workbench play shader ownership does not match its drawable")
+	var source: Shader = _play_source(candidate.material.shader)
+	var variant: Shader = _play_variant(source)
+	if source == null or variant == null:
+		return _reject("The accepted play palette does not expose the validated Strata opacity seam")
+	var glow: Variant = controller_host.get("glow_overlay")
+	if not glow is TextureRect or not glow.material is ShaderMaterial \
+			or controller_host.get("glow_composite_shader") != glow.material:
+		return _reject("Workbench play glow ownership does not match its drawable")
+	var glow_source: Shader = _glow_source(glow.material.shader)
+	var glow_variant: Shader = _glow_variant(glow_source)
+	if glow_source == null or glow_variant == null:
+		return _reject("The accepted play glow does not expose the validated Strata opacity seam")
 	# Stage the private material and LUT before requesting any play installation.
-	# If another Strata adapter is active, its shader resource is shared with the
-	# eventual restored original, but its material object must not be retained as
-	# the new original. mount() captures that object after the previous detach.
+	# If another Strata adapter is active, resolve its original shader through
+	# the validated source metadata; never wrap a private variant a second time.
+	# mount() captures the original material object after the previous detach.
 	var private: ShaderMaterial = candidate.material.duplicate()
+	var private_glow: ShaderMaterial = glow.material.duplicate()
 	var transparent: ImageTexture = _transparent_empty_lut()
-	if private == null or transparent == null or transparent.get_width() != Appearance.ATLAS_WIDTH:
+	if private == null or private_glow == null or transparent == null or transparent.get_width() != Appearance.ATLAS_WIDTH:
 		return _reject("Could not prepare the private Strata play palette")
+	private.shader = variant
 	private.set_shader_parameter("material_lut", transparent)
+	private.set_shader_parameter(PLAY_OPACITY_UNIFORM, 1.0)
+	private_glow.shader = glow_variant
+	private_glow.set_shader_parameter(PLAY_OPACITY_UNIFORM, 1.0)
 	_private_shader = private
+	_private_glow_shader = private_glow
 	_prepared_host_id = controller_host.get_instance_id()
 	_prepared_view_id = candidate.get_instance_id()
-	_prepared_shader = candidate.material.shader
+	_prepared_shader = source
+	_prepared_glow_view_id = glow.get_instance_id()
+	_prepared_glow_shader = glow_source
 	return _accept()
 
 func mount(controller_host: Control) -> bool:
-	if not _prepared or controller_host == null or _private_shader == null:
+	if not _prepared or controller_host == null or _private_shader == null or _private_glow_shader == null:
 		return _reject("Prepare Strata surfaces and host before mounting")
 	if host != null:
 		return _accept() if host == controller_host else _reject("Strata presentation already has a host")
 	var candidate: Variant = controller_host.get("world_view")
+	var glow: Variant = controller_host.get("glow_overlay")
 	if controller_host.get_instance_id() != _prepared_host_id or not candidate is TextureRect \
 			or candidate.get_instance_id() != _prepared_view_id or not candidate.material is ShaderMaterial \
 			or candidate.material.shader != _prepared_shader or controller_host.get("world_shader") != candidate.material:
 		return _reject("The prepared Workbench presentation owner changed before adoption")
+	if not glow is TextureRect or glow.get_instance_id() != _prepared_glow_view_id \
+			or not glow.material is ShaderMaterial or glow.material.shader != _prepared_glow_shader \
+			or controller_host.get("glow_composite_shader") != glow.material:
+		return _reject("The prepared Workbench glow owner changed before adoption")
 	host = controller_host
 	_view = candidate
+	_glow_view = glow
 	_original_shader = _view.material
+	_original_glow_shader = _glow_view.material
 	_original_modulate = _view.self_modulate
 	_capture_overlays()
 	_view.add_child(self)
@@ -235,6 +276,9 @@ func sync_view() -> void:
 		drawable.size = Vector2(extent) / _view_size * _content.size
 
 func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
+	# Input may follow a pan/zoom/resize in the same event batch, before our
+	# process callback. Read the existing accepted host view at the edit boundary.
+	sync_view()
 	if id not in IDS or not local_position.is_finite() or not _content.has_area() or not _content.has_point(local_position): return Vector2(-1, -1)
 	var logical: Vector2 = (local_position - _content.position) / _content.size * _view_size
 	var depth: float = 0.0 if id == "play" else float(_plane(id).get("depth", 0.0))
@@ -242,6 +286,7 @@ func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
 	return Transform.logical_to_layer(logical, Vector2(extent), _view_size, _origin, 1.0, 1.0 - depth, strength)
 
 func layer_to_screen(point: Vector2, id: String) -> Vector2:
+	sync_view()
 	if id not in IDS or not point.is_finite() or not _content.has_area(): return Vector2(-1, -1)
 	return _content.position + _logical_for_layer(point, id) / _view_size * _content.size
 
@@ -277,6 +322,12 @@ func diagnostics() -> Dictionary:
 		"play_texture_instance_id":_view.texture.get_instance_id() if is_instance_valid(_view) and _view.texture != null else 0,
 		"original_shader_instance_id":_original_shader.get_instance_id() if _original_shader != null else 0,
 		"active_shader_instance_id":_view.material.get_instance_id() if is_instance_valid(_view) and _view.material != null else 0,
+		"play_shader_source_sha256":_prepared_shader.code.sha256_text() if _prepared_shader != null else "",
+		"play_shader_variant_sha256":_private_shader.shader.code.sha256_text() if _private_shader != null else "",
+		"play_shader_variant_bound":_private_shader != null and _private_shader.shader.code == _play_variant_code(_prepared_shader),
+		"play_glow_source_sha256":_prepared_glow_shader.code.sha256_text() if _prepared_glow_shader != null else "",
+		"play_glow_variant_sha256":_private_glow_shader.shader.code.sha256_text() if _private_glow_shader != null else "",
+		"play_glow_variant_bound":_private_glow_shader != null and _private_glow_shader.shader.code == _glow_variant_code(_prepared_glow_shader),
 		"play_overlay_instance_ids":_overlay_modulates.keys()}
 
 func detach() -> void:
@@ -287,12 +338,15 @@ func detach() -> void:
 	if get_parent() != null: get_parent().remove_child(self)
 	host = null
 	_view = null
+	_glow_view = null
 
 func _apply_visibility() -> void:
 	_set_enabled(bool(_document.get("presentation", {}).get("enabled", false)))
 	if not is_instance_valid(_view): return
 	_capture_overlays()
 	var play_opacity: float = float(_plane("play").get("opacity", 1.0)) if _enabled and effective_visible("play") else (0.0 if _enabled else 1.0)
+	_private_shader.set_shader_parameter(PLAY_OPACITY_UNIFORM, play_opacity)
+	_private_glow_shader.set_shader_parameter(PLAY_OPACITY_UNIFORM, play_opacity)
 	_view.self_modulate = _original_modulate * Color(1.0, 1.0, 1.0, play_opacity)
 	for key: Variant in _overlay_modulates:
 		var entry: Dictionary = _overlay_modulates[key]
@@ -319,21 +373,31 @@ func _set_enabled(value: bool) -> void:
 		return
 	if value:
 		# The host continues updating the same alias it already owns. Only the
-		# private LUT differs, making Empty reveal the rear planes.
+		# private LUT makes Empty reveal the rear planes; final fragment opacity
+		# is applied after all material/actor finishes in the private program.
 		for uniform: Dictionary in _original_shader.shader.get_shader_uniform_list():
 			if str(uniform.name) != "material_lut":
 				_private_shader.set_shader_parameter(uniform.name, _original_shader.get_shader_parameter(uniform.name))
 		_view.material = _private_shader
 		host.set("world_shader", _private_shader)
+		for uniform: Dictionary in _original_glow_shader.shader.get_shader_uniform_list():
+			_private_glow_shader.set_shader_parameter(uniform.name, _original_glow_shader.get_shader_parameter(uniform.name))
+		_glow_view.material = _private_glow_shader
+		host.set("glow_composite_shader", _private_glow_shader)
 	else:
 		# Keep the live frame's textures, interpolation, sampled actors and view
 		# when returning to flat inspection. Restore the exact material object.
 		if _view.material == _private_shader:
-			for uniform: Dictionary in _private_shader.shader.get_shader_uniform_list():
+			for uniform: Dictionary in _original_shader.shader.get_shader_uniform_list():
 				if str(uniform.name) != "material_lut":
 					_original_shader.set_shader_parameter(uniform.name, _private_shader.get_shader_parameter(uniform.name))
 			_view.material = _original_shader
 			if host.get("world_shader") == _private_shader: host.set("world_shader", _original_shader)
+		if is_instance_valid(_glow_view) and _glow_view.material == _private_glow_shader:
+			for uniform: Dictionary in _original_glow_shader.shader.get_shader_uniform_list():
+				_original_glow_shader.set_shader_parameter(uniform.name, _private_glow_shader.get_shader_parameter(uniform.name))
+			_glow_view.material = _original_glow_shader
+			if host.get("glow_composite_shader") == _private_glow_shader: host.set("glow_composite_shader", _original_glow_shader)
 		_view.self_modulate = _original_modulate
 		_restore_overlays()
 		for surface: CyberDepthLayerSurface in _surfaces.values():
@@ -370,6 +434,60 @@ func _transparent_empty_lut() -> ImageTexture:
 		colour.a = 0.0
 		image.set_pixel(x, 0, colour)
 	return ImageTexture.create_from_image(image)
+
+static func _play_variant_code(source: Shader) -> String:
+	return _opacity_variant_code(source, "COLOR = colour;", "COLOR = vec4(colour.rgb, colour.a * strata_play_opacity);")
+
+static func _glow_variant_code(source: Shader) -> String:
+	# Additive glow contributes RGB independently of material alpha. Scale its
+	# final contribution, retaining the ordinary glow strength and enable owner.
+	return _opacity_variant_code(source, "COLOR = vec4((glow + centre * 0.18) * glow_strength, 1.0);",
+		"COLOR = vec4((glow + centre * 0.18) * glow_strength * strata_play_opacity, 1.0);")
+
+static func _opacity_variant_code(source: Shader, output: String, replacement: String) -> String:
+	if source == null: return ""
+	var code: String = source.code
+	# This adapter deliberately refuses an unknown future palette seam instead
+	# of editing a global shader or guessing where its final colour is produced.
+	if code.count("shader_type canvas_item;") != 1 or code.count(output) != 1 \
+			or code.contains(String(PLAY_OPACITY_UNIFORM)):
+		return ""
+	return code.replace("shader_type canvas_item;", "shader_type canvas_item;\nuniform float strata_play_opacity : hint_range(0.0, 1.0) = 1.0;").replace(
+		output, replacement)
+
+static func _play_source(palette: Shader) -> Shader:
+	if palette == null: return null
+	if not palette.has_meta(PLAY_SOURCE_META): return palette
+	var source: Variant = palette.get_meta(PLAY_SOURCE_META)
+	if not source is Shader or source == palette or palette.code != _play_variant_code(source): return null
+	return source
+
+static func _play_variant(source: Shader) -> Shader:
+	var code: String = _play_variant_code(source)
+	if code.is_empty(): return null
+	if _cached_play_source != source or _cached_play_variant == null or _cached_play_variant.code != code:
+		_cached_play_source = source
+		_cached_play_variant = Shader.new()
+		_cached_play_variant.code = code
+		_cached_play_variant.set_meta(PLAY_SOURCE_META, source)
+	return _cached_play_variant
+
+static func _glow_source(palette: Shader) -> Shader:
+	if palette == null: return null
+	if not palette.has_meta(GLOW_SOURCE_META): return palette
+	var source: Variant = palette.get_meta(GLOW_SOURCE_META)
+	if not source is Shader or source == palette or palette.code != _glow_variant_code(source): return null
+	return source
+
+static func _glow_variant(source: Shader) -> Shader:
+	var code: String = _glow_variant_code(source)
+	if code.is_empty(): return null
+	if _cached_glow_source != source or _cached_glow_variant == null or _cached_glow_variant.code != code:
+		_cached_glow_source = source
+		_cached_glow_variant = Shader.new()
+		_cached_glow_variant.code = code
+		_cached_glow_variant.set_meta(GLOW_SOURCE_META, source)
+	return _cached_glow_variant
 
 func _accept() -> bool:
 	last_error = ""

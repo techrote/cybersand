@@ -11,10 +11,13 @@ on:
       - 'godot/data/strata/**'
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/scripts/workbench_paint_editor_controller.gd'
-      - 'godot/tools/qualify_workbench_strata.gd'
+      - 'godot/tools/qualify_workbench_strata*.gd'
       - 'godot/tests/test_workbench_strata*.gd'
       - 'tools/ci/qualify_strata_workbench.py'
       - 'tools/ci/test_strata_qualification.py'
+      - 'tools/ci/test_strata_campaign_custody.py'
+      - 'tools/ci/strata_process_metrics.py'
+      - 'tools/ci/test_strata_process_metrics.py'
       - 'tools/package_strata_workbench.py'
       - '.github/workflows/strata-theatre-workbench.yml'
   workflow_dispatch:
@@ -54,6 +57,8 @@ jobs:
           set -euo pipefail
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/test_strata_qualification.py
+          python3 tools/ci/test_strata_campaign_custody.py
+          python3 tools/ci/test_strata_process_metrics.py
           git lfs install --local
           git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
       - name: Prepare official pinned Godot and graphical display
@@ -96,6 +101,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
           python tools/ci/test_strata_qualification.py
           if ($LASTEXITCODE -ne 0) { throw 'Evidence adverse controls failed' }
+          python tools/ci/test_strata_campaign_custody.py
+          if ($LASTEXITCODE -ne 0) { throw 'Independent campaign custody controls failed' }
+          python tools/ci/test_strata_process_metrics.py
+          if ($LASTEXITCODE -ne 0) { throw 'Process resource observation controls failed' }
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
           git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
@@ -215,7 +224,7 @@ jobs:
           $admittedLines = @($stdout.Result -split "`r?`n" | Where-Object { $_.StartsWith('STRATA_WORKBENCH_LAUNCH_ADMITTED ') })
           if ($admittedLines.Count -ne 1) { throw 'One actual ordinary Workbench admission receipt is required' }
           $admitted = $admittedLines[0].Substring('STRATA_WORKBENCH_LAUNCH_ADMITTED '.Length) | ConvertFrom-Json
-          if ($admitted.source_revision -ne $env:GITHUB_SHA -or $admitted.workbench_script -ne 'res://scripts/shared_workbench.gd' -or $admitted.world_generation -le 0 -or $admitted.worker_id -le 0 -or $admitted.strata_enabled -ne $false -or $admitted.extent.Count -ne 2 -or $admitted.extent[0] -ne 2048 -or $admitted.extent[1] -ne 2048) { throw 'Ordinary default play World admission identity is invalid' }
+          if ($admitted.source_revision -ne $env:GITHUB_SHA -or $admitted.workbench_script -ne 'res://scripts/shared_workbench.gd' -or $admitted.world_generation -le 0 -or ($admitted.worker_id -isnot [string] -or $admitted.worker_id -notmatch '^-?[1-9][0-9]{0,18}$') -or $admitted.strata_enabled -ne $false -or $admitted.extent.Count -ne 2 -or $admitted.extent[0] -ne 2048 -or $admitted.extent[1] -ne 2048) { throw 'Ordinary default play World admission identity is invalid' }
           @{ command = $start.FileName + ' ' + $start.Arguments; wrapper_pid = $process.Id; exit_code = $process.ExitCode; admitted = $admitted; source_revision = $env:GITHUB_SHA; pristine_directory = $extracted } | ConvertTo-Json -Depth 8 | Set-Content evidence/launcher.json
           python tools/package_strata_workbench.py verify $extracted
           if ($LASTEXITCODE -ne 0) { throw 'Original payload changed during extracted execution' }

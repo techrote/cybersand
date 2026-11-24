@@ -65,7 +65,7 @@ func mount(mediator: Node) -> void:
 	_solo.toggled.connect(func(value: bool) -> void: _presentation({"solo":IDS[_active.selected] if value else ""}))
 	_slider(rows, "Opacity", _opacity, 0.0, 1.0, 0.05, func(value: float) -> void: _layer({"opacity":value}))
 	_slider(rows, "Relative depth", _depth, 0.0, 1.0, 0.05, func(value: float) -> void: _layer({"depth":value}))
-	_slider(rows, "Parallax strength", _parallax, 0.0, 1.0, 0.05, func(value: float) -> void: _presentation({"parallax_strength":value}))
+	_slider(rows, "Parallax strength", _parallax, 0.0, 2.0, 0.05, func(value: float) -> void: _presentation({"parallax_strength":value}))
 	_slider(rows, "Distance haze", _fog, 0.0, 1.0, 0.05, func(value: float) -> void: _presentation({"fog_strength":value}))
 	_clock.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_clock)
@@ -74,7 +74,7 @@ func mount(mediator: Node) -> void:
 	_button(history, "Undo selected plane", "undo_layer")
 	_button(history, "Redo selected plane", "redo_layer")
 	var note := Label.new()
-	note.text = "Use the ordinary brush or eraser on the selected plane. Hidden, solo-excluded and locked planes do not receive edits. Rear planes stay still; play remains live."
+	note.text = "Use the ordinary brush or eraser on the selected plane. Hidden, solo-excluded and locked planes do not receive edits while layered presentation is enabled. Switching it off restores ordinary Play editing; stored layer settings apply when enabled again. Rear planes stay still; play remains live."
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.add_theme_color_override("font_color", Color("b4c1cc"))
 	rows.add_child(note)
@@ -129,7 +129,7 @@ func refresh(document: Dictionary, status: String = "") -> void:
 	elif _locked.button_pressed: _target.text += "  ·  LOCKED"
 	elif not _visible.button_pressed or _opacity.value <= 0.0: _target.text += "  ·  HIDDEN"
 	elif not str(settings.get("solo", "")).is_empty() and str(settings.solo) != active: _target.text += "  ·  EXCLUDED BY SOLO"
-	_clock.text = "Clock: ordinary play simulation. Actors and collision live on this plane." if active == "play" else "Clock: static · 0 Hz · paused. Painting changes this plane; it has no actors or cross-plane collisions."
+	_clock.text = "Clock: ordinary play simulation. Actors and collision live on this plane." if effective_name == "play" else "Clock: static · 0 Hz · paused. Painting changes this plane; it has no actors or cross-plane collisions."
 	_status.text = status
 	_syncing = false
 

@@ -43,11 +43,25 @@ func check(ok: bool, label: String) -> bool:
 	return ok
 
 func until(predicate: Callable, label: String, limit_ms: int = 45000) -> bool:
-	var deadline := Time.get_ticks_msec()+limit_ms
+	var started := Time.get_ticks_msec()
+	var deadline := started+limit_ms
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call(): return true
 		if host != null and host.simulation_worker.has_failed(): break
 		await process_frame
+	# A software-driver cold shader frame may finish after the callback deadline.
+	# Recheck the actual predicate once; the external OS-process bound remains.
+	if predicate.call():
+		if not record.has("deadline_rechecks"): record.deadline_rechecks = []
+		record.deadline_rechecks.append({"label":label,"limit_ms":limit_ms,"elapsed_ms":Time.get_ticks_msec()-started})
+		return true
+	if not record.has("timeouts"): record.timeouts = []
+	record.timeouts.append({"label":label,"limit_ms":limit_ms,"elapsed_ms":Time.get_ticks_msec()-started,
+		"workbench_message":str(wb.message) if wb != null else "no Workbench",
+		"applied":not wb.applied.is_empty() if wb != null else false,
+		"busy":wb.busy() if wb != null else false,"pending":host.pending_microscenario_apply if host != null else {},
+		"worker_failed":host.simulation_worker.has_failed() if host != null else true,
+		"snapshot_generation":int(host.latest_snapshot.render_world_generation) if host != null and host.latest_snapshot != null else -1})
 	return check(false,label+" / "+str(wb.message if wb != null else "no Workbench"))
 
 func idle() -> bool:
@@ -61,12 +75,12 @@ func digest(bytes: PackedByteArray) -> String:
 	return hashing.finish().hex_encode()
 
 func play_identity() -> Dictionary:
-	var bodies: Array[int] = []
+	var bodies: Array[String] = []
 	if host.physical_actor_session != null:
-		for body: RigidBody2D in host.physical_actor_session.bodies(): bodies.append(body.get_instance_id())
+		for body: RigidBody2D in host.physical_actor_session.bodies(): bodies.append(str(body.get_instance_id()))
 	return {"world_generation":int(host.latest_snapshot.render_world_generation),
-		"physical_epoch":int(host._physical_epoch),"worker_id":host.simulation_worker.get_instance_id(),
-		"actor_session_id":host.physical_actor_session.get_instance_id() if host.physical_actor_session != null else 0,
+		"physical_epoch":int(host._physical_epoch),"worker_id":str(host.simulation_worker.get_instance_id()),
+		"actor_session_id":str(host.physical_actor_session.get_instance_id()) if host.physical_actor_session != null else "0",
 		"actor_body_ids":bodies,"native_tick":int(host.latest_snapshot.tick_index),
 		"rapier_tick":int(host.physical_actor_session.tick) if host.physical_actor_session != null else 0}
 
@@ -85,6 +99,9 @@ func capture(label: String) -> Image:
 	await settle()
 	var image: Image = root.get_texture().get_image()
 	if check(image != null and not image.is_empty(),"actual framebuffer exists: "+label):
+		if not record.has("framebuffers"): record.framebuffers = {}
+		record.framebuffers[label] = {"pixels":[image.get_width(),image.get_height()],
+			"window_size":[root.size.x,root.size.y],"content_scale_factor":root.content_scale_factor}
 		check(image.save_png(output.path_join(label+".png")) == OK,"actual framebuffer saved: "+label)
 	return image
 
@@ -148,11 +165,11 @@ func all_native_hashes() -> Dictionary:
 		result[id] = digest(cells)
 	return result
 
-func gesture(layer: String, tool: String, from: Vector2i, to: Vector2i, material: int = 131) -> void:
+func gesture(layer: String, tool: String, from: Vector2i, to: Vector2i, material: int = 131, radius: int = 0) -> void:
 	check(strata.select_layer(layer),"select edit target "+layer)
 	wb.paint_editor.select_tool(tool)
 	wb.paint_editor.select_material(material)
-	wb._brush.value = 0
+	wb._brush.value = radius
 	strata.presenter.sync_view()
 	var press := InputEventMouseButton.new()
 	press.button_index = MOUSE_BUTTON_LEFT; press.pressed = true
@@ -189,6 +206,283 @@ func backtracking_gesture() -> void:
 	for point: Vector2i in points:
 		check(strata.layer_owner.material_at("scripted",point) == 131,"backtracking path native target "+str(point))
 	record.backtracking_gesture = {"points":4,"native_targets_correct":true}
+
+func ordinary_disabled_baseline() -> void:
+	check(wb.strata == null,"ordinary disabled baseline allocates no decorative controller")
+	frame_intervals = []; process_times = []; previous_frame_usec = 0
+	var snapshot_before: int = host.consumed_snapshot_serial
+	var tick_before: int = host.latest_snapshot.tick_index
+	var memory_before := int(Performance.get_monitor(Performance.MEMORY_STATIC))
+	measuring = true
+	for _i: int in 30: await process_frame
+	measuring = false
+	var baseline_extent: Vector2i = Setup.extent_of(wb.applied)
+	record.ordinary_disabled_baseline = {"extent":[baseline_extent.x,baseline_extent.y],"strata_initialized":wb.strata != null,
+		"native_tick_before":tick_before,"native_tick_after":host.latest_snapshot.tick_index,
+		"snapshot_serial_before":snapshot_before,"snapshot_serial_after":host.consumed_snapshot_serial,
+		"godot_tracked_static_memory_before":memory_before,
+		"godot_tracked_static_memory_after":int(Performance.get_monitor(Performance.MEMORY_STATIC)),
+		"callback_intervals_usec":frame_intervals.duplicate(),"godot_process_seconds":process_times.duplicate(),
+		"scope":"ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost"}
+
+func decorative_publication_hashes() -> Dictionary:
+	var values := {}
+	for id: String in ["scripted","effects","background"]:
+		var packet: Dictionary = strata.layer_owner.snapshot_layer(id,true)
+		values[id] = {"cells_sha256":digest(packet.cells),"native_revision":strata.layer_owner.stats().layers[id].native_revision,
+			"native_owner":str(strata.layer_owner.stats().layers[id].native_instance_id)}
+	return values
+
+func framebuffer_colour(image: Image, point: Vector2i, layer: String) -> Color:
+	var local: Vector2 = strata.presenter.layer_to_screen(Vector2(point)+Vector2(0.5,0.5),layer)
+	var screen: Vector2 = root.get_stretch_transform()*host.world_view.get_global_transform_with_canvas()*local
+	var pixel := Vector2i(screen.floor())
+	if not check(Rect2i(Vector2i.ZERO,image.get_size()).has_point(pixel),"material readback pixel lies inside actual framebuffer"):
+		return Color.TRANSPARENT
+	return image.get_pixelv(pixel)
+
+func all_plane_authoring_and_guards() -> void:
+	var view: Dictionary = strata.document().presentation.duplicate(true)
+	var checks_by_plane := {}
+	var unchanged_play: PackedByteArray = await play_bytes()
+	var identity_before := play_identity()
+	for id: String in ["scripted","effects","background"]:
+		var opacity: float = Document.plane(strata.document(),id).opacity
+		check(strata.set_presentation({"enabled":true,"mode":"flat","active":id,"solo":"","fog_strength":0.0,
+			"parallax_strength":0.0}),"flat author inspection "+id)
+		check(strata.set_layer_option(id,"opacity",1.0),"opaque author inspection "+id)
+		var target := Vector2i(596,246)
+		var original_material: int = strata.layer_owner.material_at(id,target)
+		var marker: int = 131 if original_material != 131 else 58
+		var other_planes := decorative_publication_hashes()
+		var before: Image = await capture("before-brush-"+id)
+		await gesture(id,"Brush",target,target,marker,4)
+		check(strata.layer_owner.material_at(id,target) == marker,"actual "+id+" brush reaches native target")
+		var painted: Image = await capture("brush-"+id)
+		var colour_before := framebuffer_colour(before,target,id)
+		var colour_after := framebuffer_colour(painted,target,id)
+		var delta := colour_distance(colour_before,colour_after)
+		check(delta > 0.025,"actual selected-plane material pixel changes on "+id)
+		var after_planes := decorative_publication_hashes()
+		for other: String in ["scripted","effects","background"]:
+			if other != id: check(other_planes[other] == after_planes[other],"brush leaves complete native "+other+" publication/owner unchanged")
+		check(strata.undo_layer(),"Undo "+id+" brush")
+		check(strata.layer_owner.material_at(id,target) == original_material,"Undo "+id+" native material")
+		check(strata.redo_layer(),"Redo "+id+" brush")
+		await gesture(id,"Eraser",target,target,0,4)
+		check(strata.layer_owner.material_at(id,target) == 0,"actual "+id+" eraser reaches native target")
+		var erased: Image = await capture("erase-"+id)
+		check(colour_distance(framebuffer_colour(erased,target,id),colour_after) > 0.025,"actual "+id+" erase pixel differs")
+		check(strata.undo_layer(),"Undo "+id+" erase")
+		check(strata.layer_owner.material_at(id,target) == marker,"Undo erase restores actual material "+id)
+		strata.selection = Rect2i(target-Vector2i(2,2),Vector2i(5,5))
+		check(strata.set_layer_option(id,"locked",true),"lock "+id)
+		check(strata.copy_selection(),"visible locked "+id+" remains copyable without mutation")
+		var copied: PackedInt32Array = strata.clipboard.materials
+		check(copied.size() == 25 and copied[12] == marker,"locked copy reads actual selected native cells")
+		check(not strata.paste_at(target+Vector2i(16,0)),"locked "+id+" rejects paste")
+		await gesture(id,"Eraser",target,target,0,4)
+		check(strata.layer_owner.material_at(id,target) == marker,"locked "+id+" rejects actual eraser gesture")
+		check(strata.set_layer_option(id,"locked",false),"unlock "+id)
+		check(strata.set_layer_option(id,"visible",false),"hide "+id)
+		await gesture(id,"Eraser",target,target,0,4)
+		check(strata.layer_owner.material_at(id,target) == marker and not strata.copy_selection(),"hidden "+id+" rejects actual gesture/copy")
+		check(strata.set_layer_option(id,"visible",true),"show "+id)
+		check(strata.set_layer_option(id,"opacity",0.0),"zero opacity "+id)
+		await gesture(id,"Eraser",target,target,0,4)
+		check(strata.layer_owner.material_at(id,target) == marker and not strata.copy_selection(),"transparent "+id+" rejects gesture/copy")
+		check(strata.set_layer_option(id,"opacity",1.0),"restore author opacity "+id)
+		check(strata.set_presentation({"mode":"stack","solo":"play"}),"solo excludes "+id)
+		await gesture(id,"Eraser",target,target,0,4)
+		check(strata.layer_owner.material_at(id,target) == marker and not strata.copy_selection(),"solo-excluded "+id+" rejects gesture/copy")
+		check(strata.set_presentation({"solo":""}),"clear solo "+id)
+		var boundary_before: String = digest(strata.layer_owner.snapshot_layer(id,true).cells)
+		await gesture(id,"Brush",Vector2i(0,246),Vector2i(0,246),marker,4)
+		check(digest(strata.layer_owner.snapshot_layer(id,true).cells) == boundary_before,"clipped "+id+" brush is refused completely")
+		check(strata.set_layer_option(id,"opacity",opacity),"restore "+id+" scene opacity")
+		checks_by_plane[id] = {"brush_native":true,"erase_native":true,"undo_native":true,"pixel_delta":delta,
+			"other_native_planes_unchanged":true,"locked_copy_read_only":true,"hidden_input_refused":true,"bounds_refused":true}
+	check(strata.set_presentation({"mode":"stack","active":"play","solo":""}),"guard ordinary Play input")
+	var before_guards := await play_bytes()
+	for guard: String in ["locked","visible","opacity","solo"]:
+		if guard == "solo": check(strata.set_presentation({"solo":"background"}),"exclude Play by solo")
+		else: check(strata.set_layer_option("play",guard,false if guard == "visible" else (0.0 if guard == "opacity" else true)),"guard Play "+guard)
+		await gesture("play","Rectangle",Vector2i(620,240),Vector2i(624,244),131)
+		check(await play_bytes() == before_guards,"actual guarded Play "+guard+" gesture changes no native cell")
+		if guard == "solo": check(strata.set_presentation({"solo":""}),"clear Play solo guard")
+		else: check(strata.set_layer_option("play",guard,true if guard == "visible" else (1.0 if guard == "opacity" else false)),"restore Play "+guard)
+	check(await play_bytes() == unchanged_play,"all decorative brush/erase/guards leave complete native Play unchanged")
+	stable_identity(identity_before,play_identity(),"all-plane authoring and guards")
+	record.all_plane_authoring = checks_by_plane
+	record.play_input_guards = ["locked","hidden","opacity_zero","solo_excluded"]
+	check(strata.set_presentation(view),"restore sample visual settings")
+
+func panel_controls() -> void:
+	var before := play_identity()
+	wb.open_strata()
+	await settle()
+	var panel: PanelContainer = strata._panel
+	check(strata._window.visible and panel.is_visible_in_tree(),"actual Strata window and controls mounted")
+	panel._active.select(2)
+	panel._active.item_selected.emit(2)
+	check(strata.active_layer() == "effects","actual panel selection signal selects Effects")
+	panel._locked.button_pressed = true
+	check(Document.plane(strata.document(),"effects").locked,"actual panel lock signal guards Effects")
+	panel._visible.button_pressed = false
+	check(not Document.plane(strata.document(),"effects").visible,"actual panel visibility signal hides Effects")
+	panel._visible.button_pressed = true
+	panel._locked.button_pressed = false
+	await settle()
+	var frame: Image = strata._window.get_texture().get_image()
+	check(not frame.is_empty() and frame.save_png(output.path_join("strata-panel.png")) == OK,"actual Strata panel framebuffer saved")
+	record.panel_controls = {"active_target":strata.active_layer(),"target_label":panel._target.text,
+		"size":[frame.get_width(),frame.get_height()],"selection_visibility_lock_signals":true,
+		"input_scope":"automated Godot control signals; physical owner interaction remains separate"}
+	panel._active.select(0)
+	panel._active.item_selected.emit(0)
+	strata._window.hide()
+	stable_identity(before,play_identity(),"panel controls")
+
+func play_visibility_pixels() -> void:
+	var original: Dictionary = strata.document().presentation.duplicate(true)
+	var background_opacity: float = Document.plane(strata.document(),"background").opacity
+	check(strata.set_presentation({"enabled":true,"mode":"stack","active":"play","solo":"","parallax_strength":0.0,"fog_strength":0.0}),"pixel fixture neutral view")
+	check(strata.set_layer_option("background","opacity",1.0),"pixel fixture opaque background")
+	wb.set_camera(2)
+	var point := Vector2i(620,240)
+	var background_point := Vector2i(596,246)
+	var emission_point := Vector2i(650,240)
+	var halo_point := emission_point+Vector2i(8,0)
+	var play_before := await play_bytes()
+	# The background point was independently painted by the all-plane test.
+	check(strata.layer_owner.material_at("background",background_point) == 131,"background visibility fixture has actual native material")
+	for id: String in ["scripted","effects","background"]:
+		await gesture(id,"Eraser",point,point,0,9)
+		check(strata.layer_owner.material_at(id,point) == 0,"Play-only point has no rear native material "+id)
+		await gesture(id,"Eraser",emission_point,emission_point,0,14)
+	check(host.glow_enabled,"ordinary material glow is enabled for its visibility witness")
+	var original_glow: Material = strata.presenter._original_glow_shader
+	var original_play: Material = strata.presenter._original_shader
+	host.set_glow_enabled(false)
+	check(strata.set_enabled(false),"disable layers while ordinary glow is off")
+	check(not host.glow_enabled and not host.glow_overlay.visible 		and host.glow_overlay.material == original_glow and host.glow_composite_shader == original_glow 		and host.world_view.material == original_play and host.world_shader == original_play,
+		"disable restores exact ordinary materials and preserves glow-off selection")
+	check(strata.set_enabled(true),"enable layers while ordinary glow is off")
+	check(not host.glow_enabled and not host.glow_overlay.visible,"layer enable preserves ordinary glow-off selection")
+	host.set_glow_enabled(true)
+	check(strata.set_presentation({"active":"background","solo":"background"}),"capture rear-only halo baseline")
+	var no_emission: Image = await capture("visibility-before-emissive-marker")
+	var halo_baseline := framebuffer_colour(no_emission,halo_point,"play")
+	check(strata.set_presentation({"active":"play","solo":""}),"restore Play for emissive fixture")
+	await gesture("play","Eraser",background_point,background_point,0,9)
+	await gesture("play","Rectangle",point-Vector2i(5,5),point+Vector2i(5,5),58)
+	await gesture("play","Rectangle",emission_point-Vector2i(5,5),emission_point+Vector2i(5,5),77)
+	var actual: PackedByteArray = await play_bytes()
+	check(actual.decode_u16((emission_point.y*Setup.extent_of(wb.applied).x+emission_point.x)*2) == 77,"emissive marker is native Neon cyan77")
+	strata.cancel_gesture()
+	check(strata.set_presentation({"active":"play","solo":"play"}),"solo Play actual pixel")
+	var visible_frame: Image = await capture("visibility-play-solo")
+	var visible_colour := framebuffer_colour(visible_frame,point,"play")
+	var halo_visible := framebuffer_colour(visible_frame,halo_point,"play")
+	var halo_strength := colour_distance(halo_visible,halo_baseline)
+	check(halo_strength > 0.01,"ordinary Neon creates an actual halo beyond its native cells")
+	check(strata.set_presentation({"solo":"background","active":"background"}),"solo background actual pixel")
+	var hidden_frame: Image = await capture("visibility-background-solo")
+	var hidden_colour := framebuffer_colour(hidden_frame,point,"play")
+	var hidden_delta := colour_distance(visible_colour,hidden_colour)
+	check(hidden_delta > 0.04,"background solo actually removes Play-only pixels")
+	check(colour_distance(framebuffer_colour(hidden_frame,halo_point,"play"),halo_baseline) < 0.02,"background solo removes additive Play glow")
+	var surface: Image = strata.presenter._surfaces.background.get_texture().get_image()
+	var rear_colour := framebuffer_colour(hidden_frame,background_point,"background")
+	check(colour_distance(rear_colour,surface.get_pixelv(background_point)) < 0.08,"background remains visible with exact opaque source colour")
+	check(strata.set_presentation({"solo":"","mode":"flat"}),"flat nonplay actual pixel")
+	var flat_frame: Image = await capture("visibility-flat-background")
+	check(colour_distance(framebuffer_colour(flat_frame,point,"play"),hidden_colour) < 0.03,"flat nonplay actually removes Play-only pixels")
+	check(colour_distance(framebuffer_colour(flat_frame,halo_point,"play"),halo_baseline) < 0.02,"flat nonplay removes additive Play glow")
+	check(strata.set_presentation({"mode":"stack","active":"play"}),"restore stack for Play visibility")
+	check(strata.set_layer_option("play","visible",false),"hide Play actual pixel")
+	var invisible: Image = await capture("visibility-play-hidden")
+	check(colour_distance(framebuffer_colour(invisible,point,"play"),hidden_colour) < 0.03,"hidden Play pixels are absent")
+	check(colour_distance(framebuffer_colour(invisible,halo_point,"play"),halo_baseline) < 0.02,"hidden Play glow is absent")
+	check(strata.set_layer_option("play","visible",true),"show Play actual pixel")
+	check(strata.set_layer_option("play","opacity",0.0),"zero Play opacity")
+	var zero: Image = await capture("visibility-play-zero")
+	check(colour_distance(framebuffer_colour(zero,point,"play"),hidden_colour) < 0.03,"zero Play opacity actually removes pixels")
+	check(colour_distance(framebuffer_colour(zero,halo_point,"play"),halo_baseline) < 0.02,"zero Play opacity removes additive glow")
+	check(strata.set_layer_option("play","opacity",0.5),"half Play opacity")
+	var half: Image = await capture("visibility-play-half")
+	var half_colour := framebuffer_colour(half,point,"play")
+	var half_halo := colour_distance(framebuffer_colour(half,halo_point,"play"),halo_baseline)
+	check(half_halo > 0.003 and half_halo < halo_strength*0.95,"half Play opacity fades actual additive halo")
+	check(colour_distance(half_colour,hidden_colour) > 0.02 and colour_distance(half_colour,visible_colour) > 0.02,
+		"half Play opacity is distinct from zero and opaque")
+	for channel: int in 3:
+		check(half_colour[channel] >= minf(hidden_colour[channel],visible_colour[channel])-0.03 			and half_colour[channel] <= maxf(hidden_colour[channel],visible_colour[channel])+0.03,"half opacity lies between endpoints")
+	check(strata.set_layer_option("play","opacity",1.0),"restore opaque Play")
+	var opaque: Image = await capture("visibility-play-opaque")
+	check(colour_distance(framebuffer_colour(opaque,point,"play"),visible_colour) < 0.03,"opaque Play restores original material colour")
+	check(strata.set_enabled(false),"ordinary disabled pixel route")
+	var disabled: Image = await capture("visibility-disabled")
+	check(colour_distance(framebuffer_colour(disabled,point,"play"),visible_colour) < 0.03,"disabled presentation restores ordinary Play colour")
+	check(strata.set_enabled(true),"restore enabled pixel route")
+	for _i: int in 3:
+		check(wb.paint_editor.undo(),"remove temporary Play visibility fixture")
+		await until(idle,"Play visibility fixture Undo")
+	for id: String in ["scripted","effects","background"]:
+		check(strata.select_layer(id) and strata.undo_layer() and strata.undo_layer(),"restore temporary rear visibility fixture "+id)
+	check(await play_bytes() == play_before,"pixel fixture cleanup restores every original Play material")
+	check(strata.set_layer_option("background","opacity",background_opacity),"restore background opacity")
+	check(strata.set_presentation(original),"restore authored view after visibility proof")
+	record.play_visibility_pixels = {"play_only_delta":hidden_delta,"background_remains_visible":true,
+		"solo_flat_hidden_zero_absent":true,"half_opacity_intermediate":true,"ordinary_restored":true,
+		"emissive_material":77,"halo_visible_delta":halo_strength,"halo_half_delta":half_halo,"hidden_halo_absent":true}
+
+func immediate_view_input() -> void:
+	var presentation: Dictionary = strata.document().presentation.duplicate(true)
+	var opacity: float = Document.plane(strata.document(),"scripted").opacity
+	check(strata.set_presentation({"enabled":true,"mode":"flat","active":"scripted","solo":"","fog_strength":0.0,"parallax_strength":0.8}),"scaled pan/zoom target")
+	check(strata.set_layer_option("scripted","opacity",1.0),"scaled native target opacity")
+	root.content_scale_factor = 1.25
+	await settle()
+	wb.paint_editor.select_tool("Brush")
+	wb.paint_editor.select_material(131)
+	wb._brush.value = 5
+	strata.presenter.sync_view()
+	# Deliberately no presenter refresh or frame between changing the accepted
+	# ordinary camera and delivering the next mouse event.
+	wb._set_view(Vector2(350.8,177.4),Vector2i(480,270))
+	var target := Vector2i(600,300)
+	var centre := Vector2(target)+Vector2(0.5,0.5)
+	var area: Rect2 = host.view_content_rect()
+	var view: Vector2 = Vector2(host.current_view_size)
+	var origin: Vector2 = Vector2(host.camera_origin).floor()
+	var extent: Vector2 = Vector2(Setup.extent_of(wb.applied))
+	var factor: float = 1.0-float(Document.plane(strata.document(),"scripted").depth)*0.8
+	var camera_centre := extent*0.5+(origin+view*0.5-extent*0.5)*factor
+	var local := area.position+(centre-camera_centre+view*0.5)/view*area.size
+	var mapped: Vector2 = strata.presenter.screen_to_layer(local,"scripted")
+	check(mapped.distance_to(centre) < 0.01,"same-event camera change maps independently computed target")
+	for down: bool in [true,false]:
+		var event := InputEventMouseButton.new()
+		event.button_index = MOUSE_BUTTON_LEFT; event.pressed = down
+		event.position = host.world_view.get_global_transform_with_canvas()*local
+		event.global_position = event.position
+		root.push_input(event,true)
+	await until(idle,"scaled actual viewport mouse event completes")
+	check(strata.layer_owner.material_at("scripted",target) == 131,"actual viewport input paints independent pan/zoom/parallax/scale target")
+	strata.cancel_gesture()
+	var frame: Image = await capture("scaled-pan-zoom-input")
+	var source: Image = strata.presenter._surfaces.scripted.get_texture().get_image()
+	var difference := colour_distance(framebuffer_colour(frame,target,"scripted"),source.get_pixelv(target))
+	check(difference < 0.08,"opacity1 haze0 composition preserves source material colour at scale1.25")
+	check(strata.undo_layer(),"remove scaled input fixture")
+	root.content_scale_factor = 1.0
+	wb.set_camera(2)
+	check(strata.set_layer_option("scripted","opacity",opacity),"restore scaled target opacity")
+	check(strata.set_presentation(presentation),"restore view after actual scaled input")
+	await settle()
+	record.immediate_view_input = {"scale":1.25,"target":[600,300],"native_material":131,
+		"inverse_error":mapped.distance_to(centre),"source_colour_error":difference,"viewport_event_injection":true}
 
 func transform_matrix() -> void:
 	var samples := 0
@@ -345,9 +639,10 @@ func pixels_and_scenes() -> void:
 	var flat: Image = await capture("disabled")
 	var changed := 0
 	var area: Rect2 = host.view_content_rect()
-	var top_left: Vector2 = host.world_view.get_global_transform_with_canvas()*area.position
-	for y: int in range(int(top_left.y)+5,mini(flat.get_height(),int(top_left.y+area.size.y)-5),9):
-		for x: int in range(int(top_left.x)+5,mini(flat.get_width(),int(top_left.x+area.size.x)-5),9):
+	var image_transform: Transform2D = root.get_stretch_transform()*host.world_view.get_global_transform_with_canvas()
+	var image_area: Rect2 = image_transform*area
+	for y: int in range(maxi(0,int(image_area.position.y)+5),mini(flat.get_height(),int(image_area.end.y)-5),9):
+		for x: int in range(maxi(0,int(image_area.position.x)+5),mini(flat.get_width(),int(image_area.end.x)-5),9):
 			if colour_distance(flat.get_pixel(x,y),stack.get_pixel(x,y)) > 0.025: changed += 1
 	check(changed > 100,"four planes visibly change actual composite region")
 	record.changed_composite_samples = changed
@@ -377,6 +672,7 @@ func cost(mode: String) -> Dictionary:
 		"godot_process_seconds":process_times.duplicate(),"godot_tracked_static_memory_bytes":Performance.get_monitor(Performance.MEMORY_STATIC),
 		"native_snapshots_during_sample":strata.layer_owner.stats().native_snapshot_calls-native_snapshots,
 		"decorative_uploads_during_sample":strata.presenter.diagnostics().full_rg8_uploads-uploads,
+		"resource_state":"composition resources retained in disabled, flat and stack",
 		"scope":"main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"}
 
 func actual_play() -> void:
@@ -411,6 +707,7 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
 	root.size = Vector2i(1600,1000)
 	set_meta("cybersand_feature","shared_workbench")
+	var bootstrap_start := Time.get_ticks_msec()
 	host = load("res://main.tscn").instantiate()
 	print("STRATA_PROGRESS instantiate ordinary Main")
 	root.add_child(host)
@@ -421,10 +718,12 @@ func run() -> void:
 	for control: SpinBox in wb._extent: control.value = 512
 	record.startup_extent = [512,512]
 	print("STRATA_PROGRESS ordinary Main ready; wait for512canvas")
-	if not await until(idle,"ordinary Workbench startup"): finish(); return
+	if not await until(idle,"ordinary Workbench startup",180000): finish(); return
+	record.bootstrap_elapsed_ms = Time.get_ticks_msec()-bootstrap_start
 	check(wb.strata == null,"disabled ordinary startup has no Strata owners or presentation")
 	record.ordinary_workbench = wb.get_script().resource_path == "res://scripts/shared_workbench.gd"
 	print("STRATA_PROGRESS ordinary Workbench admitted")
+	await ordinary_disabled_baseline()
 	strata = wb.ensure_strata()
 	if phase == "install":
 		check(not FileAccess.file_exists(Setup._path(save_name)),"install uses a pristine user profile")
@@ -440,12 +739,19 @@ func run() -> void:
 	record.world_count = {"play_borrowed":1,"decorative_owned":owners.native_world_count}
 	print("STRATA_PROGRESS four native planes admitted")
 	if phase == "install":
+		await capture("reference-composite")
+		await panel_controls()
 		print("STRATA_PROGRESS mode identity")
 		await mode_identity()
 		print("STRATA_PROGRESS transforms")
 		await transform_matrix()
 		print("STRATA_PROGRESS author and refuse")
 		await author_and_refuse()
+		print("STRATA_PROGRESS all-plane actual brush/erase guards")
+		await all_plane_authoring_and_guards()
+		print("STRATA_PROGRESS actual visibility and scaled input")
+		await play_visibility_pixels()
+		await immediate_view_input()
 		print("STRATA_PROGRESS actual pixels")
 		await pixels_and_scenes()
 		print("STRATA_PROGRESS bounded costs")
@@ -471,6 +777,14 @@ func run() -> void:
 	finish()
 
 func finish() -> void:
+	var retained_owner: RefCounted = strata.layer_owner if is_instance_valid(strata) else null
+	if is_instance_valid(host): host.queue_free()
+	await process_frame
+	await process_frame
+	if retained_owner != null:
+		var retired: Dictionary = retained_owner.stats()
+		check(retired.native_world_count == 0 and retired.pending_native_world_count == 0,"ordinary host teardown retires all decorative native owners")
+		record.teardown = retired
 	record.checks = checks
 	record.failures = failures
 	record.completed = true
@@ -481,7 +795,4 @@ func finish() -> void:
 			file.store_string(JSON.stringify(record,"\t")+"\n")
 			file.close()
 	print("STRATA_WORKBENCH ",JSON.stringify({"checks":checks,"failures":failures,"scene":scene_id,"phase":phase}))
-	if is_instance_valid(host): host.queue_free()
-	await process_frame
-	await process_frame
 	quit(0 if failures.is_empty() else 1)

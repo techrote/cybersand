@@ -22,11 +22,14 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools/ci"))
 import qualify_strata_workbench as qualification
 from package_explore001_candidate import verify_vc_runtime, stage_generator_profiles
-from package_wave_flow_candidate import archive_environment, omit_regenerated_imports
+from package_wave_flow_candidate import archive_environment, omit_regenerated_imports, REGENERATED_RAPIER_IMPORTS
 from package_workbench_landscape_review import DEPENDENCIES
 
 require, sha, write_json = qualification.require, qualification.sha, qualification.write_json
 MANIFEST = "evaluation-manifest.json"
+ARCHIVE_INPUTS = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json",
+                  "third_party/native-toolchain.lock.json", "third_party/rapier-bvh-build.lock.json",
+                  "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch", "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md"]
 
 
 def payload(folder: Path) -> dict[str, str]:
@@ -34,11 +37,32 @@ def payload(folder: Path) -> dict[str, str]:
             if p.is_file() and p != folder / MANIFEST}
 
 
+
+def launcher_text(source: dict) -> str:
+    return (
+        '@echo off\nsetlocal\ncd /d "%~dp0"\n'
+        'set "APPDATA=%~dp0userdata\\roaming"\nset "LOCALAPPDATA=%~dp0userdata\\local"\n'
+        'set "XDG_DATA_HOME=%~dp0userdata\\roaming"\n'
+        f'set "CYBERSAND_SOURCE_REVISION={source["source_commit"]}"\n'
+        '"%~dp0Godot_v4.7-stable_win64_console.exe" --headless --audio-driver Dummy --path "%~dp0godot" --editor --quit\n'
+        'if errorlevel 1 (\n  pause\n  exit /b 1\n)\n'
+        '"%~dp0Godot_v4.7-stable_win64_console.exe" --path "%~dp0godot" %* -- --workbench\n'
+        'set "strata_exit=%errorlevel%"\nif not "%strata_exit%"=="0" pause\nexit /b %strata_exit%\n')
+
 def verify(folder: Path, *, pristine: bool = False) -> dict:
     record = json.loads((folder / MANIFEST).read_text(encoding="utf-8"))
     require(record.get("schema") == "strata-workbench-evaluation-v1" and record.get("draft_hold") is True,
             "Wrong Strata evaluator manifest")
     require(set(record.get("qualification_platforms", [])) == {"linux", "win32"}, "Both actual platform campaigns are required")
+    source = qualification.identity()
+    runtime = qualification.retained_runtime_manifest("win32")
+    require(record.get("source_commit") == source["source_commit"] and record.get("source_tree") == source["source_tree"]
+            and record.get("runtime") == runtime and record.get("godot_version") == qualification.custody.windows.GODOT_VERSION,
+            "Evaluator source, retained runtime or engine identity differs from current source")
+    qualification.custody.project_identity(folder / "godot", source, runtime)
+    for platform, name in (("linux", "linux"), ("win32", "windows")):
+        admitted = qualification.verify_campaign(folder / "qualification" / name, source)
+        require(admitted["platform"] == platform, "Embedded campaign platform differs from its package location")
     names = record.get("files_sha256", {})
     require(isinstance(names, dict) and names, "Missing payload manifest")
     for name, digest in names.items():
@@ -46,6 +70,28 @@ def verify(folder: Path, *, pristine: bool = False) -> dict:
                 "Unsafe payload path")
         path = folder / name
         require(path.is_file() and not path.is_symlink() and sha(path) == digest, "Payload changed: " + name)
+    required = {"Open Workbench.cmd", "READ-ME.md", "OWNER-EVALUATION.md", "godot/project.godot",
+                "godot/scripts/shared_workbench.gd", "vcruntime140.dll", "vc-runtime-provenance.json", *DEPENDENCIES}
+    require(required <= set(names), "Evaluator omits required application, launcher, instructions or runtime dependencies")
+    archived = set(qualification.custody.git("ls-tree", "-r", "--name-only", "HEAD", "--", *ARCHIVE_INPUTS).decode().splitlines())
+    materialized = {runtime[k]["path"] for k in ("cybersand_runtime", "rapier_runtime")}
+    omitted = {name:digest for name,digest in REGENERATED_RAPIER_IMPORTS.items() if name in archived}
+    require(record.get("regenerated_imports_sha256") == omitted, "Regenerated import omission list differs from reviewed source")
+    originals = {name for name in archived if not name.startswith("godot/.godot/") and
+                 ("/bin/" not in name or name in materialized) and name not in omitted}
+    require(originals <= set(names), "Payload manifest silently omits an archived source asset")
+    profiles = {Path(name).name:sha(folder / name) for name in originals if name.startswith("examples/worldgen/") and name.endswith(".json")}
+    require(record.get("generator_profiles_sha256") == profiles and all(
+        names.get("godot/authoring/worldgen/" + name) == digest for name,digest in profiles.items()),
+        "Portable generator profiles differ from archived source recipes")
+
+    require((folder / "Open Workbench.cmd").read_text(encoding="utf-8") == launcher_text(source),
+            "Ordinary evaluator launcher differs from the qualified launcher")
+    for name, digest in DEPENDENCIES.items():
+        require(names.get(name) == digest, "Packaged dependency differs from its pin: " + name)
+    vc = verify_vc_runtime(folder)
+    require(record.get("vc_runtime_sha256") == vc["files_sha256"]["vcruntime140.dll"] == names["vcruntime140.dll"],
+            "Packaged VC runtime receipt differs from its payload")
     if pristine:
         require(payload(folder) == names, "Pristine payload has missing or extra files")
     require(names.get("Godot_v4.7-stable_win64.exe") == qualification.GODOT_GUI_SHA256
@@ -70,9 +116,7 @@ def build(args) -> Path:
     output = args.output.resolve()
     require(not output.exists(), "Refusing to overwrite an evaluator")
     output.mkdir(parents=True)
-    include = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json",
-               "third_party/native-toolchain.lock.json", "third_party/rapier-bvh-build.lock.json",
-               "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch", "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md"]
+    include = ARCHIVE_INPUTS
     archive = subprocess.check_output(["git", "archive", "HEAD", "--", *include], cwd=ROOT,
                                       env=archive_environment(), timeout=90)
     materialized = {runtime["cybersand_runtime"]["path"], runtime["rapier_runtime"]["path"]}
@@ -92,15 +136,7 @@ def build(args) -> Path:
     omitted = omit_regenerated_imports(output)
     for name in [*DEPENDENCIES, "vcruntime140.dll", "vc-runtime-provenance.json"]:
         shutil.copyfile(dependencies / name, output / name)
-    launcher = (
-        '@echo off\nsetlocal\ncd /d "%~dp0"\n'
-        'set "APPDATA=%~dp0userdata\\roaming"\nset "LOCALAPPDATA=%~dp0userdata\\local"\n'
-        'set "XDG_DATA_HOME=%~dp0userdata\\roaming"\n'
-        f'set "CYBERSAND_SOURCE_REVISION={source["source_commit"]}"\n'
-        '"%~dp0Godot_v4.7-stable_win64_console.exe" --headless --audio-driver Dummy --path "%~dp0godot" --editor --quit\n'
-        'if errorlevel 1 (\n  pause\n  exit /b 1\n)\n'
-        '"%~dp0Godot_v4.7-stable_win64_console.exe" --path "%~dp0godot" %* -- --workbench\n'
-        'set "strata_exit=%errorlevel%"\nif not "%strata_exit%"=="0" pause\nexit /b %strata_exit%\n')
+    launcher = launcher_text(source)
     (output / "Open Workbench.cmd").write_text(launcher, encoding="utf-8", newline="\r\n")
     readme = f"""# CyberSand — Strata Theatre Workbench evaluation
 
