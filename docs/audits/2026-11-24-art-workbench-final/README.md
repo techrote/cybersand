@@ -143,6 +143,48 @@ changing coverage or the two-second stall threshold. It is not a diagnosis of
 the interrupted monolithic run. Original logs and partial receipts remain in
 the evidence packet, alongside every later completed group.
 
+## Displayed qualification controls
+
+[Run 45474493201](https://github.com/techrote/cybersand/actions/runs/45474493201)
+used exact published source `2fc5974be7cd35aea6d5b1ad76d44d522e03bd17`, tree
+`7e0505c5e675eec6e983ee474aca1e976075d802`. Linux passed all headless and displayed
+groups, including complete redacted body hashes. Windows passed all headless
+groups, displayed panel 272 checks, evaluator input 18, native OS clipboard 71,
+outgoing preparation 125, native lifecycle 92 and changed near-cap Apply 23.
+The Windows job still failed: its displayed network group hit the 300-second
+process watchdog, and incoming preparation never received complete large bodies.
+Neither the Windows package nor installed-launcher gates were reached in that run.
+
+All five incoming preparation responses on Windows recorded transport timeout
+13, HTTP status zero and an empty admitted body, with no assistant or usage turns.
+The 16,773,283-byte assistant case timed out after 19.843 seconds of transport;
+its measured interval contained only 113 frames, including post-timeout cleanup.
+The largest frame gap in that case was 590.092 ms. The pinned engine calls one
+`read_response_body_chunk` per process update and bounds that chunk by the
+configured 64 KiB. At 250 ms per frame, about 1 MiB needs at least 17 body-read
+frames (4.25 seconds), and a near-cap body needs 256 (64 seconds), before
+connection/header overhead. The fixture's three- and twenty-second budgets
+could therefore expire on Windows ANGLE over Microsoft Basic Render Driver.
+A server-side `response_written` receipt does not establish client completion.
+The independent complete-body verifier correctly refused those timeout receipts.
+
+The follow-up keeps the 1280×720 native Workbench, actual input route, two-second
+adjacent-frame limit, full-body hashes and unfinished-worker preconditions. It
+uses explicit finite large-response transport/observation budgets and sufficient
+bounded process time. Short timeout and absent-server conditions remain separate;
+application defaults and provider implementation are unchanged by this fixture
+correction. Slow rendering can still reduce real download throughput under any
+owner-selected timeout, so this remains an explicit evaluator diagnostic boundary.
+
+The same Linux and Windows screenshots exposed a separate usability defect:
+the Conversation scroll body's direct child did not expand vertically, leaving
+unused space below a short text pane. The product follow-up adds vertical
+expansion and seven assertions through ordinary Conversation / + Note, including
+at least 190 pixels of text-pane growth for 200 pixels of added dialog height,
+reachable Apply/Cancel at both sizes and Cancel preserving live history. The
+pre-fix screenshots remain negative visual controls. New runtime results must
+be read against the follow-up source rather than attributed to `2fc5974b`.
+
 ## Ordinary desktop observation
 
 The [Linux desktop receipt](linux-desktop-observation.json) records actual mouse
@@ -178,6 +220,8 @@ integration. The following findings changed the candidate or its qualification:
 | Worker response inputs shared mutable packed buffers | Copy body/header buffers before handoff; later signal observers cannot alter them |
 | A short registered key could rename the audit's body property | Keep an independent sanitized body projection without weakening property-name redaction |
 | Scaled dialogs could push Apply/Cancel out of reach | Correct scaled minima and scrollable bodies; rendered geometry checks distinguish actual display space from headless dummy geometry |
+| Conversation text pane left most added dialog height unused | Direct scroll child expands vertically; short-note resize, footer containment and Cancel checks |
+| Windows clipboard fixture bypassed native LF-to-CRLF conversion | Native and production controls now use the same actual OS boundary; raw Copy/Cut values, Paste, selection and Undo are compared without normalization |
 | Auxiliary windows lost their useful preferred size | Preserve Traffic/Guidance preferred dimensions where the host permits; clamp when space is small |
 | Ctrl+F12 could miss a short tap or a child-window focus | Observe actual Window input events, deduplicate checkpoints and acknowledge saving in the title; 18 focused assertions |
 | Packaging could consume changed transitive helpers | Gate tracked and untracked application/tools inputs before using committed Git archive sources |

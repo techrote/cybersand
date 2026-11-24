@@ -4,6 +4,10 @@ extends SceneTree
 ## The fixture profile and every endpoint are created by the Python loopback runner.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const CANARY := "art-fixture-private-key::2026-QA"
+const RESPONSE_CHUNK_BYTES := 64*1024
+const MIB_RESPONSE_MODELS := ["fixture-large","fixture-large-error","fixture-large-envelope-error","fixture-malicious-usage"]
+const PAYLOAD_MIB_TRANSPORT_SECONDS := 10.0
+const PAYLOAD_NEAR_LIMIT_TRANSPORT_SECONDS := 90.0
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
 
@@ -25,6 +29,7 @@ var transport_manual_activity_count := 0
 var baseline_frames: Dictionary = {}
 var shutdown_metrics: Dictionary = {}
 var preparation_type: Script
+var preparation_budgets: Array[Dictionary] = []
 
 
 func _initialize() -> void:
@@ -101,6 +106,50 @@ func preparation_running(direction: String = "response") -> bool:
 func preparation_pending_count() -> int:
 	if preparation_type == null: preparation_type = load("res://scripts/art_response_preparation.gd")
 	return preparation_type.pending_count()
+
+
+func fixture_response_bound(model_name: String) -> int:
+	if model_name in ["fixture-near-limit","fixture-large-assistant"] or model_name.begins_with("fixture-preparation-"):
+		return 16*1024*1024
+	if model_name in MIB_RESPONSE_MODELS: return 1024*1024+4096
+	return 0
+
+
+func fixture_response_minimum(model_name: String) -> int:
+	var bound := fixture_response_bound(model_name)
+	if bound==16*1024*1024: return bound-8192
+	return 1024*1024 if bound>0 else 1
+
+
+func fixture_transport_seconds(model_name: String, endpoint_name: String = "endpoint") -> float:
+	if model_name in ["fixture-timeout","fixture-blackhole-timeout"] or endpoint_name=="slow_connect_endpoint": return 1.0
+	if model_name.begins_with("fixture-outgoing-"): return 20.0
+	var bound := fixture_response_bound(model_name)
+	if bound==16*1024*1024: return PAYLOAD_NEAR_LIMIT_TRANSPORT_SECONDS
+	if bound>0: return PAYLOAD_MIB_TRANSPORT_SECONDS
+	return 3.0
+
+
+func fixture_budget_record(model_name: String, transport_seconds: float, observation_ms: int) -> Dictionary:
+	var response_bound := fixture_response_bound(model_name)
+	return {"fixture":model_name,"transport_seconds":transport_seconds,
+		"authoring_run_seconds":maxf(15.0,transport_seconds*2.0),"worker_observation_ms":observation_ms,
+		"settlement_ms":maxi(12000,int(transport_seconds*2000.0)+5000),
+		"response_bound_bytes":response_bound,"download_chunk_bytes":RESPONSE_CHUNK_BYTES,
+		"full_chunk_body_reads_for_size_bound":ceili(float(response_bound)/RESPONSE_CHUNK_BYTES),
+		"body_read_assumption":"Each read fills one configured chunk; partial reads can require more process frames",
+		"budget_frame_basis_usec":250000}
+
+
+func observe_incoming_preparation(limit_ms: int) -> bool:
+	var deadline := Time.get_ticks_msec()+limit_ms
+	while Time.get_ticks_msec()<deadline:
+		if preparation_running(): return true
+		# A completed/failed transport cannot later produce an unfinished job.
+		# Preserve its failure immediately instead of consuming the whole budget.
+		if not panel.provider.active: return false
+		await process_frame
+	return preparation_running()
 
 
 func pointer_click(viewport: Viewport, at: Vector2) -> void:
@@ -235,9 +284,15 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 	checkpoint(label+" before Send")
 	if not check(await until(settled),label+" prior model/native work settles"): return
 	var outgoing := model_name.begins_with("fixture-outgoing-")
-	var large_response := model_name in ["fixture-near-limit","fixture-large-assistant"] or model_name.begins_with("fixture-preparation-") or outgoing
-	var request_timeout := 20.0 if large_response else 3.0
-	if model_name in ["fixture-timeout","fixture-blackhole-timeout"] or endpoint_name=="slow_connect_endpoint": request_timeout = 1.0
+	# Godot 4.7's bounded nonblocking HTTPRequest reads at most one 64 KiB
+	# body chunk per process frame. The measured software Windows display can
+	# run near 5 Hz: 17/256 reads alone need roughly 4.25/64 s at a conservative
+	# 0.25 s per frame. These fixture budgets do not change product defaults.
+	var request_timeout := fixture_transport_seconds(model_name,endpoint_name)
+	var observation_ms := 0
+	if outgoing: observation_ms = 25000
+	elif model_name.begins_with("fixture-preparation-"): observation_ms = int((request_timeout+15.0)*1000.0)
+	var configured_budgets := fixture_budget_record(model_name,request_timeout,observation_ms)
 	await prepare_panel(model_name,endpoint_name,request_timeout)
 	if outgoing: panel.context_mode.select(0) # Full context is the measured request.
 	var initial_log := str(panel.provider.log_path)
@@ -262,7 +317,7 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 	var stop_observation := {}
 	var bounded_retry := {}
 	if model_name.begins_with("fixture-preparation-"):
-		preparation_observed = await until(preparation_running,25000)
+		preparation_observed = await observe_incoming_preparation(observation_ms)
 		check(preparation_observed,label+" real HTTP response is actively running CPU preparation")
 		check(panel.provider.response_preparation_jobs==1,label+" retains one preparation job")
 	if outgoing:
@@ -331,7 +386,7 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 		wb.applied.brush = 0
 		paint_queued = wb.paint(paint_point,58)
 		check(paint_queued,label+" ordinary manual stroke accepted in request lifecycle")
-	check(await until(settled,45000 if large_response else 12000),label+" request/native operations reach bounded terminal state")
+	check(await until(settled,int(configured_budgets.settlement_ms)),label+" request/native operations reach bounded terminal state")
 	for _index in range(12): await process_frame
 	var frames := end_measurement()
 	var post_arrivals_after := fixture_post_arrivals() if outgoing and expectation=="cancel" else -1
@@ -348,7 +403,10 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 		check(not panel.input_error.is_empty(),label+" explicit failure reaches Art status")
 		check(int(kinds.get("assistant",0))==0 and int(kinds.get("usage",0))==0,label+" failed transport/envelope is not an assistant turn")
 	if expectation=="success":
-		check(panel.input_error.is_empty() or panel.input_error=="Model finished.",label+" successful packet remains usable")
+		check((panel.input_error.is_empty() or panel.input_error=="Model finished.") \
+			and int(timing.get("transport_result",-1))==0 and int(timing.get("http_code",0))==200 \
+			and int(timing.get("response_bytes",0))>=fixture_response_minimum(model_name),
+			label+" successful packet has actual complete HTTP 200 content and remains usable")
 	if endpoint_name in ["absent_endpoint","localhost_absent_endpoint","ipv6_absent_endpoint","ipv6_short_absent_endpoint"] and not stop_was_active:
 		check(int(timing.get("transport_result",0))!=0 and int(timing.get("http_code",-1))==0,label+" absent listener is transport failure without HTTP response")
 	if endpoint_name=="slow_connect_endpoint":
@@ -356,7 +414,11 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 	if model_name=="fixture-invalid" and endpoint_name=="endpoint":
 		check(int(timing.get("http_code",0))==404,label+" genuine HTTP model error remains separate")
 	if model_name in ["fixture-large-error","fixture-large-envelope-error"]:
-		check(str(panel.input_error).length()<800,label+" complete large failure has bounded UI/conversation projection")
+		var expected_http_code := 404 if model_name=="fixture-large-error" else 200
+		check(str(panel.input_error).length()<800 and int(timing.get("transport_result",-1))==0 \
+			and int(timing.get("http_code",0))==expected_http_code \
+			and int(timing.get("response_bytes",0))>=fixture_response_minimum(model_name),
+			label+" complete large HTTP failure has bounded UI/conversation projection")
 	if model_name=="fixture-malicious-usage":
 		check(not str(panel.state.text).contains(CANARY),label+" malformed usage cannot expose a credential in visible status")
 		check(str(panel.state.text).length()<2000,label+" malformed usage cannot expand visible status without bound")
@@ -386,7 +448,7 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 		var traffic := FileAccess.get_file_as_string(panel.provider.log_path)
 		check(not traffic.contains(CANARY) and traffic.contains("END-OF-COMPLETE-REDACTED-ERROR"),label+" full redacted error survives in audit")
 	var snapshot := {"case":label,"fixture":model_name,"action":action,"expected":expectation,
-		"send_usec":send_usec,"elapsed_usec":elapsed_usec,"frames":frames,"provider":timing,
+		"send_usec":send_usec,"elapsed_usec":elapsed_usec,"frames":frames,"provider":timing,"fixture_budgets":configured_budgets,
 		"send_stages":send_stages,"finished_stages":optional_metrics(panel,"last_finished_timing"),
 		"last_audit":optional_metrics(panel.provider,"last_audit_timing"),
 		"native_poll_usec":optional_metrics(panel,"last_native_poll_usec"),"close":panel.last_close_timing.duplicate(true) if action!="visible" else {},
@@ -480,10 +542,16 @@ func preparation_checks() -> void:
 	check(panel.conversation.any(func(turn: Dictionary) -> bool: return turn.role=="assistant" and str(turn.content).length()>16000000),
 		"complete large assistant is retained in the live conversation")
 	await clear_fixture_conversation()
-	await prepare_panel("fixture-preparation-world","endpoint",20.0)
+	var world_timeout := fixture_transport_seconds("fixture-preparation-world")
+	var world_observation_ms := int((world_timeout+15.0)*1000.0)
+	var world_budgets := fixture_budget_record("fixture-preparation-world",world_timeout,world_observation_ms)
+	world_budgets.erase("settlement_ms")
+	world_budgets.merge({"phase":"response_world_replacement","world_replacement_ready_ms":15000,"post_cancel_settlement_ms":15000})
+	preparation_budgets.append(world_budgets)
+	await prepare_panel("fixture-preparation-world","endpoint",world_timeout)
 	var offset := log_length()
 	click(panel.draw)
-	check(await until(preparation_running,25000),"World replacement begins while actual CPU preparation runs")
+	check(await observe_incoming_preparation(world_observation_ms),"World replacement begins while actual CPU preparation runs")
 	ordinary_x()
 	checkpoint("response CPU work before World replacement")
 	var old_epoch: int = host.simulation_worker.art_state().epoch
@@ -506,16 +574,30 @@ func cpu_preparation_shutdown(exit_process: bool, direction: String = "response"
 	if direction=="request":
 		await seed_outgoing_context(1024*1024)
 		model_name = "fixture-outgoing-exit" if exit_process else "fixture-outgoing-shutdown"
-	await prepare_panel(model_name,"endpoint",20.0)
+	var request_timeout := fixture_transport_seconds(model_name)
+	var observation_ms := 25000 if direction=="request" else int((request_timeout+15.0)*1000.0)
+	var configured_budgets := fixture_budget_record(model_name,request_timeout,observation_ms)
+	configured_budgets.erase("settlement_ms")
+	configured_budgets.phase = direction+("_process_exit" if exit_process else "_owner_destruction")
+	if exit_process:
+		configured_budgets.process_exit_limit_usec = int(spec.stall_limit_usec)
+	else:
+		configured_budgets.merge({"owner_teardown_limit_usec":int(spec.stall_limit_usec),
+			"post_cancel_reap_ms":15000,"new_session_ready_ms":90000})
+	preparation_budgets.append(configured_budgets)
+	await prepare_panel(model_name,"endpoint",request_timeout)
 	if direction=="request": panel.context_mode.select(0)
 	if exit_process: await capture_graphical()
 	click(panel.draw)
-	check(await until(func() -> bool: return preparation_running(direction),25000),"shutdown begins while actual "+direction+" CPU preparation runs")
+	var observed: bool
+	if direction=="request": observed = await until(func() -> bool: return preparation_running(direction),observation_ms)
+	else: observed = await observe_incoming_preparation(observation_ms)
+	check(observed,"shutdown begins while actual "+direction+" CPU preparation runs")
 	check(preparation_pending_count()==1,"shutdown owns exactly one unreaped preparation task")
 	if exit_process:
 		var receipt := {"requested_unix_seconds":Time.get_unix_time_from_system(),
 			"preparation_active":preparation_running(direction),"direction":direction,"pending_jobs":preparation_pending_count(),
-			"request_timing":panel.provider.last_request_timing.duplicate(true)}
+			"request_timing":panel.provider.last_request_timing.duplicate(true),"fixture_budgets":configured_budgets}
 		var file := FileAccess.open(str(spec.output)+"/exit-request.json",FileAccess.WRITE)
 		file.store_string(JSON.stringify(receipt,"\t")+"\n")
 		file.close()
@@ -876,6 +958,7 @@ func result_data(phase: String) -> Dictionary:
 		"native_activity_cases":native_activity_count,"manual_during_transport_cases":transport_manual_activity_count,
 		"manual_during_provider_activity_cases":active_manual_activity_count,
 		"baseline_frames":baseline_frames,"shutdown":shutdown_metrics,"unavailable":unavailable,
+		"preparation_budgets":preparation_budgets,"process_watchdog":spec.get("process_watchdog",{}),
 		"godot":Engine.get_version_info().string,"os":OS.get_name(),"display":DisplayServer.get_name(),
 		"input_path":"InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
 		"scope":"synthetic loopback only, isolated profile, ordinary native Workbench"}

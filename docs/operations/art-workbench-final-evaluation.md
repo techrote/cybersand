@@ -49,28 +49,33 @@ separately; this is a script/UI change and does not rebuild the engine.
 ## Short owner checklist
 
 1. Completely stop LM Studio. Confirm there is no listener on the configured
-   local API endpoint, normally `127.0.0.1:1234`. Select LM Studio and leave Image
-   off. Press **Send**, then immediately click Art's ordinary **X**. Repeat three
-   times, reopening Art between attempts. Check mouse, camera and painting
+   local API endpoint, normally `127.0.0.1:1234`. Select **LM Studio → Model prompt**
+   and leave **Image** off. Press **Send**, then immediately click Art's ordinary
+   **X**. Repeat three
+   times, reopening through **Art batches** between attempts. Check mouse, camera and painting
    responsiveness; record any pause and whether it begins on Send, X or recovery.
+   Repeat separately with the Image setting used during the original freeze.
 2. Compare the same absent-server request with Art left visible, and with
    **Stop** followed by X. Try reopening while a request is pending. X hides Art;
    Stop explicitly cancels activity. A failed connection leaves Send usable.
-3. Open **Conversation → Note**. Use long text at a 1280×720 and 1920×1080 window,
+3. Open **Conversation… → + Note**. Use long text at a 1280×720 and 1920×1080 window,
    and at your normal Windows display scale. Scroll the contents, click Apply,
    reopen and verify the edit. Cancel a second edit and verify that it was not
-   applied. Apply/Cancel should remain reachable at a small Art window size.
+   applied. Apply/Cancel should remain reachable at a small Art window size; a
+   short Note should gain editing height when the Conversation window is taller.
    Messages over 4,096 characters use **Previous/Next** parts; Apply retains the
    complete message, including edits made in other parts. Use the part-number
-   field to jump directly. Moving between parts or pasting across parts resets
+   field and Enter to jump directly without applying. Moving between parts or pasting across parts resets
    local text Undo; Cancel still discards the whole draft. Ordinary small-note
    Undo remains available.
 4. Inspect both provider preset lists, enter a custom model and endpoint, switch
-   provider and return. Check that saved custom choices remain. Key belongs to
-   the provider named when its dialog opened and is held only in process memory.
-5. Draw manually and with Direct JSON; Stop a large batch after a visible prefix.
-   Wait for its confirmed result, then Undo/Redo while paused. Save an authored
-   start, reopen it and continue painting. A new Workbench game session starts
+   provider and return. Check that saved custom choices remain. **Key… / Key ✓**
+   belongs to the provider named when its dialog opened and is held only in
+   process memory. A dummy key suffices to check the dialog without inference.
+5. Draw manually and with **Direct JSON → Draw**; Stop a large batch after a visible
+   prefix. Wait for its confirmed result, pause through **Play / Pause [P]**, then
+   Undo/Redo. **Save start [Ctrl+S] / Load start** should retain the authored start
+   so painting can continue. A new Workbench game session starts
    with an empty conversation and a new audit; hiding Art within one game session
    preserves that session's conversation.
 
@@ -101,6 +106,16 @@ The runner records its exact arguments and source/runtime hashes.
 A watchdog failure is retained as a failure,
 not converted to a pass because the operating system eventually killed Godot.
 
+Large synthetic response fixtures allow 10 seconds for about 1 MiB and 90 seconds
+for near-cap bodies, with matching finite CPU-entry and authoring-run budgets.
+Intentional timeout fixtures retain their one-second deadline; the two-second
+adjacent-frame and cancellation gates are independent of transfer duration.
+For graphical replay, the process watchdog defaults to 600 seconds for `network`,
+900 for `preparation`, and 2,400 for the combined `all` group. Other groups and
+headless runs retain 300 seconds. `--timeout SECONDS` explicitly changes only the
+outer process watchdog; every case still has its own finite lifecycle bounds.
+Fresh groups are preferred when reproducing a specific condition.
+
 | Failure or lifecycle condition | What the evidence must distinguish |
 | --- | --- |
 | No server on default numeric loopback | Send/X, visible, Stop/X and reopen; no HTTP status exists |
@@ -127,3 +142,11 @@ Headless native tests, rendered synthetic-input tests, Linux desktop clicks,
 hosted Windows rendering and the owner's physical Windows 11/NVIDIA observation
 are separate qualification tiers. No paid inference, remote provider capability
 verification or physical NVIDIA acceptance is implied by passing loopback tests.
+
+The nonblocking 64 KiB HTTP read path advances with the application frame loop.
+Slow rendering therefore reduces download throughput under the configured
+transport timeout. An uncompressed 16 MiB response needs at least 256 body-read
+frames; partial reads can take more. This tradeoff is separate from callback, JSON, audit and native-edit
+latency; the evaluator records those stages and adjacent-frame gaps separately.
+A genuine timeout remains an explicit transport failure and cannot qualify a
+complete-response or CPU-preparation success check.

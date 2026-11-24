@@ -25,6 +25,13 @@ MARKER = "ART_WORKBENCH_FINAL_RESULT "
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
 CANARY = "art-fixture-private-key::2026-QA"
 MAX_RESPONSE = 16 * 1024 * 1024
+# Software-rendered Windows evidence measured about five process frames per
+# second. Each bounded HTTPRequest body read needs a frame; these process
+# ceilings cover all existing native readback/lifecycle work as well as larger
+# fixture transport budgets. Application frame and complete-body gates remain
+# independent and unchanged.
+DEFAULT_WATCHDOG_SECONDS = 300
+GRAPHICAL_WATCHDOG_SECONDS = {"network":600, "preparation":900, "all":2400}
 MODELS = {"fixture-valid", "fixture-invalid", "fixture-delayed", "fixture-delayed-draw",
           "fixture-drop", "fixture-timeout", "fixture-secret-boundary", "fixture-malformed",
           "fixture-oversized", "fixture-large", "fixture-large-error", "fixture-large-envelope-error",
@@ -39,6 +46,16 @@ MODELS = {"fixture-valid", "fixture-invalid", "fixture-delayed", "fixture-delaye
 def identity(path: Path) -> dict:
     return {"path": str(path), "size": path.stat().st_size,
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def process_watchdog(group: str, graphical: bool, requested: int | None) -> dict:
+    if requested is not None and requested <= 0:
+        raise ValueError("--timeout must be a positive number of seconds")
+    default = GRAPHICAL_WATCHDOG_SECONDS.get(group, DEFAULT_WATCHDOG_SECONDS) if graphical else DEFAULT_WATCHDOG_SECONDS
+    return {"seconds":requested if requested is not None else default,
+            "source":"explicit_override" if requested is not None else "finite_group_default",
+            "group":group,"graphical":graphical,"ordinary_default_seconds":DEFAULT_WATCHDOG_SECONDS,
+            "graphical_group_defaults_seconds":GRAPHICAL_WATCHDOG_SECONDS}
 
 
 def resource_snapshot() -> dict:
@@ -289,9 +306,15 @@ def main() -> int:
     parser.add_argument("--graphical", action="store_true")
     parser.add_argument("--group", choices=("all", "no-server", "network", "shutdown", "lifecycle", "conversation-apply", "preparation", "preparation-exit",
                                             "request-preparation", "request-preparation-exit"), default="all")
-    parser.add_argument("--timeout", type=int, default=300)
+    parser.add_argument("--timeout", type=int, help="Positive process watchdog seconds; defaults to 300, or graphical network600/preparation900/all2400")
     parser.add_argument("--stall-limit-ms", type=int, default=2000)
     args = parser.parse_args()
+    # Reject invalid overrides before creating profiles, sockets or a process.
+    try:
+        watchdog = process_watchdog(args.group, args.graphical, args.timeout)
+    except ValueError as error:
+        parser.error(str(error))
+    args.timeout = watchdog["seconds"]
     args.godot = args.godot.resolve()
     args.project = args.project.resolve()
     args.output = args.output.resolve()
@@ -317,6 +340,7 @@ def main() -> int:
             "output": str(args.output), "accepted_dir":str(fixture.accepted_dir),
             "post_arrival_dir":str(fixture.post_arrival_dir),
             "graphical": args.graphical,"group":args.group,
+            "process_watchdog":watchdog,
             "stall_limit_usec": args.stall_limit_ms * 1000}
     spec_path = args.output / "fixture-spec.json"
     spec_path.write_text(json.dumps(spec, indent=2) + "\n", encoding="utf-8")
@@ -335,7 +359,7 @@ def main() -> int:
                   "native": identity(args.project / "addons/cybersand_native/bin" / native_name),
                   "harness": identity(Path(__file__).resolve()),
                   "driver": identity(args.project / "tests/run_art_workbench_final.gd"),
-                  "command": command, "platform": sys.platform,
+                  "command": command, "platform": sys.platform,"process_watchdog":watchdog,
                   "interaction": "Godot InputEventMouseButton into embedded windows; no physical mouse/driver acceptance"}
     (args.output / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n", encoding="utf-8")
     log = args.output / "godot.log"

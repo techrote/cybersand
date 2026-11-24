@@ -177,6 +177,57 @@ func layout_checks() -> void:
 	root.size = original_root_size
 	panel.size = Vector2i(640,400)
 
+func conversation_resize_checks() -> void:
+	# A normal short Note should use new vertical space when the owner resizes
+	# the dialog. The separate footer must remain reachable at both sizes.
+	var original_root_size := root.size
+	var original_panel_size := panel.size
+	var original_history: Array = panel.conversation.duplicate(true)
+	var original_error: String = panel.conversation_error
+	var dialog = panel.conversation_editor
+	var original_dialog_size: Vector2i = dialog.size
+	var original_dialog_scale: float = dialog.content_scale_factor
+	root.size = Vector2i(1280,720)
+	panel.size = Vector2i(640,400)
+	dialog.content_scale_factor = 1.0
+	panel._open_conversation()
+	var note := button_with_text(dialog,"+ Note")
+	var text_heights: Array[float] = []
+	if check(note != null,"normal Conversation exposes the ordinary + Note control for resize qualification"):
+		note.pressed.emit()
+		dialog.content.text = "A short editable note should use the available dialog height."
+		dialog.content.text_changed.emit()
+		for height: int in [360,560]:
+			dialog.size = Vector2i(760,height)
+			for i: int in 3: await process_frame
+			var popup_rect := window_screen_rect(dialog)
+			var root_rect := window_screen_rect(root)
+			var text_rect := control_screen_rect(dialog.content)
+			var apply_rect := control_screen_rect(dialog.get_ok_button())
+			var cancel_rect := control_screen_rect(dialog.get_cancel_button())
+			text_heights.append(dialog.content.size.y)
+			print("ART_CONVERSATION_RESIZE_LAYOUT ",JSON.stringify({"requested_popup_height":height,
+				"actual_popup_size":dialog.size,"root_size":root.size,"root_screen_rect":root_rect,
+				"popup_screen_rect":popup_rect,"text_screen_rect":text_rect,"text_logical_height":dialog.content.size.y,
+				"apply_screen_rect":apply_rect,"cancel_screen_rect":cancel_rect,"display":DisplayServer.get_name()}))
+			check(root_rect.encloses(popup_rect) and popup_rect.encloses(text_rect),
+				"resized normal Note and its text pane remain within the root viewport: "+str(height))
+			check(dialog.get_ok_button().is_visible_in_tree() and dialog.get_cancel_button().is_visible_in_tree() \
+				and popup_rect.encloses(apply_rect) and popup_rect.encloses(cancel_rect) \
+				and root_rect.encloses(apply_rect) and root_rect.encloses(cancel_rect),
+				"resized normal Note keeps Apply and Cancel reachable: "+str(height))
+	check(text_heights.size()==2 and text_heights[1]-text_heights[0]>=190.0,
+		"normal Note text pane uses at least 190 of 200 added logical pixels")
+	dialog.get_cancel_button().pressed.emit()
+	for i: int in 3: await process_frame
+	check(not dialog.visible and panel.conversation==original_history,
+		"Cancel after normal Note resizing discards the draft and preserves live conversation")
+	dialog.content_scale_factor = original_dialog_scale
+	dialog.size = original_dialog_size
+	panel.conversation_error = original_error
+	panel.size = original_panel_size
+	root.size = original_root_size
+
 func scaled_layout_checks() -> void:
 	var original_root_size := root.size
 	var dialog = panel.conversation_editor
@@ -600,6 +651,7 @@ func run() -> void:
 		await process_frame
 		await selection_checks()
 		await layout_checks()
+		await conversation_resize_checks()
 		await scaled_layout_checks()
 		conversation_checks()
 		await large_conversation_checks()

@@ -50,6 +50,7 @@ func _ready() -> void:
 	add_child(scroll)
 	var box := VBoxContainer.new()
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.add_child(box)
 	notice.text = HELP
 	notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
