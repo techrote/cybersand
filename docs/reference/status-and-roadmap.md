@@ -18,8 +18,10 @@ directional cell density exchange, applicable generic viscosity and eligible
 existing reaction thresholds. The [consumer map](../systems/material-audition-consumers.md)
 separates active solver applicability from descriptor metadata. Named profiles
 remain separate from authored scene saves; Apply does not replace the World.
-Exact-source native, graphical and target-OS evaluator evidence is recorded
-separately from physical owner acceptance and combined-engine reconciliation.
+The [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+records passed native, graphical, Linux/Windows and exact extracted-evaluator
+qualification at source `5f73b0ae`, with runtime publication `206f14da`.
+Physical owner acceptance and combined-engine reconciliation remain separate.
 
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 

@@ -13,7 +13,9 @@ related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscena
 **Materials Lab v1 merged in [PR #562](https://github.com/techrote/cybersand/pull/562).**
 This branch adds the **MAT-AUDITION-LIVE-001 Draft/HOLD candidate** described below.
 Its source-qualified native and platform evidence is separate from v1 acceptance;
-physical owner acceptance and integration remain gates. The desktop **Materials Lab** opens from the feature launcher,
+the [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+records completed Linux/Windows and exact portable-evaluator qualification.
+Physical owner acceptance and integration remain gates. The desktop **Materials Lab** opens from the feature launcher,
 the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`.
 It combines native material inspection, structured candidate editing, compiled
 candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The

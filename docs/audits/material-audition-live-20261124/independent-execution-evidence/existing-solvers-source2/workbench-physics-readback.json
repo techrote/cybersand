@@ -1,0 +1,954 @@
+{
+	"assertions": 72,
+	"case": "WORKBENCH_001 shared physics",
+	"failures": [],
+	"results": [
+		{
+			"age_drops": 0,
+			"arrivals": 5,
+			"barrel_end": "(340.0932, 254.0002)",
+			"burial_grains": {
+				"left": 57,
+				"overhead": 68,
+				"right": 41,
+				"under": 89
+			},
+			"case": "Sand burial",
+			"delivered": 3.44956803321838,
+			"delivered_torque": 0.392736337606529,
+			"end": [
+				248.249084472656,
+				230.164947509766
+			],
+			"force": 31.1201763153076,
+			"granular_torque": 0.360360027891203,
+			"landed_y": 235.916000366211,
+			"max_rotation": 0.180542424321175,
+			"max_y": 236.050247192383,
+			"min_y": 220.0,
+			"native_frame": true,
+			"native_ticks": 275,
+			"normal": 3.4485292048812,
+			"source": {
+				"armed": true,
+				"attempted": 408,
+				"blocked": 4,
+				"burst_queued": false,
+				"inserted": 404,
+				"material": 2,
+				"max_stream_ticks": 600,
+				"origin": "(241, 176)",
+				"stream_enabled": true,
+				"stream_ticks": 78
+			},
+			"torque": 10.6886671975311,
+			"wrench": 3.44956803321838
+		},
+		{
+			"age_drops": 0,
+			"arrivals": 6,
+			"barrel_end": "(340.0932, 254.0002)",
+			"burial_grains": {
+				"left": 57,
+				"overhead": 68,
+				"right": 41,
+				"under": 89
+			},
+			"case": "Dust burial",
+			"delivered": 3.44956803321838,
+			"delivered_torque": 0.443745920300918,
+			"end": [
+				248.173461914062,
+				230.004760742188
+			],
+			"force": 31.1235580444336,
+			"granular_torque": 0.386048612455789,
+			"landed_y": 235.916000366211,
+			"max_rotation": 0.196578532457352,
+			"max_y": 236.050247192383,
+			"min_y": 220.0,
+			"native_frame": true,
+			"native_ticks": 276,
+			"normal": 0.53843678079581,
+			"source": {
+				"armed": true,
+				"attempted": 408,
+				"blocked": 4,
+				"burst_queued": false,
+				"inserted": 404,
+				"material": 14,
+				"max_stream_ticks": 600,
+				"origin": "(241, 176)",
+				"stream_enabled": true,
+				"stream_ticks": 78
+			},
+			"torque": 10.9756781245972,
+			"wrench": 0.543225407600403
+		},
+		{
+			"after_tip": 6,
+			"after_tip_application_history_retired": true,
+			"after_tip_identity": {
+				"completed_tick": 293,
+				"epoch": 3,
+				"frame_tick": 293,
+				"generation": 3,
+				"instance": 1,
+				"render_serial": 406,
+				"render_tick": 293,
+				"revision": 2664,
+				"sample": 294,
+				"sample_tick": 292,
+				"session": 3,
+				"uploaded_generation": 5,
+				"uploaded_revision": 2664,
+				"uploaded_serial": 406,
+				"world_generation": 5
+			},
+			"after_tip_material": {
+				"above_rim": 0,
+				"below_floor": 3,
+				"cavity": 6,
+				"inside_solid": 4,
+				"mean_x": 359.961538461538,
+				"mean_y": 187.5,
+				"points": [
+					[
+						379.5,
+						166.5
+					],
+					[
+						379.5,
+						167.5
+					],
+					[
+						379.5,
+						168.5
+					],
+					[
+						380.5,
+						168.5
+					],
+					[
+						381.5,
+						168.5
+					],
+					[
+						380.5,
+						169.5
+					],
+					[
+						381.5,
+						169.5
+					],
+					[
+						382.5,
+						169.5
+					],
+					[
+						380.5,
+						170.5
+					],
+					[
+						381.5,
+						170.5
+					],
+					[
+						294.5,
+						245.5
+					],
+					[
+						293.5,
+						246.5
+					],
+					[
+						284.5,
+						256.5
+					]
+				],
+				"pose": [
+					376.960693359375,
+					160.834167480469,
+					1.21301472187042
+				],
+				"total": 13
+			},
+			"after_tip_native_tick": 293,
+			"after_tip_sampled_material": {
+				"above_rim": 0,
+				"below_floor": 3,
+				"cavity": 10,
+				"inside_solid": 0,
+				"mean_x": 359.961538461538,
+				"mean_y": 187.5,
+				"points": [
+					[
+						379.5,
+						166.5
+					],
+					[
+						379.5,
+						167.5
+					],
+					[
+						379.5,
+						168.5
+					],
+					[
+						380.5,
+						168.5
+					],
+					[
+						381.5,
+						168.5
+					],
+					[
+						380.5,
+						169.5
+					],
+					[
+						381.5,
+						169.5
+					],
+					[
+						382.5,
+						169.5
+					],
+					[
+						380.5,
+						170.5
+					],
+					[
+						381.5,
+						170.5
+					],
+					[
+						294.5,
+						245.5
+					],
+					[
+						293.5,
+						246.5
+					],
+					[
+						284.5,
+						256.5
+					]
+				],
+				"pose": [
+					375.96923828125,
+					160.382293701172,
+					1.21268081665039
+				],
+				"total": 13
+			},
+			"age_drops": 0,
+			"arrivals": 13,
+			"barrel_end": "(340.0, 254.0002)",
+			"carried": 2,
+			"carried_application_history_retired": true,
+			"carried_identity": {
+				"completed_tick": 202,
+				"epoch": 3,
+				"frame_tick": 202,
+				"generation": 3,
+				"instance": 1,
+				"render_serial": 341,
+				"render_tick": 202,
+				"revision": 2101,
+				"sample": 203,
+				"sample_tick": 201,
+				"session": 3,
+				"uploaded_generation": 5,
+				"uploaded_revision": 2101,
+				"uploaded_serial": 341,
+				"world_generation": 5
+			},
+			"carried_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 2,
+				"inside_solid": 12,
+				"mean_x": 295.423076923077,
+				"mean_y": 164.423076923077,
+				"points": [
+					[
+						292.5,
+						163.5
+					],
+					[
+						293.5,
+						163.5
+					],
+					[
+						292.5,
+						164.5
+					],
+					[
+						293.5,
+						164.5
+					],
+					[
+						294.5,
+						164.5
+					],
+					[
+						295.5,
+						164.5
+					],
+					[
+						296.5,
+						164.5
+					],
+					[
+						297.5,
+						164.5
+					],
+					[
+						298.5,
+						164.5
+					],
+					[
+						299.5,
+						164.5
+					],
+					[
+						300.5,
+						164.5
+					],
+					[
+						301.5,
+						164.5
+					],
+					[
+						284.5,
+						165.5
+					]
+				],
+				"pose": [
+					305.62158203125,
+					164.634460449219,
+					-0.000816564017441124
+				],
+				"total": 13
+			},
+			"carried_native_tick": 202,
+			"carried_sampled_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 12,
+				"inside_solid": 0,
+				"mean_x": 295.423076923077,
+				"mean_y": 164.423076923077,
+				"points": [
+					[
+						292.5,
+						163.5
+					],
+					[
+						293.5,
+						163.5
+					],
+					[
+						292.5,
+						164.5
+					],
+					[
+						293.5,
+						164.5
+					],
+					[
+						294.5,
+						164.5
+					],
+					[
+						295.5,
+						164.5
+					],
+					[
+						296.5,
+						164.5
+					],
+					[
+						297.5,
+						164.5
+					],
+					[
+						298.5,
+						164.5
+					],
+					[
+						299.5,
+						164.5
+					],
+					[
+						300.5,
+						164.5
+					],
+					[
+						301.5,
+						164.5
+					],
+					[
+						284.5,
+						165.5
+					]
+				],
+				"pose": [
+					303.282348632812,
+					165.284790039062,
+					-0.000796715496107936
+				],
+				"total": 13
+			},
+			"carry_x": 60.62158203125,
+			"case": "Scooper native load and tilt",
+			"delivered": 0.519999980926514,
+			"delivered_torque": 1.3,
+			"drawn_pieces": 5,
+			"end": [
+				376.960693359375,
+				160.834167480469
+			],
+			"force": 23.0,
+			"granular_torque": 1.3,
+			"lateral_start": 13,
+			"lateral_start_application_history_retired": false,
+			"lateral_start_identity": {
+				"completed_tick": 138,
+				"epoch": 3,
+				"frame_tick": 138,
+				"generation": 3,
+				"instance": 1,
+				"render_serial": 305,
+				"render_tick": 138,
+				"revision": 1724,
+				"sample": 139,
+				"sample_tick": 137,
+				"session": 3,
+				"uploaded_generation": 5,
+				"uploaded_revision": 1724,
+				"uploaded_serial": 305,
+				"world_generation": 5
+			},
+			"lateral_start_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 13,
+				"inside_solid": 0,
+				"mean_x": 247.5,
+				"mean_y": 192.5,
+				"points": [
+					[
+						241.5,
+						192.5
+					],
+					[
+						242.5,
+						192.5
+					],
+					[
+						243.5,
+						192.5
+					],
+					[
+						244.5,
+						192.5
+					],
+					[
+						245.5,
+						192.5
+					],
+					[
+						246.5,
+						192.5
+					],
+					[
+						247.5,
+						192.5
+					],
+					[
+						248.5,
+						192.5
+					],
+					[
+						249.5,
+						192.5
+					],
+					[
+						250.5,
+						192.5
+					],
+					[
+						251.5,
+						192.5
+					],
+					[
+						252.5,
+						192.5
+					],
+					[
+						253.5,
+						192.5
+					]
+				],
+				"pose": [
+					250.7744140625,
+					193.484252929688,
+					0.00118825177196413
+				],
+				"total": 13
+			},
+			"lateral_start_native_tick": 138,
+			"lateral_start_sampled_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 13,
+				"inside_solid": 0,
+				"mean_x": 247.5,
+				"mean_y": 192.5,
+				"points": [
+					[
+						241.5,
+						192.5
+					],
+					[
+						242.5,
+						192.5
+					],
+					[
+						243.5,
+						192.5
+					],
+					[
+						244.5,
+						192.5
+					],
+					[
+						245.5,
+						192.5
+					],
+					[
+						246.5,
+						192.5
+					],
+					[
+						247.5,
+						192.5
+					],
+					[
+						248.5,
+						192.5
+					],
+					[
+						249.5,
+						192.5
+					],
+					[
+						250.5,
+						192.5
+					],
+					[
+						251.5,
+						192.5
+					],
+					[
+						252.5,
+						192.5
+					],
+					[
+						253.5,
+						192.5
+					]
+				],
+				"pose": [
+					250.7744140625,
+					193.484252929688,
+					0.00118825177196413
+				],
+				"total": 13
+			},
+			"lift_distance": 12.890869140625,
+			"lifted": 0,
+			"lifted_application_history_retired": true,
+			"lifted_identity": {
+				"completed_tick": 110,
+				"epoch": 3,
+				"frame_tick": 110,
+				"generation": 3,
+				"instance": 1,
+				"render_serial": 287,
+				"render_tick": 110,
+				"revision": 1486,
+				"sample": 111,
+				"sample_tick": 109,
+				"session": 3,
+				"uploaded_generation": 5,
+				"uploaded_revision": 1486,
+				"uploaded_serial": 287,
+				"world_generation": 5
+			},
+			"lifted_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 0,
+				"inside_solid": 13,
+				"mean_x": 247.5,
+				"mean_y": 210.5,
+				"points": [
+					[
+						241.5,
+						210.5
+					],
+					[
+						242.5,
+						210.5
+					],
+					[
+						243.5,
+						210.5
+					],
+					[
+						244.5,
+						210.5
+					],
+					[
+						245.5,
+						210.5
+					],
+					[
+						246.5,
+						210.5
+					],
+					[
+						247.5,
+						210.5
+					],
+					[
+						248.5,
+						210.5
+					],
+					[
+						249.5,
+						210.5
+					],
+					[
+						250.5,
+						210.5
+					],
+					[
+						251.5,
+						210.5
+					],
+					[
+						252.5,
+						210.5
+					],
+					[
+						253.5,
+						210.5
+					]
+				],
+				"pose": [
+					245.0,
+					210.035568237305,
+					0.0000765250879339874
+				],
+				"total": 13
+			},
+			"lifted_native_tick": 110,
+			"lifted_sampled_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 13,
+				"inside_solid": 0,
+				"mean_x": 247.5,
+				"mean_y": 210.5,
+				"points": [
+					[
+						241.5,
+						210.5
+					],
+					[
+						242.5,
+						210.5
+					],
+					[
+						243.5,
+						210.5
+					],
+					[
+						244.5,
+						210.5
+					],
+					[
+						245.5,
+						210.5
+					],
+					[
+						246.5,
+						210.5
+					],
+					[
+						247.5,
+						210.5
+					],
+					[
+						248.5,
+						210.5
+					],
+					[
+						249.5,
+						210.5
+					],
+					[
+						250.5,
+						210.5
+					],
+					[
+						251.5,
+						210.5
+					],
+					[
+						252.5,
+						210.5
+					],
+					[
+						253.5,
+						210.5
+					]
+				],
+				"pose": [
+					245.0,
+					211.595153808594,
+					0.0000889169459696859
+				],
+				"total": 13
+			},
+			"loaded": 13,
+			"loaded_application_history_retired": false,
+			"loaded_identity": {
+				"completed_tick": 76,
+				"epoch": 3,
+				"frame_tick": 76,
+				"generation": 3,
+				"instance": 1,
+				"render_serial": 275,
+				"render_tick": 74,
+				"revision": 1337,
+				"sample": 77,
+				"sample_tick": 75,
+				"session": 3,
+				"uploaded_generation": 5,
+				"uploaded_revision": 1337,
+				"uploaded_serial": 275,
+				"world_generation": 5
+			},
+			"loaded_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 13,
+				"inside_solid": 0,
+				"mean_x": 245.730769230769,
+				"mean_y": 221.884615384615,
+				"points": [
+					[
+						245.5,
+						220.5
+					],
+					[
+						246.5,
+						220.5
+					],
+					[
+						244.5,
+						221.5
+					],
+					[
+						245.5,
+						221.5
+					],
+					[
+						246.5,
+						221.5
+					],
+					[
+						247.5,
+						221.5
+					],
+					[
+						242.5,
+						222.5
+					],
+					[
+						243.5,
+						222.5
+					],
+					[
+						244.5,
+						222.5
+					],
+					[
+						245.5,
+						222.5
+					],
+					[
+						246.5,
+						222.5
+					],
+					[
+						247.5,
+						222.5
+					],
+					[
+						248.5,
+						222.5
+					]
+				],
+				"pose": [
+					245.0,
+					222.92643737793,
+					0.000313051277771592
+				],
+				"total": 13
+			},
+			"loaded_native_tick": 76,
+			"loaded_sampled_material": {
+				"above_rim": 0,
+				"below_floor": 0,
+				"cavity": 13,
+				"inside_solid": 0,
+				"mean_x": 245.730769230769,
+				"mean_y": 221.884615384615,
+				"points": [
+					[
+						245.5,
+						220.5
+					],
+					[
+						246.5,
+						220.5
+					],
+					[
+						244.5,
+						221.5
+					],
+					[
+						245.5,
+						221.5
+					],
+					[
+						246.5,
+						221.5
+					],
+					[
+						247.5,
+						221.5
+					],
+					[
+						242.5,
+						222.5
+					],
+					[
+						243.5,
+						222.5
+					],
+					[
+						244.5,
+						222.5
+					],
+					[
+						245.5,
+						222.5
+					],
+					[
+						246.5,
+						222.5
+					],
+					[
+						247.5,
+						222.5
+					],
+					[
+						248.5,
+						222.5
+					]
+				],
+				"pose": [
+					245.0,
+					222.92643737793,
+					0.000313051277771592
+				],
+				"total": 13
+			},
+			"max_rotation": 1.21301472187042,
+			"max_y": 223.018539428711,
+			"min_y": 155.463760375977,
+			"native_frame": true,
+			"native_ticks": 293,
+			"normal": 0.0,
+			"shape_count": 5,
+			"tip_rotation": 1.21301472187042,
+			"torque": 1189.92654418945,
+			"wrench": 0.519999980926514
+		},
+		{
+			"age_drops": 0,
+			"arrivals": 0,
+			"barrel_contact_samples": 144,
+			"barrel_lift": 9.1414794921875,
+			"barrel_y": 249.001663208008,
+			"case": "mixed body impact",
+			"delivered": 0.0,
+			"delivered_torque": 0.0,
+			"end": [
+				245.000091552734,
+				245.977127075195
+			],
+			"first_y": 256.281219482422,
+			"force": 184.0,
+			"granular_torque": 0.0,
+			"max_rotation": 0.000667366373818368,
+			"max_y": 256.282257080078,
+			"min_y": 235.0,
+			"native_frame": true,
+			"needle": {
+				"angular_velocity": 0.0000466139645141084,
+				"budget": 5.0,
+				"control_generation": 2,
+				"controller": {
+					"applied_force": "(0.0, 0.0)",
+					"applied_torque": 0.0,
+					"boost_multiplier": 1.0,
+					"controller": "gcr-review-fleet/v1",
+					"force_cap": 0.0,
+					"movement_mode": "cancelled",
+					"side_thrust": 0.0,
+					"thrust": 0.0
+				},
+				"definition_hash": "9d52fc8f375d05a7660f14d1097000405c1cc5b1bf5d31d4fbd4d473fb847560",
+				"force_limit": 12.0,
+				"gravity": 38.0000008642673,
+				"inertia": 0.628333330154419,
+				"instance_id": 3,
+				"linear_velocity": "(0.0001, 0.000041)",
+				"mass": 0.259999990463257,
+				"model": "needle",
+				"position": "(344.9972, 259.5002)",
+				"retained_parts": [
+					{
+						"angular_velocity": 0.0000466139645141084,
+						"linear_velocity": "(0.0001, 0.000041)",
+						"position": "(344.9972, 259.5002)",
+						"rotation": 0.0000726205398677848
+					}
+				],
+				"rotation": 0.0000726205398677848,
+				"torque_limit": 10.0
+			},
+			"normal": 0.0,
+			"torque": 121.918055226894,
+			"wrench": 0.0
+		}
+	]
+}

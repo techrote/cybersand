@@ -14,6 +14,9 @@ Current-scene material audition: [Draft/HOLD contract](systems/material-audition
 [consumer capability map](systems/material-audition-consumers.md), and
 [existing Lab controls](operations/materials-lab-authoring.md). Supported profiles
 activate in the current World; reverting configuration does not undo simulation.
+The [definitive decision packet](audits/material-audition-live-20261124/decision-packet.md)
+records source-qualified Linux/Windows execution, the exact tested portable
+evaluator, original evidence and remaining physical owner/integration gates.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 

@@ -1,0 +1,86 @@
+{
+  "recorded_at_utc": "2026-11-24 19:36:49 UTC",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "material_source": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "material_runtime_publication": "206f14dade78f42b5d8502627bcc19c7093c808e",
+  "policy": "Read-only inspection. No foreign branch changes absorbed; combined implementation remains an explicit reconciliation and requalification gate.",
+  "programmes": [
+    {
+      "name": "ObjectShard",
+      "pr": 754,
+      "url": "https://github.com/techrote/cybersand/pull/754",
+      "head": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+      "draft": true,
+      "merged": false,
+      "changed_files": 773,
+      "overlapping_paths": [
+        "docs/README.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/simulation_worker.gd",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "tools/material_catalogue/compatibility.py"
+      ]
+    },
+    {
+      "name": "PUBPRES",
+      "pr": 757,
+      "url": "https://github.com/techrote/cybersand/pull/757",
+      "head": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "draft": true,
+      "merged": false,
+      "changed_files": 231,
+      "overlapping_paths": [
+        "docs/README.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/simulation_worker.gd",
+        "godot/tests/test_material_lab_ui.gd",
+        "tools/material_catalogue/compatibility.py"
+      ]
+    },
+    {
+      "name": "Art Workbench",
+      "pr": 766,
+      "url": "https://github.com/techrote/cybersand/pull/766",
+      "head": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "draft": true,
+      "merged": false,
+      "changed_files": 4,
+      "overlapping_paths": []
+    },
+    {
+      "name": "SWARM",
+      "pr": 729,
+      "url": "https://github.com/techrote/cybersand/pull/729",
+      "head": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+      "draft": true,
+      "merged": false,
+      "changed_files": 289,
+      "overlapping_paths": [
+        "Makefile",
+        "docs/README.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "godot/scripts/shared_workbench.gd"
+      ]
+    }
+  ]
+}

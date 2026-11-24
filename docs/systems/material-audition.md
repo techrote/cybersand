@@ -197,7 +197,12 @@ interactive Windows evaluator packager. The dedicated workflow runs only on an
 explicit `.github/material-audition-run.json` request or manual dispatch; normal
 Draft iteration does not launch the expensive matrix.
 
-Executed evidence and exact identities belong in the dated decision packet.
+Executed evidence and exact identities are recorded in the
+[definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md):
+qualified source `5f73b0ae`, its four-path runtime publication `206f14da`, actual
+Linux/Windows and extracted-evaluator execution, exact archive verification and
+independent review. The frozen shared ledger remains a build-input checkpoint;
+the decision packet owns the final qualification disposition.
 Source implementation, native simulation evidence, graphical automation,
 extracted-package execution and physical owner acceptance remain separate
 claims. The candidate stays **Draft/HOLD** pending owner acceptance and any

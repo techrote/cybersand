@@ -18,6 +18,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 from accepted main `00cdb02f`; retain the independent PUBPRES/ObjectShard/Art/SWARM
 programmes and reconcile only the listed narrow seams. No canonical catalogue,
 identity allocation or production default is retuned. Keep Draft/HOLD.
+The [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+binds source `5f73b0ae`, runtime-only child `206f14da`, original target-platform
+execution and the independently verified Windows ZIP. Its final integration
+snapshot and physical owner gates remain authoritative for this candidate.
 
 ## Workbench Art traffic lifetime — 2026-11-20
 
