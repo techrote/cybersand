@@ -57,6 +57,17 @@ func run() -> void:
 				await process_frame
 				await RenderingServer.frame_post_draw
 				expect(root.get_texture().get_image().save_png(destination.path_join("audition-%dx%d.png" % [size.x,size.y]))==OK,"actual graphical framebuffer captured")
+	var field: SpinBox = audition._controls["material:2:density"]
+	field.get_line_edit().text = "-1"
+	field.get_line_edit().text_changed.emit("-1")
+	panel.select_material(24)
+	expect(panel.selected_id==2 and audition.selected_id==2,"common browser and current-scene editor retain one selection after invalid draft input")
+	var selection: PackedInt32Array = panel._list.get_selected_items()
+	expect(selection.size()==1 and int(panel._list.get_item_metadata(selection[0]))==2,"the visible browser highlight is restored to the refused selection's original material")
+	expect(panel._status.text.contains("invalid input in Current scene"),"selection refusal remains visible even when browsing another Lab tab")
+	audition.use_active_as_draft()
+	panel.select_material(24)
+	expect(panel.selected_id==24 and audition.selected_id==24,"explicitly discarding invalid draft input permits the next common selection")
 	scene.queue_free()
 	await process_frame
 	print("MAT_AUDITION_LAYOUT: %d checks, %d failures; display=%s; fake-owner presentation only" % [checks,failures,DisplayServer.get_name()])

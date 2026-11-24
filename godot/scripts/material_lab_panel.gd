@@ -509,7 +509,14 @@ func bind_current_scene(owner: Object) -> void:
 	audition_panel.bind_current_scene(owner)
 
 func select_material(id: int) -> void:
-	audition_panel.select_material(id)
+	if not audition_panel.select_material(id):
+		_status.text = "Finish or discard invalid input in Current scene before selecting another material."
+		_list.deselect_all()
+		for index: int in range(_list.item_count):
+			if int(_list.get_item_metadata(index)) == selected_id:
+				_list.select(index)
+				break
+		return
 	if selected_id != id: _retire_reaction_diagnostic()
 	selected_id = id
 	_list.deselect_all()

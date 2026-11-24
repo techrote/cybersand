@@ -5,10 +5,10 @@ extends RefCounted
 # live material Apply is a different operation and never calls this module.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const SCENES := [
-	{"id":"density-sorter","label":"Density sorter · 512²","help":"Sand and Salt fall into separate Water basins through sloped hoppers. Try Sand density 500, 1600 and 2400. The live control changes admitted density exchanges; powder–powder swaps stay forbidden. Repaint a dose to compare within the continuing scene."},
-	{"id":"viscosity-channel","label":"Brine flow channels · 512²","help":"Three finite Brine reservoirs empty through narrow gaps onto stepped channels. Select Brine 24, compare viscosity 0, 96 and 240, and watch actual flow. These are Brine's native generic-liquid rules; the separate Water solver setting is unchanged."},
-	{"id":"reaction-contact","label":"Salt contact gallery · 512²","help":"Salt doses fall into Water through contact trays; a separate Salt and Ice pocket exposes another authored pair. Select Salt 23 and inspect each pair's roles and products. Compare an admitted threshold of 0 with 255. Zero remains 1/256; reactions already consumed are not undone by Revert."},
-	{"id":"industrial-loop","label":"Industrial settling works · 1024×512","help":"A finite industrial apparatus combines Sand classification, a Brine raceway and Salt/Water processing among Metal supports, glass windows and a timber service deck. Paint fresh material, remove a gate, and refine one current-scene profile while the ordinary Workbench keeps running."},
+	{"id":"density-sorter","label":"Density sorter · 512²","help":"Sand on the left and lighter Dust on the right fall into independent Oil basins through sloped hoppers. Compare Sand 500 below Oil's declared 800 with 1600 and 2400 above it; both heavy settings share the same exchange eligibility. Dust stays an unchanged control. Powder–powder swaps remain forbidden. Repaint a dose to compare within the continuing scene."},
+	{"id":"viscosity-channel","label":"Brine flow channels · 512²","help":"Three finite Brine reservoirs feed covered horizontal throats before dropping into stepped channels. Compare lateral advance: viscosity changes sideways yield, while gravity stays unchanged. Select Brine 24 and compare 0, 96 and 240 when its generic consumer is active. High values can enter existing activity rest; changing the configuration wakes the affected cells. An inertial Brine assignment has no live viscosity control. Applied solver settings are preserved."},
+	{"id":"reaction-contact","label":"Salt contact gallery · 512²","help":"Salt doses fall into Water through contact trays; a separate Salt and Ice pocket exposes another authored pair. Select Salt 23 and inspect each pair's roles and products. Active Salt can initiate its admitted Water contact even when Wave Water cannot. Compare an admitted threshold of 0 with 255. Zero remains 1/256; reactions already consumed are not undone by Revert."},
+	{"id":"industrial-loop","label":"Industrial settling works · 1024×512","help":"A finite industrial apparatus combines Sand/Oil classification, a Brine raceway and Salt/Water processing among Metal supports, glass windows and a timber service deck. Paint fresh material, remove a gate, and refine one current-scene profile while the ordinary Workbench keeps running."},
 ]
 
 static func description(id: String) -> Dictionary:
@@ -51,10 +51,10 @@ static func _stairs(edits: Array, x0: int, y0: int, steps: int, width: int, drop
 		_box(edits,x,y,x+width+2,y+5,Setup.WALL)
 
 static func _density(edits: Array) -> void:
-	# Basins remain independent. Salt is an intentionally reactive comparison;
-	# Sand is the clean density-exchange dose against Water.
+	# Independent, non-reactive contacts isolate ordinary directional exchange.
+	# Sand's admitted density crosses Oil's 800; unchanged Dust is lighter at 420.
 	for origin: int in [20,270]:
-		_box(edits,origin+6,292,origin+214,474,Setup.WATER)
+		_box(edits,origin+6,292,origin+214,474,Setup.OIL)
 		_basin(edits,origin,236,origin+220,482)
 		_stairs(edits,origin+14,156,6,12,9,1)
 		_stairs(edits,origin+190,156,6,12,9,-1)
@@ -64,7 +64,7 @@ static func _density(edits: Array) -> void:
 		_box(edits,origin+36,384,origin+84,390,Setup.WALL)
 		_box(edits,origin+136,418,origin+194,424,Setup.WALL)
 	_box(edits,50,92,214,142,Setup.SAND)
-	_box(edits,300,92,464,142,Setup.SALT)
+	_box(edits,300,92,464,142,Setup.DUST)
 	_box(edits,24,488,488,496,Setup.METAL)
 
 static func _viscosity(edits: Array) -> void:
@@ -72,12 +72,16 @@ static func _viscosity(edits: Array) -> void:
 		var left := 12 + index * 168
 		# All bays use the same material and geometry so there is no suggestion
 		# that one material-global scene profile selectively alters a single bay.
-		_box(edits,left+6,56,left+146,168,Setup.BRINE)
+		_box(edits,left+6,56,left+62,168,Setup.BRINE)
 		_box(edits,left,28,left+6,176,Setup.WALL)
-		_box(edits,left+146,28,left+152,176,Setup.WALL)
-		_box(edits,left,170,left+62,176,Setup.WALL)
-		_box(edits,left+82,170,left+152,176,Setup.WALL)
-		_stairs(edits,left+66,218,6,11,19,1)
+		# A tall partition and covered three-cell throat prevent gravity from
+		# bypassing the actual lateral-yield consumer. The opening stays ordinary
+		# erasable terrain; no hidden pump or fixture-specific motion is used.
+		_box(edits,left+62,28,left+68,173,Setup.WALL)
+		_box(edits,left+62,168,left+146,173,Setup.WALL)
+		_box(edits,left,176,left+138,182,Setup.WALL)
+		_box(edits,left+146,168,left+152,490,Setup.WALL)
+		_stairs(edits,left+132,218,6,11,19,-1)
 		_box(edits,left+10,372,left+104,378,Setup.WALL)
 		_box(edits,left+98,340,left+104,378,Setup.WALL)
 		_basin(edits,left,392,left+152,490,6)
@@ -99,7 +103,7 @@ static func _reaction(edits: Array) -> void:
 
 static func _industrial(edits: Array) -> void:
 	# Left classifier and settling basin.
-	_box(edits,30,318,310,478,Setup.WATER)
+	_box(edits,30,318,310,478,Setup.OIL)
 	_basin(edits,24,280,318,486,8)
 	_box(edits,48,64,254,126,Setup.SAND)
 	_stairs(edits,40,142,7,16,11)

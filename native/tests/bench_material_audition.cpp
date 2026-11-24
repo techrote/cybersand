@@ -77,11 +77,14 @@ void sample(int side, int workers, int ticks, int repeat, std::string_view mode)
     const auto initial_tick = world.tick_index();
     const auto initial_hard_revision = world.hard_surface_revision();
     std::uint64_t scanned_cells = 0, woken_blocks = 0;
-    const auto activation_begin = Clock::now();
+    double activation_ms = 0.0;
 #if CYBERSAND_AUDITION_BENCH
     if (mode != "default") {
         const auto identity = world.material_audition_world_id();
-        const auto result = world.apply_material_audition(identity, 0, profile(mode));
+        const auto proposed = profile(mode);
+        const auto activation_begin = Clock::now();
+        const auto result = world.apply_material_audition(identity, 0, proposed);
+        activation_ms = std::chrono::duration<double, std::milli>(Clock::now() - activation_begin).count();
         if (!result.applied() || world.material_audition_world_id() != identity ||
             world.content_hash() != initial_content || world.tick_index() != initial_tick ||
             world.hard_surface_revision() != initial_hard_revision)
@@ -93,7 +96,6 @@ void sample(int side, int workers, int ticks, int repeat, std::string_view mode)
     (void)initial_tick;
     (void)initial_hard_revision;
 #endif
-    const double activation_ms = std::chrono::duration<double, std::milli>(Clock::now() - activation_begin).count();
     std::uint64_t moved = 0, visited = 0;
     std::uint32_t observed_workers = 0;
     std::vector<double> timings;

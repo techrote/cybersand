@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Current-scene material audition: [Draft/HOLD contract](systems/material-audition.md),
+[consumer capability map](systems/material-audition-consumers.md), and
+[existing Lab controls](operations/materials-lab-authoring.md). Supported profiles
+activate in the current World; reverting configuration does not undo simulation.
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).

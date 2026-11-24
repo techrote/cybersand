@@ -2833,8 +2833,9 @@ func _worker_loop() -> void:
 		_mutex.lock()
 		_legacy_edit_inflight = false
 		_world_change_inflight = false
+		if _material_audition.enabled:
+			_material_audition.consume(_world,_world_generation,_material_audition_error_locked())
 		_mutex.unlock()
-		_consume_material_audition()
 		_consume_material_capture()
 		# A paused snapshot can arise from a stale body sample even during Play.
 		# Acknowledge the UI pause only after this worker turn actually consumed

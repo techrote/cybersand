@@ -6,10 +6,13 @@ import copy
 import json
 import os
 from pathlib import Path
+import shutil
+import struct
 import subprocess
 import sys
 import tempfile
 import unittest
+import zlib
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import run_material_audition_qualification as subject
@@ -24,7 +27,12 @@ class EvidenceTests(unittest.TestCase):
         self.git("init", "-q")
         for relative in ("native/include/example.hpp", "native/src/example.cpp",
                          "godot/native_extension/example.cpp", "godot/scripts/example.gd",
-                         "godot/tests/example.gd", "tools/ci/run_material_audition_qualification.py"):
+                         "godot/tests/example.gd", "godot/feature_launcher.tscn",
+                         "godot/shaders/example.gdshader", "godot/addons/example/example.gdextension",
+                         "examples/worldgen/example.json",
+                         "godot/addons/example/example.svg.import", "godot/addons/example/LICENSE",
+                         "tools/web/example.mjs", "tools/example.patch", "tools/toolchains/g++",
+                         "tools/package_materials_lab_candidate.py", "tools/ci/run_material_audition_qualification.py"):
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("source fixture\n", encoding="utf-8")
@@ -56,6 +64,15 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(restored["status"], "built-not-executed")
         self.assertEqual(restored["source_commit"], self.git("rev-parse", "HEAD").decode().strip())
         self.assertIn("godot/scripts/example.gd", restored["execution_inputs"])
+
+    def test_checkout_text_line_endings_preserve_cross_platform_source_identity(self):
+        # Reproduce Git's Windows text materialization without weakening its
+        # tracked-content check or normalizing executable/binary resources.
+        self.git("config", "core.autocrlf", "true")
+        for relative in self.identity["execution_inputs"]:
+            path = self.root / relative
+            path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))
+        self.assertEqual(subject.verify(self.root, self.candidate), self.identity)
 
     def test_existing_candidate_is_not_overwritten(self):
         before = (self.candidate / subject.MANIFEST).read_bytes()
@@ -92,9 +109,51 @@ class EvidenceTests(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             subject.source_identity(self.root)
 
+    def test_dirty_entry_loader_shader_and_imported_helper_refused(self):
+        for relative in ("godot/feature_launcher.tscn","godot/shaders/example.gdshader",
+                         "godot/addons/example/example.gdextension","tools/package_materials_lab_candidate.py"):
+            path = self.root / relative
+            before = path.read_bytes()
+            path.write_text("different execution authority\n")
+            with self.subTest(relative=relative), self.assertRaises(subprocess.CalledProcessError):
+                subject.verify(self.root,self.candidate)
+            path.write_bytes(before)
+
+    def test_relocated_source_custody_does_not_mutate_git_index(self):
+        copied = Path(self.temporary.name) / "relocated source with spaces"
+        shutil.copytree(self.root,copied)
+        before = (copied / ".git/index").read_bytes()
+        self.assertEqual(subject.verify(copied,self.candidate),self.identity)
+        self.assertEqual(subject.verify(copied,self.candidate),self.identity)
+        self.assertEqual((copied / ".git/index").read_bytes(),before)
+
     def test_untracked_host_implementation_refused(self):
         (self.root / "godot/scripts/extra.gd").write_text("untracked host")
         with self.assertRaisesRegex(ValueError, "Untracked implementation"):
+            subject.verify(self.root, self.candidate)
+
+    def test_godot_generated_resource_uid_sidecars_do_not_change_source(self):
+        for relative in ("godot/scripts/example.gd", "godot/shaders/example.gdshader",
+                         "godot/addons/example/example.gdextension"):
+            (self.root / (relative + ".uid")).write_text("uid://generatedbygodot\n")
+        self.assertEqual(subject.verify(self.root, self.candidate), self.identity)
+        (self.root / "godot/scripts/unknown.uid").write_text("not a generated script sidecar\n")
+        with self.assertRaisesRegex(ValueError, "Untracked implementation"):
+            subject.verify(self.root, self.candidate)
+
+    def test_generated_uid_exception_requires_tracked_resource_companion(self):
+        for relative in ("godot/scripts/orphan.gd.uid", "godot/shaders/orphan.gdshader.uid",
+                         "godot/addons/example/orphan.gdextension.uid"):
+            path = self.root / relative
+            path.write_text("uid://orphan\n")
+            with self.subTest(relative=relative), self.assertRaisesRegex(ValueError, "Untracked implementation"):
+                subject.verify(self.root, self.candidate)
+            path.unlink()
+
+    def test_generator_profile_source_is_bound_without_staged_duplicates(self):
+        self.assertIn("examples/worldgen/example.json", self.identity["execution_inputs"])
+        (self.root / "examples/worldgen/example.json").write_text("changed recipe")
+        with self.assertRaises(subprocess.CalledProcessError):
             subject.verify(self.root, self.candidate)
 
     def test_manifest_artifact_path_cannot_escape_candidate(self):
@@ -179,16 +238,121 @@ class EvidenceTests(unittest.TestCase):
     def test_empty_or_missing_target_os_evidence_never_qualifies_package(self):
         directory = Path(self.temporary.name) / "empty-evidence"
         directory.mkdir()
+        manifest=copy.deepcopy(self.identity)
+        manifest.update(platform="windows",artifact=subject.RUNTIMES["windows"])
         result = {"schema": "cybersand.material-audition.execution", "status": "passed",
                   "platform": "windows", "graphical": True, "cases": [], "files_sha256": {},
+                  "godot_version":subject.VERSION,"godot_sha256":"1"*64,
+                  "candidate_sha256":__import__("hashlib").sha256(subject.canonical(manifest)).hexdigest(),
                   **{key: self.identity[key] for key in ("source_commit", "source_tree", "native_sha256")}}
         subject.write(directory / "execution.json", result)
         with self.assertRaisesRegex(ValueError, "omitted"):
-            package.verified_execution(directory, self.identity, graphical=True)
+            package.verified_execution(directory, manifest, graphical=True)
         result["platform"] = "linux"
         subject.write(directory / "execution.json", result)
         with self.assertRaisesRegex(ValueError, "Windows execution"):
-            package.verified_execution(directory, self.identity, graphical=True)
+            package.verified_execution(directory, manifest, graphical=True)
+
+    def evidence_fixture(self):
+        """Structurally complete synthetic guard fixture; no process is run."""
+        directory = Path(self.temporary.name) / "synthetic evidence"
+        directory.mkdir()
+        (directory / "frames").mkdir()
+        manifest = copy.deepcopy(self.identity)
+        manifest.update(platform="windows",artifact=subject.RUNTIMES["windows"])
+        marker = {"checks":3,"failures":0,"status":"passed","display":"synthetic-fixture",
+                  "frames":[],"native_witnesses":[{"kind":kind} for kind in
+                    ("density","viscosity","reaction","owner-adversaries","ordinary-workbench","ordinary-demo")]}
+        def chunk(name,data):
+            return struct.pack(">I",len(data))+name+data+struct.pack(">I",zlib.crc32(name+data))
+        width,height=400,300
+        png=b"\x89PNG\r\n\x1a\n"+chunk(b"IHDR",struct.pack(">IIBBBBB",width,height,8,2,0,0,0))
+        png+=chunk(b"IDAT",zlib.compress((b"\0"+b"\x80\x90\xa0"*width)*height))+chunk(b"IEND",b"")
+        for name in ("current-scene-density","current-scene-1000x650","current-scene-1280x720",
+                     "density-sorter","viscosity-channel","reaction-contact","industrial-loop"):
+            path=directory / "frames" / (name+".png")
+            path.write_bytes(png)
+            marker["frames"].append({"name":name,"file":path.name,"width":width,"height":height,"sha256":subject.sha(path)})
+        subject.write(directory / "frames/native-readback.json",marker)
+        report={"schema":"cybersand.material-audition.execution","status":"passed","platform":"windows",
+                "graphical":True,"godot_version":subject.VERSION,"godot_sha256":"1"*64,
+                "candidate_sha256":__import__("hashlib").sha256(subject.canonical(manifest)).hexdigest(),"cases":[],
+                **{key:manifest[key] for key in ("source_commit","source_tree","native_sha256")}}
+        for name,prefix in (("import",None),*subject.CASES):
+            completion=marker if name=="test_material_audition" else {"checks":3,"failures":0,"status":"passed"}
+            log=directory / (name+".log")
+            log.write_text("synthetic custody fixture; never executed\n"+(prefix+" "+json.dumps(completion)+"\n" if prefix else ""))
+            receipt={"command":["synthetic-never-executed"],"timeout_seconds":1,"status":"passed","process_id":1,
+                     "exit_code":0,"elapsed_seconds":0.1,"log_sha256":subject.sha(log)}
+            if prefix: receipt["completion"]=completion
+            subject.write(directory / (name+".receipt.json"),receipt)
+            report["cases"].append({"name":name,**receipt})
+        self.refresh_inventory(directory,report)
+        return directory,manifest,report
+
+    def refresh_inventory(self,directory,report):
+        report["files_sha256"]={path.relative_to(directory).as_posix():subject.sha(path)
+                                  for path in directory.rglob("*") if path.is_file() and path.name!="execution.json"}
+        subject.write(directory / "execution.json",report)
+
+    def test_structurally_complete_fixture_validates_without_execution_claim(self):
+        directory,manifest,report=self.evidence_fixture()
+        self.assertEqual(package.verified_execution(directory,manifest,graphical=True),report)
+
+    def test_failed_original_process_cannot_be_promoted_by_summary(self):
+        directory,manifest,report=self.evidence_fixture()
+        path=directory / "test_material_audition.receipt.json"
+        receipt=json.loads(path.read_text())
+        receipt.update(status="failed",exit_code=7)
+        subject.write(path,receipt)
+        self.refresh_inventory(directory,report)
+        with self.assertRaisesRegex(ValueError,"Original process receipt disagrees"):
+            package.verified_execution(directory,manifest,graphical=True)
+
+    def test_script_error_refused_even_when_all_hashes_and_summaries_match(self):
+        directory,manifest,report=self.evidence_fixture()
+        log=directory / "test_material_audition.log"
+        log.write_text("SCRIPT ERROR: synthetic adversary\n"+log.read_text())
+        case=next(case for case in report["cases"] if case["name"]=="test_material_audition")
+        case["log_sha256"]=subject.sha(log)
+        subject.write(directory / "test_material_audition.receipt.json",{key:value for key,value in case.items() if key!="name"})
+        self.refresh_inventory(directory,report)
+        with self.assertRaisesRegex(ValueError,"script errors"):
+            package.verified_execution(directory,manifest,graphical=True)
+
+    def test_wrong_engine_or_candidate_identity_refused(self):
+        directory,manifest,report=self.evidence_fixture()
+        for key in ("godot_version","candidate_sha256"):
+            old=report[key]
+            report[key]="wrong"
+            self.refresh_inventory(directory,report)
+            with self.subTest(key=key),self.assertRaises(ValueError):
+                package.verified_execution(directory,manifest,graphical=True)
+            report[key]=old
+        self.refresh_inventory(directory,report)
+        with self.assertRaisesRegex(ValueError,"engine byte identity"):
+            package.verified_execution(directory,manifest,graphical=True,godot_digest="2"*64)
+
+    def test_missing_frame_or_native_readback_cannot_claim_graphical_success(self):
+        directory,manifest,report=self.evidence_fixture()
+        raw=directory / "frames/native-readback.json"
+        raw.unlink()
+        self.refresh_inventory(directory,report)
+        with self.assertRaisesRegex(ValueError,"native graphical readback"):
+            package.verified_execution(directory,manifest,graphical=True)
+
+    def test_headless_completion_cannot_claim_graphical_success(self):
+        directory,manifest,report=self.evidence_fixture()
+        case=next(case for case in report["cases"] if case["name"]=="test_material_audition")
+        case["completion"]["display"]="headless"
+        log=directory / "test_material_audition.log"
+        log.write_text("MATERIAL_AUDITION_RESULT "+json.dumps(case["completion"])+"\n")
+        case["log_sha256"]=subject.sha(log)
+        subject.write(directory / "test_material_audition.receipt.json",{key:value for key,value in case.items() if key!="name"})
+        subject.write(directory / "frames/native-readback.json",case["completion"])
+        self.refresh_inventory(directory,report)
+        with self.assertRaisesRegex(ValueError,"headless display"):
+            package.verified_execution(directory,manifest,graphical=True)
 
 
 if __name__ == "__main__":

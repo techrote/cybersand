@@ -95,7 +95,8 @@ func poll(request_id: String) -> Dictionary:
 	if not _pending.is_empty() and _pending.request_id == request_id:
 		return {"ok":true,"status":"pending","pending":true,"request_id":request_id}
 	if _receipts.has(request_id): return _receipts[request_id].duplicate(true)
-	var result: Dictionary = _refusal("Unknown or expired request receipt; refresh the active configuration.","unknown_request")
+	var result: Dictionary = {"ok":false,"status":"unavailable","code":"unknown_request",
+		"error":"Unknown or expired request receipt; refresh the active configuration. Activation or refusal cannot be inferred from a missing receipt."}
 	result["request_id"] = request_id
 	return result
 
@@ -104,7 +105,7 @@ func cancel(request_id: String) -> Dictionary:
 		refuse_pending("Cancelled before native activation.","cancelled")
 		return poll(request_id)
 	var result: Dictionary = poll(request_id)
-	if result.get("status") == "active":
+	if result.get("accepted",false) or result.get("status") == "active":
 		result["cancelled"] = false
 		result["cancellation_note"] = "Already activated; use Revert to restore configuration."
 	return result
@@ -131,6 +132,13 @@ func consume(world: Variant, generation: int, reason: String) -> void:
 	# Native readback is the authority after success AND refusal. No UI-provided
 	# field is allowed to substitute for the activated profile or its revision.
 	_state = world.get_material_audition_state()
+	if receipt.get("status") == "active_readback_failed" and _state.get("ok",false) \
+		and _state.get("world_id") == command.world_id and int(_state.get("revision",-1)) == int(command.expected_revision)+1:
+		receipt["ok"] = true
+		receipt["status"] = "active"
+		receipt["error"] = ""
+		receipt["profile"] = _state.profile.duplicate(true)
+		receipt["readback_recovered"] = true
 	receipt["request_id"] = command.request_id
 	receipt["session_id"] = session_id
 	receipt["pending"] = false

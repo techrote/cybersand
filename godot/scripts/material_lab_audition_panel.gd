@@ -132,10 +132,11 @@ func set_catalogue(materials: Array) -> void:
 	_materials = materials.duplicate(true)
 	if is_node_ready(): _refresh_fields()
 
-func select_material(id: int) -> void:
-	if is_node_ready() and not _commit_fields(): return
+func select_material(id: int) -> bool:
+	if is_node_ready() and not _commit_fields(): return false
 	selected_id = id
 	if is_node_ready(): _refresh_fields()
+	return true
 
 func _host() -> Object:
 	return _owner.get_ref() if _owner != null else null
@@ -229,7 +230,7 @@ func _refresh_fields() -> void:
 	_title.text = "%03d / %s · current-scene audition" % [selected_id,_material_name(selected_id)]
 	if not _available():
 		_identity.text = "Current scene: unavailable"
-		_label(_fields,"No current native World is bound. Inspect, Edit copy and isolated tests remain available.")
+		_label(_fields,"Current native material readback is unavailable. Inspect, Edit copy and isolated tests remain available.")
 		_refresh_buttons()
 		return
 	_identity.text = "Active profile: %s · revision %d · World %s" % [str(active_state.profile.get("profile_id","accepted-defaults")),int(active_state.get("revision",0)),str(active_state.get("world_id",""))]
@@ -277,6 +278,8 @@ func _refresh_fields() -> void:
 		else:
 			_label(values,"No live control",false)
 		var explanation := str(row.get("applicability",""))
+		if property == "viscosity" and classification == "live":
+			explanation += " This controls generic sideways yielding. Existing activity cooling may let material rest after a missed movement gate; a changed configuration, contact or edit can wake it. Gravity and the separate liquid solver families keep their existing rules."
 		if reaction:
 			explanation += " Threshold T means (T + 1) / 256: 0 is 1/256, not disabled. Endpoint roles and products remain unchanged. This readback describes the admitted rule, not a witnessed contact or executed reaction."
 		_label(box,explanation)
@@ -393,14 +396,35 @@ func _complete(result: Dictionary) -> void:
 	last_receipt = result.duplicate(true)
 	_receipt.text = JSON.stringify(last_receipt,"\t")
 	_pending.clear()
-	if not result.get("ok",false):
-		_set_status("Configuration refused: " + str(result.get("error",result.get("message",result.get("status","No native activation acknowledged.")))))
-		refresh_scene()
+	# Native commit and receipt encoding are separate operations. A bridge may
+	# acknowledge activation even if it could not allocate the effective readback.
+	# Never describe that outcome as a refused or cancelled configuration.
+	var readback_failed: bool = not result.get("ok",false) and (bool(result.get("accepted",false)) or result.get("status") == "active_readback_failed")
+	if not result.get("ok",false) and not readback_failed:
+		var detail := str(result.get("error",result.get("message",result.get("status","No native activation acknowledged."))))
+		if result.get("status") in ["retired","unavailable"] or result.get("code") in ["unknown_request","host_retired"]:
+			_previous_profile.clear()
+			refresh_scene()
+			_set_status("Transaction outcome unavailable: " + detail + " Active values must be checked before another change; no configuration reversal is claimed.")
+		else:
+			_set_status("Configuration refused: " + detail)
+			refresh_scene()
 		return
 	var state: Dictionary = result.get("state",result).duplicate(true)
-	if not _same_world(submitted.request,state) or int(state.get("revision",-1)) <= int(submitted.request.expected_revision) or not state.get("profile") is Dictionary or state.profile != submitted.request.profile:
-		_set_status("Native activation receipt does not match the submitted World, revision and profile. Refresh active values; no successful application is claimed.")
+	if readback_failed:
 		refresh_scene()
+		state = active_state.duplicate(true)
+	if not state.get("ok",false) or not state.get("capabilities") is Array or not _same_world(submitted.request,state) or int(state.get("revision",-1)) <= int(submitted.request.expected_revision) or not state.get("profile") is Dictionary or state.profile != submitted.request.profile:
+		if readback_failed:
+			var message := "Configuration activated, but native readback failed. Refresh active values before another change. Simulation consequences remain in the current World."
+			# A stale pre-commit cache is not current effective-value evidence.
+			if _same_world(submitted.request,state) and int(state.get("revision",-1)) <= int(submitted.request.expected_revision):
+				active_state = {"ok":false,"error":message}
+				_refresh_fields()
+			_set_status(message)
+		else:
+			_set_status("Native activation receipt does not match the submitted World, revision and profile. Refresh active values; no successful application is claimed.")
+			refresh_scene()
 		return
 	_previous_profile = submitted.previous.duplicate(true)
 	# Preserve edits made while native admission was pending. They become a
@@ -409,7 +433,8 @@ func _complete(result: Dictionary) -> void:
 	_draft_binding = _binding(state)
 	_accept_state(state)
 	configuration_changed.emit(active_state.duplicate(true))
-	_set_status("Configuration active at revision %d. %s Simulation consequences remain in the current World." % [int(state.revision),"Your newer draft is still unapplied." if _draft_revision != int(submitted.draft_revision) else "You may continue editing or revert the configuration."])
+	var recovery := "The initial readback failed; refreshed native values confirm activation. " if readback_failed else ""
+	_set_status("Configuration activated at revision %d. %s%s Simulation consequences remain in the current World." % [int(state.revision),recovery,"Your newer draft is still unapplied." if _draft_revision != int(submitted.draft_revision) else "You may continue editing or revert the configuration."])
 
 func cancel_pending() -> Dictionary:
 	var owner := _host()

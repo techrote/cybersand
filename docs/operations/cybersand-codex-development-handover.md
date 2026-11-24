@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Material audition — 2026-11-24
+
+[Draft PR #768](https://github.com/techrote/cybersand/pull/768) owns the
+[current-scene material profile contract](../systems/material-audition.md) and
+[consumer capability map](../systems/material-audition-consumers.md). It starts
+from accepted main `00cdb02f`; retain the independent PUBPRES/ObjectShard/Art/SWARM
+programmes and reconcile only the listed narrow seams. No canonical catalogue,
+identity allocation or production default is retuned. Keep Draft/HOLD.
+
 ## Workbench Art traffic lifetime — 2026-11-20
 
 [Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the

@@ -21,6 +21,7 @@ var _generated_active: Dictionary = {}
 var _pending_generated: Dictionary = {}
 var _pending_retain_generated := false
 var _pending_water_comparison := ""
+var _pending_material_demo := ""
 var _pending_staged_liquid_selection: Dictionary = {}
 var _material_baseline: Dictionary = {}
 var _pending_material_baseline: Dictionary = {}
@@ -817,7 +818,8 @@ func load_material_audition_demo(scene_id: String) -> Dictionary:
 	if policy.is_empty(): policy = _liquids.bridge.default_liquid_policy()
 	var candidate: Dictionary = preload("res://scripts/workbench_material_audition_scenes.gd").create(scene_id,policy)
 	if candidate.is_empty(): return {"ok":false,"error":"Unknown material audition scene."}
-	if not apply(candidate): return {"ok":false,"error":message}
+	if not apply(candidate,false,0,false,false,{},{},false): return {"ok":false,"error":message}
+	_pending_material_demo = scene_id
 	message = "Installing material audition scene. Previous scene and its session profile are replaced."
 	return {"ok":true,"status":"pending","scene_id":scene_id}
 
@@ -947,7 +949,16 @@ func installed(candidate: Dictionary) -> void:
 		_camera.select(2)
 		set_camera(2)
 		message = "Mixed Actor Workshop ready. Play, inspect an NPC, Pilot inspected, then Hand back. Paint remains available."
+	if not _pending_material_demo.is_empty():
+		var scene := preload("res://scripts/workbench_material_audition_scenes.gd").description(_pending_material_demo)
+		_name.text = "materials-" + _pending_material_demo
+		_camera.select(2)
+		set_camera(2)
+		message = "%s · %s" % [str(scene.get("label","Material audition")),str(scene.get("help",""))]
+		_pending_material_demo = ""
 	if is_instance_valid(_actor_panel): _actor_panel.refresh(true)
+	if not OS.get_environment("MAT_AUDITION_LAUNCHER_RECEIPT").is_empty():
+		preload("res://tests/support/material_audition_launcher_witness.gd").attach(self)
 
 
 func _material_counts(counts: Dictionary) -> String:
@@ -1559,6 +1570,7 @@ func _process(_delta: float) -> void:
 		_pending_retain_generated = false
 		_pending_water_comparison = ""
 		_pending_staged_liquid_selection.clear()
+		_pending_material_demo = ""
 		_pending_pilot_id = -1
 		_pending_actor_workshop = false
 		_actor_action = ""

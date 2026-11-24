@@ -106,16 +106,24 @@ persistence boundary and the future persistent-area seam.
 
 The Current scene tab offers four small scene recipes. **Load demo…** explicitly
 replaces the current authored scene after explaining that operation. It is
-separate from live Apply. The recipes preserve the selected Water policy and
+separate from live Apply. The recipes preserve the applied liquid solver policy and
 contain ordinary finite construction/material stamps, no private fixture owner.
 Save work you want to retain before replacing a scene.
 
 | Scene | Experiment |
 | --- | --- |
-| Density sorter, 512² | Sand and Salt doses over separate Water basins, sloped hoppers, cavities and shelves. Compare Sand density 500, 1600 and 2400; repaint a dose to observe a new contact in the continuing scene. |
-| Brine flow channels, 512² | Three finite reservoirs, restricted outlets and stepped channels. Compare admitted Brine viscosity 0, 96 and 240. All Brine cells share the scene profile; the three bays do not have independent hidden parameters. |
-| Salt contact gallery, 512² | Salt/Water trays plus an isolated Salt/Ice pocket. Inspect each slot's actual roles/products before adjusting its inclusive threshold. Declared rule readback is distinct from observed contact and executed native chemistry. |
-| Industrial settling works, 1024×512 | Sand classification, a Brine raceway and Salt/Water processing among Metal supports, glass and a timber service deck. Paint, erase a gate, run the scene and refine the same profile. |
+| Density sorter, 512² | Sand on the left and lighter Dust on the right over independent Oil basins, with sloped hoppers, cavities and shelves. Sand 500 is below Oil's declared 800; 1600 and 2400 are both above it and share the same exchange eligibility. Dust remains an unchanged control. Repaint a dose to observe a new contact in the continuing scene. |
+| Brine flow channels, 512² | Three finite reservoirs feed covered horizontal throats and stepped channels. Compare lateral advance: viscosity affects sideways yield, while gravity remains unchanged. Compare 0, 96 and 240 when the current World uses Brine's generic consumer; an inertial Brine assignment is refused. All Brine cells share the scene profile; the three bays do not have independent hidden parameters. |
+| Salt contact gallery, 512² | Salt/Water trays plus an isolated Salt/Ice pocket. Inspect each slot's actual roles/products before adjusting its inclusive threshold. Active Salt can initiate the admitted Water contact even when Wave Water cannot. Declared rule readback is distinct from observed contact and executed native chemistry. |
+| Industrial settling works, 1024×512 | Sand/Oil classification, a Brine raceway and Salt/Water processing among Metal supports, glass and a timber service deck. Paint, erase a gate, run the scene and refine the same profile. |
+
+Generic viscosity controls the native lateral movement gate. At high settings,
+existing activity cooling can let the material rest after failed movement
+attempts. A changed configuration wakes affected resident blocks; a new contact
+or ordinary edit can also wake resting material. These controls do not introduce
+continuous-fluid viscosity or change the scheduling policy. The horizontal
+throats expose lateral advance directly, without treating gravity-driven outlet
+flow as a viscosity measurement.
 
 Source: [audition view](../../godot/scripts/material_lab_audition_panel.gd),
 [profile envelope](../../godot/scripts/material_audition_profile.gd), and
@@ -552,6 +560,20 @@ separate controls and evidence.
 - Select neighbouring native preview cells with left/right clicks, inspect a
   supplied roll, swap source/target and advance one step; the old contact report
   must retire and unobserved scheduling facts must remain labelled.
+- In an ordinary Workbench, open **Current scene** and load the density sorter.
+  Confirm the acknowledged scene opens in Overview. Apply Sand500, run until
+  the grains reach Oil, then apply1600 without replacing the World. Confirm
+  its identity stays the same and the active value changes; Revert must not
+  move already settled grains back to their initial positions.
+- In the Brine channels, compare lateral advance through the covered throats
+  at0,96 and240. If the high setting rests, apply0 to wake the existing Brine;
+  do not interpret the result as a new continuous-fluid solver.
+- Save a named current-scene profile, reset, load it as a draft and deliberately
+  Apply. Reopen a saved authored start separately: it must have a new World and
+  accepted defaults until the profile is explicitly loaded and applied again.
+- Retire a host or inspect an expired transaction receipt while applying.
+  An unobserved outcome must not be described as a definite refusal, successful
+  cancellation or configuration reversal.
 
 ## Qualification and remaining gates
 
@@ -568,11 +590,26 @@ effects-v2 World view, native receipt and source/library/display manifest.
 Commands and outcomes are retained in the
 [audit](../audits/2026-11-11-materials-lab-v1.md).
 
-The bounded #353-B hard/granular capability consumer is isolated in
+Current-scene schema and view-state regressions are
+`test_material_audition_profile.gd`, `test_material_audition_ui_contract.gd` and
+`test_material_audition_layout.gd`. The latter two use explicit fake owners and
+provide no native activation evidence. The separate
+`test_material_audition.gd` exercises actual native consumers and the ordinary
+mounted Workbench/Lab owner. `test_material_audition_authored_scenes.gd` executes
+the finite demonstration recipes in isolated native Worlds with explicit
+full-canvas observers, records material readback at180 and360 ticks, and checks
+default equivalence, density thresholds, lateral yielding, same-World wake and
+configuration Revert, reaction products with Wave on/off, and the mixed
+industrial apparatus. Set `MAT_AUDITION_DEMO_EVIDENCE_DIR` to retain its JSON
+readback and observed runtime-file/recipe identities. These recipe witnesses
+complement graphical current-scene qualification; they do not substitute for it.
+
+The accepted bounded #353-B hard/granular capability consumer is documented in
 [PR #563](https://github.com/techrote/cybersand/pull/563). Its generated maps feed
 the native hard-surface and granular-support predicates. The Lab continues to
 execute authored candidates in isolated tests. Wider endpoint and quantity semantics require additional native
 contracts. The owner explicitly excluded MoltenGlass H1 from this continuation;
 it is not a Materials Lab delivery dependency. Historical liveness evidence is
-preserved. No production thermal law, native identity or saved-World semantics
-change in this Lab implementation.
+preserved. The accepted Lab v1 did not change production thermal laws, native
+identity or saved-World semantics. The current-scene profile retention and
+physical-save boundaries are explicitly documented above.

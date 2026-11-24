@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Current-scene material audition — 2026-11-24
+
+**Draft/HOLD candidate, PR #768:** the [scene-local contract](../systems/material-audition.md)
+extends the accepted Materials Lab with native-owner profile transactions for
+directional cell density exchange, applicable generic viscosity and eligible
+existing reaction thresholds. The [consumer map](../systems/material-audition-consumers.md)
+separates active solver applicability from descriptor metadata. Named profiles
+remain separate from authored scene saves; Apply does not replace the World.
+Exact-source native, graphical and target-OS evaluator evidence is recorded
+separately from physical owner acceptance and combined-engine reconciliation.
+
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
 The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)

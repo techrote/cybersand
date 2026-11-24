@@ -77,6 +77,7 @@ func run() -> void:
 	panel._controls[density_key].get_line_edit().text_changed.emit("-1")
 	var prior_requests := owner.requests
 	expect(not panel.apply_draft().get("ok",true) and owner.requests==prior_requests,"out-of-range typed input refuses before native submission")
+	expect(not panel.select_material(24) and panel.selected_id==2,"invalid current-scene input explicitly refuses a material selection change")
 	panel.use_active_as_draft()
 	panel._controls[density_key].value = 400
 	owner.completion.clear()
@@ -101,6 +102,32 @@ func run() -> void:
 	panel._complete(owner.completion)
 	expect(panel._pending.is_empty(),"matching terminal receipt completes the request")
 	owner.completion.clear()
+	panel._controls[density_key].value = 650
+	panel.apply_draft()
+	owner.activate()
+	panel._complete({"ok":false,"accepted":true,"status":"active_readback_failed","request_id":owner.request_id,"error":"Receipt allocation failed after commit"})
+	expect(panel._pending.is_empty() and int(panel.active_state.profile.materials[0].density)==650,"post-commit receipt failure recovers actual active values through authoritative refresh")
+	expect(panel._status.text.contains("activated") and panel._status.text.contains("initial readback failed") and not panel._status.text.contains("refused"),"post-commit readback failure never reports a refused activation")
+	expect(panel._draft_binding.expected_revision==owner.state.revision and not panel._buttons.revert.disabled,"recovered activation restores revision binding and previous configuration")
+	owner.completion.clear()
+	panel._controls[density_key].value = 750
+	panel.apply_draft()
+	# The owner declares a commit, but its first readback is the old cached state.
+	panel._complete({"ok":false,"status":"active_readback_failed","request_id":owner.request_id,"error":"Effective state unavailable after commit"})
+	expect(panel._pending.is_empty() and not panel.active_state.get("ok",false) and panel._buttons.apply.disabled,"unrecovered post-commit readback does not publish stale effective values or enable another Apply")
+	expect(panel._status.text.contains("activated") and not panel._status.text.contains("refused"),"status-only post-commit receipt preserves truthful activation feedback")
+	owner.activate()
+	panel.refresh_scene()
+	expect(panel.active_state.profile.materials[0].density==750 and panel._buttons.apply.disabled,"later native recovery shows actual values while retaining explicit stale-draft rebase")
+	owner.completion.clear()
+	panel.use_active_as_draft()
+	panel._controls[density_key].value = 850
+	panel.apply_draft()
+	owner.activate()
+	panel._complete({"ok":false,"status":"unavailable","code":"unknown_request","request_id":owner.request_id,"error":"Expired receipt"})
+	expect(panel.active_state.profile.materials[0].density==850 and panel._previous_profile.is_empty(),"expired transaction receipt refreshes actual active values and retires uncorrelated revert history")
+	expect(panel._status.text.contains("outcome unavailable") and not panel._status.text.contains("refused"),"unknown outcome never claims refusal of an already committed configuration")
+	owner.completion.clear()
 	owner.state.world_id = "replacement-world"
 	owner.state.revision = 0
 	owner.state.profile = Profiles.defaults()
@@ -124,6 +151,7 @@ func run() -> void:
 	owner = null
 	panel._process(1.0)
 	expect(panel._pending.is_empty() and not panel.active_state.get("ok",false),"destroyed host terminates pending UI state without claiming cancellation or activation")
+	expect(panel._status.text.contains("outcome unavailable") and not panel._status.text.contains("refused"),"host retirement reports the unobserved outcome rather than inventing a pre-commit refusal")
 	panel.queue_free()
 	await process_frame
 	print("MAT_AUDITION_UI_CONTRACT: %d checks, %d failures; fake-owner state machine only" % [checks,failures])

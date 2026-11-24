@@ -20,8 +20,6 @@ import subprocess
 import sys
 import time
 
-import native_candidate_identity
-
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = "material-audition-candidate.json"
 VERSION = "4.7.stable.official.5b4e0cb0f"
@@ -29,11 +27,28 @@ RUNTIMES = {
     "linux": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
     "windows": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
 }
-SOURCE_DIRS = ("native/include", "native/src", "godot/native_extension", "godot/scripts", "godot/tests")
-SOURCE_TOOLS = ("tools/ci/run_material_audition_qualification.py", "tools/package_material_audition_candidate.py")
+# Scene loaders, extension declarations, shaders and every tracked execution
+# resource matter just as much as scripts. Bind the custody/package helpers too.
+# Runtime libraries are separately verified as executed artifacts/dependencies;
+# their platform-specific LFS materialization must not alter source identity.
+SOURCE_DIRS = ("native/include", "native/src", "godot", "tools", "examples/worldgen")
+SOURCE_EXCLUDES = (":(exclude,glob)godot/addons/**/bin/**",
+                   ":(exclude)godot/addons/cybersand_native/runtime-provenance.json",
+                   ":(exclude)godot/addons/cybersand_native/retained-runtime-provenance.reference.json")
+TEXT_SUFFIXES = {".gd", ".gdshader", ".gdshaderinc", ".godot", ".tscn", ".tres", ".gdextension", ".cfg",
+                 ".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".inc", ".inl", ".tpp",
+                 ".py", ".json", ".yml", ".yaml", ".sh", ".ps1", ".bat", ".cmd", ".md", ".txt", ".svg",
+                 ".import", ".mjs", ".patch"}
+TEXT_FILENAMES = {".gdignore", "LICENSE", "g++"}
+NATIVE_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".inc", ".inl", ".tpp"}
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
 CASES = (
     ("test_material_audition", "MATERIAL_AUDITION_RESULT"),
+    ("test_material_audition_authored_scenes", "MAT_AUDITION_AUTHORED_RESULT"),
+    ("test_material_audition_profile", "MAT_AUDITION_PROFILE:"),
+    ("test_material_audition_ui_contract", "MAT_AUDITION_UI_CONTRACT:"),
+    ("test_material_audition_layout", "MAT_AUDITION_LAYOUT:"),
+    ("test_material_lab_ui", "MATERIAL_LAB_UI:"),
     ("test_material_lab_catalogue", "MATERIAL_LAB_CATALOGUE:"),
     ("test_material_lab_experiment", "MATERIAL_LAB_EXPERIMENT:"),
     ("test_material_lab_diagnostics", "MATERIAL_LAB_DIAGNOSTICS:"),
@@ -60,21 +75,42 @@ def require(condition: bool, message: str) -> None:
 
 
 def git(root: Path, *args: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(root), *args], timeout=120)
+    # A read-only custody check must not refresh a relocated .git/index. It
+    # also must not inherit a caller's alternate repository/index authority.
+    environment = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    environment.update(GIT_OPTIONAL_LOCKS="0", GIT_CONFIG_NOSYSTEM="1",
+                       GIT_CONFIG_GLOBAL=os.devnull, GIT_LFS_SKIP_SMUDGE="1")
+    return subprocess.check_output(["git", "-c", "diff.autoRefreshIndex=false", "-C", str(root), *args],
+                                   timeout=120, env=environment)
 
 
 def source_identity(root: Path) -> dict:
     """Require clean tracked implementation and retain its exact input bytes."""
-    commit, tree, native_inputs = native_candidate_identity.source(root)
-    git(root, "diff", "--exit-code", "HEAD", "--", *SOURCE_DIRS,
-        "godot/project.godot", "godot/materials_lab.tscn", "materials", "tools/material_catalogue", *SOURCE_TOOLS)
-    names = git(root, "ls-files", "-z", "--", *SOURCE_DIRS, "godot/project.godot",
-                "godot/materials_lab.tscn", "materials", "tools/material_catalogue",
-                *SOURCE_TOOLS).decode().split("\0")
+    commit = git(root,"rev-parse","HEAD").decode().strip()
+    tree = git(root,"rev-parse","HEAD^{tree}").decode().strip()
+    paths_to_check = (*SOURCE_DIRS, "materials", *SOURCE_EXCLUDES)
+    git(root, "diff", "--exit-code", "HEAD", "--", *paths_to_check)
+    names = git(root, "ls-files", "-z", "--", *paths_to_check).decode().split("\0")
     paths = [name for name in names if name and not name.endswith(".uid")]
-    inputs = {name: hashlib.sha256((root / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-              for name in sorted(paths)}
-    untracked = git(root, "ls-files", "--others", "--exclude-standard", "--", *SOURCE_DIRS).decode().splitlines()
+    inputs = {}
+    for name in sorted(paths):
+        content = (root / name).read_bytes()
+        if Path(name).suffix in TEXT_SUFFIXES or Path(name).name in TEXT_FILENAMES:
+            content = content.replace(b"\r\n", b"\n")
+        inputs[name] = hashlib.sha256(content).hexdigest()
+    native_inputs = {name: digest for name, digest in inputs.items()
+                     if name.startswith(("native/include/", "native/src/", "godot/native_extension/"))
+                     and Path(name).suffix in NATIVE_SUFFIXES}
+    require(bool(native_inputs),"Missing native candidate inputs")
+    # Godot's first editor import creates resource UID sidecars. Admit only the
+    # known generated suffixes with a tracked real companion; an orphan sidecar,
+    # arbitrary .uid file, untracked script or native input still refuses.
+    tracked = set(names)
+    def generated_uid(name: str) -> bool:
+        return name.endswith((".gd.uid", ".gdshader.uid", ".gdextension.uid")) and name[:-4] in tracked
+    untracked = [name for name in git(root, "ls-files", "--others", "--exclude-standard",
+                                    "--", *paths_to_check).decode().splitlines()
+                 if not generated_uid(name)]
     require(not untracked, "Untracked implementation cannot receive an exact-source receipt: " + ", ".join(untracked))
     return {"source_commit": commit, "source_tree": tree, "native_inputs": native_inputs,
             "execution_inputs": inputs}
@@ -188,6 +224,7 @@ def run_process(command: list[str], log: Path, environment: dict[str, str], time
 def execute(root: Path, candidate: Path, godot: Path, evidence: Path, *, graphical: bool = False,
             project: Path | None = None, inherited_environment: dict[str, str] | None = None,
             include_legacy: bool = True) -> dict:
+    root, candidate, evidence = root.resolve(), candidate.resolve(), evidence.resolve()
     target = "windows" if os.name == "nt" else "linux"
     manifest = verify(root, candidate, target)
     require(not evidence.exists(), "Execution evidence is immutable; choose a new directory")
@@ -202,7 +239,8 @@ def execute(root: Path, candidate: Path, godot: Path, evidence: Path, *, graphic
     environment = dict(inherited_environment or os.environ)
     environment.update(APPDATA=str(evidence / "userdata"), XDG_DATA_HOME=str(evidence / "userdata"),
                        CYBERSAND_SOURCE_REVISION=manifest["source_commit"],
-                       MAT_AUDITION_EVIDENCE_DIR=str(evidence / "frames"))
+                       MAT_AUDITION_EVIDENCE_DIR=str(evidence / "frames"),
+                       MAT_AUDITION_DEMO_EVIDENCE_DIR=str(evidence / "authored-scenes"))
     for key in ("MATERIAL_LAB_CACHED_ONLY", "MATERIAL_LAB_SKIP_COMPILE"):
         environment.pop(key, None)
     report = {"schema": "cybersand.material-audition.execution", "schema_version": 1,
@@ -224,6 +262,11 @@ def execute(root: Path, candidate: Path, godot: Path, evidence: Path, *, graphic
             else:
                 args += ["--headless"]
             args += ["--script", "res://tests/" + name + ".gd"]
+            if name == "test_material_lab_ui":
+                # The existing ordinary Workbench mount is the regression
+                # target here. The portable evaluator additionally runs this
+                # script's full isolated-authoring path using bundled tools.
+                args += ["--", "--workbench-mount-only"]
             report["cases"].append({"name": name, **run_process(
                 args, evidence / (name + ".log"), environment, 1200, marker)})
             write(evidence / "execution.json", report)

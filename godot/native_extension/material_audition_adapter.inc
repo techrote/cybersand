@@ -215,7 +215,10 @@ Dictionary CyberNativeCellWorld::get_material_audition_state() const try {
     return material_audition_wire::refused("Material readback failed.","readback_failed");
 }
 
-Dictionary CyberNativeCellWorld::apply_material_audition(const Dictionary& request) try {
+Dictionary CyberNativeCellWorld::apply_material_audition(const Dictionary& request) {
+    bool activated = false;
+    std::uint64_t activated_world = 0, activated_revision = 0;
+    try {
     using namespace material_audition_wire;
     if (!world_) return refused("Native World unavailable.","world_unavailable");
     if (request.size() != 3 || !keys(request,{"world_id","expected_revision","profile"}))
@@ -228,8 +231,15 @@ Dictionary CyberNativeCellWorld::apply_material_audition(const Dictionary& reque
     if (request.get("profile",Variant()).get_type() != Variant::DICTIONARY) return refused("Profile must be an object.");
     cybersand::MaterialAuditionProfile profile;
     if (const String error = decode_profile(request["profile"],profile); !error.is_empty()) return refused(error);
+    // Prepare the successful profile copy before publication. If a later
+    // receipt allocation nevertheless fails, distinguish committed state from
+    // admission refusal; the worker then obtains authoritative fresh readback.
+    const Dictionary proposed_profile = encode_profile(profile);
     const auto before_tick = world_->completed_tick_index();
     const auto result = world_->apply_material_audition(world_id,static_cast<std::uint64_t>(static_cast<int64_t>(revision)),profile);
+    activated = result.applied();
+    activated_world = result.world_id;
+    activated_revision = result.revision;
     Dictionary out;
     out["ok"] = result.applied(); out["accepted"] = result.applied();
     out["status"] = result.applied() ? "active" : "refused";
@@ -244,10 +254,18 @@ Dictionary CyberNativeCellWorld::apply_material_audition(const Dictionary& reque
     out["scanned_cells"] = static_cast<int64_t>(result.scanned_cells);
     out["tick_before"] = static_cast<int64_t>(before_tick);
     out["tick_after"] = static_cast<int64_t>(world_->completed_tick_index());
-    out["profile"] = encode_profile(world_->material_audition_profile());
+    out["profile"] = activated ? proposed_profile : encode_profile(world_->material_audition_profile());
     return out;
-} catch (const std::exception& error) {
-    return material_audition_wire::refused(String("Material admission failed: ")+error.what(),"admission_failed");
-} catch (...) {
-    return material_audition_wire::refused("Material admission failed.","admission_failed");
+    } catch (...) {
+        auto out = material_audition_wire::refused(activated
+            ? "Native configuration activated, but receipt construction failed. Refresh active values before further changes."
+            : "Material admission failed before activation.",
+            activated ? "active_readback_failed" : "admission_failed");
+        if (activated) {
+            out["accepted"] = true; out["status"] = "active_readback_failed";
+            out["world_id"] = String::num_uint64(activated_world);
+            out["revision"] = static_cast<int64_t>(activated_revision);
+        }
+        return out;
+    }
 }

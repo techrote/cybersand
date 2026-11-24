@@ -229,32 +229,42 @@ void density_actual_consumer_reversion_and_world_isolation() {
     }
 }
 
-std::uint64_t viscosity_moves(std::int32_t viscosity, std::uint32_t workers) {
+std::uint64_t viscosity_moves(std::int32_t viscosity, std::uint32_t workers,
+                              Material material = Material::Paste) {
     WorldConfig config; config.worker_threads = workers; config.parallel_job_threshold = 1;
     World world(config);
     for (int bay = 0; bay < 96; ++bay) {
         const int x = (bay % 16) * 6, y = (bay / 16) * 8;
         for (int dx = 0; dx <= 4; ++dx) { world.set(x + dx, y, Material::Wall); world.set(x + dx, y + 2, Material::Wall); }
         world.set(x, y + 1, Material::Wall); world.set(x + 4, y + 1, Material::Wall);
-        world.set(x + 2, y + 1, Material::Paste);
+        world.set(x + 2, y + 1, material);
     }
-    MaterialAuditionProfile profile; profile.profile_id = "viscosity-trial"; profile.viscosity[20] = viscosity;
+    MaterialAuditionProfile profile; profile.profile_id = "viscosity-trial";
+    profile.viscosity[static_cast<std::size_t>(material)] = viscosity;
     apply(world, profile);
     const auto identity = world.material_audition_world_id();
     (void)world.tick();
     std::uint64_t moved = 0;
     for (int bay = 0; bay < 96; ++bay)
-        moved += world.stored_material((bay % 16) * 6 + 2, (bay / 16) * 8 + 1) != Material::Paste;
+        moved += world.stored_material((bay % 16) * 6 + 2, (bay / 16) * 8 + 1) != material;
     require(world.material_audition_world_id() == identity && world.completed_tick_index() == 1,
         "viscosity trial replaced/reset native World");
     return moved;
 }
 
 void viscosity_actual_consumer_and_diagnostic_ownership() {
-    const auto fast = viscosity_moves(0, 1), medium = viscosity_moves(128, 1), slow = viscosity_moves(255, 1);
-    require(fast > medium && medium > slow, "three viscosities did not alter actual native lateral motion");
-    require(viscosity_moves(0, 4) == fast && viscosity_moves(128, 4) == medium && viscosity_moves(255, 4) == slow,
-        "viscosity outcomes changed with worker configuration");
+    for (const auto material : {Material::Paste, Material::Slush, Material::Brine, Material::Cement,
+                               Material::ToxicSludge, Material::Mercury, Material::MoltenGlass}) {
+        const auto fast = viscosity_moves(0, 1, material);
+        const auto medium = viscosity_moves(128, 1, material);
+        const auto slow = viscosity_moves(255, 1, material);
+        require(fast > medium && medium > slow, "three viscosities did not alter an admitted family's native lateral motion");
+        require(viscosity_moves(0, 4, material) == fast && viscosity_moves(128, 4, material) == medium &&
+                viscosity_moves(255, 4, material) == slow, "viscosity outcomes changed with worker configuration");
+        std::cout << "{\"experiment\":\"viscosity\",\"material_id\":" << static_cast<unsigned>(material)
+                  << ",\"bays\":96,\"ticks\":1,\"moves_nu0\":" << fast
+                  << ",\"moves_nu128\":" << medium << ",\"moves_nu255\":" << slow << "}\n";
+    }
     WorldConfig config; config.physics_diagnostics.mercury_viscosity = 224;
     World diagnostic(config);
     require(!diagnostic.material_audition_viscosity_available(Material::Mercury) &&
@@ -263,8 +273,6 @@ void viscosity_actual_consumer_and_diagnostic_ownership() {
     MaterialAuditionProfile profile; profile.viscosity[33] = 224;
     require(diagnostic.apply_material_audition(diagnostic.material_audition_world_id(), 0, profile).outcome ==
                 MaterialAuditionOutcome::UnsupportedProperty, "profile bypassed diagnostic ownership");
-    std::cout << "{\"experiment\":\"viscosity\",\"bays\":96,\"ticks\":1,\"moves_nu0\":" << fast
-              << ",\"moves_nu128\":" << medium << ",\"moves_nu255\":" << slow << "}\n";
 }
 
 void solver_specific_consumer_admission() {
@@ -337,6 +345,68 @@ void reaction_actual_execution_thresholds_and_worker_parity() {
         "reaction execution changed with worker configuration");
     std::cout << "{\"experiment\":\"water-salt\",\"bays\":96,\"ticks\":4,\"events_t0\":" << low
               << ",\"events_t63\":" << medium << ",\"events_t255\":" << high << "}\n";
+}
+
+std::uint64_t authored_pair_events(std::size_t slot, std::int32_t threshold, bool reversed) {
+    World world;
+    const auto& rule = kPairInteractionRules[slot];
+    for (int bay = 0; bay < 32; ++bay) {
+        const int x = (bay % 8) * 6, y = (bay / 8) * 8;
+        for (int dx = 0; dx < 4; ++dx) for (int dy = 0; dy < 3; ++dy)
+            world.set(x + dx, y + dy, Material::Wall);
+        world.set(x + 1, y + 1, reversed ? rule.second : rule.first);
+        world.set(x + 2, y + 1, reversed ? rule.first : rule.second);
+    }
+    MaterialAuditionProfile profile;
+    profile.profile_id = "authored-pair-contact";
+    profile.probability_threshold[slot] = threshold;
+    apply(world, profile);
+    for (int tick = 0; tick < 4; ++tick) (void)world.tick();
+    // Products may already execute a later lifecycle kernel. The ledger is an
+    // actual compact-pair execution witness; the role resolver is checked below.
+    return world.quantity_ledger().pair_events[slot];
+}
+
+void every_authored_reaction_threshold_role_and_execution() {
+    World queries;
+    for (std::size_t slot = 0; slot < kPairInteractionRules.size(); ++slot) {
+        const auto& rule = kPairInteractionRules[slot];
+        require(queries.material_audition_probability_available(slot), "default World lost an authored pair consumer");
+        for (const auto threshold : {0, 31, 255}) {
+            MaterialAuditionProfile profile;
+            profile.profile_id = "authored-role-query";
+            profile.probability_threshold[slot] = threshold;
+            apply(queries, profile);
+            for (const auto reversed : {false, true}) {
+                const auto source = reversed ? rule.second : rule.first;
+                const auto target = reversed ? rule.first : rule.second;
+                const auto authored = MaterialRules::pair_reaction(source, target, 0);
+                require(authored && authored->rule_index == slot, "fixture does not select the expected authored pair");
+                require(authored->source_product == (reversed ? rule.second_product : rule.first_product) &&
+                        authored->target_product == (reversed ? rule.first_product : rule.second_product),
+                    "authored resolver lost endpoint product roles");
+                for (unsigned roll = 0; roll < 256; ++roll) {
+                    const auto observed = PrecisionProbe::reaction(queries, source, target, static_cast<std::uint8_t>(roll));
+                    require(observed.has_value() == (roll <= static_cast<unsigned>(threshold)),
+                        "profile threshold failed the inclusive native probability contract");
+                    if (observed)
+                        require(observed->rule_index == slot && observed->source_product == authored->source_product &&
+                                observed->target_product == authored->target_product,
+                            "profile changed a reaction identity or endpoint product role");
+                }
+            }
+        }
+        std::array<std::uint64_t, 2> low{}, high{};
+        for (std::size_t orientation = 0; orientation < 2; ++orientation) {
+            low[orientation] = authored_pair_events(slot, 0, orientation != 0);
+            high[orientation] = authored_pair_events(slot, 255, orientation != 0);
+            require(high[orientation] > low[orientation] && high[orientation] <= 32,
+                "authored threshold did not reach an actual native contact consumer");
+        }
+        std::cout << "{\"experiment\":\"authored-pair-contact\",\"slot\":" << slot
+                  << ",\"bays\":32,\"ticks\":4,\"events_t0\":[" << low[0] << ',' << low[1]
+                  << "],\"events_t255\":[" << high[0] << ',' << high[1] << "]}\n";
+    }
 }
 
 void exhaustive_default_and_unrelated_consumer_parity() {
@@ -418,6 +488,7 @@ int main() {
         viscosity_actual_consumer_and_diagnostic_ownership();
         solver_specific_consumer_admission();
         reaction_actual_execution_thresholds_and_worker_parity();
+        every_authored_reaction_threshold_role_and_execution();
         exhaustive_default_and_unrelated_consumer_parity();
         physical_hash_and_persistence_scope();
         bounded_transition_refuses_before_publication();

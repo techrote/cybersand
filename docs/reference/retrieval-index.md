@@ -47,6 +47,7 @@ For the combined #562 Materials Lab / #564 Workbench candidate, original source 
 
 | Question | Canonical route |
 |---|---|
+| How do I audition material properties in the current Workbench World, revert configuration and save a named profile? | [Scene-local contract](../systems/material-audition.md), [actual consumer map](../systems/material-audition-consumers.md) |
 | How do I open the real Materials Lab and inspect declared versus effective native physics? | [Desktop launch and native inspection](../operations/materials-lab-authoring.md#browse-and-inspect-actual-behaviour) |
 | Which properties and reaction effects can I edit, and does compiled mean runtime-active? | [Candidate boundaries and states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions) |
 | How do presets round-trip, synthetic powder132 compile, and threshold0 reactions behave? | [Preset compilation](../operations/materials-lab-authoring.md#save-import-compile-and-compare), [reaction diagnostics](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |

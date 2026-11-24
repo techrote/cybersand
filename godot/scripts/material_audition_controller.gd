@@ -35,7 +35,7 @@ func request_material_audition(request: Dictionary) -> Dictionary:
 
 func poll_material_audition(request_id: String) -> Dictionary:
 	var worker: Variant = _worker()
-	if worker == null: return {"ok":false,"status":"refused","request_id":request_id,"error":"The Workbench host session has retired."}
+	if worker == null: return {"ok":false,"status":"unavailable","code":"host_retired","request_id":request_id,"error":"The Workbench host session has retired; the transaction outcome is unavailable."}
 	var receipt: Dictionary = worker.material_audition_poll(request_id)
 	if receipt.has("state"):
 		receipt.state["source_identity"] = _source_identity
@@ -43,7 +43,7 @@ func poll_material_audition(request_id: String) -> Dictionary:
 
 func cancel_material_audition(request_id: String) -> Dictionary:
 	var worker: Variant = _worker()
-	if worker == null: return {"ok":false,"status":"refused","request_id":request_id,"error":"The Workbench host session has retired."}
+	if worker == null: return {"ok":false,"status":"unavailable","code":"host_retired","request_id":request_id,"error":"The Workbench host session has retired; the transaction outcome is unavailable."}
 	var receipt: Dictionary = worker.material_audition_cancel(request_id)
 	if receipt.has("state"):
 		receipt.state["source_identity"] = _source_identity
