@@ -225,6 +225,32 @@ actual ZIP, extracted command launcher, native readiness/teardown, immutable
 hashes and module paths. Its packaged source-scope receipt identifies both source
 revisions and states that reuse proof alone does not establish package acceptance.
 
+## Installed package integrity boundary
+
+[Run 45493176632](https://github.com/techrote/cybersand/actions/runs/45493176632)
+verified the complete source/evidence reuse proof for `2eedd8f3`, built the fresh
+Windows ZIP and launched its actual extracted command file. Native Workbench
+readiness and orderly teardown were observed with exit zero and no automatic
+model request. Final immutable-file verification then refused
+`godot/addons/godot-rapier2d/Radial2D.svg.import`; the module gate was not reached,
+so that package remains unqualified.
+
+Windows-style Git archive export reproducibly turns the committed LF vendor import
+descriptors into CRLF text. The failed installation did not retain its rewritten
+descriptor bytes; an interrupted minimal local import also establishes no completed
+transformation result. The narrow packaging correction exports those descriptors
+as committed LF, retaining every setting and the complete post-launch hash check.
+The next installed run retains their exact before/after bytes to establish import
+stability. Explicit file-specific line-ending attributes remain in effect. Archive
+export also leaves LFS pointers intact so only the selected, size/hash-verified
+Windows libraries are materialized. This does not establish the specific rejected
+path in the earlier `981a7408` source-guard failure.
+
+The actual installed software-rendered Windows run recorded readiness at 52.238
+seconds, a 47.602-second startup frame, 168.370 ms maximum visible-idle frame and
+394.253 ms teardown. Startup and owner-hardware behavior remain explicit limits;
+the completed two-second matrix gates concern post-startup interaction cases.
+
 ## Ordinary desktop observation
 
 The [Linux desktop receipt](linux-desktop-observation.json) records actual mouse

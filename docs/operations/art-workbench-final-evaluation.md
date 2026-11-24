@@ -26,6 +26,9 @@ compiler or model server is needed for ordinary Art evaluation.
 
 The first launch imports the project. It then opens the normal interactive
 Workbench and Art window, with Image off for the primary text-only reproduction.
+Let the initial import and World setup finish before checking Send/X. The hosted
+Windows software-rendering run took about 52 seconds to create the Workbench after
+import; that cold-start cost is recorded separately from interaction timings.
 Its profile is stored in this package's `profile` folder; existing installations
 and historical user data are not read or changed. No request is sent automatically.
 Model identifiers and endpoints remain editable. A preset says nothing about

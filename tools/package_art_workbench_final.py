@@ -60,6 +60,17 @@ def qualification_source(path: Path | None, source: str, tree: str) -> dict | No
     return validate_completed_decision(proof, source, tree)
 
 
+def archive_source(inputs: list[str]) -> bytes:
+    # Git archive honors checkout EOL settings. Windows CRLF export changes
+    # committed .import descriptors; export canonical LF before first launch.
+    # Keep unspecified text LF; explicit .gitattributes rules still apply.
+    # Leave LFS pointers for the hash-checked Windows materialization below.
+    return subprocess.check_output(
+        ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf",
+         "archive", "HEAD", "--", *inputs], cwd=ROOT,
+        env=dict(os.environ, GIT_LFS_SKIP_SMUDGE="1"), timeout=120)
+
+
 def build(args: argparse.Namespace) -> dict:
     if os.name != "nt":
         raise ValueError("Build and qualify this Windows evaluator on Windows")
@@ -90,7 +101,7 @@ def build(args: argparse.Namespace) -> dict:
     for name, expected in expected_notices.items():
         if sha(args.engine_notices / name) != expected:
             raise ValueError("Godot notice mismatch: " + name)
-    archive = subprocess.check_output(["git", "archive", "HEAD", "--", *inputs], cwd=ROOT, timeout=120)
+    archive = archive_source(inputs)
     output.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(archive)) as source_archive:
         for entry in source_archive:
@@ -169,9 +180,41 @@ def verify(package: Path) -> dict:
     return identity
 
 
+def import_descriptor_snapshot(package: Path, identity: dict) -> dict:
+    """Retain exact public source metadata, including newlines, around import."""
+    result = {}
+    source_root = package.resolve() / "godot"
+    for relative in sorted(identity["files_sha256"]):
+        if not relative.startswith("godot/") or not relative.endswith(".import"):
+            continue
+        if ("\\" in relative or ":" in relative or
+                any(part in ("", ".", "..") for part in relative.split("/")) or
+                source_root.resolve() != source_root):
+            raise ValueError("Invalid import descriptor path: " + relative)
+        path = (package / relative).resolve()
+        if not path.is_relative_to(source_root):
+            raise ValueError("Invalid import descriptor path: " + relative)
+        if not path.is_file():
+            result[relative] = {"missing": True}
+            continue
+        size = path.stat().st_size
+        if size > 65536:
+            result[relative] = {"bytes": size, "content_omitted": "oversized import descriptor"}
+            continue
+        data = path.read_bytes()
+        record = {"bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+        try:
+            record["utf8"] = data.decode("utf-8")
+        except UnicodeDecodeError:
+            record["content_omitted"] = "non-UTF8 import descriptor"
+        result[relative] = record
+    return result
+
+
 def smoke(args: argparse.Namespace) -> None:
     identity = verify(args.output)
     args.evidence.mkdir(parents=True, exist_ok=True)
+    imports_before = import_descriptor_snapshot(args.output, identity)
     env = dict(os.environ, WB_ART_EVALUATOR_SMOKE_SECONDS="5", WB_ART_EVALUATOR_SOFTWARE="1")
     log = args.evidence / "installed-launcher.log"
     timed_out = False
@@ -190,6 +233,9 @@ def smoke(args: argparse.Namespace) -> None:
                                stdout=stream, stderr=subprocess.STDOUT, timeout=30, check=False)
                 process.wait(timeout=30)
     finally:
+        (args.evidence / "installed-import-descriptors.json").write_text(json.dumps({
+            "source_commit": identity["source_commit"], "before": imports_before,
+            "after": import_descriptor_snapshot(args.output, identity)}, indent=2) + "\n", encoding="utf-8")
         for name in ("import.log", "workbench.log", "art-responsiveness.json"):
             source = args.output / "diagnostics" / name
             if source.is_file(): shutil.copyfile(source, args.evidence / name)
