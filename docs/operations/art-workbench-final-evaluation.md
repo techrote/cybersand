@@ -46,6 +46,15 @@ The source commit, source tree and hashes of every immutable delivered file are
 in `candidate-manifest.json`. Native runtime source identity is recorded
 separately; this is a script/UI change and does not rebuild the engine.
 
+`APPLICATION-QUALIFICATION.json` records the source comparison and application
+evidence basis. Packaging-only follow-ups may reuse a fixed completed application
+run only after the full change allowlist, protected source trees, prior job steps,
+artifact digests and all matrix receipts verify. The packaging commit/tree is
+recorded separately from that application-tested source. Each evaluator still
+requires a fresh committed packaging checkout, the actual extracted command
+launcher, immutable-file verification and complementary loaded-module checks.
+The source comparison alone does not establish package acceptance.
+
 ## Short owner checklist
 
 1. Completely stop LM Studio. Confirm there is no listener on the configured

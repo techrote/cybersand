@@ -33,6 +33,8 @@ on:
       - 'tools/ci/run_art_workbench_final.py'
       - 'tools/package_art_workbench_final.py'
       - 'tools/ci/test_art_evaluator_packaging.py'
+      - 'tools/ci/art_evaluator_qualification_scope.py'
+      - 'tools/ci/test_art_evaluator_qualification_scope.py'
       - 'tools/package_explore001_candidate.py'
       - 'tools/ci/check_repository.py'
       - 'tools/ci/check_windows_package_modules.ps1'
@@ -49,12 +51,49 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: art-session-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  qualification-scope:
+    name: Verify application qualification source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      reuse: ${{ steps.scope.outputs.reuse }}
+    steps:
+      - name: Checkout exact source and qualification ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Test application evidence boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tools/ci/test_art_evaluator_qualification_scope.py > evidence/application-qualification-tests.log 2>&1
+      - name: Prove reuse or require full application qualification
+        id: scope
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/art_evaluator_qualification_scope.py --output evidence/application-qualification-reuse.json
+      - name: Retain application qualification decision
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: art-workbench-qualification-scope-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/
+          if-no-files-found: error
   linux:
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.reuse != 'true'
     name: Linux 4.7 native and displayed Art Workbench
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -158,6 +197,7 @@ jobs:
           path: evidence/
           if-no-files-found: warn
   windows:
+    needs: qualification-scope
     name: Windows 4.7 displayed Art and installed evaluator
     runs-on: windows-2022
     # Software ANGLE advances nonblocking 64 KiB reads with displayed frames.
@@ -187,6 +227,7 @@ jobs:
           Expand-Archive -Path $zip -DestinationPath (Join-Path $env:RUNNER_TEMP 'godot-win47')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot-win47/Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
       - name: Import and execute fresh user-data Workbench tests
+        if: needs.qualification-scope.outputs.reuse != 'true'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
@@ -269,8 +310,34 @@ jobs:
             }
           }
           if ($displayedFailures.Count -gt 0) { throw ('Displayed qualification failures: ' + ($displayedFailures -join '; ')) }
+      - name: Download verified application qualification decision
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: art-workbench-qualification-scope-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/qualification-scope
+      - name: Checkout fresh committed packaging inputs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: packaging-source
+          fetch-depth: 0
+      - name: Materialize and check fresh packaging inputs
+        shell: pwsh
+        working-directory: packaging-source
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh packaging LFS materialization failed' }
+          $evidenceRoot = Join-Path $env:GITHUB_WORKSPACE 'evidence'
+          New-Item -ItemType Directory -Force $evidenceRoot | Out-Null
+          python tools/ci/test_art_evaluator_packaging.py *> (Join-Path $evidenceRoot 'fresh-evaluator-packaging-tests.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh evaluator package boundary regression failed' }
+          git status --porcelain=v1 --untracked-files=all -- godot tools examples/worldgen third_party > (Join-Path $evidenceRoot 'fresh-packaging-input-status.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh packaging source status failed' }
       - name: Package exact source with retained Windows runtime
         shell: pwsh
+        working-directory: packaging-source
         run: |
           $notices = Join-Path $env:RUNNER_TEMP 'art-godot-notices'
           New-Item -ItemType Directory -Force $notices | Out-Null
@@ -287,27 +354,30 @@ jobs:
           $vcRuntime = Join-Path $env:RUNNER_TEMP 'art-vc-runtime'
           ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
-          python tools/package_art_workbench_final.py build --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --output build/art-workbench-final-windows
+          $qualification = Join-Path $env:GITHUB_WORKSPACE 'evidence/qualification-scope/application-qualification-reuse.json'
+          python tools/package_art_workbench_final.py build --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --qualification-source $qualification --output build/art-workbench-final-windows
           if ($LASTEXITCODE -ne 0) { throw 'Art evaluator packaging refused' }
           python tools/package_art_workbench_final.py zip --output build/art-workbench-final-windows
           if ($LASTEXITCODE -ne 0) { throw 'Art evaluator archive refused' }
       - name: Exercise actual delivered launcher from an extracted installation
         shell: pwsh
+        working-directory: packaging-source
         run: |
           $installationRoot = Join-Path $env:RUNNER_TEMP 'Art Evaluator Fresh Installation'
           Expand-Archive -Path build/art-workbench-final-windows.zip -DestinationPath $installationRoot
           $package = Join-Path $installationRoot 'art-workbench-final-windows'
-          python tools/package_art_workbench_final.py smoke --output $package --evidence evidence/installed-evaluator
+          $installedEvidence = Join-Path $env:GITHUB_WORKSPACE 'evidence/installed-evaluator'
+          python tools/package_art_workbench_final.py smoke --output $package --evidence $installedEvidence
           if ($LASTEXITCODE -ne 0) { throw 'Installed Art evaluator failed' }
-          ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence evidence/installed-evaluator/runtime-modules.json
+          ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence (Join-Path $installedEvidence 'runtime-modules.json')
       - name: Retain qualified Windows evaluator
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: art-workbench-final-windows-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
-            build/art-workbench-final-windows.zip
-            build/art-workbench-final-windows.zip.sha256
+            packaging-source/build/art-workbench-final-windows.zip
+            packaging-source/build/art-workbench-final-windows.zip.sha256
           if-no-files-found: error
       - name: Retain evidence
         if: always()

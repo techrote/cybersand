@@ -23,6 +23,7 @@ import package_explore001_candidate as retained
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools/ci"))
 from check_repository import verify_runtime
+from art_evaluator_qualification_scope import validate_completed_decision
 
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 GUIDE = "docs/operations/art-workbench-final-evaluation.md"
@@ -48,7 +49,15 @@ def check_source_inputs(inputs: list[str]) -> None:
     dirty = [line for line in status.splitlines() if not (
         line.startswith("?? godot/") and line.endswith((".gd.uid", ".gdshader.uid")))]
     if dirty:
-        raise ValueError("Commit application/package inputs before source-qualified packaging")
+        raise ValueError("Commit application/package inputs before source-qualified packaging; rejected status rows:\n" + "\n".join(dirty))
+
+
+
+def qualification_source(path: Path | None, source: str, tree: str) -> dict | None:
+    if path is None:
+        return None
+    proof = json.loads(path.read_text(encoding="utf-8"))
+    return validate_completed_decision(proof, source, tree)
 
 
 def build(args: argparse.Namespace) -> dict:
@@ -59,10 +68,12 @@ def build(args: argparse.Namespace) -> dict:
         raise ValueError("Choose a new package directory; existing profiles are never overwritten")
     inputs = ["godot", "examples/worldgen", "third_party", "tools/package_art_workbench_final.py",
               "tools/package_explore001_candidate.py", "tools/ci/check_repository.py",
+              "tools/ci/art_evaluator_qualification_scope.py",
               "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md", GUIDE]
     check_source_inputs(inputs)
     source = git("rev-parse", "HEAD")
     tree = git("rev-parse", "HEAD^{tree}")
+    qualification = qualification_source(args.qualification_source, source, tree)
     native_manifest = json.loads((ROOT / "godot/addons/cybersand_native/runtime-provenance.json").read_text())
     errors = verify_runtime(ROOT, native_manifest)
     if errors:
@@ -103,6 +114,12 @@ def build(args: argparse.Namespace) -> dict:
         shutil.copyfile(args.engine_notices / name, output / ("Godot-" + name))
     vc_sha = retained.stage_vc_runtime(args.vc_runtime, output)
     shutil.copyfile(output / GUIDE, output / "READ-ME.md")
+    if qualification is not None:
+        # This binds application evidence to the package's committed source.
+        # It does not attest package acceptance before the actual installed
+        # launcher and module-path gates execute on this new installation.
+        (output / "APPLICATION-QUALIFICATION.json").write_text(
+            json.dumps(qualification, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     # This launcher is also executed by the installed-copy smoke check. The
     # smoke-only environment knob closes the SAME interactive code after a few
     # seconds; it never switches to a detached mock application.
@@ -133,6 +150,9 @@ def build(args: argparse.Namespace) -> dict:
                 "native_source_unchanged":True, "vc_runtime_sha256":vc_sha,
                 "generator_profiles_sha256":profiles, "automatic_model_requests":False,
                 "profile":"package-local", "status":"Draft/HOLD",
+                "qualification_scope_file":"APPLICATION-QUALIFICATION.json" if qualification is not None else None,
+                "application_qualification":{key:qualification[key] for key in (
+                    "mode","application_source_commit","application_source_tree")} if qualification is not None else None,
                 "files_sha256":{p.relative_to(output).as_posix():sha(p) for p in sorted(output.rglob("*")) if p.is_file()}}
     (output / MANIFEST).write_text(json.dumps(identity, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return identity
@@ -198,6 +218,7 @@ def main() -> None:
     parser.add_argument("--engine", type=Path)
     parser.add_argument("--engine-notices", type=Path)
     parser.add_argument("--vc-runtime", type=Path)
+    parser.add_argument("--qualification-source", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--evidence", type=Path)
     args = parser.parse_args()

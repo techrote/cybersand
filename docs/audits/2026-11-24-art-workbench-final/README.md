@@ -185,6 +185,46 @@ reachable Apply/Cancel at both sizes and Cancel preserving live history. The
 pre-fix screenshots remain negative visual controls. New runtime results must
 be read against the follow-up source rather than attributed to `2fc5974b`.
 
+## Qualified application and packaging boundary
+
+[Run 45482969231](https://github.com/techrote/cybersand/actions/runs/45482969231)
+qualified the application on source `981a740828decbeac04d5a14511d0222095de0a9`,
+tree `9e37f6c4113e51b7aa9969bd7f3cc726405467bf`: Linux passed all 12 groups with
+928 headless / 903 displayed matrix assertions; Windows passed all 12 groups
+with 928 / 904. Both platforms passed panel 275/279, displayed native clipboard
+71 and evaluator input 18. The short-note text pane grows 209 to 409 logical
+pixels when the dialog grows by 200, and both displayed captures use the formerly
+blank body while keeping the footer visible.
+
+The Windows near-cap assistant actually received 16,773,283 bytes with transport
+success and HTTP 200 after 48.129 seconds. Its complete redacted body hash matches
+the fixture, and its maximum measured frame was 823.830 ms. Independent reviews
+verified 16 complete body hashes and two complete changed-conversation hashes
+per platform. The displayed 16,769,024-byte changed Apply took 354.215 ms on Linux
+and 413.840 ms on Windows. Conditional assertion counts remain explicit: Linux's
+incoming retry could not be observed after cancellation drained, and Windows's
+intentional one-second header timeout completed before X in that one arm.
+
+The overall Windows job then failed at the strict packaging source-input guard.
+Its rejected filenames were not logged. All matrix provenance records showed no
+tracked differences, so the repeated LF/CRLF warnings do not prove a cause or a
+false-positive guard. The original refusal remains preserved; no evaluator ZIP,
+installed launcher or loaded-module acceptance is inferred from that run.
+
+Packaging now uses a second, fresh checkout of the committed candidate and its
+own committed tools, with source-matched native LFS inputs and no prior Godot
+import. The guard remains strict and reports rejected status rows. To avoid
+repeating unchanged application tests, a separate proof permits reuse only for
+an explicit packaging/workflow/test/guide change allowlist, unchanged protected
+trees, the fixed prior run and application-step results, both immutable artifact
+digests and all 12 complete successful receipts per platform. Any other source
+change requires the full application workflow; an eligible reuse attempt with
+missing or mismatched prior evidence fails. The prior Windows overall packaging
+failure is never relabeled as success. Every successor must freshly qualify the
+actual ZIP, extracted command launcher, native readiness/teardown, immutable
+hashes and module paths. Its packaged source-scope receipt identifies both source
+revisions and states that reuse proof alone does not establish package acceptance.
+
 ## Ordinary desktop observation
 
 The [Linux desktop receipt](linux-desktop-observation.json) records actual mouse
