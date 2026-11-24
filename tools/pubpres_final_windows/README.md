@@ -43,13 +43,14 @@ Use PowerShell from the extracted folder. Replace `FULL_CANDIDATE_SHA` with the
 40-character identity printed by the launcher or recorded in the manifest.
 
 ```powershell
-# Optional three-slot Full experiment; separate profile, unchanged physics gates.
+# Retained adverse control only: three slots regressed hosted Windows playability.
+# Separate profile; ordinary evaluation keeps the default two slots.
 .\tools\pubpres_final_windows\Start-PUBPRES-Final.ps1 -PackageRoot . `
   -ExpectedCandidate FULL_CANDIDATE_SHA -Action Open -OwnerProfile `
   -FullImageSlots 3 -Scene wave512
 
-# Optional recovered engine, only if included in this exact artifact.
-# Use Safe first, then Separate with otherwise identical choices.
+# Historical EGL engine control, only if separately included and qualified.
+# The standard evaluator omits this engine after ordinary Separate startup failed.
 .\tools\pubpres_final_windows\Start-PUBPRES-Final.ps1 -PackageRoot . `
   -ExpectedCandidate FULL_CANDIDATE_SHA -Action Open -OwnerProfile `
   -Engine Egl -RenderThread Separate -RenderingDriver opengl3_angle -Scene wave512
@@ -59,12 +60,23 @@ Use PowerShell from the extracted folder. Replace `FULL_CANDIDATE_SHA` with the
   -ExpectedCandidate FULL_CANDIDATE_SHA -Action Open -OwnerProfile -Source Donor
 ```
 
-Three slots increase the distance between texture reuse and the previous bound
-history pair; they do not prove that the GPU has finished using a texture. The
-recovered engine contains the source-exact EGL context-handoff repair originally
-qualified in #609. Its version and executable hash are distinct from official
-Godot. Separate still synchronizes with Main each iteration. Hosted ANGLE results
-do not establish physical NVIDIA performance or display scanout behavior.
+**Three slots are a retained negative control, not a recommended playability
+treatment.** In the matched Windows two/three/three/two Wave512 cohort, completed
+physics rates were 13.602/9.080/9.065/13.765 steps per second and maximum gaps
+were 248.089/700.931/709.374/248.607 ms. The Wave2048 cohort was also adverse.
+The exact current/previous image checks passed, so coherent image ownership
+alone did not establish responsive progression. These results are retained in
+[campaign 45436083078](https://github.com/techrote/cybersand/actions/runs/45436083078).
+The ordinary evaluator continues to use Full two slots.
+
+The historical recovered engine contains the source-exact EGL context-handoff
+repair from #609, with a separate version and executable hash. The second
+campaign reached ordinary Main and then failed Separate startup with the font
+Image/CowData diagnostic. The standard evaluator therefore includes the official
+engine only. Source-bound research on a separately identified font repair is
+outside this evaluator; it cannot inherit qualification from the old engine.
+Separate still synchronizes with Main each iteration. Hosted ANGLE results do
+not establish physical NVIDIA performance or display scanout behavior.
 
 ## Evidence and practical acceptance
 
@@ -94,7 +106,9 @@ python tools/pubpres_final_windows/package_windows.py `
   --godot-zip $GodotZip --vc-runtime $VcStage --notices $GodotNotices `
   --output-dir $Payload --archive $Archive
 # Optional: --donor-root $FrozenC90 --donor-runtime $DonorRuntime
-# Optional: --patched-engine-archive $Original609EngineArtifact
+# Historical research only: --patched-engine-archive $Original609EngineArtifact
+# Including it keeps every mandatory engine startup test; the known failure
+# is not waived. The qualified ordinary evaluator inventory omits this option.
 
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/pubpres_final_windows/Test-Evaluator.ps1 `
   -PackageRoot $Payload -ExpectedCandidate $Sha -ArtifactZip $Archive -Output $Evidence

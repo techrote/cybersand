@@ -1,0 +1,105 @@
+{
+  "schema": "workbench-godot-build-lock-v1",
+  "source_repository": "https://github.com/godotengine/godot.git",
+  "source_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "build_name": "cybersand_egl_font_snapshot",
+  "version": "4.7.stable.cybersand_egl_font_snapshot.5b4e0cb0f",
+  "patches": [
+    {
+      "path": "third_party/patches/godot-egl-current-window.patch",
+      "sha256": "29a74947a3128ed93eeea0c6ab7274d10f45c194627fb516d7db6b511413e9a1",
+      "files": {
+        "drivers/egl/egl_manager.cpp": {
+          "before_sha256": "65f6cb972cd6f8d3242663589e213f96d3a51dcf9f65e745d5d0ca34986d8de7",
+          "after_sha256": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e"
+        }
+      }
+    },
+    {
+      "path": "tools/pubpres_final_engine/godot-font-image-snapshot.patch",
+      "sha256": "49f06da6478582499adf5f466daec1d20981c5facbd2ef5a0acfa61cc6f788a6",
+      "files": {
+        "modules/text_server_adv/text_server_adv.cpp": {
+          "before_sha256": "f156a5b0100ab39d588a3abc09a013c468b49dbff0ed085b7cb9c2a3e577cfcf",
+          "after_sha256": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b"
+        },
+        "modules/text_server_fb/text_server_fb.cpp": {
+          "before_sha256": "b1a6a009a89007bcbf48f3c70a8a02da037e9aef6d9cf9fa22b9f003c756a6d7",
+          "after_sha256": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1"
+        }
+      }
+    }
+  ],
+  "scons": {
+    "version": "4.10.1",
+    "filename": "scons-4.10.1-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/ce/bf/931fb9fbb87234c32b8b1b1c15fba23472a10777c12043336675633809a7/scons-4.10.1-py3-none-any.whl",
+    "bytes": 4136069,
+    "sha256": "bd9d1c52f908d874eba92a8c0c0a8dcf2ed9f3b88ab956d0fce1da479c4e7126"
+  },
+  "angle": {
+    "tag": "chromium/7219",
+    "release_asset_id": 262261050,
+    "filename": "godot-angle-static-x86_64-msvc-release.zip",
+    "url": "https://github.com/godotengine/godot-angle-static/releases/download/chromium/7219/godot-angle-static-x86_64-msvc-release.zip",
+    "bytes": 31123250,
+    "sha256": "ccca7ac3d989858f853ad1a84d1a791f10ae5ced0b3b88cadc27204ffe34147b"
+  },
+  "accesskit": {
+    "tag": "0.21.2",
+    "release_asset_id": 372219312,
+    "filename": "accesskit-c-0.21.2.zip",
+    "url": "https://github.com/godotengine/godot-accesskit-c-static/releases/download/0.21.2/accesskit-c-0.21.2.zip",
+    "bytes": 95929259,
+    "sha256": "02a08691b78fc6f8f88f6546e997b9f90b4ecbedf5ca5c621dbab144a4b18964"
+  },
+  "official_reference": {
+    "filename": "Godot_v4.7-stable_win64.exe.zip",
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip",
+    "sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "gui": "Godot_v4.7-stable_win64.exe",
+    "console": "Godot_v4.7-stable_win64_console.exe",
+    "gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "scons_flags": [
+    "platform=windows",
+    "arch=x86_64",
+    "target=editor",
+    "windows_subsystem=gui",
+    "use_mingw=no",
+    "use_llvm=no",
+    "msvc_version=14.3",
+    "production=yes",
+    "optimize=speed",
+    "lto=none",
+    "debug_symbols=no",
+    "dev_build=no",
+    "precision=single",
+    "use_static_cpp=yes",
+    "opengl3=yes",
+    "angle=yes",
+    "vulkan=yes",
+    "use_volk=yes",
+    "d3d12=no",
+    "accesskit=yes",
+    "winrt=yes",
+    "scu_build=yes",
+    "scu_limit=8",
+    "threads=yes",
+    "disable_3d=no",
+    "tests=no",
+    "compiledb=yes"
+  ],
+  "output_gui": "godot.windows.editor.x86_64.exe",
+  "output_console": "godot.windows.editor.x86_64.console.exe",
+  "scope": {
+    "custom_engine": true,
+    "official_binary_reproduction": false,
+    "d3d12": "Explicitly disabled to avoid unrelated Mesa/DXC/Agility dependencies. Vulkan, native OpenGL and static ANGLE remain enabled; no module is disabled.",
+    "gdextension": "Single precision public API equivalence and actual native/Rapier loading must both be checked; API equivalence alone does not qualify gameplay or physical hardware.",
+    "source_fix": "Original EGL current-window handoff repair plus private Image snapshots at all font-atlas publication boundaries in TextServerAdvanced and TextServerFallback. Material publication, Main/render synchronization, font glyph/mipmap/alpha rules and public APIs are unchanged. All application and graphical acceptance remains pending.",
+    "performance": "No build-time or runtime performance claim is made by this lock."
+  }
+}

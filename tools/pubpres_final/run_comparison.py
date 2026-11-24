@@ -31,10 +31,13 @@ from run_focus import (ENGINE_SHA256, FROZEN_REGISTRATION, OBSERVER_TARGET,
 from results import canonical, digest, need
 from results_same_frame import reduce_receipt
 from run_source_abba import compare_registered_direction, TOOLCHAIN_FIELDS
-from metrics import supplementary_metrics, validate_slot_treatment
+from metrics import supplementary_metrics, validate_slot_treatment, validate_deadline_baseline
+from observer_support import (DIRECTORY as OBSERVER_DIRECTORY, PROBE as PRESENTATION_PROBE,
+                              SELECTOR as PRESENTATION_SELECTOR, observer_bundle,
+                              execute_with_resources, validate_observers, calibration_measurements)
 
 OBSERVER = "tests/pubpres_final_gameplay.gd"
-MODES = ("source-abba", "slots-abba", "single")
+MODES = ("source-abba", "slots-abba", "observer-abba", "single")
 
 
 def driver_identity() -> dict:
@@ -49,6 +52,9 @@ def driver_identity() -> dict:
         committed = subprocess.check_output(["git", "-C", str(ROOT), "show", "HEAD:" + relative])
         need((ROOT / relative).read_bytes() == committed, "Final driver differs from committed bytes: " + relative)
         identity["files_sha256"][relative] = digest(ROOT / relative)
+    observer_identity = observer_bundle.identity()
+    identity["files_sha256"].update(observer_identity["files_sha256"])
+    identity["supplementary_observer_bundle"] = observer_identity
     return identity
 
 
@@ -59,6 +65,9 @@ def comparison_plan(mode: str, slots: int) -> list[dict]:
         return [{"role": role, "slots": 2} for role in ("D", "C", "C", "D")]
     if mode == "slots-abba":
         return [{"role": "C", "slots": value} for value in (2, 3, 3, 2)]
+    if mode == "observer-abba":
+        need(slots == 2, "Observer calibration must retain two Full slots")
+        return [{"role": "C", "slots": 2, "presentation_observer": value} for value in (False, True, True, False)]
     return [{"role": "C", "slots": slots}]
 
 
@@ -92,6 +101,7 @@ def campaign_settings(registration: dict, cases: list[str], sustained: bool) -> 
         campaign["measurement"]["minimum_capture_usec"] = registration["sustained_minimum_usec"]
     campaign["overlay_sha256"][OBSERVER_TARGET] = digest(ROOT / "tools/pubpres003/pubpres_causal_gameplay.gd")
     campaign["overlay_sha256"][OBSERVER] = digest(HERE / "pubpres_final_gameplay.gd")
+    campaign["overlay_sha256"][PRESENTATION_PROBE] = digest(OBSERVER_DIRECTORY / "presentation_probe.gd")
     campaign["observer_entrypoint"] = OBSERVER
     return campaign
 
@@ -110,7 +120,7 @@ def verify_rapier(root: Path, source: dict, override: Path | None) -> tuple[Path
 
 
 def prepare(root: Path, source: dict, output: Path, campaign: dict, engine: Path,
-            rapier_override: Path | None) -> Path:
+            rapier_override: Path | None, *, overlay_sources: dict[str, Path] | None = None) -> Path:
     template = stage_committed_project(root, source["source_commit"], output)
     recipes = template.parent / "examples/worldgen"
     if recipes.is_dir():
@@ -120,13 +130,29 @@ def prepare(root: Path, source: dict, output: Path, campaign: dict, engine: Path
     rapier_binary, rapier = verify_rapier(root, source, rapier_override)
     shutil.copyfile(rapier_binary, template / Path(rapier["artifact"]).relative_to("godot"))
     for relative, expected in campaign["overlay_sha256"].items():
-        original = (HERE / "pubpres_final_gameplay.gd" if relative == OBSERVER else
+        if relative == PRESENTATION_PROBE:
+            need(digest(OBSERVER_DIRECTORY / "presentation_probe.gd") == expected,
+                 "Supplementary observer dependency changed")
+            observer_bundle.stage(template)
+            continue
+        original = ((overlay_sources or {})[relative] if relative in (overlay_sources or {}) else
+                    HERE / "pubpres_final_gameplay.gd" if relative == OBSERVER else
                     ROOT / "tools/pubpres003/pubpres_causal_gameplay.gd" if relative == OBSERVER_TARGET else
                     ROOT / "godot" / relative)
         need(digest(original) == expected, "Observer dependency changed: " + relative)
         shutil.copyfile(original, template / relative)
+    authored = {path.relative_to(template).as_posix(): digest(path)
+                for path in template.rglob("*") if path.is_file()}
     execute(engine, ["--headless", "--audio-driver", "Dummy", "--path", str(template), "--editor", "--import"],
             output / "import", source["source_commit"], {}, 300)
+    imported = {path.relative_to(template).as_posix(): digest(path)
+                for path in template.rglob("*") if path.is_file()}
+    bootstrap = {".godot/global_script_class_cache.cfg", ".godot/extension_list.cfg"}
+    changes = [name for name, expected in authored.items() if name not in bootstrap and imported.get(name) != expected]
+    write_json(output / "source-custody.json", {"source_commit": source["source_commit"],
+               "source_tree": source["source_tree"], "authored_files_sha256": authored,
+               "imported_files_sha256": imported, "authored_mutations": changes})
+    need(not changes, "Import changed source-exact authored comparison inputs")
     return template
 
 
@@ -145,6 +171,8 @@ def validate_final_cohort(arms: list[dict], mode: str, plan: list[dict]) -> dict
                  and selected["cadence"] == "repaired" and selected["rendezvous"]["mode"] == "off",
                  "Final cohort changed physical/cadence/presentation control")
         need(arm["slots"]["requested_slots"] == treatment["slots"], "Final cohort slot order differs")
+        need(arm["observers"]["presentation_enabled"] is treatment["presentation_observer"],
+             "Final cohort supplementary observer treatment differs")
     return parity
 
 
@@ -156,17 +184,35 @@ def main() -> int:
     parser.add_argument("--mode", choices=MODES, default="source-abba")
     parser.add_argument("--slots", type=int, choices=(2, 3), default=2)
     parser.add_argument("--sustained", action="store_true")
+    parser.add_argument("--presentation-observer", action="store_true",
+                        help="Enable the separately source-bound submitted-pose sidecar equally on every arm")
     parser.add_argument("--rapier-runtime", type=Path)
     parser.add_argument("--display-wrapper", type=Path)
     parser.add_argument("--allow-development-toolchain-drift", action="store_true")
     args = parser.parse_args()
     need(not args.sustained or args.mode == "single", "Sustained captures are separate single arms")
+    need(not args.presentation_observer or args.mode != "observer-abba",
+         "Observer calibration supplies its own explicit off/on/on/off selector order")
+    need(not args.allow_development_toolchain_drift or args.mode != "observer-abba",
+         "Observer calibration requires the pinned independently built runtime")
     output, engine = args.output.resolve(), args.engine.resolve()
     need(not output.exists(), "Evidence output exists; original attempts must be retained")
     driver = driver_identity()
     registration = json.loads((HERE / "registration.json").read_bytes())
     need(registration["schema"] == "pubpres-playability-final-registration-v1", "Unknown final registration")
     plan = comparison_plan(args.mode, args.slots)
+    observer_registration = None
+    if args.mode == "observer-abba":
+        observer_registration = json.loads((HERE / "observer_registration.json").read_bytes())
+        need(observer_registration["schema"] == "pubpres-final-observer-calibration-registration-v1"
+             and observer_registration["order"] == [False, True, True, False]
+             and set(args.case) <= set(observer_registration["cases"]),
+             "Observer calibration must use its registered primary cases and selector order")
+        need(all(observer_registration[name] == registration[name] for name in
+                 ("minimum_capture_usec", "minimum_real_steps", "maximum_capture_usec")),
+             "Observer calibration changed the original observation window")
+    else:
+        plan = [dict(item, presentation_observer=args.presentation_observer) for item in plan]
     campaign = campaign_settings(registration, args.case, args.sustained)
     platform = "windows" if os.name == "nt" else "linux"
     need(digest(engine) == ENGINE_SHA256[platform], "Engine differs from official Godot 4.7 platform pin")
@@ -189,7 +235,9 @@ def main() -> int:
               "engine_sha256": digest(engine), "sources": sources, "order": plan,
               "campaign_sha256": digest(output / "campaign.json"), "cases": [], "failures": [],
               "complete": False, "physical_acceptance": "HOLD", "sustained": args.sustained,
-              "scope": registration["scope"]}
+              "scope": observer_registration["scope"] if observer_registration else registration["scope"],
+              "observer_registration": observer_registration,
+              "observer_registration_sha256": digest(HERE / "observer_registration.json") if observer_registration else None}
     write_json(output / "SUMMARY.json", report)
     templates = {}
     for role, source in sources.items():
@@ -211,6 +259,8 @@ def main() -> int:
             settings = selectors({"material": "full", "same_frame_continuation": False,
                                   "wave_column_probe": False, "causal": False}, nonce)
             settings["CYBERSAND_DIAG_FULL_IMAGE_SLOTS"] = str(slots)
+            settings["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"] = "0"
+            settings[PRESENTATION_SELECTOR] = "1" if treatment["presentation_observer"] else "0"
             arguments = ["--path", str(project), "--rendering-method", "gl_compatibility",
                          "--rendering-driver", rendering_driver, "--render-thread", "safe", "--audio-driver", "Dummy",
                          "--log-file", str(folder / "godot.log"), "--script", "res://" + OBSERVER, "--",
@@ -226,14 +276,17 @@ def main() -> int:
                                              "treatment": treatment, "selectors": settings, "arguments": arguments})
             print(case["id"], index, treatment, flush=True)
             try:
-                process = execute(engine, arguments, folder, source["source_commit"], settings, 420, args.display_wrapper)
+                process = execute_with_resources(engine, arguments, folder, source["source_commit"], settings, 420, args.display_wrapper)
                 data = json.loads(receipt.read_bytes())
                 validate_requested_capture(data, case, campaign, source["source_commit"], nonce, rendering_driver)
                 # Frozen acceptance is mandatory, with no monkeypatch/relabel.
                 analysis = reduce_receipt(receipt, campaign, project=project, engine=engine, arm_letter="C")
+                analysis["material_deadline_baseline"] = validate_deadline_baseline(data, required=role == "C")
+                observers = validate_observers(receipt, process, project, treatment["presentation_observer"])
                 events = [json.loads(line) for line in receipt.with_name("receipt-events.jsonl").read_text().splitlines()]
                 slot_evidence = validate_slot_treatment(data, events, slots,
-                                                        require_status=args.mode == "slots-abba" or slots == 3)
+                                                        require_status=args.mode == "slots-abba" or slots == 3,
+                                                        expected_extent=campaign["fixtures"][case["fixture"]]["extent"])
                 analysis["physical_gap_counts_above_ms"] = observed_gap_counts(
                     receipt.with_name("receipt-events.jsonl"), analysis["windows"],
                     registration["reported_gap_thresholds_ms"])
@@ -242,10 +295,11 @@ def main() -> int:
                 need(process["app_sampler_pid_matched"], "Process memory sampler followed a different application")
                 write_json(folder / "analysis.json", analysis)
                 write_json(folder / "supplementary.json", supplement)
+                write_json(folder / "observers.json", observers)
                 write_json(folder / "process.json", process)
-                arm_role = ("D" if index in (0, 3) else "C") if args.mode == "slots-abba" else role
+                arm_role = ("D" if index in (0, 3) else "C") if args.mode in ("slots-abba", "observer-abba") else role
                 arms.append({"arm": arm_role, "index": index, "source_role": role, "statistics": analysis,
-                             "supplementary": supplement, "slots": slot_evidence, "process": process,
+                             "supplementary": supplement, "slots": slot_evidence, "process": process,"observers":observers,
                              "receipt_sha256": digest(receipt)})
                 shutil.rmtree(project)
             except Exception as error:
@@ -256,7 +310,9 @@ def main() -> int:
         record = {"case": case["id"], "arms": arms}
         try:
             record["physical_outcome_parity"] = validate_final_cohort(arms, args.mode, plan)
-            if args.mode != "single":
+            if args.mode == "observer-abba":
+                record["observer_calibration"] = calibration_measurements(arms)
+            elif args.mode != "single":
                 record["registered_direction"] = compare_registered_direction(arms)
         except (ValueError, TypeError, KeyError) as error:
             report["failures"].append({"case": case["id"], "reason": str(error)})

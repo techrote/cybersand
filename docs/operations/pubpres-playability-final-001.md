@@ -56,12 +56,38 @@ coupling feedback and equipment geometry belong to the actual sample. No extra
 Rapier steps, fabricated callback credit, skipped material turns or stale-sample
 admission are introduced.
 
-The separate engine lane recovers the original #609 Godot 4.7 EGL context-handoff
-patch and independently qualified engine identity. Clearing the cached window on
-context release repairs a source-located Separate/ANGLE startup defect. It does
-not establish physical NVIDIA behavior or a performance gain. Stock official4.7
-and the patched engine remain separately identified; original Safe defaults and
-Separate failures are preserved.
+A second, still unselected native candidate retains a derived certificate for
+complete chunk halves whose actual material is Empty and weight/meta storage is
+zero. It omits only redundant gather/scatter, preserving all settle, flux, apply
+and original dry/clean decisions. Diagnostic assertions and 153 every-tick
+cross-source/cross-worker lifecycle checkpoints pass, as do full Wave, spill and
+body-boundary suites. Its first native timing screen contains adverse small and
+no-body cases, substantial host drift and one control with insufficient observed
+worker participation. The
+[retained native screen](../audits/2026-11-24-pubpres-playability-final/native-empty-derived-screen.json)
+does not select a winner; the next ordinary source comparison tests this arm.
+
+The separate engine lane recovered the original #609 Godot 4.7 EGL context-handoff
+patch and its exact engine identity. Clearing the cached window repairs the
+Separate/ANGLE GLAD startup defect, but the second campaign exposed a later
+ordinary Workbench crash on an empty `CowData` byte buffer. Mutable font-image
+publication is the source-supported repair hypothesis; runtime confirmation is
+pending. Its four Separate timing arms produced no valid gameplay receipt. A
+distinct engine arm snapshots font Images at all ten publication boundaries
+while preserving alpha, mipmaps, glyph layout and public APIs. Compilation,
+framebuffer parity and ordinary
+startup must pass before its timing can count. Neither engine's hosted ANGLE
+behavior establishes physical NVIDIA behavior. Original Safe defaults and all
+failed controls are preserved.
+
+The default-off material deadline experiment accepts only 30 or 60 Hz. It holds
+one immutable cumulative packet, replaces it without extending an outstanding
+deadline, and acknowledges only an actual accepted upload. Owner retirement,
+World replacement, failure and teardown cancel pending work. Independent
+22-boundary/8-history byte and authority checks precede ordinary off/30/60
+timing. The original physical mailbox, terrain admission and Rapier step gates
+remain authoritative. A new submitted-pose/CPU observer is separately calibrated
+before its measurements are used in comparisons.
 
 ## Comparison and evidence contract
 
@@ -78,8 +104,9 @@ resource ownership, exact first current/previous GPU reads and dense-to-sparse
 reuse. Supplementary clocks explicitly distinguish application command admission
 from device-input latency and post-draw delivery from scanout.
 
-The first development checkpoint is **unqualified** until actual platform
-execution finishes. Source review and headless checks are not GPU acceptance.
+The successor remains **unqualified for final playability**. Completed platform
+captures and their negative results are described below. Source review and
+headless checks are not GPU acceptance.
 Local native development uses GCC14.2; hosted qualification retains pinned GCC13.3
 and LLVM-MinGW23.1.0. The local workspace refuses Unix sockets, so its attempted
 owned Xvfb startup is retained as an environment failure and graphical execution
@@ -100,9 +127,28 @@ binds every archive and runtime. The
 [decision packet](../audits/2026-11-24-pubpres-playability-final/decision-packet.md)
 retains the causal account and unresolved selection.
 
-The selected final source requires an ordinary interactive Windows evaluator,
-exact runtime and per-file manifest, executed extraction/launch/authoring/reopen,
-ergonomic result collection, and a short owner test procedure. Those deliverables
-remain pending at this initial implementation checkpoint. Physical Windows11 /
-NVIDIA Follow, controls, paint, multiple actors, material trails and sustained
-playability remain separate owner acceptance requirements.
+The second run [45436083078](https://github.com/techrote/cybersand/actions/runs/45436083078)
+executed source `515fce2862dd87d8dd01935bdf7bd1736e645901`. Both platforms passed
+twelve correctness processes. All sixteen Linux source/slot captures passed
+independent raw reduction and complete physical/GPU replay after correcting an
+extent assumption in the added slot checker; the original workflow remains red.
+The Linux large-canvas source comparison supports a relative gain, but still
+contains 150–270 ms physical gaps. Wave512 and three-slot comparisons do not
+establish repeatable improvements. The
+[second decision packet](../audits/2026-11-24-pubpres-playability-final/development02-independent-decision.md)
+retains all controls and limits. Windows source/slot evidence is retained for
+its independent replay.
+
+The extracted Windows evaluator passed ten included launches and actual native
+authoring, Save and fresh-process reopen. Its optional recovered Separate engine
+crashed, so the collector was never reached and that package remains unqualified.
+The next stock-engine package must pass every included launcher, extraction,
+source/runtime refusal, persistence and collector gate with its own exact
+manifest. The separate font engine is a research artifact until its startup,
+image, ordinary gameplay and evaluator gates pass.
+
+Final source selection, sustained eight-actor mixed qualification, sanitizer
+results, a verified evaluator manifest and practical owner test procedure remain
+required. Physical Windows 11/NVIDIA Follow, controls, paint, multiple actors,
+material trails and sustained playability remain separate owner acceptance
+requirements. No hosted software-renderer result resolves them.

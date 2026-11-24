@@ -1,0 +1,117 @@
+{
+  "schema": "pubpres-final-mixed-registration-v1",
+  "cases": [
+    "mixed_wave_512_follow",
+    "mixed_wave_1024_follow"
+  ],
+  "minimum_capture_usec": 60000000,
+  "maximum_capture_usec": 90000000,
+  "minimum_real_steps": 144,
+  "workers": 4,
+  "water_profile": "gameplay_main846f",
+  "actors": [
+    [
+      1,
+      "needle",
+      200,
+      160
+    ],
+    [
+      2,
+      "needle",
+      72,
+      80
+    ],
+    [
+      3,
+      "needle",
+      144,
+      80
+    ],
+    [
+      4,
+      "needle",
+      216,
+      80
+    ],
+    [
+      5,
+      "needle",
+      288,
+      80
+    ],
+    [
+      6,
+      "needle",
+      360,
+      80
+    ],
+    [
+      7,
+      "needle",
+      432,
+      80
+    ],
+    [
+      8,
+      "reference_barrel",
+      176,
+      220
+    ]
+  ],
+  "actor_scale": "positions and authored basin coordinates multiply by two at extent1024; body dimensions remain their real model dimensions",
+  "paint_tape": [
+    {
+      "tick": 32,
+      "point": [
+        320,
+        192
+      ],
+      "material": 58
+    },
+    {
+      "tick": 64,
+      "point": [
+        320,
+        192
+      ],
+      "material": 0
+    },
+    {
+      "tick": 96,
+      "point": [
+        352,
+        192
+      ],
+      "material": 2
+    },
+    {
+      "tick": 120,
+      "point": [
+        400,
+        192
+      ],
+      "material": 28
+    }
+  ],
+  "brush_radius": 8,
+  "paint_scan": {
+    "x_offset": -16,
+    "y_offset": -16,
+    "width": 33,
+    "height": 81
+  },
+  "input": "Original eleven-segment tick-addressed input tape for selected Needle1, repeated ordinary callback admission with its six-physical-tick lease. Other actors receive no commands.",
+  "contact": "At least one direct Rapier contact on passive barrel8, above the authored platform at y240*scale and x112*scale..224*scale; no extra contacts or steps are injected.",
+  "material": "full",
+  "full_image_slots": 2,
+  "physics": "early",
+  "render_thread": "safe",
+  "same_frame_continuation": false,
+  "scope": "Distinct sustained eight-actor ordinary Workbench workload. Every actor has independent node/RID/native-sample/control identity. Ordinary painting goes through SharedWorkbench.paint and worker admission. Material freshness observes the first matching source CPU image after an actual production upload; it is not an input-device or GPU-scanout timestamp. Final GPU/CPU equality and separate two-history correctness remain required. All evidence remains Draft/HOLD.",
+  "model_hashes": {
+    "needle": "9d52fc8f375d05a7660f14d1097000405c1cc5b1bf5d31d4fbd4d473fb847560",
+    "reference_barrel": "reference-barrel-v1"
+  },
+  "paint_observer_cost": "Every attempted CPU material scan, including a no-match Sand search, contributes to the disclosed attempt count, total elapsed microseconds and maximum attempt microseconds. These costs are part of the observed instrumented Main workload."
+}

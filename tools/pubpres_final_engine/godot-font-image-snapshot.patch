@@ -1,0 +1,126 @@
+diff --git a/modules/text_server_adv/text_server_adv.cpp b/modules/text_server_adv/text_server_adv.cpp
+--- a/modules/text_server_adv/text_server_adv.cpp
++++ b/modules/text_server_adv/text_server_adv.cpp
+@@ -3399,6 +3399,11 @@
+ 		img = p_image->duplicate();
+ 		img->generate_mipmaps();
+ 	}
++	// The render queue may outlive the next glyph-cache mutation.
++	// Preserve existing alpha/mipmap work, then publish a private Image.
++	if (img == tex.image) {
++		img = tex.image->duplicate();
++	}
+ 	tex.texture = ImageTexture::create_from_image(img);
+ 	tex.dirty = false;
+ }
+@@ -3804,6 +3809,11 @@
+ 				img = tex.image->duplicate();
+ 				img->generate_mipmaps();
+ 			}
++			// The render queue may outlive the next glyph-cache mutation.
++			// Preserve existing alpha/mipmap work, then publish a private Image.
++			if (img == tex.image) {
++				img = tex.image->duplicate();
++			}
+ 			if (tex.texture.is_null()) {
+ 				tex.texture = ImageTexture::create_from_image(img);
+ 			} else {
+@@ -3853,6 +3863,11 @@
+ 			if (fd->mipmaps && !img->has_mipmaps()) {
+ 				img = tex.image->duplicate();
+ 				img->generate_mipmaps();
++			}
++			// The render queue may outlive the next glyph-cache mutation.
++			// Preserve existing alpha/mipmap work, then publish a private Image.
++			if (img == tex.image) {
++				img = tex.image->duplicate();
+ 			}
+ 			if (tex.texture.is_null()) {
+ 				tex.texture = ImageTexture::create_from_image(img);
+@@ -4330,6 +4345,11 @@
+ 					img = tex.image->duplicate();
+ 					img->generate_mipmaps();
+ 				}
++				// The render queue may outlive the next glyph-cache mutation.
++				// Preserve existing alpha/mipmap work, then publish a private Image.
++				if (img == tex.image) {
++					img = tex.image->duplicate();
++				}
+ 				if (tex.texture.is_null()) {
+ 					tex.texture = ImageTexture::create_from_image(img);
+ 				} else {
+@@ -4468,6 +4488,11 @@
+ 				if (fd->mipmaps && !img->has_mipmaps()) {
+ 					img = tex.image->duplicate();
+ 					img->generate_mipmaps();
++				}
++				// The render queue may outlive the next glyph-cache mutation.
++				// Preserve existing alpha/mipmap work, then publish a private Image.
++				if (img == tex.image) {
++					img = tex.image->duplicate();
+ 				}
+ 				if (tex.texture.is_null()) {
+ 					tex.texture = ImageTexture::create_from_image(img);
+diff --git a/modules/text_server_fb/text_server_fb.cpp b/modules/text_server_fb/text_server_fb.cpp
+--- a/modules/text_server_fb/text_server_fb.cpp
++++ b/modules/text_server_fb/text_server_fb.cpp
+@@ -2102,6 +2102,11 @@
+ 		img = p_image->duplicate();
+ 		img->generate_mipmaps();
+ 	}
++	// The render queue may outlive the next glyph-cache mutation.
++	// Preserve existing alpha/mipmap work, then publish a private Image.
++	if (img == tex.image) {
++		img = tex.image->duplicate();
++	}
+ 	tex.texture = ImageTexture::create_from_image(img);
+ 	tex.dirty = false;
+ }
+@@ -2493,6 +2498,11 @@
+ 				img = tex.image->duplicate();
+ 				img->generate_mipmaps();
+ 			}
++			// The render queue may outlive the next glyph-cache mutation.
++			// Preserve existing alpha/mipmap work, then publish a private Image.
++			if (img == tex.image) {
++				img = tex.image->duplicate();
++			}
+ 			if (tex.texture.is_null()) {
+ 				tex.texture = ImageTexture::create_from_image(img);
+ 			} else {
+@@ -2542,6 +2552,11 @@
+ 			if (fd->mipmaps && !img->has_mipmaps()) {
+ 				img = tex.image->duplicate();
+ 				img->generate_mipmaps();
++			}
++			// The render queue may outlive the next glyph-cache mutation.
++			// Preserve existing alpha/mipmap work, then publish a private Image.
++			if (img == tex.image) {
++				img = tex.image->duplicate();
+ 			}
+ 			if (tex.texture.is_null()) {
+ 				tex.texture = ImageTexture::create_from_image(img);
+@@ -2972,6 +2987,11 @@
+ 					img = tex.image->duplicate();
+ 					img->generate_mipmaps();
+ 				}
++				// The render queue may outlive the next glyph-cache mutation.
++				// Preserve existing alpha/mipmap work, then publish a private Image.
++				if (img == tex.image) {
++					img = tex.image->duplicate();
++				}
+ 				if (tex.texture.is_null()) {
+ 					tex.texture = ImageTexture::create_from_image(img);
+ 				} else {
+@@ -3110,6 +3130,11 @@
+ 				if (fd->mipmaps && !img->has_mipmaps()) {
+ 					img = tex.image->duplicate();
+ 					img->generate_mipmaps();
++				}
++				// The render queue may outlive the next glyph-cache mutation.
++				// Preserve existing alpha/mipmap work, then publish a private Image.
++				if (img == tex.image) {
++					img = tex.image->duplicate();
+ 				}
+ 				if (tex.texture.is_null()) {
+ 					tex.texture = ImageTexture::create_from_image(img);

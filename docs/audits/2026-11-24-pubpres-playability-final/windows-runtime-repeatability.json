@@ -1,0 +1,570 @@
+{
+  "schema": "pubpres-final-windows-runtime-repeatability-v1",
+  "first_run": 45430704276,
+  "second_run": 45436083078,
+  "scope": "Original artifacts remain byte-distinct and keep their exact hashes. Both fresh builds use identical native source closures and compiler identities. Each DLL differs in fourteen metadata bytes only: its existing build script temporary export module basename and dependent CodeView GUID. PE parsing independently proves every changed offset is within those fields; no binary is normalized or relabelled. Linux role binaries are bit-identical across these two builds. This is binary custody, not gameplay or whole-library reproducible-build qualification.",
+  "roles": [
+    {
+      "role": "D",
+      "first_sha256": "8913f727c34ed617048c78d23867e7a36d97fb0b6ca90e6a05efd2b2a9ed4993",
+      "second_sha256": "a0d0097fe3a66a85cc75bfdbde0f63e8defd1ad1b795ae85a787df51ca06e047",
+      "bytes": 5824512,
+      "differing_bytes": 14,
+      "differing_ranges": [
+        [
+          3932877,
+          3932883
+        ],
+        [
+          4274720,
+          4274728
+        ]
+      ],
+      "all_differences_are_export_temp_basename_or_codeview_guid": true,
+      "executable_text_sha256": "6cb00f2e6bb5da81a65eb6eef772de7299ea1722cc85d888d4ebcd6ba92a07c9",
+      "first": {
+        "sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "raw_offset": 1024,
+            "raw_size": 3575296,
+            "virtual_size": 3574966,
+            "sha256": "6cb00f2e6bb5da81a65eb6eef772de7299ea1722cc85d888d4ebcd6ba92a07c9"
+          },
+          {
+            "name": ".rdata",
+            "rva": 3579904,
+            "raw_offset": 3576320,
+            "raw_size": 698368,
+            "virtual_size": 697904,
+            "sha256": "2f0f4b7ca15bd4b9ad8f4bd432421173bf7ea4ec5702d117e36d8501317d4279"
+          },
+          {
+            "name": ".buildid",
+            "rva": 4280320,
+            "raw_offset": 4274688,
+            "raw_size": 512,
+            "virtual_size": 53,
+            "sha256": "75d1e8a22cd393b87e407d5b4e74101c34333fd32413cec04a65ae7c00d9cc94"
+          },
+          {
+            "name": ".data",
+            "rva": 4284416,
+            "raw_offset": 4275200,
+            "raw_size": 1024,
+            "virtual_size": 104272,
+            "sha256": "74ba128193ff321014353ed5ba3bdce4d2e857c2d09abe0bc498a713128d0dbe"
+          },
+          {
+            "name": ".pdata",
+            "rva": 4390912,
+            "raw_offset": 4276224,
+            "raw_size": 67584,
+            "virtual_size": 67356,
+            "sha256": "dfe68dd7e487d84fc0f27ed85e2cf032f323e53bb2b9a744e2f7db504597b023"
+          },
+          {
+            "name": ".tls",
+            "rva": 4460544,
+            "raw_offset": 4343808,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+          },
+          {
+            "name": ".reloc",
+            "rva": 4464640,
+            "raw_offset": 4344320,
+            "raw_size": 15872,
+            "virtual_size": 15652,
+            "sha256": "5f1ca01f46eaf15fca6f748ed832bbf172e47f0ac3b4c7be3c16cfa6821aa58a"
+          },
+          {
+            "name": "/4",
+            "rva": 4481024,
+            "raw_offset": 4360192,
+            "raw_size": 14336,
+            "virtual_size": 13995,
+            "sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+          },
+          {
+            "name": "/18",
+            "rva": 4497408,
+            "raw_offset": 4374528,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "0593d3d377f34e2892ef00f44b681b5242d0d39be1c008869082a2772408f3db"
+          },
+          {
+            "name": "/58",
+            "rva": 4501504,
+            "raw_offset": 4375040,
+            "raw_size": 59392,
+            "virtual_size": 59112,
+            "sha256": "31cff9f90f6e874bb58f166306b250a360c9e84f35c689e730bca7bf5243bd29"
+          },
+          {
+            "name": "/70",
+            "rva": 4562944,
+            "raw_offset": 4434432,
+            "raw_size": 46080,
+            "virtual_size": 46052,
+            "sha256": "5433949ef9b5e0c84c00e98161fdb2476b5455d90304a7248c0d024b395cce61"
+          },
+          {
+            "name": "/82",
+            "rva": 4612096,
+            "raw_offset": 4480512,
+            "raw_size": 92672,
+            "virtual_size": 92523,
+            "sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+          },
+          {
+            "name": "/33",
+            "rva": 4706304,
+            "raw_offset": 4573184,
+            "raw_size": 7168,
+            "virtual_size": 7104,
+            "sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+          },
+          {
+            "name": "/47",
+            "rva": 4714496,
+            "raw_offset": 4580352,
+            "raw_size": 31744,
+            "virtual_size": 31713,
+            "sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+          }
+        ],
+        "export_name": ".cybersand_native.windows.x86_64.dll.partial.Riffro",
+        "export_name_range": [
+          3932832,
+          3932883
+        ],
+        "codeview": [
+          {
+            "offset": 4274716,
+            "size": 25,
+            "guid": "49c602668d127d314c4c44205044422e",
+            "age": 1
+          }
+        ],
+        "pe_timestamp": 0,
+        "pe_checksum": 0
+      },
+      "second": {
+        "sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "raw_offset": 1024,
+            "raw_size": 3575296,
+            "virtual_size": 3574966,
+            "sha256": "6cb00f2e6bb5da81a65eb6eef772de7299ea1722cc85d888d4ebcd6ba92a07c9"
+          },
+          {
+            "name": ".rdata",
+            "rva": 3579904,
+            "raw_offset": 3576320,
+            "raw_size": 698368,
+            "virtual_size": 697904,
+            "sha256": "bf4030ff4a6aac2b2790e0655a1370ec3e5642a93226cd9a4094f12b61f84c79"
+          },
+          {
+            "name": ".buildid",
+            "rva": 4280320,
+            "raw_offset": 4274688,
+            "raw_size": 512,
+            "virtual_size": 53,
+            "sha256": "dcfc1028ac9d9f56de2e5022a31a28a205c31b952ffb84e8798e724f892c891e"
+          },
+          {
+            "name": ".data",
+            "rva": 4284416,
+            "raw_offset": 4275200,
+            "raw_size": 1024,
+            "virtual_size": 104272,
+            "sha256": "74ba128193ff321014353ed5ba3bdce4d2e857c2d09abe0bc498a713128d0dbe"
+          },
+          {
+            "name": ".pdata",
+            "rva": 4390912,
+            "raw_offset": 4276224,
+            "raw_size": 67584,
+            "virtual_size": 67356,
+            "sha256": "dfe68dd7e487d84fc0f27ed85e2cf032f323e53bb2b9a744e2f7db504597b023"
+          },
+          {
+            "name": ".tls",
+            "rva": 4460544,
+            "raw_offset": 4343808,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+          },
+          {
+            "name": ".reloc",
+            "rva": 4464640,
+            "raw_offset": 4344320,
+            "raw_size": 15872,
+            "virtual_size": 15652,
+            "sha256": "5f1ca01f46eaf15fca6f748ed832bbf172e47f0ac3b4c7be3c16cfa6821aa58a"
+          },
+          {
+            "name": "/4",
+            "rva": 4481024,
+            "raw_offset": 4360192,
+            "raw_size": 14336,
+            "virtual_size": 13995,
+            "sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+          },
+          {
+            "name": "/18",
+            "rva": 4497408,
+            "raw_offset": 4374528,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "0593d3d377f34e2892ef00f44b681b5242d0d39be1c008869082a2772408f3db"
+          },
+          {
+            "name": "/58",
+            "rva": 4501504,
+            "raw_offset": 4375040,
+            "raw_size": 59392,
+            "virtual_size": 59112,
+            "sha256": "31cff9f90f6e874bb58f166306b250a360c9e84f35c689e730bca7bf5243bd29"
+          },
+          {
+            "name": "/70",
+            "rva": 4562944,
+            "raw_offset": 4434432,
+            "raw_size": 46080,
+            "virtual_size": 46052,
+            "sha256": "5433949ef9b5e0c84c00e98161fdb2476b5455d90304a7248c0d024b395cce61"
+          },
+          {
+            "name": "/82",
+            "rva": 4612096,
+            "raw_offset": 4480512,
+            "raw_size": 92672,
+            "virtual_size": 92523,
+            "sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+          },
+          {
+            "name": "/33",
+            "rva": 4706304,
+            "raw_offset": 4573184,
+            "raw_size": 7168,
+            "virtual_size": 7104,
+            "sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+          },
+          {
+            "name": "/47",
+            "rva": 4714496,
+            "raw_offset": 4580352,
+            "raw_size": 31744,
+            "virtual_size": 31713,
+            "sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+          }
+        ],
+        "export_name": ".cybersand_native.windows.x86_64.dll.partial.QfLCdG",
+        "export_name_range": [
+          3932832,
+          3932883
+        ],
+        "codeview": [
+          {
+            "offset": 4274716,
+            "size": 25,
+            "guid": "fe0025099e8e1f384c4c44205044422e",
+            "age": 1
+          }
+        ],
+        "pe_timestamp": 0,
+        "pe_checksum": 0
+      }
+    },
+    {
+      "role": "C",
+      "first_sha256": "417f0221046458c3041eae487fbd2244097b047a1135efeb7e028d0158c41cf7",
+      "second_sha256": "c571e40334d65fb2828f1db772779455061a4a1bbcf73a9d62be997c24a0b3d7",
+      "bytes": 5825024,
+      "differing_bytes": 14,
+      "differing_ranges": [
+        [
+          3933389,
+          3933395
+        ],
+        [
+          4275232,
+          4275240
+        ]
+      ],
+      "all_differences_are_export_temp_basename_or_codeview_guid": true,
+      "executable_text_sha256": "97e1716b40f396ca081468f554e7c28bd77e2b32bb78f13081feec58c3b0d149",
+      "first": {
+        "sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "raw_offset": 1024,
+            "raw_size": 3575808,
+            "virtual_size": 3575430,
+            "sha256": "97e1716b40f396ca081468f554e7c28bd77e2b32bb78f13081feec58c3b0d149"
+          },
+          {
+            "name": ".rdata",
+            "rva": 3579904,
+            "raw_offset": 3576832,
+            "raw_size": 698368,
+            "virtual_size": 697904,
+            "sha256": "adb4b82aa7ec0b28a2a4b4cebbfc41dca9b4b83824406ef282e62797490fc0a9"
+          },
+          {
+            "name": ".buildid",
+            "rva": 4280320,
+            "raw_offset": 4275200,
+            "raw_size": 512,
+            "virtual_size": 53,
+            "sha256": "5af49948c00a50d42087e156d5379bba174e3d69bbfcb9a4f0102e080536c33e"
+          },
+          {
+            "name": ".data",
+            "rva": 4284416,
+            "raw_offset": 4275712,
+            "raw_size": 1024,
+            "virtual_size": 104272,
+            "sha256": "9c4b6aee6ac5bf183da161c39de29fec4e3926ec0b3cdaf6f5bb2767953245b3"
+          },
+          {
+            "name": ".pdata",
+            "rva": 4390912,
+            "raw_offset": 4276736,
+            "raw_size": 67584,
+            "virtual_size": 67356,
+            "sha256": "f872d9d5266d439438d6d0cecbcef114ab9c52604813932da2b85d7c12b06394"
+          },
+          {
+            "name": ".tls",
+            "rva": 4460544,
+            "raw_offset": 4344320,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+          },
+          {
+            "name": ".reloc",
+            "rva": 4464640,
+            "raw_offset": 4344832,
+            "raw_size": 15872,
+            "virtual_size": 15652,
+            "sha256": "5f1ca01f46eaf15fca6f748ed832bbf172e47f0ac3b4c7be3c16cfa6821aa58a"
+          },
+          {
+            "name": "/4",
+            "rva": 4481024,
+            "raw_offset": 4360704,
+            "raw_size": 14336,
+            "virtual_size": 13995,
+            "sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+          },
+          {
+            "name": "/18",
+            "rva": 4497408,
+            "raw_offset": 4375040,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "0c58567a9f85d77e8ca51718c3ae8525d9666ceda63c044ea4076955faef6817"
+          },
+          {
+            "name": "/58",
+            "rva": 4501504,
+            "raw_offset": 4375552,
+            "raw_size": 59392,
+            "virtual_size": 59112,
+            "sha256": "c3b3d27fbc3b0b318a9dc8a82911ac3e7f2b1407e179edca2e038f306913d81d"
+          },
+          {
+            "name": "/70",
+            "rva": 4562944,
+            "raw_offset": 4434944,
+            "raw_size": 46080,
+            "virtual_size": 46052,
+            "sha256": "cb58c0f984588db5176c85697cd4e5dfeec6a7a594d8a37904becc3e830c8618"
+          },
+          {
+            "name": "/82",
+            "rva": 4612096,
+            "raw_offset": 4481024,
+            "raw_size": 92672,
+            "virtual_size": 92523,
+            "sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+          },
+          {
+            "name": "/33",
+            "rva": 4706304,
+            "raw_offset": 4573696,
+            "raw_size": 7168,
+            "virtual_size": 7104,
+            "sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+          },
+          {
+            "name": "/47",
+            "rva": 4714496,
+            "raw_offset": 4580864,
+            "raw_size": 31744,
+            "virtual_size": 31713,
+            "sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+          }
+        ],
+        "export_name": ".cybersand_native.windows.x86_64.dll.partial.zzXeHP",
+        "export_name_range": [
+          3933344,
+          3933395
+        ],
+        "codeview": [
+          {
+            "offset": 4275228,
+            "size": 25,
+            "guid": "0ed3fbd19e166cfd4c4c44205044422e",
+            "age": 1
+          }
+        ],
+        "pe_timestamp": 0,
+        "pe_checksum": 0
+      },
+      "second": {
+        "sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "raw_offset": 1024,
+            "raw_size": 3575808,
+            "virtual_size": 3575430,
+            "sha256": "97e1716b40f396ca081468f554e7c28bd77e2b32bb78f13081feec58c3b0d149"
+          },
+          {
+            "name": ".rdata",
+            "rva": 3579904,
+            "raw_offset": 3576832,
+            "raw_size": 698368,
+            "virtual_size": 697904,
+            "sha256": "d23c7d62b1457724c6f6feb13ab138442ce48cfc826c9d273174a403c3224a6a"
+          },
+          {
+            "name": ".buildid",
+            "rva": 4280320,
+            "raw_offset": 4275200,
+            "raw_size": 512,
+            "virtual_size": 53,
+            "sha256": "c056115df01b4535d77bcec9ab37ac340c03d422dba20b9d3768db13f6840429"
+          },
+          {
+            "name": ".data",
+            "rva": 4284416,
+            "raw_offset": 4275712,
+            "raw_size": 1024,
+            "virtual_size": 104272,
+            "sha256": "9c4b6aee6ac5bf183da161c39de29fec4e3926ec0b3cdaf6f5bb2767953245b3"
+          },
+          {
+            "name": ".pdata",
+            "rva": 4390912,
+            "raw_offset": 4276736,
+            "raw_size": 67584,
+            "virtual_size": 67356,
+            "sha256": "f872d9d5266d439438d6d0cecbcef114ab9c52604813932da2b85d7c12b06394"
+          },
+          {
+            "name": ".tls",
+            "rva": 4460544,
+            "raw_offset": 4344320,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+          },
+          {
+            "name": ".reloc",
+            "rva": 4464640,
+            "raw_offset": 4344832,
+            "raw_size": 15872,
+            "virtual_size": 15652,
+            "sha256": "5f1ca01f46eaf15fca6f748ed832bbf172e47f0ac3b4c7be3c16cfa6821aa58a"
+          },
+          {
+            "name": "/4",
+            "rva": 4481024,
+            "raw_offset": 4360704,
+            "raw_size": 14336,
+            "virtual_size": 13995,
+            "sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+          },
+          {
+            "name": "/18",
+            "rva": 4497408,
+            "raw_offset": 4375040,
+            "raw_size": 512,
+            "virtual_size": 48,
+            "sha256": "0c58567a9f85d77e8ca51718c3ae8525d9666ceda63c044ea4076955faef6817"
+          },
+          {
+            "name": "/58",
+            "rva": 4501504,
+            "raw_offset": 4375552,
+            "raw_size": 59392,
+            "virtual_size": 59112,
+            "sha256": "c3b3d27fbc3b0b318a9dc8a82911ac3e7f2b1407e179edca2e038f306913d81d"
+          },
+          {
+            "name": "/70",
+            "rva": 4562944,
+            "raw_offset": 4434944,
+            "raw_size": 46080,
+            "virtual_size": 46052,
+            "sha256": "cb58c0f984588db5176c85697cd4e5dfeec6a7a594d8a37904becc3e830c8618"
+          },
+          {
+            "name": "/82",
+            "rva": 4612096,
+            "raw_offset": 4481024,
+            "raw_size": 92672,
+            "virtual_size": 92523,
+            "sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+          },
+          {
+            "name": "/33",
+            "rva": 4706304,
+            "raw_offset": 4573696,
+            "raw_size": 7168,
+            "virtual_size": 7104,
+            "sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+          },
+          {
+            "name": "/47",
+            "rva": 4714496,
+            "raw_offset": 4580864,
+            "raw_size": 31744,
+            "virtual_size": 31713,
+            "sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+          }
+        ],
+        "export_name": ".cybersand_native.windows.x86_64.dll.partial.9y5HSm",
+        "export_name_range": [
+          3933344,
+          3933395
+        ],
+        "codeview": [
+          {
+            "offset": 4275228,
+            "size": 25,
+            "guid": "2f2ec9e35c3afa6d4c4c44205044422e",
+            "age": 1
+          }
+        ],
+        "pe_timestamp": 0,
+        "pe_checksum": 0
+      }
+    }
+  ]
+}

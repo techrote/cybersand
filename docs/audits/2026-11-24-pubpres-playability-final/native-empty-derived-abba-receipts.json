@@ -1,0 +1,838 @@
+{
+  "schema": "pubpres-native-empty-derived-receipts-v1",
+  "manifest": {
+    "schema": "pubpres-native-empty-derived-abba-v1",
+    "order": [
+      "A",
+      "B",
+      "B",
+      "A"
+    ],
+    "ticks": 72,
+    "workers": 4,
+    "builds": {
+      "A": {
+        "source_commit": "27a08efb4a78186c0e2b19176576752e2503b998",
+        "source_tree": "24a69fea61a7f5ef02f533280a07a3c8f3e67741",
+        "cwd": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/control-src",
+        "compiler": {
+          "path": "/usr/bin/x86_64-linux-gnu-g++-14",
+          "sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+          "version": "x86_64-linux-gnu-g++-14 (Debian 14.2.0-19) 14.2.0"
+        },
+        "flags": [
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include"
+        ],
+        "arguments": [
+          "/usr/bin/x86_64-linux-gnu-g++-14",
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/bench/pubpres_empty_derived.cpp",
+          "-o",
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A"
+        ],
+        "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8",
+        "source_inputs_sha256": {
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "679edc84be60e6dfd5b2e8896032a8f19a98b0a0866d576bd527fb1af955420b",
+          "native/bench/pubpres_empty_derived.cpp": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+        },
+        "started_utc": "2026-11-24T17:25:01.697511+00:00",
+        "finished_utc": "2026-11-24T17:26:26.631108+00:00",
+        "exit_code": 0,
+        "log_sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000"
+      },
+      "B": {
+        "source_commit": "fa34fc2129125d77a5255c95bfa82af91eff05a5",
+        "source_tree": "bf7603054b69023a87d5c14902358c3d4d8c0478",
+        "cwd": "/workspace/scratch/0b2a9bdf7883/cybersand-native",
+        "compiler": {
+          "path": "/usr/bin/x86_64-linux-gnu-g++-14",
+          "sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+          "version": "x86_64-linux-gnu-g++-14 (Debian 14.2.0-19) 14.2.0"
+        },
+        "flags": [
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include"
+        ],
+        "arguments": [
+          "/usr/bin/x86_64-linux-gnu-g++-14",
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/bench/pubpres_empty_derived.cpp",
+          "-o",
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B"
+        ],
+        "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8",
+        "source_inputs_sha256": {
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "514ba4062fecf114406d7761cd4720dc0353684048da386c05a981381065e0bb",
+          "native/bench/pubpres_empty_derived.cpp": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+        },
+        "started_utc": "2026-11-24T17:26:26.723352+00:00",
+        "finished_utc": "2026-11-24T17:27:53.822939+00:00",
+        "exit_code": 0,
+        "log_sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355"
+      }
+    },
+    "runs": [
+      {
+        "name": "current512-one-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:28:55.221906+00:00",
+        "finished_utc": "2026-11-24T17:28:56.489500+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:28:56.493216+00:00",
+        "finished_utc": "2026-11-24T17:28:57.982559+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-3-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:28:57.986804+00:00",
+        "finished_utc": "2026-11-24T17:28:59.210114+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-4-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:28:59.213824+00:00",
+        "finished_utc": "2026-11-24T17:29:00.286684+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current1024-one-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "1024",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:29:00.290575+00:00",
+        "finished_utc": "2026-11-24T17:29:04.123667+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current1024-one-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "1024",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:29:04.131446+00:00",
+        "finished_utc": "2026-11-24T17:29:07.478355+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current1024-one-3-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "1024",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:29:07.483372+00:00",
+        "finished_utc": "2026-11-24T17:29:10.895865+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current1024-one-4-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "1024",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:29:10.900413+00:00",
+        "finished_utc": "2026-11-24T17:29:14.843524+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:29:14.853256+00:00",
+        "finished_utc": "2026-11-24T17:29:33.072518+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:29:33.080156+00:00",
+        "finished_utc": "2026-11-24T17:29:44.018380+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-3-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:29:44.027080+00:00",
+        "finished_utc": "2026-11-24T17:29:55.175174+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-4-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:29:55.187424+00:00",
+        "finished_utc": "2026-11-24T17:30:07.477115+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "historical512-one-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "512",
+          "1",
+          "4",
+          "72",
+          "1"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:30:07.487438+00:00",
+        "finished_utc": "2026-11-24T17:30:07.892342+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "historical512-one-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "512",
+          "1",
+          "4",
+          "72",
+          "1"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:30:07.899248+00:00",
+        "finished_utc": "2026-11-24T17:30:08.303513+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "historical512-one-3-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "512",
+          "1",
+          "4",
+          "72",
+          "1"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:30:08.310655+00:00",
+        "finished_utc": "2026-11-24T17:30:08.675443+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "historical512-one-4-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "512",
+          "1",
+          "4",
+          "72",
+          "1"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:30:08.680809+00:00",
+        "finished_utc": "2026-11-24T17:30:09.096767+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:30:09.103561+00:00",
+        "finished_utc": "2026-11-24T17:30:18.429132+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:30:18.437158+00:00",
+        "finished_utc": "2026-11-24T17:30:31.331532+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-3-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:30:31.362746+00:00",
+        "finished_utc": "2026-11-24T17:30:45.698901+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-4-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:30:45.709982+00:00",
+        "finished_utc": "2026-11-24T17:30:56.793487+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-eight-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "8",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:30:56.801183+00:00",
+        "finished_utc": "2026-11-24T17:31:10.661122+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-eight-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "8",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:31:10.671704+00:00",
+        "finished_utc": "2026-11-24T17:31:21.170509+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-eight-3-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "8",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T17:31:21.177729+00:00",
+        "finished_utc": "2026-11-24T17:31:29.092862+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-eight-4-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "8",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T17:31:29.098514+00:00",
+        "finished_utc": "2026-11-24T17:31:40.349746+00:00",
+        "exit_code": 0
+      }
+    ],
+    "host": {
+      "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+      "logical_cpus": 9,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "scope": "Local development compiler and native-only causal screen; no physical/playability acceptance.",
+    "started_utc": "2026-11-24T17:28:55.219394+00:00",
+    "runner_source_sha256": "6aed2cf79d96b3212965b87e6a2d94cbb161bc27b8067b8743868f4d9c99012a",
+    "quiet_scope": "Root/B/C were explicitly asked to avoid local builds/tests/Godot execution throughout this serial interval. External host activity is unobserved; no stationarity claim.",
+    "finished_utc": "2026-11-24T17:31:40.353724+00:00"
+  },
+  "raw_runs": {
+    "current512-one-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":13.360496875000001,\"tick_p50_ms\":11.853172000000001,\"tick_p95_ms\":20.859517,\"tick_p99_ms\":22.325804999999999,\"tick_max_ms\":22.325804999999999,\"column_mean_ms\":8.2305322638888896,\"flux_mean_ms\":3.0147853888888889,\"apply_mean_ms\":1.2749964166666667,\"prepare_mean_ms\":0.056812361111111112,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[21830825,13005581,12486262,16818643,12759090,11895297,11225675,12062160,11500724,11298264,11303042,20139366,12367105,11510756,12386501,11096584,12558946,20672656,11853172,11592661,11856650,12173577,13165378,20187943,16752413,13083144,15034424,14122393,10655142,16567205,11490100,10260815,10461751,11503780,12656547,11469359,22186884,11233459,10688943,11634484,13525011,14892945,10718114,20859517,12557957,11275807,11423138,10891532,10507583,10624250,20408086,11342622,17058075,15883180,11450067,11793330,11015113,16980017,11883020,11737535,11780989,11470345,11991640,10944641,19761131,11052487,10161980,14376199,11126901,11825914,10763143,22325805],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[416034,12068733,5213410,2000036],[149153,7689305,2667387,842106],[65386,7392070,2766774,1021463],[26198,12677800,2892706,992397],[36626,8210163,3149454,1020703],[38159,7540069,3057070,984008],[36873,7163543,2687470,1016243],[33737,7722815,3115253,952224],[36325,7229032,2910016,1020849],[37179,7015411,2847708,995927],[174477,7110999,2745139,881136],[35724,7901431,10983798,922869],[36319,7806905,3031964,892547],[37968,7447452,2690195,952364],[35224,8083501,2908258,922984],[36662,7076893,2609381,1018124],[34230,7859769,3200895,980226],[37864,16414760,2922692,907290],[38745,7447325,2920055,978623],[61783,7466579,2755034,902529],[36301,7572731,2869672,835881],[39233,7273593,2654917,1546668],[110523,8525775,3125256,924139],[37438,7468089,11183638,1098605],[25852,11560584,3729391,910566],[41135,7290076,2651405,2359674],[39780,7443899,2767961,1883928],[503851,8899120,2321618,880394],[121447,7128319,2138287,777504],[35625,13078494,1979290,855978],[36269,7820514,2369177,765137],[34426,6447345,2357344,809365],[37311,6937641,2065392,708526],[41925,6955953,2294056,830322],[41038,7650767,3279458,807550],[36233,6794950,2486801,1675232],[27188,9660591,2142203,9418001],[39831,7178655,2295624,724289],[35776,7270899,1935814,820883],[36329,8007294,1975151,875876],[33866,8117094,3805462,856776],[35485,9142265,4108266,796139],[68692,7074631,2066563,817104],[38057,17209329,2131587,893899],[34879,8433060,2113023,1219149],[45860,7462453,2014689,1088635],[36981,7528746,2221291,761387],[38300,6907100,2202246,930952],[31698,6550722,2178787,1101560],[36127,6968166,2020105,750439],[58352,7452713,11059203,1002081],[40279,6969738,2212406,1108401],[37200,8746322,4199496,2698459],[37692,7934110,6393609,823839],[38195,7261015,2072475,873114],[35569,7522768,2281499,895746],[39503,6662219,2365969,875721],[36295,12782860,2431081,787939],[41205,7728092,2370033,918586],[36346,7667465,2387517,875037],[43440,7660229,2404003,822982],[90382,6969760,2566105,943441],[43435,7593313,2495012,980460],[39597,7160385,1985674,766288],[38179,15263147,2513833,1053043],[38818,7477806,1906570,826537],[41811,6427366,1981035,815625],[37922,9170186,2888619,1087224],[39109,6751652,2270537,1100364],[38704,7391449,2527067,986119],[36901,6824753,2145544,818011],[39434,7497565,2048128,11811519]]}\n",
+      "stderr": "",
+      "stdout_sha256": "ecf2b0f17c4f702d00565819860b76e259185f7b53cbad7e05fb4b5d7a316d8d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":15.76145475,\"tick_p50_ms\":13.344556000000001,\"tick_p95_ms\":26.399374000000002,\"tick_p99_ms\":41.244334000000002,\"tick_max_ms\":41.244334000000002,\"column_mean_ms\":8.1789788055555555,\"flux_mean_ms\":4.3219290138888891,\"apply_mean_ms\":1.902191361111111,\"prepare_mean_ms\":0.048916861111111112,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[23805819,15398862,12152572,16431916,15183233,19552785,41244334,10891925,14157696,12906498,18352646,12961588,11737446,19861800,12382347,12875011,12768588,12552597,16619225,12332185,24237634,14047031,11899802,33896164,26399374,17002666,14779448,12256848,18744109,11636309,12154847,11502696,12552637,12638076,11287523,11435229,18582569,27010969,22538530,20713226,22342508,15726273,15448255,11204338,11582643,11193300,15380584,12366742,12912372,12698847,12272147,13329416,21408696,12810933,12547867,12110515,12755859,13807744,12825536,19456308,13151460,13352189,13344556,13407222,17204248,23685691,12323618,13141207,15387635,14080773,13568185,18512315],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[710206,14424106,4494831,2097155],[39560,6893713,6060183,1132906],[31720,6660933,2798010,1262567],[31697,11783309,2736793,1627659],[35719,7287001,5947241,1385851],[36299,9246298,5808837,2872535],[38317,14859595,14307992,3704351],[35309,6410561,3082957,1137023],[32521,9382649,2831153,1005539],[35454,6794433,4239147,1449468],[34691,8292114,3422775,4715329],[35180,7556698,3339553,1780942],[29538,6621096,3163078,1487971],[33505,6804614,11550060,1097479],[34376,6599971,3392462,1914282],[33317,7466810,3806299,1205117],[36989,6856983,3958219,1339123],[42408,6970997,2949587,1233189],[38660,7664484,3670037,1455725],[38715,6988715,3542244,1191033],[36414,19061945,3033371,1409110],[36233,7428231,3735716,2082776],[37696,6861661,3516432,983022],[36224,14037511,15938439,3431300],[30240,13976602,6189317,4983870],[36612,9008120,4779679,1809887],[35476,7709841,4640231,1109712],[36079,7127315,2885990,1787651],[34638,12446182,3272202,2428978],[34934,6300215,3552781,1306798],[67517,6011786,4288491,1263330],[34313,6624467,2773578,1274639],[32100,7519709,2952040,1318203],[36531,7043048,3788978,1207954],[32711,6329126,3058685,1267082],[37140,6749966,2849035,1056765],[24362,8273225,5855505,3700635],[34738,10912437,10915071,1547189],[39254,11124366,7023847,1305235],[35296,8125228,9896633,1315662],[34405,11535065,7039291,2583425],[55358,7578408,5511500,1321908],[33640,8420986,3242373,2993864],[31514,6519184,2729748,1259201],[33988,6606423,2642068,1362992],[33929,6593486,2766354,1138043],[32784,10239309,2476049,1352835],[33216,6406836,2747465,2546639],[28660,7516451,2976738,1093856],[31789,7330581,3140465,1520872],[33208,6597609,3452418,1388251],[38132,6934509,3776348,1060340],[39077,6900656,3346401,10274651],[41473,6954820,3191446,1711024],[35263,7323056,3204190,1144172],[35389,6477871,3366119,1352489],[34170,7785954,2969032,1063803],[34274,7378463,4392126,1294294],[115743,7929174,2723507,1137181],[35369,13357139,3873475,1097181],[28232,7563097,3399917,1279420],[39239,7659952,3063559,1566130],[38446,7431510,3154643,1776281],[39724,6343060,3066437,2511498],[37279,7008699,4854757,2270454],[46392,8104198,2781908,1373166],[167843,7149448,2897951,1101167],[37064,7778263,3147574,1057423],[41075,7368262,5386536,1305368],[40510,6442663,3901896,2124987],[64089,6127894,2155220,1660287],[38051,5287387,3753899,8549534]]}\n",
+      "stderr": "",
+      "stdout_sha256": "e215627839042a75885b6d02896e4fbff5e758d559684cd7dd7c2828c40f4c42",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-3-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":13.287529277777779,\"tick_p50_ms\":11.090985999999999,\"tick_p95_ms\":24.848949000000001,\"tick_p99_ms\":39.146912,\"tick_max_ms\":39.146912,\"column_mean_ms\":7.406464402777778,\"flux_mean_ms\":3.2411045972222219,\"apply_mean_ms\":1.5717072638888889,\"prepare_mean_ms\":0.046568305555555557,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[20263898,14064768,10557863,8642197,9614418,10272529,10512837,12049510,9402028,20937734,9020703,9418725,10657064,10931460,9688332,10027597,16719110,11090986,10474125,8797747,13710966,39146912,22231644,11030414,9760796,10801821,9639725,12306659,9748895,24848949,9198469,10367684,20118835,14165494,16976434,26220400,9880934,9037359,15844316,9668943,11657760,9996287,15466031,9151452,11552500,11188133,10278859,9912651,9441491,18351910,12921682,14961816,18516162,10035707,13430521,13226916,21007911,12321086,11327996,16166646,27752997,10751041,11182438,13838076,13125886,13306547,12494412,10858938,15117159,10035542,9887623,9588652],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[289535,10949028,4882690,2975283],[25176,6740079,4464759,852509],[15994,5086788,2366864,856610],[18349,5474773,2064917,892327],[21504,6333837,2144338,888654],[22040,6482507,2376825,1205403],[21024,6620084,2816707,850158],[21592,7127081,2537994,1127357],[23792,6240823,2117777,804547],[21084,7838656,2941218,9918320],[23851,5962903,2029835,793787],[20388,6242750,1948574,1013490],[15716,6552608,2452771,1194817],[21705,5684051,4057815,876368],[47212,6060121,2277498,1003105],[21752,5779088,3098839,854972],[21495,5519669,2015898,8842869],[23187,6897142,2558573,1127869],[22877,5807586,3351420,899556],[22892,5566739,2064137,834502],[18645,5752260,3492628,1398227],[24481,26054847,3086795,8366643],[1080147,12071326,7469609,1256366],[56894,6367088,3329771,938415],[13143,6155751,2340185,883291],[23517,5833919,2199702,2330951],[19685,5846239,2384276,1032369],[22335,7380742,3658532,925216],[22978,6098561,2408666,865788],[21538,11892143,4209833,986951],[22936,5500452,2399875,910487],[20904,6791855,2192810,876957],[20889,7324089,9705545,1371684],[43798,7842588,4463447,1271817],[24912,9176466,4107542,2608600],[74987,18878352,5753309,1085026],[86718,6361702,1970638,967419],[22503,5455764,2249237,882972],[20373,6082672,4995410,4225637],[23816,5901360,2060404,1170012],[21876,7317520,2985769,849008],[23067,6437498,1965231,1001737],[48560,11884610,2025185,990162],[21671,5519401,2079973,987441],[21009,7831445,2209682,996970],[20390,5653164,2492297,1053619],[21629,6407247,2291853,1093926],[20291,5860831,2325898,1226700],[16806,5998416,2119824,779877],[19047,12236144,3221912,806650],[21556,7532663,3606134,1184646],[21333,5885001,6037201,1031797],[22317,5654222,6092224,1579082],[21760,5966494,2385752,1082429],[21469,7793511,3286799,1781184],[21729,8912326,2723849,1004347],[20374,16553958,2681069,900502],[23280,6003745,4070057,1491265],[21739,6055526,2260847,925529],[21893,5645144,4377938,4033482],[19951,9341673,7616471,1685859],[24428,6679942,2385872,943521],[23332,7279603,2306938,940012],[22400,6114063,5209167,1790508],[23989,6004381,3781361,2071136],[23920,8493536,2667764,1482771],[201002,6037263,3291403,1772860],[24504,6518541,2167476,1497531],[23960,5674601,7315851,1232779],[24266,6380663,2102930,825104],[79497,6102636,2186496,867035],[23509,5755180,2040645,1086123]]}\n",
+      "stderr": "",
+      "stdout_sha256": "9b45afcf8ac915056cc83483ef24219c5696189e08bf2c8d9f7fb978a0006032",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-4-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":3,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":12.684415361111112,\"tick_p50_ms\":11.247616000000001,\"tick_p95_ms\":21.881267000000001,\"tick_p99_ms\":27.866160000000001,\"tick_max_ms\":27.866160000000001,\"column_mean_ms\":8.5143998750000005,\"flux_mean_ms\":2.4085139305555554,\"apply_mean_ms\":1.136035861111111,\"prepare_mean_ms\":0.023358791666666667,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[11785653,13167872,11387220,10510931,10393982,12062912,10495623,22182718,12047867,10873188,10816555,10135504,9844651,10321386,18455336,11716773,11803389,10271200,10463654,10120463,10279715,10651843,23000524,11742246,11192176,11896295,11958189,10479109,12664394,16252185,10576732,10124226,10302438,10288410,10977810,11094916,19220759,10871640,12346655,10606047,13026508,13106445,10654169,10560674,19535494,11173430,10920207,10781499,12298346,12252563,21881267,12224558,13105443,12444858,27866160,12226600,19556781,10679001,9994467,11728159,12053357,11247616,10767997,16763484,11087512,10589407,11421506,11022327,10237057,13610889,13835196,19241743],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[103773,7508494,2262888,682524],[18604,7007274,1957700,641360],[16806,7166311,2581457,778815],[15831,7429715,2046999,830027],[22669,7461014,2091994,610301],[21770,8261758,2319348,1251257],[21653,7069814,2107238,993399],[21299,18945485,2201710,771041],[22413,7704329,2666776,1413198],[22701,7663662,2285395,694026],[29494,7443815,2416217,699324],[20719,7187983,2094663,634595],[18070,6639136,2132054,763954],[21295,7190503,2036121,794150],[21683,15176583,2149061,742488],[22086,7616366,2615040,1180837],[21983,7573224,2983686,879778],[22130,7204628,1993931,735876],[20936,7040191,2228647,706345],[21834,7158556,2005504,645368],[22695,7073656,2168901,616699],[21438,7460748,2224869,628353],[19297,7480316,2005163,13094994],[21457,8289006,2191769,764036],[12784,8097128,2052871,697765],[23417,7312787,3376840,800362],[21557,7148564,2013931,2232900],[22246,7400933,2086832,625473],[26174,7137903,2394191,1004627],[23370,12715142,2018442,883410],[22796,6997219,2238704,880706],[22376,6904638,2049270,732324],[20460,7158119,1939757,751959],[22037,6934542,2117362,752139],[21510,7486822,1953788,822545],[22276,6552858,3009305,768303],[13148,15398771,2478788,746291],[21998,7315331,2132552,736022],[21787,7169658,2185074,2299375],[21514,7197335,2184310,708589],[20607,7608396,3981083,841256],[23405,7292942,3264724,2019661],[20749,7379559,2046517,706084],[19665,7300584,2015484,754706],[19987,16096111,2033646,837088],[20617,7343259,2232267,1019700],[19248,7586940,1953765,750042],[20081,7277503,2137173,854285],[72806,7509549,3173398,1029756],[20256,7157773,3764227,831677],[42340,16387753,2419554,2485972],[22445,8521019,2117944,923051],[20807,7642917,2191211,2621706],[20868,7533504,2055005,734860],[21097,17885284,8345337,975188],[21103,8405707,2369423,865062],[21463,15934890,2209499,723973],[20839,7046795,2022260,1037980],[20295,6615982,2002778,762531],[22528,7791616,2315776,783443],[16619,7932548,2405896,951747],[22611,7558274,2289617,801029],[22226,7350858,2066619,775088],[20116,13066443,2116336,924144],[22070,7049586,2516392,864523],[21742,6823898,2109209,1018912],[22049,7676054,2181953,756458],[21907,7487053,2055342,777177],[21889,6456630,2104866,990203],[21662,8273771,2492101,2078096],[23061,7316350,3055079,2172272],[22589,14046926,3369374,1131377]]}\n",
+      "stderr": "",
+      "stdout_sha256": "a06939d2a9e9d7e28278cbecd1f753e27c4e748a2480ffc6932ee19eac50e99c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current1024-one-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":1024,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":66229110,\"tick_mean_ms\":45.475689652777774,\"tick_p50_ms\":43.243406999999998,\"tick_p95_ms\":56.876246000000002,\"tick_p99_ms\":92.531628999999995,\"tick_max_ms\":92.531628999999995,\"column_mean_ms\":30.526739138888889,\"flux_mean_ms\":9.7306086666666669,\"apply_mean_ms\":4.0050391666666663,\"prepare_mean_ms\":0.12208148611111111,\"wave_storage_bytes\":14115432,\"launched_parcels\":4608,\"checkpoints\":[5381231517344368158,13050306749737917782,13291359925706445286,0,0,0,1280850462754462505,5308624377735771212,15228743573666496613,0,0,0,9068512957720627750,1217426527203527398,7780746231543997677,0,0,0,4598265701910772061,12159439666640891378,7688049153939499666,0,0,0,8470040545395979904,4966177361829198123,16686447720401648781,0,0,0,7157131854820215411,11586433819709117758,7246570784317364593,0,0,0],\"tick_nanoseconds\":[42063283,50558005,42337771,47397988,37072362,54341713,39389068,38750331,48101040,41524586,48285530,51741927,40950298,39456125,52679341,39702193,39871132,50454736,39772450,50195383,37081668,48975166,46188684,49639979,47142187,39607720,54907770,40083088,47422868,34130722,41395681,35439795,37473839,34221270,39023661,44312389,40062201,46922046,37070976,42492728,36114017,35554247,47259398,40470227,43998615,44351047,54485674,36724655,41784463,51769779,49411352,70541520,92531629,39615082,44539979,37464920,46848197,52044303,62807170,37207305,47589847,56058833,43053984,53556843,41584625,56876246,50183517,49857984,40922707,38540066,49018317,43243407],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1091917,27391962,7669767,2766417],[57161,33210252,9659073,2772183],[53143,29392003,8243079,2473643],[52683,37226841,7262417,2561464],[56677,26477140,7134588,2712698],[55649,27610490,22004119,4370236],[57211,28342150,7789385,2847906],[84755,27971842,7926025,2488903],[67437,37326435,7030952,2834575],[118522,30196381,7508874,3182711],[54845,34581120,8249216,5048076],[274401,30879436,14607836,4936675],[73427,29817387,7629260,3070013],[63554,28430260,7421521,3081819],[66439,27185017,8361809,16477896],[64068,27902010,8156739,2813809],[55802,27271033,8505503,3509078],[55844,37430174,9609950,2923673],[57711,28369271,7846462,2907116],[56868,39377163,7363905,2976429],[63335,24667083,8022716,3598656],[78818,38030402,7510909,2821665],[62633,30329252,9926783,3993747],[62188,27624674,17853972,2650014],[73010,29565915,10074387,6800386],[63133,27694487,8114271,3156446],[60723,38341818,11356989,3234403],[61155,29042535,6975242,3032162],[55375,26589381,17324489,2677122],[65719,23993202,6532505,2749938],[58684,23971904,12267302,4423823],[58602,26014594,6298945,2452449],[55912,26025633,8169908,2586739],[58457,24509152,6339045,2703596],[164363,27997105,6042532,3883590],[87922,23949265,9975534,9282248],[99967,22820967,7441805,7524465],[88242,23053375,13636881,9227924],[98623,23298803,7346167,4747446],[597968,20664836,14546059,5857125],[89170,20605882,8042606,6414846],[87246,24433946,7266844,2685035],[87073,26794690,16673192,2813506],[152703,28184439,7963123,3195455],[84811,32605850,7440292,2891259],[89756,32111802,8428289,2723788],[89233,43434003,7109513,2748859],[87874,25551408,7246626,2978769],[90012,26593682,8892364,4751688],[89762,29190386,16222635,3700903],[94433,34849215,10581840,2874121],[159885,48088863,15228297,4070103],[1658637,58182840,27379374,4033869],[116952,26668772,8591457,3081135],[89505,26557652,14387540,2537954],[86169,25695143,7809040,2867710],[99856,33223476,8687735,3561047],[116515,37964093,9875379,3018363],[113354,30618737,12404295,17882542],[86835,24741001,7556311,3487971],[56393,33966950,9329376,2980749],[55668,38152310,11522578,4700305],[61155,30389797,7913393,3339421],[62780,41700487,8020706,2763436],[56777,27106722,8993176,4422394],[56690,42540830,8778107,3926478],[57270,32672782,13179680,3365860],[61152,38662639,7133617,2767452],[56148,27958954,8542319,3471074],[55247,26701392,7830752,3214667],[53849,36336363,7933366,3562564],[54014,31067362,7903081,3370233]]}\n",
+      "stderr": "",
+      "stdout_sha256": "162b8d611ed3dacbda4d92b755f65941133dc2d649c18b4c836411ae60bec75f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current1024-one-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":1024,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":66229110,\"tick_mean_ms\":38.289477708333337,\"tick_p50_ms\":34.570686000000002,\"tick_p95_ms\":56.904048000000003,\"tick_p99_ms\":74.486797999999993,\"tick_max_ms\":74.486797999999993,\"column_mean_ms\":22.931189791666668,\"flux_mean_ms\":9.4490486805555562,\"apply_mean_ms\":4.2586979861111107,\"prepare_mean_ms\":0.30652106944444446,\"wave_storage_bytes\":14115432,\"launched_parcels\":4608,\"checkpoints\":[5381231517344368158,13050306749737917782,13291359925706445286,0,0,0,1280850462754462505,5308624377735771212,15228743573666496613,0,0,0,9068512957720627750,1217426527203527398,7780746231543997677,0,0,0,4598265701910772061,12159439666640891378,7688049153939499666,0,0,0,8470040545395979904,4966177361829198123,16686447720401648781,0,0,0,7157131854820215411,11586433819709117758,7246570784317364593,0,0,0],\"tick_nanoseconds\":[41580298,33795188,40378288,30722249,29033710,41036270,33028111,29400673,35802933,30690444,30686309,38469125,32877543,34663354,48334096,36069717,33420096,46890048,34160866,45984549,64802702,41680602,35264617,30561470,43492416,30219879,30209793,38492840,29803487,32693981,43930540,31862795,33055164,43565761,31419703,51957174,39356384,33919895,32707797,39134125,31571106,32715782,42537362,31154544,33845285,40528278,30256386,31992136,37372636,32843407,33557689,40083834,32974537,32818263,40392710,55100589,56006893,34570686,39815658,32601640,56904048,36636525,34639427,35983270,49558815,34370738,64559896,74486798,33860243,33137712,42760550,32049960],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[343033,26205647,8830271,3234105],[102292,19390911,8608171,3606229],[87091,27596737,7461987,3172043],[200083,18429509,8156743,3613955],[84779,18438646,7093824,3078908],[84827,29123711,7508836,4007372],[87645,21402559,7430049,3728946],[181390,18331694,6908182,3598664],[89303,25091648,6903127,3291364],[88614,18792997,7823923,3554501],[87561,19077533,7023560,3998761],[85931,26906318,7754413,3289383],[107818,19701557,8994846,3391568],[93321,20864842,8142666,4275167],[92451,20340812,9573273,17025526],[101631,20293547,8209389,6863390],[93916,21061420,8234521,3304366],[13397103,19456553,8498253,3657089],[87471,19918674,9410605,4084716],[86708,32469837,7597320,4817692],[93002,38022376,9607397,15925220],[118991,20261430,16782105,3943121],[89343,18878421,12042522,3515045],[111983,18161459,7905876,3586166],[100227,19620103,17874188,5212731],[98038,18392998,7382795,3599417],[95773,17825704,7827156,3641914],[124043,17595050,16907839,3038906],[88110,17967465,7425324,3467788],[89553,19605228,8711269,3529453],[98843,30493548,8849412,3220288],[101017,19237033,8432538,3299490],[94695,19804421,8888397,3469542],[100344,31646337,7900002,3097783],[96188,18762853,7929834,3498045],[91089,33304742,7949816,3031037],[102762,27343135,7429161,3569628],[144778,21152194,7718816,3959547],[95908,20188954,7770919,3790449],[94135,27590966,7086381,3515730],[91914,19055035,7674169,3728041],[183379,20018607,7722322,3628858],[97229,19097979,18170030,3708653],[93699,19182281,7531184,3422510],[94015,21575047,7847659,3436700],[98026,29200853,7026694,3330058],[94805,18707244,7317855,3137868],[123176,19734020,7434694,3306460],[104898,18859511,13039537,4241007],[530279,19155152,9272278,3192168],[128639,20035381,8600336,4006108],[169670,28177569,7696529,3172543],[64362,19727377,7801579,4411790],[59291,20039696,8698329,3292126],[90604,18661470,17103726,3587773],[59758,41209911,9101494,3617732],[71534,24547541,21953004,8365336],[67503,21485193,8878617,3289483],[65996,18694556,16544785,3369981],[63800,19418901,6776435,3560451],[124829,35663769,8645943,4266627],[114520,23971493,7943202,3558877],[255755,19495088,9167987,3698781],[131274,20888078,8821495,4166039],[111422,33379675,11462398,3248066],[100224,20514429,8530346,3829351],[94904,31106438,18362773,8977361],[670595,43801675,15414159,10172464],[122252,19509799,8069828,4781194],[130701,19908448,7517467,3487598],[109597,29238575,8489553,3708400],[139077,18235305,9129392,3420806]]}\n",
+      "stderr": "",
+      "stdout_sha256": "92fe828694483191fedaccb591a5fe525609610938cd2ecc6dd650db401a835b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current1024-one-3-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":1024,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":66229110,\"tick_mean_ms\":40.393938916666663,\"tick_p50_ms\":34.107698999999997,\"tick_p95_ms\":86.317967999999993,\"tick_p99_ms\":104.001589,\"tick_max_ms\":104.001589,\"column_mean_ms\":23.120247194444445,\"flux_mean_ms\":10.876267458333334,\"apply_mean_ms\":4.6686184722222217,\"prepare_mean_ms\":0.084509944444444443,\"wave_storage_bytes\":14115432,\"launched_parcels\":4608,\"checkpoints\":[5381231517344368158,13050306749737917782,13291359925706445286,0,0,0,1280850462754462505,5308624377735771212,15228743573666496613,0,0,0,9068512957720627750,1217426527203527398,7780746231543997677,0,0,0,4598265701910772061,12159439666640891378,7688049153939499666,0,0,0,8470040545395979904,4966177361829198123,16686447720401648781,0,0,0,7157131854820215411,11586433819709117758,7246570784317364593,0,0,0],\"tick_nanoseconds\":[38333146,31376231,48259918,24712748,29031111,25537235,33373648,27162322,31516400,37241151,26447432,27748296,56596001,35517066,32533482,34013385,30053076,30303715,39560152,29716076,32456418,50692245,30319137,33464892,32413319,31197985,36722999,33448206,43555835,31072650,47834614,29901853,31711537,40889986,33473151,41164494,60705598,51991660,57897767,32703845,39994048,57866250,92563273,92268395,34321495,34556544,31561292,48705284,41380535,32717717,30628005,48146617,34107699,33376245,44316044,34279986,40594815,31377413,34113454,44215789,39279285,34295394,86317968,33943419,55150347,104001589,33583793,50463366,30909365,31687458,42990825,31999111],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[240429,23778826,7899650,4434990],[56315,17639864,7766224,3492414],[74566,25176024,13562074,4177931],[56116,13426984,8259403,2580966],[58859,15079878,8922117,4533087],[57376,14873365,6454736,2803668],[57189,21734136,6781689,2633907],[58577,13426822,8613795,2750717],[58378,19384199,6022141,5718879],[56322,23601871,10638013,2608983],[61586,16626677,5693167,2863569],[56432,17166596,7132424,3024477],[67976,21709407,17005328,10139542],[71481,20392037,7635723,6757074],[83334,18835216,6633060,6371687],[62446,14567047,16032878,2950286],[60761,19380142,7053731,3102008],[56569,18621037,7442594,3729887],[55686,18427381,16656086,3855707],[58998,18629020,7479931,3114864],[55608,19056307,9370961,3470596],[55087,29613493,11412966,9091945],[84474,18758245,7421880,3535794],[61211,21082844,8355881,3371845],[74540,20496567,7140924,4129973],[86637,17784302,7105887,4911101],[60447,20352933,11630269,4044807],[83511,20112454,9095120,3570472],[61095,28794605,10878519,3195297],[61158,19135715,7388444,3877700],[221184,33684411,8710480,4304963],[87148,18088460,7502007,3608484],[59923,19125121,7460472,4362704],[62413,28084672,7413818,4035101],[59094,18480127,8280530,3311837],[58160,27664390,8754658,3933075],[63364,25558084,15427524,14205157],[71894,32288237,8963990,9959993],[68395,32207301,8890199,15143115],[70751,19613004,8707915,3577794],[63075,26636893,8950735,3405287],[63769,33869787,13009483,4072303],[408587,50329811,28809654,9284777],[256654,34892761,42820860,12728557],[445568,21258910,7844610,3944371],[68379,23002393,7028812,3729608],[60977,19070937,8371729,3283815],[59672,20476112,8504293,3230411],[70935,28215340,8149463,4063558],[61568,20033298,7917607,3834466],[85617,18579270,7586035,3462203],[62237,35182186,7784919,3256321],[59994,20321632,8516994,4436159],[60199,20867337,7879122,3215676],[60208,31172967,8761643,3284423],[57453,19903953,9539694,3981674],[93457,28419955,7609692,3668769],[58902,18631730,7532377,3469831],[84125,20229395,8632967,3490691],[59778,19841842,8391851,15020251],[61477,21662345,13223084,3533502],[61956,20738019,9293690,3287793],[57548,66945154,10736868,6812991],[67019,20605296,8211222,3385161],[59144,33615947,10374391,4453828],[60719,20323169,76769720,3908374],[218429,22161299,7442592,2771007],[73603,19867907,26259967,3215364],[86372,18255294,8156165,3511648],[58954,19334574,8152434,3228091],[62576,28948881,9149507,3802741],[60275,18805603,8081869,4080483]]}\n",
+      "stderr": "",
+      "stdout_sha256": "392b1dfb0dc9eab0676723a83827147dda2ab4f617e4d85ce50029d3dd3d6382",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current1024-one-4-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":1024,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":66229110,\"tick_mean_ms\":45.568379694444445,\"tick_p50_ms\":43.164085999999998,\"tick_p95_ms\":62.429440999999997,\"tick_p99_ms\":95.990384000000006,\"tick_max_ms\":95.990384000000006,\"column_mean_ms\":30.765233819444443,\"flux_mean_ms\":9.329703277777778,\"apply_mean_ms\":4.1356029861111114,\"prepare_mean_ms\":0.13801166666666664,\"wave_storage_bytes\":14115432,\"launched_parcels\":4608,\"checkpoints\":[5381231517344368158,13050306749737917782,13291359925706445286,0,0,0,1280850462754462505,5308624377735771212,15228743573666496613,0,0,0,9068512957720627750,1217426527203527398,7780746231543997677,0,0,0,4598265701910772061,12159439666640891378,7688049153939499666,0,0,0,8470040545395979904,4966177361829198123,16686447720401648781,0,0,0,7157131854820215411,11586433819709117758,7246570784317364593,0,0,0],\"tick_nanoseconds\":[60937639,53614787,43836430,47763966,42037804,25969846,48801985,41846767,38415229,34205828,42017880,64263516,58253055,95990384,43015329,45643086,38445603,43865206,37335374,40373378,40952696,40583919,55012000,39386598,41271882,45866628,41760088,45737263,37653086,39655576,62429441,54343104,39661150,38059131,47115784,41613899,54682716,40464494,42154786,51339767,40692387,44582407,40839250,48589650,38593125,41959248,44255596,42893889,43823104,46389828,37782615,54506159,38640879,50867291,35564672,62559348,36119112,43164086,47023991,46533115,39596079,46201483,41324329,48878013,45642894,57778945,43206619,44074406,40068351,51576075,39672762,51146530],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[339607,38534705,14320081,4799083],[89314,36705508,10519799,3677219],[107293,28609694,9308796,3387544],[76303,33381234,10646493,3301640],[87361,28801933,9084859,3717042],[56295,18148827,5617895,1844217],[62758,25029231,17282813,2450475],[59776,24394476,10176057,6833296],[57658,24973056,5229070,7612018],[162536,22049110,7978426,3241882],[85903,27803535,9596824,3523210],[142576,46102152,11865642,3990201],[830138,34604737,10317702,6676793],[790270,61813615,23250304,8840811],[1246832,24688712,10697785,2139866],[97112,25778431,10757187,8430901],[93998,22406635,6190819,9119742],[88646,33215571,7017857,2935123],[85537,26366727,7489996,2834125],[337194,27913253,7552854,3833167],[86389,30308609,6886917,2853767],[79910,28791770,7998241,3201828],[117909,29069657,21981261,2964165],[89810,27061657,8513442,3036282],[94313,29455077,8119686,2675296],[113913,27010249,7054167,10895393],[89679,28013098,9192743,3710368],[86525,35082168,7182743,2746364],[86054,26710920,7238812,2910058],[86103,28248007,7928773,2479023],[84205,43067441,7797432,10718217],[89683,32567060,18405422,2519944],[85735,27763751,8155809,2749547],[89812,26200122,7933926,3062057],[84007,33386386,9663305,3159242],[84432,28798936,8657623,3291852],[111467,35483302,13300476,4608768],[83189,29547441,6997678,2906499],[88899,30892615,7514546,2601682],[87805,39937828,7674570,2659072],[88831,28296740,8497591,2882927],[83549,33804963,7194780,2614102],[93740,28879319,7612675,3105902],[114670,24602431,7594446,15007266],[89082,26727914,7002671,3765914],[86615,29638262,8579649,2841294],[90250,33036494,7237701,2953172],[84388,29956514,8734419,3163490],[91127,28593340,7208790,5647746],[101056,32227740,7546725,2890727],[154966,25754872,7883144,3059767],[175610,27059445,7391484,18837330],[88197,26856518,7858478,2767521],[88020,37682173,9143926,2980368],[89469,24201464,7545158,2597875],[85183,46968128,11023707,3609064],[92476,24924729,7248143,2701056],[82746,31070882,7803601,3150061],[84018,35581728,7326622,3067704],[84667,34024923,7947386,3497881],[92348,27165983,8414531,2840473],[86559,33108149,7798356,4261013],[120558,29096435,7644295,3247752],[87515,36588909,8267812,2806528],[83536,31537429,9828391,2949527],[190229,43105885,9959861,3499134],[97357,30450679,8395265,2989126],[116563,23655700,16648507,2594500],[134894,27771122,7755634,3213194],[92173,39676895,7371219,3325828],[85853,27566738,8202153,2739051],[83649,26767096,19972685,3218343]]}\n",
+      "stderr": "",
+      "stdout_sha256": "c4ee7411a6d014cd545602d9716e9e50e17647f90f1944812dc7dc8657cad0b6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":208.7668536388889,\"tick_p50_ms\":201.38162600000001,\"tick_p95_ms\":283.881078,\"tick_p99_ms\":477.29557499999999,\"tick_max_ms\":477.29557499999999,\"column_mean_ms\":135.54720931944445,\"flux_mean_ms\":47.162954791666664,\"apply_mean_ms\":18.209517597222224,\"prepare_mean_ms\":0.69175415277777774,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[231773682,185452517,196412330,202927150,208404770,191480978,218324287,221503882,220585732,243474601,243721305,216204493,243719391,221289424,225607334,256785912,235300945,231941774,247921199,397038772,223187907,260505750,238714541,224339431,270754059,302973410,276313597,267803422,267517331,228673572,283881078,267305001,230604318,172621200,154024156,171680105,202028380,477295575,225929939,212205911,215248904,195867704,147982374,179471362,168346670,151936114,160801813,160526215,169097578,150484631,155884689,160837241,161760195,181309596,168461461,163953666,183878948,179098320,177785144,201381626,174714889,145032712,156895569,172694708,169957459,158821493,155652474,173809223,153913635,156452444,164059659,216865785],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[3094434,149122228,46724192,22919420],[383219,124342446,34569604,17314081],[379581,114029724,51566260,22665624],[323592,123001794,57739044,14789574],[442453,132605303,59807359,14876286],[713779,115116182,56478738,14754308],[431731,135550827,63285139,18368563],[440029,152531700,45901049,14576202],[463071,158567040,40077941,20620868],[407458,152470928,52862738,34037645],[455164,152522202,59232361,16330273],[523934,157471513,40941537,12274548],[592083,164573714,50426624,27265797],[447855,135721562,66753571,17384941],[548740,159195671,49333911,11411818],[409322,194071359,40646924,20499353],[425804,154598486,59079172,20046915],[440890,166143405,45460047,18976451],[444520,165715572,51177603,23880041],[481100,227908082,130469610,35418336],[449908,144946899,50801060,11893181],[490841,172858322,46904294,19614657],[510358,154460775,59434145,19913261],[475295,163063289,44755253,11355938],[621291,182163109,68035259,14236384],[440836,217289215,58926296,21160064],[439447,177347368,53044688,28160560],[536591,190412764,52132988,19725243],[446486,149769946,84659970,16217867],[536809,154337201,49100513,10810599],[604705,171260564,74159427,28097329],[549699,161259288,48574961,24246833],[1409792,162908632,41830238,16885537],[479481,112933160,44283200,11096987],[481658,103777716,34769592,13071243],[429348,123180472,35357444,8134860],[713697,124308975,33931092,27082193],[757366,235328876,155847015,76937670],[947872,145008564,43486732,27663221],[510330,129576773,64933814,15132063],[520178,151359578,43368425,12919661],[711175,126951495,35686307,16730684],[501359,90502718,45450201,6461163],[404244,104032540,35664698,30661611],[450218,113892169,37325527,10828081],[544319,99292998,35005901,11409393],[454889,108696963,26855687,23132641],[616961,96846988,37904896,23348591],[8044858,104609273,29674878,9738864],[531593,99116776,36176919,8655674],[546845,108688559,30179628,11015288],[849319,96717102,41310841,11273492],[369728,103522407,35555487,14632251],[437799,124518838,35488087,15606891],[522443,111092714,39509416,15118676],[435164,107141121,32959866,21506381],[418511,129697167,36777693,15028174],[607551,128474857,32369739,12817937],[633684,119114186,44786950,11005498],[467409,107892845,47954071,26877163],[708706,122488740,29849120,13381765],[405937,88602766,29117961,22066098],[483528,105598427,29301855,14653511],[433033,98237001,44243906,15833017],[2738947,118459356,33140923,13011486],[443118,115965352,28661481,11067940],[422127,102313185,35313357,15645837],[481509,122430750,38689479,9501239],[503622,102824818,38563008,9565263],[471071,113122817,30395878,10234008],[453198,118149262,31952100,10945478],[512687,107593657,38997055,36564777]]}\n",
+      "stderr": "",
+      "stdout_sha256": "859f90aae411bbb49120e701d704bc0fb5c0a24956f15e92f00e774a28305341",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":123.39687913888889,\"tick_p50_ms\":115.205128,\"tick_p95_ms\":195.08793,\"tick_p99_ms\":268.84783199999998,\"tick_max_ms\":268.84783199999998,\"column_mean_ms\":69.720826527777774,\"flux_mean_ms\":33.22988306944444,\"apply_mean_ms\":14.751199527777779,\"prepare_mean_ms\":2.2749375416666666,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[155186935,153030732,130183144,139110112,130253896,152664331,147088465,130457021,140067515,109953347,152951412,146327289,94445004,94324640,97947023,101615000,110348811,115205128,100402522,107996727,101324081,123093728,101467890,105628956,110807087,151516653,121971178,118795681,104111331,126443184,102077933,103654958,103039010,104781027,100225472,100731087,138581724,107794961,109292237,114467155,104178165,143085027,244823866,195087930,116969023,216263878,150929421,126739849,152765512,121403837,125693455,135263984,121496704,130816077,137448395,131844427,268847832,123277157,129915902,105454756,115217950,93545815,96430034,92363401,99766053,92588746,93840850,95764925,88150379,92800457,90667761,91769343],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1584591,85091315,46147026,16220104],[624472,95574974,33409859,11964670],[372127,80274136,31789205,11190113],[400045,78580481,35498202,23988804],[478184,77766718,40229050,8895264],[476914,78348494,57589664,15637229],[554406,88730303,37445802,16178104],[512899,73185884,31737280,23415612],[511635,81294099,32208090,24247101],[449221,62392232,31855768,14577856],[474345,95547538,41115979,14114491],[6098680,86226885,39405377,12928001],[684855,57143011,25334242,10244205],[532291,57779649,24952415,9848340],[369857,60624406,25913604,10024142],[494499,62772908,26500841,10736952],[493592,62699567,27281731,10536544],[407984,66088427,25419221,22383421],[396302,52859484,26770422,19289578],[434022,57307379,37870747,10934827],[548925,55498152,33476952,10609667],[461584,56151918,54677845,10582727],[834757,61046451,27773330,10654904],[466016,67540741,26660109,9841069],[747081,67233950,27855416,13528131],[460505,78330329,57284538,14160606],[868459,69131262,39902122,10754319],[609339,74286811,31410089,11178199],[399546,61265149,30497074,10397100],[406070,62905684,35155865,24554449],[367953,57128824,31705116,11386607],[566932,64962278,26704124,10112517],[338639,61664248,28885269,10678354],[340544,65728561,25495802,10447210],[652520,62835434,25449548,9759731],[352662,61877276,26569647,10403971],[756554,85844249,32947256,17298631],[1746108,65487628,26204945,9026237],[423321,61749913,28444895,15848620],[387456,56980682,25857201,29393199],[522233,56909908,31533924,11978086],[365382,76822510,33632266,15012915],[6809786,109271500,82431555,38020428],[41130107,92671222,34616926,15946533],[322565,66746089,25195369,22458486],[73995705,64936130,49271086,11631532],[308867,99532369,33247560,15914784],[294807,63526240,40600640,17736114],[878892,97513989,37410660,12614473],[523018,64729190,39742927,10972569],[451222,65559606,36465314,13908791],[480659,68215765,30765467,30233553],[473472,79454922,29154294,9774743],[782480,74947798,30008485,23164989],[323136,80374974,31852668,12437656],[303992,58914074,48845931,21587015],[1328196,154297133,66981358,43969542],[489592,72794297,32996711,12589804],[344598,70889269,33486167,23747365],[417563,70833978,23031918,9423247],[584697,77153223,24661028,10761857],[624871,52542227,27072994,11084448],[382178,61498604,22827193,9699314],[376296,60242082,20688422,9333103],[351003,53635092,33613916,10001935],[404784,49973447,30181905,9937354],[558942,49883167,31450559,9825679],[356364,49615127,21322868,22292955],[356489,53581693,21896539,10307012],[413505,51118341,21412861,9048783],[352160,55201347,23456297,9561066],[402050,58576767,21264105,9138629]]}\n",
+      "stderr": "",
+      "stdout_sha256": "fafa0a9206c3b007514cd1cccd825c291ef8fec9ca906197de434fac4e002aef",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-3-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":123.65490697222222,\"tick_p50_ms\":115.899055,\"tick_p95_ms\":200.792404,\"tick_p99_ms\":330.70670000000001,\"tick_max_ms\":330.70670000000001,\"column_mean_ms\":73.001498611111103,\"flux_mean_ms\":32.955837416666668,\"apply_mean_ms\":13.892993597222222,\"prepare_mean_ms\":0.77363998611111118,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[201749073,93442868,217899770,129041126,83436478,91638967,87507688,96928259,111158401,79821495,81054183,90900369,84549744,82911230,90316805,107237977,93017280,123424152,106494682,330706700,99894287,80094070,89541688,98436524,106197884,123872944,104315180,123617528,106687416,103448744,109515722,144795861,107760599,104377630,114891514,116010140,115899055,124889642,121319582,116253225,135416386,121057538,130399147,138144098,133965538,140338001,169345252,125539345,128972036,200792404,162430707,136843864,143997092,123965572,153124481,132891501,121526235,125919700,143306223,155851431,113445550,111028935,139730663,200031373,109280113,115649572,112495865,115398607,117292449,104289048,105462662,140165432],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[21180815,116754616,45778852,10610140],[508998,49284596,28340545,9361563],[377041,170890226,27402908,9269431],[412954,83915269,22811083,21420561],[446265,50979885,22858099,8557450],[754424,59180997,21895092,9293948],[413608,53892553,22871743,9590076],[382460,63023900,22635786,10359835],[237922,66380258,26501611,11437100],[275798,44404994,23668354,9039873],[265592,52224140,19783468,7947619],[206709,50422029,28197338,7800815],[349432,51249471,20707056,11531143],[242972,48849602,23020750,9308132],[229405,52070206,21150313,15873644],[254029,65984512,27460466,11662098],[430295,51774415,21960514,17999496],[237253,85105705,26438122,10777642],[338823,55025280,36638021,11578001],[933236,155515275,119493194,51421722],[926701,56012783,24696427,16249893],[253564,48880978,21023665,9085935],[251978,57253007,22108310,9081674],[226630,58525671,25877608,9319578],[430269,58084270,29107088,9301020],[267428,68551143,39440343,9256858],[287889,60472371,28552428,14047318],[249348,71930258,32674446,12347222],[270212,54560805,40018061,10700330],[271149,60105476,28468513,13162721],[241689,64365724,28948817,14753780],[512556,58721349,67921376,16523884],[345536,60152779,30720079,15305496],[232027,62840595,26501759,13800053],[256619,62734145,24188827,10787813],[346780,62111649,32972657,15094772],[464819,71225671,30177214,12704300],[248860,78007743,32542648,12908416],[282093,65966234,39583036,14167410],[389209,72884058,29689312,11955169],[238027,80405773,40890900,12624514],[358004,76106667,30212380,13244207],[506604,70960671,44413522,13370204],[1193372,85191023,38221273,12382291],[306641,88971342,29448970,13486780],[418078,73175235,49298369,15183707],[290362,116305469,36288169,13123090],[301796,80966817,29694922,13048153],[359270,69239603,42133650,15199503],[920668,125132123,56853006,16046414],[342756,117787795,29790495,12948822],[400281,90683506,30705015,13428203],[268862,95598923,33066012,13760436],[303822,76725069,32518148,12954200],[289102,72203048,53630882,24169728],[347717,83933019,32502803,14418056],[314111,66276620,29822394,23217525],[335382,79232106,29417500,12110182],[266409,94211928,31610818,12996116],[7101986,85696748,28467198,12161538],[435266,61840836,27622523,17637697],[397076,66855770,29363813,12360387],[324350,77528775,35263452,21870356],[1014679,89705340,60087065,45622687],[1034934,59355063,34895051,11695467],[264317,67832641,33813708,12298719],[333078,68994996,27984278,12495285],[264693,58965107,43903408,10337991],[324374,72537059,26792263,15465263],[634723,65711063,22633076,12990930],[330355,63947172,27257525,12000441],[247597,93715955,29391777,10252716]]}\n",
+      "stderr": "",
+      "stdout_sha256": "85841e706cd49c3e9101ec11248ce3aec259a8bec82f438018b817bb716f5cf8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-4-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":143.25513516666666,\"tick_p50_ms\":130.316743,\"tick_p95_ms\":210.706616,\"tick_p99_ms\":334.71319899999997,\"tick_max_ms\":334.71319899999997,\"column_mean_ms\":98.430693763888897,\"flux_mean_ms\":29.140058111111113,\"apply_mean_ms\":10.112534569444444,\"prepare_mean_ms\":1.363399513888889,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[122861005,141487102,122040839,210706616,334713199,175313035,175616340,150544017,166781404,118491291,135588949,123490031,153847903,165697329,158376630,224946372,150736871,136512146,151753367,126270605,119857733,128292500,130316743,121395477,111643509,129669680,120495131,118172280,134872393,177239106,126115526,138986592,153182786,131323485,119538153,123375598,117581109,119122789,121796278,130503104,122692970,119390600,127066646,217101778,172464738,145616641,118613776,126150157,111748123,117347488,120016072,134765575,121184506,130106235,133500075,143947834,133313370,204419445,202283603,134625400,120030827,123785878,122053836,128400318,144006047,122478588,116806921,137482626,171177667,128934970,176273521,167328478],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1904330,84503643,22329589,7568232],[320419,86019605,41361465,7442841],[324191,85483916,22190054,7636654],[294311,111560137,54560417,29063461],[2011787,206498307,116507386,8607660],[679184,127974939,30894423,9273938],[469414,137800664,27477707,7597914],[416276,92966646,41955904,12476226],[378230,125450739,30846210,9352313],[467322,79360426,29810395,8249469],[317914,93361312,23152671,18057140],[349609,88389643,24844444,9244428],[593724,107972372,29982552,8185820],[586939,113314071,37770429,12778634],[626684,100341297,29760772,20237607],[469866,115958579,80066272,27454384],[411704,110326357,24929098,7606526],[402729,99053892,25401639,10241071],[471260,107448356,25562840,16005676],[1544797,86546575,29025430,7595256],[425961,87730403,22412108,8089111],[355320,87761088,31297471,7782338],[414051,96144840,24085774,8481757],[424654,80770379,31217401,8013065],[579528,78954593,22202048,8382198],[369087,90375679,30073949,7645539],[394397,89155304,21522475,8308419],[347873,85491214,23811766,7422992],[315876,83123860,36524071,11503187],[44333870,99060820,23815944,7469640],[336863,87195287,23369800,11938643],[448452,90673402,21182495,7994083],[357985,120605304,21898112,8465647],[425362,89196537,31956502,8146948],[379568,88332312,21170188,8188683],[354245,86359954,26802825,8308644],[691662,82120216,23173651,9195343],[430305,76480464,23812003,16937973],[362784,89771110,22058084,7784535],[346701,89547675,30484195,8757599],[531255,90708519,22151537,7707744],[507486,88287764,21447509,7759141],[574225,93893918,21846949,7863196],[387002,140472820,36165508,13655558],[4072672,117398011,26785430,8045913],[823601,112555349,22170917,8320359],[365151,87380494,22000742,7515603],[227739,80567109,36350358,7862296],[404160,81260066,20443194,8210637],[238578,80376811,26678106,8709976],[418352,88128900,22415279,7625540],[323090,104630147,20944478,7661951],[356014,90716311,20943742,7781854],[263090,77966669,37777196,9307749],[219522,88906582,23057115,19870556],[933767,99369792,28391374,8309019],[280089,98452928,24640010,8152955],[249087,123992059,45505702,17459350],[18101013,110689191,21956163,7656984],[266989,101312535,22851933,8029617],[391738,83256940,26695636,7867938],[244105,91346491,22402365,8445240],[294723,90054503,22244378,7920105],[244663,89891515,26814978,9293130],[239946,112061292,21926932,8191544],[259217,89807379,23046771,7859215],[404722,76425436,30366617,7941491],[227607,91617647,22933276,7523944],[250146,123599518,35990096,9410430],[299910,86786137,19889985,20280959],[266937,131376992,29824321,11826041],[362935,124538209,30125028,10544860]]}\n",
+      "stderr": "",
+      "stdout_sha256": "1e151390fb85ea2304ce920c9b54e2aec321524dfc4e7e54fbb6fc8866f97f0b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "historical512-one-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":1,\"water_units\":16387830,\"tick_mean_ms\":3.3643775694444447,\"tick_p50_ms\":3.168126,\"tick_p95_ms\":5.7018190000000004,\"tick_p99_ms\":8.9284429999999997,\"tick_max_ms\":8.9284429999999997,\"column_mean_ms\":1.8945257222222223,\"flux_mean_ms\":0.82590363888888885,\"apply_mean_ms\":0.33468286111111112,\"prepare_mean_ms\":0.021141625000000001,\"wave_storage_bytes\":2418536,\"launched_parcels\":0,\"checkpoints\":[3786609995437907326,5687707805106229889,2078344468358825180,0,0,0,15251054991558189993,8272947231606637712,17630929314695152956,0,0,0,16010206630865160733,9124636946066040304,1263129192828433310,0,0,0,6101490429769082091,14326670515296407294,18234044131907486787,0,0,0,6180104469986182640,1383027579155220820,15657599711786271735,0,0,0,5291702374144063681,5148702019488218517,15198786086736025067,0,0,0],\"tick_nanoseconds\":[5524370,6298096,5701819,4292354,3811476,5102124,3687205,4182522,3502055,3483873,3593199,3428605,3579830,3741249,3329723,3411995,3864428,3820989,3192974,2889206,8928443,5088458,3828257,3445404,3429713,3753834,3363464,3539068,3169225,3347653,2593493,3181732,2904745,2979629,2877568,3683623,3190374,2616004,3261249,2953117,3313775,2572919,3168126,3093761,2709400,2471921,3001486,2905570,2735989,2323461,2699073,2312106,2450030,2943901,2551155,2749800,3049197,2522192,2436178,2424946,2815569,2354954,2300227,5806460,3300430,2575070,2961899,2698166,2605336,2592365,2372406,2844172],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[88774,2801862,927202,443700],[50697,3296197,1043814,598183],[40121,3095585,996860,381722],[34639,2813985,953251,288380],[34825,2078425,1073777,463716],[33283,3429783,928201,523537],[37781,2318196,847690,307961],[36334,2861591,662838,408036],[36750,2140971,787894,391170],[36930,2115376,891005,286262],[34810,2177183,717641,484653],[38393,2144077,791081,289430],[29267,2172831,761236,350321],[33405,2275030,890076,336833],[33877,1805986,774529,562818],[33455,2077473,807011,313498],[34087,2597443,760514,304093],[35984,2644230,724704,269498],[35818,2067389,677215,249434],[36941,1652074,707322,328788],[37604,1894170,6302060,354823],[40040,2395865,2164642,325047],[59785,2450874,843648,309460],[39235,1935714,866383,381525],[36686,2173148,795077,272798],[35894,2408823,862705,291236],[36141,2054741,737105,380399],[36352,1739243,1051989,426742],[37372,1711313,869733,370041],[33459,2128922,698108,308427],[8151,1564118,659631,212508],[8120,1793261,685192,534292],[7838,1561232,567168,344627],[8478,1816625,687941,219638],[7921,1595718,629858,251060],[8453,1857673,610766,868612],[8729,2009442,649733,249409],[7168,1596446,585514,222522],[30389,1514879,1067911,331180],[8021,1841676,637302,230494],[7680,1761903,884110,355132],[7766,1566265,552337,215563],[8090,1711788,560350,210903],[8494,1628963,942636,279736],[8149,1451182,792295,215398],[8405,1411598,603823,223630],[8139,1811244,564090,282525],[8521,1683569,604874,232675],[9400,1587159,583955,235425],[7551,1348850,542189,216162],[6844,1563728,674237,210837],[6434,1246275,566434,294028],[6465,1324879,573494,204254],[6185,1725203,608301,359761],[7253,1372108,548842,302750],[8187,1591274,642038,236181],[6409,1443274,714962,600337],[8358,1339757,615773,233162],[7396,1359420,516600,274534],[7279,1380733,630381,205830],[8805,1640704,552199,288868],[7781,1374352,549851,203089],[7034,1310901,575688,201304],[6641,2928980,1107592,1252763],[9436,2203151,635023,226802],[8369,1298930,736710,306436],[7800,1589213,742722,383898],[8340,1492462,666380,229881],[8595,1386686,622373,352415],[8196,1383686,675903,315809],[8073,1262899,565471,242274],[8115,1615146,617102,237931]]}\n",
+      "stderr": "",
+      "stdout_sha256": "a2cbdda12e36fdd6599514747430c30460b4bfa012b428e75439c8d2fc9ba9bf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "historical512-one-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":1,\"water_units\":16387830,\"tick_mean_ms\":3.4351755416666667,\"tick_p50_ms\":3.0425550000000001,\"tick_p95_ms\":5.6455950000000001,\"tick_p99_ms\":12.404626,\"tick_max_ms\":12.404626,\"column_mean_ms\":1.7008852777777776,\"flux_mean_ms\":0.85443687499999998,\"apply_mean_ms\":0.46069819444444443,\"prepare_mean_ms\":0.024341249999999998,\"wave_storage_bytes\":2418536,\"launched_parcels\":0,\"checkpoints\":[3786609995437907326,5687707805106229889,2078344468358825180,0,0,0,15251054991558189993,8272947231606637712,17630929314695152956,0,0,0,16010206630865160733,9124636946066040304,1263129192828433310,0,0,0,6101490429769082091,14326670515296407294,18234044131907486787,0,0,0,6180104469986182640,1383027579155220820,15657599711786271735,0,0,0,5291702374144063681,5148702019488218517,15198786086736025067,0,0,0],\"tick_nanoseconds\":[4025228,3874953,4370789,3041894,3120598,3042555,3891252,3371368,3794222,3119072,2876488,2957206,4677114,2844979,7537669,12404626,3438875,3450982,3712367,3446289,3459557,3322568,3707362,4783069,4326691,5486180,4750451,7140439,5565297,3409175,3452946,3788280,4227739,2403481,4721707,4803338,5645595,3438908,3190030,3084145,2451353,2479561,2206380,2143359,2700614,2252201,2464789,2333779,2191164,2320105,2217516,2120770,2252297,2514474,2198943,2900263,2357982,2384618,2827045,2581011,3109275,2773378,2569394,2489311,2424309,2212846,2604050,3354798,2275977,2976298,2482826,2456469],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[93601,2003337,713631,388753],[30077,1812285,708558,331755],[190221,2092898,960239,279719],[28511,1649867,734416,462277],[31610,1836930,670772,404085],[32036,1551213,935217,338486],[39225,2502955,889245,280997],[32713,2033118,749860,355435],[30283,1942702,929432,611871],[32705,1806060,810243,299399],[32090,1617852,661034,374411],[39438,1719878,725890,319470],[70397,2441424,1407255,395560],[34391,1520304,670520,423139],[35241,1834703,4030055,628098],[37186,9533610,2120430,325675],[33503,2163588,729635,351453],[32156,2043277,860704,361178],[30113,1991074,729791,727766],[34694,1783498,1141707,335801],[32590,1834358,859875,376172],[33380,1859776,849332,398581],[57775,2446160,669445,359785],[32728,1718093,766700,1831874],[30141,2467070,864141,655475],[32647,2806553,881164,315144],[90763,2944182,1075854,352316],[33558,1911545,918537,435400],[108047,3989995,879430,435418],[33450,1783551,784193,279187],[8745,1297207,1706003,270957],[8511,1378407,595159,1328783],[9096,1728332,1951065,299828],[8070,1216439,630190,259258],[6565,1308894,1235761,1810530],[7104,1485889,618863,2320908],[8892,1186335,1355735,2334207],[8836,1411557,1513865,279781],[8013,1445165,584728,706903],[29389,1282937,934890,503965],[9256,1315290,618437,280869],[7743,1357226,638148,215518],[7417,1023669,582475,283290],[8364,1155077,512270,247235],[6996,1349679,690730,278567],[6891,1115852,517950,291659],[9564,1337306,555709,335615],[7655,1280110,549487,239910],[9618,1058400,605931,269728],[7089,1094832,648220,301037],[6903,1077993,501691,267393],[7961,1094258,603495,195123],[8523,1057246,604636,311852],[6845,1139461,811770,295515],[7133,1102735,652491,225208],[6626,1518692,788079,332218],[5911,1246719,598511,260171],[5926,1227363,587967,277249],[6670,1265876,929100,279936],[6924,1539977,564079,267211],[7714,1543257,620416,301539],[7798,1240422,906348,239283],[8835,1200347,798393,276304],[7515,1202265,639011,405237],[6838,1154775,676937,353813],[7505,1144476,547488,275920],[6820,1162116,987243,233834],[7832,1196217,720162,775565],[8729,1122068,520375,332706],[10000,1218619,555974,369354],[7226,1252288,566243,326821],[7252,1286111,566125,274790]]}\n",
+      "stderr": "",
+      "stdout_sha256": "5ebd87075b92b54a475f8728280a9d719c9f36e9d670f7cf40e4dd1e918adb76",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "historical512-one-3-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":1,\"water_units\":16387830,\"tick_mean_ms\":2.9026030694444445,\"tick_p50_ms\":2.7129729999999999,\"tick_p95_ms\":4.2440150000000001,\"tick_p99_ms\":5.3317920000000001,\"tick_max_ms\":5.3317920000000001,\"column_mean_ms\":1.5050995833333332,\"flux_mean_ms\":0.72918315277777779,\"apply_mean_ms\":0.33907723611111112,\"prepare_mean_ms\":0.021418069444444444,\"wave_storage_bytes\":2418536,\"launched_parcels\":0,\"checkpoints\":[3786609995437907326,5687707805106229889,2078344468358825180,0,0,0,15251054991558189993,8272947231606637712,17630929314695152956,0,0,0,16010206630865160733,9124636946066040304,1263129192828433310,0,0,0,6101490429769082091,14326670515296407294,18234044131907486787,0,0,0,6180104469986182640,1383027579155220820,15657599711786271735,0,0,0,5291702374144063681,5148702019488218517,15198786086736025067,0,0,0],\"tick_nanoseconds\":[5206803,3723398,3568889,2657245,3159190,3098500,3057651,2967031,3194954,2748623,3464029,3419079,3929184,2986574,5331792,3096334,4097910,3123698,3358179,4465411,2963970,3842026,4244015,2891378,3891583,2931581,3082241,2954661,3214897,3267390,2631396,3462384,2667694,2922616,3183613,2659947,3357189,2550308,2712973,2558086,2666987,2629237,2338788,2103959,2215926,2445468,2943736,2517299,2571200,2462984,2454423,2075051,2607221,2060453,2299785,2808341,2447283,2169755,2069900,2310704,2427620,2150197,3131246,2319218,2215715,2285008,2037244,2243906,2304491,2233996,2508818,2287040],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[103451,2317213,833716,411155],[46665,1754447,709537,295377],[32307,1669261,815071,312499],[33176,1476057,628671,355108],[35491,1705457,816921,317001],[35379,1747217,781158,348368],[34886,1807468,708779,326785],[36910,1804885,642966,333323],[35189,1942925,679429,367808],[34990,1500571,666203,361443],[35092,1951569,895584,386858],[41300,2023747,796945,369958],[34793,2210631,866402,342354],[37478,1814068,667851,298735],[39357,2097181,2648968,383555],[39518,1786203,791914,296122],[38025,2693361,780682,399443],[37955,1714626,807721,384106],[34303,2165301,657691,335874],[35887,2832982,950862,377416],[37629,1690016,772187,270245],[36664,1582733,1058252,788104],[38966,2025383,880542,398445],[38195,1615802,746940,319929],[31387,1942579,1196973,309963],[63982,1595683,721292,335631],[36029,1574625,981409,290778],[36747,1662773,812051,269593],[34799,1820093,819528,366144],[34116,1944670,803353,328418],[7642,1217084,658818,424441],[10773,1444858,1321945,311772],[10519,1351683,612760,264482],[9239,1650567,614818,289326],[8690,1819449,615473,414154],[9843,1246786,706487,237917],[9081,1415643,634133,1006515],[9333,1351593,622085,352564],[8373,1535318,611182,348631],[7627,1300859,695813,302433],[8819,1305562,749011,290036],[8244,1500762,645288,255551],[7756,1115032,596934,381670],[8190,960656,568999,361718],[8383,1044215,657269,272762],[9202,1102677,565910,324846],[8858,1824507,571670,312387],[7103,1137979,847157,221171],[9932,1460580,506263,342621],[7107,1053732,629940,323273],[8373,1032915,786252,237295],[8378,989025,512652,264394],[6318,1386398,677529,282762],[6334,1076337,499360,224429],[6294,1271466,530449,270092],[5844,974928,580751,267521],[8509,1243300,715127,254489],[7053,1085708,534199,257043],[6501,1018323,563226,239779],[6561,1167968,590950,273385],[9456,1138391,692557,337152],[6791,1108896,524755,266764],[6373,1119393,613140,1101890],[7549,1157018,650038,294893],[7485,1134142,546354,295463],[6675,1257823,588530,230560],[7286,1047237,537245,248067],[6675,1157345,618011,264941],[6114,1135656,628886,291766],[7611,1190585,576599,254353],[26720,1334889,595548,276461],[7821,1030358,567476,261254]]}\n",
+      "stderr": "",
+      "stdout_sha256": "613142cc4d5d5b77a645ae03776df36372e06a153935c42c3c449c88b9923a3d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "historical512-one-4-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":1,\"water_units\":16387830,\"tick_mean_ms\":3.4152248611111111,\"tick_p50_ms\":3.1243310000000002,\"tick_p95_ms\":5.3252079999999999,\"tick_p99_ms\":14.182772999999999,\"tick_max_ms\":14.182772999999999,\"column_mean_ms\":1.9265810833333332,\"flux_mean_ms\":0.84835351388888891,\"apply_mean_ms\":0.29643231944444443,\"prepare_mean_ms\":0.055236569444444446,\"wave_storage_bytes\":2418536,\"launched_parcels\":0,\"checkpoints\":[3786609995437907326,5687707805106229889,2078344468358825180,0,0,0,15251054991558189993,8272947231606637712,17630929314695152956,0,0,0,16010206630865160733,9124636946066040304,1263129192828433310,0,0,0,6101490429769082091,14326670515296407294,18234044131907486787,0,0,0,6180104469986182640,1383027579155220820,15657599711786271735,0,0,0,5291702374144063681,5148702019488218517,15198786086736025067,0,0,0],\"tick_nanoseconds\":[4225711,4762752,4287066,3907705,3852636,3828784,3737929,3259204,3417125,3911725,14182773,7402710,3752058,3543066,3710472,3704860,3153495,3452104,3604419,3670117,3540555,3379917,3797099,3555578,3415996,3516375,3371496,4018843,5484355,5325208,3259179,2804340,2872348,2727661,2648383,2781958,3124331,2539592,3215180,2819199,2754639,2817267,2755529,3252642,2489403,2551614,2552734,3175391,3078745,2800628,2827509,2808877,3267462,3379189,2572061,2748385,2776887,2835365,2467776,2925297,2547130,2726798,2784827,2672499,2702766,2536261,2563765,2561619,2440650,2440038,2902791,2615342],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[108009,2194681,859981,288831],[21164,2419253,806569,435198],[23481,2073175,947161,407368],[15215,2658794,761291,309575],[20488,2304725,982085,290801],[19495,2737143,680276,244071],[17850,2544055,611675,343697],[21523,2088370,738941,272059],[15504,2201652,771860,287253],[18191,2423568,1044297,284231],[16575,2272015,10364906,660942],[2472065,3552532,861559,344807],[231363,2362833,637481,288164],[22850,2041760,975180,318681],[21917,2462272,693236,381520],[22426,2302789,894286,326346],[21733,2083863,612536,297409],[16098,2273888,738439,282355],[18396,2335094,688001,328570],[19544,2234396,926844,314541],[48253,2220273,830497,295716],[20663,2309892,610443,278508],[17023,2554448,766480,289031],[15661,2372197,760767,262940],[20514,2179537,717440,326254],[18501,2307657,719036,304554],[19223,2113709,794837,296093],[17227,2544217,903827,311426],[21693,3146253,880334,1205265],[22351,2577093,742543,273296],[6020,2130388,614603,354483],[5547,1777355,644585,237731],[5009,1757444,652672,200072],[4780,1613257,637898,259929],[4327,1549309,596123,293160],[4665,1417357,831462,268109],[6941,1895859,677026,297112],[4372,1462696,655853,210700],[4180,1778037,626469,354089],[4013,1549284,754674,227839],[4292,1630074,685702,226293],[4120,1685572,648131,270001],[4520,1590888,500269,278615],[5115,1515439,980410,378461],[4981,1412871,574242,256011],[4477,1412185,648226,212362],[4318,1463655,661216,190354],[4051,1371936,1256276,272192],[6881,1887663,637512,214255],[3926,1568229,651893,216427],[3810,1728999,657813,222347],[3858,1681154,662456,203072],[4521,1738578,953317,208558],[357624,1567044,890734,229082],[6158,1538352,607429,204946],[5373,1375507,576673,574715],[3634,1685794,600263,252194],[68996,1487892,604975,305250],[5242,1393189,639552,221600],[4651,1879391,617014,205583],[5218,1526950,571643,224882],[4213,1546428,567805,343536],[3977,1811451,528968,234674],[3919,1468437,739102,231365],[4168,1550059,586791,241994],[5287,1484337,522176,217347],[4534,1544941,607700,204568],[3831,1490408,582115,268209],[4198,1400823,619387,209233],[3811,1356446,603380,243266],[3851,1744310,514952,218056],[4628,1351716,569158,310953]]}\n",
+      "stderr": "",
+      "stdout_sha256": "1f288b3a889fbdfee6252e52e387123fd6b06889e9976ad933a23e2164c1518d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":98.872474708333328,\"tick_p50_ms\":97.517427999999995,\"tick_p95_ms\":143.062949,\"tick_p99_ms\":209.40860000000001,\"tick_max_ms\":209.40860000000001,\"column_mean_ms\":69.705561944444455,\"flux_mean_ms\":17.914049138888888,\"apply_mean_ms\":7.2510754999999998,\"prepare_mean_ms\":0.70215352777777773,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[107987407,87758354,98621779,80478435,80635381,97853123,111921968,90842946,100045908,96794805,123454582,106516322,99380773,105410486,139162524,109788342,108213270,105942407,148837521,111740295,115486717,111953799,114286127,109226645,107116599,75698731,80394612,84101333,84533863,65245707,78430543,72944071,90826991,97517428,64292953,67829990,67572395,67032598,69722421,64651547,70817781,68087564,64546018,112066741,74641046,70262064,73670319,64456763,64294532,68478809,70408157,92693153,65223490,65205173,88192423,209408600,194847507,76316483,87379580,123398924,104440081,117971437,136636873,139120936,124204285,143062949,120796401,119136413,116513565,136252055,135261584,120774775],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[3541101,79342333,9655939,8253441],[178731,57607588,18515954,5131091],[266002,64441494,15009607,6799635],[321302,62885477,12353097,4461884],[200167,51213746,23850532,4825490],[317368,62999564,15112044,18605879],[370066,72205522,31318934,5117544],[277498,58923017,16694299,11374583],[368517,62324496,20389019,13366060],[260528,61799209,15573509,18630291],[249149,92594134,18824377,11023888],[274739,81579328,19165566,4594837],[414962,62222363,20572434,6718418],[254169,70754788,26585264,6850008],[215270,104469240,25890864,7501244],[488094,75140265,25426989,7671431],[365997,83026006,17496613,6354098],[223819,81243582,17327297,6305218],[215845,120172173,20693342,6724556],[258391,86602686,17612747,6292577],[259192,80999077,16544478,14803339],[282572,73037713,30591482,6958660],[245183,88811823,17669054,6554465],[250360,84331469,17193290,6522327],[812350,82237996,17850294,4663568],[447971,53834539,13121250,7203894],[418315,55035272,17695170,6178244],[299351,61179784,17266306,4117976],[347669,52738778,22190725,7873815],[410145,47934456,10973047,4803880],[440079,58884983,11133008,5067625],[357908,56283096,10544479,4479011],[459640,54078419,22944627,9091180],[889094,79215347,10395019,4797536],[382045,47994791,10094102,4421925],[309351,52065888,9931125,4124709],[569143,48739340,11413216,4555633],[338729,49727671,11167654,4452833],[316868,53620087,9828264,4419285],[302480,47603845,10893180,4561337],[410475,52974819,10487896,5285569],[300807,51182916,10649409,4542562],[343303,48086783,10344825,4319746],[10387058,57400625,10612226,4755887],[9322782,47226330,10963098,4841367],[318188,46400744,17588564,4296385],[310533,57563185,9914936,4282140],[316774,47030540,10683798,4592530],[597708,46519863,10937885,4434513],[370486,46865121,10450956,9233830],[318326,51665734,11674451,4763122],[303768,60051021,15612495,15319042],[230021,48212394,10922289,4478799],[344639,45755466,14009387,3448662],[373820,51367245,14212126,13584222],[1047163,161328010,24586885,12958206],[1759648,165486684,11375679,8253321],[369322,56528015,11661085,6122788],[336427,57170886,17310229,5888183],[384988,61844658,49219492,8130315],[656174,77821891,19060189,3853205],[552959,85492246,20952801,9192059],[399041,93446952,28144410,12343803],[416786,94240400,31566475,7001539],[449405,89257876,17853804,7576969],[396906,89802547,37003734,5543037],[490749,84640978,23145699,10455519],[510162,76183792,34774113,5235986],[271949,83995812,15329225,12547923],[298054,84739668,37717730,7685394],[361775,98511091,20661690,5414980],[404698,80104783,22875760,15442418]]}\n",
+      "stderr": "",
+      "stdout_sha256": "f17b6c81cff64149bef78de41919c2832abb129973acad83ee94900fc756518a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":131.66589629166668,\"tick_p50_ms\":121.758548,\"tick_p95_ms\":182.66658200000001,\"tick_p99_ms\":233.18005700000001,\"tick_max_ms\":233.18005700000001,\"column_mean_ms\":90.00684311111111,\"flux_mean_ms\":23.388405722222224,\"apply_mean_ms\":10.920421402777778,\"prepare_mean_ms\":0.78332808333333337,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[166086078,110791896,104918431,95481620,103449797,96882276,93289496,93997779,98465283,105554135,94210419,121758548,112445062,144026881,108694731,115201300,111672732,147918960,116137083,116072773,135759686,155665151,140691118,151987769,118128903,112779391,160438540,106994644,98861200,135831824,129527436,139890785,104002266,99914358,96362143,103543860,132245638,193515744,148532628,172486936,106102201,128076990,116322536,112158128,131183414,139347108,112067747,107898168,112313359,115248475,112529044,115680134,112535355,195062864,160036132,151078183,162287503,167531362,139963629,162493069,166086128,152309901,143965814,233180057,159821244,155165812,159332415,172536726,182666582,152277538,120064460,128407155],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[7062411,106504062,17031721,4128754],[336954,71223895,21272046,4005513],[358215,76612875,11185281,7497523],[272356,71368019,11728222,11319772],[347025,73141581,19198665,6570592],[354951,69057903,18581964,6271825],[433292,69358964,15429025,5537497],[400581,70969994,14597532,7477453],[402503,70873868,18828200,3950537],[369599,86275650,12005384,6368366],[1139363,70465511,16327042,5499833],[332982,75834376,23294222,15873040],[598728,79240569,15034459,16662456],[377830,104442448,18332971,19800788],[482589,84886055,12871255,8979256],[390014,86175882,18760381,4870369],[395197,70411467,14954367,16566628],[368098,98086978,20216286,8561600],[311617,78182041,21253369,12660548],[385817,83327041,21142803,5348295],[524926,83821737,26678909,15145179],[449242,113826621,17098839,14716070],[438360,87445949,40996347,6953551],[506365,97255147,37326893,15908616],[707643,80746173,26813959,5694276],[1159278,83952097,15059829,11126419],[419913,105130170,28370205,24682810],[822017,68303867,28809928,6401164],[377606,66056300,21920030,8665245],[564739,92118982,22416161,13059336],[530081,84077826,32879538,7356766],[452776,90441858,31341704,12954708],[491723,71438021,18900002,8005857],[365221,72191752,16179319,5760481],[405722,73798731,14231244,6407498],[384858,73401110,13499577,9123040],[860648,92106994,22711943,5427993],[380901,147059104,24309446,17130563],[717855,97918988,20767810,10365138],[466329,104890548,19115056,23697182],[3064223,74180048,18138998,6685105],[401432,85303737,15057621,20170208],[249451,78829389,30566750,5333936],[357069,87812690,13498739,8778282],[289000,85595928,31425887,12515714],[377924,98742829,27078067,6049285],[333866,76770446,21276467,8503301],[510904,76557362,19286489,5284869],[387245,84882741,13964594,8486751],[271002,86789479,20630863,6316334],[245154,82152875,17978840,5169149],[295733,74922757,28629845,10486240],[280080,81707535,19882529,4770449],[234335,123211155,32468010,31490436],[1937189,119411203,22053464,10702408],[336104,101890895,38910264,5203044],[524446,117566218,30953041,11865466],[329036,96603864,37013901,5312586],[318204,96104622,29947004,5469753],[287214,106713860,23809149,28389908],[12739748,105812959,31205887,10505338],[617565,101123974,26144605,15965465],[1318359,95920828,27216061,12330543],[470983,151485570,69940459,7202427],[333747,117511508,22179615,14595419],[502529,90710013,33032738,14232184],[524126,113400773,26170808,14877808],[677534,118455335,26703895,20022754],[522557,107550431,35097085,23597421],[437931,90151179,27222726,19099830],[467548,86595385,17416756,9864595],[611059,83603962,27592121,10460796]]}\n",
+      "stderr": "",
+      "stdout_sha256": "ad419e47a5d81d9e95ecc6aaba49e244280af8718f768d5f16f4bf44eb3edeb1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-3-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":142.73224184722221,\"tick_p50_ms\":126.87913500000001,\"tick_p95_ms\":264.24985299999997,\"tick_p99_ms\":357.03632700000003,\"tick_max_ms\":357.03632700000003,\"column_mean_ms\":96.154258486111104,\"flux_mean_ms\":24.827022347222226,\"apply_mean_ms\":11.233959791666667,\"prepare_mean_ms\":1.4834180694444445,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[277398311,224057710,189494739,188813453,187969291,172521293,175580403,187746349,167398272,156909323,156132548,151589638,146812194,119404464,132195618,151432561,136880757,176512484,264249853,151369357,148249137,139391506,180253609,155634663,164456711,167053933,121311153,210830677,175345941,116069481,119895556,124252089,151765693,136319586,191863820,151196824,126879135,101941053,102044057,79183675,83172310,79757804,220715825,329444872,122955078,96132944,99912401,95344809,113380775,123892636,94911658,97788202,91658095,97170372,95912336,106206701,101684293,100990565,105876093,87564185,357036327,98277910,105637206,102707776,97792790,98519219,100404688,98019558,101227377,116217213,132316129,145686349],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[994593,175865640,70792684,12774208],[287607,156179065,28956450,11528101],[398605,135225033,31402646,5813340],[358340,116361629,46130061,17617744],[380067,121454605,46356831,15581398],[410094,111479067,36615756,23466376],[367321,125136534,31414021,14188920],[400344,127217219,40076567,10877245],[408501,127309976,28519651,10382187],[418996,100798687,27938798,23108996],[429474,111672968,27881792,15342203],[636205,97460311,34122455,14892666],[511403,111809136,26208176,7009561],[245257,82678809,21946735,9569111],[340340,81455636,30321540,12304881],[312610,92581375,28640918,17931199],[212757,97214312,26992532,7103689],[274583,125708130,28611715,18465951],[48165044,135723383,54902520,6017918],[992481,87637464,32546568,20981000],[268225,91420146,28595437,11220223],[231964,103119664,22519382,8970592],[248160,143286777,24417990,10736543],[249482,96439383,30130558,23817196],[319656,121200461,31247911,10366070],[274655,104442773,44419565,10734610],[432226,88599629,15672827,10523264],[236754,108847695,25486006,32437302],[12551841,100105909,21756401,6410038],[350128,86192308,19060809,5740444],[327213,87799279,17161562,9535355],[403417,88683300,23119595,10372828],[387771,99023669,27302693,20882189],[339987,76077044,17360722,24756524],[341139,141247703,31647876,13267941],[403910,108689940,32039919,8425018],[605288,84122270,21008120,15643865],[383168,76482888,16772898,7102542],[236319,68196269,18839170,13563476],[192983,62028283,10890243,5034565],[302475,53500297,10994183,15582420],[278379,53514678,15373801,7405510],[354985,134189520,35354975,6091527],[13114409,249267663,33354767,8740128],[398828,65577246,15983979,38832213],[430357,72744577,12755695,7641759],[448492,63078843,23852133,4690239],[301938,72013794,10362448,11068894],[734001,85667820,16798697,7245737],[419876,92320734,18723743,6917693],[372803,71777656,14406057,5655463],[649001,73540061,11058452,6672526],[319756,67616930,12621940,9326937],[299533,76532506,12880506,5049384],[329832,63350646,23530835,6984146],[505394,83163623,11817231,7184239],[299475,76310970,18000542,4998013],[307116,76722676,15559771,5013769],[680656,73994939,21145628,6727763],[609757,66956405,12106499,6131935],[5952395,122622252,57320680,16881861],[436845,74995711,15378914,5175778],[396336,76854882,17072176,5768068],[471600,69005648,21040447,10306924],[392443,71799090,14948046,8531608],[365715,76824339,12716050,6848676],[383038,72478215,11104243,7593560],[390191,70440767,17405207,5501260],[424234,78195947,15435926,5029969],[335976,86189368,18828278,8525086],[332345,91020348,29869661,7838869],[439012,103864091,29915999,8385872]]}\n",
+      "stderr": "",
+      "stdout_sha256": "88c938e894b96fbe6b5688b5c0b7a60663c9abae78288730fbeb8167790659ea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-4-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":125.32144931944445,\"tick_p50_ms\":99.402868999999995,\"tick_p95_ms\":277.53878300000002,\"tick_p99_ms\":531.51619100000005,\"tick_max_ms\":531.51619100000005,\"column_mean_ms\":85.167313416666673,\"flux_mean_ms\":21.632625444444443,\"apply_mean_ms\":10.182149194444444,\"prepare_mean_ms\":0.83818912499999998,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[407185417,124114089,101493248,82776466,70948361,86043801,88179725,87063753,80972215,83337795,76541345,79904578,96581213,114971289,136273248,97917189,89468069,92429758,83826058,91696459,272539718,120901463,78967504,82619596,72677701,81821281,87846744,92058547,99402869,96268836,96059584,90588280,82735927,102115496,80515732,96260378,100357611,210411318,373025916,135590596,160410423,99986330,148885545,134435559,110432948,111992942,116337144,114871347,115052740,115702515,115829174,112916720,128374402,531516191,241515270,141085715,277538783,130850668,155792308,139394210,89799133,82658516,99003764,78848751,79315526,80623220,76476179,93611607,115747468,149877742,144444456,105327882],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[6041876,173299360,44851598,7893602],[1252846,90406683,16213482,7947607],[273270,63045661,24152789,4749044],[314746,55895661,18245303,4314642],[267103,51600490,10867144,7617518],[369491,62578986,13733762,6160086],[257952,63437766,15068709,8689295],[283513,57862194,23168070,5141875],[324610,59523939,10167797,10261159],[313132,51283889,23226851,4774967],[251252,55515306,10173628,9838705],[177492,61412520,11109612,6718560],[342495,66073249,22975285,6085268],[221721,71326193,23943836,5341644],[250289,88597565,28151691,15605125],[295391,67962858,10903955,17897464],[382935,68371824,12231224,7633212],[207050,67038763,16945510,7263129],[229647,63190250,12328861,7038829],[242683,72468566,12796080,4404617],[205439,115694649,75489780,50195266],[1421653,76496958,28337853,8485232],[250924,57670871,11345183,8849077],[221646,56711771,19074972,5652141],[677636,51390699,13447932,5641676],[320748,51197539,9376644,19744900],[402682,61691136,10320327,10458251],[317535,68378534,8768619,9355324],[317835,67907696,14935226,9734267],[482837,68812115,11876225,10007364],[315403,55619063,24574904,10437826],[442325,59737464,23749383,5521389],[353762,62508483,8432633,9939844],[408835,72957650,16284701,7439282],[343684,60256714,8334084,10276689],[355087,73842979,12210183,8491162],[345369,75514833,15943581,7225848],[242801,136364354,37077992,33115320],[5939631,285542208,47338581,25995147],[489844,90509301,24523047,18541669],[524579,130804138,19386608,7270569],[275181,72364882,19627953,6468257],[243143,122145494,18453514,6725760],[225932,99420946,26511615,6760830],[272554,84117367,17638381,6815325],[346621,83988421,19885418,6465249],[258234,89551450,18096888,6880652],[273626,79446447,26748113,7023219],[366518,86366173,19113396,7301541],[245776,90859924,16865150,6370602],[247789,76618667,29566414,7972977],[229874,87186613,17223245,6793939],[329536,84156461,33465970,8146553],[690841,295617566,75712940,80798165],[12919272,139133920,39263187,8594200],[288607,105258813,26445698,7553375],[359753,222416464,42385002,10571068],[435750,92761723,27503947,5368037],[673025,104799909,37656601,9819384],[489176,108711006,21408417,4906227],[526354,61990342,19208536,5825155],[409521,62971802,12576395,5016969],[433892,78715045,13052488,4799906],[439590,58793879,12414064,5354416],[333341,51533582,13098562,12452736],[341052,51931251,12667757,4732692],[312799,55974158,12542470,5568992],[272449,56831564,13914557,5138544],[6277942,71435083,20925292,8453874],[1872234,93004061,41741341,9185915],[1574756,96304500,30762027,12485259],[1704730,77138175,18990049,5010333]]}\n",
+      "stderr": "",
+      "stdout_sha256": "59addf97fefe29b4ad727bfc7b740dbd0f4e073864b5273af23f11e755c61da2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-eight-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":8,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":164.98683666666665,\"tick_p50_ms\":144.67401699999999,\"tick_p95_ms\":264.91332699999998,\"tick_p99_ms\":411.40145899999999,\"tick_max_ms\":411.40145899999999,\"column_mean_ms\":111.53695480555555,\"flux_mean_ms\":35.407426125000001,\"apply_mean_ms\":13.861568972222223,\"prepare_mean_ms\":0.78928905555555551,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[4600233306539925130,15257457874320927867,8319377670905281559,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11855639968803485151,17793800119738956370,8014468811358169298,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9778192517989256489,2936721077070833144,7843052256888340300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8661790798340315404,10152737846121957068,15195825727937012849,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,122115801713725820,11697486003781974515,16716654134185236325,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2430707526420241448,17559458164369472755,17933798407556067558,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"tick_nanoseconds\":[142175967,143367273,147825812,143042806,166986072,176509500,140481818,140713617,215196172,363926155,171781392,167657748,314337271,204541236,226597369,201979095,206917900,411401459,194790031,151154724,144674017,151135378,154271922,150960840,129549061,136149165,119879021,127651396,142191017,143143143,146130094,264913327,145854401,134372052,147968826,138209292,132707568,133701761,143829593,137660496,148617252,143331555,139239370,138914146,196464067,208347766,129513970,148599253,137494335,151166715,144258412,143772542,137549264,152783757,132789793,153482993,137063219,182792651,264859529,137961302,136552969,156593349,135093811,140549124,154598037,132245053,145324203,136058444,135237903,143610239,153061719,224789711],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1074973,98853151,27078866,8580413],[310530,86757891,39355691,9532426],[297320,104402950,28191620,8210760],[280852,93254610,36754956,12019968],[1196958,121101033,28973080,14803943],[348500,117324702,35640179,18395926],[406658,91229840,26844065,21079686],[342083,91799116,26174878,21479946],[353315,160503468,37427425,11931558],[880863,253527910,89548526,18527685],[786535,124262038,30266640,15537359],[316965,109479104,44212040,12870161],[5468968,168442741,79656785,58647007],[341619,128253943,54239142,19786475],[289314,153188766,35350433,26605478],[293495,145777921,34235939,18697957],[1075864,146726867,43700357,11993637],[405080,306829582,78117552,24205575],[1349218,156022165,26839966,8933610],[286140,101134635,39632874,9164312],[456837,107737746,26045363,9127693],[276393,101352389,27640187,20854728],[290073,102637913,41133821,9068765],[226776,104722334,35733026,8944185],[419498,88639273,26667457,8320620],[245162,93925820,30063029,10911649],[258871,86030211,23220675,9143815],[419781,82398180,32408928,8879321],[354877,108287795,24423589,7577795],[430866,89828407,28132925,23374297],[444659,90895100,27380147,23885626],[2912091,166187177,62845963,27443968],[1655088,92492437,39858836,8953752],[591256,96234772,27337751,8778969],[568165,97524273,30717131,17638421],[410904,99904315,27776791,8673518],[1115780,91422576,28419518,9911928],[429547,87163697,34908052,9546647],[398544,93788849,39002278,8446899],[456885,99856327,27174102,8593148],[375139,98755429,26980905,20747602],[393273,102459429,25628394,8450581],[499525,100502745,27294208,9239362],[476337,101632930,25965482,8760988],[382935,90096107,54797698,34737466],[7083078,140422595,39680464,13397162],[405016,91295407,26449220,9447518],[483828,97301013,40169061,8730392],[854711,91772067,33330068,9265888],[422912,104326960,35098627,9637240],[422604,93670228,26540386,21490296],[419591,103113417,28993025,9335722],[561490,98678667,26647846,9194603],[442008,97723634,26473395,10009833],[454821,84129890,37972353,8322719],[493519,113170918,28519522,9309199],[513395,96143473,25742080,12453555],[538736,104898388,44706348,11372889],[5868509,148942613,61677251,37194210],[469724,98022030,28937443,8508223],[633040,97384294,27080630,9262135],[358525,95742788,33944109,23254337],[365383,97993191,25493711,8949704],[594387,100809911,28366079,8784431],[427679,113186445,29070270,9543189],[401414,85377211,35309655,9200063],[343100,95004849,38897400,8790258],[331623,98514838,26426348,8896566],[588303,96953267,27118666,8518126],[318796,104721251,27510902,8792818],[411017,96537775,43048654,10692859],[2027091,151474962,52333898,14663406]]}\n",
+      "stderr": "",
+      "stdout_sha256": "180fb3c9cd7e5d10f0a94aeb1dc852ac12e7262d17b2f3d21feeacd5c6d1ef84",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-eight-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":8,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":114.54717244444444,\"tick_p50_ms\":110.879801,\"tick_p95_ms\":155.626744,\"tick_p99_ms\":176.34188499999999,\"tick_max_ms\":176.34188499999999,\"column_mean_ms\":67.722273874999999,\"flux_mean_ms\":29.803216944444443,\"apply_mean_ms\":13.667014222222223,\"prepare_mean_ms\":0.5040669166666667,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[4600233306539925130,15257457874320927867,8319377670905281559,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11855639968803485151,17793800119738956370,8014468811358169298,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9778192517989256489,2936721077070833144,7843052256888340300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8661790798340315404,10152737846121957068,15195825727937012849,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,122115801713725820,11697486003781974515,16716654134185236325,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2430707526420241448,17559458164369472755,17933798407556067558,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"tick_nanoseconds\":[148597153,115973497,110879801,113378724,108906500,108033465,112004532,118873024,105708806,115114477,121514843,105972622,109203551,99699722,110324305,99753588,111753470,117450806,135425545,114584823,93912532,98872109,103347094,83002335,116210431,115372539,105551420,163798049,107500917,106887792,102227999,117239896,104762620,153905320,155313787,117409639,112486052,124095916,153454997,104799198,90616393,103479030,132544514,81704221,111376722,176341885,155063243,171851849,121362636,155626744,148298556,134315941,137979247,144457688,134618942,141028076,119648008,94004161,77186250,82577228,85767821,143903534,98637023,86776730,91472943,92369306,87401760,75108116,80263321,83370547,104647849,80292236],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1023362,99205203,31251322,10018321],[303975,70524356,27724495,10949296],[340716,64774576,28854096,10604726],[287363,61378204,27653428,23240564],[323013,63710668,33303762,10847491],[354952,71433338,25047174,10466250],[348718,72720850,27606481,10202489],[476913,63714455,27641161,26232899],[412625,56375371,37986785,10036621],[438525,74151131,28261323,11437016],[332533,75623954,27641616,17071519],[341271,62249387,31396684,11169655],[566439,64586376,29432665,13559619],[387073,60069536,25311041,12794018],[348244,61922345,26630417,20360033],[306288,58566799,25720842,14112781],[278239,60607760,30636522,15666178],[287550,65477258,33153646,17409274],[1113057,81082641,36686000,15374703],[312650,72085117,29924309,10889835],[236223,54059330,20286232,18301192],[584199,53159409,20552246,11716392],[378666,58430865,26217953,14395476],[223012,48378242,22117364,8600980],[559132,72835320,32019398,9367693],[295371,68740581,24647761,20672172],[272656,58842946,34350852,10820487],[312102,115403418,34032782,12875817],[940618,69253843,25045053,10677087],[280144,68728913,26038066,10752445],[260632,64753247,25327941,10378285],[280739,66800816,25528918,23479885],[258235,58506308,33935034,10787120],[361715,99202441,25779104,27204496],[363508,90909870,50212630,12506243],[300979,74413384,30732198,10580176],[462727,67647156,30796420,11785013],[293026,64333248,27889154,24829756],[315755,82989743,47375747,19604262],[585312,69903078,21306224,11306567],[257631,47034787,31342971,10624715],[322553,57786396,31937240,12184932],[295331,78885875,33972123,18054295],[333830,50981505,20946855,8089578],[214234,64166430,32722044,10885674],[226594,100868361,44003605,27254299],[2603772,87906042,42153432,11315757],[695661,99509286,51280213,16590758],[373925,76574755,30873261,11217265],[288986,82970222,42840702,18734746],[333872,82656743,43219681,16137097],[308864,73292590,46137583,10144867],[309894,73338970,41455187,14817973],[4516004,87528759,27127507,18431446],[832826,81090101,36219910,13727944],[736960,81961465,36288644,17405596],[488376,67790259,29734178,18980178],[436854,51758683,29832524,9984229],[580366,47708554,18093377,8521121],[456937,51705940,19505749,8906976],[720006,51336554,22178598,9140565],[754641,109339625,22497879,8756341],[361183,52466002,35535230,8305350],[361124,50859387,20003332,8789281],[329345,54218055,23332036,8928041],[660985,61312243,20000675,8476211],[336601,46701725,19118837,19344160],[435801,45548580,18741654,8590732],[474566,49857088,20240708,7790685],[299783,44965132,27755244,8432924],[331478,47308045,30196386,24170045],[465578,49024077,20489409,8206411]]}\n",
+      "stderr": "",
+      "stdout_sha256": "4792e4a598c45bc0a8bcf23f49dd7337c7b814bd8754f7e9a19fbcf01c40b148",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-eight-3-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":8,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":83.396486749999994,\"tick_p50_ms\":76.603202999999993,\"tick_p95_ms\":142.75001800000001,\"tick_p99_ms\":210.871871,\"tick_max_ms\":210.871871,\"column_mean_ms\":49.443870611111109,\"flux_mean_ms\":21.413079291666669,\"apply_mean_ms\":9.3772055416666653,\"prepare_mean_ms\":0.93535583333333339,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[4600233306539925130,15257457874320927867,8319377670905281559,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11855639968803485151,17793800119738956370,8014468811358169298,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9778192517989256489,2936721077070833144,7843052256888340300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8661790798340315404,10152737846121957068,15195825727937012849,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,122115801713725820,11697486003781974515,16716654134185236325,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2430707526420241448,17559458164369472755,17933798407556067558,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"tick_nanoseconds\":[210871871,79130732,81369423,79698632,84526611,75781407,73679722,74979537,74168211,78667725,75163703,74759458,76969377,75797613,75480243,78075708,79669448,74659913,87847253,75898087,75059570,75320955,74546123,76558562,79298767,81799186,80843551,76479059,79044487,74483104,76974516,118474385,80893848,79803481,76603203,72917492,78244571,76845431,77164802,74288566,76343575,74642708,81277396,75401290,115020377,142750018,77430893,68776138,86985758,97403804,74392352,76338706,74274776,73815766,83789707,75178849,70997591,74770323,68726019,68490010,71531807,86443694,80861704,73072013,74612183,78986210,159480722,142792208,87396927,83976905,74243896,81504388],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[2029110,118257727,57211216,13527381],[556980,46901117,18539266,8087387],[176415,46627604,20963102,8256323],[168492,48847653,22237908,7734413],[176765,56103981,18536075,8843280],[207650,46321333,20396176,8311695],[166309,46277297,18451586,8021479],[182917,47261010,19052444,7872359],[174551,45138562,19055713,8879894],[178657,46058216,20110318,11608514],[217130,47745142,18644559,7835148],[211411,46799239,18625302,8480067],[367339,47831539,19507887,8292300],[300922,46042708,20127809,8225492],[304407,45943959,19270988,8729224],[270376,46529876,20736935,8869606],[296302,46807252,22819551,8215967],[435323,45109352,19667474,8417133],[256329,57140240,20613339,8615169],[313662,46463368,19561994,8371303],[263520,44641615,20227649,8406298],[261315,46987269,19121314,7858400],[283932,44917730,19806167,7909750],[269329,45238992,20274069,8561871],[616470,48302064,19513356,9326723],[316569,44007271,22815857,11240575],[294979,48347593,20644682,10265426],[286344,45453097,20776406,8720865],[335020,47739662,20265571,8711889],[329364,44489057,20055260,8338775],[323430,46964337,19392533,8722056],[286452,55515433,20315156,39724889],[316866,47630072,20891168,10628493],[469950,48059752,21445866,8485787],[280273,45361401,19914445,9347407],[306083,46455783,17339436,7533792],[783923,47960814,19062355,8245365],[365821,47272871,19381266,8243896],[354678,46217922,19567955,9507518],[292229,45091705,19374541,8052061],[271857,46401473,20328293,7944235],[290363,45230537,19415741,8295382],[253728,52749639,18503241,8303311],[354723,45876203,19334146,8357489],[284412,56254897,45266802,10373930],[2481667,78603583,41799868,14151502],[1752872,48500015,16989250,7546819],[290394,43048479,16434095,7469786],[508030,46414871,25023653,8307815],[200318,55577442,32643433,7619643],[235603,44837428,18723780,8765591],[290166,44796139,20554562,8891291],[322102,42575868,20776601,8858796],[328510,44146109,19051626,8518199],[358385,48898714,21375992,11097132],[326578,44004005,19768775,9376494],[279461,44314252,16349921,8048813],[357501,45333516,18190440,8868182],[266987,40951936,17797575,8049895],[314547,42501026,16611308,7614560],[455467,45500085,15913071,7821164],[458167,48867538,25389771,9811985],[460452,54856734,15911909,7675494],[205967,43223250,19987182,8112306],[206228,46095622,17708086,9104502],[187901,43895969,21527495,9752757],[181884,89301377,49048310,14342374],[40392801,64896733,19510444,9242155],[225322,56498041,19537703,9001598],[364706,47931796,19843213,14072500],[191110,45614266,18601898,8252037],[219817,51399526,19508831,8485092]]}\n",
+      "stderr": "",
+      "stdout_sha256": "480b4e427e02cee35c393603db38773adb5f2a2a941d47b6f6d051b608b47d71",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-eight-4-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":8,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":129.31473968055556,\"tick_p50_ms\":112.34976899999999,\"tick_p95_ms\":219.8365,\"tick_p99_ms\":481.93581399999999,\"tick_max_ms\":481.93581399999999,\"column_mean_ms\":90.314401388888896,\"flux_mean_ms\":26.310639652777777,\"apply_mean_ms\":9.1944038888888873,\"prepare_mean_ms\":0.35827483333333332,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[4600233306539925130,15257457874320927867,8319377670905281559,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11855639968803485151,17793800119738956370,8014468811358169298,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9778192517989256489,2936721077070833144,7843052256888340300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8661790798340315404,10152737846121957068,15195825727937012849,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,122115801713725820,11697486003781974515,16716654134185236325,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2430707526420241448,17559458164369472755,17933798407556067558,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"tick_nanoseconds\":[222699677,147759661,118141542,107503765,106516023,109450442,121839617,110717009,147855210,178104114,146628790,127199326,101789775,102570147,107368276,105672080,116333466,124766188,198375471,249613154,134670270,219836500,481935814,154213846,112134821,115137259,133817682,133305133,111017792,122348282,112187296,118197878,115304555,130868577,131850333,113002406,102626450,129138095,116831640,112982566,102369200,111186366,105829678,107164247,107940463,103965358,150318519,112349769,111895744,107756083,151748447,108913637,106270088,139263027,105375742,105447798,107851542,106721123,109377844,105908520,100015023,102637502,103839002,109757016,111315358,154133461,130008049,108840597,112947866,107454245,122142935,127606080],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1501453,136442988,50773241,24573664],[260848,97904739,34543252,9990523],[183271,69897085,27032016,15364099],[173315,80742631,19023433,7010947],[214400,77342672,21148990,7133963],[214114,79619334,21490694,7480719],[191553,80507732,21348689,18960582],[201259,73293700,30136812,6483788],[245699,116165953,22805788,7524387],[650150,140739444,25756334,9991961],[565032,115840544,21800663,7526155],[269664,81841090,37089118,7007181],[326480,72782392,20308902,7408584],[252501,74775195,19881167,6865652],[211779,79116927,19723263,7254778],[218248,77186245,19932134,7491775],[339257,68674972,35654643,6756985],[282744,85265682,23678639,8562744],[260927,137529007,40179401,13875818],[369428,182002157,51060803,15065955],[436324,85388786,38546293,8985175],[420493,143967051,43986864,21236742],[377421,355081059,93221081,28076286],[443288,120267843,24661434,7255393],[370116,79332475,24041007,7183322],[246202,74290413,32532023,7072779],[189401,89228948,24673196,9237669],[563139,102879102,20268064,7989045],[302828,83007587,19499750,6987810],[199445,81928749,32325759,6662668],[220688,83904525,18714456,7900519],[205335,83156544,25433187,7792535],[323355,76495752,20315919,16738992],[304174,89573821,25985168,12805763],[485909,89616413,31749638,8312822],[391107,79101119,21627466,9575871],[574239,71600250,22012555,6727805],[626333,79750350,33466287,6662695],[318193,84573422,21436263,7032873],[316215,82534549,20952336,7681699],[304154,73923774,19684819,6676669],[311568,73131770,19783907,16416463],[272325,77196016,19741063,7060340],[345623,77338293,20183343,7535668],[305120,77703185,20960652,7020724],[288959,75269061,20368896,6538807],[276983,100669886,25855335,19010478],[355971,78385861,24618978,7155368],[804613,78634747,23340366,7026684],[356553,78715230,19739706,6678645],[282711,96288177,42348931,10947567],[454257,79812464,19808594,7231413],[327301,75398021,21217598,7641381],[279443,99683284,25114209,8113343],[320089,75555578,20366147,7376843],[283088,78064822,18493016,6704603],[317216,78010978,20875059,6830967],[272845,67709203,19871528,16764779],[273172,72316408,28278512,6583259],[292438,76755353,20556382,6586291],[570893,69985176,20581022,6462601],[299688,73733399,19222542,7565178],[308387,74561404,20392688,6693389],[311256,76890401,22589975,7998142],[403187,73329408,28964956,6744130],[354794,83687922,20918978,6835384],[594857,99637542,20592620,6699248],[516325,78695784,21604851,5964856],[297051,72720764,31340853,6733162],[282185,79154101,19551218,6442513],[307130,83038050,27605010,6497392],[579279,83291591,30977573,7212070]]}\n",
+      "stderr": "",
+      "stdout_sha256": "e1480daffa6e977ef7d2732bd7f95550ad01a5da9f1087f4f32bc8e4a7012d2c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "runner_source": "from pathlib import Path\nimport datetime,hashlib,json,subprocess,sys\nroot=Path(__file__).resolve().parents[3]\nsys.path.insert(0,str(root/'tools/pubpres_final'))\nfrom native_abba import COHORTS,ORDER\nfrom native_empty_derived import reconstruct,reduce_receipts\nout=Path(__file__).resolve().parent\nsha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\nmanifest=json.loads((out/'timing-manifest.json').read_bytes())\nassert not manifest['runs']\nfor arm,build in manifest['builds'].items():\n assert build['exit_code']==0 and sha(out/('timing-'+arm))==build['binary_sha256']\n for name,expected in build['source_inputs_sha256'].items():assert sha(Path(build['cwd'])/name)==expected\nmanifest['started_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()\nmanifest['runner_source_sha256']=sha(Path(__file__))\nmanifest['quiet_scope']='Root/B/C were explicitly asked to avoid local builds/tests/Godot execution throughout this serial interval. External host activity is unobserved; no stationarity claim.'\nraw_runs={};failures=[]\ndef save():\n (out/'timing-manifest.json').write_text(json.dumps(manifest,indent=2)+'\\n')\n receipt={'schema':'pubpres-native-empty-derived-receipts-v1','manifest':manifest,'raw_runs':raw_runs,'runner_source':Path(__file__).read_text(),'failures':failures}\n (out/'timing-receipts.json').write_text(json.dumps(receipt,indent=2)+'\\n')\n return receipt\nsave()\nfor label,size,bodies,profile in COHORTS:\n for index,arm in enumerate(ORDER,1):\n  name=f'{label}-{index}-{arm}';args=[str(out/('timing-'+arm)),str(size),str(bodies),'4','72',str(profile)]\n  record={'name':name,'arm':arm,'argv':args,'binary_sha256':sha(out/('timing-'+arm)),'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}\n  result=subprocess.run(args,capture_output=True,text=True,timeout=120)\n  record.update(finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),exit_code=result.returncode)\n  (out/(name+'.stdout')).write_text(result.stdout);(out/(name+'.stderr')).write_text(result.stderr)\n  raw_runs[name]={'stdout':result.stdout,'stderr':result.stderr,'stdout_sha256':hashlib.sha256(result.stdout.encode()).hexdigest(),'stderr_sha256':hashlib.sha256(result.stderr.encode()).hexdigest()}\n  manifest['runs'].append(record)\n  try:\n   assert result.returncode==0 and result.stderr==''\n   data=json.loads(result.stdout);stats=reconstruct(data)\n   print(name,'mean',round(stats['tick_mean_ms'],3),'p95',round(stats['tick_p95_ms'],3),'max',round(stats['tick_max_ms'],3),flush=True)\n  except Exception as error:\n   failures.append({'name':name,'reason':repr(error)})\n   print(name,'RETAINED FAILURE',repr(error),flush=True)\n  save()\nmanifest['finished_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()\nreceipt=save()\nif failures:raise SystemExit(1)\nreduced=reduce_receipts(receipt)\n(out/'timing-reduction.json').write_text(json.dumps(reduced,indent=2)+'\\n')\nprint('Complete source-exact semantic parity for all24 processes.',flush=True)\nfor cohort in reduced['cohorts']:\n print(cohort['cohort'],'mean change%',round(cohort['mean_percent_change'],3),'all directions repeat',cohort['all_registered_timing_directions_repeat'],flush=True)\n",
+  "failures": []
+}

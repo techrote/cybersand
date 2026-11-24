@@ -76,6 +76,24 @@ wave-flow-sanitize: $(BUILD_DIR)/test_wave_flow_sanitized
 wave-flow-thread-sanitize: $(BUILD_DIR)/test_wave_flow_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_tsan
 
+# PUBPRES derived-Empty cache lifecycle. The diagnostic verifies actual cells
+# and derived bytes before reuse and after certification; performance builds
+# omit it. Run this exact source against the occupied-bounds control as well.
+.PHONY: wave-empty-derived-test wave-empty-derived-sanitize
+$(BUILD_DIR)/test_wave_empty_derived: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_empty_derived.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -DCYBERSAND_WAVE_VERIFY_EMPTY_DERIVED $(CORE_SOURCES) native/tests/test_wave_empty_derived.cpp -o $@
+
+$(BUILD_DIR)/test_wave_empty_derived_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_empty_derived.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined -DCYBERSAND_WAVE_VERIFY_EMPTY_DERIVED $(CORE_SOURCES) native/tests/test_wave_empty_derived.cpp -o $@
+
+wave-empty-derived-test: $(BUILD_DIR)/test_wave_empty_derived
+	./$(BUILD_DIR)/test_wave_empty_derived 1
+	./$(BUILD_DIR)/test_wave_empty_derived 4
+
+wave-empty-derived-sanitize: $(BUILD_DIR)/test_wave_empty_derived_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_empty_derived_sanitized 1
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_empty_derived_sanitized 4
+
 # WAVE-WATERWALL-001 exposed-face spill and hybrid ballistic release: standalone
 # regressions (own main) and the authored-map apparatus.
 .PHONY: wave-spill-test wave-spill-sanitize wave-spill-thread-sanitize wave-waterwall

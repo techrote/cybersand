@@ -205,6 +205,7 @@ function Get-PFSettings([string]$Key,[string]$EngineName,[string]$Thread,[int]$S
         CYBERSAND_DIAG_PHYSICS_PUBLICATION='early';CYBERSAND_DIAG_PRESENTATION='coherent';
         CYBERSAND_DIAG_MATERIAL_TIMING='measured';CYBERSAND_DIAG_RENDER_CADENCE='repaired';
         CYBERSAND_DIAG_SAME_FRAME_CONTINUATION='0';CYBERSAND_DIAG_NATIVE_RENDEZVOUS='0';
+        CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ='0';
         CYBERSAND_DIAG_MATERIAL_POOL_POLICY='eager';CYBERSAND_MATERIAL_QUEUE_THREAD=$Thread;
         CYBERSAND_PLAYABILITY_RENDER_THREAD=$Thread;CYBERSAND_FINAL_SCENE=$SceneName}
 }
@@ -334,6 +335,12 @@ try {
     Assert-PP ($Material.requested_mode -ceq 'full' -and $Material.backend -ceq 'full' -and $Material.fallback_reason -ceq '') 'Full publication was not installed'
     if($Record.source -ceq 'C') {
         Assert-PP ($Material.full_image_slots -eq $Record.full_image_slots -and $Material.full_image_slots_requested -ceq [string]$Record.full_image_slots) 'Actual Full slot treatment differs'
+        $Deadline=$Ready.material_deadline
+        Assert-PP ($null -ne $Deadline -and $Deadline.schema -ceq 'pubpres-material-deadline-v1' -and
+            $Deadline.requested_hz -eq 0 -and $Deadline.enabled -eq $false -and $Deadline.interval_usec -eq 0 -and
+            $Deadline.pending_count -eq 0 -and $Deadline.accepted_uploads -eq 0 -and $Deadline.physical_credit -eq $false) 'Actual material deadline OFF policy differs'
+    } else {
+        Assert-PP ($null -eq $Ready.material_deadline) 'Frozen donor unexpectedly reports a newer material deadline API'
     }
     $Continuation=$Ready.same_frame_continuation
     Assert-PP ($Continuation.version -eq 1 -and $Continuation.requested -eq $false -and $Continuation.enabled -eq $false -and

@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 ---
 
 # Rendering and gameplay bridges
@@ -117,6 +117,27 @@ also wraps and poisons caller Images, tests R8/RG8 and NPOT sizes, and rejects
 foreign owners and invalid shape/format. These are correctness requirements;
 the experiment remains Draft/HOLD until matched actual Rapier and ordinary
 Workbench evidence establishes its end-to-end effect.
+
+**PUBPRES-PLAYABILITY-FINAL presentation deadline, default off:**
+[`MaterialPublicationDeadline`](../../godot/scripts/material_publication_deadline.gd)
+lets Main retain one immutable, cumulative worker publication before any CPU
+image mutation. The explicit 30/60 Hz diagnostic selector has its exact values
+in the [configuration reference](../reference/configuration-reference.md#workbench-material-deadline-experiment).
+Newer eligible packets replace the offer without postponing its first deadline.
+Every ordinary process turn attempts to drain it, including a paused World with
+no newer mailbox. This controls material consumption only; native sample and
+Rapier admission remain independently authoritative.
+
+Consumption calls the existing complete upload, history and acknowledgement
+path. If uploaded material serials jump from 20 to 24, the histories are 20 and
+24; deferred serials receive no ACK or pose authority. A pending offer is bound
+to the live actor session, epoch and authoritative World generation. Owner
+replacement, failure, texture recreation or rejected material cancels it. A new
+World requires its complete frame and bypasses the prior deadline; transition
+transactions retain their existing immediate path. Structural refusal requests
+the existing full-refresh recovery. This experiment is source implemented,
+but graphical correctness and comparative playability remain unqualified in the
+[implementation checkpoint](../audits/2026-11-24-pubpres-playability-final/material-deadline-implementation.md).
 
 No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full

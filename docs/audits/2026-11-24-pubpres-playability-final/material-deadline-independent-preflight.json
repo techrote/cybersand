@@ -1,0 +1,94 @@
+{
+  "schema": "pubpres-deadline-independent-preflight-v1",
+  "source_base": "689ffefdb936dac9d0a6c4cf429b2368f81a01c3",
+  "application_fixture_sha256": "d4203240af3f265c0ead9a339fedc3b459b8f25788573447817d8c25e6f76200",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "aeb83dc3795b8010437e8bbba037053aff6cf5b5c928d60e0eeedef6b6eb6bd1",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "scope": "Source preflight only; native from independently built b21 runtime has matching native closure, not newly attested complete-source runtime. Graphical execution forbidden in local socket-restricted environment. No performance or physical qualification.",
+  "runs": [
+    {
+      "test": "test_material_publication_deadline",
+      "parse_only": false,
+      "returncode": 0,
+      "started_at": "2026-11-24T16:31:05.470340+00:00",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand/build/pubpres-final/deadline-independent-preflight/project",
+        "--script",
+        "res://tests/test_material_publication_deadline.gd"
+      ],
+      "log_sha256": "af9e7ece8131a053ae3a8401f4410efae592b9fa40c5e364e9fc322dd815fe29",
+      "strict_diagnostics": true,
+      "independent_receipt": {
+        "checks": 57,
+        "complete": true,
+        "failures": [],
+        "physical_credit": false,
+        "policy_sha256": "a3ee3e49b9269dfd1941d3bc9b2af9b8fe7956db70019c1289cd9791388eb20d",
+        "schema": "pubpres-material-deadline-policy-v1",
+        "synthetic_clocks": true
+      }
+    },
+    {
+      "test": "test_material_deadline_main_identity",
+      "parse_only": false,
+      "returncode": 0,
+      "started_at": "2026-11-24T16:31:05.811491+00:00",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand/build/pubpres-final/deadline-independent-preflight/project",
+        "--script",
+        "res://tests/test_material_deadline_main_identity.gd"
+      ],
+      "log_sha256": "c19253254d2d5c4c0dc3b45a077502edf74a047225e843fb0e23e116cc64f57d",
+      "strict_diagnostics": true,
+      "independent_receipt": {
+        "cancelled_cases": [
+          "changed actor epoch",
+          "changed actor session",
+          "incomplete material frame identity",
+          "material and authoritative World disagreement",
+          "pending actor reset",
+          "pending physical replacement",
+          "pending World transaction",
+          "native failure before deadline drain",
+          "failed latest snapshot before deadline drain",
+          "failed offer invalidates pending packet",
+          "actual physical owner closure"
+        ],
+        "checks": 25,
+        "complete": true,
+        "failures": [],
+        "fixture_sha256": "8949afe1a3848827982fc7a075b6d3b5a3137e8fdccbeab0ddadb2495c03fb2e",
+        "gpu_uploads": 0,
+        "main_sha256": "e30a9d45b47562087b7b1b29e06f4d9039497f1cb8c037a5b04a7df56c32f53b",
+        "physical_credit": false,
+        "schema": "pubpres-material-deadline-main-identity-v1",
+        "synthetic_identity_fields": true
+      }
+    },
+    {
+      "test": "test_material_deadline_main_history",
+      "parse_only": true,
+      "returncode": 0,
+      "started_at": "2026-11-24T16:31:09.360794+00:00",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand/build/pubpres-final/deadline-independent-preflight/project",
+        "--check-only",
+        "--script",
+        "res://tests/test_material_deadline_main_history.gd"
+      ],
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "strict_diagnostics": true
+    }
+  ],
+  "complete": true
+}

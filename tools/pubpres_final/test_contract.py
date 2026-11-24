@@ -77,6 +77,28 @@ class FinalContract(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_slot_treatment(data, events, 3, False)
 
+    def test_generated_fixture_requires_registered_extent_without_rewriting_receipt(self):
+        data, events = ring_capture()
+        data["fixture"] = {"name": "reference2048", "generated_sha256": "a" * 64}
+        for event in events:
+            event["material"]["allocated_logical_gpu_bytes"] = 3 * 2048 * 2048 * 2
+        original = copy.deepcopy(data)
+        observed = validate_slot_treatment(data, events, 3, True, expected_extent=[2048, 2048])
+        self.assertEqual(observed["registered_extent"], [2048, 2048])
+        self.assertEqual(observed["logical_gpu_bytes"], 25165824)
+        self.assertEqual(data, original)
+        for bad in (None, [], [2048], [2048, 1024], [2048, 2048.0], [False, 2048], [0, 2048]):
+            with self.subTest(expected_extent=bad), self.assertRaises(ValueError):
+                validate_slot_treatment(data, events, 3, True, expected_extent=bad)
+        changed = copy.deepcopy(data)
+        changed["fixture"]["extent"] = [1024, 2048]
+        with self.assertRaises(ValueError):
+            validate_slot_treatment(changed, events, 3, True, expected_extent=[2048, 2048])
+        false_bytes = copy.deepcopy(events)
+        false_bytes[0]["material"]["allocated_logical_gpu_bytes"] = 2 * 2048 * 2048 * 2
+        with self.assertRaises(ValueError):
+            validate_slot_treatment(data, false_bytes, 3, True, expected_extent=[2048, 2048])
+
     def test_refcounted_object_ids_keep_signed_int64_identity(self):
         data, events = ring_capture()
         negative = [-9223371955351058792, -9223371955317504358, -9223371955283949924]

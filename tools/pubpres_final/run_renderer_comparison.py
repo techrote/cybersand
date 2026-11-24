@@ -27,6 +27,7 @@ from results_registered_renderer import reduce_receipt
 from run_source_abba import compare_registered_direction
 from metrics import supplementary_metrics, validate_slot_treatment
 from renderer_contract import verify_renderer_reducer
+from observer_support import SELECTOR as PRESENTATION_SELECTOR, execute_with_resources, validate_observers
 
 ORACLE_RESOURCE = "tests/pubpres_final_two_slot_oracle.gd"
 EXTERNAL_INPUTS = (
@@ -121,6 +122,7 @@ def main() -> int:
     parser.add_argument("--case", action="append", required=True)
     parser.add_argument("--rapier-runtime", type=Path)
     parser.add_argument("--qualify-only", action="store_true")
+    parser.add_argument("--presentation-observer", action="store_true")
     args = parser.parse_args()
     need(os.name == "nt", "Recovered engine isolation is registered only for hosted Windows/ANGLE")
     need(not any(key.startswith("WB_COMBINED_") for key in os.environ), "Inherited unregistered combined-workbench settings")
@@ -223,6 +225,7 @@ def main() -> int:
                 settings = selectors({"material": "full", "same_frame_continuation": False,
                                       "wave_column_probe": False, "causal": False}, nonce)
                 settings.update(CYBERSAND_DIAG_FULL_IMAGE_SLOTS="2", CYBERSAND_PLAYABILITY_RENDER_THREAD=thread)
+                settings[PRESENTATION_SELECTOR] = "1" if args.presentation_observer else "0"
                 arguments = ["--path", str(project), "--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle",
                              "--render-thread", thread, "--audio-driver", "Dummy", "--log-file", str(folder / "godot.log"),
                              "--script", "res://" + OBSERVER, "--", "--receipt=" + str(receipt), "--fixture=" + case["fixture"],
@@ -235,13 +238,14 @@ def main() -> int:
                 print(case["id"], index, treatment, flush=True)
                 try:
                     need(digest(engines[role]) == registration[role + "_engine_sha256"], "Executable changed before timed arm")
-                    process = execute(engines[role], arguments, folder, source["source_commit"], settings, 420)
+                    process = execute_with_resources(engines[role], arguments, folder, source["source_commit"], settings, 420)
                     strict_logs(folder)
                     data = json.loads(receipt.read_bytes())
                     validate_requested_renderer(data, case, campaign, source["source_commit"], nonce,
                                                 registration[role + "_engine_sha256"], thread)
                     analysis = reduce_receipt(receipt, campaign, project=project, engine=engines[role], arm_letter="C",
                                               expected_render_thread=thread)
+                    observers = validate_observers(receipt, process, project, args.presentation_observer)
                     events = [json.loads(line) for line in receipt.with_name("receipt-events.jsonl").read_text().splitlines()]
                     validate_draw_identity(events, thread)
                     slot_evidence = validate_slot_treatment(data, events, 2, True)
@@ -255,9 +259,10 @@ def main() -> int:
                     process["app_sampler_pid_matched"] = True
                     write_json(folder / "analysis.json", analysis)
                     write_json(folder / "supplementary.json", supplement)
+                    write_json(folder / "observers.json", observers)
                     write_json(folder / "process.json", process)
                     arms.append({"arm": "C", "index": index, "treatment": treatment, "statistics": analysis,
-                                 "slots": slot_evidence, "supplementary": supplement, "process": process,
+                                 "slots": slot_evidence, "supplementary": supplement, "process": process,"observers":observers,
                                  "receipt_sha256": digest(receipt)})
                     shutil.rmtree(project)
                 except Exception as error:

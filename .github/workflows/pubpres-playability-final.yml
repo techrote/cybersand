@@ -31,8 +31,74 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           python3 -m unittest discover -s tools/pubpres_final -v
           python3 -m unittest discover -s tools/pubpres_final_windows -v
+          python3 -m unittest discover -s tools/pubpres_final_observers -p 'test_*.py' -v
+          python3 tools/pubpres_final_observers/bundle.py --verify
+          python3 -m unittest discover -s tools/pubpres_final_engine -p 'test_*.py' -v
+          python3 tools/pubpres_final_engine/engine_contract.py --verify
           python3 tools/ci/test_workbench_engine_provenance.py
           python3 tools/pubpres_playability/test_results_same_frame.py
+
+  engine-font-windows:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: 180
+    outputs:
+      proof_sha256: ${{ steps.identity.outputs.proof_sha256 }}
+    steps:
+      - name: Canonical Windows source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Exact clean Godot 4.7 source
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $EngineSource = Join-Path $env:RUNNER_TEMP 'godot-font-source'
+          git init $EngineSource
+          if ($LASTEXITCODE -ne 0) { throw 'Engine source initialization failed' }
+          git -C $EngineSource remote add origin https://github.com/godotengine/godot.git
+          if ($LASTEXITCODE -ne 0) { throw 'Engine source remote setup failed' }
+          git -C $EngineSource fetch --depth=1 --no-tags origin 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine source fetch failed' }
+          git -C $EngineSource checkout --detach FETCH_HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine source checkout failed' }
+      - name: Build separately identified immutable font-publication engine
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_final_engine/engine_contract.py --verify
+          if ($LASTEXITCODE -ne 0) { throw 'Engine input admission failed' }
+          python tools/pubpres_final_engine/build_engine.py --source-dir (Join-Path $env:RUNNER_TEMP 'godot-font-source') --output build/pubpres-font-engine/payload --evidence build/pubpres-font-engine/proof --workers 2
+          if ($LASTEXITCODE -ne 0) { throw 'Exact font engine build or ABI gate failed' }
+      - name: Bind downstream admission to this build proof
+        id: identity
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Proof = Get-Item build/pubpres-font-engine/payload/build-provenance.json
+          $Hash = (Get-FileHash -Algorithm SHA256 $Proof.FullName).Hash.ToLowerInvariant()
+          'proof_sha256='+$Hash | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: pubpres-final-font-engine-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-font-engine/payload/
+          retention-days: 90
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-final-font-engine-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-font-engine/proof/
+            !build/pubpres-font-engine/proof/dependencies/**
+            !build/pubpres-font-engine/proof/downloads/*.zip
+            !build/pubpres-font-engine/proof/downloads/*.whl
+          retention-days: 90
+          if-no-files-found: warn
 
   runtimes:
     needs: plan
@@ -162,6 +228,14 @@ jobs:
           }
           python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
           if ($LASTEXITCODE -ne 0) { throw 'Pinned engine preparation failed' }
+      - name: Actual Windows process CPU ownership and presentation observer contracts
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python -m unittest discover -s tools/pubpres_final_observers -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows resource/observer contracts failed' }
+          python tools/pubpres_final_observers/bundle.py --verify
+          if ($LASTEXITCODE -ne 0) { throw 'Observer executed-source custody failed' }
       - name: Source-bound correctness and matched physical comparisons
         env:
           PUBPRES_FINAL_PHASE: ${{ needs.plan.outputs.phase }}
@@ -179,7 +253,7 @@ jobs:
           if-no-files-found: warn
 
   renderer-windows:
-    needs: [plan, runtimes]
+    needs: [plan, runtimes, engine-font-windows]
     timeout-minutes: 180
     runs-on: windows-2022
     steps:
@@ -194,6 +268,10 @@ jobs:
         with:
           name: pubpres-final-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-final-font-engine-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/font-engine
       - name: Windows graphical dependencies and exact source
         shell: powershell
         run: |
@@ -213,8 +291,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/ci/restore_workbench_godot.py --download --archive "${{ runner.temp }}/engine609.zip" --output "${{ runner.temp }}/engine609" --evidence build/pubpres-renderer/custody
-      - name: Exact image histories and isolated engine/render-owner comparison
-        run: python tools/pubpres_final/run_renderer_comparison.py --source . --runtime build/runtime/C --official-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --patched-engine-root "${{ runner.temp }}/engine609" --output build/pubpres-renderer/comparison --case wave_512_follow --case wave_gameplay_2048_follow
+      - name: Immutable engine admission, four font controls and ordinary repaired startup
+        run: python tools/pubpres_final_engine/run_font_qualification.py --source . --runtime build/runtime/C --original-engine-root "${{ runner.temp }}/engine609" --repaired-engine-root build/font-engine --engine-build-source "${{ github.sha }}" --engine-build-run "${{ github.run_id }}" --engine-build-attempt "${{ github.run_attempt }}" --engine-proof-sha256 "${{ needs.engine-font-windows.outputs.proof_sha256 }}" --output build/pubpres-renderer/font
+      - name: Same-executable Safe and Separate physical progression comparison
+        run: python tools/pubpres_final/run_font_renderer_comparison.py --source . --runtime build/runtime/C --engine-payload build/font-engine --engine-build-source "${{ github.sha }}" --engine-build-run "${{ github.run_id }}" --engine-build-attempt "${{ github.run_attempt }}" --engine-proof-sha256 "${{ needs.engine-font-windows.outputs.proof_sha256 }}" --font-qualification build/pubpres-renderer/font/SUMMARY.json --output build/pubpres-renderer/comparison --case wave_512_follow --case wave_gameplay_2048_follow --presentation-observer
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -222,7 +302,9 @@ jobs:
           path: |
             build/pubpres-renderer/
             !build/pubpres-renderer/**/projects/**
+            !build/pubpres-renderer/**/startup-projects/**
             !build/pubpres-renderer/**/oracle-projects/**
+            !build/pubpres-renderer/**/startup-template/project/**
             !build/pubpres-renderer/**/template-*/**
           retention-days: 90
           if-no-files-found: warn
@@ -271,11 +353,11 @@ jobs:
       - name: Signed VC runtime and pinned dependency notices
         shell: powershell
         run: ./tools/pubpres_final/prepare_windows_dependencies.ps1 -Output "${{ runner.temp }}/pubpres-final-dependencies"
-      - name: Restore exact optional evaluator engine
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python tools/ci/restore_workbench_godot.py --download --archive "${{ runner.temp }}/engine609.zip" --output "${{ runner.temp }}/engine609" --evidence build/pubpres-evaluator/custody
-      - name: Assemble ordinary source-exact Windows evaluator
+      # The recovered optional engine remains in the separate research lane.
+      # Run45436083078 proved its Separate ordinary-startup CowData failure;
+      # this deliverable explicitly contains only the official engine. Tests
+      # for every included source/scene/selector remain mandatory.
+      - name: Assemble ordinary source-exact stock-engine Windows evaluator
         id: package
         shell: powershell
         run: |
@@ -286,7 +368,7 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Exact candidate ancestry fetch failed' }
           }
           $Archive = Join-Path $PWD ('delivery/CyberSand-PUBPRES-PLAYABILITY-FINAL-001-'+$env:GITHUB_SHA.Substring(0,12)+'-Windows.zip')
-          python tools/pubpres_final_windows/package_windows.py --candidate-root . --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C --donor-root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --donor-runtime build/runtime/D --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-final-dependencies/vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-final-dependencies/notices') --patched-engine-archive (Join-Path $env:RUNNER_TEMP 'engine609.zip') --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-final-payload') --archive $Archive
+          python tools/pubpres_final_windows/package_windows.py --candidate-root . --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C --donor-root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --donor-runtime build/runtime/D --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-final-dependencies/vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-final-dependencies/notices') --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-final-payload') --archive $Archive
           if ($LASTEXITCODE -ne 0) { throw 'Exact evaluator assembly failed' }
           'archive='+$Archive | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
       - name: Extract and execute actual shipped launchers, scenes, reopen and collector
@@ -332,8 +414,8 @@ jobs:
           mkdir -p build/pubpres-final-native
           git rev-parse HEAD > build/pubpres-final-native/source.txt
           status=0
-          timeout 3600 make test wave-flow-test wave-spill-test wave-body-boundary-test material-baseline-test > build/pubpres-final-native/normal.log 2>&1 || status=1
-          timeout 3600 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize > build/pubpres-final-native/sanitizers.log 2>&1 || status=1
+          timeout 3600 make test wave-flow-test wave-spill-test wave-body-boundary-test wave-empty-derived-test material-baseline-test > build/pubpres-final-native/normal.log 2>&1 || status=1
+          timeout 3600 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize wave-empty-derived-sanitize > build/pubpres-final-native/sanitizers.log 2>&1 || status=1
           exit "$status"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

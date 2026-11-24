@@ -4,11 +4,31 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-24
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Workbench material deadline experiment
+
+**Current PUBPRES-PLAYABILITY-FINAL source, Draft/HOLD:**
+`CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ` admits only the exact strings `30` and `60`.
+Missing, `0`, or any other value keeps the existing immediate consumption path.
+The explicit intervals are 33,334 and 16,667 microseconds, rounded up. After an
+actual accepted upload completes, the next eligible material consumption is no
+earlier than that completion plus the selected interval. An already pending
+offer keeps its first deadline when a newer cumulative packet replaces it.
+
+The policy applies only to desktop Shared Workbench. It retains at most one
+immutable material snapshot, drains on ordinary process turns, and exposes its
+requested rate, pending identity, deadlines and counters through
+`Main.material_deadline_status()`. New World/full recovery and owner transitions
+follow the [rendering contract](../architecture/rendering-and-gameplay-bridges.md).
+This selector changes no simulation tick rate, callback credit, physics fence,
+renderer owner, publication backend or full-image slot count. It is not persisted
+in a level or promoted to a production default. Main blocking may overrun the
+deadline; the interval is not a guarantee of displayed-frame delivery.
 
 ## Architectural Generator project controls
 

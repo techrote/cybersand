@@ -166,9 +166,51 @@ def measure_window(rows: list[dict], data: dict, end: int) -> dict:
     }
 
 
-def validate_slot_treatment(data: dict, events: list[dict], slots: int, require_status: bool) -> dict:
+def validate_deadline_baseline(data, *, required: bool):
+    """An ordinary control cannot silently acquire the new deadline treatment."""
+    need(type(required) is bool, "Deadline baseline availability must be explicit")
+    for phase in ("selectors_before", "selectors_after"):
+        selected = data[phase]
+        need(selected["requested"].get("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ") == "0"
+             and "material_deadline" in selected, "Ordinary deadline control was not observed")
+        status = selected["material_deadline"]
+        if not required:
+            need(status is None, "Frozen source unexpectedly acquired a material deadline API")
+            continue
+        need(isinstance(status, dict) and status.get("schema") == "pubpres-material-deadline-v1"
+             and status.get("enabled") is False and status.get("physical_credit") is False,
+             "Ordinary source acquired enabled deadline policy or lost effective status")
+        for key in ("requested_hz", "interval_usec", "pending_count", "offers", "replaced_offers",
+                    "consumptions", "accepted_uploads", "cancellations"):
+            need(type(status.get(key)) is int and status[key] == 0,
+                 "Ordinary off control acquired material scheduling work: " + key)
+        for key in ("pending_serial", "pending_generation", "deadline_usec", "next_upload_usec"):
+            need(type(status.get(key)) is int and status[key] == -1,
+                 "Ordinary off control retained pending material authority: " + key)
+    return {"requested_hz": 0, "effective_api_present": required, "verified_off": required,
+            "frozen_absence_verified": not required,
+            "scope": "Source-bound policy observation only; no physical, draw or upload credit."}
+
+
+def validate_slot_treatment(data: dict, events: list[dict], slots: int, require_status: bool,
+                            *, expected_extent: list[int] | None = None) -> dict:
     """Adversarial treatment validation independent of the publisher's oracle."""
     need(type(slots) is int and slots in (2, 3), "Unregistered slot treatment")
+    extent = None
+    if slots == 3:
+        # Authored fixtures include extent in their receipt. The unchanged
+        # generated reference2048 fixture instead records its recipe/generated
+        # hashes; its dimensions come from the source-bound campaign that the
+        # complete physical reducer has already validated. Never infer dimensions
+        # from claimed allocation bytes, or fill a missing size with a guess.
+        observed_extent = data.get("fixture", {}).get("extent")
+        extent = expected_extent if expected_extent is not None else observed_extent
+        need(isinstance(extent, list) and len(extent) == 2
+             and all(type(value) is int and value > 0 for value in extent),
+             "Ring allocation has no valid registered fixture extent")
+        if observed_extent is not None:
+            need(observed_extent == extent and all(type(value) is int for value in observed_extent),
+                 "Observed fixture extent differs from registered extent")
     for phase in ("selectors_before", "selectors_after"):
         selector = data[phase]
         need(selector["requested"].get("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") == str(slots),
@@ -203,7 +245,6 @@ def validate_slot_treatment(data: dict, events: list[dict], slots: int, require_
             need({current, previous, spare} == {0, 1, 2} and upload == current,
                  "Ring slot role or published upload slot is inconsistent")
             declared_bytes = status.get("allocated_logical_gpu_bytes")
-            extent = data["fixture"]["extent"]
             need(declared_bytes == 3 * extent[0] * extent[1] * 2,
                  "Ring logical RG8 storage differs from registered extent")
             allocation = declared_bytes
@@ -213,5 +254,5 @@ def validate_slot_treatment(data: dict, events: list[dict], slots: int, require_
             "historical_two_slot_scope": not require_status,
             "uploads_checked": len(uploads), "fixed_texture_ids": list(identities[0][0]) if identities else None,
             "fixed_texture_rids": list(identities[0][1]) if identities else None,
-            "logical_gpu_bytes": allocation,
+            "logical_gpu_bytes": allocation, "registered_extent": extent,
             "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."}

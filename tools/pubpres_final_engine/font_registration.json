@@ -1,0 +1,30 @@
+{
+  "schema": "pubpres-font-engine-registration-v1",
+  "order": [
+    {"engine": "original", "render_thread": "safe"},
+    {"engine": "original", "render_thread": "separate"},
+    {"engine": "repaired", "render_thread": "safe"},
+    {"engine": "repaired", "render_thread": "separate"}
+  ],
+  "fixture": "tools/pubpres_render_probes/projects/font",
+  "fixture_sha256": {
+    "project.godot": "310b0cee3c4654d90cbc29b5b3e9d539b3c11ba9497ba184e9ffa1eec00ec7b3",
+    "font_probe.gd": "9e612d697a70e30a6499a679ac6d1593718e74dd6fd3074bf0bf18ff2078e3ae"
+  },
+  "font_mode": "text",
+  "font_mipmaps": false,
+  "draws": 64,
+  "glyph_calls": 6016,
+  "framebuffer_size": [1024, 640],
+  "font_timeout_seconds": 60,
+  "startup_scene": "wave512",
+  "startup_timeout_seconds": 360,
+  "import_timeout_seconds": 300,
+  "startup_observer": "tools/pubpres_final_windows/owner_start.gd",
+  "startup_observer_sha256": "0974b8c1511718552cceae43ec539bf751757565a557a3946cfc1fbba3fb3c5f",
+  "startup_order": ["safe", "separate"],
+  "render_driver": "opengl3_angle",
+  "platform": "Windows",
+  "old_separate_negative": "Only an actual nonzero native exit after the isolated font script began, with CowData<unsigned char>::get byte-zero/empty-size diagnostics, no receipt, no timeout and complete process-tree cleanup is admitted as a retained negative. A valid intermittent old Separate pass must have pixel parity. Any other failure invalidates the experiment.",
+  "scope": "One exact host, original EGL engine and separately admitted font-repaired engine. Unchanged finite font fixture, fresh processes and profiles. Repaired Safe and Separate must both equal original Safe framebuffer bytes and then pass ordinary source-exact native/Rapier Wave512 Main startup. The historical negative is never a passed gameplay arm. Startup remains paused and earns no physical-step or sustained-playability credit. No NVIDIA or performance acceptance; Draft/HOLD."
+}

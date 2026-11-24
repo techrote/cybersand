@@ -23,6 +23,7 @@ from run_campaign import source_identity
 from run_regressions import stage_source, run, validate_completion, terminal_json
 from run_comparison import driver_identity
 from qualification_oracles import ring_result, transition_result, main_recovery_result
+from material_deadline_oracle import main_history_result as deadline_history_result, headless_result as deadline_headless_result
 
 
 def digest(path):
@@ -78,6 +79,7 @@ def main():
         environment = dict(clean, APPDATA=str(profile), LOCALAPPDATA=str(profile), XDG_DATA_HOME=str(profile),
                            XDG_CONFIG_HOME=str(profile), XDG_CACHE_HOME=str(profile), CYBERSAND_SOURCE_REVISION=source["source_commit"],
                            CYBERSAND_MATERIAL_PUBLICATION="full", CYBERSAND_DIAG_FULL_IMAGE_SLOTS=str(slots),
+                           CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ="0",
                            CYBERSAND_DIAG_PHYSICS_PUBLICATION="early", CYBERSAND_DIAG_PRESENTATION="coherent",
                            CYBERSAND_DIAG_SAME_FRAME_CONTINUATION="0", CYBERSAND_MATERIAL_QUEUE_THREAD="safe")
         if test == "test_workbench_physics_causal_trace":
@@ -107,6 +109,11 @@ def main():
                 item["evidence"] = transition_result(output / "ring-transition.json", project, source=source["source_commit"], driver=driver, engine_sha256=report["engine_sha256"])
             elif test == "test_full_image_ring_main_recovery":
                 item["evidence"] = main_recovery_result(text, source["source_commit"], project, driver, engine_sha256=report["engine_sha256"])
+            elif test == "test_material_deadline_main_history":
+                item["evidence"] = deadline_history_result(text, source["source_commit"], project, driver,
+                                                            engine_sha256=report["engine_sha256"], slots=slots)
+            elif test in ("test_material_publication_deadline", "test_material_deadline_main_identity"):
+                item["evidence"] = deadline_headless_result(test, text, project)
             else:
                 errors = validate_completion(test, text, item["returncode"], completion=True)
                 need(not errors, "; ".join(errors))
@@ -131,7 +138,8 @@ def main():
     if imported:
         for test in ("test_workbench_physics_publication", "test_workbench_physics_causal_trace",
                      "test_workbench_material_world_blend", "test_workbench_material_delivery_timing",
-                     "test_physical_actor_integration", "test_render_cadence_worker"):
+                     "test_physical_actor_integration", "test_render_cadence_worker",
+                     "test_material_publication_deadline", "test_material_deadline_main_identity"):
             invoke(test)
         if not args.headless_only:
             invoke("test_full_image_ring_publication", 3, True)
@@ -140,6 +148,8 @@ def main():
                    ["--material=full", "--receipt=" + str(output / "ring-transition.json")])
             invoke("test_workbench_material_world_blend", 3, True)
             invoke("test_workbench_material_delivery_timing", 3, True)
+            invoke("test_material_deadline_main_history", 2, True)
+            invoke("test_material_deadline_main_history", 3, True)
     report["final_source_mutations"] = [name for name, expected in authored.items()
                                         if name not in {".godot/global_script_class_cache.cfg", ".godot/extension_list.cfg"}
                                         and (not (project / name).is_file() or digest(project / name) != expected)]

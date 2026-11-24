@@ -1,0 +1,55 @@
+{
+  "schema": "pubpres-material-deadline-apparatus-local-v1",
+  "scope": "Local reader tamper tests and exact Godot4.7 syntax only; no native build or graphical/performance acceptance.",
+  "base_commit": "892f8b16cbc084430b91d2867404ccb36853c544",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "commands": [
+    {
+      "arguments": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/pubpres_final",
+        "-p",
+        "test_deadline_contract.py",
+        "-v"
+      ],
+      "started_utc": "2026-11-24T16:58:40.948018+00:00",
+      "finished_utc": "2026-11-24T16:58:41.320927+00:00",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "test_coalescing_and_held_material_age_are_not_physical_steps (test_deadline_contract.DeadlineContract.test_coalescing_and_held_material_age_are_not_physical_steps) ... ok\ntest_forged_schedule_and_material_observations_are_rejected (test_deadline_contract.DeadlineContract.test_forged_schedule_and_material_observations_are_rejected) ... ok\ntest_graphical_prerequisites_are_bound_to_exact_source_engine_and_both_histories (test_deadline_contract.DeadlineContract.test_graphical_prerequisites_are_bound_to_exact_source_engine_and_both_histories) ... ok\ntest_hardware_outcome_and_complete_order_are_still_required (test_deadline_contract.DeadlineContract.test_hardware_outcome_and_complete_order_are_still_required) ... ok\ntest_interval_and_zero_suppression_are_exposed_without_a_speed_claim (test_deadline_contract.DeadlineContract.test_interval_and_zero_suppression_are_exposed_without_a_speed_claim) ... ok\ntest_new_status_fields_refuse_booleans_and_integral_floats (test_deadline_contract.DeadlineContract.test_new_status_fields_refuse_booleans_and_integral_floats) ... ok\ntest_unmodified_physical_oracle_and_three_independent_counterbalances (test_deadline_contract.DeadlineContract.test_unmodified_physical_oracle_and_three_independent_counterbalances) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.016s\n\nOK\n"
+    },
+    {
+      "arguments": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/deadline-main-parse/project",
+        "--script",
+        "res://tests/pubpres_final_deadline_gameplay.gd",
+        "--check-only"
+      ],
+      "started_utc": "2026-11-24T16:58:41.321001+00:00",
+      "finished_utc": "2026-11-24T16:58:47.711942+00:00",
+      "returncode": 0,
+      "stdout": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\n",
+      "stderr": ""
+    }
+  ],
+  "files_sha256": {
+    "tools/pubpres003/pubpres_causal_gameplay.gd": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e",
+    "tools/pubpres_final/pubpres_final_gameplay.gd": "82378e5bbfa6c5441c65370ad25e91673395e4214b3189fade8f504ead9a65b0",
+    "tools/pubpres_final/pubpres_final_deadline_gameplay.gd": "0facd5edcba0950c44ef7fca3c4604f0768332339a8dd2eb418067bacccc47d5",
+    "tools/pubpres_final/deadline_registration.json": "6cbaa4399c71c8b3edd26667258c277098e392ad0347dfe11a51d5662fa0ff16",
+    "tools/pubpres_final_observers/presentation_probe.gd": "8cbac6c30c8719fb2c3979af1b4cfb059ecfe4c9ed643c0fbf1bea774de3bba5",
+    "tools/pubpres_final/deadline_contract.py": "d5b46c4173bdf8d075a7557a4f98cee3d1a2a2532dfeecc5cfaf5d46b291eb69",
+    "tools/pubpres_final/run_deadline_comparison.py": "8acca2c48ed85e2d4954a041dd84e56e95f668b7cc6041480bf2feb476e1e680",
+    "tools/pubpres_final/test_deadline_contract.py": "43c135cac9bbf07626a66e52a1018c28b1313bffcc8c675d361ebfd04f508aee"
+  },
+  "native_stage_manifest_sha256": "cddd9ebf3aef98e00f1c350ac58f2a8fe4c8e0120e2d757801bfdd8309fcc709",
+  "pure_reader_methods": 7,
+  "pass": true
+}

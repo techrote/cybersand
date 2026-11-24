@@ -2,6 +2,7 @@ extends Control
 
 const MaterialPublisher = preload("res://scripts/blit_material_publisher.gd")
 const FullImageRingPublisher = preload("res://scripts/full_image_ring_publisher.gd")
+const MaterialPublicationDeadline = preload("res://scripts/material_publication_deadline.gd")
 const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -1755,6 +1756,9 @@ var material_appearance_program: ImageTexture
 var render_channels: int = 1
 var render_image_format: Image.Format = Image.FORMAT_R8
 var _uploaded_workbench_frame: Dictionary = {}
+var _material_deadline = MaterialPublicationDeadline.new()
+var _material_deadline_hz: int = MaterialPublicationDeadline.requested_hz(
+	OS.get_environment("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"))
 # Changed-pixel old occupancy from the *previous* GPU texture, sampled before
 # accepting each patch. Only consulted while palette snapshot_blend < 1.
 # An oversized/full refresh is unknown rather than optimistically empty.
@@ -1960,6 +1964,7 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	_material_deadline.configure(_material_deadline_hz)
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
@@ -2141,6 +2146,7 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	_material_deadline.cancel("exit_tree")
 	if workbench_pose_trace.active:
 		var saved: Dictionary = finish_workbench_pose_trace()
 		print("WORKBENCH_POSE_TRACE_EXIT ",JSON.stringify(saved))
@@ -2182,6 +2188,9 @@ func _process(delta: float) -> void:
 			rapier_bridge.process_hard_surface_collider_budget(32, 1000)
 	var material_started_usec: int = Time.get_ticks_usec() if _pubpres_trace_enabled else 0
 	consume_worker_snapshot()
+	# A paused World may publish no newer mailbox. An already offered material
+	# packet still drains at its fixed deadline on every ordinary process turn.
+	_drain_material_deadline()
 	if _pubpres_trace_enabled:
 		_pubpres_packet_observed("material_consumption", material_started_usec, latest_snapshot,
 			{"uploaded_serial":last_uploaded_render_snapshot_serial, "ack_serial":_engine_lab_last_ack_serial})
@@ -3657,7 +3666,7 @@ func consume_worker_snapshot() -> void:
 				snapshot.failed_tick_index,snapshot.last_tick_error]
 	if not player_uses_barrel():
 		character_position = snapshot.character_position
-	consume_render_snapshot(snapshot)
+	_offer_material_snapshot(snapshot)
 	gameplay_recorder.ingest_snapshot(snapshot)
 
 
@@ -4682,6 +4691,74 @@ func workbench_display_frame() -> Dictionary:
 	return _uploaded_workbench_frame
 
 
+func _material_deadline_identity(snapshot: CyberSimulationSnapshot) -> Array:
+	if shared_workbench == null or snapshot == null or snapshot.simulation_failed \
+			or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null \
+			or _actor_reset_receipt != 0:
+		return []
+	var generation: int = snapshot.physics_world_generation
+	if generation < 0 or snapshot.render_world_generation != generation:
+		return []
+	if physical_actor_session != null:
+		var bridge: Variant = physical_actor_session.bridge
+		if not bridge is WorkbenchBridge or snapshot.rigid_body_epoch != bridge._epoch:
+			return []
+		var frame: Dictionary = snapshot.render_context.get("workbench_display", {})
+		if frame.get("session", -1) != bridge._session or frame.get("epoch", -1) != bridge._epoch \
+				or frame.get("world_generation", -1) != generation:
+			return []
+		return [bridge._session, bridge._epoch, generation]
+	return [0, _body_owner_epoch(), generation] if snapshot.rigid_body_epoch == _body_owner_epoch() else []
+
+
+func _offer_material_snapshot(snapshot: CyberSimulationSnapshot, now_usec: int = -1) -> void:
+	if not _material_deadline.enabled() or shared_workbench == null:
+		consume_render_snapshot(snapshot)
+		return
+	if snapshot.simulation_failed or simulation_worker.has_failed():
+		_material_deadline.cancel("native_failure")
+		return
+	var identity: Array = _material_deadline_identity(snapshot)
+	if identity.is_empty():
+		# Transition transactions retain their original immediate material path.
+		# An old deferred offer never survives a physical owner replacement.
+		_material_deadline.cancel("owner_transition")
+		consume_render_snapshot(snapshot)
+		return
+	var offered: bool = _material_deadline.offer(snapshot, identity,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec,
+		last_uploaded_world_generation, last_uploaded_render_snapshot_serial)
+	if not offered:
+		var reason: String = _material_deadline.status().last_offer_result
+		if reason in ["new_world_requires_full", "world_mismatch", "invalid_offer"]:
+			last_render_patch_validation_error = "material deadline refused: " + reason
+			reject_render_snapshot(snapshot)
+
+
+func _drain_material_deadline(now_usec: int = -1) -> void:
+	if not _material_deadline.enabled():
+		return
+	var identity: Array = _material_deadline_identity(latest_snapshot)
+	if identity.is_empty() or simulation_worker.has_failed():
+		_material_deadline.cancel("owner_transition_or_failure")
+		return
+	var selected: CyberSimulationSnapshot = _material_deadline.take_due(identity,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec)
+	if selected == null:
+		return
+	var before_serial: int = last_uploaded_render_snapshot_serial
+	consume_render_snapshot(selected)
+	var accepted: bool = selected.render_snapshot_serial > before_serial \
+		and last_uploaded_render_snapshot_serial == selected.render_snapshot_serial \
+		and last_uploaded_world_generation == selected.render_world_generation
+	_material_deadline.complete(selected, accepted,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec)
+
+
+func material_deadline_status() -> Dictionary:
+	return _material_deadline.status()
+
+
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
@@ -5078,6 +5155,7 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 
 func _close_physical_actors() -> void:
+	_material_deadline.cancel("physical_owner_closed")
 	_workbench_presentation_state.clear()
 	_workbench_presentation_identity.clear()
 	_workbench_sample_steps.clear()
@@ -6189,6 +6267,7 @@ func view_content_rect() -> Rect2:
 
 
 func create_render_textures() -> void:
+	_material_deadline.cancel("textures_recreated")
 	material_presentation_timeline.reset()
 	_create_material_texture_pair(image, image)
 	_material_pending_rectangles.clear()
@@ -6445,6 +6524,7 @@ func validate_render_patch_payload(
 
 
 func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	_material_deadline.cancel("render_packet_rejected")
 	rejected_render_snapshot_count += 1
 	if snapshot.render_snapshot_serial != last_rejected_render_snapshot_serial:
 		push_error(

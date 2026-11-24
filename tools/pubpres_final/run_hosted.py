@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -33,6 +34,10 @@ def main():
               "source": os.environ.get("GITHUB_SHA"), "run_id": os.environ.get("GITHUB_RUN_ID"),
               "attempt": os.environ.get("GITHUB_RUN_ATTEMPT"), "platform": "windows" if windows else "linux",
               "outcomes": [], "unexecuted": [], "complete": False, "physical_acceptance": "HOLD"}
+    retired_path = ROOT / "tools/pubpres_final/retired_experiments.json"
+    report["prospectively_retired_experiments"] = {
+        "sha256": hashlib.sha256(retired_path.read_bytes()).hexdigest(),
+        "record": json.loads(retired_path.read_bytes())}
     def save():
         (output / "INVENTORY.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     def run(label, arguments, seconds):
@@ -59,18 +64,33 @@ def main():
                   "--candidate-source", str(ROOT), "--candidate-runtime", str(runtime / "C"),
                   "--engine", str(engine), *display]
         primary = ["wave_512_follow", "wave_gameplay_2048_follow"]
-        for mode in ("source-abba", "slots-abba"):
-            run(mode, [*common, "--mode", mode, "--case", primary[0], "--case", primary[1],
-                       "--output", str(output / mode)], 4800)
-        if phase == "final":
-            # Independent 60-second ordinary mounted captures retain all steps
-            # beyond the registered first-144 window. No tail is discarded.
-            for slots in (2, 3):
-                run("sustained-slots" + str(slots), [*common, "--mode", "single", "--sustained",
-                    "--slots", str(slots), "--case", primary[1], "--output", str(output / ("sustained-slots" + str(slots)))], 1800)
-            for case in ("wave_1024_follow_4", "wave_landscape_follow", "pressure_512_follow", "freemass_2048_follow"):
-                run("confirmation-" + case, [*common, "--mode", "source-abba", "--case", case,
-                    "--output", str(output / ("confirmation-" + case))], 2400)
+        # This is a capture-validity prerequisite, not an invented acceptable
+        # overhead threshold. The exact off/on/on/off timing effect is retained.
+        observer_ok = run("observer-calibration", [*common, "--mode", "observer-abba", "--slots", "2",
+            "--case", primary[0], "--case", primary[1], "--output", str(output / "observer-calibration")], 4800)
+        if observer_ok:
+            run("mixed-eight-actor", [str(ROOT / "tools/pubpres_final/run_mixed_qualification.py"),
+                "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
+                "--correctness-summary", str(output / "correctness/SUMMARY.json"),
+                "--output", str(output / "mixed-eight-actor"), *display], 1500)
+            run("material-deadlines", [str(ROOT / "tools/pubpres_final/run_deadline_comparison.py"),
+                "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
+                "--correctness-summary", str(output / "correctness/SUMMARY.json"),
+                "--output", str(output / "material-deadlines"), *display], 7200)
+            observed_common = [*common, "--presentation-observer"]
+            run("source-abba", [*observed_common, "--mode", "source-abba", "--case", primary[0], "--case", primary[1],
+                "--output", str(output / "source-abba")], 4800)
+            if phase == "final":
+                # Independent60-second ordinary mounted captures retain all
+                # steps beyond the registered144-step window, including tails.
+                run("sustained-slots2", [*observed_common, "--mode", "single", "--sustained",
+                    "--slots", "2", "--case", primary[1], "--output", str(output / "sustained-slots2")], 1800)
+                for case in ("wave_1024_follow_4", "wave_landscape_follow", "pressure_512_follow", "freemass_2048_follow"):
+                    run("confirmation-" + case, [*observed_common, "--mode", "source-abba", "--case", case,
+                        "--output", str(output / ("confirmation-" + case))], 2400)
+        else:
+            report["unexecuted"].append({"scope": "instrumented comparisons and mixed/deadline qualification",
+                                         "reason": "Required new observer calibration did not produce valid evidence"})
     elif phase != "delivery":
         report["unexecuted"].append({"scope": "timed comparisons", "reason": "Required successor correctness did not pass"})
     report["complete"] = not report["unexecuted"] and all(row["returncode"] == 0 and not row["timed_out"] for row in report["outcomes"])

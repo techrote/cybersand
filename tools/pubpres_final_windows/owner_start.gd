@@ -107,6 +107,7 @@ func _poll() -> void:
 		"world_generation":app.last_uploaded_world_generation,"material_revision":app.last_uploaded_revision,
 		"native_tick":app.latest_snapshot.tick_index,"authored_actor_count":actor_count,
 		"material_publication":material,
+		"material_deadline":app.call("material_deadline_status") if app.has_method("material_deadline_status") else null,
 		"same_frame_continuation":app.call("same_frame_continuation_status") if app.has_method("same_frame_continuation_status") else null,
 		"render_thread_inline":RenderingServer.is_on_render_thread(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
