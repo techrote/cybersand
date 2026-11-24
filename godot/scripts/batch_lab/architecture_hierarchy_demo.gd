@@ -68,6 +68,21 @@ static func repaired_gallery() -> Dictionary:
 	value.operations=[rectangle(64,328,112,8),rectangle(104,336,4,80),rectangle(172,336,4,80)]
 	return value
 
+static func recovery_attachments() -> Dictionary:
+	var value:=stage("attach-workshop-bays","Connect the recovered bays and their service fins to the observed roof with complete face contacts.",Rect2i(32,128,448,192),1024)
+	value.materials=[28,58]
+	for x: int in [64,440]:
+		value.operations.append(rectangle(x,144,8,16))
+		for dx: int in 8:
+			value.connections.append({"kind":"solid-contact","a":[x+dx,143],"b":[x+dx,144]})
+			value.connections.append({"kind":"solid-contact","a":[x+dx,159],"b":[x+dx,160]})
+	for x: int in [88,112,136,360,384,408]:
+		value.operations.append(rectangle(x,168,8,16,28))
+		for dx: int in 8:
+			value.connections.append({"kind":"solid-contact","a":[x+dx,167],"b":[x+dx,168]})
+			value.connections.append({"kind":"solid-contact","a":[x+dx,183],"b":[x+dx,184]})
+	return value
+
 static func recovery(snapshot: Dictionary) -> Dictionary:
 	if Compiler.rect(snapshot.get("region"))!=RECOVERY_AREA or not snapshot.get("source_sha256") is String or int(snapshot.get("generation",0))<1:
 		return {"ok":false,"reason":"Recovery requires a new actual inspection of the stopped cladding region."}
@@ -77,8 +92,8 @@ static func recovery(snapshot: Dictionary) -> Dictionary:
 	resolved.operations=[rectangle(64,304,384,8),rectangle(64,160,8,144),rectangle(440,160,8,144),rectangle(64,160,112,8),rectangle(336,160,112,8)]
 	for x: int in [88,112,136,360,384,408]:resolved.operations.append(rectangle(x,184,8,64,28))
 	var campaign:={"format":Campaign.FORMAT,"id":"workshop-fresh-recovery","title":"Freshly inspected recovery",
-		"intent":"Retain completed native structure and local work; revise only the explicitly stopped trial after inspecting its actual prefix.",
-		"region":[0,0,512,512],"budget":{"native_checks":81920,"raster_candidates":2097152,"max_retries_per_job":1},
-		"nodes":[leaf(clear,"Clear the witnessed partial prefix","typed",[],""),leaf(resolved,"Build open service bays","structure",[clear.id],"")]}
+		"intent":"Retain completed native structure and local work; recover the inspected stopped trial, then separately approve its declared roof and fin attachments.",
+		"region":[0,0,512,512],"budget":{"native_checks":82944,"raster_candidates":3145728,"max_retries_per_job":1},
+		"nodes":[leaf(clear,"Clear the witnessed partial prefix","typed",[],""),leaf(resolved,"Build open service bays","structure",[clear.id],""),leaf(recovery_attachments(),"Attach the recovered bays","connection",[resolved.id],"")]}
 	var checked:=Campaign.validate(campaign)
 	return {"ok":true,"campaign":campaign} if checked.ok else checked

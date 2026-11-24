@@ -88,7 +88,7 @@ func run() -> void:
 	var refused: Dictionary=await workflow.preview_selected()
 	if not check(not refused.get("ok",true),"conflicting gallery is refused before native admission"):await finish();return
 	decisions.append({"kind":"native-preview-refusal","stage_id":"access-gallery","reason":refused.reason})
-	if not check(workflow.revise(Demo.repaired_gallery()).ok,"owner revises the proposal around the protected passage") or not await apply_selected():await finish();return
+	if not check(workflow.revise_workshop_gallery().ok,"owner revises the proposal around the protected passage") or not await apply_selected():await finish();return
 	for identity: String in ["mounted-ribs","service-connection","controlled-wear"]:
 		if not choose(identity):await finish();return
 		var before: Dictionary=await wb.capture_batch_source(Compiler.rect(session.stage().region))
@@ -112,25 +112,32 @@ func run() -> void:
 	if not check(before_recovery.get("ok",false),"full stopped prefix captured before recovery"):await finish();return
 	var stopped_file:=FileAccess.open(evidence.path_join("stopped-workshop.u16le"),FileAccess.WRITE)
 	stopped_file.store_buffer(before_recovery.config.source_cells);stopped_file.close()
-	var inspected: Dictionary=await session.inspect_region(Demo.RECOVERY_AREA)
-	if not check(inspected.get("ok",false),"fresh native partial state inspected"):await finish();return
-	var recovery:=Demo.recovery(session.inspection_view())
-	if not check(recovery.ok and workflow.load_campaign(recovery.campaign).ok,"fresh finite recovery plan replaces cancelled campaign"):await finish();return
+	var proposed_recovery: Dictionary=await workflow.propose_workshop_recovery()
+	if not check(proposed_recovery.get("ok",false) and proposed_recovery.get("zero_writes",false),"owner recovery control inspects the actual stopped region and proposes finite tasks / "+str(proposed_recovery.get("reason",""))):await finish();return
+	var recovery:=workflow.campaign.export_history()
+	var after_proposal: Dictionary=await wb.capture_batch_source(Demo.AREA)
+	if not check(after_proposal.get("ok",false) and after_proposal.config.source_cells==before_recovery.config.source_cells,"recovery proposal leaves every actual native cell unchanged"):await finish();return
 	check(workflow.summary().prior_campaigns==1,"rejection revision and stopped decisions remain in bounded prior history")
 	write_json("recovery-campaign.json",recovery.campaign)
-	for identity: String in ["clear-stopped-prefix","open-workshop-bays"]:
+	for identity: String in ["clear-stopped-prefix","open-workshop-bays","attach-workshop-bays"]:
 		if not choose(identity) or not await apply_selected():await finish();return
 	if not check(workflow.campaign.summary().state=="completed","fresh recovery campaign reaches verified native completion"):await finish();return
 	var final_plane: Dictionary=await wb.capture_batch_source(Demo.AREA)
 	if not check(final_plane.get("ok",false),"independent final native material readback"):await finish();return
 	var cells: PackedByteArray=final_plane.config.source_cells
-	var unchanged:=true;var passage_clear:=true
+	var unchanged:=true;var passage_clear:=true;var attachment_cells:=0
 	for y: int in 512:
 		for x: int in 512:
 			var offset:=(y*512+x)*2
-			if not Demo.RECOVERY_AREA.has_point(Vector2i(x,y)) and cells.decode_u16(offset)!=before_recovery.config.source_cells.decode_u16(offset):unchanged=false
+			var allowed_attachment: bool=(Rect2i(64,144,8,16).has_point(Vector2i(x,y)) or Rect2i(440,144,8,16).has_point(Vector2i(x,y)))
+			if allowed_attachment:
+				if before_recovery.config.source_cells.decode_u16(offset)!=0 or cells.decode_u16(offset)!=58:unchanged=false
+				else:attachment_cells+=1
+			elif not Demo.RECOVERY_AREA.has_point(Vector2i(x,y)) and cells.decode_u16(offset)!=before_recovery.config.source_cells.decode_u16(offset):unchanged=false
 			if Compiler.rect(Demo.PASSAGE).has_point(Vector2i(x,y)) and cells.decode_u16(offset)!=0:passage_clear=false
-	check(unchanged and passage_clear,"fresh recovery preserves completed geometry and protected floor passage")
+	check(unchanged and attachment_cells==256 and passage_clear,"recovery preserves completed geometry except its exact separately approved Empty-only hangers")
+	var attached: Dictionary=session.records.back()
+	check(attached.stage_id=="attach-workshop-bays" and attached.checked_cells==1024 and attached.changed_cells==1024 and attached.stage.connections.size()==128,"all128 declared face contacts belong to the1024-cell independently approved attachment stage")
 	var file:=FileAccess.open(evidence.path_join("workshop.u16le"),FileAccess.WRITE);file.store_buffer(cells);file.close()
 	wb._name.text="m67-delegated-workshop"
 	if not check(wb.save_setup(),"ordinary authored Save start retains final actual World"):await finish();return
@@ -143,7 +150,7 @@ func run() -> void:
 		"stopped_plane":"stopped-workshop.u16le","stopped_plane_sha256":Compiler.digest(before_recovery.config.source_cells),
 		"extent":[512,512],"delegated_workers":workers,"owner_decisions":decisions,"partial_checked_cells":partial.checked_cells,
 		"final_campaign_state":workflow.campaign.summary().state,"prior_campaigns":workflow.summary().prior_campaigns,
-		"preserved_outside_recovery":unchanged,"protected_passage_empty":passage_clear,"original_records":initial_records.size(),"all_records":session.records.size()}
+		"preserved_outside_recovery_except_declared_attachments":unchanged,"approved_outside_recovery_cells":attachment_cells,"protected_passage_empty":passage_clear,"original_records":initial_records.size(),"all_records":session.records.size()}
 	await finish()
 
 func finish() -> void:
