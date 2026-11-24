@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,6 +27,7 @@ def main():
     windows = os.name == "nt"
     engine = args.engine_root.resolve() / ("Godot_v4.7-stable_win64.exe" if windows else "Godot_v4.7-stable_linux.x86_64")
     runtime = args.runtime_root.resolve()
+    shutil.copyfile(args.engine_root.resolve() / "ENGINE.json", output / "ENGINE.json")
     display = [] if windows else ["--display-wrapper", str(ROOT / "tools/pubpres_playability_build/owned_xvfb.py")]
     report = {"schema": "pubpres-final-hosted-inventory-v1", "phase": phase,
               "source": os.environ.get("GITHUB_SHA"), "run_id": os.environ.get("GITHUB_RUN_ID"),

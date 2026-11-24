@@ -1,7 +1,7 @@
 {
   "schema": "pubpres-playability-final-request-v1",
   "phase": "development",
-  "purpose": "First occupied-mask bounds and bounded Full-image ring correctness plus frozen/source and two/three-slot physical ABBA; no acceptance promotion",
+  "purpose": "Second development checkpoint: corrected signed ObjectID domain, actual source/slots physical ABBA, isolated stock-Safe/patched-Safe/patched-Separate controls, and source-exact extracted Windows evaluator qualification. First red evidence retained; no promotion.",
   "frozen_reference": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "45c10ef583e551082af86d767c045ce4648f1b2d215d406fe3fc2b16ebbd0507"
+  "payload_sha256": "5fae2c4bbd7c497533cece1589eaec628c5c49d6c95f192917efaa8a99cdb422"
 }

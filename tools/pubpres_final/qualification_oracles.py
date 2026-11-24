@@ -16,6 +16,8 @@ import json
 from pathlib import Path
 import re
 
+from identity_domains import object_id, texture_rid
+
 
 EXTENT = (2048, 2048)
 WARMUP = 30
@@ -219,7 +221,7 @@ def transition_result(path: Path, project: Path, *, source: str, driver: str,
              "Transition publication treatment/allocation differs")
         ids, rids = status["texture_ids"], status["texture_rids"]
         need(len(ids) == len(set(ids)) == len(rids) == len(set(rids)) == 3
-             and all(type(value) is int and value > 0 for value in ids + rids),
+             and all(object_id(value) for value in ids) and all(texture_rid(value) for value in rids),
              "Transition texture ownership aliases or is missing")
         observed_ids = (tuple(ids), tuple(rids))
         if fixed_ids is None:

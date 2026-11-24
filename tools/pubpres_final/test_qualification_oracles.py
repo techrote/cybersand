@@ -197,6 +197,27 @@ class QualificationOracles(unittest.TestCase):
         with self.assertRaises(ValueError):
             oracle.ring_result(text + "\n" + text, SOURCE, self.project, DRIVER, engine_sha256=ENGINE)
 
+    def test_negative_refcounted_ids_do_not_weaken_identity_or_rid_checks(self):
+        data = self.transition()
+        negative = [-9223371955351058792, -9223371955317504358, -9223371955283949924]
+        for row in data["admissions"]:
+            row["material"]["texture_ids"] = negative.copy()
+        self.validate_transition(data)
+        for value in (0, -(1 << 63) - 1, 1 << 63, True, -1.5):
+            with self.subTest(invalid_object_id=value):
+                broken = copy.deepcopy(data)
+                broken["admissions"][20]["material"]["texture_ids"][0] = value
+                with self.assertRaises(ValueError):
+                    self.validate_transition(broken)
+        self.assert_faults(data, self.validate_transition, [
+            ("negative_id_alias", lambda d: d["admissions"][20]["material"].update(texture_ids=[negative[0], negative[0], negative[2]])),
+            ("negative_id_replacement", lambda d: d["admissions"][20]["material"].update(texture_ids=[negative[0], negative[1], -97])),
+            ("negative_rid", lambda d: d["admissions"][20]["material"].update(texture_rids=[-1, 201, 202])),
+            ("rid_overflow", lambda d: d["admissions"][20]["material"].update(texture_rids=[1 << 63, 201, 202])),
+            ("rid_bool", lambda d: d["admissions"][20]["material"].update(texture_rids=[True, 201, 202])),
+            ("rid_float", lambda d: d["admissions"][20]["material"].update(texture_rids=[1.5, 201, 202])),
+        ])
+
     def test_reconstruction_retains_sparse_substrate_and_two_channels(self):
         sparse = oracle.transition_plane(38)
         self.assertEqual(sparse[:2], bytes((58, (37 * 37) % 256)))

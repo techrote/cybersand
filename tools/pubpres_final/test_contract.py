@@ -77,6 +77,29 @@ class FinalContract(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_slot_treatment(data, events, 3, False)
 
+    def test_refcounted_object_ids_keep_signed_int64_identity(self):
+        data, events = ring_capture()
+        negative = [-9223371955351058792, -9223371955317504358, -9223371955283949924]
+        for event in events:
+            event["material"]["texture_ids"] = negative.copy()
+        result = validate_slot_treatment(data, events, 3, True)
+        self.assertEqual(result["fixed_texture_ids"], negative)
+        for invalid in (0, -(1 << 63) - 1, 1 << 63, True, -1.5):
+            with self.subTest(invalid=invalid):
+                broken = copy.deepcopy(events)
+                broken[0]["material"]["texture_ids"][0] = invalid
+                with self.assertRaises(ValueError):
+                    validate_slot_treatment(data, broken, 3, True)
+        for key, values in (("texture_ids", [negative[0], negative[0], negative[2]]),
+                            ("texture_ids", [negative[0], negative[1], -97]),
+                            ("texture_rids", [-1, 902, 903]),
+                            ("texture_rids", [1 << 63, 902, 903])):
+            with self.subTest(key=key, values=values):
+                broken = copy.deepcopy(events)
+                broken[1]["material"][key] = values
+                with self.assertRaises(ValueError):
+                    validate_slot_treatment(data, broken, 3, True)
+
     def test_repeated_admission_cannot_hide_wait_or_invent_material_draw(self):
         rows = [
             {"event": "command_attempt", "time_usec": 1000, "absolute_tick": 0, "sequence_after": 1},
@@ -89,7 +112,7 @@ class FinalContract(unittest.TestCase):
              "render_serial": 7, "generated_usec": 4000},
             {"event": "texture_upload", "start_usec": 13000, "time_usec": 14000,
              "render_serial": 8, "generated_usec": 5000},
-            {"event": "framebuffer_draw", "time_usec": 15000, "render_serial": 8},
+            {"event": "framebuffer_draw", "time_usec": 15000, "render_serial": 8, "inline_main": True},
         ]
         result = measure_window(rows, {"capture_start_usec": 0}, 16000)
         self.assertEqual(result["first_admitted_command_for_tick_to_step_ms"]["max"], 9)
@@ -98,6 +121,13 @@ class FinalContract(unittest.TestCase):
         self.assertEqual(result["matching_material_generation_to_draw_delivery_ms"]["max"], 10)
         self.assertEqual(result["matching_upload_return_to_draw_delivery_ms"]["max"], 1)
         self.assertEqual(result["latest_physical_completion_age_at_draw_delivery_ms"]["max"], 5)
+        deferred = copy.deepcopy(rows)
+        deferred[-1].update(inline_main=False, render_serial=-1)
+        unknown = measure_window(deferred, {"capture_start_usec": 0}, 16000)
+        self.assertFalse(unknown["material_draw_identity_available"])
+        self.assertIsNone(unknown["unmatched_uploads_at_window_end"])
+        self.assertIsNone(unknown["matching_material_generation_to_draw_delivery_ms"])
+        self.assertEqual(unknown["latest_physical_completion_age_at_draw_delivery_ms"]["max"], 5)
         bad = copy.deepcopy(rows)
         bad[2]["command_sequence"] = 999
         with self.assertRaises(ValueError):

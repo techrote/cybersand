@@ -1,0 +1,352 @@
+{
+  "schema": "pubpres-final-development-evidence-v1",
+  "source": "b21dca8fd6bd30bed9c19ce84601f85050405bed",
+  "source_tree": "ab5493df827a7c2bef273b4bfc4132345cd6d291",
+  "workflow_run": 45430704276,
+  "workflow_conclusion": "failure",
+  "physical_acceptance": "HOLD",
+  "comparisons_executed": false,
+  "reason": "Original independent transition checker rejected valid signed RefCounted ObjectIDs; timed work correctly withheld. See object-id-replay.json for separate unchanged-evidence correction.",
+  "runtimes": {
+    "linux": {
+      "archive": {
+        "run_id": 45430704276,
+        "artifact_id": 14938058809,
+        "archive_sha256": "59553bd04e0f0339ff83599e3c85158da2565085af3128c255befe9211b48163",
+        "archive_bytes": 4176197,
+        "crc_verified": true,
+        "source_commit": "b21dca8fd6bd30bed9c19ce84601f85050405bed"
+      },
+      "roles": {
+        "D": {
+          "source_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+          "source_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+          "runtime_file": "libcybersand_native.linux.x86_64.so",
+          "runtime_sha256": "bc5cdbf4832d09f8b14f6ff2ed7cf1e182343d55a3a4ebc4dc1d93894d660d59",
+          "runtime_bytes": 5257896,
+          "returncode": 0,
+          "toolchain_drift_allowed": false,
+          "production_runtime_promotion": false,
+          "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+          "godot_cpp_dependency_sha256": "63e3fe77b85413372f8c4d313f48cd327170edf899a2c5b75f6f4b8971bf00f9",
+          "receipt_sha256": "ac9747b56ef6a4be8d29015a327dd7260f49616a71ae473f3ea6fa75d8eca44d",
+          "source_input_count": 105
+        },
+        "C": {
+          "source_commit": "b21dca8fd6bd30bed9c19ce84601f85050405bed",
+          "source_tree": "ab5493df827a7c2bef273b4bfc4132345cd6d291",
+          "runtime_file": "libcybersand_native.linux.x86_64.so",
+          "runtime_sha256": "aeb83dc3795b8010437e8bbba037053aff6cf5b5c928d60e0eeedef6b6eb6bd1",
+          "runtime_bytes": 5261992,
+          "returncode": 0,
+          "toolchain_drift_allowed": false,
+          "production_runtime_promotion": false,
+          "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+          "godot_cpp_dependency_sha256": "63e3fe77b85413372f8c4d313f48cd327170edf899a2c5b75f6f4b8971bf00f9",
+          "receipt_sha256": "1b538d01e1ea5d5940beb9e35427581e720992f814b8cf6211e970e2b1e1fd43",
+          "source_input_count": 105
+        }
+      }
+    },
+    "windows": {
+      "archive": {
+        "run_id": 45430704276,
+        "artifact_id": 14938123799,
+        "archive_sha256": "6904599fd4426a4b8ad058dfd0fdde0f4f0db7343ed6e2308a7b29ec413aa73d",
+        "archive_bytes": 4444172,
+        "crc_verified": true,
+        "source_commit": "b21dca8fd6bd30bed9c19ce84601f85050405bed"
+      },
+      "roles": {
+        "D": {
+          "source_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+          "source_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+          "runtime_file": "cybersand_native.windows.x86_64.dll",
+          "runtime_sha256": "8913f727c34ed617048c78d23867e7a36d97fb0b6ca90e6a05efd2b2a9ed4993",
+          "runtime_bytes": 5824512,
+          "returncode": 0,
+          "toolchain_drift_allowed": false,
+          "production_runtime_promotion": false,
+          "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "5913bb7471aa6f288bfaf7a459fe229b9f51f73d70b704a64d503a7bb41d1e8a",
+          "godot_cpp_dependency_sha256": "efe4c860b1b76aafe4797f5f2732edc88a0ded950333e06e3821bf3e89976a0a",
+          "receipt_sha256": "dd290a3a036ea57ccf477f7c75e5cb7c7a2d82ccc7088028684137da47564d0e",
+          "source_input_count": 105
+        },
+        "C": {
+          "source_commit": "b21dca8fd6bd30bed9c19ce84601f85050405bed",
+          "source_tree": "ab5493df827a7c2bef273b4bfc4132345cd6d291",
+          "runtime_file": "cybersand_native.windows.x86_64.dll",
+          "runtime_sha256": "417f0221046458c3041eae487fbd2244097b047a1135efeb7e028d0158c41cf7",
+          "runtime_bytes": 5825024,
+          "returncode": 0,
+          "toolchain_drift_allowed": false,
+          "production_runtime_promotion": false,
+          "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "5913bb7471aa6f288bfaf7a459fe229b9f51f73d70b704a64d503a7bb41d1e8a",
+          "godot_cpp_dependency_sha256": "efe4c860b1b76aafe4797f5f2732edc88a0ded950333e06e3821bf3e89976a0a",
+          "receipt_sha256": "3d70a88ac2522a6c8780aa549470071c1eb632f26adb33ef843ee79d6459d128",
+          "source_input_count": 105
+        }
+      }
+    }
+  },
+  "graphical": {
+    "linux": {
+      "archive": {
+        "run_id": 45430704276,
+        "artifact_id": 14939976161,
+        "archive_sha256": "bd1430653bac89a38dc4d1a77c10c869ee1eb16c721add5e47b348122babd103",
+        "archive_bytes": 7116329,
+        "crc_verified": true
+      },
+      "summary_sha256": "2ada5edee53a7b60a38cd6bb25b052282e4dd70a25272d944d9408e8d3012f77",
+      "complete": false,
+      "outcomes": [
+        {
+          "test": "import",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_physics_publication",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_physics_causal_trace",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_world_blend",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_delivery_timing",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_physical_actor_integration",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_render_cadence_worker",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_full_image_ring_publication",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_full_image_ring_main_recovery",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "pubpres_full_image_ring_oracle",
+          "slots": 3,
+          "graphical": true,
+          "valid": false,
+          "failure": "Transition texture ownership aliases or is missing",
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_world_blend",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_delivery_timing",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ],
+      "source_mutations": {
+        "import": [],
+        "final": []
+      }
+    },
+    "windows": {
+      "archive": {
+        "run_id": 45430704276,
+        "artifact_id": 14940101172,
+        "archive_sha256": "896be431cfaf8c02a72d1f9afcde67ade9ba5af102cd95cd612d5a3dd8ca6932",
+        "archive_bytes": 5327692,
+        "crc_verified": true
+      },
+      "summary_sha256": "a502d9a3763c6636cc36774f9e0ac6f7e12773bcfbfd284b04bb231f589f49ff",
+      "complete": false,
+      "outcomes": [
+        {
+          "test": "import",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_physics_publication",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_physics_causal_trace",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_world_blend",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_delivery_timing",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_physical_actor_integration",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_render_cadence_worker",
+          "slots": 2,
+          "graphical": false,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_full_image_ring_publication",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_full_image_ring_main_recovery",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "pubpres_full_image_ring_oracle",
+          "slots": 3,
+          "graphical": true,
+          "valid": false,
+          "failure": "Transition texture ownership aliases or is missing",
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_world_blend",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "test": "test_workbench_material_delivery_timing",
+          "slots": 3,
+          "graphical": true,
+          "valid": true,
+          "failure": null,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ],
+      "source_mutations": {
+        "import": [],
+        "final": []
+      }
+    }
+  }
+}

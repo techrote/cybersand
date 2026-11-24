@@ -14,6 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pubpres_playability"))
 from results import distribution, need
+from identity_domains import object_id, texture_rid
 
 
 def _duration(rows):
@@ -45,7 +46,7 @@ def supplementary_metrics(receipt: Path) -> dict:
         "scope": {
             "admission_latency": "Actual application command admission to the next completed physical step. Input is tick-addressed; this is NOT wall-clock device/input-delivery latency.",
             "draw_delivery": "Main-thread frame_post_draw delivery, NOT a GPU fence or physical scanout.",
-            "material_age": "Original native material generation to matching render-serial draw delivery. Unmatched or superseded publications are counted separately.",
+            "material_age": "Original native material generation to matching inline Main render-serial notification only. Separate notifications are deferred to Main and have no upload-specific draw identity; those material-age joins remain unavailable.",
             "physical_age": "Age of the latest completed physical step when draw callback is delivered. This is NOT proof that that pose was displayed.",
             "native_duration": "Native-reported elapsed tick duration from the first healthy packet per consumed sample; may include scheduling/preemption.",
             "overlap": "Observed interval overlap is descriptive. It does NOT by itself assign a driver, hardware or scheduler root cause.",
@@ -109,8 +110,13 @@ def measure_window(rows: list[dict], data: dict, end: int) -> dict:
 
     draws = by_kind["framebuffer_draw"]
     uploads = by_kind["texture_upload"]
+    draw_identity_available = bool(draws) and all(draw.get("inline_main") is True
+                                                 and type(draw.get("render_serial")) is int
+                                                 and draw["render_serial"] > 0 for draw in draws)
     material_age, upload_to_draw, unmatched = [], [], 0
     for upload in uploads:
+        if not draw_identity_available:
+            continue
         matching = next((draw for draw in draws
                          if draw["time_usec"] >= upload["time_usec"]
                          and draw["render_serial"] == upload["render_serial"]), None)
@@ -147,7 +153,11 @@ def measure_window(rows: list[dict], data: dict, end: int) -> dict:
         "main_callback_ms": _duration(by_kind["main_callback"]),
         "upload_call_ms": _duration(uploads),
         "upload_count": len(uploads),
-        "unmatched_uploads_at_window_end": unmatched,
+        "material_draw_identity_available": draw_identity_available,
+        "unknown_draw_identity_notifications": sum(draw.get("inline_main") is not True for draw in draws),
+        "material_draw_unavailable_reason": None if draw_identity_available else
+            "No complete inline draw identity: Separate delivers notifications later on Main, so its live material serial cannot identify the completed draw.",
+        "unmatched_uploads_at_window_end": unmatched if draw_identity_available else None,
         "matching_upload_return_to_draw_delivery_ms": distribution(upload_to_draw),
         "matching_material_generation_to_draw_delivery_ms": distribution(material_age),
         "latest_physical_completion_age_at_draw_delivery_ms": distribution(physical_age),
@@ -184,7 +194,7 @@ def validate_slot_treatment(data: dict, events: list[dict], slots: int, require_
             ids, rids = status.get("texture_ids"), status.get("texture_rids")
             need(isinstance(ids, list) and isinstance(rids, list)
                  and len(ids) == len(set(ids)) == len(rids) == len(set(rids)) == 3
-                 and all(type(value) is int and value > 0 for value in ids + rids),
+                 and all(object_id(value) for value in ids) and all(texture_rid(value) for value in rids),
                  "Ring texture identities are missing or alias")
             identity = (tuple(ids), tuple(rids))
             identities.append(identity)

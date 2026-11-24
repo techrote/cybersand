@@ -41,8 +41,8 @@ def driver_identity() -> dict:
     identity = verify_driver()
     tracked = git(ROOT, "ls-tree", "-r", "--name-only", "HEAD", "--", "tools/pubpres_final").splitlines()
     actual = {path.relative_to(ROOT).as_posix() for path in HERE.iterdir()
-              if path.is_file() and path.suffix in (".py", ".gd", ".json")}
-    needed = {path for path in tracked if Path(path).suffix in (".py", ".gd", ".json")}
+              if path.is_file() and path.suffix in (".py", ".gd", ".json", ".ps1")}
+    needed = {path for path in tracked if Path(path).suffix in (".py", ".gd", ".json", ".ps1")}
     need(actual == needed and needed, "Uncommitted or missing final measurement driver")
     needed.add("tools/pubpres_completion/run_source_abba.py")
     for relative in sorted(needed):

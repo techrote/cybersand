@@ -1,13 +1,16 @@
 # PUBPRES final physical-progression comparisons
 
-This prospective apparatus measures two new questions: a source change with
+This prospective apparatus measures a source change with
 two Full-image slots, or the same source's optional two-versus-three Full-image
-slots. It does not rerun the rejected Full/Target or Early/Combined experiments.
+slots, plus an explicitly separate engine/render-owner isolation. It does not
+rerun the rejected Full/Target or Early/Combined experiments.
 All results and source changes remain Draft/HOLD.
 
 `run_comparison.py` imports the original V3 observer and reducer unchanged. Its
-small GDScript subclass only adds its own source hash, the ring helper hash
+small GDScript subclass adds its own source hash, the ring helper hash
 (explicitly absent on historical controls), and the requested slot selector.
+It also records Separate's deferred draw-notification serial as unknown instead
+of substituting Main's later live material serial. Safe observes its inline serial.
 Every successful arm must still pass the original source, real callback, actual
 Rapier step, native completion, exact terrain, actor/input, Water and current-GPU
 checks. Previous-history correctness is separately qualified by the actual-size
@@ -64,6 +67,9 @@ not proof of playable 60 Hz physics. `SUMMARY.json` always retains
 matching-draw-delivery and latest-physical-completion-age clocks. Repeated
 commands cannot hide the interval since the first command admitted for a tick.
 Superseded material serials are counted rather than assigned an unrelated draw.
+Separate's deferred Main notification cannot identify the completed draw's
+material serial; its matching-material clocks and unmatched-upload count remain
+unavailable rather than fabricated from the notification's later Main state.
 These clocks are not hardware input latency, a guarantee of which pose was
 displayed, GPU completion or scanout. Native tick duration may contain CPU
 preemption. Reported texture bytes are logical allocation, not physical VRAM.
@@ -73,3 +79,40 @@ Run the narrow adversarial evidence contract checks with:
 ```sh
 python -m unittest discover -s tools/pubpres_final -p 'test_*.py' -v
 ```
+
+## Separate engine and rendering-owner isolation
+
+The recovered #609 engine is a distinct executable, with its original build/API
+manifest and all ten payload files verified through the restored engine lock.
+Its EGL fix is evidence about startup; performance remains a new experiment.
+`run_renderer_comparison.py` uses exactly one current application/native/Rapier
+and Full-two/early/coherent policy in the six-arm order
+stock Safe / patched Safe / patched Separate / patched Separate / patched Safe /
+stock Safe. This supplies independent Safe engine-package and same-patched-engine
+render-owner ABBA comparisons. Each of the three treatments must first pass an
+untimed first-read current/previous GPU oracle with 180 exact revisions, 15
+dense-to-sparse transitions and two fixed alternating texture owners.
+
+```powershell
+python tools/pubpres_final/run_renderer_comparison.py `
+  --source C:\source --runtime C:\runtime\C `
+  --official-engine C:\Godot\Godot_v4.7-stable_win64.exe `
+  --patched-engine-root C:\verified-609-engine `
+  --output C:\new-renderer-evidence --case wave_512_follow
+```
+
+Use `--qualify-only` for the three untimed prerequisites. Add the separately
+registered `wave_gameplay_2048_follow` case when warranted. A failed prerequisite
+is retained and its timed arms are explicitly not run; other available controls
+remain useful. The renderer runner only accepts locked Windows native builds.
+
+The frozen V3 reducer stays unchanged. The new
+`results_registered_renderer.py` has a distinct schema and requires an explicit
+expected actual Safe or Separate owner. `renderer_contract.py` proves that this
+committed source differs from the pinned frozen reducer only at that owner
+predicate, function signature and analysis schema, with a new explanatory header
+and no inherited command-line entry point. All native, terrain, real callback,
+body, input, Water, material and framebuffer predicates remain byte-identical.
+The outer runner also checks actual Main rendezvous ownership, original trace
+integrity, exact executable/source identities and every non-treatment match
+field. Original receipts are never relabelled, patched or rewritten.

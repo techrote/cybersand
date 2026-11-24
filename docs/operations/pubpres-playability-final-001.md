@@ -14,7 +14,8 @@ This mission continues programme [#717](https://github.com/techrote/cybersand/is
 from frozen [#757](https://github.com/techrote/cybersand/pull/757), source
 `c90dbc46e1f57f28e06b1f4205b83467335ff657`. Accepted main at intake remains
 `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. The isolated successor branch is
-`codex/pubpres-playability-final-001-20261124`. Frozen predecessors, their negative
+`codex/pubpres-playability-final-001-20261124`, [Draft #767](https://github.com/techrote/cybersand/pull/767).
+Frozen predecessors, their negative
 results and unrelated programmes retain their ownership. **Draft/HOLD: no merge,
 Ready, automatic default promotion or release.**
 
@@ -85,6 +86,19 @@ owned Xvfb startup is retained as an environment failure and graphical execution
 uses the repository's GitHub-hosted policy. No acceptance condition is relaxed.
 
 ## Delivery and owner gate
+
+The first source-frozen run [45430704276](https://github.com/techrote/cybersand/actions/runs/45430704276)
+built both independent platform pairs and executed twelve correctness outcomes
+per platform. The original run failed because the independent checker required
+positive ObjectIDs; Godot RefCounted textures legitimately use negative signed
+64-bit identities. All actual image histories matched. The
+[separate corrected replay](../audits/2026-11-24-pubpres-playability-final/object-id-replay.md)
+passes unchanged original receipts without rewriting that failed run. Timing
+comparisons were correctly withheld. The
+[development inventory](../audits/2026-11-24-pubpres-playability-final/development-01-inventory.json)
+binds every archive and runtime. The
+[decision packet](../audits/2026-11-24-pubpres-playability-final/decision-packet.md)
+retains the causal account and unresolved selection.
 
 The selected final source requires an ordinary interactive Windows evaluator,
 exact runtime and per-file manifest, executed extraction/launch/authoring/reopen,

@@ -41,3 +41,6 @@ docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lfs merge=lfs -text
+
+# PUBPRES final measurement-driver closure compares these new script bytes exactly.
+tools/pubpres_final/*.ps1 text eol=lf

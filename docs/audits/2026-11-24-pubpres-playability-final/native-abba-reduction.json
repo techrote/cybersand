@@ -1,0 +1,583 @@
+{
+  "schema": "pubpres-native-abba-reduction-v1",
+  "scope": "native-only; no Rapier, presentation, or input-latency witness",
+  "source_identities": {
+    "predecessor_source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "candidate_source": "7e983d170aabb06c1b9d48788d5a8e416c3afd3e",
+    "candidate_tree": "c339e062110b83dc67bcc10b7c7787e62e4ef802"
+  },
+  "percentile_policy": "Each percentile is a per-process value; no pooled percentile is recoverable from these aggregates.",
+  "sampling_limit": "72 ticks per process, two processes per source per cohort; tail behavior is not a sustained gameplay qualification.",
+  "cohorts": [
+    {
+      "cohort": "current512-one",
+      "complete_checkpoint_parity": true,
+      "water_units": 16387830,
+      "launched_parcels": 5098,
+      "metrics_in_run_order": {
+        "A": {
+          "tick_mean_ms": [
+            7.30841,
+            7.51581
+          ],
+          "tick_p50_ms": [
+            6.90226,
+            7.13638
+          ],
+          "tick_p95_ms": [
+            8.71793,
+            9.21869
+          ],
+          "tick_p99_ms": [
+            22.099,
+            14.8278
+          ],
+          "tick_max_ms": [
+            22.099,
+            14.8278
+          ],
+          "column_mean_ms": [
+            4.38743,
+            4.67607
+          ],
+          "flux_mean_ms": [
+            1.49586,
+            1.49265
+          ],
+          "apply_mean_ms": [
+            0.626003,
+            0.656616
+          ],
+          "prepare_mean_ms": [
+            0.0420577,
+            0.0213735
+          ],
+          "wave_storage_bytes": [
+            3598144,
+            3598144
+          ]
+        },
+        "B": {
+          "tick_mean_ms": [
+            7.2257,
+            6.86589
+          ],
+          "tick_p50_ms": [
+            6.02467,
+            6.27628
+          ],
+          "tick_p95_ms": [
+            9.35852,
+            10.3668
+          ],
+          "tick_p99_ms": [
+            71.5663,
+            12.6533
+          ],
+          "tick_max_ms": [
+            71.5663,
+            12.6533
+          ],
+          "column_mean_ms": [
+            3.58933,
+            3.87799
+          ],
+          "flux_mean_ms": [
+            2.33283,
+            1.577
+          ],
+          "apply_mean_ms": [
+            0.636234,
+            0.775463
+          ],
+          "prepare_mean_ms": [
+            0.0236652,
+            0.0197432
+          ],
+          "wave_storage_bytes": [
+            3598184,
+            3598184
+          ]
+        }
+      },
+      "candidate_mean_percent_change": -4.942114998293334,
+      "both_candidate_means_below_both_controls": true,
+      "both_candidate_means_above_both_controls": false
+    },
+    {
+      "cohort": "current1024-one",
+      "complete_checkpoint_parity": true,
+      "water_units": 66229110,
+      "launched_parcels": 4608,
+      "metrics_in_run_order": {
+        "A": {
+          "tick_mean_ms": [
+            23.1667,
+            27.3386
+          ],
+          "tick_p50_ms": [
+            22.1423,
+            26.259
+          ],
+          "tick_p95_ms": [
+            27.9865,
+            30.647
+          ],
+          "tick_p99_ms": [
+            46.7719,
+            52.28
+          ],
+          "tick_max_ms": [
+            46.7719,
+            52.28
+          ],
+          "column_mean_ms": [
+            17.4374,
+            20.0287
+          ],
+          "flux_mean_ms": [
+            3.31812,
+            4.45226
+          ],
+          "apply_mean_ms": [
+            1.47132,
+            1.78442
+          ],
+          "prepare_mean_ms": [
+            0.0593193,
+            0.150172
+          ],
+          "wave_storage_bytes": [
+            14115392,
+            14115392
+          ]
+        },
+        "B": {
+          "tick_mean_ms": [
+            21.0965,
+            20.4925
+          ],
+          "tick_p50_ms": [
+            19.3296,
+            20.1111
+          ],
+          "tick_p95_ms": [
+            31.0509,
+            24.5432
+          ],
+          "tick_p99_ms": [
+            51.3922,
+            40.0388
+          ],
+          "tick_max_ms": [
+            51.3922,
+            40.0388
+          ],
+          "column_mean_ms": [
+            14.7773,
+            14.3336
+          ],
+          "flux_mean_ms": [
+            3.85226,
+            3.79921
+          ],
+          "apply_mean_ms": [
+            1.5621,
+            1.56633
+          ],
+          "prepare_mean_ms": [
+            0.0680533,
+            0.0553257
+          ],
+          "wave_storage_bytes": [
+            14115432,
+            14115432
+          ]
+        }
+      },
+      "candidate_mean_percent_change": -17.65418678831726,
+      "both_candidate_means_below_both_controls": true,
+      "both_candidate_means_above_both_controls": false
+    },
+    {
+      "cohort": "current2048-one",
+      "complete_checkpoint_parity": true,
+      "water_units": 266083830,
+      "launched_parcels": 4608,
+      "metrics_in_run_order": {
+        "A": {
+          "tick_mean_ms": [
+            94.1102,
+            109.393
+          ],
+          "tick_p50_ms": [
+            92.2822,
+            107.39
+          ],
+          "tick_p95_ms": [
+            110.233,
+            127.711
+          ],
+          "tick_p99_ms": [
+            118.222,
+            132.567
+          ],
+          "tick_max_ms": [
+            118.222,
+            132.567
+          ],
+          "column_mean_ms": [
+            75.6078,
+            87.3863
+          ],
+          "flux_mean_ms": [
+            11.8714,
+            14.7793
+          ],
+          "apply_mean_ms": [
+            5.21305,
+            5.60596
+          ],
+          "prepare_mean_ms": [
+            0.245778,
+            0.320764
+          ],
+          "wave_storage_bytes": [
+            55912000,
+            55912000
+          ]
+        },
+        "B": {
+          "tick_mean_ms": [
+            83.2454,
+            81.8627
+          ],
+          "tick_p50_ms": [
+            81.7259,
+            80.7595
+          ],
+          "tick_p95_ms": [
+            91.9839,
+            88.9325
+          ],
+          "tick_p99_ms": [
+            108.769,
+            108.51
+          ],
+          "tick_max_ms": [
+            108.769,
+            108.51
+          ],
+          "column_mean_ms": [
+            61.1444,
+            60.729
+          ],
+          "flux_mean_ms": [
+            14.9676,
+            14.1012
+          ],
+          "apply_mean_ms": [
+            5.60427,
+            5.52542
+          ],
+          "prepare_mean_ms": [
+            0.267778,
+            0.232936
+          ],
+          "wave_storage_bytes": [
+            55912040,
+            55912040
+          ]
+        }
+      },
+      "candidate_mean_percent_change": -18.86707432610396,
+      "both_candidate_means_below_both_controls": true,
+      "both_candidate_means_above_both_controls": false
+    },
+    {
+      "cohort": "historical512-one",
+      "complete_checkpoint_parity": true,
+      "water_units": 16387830,
+      "launched_parcels": 0,
+      "metrics_in_run_order": {
+        "A": {
+          "tick_mean_ms": [
+            2.57418,
+            2.85739
+          ],
+          "tick_p50_ms": [
+            2.43796,
+            2.4724
+          ],
+          "tick_p95_ms": [
+            3.61586,
+            6.10581
+          ],
+          "tick_p99_ms": [
+            4.13949,
+            9.36987
+          ],
+          "tick_max_ms": [
+            4.13949,
+            9.36987
+          ],
+          "column_mean_ms": [
+            1.61171,
+            1.66721
+          ],
+          "flux_mean_ms": [
+            0.448394,
+            0.525089
+          ],
+          "apply_mean_ms": [
+            0.237984,
+            0.282329
+          ],
+          "prepare_mean_ms": [
+            0.0143722,
+            0.0451938
+          ],
+          "wave_storage_bytes": [
+            2418496,
+            2418496
+          ]
+        },
+        "B": {
+          "tick_mean_ms": [
+            2.43066,
+            2.54188
+          ],
+          "tick_p50_ms": [
+            2.35702,
+            2.42028
+          ],
+          "tick_p95_ms": [
+            3.07785,
+            3.8894
+          ],
+          "tick_p99_ms": [
+            4.70859,
+            4.84586
+          ],
+          "tick_max_ms": [
+            4.70859,
+            4.84586
+          ],
+          "column_mean_ms": [
+            1.40923,
+            1.43495
+          ],
+          "flux_mean_ms": [
+            0.524192,
+            0.538868
+          ],
+          "apply_mean_ms": [
+            0.231473,
+            0.250628
+          ],
+          "prepare_mean_ms": [
+            0.00951864,
+            0.0176986
+          ],
+          "wave_storage_bytes": [
+            2418536,
+            2418536
+          ]
+        }
+      },
+      "candidate_mean_percent_change": -8.451147642394375,
+      "both_candidate_means_below_both_controls": true,
+      "both_candidate_means_above_both_controls": false
+    },
+    {
+      "cohort": "current2048-zero",
+      "complete_checkpoint_parity": true,
+      "water_units": 266083830,
+      "launched_parcels": 4608,
+      "metrics_in_run_order": {
+        "A": {
+          "tick_mean_ms": [
+            46.6756,
+            42.211
+          ],
+          "tick_p50_ms": [
+            44.9317,
+            40.1876
+          ],
+          "tick_p95_ms": [
+            55.6592,
+            50.74
+          ],
+          "tick_p99_ms": [
+            102.758,
+            70.6735
+          ],
+          "tick_max_ms": [
+            102.758,
+            70.6735
+          ],
+          "column_mean_ms": [
+            35.0336,
+            31.7273
+          ],
+          "flux_mean_ms": [
+            7.2212,
+            6.07643
+          ],
+          "apply_mean_ms": [
+            3.01031,
+            2.8243
+          ],
+          "prepare_mean_ms": [
+            0.215449,
+            0.229625
+          ],
+          "wave_storage_bytes": [
+            55912000,
+            55912000
+          ]
+        },
+        "B": {
+          "tick_mean_ms": [
+            47.4372,
+            46.0089
+          ],
+          "tick_p50_ms": [
+            45.7505,
+            45.0899
+          ],
+          "tick_p95_ms": [
+            57.2587,
+            55.8777
+          ],
+          "tick_p99_ms": [
+            82.0155,
+            73.1977
+          ],
+          "tick_max_ms": [
+            82.0155,
+            73.1977
+          ],
+          "column_mean_ms": [
+            35.3375,
+            34.5243
+          ],
+          "flux_mean_ms": [
+            7.34543,
+            6.93178
+          ],
+          "apply_mean_ms": [
+            3.16676,
+            2.99486
+          ],
+          "prepare_mean_ms": [
+            0.259162,
+            0.266021
+          ],
+          "wave_storage_bytes": [
+            55912040,
+            55912040
+          ]
+        }
+      },
+      "candidate_mean_percent_change": 5.12956958641686,
+      "both_candidate_means_below_both_controls": false,
+      "both_candidate_means_above_both_controls": false
+    },
+    {
+      "cohort": "current2048-eight",
+      "complete_checkpoint_parity": true,
+      "water_units": 266083830,
+      "launched_parcels": 4608,
+      "metrics_in_run_order": {
+        "A": {
+          "tick_mean_ms": [
+            98.5499,
+            123.338
+          ],
+          "tick_p50_ms": [
+            99.8884,
+            115.113
+          ],
+          "tick_p95_ms": [
+            108.187,
+            166.837
+          ],
+          "tick_p99_ms": [
+            112.897,
+            175.807
+          ],
+          "tick_max_ms": [
+            112.897,
+            175.807
+          ],
+          "column_mean_ms": [
+            79.0831,
+            98.3694
+          ],
+          "flux_mean_ms": [
+            12.9156,
+            16.3961
+          ],
+          "apply_mean_ms": [
+            5.1699,
+            6.6074
+          ],
+          "prepare_mean_ms": [
+            0.231299,
+            0.308436
+          ],
+          "wave_storage_bytes": [
+            55912000,
+            55912000
+          ]
+        },
+        "B": {
+          "tick_mean_ms": [
+            81.8445,
+            129.926
+          ],
+          "tick_p50_ms": [
+            81.5852,
+            128.313
+          ],
+          "tick_p95_ms": [
+            92.2087,
+            194.709
+          ],
+          "tick_p99_ms": [
+            125.941,
+            214.876
+          ],
+          "tick_max_ms": [
+            125.941,
+            214.876
+          ],
+          "column_mean_ms": [
+            61.3101,
+            91.6729
+          ],
+          "flux_mean_ms": [
+            13.4036,
+            23.9337
+          ],
+          "apply_mean_ms": [
+            5.58193,
+            10.5102
+          ],
+          "prepare_mean_ms": [
+            0.226387,
+            0.364392
+          ],
+          "wave_storage_bytes": [
+            55912040,
+            55912040
+          ]
+        }
+      },
+      "candidate_mean_percent_change": -4.559689825357771,
+      "both_candidate_means_below_both_controls": false,
+      "both_candidate_means_above_both_controls": false
+    }
+  ]
+}
