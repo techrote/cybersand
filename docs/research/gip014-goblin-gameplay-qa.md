@@ -15,8 +15,12 @@ It owns only an opt-in developer scene, bounded in-game action adapters, disposa
 fixtures, policies, evidence readers and focused documentation. It does not change
 ordinary Workbench startup or production gameplay. No Ready promotion or merge is
 authorized. The branch now implements a real in-process Godot controller and has
-passed native Linux campaigns and the actual hosted Windows developer UI test.
-The extracted Windows evaluator remains a separate custody and qualification gate.
+passed native Linux campaigns, the actual hosted Windows developer UI test and
+the separate extracted-package custody gate. The qualified Windows developer
+evaluator is an unchanged source-matched artifact of commit
+`3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`; this final documentation update
+does not change or relabel that runtime. [PR #772](https://github.com/techrote/cybersand/pull/772)
+remains Draft/HOLD.
 
 ## Shared progress and ownership ledger
 
@@ -67,6 +71,30 @@ are never reported as discovered gameplay defects.
 
 ## Run and watch goblin
 
+### Qualified Windows developer evaluator
+
+Download the qualified evaluator artifact from
+[run 45474099351](https://github.com/techrote/cybersand/actions/runs/45474099351).
+GitHub's outer artifact ZIP contains the inner `CyberSand-goblin.zip`; unpack
+that inner ZIP into a writable folder, and double-click `Open goblin.cmd`.
+Godot and the required native libraries are included; Python
+and a separately installed Godot are not needed. The launcher creates a new
+disposable profile beneath the extracted package's `test-output` directory.
+
+For a first watch session, select `Actor workshop` (fixture ID `actor_workshop`),
+`WANDERER`, seed `13`, budget
+`128`, and pacing `150` ms, then press Start. The fixture picker is inside the
+developer panel; the launcher initially selects `material_playground`. Use Stop
+to release pilot input and pause the game before changing experiments. The
+package's PowerShell launcher can rerun its two fixed 64-action campaigns and
+graphical controls test. Run this command from the extracted package folder:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\Open goblin.ps1" -Mode SelfTest -GraphicalSmoke
+```
+
+### Source invocation
+
 Use the repository's pinned Godot `4.7.stable.official.5b4e0cb0f` and materialized
 native/Rapier libraries whose retained source-input manifests match this checkout.
 The existing [local build guide](../operations/local-build-and-validation.md)
@@ -82,6 +110,13 @@ python tools/gip014/run_goblin.py --godot /path/to/pinned-godot --out /path/to/n
 python tools/gip014/run_goblin.py --godot /path/to/pinned-godot --case replay --out /path/to/new-replay-run --replay /path/to/original/transcript.json
 python tools/gip014/verify_transcript.py /path/to/original/transcript.json
 ```
+
+Replay requires the exact source commit recorded in the transcript's
+`header.provenance.source_commit`, its source-input snapshot, fixture and runtime.
+Use a separate checkout of that commit before replaying retained qualification
+tapes. The retained Linux tapes pin `1649f086a5795d88d03d19fd161ad549365a3fc4`;
+the Windows package pins `3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`.
+A later documentation-only commit is not silently substituted for either identity.
 
 The interactive scene uses ordinary Godot controls for fixture, personality, signed
 32-bit seed, action budget (1–256), pacing (0–3000 ms), Start, Pause and Stop. It
@@ -220,31 +255,34 @@ limits, preserved below. Production owners' sources remain untouched.
 | Original #749 run45066785091 | Passing reference model only; original archive and identities retained |
 | `adapter-profile-001` | 278 checks/33 operations; two camera int/float oracle failures, corrected in harness |
 | `adapter-002`, `control-dev-001` | Staging/import blocked by shared-volume exhaustion; no game pass claimed |
-| `control-dev-002` | Import process killed with signal9; cause not established, no game defect claimed |
-| `adapter-003` | 310 checks/35 records pass; genuine actor lease/input and pending native cancellation observed |
-| `adapter-004` | Expanded adapter passes its exercised cases; actor placement/pilot/reset/single-step added, without implying26/26 ID coverage |
-| `adapter-005` | 723 checks,49 retained records (46 completed/3 controlled cancelled refusals),25 completed IDs,50 real API admissions,23.040s |
-| `control-dev-003` | Actual Linux CONTROL64:64 completed,17 feature IDs,381 passing assertions,1 not applicable,22.521s; independent Python readback agrees |
-| `controller-b001` | Two lifecycle-test failures concerning pre-native cancellation evidence; harness corrected, originals retained |
-| `controller-b002` | Lifecycle execution passes,17.353s; pause/resume, Stop, pending admission, profile isolation, fixed archives and mismatched replay refusal |
+| `control-dev-002` | Import process killed with signal 9; cause not established, no game defect claimed |
+| `adapter-003` | Recovered summary:310 checks/35 records pass; genuine actor lease/input and pending native cancellation observed; local raw tape lost at host restart |
+| `adapter-004` | Recovered summary:expanded adapter passes its exercised cases; actor placement/pilot/reset/single-step added, without implying26/26 ID coverage |
+| `adapter-005` | Recovered summary:723 checks,49 records (46 completed/3 controlled cancelled refusals),25 completed IDs,50 real API admissions,23.040s; local raw tape lost |
+| `control-dev-003` | Recovered summary:Linux CONTROL64 completed,17 feature IDs,381 assertion passes,1 N/A,22.521s; local raw tape lost |
+| `controller-b001` | Recovered summary:two lifecycle-test failures concerning pre-native cancellation evidence; harness corrected; local raw tape lost |
+| `controller-b002` | Recovered summary:lifecycle execution passes,17.353s; pause/resume, Stop, pending admission, profile isolation, fixed archives and mismatched replay refusal |
 | Unit controls | Deliberately inconsistent fixtures test wrong cells, stale source, missing/queued receipts, missing input, malformed transcripts and reducer behavior; never reported as discovered defects |
 | Local graphical display | Display-server sockets denied by this host; graphical test not run locally |
-| Published `5199cd5806e72819bbe512c000aee8dcee6efca1` matched12 | Same construction scene, seeds13/605,64-action budgets;9 complete/3 interrupted capture-preflight cases,692 attempts/689 completions,26 IDs,6242 passing assertions/0 failures/10 not applicable,221.174s; originals retained |
+| Published `5199cd5806e72819bbe512c000aee8dcee6efca1` matched12 | Recovered summary:same construction scene, seeds13/605,64-action budgets;9 complete/3 interrupted capture-preflight cases,692 attempts/689 completions,26 IDs,6242 assertion passes/0 failures/10 N/A,221.174s; local raw tapes lost |
 | Windows `45460161994` | Artificial Python fixture CRLF expected-hash mistake stopped the lane before gameplay; retained artifact14952576748 |
 | Windows `45461118405` | Unit, adapter, controller and both ordinary Workbench baselines pass; CONTROL stops before Save on native body-copy protection; retained artifact14951654742, no evaluator uploaded |
-| `adapter-006-diagnostic` | 784 checks/52 records pass; actual full and bounded body-protection receipts retained; ordinary actor Save/Reopen authored identity succeeds |
-| `replay-5199-*` | Two selected tapes refused before dispatch by a JSON integral-number enumeration bug; corrected in both action validators and26-action roundtrip controls, no replay pass attributed to these attempts |
-| `material-motion-c001` | Actual native motion passes, but the test labeled material58 as Wood; original receipt remains Wall evidence, fixture corrected to named material constants |
-| `material-motion-c002` | Corrected actual Wood7 cup:89 checks/10 operations pass in7.800s;16 Sand2 cells conserved,188 Wood cells unchanged, native tick0→16 and Sand vertical-position sum152→406 |
+| `adapter-006-diagnostic` | Recovered summary:784 checks/52 records pass; body-protection receipts and authored Save/Reopen observed. Later retained Windows adapter evidence independently covers this repair. |
+| `replay-5199-*` | Recovered summary:two selected tapes refused before dispatch by a JSON integral-number enumeration bug; corrected in both validators and26-action roundtrip controls; no replay pass attributed |
+| `material-motion-c001` | Recovered summary:native motion passes, but the test called material58 Wood; it was Wall. Fixture corrected; retained Windows evidence distinguishes these materials. |
+| `material-motion-c002` | Recovered summary:corrected Wood7 cup,89 checks/10 operations pass in7.800s. Fresh retained1649 execution independently repeats the Sand/Wood regression. |
 | Current negative/unit controls | 173 Godot assertion/transcript checks,153 policy checks and23 Python evidence/reducer/package checks; explicitly artificial controls |
 | Published `89a90e34` matched12 and replay | All12 campaigns reached64 attempts;767/768 operations completed,26 IDs,7393 assertion passes/0 failures/10 not applicable. CONTROL and CURIOSITY semantic replays passed; raw timing observations differed. See evidence-retention qualification below. |
 | Windows `45466167235` | Source unit/adapter/controller/gameplay/baseline, CONTROL64, BUILDER128 and CONTROL replay pass; extracted actor/save CONTROL64 cases pass. Graphical BUILDER24 completes, but UI replay identity, canvas-size fixture and hosted audio diagnostics block evaluator publication; artifact14953994370 preserves raw evidence. |
 | UI repair lifecycle control | 53 actual Godot lifecycle checks pass with a positive in-memory replay and retained wrong-hash refusal; source89a90e34 plus recorded local delta. |
 | Regenerated `1649f086` matched12 | All12 selected campaigns pass:768 attempts/767 completions,26 IDs,7393 assertion passes/0 failures/10 not applicable;247.233s plus10.912s shared import. One additional CURIOSITY605 attempt retained41 actions before shared-disk exhaustion stopped evidence export; its fresh-profile retry passes. |
 | `1649f086` replay and positive controls | CONTROL64 and CURIOSITY64 replay semantically,25.330s/20.389s; exact asynchronous observations differ. Wood/Sand89-check regression,173 contract and153 policy controls,6-action positive reproduction and passing-tape reducer N/A all pass. |
-| Windows `45469647752` | Source tests and extracted campaigns pass; actual graphical25-check test and24-action UI replay pass at1600×900, with full panel containment. Final byte custody rejects a rewritten Rapier SVG import descriptor; artifact14958115957 retained, no evaluator uploaded. |
+| Windows `45469647752` | Source tests and extracted campaigns pass; actual graphical25-check test and 24-action UI replay pass at1600×900, with full panel containment. Final byte custody rejects a rewritten Rapier SVG import descriptor; artifact14958115957 retained, no evaluator uploaded. |
 | Packaging repair controls | 23 Python tests pass. Only the four Rapier import descriptors named by the existing Windows runner are canonicalized CRLF→LF before package hashes; original/archive and packaged hashes are retained. Post-extraction and post-test hashes remain strict for every payload member. |
-| Longer128/256 Linux cases and final Windows evaluator | In progress; results require their own retained application evidence. |
+| Four retained128-action Linux cases | CONTROL/material_playground, WANDERER/actor_workshop, BUILDER/liquid_channel and TINKERER/save_reopen each complete128/128 with no assertion failures; details below |
+| Retained256-action attempts | CURIOSITY a01 ends with unattributed SIGKILL after220 completed actions and a pending brush; RANDOM a01 ends with SIGKILL before a fixed tape. Separate CURIOSITY a02 completes256/256 with2888 assertion passes,3 N/A,139.336s. No matched256 comparison is qualified. |
+| Goblin-disabled ordinary baselines | Existing Workbench deferred-paint49 checks and input26 checks pass on the frozen1649 application source |
+| Final Windows `45474099351` | Source tests, source campaigns/replay, both extracted CONTROL64 cases, graphical25 checks and 24-action UI replay, and final strict payload verification pass. Qualified evaluator14958249728 and evidence14959436637 uploaded. |
 
 ### Matched behavior comparison on published game source
 
@@ -280,6 +318,84 @@ capture/receipt IDs, sampled actor commands and neutral release, actual panel
 states, and native Undo/Redo readback. A selected passing matrix does not erase
 the separately retained storage interruption or other failed attempts.
 
+### Longer native campaigns and interruption accounting
+
+These cases use the same frozen Linux source and runtime, seed 605, one native
+worker, fresh isolated profiles and unchanged test deadlines.
+
+| Policy and fixture | Completed actions | Distinct completed IDs | Assertion pass / N/A / fail | Process seconds |
+| --- | --- | --- | --- | --- |
+| CONTROL / material_playground |128/128|23|1660 / 3 / 0|50.148|
+| WANDERER / actor_workshop |128/128|9|2999 / 0 / 0|58.379|
+| BUILDER / liquid_channel |128/128|8|1457 / 0 / 0|31.895|
+| TINKERER / save_reopen |128/128|15|1800 / 8 / 0|50.372|
+| CURIOSITY / construction, separate a02 |256/256|25|2888 / 3 / 0|139.336|
+
+WANDERER delivered ordinary Kestrel input and neutral release, with independently
+observed torque/rotation response. This is not proof of horizontal traversal or
+pathfinding. BUILDER's 128 actions include 48 native edit receipts and 288 native
+ticks across its primary completed simulation intervals. TINKERER completes eight
+authored Save/Reopen cycles; unavailable body-covered material captures remain N/A.
+
+The original CURIOSITY 256 a01 ended with signal 9 after 95.695s, retaining 220
+completed actions, 2518 passing assertions, 3 N/A and an admitted pending brush at
+index 220. RANDOM 256 a01 ended with signal 9 after 22.021s and retained only startup
+output, without a fixed transcript or completed gameplay count. Neither kill has
+an established cause; they are not proven game crashes, timeouts or assertion
+failures. Their original outputs remain unchanged.
+
+The separate CURIOSITY 256 a02 uses the same fixture, seed, source and runtime.
+All 220 retained action IDs/arguments and semantic fingerprints match its prefix;
+the previously pending brush has a genuine completed native receipt. Its measured
+child peak RSS is 576708 KiB, approximately 563.2 MiB. This is a process observation,
+not a performance guarantee. RANDOM 256 remains incomplete, so the 256-action
+matched policy comparison remains unqualified.
+
+### Qualified Windows package and independent review
+
+[Run45474099351](https://github.com/techrote/cybersand/actions/runs/45474099351)
+qualifies exact source `3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`, tree
+`3ee2a02e13cde1a1a4ff67321cb7c3d6f9bd1e37`. There are no differences under
+`godot/` or `native/` from the separately qualified Linux source 1649f086.
+The successor changes only the focused package helpers, their unit fixture,
+qualification request and this guide.
+
+The immutable inner `CyberSand-goblin.zip` is 92958820 bytes, SHA-256
+`4ced405c47f4c0493166728ccb692ba33e822f1e5c9f63dacf73db47664d5c79`.
+The final Windows evidence ZIP is 53552174 bytes, SHA-256
+`c7ff1cda1e08750cd884d5b33dc324b7329594394a8d1569d4527479ace51952`.
+The extracted manifest hash is
+`15577c842309446c304aa14751badb60dcf63d83e4ca84a5d029f8feb16d15b1`;
+the successful extracted-package report hash is
+`ef44883de844cca25cfa300a6adcf87d2c6c81b3b2e2f2b72836fc884765c2dd`.
+The external qualification report binds those exact unchanged package bytes.
+The manifest's build-time candidate wording is not edited after qualification.
+
+Both extracted CONTROL64 campaigns complete 64 operations: actor_workshop in
+25.396s and save_reopen in 24.985s. The actual hosted graphical test passes 25
+checks, including full developer-panel containment in 1600×900. Its24-action
+BUILDER campaign and 24-action UI replay each pass 180 assertions. Semantic fields
+match; exact asynchronous observations differ. The recorded renderer is ANGLE
+on Microsoft Basic Render Driver, using gl_compatibility.
+
+The lead and a specialist independently hash all 1162 declared payload members,
+check exact source/manifest/report bindings, verify all four permitted import
+descriptor receipts, inspect raw campaign tapes and view the actual PNG. The
+final raw hashes remain byte-exact after extraction and execution. The four
+earlier failed Windows archives remain retained alongside the successful one.
+The independent consolidated ledger classifies natural gameplay findings,
+harness repairs, artificial controls and execution-host failures separately.
+There are no verified ordinary production gameplay defects and no claimed
+minimized failing gameplay fixture; the positive regression and reducer controls
+are still useful, independently checked tests.
+
+Windows Godot SHA-256:
+`b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8`;
+native `668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e`;
+Rapier `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7`.
+The Windows project-input snapshot is
+`bf68522aafcdcfc0c6f25669838970b15a22bc8b5bb8dbc34e4b748b185f3abe`.
+
 ### Execution-host restart and evidence retention
 
 The execution host restarted during the first planned128-action Linux campaign.
@@ -291,8 +407,9 @@ they are not replacement raw transcripts. The earlier local entries above must
 be read with this limitation, even where their contemporaneous notes said
 originals were retained. The interrupted128-action case has no completion claim.
 New qualification is written to the surviving conversation workspace, with fresh
-profiles and distinct attempt identities. The Windows artifacts retain complete
-raw evidence independently of that host restart.
+profiles and distinct attempt identities. The Windows artifacts retain their
+uploaded raw logs, transcripts, captures and qualification reports independently
+of that host restart.
 
 The Linux engine executable SHA-256 is
 `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`;
