@@ -11,6 +11,14 @@ last-reviewed: 2026-11-20
 
 # Interfaces and message contracts
 
+The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
+`ambient-observation/v1` copied environment and authored profile version 1.
+These are local value schemas. Existing physical issued observation/command
+version 2, native material formats and Rapier interfaces remain unchanged.
+`control.source = "policy"`, `control.policy = "ambient"` and the validated
+`control.ambient` profile select the adapter. Unavailable sensor fields remain
+explicitly unavailable; they do not become safe ground or an absent material.
+
 The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
 adds versioned construction options and full uint16 Water mass readback without
 changing the existing C ABI. Legacy uint8 mass readback saturates at 255.

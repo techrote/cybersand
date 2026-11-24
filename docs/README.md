@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
+[Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),
+and [exact-source qualification and remaining acceptance](research/ambient-001/mission-ledger.md).
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
