@@ -15,13 +15,26 @@ related-documents: [swarm456-owner-acceptance.md, swarm45-mainline-integration.m
 and [#716](https://github.com/techrote/cybersand/pull/716). It does not waive exact
 source qualification, independent final-source review or explicit acceptance of
 the new evaluator on the owner's physical Windows 11 / NVIDIA installation.
-Only after all those gates pass may the consolidated PR become Ready and receive
-one manual merge. Auto-merge and default promotion remain unauthorized.
+Passing those gates is a prerequisite for any later owner-directed Ready
+promotion and manual merge. This mission grants neither; auto-merge and default
+promotion remain unauthorized.
 
 The predecessor runbooks and registered evidence retain their original source,
 execution and scientific scope. Their earlier instruction to wait for a separate
 SWARM-004/005 merge is replaced by this combined delivery. Neither original donor
 branch, PR, archive, scientific policy nor frozen result is modified.
+
+## Definitive delivery checkpoint — 24 November 2026
+
+The [canonical decision packet](../audits/swarm456-definitive-001/final-decision-packet.md), [JSON companion](../audits/swarm456-definitive-001/final-decision-packet.json) and [recovery manifest](../audits/swarm456-definitive-001/evidence/recovery-manifest.json) own the final source identities, qualification matrix, immutable historical outcomes, independent reviews and direct evaluator artifact.
+
+Q7 [45445188802](https://github.com/techrote/cybersand/actions/runs/45445188802) passed all seven mandatory jobs at application/runtime/evaluator source `5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f`. It supplied new actual native transaction/capture and saved-file witnesses, all 1,920 revealed cases and 360 donor controls, all nine examples on each of Linux source, Windows source and pristine Windows package,63 native transactions and21 fresh Reopens. Original Q1–Q5 failures remain failed; Q6's two attempts retain separate old-source outcomes.
+
+Dedicated publication [45458124077](https://github.com/techrote/cybersand/actions/runs/45458124077) produced `5323b837` through the exact authenticated eight-path lease. Seven paths changed; the already identical Linux library was verified. Fresh hosted remote LFS fetch, all 20 materialized repository runtime paths and fsck passed independently. Complete ordinary Native and full Documentation pass at `e4a0a390`; current PLAY identity passes at `5fd9985e`. Final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage.
+
+The [one-file CI inventory test repair](../audits/swarm456-definitive-001/ordinary-budget-test-correction.md) and [official same-byte Godot download/branch route](../audits/swarm456-definitive-001/ordinary-linux-download-correction.md) preserve every compiled product/scientific input, runtime pin and mandatory execution gate. Original failed ordinary runs remain failures. Their new ordinary candidates are separately identified; the qualified/published/evaluator source is not retagged.
+
+One complete [Windows artifact](https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922) contains the portable evaluator, pinned engine/dependencies, existing presets, launcher and guide. The inner ZIP SHA-256 is `d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522`. **Draft/HOLD; physical Windows 11/NVIDIA owner acceptance remains pending.** The following sections retain the source contract, original failure diagnoses and owner procedure.
 
 ## Closure qualification — 24 November 2026
 
@@ -64,12 +77,11 @@ missing genuinely changed files, substituted metadata or LFS pointers, pointer-o
 working files and wrong Git modes are refused. Publication still requires a
 successful source-exact qualification, immutable artifact digest and branch lease.
 
-Fresh complete qualification, source/pristine Windows execution, guarded runtime
-publication and broad materialized-source gates are required for this reconciled
-candidate. Retained Q5 native/scientific/material evidence is independently
-verified historical evidence, not a pass claim for the new application source.
-The canonical final decision packet will record actual run and artifact identities
-after those gates terminate; physical Windows 11/NVIDIA acceptance remains pending.
+The new complete Q7 campaign supplied source/pristine Windows execution and the
+required new witnesses before guarded runtime publication. Retained Q5 evidence
+remains independently verified historical evidence, not a pass for new source.
+The canonical decision packet records each actual run/artifact and the separately
+reviewed ordinary gates; physical Windows 11/NVIDIA acceptance remains pending.
 
 ### Definitive transaction-evidence review
 
@@ -100,8 +112,9 @@ The existing strict process/report/log joins remain mandatory.
 
 Q5 and Q6 do not contain these new original transaction and file witnesses.
 They cannot be upgraded by filling in reports afterward. The current publication
-policy requires one complete new source/run/attempt-bound campaign after the
-reviewed repair; it has no verification-only replay exception for this change.
+policy required one complete new source/run/attempt-bound campaign after the
+reviewed repair. Q7 fulfilled that requirement; no verification-only replay
+exception was used for this source-sensitive change.
 Local reused-runtime native execution is a diagnostic preflight, not final-source
 qualification. All revealed scientific cases, donor controls, negative results,
 native definitions and default-OFF controls remain unchanged. This mission
@@ -190,9 +203,10 @@ regressions.
 The #715 receptor accounting repair can affect receiver-enabled recovery-OFF
 controls. The recovery-ON path bypasses that scanner after its empty initial
 offer, so unchanged recovery is expected to retain its registered outcomes.
-This source-based expectation must be tested. It permits no broad normalization:
-report identity-only changes separately from work-accounting changes and
-investigate any behavioral difference.
+Independent Q7 review completed all 1,920 original identity-normalized comparisons
+and 360 donor-control comparisons. The canonical scientific review preserves
+FAIL138 and distinguishes identity-only differences from work/refusal accounting;
+no broad normalization or historical reclassification was introduced.
 
 ## Runtime and qualification admission
 
@@ -210,7 +224,7 @@ cancellation, source races and forged/stale bindings. Preserve Paint, Water/Wave
 Art, Flatten, actors, equipment, shared history, all 80 Genteks and saved-map
 reconstruction. Apply remains the acknowledged retained-World transaction.
 
-Publish actual qualified bytes through #715's eight-path leased transaction,
+Publish actual qualified bytes through the dedicated SWARM456 eight-path leased transaction,
 then check the published source and obtain independent final-source reviews.
 Draft skips, source-only repairs and donor passes cannot qualify the new build.
 Retain original failures and identify each repaired successor in the PR.
@@ -274,8 +288,9 @@ liveness check and its cleanup signal. Independent triage found no body assertio
 or production ownership error; the fixture and production helpers were unchanged
 from accepted main. Catching only `ProcessLookupError` in POSIX fixture cleanup
 preserves all descendant-retirement assertions and other exceptions. The repaired
-four-test real-process suite passed locally, but the full ordinary Documentation
-gate still requires a successful final-source execution.
+four-test real-process suite passed locally. The later complete ordinary
+Documentation gates now pass at their recorded exact sources; this original
+cleanup-race outcome remains a failed historical attempt.
 
 ## Physical owner acceptance
 
@@ -283,26 +298,19 @@ The [owner launch guide](swarm456-owner-acceptance.md) accompanies one Windows a
 and simple launcher. Physical acceptance remains **pending** until the owner tests
 that exact package on the NVIDIA system.
 
-1. Launch Shared Workbench and open **Reciprocal assembly**. Confirm both SWARM-005
-   controls and recovery are accessible and initially OFF.
-2. Try supplied positives, then identical recovery OFF/ON inputs with multiple
-   expressions/seeds/territories, including a 192 × 112 crop.
-3. Inspect Final and each provisional round with Joints, Unresolved, Clearance and
-   Revisions. Retain blocked/exhausted diagnostics.
-4. Apply, Undo, regenerate, Apply, Save under a new name, close and reopen in a
-   fresh process.
-5. Test a copy of the original painted map; check ordinary authoring, actors,
-   player collision, presentation, responsiveness and useful traversal. Preserve
-   original content; record settings, screenshots and refusal logs.
-6. Report PASS or reproducible FAIL against the exact archive/source identity.
-   Hosted software rendering is separate evidence.
+1. Verify/extract the exact evaluator and launch ordinary Workbench. Back up an original populated authored map and its sidecars, then use Load start and a new valid save name to make a local working copy. Confirm both SWARM-005 controls and recovery begin OFF.
+2. Configure existing compositions and compare recovery OFF/ON with map, seed, territory and other controls fixed. Inspect Final/provisional rounds, Joints, Unresolved, Clearance and Revisions; retain blocked/exhausted diagnostics.
+3. Apply a valid complete composition, inspect actual installed materials, exercise supported construction Undo and regenerate/reapply.
+4. Save this composition checkpoint, close and reopen in a fresh process, and inspect its historical read-only evidence **before ordinary editing changes the accepted history**.
+5. Close the reciprocal dock or turn Paint territory OFF. Continue ordinary painting, supported Undo/Redo, actors and simulation. Exercise busy/stale/cancellation refusal and use a disposable copy for World replacement.
+6. Save the intended authored result separately and reopen fresh again. Confirm material persistence; later edits may legitimately omit stale composition receipts. Save represents the authored baseline, not an arbitrary live frame; optional Flatten belongs after history tests under another new name.
+7. Record physical Windows 11/NVIDIA appearance, sound, responsiveness, usefulness and preference against the exact archive/source identity. Private maps stay local; uploads are not required. Hosted rendering and identity-only PLAY packets do not replace these checks.
 
-After explicit acceptance, refresh main/integration, inspect the merge tree and
-required checks, reconcile intervening accepted changes and requalify affected
-outputs. Require no confirmed unresolved P1/P2 defect. Only then mark Ready and
-manually merge; verify the merged SHA and post-merge runtime smoke. Identify
-#715/#716 as superseded for later housekeeping while preserving their branches
-and scientific records.
+After physical acceptance, any later owner-directed promotion/merge still requires
+a fresh main/integration impact assessment, merge-tree review and applicable
+checks. This closure authorizes no automatic Ready promotion or merge. Preserve
+#715/#716 branches and scientific history; do not silently retire predecessor
+evidence or import concurrently owned Draft work.
 
 ## SWARM-BRUSH-001 handoff
 

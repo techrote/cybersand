@@ -4,27 +4,21 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-24
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-## Unified SWARM-004/005/006 candidate — 2026-11-22
+## Unified SWARM-004/005/006 definitive candidate — 2026-11-24
 
-The [consolidated runbook](../operations/swarm456-unified-mainline.md) reconciles current accepted main with #715 and #716 in one branch. It preserves source-feasible parts, source-bound receptors, bounded reciprocal recovery, final/provisional inspection, historical read-only authority and ordinary Workbench features. Recovery and both SWARM-005 controls remain OFF. Exact-source platform/scientific qualification and physical owner acceptance are required; predecessor results remain historical. Draft/HOLD, with one eventual manual merge only after all gates pass.
+The existing [PR #729](https://github.com/techrote/cybersand/pull/729) is one consolidated candidate preserving genuine #715/#716 donor histories and accepted main `00cdb02f`, including #727 Art session-only logging. Existing source-feasible reciprocal assembly, bounded recovery, final/provisional inspection, historical read-only authority and normal Workbench behavior remain. Both independent SWARM-005 controls and SWARM-006 recovery remain OFF. No new solver policy, catalogue entry or unrelated Draft programme was imported.
 
-The 24 November closure continues this same candidate through accepted main
-`00cdb02f` (#727). Q5 remains failed because its Windows process receipts identify
-the console launcher while Godot reports the child engine PID. A source-matched
-successor launches the actual pinned engine and preserves strict process joins;
-the native definition and registered scientific policy remain unchanged.
+The [canonical decision packet](../audits/swarm456-definitive-001/final-decision-packet.md) and [JSON companion](../audits/swarm456-definitive-001/final-decision-packet.json) identify source, every gate, original evidence and the evaluator. Q7 at `5e34e0dd` passed all seven required jobs, including all 1,920 revealed cases,360 donor controls, actual Linux/Windows native/graphical execution and a pristine extracted Windows evaluator. Actual native captures and independently reconstructed patch receipts close the demonstrated qualification gap; Q5's original console-wrapper/engine mismatch remains a failed campaign.
 
-The [definitive transaction-evidence review](../operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review)
-also requires original native capture sequences, recomputed material-patch
-identity and saved-file hashes from both Save and fresh Reopen. Earlier receipts
-cannot supply these newly required witnesses. A complete new source-bound
-campaign must pass before runtime publication; no earlier failed run is relabeled.
+Guarded publication `5323b837` passed all eight paths (seven changed; Linux library byte-identical), and fresh hosted LFS materialization independently verified all four SWARM binaries. Complete ordinary Native and full Documentation pass at `e4a0a390`; current PLAY identity passes at `5fd9985e`. Final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. The later CI-test and official-download transport corrections leave compiled application/scientific inputs and published/evaluator bytes unchanged; original failed ordinary attempts remain failed.
+
+The [portable Windows owner procedure](../operations/swarm456-owner-acceptance.md) uses one qualified package and a copy of an original populated authored map. Save/fresh-Reopen composition history before later ordinary edits, then separately verify persistence of the edited authored map. Private maps stay local. Physical Windows 11/NVIDIA appearance, sound, responsiveness, usability and owner preference remain **owner-pending**. This mission leaves the candidate **Draft/HOLD** and grants no Ready promotion, merge or default activation.
 
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 

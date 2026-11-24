@@ -4,20 +4,15 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
 
-**Current SWARM-004/005/006 consolidated delivery:** [unified integration, reconciliation ledger and physical owner acceptance](operations/swarm456-unified-mainline.md). One new candidate supersedes the two earlier mergedown operations; their source/evidence remains intact. Draft/HOLD until exact-source qualification and physical Windows/NVIDIA acceptance.
+**Current SWARM-004/005/006 consolidated delivery:** [canonical decision packet](audits/swarm456-definitive-001/final-decision-packet.md), [machine-readable decision](audits/swarm456-definitive-001/final-decision-packet.json), [unified runbook](operations/swarm456-unified-mainline.md) and [physical owner procedure](operations/swarm456-owner-acceptance.md). The same principal #729 preserves both donor histories and accepted Art session logging. Q7 qualifies application/runtime/evaluator source `5e34e0dd`; guarded publication `5323b837` and fresh remote LFS materialization passed. Complete Native, full Documentation and current PLAY identity passed their reviewed scopes; final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. **Draft/HOLD; physical Windows 11/NVIDIA acceptance remains owner-pending.**
 
-Its [24 November closure](operations/swarm456-unified-mainline.md#closure-qualification--24-november-2026)
-retains Q1–Q5 failures, reconciles accepted Art session behavior and qualifies
-direct Windows engine process custody without changing the native solver.
-The [definitive evidence review](operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review)
-adds independently checked native transaction and Save/Reopen file custody;
-the repaired source requires a fresh complete campaign.
+The [definitive evidence review](operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review) preserves Q1–Q5 failures and independently binds actual native transactions, material readback and Save/fresh-Reopen files. Q7 supplied the required new original witnesses. The [ordinary budget-test correction](audits/swarm456-definitive-001/ordinary-budget-test-correction.md) and [same-byte Linux download correction](audits/swarm456-definitive-001/ordinary-linux-download-correction.md) preserve qualified product/scientific/runtime identities and all mandatory gates; their affected ordinary executions are recorded separately.
 
 **SWARM-004/005 mainline candidate:** [integration, exact donor custody, experimental controls and owner evaluation](operations/swarm45-mainline-integration.md). The registered negative holdout results remain intact; new-source platform/publication and physical-owner acceptance remain separate gates.
 

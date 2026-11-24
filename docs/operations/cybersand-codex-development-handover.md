@@ -4,29 +4,21 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-24
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
-## Unified SWARM closure qualification — 2026-11-24
+## Unified SWARM definitive delivery — 2026-11-24
 
-The existing #729 [closure qualification](swarm456-unified-mainline.md#closure-qualification--24-november-2026)
-reconciles accepted #727 Art session logging at `00cdb02f` without changing native
-solver behavior. Q1–Q5 retain their failed dispositions. Q5's Windows console
-wrapper/engine PID mismatch requires fresh direct-engine execution; original
-reports remain immutable. Exact eight-path publication now accounts for verified
-byte-identical paths. Source qualification, publication, broad gates and physical
-owner acceptance remain distinct; the principal candidate stays Draft/HOLD.
+Continue from the [canonical decision packet](../audits/swarm456-definitive-001/final-decision-packet.md), its [machine-readable companion](../audits/swarm456-definitive-001/final-decision-packet.json), and the [unified runbook](swarm456-unified-mainline.md). The existing #729 remains Draft/HOLD with accepted #727 Art session logging at `00cdb02f` and both frozen donor histories preserved. The older mergedown entries below retain their dated scope.
 
-The [definitive review](swarm456-unified-mainline.md#definitive-transaction-evidence-review)
-found a separate aggregate receipt-validation gap using immutable Q5 originals
-and adversarial copies. Additive fixture captures and independent native-patch,
-transaction-sequence and Save/Reopen file checks repair that gap without changing
-solver or product behavior. Original Q5/Q6 reports lack those new witnesses;
-fresh complete qualification is required. Do not publish an earlier candidate
-and append this source-sensitive repair afterward.
+Q7 source `5e34e0dd` passed all mandatory native/scientific/actual-Godot/source-Windows/extracted-evaluator/aggregate gates after the independently reviewed native receipt and Save/Reopen witness repair. Q1–Q5 remain failed; Q4's native failure prefix and Q5's wrapper/engine identity mismatch are distinct. Q6 attempt1 failed and its separate old-source attempt2 success does not qualify the new Q7 contract.
+
+Dedicated runtime publication `5323b837` completed the authenticated eight-path branch-leased LFS transaction; actual fresh remote fetch/materialization passed independently. Complete Native and full Documentation pass at `e4a0a390`. Current PLAY identity passes at `5fd9985e`; final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. Dated [budget-test](../audits/swarm456-definitive-001/ordinary-budget-test-correction.md) and [official-download](../audits/swarm456-definitive-001/ordinary-linux-download-correction.md) corrections preserve all compiled/product/scientific/published-runtime inputs. Original failed ordinary runs are retained, and fresh affected coverage is separately source-bound.
+
+The [owner guide](swarm456-owner-acceptance.md) opens one complete portable Windows evaluator. Keep private maps local and test a copy. Check saved composition evidence in a fresh process before later authoring edits, then separately Save/Reopen the edited map. Physical Windows 11/NVIDIA appearance, responsiveness, sound, usability and preference remain owner-dependent. No new SWARM research, default activation, automatic Ready promotion or merge belongs to this closure.
 
 ## Unified SWARM-004/005/006 mergedown — 2026-11-22
 

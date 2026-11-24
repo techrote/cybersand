@@ -1,0 +1,147 @@
+{
+  "schema": "swarm456-final-documentation-validation-v1",
+  "recorded_utc": "2026-11-24T19:57:05.138274+00:00",
+  "base_source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "scope": "Documentation-only closure. Original runtime, source qualification and scientific records retain their own identities. This record is not a new binary producer or a physical acceptance claim.",
+  "packet_files": [
+    {
+      "name": "final-decision-packet.md",
+      "bytes": 40563,
+      "sha256": "e9900b728caa2ac4985c8f45a0346d1ab5a5329296db8e5f3d069459f9716044"
+    },
+    {
+      "name": "final-decision-packet.json",
+      "bytes": 36512,
+      "sha256": "4426b4eade793f96620e69d45af77970293aaddd42d002cbdc80acb47a27d23d"
+    }
+  ],
+  "current_routes": [
+    {
+      "path": "docs/README.md",
+      "bytes": 64567,
+      "sha256": "83e14b2fc27d45a840c03fd204746416b799884c5111fdef488e29b38294b034"
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "bytes": 134275,
+      "sha256": "1e3a9d8358946c91bcf4c8f7044020b9ba47fd926e867e3b4c0295ea853edc4e"
+    },
+    {
+      "path": "docs/operations/swarm456-unified-mainline.md",
+      "bytes": 27764,
+      "sha256": "239b142734d666b5defade55e1e8f235dbafb09007a034b95b705356f9f097ff"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "bytes": 167413,
+      "sha256": "b1de73c89434b53776d026f71d8832d0acbb834f20e62fd2f277b7528afadb6a"
+    }
+  ],
+  "checks": [
+    {
+      "name": "documentation",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "started_utc": "2026-11-24T19:56:06.796087+00:00",
+      "completed_utc": "2026-11-24T19:56:08.295449+00:00",
+      "exit_code": 0,
+      "log_sha256": "25841878752851f8d3bff809300e79a134d365251042fa48b408d7efca68d3c1",
+      "scope": null,
+      "status": "passed",
+      "errors": [],
+      "documents": 155,
+      "local_links": 4228,
+      "warnings": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "started_utc": "2026-11-24T19:55:07.874943+00:00",
+      "completed_utc": "2026-11-24T19:55:08.214242+00:00",
+      "exit_code": 0,
+      "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "scope": "historical M11 integrity; no current runtime acceptance",
+      "status": "passed",
+      "errors": [],
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "started_utc": "2026-11-24T19:55:07.845856+00:00",
+      "completed_utc": "2026-11-24T19:55:09.769168+00:00",
+      "exit_code": 0,
+      "log_sha256": "189e7d7bb91867ef1914a6928ca887b7d63bab57d72581b5b1e42481c4ee1342",
+      "scope": "current source/documentation and artifact identity",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "name": "retrieval-frozen",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "<review-output>/retrieval-frozen.json"
+      ],
+      "started_utc": "2026-11-24T19:55:07.857468+00:00",
+      "completed_utc": "2026-11-24T19:55:08.719636+00:00",
+      "exit_code": 0,
+      "log_sha256": "c996af4cf63887519c2e0dd13a7b767b4e2e3a6b24a740c88b1d378bce8e884d",
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.7292,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "ea66a43ddf76fb147741cfc6ab955be094d366d622635a1795f969160fe00eac",
+      "historical_opt_in": false,
+      "original_misses_preserved": true
+    },
+    {
+      "name": "retrieval-mission",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/audits/swarm456-definitive-001/retrieval-questions.json",
+        "--output",
+        "<review-output>/retrieval-mission.json"
+      ],
+      "started_utc": "2026-11-24T19:55:07.866960+00:00",
+      "completed_utc": "2026-11-24T19:55:08.766674+00:00",
+      "exit_code": 0,
+      "log_sha256": "78c87198556aeb08a9e4999dc6639f1e5160dc4b610f27912a225f4b7f54e778",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "c469fb4b4edb2dc76176c92db6921d97400f6fb666a5f86382057fe4705a98bd",
+      "historical_opt_in": false,
+      "original_misses_preserved": false
+    }
+  ],
+  "diff_check": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0
+  },
+  "postcommit_checks": "Exact documentation commit and hosted results are recorded in a separate final closure receipt and the PR check suite, avoiding a circular self-commit claim."
+}

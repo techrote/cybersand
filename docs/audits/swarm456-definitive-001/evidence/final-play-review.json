@@ -1,0 +1,136 @@
+{
+  "all_68_normal_optimized_helpers_passed": true,
+  "all_source_packet_native_engine_identity_joins_passed": true,
+  "jobs": [
+    {
+      "conclusion": "success",
+      "id": 138707577911,
+      "name": "plan",
+      "skipped_steps": 0,
+      "steps": 7
+    },
+    {
+      "conclusion": "success",
+      "id": 138707722649,
+      "name": "windows",
+      "skipped_steps": 0,
+      "steps": 16
+    },
+    {
+      "conclusion": "success",
+      "id": 138707722674,
+      "name": "linux",
+      "skipped_steps": 0,
+      "steps": 16
+    }
+  ],
+  "observed_at_utc": "2026-11-24T19:17:48.120894+00:00",
+  "platforms": [
+    {
+      "engine": {
+        "archive": "/home/runner/work/_temp/manual-godot.zip",
+        "archive_algorithm": "sha256",
+        "archive_bytes": 75664355,
+        "archive_digest": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": {
+            "bytes": 144186224,
+            "path": "/home/runner/work/_temp/manual-godot/Godot_v4.7-stable_linux.x86_64",
+            "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+          }
+        },
+        "identity_method": "pinned official archive and matching bytes; no executable probe",
+        "selected_executable": "/home/runner/work/_temp/manual-godot/Godot_v4.7-stable_linux.x86_64",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "helper_skips": 0,
+      "manifest_files": 4,
+      "manual_case_status": "untested",
+      "manual_cases": 51,
+      "materialized_runtime_paths": 20,
+      "native": {
+        "build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+        "bytes": 5278840,
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "provenance_path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "provenance_sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+        "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+      },
+      "normal_helper_tests": 17,
+      "optimized_helper_tests": 17,
+      "original_artifact_id": 14957190127,
+      "original_decoded_log": "/workspace/scratch/e18127ed82c6/qualification-audit/post-publication/play-45467888942-linux-original-decoded.log",
+      "original_decoded_log_sha256": "d6465b6b0dfc6a05c87becdf1a9884202933d3e840f99e7e5342de96ff4ad8f5",
+      "platform": "linux",
+      "source": {
+        "commit": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81"
+      }
+    },
+    {
+      "engine": {
+        "archive": "D:\\a\\_temp\\manual-godot.zip",
+        "archive_algorithm": "sha512",
+        "archive_bytes": 83764371,
+        "archive_digest": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": {
+            "bytes": 178485256,
+            "path": "D:\\a\\_temp\\manual-godot\\Godot_v4.7-stable_win64.exe",
+            "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+          },
+          "Godot_v4.7-stable_win64_console.exe": {
+            "bytes": 198152,
+            "path": "D:\\a\\_temp\\manual-godot\\Godot_v4.7-stable_win64_console.exe",
+            "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+          }
+        },
+        "identity_method": "pinned official archive and matching bytes; no executable probe",
+        "selected_executable": "D:\\a\\_temp\\manual-godot\\Godot_v4.7-stable_win64.exe",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "helper_skips": 0,
+      "manifest_files": 4,
+      "manual_case_status": "untested",
+      "manual_cases": 51,
+      "materialized_runtime_paths": 20,
+      "native": {
+        "build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+        "bytes": 5844992,
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "provenance_path": "godot/addons/cybersand_native/runtime-provenance.json",
+        "provenance_sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+        "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+        "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+      },
+      "normal_helper_tests": 17,
+      "optimized_helper_tests": 17,
+      "original_artifact_id": 14956165929,
+      "original_decoded_log": "/workspace/scratch/e18127ed82c6/qualification-audit/post-publication/play-45467888942-windows-original-decoded.log",
+      "original_decoded_log_sha256": "71103a5038a11957690dcb3a1437f088934ac2023d32de5b580f112a4b5e91dd",
+      "platform": "windows",
+      "source": {
+        "commit": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81"
+      }
+    }
+  ],
+  "prior_failed_attempts_retained": [
+    {
+      "attempts": [
+        1,
+        2
+      ],
+      "conclusion": "failure",
+      "run": 45464427423
+    }
+  ],
+  "qualification_scope": "Ordinary packet identity/preflight only. Neither engine nor physical acceptance was executed.",
+  "qualified_runtime_source_unchanged": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "run_attempt": 1,
+  "run_id": 45467888942,
+  "schema": 1,
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "status": "PASS"
+}
