@@ -3,7 +3,7 @@ name: GDExtension build and current Godot regression
 on:
   push:
     # Owner-authorized complete qualification while the integration stays Draft.
-    branches: [main, codex/wb-art-paint-integrated-20261111]
+    branches: [main, codex/wb-art-paint-integrated-20261111, integration/swarm004-005-006-unified-20261122]
     paths-ignore:
       - '.github/workflows/**'
       - 'docs/**'
@@ -44,7 +44,7 @@ concurrency:
 
 env:
   CYBERSAND_CI_WATCHDOG_SCALE: "1"
-  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
   GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
