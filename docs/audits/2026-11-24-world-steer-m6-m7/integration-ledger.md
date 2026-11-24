@@ -89,3 +89,37 @@ planned unless inputs actually change or the established final gate requires it.
 - The lead integrated live-source delegation, pure preparation, atomic Skip preflight and bounded prior-campaign recovery archives. Independent B review found and repaired host-rebinding capability retention;52 workflow fixture checks now pass. A real delegated workshop/partial-prefix/recovery witness is being qualified.
 - All local capacity reductions are explicit development settings; source-qualified hosted runs must use the unchanged normal1024 default. No production settings, C++ inputs, original source evidence, Art transport, credentials, SWARM policies or unrelated branches are modified.
 - C now owns additive qualification/workflow/package edits after UI integration. Root owns final source freeze, remote publication, M7/native evidence and packet; A temporarily owns precise flagship connectivity repairs; B owns the proposal-only owner seam and independent scientific/lifecycle review.
+
+## Final campaign preparation after executor recovery
+
+The continuation is Draft PR #777. Published checkpoint001ead437 has the exact
+tree of localb8d12ad69 and preserves #770 ancestry. The executor interruption
+left the earlier reopen without a terminal; recovery did not turn that into PASS.
+
+Root integrated reviewed request lifetime fences, exact workshop attachments,
+owner repair/recovery proposal controls and eight new recovery adversaries.
+Pinned Godot4.7 now passes60 workflow and31 UI-control fixtures. Native workshop
+sourceff5d2bdb25b34fd0aa05fb23abae1e3660e87e32 passes89 checks at normal1024,
+plus12 in fresh Reopen. A independently replays10 stages/20chunks/49,898 changed
+rows, including the exact1,024-cell attachment and256-cell outside exception.
+
+All four refined flagship Worlds at5e6ef0d1fe412e369b0550ca2d9502087cd21e3a
+pass446 native checks/default1024. A replays55 stages/337chunks/1,160,376 changed
+rows. A/B visual reviews use explicitly diagnostic material maps; actual Godot
+frames and full-World gameplay remain required hosted gates.
+
+B's proposal bridge passes41 accepted-interface fixtures. Actual immutable
+GOLDMAPS knowledge bytes pass31 consumer checks after correcting a source-tag
+length assumption; no artwork, native module authority or owner acceptance is
+imported. A's reducer passes53 adversaries; B's original-PNG transport passes7.
+C's raw-evidence/launcher guards pass20 adversaries. A found and C fixed
+unlisted-file acceptance before the delivered launcher; B checked raw runtime,
+experiment-denominator and artifact custody independently.
+
+Current Artfa22d386b802b686c371bb6e12996c7a93c18588 has a qualified extracted
+package/run45497650568. Its proposal-only route and ownership handoff remain
+absent; the independent Architecture seam is retained. Accepted main stays00cdb02f.
+Only the existing WORLD-STEER workflow is extended for the combined campaign.
+No merge, Ready, release, paid inference, training, native inputs or unrelated
+programme sources change. Final source/runtime/artifact identities will be added
+to the decision packet after their actual outcomes.

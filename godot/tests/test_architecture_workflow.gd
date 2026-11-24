@@ -57,6 +57,15 @@ class FixtureSession extends Session:
 		terminal.emit(record)
 		return record
 
+class RecoveryFixture extends FixtureSession:
+	func inspection_view() -> Dictionary:
+		return {"ok":true,"kind":"native-inspection-snapshot","stale":false,"region":Compiler.rect_array(fixture_region),
+			"cells":fixture_cells.duplicate(),"source_sha256":Compiler.digest(fixture_cells),"generation":int(fence.generation),"provenance":{"kind":"copied-recovery-fixture"}}
+	func inspect_region(region: Rect2i) -> Dictionary:
+		await get_tree().process_frame
+		if preparation_hook.is_valid(): preparation_hook.call()
+		return inspection_view() if region==fixture_region else {"ok":false,"reason":"Fixture region differs."}
+
 var checks:=0
 var failures:=0
 func check(value: bool,label: String) -> bool:
@@ -168,5 +177,50 @@ func run() -> void:
 	check(not (await workflow.preview_selected()).ok,"matching serialized stage in another host cannot reuse a prior preparation capability")
 	replacement.queue_free()
 	workflow.queue_free(); session.queue_free(); await process_frame
+	await recovery_controls()
 	print("ARCHITECTURE_WORKFLOW: %d checks, %d failures"%[checks,failures])
 	quit(1 if failures else 0)
+
+func recovery_controls() -> void:
+	# Copied evidence tests convenience-control refusal, not native completion.
+	var session:=RecoveryFixture.new(); root.add_child(session)
+	var workflow:=Workflow.new(); root.add_child(workflow); workflow.bind_session(session)
+	var area:=Rect2i(64,160,384,160)
+	session.fixture_region=area; session.fixture_cells.resize(area.get_area()*2)
+	var empty:=session.fixture_cells.duplicate()
+	session.fixture_cells.encode_u16(0,58)
+	var trial:=Compiler.stage_defaults("cladding-trial",area)
+	trial.materials=[0,58];trial.budget.max_checked_cells=65536
+	trial.operations=[{"shape":"rectangle","x0":64,"y0":160,"x1":447,"y1":319,"material":58}]
+	var graph:={"format":Campaign.FORMAT,"id":"delegated-workshop","title":"Copied workshop recovery fixture","intent":"Exercise owner proposal guards only.",
+		"region":[0,0,512,512],"budget":{"native_checks":65536,"raster_candidates":1048576,"max_retries_per_job":1},
+		"nodes":[{"id":trial.id,"parent_id":"","title":"Copied trial","kind":"typed","executor":"authored-typed","region":trial.region,
+			"depends_on":[],"stage":trial,"raster_candidates_limit":1048576}]}
+	check(workflow.load_campaign(graph).ok,"recovery-control copied campaign loads without native execution")
+	workflow.cancel()
+	check(not (await workflow.propose_workshop_recovery()).ok,"no live partial record means no convenience recovery")
+	var record:={"kind":"native-stage","stage_id":"cladding-trial","status":"partial","final_readback_available":true,"checked_cells":1,
+		"plan_id":"delegated-workshop","plan_sha256":Compiler.digest(Compiler.canonical(session.plan).to_utf8_buffer()),"stage":session.stage().duplicate(true),
+		"generation":5,"source_sha256":Compiler.digest(empty),"result_sha256":Compiler.digest(session.fixture_cells),"reason":"Copied non-native fixture"}
+	session.records.append(record)
+	record.source_sha256=record.result_sha256
+	check(not (await workflow.propose_workshop_recovery()).ok,"a nonempty original trial cannot be erased by the convenience recovery")
+	record.source_sha256=Compiler.digest(empty)
+	session.fixture_cells.encode_u16(2,28)
+	check(not (await workflow.propose_workshop_recovery()).ok and session.fixture_cells.decode_u16(2)==28,"later source edits refuse and remain untouched")
+	session.fixture_cells.encode_u16(2,0)
+	session.fence.generation=6
+	check(not (await workflow.propose_workshop_recovery()).ok,"a replaced native generation cannot reuse a stopped receipt")
+	session.fence.generation=5
+	record.plan_sha256="outdated"
+	check(not (await workflow.propose_workshop_recovery()).ok,"a changed plan cannot reuse the old stopped receipt")
+	record.plan_sha256=Compiler.digest(Compiler.canonical(session.plan).to_utf8_buffer())
+	session.preparation_hook=func()->void:workflow.cancel()
+	check(not (await workflow.propose_workshop_recovery()).ok and workflow.campaign.summary().campaign_id=="delegated-workshop","Stop during inspection retires the recovery proposal")
+	session.preparation_hook=Callable()
+	var before:=session.fixture_cells.duplicate()
+	var answer: Dictionary=await workflow.propose_workshop_recovery()
+	check(answer.get("ok",false) and answer.get("zero_writes",false) and not answer.get("queued",true) and session.fixture_cells==before
+		and session.preview.is_empty() and workflow.campaign.summary().campaign_id=="workshop-fresh-recovery"
+		and session.plan.stages.size()==3 and not workflow.summary().has_review_ticket,"fresh recovery only adopts three finite owner-reviewable stages")
+	workflow.queue_free();session.queue_free();await process_frame

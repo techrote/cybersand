@@ -17,6 +17,7 @@ const WorkflowPanel = preload("res://scripts/batch_lab/architecture_workflow_pan
 const Connections = preload("res://scripts/batch_lab/native_module_connections.gd")
 const Catalogue = preload("res://scripts/batch_lab/native_module_catalogue.gd")
 const Flagships = preload("res://scripts/batch_lab/architecture_flagships.gd")
+const HierarchyDemo = preload("res://scripts/batch_lab/architecture_hierarchy_demo.gd")
 const DetailPanel = preload("res://scripts/batch_lab/architecture_detail_panel.gd")
 var wb: Node
 var library := Library.new()
@@ -72,6 +73,8 @@ var stage_brief := Label.new()
 var stage_parts := ItemList.new()
 var result_tabs := TabContainer.new()
 var prepare_local_button: Button
+var workshop_revision_button: Button
+var workshop_recovery_button: Button
 var source_view: Control
 var native_view: Control
 var source_label := Label.new()
@@ -435,6 +438,11 @@ func _build_stages() -> void:
 	flagship.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	large.add_child(flagship)
 	_button(large,"Load flagship tasks",load_flagship,"Load a finite hierarchy into the existing World. A smaller World is refused; use ordinary New to choose the stated size first. Loading does not construct or erase geometry.")
+	var workshop := HFlowContainer.new()
+	body.add_child(workshop)
+	_button(workshop,"Load delegated workshop",load_delegated_workshop,"Load a finite proposal with three bounded local workers. Requires a 512 × 512 World and the curated parts; nothing is approved or constructed.")
+	workshop_revision_button=_button(workshop,"Propose clear access gallery",revise_workshop_gallery,"Replace the selected workshop access proposal with a side gallery around the protected passage. Preview and approval remain separate.")
+	workshop_recovery_button=_button(workshop,"Propose recovery from stopped trial",recover_workshop,"Requires the current workshop's acknowledged partial cladding receipt and an unchanged native region. Loading recovery does not apply it.")
 	var split := HSplitContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_child(split)
@@ -858,6 +866,31 @@ func load_flagship() -> void:
 		_last_stage=""; _refresh_session(); workflow_panel.refresh(); tabs.current_tab=3
 		_note("Flagship task hierarchy loaded. Review each bounded stage and its actual native source before approving construction.")
 
+func load_delegated_workshop() -> void:
+	if _harvesting or not is_instance_valid(workflow): _note("Wait for the installed authoring host."); return
+	if wb==null or not wb.get("applied") is Dictionary or wb.applied.is_empty(): _note("Open an installed World before loading the workshop."); return
+	var actual: Vector2i=Setup.extent_of(wb.applied)
+	if actual.x<512 or actual.y<512: _note("The delegated workshop needs a World of at least 512 × 512. Save your start and use ordinary New first. No World was changed."); return
+	var built: Dictionary=HierarchyDemo.build(library)
+	if not built.get("ok",false): _note(str(built.get("reason","Missing curated parts."))+" Use Add curated templates or import the matching qualified catalogue first."); return
+	if _result(workflow.load_campaign(built.campaign)):
+		_last_stage=""; _refresh_session(); workflow_panel.refresh(); tabs.current_tab=3
+		_note("Delegated workshop proposal loaded. Review the task tree, prepare each ready local job, then preview and approve each stage explicitly.")
+
+func revise_workshop_gallery() -> void:
+	if _harvesting or not is_instance_valid(workflow): return
+	var answer: Dictionary=workflow.revise_workshop_gallery()
+	if answer.get("ok",false): _last_stage=""
+	_refresh_session(); _result(answer)
+	if answer.get("ok",false): _note("Clear access gallery proposed. Inspect its new zero-write preview, then approve this revision explicitly.")
+
+func recover_workshop() -> void:
+	if _harvesting or not is_instance_valid(workflow): return
+	var answer: Dictionary=await workflow.propose_workshop_recovery()
+	if answer.get("ok",false): _last_stage=""
+	_refresh_session(); _result(answer)
+	if answer.get("ok",false): workflow_panel.refresh(); tabs.current_tab=3; _note("Fresh recovery proposed from the exact stopped native result. Earlier history remains retained. Preview and approve each recovery stage explicitly.")
+
 func prepare_local_job() -> void:
 	if _harvesting: _note("Wait for native harvest."); return
 	if not is_instance_valid(workflow): _note("The host workflow is unavailable."); return
@@ -913,6 +946,10 @@ func _refresh_session() -> void:
 	var summary: Dictionary = session.summary()
 	var coordinated: Dictionary=workflow.summary() if is_instance_valid(workflow) else {}
 	if is_instance_valid(prepare_local_button): prepare_local_button.disabled=not coordinated.get("can_prepare_local_job",false)
+	var selected_state: Dictionary=summary.stages[summary.selected] if summary.get("selected",-1)>=0 and summary.selected<summary.stages.size() else {}
+	var workshop_current: bool=coordinated.get("campaign",{}).get("campaign_id","")=="delegated-workshop" and not session.busy()
+	if is_instance_valid(workshop_revision_button): workshop_revision_button.disabled=not (workshop_current and selected_state.get("id")=="access-gallery" and selected_state.get("state")!="completed")
+	if is_instance_valid(workshop_recovery_button): workshop_recovery_button.disabled=not (workshop_current and selected_state.get("id")=="cladding-trial" and selected_state.get("state")=="partial")
 	_note(str(summary.message))
 	stage_list.clear()
 	if not summary.stages.is_empty():

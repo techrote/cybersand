@@ -12,12 +12,14 @@ import json
 from pathlib import Path
 import shutil
 
+from verify_collaborative_evidence import verify as verify_collaborative
+
 
 def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def bundle(evidence: Path, package: Path) -> dict:
+def bundle(evidence: Path, package: Path, require_collaborative: bool = False) -> dict:
     evidence, package = evidence.resolve(), package.resolve()
     report_path = evidence / "qualification.json"
     manifest_path = package / "candidate-manifest.json"
@@ -34,6 +36,28 @@ def bundle(evidence: Path, package: Path) -> dict:
     native_name = "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
     if report.get("source_files_sha256", {}).get(native_name) != manifest.get("native_sha256"):
         raise ValueError("Architecture evidence and evaluator native runtime differ")
+    collaborative = bool(report.get("collaborative_m6_m7"))
+    if require_collaborative and not collaborative:
+        raise ValueError("This evaluator requires the completed M6/M7 campaign")
+    collaborative_custody = {}
+    if collaborative:
+        reference = report.get("collaborative_evidence", {})
+        if (reference.get("path") != "architecture/collaborative/custody.json"
+                or reference.get("native_active_core_capacity") != 1024 or reference.get("cropped_route_worlds") is not False):
+            raise ValueError("Incomplete default-runtime collaborative qualification reference")
+        custody_path = evidence / reference["path"]
+        if not custody_path.is_file() or sha(custody_path) != reference.get("sha256"):
+            raise ValueError("Collaborative custody report changed")
+        retained = json.loads(custody_path.read_bytes())
+        recomputed = verify_collaborative(evidence / "architecture/collaborative",
+                                         report["source_commit"], manifest["native_sha256"])
+        if retained != recomputed:
+            raise ValueError("Collaborative reports/captures no longer match their completed custody gate")
+        engine_name = "Godot_v4.7-stable_win64_console.exe"
+        if report.get("godot_executable_sha256") != manifest.get("files_sha256", {}).get(engine_name):
+            raise ValueError("Delivered Godot executable differs from the qualified engine")
+        collaborative_custody = {"sha256": reference["sha256"], "counts": retained["counts"],
+                                  "native_active_core_capacity": 1024, "cropped_route_worlds": False}
     # Verify every original payload file before extending its manifest. Never
     # adopt an altered executable or source file into a newly computed checksum.
     for name, expected in manifest["files_sha256"].items():
@@ -60,6 +84,7 @@ def bundle(evidence: Path, package: Path) -> dict:
         "source_commit": report["source_commit"], "native_sha256": manifest["native_sha256"],
         "qualification_sha256": sha(report_path), "platform": "win32", "graphical": True,
         "physical_owner_acceptance": "pending", "actual_model_calls": 0,
+        "collaborative_m6_m7": collaborative, "collaborative_custody": collaborative_custody,
         "scope": "Retained completed native outputs and source-bound rendered evidence. Imported modules and receipts are historical until fresh native observation.",
         "files_sha256": copied,
     }
@@ -73,6 +98,7 @@ def bundle(evidence: Path, package: Path) -> dict:
     manifest["architecture_evidence"] = {
         "source_commit": report["source_commit"], "qualification_sha256": sha(report_path),
         "files": len(copied), "directory": "architecture-evidence",
+        "collaborative_m6_m7": collaborative, "collaborative_custody": collaborative_custody,
         "scope": "Generated evidence supplements committed source; no native qualification is inferred from import.",
     }
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -83,8 +109,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--package", type=Path, required=True)
+    parser.add_argument("--collaborative", action="store_true", help="Require exact completed M6/M7 evidence before packaging")
     args = parser.parse_args()
-    print(json.dumps(bundle(args.evidence, args.package), indent=2))
+    print(json.dumps(bundle(args.evidence, args.package, args.collaborative), indent=2))
 
 
 if __name__ == "__main__":

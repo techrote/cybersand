@@ -10,6 +10,7 @@ const EVIDENCE:="40f196f792e4d9e19bbd57fdafd6a90420fadf32"
 const ARCHIVE:="b9535405853a5cd16e4bba968ec7167222861c42"
 const MAX_BYTES:=8*1024*1024
 const MAX_MAPS:=70
+const MAX_SOURCE_TAG_CHARS:=512
 const COUNTS:={"maps":70,"current_protected_features":27,"immutable_feature_states":76,"comparative_families":12,"negative_interventions":5,"owner_accepted":0}
 
 static func _fail(reason: String) -> Dictionary:
@@ -17,6 +18,14 @@ static func _fail(reason: String) -> Dictionary:
 
 static func _hex(value: Variant, count: int) -> bool:
 	return Design._hex(value,count)
+
+static func _source_tags(value: Variant) -> bool:
+	# The identified source export retains descriptive source-authored tags,
+	# including a 272-character observation. They are not campaign identifiers.
+	if not value is Array or value.size()>128: return false
+	for item: Variant in value:
+		if not Campaign._text(item,MAX_SOURCE_TAG_CHARS): return false
+	return true
 
 static func load_identified(path: String, identity: Dictionary) -> Dictionary:
 	var file:=FileAccess.open(path,FileAccess.READ)
@@ -63,7 +72,7 @@ static func inspect_bytes(bytes: PackedByteArray, identity: Dictionary) -> Dicti
 			or int(map.source.pr) in source_prs or not _hex(map.material_plane.get("plane_sha256"),64): return _fail("Source map identity is not exact and distinct.")
 		var extent: Variant=map.material_plane.get("extent")
 		if not extent is Array or extent.size()!=2 or not Campaign._integer(extent[0],1,2048) or not Campaign._integer(extent[1],1,2048): return _fail("Source map extent is unsupported.")
-		if not Campaign._strings(map.get("visual_family_groups"),32) or not Campaign._strings(map.get("tags",[]),128): return _fail("Source map family ancestry or tags are malformed.")
+		if not Campaign._strings(map.get("visual_family_groups"),32) or not _source_tags(map.get("tags",[])): return _fail("Source map family ancestry or tags are malformed.")
 		if not Campaign._text(map.get("architectural_family"),256) or not map.get("native",{}) is Dictionary: return _fail("Source map interpretation or historical qualification record is malformed.")
 		if int(map.source.pr) in [155,183] and (map.native.get("eligibility")!="refused" or map.native.get("status")!="REFUSED_INVALID_SOURCE"):
 			return _fail("Original #155/#183 source refusals must remain explicit; policy-only descendants are separate identities.")

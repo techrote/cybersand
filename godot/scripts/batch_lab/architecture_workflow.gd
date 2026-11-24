@@ -10,6 +10,7 @@ const Compiler = preload("res://scripts/batch_lab/architecture_stage_plan.gd")
 const Campaign = preload("res://scripts/batch_lab/architecture_campaign.gd")
 const Planning = preload("res://scripts/batch_lab/architecture_planning_adapter.gd")
 const Delegation = preload("res://scripts/batch_lab/architecture_delegation.gd")
+const Workshop = preload("res://scripts/batch_lab/architecture_hierarchy_demo.gd")
 const FORMAT := "cybersand-architecture-workflow-history-v1"
 const MAX_FILE_BYTES := 64*1024*1024
 const MAX_PRIOR_CAMPAIGNS := 8
@@ -302,6 +303,60 @@ func revise(value: Dictionary) -> Dictionary:
 	_prepared_jobs.erase(str(value.get("id","")))
 	return _answer(true,"Revision retained. Completed geometry remains in native history; preview this changed stage again.")
 
+func revise_workshop_gallery() -> Dictionary:
+	if busy() or not is_instance_valid(session): return _answer(false,"Wait for the actual native terminal before revising the workshop gallery.")
+	var view:=campaign.summary()
+	if view.get("campaign_id")!="delegated-workshop" or view.get("historical_only",false) or view.get("state")=="cancelled" or session.stage().get("id")!="access-gallery":
+		return _answer(false,"Select the access-gallery task in the current delegated workshop.")
+	var answer:=revise(Workshop.repaired_gallery())
+	if answer.ok:
+		answer["zero_writes"]=true; answer["queued"]=false
+		message="Side-gallery repair proposed. Inspect its new native projection and approve this stage explicitly."
+		changed.emit()
+	return answer
+
+func _workshop_partial() -> Dictionary:
+	if not is_instance_valid(session): return {}
+	var view:=campaign.summary()
+	if view.get("campaign_id")!="delegated-workshop" or view.get("historical_only",false) or view.get("state")!="cancelled" or not str(view.get("active_job_id","")).is_empty(): return {}
+	for index: int in range(session.records.size()-1,-1,-1):
+		var record: Dictionary=session.records[index]
+		if record.get("kind")!="native-stage" or record.get("stage_id")!="cladding-trial": continue
+		if record.get("status")!="partial" or not record.get("final_readback_available",false) or int(record.get("checked_cells",0))<=0 or int(record.get("checked_cells",61440))>=61440: return {}
+		if record.get("plan_id")!="delegated-workshop" or Compiler.rect(record.get("stage",{}).get("region"))!=Workshop.RECOVERY_AREA: return {}
+		if int(record.get("generation",-2))!=int(session._observation_fence().get("generation",-1)): return {}
+		return record
+	return {}
+
+func propose_workshop_recovery() -> Dictionary:
+	if busy(): return _answer(false,"Wait for the acknowledged partial native terminal before proposing recovery.")
+	var partial:=_workshop_partial()
+	if partial.is_empty(): return _answer(false,"Recovery requires this live workshop's verified stopped cladding prefix; imported history grants no recovery authority.")
+	if partial.get("plan_sha256")!=Compiler.digest(Compiler.canonical(session.plan).to_utf8_buffer()):
+		return _answer(false,"The stopped trial belongs to another plan revision. Inspect and author a new recovery explicitly.")
+	var empty:=PackedByteArray(); empty.resize(Workshop.RECOVERY_AREA.get_area()*2)
+	if partial.get("source_sha256")!=Compiler.digest(empty):
+		return _answer(false,"This convenience recovery supports the demo's originally Empty trial region only. Preserve the earlier authored geometry with a separately revised plan.")
+	var serial:=_selection_serial
+	var bound_session:=session
+	_action=true
+	var inspected: Dictionary=await session.inspect_region(Workshop.RECOVERY_AREA)
+	_action=false
+	if serial!=_selection_serial or session!=bound_session or not is_instance_valid(session):
+		return _answer(false,"Stop or a changed host retired recovery inspection; no proposal was adopted.")
+	if not inspected.get("ok",false) or inspected.get("stale",true) or session.inspection_view().get("stale",true):
+		return _answer(false,"Recovery needs a current, successful native inspection.")
+	if inspected.get("source_sha256")!=partial.get("result_sha256") or int(inspected.get("generation",-1))!=int(partial.generation):
+		return _answer(false,"The stopped region has changed since its native receipt. A new explicit recovery must preserve those later edits.")
+	var recovered:=Workshop.recovery(inspected)
+	if not recovered.ok: return _answer(false,recovered.reason)
+	var answer:=load_campaign(recovered.campaign)
+	if answer.ok:
+		answer["zero_writes"]=true; answer["queued"]=false; answer["completed"]=false
+		message="Fresh recovery proposed with separate clearing, open-bay and attachment stages. Review and approve each stage; no geometry has changed."
+		changed.emit()
+	return answer
+
 func skip() -> Dictionary:
 	if busy(): return _answer(false,"Wait for the native terminal before skipping another task.")
 	var identity:=str(session.stage().get("id",""))
@@ -331,7 +386,9 @@ func summary() -> Dictionary:
 	var can_prepare: bool=not busy() and campaign.job(selected_id).has("delegation") and selected_id in campaign.ready_jobs()
 	return {"busy":busy(),"message":message,"request_id":_request_id,"session":session.summary() if is_instance_valid(session) else {},
 		"campaign":campaign.summary(),"planning":planning.summary(),"has_review_ticket":not _ticket.is_empty(),"prior_campaigns":_prior_campaigns.size(),
-		"can_prepare_local_job":can_prepare,"prepared_local_job":_prepared_matches(selected_id) if not selected_id.is_empty() else false}
+		"can_prepare_local_job":can_prepare,"prepared_local_job":_prepared_matches(selected_id) if not selected_id.is_empty() else false,
+		"can_revise_workshop_gallery":not busy() and campaign.summary().get("campaign_id")=="delegated-workshop" and campaign.summary().get("state")!="cancelled" and selected_id=="access-gallery",
+		"can_propose_workshop_recovery":not busy() and not _workshop_partial().is_empty()}
 
 func open_session(path: String) -> Dictionary:
 	if busy(): return _answer(false,"Wait for native work before opening another session.")

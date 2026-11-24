@@ -141,7 +141,7 @@ func run() -> void:
 	finish()
 
 func finish() -> void:
-	if not evidence.is_empty(): write_json(evidence.path_join("flagships-native.json"),{"format":"cybersand-native-flagship-campaign-v1","examples":results,"checks":checks,"failures":failures,
+	if not evidence.is_empty(): write_json(evidence.path_join("flagships-native.json"),{"format":"cybersand-native-flagship-campaign-v1","examples":results,"checks":checks+1,"failures":failures,
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"godot":Engine.get_version_info().string,"platform":OS.get_name(),"core_capacity":core_capacity,
 		"real_model_calls":0,"scope":"Actual native material construction through finite hierarchy and ordinary Workbench authority; no actor traversal or physical owner acceptance inferred."})
 	print("ARCHITECTURE_FLAGSHIPS_NATIVE: %d checks, %d failures"%[checks,failures])

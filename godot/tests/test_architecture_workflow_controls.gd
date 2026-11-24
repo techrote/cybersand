@@ -133,6 +133,17 @@ func run() -> void:
 	check(panel.library.count()>=40 and panel.library.summaries().all(func(item: Dictionary) -> bool: return not item.get("native_readback_verified",false)),"curated browser bootstrap retains all forty distinct templates without invented native qualification")
 	panel.search.text="tapered-pier"; panel._refresh_modules()
 	check(panel.module_summary.text.contains("UNEXECUTED TEMPLATE") and not panel.keep.editable,"template status and fixed geometry are explicit in the ordinary inspector")
+	panel.load_delegated_workshop()
+	check(panel.session.plan.id=="delegated-workshop" and panel.workflow.summary().campaign.nodes.filter(func(item: Dictionary)->bool:return item.get("executor","")=="procedural").size()==3 and panel.session.preview.is_empty(),"workshop button loads three finite worker proposals without approval")
+	var initial_stage: String=panel.session.stage().id
+	panel.revise_workshop_gallery()
+	check(panel.session.stage().id==initial_stage and panel.session.preview.is_empty(),"gallery convenience action cannot replace an unrelated selected task")
+	for index: int in panel.session.plan.stages.size():
+		if panel.session.plan.stages[index].id=="access-gallery": panel.workflow.select(index); break
+	panel.revise_workshop_gallery()
+	check(panel.session.stage().operations[0].x0==64 and panel.session.stage().operations[0].x1==175 and panel.session.preview.is_empty(),"gallery repair uses the shared host proposal without creating approval")
+	await panel.recover_workshop()
+	check(panel.session.plan.id=="delegated-workshop" and panel.session.preview.is_empty(),"recovery convenience action refuses when no actual partial native receipt exists")
 	workbench.applied.extent=[1024,1024]
 	panel.load_flagship()
 	check(panel.session.plan.id.begins_with("flagship-") and panel.workflow.summary().campaign.nodes.size()>12 and panel.session.preview.is_empty(),"large typed hierarchy loads into an adequate existing World as unapproved tasks")

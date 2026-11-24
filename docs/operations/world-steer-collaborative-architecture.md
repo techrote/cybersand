@@ -251,3 +251,11 @@ architectural preference or physical Windows/NVIDIA acceptance.
 The owner decision remains Draft/HOLD until the exact delivered evaluator is
 reviewed on the intended machine and the remaining Art, model-dependent and
 physical acceptance gates are explicitly resolved.
+
+## Delegated workshop and stopped recovery
+
+Use an Empty World of at least 512 × 512 and add the curated templates or import the source-matched curated native library. In Construction, **Load delegated workshop** creates the finite task hierarchy without constructing it. Review each leaf in Tasks, return to Construction for **Inspect + preview**, and approve only the current projection. The three ready procedural leaves expose **Prepare local job**; preparation reads the actual source and creates a bounded proposal, then requires a fresh preview and approval.
+
+The first access-gallery proposal deliberately intersects a protected passage and should refuse. Select that leaf and choose **Propose clear access gallery** to review the finite repair. The optional screen may be explicitly skipped. To exercise Stop, start the cladding trial and stop it while it is running. Wait for its acknowledged native terminal. **Propose recovery from stopped trial** is available only for that partial stage and requires the stopped region to remain unchanged; the host re-inspects it. The new recovery campaign retains prior history, has separate preview and approval for every stage, and does not erase on selection. If the trial already completed before Stop, this convenience recovery is unavailable; no partial result is invented.
+
+The extracted Windows qualification starts the unchanged **Open Workbench.cmd** in a pristine extraction before any runner import. It records the actual child process, visible window and accepted Workbench route, then closes only that observed process. The source/runtime/payload manifest is checked before launch; later Godot-generated `.import` sidecar rewrites are recorded separately while executable and source bytes remain strict. Subsequent native, UI and full-World actor cases are separate gates. Hosted launcher execution does not establish physical owner acceptance.

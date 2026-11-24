@@ -1,21 +1,23 @@
 {
   "schema": "world-steer-batch-request-v1",
-  "mission": "WORLD-STEER-BATCH-M3-M5-001",
-  "scope": "M0-M2 reconciliation; M3 native modules; M4 GOLDMAPS retrieval; M5 staged construction",
-  "request_id": "2026-11-24-architecture-qualification-2",
+  "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
+  "scope": "Preserved M0-M5 regression gates;40 native parts/v2 contacts; bounded detail, hierarchy, full-size native Worlds and actual extracted Windows evaluator",
+  "request_id": "2026-11-24-collaborative-qualification-1",
   "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-  "review_checkpoint_parent": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+  "review_checkpoint_parent": "001ead437297d71238f59c7becb3f93c8bf02b24",
   "platforms": [
     "linux",
     "windows"
   ],
-  "source_identity": "The executing workflow commit, tree and build ledger identify the frozen candidate.",
-  "disposition": "Draft/HOLD; no merge, Ready, auto-merge or production-default promotion",
+  "source_identity": "Executing workflow commit, tree, clean source guard and platform build ledger identify the exact candidate. No earlier-source PASS inherited.",
+  "disposition": "Draft/HOLD; no merge, Ready, release, auto-merge or production-default promotion",
   "paid_model_dispatch": false,
+  "actual_model_calls_authorized": false,
   "physical_windows_11_nvidia_acceptance": "pending owner device",
   "original_qualification_run": 44962406023,
+  "foundation_qualification_run": 45454711939,
   "original_evidence_preserved": true,
-  "actual_model_calls_authorized": false,
-  "preceding_campaign_run": 45447549238,
-  "source_specific_reason": "Final screenshot review found off-center module/stage inspectors; fit new content, expose Fit/1:1 and qualify actual visible bounds plus preview UI. Geometry, retrieval corpus, experiments and native source unchanged."
+  "native_inputs_changed": false,
+  "source_specific_reason": "First combined successor qualification after independently reviewed connection, planning, detail, hierarchical recovery, native flagship and owner-control implementation. Focused pinned4.7 normal-capacity native89/reopen12/flagships446 and pure/receipt adversaries passed; final graphical Linux/Windows/extracted source remains mandatory.",
+  "art_boundary": "Qualified fa22 Art successor identified; no proposal-only owner route/handoff exists. This campaign qualifies the independent Architecture workflow against accepted provider contracts without importing the separate branch."
 }

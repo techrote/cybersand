@@ -283,7 +283,9 @@ def main() -> None:
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     if args.manifest.stat().st_size > 16 * 1024 * 1024: raise ValueError("Manifest exceeds finite bound")
-    result = evaluate(json.loads(args.manifest.read_bytes()), args.manifest.parent, args.registration.read_bytes())
+    raw = args.manifest.read_bytes()
+    result = evaluate(json.loads(raw), args.manifest.parent, args.registration.read_bytes())
+    result["manifest_sha256"] = sha(raw)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     print(json.dumps({key: result[key] for key in ("registered_cases", "retained_rows", "evaluable_cases", "constraints_preserved_cases", "exact_projection_cases")}))
 

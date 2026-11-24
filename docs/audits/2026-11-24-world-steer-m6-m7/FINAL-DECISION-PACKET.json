@@ -1,0 +1,333 @@
+{
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "art_gate": {
+    "adapter_scope": "Independent explicit owner seam; controlled fixtures are not inference or completed Art integration.",
+    "application_run": 45482969231,
+    "current_boundary": "Stable Art source is identified, but no exclusively owned proposal-only request route or ownership handoff is supplied. Independent accepted-interface seam remains the delivery boundary.",
+    "owner_proposal_only_handoff": false,
+    "packaging_outcome": "Current actual extracted package, immutable manifest and loaded-module gates passed; Linux application run reused through qualified proof.",
+    "packaging_run": 45497650568,
+    "packaging_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+    "pr": 773,
+    "qualified_application": "981a740828decbeac04d5a14511d0222095de0a9",
+    "retained_prior_packaging_failure": {
+      "outcome": "post-launch import descriptor verification failure",
+      "run": 45493176632,
+      "source": "2eedd8f3f9717bbec15f17755a0b1c3612320770"
+    }
+  },
+  "art_successor_imported": false,
+  "batch_foundation": {
+    "pr": 720,
+    "qualification_run": 44962406023,
+    "source": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+    "unchanged": true
+  },
+  "composition_comparison": {
+    "arm_admitted_out_of_12": {
+      "hand_typed": 4,
+      "procedural": 2,
+      "random_valid": 3,
+      "reference_guided": 4,
+      "retrieval": 10
+    },
+    "checks": 412,
+    "completed": 23,
+    "contradictory_held_out_brief": {
+      "conflicting_immutable_empty_cells": 128,
+      "correct_refusals_retained": 10,
+      "name": "pressure-dock"
+    },
+    "manifest_sha256": "4763904334ec5f275f9980075aa6d02d89cb5ebc0595834ba989cd9a68c8ff76",
+    "proposals": 60,
+    "refused_before_native": 37,
+    "scope": "Deterministic selection/tool-capability comparison; no prompt, inference or human aesthetic claim.",
+    "source": "2861317ebe279dca8c2d000c48a6933221507aac"
+  },
+  "development_catalogue": {
+    "attempts": 100,
+    "capacity": 128,
+    "checks": 801,
+    "source": "43ea4dd05f0786b2c174386860f95d6b804f1c59"
+  },
+  "development_observations": [
+    {
+      "bytes": 80490,
+      "capacity": 128,
+      "checks": 202,
+      "display": "headless",
+      "evidence_relative_path": "detail-aa2dee5d4-capacity128/cases.json",
+      "failures": [],
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "abbea005cbcc958e49cd4caa15c5b8304f4b682c946dcf5b69d43ee146cd7e1a",
+      "source_revision": "aa2dee5d444fdf2d9ac4461c4726655e0eebfe14"
+    },
+    {
+      "bytes": 14359,
+      "capacity": 128,
+      "checks": 438,
+      "display": "headless",
+      "evidence_relative_path": "flagships-native-development/flagships-native.json",
+      "failures": 0,
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "6ec25a4eef40009e376f288536be67f03da0d625f7d0de6b83ef1921531577d5",
+      "source_revision": "ecc76ad4aa9a6dcd6e2543489875e8e22a3e297b"
+    },
+    {
+      "bytes": 3608,
+      "capacity": 16,
+      "checks": 80,
+      "display": "headless",
+      "evidence_relative_path": "hierarchy-native-core16/hierarchy-native.json",
+      "failures": 0,
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "de4f2a8c625d83140d00477fd251227bd832b8c6419cba11fce0dc580ccbe6f2",
+      "source_revision": "de5c5e273d1b9fcbaa5ca438c020660ba22150ff"
+    },
+    {
+      "bytes": 3739,
+      "capacity": 16,
+      "checks": 82,
+      "display": "headless",
+      "evidence_relative_path": "hierarchy-native-custody/hierarchy-native.json",
+      "failures": 0,
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "969018525068e6d6a620c52facc818bbd6b0814fa26eae19ddb6ff6086f4498e",
+      "source_revision": "b8d12ad69885e5ab3d066af9857a74aa8f270934"
+    },
+    {
+      "bytes": 571262,
+      "capacity": 128,
+      "checks": 50,
+      "display": "headless",
+      "evidence_relative_path": "collaborative-ui-512f0359b/collaborative-ui.json",
+      "failures": [],
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "e1c8631f2d7dfaa2a6ae43d8f9eac0cda72b4d313dc3ad83d88a3b6cbb439bcc",
+      "source_revision": "512f0359b357fe96698c7566b3be4127cd9b6639"
+    },
+    {
+      "bytes": 1809057,
+      "capacity": 128,
+      "checks": 106,
+      "display": "headless",
+      "evidence_relative_path": "gameplay-crops-e99dfd6fe/architecture-gameplay.json",
+      "failures": [
+        "terraced-arcology-route-crop: native replay exactly matches every material cell from the original flagship crop"
+      ],
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "fbcca2ea3afa3e7a9727e14c6fcd45760b815eedd51362642e2027a6f06cbacf",
+      "source_revision": "e99dfd6fe37fc51bc9a62be82ea274f1e387f0ab"
+    },
+    {
+      "bytes": 149572,
+      "capacity": 128,
+      "checks": 50,
+      "display": "headless",
+      "evidence_relative_path": "gameplay-crops-e99dfd6fe/architecture-gameplay-reopen.json",
+      "failures": [],
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "9cb6528d08e965e6f813a4482dc76e063fa6ba27afb459664acd585a364b2e71",
+      "source_revision": "512f0359b357fe96698c7566b3be4127cd9b6639"
+    },
+    {
+      "bytes": 569989,
+      "capacity": 128,
+      "checks": 34,
+      "display": "headless",
+      "evidence_relative_path": "gameplay-arcology-crop-512f0359b/architecture-gameplay.json",
+      "failures": [],
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "0a5c4b46680677492cc073a5b21a2c8bff9c51223c2638f10fd7cf1edeb9715e",
+      "source_revision": "512f0359b357fe96698c7566b3be4127cd9b6639"
+    },
+    {
+      "bytes": 50291,
+      "capacity": 128,
+      "checks": 18,
+      "display": "headless",
+      "evidence_relative_path": "gameplay-arcology-crop-512f0359b/architecture-gameplay-reopen.json",
+      "failures": [],
+      "scope": "Development source only; does not qualify later source.",
+      "sha256": "04e96d29c60113985ff264578deff5e40b037fc6b1ea9bf91c13dba81108a127",
+      "source_revision": "512f0359b357fe96698c7566b3be4127cd9b6639"
+    },
+    {
+      "bytes": 3958,
+      "capacity": 1024,
+      "checks": 89,
+      "evidence_relative_path": "hierarchy-final-default-ff5d/hierarchy-native.json",
+      "failures": 0,
+      "scope": "Pinned Godot4.7/default1024 application-source development observation; graphical and cross-platform final campaign separate.",
+      "sha256": "75fd4bfe53a9ac8d3a9e4f471829ad10c5de1086170bad459625defc09ee1d75",
+      "source_revision": "ff5d2bdb25b34fd0aa05fb23abae1e3660e87e32"
+    },
+    {
+      "bytes": 522,
+      "capacity": 1024,
+      "checks": 12,
+      "evidence_relative_path": "hierarchy-final-default-ff5d/hierarchy-reopen.json",
+      "failures": 0,
+      "scope": "Pinned Godot4.7/default1024 application-source development observation; graphical and cross-platform final campaign separate.",
+      "sha256": "723ff1e08d2262297a006d3ae805790f776a008fcfe553925d44fef84370ad74",
+      "source_revision": "ff5d2bdb25b34fd0aa05fb23abae1e3660e87e32"
+    },
+    {
+      "bytes": 9386,
+      "capacity": null,
+      "checks": null,
+      "evidence_relative_path": "hierarchy-final-default-ff5d/independent-hierarchy-verification.json",
+      "failures": null,
+      "scope": "Pinned Godot4.7/default1024 application-source development observation; graphical and cross-platform final campaign separate.",
+      "sha256": "6be71c5c4527d00ca23339da5ea8a59d39938cc3728a95b9ed9130b164216c43",
+      "source_revision": "ff5d2bdb25b34fd0aa05fb23abae1e3660e87e32"
+    },
+    {
+      "bytes": 14360,
+      "capacity": 1024,
+      "checks": 446,
+      "evidence_relative_path": "flagships-final-default/flagships-native.json",
+      "failures": 0,
+      "scope": "Pinned Godot4.7/default1024 application-source development observation; graphical and cross-platform final campaign separate.",
+      "sha256": "e165640b4aa7fde3868065100536f3e633c767136bc781de0846feadebad441b",
+      "source_revision": "5e6ef0d1fe412e369b0550ca2d9502087cd21e3a"
+    },
+    {
+      "bytes": 15147,
+      "capacity": null,
+      "checks": null,
+      "evidence_relative_path": "flagships-final-default/independent-native-support-review-a.json",
+      "failures": null,
+      "scope": "Pinned Godot4.7/default1024 application-source development observation; graphical and cross-platform final campaign separate.",
+      "sha256": "a0907a7939179aba62c6a49678a98664876c965edcf64091175a960630330249",
+      "source_revision": "5e6ef0d1fe412e369b0550ca2d9502087cd21e3a"
+    }
+  ],
+  "development_runtime": {
+    "changed_inputs": [],
+    "engine": "4.7.stable.official.5b4e0cb0f",
+    "foundation_application": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "linux_native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "native_source_inputs": 105,
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "scope": "Development runtime reuse only; no successor application qualification inherited."
+  },
+  "disposition": "DRAFT_HOLD",
+  "final_campaign": null,
+  "final_source_tree": null,
+  "final_tested_application": null,
+  "first_published_checkpoint": {
+    "local_equivalent": "b8d12ad69885e5ab3d066af9857a74aa8f270934",
+    "source": "001ead437297d71238f59c7becb3f93c8bf02b24",
+    "tree": "a6df187b3287f04e29fb8da417664d0e2f41d7e4"
+  },
+  "foundation": {
+    "archive": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+    "pr": 770,
+    "qualification_run": 45454711939,
+    "tested_application": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "unchanged": true
+  },
+  "genuine_model_calls": 0,
+  "goldmaps": {
+    "archive_authority": "b9535405853a5cd16e4bba968ec7167222861c42",
+    "comparative_families": 12,
+    "evidence_authority": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+    "gold_nominees": 25,
+    "immutable_states": 76,
+    "negative_interventions": 5,
+    "original_native_refusals": [
+      155,
+      183
+    ],
+    "owner_accepted_at_authority": 0,
+    "primary_scan_maps": 67,
+    "protected_features": 27,
+    "recovered_maps": 70,
+    "upstream_export": {
+      "actual_consumer_report_sha256": "e041123d2e22806c5fef05c307f080a6e3f1d8fef5ff910fd5a5d066fdf26794",
+      "bytes": 1640704,
+      "consumed_by_new_adapter": true,
+      "consumer_source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+      "identity_source": "techrote/sandmapsreference@2d984a981da99348bbf9b44612b058cd048f3474/docs/corpus/goldmaps-owner-delivery-001/corpus/actual-archive-knowledge-review.v1.json",
+      "path": "corpus-export/knowledge.v1.json",
+      "producer": "b4ed0fc462a5e10f3d502b4b5593ef9b4ce70041",
+      "scope": "Actual immutable export parsed read-only;70maps/27hints,25unchangedcards,0nativeimports and0owneracceptance. Initial longer-tag refusal retained; consumer-local bounded512-character tags corrected.",
+      "sha256": "711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557"
+    }
+  },
+  "implementation": {
+    "detail_worker_types": 8,
+    "flagship_families": 4,
+    "goldmaps_cards": 25,
+    "maximum_campaign_depth": 4,
+    "maximum_campaign_native_checks": 4194304,
+    "maximum_campaign_nodes": 64,
+    "maximum_campaign_raster_candidates": 16777216,
+    "maximum_native_checks_per_stage": 262144,
+    "maximum_plan_stages": 32,
+    "maximum_prior_campaigns": 8,
+    "maximum_prior_history_bytes": 25165824,
+    "maximum_raster_candidates_per_stage": 1048576,
+    "maximum_stage_side": 512,
+    "native_mutation": "existing serialized Workbench Art executor and PAINT history",
+    "native_parts": 40,
+    "original_parts_preserved": 8,
+    "owner_workshop_recovery": "fresh zero-write proposal with original-Empty/current-plan/generation/stopped-result guards"
+  },
+  "independent_reviews": {
+    "comparison": "B audited all60 outcomes; C independently diagnosed the frozen contradictory brief.",
+    "detail": "A and B replayed 24 full material planes and receipts; negatives retained.",
+    "native_flagships_current": "A independently replayed55stages/337chunks/1,160,376changed rows at5e6ef0d1fe412e369b0550ca2d9502087cd21e3a;4actualplanes equal reviewed projections. A/B diagnosticvisualreview retains disconnected detail component counts6/35/14/2; no all-connected or Godot-render claim.",
+    "native_hierarchy_current": "A reducer96584,53adversaries; actual10stages/20chunks/49,898changed rows/default1024 sourceff5d PASS;128contacts/256outside exact; freshReopen12checks.",
+    "native_parts": "Root/B checked v2 contact aliases, capacities, live source and placement guards.",
+    "proposal_bridge": "A found teardown and nested-dispatch reentrancy; B repaired at3f0f146e8052cfa8f20af5da6cc1cf89cc662d31. Runtime outcome tracked separately.",
+    "windows_launcher": "A found unlisted-file acceptance; C8daddc adds exact pristine inventory and generated-cache-only postimport classification.20synthetic guards pass; actual Windows remains hosted.",
+    "workflow": "B found host-rebind authority retention; root repaired it.60 combined fixture checks passed after recovery.",
+    "workshop": "A reviewed exact1024attachment cells/128contacts/256outside exception and root recovery authority at4da5f0fe473c3882743dfbd2da7b791af9e94aaf. Independent reducer239d725065b0a3456d0bdd5e558e04a2b6283e7d awaits native final artifact."
+  },
+  "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
+  "native_inputs": {
+    "changed": false,
+    "final_build_policy": "Existing source-exact platform build gate retained.",
+    "normalized_input_count": 105
+  },
+  "negative_results": [
+    "Earlier30-case comparison: four contextual arms had identical matched geometry.",
+    "Six random additive detail controls had20\u2013240 unattached cells; frame controls identical; some panel/pipe seeds invariant; random wear component count unchanged.",
+    "Full-World Play at developmentcapacity128 failed scheduling-core capacity on its first tick.",
+    "Original arcology crop bound mismatch retained; corrected source and fresh reopen passed only crop scope.",
+    "Refined flagship attempt307ff3edeffcae8ecd349231e9be0f4ff69942c4 OS-killed before construction.",
+    "Hierarchy startupff5f887ff7b78c115d1de93cb05dac4d926ca1d2 capacity64 OS-killed; subsequent capacity16 run passed.",
+    "Shared executor interruption left b8 fresh-reopen terminal unobserved; recovered log confirms startup only.",
+    "Initial flagship report438 versus console439 final write assertion is preserved; successor reporting corrected without rewriting old evidence.",
+    "Recovered system default was Godot4.7.2; its60fixture checks remain diagnostic. Required pinned4.7 was recovered and60checks repeated successfully.",
+    "First dff native-hierarchy launch stopped at GDScript type inference before creating a World; explicit Dictionary annotation fixed and sourceff5d passed89native checks/default1024 plus12freshreopen checks.",
+    "Actual GOLDexport initially refused legitimate source tags longer than128characters; a bounded512-character tag reader passed31checks without mutating the corpus."
+  ],
+  "owner_gates": [
+    "Draft/HOLD review",
+    "physical Windows/NVIDIA acceptance",
+    "subjective architectural preference",
+    "separately qualified Art proposal-only handoff",
+    "authorized genuine model trial",
+    "broader physical stability or general traversal claims"
+  ],
+  "paid_inference": false,
+  "prohibited_actions_not_taken": [
+    "merge",
+    "Ready promotion",
+    "production defaults",
+    "release",
+    "paid inference",
+    "training",
+    "unapproved reference-art transmission"
+  ],
+  "pull_request": 777,
+  "repository": "techrote/cybersand",
+  "schema": "cybersand-collaborative-architecture-decision-packet-v1",
+  "state": "implementation_checkpoint_final_qualification_pending",
+  "training": false,
+  "updated_utc": "2026-11-24T22:53:54.154508+00:00",
+  "windows_evaluator": null
+}
