@@ -17,6 +17,7 @@ import re
 import struct
 import subprocess
 import time
+import traceback
 import zlib
 
 from seal_owner import sha
@@ -51,6 +52,14 @@ def windows_powershell_env(environment: dict[str, str] | None = None) -> dict[st
 
 def same_path(left: str, right: str) -> bool:
     return ntpath.normcase(ntpath.normpath(left)) == ntpath.normcase(ntpath.normpath(right))
+
+
+def failure_details(error: Exception, phase: dict, observer_context: dict) -> dict:
+    """Retain the original failure; diagnostics never change gate admission."""
+    return {'type': type(error).__module__ + '.' + type(error).__qualname__,
+            'errno': getattr(error, 'errno', None), 'winerror': getattr(error, 'winerror', None),
+            'phase': dict(phase), 'observer': dict(observer_context),
+            'traceback': ''.join(traceback.format_exception(type(error), error, error.__traceback__))}
 
 
 def owner_command(argv: list[str], engine: str, project: str) -> bool:
@@ -118,6 +127,7 @@ class WindowsObserver:
     def __init__(self, job) -> None:
         from ctypes import wintypes as w
         self.w, self.job = w, job
+        self.failure_context = {}
         self.kernel = ctypes.WinDLL('kernel32', use_last_error=True)
         self.user = ctypes.WinDLL('user32', use_last_error=True)
         self.gdi = ctypes.WinDLL('gdi32', use_last_error=True)
@@ -155,6 +165,13 @@ class WindowsObserver:
             function = getattr(api, name);function.argtypes, function.restype = arguments, result
         self.user.SetProcessDPIAware()
 
+    def api_failure(self, api: str, **context) -> OSError:
+        # Capture the failure before CloseHandle or EnumWindows can alter the
+        # thread's last-error value. Keep the original Windows exception class.
+        code = ctypes.get_last_error()
+        self.failure_context = {'api': api, **context, 'winerror': code}
+        return ctypes.WinError(code)
+
     def members(self) -> list[int]:
         # Microsoft JobObjectBasicProcessIdList includes live child-job members.
         # Fail closed instead of silently truncating an unexpected process tree.
@@ -162,7 +179,7 @@ class WindowsObserver:
             _fields_ = [('assigned', self.w.DWORD), ('count', self.w.DWORD), ('pids', ctypes.c_size_t * 64)]
         value = Members()
         if not self.kernel.QueryInformationJobObject(self.job._handle, 3, ctypes.byref(value), ctypes.sizeof(value), None):
-            raise ctypes.WinError(ctypes.get_last_error())
+            raise self.api_failure('QueryInformationJobObject')
         if value.assigned != value.count or value.count > 64:
             raise ValueError('Owner launch exceeds bounded process observation capacity')
         return [int(value.pids[index]) for index in range(value.count)]
@@ -177,9 +194,9 @@ class WindowsObserver:
             path = ctypes.create_unicode_buffer(32768);size = self.w.DWORD(len(path))
             times = [self.w.FILETIME() for _ in range(4)]
             if not self.kernel.QueryFullProcessImageNameW(handle, 0, path, ctypes.byref(size)):
-                raise ctypes.WinError(ctypes.get_last_error())
+                raise self.api_failure('QueryFullProcessImageNameW', pid=pid)
             if not self.kernel.GetProcessTimes(handle, *(ctypes.byref(value) for value in times)):
-                raise ctypes.WinError(ctypes.get_last_error())
+                raise self.api_failure('GetProcessTimes', pid=pid)
             return {'pid': pid, 'image': path.value, 'created_filetime': (times[0].dwHighDateTime << 32) | times[0].dwLowDateTime, 'job_member': True}
         finally:
             self.kernel.CloseHandle(handle)
@@ -188,8 +205,9 @@ class WindowsObserver:
         found = [];failures = []
         @self.callback
         def observe(hwnd, _):
+            pid = self.w.DWORD()
             try:
-                pid = self.w.DWORD();self.user.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+                self.user.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
                 if pid.value not in pids or not self.user.IsWindowVisible(hwnd): return True
                 process = self.process(pid.value)
                 if process is None or not same_path(process['image'], str(engine)): return True
@@ -201,10 +219,14 @@ class WindowsObserver:
                               'left': rect.left, 'top': rect.top, 'width': rect.right - rect.left, 'height': rect.bottom - rect.top})
                 return True
             except Exception as error:
+                # ctypes callbacks cannot propagate Python exceptions through
+                # User32. Retain the same exception and raise it after enumeration.
+                self.failure_context = {'callback': 'EnumWindowsProc', 'hwnd': int(hwnd),
+                                        'pid': int(pid.value), **self.failure_context}
                 failures.append(error);return False
         completed = self.user.EnumWindows(observe, 0)
         if failures: raise failures[0]
-        if not completed: raise ctypes.WinError(ctypes.get_last_error())
+        if not completed: raise self.api_failure('EnumWindows')
         return found
 
     def foreground(self, window: dict) -> None:
@@ -214,7 +236,7 @@ class WindowsObserver:
         x, y = self.user.GetSystemMetrics(76) + 20, self.user.GetSystemMetrics(77) + 20
         if width < 640 or height < 360: raise ValueError('Windows runner has no usable graphical desktop')
         if not self.user.SetWindowPos(window['hwnd'], None, x, y, width, height, 0x0040):
-            raise ctypes.WinError(ctypes.get_last_error())
+            raise self.api_failure('SetWindowPos', pid=window['pid'], hwnd=window['hwnd'])
         self.user.SetForegroundWindow(window['hwnd'])
 
     def argv(self, pid: int) -> tuple[list[str], dict]:
@@ -223,13 +245,14 @@ class WindowsObserver:
                                capture_output=True, text=True, timeout=20, check=True, env=windows_powershell_env())
         process = json.loads(value.stdout)
         count = ctypes.c_int();arguments = self.shell.CommandLineToArgvW(process['CommandLine'], ctypes.byref(count))
-        if not arguments: raise ctypes.WinError(ctypes.get_last_error())
+        if not arguments: raise self.api_failure('CommandLineToArgvW', pid=pid)
         try: return [arguments[index] for index in range(count.value)], process
         finally: self.kernel.LocalFree(arguments)
 
     def screenshot(self, window: dict, path: Path) -> dict:
         rect = self.w.RECT()
-        if not self.user.GetWindowRect(window['hwnd'], ctypes.byref(rect)): raise ctypes.WinError(ctypes.get_last_error())
+        if not self.user.GetWindowRect(window['hwnd'], ctypes.byref(rect)):
+            raise self.api_failure('GetWindowRect', pid=window['pid'], hwnd=window['hwnd'])
         width, height = rect.right - rect.left, rect.bottom - rect.top
         if not 640 <= width <= 2560 or not 360 <= height <= 1440:
             raise ValueError('Owned window screenshot exceeds its declared bounds')
@@ -239,10 +262,13 @@ class WindowsObserver:
         bits = ctypes.c_void_p();bitmap = self.gdi.CreateDIBSection(screen, header, 0, ctypes.byref(bits), None, 0)
         previous = None
         try:
-            if not screen or not memory or not bitmap or not bits.value: raise ctypes.WinError(ctypes.get_last_error())
+            if not screen or not memory or not bitmap or not bits.value:
+                raise self.api_failure('GetDC/CreateCompatibleDC/CreateDIBSection', pid=window['pid'], hwnd=window['hwnd'],
+                                       screen_created=bool(screen), memory_created=bool(memory), bitmap_created=bool(bitmap),
+                                       pixels_created=bool(bits.value))
             previous = self.gdi.SelectObject(memory, bitmap)
             if not self.gdi.BitBlt(memory, 0, 0, width, height, screen, rect.left, rect.top, 0x40CC0020):  # SRCCOPY | CAPTUREBLT
-                raise ctypes.WinError(ctypes.get_last_error())
+                raise self.api_failure('BitBlt', pid=window['pid'], hwnd=window['hwnd'])
             self.gdi.GdiFlush()
             bgra = ctypes.string_at(bits, width * height * 4)
             rgb = bytearray(width * height * 3);rgb[0::3] = bgra[2::4];rgb[1::3] = bgra[1::4];rgb[2::3] = bgra[0::4]
@@ -328,20 +354,25 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
     specification = importlib.util.spec_from_file_location('swarm006_owned_process', JOB_HELPER)
     module = importlib.util.module_from_spec(specification);specification.loader.exec_module(module)
     owner = module.WindowsJob();observer = WindowsObserver(owner);process = None;started = time.monotonic()
+    phase = {'stage': 'launch_owner_process'}
     try:
         with log_path.open('w', encoding='utf-8') as log:
             process = subprocess.Popen(command, cwd=output, env=env, stdout=log, stderr=log, stdin=subprocess.DEVNULL,
                                        creationflags=module.CREATE_SUSPENDED | subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW)
             report['launcher_pid'] = process.pid
+            phase = {'stage': 'establish_job_ownership', 'pid': process.pid}
             owner.assign_and_resume(process);report['owned_before_resume'] = True
             deadline = started + MAX_SECONDS;stable_since = None;stable_identity = None;known = {};audio_pending_since = None
             while time.monotonic() < deadline:
+                phase = {'stage': 'query_job_members'}
                 members = observer.members()
                 for pid in members:
+                    phase = {'stage': 'observe_owned_process', 'pid': pid}
                     identity = observer.process(pid)
                     if identity: known[(pid, identity['created_filetime'])] = identity
                 if len(known) > 64: raise ValueError('Owner dispatch exceeds bounded process history')
                 report['observed_processes'] = list(known.values())
+                phase = {'stage': 'read_startup_logs'}
                 logs, diagnostics = read_logs(profile, log_path);report.update(diagnostics)
                 if diagnostics['initialization_errors']: raise ValueError('Actual owner launch reported initialization errors')
                 if diagnostics['pending_audio_diagnostics']:
@@ -350,22 +381,28 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
                         raise ValueError('Incomplete audio recovery exceeded the bounded log-flush grace')
                 else:
                     audio_pending_since = None
+                phase = {'stage': 'inspect_owner_exit', 'pid': process.pid}
                 if process.poll() not in (None, 0): raise ValueError('Owner PowerShell launcher failed')
+                phase = {'stage': 'enumerate_owned_windows'}
                 windows = [w for w in observer.windows(members, engine) if TITLE in w['title'] and w['responsive']]
                 if len(windows) > 1: raise ValueError('Owner launch created ambiguous Workbench windows')
                 if windows and any(MARKER in text for text in logs.values()) and not diagnostics['pending_audio_diagnostics']:
                     window = windows[0];identity = (window['pid'], window['created_filetime'], window['hwnd'])
                     if identity != stable_identity:
+                        phase = {'stage': 'place_workbench_window', 'pid': window['pid'], 'hwnd': window['hwnd']}
                         observer.foreground(window);stable_identity = identity;stable_since = time.monotonic()
                     report['window'] = window
                     report['stable_seconds'] = time.monotonic() - stable_since
                     if report['stable_seconds'] >= STABLE_SECONDS and process.poll() == 0:
+                        phase = {'stage': 'inspect_graphical_command', 'pid': window['pid'], 'hwnd': window['hwnd']}
                         report['godot_argv'], report['godot_cim'] = observer.argv(window['pid'])
+                        phase = {'stage': 'verify_graphical_process_identity', 'pid': window['pid'], 'hwnd': window['hwnd']}
                         current = observer.process(window['pid'])
                         if not current or current['created_filetime'] != window['created_filetime']:
                             raise ValueError('Observed Godot identity changed during command inspection')
                         if not same_path(report['godot_cim']['ExecutablePath'], str(engine)):
                             raise ValueError('CIM executable differs from the sealed graphical Godot')
+                        phase = {'stage': 'capture_workbench_window', 'pid': window['pid'], 'hwnd': window['hwnd']}
                         report['screenshot'] = observer.screenshot(window, output / 'owner-workbench-window.png')
                         break
                 else:
@@ -374,6 +411,7 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
                 time.sleep(.25)
             else:
                 raise TimeoutError('Actual owner dispatch did not reach a stable graphical Workbench in its bounded time')
+            phase = {'stage': 'verify_extracted_runtime'}
             manifest_path = destination / 'candidate-manifest.json'
             manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
             if manifest['source_commit'] != source: raise ValueError('Extracted source changed after owner verification')
@@ -385,6 +423,7 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
                           manifest_sha256=sha(manifest_path), expected_manifest_sha256=metadata['manifest_sha256'])
     except Exception as error:
         report['failure'] = str(error)
+        report['failure_details'] = failure_details(error, phase, observer.failure_context)
     finally:
         try:
             # The job, not a guessed PID tree, owns every Start-Process/start child.

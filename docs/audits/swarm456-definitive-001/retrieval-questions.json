@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-24",
+  "purpose": "Additive definitive receipt-custody questions; original frozen32 and all earlier challenges unchanged. These inspect current canonical routes, not historical authority.",
+  "questions": [
+    {
+      "id": "SWARM456-DEFINITIVE-RECEIPT",
+      "query": "How does the consolidated SWARM-004/005/006 verifier bind native Apply Undo reapply receipts to actual material changes and saved map files after Reopen?",
+      "canonical": [
+        "operations/swarm456-unified-mainline.md"
+      ],
+      "facts": [
+        "The UI fixture retains original source and installed native captures for three actual transactions.",
+        "The reducer reconstructs the native patch hash and checks captured sequence, protected cells and both processes saved-file hashes.",
+        "Blocked outcomes must not claim Apply; old Q5/Q6 evidence lacks the new witnesses and cannot be requalified by adding them afterward."
+      ],
+      "sources": [
+        "operations/swarm456-unified-mainline.md"
+      ]
+    },
+    {
+      "id": "SWARM456-DEFINITIVE-Q5",
+      "query": "Why did the SWARM Q5 process report log join fail and can the old Windows receipt be accepted using a PID alias?",
+      "canonical": [
+        "operations/swarm456-unified-mainline.md"
+      ],
+      "facts": [
+        "Q5 wrapper PID5148 differs from actual enginePID7432; original parent/child custody is absent.",
+        "The successor launches the actual pinned engine and still requires strict process/report/log identity.",
+        "Q4 Flatten failure and Q5 failure remain distinct immutable failed outcomes."
+      ],
+      "sources": [
+        "operations/swarm456-unified-mainline.md"
+      ]
+    }
+  ]
+}

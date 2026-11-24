@@ -332,8 +332,11 @@ class GraphicalOriginalEvidence(unittest.TestCase):
     def validate(self):
         return subject.validate_example(self.root, "reciprocal", self.pair, self.receipt, self.fixture.TEST)
 
-    def test_full_original_plane_inspector_and_report_fixture_passes(self):
-        self.assertTrue(self.validate()["passed"])
+    def test_legacy_shallow_receipt_fixture_requires_transaction_witnesses(self):
+        # Original reader fixtures do not establish independent transaction
+        # captures or canonical native patch identity. Never invent them here.
+        with self.assertRaisesRegex(ValueError, "three original transaction witnesses"):
+            self.validate()
 
     def test_rehashed_native_changes_cannot_hide_behind_ui_passed_flags(self):
         value = json.loads((self.root / "initial-result.json").read_bytes())
@@ -352,6 +355,27 @@ class GraphicalOriginalEvidence(unittest.TestCase):
         path.write_bytes(path.read_bytes()[:24])
         with self.assertRaisesRegex(ValueError, "Original native planes"):
             self.validate()
+
+    def test_blocked_original_cannot_claim_applied_or_saved_native_transactions(self):
+        report = self.fixture.report("swarm005_viaduct", "blocked")
+        report.update(historical_only=False, native_transactions={}, saved_artifacts={}, native_receipt={}, applied=False)
+        self.fixture.native_artifacts(self.root, report, False)
+        baseline = bytes(512 * 512 * 2)
+        for stage in ("baseline", "preview"):
+            (self.root / (stage + "-native.le16")).write_bytes(baseline)
+        digest = hashlib.sha256(baseline).hexdigest()
+        report["native_planes_sha256"] = {"baseline": digest, "preview": digest}
+        (self.root / "native-unresolved.png").write_bytes(self.fixture.synthetic_png())
+        validate = lambda: subject.validate_example(self.root, "swarm005_viaduct", {"blocked": report}, self.receipt, self.fixture.TEST)
+        self.assertTrue(validate()["passed"])
+        for key, value in (("applied", True), ("native_receipt", {"operation": "build", "changed_cells": 12}),
+                           ("native_transactions", {"first_apply": {"operation": "build"}}),
+                           ("saved_artifacts", {"map_sha256": "0" * 64})):
+            original = report[key]
+            report[key] = value
+            with self.assertRaisesRegex(ValueError, "Negative native outcome claims"):
+                validate()
+            report[key] = original
 
 
 class PreservationOriginalEvidence(unittest.TestCase):

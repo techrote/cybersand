@@ -71,6 +71,55 @@ verified historical evidence, not a pass claim for the new application source.
 The canonical final decision packet will record actual run and artifact identities
 after those gates terminate; physical Windows 11/NVIDIA acceptance remains pending.
 
+### Definitive transaction-evidence review
+
+The definitive completion review independently reproduced a separate semantic
+gap in the aggregate reader at Q6 source
+`b126523158e22d8993b4899710799f88dd0b98d0`. The original Q5 Linux graphical
+artifact passed the complete graphical admission path; copied evidence with
+coherently rehashed, incorrect native receipt counts, patch digest, schema,
+semantics or source generation also passed. This finding does not explain or
+replace Q5's strict Windows process-identity refusal. Original archives and
+reports remain unchanged.
+
+The additive fixture in `godot/tests/swarm456_reciprocal_ui.gd` now retains actual
+native captures immediately before and after first Apply, Undo and reapply. Each
+capture includes generation, revision, tick, full World extent and the original
+material-plane hash. The original Save and separate fresh-process Reopen each
+record hashes of the saved map, sidecar and native evidence. These are test
+observations; native application, ownership and persistence behavior are unchanged.
+
+`tools/swarm45/reduce_evidence.py::validate_native_transactions` joins every
+acknowledgement to those captures, checks their actual sequence, reconstructs the
+native v1 patch digest from full material readbacks and original protected cells,
+and verifies the saved receipt, territory and file identities. Negative examples
+must explicitly retain no Apply, transaction, saved-file or native-receipt claim.
+Independent mutations exercise nonzero wrong counts, substituted logs and saved
+files, false source/runtime identities, receipt forgery and blocked Apply claims.
+The existing strict process/report/log joins remain mandatory.
+
+Q5 and Q6 do not contain these new original transaction and file witnesses.
+They cannot be upgraded by filling in reports afterward. The current publication
+policy requires one complete new source/run/attempt-bound campaign after the
+reviewed repair; it has no verification-only replay exception for this change.
+Local reused-runtime native execution is a diagnostic preflight, not final-source
+qualification. All revealed scientific cases, donor controls, negative results,
+native definitions and default-OFF controls remain unchanged. This mission
+authorizes neither Ready promotion nor merging.
+
+Q6 attempt 1 ([45437617377](https://github.com/techrote/cybersand/actions/runs/45437617377))
+has separate failed Windows lanes: the source job exhausted its existing retries
+on an HTTP 500 official-engine download, and the packaged owner-launch observer
+reported `WinError 5: Access is denied`. The original owner report does not retain
+the failing API or traceback, so neither an application defect nor a harmless
+observer race is established. `tools/swarm006/owner_dispatch.py` now records the
+failure phase, API, PID/window context and original exception before cleanup.
+The same error remains fatal; access rights, command, process ownership,
+responsive-window, screenshot, payload and retirement requirements are unchanged.
+These diagnostics do not repair or reclassify Q6. The dated
+[repair and independent review](../audits/swarm456-definitive-001/receipt-custody-repair.md)
+records exact deltas, regressions and explicitly scoped local execution.
+
 ## Exact starting source and ownership
 
 | Source | Ref verified at start |

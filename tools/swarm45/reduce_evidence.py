@@ -6,10 +6,12 @@ process receipts, original logs, native documents, material planes or PNGs.
 from __future__ import annotations
 
 import ast
+import hashlib
 import json
 import math
 from pathlib import Path
 import re
+import struct
 
 import runtime_custody as custody
 from shared import (HEADLESS_CASES, graphical_processes, historical_refresh_errors, input_report_errors,
@@ -328,6 +330,131 @@ def graphical_command(row: dict, script: str | None, graphical: bool) -> None:
         custody.require(command[-2:] == ["--script", "res://" + script], "Original test script command changed")
 
 
+def native_patch_identity(before: bytes, after: bytes, extent: list, native: dict,
+                          recipe: dict, operation: str) -> dict:
+    """Reconstruct the native v1 patch digest from full readbacks and raw guards.
+
+    Encoding is defined by workbench_authoring_patch.hpp::stage and
+    water_normalization.hpp::CanonicalHash: fixed-width little-endian integers,
+    row-major changed cells, then the original protected coordinates.
+    """
+    custody.require(extent in ([512, 512], [2048, 2048]) and all(type(n) is int for n in extent)
+                    and len(before) == len(after) == extent[0] * extent[1] * 2,
+                    "Native receipt lacks complete source/installed material planes")
+    frame = native.get("input", {}).get("frame", {})
+    width, height, origin = frame.get("width"), frame.get("height"), frame.get("origin")
+    custody.require(type(width) is int and type(height) is int and width > 0 and height > 0
+                    and isinstance(origin, list) and len(origin) == 2 and all(type(n) is int for n in origin)
+                    and 0 <= origin[0] <= extent[0] - width and 0 <= origin[1] <= extent[1] - height
+                    and recipe.get("size") == [width, height] and recipe.get("origin") == origin,
+                    "Native receipt crop differs from its original native recipe")
+    protected, cells, ledger = frame.get("protected"), native.get("cells"), native.get("ledger")
+    custody.require(all(isinstance(value, list) and len(value) == width * height for value in (protected, cells, ledger))
+                    and all(type(value) is int and value in (0, 1) for value in protected)
+                    and operation in ("build", "remove"), "Native receipt original patch/guard arrays are malformed")
+    expected, guards = [], []
+    for index, (material, owner) in enumerate(zip(cells, ledger)):
+        x, y = origin[0] + index % width, origin[1] + index // width
+        custody.require(type(material) is int and 0 <= material <= 255 and isinstance(owner, list)
+                        and len(owner) == 6 and type(owner[0]) is int and 0 <= owner[0] <= 3,
+                        "Native receipt original cell ownership is malformed")
+        if protected[index]:
+            guards.append((x, y))
+        if owner[0] in (1, 2):
+            custody.require(material != 0 and not protected[index], "Native receipt construction intersects original protection")
+            expected.append((x, y, 0, material) if operation == "build" else (x, y, material, 0))
+    changed = [(index % extent[0], index // extent[0], old[0], new[0])
+               for index, (old, new) in enumerate(zip(struct.iter_unpack("<H", before), struct.iter_unpack("<H", after)))
+               if old != new]
+    custody.require(changed == expected and 0 < len(changed) <= 262144 and len(guards) <= 262144,
+                    "Native receipt patch differs from actual source/installed material changes")
+    tag = b"cybersand-workbench-authoring-patch-v1"
+    digest = hashlib.sha256(struct.pack("<I", len(tag)) + tag)
+    digest.update(struct.pack("<BIIQ", 1 if operation == "build" else 2, *extent, len(changed)))
+    for cell in changed:
+        digest.update(struct.pack("<iiBB", *cell))
+    digest.update(struct.pack("<Q", len(guards)))
+    for point in guards:
+        digest.update(struct.pack("<ii", *point))
+    return {"changed_cells": len(changed), "protected_cells": len(guards), "patch_sha256": digest.hexdigest()}
+
+
+def validate_native_transactions(directory: Path, name: str, reports: dict, runtime: dict) -> None:
+    """Bind acknowledgements to independent captures, full native planes and the saved receipt."""
+    primary = reports.get("create", reports.get("evaluate", {}))
+    transactions = primary.get("native_transactions")
+    custody.require(isinstance(transactions, dict) and set(transactions) == {"first_apply", "undo", "reapply"}
+                    and reports.get("reopen", {}).get("native_transactions") == {},
+                    "Native receipt lacks the three original transaction witnesses or fresh read-only Reopen")
+    recipe = primary["native_recipe"]
+    extent = recipe.get("world_extent", [512, 512])
+    numeric = ("schema", "changed_cells", "protected_cells", "source_native_generation", "source_revision", "source_tick")
+    fields = {*numeric, "operation", "proposal_sha256", "patch_sha256", "semantics"}
+    previous_installed = None
+    for label, operation, before_stage, after_stage, native_stage in (
+            ("first_apply", "build", "baseline", "applied", "initial"),
+            ("undo", "remove", "applied", "undone", "initial"),
+            ("reapply", "build", "undone", "regenerated", "regenerated")):
+        witness = transactions[label]
+        custody.require(isinstance(witness, dict) and set(witness) == {
+            "operation", "source_capture", "installed_capture", "receipt", "source_material_sha256", "installed_material_sha256"}
+            and witness.get("operation") == operation, "Native transaction witness is incomplete: " + label)
+        capture, installed, receipt = witness["source_capture"], witness["installed_capture"], witness["receipt"]
+        for value in (capture, installed):
+            custody.require(isinstance(value, dict) and set(value) == {"native_generation", "revision", "tick", "extent"}
+                            and value.get("extent") == extent and all(type(n) is int for n in value["extent"])
+                            and all(type(value.get(key)) is int and 0 <= value[key] <= 2**63 - 1
+                                    for key in ("native_generation", "revision", "tick")),
+                            "Native transaction lacks its independent source/installed capture: " + label)
+        custody.require(installed["native_generation"] > capture["native_generation"]
+                        and (previous_installed is None or capture == previous_installed),
+                        "Native transaction captures do not form the actual installed generation sequence: " + label)
+        previous_installed = installed
+        custody.require(isinstance(receipt, dict) and set(receipt) == fields
+                        and all(type(receipt.get(key)) is int for key in numeric)
+                        and receipt.get("schema") == 1 and receipt.get("operation") == operation
+                        and receipt.get("semantics") == "retained-native-transaction-v1"
+                        and all(receipt.get("source_" + key) == capture[key] for key in ("native_generation", "revision", "tick")),
+                        "Native receipt schema, semantics or captured source identity differs: " + label)
+        before_path, after_path = (directory / (stage + "-native.le16") for stage in (before_stage, after_stage))
+        before, after = before_path.read_bytes(), after_path.read_bytes()
+        custody.require(witness["source_material_sha256"] == hashlib.sha256(before).hexdigest()
+                        and witness["installed_material_sha256"] == hashlib.sha256(after).hexdigest(),
+                        "Native transaction capture differs from original readback: " + label)
+        native_path = directory / (native_stage + "-result.json")
+        custody.require(receipt.get("proposal_sha256") == custody.sha(native_path),
+                        "Native receipt proposal differs from original native output: " + label)
+        derived = native_patch_identity(before, after, extent, legacy.read_report(native_path), recipe, operation)
+        custody.require(all(receipt.get(key) == value for key, value in derived.items()),
+                        "Native receipt count, protection or patch digest differs from native readback: " + label)
+    final = transactions["reapply"]["receipt"]
+    custody.require(primary.get("native_receipt") == reports["reopen"].get("native_receipt") == final,
+                    "Terminal and reopened native receipts differ from the actual reapply acknowledgement")
+    map_name = (name + "-synthetic-eval" if legacy.EXAMPLES[name].get("evaluate") else
+                "swarm005-v3-irregular-evaluation" if name == "swarm005_irregular" else "swarm004-interactive-evaluation")
+    profile = "roaming/Godot" if runtime["platform"] == "windows" else "data/godot"
+    map_path = directory / "profile" / profile / "app_userdata/Cyber Sand Reference Sandbox/workbench" / ("setup-" + map_name + ".json")
+    sidecar_path, evidence_path = Path(str(map_path) + ".swarm004.json"), Path(str(map_path) + ".swarm004-evidence.json")
+    custody.require(all(path.is_file() and not path.is_symlink() for path in (map_path, sidecar_path, evidence_path)),
+                    "Original authored map, native receipt or saved native evidence is absent")
+    saved = {key: custody.sha(path) for key, path in (
+        ("map_sha256", map_path), ("sidecar_sha256", sidecar_path), ("evidence_sha256", evidence_path))}
+    custody.require(primary.get("saved_artifacts") == reports["reopen"].get("saved_artifacts") == saved,
+                    "Original saved files differ from Create/fresh-Reopen process witnesses")
+    sidecar = legacy.read_report(sidecar_path)
+    custody.require(type(sidecar.get("schema")) is int and sidecar["schema"] == 1
+                    and sidecar.get("status") == "accepted_native_material_architecture"
+                    and sidecar.get("native_receipt") == final and type(sidecar.get("cell_count")) is int
+                    and sidecar["cell_count"] == final["changed_cells"]
+                    and sidecar.get("authoring_territory") == {"layout": recipe.get("layout"), "border": recipe.get("border")}
+                    and sidecar.get("map_sha256") == custody.sha(map_path)
+                    and sidecar.get("proposal_sha256") == sidecar.get("evidence_sha256") == final["proposal_sha256"] == custody.sha(evidence_path)
+                    and sidecar.get("request_sha256") == custody.sha(directory / "regenerated-request.txt")
+                    and sidecar.get("native_source") == runtime["source_commit"]
+                    and sidecar.get("cli_sha256") == runtime["files"][runtime["cli"]]["sha256"],
+                    "Original saved native receipt differs from the acknowledged transaction, source or map")
+
+
 def validate_example(directory: Path, name: str, reports: dict, receipt: dict, test_sha: str) -> dict:
     """Apply unchanged native/inspector/plane/PNG validators to original reports."""
     source, cli_sha = receipt["source_commit"], receipt["files"][receipt["cli"]]["sha256"]
@@ -342,6 +469,12 @@ def validate_example(directory: Path, name: str, reports: dict, receipt: dict, t
     recomputed = legacy.blocked_evidence(directory, primary) if negative else legacy.example_evidence(directory, reports)
     custody.require(recomputed.get("passed") is True and recomputed.get("validation_errors") == [],
                     "Original native planes/inspector/screenshots failed: " + name + ": " + "; ".join(recomputed.get("validation_errors", [])))
+    if negative:
+        custody.require(primary.get("native_transactions") == {} and primary.get("saved_artifacts") == {}
+                        and primary.get("native_receipt") == {} and primary.get("applied") is False,
+                        "Negative native outcome claims a transaction, saved result or Apply acknowledgement")
+    else:
+        validate_native_transactions(directory, name, reports, receipt)
     outcome = {key: primary.get(key) for key in ("native_status", "native_reason", "native_stop_reason", "native_can_apply",
                "material_count", "joint_count", "obligation_count", "reciprocal_witness", "native_work", "native_evidence_sha256")}
     outcome.update(legacy.closure_outcome(primary.get("native_status"), primary.get("native_work")))

@@ -15,6 +15,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 Its [24 November closure](operations/swarm456-unified-mainline.md#closure-qualification--24-november-2026)
 retains Q1–Q5 failures, reconciles accepted Art session behavior and qualifies
 direct Windows engine process custody without changing the native solver.
+The [definitive evidence review](operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review)
+adds independently checked native transaction and Save/Reopen file custody;
+the repaired source requires a fresh complete campaign.
 
 **SWARM-004/005 mainline candidate:** [integration, exact donor custody, experimental controls and owner evaluation](operations/swarm45-mainline-integration.md). The registered negative holdout results remain intact; new-source platform/publication and physical-owner acceptance remain separate gates.
 

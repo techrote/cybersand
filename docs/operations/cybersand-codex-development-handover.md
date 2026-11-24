@@ -20,6 +20,14 @@ reports remain immutable. Exact eight-path publication now accounts for verified
 byte-identical paths. Source qualification, publication, broad gates and physical
 owner acceptance remain distinct; the principal candidate stays Draft/HOLD.
 
+The [definitive review](swarm456-unified-mainline.md#definitive-transaction-evidence-review)
+found a separate aggregate receipt-validation gap using immutable Q5 originals
+and adversarial copies. Additive fixture captures and independent native-patch,
+transaction-sequence and Save/Reopen file checks repair that gap without changing
+solver or product behavior. Original Q5/Q6 reports lack those new witnesses;
+fresh complete qualification is required. Do not publish an earlier candidate
+and append this source-sensitive repair afterward.
+
 ## Unified SWARM-004/005/006 mergedown — 2026-11-22
 
 The owner authorized a [single consolidated integration](swarm456-unified-mainline.md) from accepted main `662df51c`, preserving reviewed #715 and #716 histories. This supersedes separate later-merge instructions in the 21 November entries below. Retain historical evidence and defaults. New source, actual Linux/Windows runtimes, full qualification, independent final-source review and physical NVIDIA acceptance remain required. Keep Draft/HOLD until all gates permit one manual merge. No Swarm brush implementation belongs to this mission.

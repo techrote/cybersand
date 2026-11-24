@@ -33,6 +33,8 @@ var native_planes:Dictionary={}
 var transport_refusals:Dictionary={}
 var native_evidence:Dictionary={}
 var inspector_evidence:Dictionary={}
+var native_transactions:Dictionary={}
+var saved_artifacts:Dictionary={}
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
@@ -225,6 +227,34 @@ func retain_world(stage:String,cells:PackedByteArray)->void:
 	var file:=FileAccess.open(evidence+"/"+stage+"-native.le16",FileAccess.WRITE)
 	if not check(file!=null,"full native World plane destination opens: "+stage):return
 	file.store_buffer(cells);file.close()
+
+func retain_transaction(stage:String,operation:String,source:Dictionary,installed:Dictionary)->void:
+	# The source witness comes from a separate native capture immediately before
+	# the real UI action, never from the proposed patch or its acknowledgement.
+	# Original full planes remain separate files; the reducer independently
+	# reconstructs the canonical patch digest from their actual material changes.
+	var extent:Vector2i=source.extent
+	var receipt:Dictionary=panel.last_receipt.duplicate(true)
+	check(receipt.get("operation")==operation and receipt.get("source_native_generation")==source.native_generation
+		and receipt.get("source_revision")==source.revision and receipt.get("source_tick")==source.tick,
+		stage+" native acknowledgement matches the independent pre-action source capture")
+	check(installed.extent==extent and installed.native_generation>source.native_generation,
+		stage+" acknowledgement installs a new native generation at the same extent")
+	native_transactions[stage]={"operation":operation,
+		"source_capture":{"native_generation":source.native_generation,"revision":source.revision,
+			"tick":source.tick,"extent":[extent.x,extent.y]},
+		"installed_capture":{"native_generation":installed.native_generation,"revision":installed.revision,
+			"tick":installed.tick,"extent":[installed.extent.x,installed.extent.y]},
+		"receipt":receipt,"source_material_sha256":Protocol.digest(source.cells),
+		"installed_material_sha256":Protocol.digest(installed.cells)}
+
+func retain_saved_artifacts()->void:
+	var map_path:=Setup._path(bench._name.text)
+	saved_artifacts={"map_sha256":FileAccess.get_sha256(map_path),
+		"sidecar_sha256":FileAccess.get_sha256(map_path+".swarm004.json"),
+		"evidence_sha256":FileAccess.get_sha256(map_path+".swarm004-evidence.json")}
+	for key:String in saved_artifacts:
+		check(str(saved_artifacts[key]).length()==64,"original saved artifact hash recorded: "+key)
 
 func retain_native(name_value:String)->void:
 	# Preserve original file bytes before invalidation cleans the child directory.
@@ -616,26 +646,38 @@ func create_map()->void:
 	for at:int in range(0,panel.proposal.cells.size(),3):
 		var cells:PackedInt32Array=panel.proposal.cells
 		expected.encode_u16((cells[at+1]*world_side()+cells[at])*2,cells[at+2])
+	var first_source:=await capture()
+	if not check(not first_source.is_empty() and first_source.get("ok",false)
+		and first_source.cells==baseline.cells,"first Apply independently captures the unchanged native source"):return
 	await click(panel._apply)
 	if not await until(func()->bool:return panel.completed_applies==1,"actual Apply receives native acknowledgement"):return
 	var applied:=await capture()
 	retain_world("applied",applied.cells)
+	retain_transaction("first_apply","build",first_source,applied)
 	check(applied.cells==expected,"Apply equals the exact complete native proposal and all retained source cells")
 	await screenshot("native-applied")
+	var undo_source:=await capture()
+	if not check(not undo_source.is_empty() and undo_source.get("ok",false)
+		and undo_source.cells==applied.cells,"Undo independently captures the exact installed native source"):return
 	await click(panel._undo_button)
 	if not await until(func()->bool:return panel.completed_undos==1,"actual Undo receives native acknowledgement"):return
 	var undone:=await capture()
 	retain_world("undone",undone.cells)
+	retain_transaction("undo","remove",undo_source,undone)
 	check(undone.cells==baseline.cells and bench.applied.edits.is_empty(),"Undo restores all native cells and original authored history")
 	await screenshot("native-undone")
 	await click(panel._generate)
 	if not await until(func()->bool:return panel.phase=="ready","same-seed regeneration completes"):return
 	inspector_evidence["regenerated"]=Inspector.verify(panel,check,"regeneration after Undo")
 	retain_native("regenerated")
+	var reapply_source:=await capture()
+	if not check(not reapply_source.is_empty() and reapply_source.get("ok",false)
+		and reapply_source.cells==undone.cells,"second Apply independently captures the unchanged post-Undo source"):return
 	await click(panel._apply)
 	if not await until(func()->bool:return panel.completed_applies==2,"second actual Apply receives acknowledgement"):return
 	var regenerated:=await capture()
 	retain_world("regenerated",regenerated.cells)
+	retain_transaction("reapply","build",reapply_source,regenerated)
 	check(regenerated.cells==expected,"same-seed regenerated native construction is exact")
 	bench._name.text=map_name(example)
 	var save:=find_button(bench,"Save start [Ctrl+S]")
@@ -644,6 +686,7 @@ func create_map()->void:
 	var saved:=Setup.read_named(bench._name.text)
 	check(not saved.has("error") and saved.setup.edits==bench.applied.edits,"ordinary Save persists acknowledged composition history")
 	check(FileAccess.file_exists(Setup._path(bench._name.text)+".swarm004.json"),"saved map has optional source/revision evidence receipt")
+	retain_saved_artifacts()
 	var saved_plane:=await capture()
 	retain_world("saved",saved_plane.cells)
 	check(saved_plane.cells==expected,"ordinary Save preserves the complete acknowledged native plane")
@@ -710,6 +753,7 @@ func reopen_map()->void:
 	bench._name.text=map_name(example)
 	await click(find_button(bench,"Load start"))
 	if not await until(settled,"saved map installs in a fresh OS process"):return
+	retain_saved_artifacts()
 	var actual:=await capture()
 	var expected:=FileAccess.get_file_as_bytes(evidence+"/expected-native.le16")
 	retain_world("reopened",actual.cells)
@@ -775,6 +819,7 @@ func run()->void:
 		"engine":Engine.get_version_info().string,"platform":OS.get_name(),"process_id":OS.get_process_id(),
 		"display":DisplayServer.get_name(),"startup":startup_state,"native_planes_sha256":native_planes,"transport_refusals":transport_refusals,
 		"native_evidence_sha256":native_evidence,
+		"native_transactions":native_transactions,"saved_artifacts":saved_artifacts,
 		"inspector_evidence":inspector_evidence,"integration_refusals":integration_refusals,"timeout_diagnostics":timeout_diagnostics,
 		"owner_visual_acceptance":"pending","reciprocal_programme_acceptance":false,
 		"test_sha256":FileAccess.get_sha256("res://tests/swarm456_reciprocal_ui.gd")}

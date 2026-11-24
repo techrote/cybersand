@@ -2,8 +2,15 @@
 """Synthetic admission attacks only; this suite never claims Windows dispatch."""
 from __future__ import annotations
 
+import ctypes
+from ctypes import wintypes
+import json
+from pathlib import Path
+import tempfile
 import time
+from types import SimpleNamespace
 import unittest
+from unittest import mock
 import owner_dispatch as dispatch
 
 ENGINE = r'C:\Owner package with spaces\Godot_v4.7-stable_win64.exe'
@@ -190,6 +197,100 @@ class DispatchAdmission(unittest.TestCase):
         self.assertTrue(dispatch.evidence_errors(report))
         report = fixture();report['screenshot']['sha256'] = ''
         self.assertTrue(dispatch.evidence_errors(report))
+
+
+class FailureDiagnostics(unittest.TestCase):
+    def test_api_failure_keeps_original_error_before_handle_cleanup(self):
+        observer = dispatch.WindowsObserver.__new__(dispatch.WindowsObserver)
+        observer.w, observer.job, observer.failure_context = wintypes, SimpleNamespace(_handle=7), {}
+        last_error = {'code': 5}
+        def membership(_handle, _job, member):
+            member._obj.value = True
+            return True
+        def close(_handle):
+            last_error['code'] = 6
+            return True
+        observer.kernel = SimpleNamespace(OpenProcess=lambda *_: 17, IsProcessInJob=membership,
+            QueryFullProcessImageNameW=lambda *_: False, CloseHandle=mock.Mock(side_effect=close))
+        original = PermissionError(13, 'Access is denied.');original.winerror = 5
+        with mock.patch.object(dispatch.ctypes, 'get_last_error', lambda: last_error['code'], create=True), \
+             mock.patch.object(dispatch.ctypes, 'WinError', return_value=original, create=True) as winerror:
+            with self.assertRaises(PermissionError) as failure:
+                observer.process(41)
+        self.assertIs(failure.exception, original)
+        winerror.assert_called_once_with(5)
+        observer.kernel.CloseHandle.assert_called_once_with(17)
+        self.assertEqual(last_error['code'], 6)
+        self.assertEqual(observer.failure_context, {'api': 'QueryFullProcessImageNameW', 'pid': 41, 'winerror': 5})
+
+    def test_window_callback_defers_the_same_failure_and_retains_its_context(self):
+        observer = dispatch.WindowsObserver.__new__(dispatch.WindowsObserver)
+        observer.w = SimpleNamespace(DWORD=ctypes.c_uint32)
+        observer.callback = lambda function: function
+        observer.failure_context = {'api': 'GetProcessTimes', 'pid': 41, 'winerror': 5}
+        original = PermissionError(13, 'Access is denied.');original.winerror = 5
+        def process(_pid):
+            raise original
+        def window_pid(_hwnd, pid):
+            pid._obj.value = 41
+            return 1
+        observer.process = process
+        observer.api_failure = mock.Mock(side_effect=AssertionError('Callback failure must not become stale EnumWindows last-error'))
+        observer.user = SimpleNamespace(GetWindowThreadProcessId=window_pid, IsWindowVisible=lambda _: True,
+                                       EnumWindows=lambda callback, argument: callback(4242, argument))
+        try:
+            observer.windows([41], Path(ENGINE))
+        except PermissionError as error:
+            self.assertIs(error, original)
+            details = dispatch.failure_details(error, {'stage': 'enumerate_owned_windows'}, observer.failure_context)
+        else:
+            self.fail('Callback failure was silently ignored')
+        observer.api_failure.assert_not_called()
+        self.assertEqual(details['observer'], {'callback': 'EnumWindowsProc', 'hwnd': 4242,
+                                              'pid': 41, 'api': 'GetProcessTimes', 'winerror': 5})
+        self.assertIn('observe', details['traceback'])
+        self.assertIn('PermissionError', details['traceback'])
+
+    def test_recorded_observation_failure_still_fails_and_retires_owned_children(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            launcher = root / 'launcher.ps1';launcher.write_text('synthetic diagnostic fixture\n')
+            lifecycle = []
+            owner = SimpleNamespace(assign_and_resume=lambda _: lifecycle.append('owned'),
+                                    terminate=lambda: lifecycle.append('terminated'), close=lambda: lifecycle.append('closed'))
+            process = SimpleNamespace(pid=41, returncode=None, poll=lambda: None,
+                                      kill=lambda: lifecycle.append('unexpected direct kill'))
+            def wait(**_):
+                process.returncode = 0
+            process.wait = wait
+            observer = SimpleNamespace(failure_context={}, members=lambda: [] if 'terminated' in lifecycle else [41])
+            original = PermissionError(13, 'Access is denied.');original.winerror = 5
+            def inspect(pid):
+                observer.failure_context = {'api': 'QueryFullProcessImageNameW', 'pid': pid, 'winerror': 5}
+                raise original
+            observer.process = inspect
+            module = SimpleNamespace(WindowsJob=lambda: owner, CREATE_SUSPENDED=4)
+            specification = SimpleNamespace(loader=SimpleNamespace(exec_module=lambda _: None))
+            with mock.patch.object(dispatch, 'os', SimpleNamespace(name='nt', environ={})), \
+                 mock.patch.object(dispatch, 'WindowsObserver', return_value=observer), \
+                 mock.patch.object(dispatch.importlib.util, 'spec_from_file_location', return_value=specification), \
+                 mock.patch.object(dispatch.importlib.util, 'module_from_spec', return_value=module), \
+                 mock.patch.object(dispatch.subprocess, 'Popen', return_value=process), \
+                 mock.patch.object(dispatch.subprocess, 'CREATE_NEW_PROCESS_GROUP', 512, create=True), \
+                 mock.patch.object(dispatch.subprocess, 'CREATE_NO_WINDOW', 0x08000000, create=True):
+                report = dispatch.qualify(launcher, root / 'archive.zip', root / 'fresh install', root / 'evidence',
+                                          'a' * 40, {'archive_sha256': 'b' * 64})
+            self.assertEqual(lifecycle, ['owned', 'terminated', 'closed'])
+            self.assertFalse(report['passed'])
+            self.assertEqual(report['failure'], str(original))
+            self.assertTrue(report['job_empty_after_retirement'])
+            details = report['failure_details']
+            self.assertEqual(details['type'], 'builtins.PermissionError')
+            self.assertEqual((details['errno'], details['winerror']), (13, 5))
+            self.assertEqual(details['phase'], {'stage': 'observe_owned_process', 'pid': 41})
+            self.assertEqual(details['observer'], {'api': 'QueryFullProcessImageNameW', 'pid': 41, 'winerror': 5})
+            self.assertIn('inspect', details['traceback'])
+            self.assertEqual(json.loads((root / 'evidence/owner-dispatch-qualification.json').read_text()), report)
 
 
 if __name__ == '__main__': unittest.main(verbosity=2)

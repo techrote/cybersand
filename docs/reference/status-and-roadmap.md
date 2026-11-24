@@ -20,6 +20,12 @@ the console launcher while Godot reports the child engine PID. A source-matched
 successor launches the actual pinned engine and preserves strict process joins;
 the native definition and registered scientific policy remain unchanged.
 
+The [definitive transaction-evidence review](../operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review)
+also requires original native capture sequences, recomputed material-patch
+identity and saved-file hashes from both Save and fresh Reopen. Earlier receipts
+cannot supply these newly required witnesses. A complete new source-bound
+campaign must pass before runtime publication; no earlier failed run is relabeled.
+
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
 The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)

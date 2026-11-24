@@ -32,7 +32,18 @@ opens ordinary Shared Workbench. `-VerifyOnly` performs the same checks without
 launching. After verification, use **Open Workbench.cmd** inside that folder.
 The bundled engine is Godot 4.7. Developer environment overrides are unnecessary.
 
-Preserve your original saved map. Use a copy and a new save name for this test.
+The normal Windows saved-map folder is
+`%APPDATA%\Godot\app_userdata\Cyber Sand Reference Sandbox\workbench`.
+Before testing, copy the original `setup-<name>.json` and any matching
+`.swarm004.json` and `.swarm004-evidence.json` sidecars to a separate local backup
+folder. Keep those original bytes unchanged.
+
+Open **Details**, enter the existing map's name without `setup-` or `.json`, and
+choose **Load start**. After the map finishes loading, enter a new name such as
+`swarm456-owner-copy` and choose **Save start [Ctrl+S]** before making changes.
+Names allow 1–48 letters, digits, underscores or hyphens. Continue the acceptance
+test and later saves under this new name; the original stays available.
+
 Pause the World, open **Reciprocal assembly…**, and draw an activation dab in the
 intended empty crop. Native source material and protected passages constrain the
 result; a seed and crop alone do not reproduce a populated owner map.
@@ -82,6 +93,18 @@ A source-time local termination is separate from a qualified foreign joint.
 - On a copy of the original map, check Paint, Water/Wave, Art, Flatten, actors and
   equipment; play through collision, presentation and useful traversal. Note any
   responsiveness or NVIDIA rendering issue.
+
+Before ordinary painting or live editing, turn **Paint territory** OFF or choose
+**Close** in the reciprocal dock. While it is ON, canvas strokes edit activation
+or protected-passage marks. Wait for cancellation or native work to retire before
+using ordinary Paint and history controls.
+
+**Save start** preserves authored edits and the retained generation recipe or
+previously adopted material baseline; it does not capture the current live
+simulation frame. Fresh **Load start** should restore that authored start. If you
+also want to retain the current simulated material state, finish the construction
+Undo/history checks first, then use **Flatten / Bake History…** and save under
+another name. Flatten adopts a new baseline and clears earlier Undo/Redo history.
 
 First report whether the result is **useful, visually convincing and responsive**,
 with **PASS** or **FAIL**, the full source SHA from `candidate-manifest.json` and
