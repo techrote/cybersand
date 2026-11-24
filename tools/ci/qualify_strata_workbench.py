@@ -366,7 +366,7 @@ def main() -> int:
             row = run(script, ["--script", "res://tests/" + script + ".gd"], env)
             require(marker in (output / script / "process.log").read_text(encoding="utf-8"), "Missing retained depth regression marker")
         maximum_path = output / "maximum" / "maximum.json"
-        maximum_env = custody.case_environment(output / "maximum" / "userdata")
+        maximum_env = custody.case_environment(output / "maximum-userdata" / "userdata")
         maximum_env.update(CYBERSAND_SOURCE_REVISION=source["source_commit"], STRATA_EVIDENCE=str(output / "maximum"),
                            STRATA_REPORT=str(maximum_path))
         report["maximum"] = {"status":"running"}
