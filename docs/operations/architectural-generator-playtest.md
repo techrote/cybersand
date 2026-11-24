@@ -1,130 +1,152 @@
 ---
-title: Architectural Generator owner evaluation
+title: Architectural Generator walkthrough
 status: Current
 document-kind: guide
-scope: Windows owner walkthrough for the source-matched Phase A and B candidate
+scope: Accepted native Architectural Generator, Gentek catalogue, preview, installation and authored save workflow
 canonical-for: [architectural-generator-owner-evaluation]
-last-reviewed: 2026-11-15
-related-documents: [../systems/architectural-generator.md, ../systems/explore001-generated-playable-maps.md, explore001-desktop-playtest.md]
+last-reviewed: 2026-11-24
+related-documents: [../systems/architectural-generator.md, workbench-saving.md, explore001-desktop-playtest.md, ../images/gentek80-integration/README.md]
 ---
 
-# Architectural Generator — owner walkthrough
+# Architectural Generator walkthrough
 
-This is an **evaluation candidate under owner merge hold**. Extract the complete Windows
-package, then double-click **Open Workbench.cmd**. The package manifest records
-its source commit and file hashes. Keep all bundled files together. The launcher
-uses the bundled Godot/native runtime; no source compilation or manual JSON
-editing is required for the ordinary workflow.
+Build a native material map, inspect it before replacing your scene, then paint,
+play and save the result. Open **Development workbench** from the feature
+launcher and choose **New from generator… → Architectural Generator…**.
+The [first-launch guide](getting-started.md) covers a source checkout or a
+complete, source-identified evaluator. Generator availability is accepted
+implementation; a particular evaluation package keeps its own source identity.
 
-## Five-style and sparse-slot graphical acceptance
+![Cathedral Megaframe's pointed frames, piers, small arcades and upper glazing rendered in native materials](../images/docs-renaissance/gentek-cathedral-megaframe-native.png)
 
-The integration finisher now independently exercises **five enabled styles**
-and **non-contiguous enabled slots 1, 3 and 5** in a live Shared Workbench.
-For each case, the graphical runner generates a real 512-square native preview,
-compares the legend names and overlay pixel colours using the original slot
-indices, verifies preservation of the attested proposal after diagnostics,
-installs it into the native owner, saves the generated-start manifest, and
-loads it into a new process, verifying exact source/material receipts again.
+*Fresh native material visualization from the documentation baseline, seed
+271828. This is a 1024 × 512 crop of a 1024-square single-style project, rendered
+headlessly from stored material IDs. It is not a Workbench GUI screenshot.
+[Capture provenance](../audits/2026-11-24-docs-renaissance/assets-b.json).*
 
-The overlay uses five distinct slot colours (Orange, Blue, Green, Violet and
-Pink); disabled slots do not acquire phantom legend entries. These tests run
-in the same Linux/Windows source-matched pipeline and from the delivered ZIP
-in addition to the existing 1024-square owner acceptance.
+## Choose a Gentek and its parameters
+
+A **Gentek** is a native architectural generator technique. A **variant** changes
+its admitted geometry, material or aperture parameters. A **preset** is a named
+starting configuration. A **composition** assigns styles to zones of one map.
+These terms describe authoring choices; they do not promise structural stability
+or navigable routes through every generated crop.
+
+The chooser has **80 Genteks plus 13 earlier architectural presets**. Use
+**Find style…** in a card to narrow by name, family or theme. The
+[visual catalogue](../images/gentek80-integration/README.md) makes the differences
+between frames, trusses, vaults, spines and suspended structures easier to see.
+Five cards support one to five enabled styles; unused cards may stay disabled.
+
+For a first scene:
+
+1. Choose **Map 512²**, **Zone 64**, and seed **271828**. The architectural
+   form offers 512² and 1024², even though a fresh blank Workbench is 2048².
+2. Enable only card **#1**, choose **Cathedral Megaframe**, and set its share to
+   **100%**. Keep the preset's geometry initially.
+3. Turn **Tunnels** off and leave **Doors** and **Windows** on. The switches
+   control independent automatic cuts; a door here is a material aperture.
+4. Click **Generate preview**. Wait for completion in the parent generator
+   window, then inspect the material map. Generation does not replace the scene.
+5. Return to **Architectural Generator…**, change a geometry parameter offered
+   for that style, regenerate and compare. Keep the seed fixed while comparing
+   one parameter. A disabled or inapplicable field is not an effective control.
+
+![Interlaced Viaduct showing masonry arches intertwined with suspended metal galleries](../images/docs-renaissance/gentek-interlaced-viaduct-native.png)
+
+*Interlaced Viaduct, the same accepted-source headless capture scope and seed.
+Material geometry is native output; physical load-bearing is not inferred.*
 
 ## Make the three-style map
 
-Five compact style cards now appear side by side without tabs. Enable any one
-to five, select the preset and enter its share. Slots four and five initially
-start disabled; **Equal shares** balances all enabled styles in one click.
-Preset descriptions/material details are on hover, not printed into the panel.
-Thirteen built-ins are available, including Civic Atrium, Transit Spine,
-Basalt Archive, Solar Conservatory, Thermal Foundry, Earthen Terraces,
-Orbital Observatory, **Skyline Terraces**, **Cellular Hive** and **Arched Viaduct**.
-The last three are new native geometry algorithms rather than recoloured
-Arcology/Vault structures. Their refined v2 presets incorporate the owner's
-structural material, window, hex-support and pier-footing comments. Previously
-saved v1 recipes remain reproducible.
+For a composition, enable cards **#1**, **#2** and **#3**. Choose Industrial
+Service, Habitation / Arcology and Overgrown / Ruined Construction; set shares
+**45 / 30 / 25**. With **Map 1024²**, **Zone 64** and seed **161803**, the 256
+planning blocks divide into 115 / 77 / 64 blocks. Coverage describes assigned
+zone area, including empty rooms, rather than the quantity of wall material.
 
-
-1. Open **New from generator… → Architectural Generator…**.
-2. Leave size at **1024 × 1024**, planning blocks at **64 cells**, and the three
-   style shares at **45 / 30 / 25**. Set seed **161803**.
-3. Turn **Automatic tunnels off**, **Automatic windows off**, and leave
-   **Automatic doors on**. Click **Generate native preview**.
-4. Inspect the material preview and optionally enable **Show style-zone overlay**.
-   The legend must report 115 / 77 / 64 blocks, or 44.921875% / 30.078125% / 25%.
-   These are zone areas including empty rooms, not amounts of wall material.
-5. Open the Architectural Generator again. In the Habitation style card change bay size
-   or floor height, select seed **271828**, and change shares to **40 / 35 / 25**.
-   Generate another complete preview. Then try seed **314159** with the original
-   shares. Layout and native room/maze detail should vary deterministically.
-
-Industrial Service uses small maze rooms; Habitation uses larger regular floors
-and bays; Overgrown / Ruined Construction uses larger interrupted architecture.
-Zone edges may clip rooms. With automatic tunnels off, no connectivity of the
-whole cropped map is promised. The generator supplies an editable starting map.
+Use **Equal shares** when you want the enabled cards balanced automatically.
+The total must be 100%; disabled cards contribute nothing. **Show style-zone
+overlay** in the parent window reveals the five original slot colours. A sparse
+composition using cards 1, 3 and 5 retains those slots' colours and legend names.
+With tunnels disabled, whole-map connectivity is not guaranteed. Zone boundaries
+can clip rooms; these are editable starting maps.
 
 ## Compare the independent controls
 
-Keep the same seed, shares and dimensions when comparing a switch. Change just
-one switch, regenerate, and inspect the corresponding feature:
+Keep seed, dimensions and shares fixed when comparing a switch:
 
-| Change | Expected visible difference |
+| Control | What to inspect |
 | --- | --- |
-| Tunnels on/off | Shared macro passages cut across style boundaries only when enabled. Explicit authored routes in expert recipes remain independent. |
-| Windows on/off | Arcology glass and window apertures become structural wall material when disabled. Service shafts and doors remain independently controlled. |
-| Doors on/off | Vault and Arcology automatic door apertures become continuous walls when disabled. Keep tunnels off to inspect this without network cuts through the same walls. |
-| Room/bay or floor dimensions | Fixed room spacing or floor separation changes across that style. |
-| Shaft width 0 / nonzero | Arcology service shaft is disabled / enabled at the chosen fixed width. |
+| Tunnels | Automatic shared passages across style zones. Explicit expert-recipe paths remain independent. |
+| Doors | Automatic doorway apertures. Disabling these does not create interactive door objects. |
+| Windows | Admitted glazing and window apertures for the selected style. |
+| Geometry fields | Bay, room, floor, wall or other dimensions actually consumed by that Gentek. |
+| Shaft width | Arcology service-shaft width; zero disables that shaft. |
+| Material selections | Native admitted structural materials; validation may reject an unsupported combination. |
 
-The per-style form identifies inactive Vault dimensions. Vault room sizes must
-divide the map extent; 16, 32, 64 and 128 are convenient for both offered sizes.
-Native validation may reject contradictory dimensions or unsupported materials.
-A doorway is an empty material aperture, not an interactive door object.
+Native validation explains contradictory dimensions or unsupported inputs.
+Vault dimensions must divide the extent; do not assume every field works for
+every technique. See the [generator contract](../systems/architectural-generator.md)
+for schemas, deterministic identity and native geometry boundaries.
 
 ## Install, paint, save and reopen
 
-1. Click **Install into workbench** only after reviewing the completed preview.
-   This explicitly replaces the current map, so save valued existing work first.
-2. Keep the simulation paused. Paint an obvious rectangle or stroke in one
-   material, then erase through a nearby wall. Verify both changes in the native
-   Workbench view.
-3. Expand **Details**, enter a distinct name and click **Save named start**.
-4. Exit Godot completely. Start **Open Workbench.cmd** in a new process, enter
-   the saved name and choose **Load start**.
-5. Wait for reconstruction and source verification. The same generated baseline
-   and the ordered paint/erase edits should reappear.
+1. Save any current work you want to keep. After a complete preview, click
+   **Install into workbench**. Installation explicitly replaces the material map.
+2. Keep the scene paused. Paint a visible mark and erase an opening. Follow
+   [painting and history](workbench-painting-and-history.md) for shapes and Undo.
+3. Enter a unique name in the painting row and use **Save start [Ctrl+S]**.
+   The control is visible in that row; it is not hidden under Details.
+4. Exit completely, relaunch, enter that name and choose **Load start**.
+   Wait for reconstruction before continuing.
+5. Check the generated baseline and ordered paint/erase edits. Actors reconstruct
+   from authored settings and spawns. Their exit-time momentum is not restored.
 
-Saved maps embed the resolved native recipe. They do not require the original
-style file or project JSON. They preserve an authored starting map and edits,
-not an arbitrary evolved simulation state.
+Saved generated starts embed the resolved native recipe and do not require the
+original external style or project file. They preserve an authored result, not
+an arbitrary evolved simulation state. [Saving](workbench-saving.md) explains
+when explicit **Flatten / Bake History…** is appropriate.
 
 ## Exercise recovery and custom styles
 
-After accepting a preview, try shares that do not total 100% or a door too wide
-for its floor. The error must identify the configuration problem. Use **Restore
-previous preview** to recover the previous verified candidate and its settings.
-Start a new preview and press **Stop preview**; the installed map must remain
-intact. Changing controls must disable Install until regeneration or explicit
-restoration.
+**Keep current map** leaves the installed scene alone. **Stop preview** cancels
+preparation; it does not roll back an already installed scene. After changing
+settings, generate a new complete preview or use **Restore previous preview**
+before Install becomes available again. A rejected request must not silently
+replace the last valid map.
 
-Use **Save project…** and **Load project…** to retain the authoring controls.
-**Import style JSON…** supports a validated declarative custom style in one slot.
-The package/source examples under `examples/worldgen/architectural/` include
-`custom-masonry-court.style.json`; its preset explicitly disables windows, so it
-overrides the inherited global window setting. Other built-ins inherit global
-apertures. Expert ordinary native recipe JSON remains available through
-**Choose profile file…** in the parent generator dialog.
+Inside **Architectural Generator**, **Save…** and **Load…** store and restore the
+project controls. **Import style…** loads a validated declarative style into the
+chosen **Into** slot. These are separate from Workbench **Save start**.
+The source example
+[`custom-masonry-court.style.json`](../../examples/worldgen/architectural/custom-masonry-court.style.json)
+sets its own windows option rather than inheriting the global setting. Expert
+native recipes use **Choose profile file…** in the parent generator window.
+
+![Megatruss Station with large crossed trusses, forked columns and glazed galleries](../images/docs-renaissance/gentek-megatruss-station-native.png)
+
+*Megatruss Station, same headless material-render scope. The source project,
+recipe hashes and native chunk receipts are retained with the capture record.*
+
+## Five-style and sparse-slot graphical acceptance
+
+Source and regression coverage include five enabled cards and non-contiguous
+cards 1, 3 and 5. A human evaluation should still inspect legibility, scrolling,
+keyboard entry and previews at the actual desktop scale. Native output equality
+and hosted captures do not establish Windows/NVIDIA playfeel.
 
 ## Owner acceptance record
 
-Record the package source SHA, Windows version, display scaling, renderer and
-the exact seed/configuration for any fault. Check the first dialog at your normal
-window size, the three toggle comparisons, visibly different style geometry,
-coverage legend, regeneration, Stop/recovery, installation, real painting,
-erasure and fresh-process reopen. Automated material captures do not establish
-Windows graphical quality or human usability acceptance. Arched Viaduct v2 is
-the owner-accepted visual reference; runtime and qualification repairs preserve
-its geometry. Evaluate the final package's integration and usability against
-that accepted reference. The PR remains unmerged until the owner explicitly
-approves it, regardless of the Draft or Ready-for-review state used for CI.
+When reporting a problem, record the source/package SHA, pinned Godot version,
+renderer, display scale, seed and saved project. Include the smallest style and
+parameter combination that reproduces it. State whether the problem occurred
+while previewing, installing, painting, saving or reopening.
+
+This walkthrough was checked against `architectural_generator_dialog.gd`,
+`architectural_generator_project.gd` and `workbench_generator_dialog.gd`; its
+native illustrations were executed headlessly. Fresh pointer-driven GUI testing
+was blocked in the documentation environment. The original
+[Phase A/B qualification walkthrough](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/architectural-generator-playtest.md)
+retains the earlier dated evaluation history. It does not put accepted #582,
+#684 or #691 back under an old candidate merge hold.

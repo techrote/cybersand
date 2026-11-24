@@ -2,9 +2,9 @@
 title: Materials Lab v1 inspection, candidate authoring and native tests
 status: Current
 document-kind: runbook
-scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+scope: Accepted desktop native inspection, candidate authoring, isolated World comparisons and existing-material MicroScenarios; no runtime candidate activation
 canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
-last-reviewed: 2026-11-12
+last-reviewed: 2026-11-24
 related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscenario-reference-pack.md, ../architecture/material-authoring-catalogue-plan.md, ../systems/intermaterial-interactions.md, ../audits/2026-11-11-materials-lab-v1.md]
 ---
 
@@ -45,20 +45,19 @@ the full reference information.
 
 ## Launch and prerequisites
 
-Use a complete checkout of the implementation branch and its history. Git LFS
-and the ordinary [desktop dependencies](local-build-and-validation.md) remain
-required. Godot is pinned to **4.7.stable.official.5b4e0cb0f** and godot-cpp to
-`101ae38034304346a46ea9ea84ae156d3e860496`. Rebuild the matching GDExtension:
-an older retained production binary predates the new read-only inspector methods.
-An older library causes an explicit rebuild message, not a metadata fallback.
-Use a freshly qualified branch runtime only when its provenance matches the
-checkout's native inputs; the completion publisher provides that explicit path.
+Use the ordinary accepted checkout, materialized Git LFS libraries and the exact
+pinned Godot **4.7.stable.official.5b4e0cb0f**. The matching retained native library
+already includes the inspector. Rebuild only when source/provenance checks require
+it; the original prototype's blanket rebuild instruction is no longer a first-run
+prerequisite. An older or mismatched library refuses explicitly rather than
+substituting metadata for native facts. See [first launch](getting-started.md)
+and [local build and validation](local-build-and-validation.md).
+
+On Linux, with `GODOT` set to that pinned executable:
 
 ```sh
-# Use the existing pinned build environment; see the local-build guide for setup.
-tools/build_pinned_godot_cpp.sh linux
-tools/build_native_extension.sh
-godot --path godot -- --materials-lab
+python3 tools/ci/check_repository.py --require-materialized
+"$GODOT" --path godot -- --materials-lab
 ```
 
 Read-only inspection and native experiments require the matching engine library.
@@ -78,27 +77,21 @@ the simulation viewport or the shared Workbench's controls.
 
 ### Windows launch
 
-The branch-scoped **Materials Lab source-matched native runtime publication**
-workflow builds a Windows evaluation ZIP after actual Windows execution. Its
-**Open-Materials-Lab.cmd** launcher uses the included Godot, Python, Git history
-and C++ compiler. Extract the entire ZIP to a writable directory and keep its
-`source` and `dependencies` directories together. First launch imports the
-project, then opens the Lab with the qualified ANGLE renderer. It does not need
-a separately configured compiler environment. The bundle's manifest binds all
-files and the native DLL; `qualification` retains the original automated
-receipts and graphical captures. A package is delivered only after its copied
-environment also executes the native authoring tests. See the completion record
-for the actual run/artifact identity; workflow presence alone is not a passed run.
+From a source checkout, run the checked desktop launcher:
 
-For an ordinary source checkout instead of the evaluation package:
+```powershell
+.\launch-desktop.cmd -Godot "C:\Tools\Godot\Godot_v4.7-stable_win64.exe"
+```
 
-Use the existing **GDExtension build and current Godot regression** workflow's
-source-built Windows candidate for the exact branch commit, or the pinned
-cross-build paths `tools/build_pinned_godot_cpp.sh windows` and
-`tools/build_native_extension_windows.sh`. Its downloaded candidate manifest
-must identify the same native input files as the checkout. Do not relabel the
-retained production DLL as a new candidate. The standalone
-`build_windows_msvc.bat` does not build this Godot extension.
+Choose **Materials Lab** in the feature launcher. The wrapper accepts its named
+Godot/Editor/identity options; it does not forward arbitrary Godot arguments.
+
+A complete evaluator may instead supply **Open-Materials-Lab.cmd**, its own
+compiler/dependencies and qualification manifest. Follow that package's launcher
+and keep its payload together. The [completion record](../audits/2026-11-11-materials-lab-completion.md)
+identifies the historical package; its existence does not qualify a different
+archive or guarantee a current download. Basic inspection uses the matching
+runtime, while candidate compilation needs the additional tools below.
 
 For source candidate compilation, start Godot from a configured x64 C++20
 compiler environment; for MSVC use an **x64 Native Tools Command Prompt** with
@@ -117,6 +110,31 @@ $labCheckout = git rev-parse --show-toplevel
 The exact Windows execution status belongs to the dated qualification record.
 Linux screenshots and a successful cross-build are not Windows graphical or
 human acceptance.
+
+## First inspection and safe experiment
+
+1. Open **Inspect**, search **Water**, and compare **Defined value** with
+   **Value used**. Read the consumer/applicability explanation before treating a
+   displayed property as an adjustable simulation input.
+2. Open **Try originals** and choose an existing-material case. Run the isolated
+   test and inspect its native result; it does not alter the Workbench canvas.
+3. Return to **Inspect**, select **Sand**, and **Duplicate selected**. Change only
+   a supported candidate field in **Edit copy**, then use **Build + check
+   definition** when the compiler tools are configured.
+4. Follow [Compare an edited candidate](#compare-an-edited-candidate-in-a-real-native-world)
+   for a real candidate/reference World comparison. Save the material preset if
+   you want to resume editing later.
+
+![Materials Lab's native Water inspector with declared and effective property columns](../images/materials-lab-v1/01-inspector-water.png)
+
+*Retained application capture from the original accepted Lab qualification;
+its [dated record](../audits/2026-11-11-materials-lab-v1.md) retains the exact
+source/runtime scope. It is not a fresh capture of this documentation change.*
+
+The current Lab tests candidates in isolated worlds. A **live current-scene
+audition** is a separate unmerged programme; no button in this guide installs
+candidate definitions into the running Workbench. Closing the Lab returns to
+that same scene.
 
 ## Browse and inspect actual behaviour
 
@@ -139,7 +157,7 @@ Examples to check:
   separate consumer; it is not the descriptor viscosity byte.
 - **Sand:** powder movement, density and explicit hard/granular capabilities are
   separate facts. A powder name never implies hard terrain.
-- **Slush:** native density is 1080; the separately identified GDScript fallback
+- **Slush:** [retained inspector](../images/materials-lab-v1/02-inspector-slush.png); native density is 1080; the separately identified GDScript fallback
   has density 1100. Neither value is silently substituted for the other.
 - **MoltenGlass:** yielding movement and specialised thermal behaviour are shown
   separately, including the actual consumers and the admitted descriptor fields.
@@ -487,7 +505,7 @@ effects-v2 World view, native receipt and source/library/display manifest.
 Commands and outcomes are retained in the
 [audit](../audits/2026-11-11-materials-lab-v1.md).
 
-The bounded #353-B hard/granular capability consumer is isolated in
+The accepted #353-B hard/granular capability consumer was merged in
 [PR #563](https://github.com/techrote/cybersand/pull/563). Its generated maps feed
 the native hard-surface and granular-support predicates. The Lab continues to
 execute authored candidates in isolated tests. Wider endpoint and quantity semantics require additional native

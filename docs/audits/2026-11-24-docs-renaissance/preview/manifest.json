@@ -1,0 +1,26 @@
+{
+  "source": "README.md",
+  "source_sha256": "662af401df48910bd99001b783958f2577a357de038e4e1604b8500bfceaaf40",
+  "renderer": "pandoc --from=gfm --to=html5 plus PyMuPDF Story 1.26.6",
+  "scope": "Static Markdown layout approximation, not actual GitHub browser rendering. Narrow code blocks wrap for printed review; GitHub may scroll them. No application capture or physical GPU claim.",
+  "previews": [
+    {
+      "name": "desktop",
+      "width": 960,
+      "height": 4503.4736328125,
+      "pdf": "readme-desktop.pdf",
+      "top_png": "readme-desktop-top.png",
+      "pdf_sha256": "f223f820317c2045b7bf5dafc6795be0f7ce11e7fcce0e0fc8809a91ad86d814",
+      "bytes": 1457400
+    },
+    {
+      "name": "narrow",
+      "width": 390,
+      "height": 5855.162109375,
+      "pdf": "readme-narrow.pdf",
+      "top_png": "readme-narrow-top.png",
+      "pdf_sha256": "bd088f827b2f5b0990b3ee341f8a2292e15573489c065f4e76369d0ebcf211e4",
+      "bytes": 1457596
+    }
+  ]
+}

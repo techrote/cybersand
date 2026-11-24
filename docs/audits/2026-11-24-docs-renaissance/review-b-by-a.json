@@ -1,0 +1,318 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "reviewed_lane": "B",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "All 22 B claim-ledger entries, README and six new practical guides read end to end; consequential current sections of ten reconciled existing guides/contracts independently inspected.",
+  "claim_count": 22,
+  "runtime_execution_by_reviewer": "NOT RUN: this is independent source and retained-artifact review; no native rebuild or paid provider call",
+  "findings": [
+    {
+      "id": "A-B-01",
+      "priority": "P1",
+      "status": "resolved",
+      "finding": "Art practical guide omitted the separate existing-material overwrite restriction. Target palette could be mistaken for permission to overwrite any source material.",
+      "resolution": "B added explicit Empty0/HardWall58-only source behavior with body/protection and human-editor distinctions. A verified updated prose and _consume_art."
+    },
+    {
+      "id": "A-B-02",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "B-04 and B-19 evidence locators named absent source symbols/files.",
+      "resolution": "B corrected the ledger to _live_brush_input and material_lab_panel.gd::_candidate_response_error plus material_lab_service.gd. A verified those source locators and current ledger."
+    },
+    {
+      "id": "A-B-03",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "Xvfb log alone does not identify EPERM; it reports no listening sockets.",
+      "resolution": "B retained a separate AF_UNIX socket-construction probe: PermissionError, errno 1, Operation not permitted. A inspected socket-probe.json and Xvfb log; graphical capture remains BLOCKED, with no GUI PASS."
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "B-01",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Independently counted 93 builtin presets,86 native module names and91 registered module/version entries; MAX_STYLES=5. These are different counts.",
+      "source_locators": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets/MAX_STYLES",
+        "native/src/world_generation.cpp::ModuleRegistry::builtins/Generator::builtin_modules",
+        "godot/native_extension/cyber_world_generator.cpp::get_catalogue"
+      ]
+    },
+    {
+      "claim_id": "B-02",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Launcher accepts -Godot/-PrintIdentityOnly, enforces exact runtime pin and materialized DLL/provenance hash. It reports checkout identity and does not rebuild or establish all source-input qualification by itself.",
+      "source_locators": [
+        "tools/launch_desktop.ps1",
+        "launch-desktop.cmd",
+        "third_party/godot-runtime.lock.json"
+      ]
+    },
+    {
+      "claim_id": "B-03",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Launcher explicitly warns session closes; Menu invokes scene replacement without automatic authored Save.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready",
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/main.gd input routing"
+      ]
+    },
+    {
+      "claim_id": "B-04",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-after-locator-fix",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Paused key_input maps R to Rectangle and B/E/L/O/S/G/V as stated; running _live_brush_input permits Brush/Eraser/right erase. Original claim locator _live_world_input does not exist.",
+      "source_locators": [
+        "godot/scripts/workbench_paint_editor_controller.gd::key_input/_live_brush_input"
+      ]
+    },
+    {
+      "claim_id": "B-05",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Human picker reads simulation_worker.paint_materials. Art picker uses ArtPlan.Setup.MATERIALS and selected material plus Erase; target admission and existing-cell overwrite permission are distinct.",
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/art_batch_panel.gd::_ready",
+        "godot/scripts/simulation_worker.gd::_consume_art"
+      ]
+    },
+    {
+      "claim_id": "B-06",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "MAX_CELLS262144,MAX_HISTORY32,HISTORY_CELLS1048576; history_available compares complete source fence including tick and refuses busy/active Art states. Native history stores materials, not all evolved physical state.",
+      "source_locators": [
+        "godot/scripts/workbench_paint_editor_controller.gd constants/history_available/_trim_history",
+        "godot/scripts/workbench_paint_editor_history.gd::prepare",
+        "godot/scripts/workbench_paint_editor_executor.gd"
+      ]
+    },
+    {
+      "claim_id": "B-07",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Worker queue reports admission. Executors consume confirmed native stored-material rows; cancellation can retain an applied prefix, and recovery/save fences remain explicit.",
+      "source_locators": [
+        "godot/scripts/simulation_worker.gd::art_queue/_consume_art/paint_queue",
+        "godot/scripts/art_batch_executor.gd::poll",
+        "godot/scripts/workbench_paint_editor_executor.gd",
+        "godot/scripts/workbench_paint_editor_controller.gd partial-receipt adoption"
+      ]
+    },
+    {
+      "claim_id": "B-08",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "save_setup selects authored baseline/generated/Setup writer and performs no live physical capture. Runtime quantities,temperature,tick and Rapier continuation are not ordinary Save.",
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::save_setup",
+        "godot/scripts/workbench_setup.gd::write_named",
+        "godot/scripts/workbench_generated_map.gd::write_named"
+      ]
+    },
+    {
+      "claim_id": "B-09",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "request_flatten captures native stored IDs; _poll_flatten changes authoring references and history only, with no prepared World/actor/pause call; explicit Save remains separate. Plant energy is not reset live or serialized by material-only capture.",
+      "source_locators": [
+        "native/include/cybersand/material_baseline.hpp",
+        "godot/scripts/shared_workbench.gd::request_flatten/_poll_flatten",
+        "godot/scripts/workbench_material_baseline.gd"
+      ]
+    },
+    {
+      "claim_id": "B-10",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "DIRECTORY=user://workbench,MAX_RUNS/MAX_STAMPS32768,BYTE_LIMIT1048576; material baseline plane and JSON limits are distinct. Same Godot application profile can expose old starts across evaluator extractions.",
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd constants",
+        "godot/scripts/workbench_material_baseline.gd::write_named",
+        "godot/project.godot"
+      ]
+    },
+    {
+      "claim_id": "B-11",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Generator confirmation calls _install only after proposal validation. Architectural form Save/Load persists controls; Workbench Save start persists installed authored state. B corrected current visible form labels during review.",
+      "source_locators": [
+        "godot/scripts/workbench_generator_dialog.gd::_ready/_install",
+        "godot/scripts/architectural_generator_dialog.gd"
+      ]
+    },
+    {
+      "claim_id": "B-12",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Ordinary generator menu offers512/1024/2048, but Architectural form and start_architectural explicitly admit only512/1024. Blank Setup.fresh defaults2048square.",
+      "source_locators": [
+        "godot/scripts/workbench_generator_dialog.gd::start_architectural",
+        "godot/scripts/architectural_generator_dialog.gd::set_project",
+        "godot/scripts/workbench_setup.gd::fresh"
+      ]
+    },
+    {
+      "claim_id": "B-13",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "_ensure_history_loaded is no-op true; preferences delete old traffic_path; no construction-time resume attaches earlier traffic. New provider lazily opens one root log while in-memory history stays session-local.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded/mount_provider_controls/save_profile",
+        "godot/scripts/art_provider.gd::new_log_path/log_event"
+      ]
+    },
+    {
+      "claim_id": "B-14",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "close_requested connects hide. stop_all cancels provider,export/resume,capture/scheduled turns and executor; a current native slice can already have applied changes.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_ready/stop_all",
+        "godot/scripts/art_batch_executor.gd::stop/poll"
+      ]
+    },
+    {
+      "claim_id": "B-15",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "load_profile exactly contains stated LM Studio/OpenAI/NVIDIA endpoint and model defaults; editable fields do not prove remote availability. No provider request executed by this review.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::load_profile"
+      ]
+    },
+    {
+      "claim_id": "B-16",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "keys dictionary stays process-local and save_profile serializes no keys. Configured credential and bearer-pattern redaction is limited; request.max_redirects=0. Prompts/images/native receipts remain private traffic.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::save_profile/_register_provider_keys_for_redaction",
+        "godot/scripts/art_provider.gd::redact/request setup"
+      ]
+    },
+    {
+      "claim_id": "B-17",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-after-guide-fix",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "_consume_art excludes existing stored IDs other than0/58, body-covered cells and region guards. Target palette choice cannot broaden this source policy. Art guide now states it explicitly.",
+      "source_locators": [
+        "godot/scripts/simulation_worker.gd::_consume_art",
+        "godot/scripts/workbench_paint_editor_executor.gd source_allowed/protection guards",
+        "docs/operations/workbench-art.md"
+      ]
+    },
+    {
+      "claim_id": "B-18",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Water Lab TAB metadata names five tabs. New Workbench merges native gameplay_water_options; explicit overrides/recovery retain separate behavior. Wave is FreeMass-carried execution, not fifth enum family.",
+      "source_locators": [
+        "godot/scripts/workbench_water_lab.gd",
+        "godot/scripts/main.gd::_ready",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water/gameplay_water_options"
+      ]
+    },
+    {
+      "claim_id": "B-19",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-after-locator-fix",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Candidate panel/service demand runtime_active=false and describe isolated compiled Worlds; no current scene activation. Original claim path materials_lab.gd is absent; correct owner files are material_lab_panel.gd/material_lab_service.gd. Pending#768 status independently supplied by lead live intake.",
+      "source_locators": [
+        "godot/scripts/material_lab_panel.gd::_candidate_response_error",
+        "godot/scripts/material_lab_service.gd",
+        "godot/scripts/material_lab_world_panel.gd",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ]
+    },
+    {
+      "claim_id": "B-20",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Current actor catalogue and prepared session expose independent producer and pilot handoff. takeover cancels authority but retains live actor/Rapier/equipment state; authored/equipment Apply may restart it. Later#762 still unmerged in live intake.",
+      "source_locators": [
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/physical_actor_session.gd::set_workbench_control/takeover",
+        "godot/scripts/shared_workbench.gd actor-control paths",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ]
+    },
+    {
+      "claim_id": "B-21",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Showcase move_tile launches a fresh scenario; frame_view only changes camera. Deepworks owns independent four-plane runtime and free-camera controls. Launcher has standalone depth_lab route; pending Workbench integration is not inferred.",
+      "source_locators": [
+        "godot/scripts/showcase_presentation.gd::launch/move_tile/frame_view",
+        "godot/scripts/exhibition/deepworks.gd",
+        "godot/scripts/feature_launcher.gd",
+        "docs/systems/depth-layers-and-parallax.md"
+      ]
+    },
+    {
+      "claim_id": "B-22",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-retained-artifacts",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Inspected native-render.json/log and capture script: three native material images from the ordinary compiler/native generator, using palette RGBA and headless display. Xvfb log records failed listening sockets; a separate retained socket(AF_UNIX, SOCK_STREAM) construction probe records PermissionError errno 1. No GUI or physical acceptance asserted and reviewer did not rerun capture.",
+      "source_locators": [
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.json",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/render_native.gd.txt",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/socket-probe.json"
+      ]
+    }
+  ]
+}

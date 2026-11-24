@@ -1,0 +1,7 @@
+{
+  "result": "blocked",
+  "errno": 1,
+  "exception": "PermissionError",
+  "message": "[Errno 1] Operation not permitted",
+  "probe": "socket(AF_UNIX, SOCK_STREAM) construction only; no bind/connect"
+}

@@ -1,0 +1,369 @@
+{
+  "schema": 1,
+  "lane": "B",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "claims": [
+    {
+      "id": "B-01",
+      "priority": "P1",
+      "claim": "Architectural Generator exposes 80 Genteks alongside 13 earlier presets, in up to five style slots.",
+      "evidence": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets",
+        "godot/tests/test_architectural_generator_ui.gd"
+      ],
+      "documents": [
+        "README.md",
+        "docs/operations/architectural-generator-playtest.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-02",
+      "priority": "P0",
+      "claim": "Repository Windows launch is launch-desktop.cmd with exact Godot 4.7.stable.official.5b4e0cb0f; dev.cmd belongs to companion workspace.",
+      "evidence": [
+        "tools/launch_desktop.ps1",
+        "launch-desktop.cmd",
+        "third_party/godot-runtime.lock.json"
+      ],
+      "documents": [
+        "README.md",
+        "docs/operations/getting-started.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-03",
+      "priority": "P0",
+      "claim": "F2/menu closes the current session; save authored start explicitly before leaving.",
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready",
+        "godot/scripts/shared_workbench.gd::setup"
+      ],
+      "documents": [
+        "docs/operations/getting-started.md",
+        "docs/operations/workbench-first-session.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-04",
+      "priority": "P1",
+      "claim": "Brush/Eraser can run live; shapes, selection, fill and Undo require paused editing; R is Rectangle in that context.",
+      "evidence": [
+        "godot/scripts/workbench_paint_editor_controller.gd::key_input",
+        "godot/scripts/workbench_paint_editor_controller.gd::_live_brush_input"
+      ],
+      "documents": [
+        "docs/operations/workbench-painting-and-history.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-05",
+      "priority": "P1",
+      "claim": "Human material picker is supplied by native paint_materials; ordinary Art has its own selected material policy.",
+      "evidence": [
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/art_batch_panel.gd::_ready"
+      ],
+      "documents": [
+        "docs/operations/workbench-painting-and-history.md",
+        "docs/operations/workbench-art.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-06",
+      "priority": "P1",
+      "claim": "Precise edit limit is 262144 cells; history retains32 parts/1048576 edit cells; ticks invalidate unsafe construction history.",
+      "evidence": [
+        "godot/scripts/workbench_paint_editor_controller.gd constants and history_available",
+        "godot/scripts/workbench_paint_editor_history.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-painting-and-history.md",
+        "docs/systems/paint-editor-bounded-shapes.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-07",
+      "priority": "P0",
+      "claim": "Queued admission is not applied success; cancellation can retain a native-confirmed partial prefix.",
+      "evidence": [
+        "godot/scripts/art_batch_executor.gd",
+        "godot/scripts/workbench_paint_editor_executor.gd",
+        "godot/scripts/simulation_worker.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-art.md",
+        "docs/operations/workbench-painting-and-history.md",
+        "docs/systems/workbench-direct-art-batches.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-08",
+      "priority": "P0",
+      "claim": "Save start reconstructs authored data and supported actor configuration, not evolved quantities, temperatures, velocities, tick or physics.",
+      "evidence": [
+        "godot/scripts/shared_workbench.gd::save_setup",
+        "godot/scripts/workbench_setup.gd",
+        "godot/scripts/workbench_generated_map.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-saving.md",
+        "README.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-09",
+      "priority": "P0",
+      "claim": "Flatten captures uint16 stored material IDs, clears prior authored/Undo history, preserves live World and does not Save.",
+      "evidence": [
+        "godot/scripts/shared_workbench.gd::request_flatten",
+        "godot/scripts/workbench_material_baseline.gd",
+        "godot/tests/test_workbench_material_baseline.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-saving.md",
+        "docs/operations/gen008-flatten-qualification.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-10",
+      "priority": "P1",
+      "claim": "Named starts live under user://workbench outside a typical evaluator extraction; setup records32768 stamps and1MiB limits separate from raw baseline plane.",
+      "evidence": [
+        "godot/scripts/workbench_setup.gd constants",
+        "godot/scripts/workbench_material_baseline.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-saving.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-11",
+      "priority": "P0",
+      "claim": "Generator preview is separate from installed World; Install explicitly replaces map; Save project differs from Save start.",
+      "evidence": [
+        "godot/scripts/workbench_generator_dialog.gd::_install",
+        "godot/scripts/architectural_generator_dialog.gd::save_project"
+      ],
+      "documents": [
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/workbench-first-session.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-12",
+      "priority": "P1",
+      "claim": "Architectural UI preview supports512 or1024 square even though ordinary blank Workbench defaults2048 square.",
+      "evidence": [
+        "godot/scripts/workbench_generator_dialog.gd::start_architectural",
+        "godot/scripts/architectural_generator_dialog.gd::set_project",
+        "godot/scripts/workbench_setup.gd::fresh"
+      ],
+      "documents": [
+        "docs/operations/architectural-generator-playtest.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-13",
+      "priority": "P0",
+      "claim": "New Workbench session starts empty Art conversation; preferences may persist, old traffic is not restored; one log per session.",
+      "evidence": [
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded",
+        "godot/scripts/art_batch_panel.gd::save_profile",
+        "godot/scripts/art_provider.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-art.md",
+        "docs/systems/workbench-art-providers.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-14",
+      "priority": "P1",
+      "claim": "Art close hides window; Stop separately cancels HTTP/capture/scheduled turns and stops native executor.",
+      "evidence": [
+        "godot/scripts/art_batch_panel.gd::_ready",
+        "godot/scripts/art_batch_panel.gd::stop_all"
+      ],
+      "documents": [
+        "docs/operations/workbench-art.md",
+        "docs/systems/workbench-art-providers.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-15",
+      "priority": "P1",
+      "claim": "Accepted NVIDIA initial model is qwen/qwen3-next-80b-a3b-instruct; endpoint/model editable. Presets do not prove service availability.",
+      "evidence": [
+        "godot/scripts/art_batch_panel.gd::load_profile"
+      ],
+      "documents": [
+        "docs/operations/workbench-art.md",
+        "docs/systems/workbench-art-providers.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-16",
+      "priority": "P0",
+      "claim": "Provider keys stay in memory; traffic retains private content with redaction limits; HTTP redirects disabled.",
+      "evidence": [
+        "godot/scripts/art_batch_panel.gd keys and save_profile",
+        "godot/scripts/art_provider.gd"
+      ],
+      "documents": [
+        "docs/operations/workbench-art.md",
+        "docs/systems/workbench-art-providers.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-17",
+      "priority": "P1",
+      "claim": "Ordinary Art may overwrite only existing Empty/Hard Wall source cells, subject to work area/protection/native checks; trusted human Undo does not widen that policy.",
+      "evidence": [
+        "godot/scripts/art_batch_executor.gd",
+        "godot/scripts/simulation_worker.gd art processing"
+      ],
+      "documents": [
+        "docs/systems/workbench-direct-art-batches.md",
+        "docs/operations/workbench-art.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-18",
+      "priority": "P1",
+      "claim": "Water Lab has five tabs with staged/native readback; fresh Workbench uses Wave gameplay profile, not default-off bare WorldConfig.",
+      "evidence": [
+        "godot/scripts/workbench_water_lab.gd",
+        "godot/scripts/main.gd::_ready",
+        "godot/native_extension/cyber_native_cell_world.cpp::gameplay_water_options"
+      ],
+      "documents": [
+        "docs/operations/workbench-water-lab.md",
+        "README.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-19",
+      "priority": "P0",
+      "claim": "Materials Lab supports inspect/edit/isolated comparison; current-scene candidate activation is unmerged work.",
+      "evidence": [
+        "godot/scripts/material_lab_panel.gd::_candidate_response_error",
+        "godot/scripts/material_lab_service.gd",
+        "https://github.com/techrote/cybersand/pull/768"
+      ],
+      "documents": [
+        "README.md",
+        "docs/operations/materials-lab-authoring.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-20",
+      "priority": "P1",
+      "claim": "Accepted actor composition includes independent sources/pilot handoff; later actor finisher is not current.",
+      "evidence": [
+        "godot/scripts/workbench_actor_panel.gd",
+        "godot/scripts/workbench_actor_control.gd",
+        "https://github.com/techrote/cybersand/pull/683",
+        "https://github.com/techrote/cybersand/pull/762"
+      ],
+      "documents": [
+        "docs/operations/workbench-actor-composition.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-21",
+      "priority": "P1",
+      "claim": "Neon districts replace tile on navigation, Deepworks is standalone free camera, standalone layers do not imply ordinary Workbench Strata integration.",
+      "evidence": [
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/exhibition/deepworks.gd",
+        "docs/operations/neon-reliquary-demo.md",
+        "https://github.com/techrote/cybersand/pull/769"
+      ],
+      "documents": [
+        "docs/operations/showcase-guide.md",
+        "README.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-22",
+      "priority": "P1",
+      "claim": "Graphical capture blocked by denied socket creation; fresh headless native material images do not establish graphical/physical acceptance.",
+      "evidence": [
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/socket-probe.json",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.json",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/environment-limit.json"
+      ],
+      "documents": [
+        "docs/audits/2026-11-24-docs-renaissance/assets-b.json"
+      ],
+      "status": "source-inspected",
+      "independent_review": "retained-capture-artifacts-verified-by-Specialist-A; no rerun",
+      "independent_review_record": "review-b-by-a.json"
+    }
+  ]
+}

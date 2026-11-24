@@ -1,0 +1,48 @@
+{
+	"automatic_doors": true,
+	"automatic_tunnels": false,
+	"automatic_windows": true,
+	"corridor_width": 12,
+	"extent": [
+		1024,
+		1024
+	],
+	"format": "cybersand.architectural-project",
+	"origin": [
+		0,
+		0
+	],
+	"planner": "connected-hilbert-v1",
+	"seed": 271828,
+	"styles": [
+		{
+			"enabled": true,
+			"preset": {
+				"apertures": {},
+				"deterioration": 0.0,
+				"format": "cybersand.architectural-style",
+				"geometry": {
+					"door_width": 12,
+					"floor_height": 96,
+					"room_size": 72,
+					"shaft_width": 0,
+					"wall_thickness": 5
+				},
+				"id": "cathedral-megaframe",
+				"materials": {
+					"floor": 119,
+					"wall": 98,
+					"window": 121
+				},
+				"module": "cathedral_megaframe",
+				"module_version": 1,
+				"name": "Cathedral Megaframe",
+				"theme": "ruins",
+				"version": 1
+			},
+			"share": 100.0
+		}
+	],
+	"version": 1,
+	"zone_scale": 64
+}
