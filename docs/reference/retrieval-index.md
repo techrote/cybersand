@@ -10,6 +10,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Editable Strata layers in ordinary Workbench
+
+For the single play authority, three static native decorative planes, exact
+view/edit transforms, visibility/lock/solo, per-plane history and the authored
+save domain, retrieve [the Strata Workbench contract](../systems/strata-workbench.md).
+For industrial, arcology and cavern examples, launch and physical Windows owner
+checks, retrieve [the evaluation guide](../operations/strata-workbench-evaluation.md).
+This Draft/HOLD successor does not adopt PUBPRES branches or the standalone
+prototype's independent simulation clocks.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |

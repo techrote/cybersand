@@ -1,0 +1,352 @@
+extends Control
+
+# A presentation adapter, never a simulation owner. The existing Workbench
+# TextureRect, shader updates and actor overlays remain the play drawable.
+# Three independently frozen material surfaces supply its rear scenery.
+const Surface = preload("res://scripts/depth/depth_layer_surface.gd")
+const Transform = preload("res://scripts/depth/depth_compositor.gd")
+const Appearance = preload("res://scripts/material_appearance_lut.gd")
+const IDS: Array[String] = ["play", "scripted", "effects", "background"]
+const REAR_IDS: Array[String] = ["background", "effects", "scripted"]
+const HAZE_SHADER: String = "shader_type canvas_item; render_mode unshaded; uniform float haze = 0.0; varying vec4 vertex_colour; void vertex() { vertex_colour = COLOR; } void fragment() { vec4 c = texture(TEXTURE, UV); c.rgb = mix(c.rgb, vec3(0.055,0.105,0.15), haze); COLOR = c * vertex_colour; }"
+
+var last_error: String = ""
+var extent: Vector2i = Vector2i.ZERO
+var host: Control
+var _view: TextureRect
+var _clip: Control
+var _surfaces: Dictionary = {}
+var _drawables: Dictionary = {}
+var _document: Dictionary = {}
+var _expected: Dictionary = {}
+var _accepted: Dictionary = {}
+var _original_shader: ShaderMaterial
+var _private_shader: ShaderMaterial
+var _prepared_host_id: int = 0
+var _prepared_view_id: int = 0
+var _prepared_shader: Shader
+var _original_modulate: Color = Color.WHITE
+var _overlay_modulates: Dictionary = {}
+var _enabled: bool = false
+var _prepared: bool = false
+var _content := Rect2()
+var _origin := Vector2.ZERO
+var _view_size := Vector2.ONE
+var _rejected_packets: int = 0
+
+func prepare(authored_extent: Vector2i) -> bool:
+	if _prepared:
+		return _accept() if extent == authored_extent else _reject("Prepared Strata surfaces cannot change extent")
+	if authored_extent.x < 512 or authored_extent.y < 512 or authored_extent.x > 2048 or authored_extent.y > 2048:
+		return _reject("Strata presentation supports 512..2048 cells per axis")
+	if authored_extent.x % 64 != 0 or authored_extent.y % 64 != 0:
+		return _reject("Strata presentation dimensions must be multiples of 64")
+	extent = authored_extent
+	name = "WorkbenchStrataPresentation"
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	show_behind_parent = true
+	_clip = Control.new()
+	_clip.name = "ClippedRearPlanes"
+	_clip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_clip.clip_contents = true
+	add_child(_clip)
+	var sky := ColorRect.new()
+	sky.name = "Backdrop"
+	sky.color = Color(0.018, 0.028, 0.047, 1.0)
+	sky.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	sky.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_clip.add_child(sky)
+	var haze_shader := Shader.new()
+	haze_shader.code = HAZE_SHADER
+	for id: String in REAR_IDS:
+		var surface := Surface.new()
+		if not surface.configure(id, true, extent, extent):
+			surface.free()
+			return _reject("Could not prepare native material presentation for " + id)
+		surface.name = "StrataSurface_" + id
+		surface.freeze_material_time(0.0)
+		# No decorative surface renders continuously. An admitted dirty packet
+		# schedules one bake once the layer is visible.
+		surface.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		add_child(surface)
+		_surfaces[id] = surface
+		var drawable := TextureRect.new()
+		drawable.name = "StrataPlane_" + id
+		drawable.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		drawable.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		drawable.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		drawable.stretch_mode = TextureRect.STRETCH_SCALE
+		drawable.texture = surface.get_texture()
+		drawable.visible = false
+		var haze := ShaderMaterial.new()
+		haze.shader = haze_shader
+		drawable.material = haze
+		_clip.add_child(drawable)
+		_drawables[id] = drawable
+	_prepared = true
+	visible = false
+	return _accept()
+
+func prepare_host(controller_host: Control) -> bool:
+	if not _prepared or controller_host == null:
+		return _reject("Prepare Strata surfaces before binding the Workbench host")
+	if host != null: return _reject("Cannot prepare a mounted presentation host")
+	var candidate: Variant = controller_host.get("world_view")
+	if not candidate is TextureRect or not candidate.material is ShaderMaterial:
+		return _reject("Workbench play drawable is unavailable")
+	if controller_host.get("world_shader") != candidate.material or candidate.material.shader == null:
+		return _reject("Workbench play shader ownership does not match its drawable")
+	# Stage the private material and LUT before requesting any play installation.
+	# If another Strata adapter is active, its shader resource is shared with the
+	# eventual restored original, but its material object must not be retained as
+	# the new original. mount() captures that object after the previous detach.
+	var private: ShaderMaterial = candidate.material.duplicate()
+	var transparent: ImageTexture = _transparent_empty_lut()
+	if private == null or transparent == null or transparent.get_width() != Appearance.ATLAS_WIDTH:
+		return _reject("Could not prepare the private Strata play palette")
+	private.set_shader_parameter("material_lut", transparent)
+	_private_shader = private
+	_prepared_host_id = controller_host.get_instance_id()
+	_prepared_view_id = candidate.get_instance_id()
+	_prepared_shader = candidate.material.shader
+	return _accept()
+
+func mount(controller_host: Control) -> bool:
+	if not _prepared or controller_host == null or _private_shader == null:
+		return _reject("Prepare Strata surfaces and host before mounting")
+	if host != null:
+		return _accept() if host == controller_host else _reject("Strata presentation already has a host")
+	var candidate: Variant = controller_host.get("world_view")
+	if controller_host.get_instance_id() != _prepared_host_id or not candidate is TextureRect \
+			or candidate.get_instance_id() != _prepared_view_id or not candidate.material is ShaderMaterial \
+			or candidate.material.shader != _prepared_shader or controller_host.get("world_shader") != candidate.material:
+		return _reject("The prepared Workbench presentation owner changed before adoption")
+	host = controller_host
+	_view = candidate
+	_original_shader = _view.material
+	_original_modulate = _view.self_modulate
+	_capture_overlays()
+	_view.add_child(self)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_view.move_child(self, 0)
+	sync_view()
+	_apply_visibility()
+	return _accept()
+
+func apply_document(candidate: Dictionary) -> bool:
+	var incoming: Variant = candidate.get("extent", [])
+	if not _prepared or not incoming is Array or incoming.size() != 2 \
+			or incoming[0] != extent.x or incoming[1] != extent.y:
+		return _reject("Strata presentation document extent mismatch")
+	if not candidate.get("presentation") is Dictionary or not candidate.get("planes") is Array:
+		return _reject("Strata presentation document is incomplete")
+	var seen: Array[String] = []
+	for plane: Variant in candidate.planes:
+		if not plane is Dictionary or str(plane.get("id", "")) not in IDS or str(plane.id) in seen:
+			return _reject("Strata presentation plane identity mismatch")
+		seen.append(str(plane.id))
+	if seen.size() != IDS.size(): return _reject("Strata presentation requires all four planes")
+	_document = candidate.duplicate(true)
+	_apply_visibility()
+	sync_view()
+	return _accept()
+
+func expect_sources(sources: Dictionary) -> bool:
+	# Binding is separate from a copied publication: an arbitrary packet cannot
+	# appoint itself the owner of a plane, even with a larger serial/generation.
+	if sources.size() != REAR_IDS.size(): return _reject("Expected exactly three decorative owner identities")
+	for id: String in REAR_IDS:
+		if not sources.get(id) is Dictionary: return _reject("Missing decorative owner identity: " + id)
+		var identity: Dictionary = sources[id]
+		if not identity.has("owner_id") or str(identity.owner_id).is_empty(): return _reject("Missing decorative owner ID")
+		for field: String in ["reset_generation", "revision"]:
+			if typeof(identity.get(field)) != TYPE_INT or int(identity[field]) < 0:
+				return _reject("Decorative identity must have nonnegative integer " + field)
+	_expected = sources.duplicate(true)
+	return _accept()
+
+func apply_layer_packet(id: String, packet: Dictionary) -> bool:
+	if not _surfaces.has(id) or not _expected.has(id): return _packet_reject("Unbound decorative presentation owner")
+	if str(packet.get("layer_id", "")) != id: return _packet_reject("Decorative packet plane mismatch")
+	var expected: Dictionary = _expected[id]
+	for field: String in ["owner_id", "reset_generation", "revision"]:
+		if packet.get(field) != expected.get(field): return _packet_reject("Decorative packet " + field + " does not match admitted owner")
+	var packet_extent: Variant = packet.get("extent")
+	if packet_extent != extent and packet_extent != [extent.x, extent.y]: return _packet_reject("Decorative packet extent mismatch")
+	var previous: Dictionary = _accepted.get(id, {})
+	if not previous.is_empty() and packet.get("reset_generation") == previous.get("reset_generation"):
+		if typeof(packet.get("serial")) != TYPE_INT or int(packet.serial) <= int(previous.serial):
+			return _packet_reject("Decorative packet serial did not advance")
+	var surface: CyberDepthLayerSurface = _surfaces[id]
+	if not surface.apply_packet(packet): return _packet_reject(surface.last_rejection)
+	_accepted[id] = {"owner_id":packet.owner_id, "reset_generation":packet.reset_generation,
+		"revision":packet.revision, "serial":packet.serial, "extent":[extent.x, extent.y]}
+	surface.render_target_update_mode = SubViewport.UPDATE_ONCE if _enabled and effective_visible(id) else SubViewport.UPDATE_DISABLED
+	return _accept()
+
+func sync_view() -> void:
+	if not is_instance_valid(host) or not is_instance_valid(_view): return
+	# The ordinary renderer floors its camera. Use precisely the accepted view;
+	# no smoothing, independent clock or alternative pan/zoom state is introduced.
+	_origin = Vector2(host.get("camera_origin")).floor()
+	_view_size = Vector2(host.get("current_view_size"))
+	_content = host.call("view_content_rect")
+	if not _content.has_area() or _view_size.x <= 0.0 or _view_size.y <= 0.0: return
+	_clip.position = _content.position
+	_clip.size = _content.size
+	for id: String in REAR_IDS:
+		var drawable: TextureRect = _drawables[id]
+		drawable.position = _logical_for_layer(Vector2.ZERO, id) / _view_size * _content.size
+		drawable.size = Vector2(extent) / _view_size * _content.size
+
+func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
+	if id not in IDS or not local_position.is_finite() or not _content.has_area() or not _content.has_point(local_position): return Vector2(-1, -1)
+	var logical: Vector2 = (local_position - _content.position) / _content.size * _view_size
+	var depth: float = 0.0 if id == "play" else float(_plane(id).get("depth", 0.0))
+	var strength: float = float(_document.get("presentation", {}).get("parallax_strength", 0.75))
+	return Transform.logical_to_layer(logical, Vector2(extent), _view_size, _origin, 1.0, 1.0 - depth, strength)
+
+func layer_to_screen(point: Vector2, id: String) -> Vector2:
+	if id not in IDS or not point.is_finite() or not _content.has_area(): return Vector2(-1, -1)
+	return _content.position + _logical_for_layer(point, id) / _view_size * _content.size
+
+func effective_visible(id: String) -> bool:
+	if id not in IDS: return false
+	var presentation: Dictionary = _document.get("presentation", {})
+	if not bool(presentation.get("enabled", false)): return id == "play"
+	var plane: Dictionary = _plane(id)
+	if not bool(plane.get("visible", true)) or float(plane.get("opacity", 1.0)) <= 0.0: return false
+	var solo: String = str(presentation.get("solo", ""))
+	if not solo.is_empty() and solo != id: return false
+	return str(presentation.get("mode", "stack")) != "flat" or str(presentation.get("active", "play")) == id
+
+func diagnostics() -> Dictionary:
+	var layers := {}
+	var uploads: int = 0
+	var bytes: int = 0
+	for id: String in REAR_IDS:
+		var info: Dictionary = _surfaces[id].diagnostics() if _surfaces.has(id) else {}
+		info["identity"] = _accepted.get(id, {}).duplicate(true)
+		info["expected"] = _expected.get(id, {}).duplicate(true)
+		info["effective_visible"] = effective_visible(id)
+		layers[id] = info
+		uploads += int(info.get("upload_count", 0))
+		bytes += int(info.get("uploaded_bytes", 0))
+	return {"prepared":_prepared, "enabled":_enabled, "extent":extent, "camera_origin":_origin,
+		"view_size":_view_size, "content_rect":_content, "play_effective_visible":effective_visible("play"),
+		"layers":layers, "full_rg8_uploads":uploads, "full_rg8_uploaded_bytes":bytes,
+		"rejected_packets":_rejected_packets, "last_error":last_error,
+		"additional_native_play_worlds":0, "additional_play_texture_uploads":0,
+		"decorative_surface_count":_surfaces.size(), "decorative_rg8_capacity_bytes":extent.x * extent.y * 2 * _surfaces.size(),
+		"decorative_rgba_capacity_bytes":extent.x * extent.y * 4 * _surfaces.size(),
+		"play_texture_instance_id":_view.texture.get_instance_id() if is_instance_valid(_view) and _view.texture != null else 0,
+		"original_shader_instance_id":_original_shader.get_instance_id() if _original_shader != null else 0,
+		"active_shader_instance_id":_view.material.get_instance_id() if is_instance_valid(_view) and _view.material != null else 0,
+		"play_overlay_instance_ids":_overlay_modulates.keys()}
+
+func detach() -> void:
+	_set_enabled(false)
+	if is_instance_valid(_view):
+		_view.self_modulate = _original_modulate
+	_restore_overlays()
+	if get_parent() != null: get_parent().remove_child(self)
+	host = null
+	_view = null
+
+func _apply_visibility() -> void:
+	_set_enabled(bool(_document.get("presentation", {}).get("enabled", false)))
+	if not is_instance_valid(_view): return
+	_capture_overlays()
+	var play_opacity: float = float(_plane("play").get("opacity", 1.0)) if _enabled and effective_visible("play") else (0.0 if _enabled else 1.0)
+	_view.self_modulate = _original_modulate * Color(1.0, 1.0, 1.0, play_opacity)
+	for key: Variant in _overlay_modulates:
+		var entry: Dictionary = _overlay_modulates[key]
+		if is_instance_valid(entry.node): entry.node.modulate = entry.colour * Color(1.0, 1.0, 1.0, play_opacity)
+	for id: String in REAR_IDS:
+		var drawable: TextureRect = _drawables[id]
+		var was_visible: bool = drawable.visible
+		drawable.visible = _enabled and effective_visible(id)
+		var plane: Dictionary = _plane(id)
+		drawable.modulate = Color(1.0, 1.0, 1.0, float(plane.get("opacity", 1.0)))
+		var fog: float = float(_document.get("presentation", {}).get("fog_strength", 0.2))
+		(drawable.material as ShaderMaterial).set_shader_parameter("haze", clampf(fog * float(plane.get("depth", 0.0)), 0.0, 0.9))
+		if not drawable.visible:
+			_surfaces[id].render_target_update_mode = SubViewport.UPDATE_DISABLED
+		elif not was_visible and _accepted.has(id):
+			_surfaces[id].render_target_update_mode = SubViewport.UPDATE_ONCE
+
+func _set_enabled(value: bool) -> void:
+	if not is_instance_valid(_view):
+		visible = false
+		return
+	if value == _enabled:
+		visible = value
+		return
+	if value:
+		# The host continues updating the same alias it already owns. Only the
+		# private LUT differs, making Empty reveal the rear planes.
+		for uniform: Dictionary in _original_shader.shader.get_shader_uniform_list():
+			if str(uniform.name) != "material_lut":
+				_private_shader.set_shader_parameter(uniform.name, _original_shader.get_shader_parameter(uniform.name))
+		_view.material = _private_shader
+		host.set("world_shader", _private_shader)
+	else:
+		# Keep the live frame's textures, interpolation, sampled actors and view
+		# when returning to flat inspection. Restore the exact material object.
+		if _view.material == _private_shader:
+			for uniform: Dictionary in _private_shader.shader.get_shader_uniform_list():
+				if str(uniform.name) != "material_lut":
+					_original_shader.set_shader_parameter(uniform.name, _private_shader.get_shader_parameter(uniform.name))
+			_view.material = _original_shader
+			if host.get("world_shader") == _private_shader: host.set("world_shader", _original_shader)
+		_view.self_modulate = _original_modulate
+		_restore_overlays()
+		for surface: CyberDepthLayerSurface in _surfaces.values():
+			surface.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	_enabled = value
+	visible = value
+
+func _capture_overlays() -> void:
+	if not is_instance_valid(_view): return
+	for child: Node in _view.get_children():
+		if child == self or not child is CanvasItem or bool(child.get_meta("strata_independent_overlay", false)): continue
+		var key: int = child.get_instance_id()
+		if not _overlay_modulates.has(key): _overlay_modulates[key] = {"node":child, "colour":child.modulate}
+
+func _restore_overlays() -> void:
+	for key: Variant in _overlay_modulates:
+		var entry: Dictionary = _overlay_modulates[key]
+		if is_instance_valid(entry.node): entry.node.modulate = entry.colour
+
+func _logical_for_layer(point: Vector2, id: String) -> Vector2:
+	var depth: float = 0.0 if id == "play" else float(_plane(id).get("depth", 0.0))
+	var strength: float = float(_document.get("presentation", {}).get("parallax_strength", 0.75))
+	return Transform.layer_to_logical(point, Vector2(extent), _view_size, _origin, 1.0, 1.0 - depth, strength)
+
+func _plane(id: String) -> Dictionary:
+	for plane: Dictionary in _document.get("planes", []):
+		if str(plane.get("id", "")) == id: return plane
+	return {}
+
+func _transparent_empty_lut() -> ImageTexture:
+	var image: Image = Appearance.create_texture().get_image()
+	for x: int in range(Appearance.ATLAS_WIDTH):
+		var colour: Color = image.get_pixel(x, 0)
+		colour.a = 0.0
+		image.set_pixel(x, 0, colour)
+	return ImageTexture.create_from_image(image)
+
+func _accept() -> bool:
+	last_error = ""
+	return true
+
+func _reject(error: String) -> bool:
+	last_error = error
+	return false
+
+func _packet_reject(error: String) -> bool:
+	_rejected_packets += 1
+	return _reject(error)
+
+func _exit_tree() -> void:
+	_set_enabled(false)

@@ -11,6 +11,12 @@ last-reviewed: 2026-10-19
 
 # Rendering and gameplay bridges
 
+The opt-in [Strata Workbench adapter](../systems/strata-workbench.md) borrows the
+ordinary play drawable/textures and camera while admitting copied decorative
+publications into three private static surfaces. It adds no play publication,
+ACK, scheduling or physical ownership path. The default renderer remains this
+page's existing path; source-bound integration qualification is separate.
+
 ## Can rendering read native cells directly?
 
 **Current:** display consumers receive copied immutable data. They never retain

@@ -6,6 +6,8 @@ const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
+const StrataDocument = preload("res://scripts/depth/workbench_layer_document.gd")
+const StrataController = preload("res://scripts/depth/workbench_strata_controller.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
@@ -90,6 +92,9 @@ var _processor_label := ""
 var water_lab := preload("res://scripts/workbench_water_lab.gd").new()
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 var paint_editor: Control
+# Created only by the explicit Strata action or a layered document load. The
+# ordinary startup keeps its existing World, presentation and publication path.
+var strata: Node
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
 var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
 
@@ -222,6 +227,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
 	_button(row,"Materials Lab…",open_materials_lab)
+	_button(row,"Strata Theatre…",open_strata)
 	_button(row,"Water Lab…",water_lab.open)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
@@ -368,6 +374,27 @@ func _ensure_art_batches() -> Window:
 func open_art_batches() -> void:
 	_cancel()
 	_ensure_art_batches().popup_centered()
+
+
+func ensure_strata() -> Node:
+	if not is_instance_valid(strata):
+		strata = StrataController.new()
+		add_child(strata)
+		strata.mount(self)
+	return strata
+
+
+func open_strata() -> void:
+	_cancel()
+	ensure_strata().open_panel()
+
+
+func strata_play_edit_reason() -> String:
+	return strata.play_edit_reason() if is_instance_valid(strata) else ""
+
+
+func strata_edit_action(action: String) -> Dictionary:
+	return strata.route_editor_action(action) if is_instance_valid(strata) else {"handled":false}
 
 
 func open_actor_composition() -> void:
@@ -680,13 +707,14 @@ func _poll_flatten() -> void:
 
 func _exit_tree() -> void:
 	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
+	if is_instance_valid(strata): strata.shutdown()
 
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true) -> bool:
+		apply_staged_water: bool = true, retain_layers: bool = false) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
@@ -765,6 +793,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	_pending_material_baseline = material_baseline.duplicate(false)
 	_pending_retain_generated = preserve
 	_pending_request_serial = int(host.pending_microscenario_apply.serial)
+	if is_instance_valid(strata): strata.play_apply_submitted(_pending_request_serial,preserve or retain_layers)
 	return true
 
 func install_generated_start(candidate: Dictionary, packet: Dictionary) -> bool:
@@ -823,6 +852,7 @@ func installed(candidate: Dictionary) -> void:
 	_pending_material_baseline.clear()
 	_pending_retain_generated = false
 	applied = candidate.duplicate(true)
+	if is_instance_valid(strata): strata.play_installed()
 	var desired_pilot := _pending_pilot_id if _pending_pilot_id >= 0 else _pilot_instance_id
 	_pending_pilot_id = -1
 	_pilot_instance_id = 0
@@ -1138,7 +1168,7 @@ func restore_start() -> bool:
 		if not _generated_active.is_empty() or not _material_baseline.is_empty():
 			return refuse("Native owner failed. Save the settled authored start, then restart the application and Load it.")
 		return host.workbench_restart(applied)
-	return apply(applied,false,0,false,false,_generated_active,_material_baseline,false)
+	return apply(applied,false,0,false,false,_generated_active,_material_baseline,false,true)
 
 func apply_settings() -> bool:
 	if not _editable(): return false
@@ -1229,6 +1259,8 @@ func save_setup() -> bool:
 	blocked = _save_block_reason()
 	if not blocked.is_empty(): return refuse(blocked)
 	if paint_editor != null and not paint_editor.save_allowed(): return false
+	if is_instance_valid(strata) and strata.has_document():
+		return strata.save_named(_name.text)
 	var error := MaterialBaseline.write_named(_name.text,applied,_material_baseline) if not _material_baseline.is_empty() else (
 		GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
@@ -1241,6 +1273,11 @@ func save_setup() -> bool:
 
 func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
+	var layered := StrataDocument.read_named(_name.text)
+	if layered.has("error"): return refuse(layered.error)
+	if layered.get("layered",false):
+		if host.simulation_worker.has_failed(): return refuse("Restart the application before loading into a fresh native owner.")
+		return ensure_strata().load_document(layered)
 	var flattened := MaterialBaseline.read_named(_name.text)
 	if flattened.has("error"): return refuse(flattened.error)
 	if flattened.get("flattened",false):
@@ -1329,6 +1366,7 @@ func _cancel() -> void:
 
 func cancel_stroke() -> void:
 	if paint_editor != null: paint_editor.cancel_preview()
+	if is_instance_valid(strata): strata.cancel_gesture()
 	_drag_button = 0
 	_pan = false
 	_last_cell = Vector2i(-1,-1)
@@ -1359,6 +1397,8 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
+	var layer_guard := strata_play_edit_reason()
+	if not layer_guard.is_empty(): return refuse(layer_guard)
 	if paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before painting.")
 	if art_batches != null:
@@ -1442,6 +1482,9 @@ func zoom_by(direction: int) -> void:
 	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
 
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(strata) and strata.key_input(event):
+		get_viewport().set_input_as_handled()
+		return
 	if paint_editor != null and paint_editor.key_input(event):
 		get_viewport().set_input_as_handled()
 		return
@@ -1482,6 +1525,7 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
+	if is_instance_valid(strata) and strata.world_input(event): return
 	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return
 	if event is InputEventMouseButton:
@@ -1532,6 +1576,7 @@ func _process(_delta: float) -> void:
 		elif int(host.tower_context.get("workbench_step_serial",-1)) == step_serial:
 			step_pending = false
 	if _pending_request_serial > 0 and host.pending_microscenario_apply.is_empty():
+		if is_instance_valid(strata): strata.play_apply_failed()
 		_pending_request_serial = 0
 		_pending_generated.clear()
 		_pending_material_baseline.clear()

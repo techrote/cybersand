@@ -2205,6 +2205,15 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
 
+**24 November 2026 scoped successor, Draft/HOLD:**
+[Strata in ordinary Workbench](../systems/strata-workbench.md) adds a borrowed-play
+presentation adapter, three static authorable native planes and explicit authored
+persistence. Its [owner evaluation](../operations/strata-workbench-evaluation.md)
+retains separate hosted-graphics and physical Windows/NVIDIA gates. Cross-plane
+transfer, independently simulated decoration, browser acceptance and automatic
+default activation remain outside this milestone. The standalone host retains
+its earlier capabilities and evidence scope.
+
 ## WORKBENCH-001 / #391 integration candidate
 
 The [desktop development workbench](../systems/player-control-playground.md#development-workbench-on-desktop) is being qualified on a separate Draft branch from main 751edc0b. The required baseline includes the eight-flyer fleet, five-piece Scooper and actual multi-body granular response. The preserved #392 attempt covers an earlier assignment. Review the [dated evidence and source compatibility disposition](../audits/2026-11-04-workbench-consolidation.md) before making a platform, physics or promotion claim.

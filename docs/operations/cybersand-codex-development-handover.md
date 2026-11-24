@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Strata Theatre Workbench candidate — 2026-11-24
+
+The owner-authorized #588 successor starts from accepted main `00cdb02f` and
+adds [ordinary four-plane composition](../systems/strata-workbench.md) behind a
+lazy Strata action. The existing play owner, actor session, publication and camera
+stay authoritative; three static decorative native Worlds own their layouts.
+The [owner guide](strata-workbench-evaluation.md) separates authored Save/reopen,
+platform qualification and physical Windows/NVIDIA acceptance. Keep Draft/HOLD;
+no Ready, merge or default activation. PUBPRES and all other active feature
+branches remain independently owned and unimported.
+
 ## Workbench Art traffic lifetime — 2026-11-20
 
 [Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the

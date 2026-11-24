@@ -10,6 +10,12 @@ related-documents: [material-appearance-and-rendering.md, ../operations/deepwork
 
 # Depth layers and parallax prototypes
 
+The 24 November Draft/HOLD [ordinary Workbench adapter](strata-workbench.md) is a
+scoped successor with one borrowed play authority and three static authorable
+native planes. Its explicit-size surface API preserves old caller defaults.
+This page continues to describe the separate prototype hosts; their clocks and
+event rules are not inherited by the Workbench integration.
+
 ## Purpose
 
 res://depth_lab.tscn is an opt-in comparison host for visual and figurative

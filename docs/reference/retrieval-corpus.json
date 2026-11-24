@@ -147,7 +147,9 @@
     "tools/art-pipeline-unification.md",
     "tools/world-art-preview.md",
     "tools/world-art-capture.md",
-    "tools/world-art-evaluation.md"
+    "tools/world-art-evaluation.md",
+    "systems/strata-workbench.md",
+    "operations/strata-workbench-evaluation.md"
   ],
   "navigation": [
     "README.md",

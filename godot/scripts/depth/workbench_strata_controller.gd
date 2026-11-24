@@ -1,0 +1,632 @@
+extends Node
+
+## The ordinary Workbench join. It borrows the existing play host and owns only
+## three static decorative native Worlds plus their copied presentation data.
+const Document = preload("res://scripts/depth/workbench_layer_document.gd")
+const Owner = preload("res://scripts/depth/workbench_layer_owner.gd")
+const Presentation = preload("res://scripts/depth/workbench_strata_presentation.gd")
+const LayerPanel = preload("res://scripts/depth/workbench_strata_panel.gd")
+const Scenes = preload("res://scripts/depth/workbench_strata_scenes.gd")
+const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
+const MAX_EDIT_CELLS := 16384
+const MAX_STROKE_POINTS := 1024
+const NONPLAY := ["scripted", "effects", "background"]
+
+var wb: Control
+var layer_owner: RefCounted = Owner.new()
+var presenter: Control
+var _document: Dictionary = {}
+var _pending: Dictionary = {}
+var _sources: Dictionary = {}
+var _history_state: Dictionary = {}
+var _layer_ready := false
+var _apply_serial := 0
+var _keep_on_apply := false
+var _window: Window
+var _panel: Control
+var _indicator: Label
+var _overlay: Control
+var _status := "Strata is off. The ordinary play World remains authoritative."
+var _gesture: Dictionary = {}
+var selection := Rect2i()
+var cursor := Vector2i(-1,-1)
+var clipboard: Dictionary = {}
+var _closed := false
+
+
+func mount(workbench: Control) -> void:
+	wb = workbench
+	_document = Document.default_document(Setup.extent_of(wb.applied)) if not wb.applied.is_empty() else {}
+	_indicator = Label.new()
+	_indicator.name = "StrataEditTarget"
+	_indicator.add_theme_color_override("font_color",Color(1.0,0.77,0.36))
+	_indicator.hide()
+	wb.paint_editor.add_child(_indicator)
+	_overlay = preload("res://scripts/depth/workbench_strata_edit_overlay.gd").new()
+	_overlay.name = "StrataEditOverlay"
+	_overlay.set_meta("strata_independent_overlay",true)
+	_overlay.controller = self
+	wb.host.world_view.add_child(_overlay)
+	set_process(false)
+
+
+func document() -> Dictionary:
+	return _document.duplicate(true)
+
+
+func has_document() -> bool:
+	return _layer_ready
+
+
+func active_layer() -> String:
+	return str(_document.get("presentation",{}).get("active","play")) if enabled() else "play"
+
+
+func enabled() -> bool:
+	return bool(_document.get("presentation",{}).get("enabled",false)) and is_instance_valid(presenter)
+
+
+func status_text() -> String:
+	return _status
+
+
+func _say(text: String) -> bool:
+	_status = text
+	if is_instance_valid(wb): wb.message = text
+	_refresh_panel()
+	return true
+
+
+func _refuse(text: String) -> bool:
+	_say("Strata refused · " + text)
+	return false
+
+
+func open_panel() -> void:
+	if wb.applied.is_empty():
+		_refuse("Wait for the ordinary Workbench to finish installing its canvas.")
+		return
+	if _document.is_empty(): _document = Document.default_document(Setup.extent_of(wb.applied))
+	if not is_instance_valid(_window):
+		_window = Window.new()
+		_window.title = "Strata Theatre · four-plane composition"
+		_window.min_size = Vector2i(560,420)
+		_window.hide()
+		_window.transient = true
+		add_child(_window)
+		var scroll := ScrollContainer.new()
+		scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		_window.add_child(scroll)
+		_panel = LayerPanel.new()
+		_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.add_child(_panel)
+		_panel.mount(self)
+		_window.close_requested.connect(_window.hide)
+	_refresh_panel()
+	_window.popup_centered_clamped(Vector2i(720,560),0.9)
+
+
+func _refresh_panel() -> void:
+	_history_state = layer_owner.stats().get("layers",{}) if _layer_ready else {}
+	if is_instance_valid(_panel): _panel.refresh(_document,_status)
+	if is_instance_valid(_indicator):
+		_indicator.visible = enabled()
+		var layer := active_layer()
+		var row := Document.plane(_document,layer)
+		_indicator.text = "EDIT: %s%s · %s" % [layer.to_upper(),
+			" [LOCKED / HIDDEN]" if enabled() and (bool(row.get("locked",false)) or not presenter.effective_visible(layer)) else "",
+			"play physics" if layer == "play" else "static decoration"]
+	if wb != null and wb.paint_editor != null and wb.paint_editor._overlay != null:
+		wb.paint_editor._overlay.visible = not enabled() or active_layer() == "play"
+
+
+func _prepare(doc: Dictionary) -> bool:
+	if not _pending.is_empty() or _apply_serial > 0: return _refuse("A scene replacement is already preparing.")
+	var error := Document.validate(doc)
+	if not error.is_empty(): return _refuse(error)
+	var admitted: Dictionary = layer_owner.prepare(doc,layer_owner.generation())
+	if not admitted.get("ok",false): return _refuse(str(admitted.get("error","Native decorative candidate refused.")))
+	var token := int(admitted.token)
+	var candidate: Control = Presentation.new()
+	if not candidate.prepare(Document.extent_of(doc)):
+		layer_owner.cancel(token)
+		candidate.free()
+		return _refuse("The complete decorative presentation could not be prepared.")
+	# All copied packets and textures must be admitted before requesting a play
+	# World replacement. Adoption below performs no native construction.
+	var packets: Dictionary = layer_owner.prepared_packets(token)
+	var sources := {}
+	for id: String in NONPLAY:
+		if not packets.has(id):
+			layer_owner.cancel(token)
+			candidate.free()
+			return _refuse("The candidate is missing its " + id + " publication.")
+		var packet: Dictionary = packets[id]
+		sources[id] = {"owner_id":packet.get("owner_id",-1),"reset_generation":packet.get("reset_generation",-1),
+			"revision":packet.get("revision",-1)}
+	if not candidate.expect_sources(sources) or not candidate.apply_document(doc):
+		layer_owner.cancel(token)
+		candidate.free()
+		return _refuse("Candidate presentation identity or settings were refused.")
+	for id: String in NONPLAY:
+		if not candidate.apply_layer_packet(id,packets[id]):
+			layer_owner.cancel(token)
+			candidate.free()
+			return _refuse("Candidate " + id + " publication was refused before changing the play World.")
+	if not candidate.prepare_host(wb.host):
+		layer_owner.cancel(token)
+		candidate.free()
+		return _refuse("The borrowed play drawable could not be prepared; the active scene is unchanged.")
+	_pending = {"token":token,"presenter":candidate,"document":doc.duplicate(true),"sources":sources}
+	return true
+
+
+func _adopt() -> bool:
+	if _pending.is_empty(): return false
+	var candidate: Control = _pending.presenter
+	var previous: Control = presenter
+	if is_instance_valid(previous): previous.detach()
+	if not candidate.mount(wb.host):
+		if is_instance_valid(previous): previous.mount(wb.host)
+		cancel_candidate()
+		return _refuse("The play presentation owner changed after preparation; layered adoption was not completed.")
+	if not layer_owner.commit(int(_pending.token)):
+		candidate.detach()
+		if is_instance_valid(previous): previous.mount(wb.host)
+		cancel_candidate()
+		return _refuse("Prepared layer ownership changed before adoption.")
+	if is_instance_valid(previous): previous.free()
+	presenter = candidate
+	_document = layer_owner.document()
+	_sources = _pending.sources.duplicate(true)
+	_layer_ready = true
+	_pending = {}
+	presenter.apply_document(_document)
+	presenter.sync_view()
+	cancel_gesture()
+	selection = Rect2i()
+	clipboard.clear()
+	set_process(enabled())
+	_refresh_panel()
+	return true
+
+
+func cancel_candidate() -> void:
+	if _pending.is_empty(): return
+	layer_owner.cancel(int(_pending.token))
+	var candidate: Control = _pending.presenter
+	if is_instance_valid(candidate): candidate.free()
+	_pending.clear()
+
+
+func _ensure_current() -> bool:
+	if has_document(): return true
+	if wb.applied.is_empty() or wb.busy(): return _refuse("Wait for the ordinary Workbench owner.")
+	if _document.is_empty(): _document = Document.default_document(Setup.extent_of(wb.applied))
+	if not _prepare(_document): return false
+	return _adopt()
+
+
+func set_presentation(patch: Dictionary) -> bool:
+	if wb.busy() or not _pending.is_empty(): return _refuse("Finish the current edit or scene replacement first.")
+	if not _ensure_current(): return false
+	cancel_gesture()
+	wb.paint_editor.cancel_preview()
+	if not layer_owner.set_presentation(patch): return _refuse("Unsupported presentation settings; the previous view is retained.")
+	if patch.has("active") and str(patch.active) != str(_document.presentation.active): selection = Rect2i()
+	_document = layer_owner.document()
+	presenter.apply_document(_document)
+	presenter.sync_view()
+	set_process(enabled())
+	return _say("Editing %s · %s. Presentation changes preserve the live play World and actors." % [active_layer(),
+		"ordinary flat play" if not enabled() else ("active-plane inspection" if _document.presentation.mode == "flat" else "four-plane stack")])
+
+
+func set_enabled(value: bool) -> bool:
+	return set_presentation({"enabled":value})
+
+
+func set_mode(value: String) -> bool:
+	return set_presentation({"mode":value})
+
+
+func select_layer(id: String) -> bool:
+	return set_presentation({"active":id})
+
+
+func set_layer_settings(id: String, patch: Dictionary) -> bool:
+	if wb.busy() or not _pending.is_empty(): return _refuse("Finish the current edit or scene replacement first.")
+	if not _ensure_current(): return false
+	cancel_gesture()
+	wb.paint_editor.cancel_preview()
+	if not layer_owner.update_settings(id,patch): return _refuse("Unsupported layer settings; the previous scene is retained.")
+	_document = layer_owner.document()
+	presenter.apply_document(_document)
+	presenter.sync_view()
+	return _say("%s settings updated. Decorative planes have no actor or collision authority." % id.capitalize())
+
+
+func set_layer_option(id: String, key: String, value: Variant) -> bool:
+	return set_layer_settings(id,{key:value})
+
+
+func reset_presentation() -> bool:
+	if not _ensure_current(): return false
+	if wb.busy(): return _refuse("Finish the current edit first.")
+	var defaults := Document.default_document(Document.extent_of(_document))
+	var view: Dictionary = defaults.presentation.duplicate(true)
+	view.enabled = enabled()
+	if not layer_owner.set_presentation(view): return false
+	for row: Dictionary in defaults.planes:
+		if not layer_owner.update_settings(row.id,{"visible":true,"locked":false,"opacity":row.opacity,"depth":row.depth}): return false
+	_document = layer_owner.document()
+	presenter.apply_document(_document)
+	presenter.sync_view()
+	cancel_gesture()
+	return _say("Presentation settings restored. Material layouts, edit histories and the play World are unchanged.")
+
+
+func play_apply_submitted(serial: int, keep: bool) -> void:
+	_apply_serial = serial
+	_keep_on_apply = keep
+	cancel_gesture()
+
+
+func play_installed() -> void:
+	if not _pending.is_empty():
+		_adopt()
+	elif not _keep_on_apply:
+		_clear_scene()
+	_apply_serial = 0
+	_keep_on_apply = false
+	if _document.is_empty() and not wb.applied.is_empty(): _document = Document.default_document(Setup.extent_of(wb.applied))
+	_refresh_panel()
+
+
+func play_apply_failed() -> void:
+	cancel_candidate()
+	_apply_serial = 0
+	_keep_on_apply = false
+	_say("Scene replacement refused; the previous valid play and decorative composition are retained.")
+
+
+func load_document(record: Dictionary) -> bool:
+	if wb.busy(): return _refuse("Finish the current Workbench transaction first.")
+	if not record.has_all(["setup","document"]): return _refuse("Incomplete layered document.")
+	var error := Document.validate(record.document)
+	if not error.is_empty(): return _refuse(error)
+	error = Setup.validate(record.setup)
+	if not error.is_empty(): return _refuse(error)
+	if Setup.extent_of(record.setup) != Document.extent_of(record.document): return _refuse("Play and layer extents differ.")
+	if not _prepare(record.document): return false
+	if not wb.apply(record.setup,false,0,false,false,record.get("generated",{}),record.get("baseline",{})):
+		cancel_candidate()
+		return false
+	return _say("Preparing complete layered authored start… the current scene remains live until native admission.")
+
+
+func load_demo(id: String) -> bool:
+	if wb.busy(): return _refuse("Finish the current Workbench transaction first.")
+	var scene: Dictionary = Scenes.make(id,PackedInt32Array(wb.applied.liquid_policy))
+	if scene.has("error"): return _refuse(str(scene.error))
+	if not load_document(scene): return false
+	wb._name.text = "strata-" + id
+	return _say(str(scene.get("title",id)) + " · installing authored scene; use Overview after admission.")
+
+
+func save_named(label: String) -> bool:
+	if not _gesture.is_empty() or not _pending.is_empty() or _apply_serial > 0:
+		return _refuse("Finish or cancel the layer gesture/replacement before saving.")
+	var error := Document.write_named(label,wb.applied,wb._generated_active,wb._material_baseline,layer_owner.document())
+	if not error.is_empty(): return _refuse(error)
+	return _say("Saved all four authored planes and presentation settings · " + label + ". Undo remains in this session; runtime continuation is not captured.")
+
+
+func play_edit_reason() -> String:
+	if not enabled(): return ""
+	if active_layer() != "play": return "The edit target is %s. Select Play to edit its material or use a decorative-plane tool." % active_layer()
+	var row := Document.plane(_document,"play")
+	if row.get("locked",false): return "The Play plane is locked."
+	if not presenter.effective_visible("play"): return "The Play plane is hidden or excluded by solo/flat inspection."
+	return ""
+
+
+func _edit_ready(id: String) -> bool:
+	if not enabled() or id not in NONPLAY: return _refuse("Enable Strata and select a decorative plane first.")
+	if wb.busy() or not _pending.is_empty(): return _refuse("Wait for the current owner transaction.")
+	if not layer_owner.can_edit(id) or not presenter.effective_visible(id): return _refuse("The selected plane is hidden, locked or excluded from this view.")
+	return true
+
+
+func _publish(id: String) -> bool:
+	var packet: Dictionary = layer_owner.snapshot_layer(id,true)
+	if packet.is_empty(): return _refuse("No current native publication exists for " + id + ".")
+	# A publication is bound to the current owner identity and authored revision,
+	# not merely to a larger serial supplied by an arbitrary caller.
+	_sources[id] = {"owner_id":packet.get("owner_id",-1),"reset_generation":packet.get("reset_generation",-1),"revision":packet.get("revision",-1)}
+	if not presenter.expect_sources(_sources) or not presenter.apply_layer_packet(id,packet):
+		return _refuse("The current native layer publication was refused; the play World remains unaffected.")
+	_document = layer_owner.document()
+	presenter.apply_document(_document)
+	_refresh_panel()
+	return true
+
+
+func edit_cells(id: String, cells: PackedInt32Array) -> bool:
+	if not _edit_ready(id): return false
+	var receipt: Dictionary = layer_owner.paint_cells(id,cells,layer_owner.generation())
+	if not receipt.get("ok",false): return _refuse(str(receipt.get("error",receipt.get("reason","Native paint refused."))))
+	if not _publish(id): return false
+	return _say("Edited %s · %d cells · independent static-plane Undo." % [id,int(receipt.get("changed",cells.size()/3))])
+
+
+func undo_layer() -> bool:
+	if active_layer() == "play": return wb.paint_editor.undo()
+	return _history("undo")
+
+
+func redo_layer() -> bool:
+	if active_layer() == "play": return wb.paint_editor.redo()
+	return _history("redo")
+
+
+func _history(action: String) -> bool:
+	var id := active_layer()
+	if not _edit_ready(id): return false
+	cancel_gesture()
+	var receipt: Dictionary = layer_owner.undo(id) if action == "undo" else layer_owner.redo(id)
+	if not receipt.get("ok",false): return _refuse(str(receipt.get("error",receipt.get("reason","No retained history."))))
+	if not _publish(id): return false
+	return _say("%s %s authored edit. Play history and simulation are unchanged." % [action.capitalize(),id])
+
+
+func route_editor_action(action: String) -> Dictionary:
+	if not enabled() or active_layer() == "play": return {"handled":false}
+	var ok := false
+	match action:
+		"copy": ok = copy_selection()
+		"undo", "redo": ok = _history(action)
+		"cancel":
+			cancel_gesture()
+			ok = _say("Layer gesture cancelled; no native edit was committed.")
+		_: return {"handled":false}
+	return {"handled":true,"ok":ok}
+
+
+func update_editor_controls(editor: Control) -> void:
+	if not enabled() or active_layer() == "play": return
+	var id := active_layer()
+	var allowed: bool = layer_owner.can_edit(id) and presenter.effective_visible(id) and not wb.busy()
+	var history: Dictionary = _history_state.get(id,{})
+	editor._copy.disabled = not selection.has_area() or not presenter.effective_visible(id) or wb.busy()
+	editor._paste.disabled = not allowed or clipboard.is_empty()
+	editor._undo_button.disabled = not allowed or int(history.get("undo",0)) == 0
+	editor._redo_button.disabled = not allowed or int(history.get("redo",0)) == 0
+	editor._undo_button.tooltip_text = "Undo the selected static plane; play history is independent."
+	editor._cancel_button.disabled = _gesture.is_empty()
+
+
+func copy_selection() -> bool:
+	var id := active_layer()
+	if not enabled() or id not in NONPLAY or not presenter.effective_visible(id): return _refuse("Select a visible decorative plane to copy.")
+	if wb.busy() or not _gesture.is_empty(): return _refuse("Finish the current gesture first.")
+	if not selection.has_area() or selection.size.x*selection.size.y > MAX_EDIT_CELLS:
+		return _refuse("Select at most 16,384 native cells inside one plane.")
+	var captured: Dictionary = layer_owner.capture_region(id,selection)
+	if not captured.get("ok",false): return _refuse(str(captured.get("error","Native layer capture refused.")))
+	clipboard = captured.duplicate(true)
+	clipboard["layer"] = id
+	clipboard["generation"] = layer_owner.generation()
+	clipboard["region"] = selection
+	return _say("Copied %d × %d native %s cells, including Empty." % [selection.size.x,selection.size.y,id])
+
+
+func paste_at(point: Vector2i) -> bool:
+	var id := active_layer()
+	if not _edit_ready(id): return false
+	if clipboard.is_empty() or int(clipboard.get("generation",-1)) != layer_owner.generation():
+		return _refuse("Copy a selection from the current composition first.")
+	var region: Rect2i = clipboard.region
+	var plan := Shapes.rectangle(region.position,region.end-Vector2i.ONE,true,Document.extent_of(_document),MAX_EDIT_CELLS)
+	if not plan.accepted: return _refuse(str(plan.error))
+	var paste := Shapes.stamp_materials(plan.cells,clipboard.materials,region.position,point,Document.extent_of(_document),MAX_EDIT_CELLS)
+	if not paste.accepted: return _refuse(str(paste.error))
+	return edit_cells(id,_triples(paste.cells,0,paste.materials))
+
+
+func _triples(points: PackedInt32Array, material: int, materials: PackedInt32Array = PackedInt32Array()) -> PackedInt32Array:
+	var result := PackedInt32Array()
+	result.resize(points.size()/2*3)
+	for index: int in points.size()/2:
+		result[index*3] = points[index*2]
+		result[index*3+1] = points[index*2+1]
+		result[index*3+2] = material if materials.is_empty() else materials[index]
+	return result
+
+
+func cancel_gesture() -> void:
+	_gesture.clear()
+	cursor = Vector2i(-1,-1)
+	if is_instance_valid(_overlay): _overlay.queue_redraw()
+
+
+func gesture() -> Dictionary:
+	return _gesture.duplicate(false)
+
+
+func _point(local: Vector2) -> Vector2i:
+	var point: Vector2 = presenter.screen_to_layer(local,active_layer())
+	if point.x < 0 or point.y < 0: return Vector2i(-1,-1)
+	var cell := Vector2i(point.floor())
+	return cell if Rect2i(Vector2i.ZERO,Document.extent_of(_document)).has_point(cell) else Vector2i(-1,-1)
+
+
+func world_input(event: InputEvent) -> bool:
+	if not enabled() or not event is InputEventMouse: return false
+	if event is InputEventMouseButton and event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]:
+		cancel_gesture()
+		return false
+	if event is InputEventMouseMotion and wb._pan: return false
+	var id := active_layer()
+	if id == "play":
+		if play_edit_reason().is_empty(): return false
+		if event is InputEventMouseButton and event.pressed: _refuse(play_edit_reason())
+		return true
+	if wb._tool.selected != 0:
+		if event is InputEventMouseButton and event.pressed: _refuse("Actor placement and physical tools address Play. Select Play for those tools.")
+		return true
+	cursor = _point(event.position)
+	if event is InputEventMouseMotion:
+		if not _gesture.is_empty() and cursor.x >= 0:
+			_gesture.cursor = cursor
+			if _gesture.tool in ["Brush","Eraser"] and (_gesture.points.is_empty() or _gesture.points.back() != cursor):
+				if _gesture.points.size() >= MAX_STROKE_POINTS:
+					cancel_gesture()
+					_refuse("Draw a shorter gesture (at most 1,024 sampled points).")
+				else: _gesture.points.append(cursor)
+		return true
+	if not event is InputEventMouseButton: return true
+	if event.pressed:
+		if cursor.x < 0 or not _edit_ready(id): return true
+		var tool: String = wb.paint_editor.tool_name()
+		if event.button_index == MOUSE_BUTTON_RIGHT: tool = "Eraser"
+		if tool == "Fill":
+			_refuse("Decorative planes support Brush, Eraser, Line, Rectangle, Outline and bounded Select/Copy/Paste. Fill remains a Play tool.")
+			return true
+		_gesture = {"layer":id,"generation":layer_owner.generation(),"tool":tool,"anchor":cursor,"cursor":cursor,
+			"points":[cursor],"radius":wb.paint_editor.radius(),"material":0 if tool == "Eraser" else wb.paint_editor.material_id}
+		return true
+	if _gesture.is_empty(): return true
+	var saved := _gesture
+	_gesture = {}
+	if cursor.x < 0 or saved.layer != id or int(saved.generation) != layer_owner.generation():
+		_refuse("Gesture cancelled outside its original plane.")
+		return true
+	if saved.tool == "Select":
+		var anchor: Vector2i = saved.anchor
+		var region := Rect2i(anchor.min(cursor),anchor.max(cursor)-anchor.min(cursor)+Vector2i.ONE)
+		if region.size.x*region.size.y > MAX_EDIT_CELLS:
+			_refuse("Select at most 16,384 cells.")
+		else:
+			selection = region
+			_say("Selected %d × %d on %s. Copy reads authoritative native materials." % [region.size.x,region.size.y,id])
+		return true
+	if saved.tool == "Paste":
+		paste_at(cursor)
+		return true
+	var extent := Document.extent_of(_document)
+	var plan := {}
+	if saved.tool in ["Rectangle","Outline"]:
+		plan = Shapes.rectangle(saved.anchor,cursor,saved.tool == "Rectangle",extent,MAX_EDIT_CELLS)
+	elif saved.tool == "Line":
+		plan = Shapes.line(saved.anchor,cursor,int(saved.radius),extent,MAX_EDIT_CELLS)
+	else:
+		var selected := {}
+		var points: Array = saved.points
+		if points.back() != cursor: points.append(cursor)
+		for index: int in points.size():
+			var segment := Shapes.line(points[maxi(0,index-1)],points[index],int(saved.radius),extent,MAX_EDIT_CELLS)
+			if not segment.accepted:
+				_refuse(str(segment.error))
+				return true
+			if segment.get("clipped",false):
+				_refuse("Brush crosses the canvas boundary; use a smaller radius or move inside.")
+				return true
+			for cell_index: int in segment.cells.size()/2:
+				selected[int(segment.cells[cell_index*2+1])*extent.x+int(segment.cells[cell_index*2])] = true
+				if selected.size() > MAX_EDIT_CELLS:
+					_refuse("Gesture exceeds 16,384 cells; use smaller strokes.")
+					return true
+		var cells := PackedInt32Array()
+		var ordered: Array = selected.keys()
+		ordered.sort()
+		for index: int in ordered:
+			cells.append(index%extent.x)
+			cells.append(index/extent.x)
+		plan = {"accepted":true,"cells":cells}
+	if not plan.get("accepted",false):
+		_refuse(str(plan.get("error","Shape refused.")))
+		return true
+	if plan.get("clipped",false):
+		_refuse("Shape crosses the canvas boundary; no partial decorative edit was applied.")
+		return true
+	edit_cells(id,_triples(plan.cells,int(saved.material)))
+	return true
+
+
+func key_input(event: InputEvent) -> bool:
+	if not enabled() or active_layer() == "play" or not event is InputEventKey or not event.pressed or event.echo: return false
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus is LineEdit or focus is TextEdit: return false
+	if event.keycode == KEY_ESCAPE:
+		cancel_gesture()
+		_say("Layer gesture cancelled; no native edit was committed.")
+		return true
+	if event.ctrl_pressed or event.meta_pressed:
+		match event.keycode:
+			KEY_S: wb.save_setup()
+			KEY_C: copy_selection()
+			KEY_V: wb.paint_editor.select_tool("Paste")
+			KEY_Z:
+				if event.shift_pressed: _history("redo")
+				else: _history("undo")
+			KEY_Y: _history("redo")
+			_: return false
+		return true
+	var keys := {KEY_B:"Brush",KEY_E:"Eraser",KEY_L:"Line",KEY_R:"Rectangle",KEY_O:"Outline",KEY_S:"Select",KEY_V:"Paste"}
+	if keys.has(event.keycode):
+		cancel_gesture()
+		wb.paint_editor.select_tool(keys[event.keycode])
+		return true
+	return false
+
+
+func _process(_delta: float) -> void:
+	if enabled():
+		presenter.sync_view()
+		if is_instance_valid(_overlay): _overlay.queue_redraw()
+
+
+func diagnostics() -> Dictionary:
+	var state: Dictionary = wb.host.simulation_worker.paint_state() if wb != null else {}
+	var actors := []
+	if wb != null:
+		for actor: Dictionary in wb.applied.get("actors",[]): actors.append(int(actor.id))
+	return {"enabled":enabled(),"active_layer":active_layer(),"play_generation":state.get("generation",-1),
+		"play_revision":state.get("revision",-1),"play_tick":state.get("tick",-1),
+		"simulation_worker_id":wb.host.simulation_worker.get_instance_id(),
+		"physical_session_id":wb.host.physical_actor_session.get_instance_id() if wb.host.physical_actor_session != null else 0,
+		"actor_ids":actors,"layers":layer_owner.stats(),"presentation":presenter.diagnostics() if is_instance_valid(presenter) else {},
+		"pending":not _pending.is_empty(),"play_apply_serial":_apply_serial}
+
+
+func _clear_scene() -> void:
+	if is_instance_valid(presenter):
+		presenter.detach()
+		presenter.free()
+	presenter = null
+	layer_owner.retire()
+	_layer_ready = false
+	_sources.clear()
+	_history_state.clear()
+	_document = {}
+	selection = Rect2i()
+	clipboard.clear()
+	cancel_gesture()
+	set_process(false)
+	if is_instance_valid(_indicator): _indicator.hide()
+	if wb != null and wb.paint_editor != null and wb.paint_editor._overlay != null: wb.paint_editor._overlay.show()
+
+
+func shutdown() -> void:
+	if _closed: return
+	_closed = true
+	cancel_candidate()
+	_clear_scene()
+	if is_instance_valid(_overlay): _overlay.queue_free()
+
+
+func _exit_tree() -> void:
+	shutdown()
