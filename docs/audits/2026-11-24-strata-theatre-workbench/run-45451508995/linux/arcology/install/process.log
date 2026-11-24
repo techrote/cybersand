@@ -1,0 +1,20 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+STRATA_PROGRESS instantiate ordinary Main
+STRATA_PROGRESS ordinary Main ready; wait for512canvas
+STRATA_PROGRESS ordinary Workbench admitted
+STRATA_PROGRESS four native planes admitted
+STRATA_PROGRESS mode identity
+STRATA_PROGRESS transforms
+STRATA_PROGRESS author and refuse
+STRATA_PROGRESS all-plane actual brush/erase guards
+STRATA_PROGRESS actual visibility and scaled input
+STRATA_PROGRESS actual pixels
+STRATA_PROGRESS bounded costs
+STRATA_PROGRESS all native material cells
+STRATA_WORKBENCH {"checks":880,"failures":[],"phase":"install","scene":"arcology"}

@@ -1,0 +1,1601 @@
+{
+  "schema": "strata-final-documentation-retrieval-v1",
+  "scope": "Current source documentation, fixture preservation and lexical retrieval; does not replace native execution or physical owner review.",
+  "baseline_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "frozen_32_fixture_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+  "frozen_fixture_unchanged": true,
+  "prior_164_challenge_objects_unchanged": true,
+  "new_challenges": [
+    "STRATA-WB-01"
+  ],
+  "baseline_summary": {
+    "questions": 32,
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 30,
+    "mrr_at_k": 0.7292,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "final_frozen_summary": {
+    "questions": 32,
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 30,
+    "mrr_at_k": 0.7276,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "final_challenge_summary": {
+    "questions": 165,
+    "canonical_hit_at_1": 127,
+    "canonical_hit_at_k": 163,
+    "mrr_at_k": 0.863,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "frozen_canonical_ranks": [
+    {
+      "id": "Q01",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q02",
+      "baseline_rank": 2,
+      "final_rank": 2
+    },
+    {
+      "id": "Q03",
+      "baseline_rank": 4,
+      "final_rank": 5
+    },
+    {
+      "id": "Q04",
+      "baseline_rank": 2,
+      "final_rank": 2
+    },
+    {
+      "id": "Q05",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q06",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q07",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q08",
+      "baseline_rank": 2,
+      "final_rank": 2
+    },
+    {
+      "id": "Q09",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q10",
+      "baseline_rank": 2,
+      "final_rank": 2
+    },
+    {
+      "id": "Q11",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q12",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q13",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q14",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q15",
+      "baseline_rank": 4,
+      "final_rank": 4
+    },
+    {
+      "id": "Q16",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q17",
+      "baseline_rank": 3,
+      "final_rank": 3
+    },
+    {
+      "id": "Q18",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q19",
+      "baseline_rank": null,
+      "final_rank": null
+    },
+    {
+      "id": "Q20",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q21",
+      "baseline_rank": 3,
+      "final_rank": 3
+    },
+    {
+      "id": "Q22",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q23",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q24",
+      "baseline_rank": 3,
+      "final_rank": 3
+    },
+    {
+      "id": "Q25",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q26",
+      "baseline_rank": 2,
+      "final_rank": 2
+    },
+    {
+      "id": "Q27",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q28",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q29",
+      "baseline_rank": 3,
+      "final_rank": 3
+    },
+    {
+      "id": "Q30",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q31",
+      "baseline_rank": 1,
+      "final_rank": 1
+    },
+    {
+      "id": "Q32",
+      "baseline_rank": null,
+      "final_rank": null
+    }
+  ],
+  "challenge_canonical_ranks": [
+    {
+      "id": "RENDER-COPY-01",
+      "rank": 4
+    },
+    {
+      "id": "C05",
+      "rank": 4
+    },
+    {
+      "id": "C06",
+      "rank": 2
+    },
+    {
+      "id": "C01",
+      "rank": 1
+    },
+    {
+      "id": "C02",
+      "rank": 1
+    },
+    {
+      "id": "C03",
+      "rank": 5
+    },
+    {
+      "id": "C04",
+      "rank": 1
+    },
+    {
+      "id": "C07",
+      "rank": 1
+    },
+    {
+      "id": "C08",
+      "rank": 1
+    },
+    {
+      "id": "C09",
+      "rank": 4
+    },
+    {
+      "id": "C10",
+      "rank": 1
+    },
+    {
+      "id": "C11",
+      "rank": 2
+    },
+    {
+      "id": "C12",
+      "rank": 1
+    },
+    {
+      "id": "C13",
+      "rank": 1
+    },
+    {
+      "id": "C14",
+      "rank": 1
+    },
+    {
+      "id": "C15",
+      "rank": 1
+    },
+    {
+      "id": "C16",
+      "rank": 2
+    },
+    {
+      "id": "MS01",
+      "rank": 1
+    },
+    {
+      "id": "MS02",
+      "rank": 3
+    },
+    {
+      "id": "MS03",
+      "rank": 1
+    },
+    {
+      "id": "MS04",
+      "rank": 2
+    },
+    {
+      "id": "MS05",
+      "rank": 1
+    },
+    {
+      "id": "SOL01",
+      "rank": 2
+    },
+    {
+      "id": "SOL02",
+      "rank": 3
+    },
+    {
+      "id": "SOL03",
+      "rank": 1
+    },
+    {
+      "id": "MS06",
+      "rank": 1
+    },
+    {
+      "id": "REM01",
+      "rank": 1
+    },
+    {
+      "id": "REM02",
+      "rank": 1
+    },
+    {
+      "id": "WEX01",
+      "rank": 1
+    },
+    {
+      "id": "WEX02",
+      "rank": 1
+    },
+    {
+      "id": "WEX03",
+      "rank": 1
+    },
+    {
+      "id": "REC01",
+      "rank": 1
+    },
+    {
+      "id": "REC02",
+      "rank": 2
+    },
+    {
+      "id": "REC03",
+      "rank": 1
+    },
+    {
+      "id": "SOL04",
+      "rank": 1
+    },
+    {
+      "id": "MAT01",
+      "rank": 1
+    },
+    {
+      "id": "MAT02",
+      "rank": 1
+    },
+    {
+      "id": "SCENE01",
+      "rank": 1
+    },
+    {
+      "id": "SCENE02",
+      "rank": 1
+    },
+    {
+      "id": "ACT01",
+      "rank": 1
+    },
+    {
+      "id": "ACT02",
+      "rank": 1
+    },
+    {
+      "id": "ACT03",
+      "rank": 1
+    },
+    {
+      "id": "ACT04",
+      "rank": 1
+    },
+    {
+      "id": "ACT05",
+      "rank": 1
+    },
+    {
+      "id": "ACT06",
+      "rank": 1
+    },
+    {
+      "id": "ACT07",
+      "rank": 1
+    },
+    {
+      "id": "ACT08",
+      "rank": 1
+    },
+    {
+      "id": "ACT09",
+      "rank": 1
+    },
+    {
+      "id": "SCENE03",
+      "rank": 1
+    },
+    {
+      "id": "GEN01",
+      "rank": 4
+    },
+    {
+      "id": "GEN02",
+      "rank": 1
+    },
+    {
+      "id": "GEN03",
+      "rank": 1
+    },
+    {
+      "id": "GEN04",
+      "rank": 1
+    },
+    {
+      "id": "GEN05",
+      "rank": 1
+    },
+    {
+      "id": "GEN06",
+      "rank": 1
+    },
+    {
+      "id": "GEN07",
+      "rank": 1
+    },
+    {
+      "id": "GEN08",
+      "rank": 1
+    },
+    {
+      "id": "THB01",
+      "rank": 1
+    },
+    {
+      "id": "THB02",
+      "rank": 1
+    },
+    {
+      "id": "THB03",
+      "rank": 1
+    },
+    {
+      "id": "THB04",
+      "rank": 1
+    },
+    {
+      "id": "THB05",
+      "rank": 1
+    },
+    {
+      "id": "THB06",
+      "rank": 1
+    },
+    {
+      "id": "ACT10",
+      "rank": 1
+    },
+    {
+      "id": "DEP01",
+      "rank": 1
+    },
+    {
+      "id": "ACT11",
+      "rank": 1
+    },
+    {
+      "id": "ACT12",
+      "rank": 1
+    },
+    {
+      "id": "ACT13",
+      "rank": 2
+    },
+    {
+      "id": "ACT14",
+      "rank": 2
+    },
+    {
+      "id": "ACT15",
+      "rank": 1
+    },
+    {
+      "id": "MAT03",
+      "rank": 1
+    },
+    {
+      "id": "TEST02",
+      "rank": 1
+    },
+    {
+      "id": "TEST01",
+      "rank": 2
+    },
+    {
+      "id": "USABLE01",
+      "rank": 2
+    },
+    {
+      "id": "USABLE02",
+      "rank": null
+    },
+    {
+      "id": "USABLE03",
+      "rank": 2
+    },
+    {
+      "id": "USABLE04",
+      "rank": 1
+    },
+    {
+      "id": "TEST03",
+      "rank": 1
+    },
+    {
+      "id": "SCENE04",
+      "rank": 1
+    },
+    {
+      "id": "DEP02",
+      "rank": 1
+    },
+    {
+      "id": "PLAY01",
+      "rank": 1
+    },
+    {
+      "id": "PLAY02",
+      "rank": 1
+    },
+    {
+      "id": "PLAY03",
+      "rank": 3
+    },
+    {
+      "id": "PLAY04",
+      "rank": 1
+    },
+    {
+      "id": "PLAY05",
+      "rank": 1
+    },
+    {
+      "id": "GEN09",
+      "rank": 1
+    },
+    {
+      "id": "GEN10",
+      "rank": 2
+    },
+    {
+      "id": "GEN11",
+      "rank": 1
+    },
+    {
+      "id": "GEN12",
+      "rank": 2
+    },
+    {
+      "id": "GEN13",
+      "rank": 1
+    },
+    {
+      "id": "GEN14",
+      "rank": 1
+    },
+    {
+      "id": "GEN15",
+      "rank": 1
+    },
+    {
+      "id": "GEN16",
+      "rank": 1
+    },
+    {
+      "id": "GEN17",
+      "rank": 1
+    },
+    {
+      "id": "GEN18",
+      "rank": 1
+    },
+    {
+      "id": "GEN19",
+      "rank": 1
+    },
+    {
+      "id": "GEN20",
+      "rank": 1
+    },
+    {
+      "id": "GEN21",
+      "rank": 1
+    },
+    {
+      "id": "GEN22",
+      "rank": 1
+    },
+    {
+      "id": "GEN23",
+      "rank": 2
+    },
+    {
+      "id": "GEN24",
+      "rank": 1
+    },
+    {
+      "id": "GEN25",
+      "rank": 2
+    },
+    {
+      "id": "GEN26",
+      "rank": 1
+    },
+    {
+      "id": "GEN005-1",
+      "rank": 1
+    },
+    {
+      "id": "GEN005-2",
+      "rank": 1
+    },
+    {
+      "id": "GEN005-3",
+      "rank": 1
+    },
+    {
+      "id": "GEN007-1",
+      "rank": 1
+    },
+    {
+      "id": "GEN007-2",
+      "rank": 1
+    },
+    {
+      "id": "GEN007-3",
+      "rank": 1
+    },
+    {
+      "id": "GEN007-4",
+      "rank": 2
+    },
+    {
+      "id": "WATER-EXIT-01",
+      "rank": 1
+    },
+    {
+      "id": "4LY01",
+      "rank": 2
+    },
+    {
+      "id": "4LY02",
+      "rank": 2
+    },
+    {
+      "id": "4LY03",
+      "rank": 1
+    },
+    {
+      "id": "4LY04",
+      "rank": 1
+    },
+    {
+      "id": "4LY05",
+      "rank": 1
+    },
+    {
+      "id": "LCB01",
+      "rank": 1
+    },
+    {
+      "id": "TEST04",
+      "rank": 1
+    },
+    {
+      "id": "LCB02",
+      "rank": 1
+    },
+    {
+      "id": "LCB03",
+      "rank": null
+    },
+    {
+      "id": "LCB04",
+      "rank": 1
+    },
+    {
+      "id": "LCB05",
+      "rank": 2
+    },
+    {
+      "id": "LCB06",
+      "rank": 2
+    },
+    {
+      "id": "LCB07",
+      "rank": 1
+    },
+    {
+      "id": "LCB08",
+      "rank": 1
+    },
+    {
+      "id": "LCB09",
+      "rank": 1
+    },
+    {
+      "id": "CI-HANG-01",
+      "rank": 3
+    },
+    {
+      "id": "LCB10",
+      "rank": 1
+    },
+    {
+      "id": "LCB11",
+      "rank": 1
+    },
+    {
+      "id": "LCB12",
+      "rank": 1
+    },
+    {
+      "id": "LCB13",
+      "rank": 1
+    },
+    {
+      "id": "LCB14",
+      "rank": 1
+    },
+    {
+      "id": "LCB15",
+      "rank": 1
+    },
+    {
+      "id": "LCB16",
+      "rank": 1
+    },
+    {
+      "id": "LCB17",
+      "rank": 1
+    },
+    {
+      "id": "LCB18",
+      "rank": 1
+    },
+    {
+      "id": "LCB-MAIN-ACCEPTANCE-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-PRESSURE-OPT-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-IN-ADAPTER-01",
+      "rank": 2
+    },
+    {
+      "id": "LCB-HOST-WEB-01",
+      "rank": 3
+    },
+    {
+      "id": "LCB-CYSD-PREP-01",
+      "rank": 3
+    },
+    {
+      "id": "LCB-MASK-GAS-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-CYSD-HOST-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-ORDINARY-DEMO-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-SYNC-BODY-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-SYNC-WATER-BODY-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-DEFAULT-DEMO-01",
+      "rank": 5
+    },
+    {
+      "id": "LCB-DEFAULT-HOST-02",
+      "rank": 1
+    },
+    {
+      "id": "LCB-WATER-IN-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-WATER-PUB-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-WATER-PUB-02",
+      "rank": 1
+    },
+    {
+      "id": "LCB-HOST-UNION-01",
+      "rank": 1
+    },
+    {
+      "id": "LCB-TRIAL-BODY-01",
+      "rank": 1
+    },
+    {
+      "id": "PLAY-MANUAL270-01",
+      "rank": 1
+    },
+    {
+      "id": "PLAY-UI007-01",
+      "rank": 2
+    },
+    {
+      "id": "CI-SCHEDULING-01",
+      "rank": 1
+    },
+    {
+      "id": "PLAY-RECOVERY-01",
+      "rank": 1
+    },
+    {
+      "id": "ATLAS-AGENT-01",
+      "rank": 1
+    },
+    {
+      "id": "ATLAS-AGENT-02",
+      "rank": 1
+    },
+    {
+      "id": "EXPLORE-001-PERSIST",
+      "rank": 1
+    },
+    {
+      "id": "EXPLORE-001-DESKTOP",
+      "rank": 1
+    },
+    {
+      "id": "EXPLORE-001-CAPACITY",
+      "rank": 1
+    },
+    {
+      "id": "EXPLORE-001-LAYOUT",
+      "rank": 2
+    },
+    {
+      "id": "WB-AUTHORING-CONVERGENCE",
+      "rank": 1
+    },
+    {
+      "id": "STRATA-WB-01",
+      "rank": 2
+    }
+  ],
+  "fact_review": [
+    "The new Strata question retrieves the explicitly scoped standalone prototype at rank1, owner guide at rank2 and ordinary Workbench contract at rank3. The prototype section routes ordinary editing/clocks/persistence to the new contract; its old immutable-background/reset controls are explicitly standalone.",
+    "The ordinary Workbench contract and source reviews identify one borrowed Play World, three static decorative owners, guarded per-plane edits, authored persistence, distinct Flatten authority and an open physical owner gate.",
+    "No frozen hit-at1 or hit-at5 loss; Q03 shifts rank4 to5. Q19 and Q32 misses are inherited. These ranking observations are not answer-correctness evidence."
+  ],
+  "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+  "corpus_manifest_sha256": "b938de5c602cb7c4c4dac6d7076248f07d9442ad551bbbca88a37ca894eb956a",
+  "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+  "final_corpus_files": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "bytes": 13377
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "246f130a0fa07d4ae5f8330e8e3929ad588d793f323900e90a9a6e557d9082f7",
+      "bytes": 16079
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "112060dc5d88ffc99b56f04c5667597f9e73ca1adb1b9353bc5d078f79763c40",
+      "bytes": 39570
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "4a85c1007a438d86f52d7b51a6c59b5aee0c85d6e900857e14fdfb07ec65aea8",
+      "bytes": 11309
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "bdacfa2db93d74044d212940ea375d08404e1c376a96cde250443f19690607a2",
+      "bytes": 84579
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "826b8454abdb75620120736c005a65a5b993c742846e0fe7985edf2c08f3005d",
+      "bytes": 66230
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "752a352b88ec125b1e8c3d319eeb35f0c8529eff3ecfda9969a4389ac4bd2977",
+      "bytes": 63265
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "cf0046c5ccce66ee0c1f0cc150f1a873d9a03ef50016770f28f5700f89476b57",
+      "bytes": 32330
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "ad0b728477160ba8b52737ca6204d55d36be70dfe04e9380bcd93f7b1a56adfc",
+      "bytes": 20378
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "12337989aa532368078eee8abf5bfe12ac204736c2fcb0878a9dcaf65b8924fb",
+      "bytes": 9313
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "eeb3bdee911991e0529f9f9b10f6d444a6e0a3f906680f8643a70e96e5a075a0",
+      "bytes": 15352
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "881afe917065cc5f06bf112fa1c4381f021be7c793a94520f3b385c905a611d0",
+      "bytes": 25376
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "94fdd3d39211766309798ce7e16f3dea8821f486c5055cdd2f621d2752322a73",
+      "bytes": 25476
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "bytes": 47213
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "22c82ce2edb6e615cf097a45d6a36b505cd7a057d782439c7949db0b1a0b3e41",
+      "bytes": 7714
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "bytes": 12906
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "221f6168d78b3bffcd42e5d3c9256d470df8394d2fcd8ce2a38bbf169a3221dc",
+      "bytes": 128705
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "bytes": 3762
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "f3083780031d5512435c07d4d454ef8f5bdb029ac33f2e1d7181e0b52fa1c862",
+      "bytes": 14140
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "bytes": 18806
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "bytes": 18051
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "bytes": 117202
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "0f8ed826d60d97f0d863556422559e720f6ac92f38157701b8015d43ea177a66",
+      "bytes": 19717
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "bytes": 13039
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "ae468a2213585d4be04d8e9b333f5d432981c6e1da37b764b52696708a4e9267",
+      "bytes": 32150
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "bytes": 17952
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/strata-workbench-evaluation.md",
+      "sha256": "e9da4acc7eafbdb2594cb0cea356f75847987701b12d99f3ec39a8d994887b26",
+      "bytes": 6608
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "bytes": 32428
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "bytes": 17230
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "de75e024d6b86b5a40cd7a0d148ea86295acc3dfd91565a3f917f16a13e37db8",
+      "bytes": 40397
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f",
+      "bytes": 13944
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "726497a27ac4745af06a4941cf4b658983a2833e0aa9c0eef3aed4c28342b35b",
+      "bytes": 15344
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "b4b4f76d2700d67e0d5e6bcd91ffa7f48677bb61fb624dfad3666790126e09f7",
+      "bytes": 90712
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "0edd84df08e0e653fc73f4c47d7e2931749e725951c3c836bc3f2340e6f4d396",
+      "bytes": 99376
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "02ad3d26a1193669dc0d582a46c4254da016b25f1281ff69ea9ba4afe61d6a6e",
+      "bytes": 47306
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "2ea330678ce74d6206213b39213aa5783374b61bda2efa0a48a575d2f76af552",
+      "bytes": 15430
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "fc8f06018d923481d37c766acea8113130d7739b99c84871ce3ad89e760b573b",
+      "bytes": 20969
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "392a2f4f80e97e9ee3b57faa4c931a8d833768a55b8a297e7c9228c0adbd6190",
+      "bytes": 161997
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "bytes": 77127
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "b9a500aa2ad7545b53ce03fe40f12b9a09cfc7c7d16661a541dd82fcfa485072",
+      "bytes": 24845
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "f7a93ae1b3ff41ca76e65ddec483c8004d8977e63e1c0a299adadd36fc3823ba",
+      "bytes": 12876
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "bytes": 13442
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "bytes": 21861
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "2140d649728829bf1b5163eb0686ab8eadd6493be7512ad5e25e21359a5c2e24",
+      "bytes": 14476
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "cb0ad9d255d648064362b2c13dfa9e5c76eae388705d52ed47988024a5fe714c",
+      "bytes": 23872
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "bytes": 62162
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "0edcd936c2a82cc7e0e8c0e5b586a84fa9841e87bb7b5edd74c60c96dd82afc3",
+      "bytes": 28537
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/strata-workbench.md",
+      "sha256": "0e6718b3e81ce78c89dacd72a0cb514cdd7299bbea4222c22c491a6e590265ad",
+      "bytes": 16496
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "b6c24131a38f2ede5a2b6426db193c1976ea5ce770a0b96195079279b75b5428",
+      "bytes": 23536
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "e3d659856dff8529cf5b85237c4b1aae3db31f6e11c975eab561a38501560ee0",
+      "bytes": 26400
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "0608fbdc4ed4a4b38cd3ce47422bbbaeee07ce1c0a080b555f820d377692538d",
+      "bytes": 13532
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "21d0d16074f0d1e3203addc8c5707bcaa70d85b6d7f0eec6e3ca12e3db96890c",
+      "bytes": 11007
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "de44534954f0d38639f220cab5a56135fec0a0589777be21460543400885953b",
+      "bytes": 12516
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "d24aa9fe1631a5506044ace6653cc035e2f469d0add9bc5f037943b6c483f281",
+      "bytes": 11786
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "4aa4f20c295f3dd92fc4854d4c02e5571c3acb49a3cf90c1e0538909ceaae72a",
+      "bytes": 16243
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "bytes": 12488
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "99ce3e3d637d456d18d93fbf1e22f1fcf713df1753a24dd2928b4702bce34b44",
+      "bytes": 8616
+    }
+  ]
+}

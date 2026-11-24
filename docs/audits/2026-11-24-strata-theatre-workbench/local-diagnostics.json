@@ -1,0 +1,78 @@
+{
+  "schema": "strata-local-diagnostics-v1",
+  "scope": "Original local development diagnostics, including failures; not the final source-bound ordinary graphical acceptance campaign",
+  "retained": [
+    {
+      "path": "local-diagnostics/00-strata-visuals-capture.log",
+      "original_path": "/tmp/strata-visuals/capture.log",
+      "bytes": 516,
+      "sha256": "38648dc2f48ed75ccc413d36a6032e507277f912d11c0c7ca90fda37624ade9d"
+    },
+    {
+      "path": "local-diagnostics/01-graphical-dev1-install.log",
+      "original_path": "/tmp/strata-evidence/graphical-dev1/install.log",
+      "bytes": 516,
+      "sha256": "38648dc2f48ed75ccc413d36a6032e507277f912d11c0c7ca90fda37624ade9d"
+    },
+    {
+      "path": "local-diagnostics/02-document-fixed-original.log",
+      "original_path": "/tmp/strata-evidence/document-fixed/original.log",
+      "bytes": 420,
+      "sha256": "4a1bd86b2ca61fd330dd91be51cfd3b3dd9d347ed21d3fe6e0841728746ef35a"
+    },
+    {
+      "path": "local-diagnostics/03-strata-evidence-shared-workbench-parse-final.log",
+      "original_path": "/tmp/strata-evidence/shared-workbench-parse-final.log",
+      "bytes": 221,
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    {
+      "path": "local-diagnostics/04-tmp-strata-layers-regression-2.log",
+      "original_path": "/tmp/strata-layers-regression-2.log",
+      "bytes": 935,
+      "sha256": "7d4e326beccd79d3cdf100e18d28f863636161980b5da9b1ab11d8f6880f7da6"
+    },
+    {
+      "path": "local-diagnostics/05-tmp-strata-layers-regression-3.log",
+      "original_path": "/tmp/strata-layers-regression-3.log",
+      "bytes": 1055,
+      "sha256": "d6c1bd038892a8b674da97c3c0378fac87695d6bc92c3aa5cce717e81cc53583"
+    },
+    {
+      "path": "local-diagnostics/06-tmp-strata-layers-regression-4.log",
+      "original_path": "/tmp/strata-layers-regression-4.log",
+      "bytes": 374,
+      "sha256": "86cc0ab8fc242f83a149ed36f4cdca3870854fab2a69a6620ba5db99e41fd3ce"
+    },
+    {
+      "path": "local-diagnostics/07-tmp-strata-layers-regression-5.log",
+      "original_path": "/tmp/strata-layers-regression-5.log",
+      "bytes": 375,
+      "sha256": "d9a57c94b6cc13b285901fdde001ff2266171f77842e9124c81e6c5a0c5ba489"
+    },
+    {
+      "path": "local-diagnostics/08-tmp-strata-layers-regression-6.log",
+      "original_path": "/tmp/strata-layers-regression-6.log",
+      "bytes": 375,
+      "sha256": "d9a57c94b6cc13b285901fdde001ff2266171f77842e9124c81e6c5a0c5ba489"
+    },
+    {
+      "path": "local-diagnostics/09-tmp-strata-layers-regression-7.log",
+      "original_path": "/tmp/strata-layers-regression-7.log",
+      "bytes": 663,
+      "sha256": "8137bf9024a2da42661d26494fda7e22665cdee8f49bc9df0234ff359d7c9cb1"
+    },
+    {
+      "path": "local-diagnostics/10-tmp-strata-layers-regression-8.log",
+      "original_path": "/tmp/strata-layers-regression-8.log",
+      "bytes": 375,
+      "sha256": "d2c382a11525dc35322164aac18ac580f75b81a4d418c8810e8ef6bb342b3152"
+    },
+    {
+      "path": "local-diagnostics/11-tmp-strata-layers-regression.log",
+      "original_path": "/tmp/strata-layers-regression.log",
+      "bytes": 1422,
+      "sha256": "1d0e80806b18a2319bef108b1caf26fce806bdf080408f7bfe0510d595c23dab"
+    }
+  ]
+}

@@ -16,8 +16,10 @@ The Draft/HOLD [four-plane composition contract](systems/strata-workbench.md)
 owns the borrowed play presentation, three static native decorative Worlds,
 input/history boundaries and versioned authored envelope. Use the
 [owner evaluation guide](operations/strata-workbench-evaluation.md) for the three
-native example scenes, controls and Save/fresh-process reopen. Physical owner
-acceptance remains separate from source and hosted graphical evidence.
+native example scenes, controls and Save/fresh-process reopen. The
+[decision packet](audits/2026-11-24-strata-theatre-workbench/decision-packet.md)
+binds the source, original qualification evidence and evaluator custody. Physical
+owner acceptance remains separate from source and hosted graphical evidence.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 

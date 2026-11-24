@@ -1,0 +1,117 @@
+{
+  "schema": "strata-negative-campaign-v1",
+  "source_commit": "16054c8894af6ba747ae72cf6b3cb582aa113c4c",
+  "source_tree": "94eb3a27132c1fbeeaade1480aff6b5592c6cfa5",
+  "workflow_run": 45446912752,
+  "status": "failed",
+  "preserved_files": [
+    {
+      "path": "run-45446912752/linux/industrial-assembly/install.json",
+      "sha256": "bb255d11c55c574ef698fad0845bc0b2f205d744220812a097b3cc5b584a87a6",
+      "bytes": 19481
+    },
+    {
+      "path": "run-45446912752/linux/cavern/install.json",
+      "sha256": "20c4f7aacf22c8e190a79694519121a9794d6dab9ab1ba0bc4353121b48edd08",
+      "bytes": 19435
+    },
+    {
+      "path": "run-45446912752/linux/arcology/install.json",
+      "sha256": "674a0399285956f63d243b83a777a005671058db505314a098cd5ff30aadd59d",
+      "bytes": 19456
+    },
+    {
+      "path": "run-45446912752/linux/industrial-assembly/install/process.log",
+      "sha256": "0697ae328c676657466f2c1deb43f4e214acaa5bb83ba5e3e4483d59c8273462",
+      "bytes": 995
+    },
+    {
+      "path": "run-45446912752/linux/cavern/install/process.log",
+      "sha256": "c3fdee5abf7eabe345731f2e774ab0f81eb688da5f1a8260899fb6fe7b240214",
+      "bytes": 982
+    },
+    {
+      "path": "run-45446912752/linux/arcology/install/process.log",
+      "sha256": "86352289e64b0f3fe8ee426fb13ea46501e3bbd36996a7c4a4f369c09d8b9567",
+      "bytes": 984
+    },
+    {
+      "path": "run-45446912752/linux/industrial-assembly/install/process.json",
+      "sha256": "68d656ca7f160d0609e8d619020cfedcfae1d7c7ce73d097327c59929087d3ed",
+      "bytes": 532
+    },
+    {
+      "path": "run-45446912752/linux/cavern/install/process.json",
+      "sha256": "fdec441eeb616958c55fa97948f940adfbdfad2bb71cc0920b6ff2c6411acb8d",
+      "bytes": 532
+    },
+    {
+      "path": "run-45446912752/linux/arcology/install/process.json",
+      "sha256": "02c8ba8c24296316d17c77797e9ab7e25c46af7896d1f3b9235fd348f06b2c1d",
+      "bytes": 532
+    },
+    {
+      "path": "run-45446912752/windows/industrial-assembly/install.json",
+      "sha256": "16d6daf518ece7b7abe7ccfec71c56683a769f8f55d04d28a8669b0f7f9449cb",
+      "bytes": 515
+    },
+    {
+      "path": "run-45446912752/windows/cavern/install.json",
+      "sha256": "1579ec902344f2397e250a6cdf3334808fdb5eda831d3f9cf236cc568e8a8095",
+      "bytes": 504
+    },
+    {
+      "path": "run-45446912752/windows/arcology/install.json",
+      "sha256": "faf47f128433e4da5097fdb0d62fad44c020a59785a0c10a7cada196d9daff7e",
+      "bytes": 506
+    },
+    {
+      "path": "run-45446912752/windows/industrial-assembly/install/process.log",
+      "sha256": "d22b7018e99b5bb2de1f256e29c86787c8ef2df40836a537c9f84e7eaf70188a",
+      "bytes": 1154
+    },
+    {
+      "path": "run-45446912752/windows/cavern/install/process.log",
+      "sha256": "c6aab05035d8a4c30a6a53aa5a90a7e2e039ebad47cf5192eaa52cf74386222d",
+      "bytes": 1141
+    },
+    {
+      "path": "run-45446912752/windows/arcology/install/process.log",
+      "sha256": "f8b5381861aa5bb8c209da50bbdc9b16d6b0b9fc22a32c51af464eccece31f63",
+      "bytes": 1143
+    },
+    {
+      "path": "run-45446912752/windows/industrial-assembly/install/process.json",
+      "sha256": "11e7d3a2d2ef99adda83f671b476bf29afc8cb5e45283b916ff12e3ca277c115",
+      "bytes": 685
+    },
+    {
+      "path": "run-45446912752/windows/cavern/install/process.json",
+      "sha256": "1b12578a48b193520077dd26574f2533829b7cec831386027a8a66b13fefbd9b",
+      "bytes": 672
+    },
+    {
+      "path": "run-45446912752/windows/arcology/install/process.json",
+      "sha256": "f3d4b1544078cf42e4bc0949ec40654983a47c1d58180d87d6c03fd8929c9386",
+      "bytes": 674
+    }
+  ],
+  "original_artifacts": [
+    {
+      "platform": "linux",
+      "id": 14946421965,
+      "sha256": "c634d71edce6163d3381bc568711e5ece62ff2ad51d7058d786a37dc005b7c43"
+    },
+    {
+      "platform": "windows",
+      "id": 14946651580,
+      "sha256": "68135be513d6c26349e13927004e87f79c479d1e1391d227c87eea2c20fb627c"
+    }
+  ],
+  "findings": [
+    "Linux each scene GDScript reported 569 checks without failure, but independent admission rejected a negative signed64 Godot RefCounted worker identity; exact textual identity correction required.",
+    "Independent actual PNG review found hidden Play materials still drawn in Solo/Flat because shared palette output ignores Control alpha; no appearance acceptance.",
+    "Windows ANGLE Microsoft Basic Render Driver reached Main startup but all three 45second bootstrap waits failed before Strata; no ordinary Windows integration pass.",
+    "No reopen phase or package acceptance followed these failures."
+  ]
+}

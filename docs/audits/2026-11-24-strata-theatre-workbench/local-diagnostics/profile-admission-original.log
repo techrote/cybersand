@@ -1,0 +1,17 @@
+E
+======================================================================
+ERROR: test_actual_source_profiles_and_adverse_copies (__main__.ArchivedGeneratorProfiles.test_actual_source_profiles_and_adverse_copies)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/strata-qualification/tools/ci/test_strata_qualification.py", line 99, in test_actual_source_profiles_and_adverse_copies
+    package.verify_generator_profiles(folder, record, originals, names)
+  File "/tmp/strata-qualification/tools/package_strata_workbench.py", line 56, in verify_generator_profiles
+    require(record.get("generator_profiles_sha256") == profiles and all(
+  File "/tmp/strata-qualification/tools/qualify_workbench_landscapes.py", line 40, in require
+    raise RuntimeError(message)
+RuntimeError: Portable generator profiles differ from archived source recipes
+
+----------------------------------------------------------------------
+Ran 1 test in 0.060s
+
+FAILED (errors=1)

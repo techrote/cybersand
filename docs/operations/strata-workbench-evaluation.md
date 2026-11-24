@@ -14,17 +14,21 @@ related-documents: [../systems/strata-workbench.md, github-development-and-relea
 ordinary Workbench. The [contract](../systems/strata-workbench.md) defines ownership,
 bounds, persistence and the deliberately static decorative planes. This guide
 does not imply that an unexecuted platform or the owner's physical GPU passed.
+The [decision packet](../audits/2026-11-24-strata-theatre-workbench/decision-packet.md)
+records exact source/runtime identities, original results and evaluator custody.
 
 ## Open and inspect
 
 Extract the complete verified Windows evaluator into a writable directory and
 run **Open Workbench.cmd**. It opens ordinary Workbench with Strata initially off.
-No separate Godot installation is required. Runtime identities, checksum and
-complete payload manifest accompany the qualified package when published.
+No separate Godot installation is required. The verified filename, checksum,
+source/runtime identities and complete payload manifest are recorded in the
+[portable evaluator section](../audits/2026-11-24-strata-theatre-workbench/decision-packet.md#verified-portable-windows-evaluator).
 
 1. Open **Strata Theatre…** in the ordinary toolbar.
-2. Load **Industrial assembly hall**, **Science-fiction arcology** or
-   **Organic / industrial cavern**. These replace the authored scene through
+2. Scroll to **Open a complete example scene**, choose **Industrial assembly
+   hall**, **Science-fiction arcology** or **Organic / industrial cavern**, then
+   press **Load selected example…**. These replace the authored scene through
    ordinary Workbench admission. Save your current scene first if wanted.
 3. Examples open in **Overview** after admission. Use the existing camera picker,
    zoom and middle-mouse pan controls to inspect details.
@@ -34,6 +38,10 @@ complete payload manifest accompany the qualified package when published.
 The scenes use native materials and true straight-on side elevation. The play
 routes and voids remain distinct from rear trusses, distant structures and
 atmospheric decoration. They introduce no asset corpus or generator programme.
+The industrial example offers a broad lower assembly hall for the Midge flyer;
+its upper chambers are separate spaces. The geometry inspection records clear
+horizontal and central vertical corridors in that lower hall, without claiming
+that every chamber is connected or that a complete flight course was qualified.
 
 ## Author and play
 
@@ -43,6 +51,10 @@ Use the ordinary material picker, radius and tool selector. Play keeps its norma
 editor. Static planes support Brush, Eraser, Line, Rectangle, Outline and bounded
 Select/Copy/Paste; right mouse erases. Each operation is limited to 16,384 cells,
 and Fill remains a Play-only tool.
+
+Move or close the floating Strata panel to expose the scene while painting.
+Reopen it with the same toolbar action to change the edit target or visual
+settings; closing this panel does not retire its composition.
 
 Ctrl+C copies the visible selected plane's native materials, including Empty;
 Ctrl+V selects Paste. Ctrl+Z/Ctrl+Y and the panel's Undo/Redo act on the selected
@@ -71,7 +83,7 @@ Save is an authored-layout operation. Evolved play liquids, fire and actor motio
 are not exact continuation state. Explicit **Flatten / Bake History** can make
 current play material occupancy its new authored baseline before Save; it never
 merges visual planes. Saving alone leaves this session's Undo intact. Undo stacks
-are not promised across restart. Ordinary old Setup/generated/Flatten saves keep
+are not saved. Ordinary old Setup/generated/Flatten saves keep
 their existing nonlayered readers.
 
 Select an editable **Play** plane before Flatten or model-assisted Art authoring;

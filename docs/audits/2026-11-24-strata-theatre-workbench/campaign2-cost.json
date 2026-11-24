@@ -1,0 +1,2230 @@
+{
+  "schema": "strata-independent-qualification-cost-summary-v1",
+  "scope": "Original source-bound ordinary Workbench execution records. Summary does not supersede campaign/package admission.",
+  "measurement_limits": [
+    "CPU and RSS/working-set observations cover whole processes and discovered descendants; they do not isolate incremental layer cost.",
+    "Raw process counters are sampled at 0.5 seconds; short-lived descendants and exit tails may be missed and shared pages may be counted more than once.",
+    "Mode samples observe paused main callback intervals and Godot-tracked static memory. Disabled, flat and stack retain the same composition resources.",
+    "The ordinary baseline precedes Strata allocation at a 512-square canvas and is not a matched-scene resource comparison.",
+    "No incremental native-RSS, GPU-memory, physical presented-FPS or Windows 11/NVIDIA result is inferred.",
+    "A successful final predicate after a callback wait limit is recorded as functional recovery with a budget overrun; the outer process deadline is separate."
+  ],
+  "campaigns": [
+    {
+      "platform": "linux",
+      "status": "failed",
+      "completed": true,
+      "source_commit": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+      "source_tree": "21d47b1ca2210ad61cfeac8997019586f8e0d639",
+      "input_custody": "passed",
+      "godot": {
+        "path": "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "original_folder": "/tmp/strata-campaign2-linux",
+      "original_manifest_sha256": "221ba39bf81b7cd1e1ea420a06c0954981457e547c34be9e1b59e67cb8c5d02b",
+      "error": "Maximum extent qualification failed",
+      "source_inputs": 1105,
+      "evidence_files": 126,
+      "runtime": {
+        "cybersand_runtime": {
+          "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "size": 5253776
+        },
+        "native_source_inputs": {
+          "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+          "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+          "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+          "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+          "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+          "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+          "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+          "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+          "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81"
+        },
+        "rapier_runtime": {
+          "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "size": 117275416
+        },
+        "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "runtime_provenance": {
+          "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+          "sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1"
+        },
+        "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+      },
+      "maximum": {
+        "status": "failed",
+        "error": "[Errno 17] File exists: '/home/runner/work/cybersand/cybersand/build/strata-linux/maximum'"
+      },
+      "scenes": [
+        {
+          "name": "industrial-assembly",
+          "status": "passed",
+          "phases": {
+            "install": {
+              "checks": 880,
+              "failures": [],
+              "completed": true,
+              "process_id": 3204,
+              "bootstrap_elapsed_ms": 8717,
+              "display_server": "X11",
+              "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+                "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+                "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+                "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+              },
+              "save": {
+                "path": "/home/runner/work/cybersand/cybersand/build/strata-linux/industrial-assembly/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-industrial-assembly.json",
+                "sha256": "f00847692b694e392cafeed4dbcf39024b27ce8461c63551c2e3544bdaf2a488"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 42839,
+                "generation": 2,
+                "last_edit_usec": 12282,
+                "layers": {},
+                "native_snapshot_calls": 37,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "e0c30035dc5854a23f07225254ad0780"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3204,
+                "wall_seconds": 73.335,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 116.91,
+                "sampled_peak_tree_rss_bytes": 1421496320,
+                "resource_sample_count": 146,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3204,
+                    7639
+                  ]
+                ],
+                "resources_sha256": "53f74e2a1a1a1d9252618c5dcfcc276ec77dd6ffd4eb0e799d35f010c8b49765",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "9eac4095404b75839bade86a091fc36282b322aacf2b1c7e340a191c38db3db8",
+              "cost_samples": [
+                {
+                  "callback_max_usec": 129756,
+                  "callback_p50_usec": 90029,
+                  "callback_p95_usec": 107481,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4076952,
+                  "godot_tracked_static_memory_bytes": 123308634.0,
+                  "mode": "disabled",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 107937,
+                  "callback_p50_usec": 91640,
+                  "callback_p95_usec": 96151,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4041483,
+                  "godot_tracked_static_memory_bytes": 123320550.0,
+                  "mode": "flat",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 101580,
+                  "callback_p50_usec": 96747,
+                  "callback_p95_usec": 100226,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4253645,
+                  "godot_tracked_static_memory_bytes": 123323742.0,
+                  "mode": "stack",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                }
+              ],
+              "ordinary_before_strata_baseline": {
+                "callback_intervals_usec": [
+                  79361,
+                  87285,
+                  92356,
+                  92987,
+                  81593,
+                  78919,
+                  80191,
+                  78037,
+                  89103,
+                  82309,
+                  80550,
+                  78613,
+                  79646,
+                  77929,
+                  80951,
+                  79036,
+                  80959,
+                  77868,
+                  79581,
+                  78016,
+                  80064,
+                  77572,
+                  79530,
+                  77445,
+                  80290,
+                  78034,
+                  99525,
+                  78237,
+                  92107
+                ],
+                "extent": [
+                  512,
+                  512
+                ],
+                "godot_process_seconds": [
+                  6.978408,
+                  6.978408,
+                  6.978408,
+                  6.978408,
+                  6.978408,
+                  6.978408,
+                  6.978408,
+                  6.978408,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.092699,
+                  0.088795,
+                  0.088795,
+                  0.088795,
+                  0.088795,
+                  0.088795,
+                  0.088795,
+                  0.088795,
+                  0.088795,
+                  0.088795
+                ],
+                "godot_tracked_static_memory_after": 105822266,
+                "godot_tracked_static_memory_before": 105817270,
+                "native_tick_after": 0,
+                "native_tick_before": 0,
+                "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+                "snapshot_serial_after": 583,
+                "snapshot_serial_before": 436,
+                "strata_initialized": false
+              },
+              "play_visibility_pixels": {
+                "background_remains_visible": true,
+                "emissive_material": 77,
+                "half_opacity_intermediate": true,
+                "halo_half_delta": 0.112014770507812,
+                "halo_visible_delta": 0.224197387695312,
+                "hidden_halo_absent": true,
+                "ordinary_restored": true,
+                "play_only_delta": 0.4417724609375,
+                "solo_flat_hidden_zero_absent": true
+              },
+              "immediate_view_input": {
+                "inverse_error": 0.0,
+                "native_material": 131,
+                "scale": 1.25,
+                "source_colour_error": 0.000436604022979736,
+                "target": [
+                  600,
+                  300
+                ],
+                "viewport_event_injection": true
+              },
+              "transform_roundtrips": {
+                "camera_floor_matches_host": true,
+                "max_error": 0.000251654390012845,
+                "samples": 216,
+                "scales": [
+                  1.0,
+                  1.25
+                ],
+                "viewports": [
+                  [
+                    1600,
+                    1000
+                  ],
+                  [
+                    1280,
+                    800
+                  ]
+                ]
+              },
+              "all_plane_authoring": {
+                "background": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.593338012695312,
+                  "undo_native": true
+                },
+                "effects": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.593338012695312,
+                  "undo_native": true
+                },
+                "scripted": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.407470703125,
+                  "undo_native": true
+                }
+              },
+              "source_bound_identity_transitions": 12
+            },
+            "reopen": {
+              "checks": 162,
+              "failures": [],
+              "completed": true,
+              "process_id": 3272,
+              "bootstrap_elapsed_ms": 6311,
+              "display_server": "X11",
+              "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+                "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+                "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+                "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+              },
+              "save": {
+                "path": "/home/runner/work/cybersand/cybersand/build/strata-linux/industrial-assembly/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-industrial-assembly.json",
+                "sha256": "f00847692b694e392cafeed4dbcf39024b27ce8461c63551c2e3544bdaf2a488"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 43504,
+                "generation": 2,
+                "last_edit_usec": 11962,
+                "layers": {},
+                "native_snapshot_calls": 3,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "4ee3d507d788212af73fbc1722196b2a"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3272,
+                "wall_seconds": 23.026,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 29.92,
+                "sampled_peak_tree_rss_bytes": 1016590336,
+                "resource_sample_count": 46,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3272,
+                    14973
+                  ]
+                ],
+                "resources_sha256": "7bfd85607af23ea37b69a0fcc4402bed228a43430885cb8343eeef29c1e43434",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "6579c06b8442768d6388698895a863b8104325354c2541785783d8bf2eb9a647"
+            }
+          },
+          "distinct_engine_processes": true,
+          "exact_four_plane_native_hashes_after_fresh_reopen": true,
+          "exact_save_bytes_after_fresh_reopen": true
+        },
+        {
+          "name": "arcology",
+          "status": "passed",
+          "phases": {
+            "install": {
+              "checks": 880,
+              "failures": [],
+              "completed": true,
+              "process_id": 3325,
+              "bootstrap_elapsed_ms": 10857,
+              "display_server": "X11",
+              "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+                "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+                "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+                "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+              },
+              "save": {
+                "path": "/home/runner/work/cybersand/cybersand/build/strata-linux/arcology/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-arcology.json",
+                "sha256": "d15cf80b2c429ee05ec3b40a58fe80b3e6fa542acdfccbb5591752901718413c"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 51348,
+                "generation": 2,
+                "last_edit_usec": 12989,
+                "layers": {},
+                "native_snapshot_calls": 37,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "e4ffe18dd6ae5d236c38edcdd6eae348"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3325,
+                "wall_seconds": 79.718,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 124.42,
+                "sampled_peak_tree_rss_bytes": 1396695040,
+                "resource_sample_count": 158,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3325,
+                    17276
+                  ]
+                ],
+                "resources_sha256": "99b582f5781942007b3f9d269e0f83f3085bb55e34680de0811a35a46fe7fe16",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "f2f8f6fd04ff823d14c3d888fa81075f2458020cbd453e5093d66434369672c4",
+              "cost_samples": [
+                {
+                  "callback_max_usec": 113152,
+                  "callback_p50_usec": 90054,
+                  "callback_p95_usec": 102122,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4024130,
+                  "godot_tracked_static_memory_bytes": 122699616.0,
+                  "mode": "disabled",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 128187,
+                  "callback_p50_usec": 95407,
+                  "callback_p95_usec": 111222,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4272256,
+                  "godot_tracked_static_memory_bytes": 122711532.0,
+                  "mode": "flat",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 126497,
+                  "callback_p50_usec": 102078,
+                  "callback_p95_usec": 116934,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4562086,
+                  "godot_tracked_static_memory_bytes": 122714724.0,
+                  "mode": "stack",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                }
+              ],
+              "ordinary_before_strata_baseline": {
+                "callback_intervals_usec": [
+                  80255,
+                  79039,
+                  80865,
+                  79464,
+                  80251,
+                  79211,
+                  79565,
+                  79807,
+                  79631,
+                  79557,
+                  90451,
+                  80092,
+                  81170,
+                  109037,
+                  92981,
+                  80920,
+                  82737,
+                  84148,
+                  83368,
+                  92321,
+                  84563,
+                  92313,
+                  83815,
+                  82298,
+                  90046,
+                  81674,
+                  82952,
+                  79760,
+                  80968
+                ],
+                "extent": [
+                  512,
+                  512
+                ],
+                "godot_process_seconds": [
+                  9.037601,
+                  9.037601,
+                  9.037601,
+                  9.037601,
+                  9.037601,
+                  9.037601,
+                  9.037601,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.081173,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721,
+                  0.108721
+                ],
+                "godot_tracked_static_memory_after": 105822094,
+                "godot_tracked_static_memory_before": 105817098,
+                "native_tick_after": 0,
+                "native_tick_before": 0,
+                "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+                "snapshot_serial_after": 714,
+                "snapshot_serial_before": 563,
+                "strata_initialized": false
+              },
+              "play_visibility_pixels": {
+                "background_remains_visible": true,
+                "emissive_material": 77,
+                "half_opacity_intermediate": true,
+                "halo_half_delta": 0.110305786132812,
+                "halo_visible_delta": 0.218948364257812,
+                "hidden_halo_absent": true,
+                "ordinary_restored": true,
+                "play_only_delta": 0.4417724609375,
+                "solo_flat_hidden_zero_absent": true
+              },
+              "immediate_view_input": {
+                "inverse_error": 0.0,
+                "native_material": 131,
+                "scale": 1.25,
+                "source_colour_error": 0.000436604022979736,
+                "target": [
+                  600,
+                  300
+                ],
+                "viewport_event_injection": true
+              },
+              "transform_roundtrips": {
+                "camera_floor_matches_host": true,
+                "max_error": 0.000251654390012845,
+                "samples": 216,
+                "scales": [
+                  1.0,
+                  1.25
+                ],
+                "viewports": [
+                  [
+                    1600,
+                    1000
+                  ],
+                  [
+                    1280,
+                    800
+                  ]
+                ]
+              },
+              "all_plane_authoring": {
+                "background": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.593338012695312,
+                  "undo_native": true
+                },
+                "effects": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.593338012695312,
+                  "undo_native": true
+                },
+                "scripted": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.125244140625,
+                  "undo_native": true
+                }
+              },
+              "source_bound_identity_transitions": 12
+            },
+            "reopen": {
+              "checks": 162,
+              "failures": [],
+              "completed": true,
+              "process_id": 3393,
+              "bootstrap_elapsed_ms": 6840,
+              "display_server": "X11",
+              "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+                "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+                "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+                "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+              },
+              "save": {
+                "path": "/home/runner/work/cybersand/cybersand/build/strata-linux/arcology/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-arcology.json",
+                "sha256": "d15cf80b2c429ee05ec3b40a58fe80b3e6fa542acdfccbb5591752901718413c"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 56258,
+                "generation": 2,
+                "last_edit_usec": 12244,
+                "layers": {},
+                "native_snapshot_calls": 3,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "223a4a37683f925bf3e526c744b525ed"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3393,
+                "wall_seconds": 23.546,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 30.18,
+                "sampled_peak_tree_rss_bytes": 1024393216,
+                "resource_sample_count": 47,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3393,
+                    25248
+                  ]
+                ],
+                "resources_sha256": "933cb58162618a3464efd7d5d4cbc7adbf1b7e418729e10434b9759c5fa33a74",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "f1e70ccd3168c6176642a57bda0906630cfac42b11c84df04720773b7bc4b08c"
+            }
+          },
+          "distinct_engine_processes": true,
+          "exact_four_plane_native_hashes_after_fresh_reopen": true,
+          "exact_save_bytes_after_fresh_reopen": true
+        },
+        {
+          "name": "cavern",
+          "status": "passed",
+          "phases": {
+            "install": {
+              "checks": 880,
+              "failures": [],
+              "completed": true,
+              "process_id": 3441,
+              "bootstrap_elapsed_ms": 9025,
+              "display_server": "X11",
+              "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+                "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+                "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+                "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+              },
+              "save": {
+                "path": "/home/runner/work/cybersand/cybersand/build/strata-linux/cavern/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-cavern.json",
+                "sha256": "d3f35b2fd97154146c457bd654c8760618d7e3fd735c7c7580108b45fff77c48"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 59300,
+                "generation": 2,
+                "last_edit_usec": 12695,
+                "layers": {},
+                "native_snapshot_calls": 37,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "b16cf72ecd223d5fcf7ae05b7f85d442"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3441,
+                "wall_seconds": 74.817,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 120.19,
+                "sampled_peak_tree_rss_bytes": 1415168000,
+                "resource_sample_count": 149,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3441,
+                    27604
+                  ]
+                ],
+                "resources_sha256": "5baeb6640ffd41a58d84011b5ca0a907e0049bf47f02629c6123ea0a9c05bab2",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "5457cf6662c821192611e2b1f7eeb40d08ae80cc1d146da43b6f279920986215",
+              "cost_samples": [
+                {
+                  "callback_max_usec": 109067,
+                  "callback_p50_usec": 91780,
+                  "callback_p95_usec": 105061,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4091080,
+                  "godot_tracked_static_memory_bytes": 123518472.0,
+                  "mode": "disabled",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 117718,
+                  "callback_p50_usec": 94759,
+                  "callback_p95_usec": 105760,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4237195,
+                  "godot_tracked_static_memory_bytes": 123530388.0,
+                  "mode": "flat",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 123327,
+                  "callback_p50_usec": 103060,
+                  "callback_p95_usec": 114624,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 4588270,
+                  "godot_tracked_static_memory_bytes": 123533580.0,
+                  "mode": "stack",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                }
+              ],
+              "ordinary_before_strata_baseline": {
+                "callback_intervals_usec": [
+                  81138,
+                  80797,
+                  81436,
+                  81207,
+                  86313,
+                  84902,
+                  84182,
+                  91432,
+                  83080,
+                  81094,
+                  82475,
+                  90417,
+                  82408,
+                  81926,
+                  90772,
+                  80834,
+                  82153,
+                  81850,
+                  82093,
+                  80974,
+                  81691,
+                  80341,
+                  85904,
+                  80634,
+                  80819,
+                  79556,
+                  94294,
+                  79769,
+                  81622
+                ],
+                "extent": [
+                  512,
+                  512
+                ],
+                "godot_process_seconds": [
+                  7.205204,
+                  7.205204,
+                  7.205204,
+                  7.205204,
+                  7.205204,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.086017,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.091133,
+                  0.094022,
+                  0.094022
+                ],
+                "godot_tracked_static_memory_after": 105822070,
+                "godot_tracked_static_memory_before": 105817074,
+                "native_tick_after": 0,
+                "native_tick_before": 0,
+                "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+                "snapshot_serial_after": 601,
+                "snapshot_serial_before": 451,
+                "strata_initialized": false
+              },
+              "play_visibility_pixels": {
+                "background_remains_visible": true,
+                "emissive_material": 77,
+                "half_opacity_intermediate": true,
+                "halo_half_delta": 0.117507934570312,
+                "halo_visible_delta": 0.232009887695312,
+                "hidden_halo_absent": true,
+                "ordinary_restored": true,
+                "play_only_delta": 0.4417724609375,
+                "solo_flat_hidden_zero_absent": true
+              },
+              "immediate_view_input": {
+                "inverse_error": 0.0,
+                "native_material": 131,
+                "scale": 1.25,
+                "source_colour_error": 0.000436604022979736,
+                "target": [
+                  600,
+                  300
+                ],
+                "viewport_event_injection": true
+              },
+              "transform_roundtrips": {
+                "camera_floor_matches_host": true,
+                "max_error": 0.000251654390012845,
+                "samples": 216,
+                "scales": [
+                  1.0,
+                  1.25
+                ],
+                "viewports": [
+                  [
+                    1600,
+                    1000
+                  ],
+                  [
+                    1280,
+                    800
+                  ]
+                ]
+              },
+              "all_plane_authoring": {
+                "background": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.593338012695312,
+                  "undo_native": true
+                },
+                "effects": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.593338012695312,
+                  "undo_native": true
+                },
+                "scripted": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.3839111328125,
+                  "undo_native": true
+                }
+              },
+              "source_bound_identity_transitions": 12
+            },
+            "reopen": {
+              "checks": 162,
+              "failures": [],
+              "completed": true,
+              "process_id": 3539,
+              "bootstrap_elapsed_ms": 7477,
+              "display_server": "X11",
+              "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+                "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+                "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+                "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+              },
+              "save": {
+                "path": "/home/runner/work/cybersand/cybersand/build/strata-linux/cavern/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-cavern.json",
+                "sha256": "d3f35b2fd97154146c457bd654c8760618d7e3fd735c7c7580108b45fff77c48"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 61307,
+                "generation": 2,
+                "last_edit_usec": 13152,
+                "layers": {},
+                "native_snapshot_calls": 3,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "00b02a202b347cd7c0fb6ca36c8859a1"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3539,
+                "wall_seconds": 24.205,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 31.18,
+                "sampled_peak_tree_rss_bytes": 1001558016,
+                "resource_sample_count": 48,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3539,
+                    35086
+                  ]
+                ],
+                "resources_sha256": "301cabd548ac8d6d20f1be957b96af1cb78aecea866d5fdac63dc3a48b451c6e",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "4548fa9efc544f19740735acc56cf2c0bee425168c575c3fba997b372991d1c0"
+            }
+          },
+          "distinct_engine_processes": true,
+          "exact_four_plane_native_hashes_after_fresh_reopen": true,
+          "exact_save_bytes_after_fresh_reopen": true
+        }
+      ]
+    },
+    {
+      "platform": "win32",
+      "status": "failed",
+      "completed": true,
+      "source_commit": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+      "source_tree": "21d47b1ca2210ad61cfeac8997019586f8e0d639",
+      "input_custody": "passed",
+      "godot": {
+        "path": "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "original_folder": "/tmp/strata-campaign2-windows",
+      "original_manifest_sha256": "b3caa7d87b066e2d933d7a03637ed2a349f03d7e662f623910f0acae68d1a706",
+      "error": "Maximum extent qualification failed",
+      "source_inputs": 1105,
+      "evidence_files": 126,
+      "runtime": {
+        "cybersand_runtime": {
+          "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "size": 5820416
+        },
+        "native_source_inputs": {
+          "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+          "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+          "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+          "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+          "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+          "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+          "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+          "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+          "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81"
+        },
+        "rapier_runtime": {
+          "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "size": 9987072
+        },
+        "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "runtime_provenance": {
+          "path": "godot/addons/cybersand_native/runtime-provenance.json",
+          "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+        },
+        "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+      },
+      "maximum": {
+        "status": "failed",
+        "error": "[WinError 183] Cannot create a file when that file already exists: 'D:\\\\a\\\\cybersand\\\\cybersand\\\\build\\\\strata-windows\\\\maximum'"
+      },
+      "scenes": [
+        {
+          "name": "industrial-assembly",
+          "status": "passed",
+          "phases": {
+            "install": {
+              "checks": 880,
+              "failures": [],
+              "completed": true,
+              "process_id": 7172,
+              "bootstrap_elapsed_ms": 58095,
+              "display_server": "Windows",
+              "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+                "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+                "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+                "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+              },
+              "save": {
+                "path": "D:/a/cybersand/cybersand/build/strata-windows/industrial-assembly/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-industrial-assembly.json",
+                "sha256": "f00847692b694e392cafeed4dbcf39024b27ce8461c63551c2e3544bdaf2a488"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 197979,
+                "generation": 2,
+                "last_edit_usec": 20664,
+                "layers": {},
+                "native_snapshot_calls": 37,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "3029ed38dfe29a5c7cca450b83e5f8b1"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 4664,
+                "wall_seconds": 249.515,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 603.484375,
+                "sampled_peak_tree_rss_bytes": 1036013568,
+                "resource_sample_count": 459,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    4664,
+                    134400158704301806
+                  ],
+                  [
+                    7172,
+                    134400158704376140
+                  ]
+                ],
+                "resources_sha256": "2ca39edb57d0405bd90da597bd041c6635794efbf6c8120c27034935c7f3e917",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [
+                {
+                  "elapsed_ms": 55473,
+                  "label": "play and all three decorative native owners adopted",
+                  "limit_ms": 45000
+                }
+              ],
+              "original_result_sha256": "73b82191e8c312e088b6e3d4c0dda2fcafa440c3b46fd3f09e3ff447b734058e",
+              "cost_samples": [
+                {
+                  "callback_max_usec": 304445,
+                  "callback_p50_usec": 291125,
+                  "callback_p95_usec": 296770,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 12758110,
+                  "godot_tracked_static_memory_bytes": 127361720.0,
+                  "mode": "disabled",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 323050,
+                  "callback_p50_usec": 294998,
+                  "callback_p95_usec": 304352,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13016920,
+                  "godot_tracked_static_memory_bytes": 127373636.0,
+                  "mode": "flat",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 321323,
+                  "callback_p50_usec": 306551,
+                  "callback_p95_usec": 312963,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13516244,
+                  "godot_tracked_static_memory_bytes": 127376828.0,
+                  "mode": "stack",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                }
+              ],
+              "ordinary_before_strata_baseline": {
+                "callback_intervals_usec": [
+                  153794,
+                  120577,
+                  272372,
+                  265855,
+                  262933,
+                  266556,
+                  266398,
+                  264872,
+                  272866,
+                  268905,
+                  268562,
+                  264455,
+                  260877,
+                  265961,
+                  261409,
+                  267457,
+                  265866,
+                  262057,
+                  262929,
+                  268405,
+                  259334,
+                  265720,
+                  263458,
+                  270499,
+                  262000,
+                  270213,
+                  258754,
+                  264533,
+                  267137
+                ],
+                "extent": [
+                  512,
+                  512
+                ],
+                "godot_process_seconds": [
+                  0.040672,
+                  0.040672,
+                  0.040672,
+                  0.266951,
+                  0.266951,
+                  0.266951,
+                  0.266951,
+                  0.261126,
+                  0.261126,
+                  0.261126,
+                  0.261126,
+                  0.267158,
+                  0.267158,
+                  0.267158,
+                  0.260373,
+                  0.260373,
+                  0.260373,
+                  0.260373,
+                  0.262184,
+                  0.262184,
+                  0.262184,
+                  0.262184,
+                  0.262834,
+                  0.262834,
+                  0.262834,
+                  0.262834,
+                  0.265125,
+                  0.265125,
+                  0.265125,
+                  0.261685
+                ],
+                "godot_tracked_static_memory_after": 109900430,
+                "godot_tracked_static_memory_before": 109873874,
+                "native_tick_after": 0,
+                "native_tick_before": 0,
+                "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+                "snapshot_serial_after": 3537,
+                "snapshot_serial_before": 3240,
+                "strata_initialized": false
+              },
+              "play_visibility_pixels": {
+                "background_remains_visible": true,
+                "emissive_material": 77,
+                "half_opacity_intermediate": true,
+                "halo_half_delta": 0.117647064849734,
+                "halo_visible_delta": 0.227450994774699,
+                "hidden_halo_absent": true,
+                "ordinary_restored": true,
+                "play_only_delta": 0.443137254565954,
+                "solo_flat_hidden_zero_absent": true
+              },
+              "immediate_view_input": {
+                "inverse_error": 0.0,
+                "native_material": 131,
+                "scale": 1.25,
+                "source_colour_error": 0.0,
+                "target": [
+                  600,
+                  300
+                ],
+                "viewport_event_injection": true
+              },
+              "transform_roundtrips": {
+                "camera_floor_matches_host": true,
+                "max_error": 0.000251654390012845,
+                "samples": 216,
+                "scales": [
+                  1.0,
+                  1.25
+                ],
+                "viewports": [
+                  [
+                    1600,
+                    1000
+                  ],
+                  [
+                    1280,
+                    800
+                  ]
+                ]
+              },
+              "all_plane_authoring": {
+                "background": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.592156885191798,
+                  "undo_native": true
+                },
+                "effects": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.592156885191798,
+                  "undo_native": true
+                },
+                "scripted": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.40784315764904,
+                  "undo_native": true
+                }
+              },
+              "source_bound_identity_transitions": 12
+            },
+            "reopen": {
+              "checks": 162,
+              "failures": [],
+              "completed": true,
+              "process_id": 3672,
+              "bootstrap_elapsed_ms": 5788,
+              "display_server": "Windows",
+              "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+                "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+                "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+                "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+              },
+              "save": {
+                "path": "D:/a/cybersand/cybersand/build/strata-windows/industrial-assembly/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-industrial-assembly.json",
+                "sha256": "f00847692b694e392cafeed4dbcf39024b27ce8461c63551c2e3544bdaf2a488"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 208577,
+                "generation": 2,
+                "last_edit_usec": 20894,
+                "layers": {},
+                "native_snapshot_calls": 3,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "ee6b8c3de50af94fb31f9a7fd1d4a750"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3088,
+                "wall_seconds": 28.391,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 74.21875,
+                "sampled_peak_tree_rss_bytes": 777179136,
+                "resource_sample_count": 53,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    3088,
+                    134400161199509979
+                  ],
+                  [
+                    3672,
+                    134400161199577415
+                  ]
+                ],
+                "resources_sha256": "69dfb08dfc1d123fadf54561e54f4b5a663a0493335ff01c10921cd4367968c1",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "2021f8708caadf30b72c290146b2f7d64a0942c7165e313985630a8e24aff7ce"
+            }
+          },
+          "distinct_engine_processes": true,
+          "exact_four_plane_native_hashes_after_fresh_reopen": true,
+          "exact_save_bytes_after_fresh_reopen": true
+        },
+        {
+          "name": "arcology",
+          "status": "passed",
+          "phases": {
+            "install": {
+              "checks": 880,
+              "failures": [],
+              "completed": true,
+              "process_id": 4780,
+              "bootstrap_elapsed_ms": 56526,
+              "display_server": "Windows",
+              "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+                "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+                "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+                "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+              },
+              "save": {
+                "path": "D:/a/cybersand/cybersand/build/strata-windows/arcology/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-arcology.json",
+                "sha256": "d15cf80b2c429ee05ec3b40a58fe80b3e6fa542acdfccbb5591752901718413c"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 236134,
+                "generation": 2,
+                "last_edit_usec": 20333,
+                "layers": {},
+                "native_snapshot_calls": 37,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "c8ea4e1842ff834b1e89aab95c12b9e4"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 7128,
+                "wall_seconds": 247.812,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 603.921875,
+                "sampled_peak_tree_rss_bytes": 1150185472,
+                "resource_sample_count": 454,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    4780,
+                    134400161483588985
+                  ],
+                  [
+                    7128,
+                    134400161483514874
+                  ]
+                ],
+                "resources_sha256": "7426d1cd9ba144284db8ea2fbd8bb5d5752e00ea92ed9c082f60deebe09d61eb",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [
+                {
+                  "elapsed_ms": 54705,
+                  "label": "play and all three decorative native owners adopted",
+                  "limit_ms": 45000
+                }
+              ],
+              "original_result_sha256": "3403b553cecf1409a9d2d7ff0a0fc9fcf9f78f6183205a3715e82efe35fcbf4f",
+              "cost_samples": [
+                {
+                  "callback_max_usec": 305207,
+                  "callback_p50_usec": 294967,
+                  "callback_p95_usec": 303107,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 12929990,
+                  "godot_tracked_static_memory_bytes": 126752406.0,
+                  "mode": "disabled",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 322884,
+                  "callback_p50_usec": 298517,
+                  "callback_p95_usec": 307790,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13176479,
+                  "godot_tracked_static_memory_bytes": 126764322.0,
+                  "mode": "flat",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 320919,
+                  "callback_p50_usec": 310679,
+                  "callback_p95_usec": 317809,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13694327,
+                  "godot_tracked_static_memory_bytes": 126767514.0,
+                  "mode": "stack",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                }
+              ],
+              "ordinary_before_strata_baseline": {
+                "callback_intervals_usec": [
+                  41003,
+                  260963,
+                  262289,
+                  257100,
+                  258892,
+                  264111,
+                  270612,
+                  265279,
+                  263980,
+                  264874,
+                  263569,
+                  259647,
+                  262604,
+                  267264,
+                  265604,
+                  261698,
+                  267568,
+                  265744,
+                  264445,
+                  269023,
+                  262467,
+                  265880,
+                  268314,
+                  261459,
+                  259264,
+                  266006,
+                  264563,
+                  261037,
+                  268497
+                ],
+                "extent": [
+                  512,
+                  512
+                ],
+                "godot_process_seconds": [
+                  0.009603,
+                  0.009603,
+                  0.009603,
+                  0.009603,
+                  0.009603,
+                  0.257117,
+                  0.257117,
+                  0.257117,
+                  0.257117,
+                  0.265349,
+                  0.265349,
+                  0.265349,
+                  0.265349,
+                  0.259224,
+                  0.259224,
+                  0.259224,
+                  0.259224,
+                  0.261934,
+                  0.261934,
+                  0.261934,
+                  0.26364,
+                  0.26364,
+                  0.26364,
+                  0.26364,
+                  0.262678,
+                  0.262678,
+                  0.262678,
+                  0.262678,
+                  0.260785,
+                  0.260785
+                ],
+                "godot_tracked_static_memory_after": 109880066,
+                "godot_tracked_static_memory_before": 109873702,
+                "native_tick_after": 0,
+                "native_tick_before": 0,
+                "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+                "snapshot_serial_after": 3486,
+                "snapshot_serial_before": 3151,
+                "strata_initialized": false
+              },
+              "play_visibility_pixels": {
+                "background_remains_visible": true,
+                "emissive_material": 77,
+                "half_opacity_intermediate": true,
+                "halo_half_delta": 0.117647064849734,
+                "halo_visible_delta": 0.227450994774699,
+                "hidden_halo_absent": true,
+                "ordinary_restored": true,
+                "play_only_delta": 0.443137254565954,
+                "solo_flat_hidden_zero_absent": true
+              },
+              "immediate_view_input": {
+                "inverse_error": 0.0,
+                "native_material": 131,
+                "scale": 1.25,
+                "source_colour_error": 0.0,
+                "target": [
+                  600,
+                  300
+                ],
+                "viewport_event_injection": true
+              },
+              "transform_roundtrips": {
+                "camera_floor_matches_host": true,
+                "max_error": 0.000251654390012845,
+                "samples": 216,
+                "scales": [
+                  1.0,
+                  1.25
+                ],
+                "viewports": [
+                  [
+                    1600,
+                    1000
+                  ],
+                  [
+                    1280,
+                    800
+                  ]
+                ]
+              },
+              "all_plane_authoring": {
+                "background": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.592156885191798,
+                  "undo_native": true
+                },
+                "effects": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.592156885191798,
+                  "undo_native": true
+                },
+                "scripted": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.125490218400955,
+                  "undo_native": true
+                }
+              },
+              "source_bound_identity_transitions": 12
+            },
+            "reopen": {
+              "checks": 162,
+              "failures": [],
+              "completed": true,
+              "process_id": 1900,
+              "bootstrap_elapsed_ms": 5738,
+              "display_server": "Windows",
+              "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+                "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+                "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+                "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+              },
+              "save": {
+                "path": "D:/a/cybersand/cybersand/build/strata-windows/arcology/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-arcology.json",
+                "sha256": "d15cf80b2c429ee05ec3b40a58fe80b3e6fa542acdfccbb5591752901718413c"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 231233,
+                "generation": 2,
+                "last_edit_usec": 20902,
+                "layers": {},
+                "native_snapshot_calls": 3,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "237bf6311c652a02215d796784854732"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 3312,
+                "wall_seconds": 27.234,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 72.203125,
+                "sampled_peak_tree_rss_bytes": 777220096,
+                "resource_sample_count": 51,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    1900,
+                    134400163961572753
+                  ],
+                  [
+                    3312,
+                    134400163961504561
+                  ]
+                ],
+                "resources_sha256": "80aae0948a99df8075bfff3238e550350e16f6214a63738a8a84d92682c2ca03",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "a26b7f0b187a3d32032ec4f0a566f6d94aaf0fa870f7bf34b435b04977fba660"
+            }
+          },
+          "distinct_engine_processes": true,
+          "exact_four_plane_native_hashes_after_fresh_reopen": true,
+          "exact_save_bytes_after_fresh_reopen": true
+        },
+        {
+          "name": "cavern",
+          "status": "passed",
+          "phases": {
+            "install": {
+              "checks": 880,
+              "failures": [],
+              "completed": true,
+              "process_id": 6584,
+              "bootstrap_elapsed_ms": 57825,
+              "display_server": "Windows",
+              "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+                "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+                "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+                "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+              },
+              "save": {
+                "path": "D:/a/cybersand/cybersand/build/strata-windows/cavern/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-cavern.json",
+                "sha256": "d3f35b2fd97154146c457bd654c8760618d7e3fd735c7c7580108b45fff77c48"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 230319,
+                "generation": 2,
+                "last_edit_usec": 23653,
+                "layers": {},
+                "native_snapshot_calls": 37,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "bdd3612e0317bb2f6930447612c5f62a"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 7416,
+                "wall_seconds": 252.125,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 613.875,
+                "sampled_peak_tree_rss_bytes": 1159208960,
+                "resource_sample_count": 458,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    6584,
+                    134400164234047219
+                  ],
+                  [
+                    7416,
+                    134400164233975616
+                  ]
+                ],
+                "resources_sha256": "dafe9af8a477cc9bd575fb031bad3832ba20feaf85563542d03556ae26415c42",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [
+                {
+                  "elapsed_ms": 56026,
+                  "label": "play and all three decorative native owners adopted",
+                  "limit_ms": 45000
+                }
+              ],
+              "original_result_sha256": "dfeb8b085896d4e9a917d7a5a48d2fde84fec12f911d47a50b5f43929d189cf8",
+              "cost_samples": [
+                {
+                  "callback_max_usec": 327507,
+                  "callback_p50_usec": 299357,
+                  "callback_p95_usec": 317567,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13132483,
+                  "godot_tracked_static_memory_bytes": 127571454.0,
+                  "mode": "disabled",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 309300,
+                  "callback_p50_usec": 301661,
+                  "callback_p95_usec": 308488,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13286192,
+                  "godot_tracked_static_memory_bytes": 127583370.0,
+                  "mode": "flat",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                },
+                {
+                  "callback_max_usec": 320837,
+                  "callback_p50_usec": 312673,
+                  "callback_p95_usec": 317865,
+                  "decorative_uploads_during_sample": 0,
+                  "elapsed_usec": 13776793,
+                  "godot_tracked_static_memory_bytes": 127586562.0,
+                  "mode": "stack",
+                  "native_snapshots_during_sample": 0,
+                  "resource_state": "composition resources retained in disabled, flat and stack",
+                  "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS",
+                  "callback_interval_count": 44,
+                  "godot_process_sample_count": 45
+                }
+              ],
+              "ordinary_before_strata_baseline": {
+                "callback_intervals_usec": [
+                  38213,
+                  259199,
+                  272077,
+                  269689,
+                  261536,
+                  264829,
+                  263769,
+                  259327,
+                  271106,
+                  268038,
+                  264019,
+                  266019,
+                  269661,
+                  267750,
+                  267559,
+                  262168,
+                  266964,
+                  264979,
+                  265766,
+                  263939,
+                  264125,
+                  265841,
+                  260860,
+                  269022,
+                  265918,
+                  264771,
+                  269954,
+                  263847,
+                  266845
+                ],
+                "extent": [
+                  512,
+                  512
+                ],
+                "godot_process_seconds": [
+                  0.009384,
+                  0.009384,
+                  0.009384,
+                  0.009384,
+                  0.266835,
+                  0.266835,
+                  0.266835,
+                  0.266835,
+                  0.259307,
+                  0.259307,
+                  0.259307,
+                  0.259307,
+                  0.265622,
+                  0.265622,
+                  0.265622,
+                  0.263947,
+                  0.263947,
+                  0.263947,
+                  0.263947,
+                  0.261609,
+                  0.261609,
+                  0.261609,
+                  0.261609,
+                  0.260216,
+                  0.260216,
+                  0.260216,
+                  0.260216,
+                  0.264444,
+                  0.264444,
+                  0.264444
+                ],
+                "godot_tracked_static_memory_after": 109880042,
+                "godot_tracked_static_memory_before": 109873678,
+                "native_tick_after": 0,
+                "native_tick_before": 0,
+                "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+                "snapshot_serial_after": 3515,
+                "snapshot_serial_before": 3221,
+                "strata_initialized": false
+              },
+              "play_visibility_pixels": {
+                "background_remains_visible": true,
+                "emissive_material": 77,
+                "half_opacity_intermediate": true,
+                "halo_half_delta": 0.113725496456027,
+                "halo_visible_delta": 0.223529426380992,
+                "hidden_halo_absent": true,
+                "ordinary_restored": true,
+                "play_only_delta": 0.443137254565954,
+                "solo_flat_hidden_zero_absent": true
+              },
+              "immediate_view_input": {
+                "inverse_error": 0.0,
+                "native_material": 131,
+                "scale": 1.25,
+                "source_colour_error": 0.0,
+                "target": [
+                  600,
+                  300
+                ],
+                "viewport_event_injection": true
+              },
+              "transform_roundtrips": {
+                "camera_floor_matches_host": true,
+                "max_error": 0.000251654390012845,
+                "samples": 216,
+                "scales": [
+                  1.0,
+                  1.25
+                ],
+                "viewports": [
+                  [
+                    1600,
+                    1000
+                  ],
+                  [
+                    1280,
+                    800
+                  ]
+                ]
+              },
+              "all_plane_authoring": {
+                "background": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.592156885191798,
+                  "undo_native": true
+                },
+                "effects": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.592156885191798,
+                  "undo_native": true
+                },
+                "scripted": {
+                  "bounds_refused": true,
+                  "brush_native": true,
+                  "erase_native": true,
+                  "hidden_input_refused": true,
+                  "locked_copy_read_only": true,
+                  "other_native_planes_unchanged": true,
+                  "pixel_delta": 0.384313747286797,
+                  "undo_native": true
+                }
+              },
+              "source_bound_identity_transitions": 12
+            },
+            "reopen": {
+              "checks": 162,
+              "failures": [],
+              "completed": true,
+              "process_id": 1344,
+              "bootstrap_elapsed_ms": 5849,
+              "display_server": "Windows",
+              "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "rendering_method": "gl_compatibility",
+              "plane_native_hashes": {
+                "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+                "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+                "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+                "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+              },
+              "save": {
+                "path": "D:/a/cybersand/cybersand/build/strata-windows/cavern/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-cavern.json",
+                "sha256": "d3f35b2fd97154146c457bd654c8760618d7e3fd735c7c7580108b45fff77c48"
+              },
+              "teardown": {
+                "cache_hits": 0,
+                "construction_usec": 227630,
+                "generation": 2,
+                "last_edit_usec": 20776,
+                "layers": {},
+                "native_snapshot_calls": 3,
+                "native_world_count": 0,
+                "owns_play_world": false,
+                "pending_native_world_count": 0,
+                "pending_token": -1,
+                "retired_worlds": 3,
+                "session_id": "212a150f8f6655f7e266465d3374c1e2"
+              },
+              "process": {
+                "status": "passed",
+                "wrapper_pid": 5852,
+                "wall_seconds": 28.453,
+                "timeout_seconds": 420,
+                "observed_cpu_seconds": 76.484375,
+                "sampled_peak_tree_rss_bytes": 778891264,
+                "resource_sample_count": 53,
+                "resource_observation_errors": [],
+                "observed_process_identities": [
+                  [
+                    1344,
+                    134400166755470368
+                  ],
+                  [
+                    5852,
+                    134400166755397321
+                  ]
+                ],
+                "resources_sha256": "8a9ca71c452138aed61567973be6389316f255d49d173389fff799d7eef41190",
+                "resource_scope": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+              },
+              "callback_wait_rechecks": [],
+              "original_result_sha256": "b995d080cc29950e024530dbbdb0dcab79ae657abb4d93f19a17d0f076670f80"
+            }
+          },
+          "distinct_engine_processes": true,
+          "exact_four_plane_native_hashes_after_fresh_reopen": true,
+          "exact_save_bytes_after_fresh_reopen": true
+        }
+      ]
+    }
+  ],
+  "all_full_campaigns_passed": false,
+  "source_consistent_between_platforms": true,
+  "portable_package_execution_status": "separate gate; not inferred from source campaigns",
+  "owner_physical_windows11_nvidia_status": "pending"
+}

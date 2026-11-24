@@ -1,0 +1,19 @@
+{
+	"checks": 3,
+	"completed": true,
+	"display_server": "Windows",
+	"failures": [
+		"ordinary Workbench startup / "
+	],
+	"phase": "install",
+	"process_id": 96,
+	"rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+	"rendering_method": "gl_compatibility",
+	"scene": "industrial-assembly",
+	"schema": "strata-workbench-execution-v1",
+	"source_revision": "16054c8894af6ba747ae72cf6b3cb582aa113c4c",
+	"startup_extent": [
+		512,
+		512
+	]
+}

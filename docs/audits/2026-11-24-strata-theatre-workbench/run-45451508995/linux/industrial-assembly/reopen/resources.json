@@ -1,0 +1,758 @@
+{
+  "available": true,
+  "observation_errors": [],
+  "observed_cpu_seconds": 29.92,
+  "observer_wall_seconds": 0.20380120000007196,
+  "peak_observed_tree_rss_bytes": 1016590336,
+  "process_identities": [
+    [
+      3272,
+      14973
+    ]
+  ],
+  "root_pid": 3272,
+  "root_start_id": 14973,
+  "sample_count": 46,
+  "sample_interval_seconds": 0.5,
+  "samples": [
+    {
+      "elapsed_seconds": 0.000433,
+      "processes": [
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 12898304,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 12886016,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 0.0,
+      "tree_rss_bytes": 12886016
+    },
+    {
+      "elapsed_seconds": 0.503985,
+      "processes": [
+        {
+          "cpu_seconds": 0.45,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 316379136,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 315834368,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 0.45,
+      "tree_rss_bytes": 315834368
+    },
+    {
+      "elapsed_seconds": 1.007965,
+      "processes": [
+        {
+          "cpu_seconds": 0.95,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 390033408,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 389496832,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 0.95,
+      "tree_rss_bytes": 389496832
+    },
+    {
+      "elapsed_seconds": 1.51185,
+      "processes": [
+        {
+          "cpu_seconds": 1.47,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 458813440,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 445399040,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 1.47,
+      "tree_rss_bytes": 445399040
+    },
+    {
+      "elapsed_seconds": 2.015863,
+      "processes": [
+        {
+          "cpu_seconds": 1.99,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 458813440,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 445530112,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 1.99,
+      "tree_rss_bytes": 445530112
+    },
+    {
+      "elapsed_seconds": 2.519642,
+      "processes": [
+        {
+          "cpu_seconds": 2.89,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 499384320,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 481488896,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 2.89,
+      "tree_rss_bytes": 481488896
+    },
+    {
+      "elapsed_seconds": 3.023719,
+      "processes": [
+        {
+          "cpu_seconds": 3.43,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 620974080,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 620294144,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 3.43,
+      "tree_rss_bytes": 620294144
+    },
+    {
+      "elapsed_seconds": 3.527959,
+      "processes": [
+        {
+          "cpu_seconds": 3.96,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 630837248,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 630124544,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 3.96,
+      "tree_rss_bytes": 630124544
+    },
+    {
+      "elapsed_seconds": 4.032038,
+      "processes": [
+        {
+          "cpu_seconds": 4.49,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 630837248,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 630124544,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 4.49,
+      "tree_rss_bytes": 630124544
+    },
+    {
+      "elapsed_seconds": 4.53599,
+      "processes": [
+        {
+          "cpu_seconds": 5.03,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 666181632,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 665382912,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 5.03,
+      "tree_rss_bytes": 665382912
+    },
+    {
+      "elapsed_seconds": 5.04005,
+      "processes": [
+        {
+          "cpu_seconds": 5.56,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 706424832,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 705622016,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 5.56,
+      "tree_rss_bytes": 705622016
+    },
+    {
+      "elapsed_seconds": 5.544191,
+      "processes": [
+        {
+          "cpu_seconds": 6.1,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 738500608,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 737865728,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 6.1,
+      "tree_rss_bytes": 737865728
+    },
+    {
+      "elapsed_seconds": 6.048273,
+      "processes": [
+        {
+          "cpu_seconds": 6.61,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 744185856,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 743501824,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 6.61,
+      "tree_rss_bytes": 743501824
+    },
+    {
+      "elapsed_seconds": 6.553471,
+      "processes": [
+        {
+          "cpu_seconds": 7.16,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 751554560,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 750972928,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 7.16,
+      "tree_rss_bytes": 750972928
+    },
+    {
+      "elapsed_seconds": 7.058752,
+      "processes": [
+        {
+          "cpu_seconds": 8.13,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 750972928,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 739454976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 8.13,
+      "tree_rss_bytes": 739454976
+    },
+    {
+      "elapsed_seconds": 7.56409,
+      "processes": [
+        {
+          "cpu_seconds": 9.16,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 750972928,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 739454976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 9.16,
+      "tree_rss_bytes": 739454976
+    },
+    {
+      "elapsed_seconds": 8.068222,
+      "processes": [
+        {
+          "cpu_seconds": 10.18,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 750972928,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 739454976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 10.18,
+      "tree_rss_bytes": 739454976
+    },
+    {
+      "elapsed_seconds": 8.573697,
+      "processes": [
+        {
+          "cpu_seconds": 11.21,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 750972928,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 739454976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 11.21,
+      "tree_rss_bytes": 739454976
+    },
+    {
+      "elapsed_seconds": 9.078948,
+      "processes": [
+        {
+          "cpu_seconds": 12.24,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 750972928,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 739454976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 12.24,
+      "tree_rss_bytes": 739454976
+    },
+    {
+      "elapsed_seconds": 9.585274,
+      "processes": [
+        {
+          "cpu_seconds": 13.15,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 751833088,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 751439872,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 13.15,
+      "tree_rss_bytes": 751439872
+    },
+    {
+      "elapsed_seconds": 10.090773,
+      "processes": [
+        {
+          "cpu_seconds": 14.58,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 819679232,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 819326976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 14.58,
+      "tree_rss_bytes": 819326976
+    },
+    {
+      "elapsed_seconds": 10.595584,
+      "processes": [
+        {
+          "cpu_seconds": 15.89,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 819679232,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 819326976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 15.89,
+      "tree_rss_bytes": 819326976
+    },
+    {
+      "elapsed_seconds": 11.101049,
+      "processes": [
+        {
+          "cpu_seconds": 16.78,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 819679232,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 819326976,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 16.78,
+      "tree_rss_bytes": 819326976
+    },
+    {
+      "elapsed_seconds": 11.606548,
+      "processes": [
+        {
+          "cpu_seconds": 17.34,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 819818496,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 819458048,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 17.34,
+      "tree_rss_bytes": 819458048
+    },
+    {
+      "elapsed_seconds": 12.11087,
+      "processes": [
+        {
+          "cpu_seconds": 17.89,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 819818496,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 819458048,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 17.89,
+      "tree_rss_bytes": 819458048
+    },
+    {
+      "elapsed_seconds": 12.615142,
+      "processes": [
+        {
+          "cpu_seconds": 18.42,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 819818496,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 819458048,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 18.42,
+      "tree_rss_bytes": 819458048
+    },
+    {
+      "elapsed_seconds": 13.119552,
+      "processes": [
+        {
+          "cpu_seconds": 18.97,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 825839616,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 825487360,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 18.97,
+      "tree_rss_bytes": 825487360
+    },
+    {
+      "elapsed_seconds": 13.623972,
+      "processes": [
+        {
+          "cpu_seconds": 19.52,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 825864192,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 825487360,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 19.52,
+      "tree_rss_bytes": 825487360
+    },
+    {
+      "elapsed_seconds": 14.129489,
+      "processes": [
+        {
+          "cpu_seconds": 20.07,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 842043392,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 841609216,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 20.07,
+      "tree_rss_bytes": 841609216
+    },
+    {
+      "elapsed_seconds": 14.633878,
+      "processes": [
+        {
+          "cpu_seconds": 20.6,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 855793664,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 855371776,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 20.6,
+      "tree_rss_bytes": 855371776
+    },
+    {
+      "elapsed_seconds": 15.139466,
+      "processes": [
+        {
+          "cpu_seconds": 21.14,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 863461376,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 863105024,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 21.14,
+      "tree_rss_bytes": 863105024
+    },
+    {
+      "elapsed_seconds": 15.643734,
+      "processes": [
+        {
+          "cpu_seconds": 21.81,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 864190464,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 863760384,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 21.81,
+      "tree_rss_bytes": 863760384
+    },
+    {
+      "elapsed_seconds": 16.148735,
+      "processes": [
+        {
+          "cpu_seconds": 22.36,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 875794432,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 875425792,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 22.36,
+      "tree_rss_bytes": 875425792
+    },
+    {
+      "elapsed_seconds": 16.653039,
+      "processes": [
+        {
+          "cpu_seconds": 22.91,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 875794432,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 875425792,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 22.91,
+      "tree_rss_bytes": 875425792
+    },
+    {
+      "elapsed_seconds": 17.157359,
+      "processes": [
+        {
+          "cpu_seconds": 23.46,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 875794432,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 875425792,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 23.46,
+      "tree_rss_bytes": 875425792
+    },
+    {
+      "elapsed_seconds": 17.662772,
+      "processes": [
+        {
+          "cpu_seconds": 24.01,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 898109440,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 897708032,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 24.01,
+      "tree_rss_bytes": 897708032
+    },
+    {
+      "elapsed_seconds": 18.167054,
+      "processes": [
+        {
+          "cpu_seconds": 24.56,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 947277824,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 946860032,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 24.56,
+      "tree_rss_bytes": 946860032
+    },
+    {
+      "elapsed_seconds": 18.672221,
+      "processes": [
+        {
+          "cpu_seconds": 25.09,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 970772480,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 970321920,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 25.09,
+      "tree_rss_bytes": 970321920
+    },
+    {
+      "elapsed_seconds": 19.176319,
+      "processes": [
+        {
+          "cpu_seconds": 25.63,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 985600000,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 985133056,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 25.63,
+      "tree_rss_bytes": 985133056
+    },
+    {
+      "elapsed_seconds": 19.681773,
+      "processes": [
+        {
+          "cpu_seconds": 26.17,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 993091584,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 992735232,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 26.17,
+      "tree_rss_bytes": 992735232
+    },
+    {
+      "elapsed_seconds": 20.186271,
+      "processes": [
+        {
+          "cpu_seconds": 26.83,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 993980416,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 993521664,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 26.83,
+      "tree_rss_bytes": 993521664
+    },
+    {
+      "elapsed_seconds": 20.690488,
+      "processes": [
+        {
+          "cpu_seconds": 27.44,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 993980416,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 993521664,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 27.44,
+      "tree_rss_bytes": 993521664
+    },
+    {
+      "elapsed_seconds": 21.194408,
+      "processes": [
+        {
+          "cpu_seconds": 27.97,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 993980416,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 993521664,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 27.97,
+      "tree_rss_bytes": 993521664
+    },
+    {
+      "elapsed_seconds": 21.698524,
+      "processes": [
+        {
+          "cpu_seconds": 28.5,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 993980416,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 993521664,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 28.5,
+      "tree_rss_bytes": 993521664
+    },
+    {
+      "elapsed_seconds": 22.202626,
+      "processes": [
+        {
+          "cpu_seconds": 29.03,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 993980416,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 993521664,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 29.03,
+      "tree_rss_bytes": 993521664
+    },
+    {
+      "elapsed_seconds": 22.706773,
+      "processes": [
+        {
+          "cpu_seconds": 29.92,
+          "image_name": "Godot_v4.7-stab",
+          "os_peak_rss_bytes": 1017028608,
+          "parent_pid": 2826,
+          "pid": 3272,
+          "rss_bytes": 1016590336,
+          "start_id": 14973
+        }
+      ],
+      "tree_cpu_seconds_observed": 29.92,
+      "tree_rss_bytes": 1016590336
+    }
+  ],
+  "schema": "strata-process-resources-v1",
+  "scope": "observed_process_and_descendants",
+  "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+}

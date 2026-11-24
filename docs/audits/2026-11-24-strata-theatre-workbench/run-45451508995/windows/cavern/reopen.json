@@ -1,0 +1,362 @@
+{
+	"bootstrap_elapsed_ms": 5849,
+	"checks": 162,
+	"completed": true,
+	"display_server": "Windows",
+	"failures": [],
+	"final_diagnostics": {
+		"active_layer": "play",
+		"actor_ids": [
+			1
+		],
+		"enabled": true,
+		"layers": {
+			"cache_hits": 0,
+			"construction_usec": 227630,
+			"generation": 1,
+			"last_edit_usec": 20776,
+			"layers": {
+				"background": {
+					"cached_bytes": 1572864,
+					"clock_mode": "static",
+					"dirty": false,
+					"error": "",
+					"failed": false,
+					"native_instance_id": -9223371732734172214,
+					"native_revision": 123,
+					"native_tick": 0,
+					"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:background",
+					"paused": true,
+					"publication_serial": 1,
+					"rate_hz": 0,
+					"ready": true,
+					"redo": 0,
+					"revision": 10,
+					"undo": 0
+				},
+				"effects": {
+					"cached_bytes": 1572864,
+					"clock_mode": "static",
+					"dirty": false,
+					"error": "",
+					"failed": false,
+					"native_instance_id": -9223371732767734266,
+					"native_revision": 31,
+					"native_tick": 0,
+					"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:effects",
+					"paused": true,
+					"publication_serial": 1,
+					"rate_hz": 0,
+					"ready": true,
+					"redo": 0,
+					"revision": 10,
+					"undo": 0
+				},
+				"scripted": {
+					"cached_bytes": 1572864,
+					"clock_mode": "static",
+					"dirty": false,
+					"error": "",
+					"failed": false,
+					"native_instance_id": -9223371732784511441,
+					"native_revision": 464,
+					"native_tick": 0,
+					"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:scripted",
+					"paused": true,
+					"publication_serial": 1,
+					"rate_hz": 0,
+					"ready": true,
+					"redo": 0,
+					"revision": 17,
+					"undo": 0
+				}
+			},
+			"native_snapshot_calls": 3,
+			"native_world_count": 3,
+			"owns_play_world": false,
+			"pending_native_world_count": 0,
+			"pending_token": -1,
+			"retired_worlds": 0,
+			"session_id": "212a150f8f6655f7e266465d3374c1e2"
+		},
+		"pending": false,
+		"physical_session_id": 306200978452,
+		"play_apply_serial": 0,
+		"play_generation": 3,
+		"play_revision": 3,
+		"play_tick": 0,
+		"presentation": {
+			"active_shader_instance_id": -9223371731106782193,
+			"additional_native_play_worlds": 0,
+			"additional_play_texture_uploads": 0,
+			"camera_origin": "(0.0, 0.0)",
+			"content_rect": "[P: (138.2222, 0.0), S: (1603.556, 902.0)]",
+			"decorative_rg8_capacity_bytes": 4718592,
+			"decorative_rgba_capacity_bytes": 9437184,
+			"decorative_surface_count": 3,
+			"enabled": true,
+			"extent": "(1024, 768)",
+			"full_rg8_uploaded_bytes": 4718592,
+			"full_rg8_uploads": 3,
+			"last_error": "",
+			"layers": {
+				"background": {
+					"accepted_packets": 1,
+					"bake_requests": 1,
+					"copied_patch_bytes": 1572864,
+					"effective_visible": true,
+					"expected": {
+						"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:background",
+						"reset_generation": 1,
+						"revision": 10
+					},
+					"identity": {
+						"extent": [
+							1024,
+							768
+						],
+						"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:background",
+						"reset_generation": 1,
+						"revision": 10,
+						"serial": 1
+					},
+					"last_rejection": "",
+					"layer_id": "background",
+					"layer_tick": 0,
+					"material_surface_size": "(1024, 768)",
+					"native_texture_size": "(1024, 768)",
+					"rejected_packets": 0,
+					"render_enabled": false,
+					"reset_generation": 1,
+					"static_bake": true,
+					"upload_count": 1,
+					"uploaded_bytes": 1572864,
+					"viewport_update_mode": 1
+				},
+				"effects": {
+					"accepted_packets": 1,
+					"bake_requests": 1,
+					"copied_patch_bytes": 1572864,
+					"effective_visible": true,
+					"expected": {
+						"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:effects",
+						"reset_generation": 1,
+						"revision": 10
+					},
+					"identity": {
+						"extent": [
+							1024,
+							768
+						],
+						"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:effects",
+						"reset_generation": 1,
+						"revision": 10,
+						"serial": 1
+					},
+					"last_rejection": "",
+					"layer_id": "effects",
+					"layer_tick": 0,
+					"material_surface_size": "(1024, 768)",
+					"native_texture_size": "(1024, 768)",
+					"rejected_packets": 0,
+					"render_enabled": false,
+					"reset_generation": 1,
+					"static_bake": true,
+					"upload_count": 1,
+					"uploaded_bytes": 1572864,
+					"viewport_update_mode": 1
+				},
+				"scripted": {
+					"accepted_packets": 1,
+					"bake_requests": 1,
+					"copied_patch_bytes": 1572864,
+					"effective_visible": true,
+					"expected": {
+						"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:scripted",
+						"reset_generation": 1,
+						"revision": 17
+					},
+					"identity": {
+						"extent": [
+							1024,
+							768
+						],
+						"owner_id": "212a150f8f6655f7e266465d3374c1e2:1:scripted",
+						"reset_generation": 1,
+						"revision": 17,
+						"serial": 1
+					},
+					"last_rejection": "",
+					"layer_id": "scripted",
+					"layer_tick": 0,
+					"material_surface_size": "(1024, 768)",
+					"native_texture_size": "(1024, 768)",
+					"rejected_packets": 0,
+					"render_enabled": false,
+					"reset_generation": 1,
+					"static_bake": true,
+					"upload_count": 1,
+					"uploaded_bytes": 1572864,
+					"viewport_update_mode": 1
+				}
+			},
+			"original_shader_instance_id": -9223371958572284363,
+			"play_effective_visible": true,
+			"play_glow_source_sha256": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+			"play_glow_variant_bound": true,
+			"play_glow_variant_sha256": "e1a27dcfd6e2c5143ba4c4ece42d7fddb510d416cee16c19ba55ebbb25a07997",
+			"play_overlay_instance_ids": [
+				125007039945,
+				123799080326,
+				116601654270,
+				125158034893,
+				129872432796,
+				138982461530,
+				139016015964,
+				139049570398,
+				139083124832,
+				149317227139,
+				240031638237
+			],
+			"play_shader_source_sha256": "7e5650cb807825e8febebd402dcba262d0df10baf02d478ee3c30f99ca3d460d",
+			"play_shader_variant_bound": true,
+			"play_shader_variant_sha256": "ca404b435194ef415526f17665ed891a5de1fff868062b8575642b5d9fd0bd4b",
+			"play_texture_instance_id": -9223371662437637078,
+			"prepared": true,
+			"rejected_packets": 0,
+			"view_size": "(480.0, 270.0)"
+		},
+		"simulation_worker_id": -9223371958404512261
+	},
+	"framebuffers": {
+		"fresh-reopen": {
+			"content_scale_factor": 1.0,
+			"pixels": [
+				1600,
+				900
+			],
+			"window_size": [
+				1600,
+				1000
+			]
+		}
+	},
+	"fresh_process_reopen": true,
+	"ordinary_disabled_baseline": {
+		"callback_intervals_usec": [
+			235451,
+			101130,
+			192850,
+			273807,
+			269125,
+			264676,
+			266368,
+			272863,
+			268969,
+			270549,
+			266773,
+			270560,
+			270002,
+			263062,
+			272329,
+			270254,
+			264865,
+			268263,
+			264780,
+			273504,
+			267001,
+			265278,
+			265830,
+			266505,
+			267608,
+			262453,
+			262150,
+			263746,
+			264704
+		],
+		"extent": [
+			512,
+			512
+		],
+		"godot_process_seconds": [
+			0.009048,
+			0.009048,
+			0.009048,
+			0.009048,
+			0.268445,
+			0.268445,
+			0.268445,
+			0.268445,
+			0.267509,
+			0.267509,
+			0.267509,
+			0.267509,
+			0.265134,
+			0.265134,
+			0.265134,
+			0.265134,
+			0.266616,
+			0.266616,
+			0.266616,
+			0.262679,
+			0.262679,
+			0.262679,
+			0.262679,
+			0.268052,
+			0.268052,
+			0.268052,
+			0.268052,
+			0.261953,
+			0.261953,
+			0.261953
+		],
+		"godot_tracked_static_memory_after": 109905286,
+		"godot_tracked_static_memory_before": 109876978,
+		"native_tick_after": 0,
+		"native_tick_before": 0,
+		"scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+		"snapshot_serial_after": 406,
+		"snapshot_serial_before": 113,
+		"strata_initialized": false
+	},
+	"ordinary_workbench": true,
+	"phase": "reopen",
+	"plane_native_hashes": {
+		"background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+		"effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+		"play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+		"scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+	},
+	"process_id": 1344,
+	"rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+	"rendering_method": "gl_compatibility",
+	"save": {
+		"path": "D:/a/cybersand/cybersand/build/strata-windows/cavern/userdata/appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-cavern.json",
+		"sha256": "d3f35b2fd97154146c457bd654c8760618d7e3fd735c7c7580108b45fff77c48"
+	},
+	"scene": "cavern",
+	"schema": "strata-workbench-execution-v1",
+	"source_revision": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+	"startup_extent": [
+		512,
+		512
+	],
+	"teardown": {
+		"cache_hits": 0,
+		"construction_usec": 227630,
+		"generation": 2,
+		"last_edit_usec": 20776,
+		"layers": {},
+		"native_snapshot_calls": 3,
+		"native_world_count": 0,
+		"owns_play_world": false,
+		"pending_native_world_count": 0,
+		"pending_token": -1,
+		"retired_worlds": 3,
+		"session_id": "212a150f8f6655f7e266465d3374c1e2"
+	},
+	"world_count": {
+		"decorative_owned": 3,
+		"play_borrowed": 1
+	}
+}

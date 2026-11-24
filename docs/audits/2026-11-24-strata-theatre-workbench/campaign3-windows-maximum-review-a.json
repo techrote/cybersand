@@ -1,0 +1,163 @@
+{
+  "schema": "strata-independent-maximum-review-v1",
+  "platform": "win32",
+  "source_commit": "d95f9ceaa77ff444d8ff85ce9b90a1173edb7989",
+  "status": "passed_scoped_maximum_review",
+  "checks": 82,
+  "original_directory": "/tmp/strata-campaign3-windows/maximum",
+  "original_report_sha256": "c51902ac1a370291b1544f3605e8f23f60100a1eab352e00ced16a3e401969d3",
+  "engine_pid": 6240,
+  "console_wrapper_pid": 7956,
+  "identity_stable": true,
+  "identity": {
+    "actor_body_ids": [
+      "330276275730"
+    ],
+    "actor_session_id": "330158835231",
+    "native_tick": 0,
+    "physical_epoch": 1,
+    "rapier_tick": 0,
+    "worker_id": "-9223371957297216004",
+    "world_generation": 3
+  },
+  "play_material_sha256": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+  "native_and_pixel_observations": [
+    {
+      "plane": "background",
+      "native_owner": "-9223371636567177703",
+      "native_material": 131,
+      "recorded_float_pixel_delta": 0.10980392806232,
+      "independent_png_delta": 0.10980392156862745,
+      "independent_png_pixel": [
+        800,
+        392
+      ],
+      "before_rgb8": [
+        5,
+        7,
+        12
+      ],
+      "after_material_rgb8": [
+        33,
+        32,
+        33
+      ],
+      "separate_guide_border_rgb8": [
+        98,
+        196,
+        219
+      ],
+      "before_png_sha256": "46ae983a8c1efe0ff00f77c547a411fcd8ecf32953751bf57af159bb391da621",
+      "after_png_sha256": "efab2ef45dec48475b7082c746da2193c402d6f4038fdde10ebed9b80428da87"
+    },
+    {
+      "plane": "effects",
+      "native_owner": "-9223371636600724515",
+      "native_material": 131,
+      "recorded_float_pixel_delta": 0.10980392806232,
+      "independent_png_delta": 0.10980392156862745,
+      "independent_png_pixel": [
+        800,
+        392
+      ],
+      "before_rgb8": [
+        5,
+        7,
+        12
+      ],
+      "after_material_rgb8": [
+        33,
+        32,
+        33
+      ],
+      "separate_guide_border_rgb8": [
+        98,
+        196,
+        219
+      ],
+      "before_png_sha256": "2b7cf9029bac01bd889a38562b8fd6dd463a06e382b455fe8a91b34086d3e0fe",
+      "after_png_sha256": "9f3e682d8194bf9e2e986166dcc674fc1bdb0ba7b7cf7d12e33deeda26a151bf"
+    },
+    {
+      "plane": "scripted",
+      "native_owner": "-9223371636651056161",
+      "native_material": 131,
+      "recorded_float_pixel_delta": 0.10980392806232,
+      "independent_png_delta": 0.10980392156862745,
+      "independent_png_pixel": [
+        800,
+        392
+      ],
+      "before_rgb8": [
+        5,
+        7,
+        12
+      ],
+      "after_material_rgb8": [
+        33,
+        32,
+        33
+      ],
+      "separate_guide_border_rgb8": [
+        98,
+        196,
+        219
+      ],
+      "before_png_sha256": "6aa960a3d8bc2b26f83f0726f9d5f4bc483e75b929b6d4bf7012042548611125",
+      "after_png_sha256": "a163b55aee8d2896bfade0e47e3d15035d67c8c2d8fb28d7896b24fb4f8c24a6"
+    }
+  ],
+  "teardown": {
+    "cache_hits": 0,
+    "construction_usec": 75133,
+    "generation": 2,
+    "last_edit_usec": 351,
+    "layers": {},
+    "native_snapshot_calls": 6,
+    "native_world_count": 0,
+    "owns_play_world": false,
+    "pending_native_world_count": 0,
+    "pending_token": -1,
+    "retired_worlds": 3,
+    "session_id": "c939440b563840379204acbb6bcd31cc"
+  },
+  "resources": {
+    "elapsed_seconds": 117.625,
+    "bootstrap_elapsed_ms": 31169,
+    "observed_cpu_seconds": 227.484375,
+    "peak_observed_tree_rss_bytes": 1475981312,
+    "peak_observed_tree_rss_mib": 1407.60546875,
+    "total_samples": 224,
+    "engine_observed_samples": 223,
+    "engine_parent_pids": [
+      7956
+    ],
+    "tracked_godot_static_bytes": 195268207.0
+  },
+  "cost": {
+    "callback_p50_usec": 290703,
+    "callback_p95_usec": 390820,
+    "callback_max_usec": 420903,
+    "elapsed_usec": 12924356,
+    "native_snapshots_during_sample": 0,
+    "decorative_uploads_during_sample": 0
+  },
+  "presentation_capacity": {
+    "decorative_rg8_capacity_bytes": 25165824,
+    "decorative_rgba_capacity_bytes": 50331648,
+    "full_rg8_uploads": 6,
+    "full_rg8_uploaded_bytes": 50331648,
+    "additional_native_play_worlds": 0,
+    "additional_play_texture_uploads": 0
+  },
+  "limits": [
+    "Actual graphical 2048-square authoring, identity and cost cap control, not a maximal-density scene or sustained 2048-square physical-play campaign.",
+    "The cap actor exists and identity remains stable, but native/Rapier ticks remain zero throughout this paused control; resumed actor progression is witnessed in separate reference-scene processes.",
+    "A single 2048-square Stack sample is not a matched comparison of modes at the maximum extent.",
+    "Windows ANGLE/Microsoft Basic Render Driver is software rendering; callback/resource observations do not establish physical Windows11/NVIDIA responsiveness or GPU FPS.",
+    "PNG RGB bytes differ by approximately one level from Linux llvmpipe; no exact cross-adapter pixel parity is claimed. Material pixels and guide pixels are independently distinguishable on each platform.",
+    "Sampled process RSS/CPU includes the actual engine and console parent; tracked Godot memory and texture capacities are separate subsets, not total native/GPU accounting.",
+    "Owner references reach zero after teardown; this is not allocator memory-return or repeated-replacement stress evidence."
+  ],
+  "exploratory_check_note": "An initial reviewer assertion reused exact Linux PNG RGB8 values and failed on Windows values approximately one level higher. This was an unsupported cross-adapter-equality assumption in scratch analysis, not a product gate. Original platform images remain unchanged; the corrected read-only check reproduces each platform recorded delta independently."
+}

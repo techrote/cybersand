@@ -24,7 +24,8 @@ panel. The default presentation, camera, simulation worker and render-publicatio
 path remain unchanged until this option is enabled. Standalone Strata, Semantic
 Depth and Deepworks remain separate tools with their earlier capabilities.
 
-Source establishes implemented behavior. The canonical decision packet and the
+Source establishes implemented behavior. The
+[canonical decision packet](../audits/2026-11-24-strata-theatre-workbench/decision-packet.md) and the
 [evaluation guide](../operations/strata-workbench-evaluation.md) distinguish
 source review, native tests, actual graphical platform execution and physical
 Windows 11/NVIDIA owner acceptance. Workflow existence is not platform evidence.
@@ -137,6 +138,13 @@ toggle does not clear it. Each decorative plane retains up to 32 independent
 static material edits. Undo/Redo affects that plane alone, advances its authored
 revision and publishes only its changed material image. Changing selection,
 opacity, depth, visibility or camera does not reconstruct a World.
+
+Decorative document revisions identify authored material changes. Play continues
+to use its existing authored source and worker generation/revision/tick; the
+controller exposes those live values in diagnostics. The Play plane record's
+preserved schema revision is metadata, not a live material counter or publication
+fence. Save binds Play through `starting_setup` and `play_source`, with the complete
+envelope checksum, rather than treating that metadata as its material authority.
 
 Decorative planes do not evolve, so their recorded layout and native material
 state remain aligned. This is not permission to reverse an evolved simulation.

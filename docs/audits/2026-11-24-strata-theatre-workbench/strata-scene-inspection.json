@@ -1,0 +1,824 @@
+{
+  "schema": "strata-authored-scene-inspection-v1",
+  "status": "completed",
+  "source_tree": "21d47b1ca2210ad61cfeac8997019586f8e0d639",
+  "inspection_worktree_head": "404210ce096c968a5d5df33ceb1a2e1869125e99",
+  "scene_bytes_match_frozen_tree": true,
+  "published_candidate": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+  "inspection_script_sha256": "15257a33f8c32e19b3ac731fe37f78375c5432a4f459b9dab78795060ea785d3",
+  "source_inputs_sha256": {
+    "godot/scripts/depth/workbench_strata_scenes.gd": "28568b0873fc5effb8bb6ad8d4c9760ea80ab15b33051870c201d35e31b36c23",
+    "godot/scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+    "godot/scripts/gcr_flyer_authoring.gd": "f9e5795bc8ef2e4e28856b95949150aca03ccf2bc9b075ec66270606a1a642fd",
+    "godot/scripts/gcr_review_fleet.gd": "344f6fcbc30967ac7591aff03c00e47d8ed87594b7f4a35a28c48a2381c9467a",
+    "godot/authoring/flyers/manifest.json": "2ddb4de6bdd6ba270f070cdef2003812608960ea34e42d7bf62a40375b4827a5",
+    "godot/authoring/flyers/midge.json": "b440c3ecbe6ded37d47f76f7ff728c7f15071ebb0b37e44f2633e4c6867703e6",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+  },
+  "method": "Ordered axis-aligned authored rectangle replay into uint16 material masks; Empty=0. One-cell canvas rim excluded from ratios/connectivity. Four-neighbour point connectivity. No plane merging for play authority.",
+  "limits": [
+    "Read-only Python geometry analysis, not native World readback, physics, collision policy, material evolution or actual traversal.",
+    "Any nonempty play material blocks the free-space mask, including Water; this is deliberately conservative and is not a native collider classification.",
+    "Spawn clearance uses the unrotated authored 4x3 Midge hull; controls, trim, contacts, momentum and all other actors remain unqualified by this mask.",
+    "The 5x5-centre mask is a conservative geometric probe, not a certified vehicle path.",
+    "Horizontal support candidates describe visual ledge geometry with empty headroom, not reachable walking/jumping routes.",
+    "Decorative overlap percentages compare local authored coordinates; rendered camera/parallax/opacity may change visible coverage."
+  ],
+  "scenes": [
+    {
+      "id": "industrial-assembly",
+      "title": "The Assembly Hall",
+      "source_path": "godot/data/strata/industrial-assembly.json",
+      "source_sha256": "b803b1e3804e0f1538cb5493b9eca209b06d58f058ff0b56ac95187ff0adc220",
+      "extent": [
+        1024,
+        768
+      ],
+      "interior_cells": 782852,
+      "rectangle_count_all_planes": 1169,
+      "bounds_errors": [],
+      "all_rectangles_inside_protected_interior": true,
+      "empty_play_interior_cells": 692465,
+      "empty_play_interior_percent": 88.4541,
+      "point_free_space_components": 3,
+      "spawn_component_cells": 185001,
+      "point_free_space_component_inventory": [
+        {
+          "component": 1,
+          "includes_spawn": false,
+          "cells": 488046,
+          "bounds_inclusive": [
+            1,
+            1,
+            1022,
+            709
+          ]
+        },
+        {
+          "component": 2,
+          "includes_spawn": true,
+          "cells": 185001,
+          "bounds_inclusive": [
+            42,
+            394,
+            981,
+            709
+          ]
+        },
+        {
+          "component": 3,
+          "includes_spawn": false,
+          "cells": 19418,
+          "bounds_inclusive": [
+            1,
+            748,
+            1022,
+            766
+          ]
+        }
+      ],
+      "spawn_component_percent_of_empty_interior": 26.7163,
+      "spawn": {
+        "position": [
+          534,
+          624
+        ],
+        "stored_material": 0,
+        "selected_actor": "midge",
+        "authored_hull_size": [
+          4,
+          3
+        ],
+        "unrotated_hull_overlapped_material_cells": 0,
+        "point_to_authored_cell_box_clearance": {
+          "distance_cells": 62.9682,
+          "nearest_occupied_cell": [
+            522,
+            686
+          ],
+          "nearest_material_id": 58
+        },
+        "unrotated_hull_box_clearance": {
+          "distance_cells": 61.1658,
+          "nearest_occupied_cell": [
+            522,
+            686
+          ],
+          "nearest_material_id": 58
+        },
+        "first_authored_material_below": {
+          "y": 710,
+          "distance_below_spawn_cells": 86,
+          "material_id": 58
+        },
+        "conservative_5x5_clear_centre_component_cells": 177893,
+        "conservative_5x5_clear_centre_component_bounds_inclusive": [
+          44,
+          396,
+          979,
+          707
+        ],
+        "conservative_5x5_clear_centre_components": 3
+      },
+      "example_axis_aligned_swept_hull_paths": [
+        {
+          "start": [
+            64,
+            624
+          ],
+          "end": [
+            960,
+            624
+          ],
+          "unrotated_hull_overlapped_material_cells": 0,
+          "swept_unrotated_hull_clearance": {
+            "distance_cells": 20.0,
+            "nearest_occupied_cell": [
+              41,
+              622
+            ],
+            "nearest_material_id": 62
+          }
+        },
+        {
+          "start": [
+            534,
+            624
+          ],
+          "end": [
+            500,
+            624
+          ],
+          "unrotated_hull_overlapped_material_cells": 0,
+          "swept_unrotated_hull_clearance": {
+            "distance_cells": 50.589,
+            "nearest_occupied_cell": [
+              494,
+              676
+            ],
+            "nearest_material_id": 66
+          }
+        },
+        {
+          "start": [
+            500,
+            624
+          ],
+          "end": [
+            500,
+            418
+          ],
+          "unrotated_hull_overlapped_material_cells": 0,
+          "swept_unrotated_hull_clearance": {
+            "distance_cells": 16.0078,
+            "nearest_occupied_cell": [
+              506,
+              400
+            ],
+            "nearest_material_id": 50
+          }
+        }
+      ],
+      "horizontal_support_candidates": [
+        {
+          "x": 300,
+          "y": 381,
+          "width": 412,
+          "material_ids": [
+            76
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 42,
+          "y": 545,
+          "width": 266,
+          "material_ids": [
+            76
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 700,
+          "y": 545,
+          "width": 282,
+          "material_ids": [
+            76
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 70,
+          "y": 664,
+          "width": 64,
+          "material_ids": [
+            63
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 174,
+          "y": 664,
+          "width": 64,
+          "material_ids": [
+            63
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 790,
+          "y": 664,
+          "width": 64,
+          "material_ids": [
+            63
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 900,
+          "y": 664,
+          "width": 64,
+          "material_ids": [
+            63
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 391,
+          "y": 676,
+          "width": 104,
+          "material_ids": [
+            66
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 238,
+          "y": 710,
+          "width": 125,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 523,
+          "y": 710,
+          "width": 267,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        }
+      ],
+      "planes": {
+        "play": {
+          "rectangle_count": 76,
+          "construction_cell_writes": 93394,
+          "occupied_interior_cells": 90387,
+          "occupied_interior_percent": 11.5459,
+          "stored_material_counts": {
+            "0": 692465,
+            "50": 1225,
+            "58": 26356,
+            "62": 27948,
+            "63": 9672,
+            "66": 1040,
+            "76": 3706,
+            "100": 20440
+          },
+          "authored_mask_sha256_u16le": "983f9d4824d7cb6daa027d8f12c65f5e12802cf4aead60ec071da93a3a8888a5"
+        },
+        "scripted": {
+          "rectangle_count": 493,
+          "construction_cell_writes": 182368,
+          "occupied_interior_cells": 153794,
+          "occupied_interior_percent": 19.6453,
+          "stored_material_counts": {
+            "0": 629058,
+            "50": 7748,
+            "58": 1792,
+            "62": 44700,
+            "63": 23236,
+            "64": 17442,
+            "68": 5376,
+            "69": 8580,
+            "71": 12112,
+            "72": 28848,
+            "76": 616,
+            "77": 608,
+            "80": 2736
+          },
+          "authored_mask_sha256_u16le": "8d122903eb328fc3efec8ac86e1e80fc03869b293171117d8088076aede4d6f8",
+          "authored_cells_over_empty_play": 150393,
+          "percent_of_plane_material_over_empty_play": 97.7886
+        },
+        "effects": {
+          "rectangle_count": 12,
+          "construction_cell_writes": 5844,
+          "occupied_interior_cells": 5844,
+          "occupied_interior_percent": 0.7465,
+          "stored_material_counts": {
+            "0": 777008,
+            "22": 5844
+          },
+          "authored_mask_sha256_u16le": "b6123b6ce74e27fb55c4bd781dc36b610cc1f61e50e01361313c04e98cfc4396",
+          "authored_cells_over_empty_play": 5844,
+          "percent_of_plane_material_over_empty_play": 100.0
+        },
+        "background": {
+          "rectangle_count": 588,
+          "construction_cell_writes": 307387,
+          "occupied_interior_cells": 298837,
+          "occupied_interior_percent": 38.1729,
+          "stored_material_counts": {
+            "0": 484015,
+            "62": 290127,
+            "77": 8710
+          },
+          "authored_mask_sha256_u16le": "49ff72a9bf6e81af341a5b62f480399408db7c599fea62b55354ef11732d7fff",
+          "authored_cells_over_empty_play": 272668,
+          "percent_of_plane_material_over_empty_play": 91.2431
+        }
+      },
+      "presentation": {
+        "fog_strength": 0.34,
+        "parallax_strength": 0.65
+      }
+    },
+    {
+      "id": "arcology",
+      "title": "The Arcology Transit Spine",
+      "source_path": "godot/data/strata/arcology.json",
+      "source_sha256": "82f5c7d62ac85144559d1ba884c922cf0bab018c2613ced1e11529d49b0f9569",
+      "extent": [
+        1024,
+        768
+      ],
+      "interior_cells": 782852,
+      "rectangle_count_all_planes": 1122,
+      "bounds_errors": [],
+      "all_rectangles_inside_protected_interior": true,
+      "empty_play_interior_cells": 703867,
+      "empty_play_interior_percent": 89.9106,
+      "point_free_space_components": 4,
+      "spawn_component_cells": 643891,
+      "point_free_space_component_inventory": [
+        {
+          "component": 1,
+          "includes_spawn": true,
+          "cells": 643891,
+          "bounds_inclusive": [
+            1,
+            1,
+            1022,
+            717
+          ]
+        },
+        {
+          "component": 2,
+          "includes_spawn": false,
+          "cells": 25560,
+          "bounds_inclusive": [
+            68,
+            576,
+            247,
+            717
+          ]
+        },
+        {
+          "component": 3,
+          "includes_spawn": false,
+          "cells": 22152,
+          "bounds_inclusive": [
+            798,
+            576,
+            953,
+            717
+          ]
+        },
+        {
+          "component": 4,
+          "includes_spawn": false,
+          "cells": 12264,
+          "bounds_inclusive": [
+            1,
+            755,
+            1022,
+            766
+          ]
+        }
+      ],
+      "spawn_component_percent_of_empty_interior": 91.4791,
+      "spawn": {
+        "position": [
+          504,
+          655
+        ],
+        "stored_material": 0,
+        "selected_actor": "midge",
+        "authored_hull_size": [
+          4,
+          3
+        ],
+        "unrotated_hull_overlapped_material_cells": 0,
+        "point_to_authored_cell_box_clearance": {
+          "distance_cells": 63.0,
+          "nearest_occupied_cell": [
+            503,
+            718
+          ],
+          "nearest_material_id": 58
+        },
+        "unrotated_hull_box_clearance": {
+          "distance_cells": 61.5,
+          "nearest_occupied_cell": [
+            501,
+            718
+          ],
+          "nearest_material_id": 58
+        },
+        "first_authored_material_below": {
+          "y": 718,
+          "distance_below_spawn_cells": 63,
+          "material_id": 58
+        },
+        "conservative_5x5_clear_centre_component_cells": 629663,
+        "conservative_5x5_clear_centre_component_bounds_inclusive": [
+          3,
+          3,
+          1020,
+          715
+        ],
+        "conservative_5x5_clear_centre_components": 4
+      },
+      "example_axis_aligned_swept_hull_paths": [],
+      "horizontal_support_candidates": [
+        {
+          "x": 142,
+          "y": 359,
+          "width": 295,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 596,
+          "y": 359,
+          "width": 284,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 28,
+          "y": 557,
+          "width": 146,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 186,
+          "y": 557,
+          "width": 102,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 410,
+          "y": 557,
+          "width": 230,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 752,
+          "y": 557,
+          "width": 74,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 838,
+          "y": 557,
+          "width": 158,
+          "material_ids": [
+            77
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 68,
+          "y": 718,
+          "width": 180,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 350,
+          "y": 718,
+          "width": 324,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 714,
+          "y": 718,
+          "width": 74,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 798,
+          "y": 718,
+          "width": 156,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        }
+      ],
+      "planes": {
+        "play": {
+          "rectangle_count": 29,
+          "construction_cell_writes": 79345,
+          "occupied_interior_cells": 78985,
+          "occupied_interior_percent": 10.0894,
+          "stored_material_counts": {
+            "0": 703867,
+            "58": 48080,
+            "62": 11420,
+            "77": 4155,
+            "100": 15330
+          },
+          "authored_mask_sha256_u16le": "ac5a8ab16728e9271971e1aa43087188ca0e85a7cf71d639cc6aef1008cd2a06"
+        },
+        "scripted": {
+          "rectangle_count": 274,
+          "construction_cell_writes": 382959,
+          "occupied_interior_cells": 311163,
+          "occupied_interior_percent": 39.7474,
+          "stored_material_counts": {
+            "0": 471689,
+            "58": 28589,
+            "62": 54956,
+            "63": 16412,
+            "72": 192502,
+            "77": 14858,
+            "78": 1956,
+            "80": 1890
+          },
+          "authored_mask_sha256_u16le": "72ed0c0de5ed98a84a2641d1b1545ef4f1f7f43ac583ca5e05860adad13c8db8",
+          "authored_cells_over_empty_play": 294231,
+          "percent_of_plane_material_over_empty_play": 94.5585
+        },
+        "effects": {
+          "rectangle_count": 12,
+          "construction_cell_writes": 8163,
+          "occupied_interior_cells": 8163,
+          "occupied_interior_percent": 1.0427,
+          "stored_material_counts": {
+            "0": 774689,
+            "22": 8163
+          },
+          "authored_mask_sha256_u16le": "3474162d31bcfeca9a12e32b3d425dcd6d96e87f8b793c4c43a03811957bdc23",
+          "authored_cells_over_empty_play": 7458,
+          "percent_of_plane_material_over_empty_play": 91.3635
+        },
+        "background": {
+          "rectangle_count": 807,
+          "construction_cell_writes": 408700,
+          "occupied_interior_cells": 396895,
+          "occupied_interior_percent": 50.6986,
+          "stored_material_counts": {
+            "0": 385957,
+            "63": 384930,
+            "79": 11965
+          },
+          "authored_mask_sha256_u16le": "10355d37f8004d904d90cffbbb5c72c58787f5eafefcb534f843222a3b923156",
+          "authored_cells_over_empty_play": 364177,
+          "percent_of_plane_material_over_empty_play": 91.7565
+        }
+      },
+      "presentation": {
+        "fog_strength": 0.38,
+        "parallax_strength": 0.8
+      }
+    },
+    {
+      "id": "cavern",
+      "title": "The Condensate Grotto",
+      "source_path": "godot/data/strata/cavern.json",
+      "source_sha256": "ec22baeaa08952031259d2890e494d8e4d430fd3d79990ad7f9d082259975d59",
+      "extent": [
+        1024,
+        768
+      ],
+      "interior_cells": 782852,
+      "rectangle_count_all_planes": 783,
+      "bounds_errors": [],
+      "all_rectangles_inside_protected_interior": true,
+      "empty_play_interior_cells": 601610,
+      "empty_play_interior_percent": 76.8485,
+      "point_free_space_components": 1,
+      "spawn_component_cells": 601610,
+      "point_free_space_component_inventory": [
+        {
+          "component": 1,
+          "includes_spawn": true,
+          "cells": 601610,
+          "bounds_inclusive": [
+            1,
+            41,
+            1022,
+            712
+          ]
+        }
+      ],
+      "spawn_component_percent_of_empty_interior": 100.0,
+      "spawn": {
+        "position": [
+          512,
+          603
+        ],
+        "stored_material": 0,
+        "selected_actor": "midge",
+        "authored_hull_size": [
+          4,
+          3
+        ],
+        "unrotated_hull_overlapped_material_cells": 0,
+        "point_to_authored_cell_box_clearance": {
+          "distance_cells": 82.8553,
+          "nearest_occupied_cell": [
+            545,
+            679
+          ],
+          "nearest_material_id": 100
+        },
+        "unrotated_hull_box_clearance": {
+          "distance_cells": 80.6923,
+          "nearest_occupied_cell": [
+            545,
+            679
+          ],
+          "nearest_material_id": 100
+        },
+        "first_authored_material_below": {
+          "y": 707,
+          "distance_below_spawn_cells": 104,
+          "material_id": 100
+        },
+        "conservative_5x5_clear_centre_component_cells": 585838,
+        "conservative_5x5_clear_centre_component_bounds_inclusive": [
+          3,
+          43,
+          1020,
+          710
+        ],
+        "conservative_5x5_clear_centre_components": 1
+      },
+      "example_axis_aligned_swept_hull_paths": [],
+      "horizontal_support_candidates": [
+        {
+          "x": 369,
+          "y": 420,
+          "width": 259,
+          "material_ids": [
+            76
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 32,
+          "y": 510,
+          "width": 230,
+          "material_ids": [
+            76
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 730,
+          "y": 544,
+          "width": 258,
+          "material_ids": [
+            76
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 826,
+          "y": 638,
+          "width": 116,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        },
+        {
+          "x": 68,
+          "y": 642,
+          "width": 99,
+          "material_ids": [
+            58
+          ],
+          "empty_headroom_cells_at_least": 12
+        }
+      ],
+      "planes": {
+        "play": {
+          "rectangle_count": 213,
+          "construction_cell_writes": 183732,
+          "occupied_interior_cells": 181242,
+          "occupied_interior_percent": 23.1515,
+          "stored_material_counts": {
+            "0": 601610,
+            "3": 7143,
+            "58": 2880,
+            "62": 12375,
+            "68": 1428,
+            "76": 2241,
+            "100": 151919,
+            "101": 3256
+          },
+          "authored_mask_sha256_u16le": "fc7a4fadd0ff900bb52d4b3b7b2f2b5c4fd28c6fb39e1b91f26f40cd1241258a"
+        },
+        "scripted": {
+          "rectangle_count": 434,
+          "construction_cell_writes": 325605,
+          "occupied_interior_cells": 255998,
+          "occupied_interior_percent": 32.7007,
+          "stored_material_counts": {
+            "0": 526854,
+            "13": 144982,
+            "50": 980,
+            "58": 1124,
+            "62": 9564,
+            "64": 19134,
+            "66": 3108,
+            "68": 4872,
+            "69": 15188,
+            "71": 5526,
+            "72": 5673,
+            "77": 288,
+            "97": 2892,
+            "100": 42667
+          },
+          "authored_mask_sha256_u16le": "4034cdfcd2450293c167adae2fe2b9d71ed804360345e1edf241aafe50f5a105",
+          "authored_cells_over_empty_play": 245459,
+          "percent_of_plane_material_over_empty_play": 95.8832
+        },
+        "effects": {
+          "rectangle_count": 22,
+          "construction_cell_writes": 16161,
+          "occupied_interior_cells": 16161,
+          "occupied_interior_percent": 2.0644,
+          "stored_material_counts": {
+            "0": 766691,
+            "22": 16161
+          },
+          "authored_mask_sha256_u16le": "45083594e6274ec2c5e1c54f61ec7d5f7041eae6304c9538435b50e0ba25efe7",
+          "authored_cells_over_empty_play": 14412,
+          "percent_of_plane_material_over_empty_play": 89.1776
+        },
+        "background": {
+          "rectangle_count": 114,
+          "construction_cell_writes": 487502,
+          "occupied_interior_cells": 419272,
+          "occupied_interior_percent": 53.557,
+          "stored_material_counts": {
+            "0": 363580,
+            "97": 19880,
+            "100": 243656,
+            "101": 125706,
+            "122": 30030
+          },
+          "authored_mask_sha256_u16le": "524d63724a48d70ef1717ba054979be32cb53a99f13bdb50fa3a48bb78bcc87e",
+          "authored_cells_over_empty_play": 252569,
+          "percent_of_plane_material_over_empty_play": 60.2399
+        }
+      },
+      "presentation": {
+        "fog_strength": 0.54,
+        "parallax_strength": 0.55
+      }
+    }
+  ]
+}

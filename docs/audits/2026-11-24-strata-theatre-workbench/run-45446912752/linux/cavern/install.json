@@ -1,0 +1,956 @@
+{
+	"actual_play": {
+		"after": {
+			"actor_body_ids": [
+				306217755672
+			],
+			"actor_session_id": 306100315153,
+			"native_tick": 9,
+			"physical_epoch": 1,
+			"rapier_tick": 10,
+			"worker_id": -9223371958320626182,
+			"world_generation": 3
+		},
+		"before": {
+			"actor_body_ids": [
+				306217755672
+			],
+			"actor_session_id": 306100315153,
+			"native_tick": 0,
+			"physical_epoch": 1,
+			"rapier_tick": 0,
+			"worker_id": -9223371958320626182,
+			"world_generation": 3
+		},
+		"distance": 0.5350341796875,
+		"position_after": [
+			512.0,
+			603.535034179688
+		],
+		"position_before": [
+			512.0,
+			603.0
+		]
+	},
+	"backtracking_gesture": {
+		"native_targets_correct": true,
+		"points": 4
+	},
+	"changed_composite_samples": 4616,
+	"checks": 569,
+	"completed": true,
+	"cost_samples": [
+		{
+			"callback_intervals_usec": [
+				119879,
+				130992,
+				161864,
+				124788,
+				118957,
+				162565,
+				138671,
+				138268,
+				118720,
+				117576,
+				129238,
+				117758,
+				126076,
+				124026,
+				139735,
+				117324,
+				122775,
+				117013,
+				118788,
+				117270,
+				129742,
+				117090,
+				118637,
+				117543,
+				118472,
+				116722,
+				118561,
+				116986,
+				118675,
+				150611,
+				158187,
+				142042,
+				117641,
+				117089,
+				122986,
+				118075,
+				127404,
+				159918,
+				118226,
+				117419,
+				147958,
+				116760,
+				118436,
+				117336
+			],
+			"callback_max_usec": 162565,
+			"callback_p50_usec": 118788,
+			"callback_p95_usec": 159918,
+			"decorative_uploads_during_sample": 0,
+			"elapsed_usec": 5585394,
+			"godot_process_seconds": [
+				0.248635,
+				0.248635,
+				0.248635,
+				0.248635,
+				0.248635,
+				0.248635,
+				0.248635,
+				0.162136,
+				0.162136,
+				0.162136,
+				0.162136,
+				0.162136,
+				0.162136,
+				0.162136,
+				0.162136,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.139418,
+				0.129274,
+				0.129274,
+				0.129274,
+				0.129274,
+				0.129274,
+				0.129274,
+				0.129274,
+				0.129274,
+				0.158012,
+				0.158012,
+				0.158012,
+				0.158012,
+				0.158012,
+				0.158012,
+				0.158012,
+				0.159639,
+				0.159639,
+				0.159639,
+				0.159639,
+				0.159639,
+				0.159639
+			],
+			"godot_tracked_static_memory_bytes": 119610694.0,
+			"mode": "disabled",
+			"native_snapshots_during_sample": 0,
+			"scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+		},
+		{
+			"callback_intervals_usec": [
+				120639,
+				118654,
+				119981,
+				118910,
+				120203,
+				118549,
+				129797,
+				119875,
+				162322,
+				126368,
+				119783,
+				120120,
+				137732,
+				119710,
+				126744,
+				140659,
+				119809,
+				119617,
+				120016,
+				120184,
+				120619,
+				152160,
+				150634,
+				126179,
+				120201,
+				119761,
+				146226,
+				119669,
+				119588,
+				119097,
+				119611,
+				120378,
+				120745,
+				141826,
+				119608,
+				120038,
+				157275,
+				127508,
+				128439,
+				120263,
+				120416,
+				119785,
+				119586,
+				119967
+			],
+			"callback_max_usec": 162322,
+			"callback_p50_usec": 120201,
+			"callback_p95_usec": 152160,
+			"decorative_uploads_during_sample": 0,
+			"elapsed_usec": 5549774,
+			"godot_process_seconds": [
+				0.147675,
+				0.147675,
+				0.147675,
+				0.147675,
+				0.147675,
+				0.147675,
+				0.147675,
+				0.147675,
+				0.129475,
+				0.129475,
+				0.129475,
+				0.129475,
+				0.129475,
+				0.129475,
+				0.129475,
+				0.161924,
+				0.161924,
+				0.161924,
+				0.161924,
+				0.161924,
+				0.161924,
+				0.161924,
+				0.161924,
+				0.15183,
+				0.15183,
+				0.15183,
+				0.15183,
+				0.15183,
+				0.15183,
+				0.15183,
+				0.15183,
+				0.145926,
+				0.145926,
+				0.145926,
+				0.145926,
+				0.145926,
+				0.145926,
+				0.145926,
+				0.145926,
+				0.156995,
+				0.156995,
+				0.156995,
+				0.156995,
+				0.156995,
+				0.156995
+			],
+			"godot_tracked_static_memory_bytes": 119622702.0,
+			"mode": "flat",
+			"native_snapshots_during_sample": 0,
+			"scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+		},
+		{
+			"callback_intervals_usec": [
+				129273,
+				158343,
+				140003,
+				141574,
+				139729,
+				125801,
+				167214,
+				126334,
+				126784,
+				160485,
+				127537,
+				125952,
+				127730,
+				125492,
+				126926,
+				125286,
+				127214,
+				124727,
+				139510,
+				125079,
+				162048,
+				126718,
+				159860,
+				136586,
+				126102,
+				125863,
+				125673,
+				127087,
+				141396,
+				130221,
+				127435,
+				127886,
+				137850,
+				126555,
+				126456,
+				126622,
+				125798,
+				125464,
+				125511,
+				125660,
+				167997,
+				134202,
+				126390,
+				148919
+			],
+			"callback_max_usec": 167997,
+			"callback_p50_usec": 127214,
+			"callback_p95_usec": 162048,
+			"decorative_uploads_during_sample": 0,
+			"elapsed_usec": 5905832,
+			"godot_process_seconds": [
+				0.277245,
+				0.277245,
+				0.277245,
+				0.277245,
+				0.277245,
+				0.170468,
+				0.170468,
+				0.170468,
+				0.170468,
+				0.170468,
+				0.170468,
+				0.170468,
+				0.166747,
+				0.166747,
+				0.166747,
+				0.166747,
+				0.166747,
+				0.166747,
+				0.166747,
+				0.166747,
+				0.139172,
+				0.139172,
+				0.139172,
+				0.139172,
+				0.139172,
+				0.139172,
+				0.139172,
+				0.16173,
+				0.16173,
+				0.16173,
+				0.16173,
+				0.16173,
+				0.16173,
+				0.16173,
+				0.141034,
+				0.141034,
+				0.141034,
+				0.141034,
+				0.141034,
+				0.141034,
+				0.141034,
+				0.141034,
+				0.167658,
+				0.167658,
+				0.167658
+			],
+			"godot_tracked_static_memory_bytes": 119625830.0,
+			"mode": "stack",
+			"native_snapshots_during_sample": 0,
+			"scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+		}
+	],
+	"display_server": "X11",
+	"edit_readback": {
+		"material": 131,
+		"play_hash_after": "fc7a4fadd0ff900bb52d4b3b7b2f2b5c4fd28c6fb39e1b91f26f40cd1241258a",
+		"play_hash_before": "fc7a4fadd0ff900bb52d4b3b7b2f2b5c4fd28c6fb39e1b91f26f40cd1241258a",
+		"target": [
+			514,
+			286
+		],
+		"target_after": 131
+	},
+	"failures": [],
+	"final_diagnostics": {
+		"active_layer": "play",
+		"actor_ids": [
+			1
+		],
+		"enabled": true,
+		"layers": {
+			"cache_hits": 0,
+			"construction_usec": 75440,
+			"generation": 1,
+			"last_edit_usec": 14265,
+			"layers": {
+				"background": {
+					"cached_bytes": 1572864,
+					"clock_mode": "static",
+					"dirty": false,
+					"error": "",
+					"failed": false,
+					"native_instance_id": -9223371732264417746,
+					"native_revision": 116,
+					"native_tick": 0,
+					"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:background",
+					"paused": true,
+					"publication_serial": 1,
+					"rate_hz": 0,
+					"ready": true,
+					"redo": 0,
+					"revision": 1,
+					"undo": 0
+				},
+				"effects": {
+					"cached_bytes": 1572864,
+					"clock_mode": "static",
+					"dirty": false,
+					"error": "",
+					"failed": false,
+					"native_instance_id": -9223371732297972219,
+					"native_revision": 24,
+					"native_tick": 0,
+					"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:effects",
+					"paused": true,
+					"publication_serial": 1,
+					"rate_hz": 0,
+					"ready": true,
+					"redo": 0,
+					"revision": 1,
+					"undo": 0
+				},
+				"scripted": {
+					"cached_bytes": 1572864,
+					"clock_mode": "static",
+					"dirty": false,
+					"error": "",
+					"failed": false,
+					"native_instance_id": -9223371732331523466,
+					"native_revision": 827,
+					"native_tick": 0,
+					"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:scripted",
+					"paused": true,
+					"publication_serial": 6,
+					"rate_hz": 0,
+					"ready": true,
+					"redo": 0,
+					"revision": 6,
+					"undo": 3
+				}
+			},
+			"native_snapshot_calls": 8,
+			"native_world_count": 3,
+			"owns_play_world": false,
+			"pending_native_world_count": 0,
+			"pending_token": -1,
+			"retired_worlds": 0,
+			"session_id": "67b9f0d4328d186a77fae440e1b1bb89"
+		},
+		"pending": false,
+		"physical_session_id": 306100315153,
+		"play_apply_serial": 0,
+		"play_generation": 3,
+		"play_revision": 51,
+		"play_tick": 10,
+		"presentation": {
+			"active_shader_instance_id": -9223371731056450547,
+			"additional_native_play_worlds": 0,
+			"additional_play_texture_uploads": 0,
+			"camera_origin": "(0.0, 0.0)",
+			"content_rect": "[P: (338.6667, 0.0), S: (1202.667, 902.0)]",
+			"decorative_rg8_capacity_bytes": 4718592,
+			"decorative_rgba_capacity_bytes": 9437184,
+			"decorative_surface_count": 3,
+			"enabled": true,
+			"extent": "(1024, 768)",
+			"full_rg8_uploaded_bytes": 12582912,
+			"full_rg8_uploads": 8,
+			"last_error": "",
+			"layers": {
+				"background": {
+					"accepted_packets": 1,
+					"bake_requests": 1,
+					"copied_patch_bytes": 1572864,
+					"effective_visible": true,
+					"expected": {
+						"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:background",
+						"reset_generation": 1,
+						"revision": 1
+					},
+					"identity": {
+						"extent": [
+							1024,
+							768
+						],
+						"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:background",
+						"reset_generation": 1,
+						"revision": 1,
+						"serial": 1
+					},
+					"last_rejection": "",
+					"layer_id": "background",
+					"layer_tick": 0,
+					"material_surface_size": "(1024, 768)",
+					"native_texture_size": "(1024, 768)",
+					"rejected_packets": 0,
+					"render_enabled": false,
+					"reset_generation": 1,
+					"static_bake": true,
+					"upload_count": 1,
+					"uploaded_bytes": 1572864,
+					"viewport_update_mode": 1
+				},
+				"effects": {
+					"accepted_packets": 1,
+					"bake_requests": 1,
+					"copied_patch_bytes": 1572864,
+					"effective_visible": true,
+					"expected": {
+						"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:effects",
+						"reset_generation": 1,
+						"revision": 1
+					},
+					"identity": {
+						"extent": [
+							1024,
+							768
+						],
+						"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:effects",
+						"reset_generation": 1,
+						"revision": 1,
+						"serial": 1
+					},
+					"last_rejection": "",
+					"layer_id": "effects",
+					"layer_tick": 0,
+					"material_surface_size": "(1024, 768)",
+					"native_texture_size": "(1024, 768)",
+					"rejected_packets": 0,
+					"render_enabled": false,
+					"reset_generation": 1,
+					"static_bake": true,
+					"upload_count": 1,
+					"uploaded_bytes": 1572864,
+					"viewport_update_mode": 1
+				},
+				"scripted": {
+					"accepted_packets": 6,
+					"bake_requests": 6,
+					"copied_patch_bytes": 9437184,
+					"effective_visible": true,
+					"expected": {
+						"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:scripted",
+						"reset_generation": 1,
+						"revision": 6
+					},
+					"identity": {
+						"extent": [
+							1024,
+							768
+						],
+						"owner_id": "67b9f0d4328d186a77fae440e1b1bb89:1:scripted",
+						"reset_generation": 1,
+						"revision": 6,
+						"serial": 6
+					},
+					"last_rejection": "",
+					"layer_id": "scripted",
+					"layer_tick": 0,
+					"material_surface_size": "(1024, 768)",
+					"native_texture_size": "(1024, 768)",
+					"rejected_packets": 0,
+					"render_enabled": false,
+					"reset_generation": 1,
+					"static_bake": true,
+					"upload_count": 6,
+					"uploaded_bytes": 9437184,
+					"viewport_update_mode": 1
+				}
+			},
+			"original_shader_instance_id": -9223371958488398284,
+			"play_effective_visible": true,
+			"play_overlay_instance_ids": [
+				125090926024,
+				123882966405,
+				116685540349,
+				125241920972,
+				129956318875,
+				139066347609,
+				139099902043,
+				139133456477,
+				139167010911,
+				149401113218,
+				239595430623
+			],
+			"play_texture_instance_id": -9223371662555085273,
+			"prepared": true,
+			"rejected_packets": 11,
+			"view_size": "(1024.0, 768.0)"
+		},
+		"simulation_worker_id": -9223371958320626182
+	},
+	"ordinary_workbench": true,
+	"phase": "install",
+	"plane_native_hashes": {
+		"background": "524d63724a48d70ef1717ba054979be32cb53a99f13bdb50fa3a48bb78bcc87e",
+		"effects": "45083594e6274ec2c5e1c54f61ec7d5f7041eae6304c9538435b50e0ba25efe7",
+		"play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+		"scripted": "31308e0be99857f1b21332dcea60e6c589b257bed83b026826c14c78b9587c61"
+	},
+	"process_id": 3374,
+	"refusals": {
+		"hidden": true,
+		"invalid_document": true,
+		"locked": true,
+		"outside": true,
+		"stale_generation": true
+	},
+	"rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"rendering_method": "gl_compatibility",
+	"save": {
+		"path": "/home/runner/work/cybersand/cybersand/build/strata-linux/cavern/userdata/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata-qualified-cavern.json",
+		"sha256": "e7678967f510b837003cb053dae846c9fac4aad4b75d83336b1b24afa8c73126"
+	},
+	"scene": "cavern",
+	"schema": "strata-workbench-execution-v1",
+	"source_revision": "16054c8894af6ba747ae72cf6b3cb582aa113c4c",
+	"startup_extent": [
+		512,
+		512
+	],
+	"transforms": {
+		"camera_floor_matches_host": true,
+		"max_error": 0.000251654390012845,
+		"samples": 216,
+		"scales": [
+			1.0,
+			1.25
+		],
+		"viewports": [
+			[
+				1600,
+				1000
+			],
+			[
+				1280,
+				800
+			]
+		]
+	},
+	"transitions": [
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 0,
+			"mode": "disabled"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 0,
+			"mode": "stack"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 0,
+			"mode": "flat"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 0,
+			"mode": "stack"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 1,
+			"mode": "disabled"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 1,
+			"mode": "stack"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 1,
+			"mode": "flat"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 1,
+			"mode": "stack"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 2,
+			"mode": "disabled"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 2,
+			"mode": "stack"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 2,
+			"mode": "flat"
+		},
+		{
+			"after": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"before": {
+				"actor_body_ids": [
+					306217755672
+				],
+				"actor_session_id": 306100315153,
+				"native_tick": 0,
+				"physical_epoch": 1,
+				"rapier_tick": 0,
+				"worker_id": -9223371958320626182,
+				"world_generation": 3
+			},
+			"iteration": 2,
+			"mode": "stack"
+		}
+	],
+	"undo_redo": {
+		"redo_native": true,
+		"undo_native": true
+	},
+	"world_count": {
+		"decorative_owned": 3,
+		"play_borrowed": 1
+	}
+}
