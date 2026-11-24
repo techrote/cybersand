@@ -31,6 +31,13 @@ func until(test: Callable,label: String,timeout_ms:=90000) -> bool:
 func installed() -> bool:
 	return not wb.applied.is_empty() and not wb.busy() and main.pending_microscenario_apply.is_empty()
 
+func full_native_extent_visible(view: Control) -> bool:
+	if view.texture==null or view.size.x<=0 or view.size.y<=0: return false
+	var scale: float=view.pixels_per_cell()
+	var origin: Vector2=view.size*0.5-view.center*scale
+	var end: Vector2=origin+Vector2(view.extent)*scale
+	return scale>0 and origin.x>=-0.01 and origin.y>=-0.01 and end.x<=view.size.x+0.01 and end.y<=view.size.y+0.01
+
 func run() -> void:
 	evidence=OS.get_environment("ARCHITECTURE_EVIDENCE_DIR")
 	if evidence.is_empty(): evidence=ProjectSettings.globalize_path("user://architecture-native-evidence")
@@ -103,9 +110,32 @@ func run() -> void:
 		check(panel.session.plan.get("id","").begins_with("modular-") and panel.session.plan.stages.all(func(stage: Dictionary) -> bool: return not stage.modules.is_empty() and stage.operations.is_empty()),"modular picker creates pinned native parts plan "+panel.example.get_item_text(index))
 	var after: Dictionary=await wb.capture_batch_source(Rect2i(0,0,512,512))
 	check(initial.config.source_cells==after.config.source_cells,"private starter construction preserves every live Workbench cell")
+	panel.search.text="buttressed"
+	panel._refresh_modules()
+	check(panel.module_ids.size()==1 and panel.module_view.extent==Vector2i(16,48) and full_native_extent_visible(panel.module_view),"new tall native module is entirely framed inside its inspector")
+	panel.module_view.native_scale()
+	check(absf(panel.module_view.pixels_per_cell()-1.0)<0.000001,"module inspector exposes exact one-cell-per-pixel inspection")
+	var wheel:=InputEventMouseButton.new()
+	wheel.button_index=MOUSE_BUTTON_WHEEL_UP; wheel.pressed=true; wheel.position=panel.module_view.size*0.5
+	panel.module_view._gui_input(wheel)
+	var press:=InputEventMouseButton.new()
+	press.button_index=MOUSE_BUTTON_RIGHT; press.pressed=true
+	panel.module_view._gui_input(press)
+	var motion:=InputEventMouseMotion.new()
+	motion.relative=Vector2(7,-5)
+	panel.module_view._gui_input(motion)
+	press.pressed=false
+	panel.module_view._gui_input(press)
+	var framing: Vector2=panel.module_view.center
+	var zoom: float=panel.module_view.zoom
+	panel._refresh_session()
+	check(panel.module_view.center==framing and panel.module_view.zoom==zoom and framing!=Vector2(8,24),"owner wheel and pan framing survives ordinary session refresh")
+	panel.module_view.fit()
+	check(full_native_extent_visible(panel.module_view),"explicit Fit restores complete native module bounds after owner navigation")
 	panel.search.text="return pipe"
 	panel._refresh_modules()
 	check(panel.module_ids.size()==1 and panel.module_ids[0]=="return-pipe","module search resolves a real harvested pipe assembly")
+	check(full_native_extent_visible(panel.module_view),"new wide native module selection resets its complete framing")
 	panel.area_fields[0].value=16; panel.area_fields[1].value=16
 	panel.area_fields[2].value=256; panel.area_fields[3].value=160
 	panel.origin_fields[0].value=24; panel.origin_fields[1].value=24
@@ -116,6 +146,23 @@ func run() -> void:
 	check(panel.session.stage().modules.size()==6,"UI composes six mirrored reusable native modules")
 	await panel.preview_stage()
 	check(not panel.session.preview.is_empty() and panel.preview_label.text.contains("ZERO-WRITE"),"interactive zero-write composition preview is explicit")
+	check(panel.preview_view.extent==Vector2i(256,160) and full_native_extent_visible(panel.preview_view),"fresh wide stage preview shows the entire projected native extent")
+	var original_size: Vector2i=panel.size
+	panel.size=Vector2i(maxi(panel.min_size.x,original_size.x-120),maxi(panel.min_size.y,original_size.y-80))
+	panel.tabs.current_tab=0
+	await process_frame
+	await process_frame
+	var resized_module_visible:=full_native_extent_visible(panel.module_view)
+	panel.tabs.current_tab=1
+	await process_frame
+	await process_frame
+	check(full_native_extent_visible(panel.preview_view) and resized_module_visible,"fitted native module and stage bounds remain visible after window resize")
+	panel.size=original_size
+	await process_frame
+	if not ui_only:
+		await RenderingServer.frame_post_draw
+		var preview_image: Image=panel.get_texture().get_image()
+		check(preview_image!=null and not preview_image.is_empty() and preview_image.save_png(evidence.path_join("architecture-zero-write-preview-ui.png"))==OK,"actual fitted zero-write preview UI captured before native approval")
 	await panel.approve_stage()
 	await until(func(): return not panel.session.busy(),"interactive module composition retires")
 	check(panel.session.stage_state()=="completed","interactive six-module composition matches authoritative native readback")
@@ -146,7 +193,7 @@ func run() -> void:
 	await process_frame
 	if not ui_only: await RenderingServer.frame_post_draw
 	ui=panel.get_texture().get_image() if not ui_only else null
-	if not ui_only: check(ui!=null and not ui.is_empty() and ui.save_png(evidence.path_join("architecture-native-composition-ui.png"))==OK,"actual completed staged construction UI captured")
+	if not ui_only: check(ui!=null and not ui.is_empty() and ui.save_png(evidence.path_join("architecture-native-placement-ui.png"))==OK,"actual completed native return-pipe placement UI captured")
 	check(panel.library.save(evidence.path_join("interactive-starter-library.json")).ok,"interactive native starter modules exported")
 	check(panel.session.save_session(evidence.path_join("interactive-module-session.json")).ok,"interactive real module receipts exported")
 	if not ui_only: check(rendered.size()==9,"all nine native representative Godot renders produced")

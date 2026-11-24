@@ -2,9 +2,9 @@
   "schema": "world-steer-batch-request-v1",
   "mission": "WORLD-STEER-BATCH-M3-M5-001",
   "scope": "M0-M2 reconciliation; M3 native modules; M4 GOLDMAPS retrieval; M5 staged construction",
-  "request_id": "2026-11-24-architecture-qualification-1",
+  "request_id": "2026-11-24-architecture-qualification-2",
   "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-  "review_checkpoint_parent": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+  "review_checkpoint_parent": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
   "platforms": [
     "linux",
     "windows"
@@ -15,5 +15,7 @@
   "physical_windows_11_nvidia_acceptance": "pending owner device",
   "original_qualification_run": 44962406023,
   "original_evidence_preserved": true,
-  "actual_model_calls_authorized": false
+  "actual_model_calls_authorized": false,
+  "preceding_campaign_run": 45447549238,
+  "source_specific_reason": "Final screenshot review found off-center module/stage inspectors; fit new content, expose Fit/1:1 and qualify actual visible bounds plus preview UI. Geometry, retrieval corpus, experiments and native source unchanged."
 }

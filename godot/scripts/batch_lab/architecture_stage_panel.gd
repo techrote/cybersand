@@ -111,6 +111,13 @@ func _scroll_tab(name: String) -> VBoxContainer:
 	scroll.add_child(body)
 	return body
 
+func _view_controls(parent: Node, view: Control) -> void:
+	var controls := HFlowContainer.new()
+	parent.add_child(controls)
+	_button(controls,"Fit",view.fit,"Show the complete native extent.")
+	_button(controls,"1:1",view.native_scale,"One material cell per view pixel. Pan to inspect a larger extent.")
+	_label(controls,"Wheel: zoom · right/middle drag: pan")
+
 func _build() -> void:
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -164,6 +171,7 @@ func _build_modules() -> void:
 	module_view.custom_minimum_size = Vector2(270,250)
 	module_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	split.add_child(module_view)
+	_view_controls(body,module_view)
 	inspect.editable = false
 	inspect.custom_minimum_size.y = 100
 	body.add_child(inspect)
@@ -246,6 +254,7 @@ func _build_stages() -> void:
 	preview_view.custom_minimum_size = Vector2(350,260)
 	preview_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(preview_view)
+	_view_controls(right,preview_view)
 	evidence_text.editable = false
 	evidence_text.custom_minimum_size.y = 120
 	right.add_child(evidence_text)
@@ -329,6 +338,7 @@ func _select_module(index: int) -> void:
 	var checked := Module.validate(value)
 	if not checked.ok: _result(checked); return
 	module_view.set_result(ImageTexture.create_from_image(Controller.material_image(checked.cells,checked.extent)),checked.extent,checked.cells,"Native material-ID geometry; static view")
+	module_view.fit()
 	var summary := Module.summary(value)
 	for item: Dictionary in library.summaries():
 		if item.id==value.id: summary=item; break
@@ -473,6 +483,7 @@ func preview_stage() -> void:
 		var region: Rect2i = Compiler.rect(preview.region)
 		preview_view.set_result(ImageTexture.create_from_image(Controller.material_image(preview.projected_cells,region.size)),region.size,
 			preview.projected_cells,"Zero-write projection; not applied native geometry")
+		preview_view.fit()
 		preview_label.text = "ZERO-WRITE PREVIEW · %d native cell checks · %d distinct cells · %d changes\nProjection only. Approve to construct; physics is not simulated here." % [preview.budget.checked_cells,preview.budget.unique_cells,preview.budget.changed_cells]
 	_refresh_session()
 
