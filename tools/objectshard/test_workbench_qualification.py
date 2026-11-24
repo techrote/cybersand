@@ -6,8 +6,22 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import qualify_workbench
+
+
+class SourceCustodyTests(unittest.TestCase):
+    def test_large_windows_tree_uses_bounded_git_arguments_and_rejects_dirty_source(self) -> None:
+        paths = [f"godot/tests/qualification_source_{index:04d}_with_a_long_name.gd" for index in range(1400)]
+        listing = ("\0".join(paths) + "\0").encode()
+        with patch.object(qualify_workbench.subprocess, "check_output", side_effect=[listing, b""]) as command, \
+                patch.object(qualify_workbench.runner, "sha256", return_value="a" * 64):
+            self.assertEqual(len(qualify_workbench.committed_inputs()), len(paths))
+            self.assertTrue(all(sum(len(arg) + 1 for arg in call.args[0]) < 1024 for call in command.call_args_list))
+        with patch.object(qualify_workbench.subprocess, "check_output", side_effect=[listing, (paths[-1] + "\0").encode()]):
+            with self.assertRaisesRegex(ValueError, "not committed"):
+                qualify_workbench.committed_inputs()
 
 
 class WorkbenchCompletionTests(unittest.TestCase):

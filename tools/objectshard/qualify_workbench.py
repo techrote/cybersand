@@ -33,6 +33,7 @@ FOCUSED = (
     ("test_object_shard_m4_compact_motion_packets", "objectshard-m4-compact-motion-packet-v1"),
     ("test_object_shard_m4_workbench_completion", "objectshard-m4-workbench-completion-v1"),
     ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
+    ("test_object_shard_m4_fragment_reabsorption", "objectshard-m4-fragment-reabsorption-v1"),
 )
 REGRESSIONS = (
     "test_workbench_canvas", "test_workbench_wave", "test_workbench_wave_spill",
@@ -93,7 +94,14 @@ def committed_inputs() -> dict[str, str]:
     paths = subprocess.check_output(["git", "ls-files", "-z", "--", *scopes], cwd=ROOT).decode().split("\0")
     selected = sorted(p for p in paths if p and "/bin/" not in p and "/.godot/" not in p
                       and Path(p).suffix in (".gd", ".tscn", ".godot", ".py", ".json", ".gdextension", ".gdshader"))
-    subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", *selected], cwd=ROOT, check=True, timeout=120)
+    # Pass bounded scopes, not hundreds of source paths: Windows CreateProcess
+    # has a small command-line limit. Intersect the full changed-path response
+    # with the exact custody selection so runtime hydration remains excluded.
+    changed = subprocess.check_output(["git", "diff", "--name-only", "-z", "HEAD", "--", *scopes],
+                                      cwd=ROOT, timeout=120).decode().split("\0")
+    dirty = sorted(set(selected).intersection(changed))
+    if dirty:
+        raise ValueError("Qualification source is not committed: " + ", ".join(dirty))
     return {p: runner.sha256(ROOT / p) for p in selected}
 
 
@@ -151,7 +159,7 @@ def qualify(args: argparse.Namespace) -> dict:
                               int(execution_policy.watchdog_seconds("godot_import_seconds")), 0), None)]
         for name, schema in FOCUSED:
             flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith("workbench_completion") or name.endswith("material_only_workbench"):
+            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption")):
                 flags += ("--", "--objectshard-m4-workbench")
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
         if args.regressions:

@@ -162,6 +162,7 @@ func reserve_body(shard: Dictionary) -> Dictionary:
 	reserved["active"] = false
 	reserved["rotation"] = float(shard.get("rotation", 0.0))
 	reserved["wrapped_rotation"] = pose.get_rotation()
+	reserved["sampled_pose"] = pose
 	reserved["com"] = Vector2(float(shard.com_x), float(shard.com_y))
 	reserved["rectangles"] = PackedInt32Array(shard.rectangles)
 	reserved["bounds_diagonal"] = _bounds_diagonal(shard)
@@ -335,13 +336,43 @@ func freeze_for_reabsorption(shard: Dictionary, transaction: int) -> Dictionary:
 # Called ONLY by ordinary Main after its existing rapier_bridge.step()
 # completed. A monotonic Main serial cannot replace the native applied-pose
 # receipt, but rejects duplicate/stale sampling. This function does not step.
-func capture_completed_main_step(main_step_serial: int) -> Dictionary:
+func capture_completed_main_step(main_step_serial: int, completed_delta: float = FIXED_DELTA) -> Dictionary:
 	if not _main_owner() or not _adopted_main_space or not space.is_valid():
 		return {"ok":false,"outcome":"MainRapierSpaceRequired"}
 	if main_step_serial <= _last_main_step_serial or main_step_serial <= 0:
 		return {"ok":false,"outcome":"StaleMainPhysicsStep"}
 	if motion_refused or _motion_in_progress():
 		return {"ok":false,"outcome":"PendingUnacknowledgedMotion"}
+	if not is_finite(completed_delta) or completed_delta<=0.0 or completed_delta>FIXED_DELTA:
+		return {"ok":false,"outcome":"InvalidMainStepDelta"}
+	var observed: Dictionary = {}
+	for id: int in bodies:
+		var body: Dictionary = bodies[id]
+		if not body.active: continue
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var previous: Transform2D = body.sampled_pose
+		var angular: float = float(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
+		var angle: float = wrapf(pose.get_rotation()-float(body.wrapped_rotation),-PI,PI)
+		var distance: float = pose.origin.distance_to(previous.origin)
+		var corner_motion: float = distance+float(body.bounds_diagonal)*absf(angle)
+		var evidence := {"id":id,"delta":completed_delta,"translation":distance,"rotation":angle,"corner_motion":corner_motion}
+		if not pose.is_finite() or not is_finite(angular) or absf(angular)*completed_delta>=PI:
+			return _motion_hold("UnresolvedCompleteRotation",evidence)
+		if distance>MAX_SEGMENT_TRANSLATION or absf(angle)>MAX_SEGMENT_ROTATION or corner_motion>MAX_SEGMENT_CORNER_MOTION:
+			return _motion_hold("SegmentMotionEnvelopeExceeded",evidence)
+		observed[id] = {"pose":pose,"rotation":float(body.rotation)+angle,
+			"sleeping":bool(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_SLEEPING))}
+	# Read and validate every body before advancing any published continuous
+	# angle. This is the same physical motion contract as the standalone path.
+	for id: int in observed:
+		var body: Dictionary = bodies[id]
+		var actual: Dictionary = observed[id]
+		body.rotation = actual.rotation
+		body.wrapped_rotation = actual.pose.get_rotation()
+		body.sampled_pose = actual.pose
+		if actual.sleeping != body.last_sleeping:
+			_event("Sleeping" if actual.sleeping else "Waking",id,{"geometry_revision":body.geometry_revision})
+		body.last_sleeping = actual.sleeping
 	var poses: Array = _sample_poses_unfenced()
 	if motion_refused:
 		return {"ok":false,"outcome":last_error}

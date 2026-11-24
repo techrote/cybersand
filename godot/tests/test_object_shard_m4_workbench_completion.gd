@@ -34,19 +34,23 @@ func _run() -> void:
 		await _finish()
 		return
 	var first_bodies: Array = f.diagnostics().physics.bodies.duplicate(true)
-	if not await f.advance(75, "ordinary worker and physical structures continue for 75 ticks"):
+	if not await f.advance(120, "ordinary worker and physical structures continue through fall and footing collision"):
 		await _finish()
 		return
 	await f.pause()
 	await f.until(f.coherent, "paused upload matches native material and pose")
 	var after: Dictionary = f.diagnostics()
 	var moved: bool = false
+	var rotated: bool = false
 	for before: Dictionary in first_bodies:
 		for body: Dictionary in after.physics.bodies:
 			if int(body.id) == int(before.id) and Vector2(float(body.x)-float(before.x),float(body.y)-float(before.y)).length() > 1.0:
 				moved = true
+			if int(body.id) == int(before.id) and absf(wrapf(float(body.backend_rotation)-float(before.backend_rotation),-PI,PI)) > 0.02:
+				rotated = true
 	f.expect(moved, "actual Rapier transform progressed after support cut")
-	f.expect(int(after.physical_steps) > 75 and int(after.native_pose_acknowledgements) > 75,
+	f.expect(rotated,"coherent facade actually topples under Rapier contact with the asymmetric footing")
+	f.expect(int(after.physical_steps) > 120 and int(after.native_pose_acknowledgements) > 120,
 		"each physical segment has native pose acknowledgements")
 	f.expect(f.host.simulation_worker.get_instance_id() == original_worker and int(after.native_instance_id) == original_native,
 		"ordinary native World and worker survive detachment without a second owner")
@@ -103,31 +107,26 @@ func _run() -> void:
 	# moving cell. The real port verifies the original copied publication.
 	var stale: Dictionary = f.bench.object_shard_m4_action(target.position, "erase", f.runtime().visible_observation(), target)
 	f.expect(not stale.get("ok",false), "stale pre-edit moving witness refused before new mutation")
-	var ignition: Dictionary = f.moving_target(7)
-	if f.expect(not ignition.is_empty(), "remaining moving Wood can be selected for ignition"):
-		var ignite: Dictionary = f.bench.object_shard_m4_action(ignition.position, "ignite", f.runtime().visible_observation(), ignition)
-		f.expect(ignite.get("ok",false), "moving Wood ignition queued through ordinary worker / " + str(ignite))
-		if ignite.get("ok",false):
-			await f.until(func(): return f.bench.object_shard_m4_port.pending_count() == 0, "ignition receipt")
-			await f.until(func(): return bool(f.diagnostics().get("physics_ready",false)) and f.coherent(), "ignition publication installed")
-			observations.ignite_receipt = f.bench.object_shard_m4_port.results.back().duplicate(true)
-			f.expect(observations.ignite_receipt.get("outcome") == "Applied", "native moving Wood ignition applied")
+	var ignition_witnesses: Array[Dictionary] = await f.ignite_exposed_wood()
+	f.expect(ignition_witnesses.size() == 4,"four source-bound exposed moving Wood cells were genuinely ignited")
 	var pre_fire: int = f.material_count(7)
-	var ignition_state: Dictionary = f.owned_cell_state(int(ignition.get("owner",0)),int(ignition.get("cell",-1)))
 	var products_before: int = int(f.frame().get("metrics",{}).get("products_created",0))
 	f.play()
 	await f.advance(120, "ignited moving material continues native chemistry")
 	await f.pause()
 	await f.until(f.coherent, "post-combustion publication coherent")
-	var reacted: Dictionary = f.owned_cell_state(int(ignition.get("owner",0)),int(ignition.get("cell",-1)))
-	# The admitted Wood law starts at 240 and decrements every two ticks.
-	# 120 ticks must continue that reaction, not invent an earlier expiry.
-	f.expect(f.material_count(7)<pre_fire or (reacted.get("material") == 7 and int(reacted.get("state_b",0))>0 \
-		and int(reacted.get("state_b",0))<int(ignition_state.get("state_b",0))),
-		"exact source-bound moving Wood continues its native combustion state")
+	for witness: Dictionary in ignition_witnesses:
+		var source: Dictionary = witness.source
+		var reacted: Dictionary = f.owned_cell_state(int(source.owner),int(source.cell))
+		# The admitted Wood law starts at 240 and decrements every two ticks.
+		# Exposed material supplies real empty native product destinations.
+		f.expect(f.material_count(7)<pre_fire or (reacted.get("material") == 7 and int(reacted.get("state_b",0))>0 \
+			and int(reacted.get("state_b",0))<int(witness.before.get("state_b",0))),
+			"exact source-bound exposed moving Wood continues its native combustion state")
+		witness.after = reacted
 	f.expect(int(f.frame().get("metrics",{}).get("products_created",0))>products_before,
 		"continued moving Wood reaction creates authentic native Fire/Smoke products")
-	observations.combustion = {"source":ignition,"before":ignition_state,"after":reacted,
+	observations.combustion = {"witnesses":ignition_witnesses,
 		"products_before":products_before,"products_after":f.frame().get("metrics",{}).get("products_created",0)}
 	f.bench._tool.select(0)
 	f.bench._brush.value = 2

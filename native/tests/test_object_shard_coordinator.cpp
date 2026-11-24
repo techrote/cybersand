@@ -2077,7 +2077,82 @@ void m4_fragmentation_does_not_launder_invalid_sand_entry() {
     check_population_balance(attached);
 }
 
+void m4_returned_inventory_resumes_exact_ordinary_world_chemistry() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc),reference(wc);
+    const auto initialize=[](World& world) {
+        const RectI64 domain{0,0,128,96};
+        world.reserve_region({-32,-32,192,160});world.reserve_temperature_region({-32,-32,192,160});
+        world.set_simulation_region(domain);world.configure_transient_obstacles(domain,true);
+        for (int tick=0;tick<17;++tick) (void)world.tick();
+    };
+    initialize(owner);initialize(reference);
+    Coordinator attached(owner,small_config());
+    for (int y=20;y<25;++y) for (int x=20;x<25;++x)
+        CHECK(attached.edit(x,y,{Material::Wood,37,0,402}).outcome==Outcome::Accepted);
+    const auto prepared=discover(attached);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(attached,prepared.shard));
+    auto& registry=CoordinatorTestAccess::registry(attached);auto* shard=registry.find(prepared.shard);
+    const auto bounds=shard->bounds();const auto tick=owner.completed_tick_index();
+    const auto local=[&](int x,int y){return static_cast<std::uint32_t>((y-bounds.y)*bounds.width+x-bounds.x);};
+    // Explicit native carrier fixtures isolate the ownership boundary from
+    // random product emission. Exact remaining life and burn state, not a
+    // restarted material default, must continue in the ordinary destination.
+    CHECK(shard->set_cell(local(20,20),{Material::Wood,37,7,402},Role::Structural,tick)==Outcome::Accepted);
+    CHECK(shard->set_cell(local(21,21),{Material::Fire,90,0,500},Role::Product,tick)==Outcome::Accepted);
+    CHECK(shard->set_cell(local(23,21),{Material::Smoke,189,0,350},Role::Product,tick)==Outcome::Accepted);
+    CHECK(shard->set_cell(local(22,23),{Material::Sand,213,217,-470},Role::Cargo,tick)==Outcome::Accepted);
+    CHECK(registry.rebuild_geometry(prepared.shard,tick)==Outcome::Accepted);
+    CHECK(attached.acknowledge(geometry_ack(attached,prepared.shard)).outcome==Outcome::Accepted);
+    struct Seed {std::int64_t x,y;Payload value;};
+    std::vector<Seed> source;
+    for (std::size_t at=0;at<shard->area();++at) if (shard->occupied(at))
+        source.push_back({bounds.x+static_cast<std::int64_t>(at%bounds.width),
+            bounds.y+static_cast<std::int64_t>(at/bounds.width),shard->payload(at)});
+    const auto pose=attached.m4_owner_readback().bodies[0].pose;const auto cell=local(20,20);
+    const ShardEditRequest request{prepared.shard,attached.next_transaction(),pose.body_generation,
+        shard->geometry().revision,pose.pose_serial,shard->material_revision(),cell,
+        shard->schedule(cell).incarnation,shard->payload(cell)};
+    CHECK(attached.act_on_shard(request,ShardAction::Reabsorb).outcome==Outcome::Accepted);
+    const auto acknowledgement=[&](AckKind kind) {
+        const auto value=attached.snapshot(false).reabsorption;
+        return Acknowledgement{value.shard,value.transaction,value.body_generation,value.payload_digest,
+            value.geometry_revision,value.mask_digest,value.shape_digest,kind,
+            kind==AckKind::ReabsorptionComplete ? value.terrain : std::span<const TerrainReceipt>{}};
+    };
+    CHECK(attached.acknowledge(acknowledgement(AckKind::ReabsorptionFrozen)).outcome==Outcome::Accepted);
+    CHECK(attached.acknowledge(acknowledgement(AckKind::ReabsorptionComplete)).outcome==Outcome::Accepted);
+    CHECK(owner.completed_tick_index()==tick && tick==17);
+    CHECK(attached.detach().outcome==Outcome::Retired);
+    for (const auto& seed:source) {
+        CHECK(owner.stored_material(seed.x,seed.y)==seed.value.material);
+        CHECK(owner.stored_state_a(seed.x,seed.y)==seed.value.state_a);
+        CHECK(owner.stored_state_b(seed.x,seed.y)==seed.value.state_b);
+        CHECK(owner.stored_temperature(seed.x,seed.y)==seed.value.temperature);
+        CHECK(reference.set_cell_state(seed.x,seed.y,seed.value.material,seed.value.state_a,seed.value.state_b));
+        reference.set_temperature(seed.x,seed.y,seed.value.temperature);
+    }
+    for (unsigned step=0;step<12;++step) {
+        (void)owner.tick();(void)reference.tick();
+        bool identical=true;
+        for (int y=0;y<96;++y) for (int x=0;x<128;++x) {
+            const auto material=owner.stored_material(x,y);
+            identical=identical && material==reference.stored_material(x,y);
+            if (material!=Material::Empty) identical=identical &&
+                owner.stored_state_a(x,y)==reference.stored_state_a(x,y) &&
+                owner.stored_state_b(x,y)==reference.stored_state_b(x,y) &&
+                owner.stored_temperature(x,y)==reference.stored_temperature(x,y);
+        }
+        CHECK(identical);
+        CHECK(owner.completed_tick_index()==tick+step+1 && reference.completed_tick_index()==owner.completed_tick_index());
+        CHECK(owner.quantity_ledger().material_cells==reference.quantity_ledger().material_cells);
+        CHECK(!owner.has_failed() && !reference.has_failed());
+    }
+}
+
 int main() {
+    m4_returned_inventory_resumes_exact_ordinary_world_chemistry();
     m4_fragmentation_does_not_launder_invalid_sand_entry();
     m4_settled_reabsorption_preserves_world_and_waits_for_physical_retirement();
     m4_attached_replacement_destroys_coordinator_before_world();

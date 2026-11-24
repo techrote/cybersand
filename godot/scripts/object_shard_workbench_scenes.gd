@@ -11,17 +11,24 @@ const BRICK: int = 43
 
 static func manifest(id: String) -> Dictionary:
 	var cuts: Array[Rect2i] = []
+	var supports: Array[Rect2i] = []
 	match id:
 		"tower", "timber", "mixed":
-			cuts = [Rect2i(137, 366, 6, 6), Rect2i(193, 366, 6, 6)]
+			for x: int in [138,194]:
+				supports.append(Rect2i(x,364,4,100))
+				cuts.append(Rect2i(x-1,366,6,98))
 		"viaduct":
-			for x: int in [99,211,323]: cuts.append(Rect2i(x,338,6,6))
+			for x: int in [100,212,324]:
+				supports.append(Rect2i(x,336,4,128))
+				cuts.append(Rect2i(x-1,338,6,126))
 		"stress":
-			for x: int in range(60,453,56): cuts.append(Rect2i(x,374,4,6))
+			for x: int in range(61,454,56):
+				supports.append(Rect2i(x,372,2,92))
+				cuts.append(Rect2i(x-1,374,4,90))
 		_: return {}
-	return {"id":id, "extent":Vector2i(512,512), "cut_rects":cuts,
+	return {"id":id, "extent":Vector2i(512,512), "cut_rects":cuts,"support_rects":supports,
 		"expected_min_bodies":8 if id == "stress" else 3 if id == "viaduct" else 1,
-		"instructions":"Play to attach. Erase the narrow supports, then use Cut moving / Ignite moving on the falling material. Pause for exact deliberate cuts. Save start reopens the authored arrangement."}
+		"instructions":"Play to attach. Erase the lower support stems for a full drop; a narrow cut leaves stumps the building can land on. Use Cut moving / Ignite moving on detached material. Pause for exact deliberate cuts. Save start reopens the authored arrangement."}
 
 static func create(id: String, policy: PackedInt32Array) -> Dictionary:
 	if id not in IDS: return {}

@@ -1236,9 +1236,12 @@ func _m4_drain_actions() -> void:
 		_m4_action_results.append(terminal)
 		_mutex.unlock()
 
-func object_shard_owner_frame() -> Dictionary:
+func object_shard_owner_frame(after_sequence: int = -1) -> Dictionary:
 	var started: int = Time.get_ticks_usec()
 	_mutex.lock()
+	if int(_m4_last_frame.get("publication_sequence",-1))<=after_sequence:
+		_mutex.unlock()
+		return {}
 	var value: Dictionary = _m4_last_frame.duplicate(true)
 	var elapsed: int = Time.get_ticks_usec()-started
 	_m4_frame_copy_calls += 1
@@ -1385,6 +1388,8 @@ func _m4_attach_on_owner() -> void:
 		"world_incarnation":int(proof.world_incarnation),
 		"transport_generation":_m4_transport_generation,
 		"operations":["erase","ignite","inspect"],"outcome":"NativeBoundPhysicsHeld"}
+	for key: String in ["max_bodies","max_body_area","max_total_area","physical_fragmentation","settled_reabsorption"]:
+		if proof.has(key): _m4_capabilities[key] = proof[key]
 	_m4_attach_requested = false
 	_mutex.unlock()
 	_m4_publish_owner()

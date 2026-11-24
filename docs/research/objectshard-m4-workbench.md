@@ -162,6 +162,23 @@ them to World. Sand cargo, historical Water exposure and output transfers retain
 their existing bounded native contracts; this is not arbitrary fluid solver
 state transfer or an internal gas-transport simulation.
 
+The admitted material interaction is displacement/exclusion, bounded Sand
+lodging and its contribution to mass, and witnessed Water/Fire chemistry.
+Rapier supplies gravity and rigid contacts. Native fluid/granular impulse
+feedback is still routed through the ordinary immutable actor roster; mutable
+shards do not receive that feedback as buoyancy, drag or Sand impact forces.
+The eventual seam is a source-bound mutable-body feedback receipt, rather than
+importing another programme's actor, equipment or force-law development branch.
+
+Overlap relocation preflights every destination before moving any material.
+It searches at most eight cells in Chebyshev distance and excludes occupied,
+reserved, shard-covered, immutable GCR and protected ingress cells. Dense fluid
+with no valid nearby destination refuses the motion receipt. Since Rapier has
+already completed that segment, the session holds for Restore; it does not
+claim to roll physics back or discard the obstructing inventory. Partial
+post-commit failure quarantines the owner. This bound must remain visible in
+mixed-material qualification and the owner evaluator.
+
 Cut and ignite requests retain the displayed native publication and exact
 local-cell witness, including body generation, pose, geometry and material
 revisions, material state, temperature and incarnation. The ordinary worker
@@ -215,6 +232,13 @@ installs the new native terrain; their terminal receipts retire the shard.
 Neither a staged request nor a queued operation is reported as completed return.
 Refusal before transfer preserves inventory; a partial failure quarantines the
 owner. Cancellation cannot resurrect a body after World has received its cells.
+
+Return preserves the same World's completed tick and the cells' material,
+state and temperature, including remaining burn or product lifetime. Once
+returned, those cells use the ordinary World scheduler at their destination
+coordinates. The shard's private per-cell scheduling cache is retired with its
+owner; it is not installed as a second scheduler inside World. Fragmentation
+between shard owners, in contrast, copies the source reaction schedule.
 
 **Save start** persists the authored recipe, including supports before their
 interactive removal. Reopening reconstructs that start in a fresh World. Live

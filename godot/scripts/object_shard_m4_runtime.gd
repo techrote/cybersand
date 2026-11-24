@@ -47,6 +47,7 @@ var deferred_world_uploads: int = 0
 var physical_steps: int = 0
 var physical_intervals: int = 0
 var native_pose_acknowledgements: int = 0
+var native_pose_echo_checks: int = 0
 var total_pump_usec: int = 0
 var max_pump_usec: int = 0
 var controls_completed: int = 0
@@ -188,6 +189,10 @@ func _poll_once() -> bool:
 				if not bridge._valid_motion_receipt(last_receipt,_pending_poses,_semantic_tick):
 					_hold("UnprovedNativePoseApplication",last_receipt)
 					return false
+				if not _native_pose_echo_matches(_pending_poses):
+					_hold("NativePoseEchoDiffersFromActualRapierSegment")
+					return false
+				native_pose_echo_checks += _pending_poses.size()
 				native_pose_acknowledgements += _pending_poses.size()
 				_interval_completed += _pending_delta
 				_pending_poses.clear()
@@ -224,7 +229,7 @@ func _poll_once() -> bool:
 		return _advance_segment()
 	if _complete_requested:
 		return _send("complete_motion",{},"complete")
-	var latest: Dictionary = worker.object_shard_owner_frame()
+	var latest: Dictionary = worker.object_shard_owner_frame(int(frame.get("publication_sequence",-1)))
 	if not latest.is_empty(): frame = latest
 	if frame.is_empty(): return false
 	if int(frame.get("tick",-1)) < _required_native_tick: return false
@@ -232,6 +237,23 @@ func _poll_once() -> bool:
 	if sequence != _last_synced_sequence or not _terrain_owned or not _physics_ready:
 		return _synchronize()
 	return false
+
+func _native_pose_echo_matches(expected: Array) -> bool:
+	var active: int = 0
+	for shard: Dictionary in frame.get("shards",[]):
+		if shard.get("has_body",false): active += 1
+	if active!=expected.size(): return false
+	for pose: Dictionary in expected:
+		var actual: Dictionary = _find_shard(int(pose.id))
+		if actual.is_empty(): return false
+		for key: String in ["session","id","generation","body_generation","geometry_revision","pose_serial"]:
+			if actual.get(key)!=pose.get(key): return false
+		for key: String in ["x","y","rotation","vx","vy","angular_velocity"]:
+			var published: String = "position_"+key if key in ["x","y"] else key
+			if not actual.has(published) or not is_finite(float(actual[published])) \
+				or absf(float(actual[published])-float(pose[key]))>0.00000001: return false
+		if bool(actual.get("sleeping",false))!=bool(pose.get("sleeping",false)): return false
+	return true
 
 func _synchronize() -> bool:
 	_physics_ready = false
@@ -390,15 +412,21 @@ func _advance_segment() -> bool:
 	for body: Dictionary in bridge.bodies.values():
 		if not body.get("active",false): continue
 		var velocity: Vector2 = PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
-		var angular: float = absf(float(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)))
-		var speed: float = velocity.length()
+		var signed_angular: float = float(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
+		var angular: float = absf(signed_angular)
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var offset: Vector2 = pose.basis_xform(body.com)
+		# Rapier reports velocity at COM; native limits constrain the stable
+		# material lattice origin. Predict that point's velocity explicitly.
+		var origin_velocity: Vector2 = velocity-Vector2(-offset.y,offset.x)*signed_angular
+		var speed: float = origin_velocity.length()
 		if not velocity.is_finite() or not is_finite(angular):
 			_hold("InvalidPhysicalVelocity")
 			return false
-		if speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_TRANSLATION*0.9/speed)
-		if angular > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_ROTATION*0.9/angular)
+		if speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_TRANSLATION*0.5/speed)
+		if angular > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_ROTATION*0.5/angular)
 		var corner_speed: float = speed+float(body.bounds_diagonal)*angular
-		if corner_speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_CORNER_MOTION*0.9/corner_speed)
+		if corner_speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_CORNER_MOTION*0.5/corner_speed)
 	var available: int = Bridge.MAX_MOTION_SUBSTEPS-_interval_segments
 	if delta <= 0.0 or remaining/delta > float(available)+0.0000001:
 		_hold("MotionSubstepCapacity")
@@ -410,7 +438,7 @@ func _advance_segment() -> bool:
 	physical_steps += 1
 	_interval_segments += 1
 	var capture_started: int = Time.get_ticks_usec()
-	var sampled: Dictionary = bridge.capture_completed_main_step(_step_serial)
+	var sampled: Dictionary = bridge.capture_completed_main_step(_step_serial,delta)
 	if not sampled.get("ok",false):
 		_hold("CompletedMainPoseCaptureFailed",sampled)
 		return false
@@ -585,6 +613,7 @@ func diagnostics() -> Dictionary:
 		"physical_steps":physical_steps,"physical_intervals":physical_intervals,
 		"motion_lease":_motion_lease,"motion_permits_refused":motion_permits_refused,"last_motion_permit":last_motion_permit.duplicate(true),
 		"native_pose_acknowledgements":native_pose_acknowledgements,"controls_completed":controls_completed,
+		"native_pose_echo_checks":native_pose_echo_checks,
 		"pump_usec_total":total_pump_usec,"pump_usec_max":max_pump_usec,"owner_replacements":owner_replacements,
 		"receipt":last_receipt.duplicate(true),"physics":bridge.diagnostics(),
 		"reabsorption_receipt":last_reabsorption_receipt.duplicate(true),

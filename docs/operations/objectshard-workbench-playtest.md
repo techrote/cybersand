@@ -40,8 +40,10 @@ portable evaluator supplies one; an arbitrary retained DLL is not a substitute.
 
 ## First collapse
 
-Choose **Multi-storey tower**, start play, and erase a narrow section of its
-supports with the ordinary Erase tool. The native structural inventory is
+Choose **Multi-storey tower**, start play, and erase the narrow vertical support
+stems below its bottom floor with the ordinary Erase tool. Clear enough of their
+height for a full drop. A small notch can let the structure land on the remaining
+stumps, which is a valid physical result. The native structural inventory is
 transferred into coherent physical bodies only after genuine geometry and
 mass installation receipts. The falling material should keep its identity,
 interact with the terrain, and remain available for further edits.
@@ -108,6 +110,18 @@ Renderer callbacks establish that the engine submitted work; they do not prove
 the exact frame displayed by the NVIDIA driver. Headless runs cannot establish
 displayed FPS. Do not use a headless 60 Hz callback as acceptance of the earlier
 owner-observed active-body rate below 10 FPS.
+
+Open **Structures… → Save diagnostics** to write a local JSON snapshot of the
+scene, camera, source identity, renderer, native/physics receipts and separate
+progression/display timings. The panel shows the saved path; **Open diagnostics
+folder** opens that directory. Save a snapshot during an active collapse and
+another after pausing when comparing responsiveness.
+
+Water contact can extinguish moving Wood; Sand can lodge in supported pockets
+and contribute to mass. This candidate does not add buoyancy, fluid drag or
+native Sand impact impulses to mutable structures. Dense fluid with no nearby
+empty relocation cells can stop the candidate with a refusal. Restore start
+recovers the authored setup without treating that refusal as successful motion.
 
 ## Physical Windows/NVIDIA observations
 

@@ -41,6 +41,8 @@ var host: Control
 # Experimental same-World interface only. Default-off and never creates a World.
 var object_shard_m4_port = ObjectShardM4Port.new()
 var _object_shard_window: Window
+var _object_shard_export_label: Label
+var _object_shard_export_folder: Button
 var _object_shard_scene: String = ""
 var _pending_object_shard_scene: String = ""
 var _object_shard_seen_result: Vector2i = Vector2i.ZERO
@@ -1548,7 +1550,7 @@ func open_object_shard_controls() -> void:
 	if _object_shard_window == null:
 		_object_shard_window = Window.new()
 		_object_shard_window.title = "Destructible structures · experimental"
-		_object_shard_window.size = Vector2i(620,300)
+		_object_shard_window.size = Vector2i(740,430)
 		_object_shard_window.transient = true
 		_object_shard_window.close_requested.connect(func() -> void: _object_shard_window.hide())
 		add_child(_object_shard_window)
@@ -1556,14 +1558,80 @@ func open_object_shard_controls() -> void:
 		column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_object_shard_window.add_child(column)
 		var description := Label.new()
-		description.text = "Enable on the current canvas or load a playable construction.\nCut supports with ordinary Erase; use Cut moving / Ignite moving on detached material.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
+		description.text = "Enable on the current canvas or load a playable construction.\nErase lower support stems for a full drop; a narrow cut leaves stumps to land on.\nUse Cut moving / Ignite moving on detached material.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
 		column.add_child(description)
 		_button(column,"Enable on current canvas",enable_object_shard)
 		for i: int in range(ObjectShardScenes.IDS.size()):
 			var id: String = ObjectShardScenes.IDS[i]
 			_button(column,ObjectShardScenes.LABELS[i],func() -> void:
 				if load_object_shard_scene(id): _object_shard_window.hide())
+		var exports := HBoxContainer.new()
+		column.add_child(exports)
+		_button(exports,"Save diagnostics",save_object_shard_diagnostics)
+		_object_shard_export_folder = _button(exports,"Open diagnostics folder",func() -> void:
+			var error: Error = OS.shell_open(ProjectSettings.globalize_path("user://objectshard-diagnostics"))
+			if error != OK: refuse("Could not open the diagnostics folder: " + error_string(error)))
+		_object_shard_export_folder.disabled = not DirAccess.dir_exists_absolute("user://objectshard-diagnostics")
+		_object_shard_export_label = Label.new()
+		_object_shard_export_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_object_shard_export_label.text = "Diagnostics are saved locally only when you press Save diagnostics."
+		column.add_child(_object_shard_export_label)
 	_object_shard_window.popup_centered()
+
+func save_object_shard_diagnostics() -> Dictionary:
+	if host == null or not host.has_method("object_shard_m4_latency_report"):
+		return {"ok":false,"outcome":"OrdinaryWorkbenchRequired"}
+	var folder: String = "user://objectshard-diagnostics"
+	var folder_error: Error = DirAccess.make_dir_recursive_absolute(folder)
+	if folder_error != OK:
+		refuse("Could not create the diagnostics folder: " + error_string(folder_error))
+		return {"ok":false,"outcome":"DirectoryCreateFailed","error":int(folder_error)}
+	var source: String = OS.get_environment("CYBERSAND_SOURCE_REVISION")
+	if source.is_empty(): source = OS.get_environment("GITHUB_SHA")
+	if source.is_empty(): source = "unavailable"
+	var utc: String = Time.get_datetime_string_from_system(true)
+	var name: String = "objectshard-"+utc.replace(":","-").replace("T","-")+"-"+str(Time.get_ticks_usec())+".json"
+	var path: String = folder.path_join(name)
+	var manifest: String = OS.get_environment("CYBERSAND_PACKAGE_MANIFEST")
+	var report: Dictionary = {
+		"schema":"objectshard-m4-workbench-diagnostics-v1","captured_utc":utc+"Z",
+		"source_commit":source,"source_scope":"launcher/environment identity; unavailable is not a source claim",
+		"package_manifest_sha256":FileAccess.get_sha256(manifest) if not manifest.is_empty() and FileAccess.file_exists(manifest) else "unavailable",
+		"platform":{"os":OS.get_name(),"os_version":OS.get_version(),
+			"processor":OS.get_processor_name(),"logical_processors":OS.get_processor_count(),
+			"godot":Engine.get_version_info(),"display_backend":DisplayServer.get_name(),
+			"rendering_method":RenderingServer.get_current_rendering_method(),
+			"rendering_driver":RenderingServer.get_current_rendering_driver_name(),
+			"adapter":RenderingServer.get_video_adapter_name(),"adapter_vendor":RenderingServer.get_video_adapter_vendor(),
+			"window_size":[get_window().size.x,get_window().size.y],"window_mode":get_window().mode,
+			"vsync_mode":DisplayServer.window_get_vsync_mode(get_window().get_window_id())},
+		"workload":{"scene_id":_object_shard_scene,"paused":host.paused,
+			"camera_origin":[host.camera_origin.x,host.camera_origin.y],
+			"view_size":[host.current_view_size.x,host.current_view_size.y],
+			"camera_mode":_camera.get_item_text(_camera.selected)},
+		"capabilities":host.object_shard_m4_runtime.capabilities.duplicate(true),
+		"visible_observation":host.object_shard_m4_runtime.visible_observation(),
+		"runtime":host.object_shard_m4_runtime.diagnostics(),
+		"probe":host.object_shard_m4_probe.summary(),
+		"scope":"explicit local diagnostic snapshot; native progression and renderer callbacks are distinct; physical monitor presentation is not verified"}
+	var file: FileAccess = FileAccess.open(path,FileAccess.WRITE)
+	if file == null:
+		var error: Error = FileAccess.get_open_error()
+		refuse("Could not save diagnostics: " + error_string(error))
+		return {"ok":false,"outcome":"FileOpenFailed","error":int(error)}
+	file.store_string(JSON.stringify(report,"\t")+"\n")
+	file.flush()
+	var write_error: Error = file.get_error()
+	file.close()
+	if write_error != OK:
+		refuse("Diagnostics write failed: " + error_string(write_error))
+		return {"ok":false,"outcome":"FileWriteFailed","error":int(write_error)}
+	var absolute: String = ProjectSettings.globalize_path(path)
+	message = "Diagnostics saved: " + absolute
+	if _object_shard_export_label != null: _object_shard_export_label.text = message
+	if _object_shard_export_folder != null: _object_shard_export_folder.disabled = false
+	return {"ok":true,"outcome":"DiagnosticsSaved","path":absolute,"user_path":path,
+		"source_commit":source,"schema":report.schema}
 
 func object_shard_m4_status() -> Dictionary:
 	if host == null or not host.has_method("object_shard_m4_latency_report"):
@@ -1743,13 +1811,22 @@ func _process(_delta: float) -> void:
 		# Status text does not need native/physics readbacks or deep receipt
 		# copies. Full source diagnostics remain an explicit evaluator action.
 		var runtime: RefCounted = host.object_shard_m4_runtime
-		_status.text += " · structures %s · %d/16 bodies" % [runtime.phase,runtime.bridge.bodies.size()]
+		_status.text += " · structures %s · %d/%d bodies" % [runtime.phase,runtime.bridge.bodies.size(),int(runtime.capabilities.get("max_bodies",16))]
 		var admission: String = str(runtime.frame.get("admission",{}).get("reason",""))
-		if admission in ["ComponentCells","BoundingBox","ShapeLimit"]:
+		if admission == "Discovering":
+			_status.text += " · finding structures: %d frontier cells" % int(runtime.frame.admission.get("frontier_cells",0))
+		elif admission in ["ComponentCells","BoundingBox","ShapeLimit"]:
 			_status.text += " · structure exceeds geometry budget; cut it into smaller connected sections"
 		elif admission in ["BodySlots","TotalArea","StorageCapacity"]:
 			_status.text += " · material-body budget full; settle bodies into the canvas or restore the scene"
+		for shard: Dictionary in runtime.frame.get("shards",[]):
+			if shard.get("fragment_deferred",false):
+				_status.text += " · split waiting for body budget; surviving material remains in its physical parent"
+				break
 	_status.tooltip_text = _status.text
+	if object_shard_m4_port.enabled:
+		var bounds: Dictionary = host.object_shard_m4_runtime.capabilities
+		_status.tooltip_text += "\nMaterial-body bounds: %d cells per body, %d cells combined." % [int(bounds.get("max_body_area",16384)),int(bounds.get("max_total_area",65536))]
 	water_spray.refresh(context)
 	equipment.refresh(context)
 	if _details.visible:

@@ -52,6 +52,7 @@ func _run() -> void:
     var activated: Dictionary = shards.activate(body)
     _expect(activated.get("ok",false) and activated.get("activated",false),
         "live mutable body activated with backend readback")
+    PhysicsServer2D.body_set_state(shards.bodies[1].rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,0.6)
     var initial: Transform2D = PhysicsServer2D.body_get_state(shards.bodies[1].rid,
         PhysicsServer2D.BODY_STATE_TRANSFORM)
     var post: Dictionary = {"ok":false}
@@ -77,6 +78,31 @@ func _run() -> void:
     _expect(post.get("poses",[]).size()==1 and
         int(post.poses[0].get("geometry_revision",-1))==1,
         "actual published pose retains native geometry revision identity")
+    _expect(post.get("poses",[]).size()==1 and absf(float(post.poses[0].rotation))>0.05 and
+        absf(wrapf(float(post.poses[0].rotation)-last.get_rotation(),-PI,PI))<0.00001,
+        "shared Main native pose includes the actual continuously observed Rapier rotation")
+    var serial: int = 100
+    for direction: int in [1,-1]:
+        var crossing: Dictionary = body.duplicate(true)
+        crossing.id = 2 if direction==1 else 3
+        crossing.transaction = 56 if direction==1 else 57
+        crossing.position_x = 80.0 if direction==1 else 110.0
+        crossing.rotation = float(direction)*(PI-0.01)
+        crossing.angular_velocity = float(direction)*0.6
+        _expect(shards.reserve_body(crossing).get("ok",false) and shards.activate(crossing).get("ok",false),
+            "actual angular wrap fixture reserved and activated")
+        for step: int in range(4):
+            ClassDB.class_call_static(RAPIER,&"space_step",main_space,DELTA)
+            ClassDB.class_call_static(RAPIER,&"space_flush_queries",main_space)
+            serial += 1
+            post = shards.capture_completed_main_step(serial)
+        var continuous: float = 0.0
+        for observed: Dictionary in post.get("poses",[]):
+            if int(observed.id)==int(crossing.id): continuous = float(observed.rotation)
+        var wrapped: Transform2D = PhysicsServer2D.body_get_state(shards.bodies[crossing.id].rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+        _expect(post.get("ok",false) and continuous*float(direction)>PI and
+            absf(wrapf(continuous-wrapped.get_rotation(),-PI,PI))<0.00001,
+            "actual shared Main angle remains continuous across "+str(direction)+" pi crossing")
     shards.shutdown()
     # A borrowed space remains owned by Main; stepping after shard disposal
     # must not fail or lose its native physical backend.

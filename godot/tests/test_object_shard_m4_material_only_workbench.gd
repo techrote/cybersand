@@ -3,6 +3,7 @@ extends SceneTree
 # Actual ordinary authoring without a reference actor: no helper body, private
 # native World or simulated pose is allowed to make this canvas playable.
 const Scenes = preload("res://scripts/object_shard_workbench_scenes.gd")
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 var host: Control
 var bench: Control
 var checks: int = 0
@@ -19,7 +20,7 @@ func _check(value: bool, label: String) -> bool:
 	return value
 
 func _until(predicate: Callable, label: String) -> bool:
-	var deadline: int = Time.get_ticks_msec()+45000
+	var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while not predicate.call() and Time.get_ticks_msec()<deadline:
 		if host != null and host.object_shard_m4_runtime.enabled \
 			and not host.object_shard_m4_runtime.held_reason.is_empty(): break

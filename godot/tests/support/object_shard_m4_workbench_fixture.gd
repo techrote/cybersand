@@ -128,10 +128,19 @@ func cut_supports(scene_id: String, retained_cap_rows: int = 0) -> bool:
 	var manifest: Dictionary = Scenes.manifest(scene_id)
 	bench._brush.value = 3
 	for rect: Rect2i in manifest.get("cut_rects", []):
-		var center: Vector2i = rect.position + rect.size / 2
-		center.y += retained_cap_rows
-		if not expect(bench.paint(center, 0), "ordinary Erase severs support at " + str(center)): return false
-		await tree.process_frame
+		# Erase the complete lower stem. A horizontal notch alone leaves a
+		# tall physical stump that legitimately catches the falling facade.
+		# Radius-three stamps four rows apart cover each actual narrow post;
+		# their rounded ends preserve the declared upper cap and floor.
+		var start_y: int = rect.position.y + retained_cap_rows + 3
+		var last_y: int = rect.end.y - 4
+		var centers: Array[int] = []
+		for y: int in range(start_y,last_y+1,4): centers.append(y)
+		if centers.is_empty() or centers.back() != last_y: centers.append(last_y)
+		for y: int in centers:
+			var center := Vector2i(rect.position.x + rect.size.x/2,y)
+			if not expect(bench.paint(center, 0), "ordinary Erase removes lower support at " + str(center)): return false
+			await tree.process_frame
 	return true
 
 func advance(count: int, message: String = "native semantic progression") -> bool:
@@ -187,7 +196,7 @@ func validate_quantity_ledger() -> void:
 	for material: int in [2,3,6,7,43]:
 		expect(int(ledger[material]) == int(counted[material]),"ordinary image agrees with independent World ledger for material "+str(material))
 
-func moving_target(material: int = 7) -> Dictionary:
+func moving_target(material: int = 7, internal_air: int = 0, unignited_only: bool = false) -> Dictionary:
 	if not coherent(): return {}
 	for shard: Dictionary in runtime().publication.get("shards", []):
 		if not shard.get("owns_inventory", false): continue
@@ -196,12 +205,38 @@ func moving_target(material: int = 7) -> Dictionary:
 		var transform := Transform2D(float(shard.rotation), Vector2(float(shard.position_x), float(shard.position_y)))
 		for index: int in range(materials.size()):
 			if int(materials[index]) != material or int(roles[index]) != 1: continue
+			if unignited_only and int(shard.states_b[index]) != 0: continue
+			if internal_air > 0:
+				var air: int = 0
+				var source := Vector2i(index%int(shard.width),index/int(shard.width))
+				for dy: int in range(-1,2):
+					for dx: int in range(-1,2):
+						if dx == 0 and dy == 0: continue
+						var neighbour: Vector2i = source+Vector2i(dx,dy)
+						if neighbour.x >= 0 and neighbour.y >= 0 and neighbour.x < int(shard.width) and neighbour.y < int(shard.height) \
+							and int(materials[neighbour.y*int(shard.width)+neighbour.x]) == 0: air += 1
+				if air < internal_air: continue
 			var local := Vector2(float(index % int(shard.width)) + 0.5, floorf(float(index) / float(shard.width)) + 0.5)
 			var position: Vector2i = Vector2i((transform * local).floor())
 			var target: Dictionary = runtime().visible_target(position)
 			if target.get("owner", -1) == int(shard.id) and target.get("cell", -1) == index:
 				return target
 	return {}
+
+func ignite_exposed_wood(count: int = 4) -> Array[Dictionary]:
+	var witnesses: Array[Dictionary] = []
+	for i: int in range(count):
+		var target: Dictionary = moving_target(7,3,true)
+		if not expect(not target.is_empty(),"actual displayed Wood has at least three internal empty neighbours for native emission"): break
+		var request: Dictionary = bench.object_shard_m4_action(target.position,"ignite",runtime().visible_observation(),target)
+		if not expect(request.get("ok",false),"exposed moving Wood ignition queues through the ordinary worker"): break
+		if not await until(func(): return bench.object_shard_m4_port.pending_count() == 0 and runtime().physics_ready() \
+			and coherent() and int(owned_cell_state(int(target.owner),int(target.cell)).get("state_b",0))>0,
+			"exact exposed Wood ignition receipt and source state are presented"): break
+		var receipt: Dictionary = bench.object_shard_m4_port.results.back().duplicate(true)
+		if not expect(receipt.get("outcome") == "Applied","actual native exposed Wood ignition applies"): break
+		witnesses.append({"source":target,"before":owned_cell_state(int(target.owner),int(target.cell)),"receipt":receipt})
+	return witnesses
 
 func owned_cell_state(owner: int, cell: int) -> Dictionary:
 	for shard: Dictionary in runtime().publication.get("shards",[]):
@@ -222,6 +257,10 @@ func validate_physics() -> void:
 		for shard: Dictionary in runtime().publication.get("shards",[]):
 			if int(shard.id) == int(body.id): source = shard
 		if not expect(not source.is_empty(),"actual Rapier body has one displayed native inventory owner"): continue
+		expect(absf(wrapf(float(source.rotation)-float(body.backend_rotation),-PI,PI)) < 0.0001,
+			"native accepted pose angle equals the actual Rapier RID transform")
+		expect(Vector2(float(source.position_x),float(source.position_y)).distance_to(Vector2(float(body.x),float(body.y))) < 0.001,
+			"native accepted pose translation equals the actual Rapier RID transform")
 		# Recompute the declared unit-cell mass moments from owned material roles,
 		# independently of the native mass/COM/inertia fields sent to Rapier.
 		var positions: Array[Vector2] = []
