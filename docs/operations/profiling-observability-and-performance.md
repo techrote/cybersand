@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-24
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -37,8 +37,8 @@ where available, without claiming complete production profiling or GPU timing.
 
 | Observation/source | What it measures | What it does not establish |
 |---|---|---|
-| [World::TickStats](../../native/include/cybersand/world.hpp) | Visited/moved cells, activity, scheduled cores, per-phase jobs, deferred events, owned chunk/temperature allocation counts | Per-worker utilization, barrier time, all process allocations |
-| [World::resident_cell_bytes](../../native/src/world.cpp) | Cell, optional-temperature, and activity capacity bytes | Hash-map/node overhead, all scheduler/snapshot buffers, total RSS |
+| [World::TickStats](../../native/include/cybersand/world.hpp) | Visited/moved cells, activity, scheduled cores, per-phase jobs, observed worker participation, deferred events, owned chunk/temperature allocation counts | Per-worker utilization over time, barrier time, all process allocations |
+| [World::resident_cell_bytes](../../native/src/world.cpp) | Cell, optional-temperature, and activity capacity bytes | Solver sidecars, hash-map/node overhead, all scheduler/snapshot buffers, total RSS |
 | [RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp) | Required/capacity/high-water patch and byte counts; pressure/failure counts | GPU upload bytes or renderer memory |
 | [Desktop worker](../../godot/scripts/simulation_worker.gd) | Worker/cellular/snapshot-copy timing, snapshot age, overruns | Synchronous Web timing semantics |
 | [Desktop controller](../../godot/scripts/main.gd) | FPS, texture update, dirty patch count/KiB, collider timing, body observations, Rapier step/flush | Stable telemetry schema, isolated GPU frame time |
@@ -87,7 +87,10 @@ compare behavior deliberately rather than requiring accidental cross-backend
 byte equality.
 
 [CyberWorkerBenchmark](../../godot/scripts/worker_benchmark.gd) powers the Web
-Performance menu and local `dev.cmd benchmark` / `stress-test`. The
+Performance menu and the source checkout's
+[`run_worker_benchmark.gd`](../../godot/tests/run_worker_benchmark.gd). Use the
+direct `godot --headless --path godot --script` route documented below; the
+companion workspace's `dev.cmd` is optional. The
 [Web runbook](web-threading.md#reference-benchmark-and-parity-checks) owns exact
 fixture sizes, counts, warmup, cancellation, and report paths.
 
@@ -127,6 +130,7 @@ fidelity mode exists.
 | Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work |
 | Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings |
 | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation |
+| Advancing tick/render counters but poor physical progression | Compare the same source-bound actor/material witness and publication/physics receipts; counters alone do not establish playable motion. See the [current programme boundary](../reference/status-and-roadmap.md). |
 
 The collider consumer's 32-chunk/750 µs limits are checked between chunks and
 exclude extraction/packet handling; one chunk may exceed the time budget. Only
@@ -135,8 +139,13 @@ every hard-surface revision and installs it with a 128-chunk/4 ms budget. The
 2026-11-06 [whole-engine benchmark](../audits/2026-11-06-whole-engine-bench.md)
 shows why: with reacting terrain the 250 ms packet throttle capped a session at
 about 4 ticks/s.
-`ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a
-changed native publication. Dirty bridge bytes cannot substitute for that cost.
+`ImageTexture.update` submits the full backing image for a changed native
+publication. Its raw RG8 payload is `2 × width × height` bytes: 2,097,152 bytes
+is the 1024 × 1024 example, not a fixed cost for every Workbench extent.
+[`main.gd`](../../godot/scripts/main.gd) creates the image from `world_extent` and
+`render_channels` and ping-pongs two presentation textures. Native dirty bridge
+bytes cannot substitute for the full-image submission; CPU call timing is not
+a measurement of GPU completion or bus traffic.
 
 ## Planned observability and acceptance
 

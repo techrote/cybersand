@@ -2,13 +2,20 @@
 title: Wave Flow evaluation
 status: Current
 document-kind: guide
-scope: Experimental PR 631 Wave Flow desktop controls inherited from PR 618, comparative fixtures, actual native diagnostics and explicit unsupported physical persistence and material behavior
+scope: Accepted Wave evaluation controls and original source-qualified package context; gameplay versus native tuning defaults, comparisons and persistence limits
 canonical-for: [wave-flow-evaluation]
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-24
 related-documents: [../architecture/wave-flow-v1.md, lcb-manual-comparison-ux.md, ../architecture/rigid-body-and-cellular-coupling.md]
 ---
 
 # Wave Flow evaluation
+
+Wave and the unified Water Lab are present on accepted main `00cdb02f`, checked
+24 November 2026. The #631/#661 foundation was accepted through #672; this page
+is not an instruction to obtain an unmerged Wave implementation. Use the
+[current Water Lab guide](workbench-water-lab.md) for the ordinary interface and
+[getting started](getting-started.md) for a source checkout. Original candidate
+packages and their measurements remain bound to their own source/manifests.
 
 ## Water Lab (consolidated Workbench UI)
 
@@ -26,11 +33,13 @@ modification; staged and refused requests still use the existing native receipts
 
 ## Start the supplied Windows candidate
 
-Extract the downloaded artifact ZIP, then extract its inner CyberSand ZIP into a
-normal folder. Double-click **Open Workbench.cmd**. The candidate includes Godot,
-native CyberSand, Rapier and the required VC runtime; no repository checkout,
-Python installation or separate Godot installation is needed. First launch
-imports the bundled project before opening the ordinary Shared Workbench.
+**Package-specific historical route.** For an evaluator supplied with a matching
+manifest and this launcher, extract its outer artifact ZIP and inner CyberSand
+ZIP into a normal folder, retain all bundled files, then open **Open Workbench.cmd**.
+The original packages contained Godot, native CyberSand, Rapier and the required
+VC runtime and imported their bundled project before opening Workbench. This is
+not a verified download link or a claim that any partial/repacked artifact is
+complete. A source checkout instead uses the [current desktop procedure](getting-started.md).
 
 Fresh Workbench sessions start with Wave, spill and ballistic release. Water Lab can stage a comparison with any admitted Water law. [Water ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md)
 
@@ -43,9 +52,9 @@ The full-face evaluation ZIP includes **water-wall** and **water-ramp**. Load **
 2. Choose **Two crests ·512²** in **Water comparison**, then press
    **Load / reset scene**. This installs an editable authored scene using the
    requested solver. It replaces the current scene, so retain any wanted work first.
-3. Read **Active native** and the native column in **Wave tuning…**. Wave must
+3. Read the applied native status and the native column in the **Wave tuning** tab. Wave must
    report enabled, with the requested rounds, worker capacity and parameter values.
-4. Use Workbench **Run/Pause** and **Single tick**. Native **ticks** and **rounds**
+4. Use Workbench **Play / Pause [P]** and, while paused, **Step [.]**. Native **ticks** and **rounds**
    must advance. At two rounds, each completed native tick contributes two Wave
    rounds. The visible simulation is native Water, not an animated overlay.
 5. Change one or two controls, then press **Apply solver / tuning**. A successful
@@ -72,15 +81,15 @@ the current law state. A normal restart uses accepted construction settings,
 not invalid or unsubmitted tuning edits.
 
 **Reset Wave defaults** stages the original version-2 values; press Apply to use
-them. **Revert to native** discards staged tuning and copies the active native
+them. **Restore native Wave values** discards staged tuning and copies the active native
 values back into the controls. **v2 defaults**, **Lively**, **Strong response**
 and **Heavy** are starting points. Non-default presets are exploratory, not
 recommendations or evidence that Wave is superior.
 
 ## Compare on editable Water scenes
 
-Use **PF cached**, **PF dormant**, **Inertial** or **FreeMass** to stage the other
-law. To compare an equal starting scene, press **Load / reset scene** after each
+Use the **Water solver** selector in **Solvers & scenes** to stage
+PressureFlow (reference/cached/dormant), Inertial cellular or FreeMass. To compare an equal starting scene, press **Load / reset scene** after each
 selection. All scenes remain ordinary Workbench canvases: paint, edit, move actors
 and use the normal camera and simulation controls.
 
@@ -100,12 +109,17 @@ judging behavior. Wave settings are kept separate from the other laws' controls.
 
 ## Tuning reference
 
-Open the movable **Wave tuning…** dialog. Every field has a bounded numeric input, a description
-and a native readback beside the requested value. **Pool workers** accepts 1–32;
+Open the **Wave tuning** tab in Water Lab. Every field has a bounded numeric
+input, a description and a native readback beside the requested value. **Pool workers** accepts 1–32;
 this is configured capacity. Observed participants report workers that actually
 claimed tasks, not utilization or a guarantee that all configured workers ran.
 
-| Control | Default | Supported range | Effect |
+The table gives the **original native v2 tuning**, also staged by **Reset Wave
+defaults**. It is not the fresh player-session profile: **Gameplay default**
+selects explicit Wave/spill overrides, including two rounds. See the
+[exact configuration comparison](../reference/configuration-reference.md#water-constructor-defaults-and-player-profile).
+
+| Control | Original v2 value | Supported range | Effect |
 |---|---:|---:|---|
 | Rounds | 1 | 1–8 | Repeats the Wave solve per native tick; more transport and more work. |
 | Active rows | 32 | 1–32 | Stack depth that participates in the restoring response. |
@@ -139,13 +153,15 @@ size, worker setting and run length, and judge the appearance yourself.
 
 ## Package identity
 
-The candidate's `candidate-manifest.json` records its complete source commit/tree
+For the original evaluator, `candidate-manifest.json` records its complete source commit/tree
 and every payload SHA-256. `source-built-runtime-provenance.json` identifies the
 native build, source inputs and target-OS execution; `qualification/runtime/`
 contains its original logs. The PR handoff supplies the artifact link, inner ZIP
 SHA-256, final source/tree and any runtime-only publication append. Earlier Wave
-packages do not qualify later Workbench source. The final acceptance ledger is
-[PR #631](https://github.com/techrote/cybersand/pull/631).
+packages do not qualify later Workbench source. The original Wave qualification is in
+[PR #631](https://github.com/techrote/cybersand/pull/631); the accepted integration
+is [#672](https://github.com/techrote/cybersand/pull/672). Neither ledger qualifies
+a later package or supplies new physical owner acceptance.
 
 ## Standalone regression fixture
 
@@ -218,7 +234,9 @@ Its complete physical-state identity is version 6; physical save format 0 means
 unsupported. CYSD1 state export/restore is also refused: its one-byte mass cannot
 represent Wave overfill. Material-only authoring snapshots are a different
 contract and never promise physical continuation. Existing legacy save formats
-and the default-off behavior remain unchanged.
+and the bare native `WorldConfig` default-off behavior remain unchanged. New
+ordinary player/Workbench sessions use the separate accepted gameplay profile
+described above.
 
 Oil directly beneath Wave Water can rise through it by exchanging places with
 the heavier Water. Grid Water in free fall retains no sideways momentum.

@@ -33,6 +33,7 @@ necessarily a mode of the ordinary Shared Workbench.
 | Experience | Guide |
 |---|---|
 | Shared Workbench: generated maps and editable starts | [First Workbench session](operations/workbench-first-session.md) |
+| Materials sandbox and manual interaction recipes | [Materials sandbox guide](MATERIAL_LAB.md) |
 | Composed actors and the Mixed Actor Workshop | [Actor composition guide](operations/workbench-actor-composition.md) |
 | Player and rig experiments | [Player playground](systems/player-control-playground.md), [physical rigs](systems/physical-actor-rigs.md), [free flight](systems/physical-free-flight.md) |
 | Deepworks material exhibition | [Districts, controls and reset behavior](operations/deepworks-exhibition.md) |
@@ -49,7 +50,7 @@ necessarily a mode of the ordinary Shared Workbench.
 | Paint, erase, select, fill and manage bounded edits | [Painting user guide](operations/workbench-painting-and-history.md), [operation contract](systems/paint-editor-bounded-shapes.md) |
 | Understand baseline, edits and live simulation | [Shared authoring data](architecture/shared-workbench-authoring-data.md) |
 | Generate native architecture and choose Genteks | [Architectural Generator](systems/architectural-generator.md), [hands-on walkthrough](operations/architectural-generator-playtest.md) |
-| Explore generation fields, modifiers and hierarchy | [Generation overview](systems/procedural-world-generation.md), [fields and modifiers](systems/procedural-generation-fields-and-modifiers.md), [hierarchical generation](systems/procedural-hierarchical-generation.md) |
+| Explore generation fields, modifiers and hierarchy | [Generation overview](systems/procedural-world-generation.md), [fields and modifiers](systems/procedural-generation-fields-and-modifiers.md), [hierarchical generation](systems/procedural-hierarchical-generation.md), [standalone generation editor](systems/generation-workbench-2.md) |
 | Save/reopen an authored result or bake history | [Save and Flatten user guide](operations/workbench-saving.md), [format boundaries](reference/level-saves-and-replay.md) |
 | Inspect materials and test isolated candidates | [Materials Lab authoring](operations/materials-lab-authoring.md) |
 | Compare Water families and configure experiments | [Water Lab](operations/workbench-water-lab.md), [family policy](architecture/liquid-solver-family-policy.md) |
@@ -74,7 +75,7 @@ matter throughout these references.
 | State ownership, threads and lifetime | [Ownership](architecture/data-ownership-and-lifetimes.md), [tick scheduling](architecture/simulation-tick-and-threading.md) |
 | Cell storage, chunks and resident regions | [Chunk model](architecture/chunk-tile-and-buffer-model.md), [World storage](systems/world-storage-and-interest-region.md) |
 | Materials, interactions and conservation | [Kernels](systems/materials-and-rule-kernels.md), [intermaterial interactions](systems/intermaterial-interactions.md), [material effects](reference/material-effects-register.md) |
-| Water, pressure, inertial and Wave families | [Solver policy](architecture/liquid-solver-family-policy.md), [pressure](architecture/pressure-flow-v1.md), [inertial](architecture/inertial-cellular-v1.md), [Wave](architecture/wave-flow-v1.md), [ballistics](architecture/ballistic-water-v1.md) |
+| Water solver families, Wave flow and ballistics | [Solver policy](architecture/liquid-solver-family-policy.md), [pressure](architecture/pressure-flow-v1.md), [inertial](architecture/inertial-cellular-v1.md), [Wave](architecture/wave-flow-v1.md), [ballistics](architecture/ballistic-water-v1.md) |
 | Rapier and material coupling | [Body/cell boundaries](architecture/rigid-body-and-cellular-coupling.md) |
 | Publication, rendering and immutable observations | [Rendering bridges](architecture/rendering-and-gameplay-bridges.md), [interfaces and receipts](reference/interfaces-and-message-contracts.md) |
 | Determinism, exactness and replay limits | [Determinism](architecture/determinism-and-boundary-transfers.md), [saves and replay](reference/level-saves-and-replay.md) |

@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance
 canonical-for: [physics-characterisation-plan, soliding-investigation]
 keywords: [powder, mercury, barrels, sinking, soliding, permeability, granular support]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-11-24
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -13,20 +13,34 @@ related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../syst
 
 ## Scope and evidence boundary
 
-**Approved owner direction, 2026-09-08:** investigate solids passing through one
+This page preserves the original September experiment design and candidate
+thresholds. It is not a current implementation assignment, runtime recipe or
+blanket statement that all subsequent work is absent. Current granular policy
+and coupling have their canonical contracts; native
+[settled-region discovery](../systems/settled-region-discovery.md) now supplies
+opt-in read-only producer/journal/connectivity machinery. That observer does
+not implement production soliding or transfer material to Rapier. The
+[lifecycle contract](../architecture/soliding-lifecycle.md) and
+[current-state register](../reference/status-and-roadmap.md) retain the separate
+production and active-candidate gates. Do not infer a new threshold or handoff
+permission from the proposed numbers below.
+
+**Recorded owner direction for the 2026-09-08 investigation:** investigate solids passing through one
 another, powders failing to support the player, dense liquids rapidly crossing
 powders, and barrels continuing to sink into granular beds. The red test
 rectangles are now called **barrels**. Mercury may retain much slower powder
-penetration. Ordinary barrel impacts should embed by no more than roughly half
-their depth and then stop. Include eventual reversible **soliding** of rested,
+penetration. The original ordinary-barrel fixture target was roughly half-depth
+embedding followed by rest. That provisional target is not a universal body
+physics acceptance rule; see [current owner intent](../reference/product-intent-and-priorities.md).
+Include eventual reversible **soliding** of rested,
 mostly contiguous same-material regions for Rapier macro motion and ballistics.
 
 **Historical planning inspection, 2026-09-08**, against source HEAD
 `b462e6b` on `codex/issues-1-2` in `C:/kybersand/source`. At inspection the only
 source-tree delta was the installed Windows native DLL (LFS working-file hash
 prefix `fda49d0`, versus tracked `402732d`); the workspace repository was clean.
-This source commit is the existing recoverable baseline. The DLL has not been
-rebuilt or run for this plan. Retain Godot 4.7 and pinned Rapier v0.35.2.
+That source commit was the recoverable baseline for the inspection. The DLL
+was not rebuilt or run for that plan. Retain Godot 4.7 and pinned Rapier v0.35.2.
 The experiments and candidate numbers below describe that **Planned** checkpoint,
 not measured fixes or runtime configuration keys at its date. The later
 [issue #9 baseline](../audits/2026-09-09-physics-characterisation.md) and
@@ -58,10 +72,11 @@ Sources: [material rules](../../native/src/material_rules.cpp),
 
 1. Record HEAD, all local deltas, executable/DLL/Web artifact hashes, dependency
    versions, platform, native/fallback backend, solver traversal, workers, tick
-   rates, actual completed ticks, body sample age and fixture seed. Rebuild the
-   native adapter before claiming source-matched results. Keep raw output in
-   `C:/kybersand/validation/local/<date>-physics/` and source fixtures in the
-   active checkout. CYSD1 alone is not a complete deterministic replay.
+   rates, actual completed ticks, body sample age and fixture seed. Verify the
+   native adapter against the selected source; rebuild when its input set has
+   changed. Use a task-owned evidence directory. The original campaign used
+   `C:/kybersand/validation/local/<date>-physics/`; that companion location is
+   not a source-checkout prerequisite. CYSD1 alone is not complete replay.
 2. Build small fixtures from explicit coordinates and input schedules; restart
    from fresh construction for every variant. Use a closed box, fixed camera
    interest, fixed tick stepping and no unrelated reactions initially. Define
@@ -86,6 +101,12 @@ fixture budgets; extend a window explicitly if a slow-rate case cannot yet move.
 
 ## Phase 2: isolate each behaviour
 
+These are the **September registration's** proposed fixtures and acceptance
+envelopes. Later [granular policy](../systems/granular-interaction-policy.md)
+and [ADR-011](../decisions/ADR-011-granular-interaction-policy.md) selected the
+pair/player settings; this original screen does not reopen those decisions or
+make its provisional barrel targets universal requirements.
+
 | Fixture | Variants | Measurements and proposed acceptance |
 |---|---|---|
 | P1: layered granular beds | All powder pairs in both vertical orders; first focus Sand/Dust, Stone/Sand, Rust/Sand. Dense packing, holes, slopes; supported and unsupported Stone. Hard Wall/Concrete controls. | Swaps/tick, interface width, centre of mass, settling/reordering time. Packed resting powders should not interpenetrate solely due to density; grains must still fall through actual voids and avalanche. Hard controls allow no material passage. |
@@ -108,19 +129,26 @@ the last ten seconds of a 30-second run. Repeat for 120 seconds to expose creep.
 Nonzero embedding is desired for ordinary drops, but gentle placement may remain
 shallow. Start with baseline mass and 1/4-height drops; classify 8-height drops,
 thin beds and unsupported piles as stress cases before extending that guarantee.
-The one-cell tolerance and timing are testing proposals; the owner's roughly
-half-depth preference is the requirement. Do not implement a fixed world-height
+The one-cell tolerance, timing and roughly half-depth envelope retain their
+original provisional fixture scope. [Current owner intent](../reference/product-intent-and-priorities.md)
+does not make this a general acceptance threshold or a barrel-only mechanics
+mandate. Do not implement a fixed world-height
 clamp: support must follow actual material and yield when excavated.
 
 ## Phase 3: parameter experiments, then model changes
+
+This table records the **September inspected baseline and proposed screen**,
+not current tuning defaults or a new implementation assignment. The selected
+versioned granular policy is in [ADR-011](../decisions/ADR-011-granular-interaction-policy.md);
+current physical coupling is in its [canonical contract](../architecture/rigid-body-and-cellular-coupling.md).
 
 Change one parameter family at a time, select finalists, then run a small
 interaction matrix. Preserve fast Water/spray/film and existing material-specific
 feel. Do not combine density, gravity and all impulse multipliers in one sweep.
 
-| Lever and current source location | Proposed test range | Interpretation / limitation |
+| Lever at the September source | Proposed test range | Interpretation / limitation |
 |---|---|---|
-| Target `accepts_density_exchange` in descriptors; current powders accept | On/off diagnostic variant only | Confirms swap causality, but a global off switch also changes gas/liquid displacement; final policy should express allowed pairs and support state. |
+| Target `accepts_density_exchange` in descriptors; that baseline's powders accepted | On/off diagnostic variant only | Confirms swap causality, but a global off switch also changes gas/liquid displacement; the subsequent versioned policy expresses allowed pairs and support state. |
 | Mercury `viscosity_index` 96 | 96/160/224/248 | Lateral-flow control experiment; it will not gate vertical exchange. Do not lower Mercury density to fake low permeability. |
 | Coupling displacement 0.18, boundary 0.19, pixel contact 0.025 | Individually 0.5×/1×/2×; disable one term for diagnosis | Distinguishes which term supplies support or bounce. Observe force direction and opposing faces before increasing gains. |
 | Per-body per-tick impulse cap 3; density scale upper clamp 1.6 | Cap 1.5/3/6; clamp 1.6/3.2 diagnostically | Measure saturation first. This clamp makes Sand and denser materials similar in those response terms; raising it can destabilize dense-liquid contact. Normalize future force to `impulse = force * dt`. |
@@ -128,11 +156,11 @@ feel. Do not combine density, gravity and all impulse multipliers in one sweep.
 | Sample-age rejection 8; attenuation `1/(1+0.25*age)` | Controlled age 0/1/2/4/8/9 at unchanged production limits | Establish whether desktop latency changes effective support. Raising age limits is not a support fix. |
 | Sweep cutoff 32 pixels, max 24 intervals; cast-shape CCD already enabled | Speeds on both sides of cutoff; separate 1/2/4 substep prototype | Diagnose fast/thin/rotating motion independently of static support. Respect the tick-work budget; do not assume more Rapier substeps automatically improve cell coupling. |
 
-These are compiled/native or scene constants, not existing UI sliders. Candidate
-values should enter a versioned fixture configuration at a later implementation
-checkpoint; apply between runs, not through unsynchronized live descriptor edits.
+These were compiled/native or scene constants, not UI sliders. A newly authorized
+experiment must inspect its actual source and version its fixture configuration;
+apply between runs, not through unsynchronized live descriptor edits.
 
-**New rules required, with proposed screening parameters:**
+**Original proposed rule screen (pair/player settings subsequently selected by #10):**
 
 - **Pair exchange/permeability:** separate movement into Empty, powder/powder
   rearrangement and liquid/powder exchange. Gate all relevant downward and
@@ -244,8 +272,13 @@ Start with one small coherent material island and one barrel, then scale.
    defer safely when capacity is unavailable. Set numeric per-frame extraction,
    shape, membership and memory budgets from measured target-platform headroom.
 
-Use `dev.cmd native-test`, a freshly rebuilt adapter and `dev.cmd godot-test`,
-then build and actually execute affected Web compatibility/threaded fixtures.
+For a newly authorized implementation, use the current
+[source build/test guide](local-build-and-validation.md) and source-matched
+focused runners. The original `dev.cmd native-test`/`dev.cmd godot-test` recipe
+belongs to the configured companion workspace. Affected Web qualifications
+require actual compatibility/threaded artifacts and browser execution; the
+[current Web prerequisites](web-threading.md#build-and-preview) must be resolved
+before promising a fresh export.
 Keep desktop async results distinct from headless Web-controller invocation and
 real browser execution. Preserve F01/F02 regressions. Each implemented increment
 must update canonical materials/coupling/ownership/interfaces/configuration,
@@ -255,7 +288,7 @@ replay guarantee follows from this plan.
 
 ## Planning checkpoint validation, 2026-09-08
 
-**Current documentation-only evidence:** Windows PowerShell, bundled Python
+**Retained September documentation-only evidence:** Windows PowerShell, bundled Python
 3.12 environment, source baseline and pre-existing DLL delta identified above.
 No physics runtime tests, rebuilds or visual acceptance were performed. The
 canonical owner-intent, roadmap, coupling route, indexes and corpus were updated;
@@ -275,9 +308,9 @@ so its soliding subsections are needed for an adequate answer. These lexical
 hits are not semantic or runtime acceptance. `git diff --check` passed.
 
 Raw checker logs and retrieval JSON are retained under
-`C:/kybersand/validation/local/2026-09-08-physics-plan/`. This plan is a local,
-uncommitted documentation delta to the recoverable source baseline, not a new
-release or published checkpoint.
+`C:/kybersand/validation/local/2026-09-08-physics-plan/`. At that inspection the
+plan was a local, uncommitted documentation delta, not a release. Its later
+presence in accepted documentation does not re-run or upgrade those old results.
 
 ## Measured follow-up, 2026-09-09
 

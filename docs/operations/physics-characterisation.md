@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-09-physics-characterisation.md]
 ---
 
@@ -22,26 +22,48 @@ and Rapier scene settings remain unchanged. The
 source/artifact/platform results. The [plan](physics-characterisation-plan.md)
 still owns the proposed permeability, support and soliding investigations.
 
-**Approved future behavior:** ordinary barrels should embed roughly half their
-depth and find stable support. The `0.5H + 1 cell`/one-cell late-creep numbers are
-provisional test envelopes, not implemented constraints. A floor-supported body
-does not demonstrate granular equilibrium.
+**Historical fixture direction, September 2026:** roughly half-depth barrel
+embedding motivated the original `0.5H + 1 cell` and one-cell late-creep screens.
+These are provisional fixture envelopes, not current universal acceptance or
+implemented constraints. The [current owner intent](../reference/product-intent-and-priorities.md#actors-and-physical-feel)
+treats the barrel as a generic Rapier reference body and calls for shared coupling.
+A floor-supported body does not demonstrate granular equilibrium.
 
 ## How do I reproduce a run?
 
-Work in `C:/kybersand/source`; keep raw files under
-`C:/kybersand/validation/local/<date>-physics/`. Build the adapter with
-`C:/kybersand/dev.cmd native-build` before Godot measurements. The Python runner
-builds its own native CLI by default; `--skip-build` requires an identified,
-source-matched executable. The installed Godot DLL is not rebuilt by `godot-test`.
+Use the actual source checkout and a new task-owned evidence directory. The
+[build guide](local-build-and-validation.md) owns source-matched native adapter
+preparation; these measurement commands do not rebuild the installed Godot
+adapter. Inspect the retained runner's options before a campaign:
 
-```text
-C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py native --group expanded --output C:/kybersand/validation/local/2026-09-09-physics/native-expanded
-C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py native --group controls --output C:/kybersand/validation/local/2026-09-09-physics/native-controls
-C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group controls --output C:/kybersand/validation/local/2026-09-09-physics/godot-controls-final
-C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group expanded --output C:/kybersand/validation/local/2026-09-09-physics/godot-expanded
-C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group finalists --seeds 20 --ticks 7200 --output C:/kybersand/validation/local/2026-09-09-physics/godot-creep
+```bash
+python3 tools/physics/run.py --help
 ```
+
+For an explicitly authorized measurement, representative source-root commands
+are:
+
+```bash
+python3 tools/physics/run.py native --group controls --output build/physics-example/native-controls
+python3 tools/physics/run.py godot --group controls --godot /absolute/path/to/pinned-Godot --output build/physics-example/godot-controls
+```
+
+These execute real workloads, not a cheap documentation smoke. The native route
+builds its own CLI with `--cxx` (default `c++` on non-Windows; the configured
+companion LLVM path on Windows). Supply the actual pinned compiler when needed.
+`--skip-build` requires an identified source-matched CLI. The Godot route accepts
+an explicit executable; its default is the historical Windows Godot path.
+The original Windows campaign commands are preserved in the
+[source-pinned procedure](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/physics-characterisation.md#how-do-i-reproduce-a-run).
+The companion `dev.cmd` and `C:/kybersand` layout are not source-checkout
+prerequisites.
+
+**Manifest portability boundary:** the retained Godot runner enumerates Windows
+native/Rapier library paths in its artifact list even when `--godot` points to a
+different platform. Do not treat that manifest as proof of which Linux or other
+runtime executed. Record and verify the actual platform's loaded native and
+Rapier artifacts separately using the [runtime identity procedure](current-and-historical-validation.md).
+Changing this measurement helper belongs to a separate tooling task.
 
 [run.py](../../tools/physics/run.py) records commands, fixture JSON, actual HEAD,
 dirty status, source-file hashes, executable hashes and platform in each result
@@ -54,9 +76,12 @@ batches; preserve each tested source snapshot if iterating.
 Defaults are five seeds `0..4`, 1,800 completed ticks, `dt = 1/60 s`. Finalists
 use seeds `0..19` and 7,200 ticks. The separate interpreted fallback defaults to
 one seed/180 ticks, overridable with `--fallback-ticks`; it is a semantic reference
-with no native Water-mass or rule-event parity claim. Timeouts are 180 seconds per
-native CLI run, 300 for its build, and 3,600 per Godot batch. A failed run retains
-its output; it must not be counted as completed evidence.
+with no native Water-mass or rule-event parity claim. **This retained campaign
+driver** still uses 180 seconds per native CLI run, 300 for its build and 3,600
+per Godot batch in `run.py`; these are not the shared CI watchdog values and this
+documentation change does not alter them. A failed or interrupted run cannot
+count as completed evidence. Keep any partial output and the applicable source
+identity; do not overwrite an older failed attempt with a retry.
 
 ## What are the exact fixture geometries and schedules?
 
@@ -217,12 +242,16 @@ Only its owner reads native observations; the main thread reads the retained
 trace after join. Rapier stays main-thread owned. Actual completed cellular and
 Rapier ticks/sample ages are reported independently.
 
+**Original Windows campaign invocation (historical paths):**
+
 ```text
 Godot_v4.7-stable_win64_console.exe --headless --path C:/kybersand/source/godot --script res://tests/test_physics_async.gd -- C:/kybersand/validation/local/2026-09-09-physics/desktop-async-final 1800 5
 ```
 
-Rebuild Web modules with `dev.cmd web` and `dev.cmd web --profile threaded`.
-After script-only changes, re-export those identified modules. Serve each export
+For a new Web campaign, follow the source tools and unresolved export
+prerequisites in [Web threading](web-threading.md). The old companion
+`dev.cmd web` commands are historical workspace recipes. A script-only change
+still needs a new identified export; a completed export is not browser execution. Serve each export
 with [serve.py](../../tools/physics/serve.py), which binds loopback, supplies
 isolation headers and accepts one result of at most 8 MiB into the named output
 directory. Open `?test=1&physics=1` in an actual browser: five seeds each of P1,
@@ -264,14 +293,19 @@ wide, reserved and malformed inputs. It parses the JSON rows and independently
 checks rectangle counts, sum-Y/centroid accounting, complete observation totals
 and rejection before any fixture output. The sanitized target uses ASan/UBSan;
 set `ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1` in a supported execution
-environment to include LeakSanitizer. Each child has a ten-second timeout. Results,
+environment to include LeakSanitizer. Each oracle child uses the shared
+`operation_seconds` watchdog (300 seconds at this source), as recorded in its
+result. Read the actual value with
+`python3 tools/ci/execution_policy.py seconds operation_seconds`; the old
+ten-second description is obsolete. Results,
 commands, executable hash and individual stdout/stderr are retained under
 `build/physics-cli-validation/`; Native CI uploads this evidence. The
 [MAT-002 review record](../audits/2026-10-19-mat002-review-and-validation.md)
 preserves the pre-fix overflow and separately identifies successful reruns.
 
-Run `dev.cmd native-test` and `dev.cmd godot-test` after a fresh native build.
-Coverage includes exact native cell/state and histogram parity, diagnostics
+Use the [source-native and Godot validation entry points](testing-validation-and-replay.md)
+with a source-matched runtime; rebuild when relevant inputs changed. Companion
+`dev.cmd` aliases are optional. Existing coverage includes exact native cell/state and histogram parity, diagnostics
 enabled/disabled comparisons, Mercury confined vertical controls, explicit
 histogram overflow, masked-source characterization, stored Water under masks,
 invalid-reset preservation, exact coupled trajectories with one/four workers,
@@ -298,13 +332,15 @@ remain distinct from production worker, terrain and gameplay queue capacities.
 
 ## How do I reproduce issue #10 acceptance?
 
-Build the current DLL with `dev.cmd native-build`. Rebuild/run the native expanded
-matrix with `tools/physics/run.py native --group expanded --output <raw>/native-expanded`.
+Prepare the source-matched adapter through the [build guide](local-build-and-validation.md).
+For an authorized repeat, rebuild/run the native expanded matrix with `tools/physics/run.py native --group expanded --output <raw>/native-expanded`.
 Then run `tools/physics/issue10.py permeability --output <raw>/permeability`,
 `issue10.py pairs --output <raw>/pairs` and `issue10.py player --output <raw>/player`.
 The first two require the identified source-matched CLI from the expanded build;
 player requires the identified rebuilt adapter. New batch manifests identify each
-input snapshot. Keep `<raw>` below `C:/kybersand/validation/local/`.
+input snapshot. Keep `<raw>` in a new task-owned evidence directory;
+`C:/kybersand/validation/local/` was the original campaign location. Apply the
+Godot artifact-manifest portability boundary above.
 
 `test_interaction_policy.gd` covers both adapters. `test_interaction_async.gd`
 records the production desktop player owner; passing an output filename retains

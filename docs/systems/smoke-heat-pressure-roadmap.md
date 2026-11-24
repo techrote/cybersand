@@ -3,8 +3,8 @@ title: Smoke, heat, and pressure roadmap
 document-kind: design
 canonical-for: [smoke-behavior, optional-heat-pressure-fields]
 status: Current
-scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
-last-reviewed: 2026-09-08
+scope: Implemented discrete Smoke and limited temperature input; bounded accepted Water pressure/gas bookkeeping distinguished from planned general heat/pressure/composition fields
+last-reviewed: 2026-11-24
 related-documents: [materials-and-rule-kernels.md, water-design.md, activity-dirty-regions-and-waking.md, ../decisions/ADR-006-gpu-compute-deferral.md]
 ---
 
@@ -13,8 +13,12 @@ related-documents: [materials-and-rule-kernels.md, water-design.md, activity-dir
 **Current:** Smoke is a discrete material with buoyancy and intentional
 non-conserved decay. Optional temperature storage exists and Rocket reads it,
 but there is no heat-conduction solver. General pressure and gas-composition
-fields are **Planned**. Local body-pressure impulses and liquid comparisons do
-not establish such fields.
+fields are **Planned**. Accepted Water PressureFlow already owns bounded
+per-cell hydraulic state and a native gas-compartment table; Wave has its own
+head/flux law. Those implemented mechanisms and local body impulses do not
+establish a general room-atmosphere, gas-mixture or heat solver. Use the
+[pressure contract](../architecture/pressure-flow-v1.md) and
+[Wave contract](../architecture/wave-flow-v1.md) for their actual state and limits.
 
 These are source claims for the [secured checkpoint](../operations/source-checkpoint-and-recovery.md).
 Dated runs are in the [evidence ledger](../reference/validation-evidence.md).
@@ -73,7 +77,7 @@ a nonexistent field solver or a complete reaction matrix.
 | Field | Implemented boundary | Missing design |
 |---|---|---|
 | Heat | Optional temperature storage; Rocket threshold | Units, conduction, energy accounting, cadence, phase transitions |
-| Pressure | Local liquid/body coupling heuristics | General pressure storage, equation/update, room/breach semantics |
+| Pressure | Water PF hydraulic state and bounded gas compartments; Wave head/flux and local body coupling | General atmosphere field, cross-material pressure/heat coupling and room/breach semantics |
 | Gas composition | Discrete Smoke/Steam material occupants | Mixture representation, quantities, conservation, vacuum behavior |
 | Field-based Smoke | Current discrete Smoke reference | Whether to replace occupancy with an optional density/composition field |
 
@@ -96,8 +100,10 @@ optional architecture: resolved connected gas regions own amount/free-volume
 bookkeeping and derive a compartment boundary pressure, while closures use
 affected-component reconstruction and unresolved topology returns no authoritative
 pressure. The result admits only the bounded #94 decompression research proof.
-Per-cell gas pressure/velocity, composition, heat coupling and production field
-integration remain unimplemented.
+The later accepted PF implementation is a separate bounded native consumer
+with its own source and capacity contract; this research result alone did not
+authorize it. General per-cell gas velocity, mixture composition, heat coupling
+and a unified atmosphere field remain outside the implemented scope.
 
 **Deferred:** GPU-resident derived fields may be benchmarked after their authority
 and synchronization are explicit. **Rejected for the current architecture:**

@@ -6,7 +6,7 @@ status: Approved design
 scope: Accepted architectural constraints, explicit current exceptions, deferred scope and rejected approaches
 keywords: [native authority, fixed tick, bounded work, approximation, rejected, GPU authority]
 related-documents: [module-boundaries.md, data-ownership-and-lifetimes.md, ../reference/invariants.md, ../reference/status-and-roadmap.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-24
 ---
 
 # Architectural principles and non-goals
@@ -61,6 +61,11 @@ other scripts in the per-cell hot loop. **Deferred:** GPU field experiments.
 would compile before play and obey the same radius/work bounds, rather than
 grant unrestricted scripting access.
 
+The existing [shadow material compiler](../operations/material-catalogue-shadow.md)
+and isolated [Materials Lab](../operations/materials-lab-authoring.md) are
+accepted bounded tooling. They do not supply this general runtime program
+compiler or replace all production descriptors and reaction kernels.
+
 ## Which shortcuts are rejected?
 
 | Rejected approach | Reason and permitted alternative |
@@ -83,9 +88,12 @@ recovery packets or separately owned future fields.
 
 World still combines several production responsibilities. Lazy coordinator
 preparation may allocate chunks/temperature during a tick; preallocation
-covers those measured allocation classes. The desktop emission queue and
-Godot render accumulation are dynamic arrays, not general bounded native
-queues. Godot still uploads the full RG8 texture after dirty CPU patching.
+covers those measured allocation classes. Desktop brush queues use dynamic
+GDScript Arrays but apply explicit admission bounds: each pending disc/cell
+brush queue is capped at eight commands, and an explicit cell-brush footprint
+is capped at 4,096 cells. Those guards are current source, not a proposed general
+native queue framework. Godot render accumulation remains dynamic, and Godot
+still uploads the complete backing RG8 texture after dirty CPU patching.
 The GDScript solver remains a desktop fallback with different semantics.
 
 Sources: [World](../../native/src/world.cpp),
@@ -99,9 +107,12 @@ into new hidden ownership or allocation paths.
 **Deferred:** broad world streaming/macroscale aggregation until local material
 behavior is mature; fully asynchronous Web ownership; GPU/coarse-field/hexagonal
 experiments. **Planned:** general persistence/replay, production fidelity
-controls, typed bounded queues and wider physics coupling. Basic optional
-temperature storage and finite-demo level saves already exist; neither implies
-those larger systems.
+controls, generalized typed bounded queues and wider physics coupling. Optional
+temperature storage, authored Workbench saves, bounded actor/authoring commands
+and native CYPS2–5 checkpoints already exist. Their declared limits—including
+Wave's refusal of exact continuation and the absence of Rapier state in native
+checkpoints—remain in the [save contract](../reference/level-saves-and-replay.md).
+They do not imply complete application replay or general world streaming.
 
 Every change should name its owner, writable stage, bounds, failure outcome,
 observable metric and detecting fixture. The [invariant register](../reference/invariants.md)

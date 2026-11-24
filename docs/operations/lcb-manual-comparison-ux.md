@@ -4,11 +4,42 @@ status: Current
 document-kind: design
 scope: LCB-003 (#202) bounded experimental comparison UI, native availability, explicit normalization and constructor coverage, followed by remaining planned manual feel-testing flow
 canonical-for: [lcb-manual-comparison-ux]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-24
 related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-comparison-and-fixtures.md, experiment-tower.md, microscenarios.md, ../systems/player-control-playground.md]
 ---
 
 # LCB manual liquid comparison UX flow
+
+## Current reader route
+
+Use **Liquid comparison — solver policies and protected Dam Break** in the
+Feature Launcher for the bounded comparison apparatus. It still provides eight
+policy presets, two protected setups, explicit radius 2/3 selection and native
+requested/applied receipts. **Load selected comparison** reconstructs the chosen
+fixture; **Apply & rebuild active** uses the supported active constructor.
+Selecting a preset alone does not replace the live World. The native validator
+determines actual availability and refusals.
+
+For ordinary authoring, use the [Workbench Water Lab](workbench-water-lab.md).
+Its Wave gameplay profile and generated/painted authored starts extend beyond
+the older comparison UI. Wave is an overlay on the FreeMass carrier, not a fifth
+entry in the four-family policy enum. Current source is
+[`liquid_comparison_panel.gd`](../../godot/scripts/liquid_comparison_panel.gd),
+[`Main`'s prepared owner routes](../../godot/scripts/main.gd), and the
+[prepared-setup contract](../architecture/liquid-prepared-setup-and-receipts.md).
+
+App [#256](https://github.com/techrote/cybersand/pull/256) and Trial
+[#257](https://github.com/techrote/cybersand/pull/257) are merged. The broader
+[#202 manual comparison programme](https://github.com/techrote/cybersand/issues/202)
+and [#203 complete build qualification](https://github.com/techrote/cybersand/issues/203)
+remain open at this review. A current constructor or a passing historical host
+test does not establish the full scientific comparison, complete mapped-host
+identity, or present browser/package qualification.
+
+The dated sections retain their original constructor and evidence scope.
+Their old final-head merge/publication work is not a new instruction to repeat
+that release. Later Workbench integration is described by the current guides,
+not by interpreting an earlier coverage-table gap as a current absence.
 
 ## Current application and comparison readiness — 2026-11-03
 
@@ -267,6 +298,14 @@ comparison, complete manual-input replay or a complete host provenance envelope.
 
 ## Constructor coverage at this checkpoint
 
+This is the retained October/3 November comparison-constructor checkpoint,
+with its original evidence and remaining full-programme gates. It is not the
+complete current Workbench feature matrix. In particular, accepted generated-map
+installation and later large-landscape host admission are covered by
+[Shared Workbench authoring](../architecture/shared-workbench-authoring-data.md)
+and the [Architectural Generator](../systems/architectural-generator.md);
+their availability does not imply complete #202/#203 qualification.
+
 The subsequent [Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
 retains the existing sampled player and requires Exploratory. Apply/reset and
 normal Water semantic/scenario changes retain selected solver/normalization/
@@ -479,7 +518,12 @@ defaults.
 
 ## Desktop native-default Exploratory owner
 
-On unmerged source66bf30f8 the ordinary default constructor can Apply explicitly
+This section records the 25 October checkpoint at source `66bf30f8`, which was
+unmerged when the original observation was written. It preserves that experiment's
+qualification limits; the current accepted routes and later merges are described
+at the top of this guide.
+
+At that checkpoint the ordinary default constructor could Apply explicitly
 in Exploratory mode using its actual native origin, with original bodies/player
 and no fabricated MicroScenario definition. R reconstructs the accepted policy,
 normalization and geometry. Controlled player/body runs and unsupported barrel/
@@ -489,5 +533,7 @@ The original default Water pattern exceeds initial gas capacity for all three
 PF variants, which now return typed native refusal before replacement. FM/CY
 actual moving-body qualification and preserved test shutdown failures are in the
 [dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md).
-Current remains the ordinary default; no fallback, complete-host eligibility or
-final released-platform claim follows from this bounded route.
+The comparison policy named Current remained the ordinary default in that
+checkpoint; no fallback, complete-host eligibility or final released-platform
+claim follows from this bounded route. This is not a statement of today's
+gameplay Water default.

@@ -4,9 +4,9 @@ document-kind: contract
 canonical-for: [native-determinism-and-hash-coverage]
 status: Current
 scope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees
-keywords: [determinism, worker parity, state_hash, content_hash, explosion ordering, boundary transfers]
+keywords: [determinism, worker parity, state_hash, content_hash, physical_state_hash, explosion ordering, boundary transfers]
 related-documents: [simulation-tick-and-threading.md, chunk-tile-and-buffer-model.md, ../reference/level-saves-and-replay.md, ../reference/validation-evidence.md]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-11-24
 ---
 
 # Determinism and boundary transfers
@@ -71,8 +71,9 @@ mixer in `world.cpp::hash_byte` (seed `1469598103934665603`, multiplier
 
 | Hash | Included | Intended comparison |
 |---|---|---|
-| `state_hash` | Attempted/completed tick identity, failed latch and epoch; requested/applied core coverage; selected geometry, sleep/temperature/backend and capacity settings; ordered pending explosions; sorted chunk coordinates; chunk/block activity and quiet counts; cell material/state/epoch and resolved temperature | Same declared native fixture and scheduling state |
+| `state_hash` | Attempted/completed tick identity, failed latch and epoch; requested/applied core coverage; selected geometry, sleep/temperature/backend and capacity settings; ordered pending explosions; sorted chunk coordinates; chunk/block activity and quiet counts; cell material/state/epoch and resolved temperature; enabled Wave state | Same declared native fixture and scheduling state |
 | `content_hash` | Chunk size and ambient temperature; coordinates, material, compact state and temperature of non-empty/non-ambient cells | Settled content while time and scheduler bookkeeping advance |
+| `physical_state_hash` | Versioned native physical domain: exact quantity accounting, selected policies, adhesion, enabled pressure/IN/ballistic/Wave state, cells, activity/deadlines and pending events | Declared native physical identity; excludes the external host/Rapier state |
 
 `state_hash` includes normalized requested/applied interest core coverage (not
 raw pixel bounds with identical coverage), granular policy version/settings and
@@ -80,10 +81,13 @@ pending pair deadlines. Mercury opportunities share the global tick modulo lane;
 excluded ticks create no accumulated movement debt. See the
 [pair policy](../systems/granular-interaction-policy.md).
 
-The existing integer mixer uses native integer widths, including `size_t`. Windows
-and Wasm hashes are therefore not a cross-platform byte-identity oracle; compare
-worker counts within the declared platform and compare explicit observed values
-across those platforms. `state_hash` **omits** liquid-surface-adhesion option,
+The mixer emits each argument's integer width in little-endian byte order.
+Current `state_hash` explicitly converts capacity values and pending-event length
+to `uint64_t`; the earlier platform-width `size_t` explanation no longer
+describes those fields. This source correction is not a new cross-platform
+equivalence result: retain each fixture's actual platform and input scope, and
+compare explicit observations where cross-platform identity is not qualified.
+`state_hash` **omits** liquid-surface-adhesion option,
 transient obstacles/contact inputs, compiled rule identity and external
 body/controller state. Worker count is intentionally omitted for parity tests.
 A matching hash is therefore insufficient to prove that every future-affecting
@@ -91,9 +95,21 @@ input matches. Record these omitted inputs independently.
 
 `content_hash` omits tick/epoch, activity, pending events and ordinary
 empty/ambient storage. It intentionally cannot detect a change in scheduling
-or pending behavior. Neither hash captures Rapier solver internals. Full replay
+or pending behavior. Unlike `state_hash`, it also omits retained Wave motion.
+None of these native hashes captures Rapier solver internals. Full replay
 requirements and CYSD1 level-byte comparison belong in
 [level saves versus replay](../reference/level-saves-and-replay.md).
+
+`physical_state_hash` and `liquid_comparison_hash` are implemented in
+[`world_pressure.inc`](../../native/src/world_pressure.inc). The instance getter
+selects hash2 for the base physical domain, hash3 for IN, hash4 for ballistic or
+signed IN, hash5 for the admitted C2048 gas table, and hash6 for Wave, in that
+precedence order with Wave highest. Physical continuation uses CYPS2–5 for
+supported healthy Worlds; Wave returns format0 and refuses save/restore. Consult
+the [current version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions)
+instead of assuming one universal hash/save version. Diagnostic comparison
+projections deliberately normalize selected fields; a constant quiescent hash
+does not prove future rest or authorize skipping ticks.
 
 ## Coupled desktop determinism — 2026-11-06
 
@@ -169,10 +185,13 @@ describes the desktop/Web response. Deterministic failure reporting is not
 proof that the pre-tick state survives intact.
 
 **Approved:** exact comparison remains the engineering oracle for declared
-fixtures. **Planned:** complete hash/replay versioning, complete future-state
-coverage, selectable strict policy, general boundary-conflict schemas and the
+fixtures. Versioned native physical identity and quantity accounting are
+**Current** within the contracts above. **Planned:** complete application replay
+identity and future-state coverage, selectable strict policy, general boundary-conflict schemas and the
 remaining mirrored/shifted boundary matrix. Closed pure-Water conservation is
-a separate invariant; generalized reaction source/sink accounting remains
-Planned. Rationale: [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md),
+a separate invariant. The [native quantity ledger](liquid-prepared-setup-and-receipts.md#quantity-aggregates-producers-and-continuation)
+already records its declared producers and source/sink operations; a general
+all-species physical conservation model is not established by that ledger.
+Rationale: [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md),
 [ADR-005](../decisions/ADR-005-water-model.md),
 [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md).

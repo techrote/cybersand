@@ -39,8 +39,8 @@ screenshots do not establish physical GPU performance or human playfeel.
 
 ![Neon Reliquary: a cyan engine suspended inside a machine cathedral above a flooded nave](docs/images/neon-reliquary/overview.png)
 
-*Neon Reliquary is an existing standalone showcase, with three connected
-district destinations below it. This retained application capture illustrates
+*Neon Reliquary is an existing standalone showcase, with three individually
+loaded district tiles below it. This retained application capture illustrates
 that showcase; it is not a screenshot of the current Workbench interface.*
 
 ![Materials Lab showing native Water properties and the distinction between declared and effective values](docs/images/materials-lab-v1/01-inspector-water.png)

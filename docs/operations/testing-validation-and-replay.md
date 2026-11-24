@@ -147,9 +147,12 @@ per-platform median, nearest-rank p95, maximum and failure frequencies. Record
 the checkout SHA in the artifacts as well as the workflow head SHA: ordinary PR
 jobs can execute GitHub's synthetic merge checkout. Missing or ambiguous timing
 must remain qualified. A passing rerun never replaces a preceding timeout.
-For a `progress_watchdog` timeout, `seconds` is process elapsed time when 45 idle
-seconds are detected, rather than a fixed 45-second duration. Compare it with
-#233's 180-second full-deadline observations using that detection difference.
+**Historical #233/#234 timing cohort:** its `progress_watchdog` timeout rows
+recorded process elapsed time when the then-configured 45 idle seconds were
+detected, rather than a fixed 45-second process duration. Compare those retained
+rows with #233's original 180-second full-deadline observations using that
+detection difference. These old values do not replace the current 300-second
+capture, 3,600-second idle or 3,940-second complex-case policy described above.
 An internal guard error can produce an ordinary failed result rather than a
 timeout; preserve both outcome classes.
 

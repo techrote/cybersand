@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-007 native provenance replay, genuine intermediate stages, visual authoring, bounded previews and revision-safe history
 canonical-for: [generation-workbench-inspection, generation-workbench-transactions, generation-workbench-visual-tools]
 keywords: [GEN-007, why is this here, workbench, graph, undo, redo, provenance, stages, seeds, comparison]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-11-24
 related-documents: [procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, procedural-typed-spatial-fields.md, procedural-hierarchical-generation.md, procedural-semantic-planes.md, ../operations/procedural-qualification.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../audits/2026-10-21-gen007-workbench-qualification.md]
 ---
 
@@ -30,7 +30,23 @@ comparison. Its [preview](../../godot/scripts/worldgen_preview.gd) consumes copi
 native cells, typed diagnostics and semantic records. No second procedural
 algorithm, mutable World access or simulation tick is used to explain a preview.
 
-Launch `res://worldgen_workbench.tscn` from Godot or the existing feature launcher.
+Choose **World generation workbench — terrain authoring preview** in the desktop
+feature launcher, or launch its scene directly from the repository root with the
+[pinned Godot runtime](../operations/getting-started.md):
+
+```sh
+godot --path godot res://worldgen_workbench.tscn
+```
+
+This standalone editor owns a generation preview. To generate a playable layout
+in the ordinary Shared Workbench, use that host's **New from generator** and the
+[architectural authoring guide](../operations/architectural-generator-playtest.md).
+The preview's **Profile JSON… → Save accepted…** writes the accepted generation
+recipe, not a running World's material or physical state. **Load JSON…** reads
+a file into the editor; select **Apply JSON** to validate and accept it. Save the
+accepted recipe before
+**F2** closes this editor; its Undo/Redo history is session-local.
+
 The separate [procedural qualification scene](../operations/procedural-qualification.md)
 exercises a complete 1024 × 1024 four-plane place. The workbench itself uses a
 bounded movable viewport; it does not keep an unlimited world or trace history.
@@ -65,6 +81,9 @@ feature cases to bounded GEN-003/004/005 data: the
 [semantic refinery](../../examples/worldgen/semantic-refinery.json), with deliberate
 local changes for the comparison. They do not depict the complete qualification
 recipe. To load that recipe, use **Graph canvas → Load GEN-007 Deepworks recipe**.
+That name identifies the GEN-007 qualification recipe; it is separate from the
+hand-authored [Deepworks exhibition](../operations/deepworks-exhibition.md) and
+does not open the exhibition's four running Worlds.
 The additional [qualification viewport](../images/gen007/workbench/workbench-qualification-viewport.png)
 shows the actual final, 61,845-byte
 [GEN-007 recipe](../../examples/worldgen/gen007-deepworks.json), at seed `19337`

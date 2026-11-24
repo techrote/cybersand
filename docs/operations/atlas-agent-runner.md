@@ -4,21 +4,24 @@ status: Current
 document-kind: runbook
 scope: How to run, budget, secure and audit the bounded OpenAI Responses API agent that critiques and edits one Atlas collection; what is verified offline and what is not yet verified against the live API
 canonical-for: [atlas-agent-runner]
-last-reviewed: 2026-11-07
+last-reviewed: 2026-11-24
 related-documents: [github-development-and-release.md, documentation-maintenance.md, ../reference/status-and-roadmap.md, ../reference/retrieval-index.md, ../audits/2026-11-07-issue-499-live-responses-smoke.md]
 ---
 
 # Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499))
 
-**Status.** The runner, its budget/sandbox/credit gates, receipts, workflows and tests are
-**Current on the implementing branch**, qualified offline and by a **real, charged live smoke test** on
-2026-11-07 (see [Qualification record](#qualification-record) and the
-[dated evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md)): `gpt-6-luna`, two runs, about
-USD 0.0012, on the bundled synthetic fixture, plus a critique-only run and an owner-directed editing run (7 validated
-batches, 66 rectangles, real Godot before/after cycle, about USD 0.004) on real `lumen-fault` art. Not yet verified:
-that those edits are artistically better (human lane review), the optional Costs API cross-check, and a reconciliation with the billing dashboard. The Godot capture hand-off
-follows [#498](https://github.com/techrote/cybersand/issues/498) and **has been exercised locally with genuine Godot captures** on real Atlas art (see runs 3–4). Those real-pixel edits still failed human-quality acceptance; the complete hosted live art pipeline is not yet qualified. No schedule is activated and no ChatGPT scheduled
-chat is replaced.
+**Current implementation:** the bounded runner, gates, receipts and manual
+workflows are present in accepted source. This tooling edits a separate Atlas
+collection in a disposable workspace; it is not the ordinary Art Workbench,
+Batch Lab, Gremlin or an accepted autonomous art-quality pipeline.
+
+**Dated qualification:** the [7 November record](../audits/2026-11-07-issue-499-live-responses-smoke.md)
+retains synthetic and real-art live attempts, genuine Godot capture cycles,
+failures and reported usage estimates. Those attempts do not qualify a later
+source, model, pricing table or hosted run. The real-art edit failed artistic
+acceptance; optional Costs API and billing-dashboard reconciliation were not
+established by that record. No schedule is activated. Earlier spending or task
+authorization does not authorize a new paid request or cross-repository write.
 
 ## What it is, in plain words
 
@@ -33,16 +36,16 @@ against the seven-point rubric and make **one small, checked edit** inside a thr
 No key, no cost (works anywhere with Python 3.10+; the SDK is **not** needed):
 
 ~~~bash
-python3 tools/atlas_agent_runner.py run --fixture --collection mini-vault \
+python3 tools/atlas_agent_runner.py run --mode dry-run --fixture --collection mini-vault \
   --dry-run-plan tools/atlas_agent/fixtures/mini-vault-plan.json --output-dir /tmp/atlas-run
 python3 tools/atlas_agent_runner.py verify-receipt /tmp/atlas-run/receipt.json
 ~~~
 
-Against a read-only checkout of the art branch (never run inside that checkout; `--expected-source-sha` pins
-exactly the HEAD you reviewed):
+For an **offline dry run** against a separately obtained, read-only art checkout
+(never run inside it; `--expected-source-sha` pins exactly the reviewed HEAD):
 
 ~~~bash
-python3 tools/atlas_agent_runner.py run --atlas-root /abs/art-checkout --collection lumen-fault \
+python3 tools/atlas_agent_runner.py run --mode dry-run --atlas-root /abs/art-checkout --collection lumen-fault \
   --expected-source-sha <40-hex HEAD> --capture-bundle /abs/captures/lumen-fault-before --output-dir /abs/out
 ~~~
 
@@ -63,13 +66,16 @@ variables and are validated with strict patterns by `tools/atlas_agent/workflow_
 `contents: read` and `actions: read`. The secret `OPENAI_API_KEY` is visible to the live step only. A refused,
 failed or rejected run is a **red job** and still uploads its diagnostics.
 [`atlas-agent-ci.yml`](../../.github/workflows/atlas-agent-ci.yml) runs the deterministic tests and the complete
-dry-run workflow on every relevant pull request, with no key. GitHub cannot start a `workflow_dispatch` for a
-workflow file that is not yet on the default branch (the API answers 404), so before merge the identical workflow
-is exercised through its `workflow_call` entry by that CI job; the manual button appears once the file is merged.
+dry-run workflow on every relevant pull request, with no key. The accepted source contains both workflows. The earlier pre-merge
+`workflow_call`/manual-button limitation belongs to the dated qualification; it
+is not evidence that today's runner is unmerged. A new manual live run still
+requires its own explicit spending authorization and current gates.
 
 ## Live runs: what must be true first
 
-Charged execution is refused (exit 3, zero requests) unless **all** of these hold. They are evaluated together,
+Charged Responses execution is refused (exit 3, no Responses request) unless
+**all** of these hold. Gate evaluation can perform model-discovery and optional
+Costs API requests; it is not an offline command. They are evaluated together,
 so a refusal lists every failing check:
 
 | Check | Meaning |
@@ -78,13 +84,14 @@ so a refusal lists every failing check:
 | `spend_authorised` | `authorised_ceiling_usd` >= `max_usd_per_run` > 0 and an authorisation reference is given. |
 | `pricing_known` | The model is in [`pricing.json`](../../tools/atlas_agent/pricing.json) and its rates are younger than `max_age_days`. Unknown models are never priced by guess, substituted or silently downgraded. |
 | `credit_attestation` … `model_attested_eligible` | A fresh owner attestation (below): unexpired with margin, enough remaining for one run, API-only grant, auto-recharge disabled, model on the eligible list. |
-| `source_clean` | The Atlas checkout has no uncommitted changes. |
-| `model_retrievable` | An uncharged `models.retrieve` call proves the key/project can use the model; optional `expected_project` must match. |
+| `source_clean` | By default the Atlas checkout must be clean. An explicitly configured `task.allow_dirty_source` diagnostic run may pass this gate with local changes; this does not waive source identity, publication custody or owner authorization. |
+| `model_retrievable` | `models.retrieve` must return the accepted discovery response; optional `expected_project` must match. Discovery alone does not prove a successful Responses call or artistic result. |
 | `costs_crosscheck` | If an organisation admin key is supplied (`OPENAI_ADMIN_KEY`), spend since the attestation is read from the Costs API and the measured headroom must still cover a run. Required when `require_costs_crosscheck` is true. |
 
-**Why an attestation?** No documented API-key endpoint exposes the credit-grant balance, its expiry or the
-auto-recharge setting, so the runner cannot verify them itself and **refuses to assume** them. The owner reads
-them from the billing dashboard and records a dated attestation. Codex API-key usage is **not** assumed to be
+**Why an attestation?** This implementation does not obtain credit-grant
+balance, expiry or auto-recharge settings from an API. It requires the owner
+to check those facts and supply a dated attestation. This describes the current
+runner contract, not a claim about every present or future provider endpoint. Codex API-key usage is **not** assumed to be
 covered by any promotional credit, and API charges are separate from GitHub Actions compute.
 
 ~~~json
@@ -93,8 +100,12 @@ covered by any promotional credit, and API charges are separate from GitHub Acti
  "source": "platform billing overview, owner check", "attested_by": "owner"}
 ~~~
 
-Pass it with `--credit-attestation-file` or the `credit_attestation_json` workflow input. Check without any
-charged request: `python3 tools/atlas_agent_runner.py credit-check --config run.json`.
+Pass it with `--credit-attestation-file` or the `credit_attestation_json` workflow
+input. `credit-check --config run.json` checks the live gate without invoking
+Responses, but may use configured credentials for network discovery and the
+optional Costs API. Use the explicit fixture dry run above for a keyless offline
+documentation check. The sample date and amounts are illustrative, not a fresh
+attestation or spending authorization.
 
 ## Budget and limits
 
@@ -106,9 +117,9 @@ priced and reconciled; reported usage above the reservation stops the run. Timeo
 keep their reservation as **possibly charged**; 429s and rejected requests are released. A 429 that mentions
 quota, billing, credit or a hard spend limit is treated as exhausted credit and is not retried.
 
-Provider rate-limit rejections (HTTP 429, no model work, no charge) do **not** consume `max_api_calls`; they are bounded
+The runner accounts for HTTP 429 rate-limit rejections separately: they do **not** consume `max_api_calls`; they are bounded
 by `max_retries` per call, `max_total_retries` per run (default 30) and the run time, and are reported separately as
-`usage.rate_limited_attempts` (`api_attempts` counts every request). Prompts above the 272K-token short-context pricing threshold are refused (`long_context_pricing_not_modelled`)
+`usage.rate_limited_attempts` (`api_attempts` counts every request). Prompts above the runner's configured 272K-token short-context threshold are refused (`long_context_pricing_not_modelled`)
 because long-context rates are not modelled.
 
 Each `render_capture` writes a fresh bundle (`captures/after`, `after-2`, ...) and clears the previous comparison, so a
@@ -116,14 +127,16 @@ model may refine and re-render several times; only a comparison of the latest re
 stopped by a limit or an API failure keeps its unfinished edits as `partial-patch.diff` (`publishable: false`,
 `validated: false`) so that raising a limit and retrying need not discard the work.
 
-The defaults and hard caps live in [`config.schema.json`](../../tools/atlas_agent/schemas/config.schema.json) (unknown keys
+The local runner defaults and hard caps live in [`config.schema.json`](../../tools/atlas_agent/schemas/config.schema.json) (unknown keys
 are rejected; each limit has a maximum, raised on 2026-11-07 at the owner's request for long supervised runs: up to 120
-iterations, 200 calls, 600 tool calls, 4 hours, 50M input tokens; the money ceilings and the 272K short-context guard are unchanged). Limits: iterations, API calls, retries and exponential backoff, run
+iterations, 200 calls, 600 tool calls, 4 hours, 50M input tokens; the money ceilings and the 272K short-context guard are unchanged). The hosted workflow input is separately limited to 30 iterations and a 30-minute job; local maxima do not enlarge that hosted envelope. Limits: iterations, API calls, retries and exponential backoff, run
 seconds, input/output tokens per call and per run, USD per call and per run, tool calls, per-tool and total tool
 seconds, tool output bytes, malformed tool calls, sandbox violations, images, image bytes and edge, image resend
 window, read/edit bytes, files edited. The SDK's own retries are disabled so none is unbudgeted. `store` is
-`false`, `truncation` is `disabled`, there is no fallback model and no auto-recharge or paid spill-over: if the
-API serves a different model than requested, the run fails.
+`false`, `truncation` is `disabled`, and there is no fallback model. The runner
+requires an owner attestation that auto-recharge is disabled; it does not control
+account billing or independently prove that setting. If the API serves a model
+outside the accepted requested-name/version match, the run fails.
 
 **Cost words.** `reserved_worst_case_*` is an estimate made before calls. `computed_from_reported_usage_usd` is
 reported tokens times published rates. **Neither is a bill**; `billing_reconciliation` is `not-performed`.
@@ -153,7 +166,9 @@ Enforced in code, not only in the prompt:
 - **Publication** is separate and off by default. `atlas_agent_runner.py publish` re-checks that upstream HEAD
   still equals the SHA the patch was made from, that only the lane's own files change and only as modifications,
   and that the branch name is a **new** `atlas-agent/*` name (local and remote); then it commits to that branch.
-  It never touches the base branch, never forces and never merges. The Actions workflow has no write access.
+  It never changes the base branch or merges. An optional `--push` uses a
+  create-only lease and refuses an existing remote branch. Publication is a
+  separate operator-authorized action; the Actions workflow has no write access.
 
 ## Atlas tools and the capture hand-off
 
@@ -183,8 +198,9 @@ runner re-verifies the seal, hashes and PNG structure itself, and invokes the #4
 documented CLI and its exit codes (`render_capture`, needing `task.godot`). **Evidence class** is recorded for
 every image: `godot-capture` (engine identity present) or `fixture` (flat raster). The receipt's
 `visual_cycle.claimed` becomes true only when before **and** after bundles are both `godot-capture`, framing is
-equivalent, the pack and PNG changed and the patched pack re-validated. Fixtures never support that claim, and
-no genuine Godot output has been integrated yet.
+equivalent, the pack and PNG changed and the patched pack re-validated. Fixtures never support that claim. The dated November 7 local run did exercise
+a genuine Godot before/after cycle, as recorded below; that establishes execution
+for its source, not artistic acceptance or a qualified hosted pipeline.
 
 ## Receipts
 
@@ -206,8 +222,8 @@ Exit codes: 0 success; 2 usage/config; 3 live gate refused; 4 stopped (a limit, 
 | 2026-11-07 | Deterministic suite (`python3 -m unittest discover -s tools/atlas_agent -p "test_*.py"`): config, pricing/budget, sandbox, malformed tool calls, validators, captures, real Git custody, the real SDK against a loopback API double, workflow entry | Exact-head results are recorded in the pull request. |
 | 2026-11-07 | Live Responses API smoke test, `gpt-6-luna`, synthetic fixture, owner-supplied key and attestation | **Passed** ([evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md)). Run 1 was stopped by `max_iterations` (fail-closed limit); run 2 succeeded with a verifiable receipt: 9 real responses, 13 tool calls, one image, one bounded edit re-validated, about USD 0.0012 against a USD 0.25 ceiling. Fixture evidence only; no Godot visual claim. |
 | 2026-11-07 | Live run on real Atlas art (`lumen-fault`, art head `c4aab63e`) with a genuine #498 Godot capture bundle | **Passed as critique-only** ([evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md#run-3-real-atlas-art-genuine-godot-captures-critique-only)): 7 real responses, 3 images viewed, baseline validator passed, about USD 0.003; the model made no edit, so no cycle is claimed. |
-| 2026-11-07 | Owner-directed editing run on real art (`lumen-fault`, art head `c4aab63e`): model edits, real validators, real Godot after-capture and comparison | **Passed** ([evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md#run-4-owner-directed-editing-cycle-on-real-art)): `success`, `visual_cycle.claimed` true, 15 responses (5 rate-limit retries, none charged), 7 `pack_add_rectangles` batches, about USD 0.004. Execution is verified; the artistic result is **not** accepted: a measured review found 49% of the new mass floating unattached and cistern edits that breach that module's placement rule. |
-| open | Human lane review and reference-gallery comparison of the run-4 patch, Costs API cross-check, dashboard reconciliation, Actions-hosted live run (needs the `OPENAI_API_KEY` repository secret and the workflow on `main`) | **Not yet run.** |
+| 2026-11-07 | Owner-directed editing run on real art (`lumen-fault`, art head `c4aab63e`): model edits, real validators, real Godot after-capture and comparison | **Passed** ([evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md#run-4-owner-directed-editing-cycle-on-real-art)): `success`, `visual_cycle.claimed` true, 15 responses (5 rate-limit retries accounted separately), 7 `pack_add_rectangles` batches, about USD 0.004. Execution is verified; the artistic result is **not** accepted: a measured review found 49% of the new mass floating unattached and cistern edits that breach that module's placement rule. |
+| open | Human lane review and reference-gallery comparison of the run-4 patch, Costs API cross-check, dashboard reconciliation, Actions-hosted live run for the separately admitted fixture path (needs current credentials and explicit spending gates) | **Not yet run.** |
 
 The loopback double (`testing_stub_api.py`) speaks HTTP to the real SDK; it proves request shape, retries,
 error mapping and accounting logic. The live smoke test above is what showed the live service accepts these

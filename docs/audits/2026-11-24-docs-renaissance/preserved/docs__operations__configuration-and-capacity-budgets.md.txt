@@ -1,0 +1,215 @@
+---
+title: Configuration and capacity budgets
+document-kind: runbook
+canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
+status: Current
+scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
+last-reviewed: 2026-09-10
+related-documents: [../reference/configuration-reference.md, ../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, profiling-observability-and-performance.md]
+---
+
+# Configuration and capacity budgets
+
+The bounded [synchronous Water body constructor](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+reuses one native pending World/token, one permanent three-body private graph,
+the existing terrain chunk/time budget, at least two frozen physics frames and
+the20-second explicit readiness refusal. It adds no native capacity, tick-time
+allocation, fallback or physics-law change. Native capacity outcomes and future
+failed-world quarantine stay authoritative; no final platform acceptance follows.
+
+**Current:** native World construction, region/temperature reservation, event
+capacity, and snapshot slot/patch/byte limits exist. **Planned:** general saved
+configuration and safe live pause/drain/resize/publish. Explicit capacity failure
+does not mean a failed tick is rolled back atomically.
+
+This page owns preparation and failure semantics. Exact values belong to the
+[configuration reference](../reference/configuration-reference.md); identity and
+executed checks belong to the [checkpoint](source-checkpoint-and-recovery.md)
+and [evidence ledger](../reference/validation-evidence.md).
+
+## What can be configured now?
+
+[WorldConfig](../../native/include/cybersand/world.hpp) is a construction-time
+value whose established fields are mirrored by versioned `cybersand_config_v2` in the
+[C ABI](../../native/include/cybersand/c_api.h). It controls geometry, workers,
+quiet thresholds, resident/active/planning capacities, and accepted explosions.
+Godot's finite adapter overrides several standalone defaults. Auto chooses
+workers when constructing a world; it does not resize a running pool.
+
+The compiled granular policy is a native construction value; the C ABI keeps
+its existing layout and uses policy defaults. Diagnostic adapter overrides build
+a fresh candidate before replacement. There is no live setting or save field.
+
+[RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp)
+has separate mandatory slot, patch-per-slot, and byte-per-slot capacities.
+The finite adapter chooses concrete values, but the general API supplies no
+production defaults.
+
+Capacity bounds allocated work/storage; it is not a permanent stored-world
+dimension. Native lazy preparation can allocate chunks/temperature during a tick.
+The Approved goal of allocation-free prepared ticks is narrower than a claim
+that all current ticks and callers allocate nothing.
+
+## Current preparation procedure
+
+1. Identify backend, geometry, worker count, resident/active capacities and
+   intended loaded/interest extents. Account for movement/write reach beyond
+   scheduled cores, not only visible pixels.
+2. Construct World with explicit limits. `initial_chunk_reserve` is a
+   reservation hint, not the hard resident limit.
+3. Call `reserve_region` for required chunks and
+   `reserve_temperature_region` where temperature will be needed.
+4. Construct snapshot storage for the intended publication policy, then
+   populate/load before the normal tick loop.
+5. Exercise boundary crossings and observe `TickStats::chunk_allocations`
+   and `temperature_field_allocations`. Zero counts cover those World-owned
+   allocations only.
+6. Observe resident payload bytes, planned work, event acceptance, snapshot
+   required bytes/patches and high-water, and explicit failures. Retain command,
+   input, source/artifact, and platform evidence.
+
+[Native fixtures](../../native/tests/test_world.cpp) test bounded construction,
+preallocated movement, event queue limits, and snapshot pressure. They do not
+implement or validate a live resize protocol.
+
+## Explosion queue rejection and exhausted simulation space
+
+**Current:** enqueueing too many explosions returns false; accepted events apply
+at tick entry. Running out of resident or active simulation capacity throws and
+may leave a partially advanced tick. Such a World is latched failed: subsequent
+ticks, writes, reservation and publication are rejected until explicit clear or
+replacement. Accepted events are never automatically replayed. Reserved space reduces allocation pressure;
+lazy preparation may still allocate chunks or temperature fields. Adapter limits
+differ from standalone WorldConfig defaults, and live resizing is **Planned**.
+Avoiding hot tick allocation is an **Approved** requirement; the **Current**
+zero-allocation evidence is limited to prepared fixtures and their World-owned
+chunk/temperature counters, not every caller or allocation category.
+The API-specific outcomes are:
+
+| Boundary | Current outcome | Limitation |
+|---|---|---|
+| Invalid World construction | Throws before a usable World is returned | Constructor constraints are in `World::World` |
+| Resident/active chunk or core capacity | Explicit exception | Work may already have mutated this tick; no atomic rollback guarantee |
+| Explosion queue full/invalid request | Enqueue returns false | Caller must inspect acceptance |
+| Snapshot slots unavailable | `Backpressure` | Dirty state retained |
+| Snapshot patch/byte capacity insufficient | `CapacityExceeded`, exact requirements | Dirty state retained |
+| Native Godot tick exception | Adapter reports false/error once and latches failure | Desktop/Web stop and retain last valid publication; reset/replacement required |
+| Generalized command/transfer queue | **Planned** | No complete shared queue-pressure contract |
+
+Sources: [World](../../native/src/world.cpp),
+[snapshot publication](../../native/src/world.cpp), and
+[native adapter](../../godot/native_extension/cyber_native_cell_world.cpp).
+Core candidates are capacity-checked after deduplication within each chunk;
+cores spanning several chunks (core larger than chunk) can still count once per
+chunk before the final sort/unique, so the bound is not always exactly the number
+of unique output jobs. Before the 2026-11-06 #406
+[stress-canvas correction](../audits/2026-11-06-stress-canvas.md) every active
+activity block counted. The
+[threading contract](../architecture/simulation-tick-and-threading.md) owns
+desktop/Web tick-failure handling.
+
+**Rejected as a future policy:** silently clipping requested regions, dropping
+accepted commands/dirty state, or hiding hot growth as safe expansion.
+These prohibitions are requirements, not a promise that every current failure
+preserves a pre-tick snapshot.
+
+## Approved reconfiguration requirements
+
+[ADR-004](../decisions/ADR-004-interest-region-and-reconfiguration.md) approves
+explicit serializable capacity and interest policy. **Planned implementation:**
+diagnose requested/available capacity, reach a safe boundary, drain affected
+workers and leased views, prepare replacement resources, preserve committed
+state and pending commands, publish a complete valid state, then resume.
+
+The API, pause/rejection behavior, failure recovery, serialization keys/migration,
+and production memory/high-water thresholds remain open. Proposed 10%/20%
+margins have unresolved per-side/total semantics; current presets are explicit
+pixel pairs. Current region changes follow the separate
+[pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry);
+waking new coverage can exhaust existing candidate capacity (distinct cores per
+chunk). That produces an explicit quarantined failure, not automatic
+capacity growth or retry. Offscreen retained activity still counts toward active
+chunk capacity. Region pause/resume does not implement live resize.
+
+CYSD1 stores a fixed level and selected metadata, not complete WorldConfig or
+replay state. Follow the [level-save contract](../reference/level-saves-and-replay.md).
+
+## Future acceptance gate
+
+A live-resize change needs near-capacity and over-capacity fixtures, current and
+2× dimensions, explicit failed-transition behavior, preserved state and
+unacknowledged dirtiness, no invalid worker/lease views, and measured allocation/
+memory consequences. Declare whether “2×” means each dimension or total area.
+Do not promote design requirements to Current on source presence alone.
+
+## How are physics diagnostics bounded?
+
+**Current:** the [measurement runbook](physics-characterisation.md) defines 256
+histogram slots per scheduled-core scratch slot and 8,192 merged slots, allocated
+only on opt-in World construction. Counter overflow is explicit and drops
+observations. Body metrics use the current 64-body bound, with fixed scalar and
+4-by-81 face/material counters. Copied cell observations are limited to 512 by
+768 cells; fixture runs are bounded to 7,200 ticks and 512 cases per invocation.
+Rapier application observations use six scalars per body.
+
+Native tick and coupling timings, used slots, core/chunk high-water marks and
+overflow are retained in the [dated baseline](../audits/2026-09-09-physics-characterisation.md).
+Offline snapshots, retained traces and postprocessing costs are outside hot-loop
+budgets. These measurements do not establish a production performance target.
+
+## Sampled support query budget
+
+[Granular policy](../systems/granular-interaction-policy.md) bounds native queries
+to 32 by 32 physical boxes (at most 33 by 33 raster cells at fractional origins),
+at most 20 stable-material samples per contact and 128
+enclosure candidates. Native queries allocate no storage; no worker read/write
+domain or Rapier shape is added.
+
+Delayed exchange adds one 64-bit deadline per native activity block, eight extra
+bytes in the tested layout. It reuses the existing metadata pass and exclusive
+block ownership; no queue or tick allocation is added. Fallback uses a fixed
+PackedInt64Array and resets quiet counters only inside due included 16 by 16
+blocks. This is bounded local waking, not a new whole-world cell scan. Existing
+World preparation/allocation and failed-tick limits still apply.
+
+
+## Issue #13 experiment checkpoint
+
+The [tower](experiment-tower.md) reuses native validated recipe construction and whole-world installation. Commands are copied outside ticks; the latest pending control replaces the previous pending control. It does not add an unbounded command queue or global floor simulation pass.
+
+
+## Opt-in transport profiles
+
+**Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
+owns schema, inheritance, units, immutable native tables and explicit owner restart.
+The Tower applies validated profiles through restart. Actual powder falls and
+lateral Water mass transport drive bounded optional mixing and grain pickup;
+horizontal sampling and cadence are separate fixed experiments.
+Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
+are unchanged. No unsynchronized live descriptor mutation is introduced.
+
+## MicroScenario setup and observation budgets
+
+**Current MS-000:** scenario setup is admitted only at fresh replacement, not in
+native worker kernels. `CyberMicroScenarioContract` enforces finite recipe,
+JSON, event and observation budgets before replacement. The [MicroScenario contract](microscenarios.md#versioned-definition-and-validation)
+lists exact limits and timing semantics. Retained optional timing samples are
+capped; overflow is reported as truncation, not silently presented as a full trace.
+
+These are apparatus budgets, not larger native World capacities. Existing native
+allocation, failed-world quarantine and general input-queue limitations remain.
+Fixed fixture execution rejects live cadence/adhesion overrides; owner-policy
+legacy scenarios still require their actual owner settings in comparisons.
+
+## MicroScenario schema-2 presentation and work capture
+
+[MS-001](microscenarios.md#schema-2-complete-apparatus-presentation-and-existing-field-inspection)
+preserves all existing setup, event, observation, JSON and native capacities.
+It admits at most 12 named in-world presentation regions; title/profile/baseline
+labels are at most 128 characters, region labels 96 and instructions 4096. The
+declared run window is 1..3600 ticks, with at most one existing step command awaiting
+acknowledgement. A/B retains two bounded definitions and one capture per slot.
+`cell_state` is exactly one cell. Optional host timings retain at most 3600 values;
+work-counter aggregation has a fixed key set. No recurring native timer or new
+material operation is added. Failed/absent native owners reject read queries;
+reported capacities are actual runtime limits, not UI guesses or raised defaults.
