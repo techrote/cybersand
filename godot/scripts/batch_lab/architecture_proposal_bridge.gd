@@ -26,6 +26,7 @@ var _requests := 0
 var _dropped_events := 0
 var _last_status := "unbound"
 var _seam_mutating := false
+var _seam_serial := 0
 
 static func _answer(ok: bool, reason: String) -> Dictionary:
 	return {"ok":ok,"reason":reason,"zero_writes":true}
@@ -46,7 +47,7 @@ func bind_owner_seam(workflow: Object, dispatch: Callable, cancel: Callable,
 		return _answer(false,"The owner must supply dispatch, request-scoped cancellation and a live host context guard.")
 	if evidence_mode not in ["fixture","owner-transport-unqualified"]:
 		return _answer(false,"A caller-supplied label cannot certify genuine inference.")
-	_seam_mutating=true
+	_seam_mutating=true; _seam_serial+=1
 	_disconnect_owner()
 	_workflow=workflow; _dispatch=dispatch; _cancel=cancel; _context_guard=context_guard; _mode=evidence_mode
 	_workflow.connect("proposal_transport_requested",_on_request)
@@ -66,7 +67,7 @@ func _disconnect_owner() -> void:
 
 func detach_owner_seam() -> Dictionary:
 	if _seam_mutating: return _answer(false,"Owner seam mutation is already in progress.")
-	_seam_mutating=true
+	_seam_mutating=true; _seam_serial+=1
 	_disconnect_owner()
 	_seam_mutating=false
 	changed.emit(summary())
@@ -106,6 +107,9 @@ func _cancel_owned(callback: Callable, provider_id: int, identity: String, reaso
 	if callback.is_valid(): callback.call(provider_id,identity,reason.left(2048))
 
 func _on_request(request: Dictionary) -> void:
+	var request_host: Object=_workflow
+	var request_seam:=_seam_serial
+	var request_mode:=_mode
 	var identity:=str(request.get("request_id",""))
 	if request.get("format")!=REQUEST_FORMAT or identity.is_empty() or identity.length()>256 or request.get("mode")!="proposal_transport":
 		_refuse_workflow(identity,_workflow); _record("refused",identity,-1,"Malformed proposal-only request."); return
@@ -114,13 +118,19 @@ func _on_request(request: Dictionary) -> void:
 	if Compiler.canonical(request).to_utf8_buffer().size()>MAX_REQUEST_BYTES:
 		_refuse_workflow(identity,_workflow); _record("refused",identity,-1,"Proposal request exceeds two MiB."); return
 	if not _active.is_empty(): _retire_active("cancelled","A new host proposal replaced the previous owned request.",true)
+	# Owner cancellation can bind another host and synchronously dispatch its
+	# proposal. The outer signal must not overwrite that newer lifetime, even
+	# if the replacement host deliberately reuses the same textual request ID.
+	if _seam_serial!=request_seam or _workflow!=request_host or not _active.is_empty():
+		_refuse_workflow(identity,request_host)
+		_record("retired-request-signal",identity,-1,"A replacement owner lifetime superseded this request signal.","",false,request_mode)
+		return
 	if not _pending(identity) or not _dispatch.is_valid():
 		_refuse_workflow(identity,_workflow); _record("refused",identity,-1,"No current exclusive owner dispatch is available."); return
 	_requests+=1
 	var token:=Crypto.new().generate_random_bytes(16).hex_encode()
 	var owner_dispatch:=_dispatch
 	var owner_cancel:=_cancel
-	var request_mode:=_mode
 	_active={"request_id":identity,"token":token,"request":request.duplicate(true),"provider_id":-1,
 		"dispatching":true,"guard_called":false,"guard_passed":false,"early":{},"early_duplicate":false,
 		"owner_cancel":owner_cancel,"evidence_mode":request_mode}

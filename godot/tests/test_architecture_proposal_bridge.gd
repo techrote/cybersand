@@ -209,6 +209,18 @@ func run() -> void:
 		next_host.begin()
 	first_host.stop()
 	check(rebindings[-1].ok and seam.summary().active and next_host.refusals==0 and first_host.get_signal_connection_list("proposal_transport_requested").is_empty(),"retiring an old host cannot refuse a replacement host with the same request ID")
+	local_owner.cancellation_hook=Callable(); seam.detach_owner_seam()
+	first_host=CorrelationHost.new(); next_host=CorrelationHost.new()
+	seam.bind_owner_seam(first_host,local_owner.dispatch,local_owner.cancel_owned,live_context,"fixture")
+	first_host.begin()
+	var earlier_calls: int=local_owner.provider.fixture_calls
+	local_owner.cancellation_hook=func()->void:
+		seam.bind_owner_seam(next_host,local_owner.dispatch,local_owner.cancel_owned,live_context,"fixture")
+		next_host.begin()
+	# A second signal while the first dispatch is active causes cancellation.
+	# Its callback synchronously binds a new host with the identical request ID.
+	first_host.begin()
+	check(seam.summary().active and seam._workflow==next_host and next_host.refusals==0 and local_owner.provider.fixture_calls==earlier_calls+1,"outer request signal cannot overwrite a nested replacement dispatch")
 	local_owner.cancellation_hook=Callable(); seam.detach_owner_seam(); local_owner.provider.free()
 	var accepted:=Provider.new()
 	var error:=accepted.send("LM Studio","fixture://never-network","","","typed fixture","typed fixture",128,1.0,"",[])
