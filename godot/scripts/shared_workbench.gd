@@ -724,6 +724,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
 		apply_staged_water: bool = true, retain_layers: bool = false) -> bool:
+	if is_instance_valid(strata) and strata.authoring_busy(): return refuse("Finish or stop Strata native authoring before replacing its source.")
 	if busy(): return refuse("Wait for the current owner transaction.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")

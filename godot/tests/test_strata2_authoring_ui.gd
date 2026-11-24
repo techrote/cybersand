@@ -8,6 +8,9 @@ var checks: Array[Dictionary] = []
 class Mediator extends Node:
 	var state := {"status":"idle", "busy":false, "can_approve":false, "cancellable":false}
 	var calls: Array[Dictionary] = []
+	var preview_serial := 0
+	var refuse_preview := false
+	var library: Array = [{"id":"native-part","label":"Native part"}]
 	var effects := {"version":1,"enabled":true,"paused":false,"seed":1,"effects":[
 		{"id":"steam-one","plane":"effects","kind":"steam","region":[64,64,128,128],"seed":2,
 		"count":12,"speed":18.0,"strength":0.5,"direction":[0.1,-1.0],"colour":[0.6,0.7,0.8,0.4],"enabled":true}]}
@@ -19,14 +22,18 @@ class Mediator extends Node:
 	func authoring_materials() -> Array: return [{"id":58,"label":"Steel"},{"id":77,"label":"Glass"}]
 	func authoring_state() -> Dictionary: return state
 	func import_fixture_catalogue() -> Array: return []
-	func module_catalogue() -> Array: return [{"id":"native-part","label":"Native part"}]
+	func module_catalogue() -> Array: return library
+	func authoring_inspect_source(path: String) -> Dictionary:
+		return {"ok":true,"kind":"native_module" if path.ends_with(".json") else "png","extent":[64,48],"source_sha256":"synthetic-inspection"}
 	func composition_catalogue() -> Array: return [{"id":"layered-preset","label":"Layered preset"}]
 	func scene_catalogue() -> Array: return [{"id":"successor-scene","label":"Successor scene","description":"Synthetic UI fixture"}]
 	func atmosphere_profiles() -> Array: return [{"id":"vent_steam","label":"Vent steam"}]
 	func atmosphere_state() -> Dictionary: return effects.duplicate(true)
 	func preview_import(path: String, options: Dictionary) -> void:
 		calls.append({"method":"preview_import","path":path,"options":options})
-		state = {"status":"ready","token":"review-1","busy":false,"can_approve":true,"cancellable":true,"plane":options.plane,"region":[32,32,64,64],"changed_cells":20,"mapped":20,"no_write":4076}
+		if refuse_preview: return
+		preview_serial += 1
+		state = {"status":"ready","token":"review-"+str(preview_serial),"busy":false,"can_approve":true,"cancellable":true,"plane":options.plane,"region":[32,32,64,64],"changed_cells":20,"mapped":20,"no_write":4076}
 	func approve_plan(token: Variant) -> void: calls.append({"method":"approve_plan","token":token})
 	func stop_authoring() -> void: calls.append({"method":"stop_authoring"})
 	func update_atmosphere_effect(id: String, patch: Dictionary) -> void:
@@ -58,6 +65,9 @@ func _run() -> void:
 	var options: Dictionary = ui._import_options()
 	_check("overlay is explicit default", options.alpha_mode == "overlay")
 	_check("decorative target is explicit", options.plane == "scripted")
+	_check("native import exposes explicit Play target", ui._import_plane.get_item_metadata(0) == "play")
+	_check("native construction exposes explicit Play target", ui._module_plane.get_item_metadata(0) == "play")
+	_check("atmosphere never exposes Play target", ui._effect_plane.item_count == 3 and ui._effect_plane.get_item_metadata(0) == "scripted")
 	_check("palette uses admitted IDs", options.palette.size() == 2 and options.palette[0].material == 58 and options.palette[1].material == 77)
 	_check("unknown colours default to refusal", options.unmapped == "refuse" and options.color_distance == 0)
 	ui._preview_import()
@@ -70,7 +80,15 @@ func _run() -> void:
 	_check("stale UI token cannot dispatch approval", mediator.calls.size() == before)
 	ui._preview_import()
 	ui._approve.pressed.emit()
-	_check("fresh approval passes reviewed token", mediator.calls.back() == {"method":"approve_plan","token":"review-1"})
+	_check("fresh approval passes reviewed token", mediator.calls.back() == {"method":"approve_plan","token":"review-2"})
+	mediator.refuse_preview = true
+	ui._origin[0].value += 1
+	ui._preview_import()
+	_check("refused new preview cannot revive retained old token", ui._approve.disabled and ui._compose_approve.disabled)
+	before = mediator.calls.size()
+	ui._approve.pressed.emit()
+	_check("refused preview cannot dispatch prior approval", mediator.calls.size() == before)
+	mediator.refuse_preview = false
 	ui._alpha_mode.select(1)
 	ui._alpha_mode.item_selected.emit(1)
 	ui.refresh({}, "")
@@ -95,6 +113,31 @@ func _run() -> void:
 	ui._stop.pressed.emit()
 	_check("Stop dispatches through mediator", mediator.calls.back().method == "stop_authoring")
 	_check("idle refresh stops own process", not ui.is_processing())
+	ui._source.text = "synthetic-native.json"
+	ui._inspect_source()
+	_check("native mode disables raster crop scale and mask", not ui._crop[0].editable and not ui._scale.editable and not ui._mask.editable)
+	_check("native mode disables raster palette controls", ui._palette[0].material.disabled and ui._palette[0].colour.disabled and ui._unmapped.disabled)
+	_check("native mode keeps exact transform and placement", not ui._transform.disabled and ui._origin[0].editable)
+	ui._source.text = "synthetic-raster.png"
+	ui._inspect_source()
+	_check("PNG inspection restores raster controls", ui._crop[0].editable and ui._scale.editable and ui._mask.editable and not ui._palette[0].material.disabled)
+	mediator.library.append({"id":"harvested-part","label":"Harvested part"})
+	mediator.state.harvested_modules = ["harvested-part"]
+	ui.refresh({}, "")
+	_check("async harvest completion refreshes native library", ui._modules.size() == 2 and ui._modules.back().id == "harvested-part")
+	mediator.state.status = "applying"
+	mediator.state.stages = [{"id":"stage-1","plane":"scripted","status":"applying","applied":10}]
+	ui.refresh({}, "")
+	mediator.state.stages[0].applied = 20
+	ui.refresh({}, "")
+	_check("stage progress refreshes within same overall status", "applied 20" in ui._plan_rows.text)
+	panel._tabs.current_tab = 1
+	await process_frame
+	var field: LineEdit = ui._origin[0].get_line_edit()
+	field.grab_focus()
+	field.text = "117"
+	ui._commit_field()
+	_check("focused typed number commits before reading controls", ui._origin[0].value == 117)
 	var failures := 0
 	for record: Dictionary in checks:
 		if not record.passed: failures += 1

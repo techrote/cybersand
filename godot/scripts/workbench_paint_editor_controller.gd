@@ -533,6 +533,14 @@ func strata_commit(cells: PackedInt32Array, token: int, expected_before: PackedI
 	if not expected_before.is_empty(): job.expected_before = expected_before.duplicate()
 	return _begin_plan(job, "Strata native placement")
 
+
+func strata_stop(token: int) -> void:
+	# Stop only this caller's owned operation; never cancel unrelated painting.
+	if int(_planning_job.get("strata_token", -1)) == token: _planning_cancelled = true
+	if int(_operation.get("job", {}).get("strata_token", -1)) == token:
+		_operation.cancel_requested = true
+		host.simulation_worker.paint_stop()
+
 func begin_deferred_brush(point: Vector2i, material: int, brush_radius: int, token: int) -> bool:
 	if material not in host.simulation_worker.paint_materials() or brush_radius < 0 or brush_radius > 24:
 		_say("Deferred human brush has an unsupported material or radius.")

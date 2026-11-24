@@ -7,11 +7,24 @@ const Provenance = preload("res://scripts/depth/strata_authoring_provenance.gd")
 const Module = preload("res://scripts/depth/strata_native_module.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const History = preload("res://scripts/workbench_paint_editor_history.gd")
+const Codec = preload("res://scripts/depth/strata_import_codec.gd")
+const Plan = preload("res://scripts/depth/strata_construction_plan.gd")
+const Session = preload("res://scripts/depth/strata_construction_session.gd")
+const Library = preload("res://scripts/depth/strata_authoring_library.gd")
 
 var controller: Node
 var _serial := 0
 var _results: Dictionary = {}
 var _pending_operations: Dictionary = {}
+var _session: RefCounted
+var _codec: RefCounted
+var _preview_serial := 0
+var _preview: Dictionary = {}
+var _conversion_options: Dictionary = {}
+var _harvest: Dictionary = {}
+var _harvested: Dictionary = {}
+var _issuing_native := false
+var _preflight_play_setup: Dictionary = {}
 
 
 func mount(value: Node) -> void:
@@ -62,6 +75,8 @@ func authoring_plane_state(id: String) -> Dictionary:
 		"paint":allowed and bool(worker.get("paint_allowed", true)) if id == "play" else allowed,
 		"erase":allowed and bool(worker.get("erase_allowed", true)) if id == "play" else allowed,
 		"materials":Array(_materials()), "source":controller.wb.applied.get("source", []) if id == "play" else [],
+		"native_tick":int(worker.get("tick", 0)) if id == "play" else 0,
+		"paused":bool(controller.wb.host.paused) if id == "play" else true,
 		"authoring_generation":int(worker.get("authoring_generation", 1)) if id == "play" else 1}
 	var rectangles: Array = controller.wb.applied.get("edits", []) if id == "play" else row.rectangles
 	var writes := 0
@@ -76,6 +91,7 @@ func authoring_plane_state(id: String) -> Dictionary:
 		"max_rectangles":Setup.MAX_STAMPS if id == "play" else Document.MAX_RECTANGLES,
 		"max_layout_writes":Document.MAX_LAYOUT_WRITES,
 		"remaining_authoring_records":Provenance.MAX_RECORDS - doc.get("authoring", Provenance.default_configuration()).records.size(),
+		"remaining_authoring_bytes":Provenance.MAX_BYTES - Module.json_bytes(doc.get("authoring", Provenance.default_configuration())).size(),
 		"tick":int(worker.get("tick", 0)) if id == "play" else 0,
 		"authoring_generation":int(worker.get("authoring_generation", 1)) if id == "play" else 1}
 
@@ -83,7 +99,8 @@ func authoring_plane_state(id: String) -> Dictionary:
 func _fence_error(id: String, expected: Dictionary) -> String:
 	var current := authoring_plane_state(id)
 	if not current.get("ok", false): return str(current.get("error", "Native plane unavailable."))
-	if not current.paint_allowed and not current.erase_allowed: return str(current.get("error", "The target is excluded or locked."))
+	if not current.paint_allowed and not current.erase_allowed:
+		return str(current.error) if not str(current.get("error", "")).is_empty() else "The target is excluded or locked."
 	for key: String in ["scene_id", "owner_id", "generation", "revision", "permission_sha256"]:
 		if not expected.has(key) or expected[key] != current[key]: return "Native target or permission changed after preview: " + key
 	return ""
@@ -97,7 +114,10 @@ func authoring_capture(id: String, region: Rect2i, expected: Dictionary) -> Dict
 	_serial += 1
 	var token := _serial
 	_pending_operations[token] = {"plane":id, "kind":"capture", "expected":expected.duplicate(true)}
-	if not controller.wb.paint_editor.strata_capture(region, token):
+	_issuing_native = true
+	var accepted: bool = controller.wb.paint_editor.strata_capture(region, token)
+	_issuing_native = false
+	if not accepted:
 		_pending_operations.erase(token)
 		return _error(controller.wb.paint_editor._message)
 	return {"ok":true, "pending":true, "operation_id":token}
@@ -116,7 +136,10 @@ func authoring_apply(id: String, cells: PackedInt32Array, expected: Dictionary) 
 	_serial += 1
 	var token := _serial
 	_pending_operations[token] = {"plane":id, "kind":"edit", "expected":expected.duplicate(true)}
-	if not controller.wb.paint_editor.strata_commit(cells, token, expected.get("before", PackedInt32Array())):
+	_issuing_native = true
+	var accepted: bool = controller.wb.paint_editor.strata_commit(cells, token, expected.get("before", PackedInt32Array()))
+	_issuing_native = false
+	if not accepted:
 		_pending_operations.erase(token)
 		return _error(controller.wb.paint_editor._message)
 	return {"ok":true, "pending":true, "operation_id":token}
@@ -126,7 +149,9 @@ func authoring_preflight(id: String, cells: PackedInt32Array, expected: Dictiona
 	var error := _fence_error(id, expected)
 	if not error.is_empty(): return _error(error)
 	if id != "play": return {"ok":true, "error":""}
-	var prepared: Dictionary = History.prepare(controller.wb.applied, cells, controller.wb._generated_active, controller.wb._material_baseline)
+	var setup: Dictionary = _preflight_play_setup if not _preflight_play_setup.is_empty() else controller.wb.applied
+	var prepared: Dictionary = History.prepare(setup, cells, controller.wb._generated_active, controller.wb._material_baseline)
+	if prepared.get("accepted", false): _preflight_play_setup = prepared.setup.duplicate(true)
 	return {"ok":bool(prepared.get("accepted", false)), "error":str(prepared.get("error", ""))}
 
 
@@ -139,7 +164,9 @@ func _play_finished(token: int, receipt: Dictionary) -> void:
 	result.error = str(result.get("reason", ""))
 	result.owner_id = operation.expected.owner_id
 	result.layer_id = "play"
-	result.authored_revision = int(controller.wb.host.simulation_worker.paint_state().get("revision", -1))
+	# Preserve the original ACK fence. A later worker state must not make an old
+	# receipt appear to acknowledge unrelated native changes.
+	result.authored_revision = int(receipt.get("revision", -1))
 	_results[token] = result
 
 
@@ -174,3 +201,372 @@ func authoring_record(record: Dictionary) -> Dictionary:
 	controller._document = controller.layer_owner.document()
 	controller._refresh_panel()
 	return {"ok":true, "error":""}
+
+
+func busy() -> bool:
+	return (_session != null and bool(_session.state().get("busy", false))) \
+		or (_codec != null and bool(_codec.state().get("busy", false))) or not _harvest.is_empty()
+
+
+func retire_scene() -> void:
+	for token: int in _pending_operations:
+		if is_instance_valid(controller.wb.paint_editor): controller.wb.paint_editor.strata_stop(token)
+	# Break Session -> adapter -> Session references explicitly on scene exit.
+	_session = null
+	_codec = null
+	_harvest.clear()
+	_results.clear()
+	_pending_operations.clear()
+	_preflight_play_setup.clear()
+	_preview_serial += 1
+	_preview = {"status":"idle", "busy":false, "can_approve":false, "cancellable":false,
+		"token":"", "error":"Previous scene observations retired; prepare a fresh native preview.", "output_image":null}
+
+
+func shutdown() -> void:
+	retire_scene()
+	if is_instance_valid(controller.wb.paint_editor) and controller.wb.paint_editor.strata_operation_finished.is_connected(_play_finished):
+		controller.wb.paint_editor.strata_operation_finished.disconnect(_play_finished)
+	_harvested.clear()
+
+
+func _new_preview() -> bool:
+	if busy():
+		controller._refuse("Stop the active preparation or native prefix before starting another preview.")
+		return false
+	# Retire the old review BEFORE reading a new path or validating options.
+	# A failed Preview B can never leave Preview A's approval token alive.
+	_preview_serial += 1
+	_session = null
+	_codec = null
+	_conversion_options.clear()
+	_preflight_play_setup.clear()
+	_preview = {"ok":false, "status":"idle", "busy":false, "can_approve":false,
+		"cancellable":false, "token":"", "preview_serial":_preview_serial,
+		"output_image":null, "source_image":null, "mask_image":null, "zero_writes":true}
+	if not controller.enabled():
+		_fail_preview("Enable Strata in Layers before importing or composing native geometry.")
+		return false
+	if controller.wb.busy():
+		_fail_preview("Wait for the ordinary Workbench transaction before preparing a native preview.")
+		return false
+	controller.set_process(true)
+	return true
+
+
+func _fail_preview(message: String) -> Dictionary:
+	_session = null
+	_codec = null
+	_preview.merge({"ok":false, "status":"refused", "busy":false, "cancellable":false,
+		"can_approve":false, "token":"", "error":message, "output_image":null}, true)
+	controller._refuse(message)
+	return authoring_state()
+
+
+func authoring_inspect_source(path: String) -> Dictionary:
+	# Inspection is read-only and does not instantiate a decorative owner.
+	return Codec.inspect_source(path, _materials())
+
+
+func _read_png(path: String, expected_sha: String) -> Dictionary:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null or file.get_length() < 1 or file.get_length() > Codec.MAX_PNG_BYTES:
+		return _error("PNG source changed or exceeds its bounded input budget.")
+	var bytes := file.get_buffer(file.get_length())
+	file.close()
+	if Module.digest(bytes) != expected_sha: return _error("Source bytes changed after inspection; inspect the file again.")
+	return {"ok":true, "bytes":bytes}
+
+
+func preview_import(path: String, options: Dictionary) -> Dictionary:
+	if not _new_preview(): return authoring_state()
+	if not Module.keys(options, Codec.OPTION_KEYS + ["plane"], ["mask_path"]):
+		return _fail_preview("Import contains unsupported or incomplete source/mapping controls.")
+	if not options.get("plane") is String or options.plane not in Document.IDS:
+		return _fail_preview("Choose one explicit native target plane.")
+	var inspected: Dictionary = authoring_inspect_source(path)
+	if not inspected.get("ok", false): return _fail_preview(str(inspected.get("error", "Source refused.")))
+	if not controller.select_layer(str(options.plane)): return _fail_preview(controller.status_text())
+	_preview.merge({"source_image":inspected.get("source_image"), "source_sha256":inspected.get("source_sha256", ""),
+		"plane":str(options.plane), "source_path":path}, true)
+	if inspected.kind == "native_module":
+		# Native IDs never pass through raster sampling, palette distance or alpha.
+		if not Module.integer(options.scale, 1, 1): return _fail_preview("Native material IDs cannot be resampled.")
+		if not options.crop is Array or options.crop != [0,0,inspected.extent[0],inspected.extent[1]]:
+			return _fail_preview("Native modules preserve their full exact grid. Harvest a smaller native region to create a new part.")
+		if options.has("mask_path") and options.mask_path != "": return _fail_preview("Native modules carry their own exact no-write mask; external raster masks are not applied.")
+		if not options.alpha_mode is String or options.alpha_mode not in ["overlay", "replace"]:
+			return _fail_preview("Choose preserve or explicit clear for native no-write cells.")
+		var placement := {"origin":options.get("origin", [0,0]), "transform":options.get("transform", "identity"),
+			"empty_mode":"clear" if options.get("alpha_mode", "overlay") == "replace" else "preserve"}
+		return _start_module(inspected.module, str(options.plane), placement)
+	var raster_options := options.duplicate(true)
+	raster_options.erase("plane")
+	raster_options.erase("mask_path")
+	var mask := PackedByteArray()
+	var source: Dictionary = _read_png(path, str(inspected.source_sha256))
+	if not source.get("ok", false): return _fail_preview(str(source.error))
+	if options.has("mask_path"):
+		if not options.mask_path is String: return _fail_preview("Choose an explicit local PNG mask.")
+		var mask_checked: Dictionary = Codec.inspect_source(options.mask_path, _materials())
+		if not mask_checked.get("ok", false) or mask_checked.get("kind", "") != "png": return _fail_preview("Mask source is not an admitted PNG.")
+		var mask_source: Dictionary = _read_png(options.mask_path, str(mask_checked.source_sha256))
+		if not mask_source.get("ok", false): return _fail_preview(str(mask_source.error))
+		mask = mask_source.bytes
+	_codec = Codec.new()
+	_conversion_options = options.duplicate(true)
+	var converted: Dictionary = _codec.begin_png(source.bytes, raster_options, _materials(), mask)
+	if not converted.get("ok", false): return _fail_preview(str(converted.get("error", "Raster proposal refused.")))
+	controller._say("Preparing a bounded material proposal; no native cells have been written.")
+	return authoring_state()
+
+
+func _start_module(module: Dictionary, plane: String, options: Dictionary) -> Dictionary:
+	var planned: Dictionary = Plan.from_module(module, plane, options, authoring_plane_state(plane))
+	if not planned.get("ok", false): return _fail_preview(str(planned.get("error", "Module placement refused.")))
+	return _start_plan(planned.plan)
+
+
+func _start_plan(plan: Dictionary) -> Dictionary:
+	_session = Session.new()
+	var started: Dictionary = _session.begin(self, plan, _materials())
+	if not started.get("ok", false): return _fail_preview(str(started.get("error", "Native preview refused.")))
+	controller._say("Reading the actual target planes for zero-write preview. Approval is required before construction.")
+	return authoring_state()
+
+
+func module_catalogue() -> Array:
+	var entries: Array = Library.catalogue()
+	for module: Dictionary in _harvested.values():
+		entries.append({"id":module.id, "label":module.name + " · harvested", "name":module.name,
+			"description":"Copied native materials; Empty defaults to no-write. Export to retain this reusable part."})
+	return entries
+
+
+func composition_catalogue() -> Array:
+	return Library.composition_catalogue()
+
+
+func import_fixture_catalogue() -> Array:
+	return Library.fixture_catalogue()
+
+
+func preview_module(id: String, options: Dictionary) -> Dictionary:
+	if not _new_preview(): return authoring_state()
+	if not Module.keys(options, ["plane", "origin"], ["transform", "palette", "empty_mode", "count", "step"]):
+		return _fail_preview("Native placement has unsupported controls.")
+	var plane: Variant = options.plane
+	if not plane is String or plane not in Document.IDS: return _fail_preview("Choose an explicit native plane.")
+	if not controller.select_layer(plane): return _fail_preview(controller.status_text())
+	var loaded: Dictionary = Module.validate(_harvested[id], _materials()) if _harvested.has(id) else Library.module(id, _materials())
+	if not loaded.get("ok", false): return _fail_preview(str(loaded.get("error", "Unknown native part.")))
+	var placement := options.duplicate(true)
+	for key: String in ["plane", "count", "step"]: placement.erase(key)
+	var planned: Dictionary = Plan.from_module(loaded.module, plane, placement, authoring_plane_state(plane))
+	if not planned.get("ok", false): return _fail_preview(str(planned.get("error", "Native placement refused.")))
+	var count: Variant = options.get("count", 1)
+	var step: Variant = options.get("step", [0, 0])
+	if not Module.integer(count, 1, 16) or not Module.pair(step, -2048, 2048): return _fail_preview("Repeat uses 1–16 copies with an exact integer step.")
+	var stage: Dictionary = planned.plan.stages[0]
+	var origin := Vector2i(int(options.origin[0]), int(options.origin[1]))
+	var region: Rect2i = Module.rectangle(stage.region)
+	var base: Dictionary = stage.placements[0].duplicate(true)
+	for index: int in range(1, int(count)):
+		var position := origin + Vector2i(int(step[0]), int(step[1])) * index
+		var copy := base.duplicate(true)
+		copy.origin = [position.x, position.y]
+		stage.placements.append(copy)
+		region = region.merge(Rect2i(position, Module.rectangle(stage.region).size))
+	stage.region = Module.rect_array(region)
+	_preview.plane = plane
+	_preview.source_image = Codec.module_image(loaded.module, _materials())
+	return _start_plan(planned.plan)
+
+
+func preview_composition(id: String, options: Dictionary) -> Dictionary:
+	if not _new_preview(): return authoring_state()
+	if not Module.keys(options, ["origin"]) or not Module.pair(options.origin, 0, 2047): return _fail_preview("Composition needs one explicit shared anchor.")
+	var states := {}
+	for plane: String in Document.IDS: states[plane] = authoring_plane_state(plane)
+	var planned: Dictionary = Library.composition(id, Vector2i(int(options.origin[0]), int(options.origin[1])), states, _materials())
+	if not planned.get("ok", false): return _fail_preview(str(planned.get("error", "Composition refused.")))
+	return _start_plan(planned.plan)
+
+
+func approve_plan(token: String) -> Dictionary:
+	if _session == null: return _fail_preview("No current native preview is awaiting approval.")
+	var result: Dictionary = _session.approve(token)
+	controller._say("Native construction admitted; queued chunks count only after their actual owner ACK." if result.get("ok", false) else str(result.get("error", "Approval refused.")))
+	return authoring_state()
+
+
+func stop_authoring() -> Dictionary:
+	if _codec != null:
+		_preview.merge(_codec.cancel(), true)
+		_codec = null
+	if _session != null: _session.stop()
+	if not _harvest.is_empty(): _harvest.stop = true
+	for token: int in _pending_operations:
+		controller.wb.paint_editor.strata_stop(token)
+	controller._say("Stop requested. Any acknowledged native prefix remains explicit; readback and history finish before another job.")
+	return authoring_state()
+
+
+func step() -> void:
+	if _codec != null:
+		var converted: Dictionary = _codec.step()
+		_preview.merge(converted, true)
+		if converted.get("status", "") == "ready":
+			_codec = null
+			_start_module(converted.module, str(_conversion_options.plane), {"origin":_conversion_options.origin, "transform":"identity", "empty_mode":"preserve"})
+		elif not converted.get("busy", false):
+			_codec = null
+			_fail_preview(str(converted.get("error", "Raster proposal refused.")))
+	elif _session != null and bool(_session.state().get("busy", false)):
+		_session.step()
+	elif not _harvest.is_empty(): _step_harvest()
+
+
+func authoring_state() -> Dictionary:
+	var state := _preview.duplicate(true)
+	if _codec != null: state.merge(_codec.state(), true)
+	if _session != null:
+		state.merge(_session.state(), true)
+		if _preview.get("source_image") is Image: state.source_image = _preview.source_image
+	state.preview_serial = _preview_serial
+	if state.get("error", "") == "": state.error = str(state.get("status", "idle"))
+	state.harvested_modules = _harvested.keys()
+	return state
+
+
+func harvest_module(plane: String, raw_region: Array, title: String) -> Dictionary:
+	if not _new_preview(): return authoring_state()
+	if plane not in Document.IDS or title.strip_edges().is_empty() or title.length() > 128:
+		return _fail_preview("Choose an explicit plane and a part name of 1–128 characters.")
+	var region: Rect2i = Module.rectangle(raw_region)
+	var state := authoring_plane_state(plane)
+	if not state.get("ok", false): return _fail_preview(str(state.get("error", "Target unavailable.")))
+	if not controller.select_layer(plane): return _fail_preview(controller.status_text())
+	state = authoring_plane_state(plane)
+	if not state.paint_allowed or int(state.remaining_authoring_records) < 1 or int(state.remaining_authoring_bytes) < 4096:
+		return _fail_preview("Harvest needs a visible unlocked plane and room for its source receipt.")
+	if region.get_area() < 1 or region.size.x < 1 or region.size.y < 1 or region.get_area() > 262144 \
+			or not Rect2i(Vector2i.ZERO, Vector2i(int(state.extent[0]), int(state.extent[1]))).encloses(region):
+		return _fail_preview("Harvest an in-bounds native region of at most 262144 cells.")
+	var tiles: Array[Rect2i] = []
+	for y: int in range(region.position.y, region.end.y, 64):
+		for x: int in range(region.position.x, region.end.x, 64):
+			tiles.append(Rect2i(x, y, mini(64, region.end.x - x), mini(64, region.end.y - y)))
+	var cells := PackedByteArray()
+	cells.resize(region.get_area() * 2)
+	_harvest = {"plane":plane, "region":region, "title":title.strip_edges(), "expected":state,
+		"tiles":tiles, "index":0, "cells":cells, "pending":0, "stop":false}
+	_preview.merge({"ok":true, "status":"harvesting", "busy":true, "cancellable":true,
+		"processed":0, "total":region.get_area(), "plane":plane, "region":raw_region.duplicate(),
+		"can_approve":false, "error":"Copying actual native materials; no cells will be written."}, true)
+	return authoring_state()
+
+
+func _step_harvest() -> void:
+	var job: Dictionary = _harvest
+	var receipt := {}
+	if int(job.pending) > 0:
+		receipt = authoring_poll(int(job.pending))
+		if receipt.is_empty(): return
+		job.pending = 0
+	elif job.stop:
+		_harvest.clear()
+		_preview.merge({"status":"cancelled", "busy":false, "cancellable":false, "error":"Harvest stopped; no native cells were written."}, true)
+		return
+	elif int(job.index) >= job.tiles.size():
+		_finish_harvest()
+		return
+	else:
+		receipt = authoring_capture(str(job.plane), job.tiles[int(job.index)], job.expected)
+		if receipt.get("pending", false):
+			job.pending = int(receipt.operation_id)
+			return
+	if not receipt.get("ok", false):
+		_harvest.clear()
+		_fail_preview(str(receipt.get("error", "Native harvest refused.")))
+		return
+	var tile: Rect2i = job.tiles[int(job.index)]
+	var region: Rect2i = job.region
+	if receipt.get("status", "") != "completed" or receipt.get("region") != tile \
+			or receipt.get("owner_id", "") != job.expected.owner_id \
+			or int(receipt.get("generation", -1)) != int(job.expected.generation) \
+			or int(receipt.get("authored_revision", -1)) != int(job.expected.revision):
+		_harvest.clear()
+		_fail_preview("Stale or misdirected native harvest receipt; no reusable part was adopted.")
+		return
+	var materials: Variant = receipt.get("materials")
+	if not materials is PackedInt32Array or materials.size() != tile.get_area():
+		_harvest.clear()
+		_fail_preview("Incomplete native harvest receipt.")
+		return
+	for index: int in materials.size():
+		var local := tile.position - region.position + Vector2i(index % tile.size.x, index / tile.size.x)
+		job.cells.encode_u16((local.y * region.size.x + local.x) * 2, materials[index])
+	_preview.processed = int(_preview.processed) + materials.size()
+	job.index = int(job.index) + 1
+
+
+func _finish_harvest() -> void:
+	var job: Dictionary = _harvest
+	_harvest = {}
+	var fence_error := _fence_error(str(job.plane), job.expected)
+	if not fence_error.is_empty(): _fail_preview(fence_error); return
+	var region: Rect2i = job.region
+	var mask := PackedByteArray()
+	mask.resize(region.get_area())
+	for index: int in mask.size(): mask[index] = 1 if job.cells.decode_u16(index * 2) != 0 else 0
+	var native_sha: String = Module.digest(job.cells)
+	var id := "harvest-" + Crypto.new().generate_random_bytes(8).hex_encode()
+	var source := {"source_kind":"native-harvest", "source_sha256":native_sha,
+		"scene_id":job.expected.scene_id, "owner_id":job.expected.owner_id, "plane":job.plane,
+		"generation":job.expected.generation, "revision":job.expected.revision,
+		"region":Module.rect_array(region), "empty_policy":"Empty captured as zero, no-write mask by default; explicit clear is a separate placement choice.",
+		"scope":"Copied authored native material occupancy; no actor, physical continuation or structural solver."}
+	var built: Dictionary = Module.create(id, str(job.title), region.size, job.cells, mask, source, _materials())
+	if not built.get("ok", false): _fail_preview(str(built.get("error", "Harvest module refused."))); return
+	var record := {"version":1, "id":id, "kind":"harvest", "plane":job.plane,
+		"scene_id":job.expected.scene_id, "owner_id":job.expected.owner_id, "generation":job.expected.generation,
+		"before_revision":job.expected.revision, "after_revision":job.expected.revision,
+		"status":"completed", "requested_cells":0, "applied_cells":0, "changed_cells":0,
+		"requested_chunks":0, "completed_chunks":0, "source_sha256":native_sha,
+		"proposal_sha256":built.module.content_sha256, "geometry_sha256":built.module.geometry.sha256,
+		"before_sha256":native_sha, "projected_sha256":native_sha, "actual_sha256":native_sha,
+		"published":true, "metadata":source, "error":"", "historical":true,
+		"scope":"authored-material-operation-history"}
+	var saved := authoring_record(record)
+	if not saved.get("ok", false): _fail_preview(str(saved.get("error", "Harvest source receipt refused."))); return
+	_harvested[id] = built.module
+	_preview.merge({"ok":true, "status":"completed", "busy":false, "cancellable":false, "can_approve":false,
+		"output_image":Codec.module_image(built.module, _materials()), "module_id":id,
+		"geometry_sha256":built.module.geometry.sha256, "source_sha256":native_sha,
+		"error":"Native part copied with no material writes. Choose it in Compose or Export to retain the reusable module."}, true)
+	controller._say(str(_preview.error))
+
+
+func export_module(id: String, path: String) -> Dictionary:
+	var loaded: Dictionary = Module.validate(_harvested[id], _materials()) if _harvested.has(id) else Library.module(id, _materials())
+	if not loaded.get("ok", false): return _error(str(loaded.get("error", "Unknown native part.")))
+	if path.is_empty() or path.get_extension().to_lower() != "json": return _error("Choose a local .json module destination.")
+	var bytes: PackedByteArray = Module.json_bytes(loaded.module)
+	var temporary := path + "." + Crypto.new().generate_random_bytes(8).hex_encode() + ".tmp"
+	var file := FileAccess.open(temporary, FileAccess.WRITE)
+	if file == null: return _error("Could not create a module export beside the chosen destination.")
+	file.store_buffer(bytes)
+	file.flush()
+	var complete: bool = file.get_error() == OK and file.get_position() == bytes.size()
+	file.close()
+	if not complete:
+		DirAccess.remove_absolute(temporary)
+		return _error("Module export failed; previous destination retained.")
+	var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	var replaced: Dictionary = bridge.replace_material_baseline_file(ProjectSettings.globalize_path(temporary), ProjectSettings.globalize_path(path))
+	if not replaced.get("ok", false):
+		DirAccess.remove_absolute(temporary)
+		return _error("Atomic module replacement refused: " + str(replaced.get("error", "")))
+	controller._say("Exported exact native module and source provenance · " + path.get_file())
+	return {"ok":true, "path":path, "sha256":Module.digest(bytes), "content_sha256":loaded.module.content_sha256, "error":""}

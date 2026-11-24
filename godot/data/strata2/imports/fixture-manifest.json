@@ -1,0 +1,91 @@
+{
+  "counts_at_threshold_128": {
+    "mapped": 1315,
+    "no_write": 1757
+  },
+  "extent": [
+    64,
+    48
+  ],
+  "files": [
+    {
+      "bytes": 199,
+      "path": "alpha-cutout.png",
+      "sha256": "452832a18d4b09185ecdc1220d1d0c93e8f447211463fec8c6e6705d07c3627b"
+    },
+    {
+      "bytes": 139,
+      "path": "left-half-mask.png",
+      "sha256": "49dbf42d8cd9063f8c0048c09f72339a37ad350d8e5e97111571266f9747e8c9"
+    },
+    {
+      "bytes": 13512,
+      "path": "alpha-cutout-native.json",
+      "sha256": "2e4c43ee76faf78e6f59ee4af29847245a0d46f8203630100c689650bdc0943e"
+    }
+  ],
+  "format": "cybersand-strata-import-fixtures-v1",
+  "known_cells": {
+    "interior_transparent": {
+      "alpha": 0,
+      "overlay": "no-write",
+      "point": [
+        32,
+        24
+      ],
+      "replace": 0
+    },
+    "opaque_accent": {
+      "material": 66,
+      "point": [
+        18,
+        6
+      ]
+    },
+    "opaque_structure": {
+      "material": 58,
+      "point": [
+        4,
+        4
+      ]
+    },
+    "partial_excluded": {
+      "alpha": 127,
+      "overlay": "no-write",
+      "point": [
+        31,
+        9
+      ],
+      "replace": 0
+    },
+    "partial_included": {
+      "alpha": 128,
+      "material": 66,
+      "point": [
+        32,
+        9
+      ]
+    }
+  },
+  "palette": [
+    {
+      "material": 58,
+      "rgb": [
+        64,
+        80,
+        96
+      ],
+      "role": "structure"
+    },
+    {
+      "material": 66,
+      "rgb": [
+        32,
+        192,
+        224
+      ],
+      "role": "accent"
+    }
+  ],
+  "source_kind": "original-synthetic-exact-grid-fixtures"
+}

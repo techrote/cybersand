@@ -1,0 +1,49 @@
+{
+  "id": "rocket-hangar-frame",
+  "label": "Rocket hangar · opaque reference plus selected frame mask",
+  "path": "res://data/strata2/reference-imports/rocket-hangar-frame.png",
+  "options": {
+    "plane": "scripted",
+    "crop": [0, 0, 512, 320],
+    "origin": [128, 128],
+    "scale": 1,
+    "transform": "identity",
+    "alpha_mode": "overlay",
+    "alpha_threshold": 128,
+    "mask_path": "res://data/strata2/reference-imports/rocket-hangar-frame.mask.png",
+    "palette": [
+      {
+        "rgb": [57, 70, 89],
+        "material": 62,
+        "role": "dark steel"
+      },
+      {
+        "rgb": [92, 102, 115],
+        "material": 114,
+        "role": "bright steel"
+      },
+      {
+        "rgb": [22, 35, 51],
+        "material": 130,
+        "role": "deep frame"
+      },
+      {
+        "rgb": [126, 84, 22],
+        "material": 76,
+        "role": "gold crane paint"
+      },
+      {
+        "rgb": [198, 150, 61],
+        "material": 79,
+        "role": "amber detail"
+      },
+      {
+        "rgb": [126, 208, 244],
+        "material": 77,
+        "role": "cyan signal"
+      }
+    ],
+    "color_distance": 64,
+    "unmapped": "skip"
+  }
+}

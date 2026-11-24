@@ -131,10 +131,14 @@ func run() -> void:
 	check(not Module.validate(result.module, PackedInt32Array([0, 26])).ok, "current native material admission required")
 	bad = result.module.duplicate(true); bad.protected_regions = [[0, 0, 1, 1]]; bad.content_sha256 = Module.content_digest(bad)
 	check(not Module.validate(bad, ADMITTED).ok, "module cannot write inside its own protection")
+	bad = result.module.duplicate(true); bad.clearances = [Rect2i(2, 1, 1, 1)]; bad.content_sha256 = Module.content_digest(bad)
+	check(not Module.validate(bad, ADMITTED).ok, "persisted module rejects native Variant rectangles instead of throwing")
 	var placement := {"origin": [100, 80], "transform": "rotate_90", "palette": {}, "empty_mode": "preserve"}
 	var constraints := {"region": [90, 70, 40, 40], "allowed_materials": Array(ADMITTED), "protected": []}
 	var compiled := Module.compile(result.module, placement, constraints, ADMITTED)
 	check(compiled.ok and compiled.cells.size() == 13 * 3 and compiled.footprint == [100, 80, 3, 5], "native placement retains exact IDs and transformed footprint")
+	var unknown_constraints: Dictionary = constraints.duplicate(true); unknown_constraints.allow_unreviewed_transfer = true
+	check(not Module.compile(result.module, placement, unknown_constraints, ADMITTED).ok, "unknown native target constraint refuses explicitly")
 	constraints.protected = [[102, 80, 1, 1]]
 	check(not Module.compile(result.module, placement, constraints, ADMITTED).ok, "one protected write refuses entire placement; no clipping")
 	constraints.protected = []; placement.origin = [120, 110]

@@ -114,6 +114,7 @@ static func safe_json(value: Variant, depth: int = 0) -> bool:
 static func _regions(value: Variant, extent: Vector2i) -> bool:
 	if not value is Array or value.size() > 64: return false
 	for raw: Variant in value:
+		if not raw is Array: return false
 		var rect := rectangle(raw)
 		if rect.size.x < 1 or rect.size.y < 1 or not Rect2i(Vector2i.ZERO, extent).encloses(rect): return false
 	return true
@@ -266,6 +267,8 @@ static func transform_rect(box: Rect2i, size: Vector2i, transform: String, origi
 static func compile(raw: Dictionary, placement: Dictionary, constraints: Dictionary, admitted: PackedInt32Array) -> Dictionary:
 	var checked := validate(raw, admitted)
 	if not checked.ok: return checked
+	raw = checked.module
+	if not keys(constraints, ["region"], ["protected", "allowed_materials"]): return failure("Module target constraints contain unsupported fields.")
 	if not keys(placement, ["origin"], ["transform", "palette", "empty_mode"]) or not pair(placement.origin): return failure("Module placement requires an exact integer origin and known controls.")
 	var transform: Variant = placement.get("transform", "identity")
 	if not transform is String or transform not in raw.allowed_transforms: return failure("Module transform is not explicitly permitted.")
@@ -280,6 +283,7 @@ static func compile(raw: Dictionary, placement: Dictionary, constraints: Diction
 	if not guards is Array or guards.size() > 64 or not allowed is Array or allowed.is_empty() or allowed.size() > 256: return failure("Invalid target protection or material permissions.")
 	for material: Variant in allowed:
 		if not integer(material, 0, 255) or int(material) not in admitted: return failure("Stage palette exceeds current native material permissions.")
+	allowed = canonical(allowed)
 	for guard: Variant in guards:
 		var box := rectangle(guard)
 		if box.size.x < 1 or box.size.y < 1: return failure("Invalid protected target rectangle.")
@@ -317,6 +321,8 @@ static func compile(raw: Dictionary, placement: Dictionary, constraints: Diction
 	for key: int in ordered: cells.append_array(PackedInt32Array(output[key]))
 	var clearances: Array = []
 	for box: Array in raw.clearances: clearances.append(rect_array(transform_rect(rectangle(box), size, transform, origin)))
+	var protected_regions: Array = []
+	for box: Array in raw.protected_regions: protected_regions.append(rect_array(transform_rect(rectangle(box), size, transform, origin)))
 	return {"ok": true, "zero_writes": true, "cells": cells, "footprint": rect_array(footprint),
-		"clearances": clearances, "module_sha256": raw.content_sha256, "geometry_sha256": digest(cells.to_byte_array()),
+		"clearances": clearances, "protected_regions": protected_regions, "module_sha256": raw.content_sha256, "geometry_sha256": digest(cells.to_byte_array()),
 		"anchor": origin + transform_point(Vector2i(int(raw.anchor[0]), int(raw.anchor[1])), size, transform), "error": ""}

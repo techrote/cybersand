@@ -1,0 +1,49 @@
+{
+  "id": "asteroid-service-gallery",
+  "label": "Asteroid gallery · opaque reference plus explicit aperture mask",
+  "path": "res://data/strata2/reference-imports/asteroid-service-gallery.png",
+  "options": {
+    "plane": "scripted",
+    "crop": [0, 0, 384, 320],
+    "origin": [128, 128],
+    "scale": 1,
+    "transform": "identity",
+    "alpha_mode": "overlay",
+    "alpha_threshold": 128,
+    "mask_path": "res://data/strata2/reference-imports/asteroid-service-gallery.mask.png",
+    "palette": [
+      {
+        "rgb": [96, 96, 108],
+        "material": 62,
+        "role": "grey structure"
+      },
+      {
+        "rgb": [55, 66, 72],
+        "material": 63,
+        "role": "dark structure"
+      },
+      {
+        "rgb": [160, 160, 168],
+        "material": 114,
+        "role": "bright metal"
+      },
+      {
+        "rgb": [204, 152, 64],
+        "material": 79,
+        "role": "amber marking"
+      },
+      {
+        "rgb": [72, 91, 76],
+        "material": 68,
+        "role": "pipe colour"
+      },
+      {
+        "rgb": [38, 39, 43],
+        "material": 100,
+        "role": "dark rock"
+      }
+    ],
+    "color_distance": 64,
+    "unmapped": "skip"
+  }
+}

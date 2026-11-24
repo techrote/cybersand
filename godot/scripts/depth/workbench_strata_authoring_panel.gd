@@ -63,6 +63,8 @@ var _unmapped := OptionButton.new()
 var _palette_rows := VBoxContainer.new()
 var _palette: Array[Dictionary] = []
 var _materials: Array = []
+var _native_source := false
+var _raster_buttons: Array[Button] = []
 var _source_preview := PreviewSurface.new()
 var _mask_preview := PreviewSurface.new()
 var _output_preview := PreviewSurface.new()
@@ -75,7 +77,10 @@ var _token: Variant
 var _last_state_key := ""
 var _configuration_revision := 0
 var _preview_ui_revision := -1
+var _preview_request_revision := -1
+var _previous_preview_identity := ""
 var _last_atmosphere_key := ""
+var _last_harvested_key := ""
 var _compose_progress := ProgressBar.new()
 var _compose_approve := Button.new()
 var _compose_stop := Button.new()
@@ -156,9 +161,17 @@ func _button(parent: Control, text: String, action: Callable) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.focus_mode = Control.FOCUS_NONE
-	button.pressed.connect(action)
+	button.pressed.connect(func() -> void: _commit_field(); action.call())
 	parent.add_child(button)
 	return button
+
+
+func _commit_field() -> void:
+	# The floating Strata Window owns a separate viewport/focus. Apply its
+	# currently typed number before any action reads SpinBox.value.
+	var focus := _tabs.get_viewport().gui_get_focus_owner()
+	if focus is LineEdit and focus.get_parent() is SpinBox: focus.get_parent().apply()
+	if focus != null: focus.release_focus()
 
 
 func _row(parent: Control) -> HBoxContainer:
@@ -191,10 +204,25 @@ func _numbers(parent: Control, captions: Array, low: float, high: float, default
 	return result
 
 
-func _plane_picker(parent: Control, picker: OptionButton) -> void:
-	for title: String in PLANE_LABELS: picker.add_item(title)
+func _plane_picker(parent: Control, picker: OptionButton, include_play: bool = false) -> void:
+	if include_play:
+		picker.add_item("Play · paused native geometry and collision")
+		picker.set_item_metadata(0,"play")
+	for index: int in PLANES.size():
+		picker.add_item(PLANE_LABELS[index])
+		picker.set_item_metadata(picker.item_count-1,PLANES[index])
+	if include_play: picker.select(1)
 	picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(picker)
+
+
+func _selected_plane(picker: OptionButton) -> String:
+	return str(picker.get_item_metadata(picker.selected)) if picker.selected >= 0 else ""
+
+
+func _select_plane(picker: OptionButton, plane: String) -> void:
+	for index: int in picker.item_count:
+		if picker.get_item_metadata(index) == plane: picker.select(index); return
 
 
 func _transform_picker(parent: Control, picker: OptionButton) -> void:
@@ -218,13 +246,14 @@ func _build_import(rows: VBoxContainer) -> void:
 	_source_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_source_info)
 	var mask_row := _row(rows)
-	_mask.placeholder_text = "Optional same-resolution mask PNG — nonzero alpha includes pixels"
+	_mask.placeholder_text = "Mask PNG · nontransparent white/light pixels include; dark/transparent exclude"
+	_mask.tooltip_text = "Same-resolution mask. A pixel is included only when alpha > 0 and mean RGB ≥ 128. Excluded pixels always mean no write, including Replace."
 	_mask.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mask_row.add_child(_mask)
-	_button(mask_row, "Mask…", func() -> void: _choose_source(true))
-	_button(mask_row, "Clear", func() -> void: _mask.text = ""; _mask_preview.set_image(null); _invalidate_preview())
-	_note(rows, "Target plane · native Play imports retain the ordinary Play tools; this workflow places decoration.")
-	_plane_picker(rows, _import_plane)
+	_raster_buttons.append(_button(mask_row, "Mask…", func() -> void: _choose_source(true)))
+	_raster_buttons.append(_button(mask_row, "Clear", func() -> void: _mask.text = ""; _mask_preview.set_image(null); _invalidate_preview()))
+	_note(rows, "Target plane · Play imports require Pause and change real collision geometry through ordinary Play history. Decorative targets have no actor authority.")
+	_plane_picker(rows, _import_plane, true)
 	_crop = _numbers(rows, ["Crop X", "Crop Y", "Width", "Height"], 0, 2048, [0, 0, 64, 64])
 	_crop[2].min_value = 1
 	_crop[3].min_value = 1
@@ -257,7 +286,7 @@ func _build_import(rows: VBoxContainer) -> void:
 	unmapped_box.add_child(_unmapped)
 	_note(rows, "Colour → admitted native material palette")
 	rows.add_child(_palette_rows)
-	_button(rows, "Add palette colour", func() -> void: _add_palette_row(Color("8899aa"), 58))
+	_raster_buttons.append(_button(rows, "Add palette colour", func() -> void: _add_palette_row(Color("8899aa"), 58)))
 	_add_palette_row(Color("8899aa"), 58)
 	_add_palette_row(Color("33ccdd"), 77)
 	_button(rows, "Preview proposed native placement", _preview_import)
@@ -291,6 +320,7 @@ func _build_execution_controls(rows: Control) -> void:
 	_approve.text = "Approve reviewed placement"
 	_approve.disabled = true
 	_approve.pressed.connect(func() -> void:
+		_commit_field()
 		if _token != null and _preview_ui_revision == _configuration_revision: _invoke("approve_plan", [_token])
 		refresh({}, ""))
 	actions.add_child(_approve)
@@ -322,7 +352,7 @@ func _add_palette_row(colour: Color, material: int) -> void:
 	row.add_child(role)
 	var record := {"row":row, "colour":colour_picker, "material":material_picker, "role":role}
 	_palette.append(record)
-	_button(row, "×", func() -> void: _palette.erase(record); row.queue_free(); _invalidate_preview())
+	record.remove = _button(row, "×", func() -> void: _palette.erase(record); row.queue_free(); _invalidate_preview())
 	colour_picker.color_changed.connect(func(_colour: Color) -> void: _invalidate_preview())
 	material_picker.item_selected.connect(func(_index: int) -> void: _invalidate_preview())
 	role.text_changed.connect(func(_text: String) -> void: _invalidate_preview())
@@ -377,8 +407,13 @@ func _inspect_source() -> void:
 		_crop[3].value = int(extent[1])
 	_source_preview.set_image(result.get("source_image"))
 	_source_info.text = "%s · %s cells/pixels · SHA-256 %s\n%s" % [str(result.get("kind", "source")), str(extent), str(result.get("source_sha256", "unavailable")), str(result.get("summary", ""))]
-	_scale.editable = str(result.get("kind", "")) == "png"
-	if not _scale.editable: _scale.value = 1
+	_native_source = str(result.get("kind", "")) == "native_module"
+	if _native_source:
+		_scale.value = 1
+		_mask.text = ""
+		_mask_preview.set_image(null)
+		_source_info.text += "\nNATIVE-ID MODE · full exact grid, native IDs and native mask are preserved. Raster mapping controls are inactive. Overlay preserves no-write cells; Replace explicitly clears them."
+	_refresh_native_controls()
 	_syncing = false
 	_invalidate_preview()
 
@@ -390,7 +425,7 @@ func _import_options() -> Dictionary:
 		var picker: OptionButton = record.material
 		if picker.selected < 0: continue
 		palette.append({"rgb":[colour.r8, colour.g8, colour.b8], "material":picker.get_selected_id(), "role":(record.role as LineEdit).text})
-	var options := {"plane":PLANES[_import_plane.selected], "crop":_integers(_crop), "origin":_integers(_origin), "scale":int(_scale.value),
+	var options := {"plane":_selected_plane(_import_plane), "crop":_integers(_crop), "origin":_integers(_origin), "scale":int(_scale.value),
 		"transform":TRANSFORMS[_transform.selected], "alpha_mode":"overlay" if _alpha_mode.selected == 0 else "replace", "alpha_threshold":int(_threshold.value),
 		"palette":palette, "color_distance":int(_distance.value), "unmapped":"refuse" if _unmapped.selected == 0 else "skip"}
 	if not _mask.text.strip_edges().is_empty(): options["mask_path"] = _mask.text.strip_edges()
@@ -398,8 +433,15 @@ func _import_options() -> Dictionary:
 
 
 func _preview_import() -> void:
-	_preview_ui_revision = _configuration_revision
-	_invoke("preview_import", [_source.text.strip_edges(), _import_options()])
+	_request_preview("preview_import", [_source.text.strip_edges(), _import_options()])
+
+
+func _request_preview(method: String, arguments: Array) -> void:
+	var previous := _dict_call("authoring_state")
+	_previous_preview_identity = str(previous.get("preview_serial", previous.get("token", "")))
+	_preview_ui_revision = -1
+	_preview_request_revision = _configuration_revision
+	_invoke(method, arguments)
 	refresh({}, "")
 
 
@@ -415,17 +457,39 @@ func _load_fixture() -> void:
 	if options.has("crop"): _set_numbers(_crop, options.crop)
 	if options.has("origin"): _set_numbers(_origin, options.origin)
 	if options.has("mask_path"): _mask.text = str(options.mask_path)
+	_scale.value = int(options.get("scale", 1))
+	var transform_index := TRANSFORMS.find(str(options.get("transform", "identity")))
+	if transform_index >= 0: _transform.select(transform_index)
+	_select_plane(_import_plane,str(options.get("plane", "scripted")))
 	_alpha_mode.select(0 if str(options.get("alpha_mode", "overlay")) == "overlay" else 1)
 	_threshold.value = int(options.get("alpha_threshold", 128))
 	_distance.value = int(options.get("color_distance", 0))
+	_unmapped.select(0 if str(options.get("unmapped", "refuse")) == "refuse" else 1)
+	_mask_preview.set_image(null)
+	if not _mask.text.is_empty():
+		var mask_result := _dict_call("authoring_inspect_source", [_mask.text])
+		if mask_result.get("ok", false): _mask_preview.set_image(mask_result.get("source_image"))
 	_syncing = false
+	_refresh_native_controls()
 	_invalidate_preview()
+
+
+func _refresh_native_controls() -> void:
+	for spin: SpinBox in _crop + [_scale, _threshold, _distance]: spin.editable = not _native_source
+	_mask.editable = not _native_source
+	_unmapped.disabled = _native_source
+	for button: Button in _raster_buttons: button.disabled = _native_source
+	for entry: Dictionary in _palette:
+		(entry.colour as ColorPickerButton).disabled = _native_source
+		(entry.material as OptionButton).disabled = _native_source
+		(entry.role as LineEdit).editable = not _native_source
+		(entry.remove as Button).disabled = _native_source
 
 
 func _build_compose(rows: VBoxContainer) -> void:
 	_note(rows, "REUSABLE NATIVE PARTS AND LAYERED COMPOSITIONS")
 	_note(rows, "Native parts preserve material IDs and exact grid transforms. Composition stages declare their own plane, bounds, dependencies and revision fences. A reviewed preview is required before placement.")
-	_plane_picker(rows, _module_plane)
+	_plane_picker(rows, _module_plane, true)
 	_module.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rows.add_child(_module)
 	_module_origin = _numbers(rows, ["Anchor X", "Anchor Y"], 0, 2047, [64, 64])
@@ -435,8 +499,7 @@ func _build_compose(rows: VBoxContainer) -> void:
 	_step = _numbers(repeat_row, ["Step X", "Step Y"], -2048, 2048, [96, 0])
 	_button(rows, "Preview selected native part", func() -> void:
 		if _module.selected < 0 or _module.selected >= _modules.size(): return
-		_preview_ui_revision = _configuration_revision
-		_invoke("preview_module", [str(_modules[_module.selected].get("id", "")), {"plane":PLANES[_module_plane.selected], "origin":_integers(_module_origin), "transform":TRANSFORMS[_module_transform.selected], "count":int(_repeat.value), "step":_integers(_step)}])
+		_request_preview("preview_module", [str(_modules[_module.selected].get("id", "")), {"plane":_selected_plane(_module_plane), "origin":_integers(_module_origin), "transform":TRANSFORMS[_module_transform.selected], "count":int(_repeat.value), "step":_integers(_step)}])
 		_show_plan())
 	rows.add_child(HSeparator.new())
 	_note(rows, "Layered preset · shared anchor, explicit per-plane stages")
@@ -444,8 +507,7 @@ func _build_compose(rows: VBoxContainer) -> void:
 	rows.add_child(_composition)
 	_button(rows, "Preview layered composition", func() -> void:
 		if _composition.selected < 0 or _composition.selected >= _compositions.size(): return
-		_preview_ui_revision = _configuration_revision
-		_invoke("preview_composition", [str(_compositions[_composition.selected].get("id", "")), {"origin":_integers(_module_origin)}])
+		_request_preview("preview_composition", [str(_compositions[_composition.selected].get("id", "")), {"origin":_integers(_module_origin)}])
 		_show_plan())
 	_plan_rows.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_plan_rows)
@@ -456,6 +518,7 @@ func _build_compose(rows: VBoxContainer) -> void:
 	_compose_approve.text = "Approve reviewed construction"
 	_compose_approve.disabled = true
 	_compose_approve.pressed.connect(func() -> void:
+		_commit_field()
 		if _token != null and _preview_ui_revision == _configuration_revision: _invoke("approve_plan", [_token])
 		refresh({}, ""))
 	approval.add_child(_compose_approve)
@@ -466,14 +529,14 @@ func _build_compose(rows: VBoxContainer) -> void:
 	_compose_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rows.add_child(_compose_status)
 	rows.add_child(HSeparator.new())
-	_note(rows, "Harvest from the selected decorative plane · Empty is transparent unless explicitly requested")
+	_note(rows, "Harvest from the selected native plane · Play requires Pause; Empty defaults to transparent no-write")
 	_module_name.placeholder_text = "Name the harvested native part"
 	rows.add_child(_module_name)
 	_harvest_region = _numbers(rows, ["Region X", "Region Y", "Width", "Height"], 0, 2048, [32, 32, 64, 64])
 	_harvest_region[2].min_value = 1
 	_harvest_region[3].min_value = 1
 	_button(rows, "Harvest native part", func() -> void:
-		_invoke("harvest_module", [PLANES[_module_plane.selected], _integers(_harvest_region), _module_name.text.strip_edges()])
+		_invoke("harvest_module", [_selected_plane(_module_plane), _integers(_harvest_region), _module_name.text.strip_edges()])
 		refresh_catalogues()
 		_show_plan())
 	_button(rows, "Export selected part…", _export_module)
@@ -526,7 +589,7 @@ func _build_atmosphere(rows: VBoxContainer) -> void:
 	_effect_seed = _spin(rows, "Deterministic seed", 0, 2147483647, 1701)
 	_button(rows, "Add selected atmosphere profile", func() -> void:
 		if _effect_profile.selected < 0 or _effect_profile.selected >= _effect_profiles.size(): return
-		_invoke("add_atmosphere_profile", [str(_effect_profiles[_effect_profile.selected].get("id", "")), PLANES[_effect_plane.selected], _integers(_effect_region), int(_effect_seed.value)])
+		_invoke("add_atmosphere_profile", [str(_effect_profiles[_effect_profile.selected].get("id", "")), _selected_plane(_effect_plane), _integers(_effect_region), int(_effect_seed.value)])
 		_refresh_atmosphere())
 	rows.add_child(HSeparator.new())
 	_note(rows, "Existing regional effect")
@@ -539,6 +602,10 @@ func _build_atmosphere(rows: VBoxContainer) -> void:
 	_effect_count = _spin(values, "Motif count (shared limit 384)", 0, 96, 24)
 	_effect_speed = _spin(values, "Speed", 0.0, 64.0, 8.0, 0.5)
 	_effect_strength = _spin(values, "Strength", 0.0, 1.0, 0.25, 0.05)
+	_effect_count.tooltip_text = "Actual seeded visual motifs in this region. Every region shares the 384-motif budget."
+	_effect_speed.tooltip_text = "Haze, steam, rain, dust and machinery: native cells per second along the direction. Beacon: pulse multiplier, 0.2 cycles per second × speed."
+	_effect_strength.tooltip_text = "Multiplies the motif colour's alpha. This changes appearance without changing native materials."
+	_effect_enabled.tooltip_text = "Hides this effect. If another effect continues on its plane, re-enabling rejoins that plane's current phase. Pause animation freezes all plane clocks."
 	_effect_direction = _numbers(rows, ["Direction X", "Direction Y"], -1.0, 1.0, [1.0, 0.0])
 	for spin: SpinBox in _effect_direction: spin.step = 0.1
 	_effect_colour.custom_minimum_size = Vector2(100, 28)
@@ -600,8 +667,7 @@ func _refresh_atmosphere(rebuild: bool = true) -> void:
 		_effect_seed.value = int(effect.get("seed", 1701))
 		_set_numbers(_effect_region, effect.get("region", []))
 		_set_numbers(_effect_direction, effect.get("direction", []))
-		var plane_index := PLANES.find(str(effect.get("plane", "effects")))
-		if plane_index >= 0: _effect_plane.select(plane_index)
+		_select_plane(_effect_plane,str(effect.get("plane", "effects")))
 		var colour: Array = effect.get("colour", [0.6, 0.7, 0.8, 1.0])
 		if colour.size() == 4: _effect_colour.color = Color(float(colour[0]), float(colour[1]), float(colour[2]), float(colour[3]))
 	_effect_status.text = "%d regional effects · %s · %s" % [_effect_ids.size(), "enabled" if _effects_enabled.button_pressed else "disabled", "paused" if _effects_paused.button_pressed else "running when visible"]
@@ -631,7 +697,16 @@ func _fill_catalogue(picker: OptionButton, entries: Array, empty_text: String) -
 func refresh(_document: Dictionary, status: String) -> void:
 	var state := _dict_call("authoring_state")
 	if not state.is_empty():
+		var harvested_key := JSON.stringify(state.get("harvested_modules", []))
+		if harvested_key != _last_harvested_key:
+			_last_harvested_key = harvested_key
+			refresh_catalogues()
 		_token = state.get("token")
+		var preview_identity := str(state.get("preview_serial", state.get("token", "")))
+		if bool(state.get("can_approve", false)) and _token != null \
+				and _preview_request_revision == _configuration_revision \
+				and not preview_identity.is_empty() and preview_identity != _previous_preview_identity:
+			_preview_ui_revision = _configuration_revision
 		_approve.disabled = not bool(state.get("can_approve", false)) or _preview_ui_revision != _configuration_revision
 		_compose_approve.disabled = _approve.disabled
 		_stop.disabled = not bool(state.get("cancellable", false))
@@ -650,10 +725,10 @@ func refresh(_document: Dictionary, status: String) -> void:
 			if state.has("output_image"):
 				_output_preview.set_image(state.output_image)
 				_compose_preview.set_image(state.output_image)
-			var stage_text := ""
-			for stage: Dictionary in state.get("stages", []):
-				stage_text += "%s · %s · %s · %s\n" % [str(stage.get("id", "stage")), str(stage.get("plane", "")), str(stage.get("region", [])), str(stage.get("status", "proposed"))]
-			if not stage_text.is_empty(): _plan_rows.text = stage_text
+		var stage_text := ""
+		for stage: Dictionary in state.get("stages", []):
+			stage_text += "%s · %s · %s · %s · applied %s / changed %s\n" % [str(stage.get("id", "stage")), str(stage.get("plane", "")), str(stage.get("region", [])), str(stage.get("status", "proposed")), str(stage.get("applied", 0)), str(stage.get("changed", stage.get("changed_cells", 0)))]
+		if not stage_text.is_empty(): _plan_rows.text = stage_text
 		_preview_summary.text = "Target: %s · region %s\nChanged cells: %s · mapped: %s · no-write: %s · explicit Empty: %s · unmapped: %s\nSource: %s\nProposed geometry: %s" % [
 			str(state.get("plane", "—")), str(state.get("region", "—")), str(state.get("changed_cells", "not yet read back")),
 			str(state.get("mapped", "—")), str(state.get("no_write", "—")), str(state.get("explicit_empty", "—")), str(state.get("unmapped", "—")),

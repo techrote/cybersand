@@ -129,6 +129,7 @@ func _refresh_panel() -> void:
 
 
 func _prepare(doc: Dictionary) -> bool:
+	if authoring_busy(): return _refuse("Finish or stop the native authoring prefix before replacing its scene.")
 	if not _pending.is_empty() or _apply_serial > 0: return _refuse("A scene replacement is already preparing.")
 	var error := Document.validate(doc)
 	if not error.is_empty(): return _refuse(error)
@@ -195,7 +196,7 @@ func _adopt() -> bool:
 	cancel_gesture()
 	selection = Rect2i()
 	clipboard.clear()
-	set_process(enabled())
+	set_process(enabled() or authoring_busy())
 	_refresh_panel()
 	return true
 
@@ -226,7 +227,7 @@ func set_presentation(patch: Dictionary) -> bool:
 	_document = layer_owner.document()
 	presenter.apply_document(_document)
 	presenter.sync_view()
-	set_process(enabled())
+	set_process(enabled() or authoring_busy())
 	return _say("Editing %s · %s. Presentation changes preserve the live play World and actors." % [active_layer(),
 		"ordinary flat play" if not enabled() else ("active-plane inspection" if _document.presentation.mode == "flat" else "four-plane stack")])
 
@@ -335,6 +336,7 @@ func load_demo(id: String) -> bool:
 
 
 func save_named(label: String) -> bool:
+	if authoring_busy(): return _refuse("Finish or stop native authoring and its readback before saving.")
 	if not _gesture.is_empty() or not _pending.is_empty() or _apply_serial > 0:
 		return _refuse("Finish or cancel the layer gesture/replacement before saving.")
 	var error := Document.write_named(label,wb.applied,wb._generated_active,wb._material_baseline,layer_owner.document())
@@ -343,6 +345,7 @@ func save_named(label: String) -> bool:
 
 
 func play_edit_reason() -> String:
+	if authoring_busy() and not _authoring._issuing_native: return "Finish or stop the reviewed native authoring job before ordinary Play edits."
 	if not enabled(): return ""
 	if active_layer() != "play": return "The edit target is %s. Select Play to edit its material or use a decorative-plane tool." % active_layer()
 	var row := Document.plane(_document,"play")
@@ -352,6 +355,7 @@ func play_edit_reason() -> String:
 
 
 func _edit_ready(id: String) -> bool:
+	if authoring_busy(): return _refuse("Finish or stop the reviewed native authoring job before another edit.")
 	if not enabled() or id not in NONPLAY: return _refuse("Enable Strata and select a decorative plane first.")
 	if wb.busy() or not _pending.is_empty(): return _refuse("Wait for the current owner transaction.")
 	if _publication_errors.has(id): return _refuse("This plane has a committed edit awaiting a valid view. Save and reopen its authored scene before editing it again.")
@@ -366,13 +370,15 @@ func _publish(id: String) -> bool:
 	var packet: Dictionary = layer_owner.snapshot_layer(id,true)
 	if packet.is_empty() or packet.get("failed",false):
 		_publication_errors[id] = "No current native publication"
-		return _refuse("Edit committed on %s, but its decorative view failed. The previous pixels remain; Save and reopen this authored scene. Play is unchanged." % id)
+		_say("Edit committed on %s; its decorative display is stale. The previous pixels remain. Save and reopen this authored scene to recover its view." % id)
+		return false
 	# A publication is bound to the current owner identity and authored revision,
 	# not merely to a larger serial supplied by an arbitrary caller.
 	_sources[id] = {"owner_id":packet.get("owner_id",-1),"reset_generation":packet.get("reset_generation",-1),"revision":packet.get("revision",-1)}
 	if not presenter.expect_sources(_sources) or not presenter.apply_layer_packet(id,packet):
 		_publication_errors[id] = "Current publication refused"
-		return _refuse("Edit committed on %s, but its decorative publication was refused. The previous pixels remain; Save and reopen this authored scene. Play is unchanged." % id)
+		_say("Edit committed on %s; its new display publication was refused. The previous pixels remain. Save and reopen this authored scene to recover its view." % id)
+		return false
 	_publication_errors.erase(id)
 	presenter.apply_document(_document)
 	_refresh_panel()
@@ -615,9 +621,11 @@ func key_input(event: InputEvent) -> bool:
 
 
 func _process(_delta: float) -> void:
+	if _authoring != null and _authoring.busy(): _authoring.step()
 	if enabled():
 		presenter.sync_view()
 		if is_instance_valid(_overlay): _overlay.queue_redraw()
+	if not enabled() and not authoring_busy(): set_process(false)
 
 
 func diagnostics() -> Dictionary:
@@ -634,6 +642,7 @@ func diagnostics() -> Dictionary:
 
 
 func _clear_scene() -> void:
+	if _authoring != null: _authoring.retire_scene()
 	if is_instance_valid(presenter):
 		presenter.detach()
 		presenter.free()
@@ -657,6 +666,9 @@ func shutdown() -> void:
 	_closed = true
 	cancel_candidate()
 	_clear_scene()
+	if _authoring != null:
+		_authoring.shutdown()
+		_authoring = null
 	if is_instance_valid(_overlay): _overlay.queue_free()
 
 
@@ -673,6 +685,58 @@ func _authoring_service() -> RefCounted:
 
 func authoring_materials() -> Array[Dictionary]:
 	return _authoring_service().authoring_materials()
+
+
+func authoring_busy() -> bool:
+	return _authoring != null and _authoring.busy()
+
+
+func authoring_state() -> Dictionary:
+	return _authoring.authoring_state() if _authoring != null else {"status":"idle", "busy":false, "can_approve":false}
+
+
+func authoring_inspect_source(path: String) -> Dictionary:
+	return _authoring_service().authoring_inspect_source(path)
+
+
+func preview_import(path: String, options: Dictionary) -> Dictionary:
+	return _authoring_service().preview_import(path, options)
+
+
+func preview_module(id: String, options: Dictionary) -> Dictionary:
+	return _authoring_service().preview_module(id, options)
+
+
+func preview_composition(id: String, options: Dictionary) -> Dictionary:
+	return _authoring_service().preview_composition(id, options)
+
+
+func approve_plan(token: String) -> Dictionary:
+	return _authoring_service().approve_plan(token)
+
+
+func stop_authoring() -> Dictionary:
+	return _authoring_service().stop_authoring()
+
+
+func module_catalogue() -> Array:
+	return _authoring_service().module_catalogue()
+
+
+func composition_catalogue() -> Array:
+	return _authoring_service().composition_catalogue()
+
+
+func import_fixture_catalogue() -> Array:
+	return _authoring_service().import_fixture_catalogue()
+
+
+func harvest_module(plane: String, region: Array, title: String) -> Dictionary:
+	return _authoring_service().harvest_module(plane, region, title)
+
+
+func export_module(id: String, path: String) -> Dictionary:
+	return _authoring_service().export_module(id, path)
 
 
 func authoring_plane_state(id: String) -> Dictionary:
@@ -715,9 +779,23 @@ func atmosphere_state() -> Dictionary:
 func set_atmosphere(configuration: Dictionary) -> bool:
 	if not _ensure_current(): return false
 	if not _pending.is_empty() or _apply_serial > 0: return _refuse("Wait for scene admission before changing atmosphere.")
+	var reason: String = Atmosphere.validate(configuration, Document.extent_of(_document))
+	if not reason.is_empty(): return _refuse(reason)
+	var previous := atmosphere_state()
+	var before := {}
+	var after := {}
+	for effect: Dictionary in previous.effects: before[effect.id] = effect
+	for effect: Dictionary in configuration.effects: after[effect.id] = effect
+	for id: String in before:
+		if not after.has(id) or before[id] != after[id]:
+			if not layer_owner.can_edit(str(before[id].plane)): return _refuse("An excluded or locked plane cannot change its authored effects.")
+	for id: String in after:
+		if not before.has(id) or before[id] != after[id]:
+			if not layer_owner.can_edit(str(after[id].plane)): return _refuse("An excluded or locked plane cannot receive authored effects.")
 	if not layer_owner.update_extensions({"atmosphere":configuration}): return _refuse(layer_owner.last_error)
 	_document = layer_owner.document()
-	if not presenter.apply_document(_document): return _refuse(presenter.last_error)
+	if not presenter.apply_document(_document):
+		return _say("Atmosphere settings committed; their display update failed. Save and reopen the authored scene. " + presenter.last_error)
 	return _say("Atmosphere settings saved in the authored scene · presentation-only motion, no native material or physics changes.")
 
 
