@@ -392,11 +392,16 @@ func large_conversation_checks() -> void:
 	for i: int in 3: await process_frame
 	check(dialog.messages.item_count == 1 and dialog.content.text == "fresh short conversation",
 		"reopen cannot receive rows from a cancelled older list generation")
-	dialog.content.text = ("long note line\n").repeat(2000)
+	var long_note := ("long note line\n").repeat(2000)
+	dialog.content.text = long_note
 	dialog.content.text_changed.emit()
 	dialog.flush_message()
-	check(dialog.draft[0].content == dialog.content.text and dialog.messages.get_item_text(0).length() < 100,
-		"long note keeps complete text with a bounded readable caption")
+	var caption: String = dialog.messages.get_item_text(0)
+	check(dialog.draft[0].content == long_note and "".join(dialog._pages) == long_note
+		and dialog.content.text == dialog._pages[dialog._page_index]
+		and dialog.content.text.length() <= dialog.PAGE_CHARACTERS
+		and caption.length() < 100 and caption.contains("long note line"),
+		"long note keeps complete text across bounded visible parts with a readable caption")
 	dialog.hide()
 	panel.conversation = []
 	for i: int in Provider.MAX_CONVERSATION_TURNS:
