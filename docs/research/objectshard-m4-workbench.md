@@ -122,6 +122,37 @@ Admission accounts for reserved and owned storage. Capacity refusal must leave
 the preexisting World and shard ownership intact. These are candidate limits,
 not claims of unlimited architecture or performance at every maximum.
 
+## Fragmentation transfers a complete island
+
+An attached active body with disconnected structural islands can stage a child
+body. The largest connected island remains in the parent; a complete additional
+island is selected in stable order. A bounded nearest-island assignment keeps
+each product and lodged cargo carrier with exactly one resulting owner. The
+child retains the copied payload, temperature, incarnation and reaction schedule.
+Preparing a child reserves storage but does not make a second authoritative
+inventory or remove the parent's cells.
+
+After actual child physics reservation, native revalidates the parent's material,
+geometry, pose and payload identity plus every copied tuple and schedule. It
+preflights the remaining parent shape cover before atomically moving authority
+from parent to child. World inventory is neither debited nor credited by this
+operation. Main installs the changed parent geometry while the child remains
+disabled; exact parent installation is required before child activation.
+
+Both bodies inherit the prior rigid velocity field at their new centres of
+mass: the original linear velocity plus the rotational contribution at the
+centre displacement. The transfer does not inject an arbitrary angular impulse.
+An exhausted body, bounding-area or shape budget retains the disconnected cells
+under their existing owner and reports a fragmentation refusal. Such a refusal
+does not authorize deleting an island or replacing it with decorative particles.
+
+Source and native witnesses live in [registry transfer](../../native/src/object_shard.cpp),
+[coordinator handoff](../../native/src/object_shard_coordinator.cpp),
+[storage tests](../../native/tests/test_object_shard_storage.cpp) and
+[coordinator tests](../../native/tests/test_object_shard_coordinator.cpp).
+Passing those witnesses does not substitute for actual ordinary Workbench child
+body installation and motion in the platform qualification campaign.
+
 ## Continuing chemistry and witnessed moving edits
 
 Moving Wood retains its complete material state, temperature, incarnation and
@@ -168,6 +199,23 @@ physics RIDs, commands and receipts. Generic actor shutdown is not itself
 authority to discard live shard inventory. Same-World detach refuses while
 owned inventory or a prepared transaction remains.
 
+The explicit **Settle into canvas** tool can return a slow, nearly grid-aligned
+body to native terrain. Native admits speed at most 0.25 cells/s, angular speed
+at most 0.01 rad/s and rotation within 0.001 rad of a quarter-turn. The origin is
+snapped to the nearest grid point as part of this deliberate authoring operation.
+Every occupied carrier needs a unique empty resident destination, with no other
+shard or GCR overlap and no pending external exposure. An oblique settled body
+stays physically owned and receives a clear refusal; it is not lossy-rasterized.
+
+The native request stages the entire return, then Main freezes and reads back
+the real body. That receipt permits the exclusive native owner to withdraw only
+the body's derived mask and transfer each complete payload and temperature into
+World while debiting its shard carrier. Main then removes the actual RID and
+installs the new native terrain; their terminal receipts retire the shard.
+Neither a staged request nor a queued operation is reported as completed return.
+Refusal before transfer preserves inventory; a partial failure quarantines the
+owner. Cancellation cannot resurrect a body after World has received its cells.
+
 **Save start** persists the authored recipe, including supports before their
 interactive removal. Reopening reconstructs that start in a fresh World. Live
 body poses, evolved combustion, owned carriers and replay state are not saved.
@@ -183,8 +231,10 @@ The bounded Main receipt rendezvous services admitted transactions without
 creating extra cellular ticks or allowing unbounded waits.
 
 The latency probe separates native progress observed by Main, renderer
-post-draw intervals and individual work durations. Its cohorts identify body
-count, pause state and camera mode. Coalesced publications retain their native
+post-draw intervals and individual work durations. Its cheap ordinary cohorts
+identify owned material-body count (including sleeping bodies), pause state and
+camera mode. The independent scene profiler samples actual Rapier sleeping state
+for separate awake-body cohorts. Coalesced publications retain their native
 tick delta; they are not labelled as worker execution cadence. A pause or cohort
 change breaks the interval clock. Headless callback cadence is explicitly
 labelled headless, and all callback summaries report hardware presentation as

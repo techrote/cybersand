@@ -34,11 +34,16 @@ var _pending_delta: float = 0.0
 var _pending_poses: Array = []
 var _step_serial: int = 0
 var _semantic_tick: int = -1
+var _required_native_tick: int = -1
 var _last_synced_sequence: int = -1
 var _physics_ready: bool = false
 var _motion_lease: int = 0
 var motion_permits_refused: int = 0
 var last_motion_permit: Dictionary = {}
+var last_reabsorption_receipt: Dictionary = {}
+var _reabsorption_action_serial: int = 0
+var _costs: Dictionary = {}
+var deferred_world_uploads: int = 0
 var physical_steps: int = 0
 var physical_intervals: int = 0
 var native_pose_acknowledgements: int = 0
@@ -69,7 +74,7 @@ func owns_terrain() -> bool:
 func has_live_inventory() -> bool:
 	for shard: Dictionary in frame.get("shards",[]):
 		if shard.get("owns_inventory",false): return true
-	return bool(frame.get("promotion",{}).get("present",false))
+	return bool(frame.get("promotion",{}).get("present",false)) or bool(frame.get("reabsorption",{}).get("present",false))
 
 func can_preserve_world() -> bool:
 	return not enabled or (not has_live_inventory() and _pending_serial == 0 and not _interval_active)
@@ -103,7 +108,7 @@ func poll(host: Control) -> void:
 		var progressed: bool = _poll_once()
 		if not held_reason.is_empty(): break
 		if not progressed:
-			if _pending_serial == 0: break
+			if _pending_serial == 0 and phase != "AwaitingCompletedNativeTick": break
 			# Bounded rendezvous only for work already admitted. This creates no
 			# semantic ticks and never invokes native or Rapier on the worker.
 			OS.delay_usec(100)
@@ -163,6 +168,20 @@ func _poll_once() -> bool:
 			frame = row.get("frame",{}).duplicate(true)
 			controls_completed += 1
 			if not last_receipt.get("ok",false):
+				if kind=="complete" and _motion_lease==0 and not frame.get("quarantined",true):
+					# A newly admitted edit can supersede a readiness observation.
+					# No physical time was consumed by this zero-lease command.
+					_complete_requested = false
+					_physics_ready = false
+					_last_synced_sequence = -1
+					phase = "Synchronizing"
+					return true
+				if kind == "reabsorb_prepare":
+					last_reabsorption_receipt = last_receipt.duplicate(true)
+					_last_synced_sequence = -1
+					phase = "Synchronizing"
+					_host.shared_workbench.refuse("Settle into canvas refused: "+str(last_receipt.get("outcome","not settled or cells unavailable")))
+					return true
 				_hold("NativeControlRefused:"+kind,last_receipt)
 				return false
 			if kind == "motion":
@@ -175,6 +194,7 @@ func _poll_once() -> bool:
 				_pending_delta = 0.0
 				if PHYSICS_DELTA-_interval_completed <= 0.000000001:
 					_interval_active = false
+					_required_native_tick = _semantic_tick+1
 					physical_intervals += 1
 					# Completing actors and publishing their ordinary GCR sample
 					# happens once per admitted 1/60 interval, after all native ACKs.
@@ -185,11 +205,17 @@ func _poll_once() -> bool:
 			elif kind == "complete":
 				_motion_lease = 0
 				_complete_requested = false
-				_physics_ready = true
-				phase = "Ready"
+				_physics_ready = int(frame.get("tick",-1)) >= _required_native_tick
+				phase = "Ready" if _physics_ready else "AwaitingCompletedNativeTick"
 			elif kind == "reserved": phase = "InstallDebitedTerrain"
 			elif kind == "terrain": phase = "ActivateReservedBody"
 			elif kind in ["activated","geometry"]: phase = "Synchronizing"
+			elif kind == "reabsorb_prepare": phase = "FreezeForMaterialReturn"
+			elif kind == "reabsorb_frozen": phase = "InstallReturnedMaterial"
+			elif kind == "reabsorb_complete":
+				last_reabsorption_receipt = last_receipt.duplicate(true)
+				phase = "Synchronizing"
+				_host.shared_workbench.message = "Settled material returned to the ordinary canvas with a native ownership receipt."
 			return true
 		if Time.get_ticks_usec()-_pending_since > RECEIPT_DEADLINE_USEC:
 			_hold("NativeReceiptDeadline")
@@ -201,6 +227,7 @@ func _poll_once() -> bool:
 	var latest: Dictionary = worker.object_shard_owner_frame()
 	if not latest.is_empty(): frame = latest
 	if frame.is_empty(): return false
+	if int(frame.get("tick",-1)) < _required_native_tick: return false
 	var sequence: int = int(frame.get("publication_sequence",0))
 	if sequence != _last_synced_sequence or not _terrain_owned or not _physics_ready:
 		return _synchronize()
@@ -208,6 +235,9 @@ func _poll_once() -> bool:
 
 func _synchronize() -> bool:
 	_physics_ready = false
+	var reabsorption: Dictionary = frame.get("reabsorption",{})
+	if reabsorption.get("present",false):
+		return _synchronize_reabsorption(reabsorption)
 	# A fragmentation commit changes the parent's collision shape while its
 	# child remains disabled. Install that parent revision before activating
 	# the child; overlapping old parent/child colliders must never be stepped.
@@ -268,6 +298,52 @@ func _synchronize() -> bool:
 	_complete_requested = true
 	return _send("complete_motion",{},"complete")
 
+func _synchronize_reabsorption(value: Dictionary) -> bool:
+	var id: int = int(value.get("id",0))
+	var shard: Dictionary = _find_shard(id)
+	var receipt: Dictionary = {}
+	for key: String in ["session","id","generation","transaction","body_generation","payload_digest","geometry_revision","mask_digest","shape_digest"]:
+		receipt[key] = value.get(key,shard.get(key))
+	if str(value.get("phase","")) == "Prepared":
+		var frozen: Dictionary = bridge.freeze_for_reabsorption(shard,int(value.transaction))
+		if not frozen.get("ok",false):
+			_hold("ReabsorptionPhysicsFreezeFailed",frozen)
+			return false
+		receipt["kind"] = "ReabsorptionFrozen"
+		return _send("acknowledge",{"receipt":receipt},"reabsorb_frozen")
+	if str(value.get("phase","")) == "WorldCommitted":
+		if bridge.bodies.has(id):
+			var removed: Dictionary = bridge.remove_body(id)
+			if not removed.get("ok",false):
+				_hold("ReturnedBodyCleanupFailed",removed)
+				return false
+		var installed: Dictionary = _install_terrain()
+		if not installed.get("ok",false): return false
+		var chunks: Array = []
+		for required: Dictionary in value.get("chunks",[]):
+			for actual: Dictionary in installed.chunks:
+				if int(actual.id)==int(required.id): chunks.append(actual)
+		receipt["chunks"] = chunks
+		receipt["kind"] = "ReabsorptionComplete"
+		return _send("acknowledge",{"receipt":receipt},"reabsorb_complete")
+	_hold("UnknownReabsorptionPhase",value)
+	return false
+
+func request_reabsorption(position: Vector2i) -> Dictionary:
+	if not physics_ready() or _host == null: return {"ok":false,"outcome":"WaitForPhysicalReceipt"}
+	if not _host.paused: return {"ok":false,"outcome":"PauseBeforeSettlingIntoCanvas"}
+	var target: Dictionary = visible_target(position)
+	if target.is_empty(): return {"ok":false,"outcome":"DisplayedMovingMaterialRequired"}
+	_reabsorption_action_serial += 1
+	var request: Dictionary = {"operation":"reabsorb","position":position,"target":target,
+		"observation":visible_observation(),"action_id":_reabsorption_action_serial,"port_generation":1}
+	for key: String in ["native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+		request[key] = capabilities.get(key)
+	_physics_ready = false
+	if not _send("prepare_reabsorb",{"request":request},"reabsorb_prepare"):
+		return {"ok":false,"outcome":"OwnerPreparationRefused"}
+	return {"ok":true,"outcome":"ReabsorptionRequested","applied":false}
+
 func _install_terrain() -> Dictionary:
 	var result: Dictionary = bridge.install_terrain(frame.get("terrain_chunks",[]))
 	if not result.get("ok",false):
@@ -327,10 +403,13 @@ func _advance_segment() -> bool:
 	if delta <= 0.0 or remaining/delta > float(available)+0.0000001:
 		_hold("MotionSubstepCapacity")
 		return false
+	var step_started: int = Time.get_ticks_usec()
 	_host.rapier_bridge.step_interval(delta)
+	_record_cost("rapier_segment","physics_work",step_started,{"delta":delta,"scope":"actual shared Main Rapier step and flush only"})
 	_step_serial += 1
 	physical_steps += 1
 	_interval_segments += 1
+	var capture_started: int = Time.get_ticks_usec()
 	var sampled: Dictionary = bridge.capture_completed_main_step(_step_serial)
 	if not sampled.get("ok",false):
 		_hold("CompletedMainPoseCaptureFailed",sampled)
@@ -343,16 +422,31 @@ func _advance_segment() -> bool:
 		if workbench_sample.is_empty():
 			_hold("CompletedMainActorPoseCaptureFailed")
 			return false
+	_record_cost("pose_packet_capture","publication_prepare",capture_started,{"scope":"completed shard and GCR RID reads plus copied packet construction"})
 	return _send("accept_motion",{"poses":_pending_poses,"workbench_sample":workbench_sample},"motion")
+
+func _record_cost(name: String, stage: String, started: int, detail: Dictionary) -> void:
+	var ended: int = Time.get_ticks_usec()
+	var elapsed: int = ended-started
+	if not _costs.has(name): _costs[name] = {"calls":0,"usec":0,"max_usec":0}
+	_costs[name].calls += 1
+	_costs[name].usec += elapsed
+	_costs[name].max_usec = maxi(int(_costs[name].max_usec),elapsed)
+	if _host != null and _host.object_shard_m4_probe.enabled:
+		_host.object_shard_m4_probe.record_duration(stage,started,ended,detail)
 
 func _send(command: String, values: Dictionary, kind: String) -> bool:
 	if _pending_serial != 0: return false
+	var admission_started: int = Time.get_ticks_usec()
 	var request: Dictionary = values.duplicate(true)
 	for key: String in ["world_generation","shard_session","world_incarnation"]:
 		request[key] = capabilities.get(key,-1)
 	request["main_space_id"] = bridge.space.get_id()
 	request["motion_lease"] = _motion_lease
+	if command == "complete_motion" and _motion_lease > 0 and _interval_single_step:
+		request["workbench_step_serial"] = int(_host.shared_workbench.step_serial)
 	var result: Dictionary = _host.simulation_worker.object_shard_submit_owner_control(command,request)
+	_record_cost("owner_control_admission","queue_admission",admission_started,{"command":command,"scope":"bounded main-to-worker command copy and admission including mutex wait"})
 	if not result.get("ok",false):
 		_hold("WorkerControlAdmissionRefused",result)
 		return false
@@ -375,18 +469,45 @@ static func _ack(shard: Dictionary, kind: String) -> Dictionary:
 
 func _present_if_coherent() -> void:
 	if _host == null or frame.is_empty() or not held_reason.is_empty(): return
+	# Present the completed material/physics/native interval. Input captured
+	# from that display can run before the next Main motion permit; a partial
+	# substep publication would already be obsolete when the pointer arrives.
+	if _interval_active or not _physics_ready or _pending_serial != 0 \
+		or int(frame.get("tick",-1)) < _required_native_tick: return
 	if int(frame.get("world_generation",-1)) != int(_host.last_uploaded_world_generation) \
 		or int(frame.get("world_revision",-1)) != int(_host.last_uploaded_revision): return
 	# Keep an admitted transaction hidden until actual physics installation.
-	if frame.get("promotion",{}).get("present",false): return
+	if frame.get("promotion",{}).get("present",false) or frame.get("reabsorption",{}).get("present",false): return
 	for shard: Dictionary in frame.get("shards",[]):
 		if shard.get("geometry_pending",false): return
+	if int(publication.get("publication_sequence",-1)) == int(frame.get("publication_sequence",0)) \
+		and int(publication.get("world_generation",-1)) == int(frame.get("world_generation",0)) \
+		and int(publication.get("render_serial",-1)) == int(_host.last_uploaded_render_snapshot_serial): return
 	var next: Dictionary = frame.duplicate(true)
 	for key: String in ["session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
 		next[key] = capabilities.get(key,-1)
 	next["render_serial"] = int(_host.last_uploaded_render_snapshot_serial)
 	publication = next
 	if overlay != null: overlay.present(publication)
+
+func can_upload_world(snapshot: CyberSimulationSnapshot) -> bool:
+	if not enabled or not _terrain_owned: return true
+	var accepted: bool = snapshot != null and _physics_ready and _pending_serial == 0 \
+		and not _interval_active and int(frame.get("tick",-1))>=_required_native_tick \
+		and int(frame.get("world_generation",-1))==int(snapshot.render_world_generation) \
+		and int(frame.get("world_revision",-1))==int(snapshot.world_revision) \
+		and not frame.get("promotion",{}).get("present",false) \
+		and not frame.get("reabsorption",{}).get("present",false)
+	for shard: Dictionary in frame.get("shards",[]):
+		if shard.get("geometry_pending",false): accepted = false
+	if not accepted: deferred_world_uploads += 1
+	return accepted
+
+func present_uploaded_world() -> void:
+	# Main calls this immediately after accepting the matching ordinary World
+	# upload, before any draw. Both material owners change visual publication
+	# together; the ordinary worker retains unacknowledged patches meanwhile.
+	_present_if_coherent()
 
 func visible_observation() -> Dictionary:
 	var value: Dictionary = {}
@@ -438,6 +559,7 @@ func world_replaced() -> void:
 	_complete_requested = false
 	_interval_active = false
 	_motion_lease = 0
+	_required_native_tick = -1
 	_physics_ready = false
 	_last_synced_sequence = -1
 	held_reason = ""
@@ -465,4 +587,8 @@ func diagnostics() -> Dictionary:
 		"native_pose_acknowledgements":native_pose_acknowledgements,"controls_completed":controls_completed,
 		"pump_usec_total":total_pump_usec,"pump_usec_max":max_pump_usec,"owner_replacements":owner_replacements,
 		"receipt":last_receipt.duplicate(true),"physics":bridge.diagnostics(),
+		"reabsorption_receipt":last_reabsorption_receipt.duplicate(true),
+		"worker_profile":_host.simulation_worker.object_shard_owner_profile() if _host != null and _host.simulation_worker != null else {},
+		"main_costs":_costs.duplicate(true),"main_cost_scope":"cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"deferred_world_uploads":deferred_world_uploads,
 		"save_scope":"authored-start-only; moving inventory is never serialized as World cells"}

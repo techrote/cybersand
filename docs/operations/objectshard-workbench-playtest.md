@@ -56,6 +56,14 @@ Ordinary painting remains available around the moving structures. Use Sand,
 Water and Fire to observe coupled behavior. Switching tools or camera modes
 must not replace the native World, duplicate the material, or restart a body.
 
+For a quiet body lying almost horizontally or vertically, choose **Settle into
+canvas** and select its material. The candidate freezes the real body, checks
+the destination cells, transfers its exact inventory back to native terrain,
+and removes its physical body only after the corresponding receipts. This
+explicit conversion snaps its origin to the nearest cell. A moving, oblique,
+overlapping or otherwise busy body is refused and stays physically owned.
+You can paint or erase the returned cells with the ordinary tools.
+
 ## Five demonstration starts
 
 | Start | What to try | What to observe |

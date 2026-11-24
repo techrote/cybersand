@@ -2082,6 +2082,10 @@ func _process(delta: float) -> void:
 		elif shared_workbench.object_shard_m4_port.enabled and not object_shard_m4_runtime.enabled:
 			object_shard_m4_runtime.enable(self)
 	object_shard_m4_runtime.poll(self)
+	if object_shard_m4_runtime.owns_terrain() and latest_snapshot != null:
+		# Runtime may finish the native/physical handoff in this callback.
+		# Retry the retained ordinary patch and commit both owners before draw.
+		consume_render_snapshot(latest_snapshot)
 	if object_shard_m4_probe.enabled and shared_workbench != null:
 		object_shard_m4_probe.observe_workload(object_shard_m4_runtime.bridge.bodies.size(),paused,
 			"follow" if camera_follow_enabled else "free")
@@ -2163,7 +2167,11 @@ func _physics_process(_delta: float) -> void:
 			_workbench_wait_sample = -1
 			return
 		# A single step can restart a previously unpublished paused frame.
-		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		# Material motion has its own exact native-frame lease. A Resume may
+		# publish a fresh unchanged GCR pose before its first real interval;
+		# requiring that sample's tick here would deadlock the material owner.
+		if not object_shard_m4_runtime.owns_terrain() and _workbench_wait_sample >= 0 \
+			and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -2228,7 +2236,8 @@ func _object_shard_m4_complete_interval(single_step: bool) -> void:
 	_publish_physical_body_state()
 	if single_step and shared_workbench != null and pending_microscenario_apply.is_empty():
 		shared_workbench.step_requested = false
-		tower_command({"step":true,"workbench_step_serial":shared_workbench.step_serial})
+		# The M4 complete-motion receipt carries this step serial. A second
+		# generic lab Step could arrive after its already admitted native tick.
 		if physical_actor_session != null: physical_actor_session.set_suspended(true)
 
 func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
@@ -3310,6 +3319,7 @@ func workbench_display_frame() -> Dictionary:
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
+		if not object_shard_m4_runtime.can_upload_world(snapshot): return
 		record_render_payload(snapshot)
 		var m4_upload_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
 		var render_uploaded: bool = upload_texture_patches(
@@ -3329,6 +3339,7 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
+			object_shard_m4_runtime.present_uploaded_world()
 			simulation_worker.acknowledge_render_snapshot(
 				snapshot.render_snapshot_serial
 			)

@@ -9,6 +9,11 @@ var host: Control
 var bench: Control
 var checks: int = 0
 var failures: Array[String] = []
+var between_callback_observations: int = 0
+var draw_observations: int = 0
+var foreign_draw_callbacks: int = 0
+var incoherent_observations: int = 0
+var incoherent_examples: Array[Dictionary] = []
 
 func _init(value: SceneTree) -> void:
 	tree = value
@@ -35,7 +40,7 @@ func tick() -> int:
 	return int(frame().get("tick", 0))
 
 func body_count() -> int:
-	return int(diagnostics().get("body_count", 0))
+	return runtime().bridge.bodies.size() if runtime() != null else 0
 
 func installed() -> bool:
 	return host != null and host.shared_workbench != null and \
@@ -45,13 +50,28 @@ func installed() -> bool:
 func until(predicate: Callable, message: String, timeout_ms: int = -1) -> bool:
 	var allowance: int = Watchdogs.milliseconds("operation_seconds") if timeout_ms < 0 else timeout_ms
 	var deadline: int = Time.get_ticks_msec() + allowance
+	var next_diagnostic: int = Time.get_ticks_msec()+5000
 	while not predicate.call() and Time.get_ticks_msec() < deadline:
 		if runtime() != null and not str(diagnostics().get("held_reason", "")).is_empty(): break
 		if host != null and host.simulation_worker != null and host.simulation_worker.has_failed(): break
+		if Time.get_ticks_msec() >= next_diagnostic:
+			var state: Dictionary = diagnostics()
+			print("M4_WORKBENCH_WAIT ",JSON.stringify({"waiting":message,"phase":state.get("phase"),
+				"native_tick":state.get("native_tick"),"body_count":state.get("body_count"),
+				"held_reason":state.get("held_reason"),"pending_kind":state.get("pending_kind"),
+				"physical_intervals":state.get("physical_intervals"),"motion_lease":state.get("motion_lease"),
+				"last_motion_permit":state.get("last_motion_permit"),"last_receipt":state.get("receipt"),
+				"actor_tick":host.physical_actor_session.tick if host != null and host.physical_actor_session != null else -1,
+				"main_wait_sample":host._workbench_wait_sample if host != null else -1,
+				"native_completed_sample":host.latest_snapshot.lab_context.get("workbench_completed_sample",-1) if host != null and host.latest_snapshot != null else -1}))
+			next_diagnostic = Time.get_ticks_msec()+5000
 		await tree.process_frame
 	return expect(bool(predicate.call()), message + " / " + str(diagnostics()))
 
 func open(scene_id: String) -> bool:
+	if not tree.process_frame.is_connected(_observe_callback): tree.process_frame.connect(_observe_callback)
+	if DisplayServer.get_name() != "headless" and not RenderingServer.frame_post_draw.is_connected(_observe_draw):
+		RenderingServer.frame_post_draw.connect(_observe_draw)
 	tree.set_meta("cybersand_feature", "shared_workbench")
 	host = load("res://main.tscn").instantiate()
 	tree.root.add_child(host)
@@ -70,6 +90,39 @@ func open(scene_id: String) -> bool:
 	expect(int(diagnostics().get("shared_main_space_id", 0)) == host.rapier_bridge.shared_space().get_id(),
 		"shards use the ordinary Main Rapier space")
 	return true
+
+func _observe_callback() -> void:
+	_observe_publication(false)
+
+func _observe_draw() -> void:
+	if OS.get_thread_caller_id() != OS.get_main_thread_id():
+		foreign_draw_callbacks += 1
+		return
+	_observe_publication(true)
+
+func _observe_publication(rendered: bool) -> void:
+	if host == null or not is_instance_valid(host) or runtime() == null or runtime().publication.is_empty(): return
+	if rendered: draw_observations += 1
+	else: between_callback_observations += 1
+	if coherent(): return
+	incoherent_observations += 1
+	if incoherent_examples.size() < 8:
+		incoherent_examples.append({"rendered":rendered,"phase":runtime().phase,
+			"publication":runtime().visible_observation(),
+			"uploaded_world_generation":host.last_uploaded_world_generation,
+			"uploaded_world_revision":host.last_uploaded_revision,
+			"uploaded_render_serial":host.last_uploaded_render_snapshot_serial})
+
+func display_witness() -> Dictionary:
+	return {"between_callback_observations":between_callback_observations,"draw_observations":draw_observations,
+		"foreign_draw_callbacks":foreign_draw_callbacks,"incoherent_observations":incoherent_observations,
+		"examples":incoherent_examples,"scope":"actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"}
+
+func validate_display() -> void:
+	expect(between_callback_observations > 0,"coherent ordinary presentation was actually observed between Main callbacks")
+	expect(incoherent_observations == 0,"every observed displayed shard and World upload use one generation/revision/render identity / "+str(incoherent_examples))
+	if DisplayServer.get_name() != "headless":
+		expect(draw_observations > 0 and foreign_draw_callbacks == 0,"actual renderer submissions have Main-thread coherent publication witnesses")
 
 func cut_supports(scene_id: String, retained_cap_rows: int = 0) -> bool:
 	var manifest: Dictionary = Scenes.manifest(scene_id)
@@ -121,6 +174,19 @@ func material_count(material: int) -> int:
 			if value == material: total += 1
 	return total
 
+func validate_quantity_ledger() -> void:
+	if not expect(whole_canvas_coherent(),"independent inventory sees a complete coherent ordinary cell image"): return
+	var bytes: PackedByteArray = host.image.get_data()
+	var channels: int = bytes.size()/(512*512)
+	if not expect(channels in [1,2,4],"native image has admitted material channel layout"): return
+	var counted: PackedInt64Array = PackedInt64Array()
+	counted.resize(256)
+	for at: int in range(0,bytes.size(),channels): counted[int(bytes[at])] += 1
+	var ledger: PackedInt64Array = runtime().publication.get("world_material_counts",PackedInt64Array())
+	if not expect(ledger.size()>43,"actual World quantity ledger is copied independently of shard accounting"): return
+	for material: int in [2,3,6,7,43]:
+		expect(int(ledger[material]) == int(counted[material]),"ordinary image agrees with independent World ledger for material "+str(material))
+
 func moving_target(material: int = 7) -> Dictionary:
 	if not coherent(): return {}
 	for shard: Dictionary in runtime().publication.get("shards", []):
@@ -137,6 +203,14 @@ func moving_target(material: int = 7) -> Dictionary:
 				return target
 	return {}
 
+func owned_cell_state(owner: int, cell: int) -> Dictionary:
+	for shard: Dictionary in runtime().publication.get("shards",[]):
+		if int(shard.id) != owner or not shard.get("owns_inventory",false): continue
+		if cell < 0 or cell >= shard.materials.size(): return {}
+		return {"material":int(shard.materials[cell]),"state_a":int(shard.states_a[cell]),
+			"state_b":int(shard.states_b[cell]),"incarnation":int(shard.incarnations[cell])}
+	return {}
+
 func validate_physics() -> void:
 	var bodies: Array = diagnostics().get("physics", {}).get("bodies", [])
 	for body: Dictionary in bodies:
@@ -144,8 +218,30 @@ func validate_physics() -> void:
 		expect(is_finite(float(body.inertia)) and float(body.inertia) > 0.0, "finite positive actual Rapier inertia")
 		expect(is_finite(float(body.com_x)) and is_finite(float(body.com_y)), "finite actual Rapier centre of mass")
 		expect(int(body.shape_count) > 0, "actual Rapier collision shapes installed")
+		var source: Dictionary = {}
+		for shard: Dictionary in runtime().publication.get("shards",[]):
+			if int(shard.id) == int(body.id): source = shard
+		if not expect(not source.is_empty(),"actual Rapier body has one displayed native inventory owner"): continue
+		# Recompute the declared unit-cell mass moments from owned material roles,
+		# independently of the native mass/COM/inertia fields sent to Rapier.
+		var positions: Array[Vector2] = []
+		var sum: Vector2 = Vector2.ZERO
+		for cell: int in range(source.roles.size()):
+			if int(source.roles[cell]) not in [1,3]: continue
+			var point := Vector2(float(cell%int(source.width))+0.5,floorf(float(cell)/float(source.width))+0.5)
+			positions.append(point)
+			sum += point
+		if not expect(not positions.is_empty(),"physical mass has actual structural or cargo carriers"): continue
+		var center: Vector2 = sum/float(positions.size())
+		var inertia: float = 0.0
+		for point: Vector2 in positions: inertia += (point-center).length_squared()+1.0/6.0
+		expect(absf(float(body.mass)-float(positions.size())) < 0.001,"actual Rapier mass equals independent carrier count")
+		expect(Vector2(float(body.com_x),float(body.com_y)).distance_to(center) < 0.001,"actual Rapier COM equals independent material centroid")
+		expect(absf(float(body.inertia)-inertia) <= maxf(0.001,inertia*0.00001),"actual Rapier inertia equals independent cell-area moments")
 
 func close() -> void:
+	if tree.process_frame.is_connected(_observe_callback): tree.process_frame.disconnect(_observe_callback)
+	if RenderingServer.frame_post_draw.is_connected(_observe_draw): RenderingServer.frame_post_draw.disconnect(_observe_draw)
 	if host != null and is_instance_valid(host):
 		host.queue_free()
 		await tree.process_frame

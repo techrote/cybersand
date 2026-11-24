@@ -43,6 +43,7 @@ var object_shard_m4_port = ObjectShardM4Port.new()
 var _object_shard_window: Window
 var _object_shard_scene: String = ""
 var _pending_object_shard_scene: String = ""
+var _object_shard_seen_result: Vector2i = Vector2i.ZERO
 var applied: Dictionary = {}
 var pilot_slot := -1
 var _pilot_instance_id := 0
@@ -246,6 +247,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		# Until the same-World adapter and overlay exist, they visibly refuse.
 		_tool.add_item("Cut moving")
 		_tool.add_item("Ignite moving")
+		_tool.add_item("Settle into canvas")
 	var names: Array = []
 	_model_ids = _compact_model_ids()
 	for id: String in _model_ids: names.append(ActorCatalog.entry(id).get("name",id))
@@ -1513,10 +1515,15 @@ func _input(event: InputEvent) -> void:
 
 func enable_object_shard() -> bool:
 	if host == null or not host.has_method("object_shard_m4_latency_report"): return false
+	if not busy() and not applied.is_empty():
+		var extent: Vector2i = Setup.extent_of(applied)
+		if extent.x > 1024 or extent.y > 1024:
+			return refuse("Choose a 512 or 1024 canvas, or load a structures scene, before enabling destructible structures.")
 	object_shard_m4_port.enabled = true
 	if _tool.item_count == TOOL_NAMES.size():
 		_tool.add_item("Cut moving")
 		_tool.add_item("Ignite moving")
+		_tool.add_item("Settle into canvas")
 	host.object_shard_m4_probe.configure(true)
 	if not RenderingServer.frame_post_draw.is_connected(host._object_shard_m4_post_draw):
 		RenderingServer.frame_post_draw.connect(host._object_shard_m4_post_draw,CONNECT_DEFERRED)
@@ -1549,7 +1556,7 @@ func open_object_shard_controls() -> void:
 		column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_object_shard_window.add_child(column)
 		var description := Label.new()
-		description.text = "Enable on the current canvas or load a playable construction.\nCut supports with ordinary Erase; use Cut moving / Ignite moving on detached material.\nPause for deliberate edits. Restore start replaces the whole scene.\nSave start stores the authored construction, not a live physics checkpoint."
+		description.text = "Enable on the current canvas or load a playable construction.\nCut supports with ordinary Erase; use Cut moving / Ignite moving on detached material.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
 		column.add_child(description)
 		_button(column,"Enable on current canvas",enable_object_shard)
 		for i: int in range(ObjectShardScenes.IDS.size()):
@@ -1599,7 +1606,7 @@ func _pick(pos: Vector2i) -> void:
 func _world_input(event: InputEvent) -> void:
 	# An M4 moving-body operation can never route through the ordinary terrain
 	# painter, including right drag or an active paint-editor interception.
-	var m4_moving_tool: bool = object_shard_m4_port.enabled and _tool.selected in [5, 6]
+	var m4_moving_tool: bool = object_shard_m4_port.enabled and _tool.selected in [5, 6, 7]
 	if not m4_moving_tool and not applied.is_empty() and paint_editor != null \
 			and paint_editor.world_input(event): return
 	if applied.is_empty() or busy():
@@ -1635,7 +1642,12 @@ func _world_input(event: InputEvent) -> void:
 	if _drag_button == 0 or pos == _last_cell: return
 	_last_cell = pos
 	if m4_moving_tool:
-		object_shard_m4_action(pos, "erase" if _tool.selected == 5 else "ignite")
+		if _tool.selected == 7:
+			var result: Dictionary = host.object_shard_m4_runtime.request_reabsorption(pos)
+			if not result.get("ok",false): refuse("Settle into canvas: "+str(result.get("outcome","unavailable")))
+			else: message = "Native owner is checking a settled material return; inventory stays owned until the physics freeze receipt."
+		else:
+			object_shard_m4_action(pos, "erase" if _tool.selected == 5 else "ignite")
 		return
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
 		paint(pos,0 if _drag_button == MOUSE_BUTTON_RIGHT else int(applied.material))
@@ -1654,6 +1666,18 @@ func _process(_delta: float) -> void:
 	if host == null: return
 	if object_shard_m4_port.enabled and object_shard_m4_port.pending_count() > 0:
 		object_shard_m4_port.poll_results(host.simulation_worker)
+	if object_shard_m4_port.enabled and not object_shard_m4_port.results.is_empty():
+		var terminal: Dictionary = object_shard_m4_port.results.back()
+		var identity := Vector2i(int(terminal.get("port_generation",0)),int(terminal.get("action_id",0)))
+		if identity != _object_shard_seen_result:
+			_object_shard_seen_result = identity
+			if terminal.get("ok",false):
+				message = "Moving material %s applied · native transaction %d." % [
+					str(terminal.get("native_receipt",{}).get("operation","edit")),int(terminal.get("native_receipt",{}).get("transaction_id",0))]
+			elif terminal.get("outcome","")=="TargetChanged":
+				message = "Moving target changed before the native edit. Try its current position, or Pause for a deliberate cut."
+			else:
+				message = "Moving material edit: "+str(terminal.get("outcome","refused"))+". The native receipt did not authorize an edit."
 	_poll_flatten()
 	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
 	if step_pending:
@@ -1716,9 +1740,15 @@ func _process(_delta: float) -> void:
 	_status.text += " · pilot " + pilot_description()
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
 	if object_shard_m4_port.enabled:
-		var m4_status: Dictionary = object_shard_m4_status()
-		var physical: Dictionary = host.object_shard_m4_runtime.diagnostics()
-		_status.text += " · structures %s · %d bodies" % [str(physical.get("phase",m4_status.get("outcome","unavailable"))),int(physical.get("body_count",0))]
+		# Status text does not need native/physics readbacks or deep receipt
+		# copies. Full source diagnostics remain an explicit evaluator action.
+		var runtime: RefCounted = host.object_shard_m4_runtime
+		_status.text += " · structures %s · %d/16 bodies" % [runtime.phase,runtime.bridge.bodies.size()]
+		var admission: String = str(runtime.frame.get("admission",{}).get("reason",""))
+		if admission in ["ComponentCells","BoundingBox","ShapeLimit"]:
+			_status.text += " · structure exceeds geometry budget; cut it into smaller connected sections"
+		elif admission in ["BodySlots","TotalArea","StorageCapacity"]:
+			_status.text += " · material-body budget full; settle bodies into the canvas or restore the scene"
 	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
 	equipment.refresh(context)

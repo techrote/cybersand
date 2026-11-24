@@ -41,7 +41,8 @@ struct TerrainChunk {
     std::vector<Rect> rectangles;
 };
 enum class AckKind : std::uint8_t {
-    PhysicsReserved, TerrainInstalled, BodyActivated, GeometryInstalled, BodyRetired
+    PhysicsReserved, TerrainInstalled, BodyActivated, GeometryInstalled, BodyRetired,
+    ReabsorptionFrozen, ReabsorptionComplete
 };
 struct Acknowledgement {
     Handle shard{};
@@ -65,6 +66,13 @@ struct PromotionView {
     std::span<const TerrainReceipt> terrain{};
     Handle source_parent{};
 };
+struct ReabsorptionView {
+    bool present{}, world_committed{};
+    Handle shard{};
+    std::uint64_t transaction{}, payload_digest{}, captured_tick{}, body_generation{};
+    std::uint64_t geometry_revision{}, mask_digest{}, shape_digest{};
+    std::span<const TerrainReceipt> terrain{};
+};
 struct BodyView {
     Handle shard{};
     std::uint64_t transaction{}, body_generation{};
@@ -74,6 +82,7 @@ struct BodyView {
     bool has_body{}, geometry_pending{}, pocket_open{},ingress_fenced{};
     std::uint32_t pocket_cell{};
     Handle source_parent{}; // Nonzero only for a physical island handoff.
+    bool fragment_deferred{};
 };
 // Bounded owner-local M4 readback: copied body values, not a published World
 // snapshot, borrowed storage span, RID or permission to tick. Ordinary M3
@@ -98,7 +107,7 @@ struct Metrics {
     std::uint64_t chemistry_cells{}, products_created{}, output_blocked{}, sand_ingested{};
     std::uint64_t exposure_overflows{}, stale_messages{}, mask_cells{}, sweep_samples{},ingress_blocked{};
     std::uint64_t composed_overlap_cells{};
-    std::uint64_t fragments{}, fragment_refusals{};
+    std::uint64_t fragments{}, fragment_refusals{}, reabsorptions{};
     std::uint64_t world_ns{}, chemistry_ns{}, contact_ns{}, occupancy_ns{}, geometry_ns{}, snapshot_ns{};
     std::uint64_t discovery_ns{},terrain_ns{},exchange_ns{},relocation_ns{};
     std::uint64_t maximum_pause_ns{}, maximum_geometry_age{}, maximum_geometry_wait_ns{},maximum_product_age{};
@@ -111,6 +120,7 @@ struct Snapshot {
     bool paused{}, quarantined{};
     Result last_result{};
     PromotionView promotion{};
+    ReabsorptionView reabsorption{};
     // Valid until the next coordinator call; the facade copies these values.
     std::span<const std::uint8_t> world_materials{};
     std::span<const TerrainChunk> terrain_chunks{};
@@ -146,7 +156,7 @@ struct ShardEditRequest {
     Payload expected{};
     std::uint32_t capability_version{kCapabilityVersion};
 };
-enum class ShardAction : std::uint8_t { Erase, Ignite, Inspect };
+enum class ShardAction : std::uint8_t { Erase, Ignite, Inspect, Reabsorb };
 
 class Coordinator {
 public:
@@ -278,8 +288,13 @@ private:
     [[nodiscard]] bool immutable_occupied(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] BodyView* body(Handle handle) noexcept;
     [[nodiscard]] const BodyView* body(Handle handle) const noexcept;
+    void preserve_material_point_velocity(Handle handle, MassProperties previous) noexcept;
     [[nodiscard]] Outcome capture_component(std::uint32_t root);
     [[nodiscard]] Outcome capture_fragment(Handle parent);
+    [[nodiscard]] Outcome prepare_reabsorption(const ShardEditRequest& request);
+    [[nodiscard]] bool validate_reabsorption() const noexcept;
+    [[nodiscard]] Outcome commit_reabsorption();
+    [[nodiscard]] Result acknowledge_reabsorption(const Acknowledgement& receipt);
     [[nodiscard]] bool pending_conflict(Bounds bounds) const noexcept;
     void refresh_admission(std::uint32_t work);
     [[nodiscard]] bool validate_prepared() const noexcept;

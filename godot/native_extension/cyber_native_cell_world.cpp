@@ -592,6 +592,9 @@ Dictionary CyberNativeCellWorld::object_shard_status() const {
     status["max_body_area"] = shard_lab_->coordinator_->config().limits.max_area;
     status["max_total_area"] = shard_lab_->coordinator_->config().limits.max_total_area;
     status["first_mutable_body_id"] = cybersand::object_shard::Coordinator::kFirstMutableBodyId;
+    status["physical_fragmentation"] = true;
+    status["settled_reabsorption"] = true;
+    status["reabsorption_policy"] = "explicit slow quarter-turn body; unique empty grid destinations; freeze, World transfer, physical retirement receipts";
     status["support_policy"] = "boundary-rooted connected architecture; severed Wall caps travel with structure";
     return status;
 }
@@ -632,6 +635,7 @@ Dictionary CyberNativeCellWorld::object_shard_acknowledge(const Dictionary& rece
     if (!shard_owner()) return {};
     const auto before=shard_lab_->coordinator_->world_material_revision();
     auto result=shard_lab_->acknowledge(receipt);
+    result["native_instance_id"]=static_cast<std::int64_t>(get_instance_id());
     if (shard_lab_->coordinator_->world_material_revision()!=before) ++revision_;
     return result;
 }

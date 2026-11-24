@@ -243,7 +243,7 @@ private:
     std::vector<std::uint64_t> slot_generations_;
     GeometryScratch scratch_;
     std::size_t peak_retained_bytes_{};
-    std::uint64_t construction_allocations_{6};
+    std::uint64_t construction_allocations_{5};
 };
 
 [[nodiscard]] const char* outcome_name(Outcome value) noexcept;

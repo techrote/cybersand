@@ -252,7 +252,6 @@ GeometryScratch::GeometryScratch(const Limits& limits) {
     if (!valid_limits(limits)) throw std::invalid_argument("invalid ObjectShard limits");
     queue_.resize(limits.max_area);
     seen_.resize(limits.max_area);
-    labels_.resize(limits.max_area);
     shapes_.reserve(limits.max_shapes);
 }
 
@@ -482,6 +481,13 @@ Outcome Registry::prepare_fragment(Handle parent_handle, std::uint64_t tick, Han
     if (parent->phase_!=Phase::Active || !parent->authoritative_ || parent->geometry_dirty_ ||
         parent->applied_physics_revision_!=parent->geometry_.revision) return Outcome::Fenced;
     if (!parent->geometry_.split_pending || parent->geometry_.islands<2) return Outcome::Unsupported;
+    // Fragment-only scratch is acquired at this explicit preparation boundary,
+    // before any authority moves. Inactive/standalone laboratories retain
+    // their historical bounded-memory envelope.
+    if (scratch_.labels_.empty()) {
+        try {scratch_.labels_.resize(limits_.max_area);++construction_allocations_;}
+        catch (const std::bad_alloc&) {return Outcome::Capacity;}
+    }
     const auto width=parent->bounds_.width, height=parent->bounds_.height;
     const auto area=parent->area();
     std::fill_n(scratch_.labels_.begin(),area,std::uint32_t{0});

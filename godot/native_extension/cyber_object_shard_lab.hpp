@@ -50,6 +50,7 @@ private:
     std::unique_ptr<cybersand::object_shard::Coordinator> coordinator_;
     bool failed_{};
     String failure_;
+    Dictionary reabsorption_receipt_;
     struct CarrierCache {
         cybersand::object_shard::Handle handle{};
         std::uint64_t material_revision{};

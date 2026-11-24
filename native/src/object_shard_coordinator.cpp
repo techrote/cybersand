@@ -75,12 +75,15 @@ contact::Pose contact_pose(const PoseSample& p) noexcept {return {p.x,p.y,p.rota
 struct Coordinator::Pending {
     struct Captured { std::int64_t x{}, y{}; std::uint32_t local{}; Payload payload{}; std::uint64_t witness{}; };
     bool present{};
+    bool reabsorption{}, world_committed{}, reabsorption_mask_removed{};
     Handle shard{};
     Handle source_parent{};
     std::uint64_t parent_material_revision{}, parent_geometry_revision{}, parent_pose_serial{}, parent_payload_digest{};
+    std::uint64_t source_mask_digest{}, source_shape_digest{}, source_body_generation{}, action_fingerprint{};
     std::uint64_t transaction{}, payload_digest{}, captured_tick{}, watch_incarnation{}, watch_revision{};
     std::vector<Captured> cells;
     std::vector<TerrainReceipt> terrain;
+    std::vector<PocketFence> fragment_fences;
     std::array<std::uint64_t, 3> acknowledgements{};
 };
 struct Coordinator::Receipt {
@@ -261,9 +264,11 @@ bool Coordinator::immutable_occupied(std::int64_t x, std::int64_t y) const noexc
     return found!=immutable_occupancy_.end() && found->x==x && found->y==y;
 }
 Payload Coordinator::inspect_world(std::int64_t x, std::int64_t y) const noexcept {
+    if (!world_) return {};
     return {world_->stored_material(x,y), world_->stored_state_a(x,y), world_->stored_state_b(x,y), world_->stored_temperature(x,y)};
 }
 std::uint64_t Coordinator::world_witness(std::int64_t x,std::int64_t y) const noexcept {
+    if (!world_ || !world_->object_shard_mutations_) return 0;
     return world_->object_shard_mutations_->witness(x,y);
 }
 std::uint64_t Coordinator::world_material_revision() const noexcept {
@@ -280,7 +285,7 @@ Metrics Coordinator::lifetime_metrics() const noexcept {
     CS_ADD_METRIC(steps);CS_ADD_METRIC(paused_calls);CS_ADD_METRIC(discovered_cells);CS_ADD_METRIC(promotions);CS_ADD_METRIC(refusals);
     CS_ADD_METRIC(chemistry_cells);CS_ADD_METRIC(products_created);CS_ADD_METRIC(output_blocked);CS_ADD_METRIC(sand_ingested);
     CS_ADD_METRIC(exposure_overflows);CS_ADD_METRIC(stale_messages);CS_ADD_METRIC(mask_cells);CS_ADD_METRIC(sweep_samples);CS_ADD_METRIC(ingress_blocked);
-    CS_ADD_METRIC(composed_overlap_cells);CS_ADD_METRIC(fragments);CS_ADD_METRIC(fragment_refusals);
+    CS_ADD_METRIC(composed_overlap_cells);CS_ADD_METRIC(fragments);CS_ADD_METRIC(fragment_refusals);CS_ADD_METRIC(reabsorptions);
     CS_ADD_METRIC(world_ns);CS_ADD_METRIC(chemistry_ns);CS_ADD_METRIC(contact_ns);CS_ADD_METRIC(occupancy_ns);CS_ADD_METRIC(geometry_ns);CS_ADD_METRIC(snapshot_ns);
     CS_ADD_METRIC(discovery_ns);CS_ADD_METRIC(terrain_ns);CS_ADD_METRIC(exchange_ns);CS_ADD_METRIC(relocation_ns);
 #undef CS_ADD_METRIC
@@ -298,8 +303,20 @@ const BodyView* Coordinator::body(Handle h) const noexcept {
     for (const auto& b : bodies_) if (b.shard == h) return &b;
     return nullptr;
 }
+void Coordinator::preserve_material_point_velocity(Handle handle, MassProperties previous) noexcept {
+    auto* physical=body(handle);const auto* shard=registry_.find(handle);
+    if (!physical || !physical->has_body || !shard || previous.mass<=0 || shard->geometry().mass.mass<=0) return;
+    const auto& current=shard->geometry().mass;
+    const auto dx=current.com_x-previous.com_x,dy=current.com_y-previous.com_y;
+    const auto cs=std::cos(physical->pose.rotation),sn=std::sin(physical->pose.rotation);
+    physical->pose.vx-=physical->pose.angular_velocity*(sn*dx+cs*dy);
+    physical->pose.vy+=physical->pose.angular_velocity*(cs*dx-sn*dy);
+    // Removing material removes that material's momentum. Preserve angular
+    // velocity and every surviving point's velocity, matching the actual
+    // Rapier mass/COM installer rather than amplifying spin after a small cut.
+}
 bool Coordinator::paused() const noexcept {
-    if (quarantined_ || pending_->present) return true;
+    if (!world_ || quarantined_ || pending_->present) return true;
     for (const auto& b : bodies_) if (b.geometry_pending) return true;
     return false;
 }
@@ -408,6 +425,14 @@ Result Coordinator::act_on_shard(const ShardEditRequest& r, ShardAction action) 
         return done(Outcome::Unsupported,"unsupported material capability version");
     if (action==ShardAction::Inspect)
         return done(Outcome::Accepted,"exact native owned-cell observation acknowledged; no mutation");
+    if (action==ShardAction::Reabsorb) {
+        const auto prepared=prepare_reabsorption(r);
+        if (prepared==Outcome::Accepted) {
+            pending_->action_fingerprint=fingerprint;
+            return done(prepared,"settled body staged for exact World handoff; physical freeze acknowledgement required");
+        }
+        return done(prepared,"settle requires a slow, lattice-aligned body and empty, fully resident destinations");
+    }
     if (shard->role(r.cell)!=Role::Structural)
         return done(Outcome::Unsupported,"only explicitly owned structural cells admit erase");
     const auto tick=world_->completed_tick_index();
@@ -419,6 +444,7 @@ Result Coordinator::act_on_shard(const ShardEditRequest& r, ShardAction action) 
         return done(shard->set_cell(r.cell,payload,Role::Structural,tick),
             "exact native Wood ignition applied; inventory unchanged");
     }
+    const auto previous_mass=shard->geometry().mass;
     const auto result=registry_.erase_structural(r.shard,r.cell,tick);
     if (result==Outcome::Capacity) return done(result,"ShapeLimit: exact post-cut geometry refused before material debit");
     if (result!=Outcome::Accepted) {
@@ -430,6 +456,7 @@ Result Coordinator::act_on_shard(const ShardEditRequest& r, ShardAction action) 
         return done(result,"structural erase preflight/commit refused");
     }
     ++accounting_.authored_destroyed[static_cast<std::uint8_t>(r.expected.material)];
+    preserve_material_point_velocity(r.shard,previous_mass);
     b->geometry_pending=true;b->geometry_pending_tick=tick;b->geometry_pending_ns=now_ns();
     return done(Outcome::Accepted,"owned structural cell erased; exact geometry awaits physics acknowledgement");
 }
@@ -484,7 +511,8 @@ Outcome Coordinator::capture_component(std::uint32_t root) {
         if (ready == Outcome::Capacity) discovery_->refuse(root,AdmissionReason::ShapeLimit);
         return ready;
     }
-    pending_->present = true; pending_->shard = handle; pending_->source_parent={};
+    pending_->present = true; pending_->reabsorption=false;pending_->world_committed=false;
+    pending_->shard = handle; pending_->source_parent={};
     pending_->transaction = next_transaction_++;
     pending_->payload_digest = shard->payload_digest(); pending_->captured_tick = world_->completed_tick_index();
     pending_->watch_incarnation = world_->object_shard_mutations_->incarnation();
@@ -507,7 +535,27 @@ Outcome Coordinator::capture_fragment(Handle parent_handle) {
     const auto ready=registry_.prepare_fragment(parent_handle,world_->completed_tick_index(),child_handle);
     if (ready!=Outcome::Accepted) return ready;
     const auto* child=registry_.find(child_handle);
-    pending_->present=true;pending_->shard=child_handle;pending_->source_parent=parent_handle;
+    pending_->fragment_fences.clear();
+    const auto fence_count=static_cast<std::size_t>(std::count_if(ingress_fences_.begin(),ingress_fences_.end(),
+        [&](const auto& fence){return fence.shard_id==parent_handle.id;}));
+    if (fence_count>config_.limits.max_area) {(void)registry_.cancel_precommit(child_handle);return Outcome::Capacity;}
+    try {pending_->fragment_fences.reserve(fence_count);}
+    catch (const std::bad_alloc&) {(void)registry_.cancel_precommit(child_handle);return Outcome::Capacity;}
+    const auto child_dx=child->bounds().x-parent->bounds().x,child_dy=child->bounds().y-parent->bounds().y;
+    for (const auto& fence:ingress_fences_) if (fence.shard_id==parent_handle.id) {
+        const auto minimum=std::max<std::int64_t>(0,static_cast<std::int64_t>(fence.min_x)-child_dx);
+        const auto maximum=std::min<std::int64_t>(child->bounds().width,static_cast<std::int64_t>(fence.max_x)-child_dx);
+        if (minimum>=maximum) continue;
+        if (pending_->fragment_fences.size()==pending_->fragment_fences.capacity() ||
+            ingress_fences_.size()+pending_->fragment_fences.size()==ingress_fences_.capacity()) {
+            (void)registry_.cancel_precommit(child_handle);return Outcome::Capacity;
+        }
+        pending_->fragment_fences.push_back({child_handle.id,static_cast<std::uint16_t>(minimum),
+            static_cast<std::uint16_t>(maximum),static_cast<std::uint16_t>(std::clamp<std::int64_t>(
+                static_cast<std::int64_t>(fence.row)-child_dy,0,child->bounds().height-1))});
+    }
+    pending_->present=true;pending_->reabsorption=false;pending_->world_committed=false;
+    pending_->shard=child_handle;pending_->source_parent=parent_handle;
     pending_->transaction=next_transaction_++;pending_->payload_digest=child->payload_digest();
     pending_->captured_tick=world_->completed_tick_index();
     pending_->watch_incarnation=world_->object_shard_mutations_->incarnation();
@@ -534,6 +582,198 @@ Outcome Coordinator::capture_fragment(Handle parent_handle) {
     slot->previous_pose=slot->pose;
     pause_started_ns_=now_ns();pause_calls_=0;
     return Outcome::Accepted;
+}
+
+Outcome Coordinator::prepare_reabsorption(const ShardEditRequest& request) {
+    if (!attached_) return Outcome::Unsupported;
+    auto* shard=registry_.find(request.shard);auto* physical=body(request.shard);
+    if (!shard || !physical || !physical->has_body || shard->phase()!=Phase::Active)
+        return Outcome::Stale;
+    const auto& pose=physical->pose;
+    // Explicit authoring conversion to the cellular grid, never automatic
+    // disposal of a moving body. No arbitrary-angle many-to-one rasterization.
+    if (contact::magnitude(pose.vx,pose.vy)>.25 || std::abs(pose.angular_velocity)>.01)
+        return Outcome::Busy;
+    constexpr double half_pi=1.57079632679489661923;
+    const auto angle=std::remainder(pose.rotation,4.*half_pi);
+    const auto quadrant=static_cast<int>(std::llround(angle/half_pi));
+    if (std::abs(angle-quadrant*half_pi)>.001) return Outcome::Unsupported;
+    const auto origin_x=static_cast<std::int64_t>(std::llround(pose.x));
+    const auto origin_y=static_cast<std::int64_t>(std::llround(pose.y));
+    const auto turn=(quadrant+4)%4;
+    const auto tick=world_->completed_tick_index();
+    for (const auto& exposure:exposures_) if (exposure.shard==request.shard &&
+        !exposure.consumed && exposure.expiry_tick>=tick) return Outcome::PendingEvent;
+    const auto count=shard->counts().total();
+    if (shard->material_revision()>UINT64_MAX-count || shard->topology_revision()>UINT64_MAX-count)
+        return Outcome::GenerationExhausted;
+    pending_->cells.clear();pending_->terrain.clear();pending_->fragment_fences.clear();
+    std::fill(reserved_destinations_.begin(),reserved_destinations_.end(),std::uint8_t{0});
+    const auto own_id=static_cast<std::uint16_t>(kFirstMutableBodyId+(physical-bodies_.data()));
+    for (std::uint32_t at=0;at<shard->area();++at) if (shard->occupied(at)) {
+        const auto lx=static_cast<std::int64_t>(at%shard->bounds().width);
+        const auto ly=static_cast<std::int64_t>(at/shard->bounds().width);
+        const auto x=origin_x+(turn==0 ? lx : turn==1 ? -ly-1 : turn==2 ? -lx-1 : ly);
+        const auto y=origin_y+(turn==0 ? ly : turn==1 ? lx : turn==2 ? -ly-1 : -lx-1);
+        if (!resident(x,y)) return Outcome::NotResident;
+        const auto index=static_cast<std::size_t>(y-config_.world_bounds.y)*config_.world_bounds.width+
+            static_cast<std::size_t>(x-config_.world_bounds.x);
+        const auto obstacle=world_->transient_obstacle_at(x,y);
+        if (reserved_destinations_[index] || immutable_occupied(x,y) ||
+            (obstacle && obstacle!=own_id) || inspect_world(x,y).material!=Material::Empty)
+            return Outcome::DestinationUnavailable;
+        const auto value=shard->payload(at);
+        const auto admitted=shard->validate_cell_write(at,{Material::Empty,0,0,value.temperature},Role::Empty,tick);
+        if (admitted!=Outcome::Accepted) return admitted;
+        reserved_destinations_[index]=1;
+        pending_->cells.push_back({x,y,at,value,world_witness(x,y)});
+    }
+    // Shared conservative cells can hide a second shard behind a lower slot
+    // in the derived union. Check every other physical carrier's actual square
+    // against the destination set before permitting a static terrain credit.
+    for (const auto& other:bodies_) {
+        if (!other.has_body || other.shard==request.shard) continue;
+        const auto* retained=registry_.find(other.shard);
+        if (!retained || !retained->owns_inventory()) continue;
+        const auto cs=std::cos(other.pose.rotation),sn=std::sin(other.pose.rotation);
+        const auto half=(std::abs(cs)+std::abs(sn))*.5;
+        for (std::size_t at=0;at<retained->area();++at) if (retained->structural(at) || retained->role(at)==Role::Cargo) {
+            const auto lx=static_cast<double>(at%retained->bounds().width)+.5;
+            const auto ly=static_cast<double>(at/retained->bounds().width)+.5;
+            const auto cx=other.pose.x+cs*lx-sn*ly,cy=other.pose.y+sn*lx+cs*ly;
+            for (auto y=static_cast<std::int64_t>(std::floor(cy-half));y<=static_cast<std::int64_t>(std::floor(cy+half));++y)
+                for (auto x=static_cast<std::int64_t>(std::floor(cx-half));x<=static_cast<std::int64_t>(std::floor(cx+half));++x) {
+                    if (!resident(x,y)) continue;
+                    const auto index=static_cast<std::size_t>(y-config_.world_bounds.y)*config_.world_bounds.width+
+                        static_cast<std::size_t>(x-config_.world_bounds.x);
+                    if (!reserved_destinations_[index]) continue;
+                    const auto dx=static_cast<double>(x)+.5-cx,dy=static_cast<double>(y)+.5-cy;
+                    if (std::abs(dx)<half+.5-1e-9 && std::abs(dy)<half+.5-1e-9 &&
+                        std::abs(dx*cs+dy*sn)<half+.5-1e-9 && std::abs(-dx*sn+dy*cs)<half+.5-1e-9)
+                        return Outcome::DestinationUnavailable;
+                }
+        }
+    }
+    pending_->present=true;pending_->reabsorption=true;pending_->world_committed=false;pending_->reabsorption_mask_removed=false;
+    pending_->shard=request.shard;pending_->source_parent={};pending_->transaction=request.sequence;
+    pending_->payload_digest=shard->payload_digest();pending_->captured_tick=tick;
+    pending_->watch_incarnation=world_->object_shard_mutations_->incarnation();
+    pending_->watch_revision=world_->object_shard_mutations_->revision();
+    pending_->parent_material_revision=shard->material_revision();
+    pending_->parent_geometry_revision=shard->geometry().revision;pending_->parent_pose_serial=pose.pose_serial;
+    pending_->source_mask_digest=shard->geometry().mask_digest;pending_->source_shape_digest=shard->geometry().shape_digest;
+    pending_->source_body_generation=physical->body_generation;pending_->acknowledgements={};
+    pause_started_ns_=now_ns();pause_calls_=0;
+    return Outcome::Accepted;
+}
+
+bool Coordinator::validate_reabsorption() const noexcept {
+    if (!pending_->present || !pending_->reabsorption || pending_->world_committed ||
+        world_->has_failed() || world_->is_tick_in_progress() || world_->completed_tick_index()!=pending_->captured_tick ||
+        world_->object_shard_mutations_->incarnation()!=pending_->watch_incarnation ||
+        world_->object_shard_mutations_->revision()!=pending_->watch_revision) return false;
+    const auto* shard=registry_.find(pending_->shard);const auto* physical=body(pending_->shard);
+    if (!shard || !physical || !physical->has_body || shard->phase()!=Phase::Active ||
+        shard->payload_digest()!=pending_->payload_digest || shard->material_revision()!=pending_->parent_material_revision ||
+        shard->geometry().revision!=pending_->parent_geometry_revision ||
+        physical->pose.pose_serial!=pending_->parent_pose_serial) return false;
+    for (const auto& cell:pending_->cells)
+        if (inspect_world(cell.x,cell.y).material!=Material::Empty ||
+            world_witness(cell.x,cell.y)!=cell.witness || shard->payload(cell.local)!=cell.payload)
+            return false;
+    return true;
+}
+
+Outcome Coordinator::commit_reabsorption() {
+    if (!validate_reabsorption()) return Outcome::Stale;
+    auto* shard=registry_.find(pending_->shard);auto* physical=body(pending_->shard);
+    const auto tick=world_->completed_tick_index();
+    // A genuine physical freeze receipt has arrived. Withdraw only this body's
+    // derived occupancy while both simulations remain fenced, so ordinary
+    // World writes retain their obstacle checks. Material custody stays with
+    // the shard until each corresponding World credit succeeds.
+    pending_->reabsorption_mask_removed=true;
+    const auto released=rebuild_mask(false);
+    if (released!=Outcome::Accepted) {
+        pending_->reabsorption_mask_removed=false;
+        if (released==Outcome::Quarantined) quarantined_=true;
+        return released;
+    }
+    for (const auto& cell:pending_->cells) {
+        bool credited=false,debited=false;
+        try {
+            credited=world_->write_cell(cell.x,cell.y,cell.payload.material,cell.payload.state_a,cell.payload.state_b,nullptr,false);
+            if (!credited) throw std::logic_error("reserved reabsorption destination changed");
+            world_->set_temperature(cell.x,cell.y,cell.payload.temperature);
+            debited=shard->set_cell(cell.local,{Material::Empty,0,0,cell.payload.temperature},Role::Empty,tick)==Outcome::Accepted;
+            if (!debited) throw std::logic_error("reserved reabsorption source changed");
+        } catch (...) {
+            const auto actual=inspect_world(cell.x,cell.y);
+            credited=actual.material==cell.payload.material && actual.state_a==cell.payload.state_a && actual.state_b==cell.payload.state_b;
+            if (credited) {
+                world_->set_temperature(cell.x,cell.y,cell.payload.temperature);
+                if (!debited) debited=shard->set_cell(cell.local,{Material::Empty,0,0,cell.payload.temperature},Role::Empty,tick)==Outcome::Accepted;
+                if (debited) ++accounting_.emitted[static_cast<std::uint8_t>(cell.payload.material)];
+            }
+            (void)registry_.quarantine(pending_->shard);quarantined_=true;
+            return Outcome::Quarantined;
+        }
+        ++accounting_.emitted[static_cast<std::uint8_t>(cell.payload.material)];
+    }
+    pending_->world_committed=true;physical->geometry_pending=false;
+    rebuild_terrain();pending_->terrain.clear();
+    const auto bounds=config_.world_bounds;const auto columns=(bounds.width+63U)/64U;
+    for (const auto& cell:pending_->cells) {
+        const auto tile=static_cast<std::uint32_t>((cell.y-bounds.y)/64)*columns+
+            static_cast<std::uint32_t>((cell.x-bounds.x)/64);
+        if (std::find_if(pending_->terrain.begin(),pending_->terrain.end(),[&](const auto& value){return value.id==tile;})==pending_->terrain.end())
+            pending_->terrain.push_back(terrain_[tile].identity);
+    }
+    std::sort(pending_->terrain.begin(),pending_->terrain.end(),[](const auto& a,const auto& b){return a.id<b.id;});
+    return Outcome::Accepted;
+}
+
+Result Coordinator::acknowledge_reabsorption(const Acknowledgement& receipt) {
+    const auto fingerprint=ack_fingerprint(receipt);
+    const auto kind=receipt.kind==AckKind::ReabsorptionFrozen ? 0U : 1U;
+    if (receipt.shard.session!=session_) return finish({Outcome::Retired,receipt.shard,receipt.transaction});
+    if (!pending_->present || !pending_->reabsorption || receipt.shard!=pending_->shard ||
+        receipt.transaction!=pending_->transaction) {
+        if (const auto* previous=prior(receipt.transaction);previous && previous->acknowledgements[kind]==fingerprint)
+            return previous->result;
+        return finish({Outcome::Stale,receipt.shard,receipt.transaction});
+    }
+    if (pending_->acknowledgements[kind]) return pending_->acknowledgements[kind]==fingerprint
+        ? finish({Outcome::Accepted,receipt.shard,receipt.transaction,Phase::Draining,"duplicate reabsorption receipt"})
+        : finish({Outcome::Stale,receipt.shard,receipt.transaction});
+    if (receipt.body_generation!=pending_->source_body_generation || receipt.payload_digest!=pending_->payload_digest ||
+        receipt.geometry_revision!=pending_->parent_geometry_revision || receipt.mask_digest!=pending_->source_mask_digest ||
+        receipt.shape_digest!=pending_->source_shape_digest) return finish({Outcome::Stale,receipt.shard,receipt.transaction});
+    if (receipt.kind==AckKind::ReabsorptionFrozen) {
+        if (!receipt.terrain.empty()) return finish({Outcome::Invalid,receipt.shard,receipt.transaction});
+        const auto committed=commit_reabsorption();
+        if (committed!=Outcome::Accepted) return finish({committed,receipt.shard,receipt.transaction});
+        pending_->acknowledgements[0]=fingerprint;
+        return finish({Outcome::Accepted,receipt.shard,receipt.transaction,Phase::Draining,
+            "World owns every credited cell; frozen body awaits physical removal and exact terrain installation"});
+    }
+    if (!pending_->world_committed || receipt.terrain.size()!=pending_->terrain.size())
+        return finish({Outcome::Stale,receipt.shard,receipt.transaction});
+    for (std::size_t i=0;i<receipt.terrain.size();++i)
+        if (receipt.terrain[i]!=pending_->terrain[i]) return finish({Outcome::Stale,receipt.shard,receipt.transaction});
+    auto* physical=body(receipt.shard);auto* shard=registry_.find(receipt.shard);
+    if (!physical || !shard || shard->counts().total()!=0 || registry_.retire(receipt.shard)!=Outcome::Accepted)
+        return quarantine(receipt.shard,"reabsorption completion source inventory mismatch");
+    *physical={};++metrics_.reabsorptions;
+    std::erase_if(ingress_fences_,[&](const auto& fence){return fence.shard_id==receipt.shard.id;});
+    std::erase_if(exposures_,[&](const auto& exposure){return exposure.shard==receipt.shard;});
+    pending_->acknowledgements[1]=fingerprint;
+    const auto completed=remember({Outcome::Accepted,receipt.shard,receipt.transaction,Phase::Retired,
+        "same-World reabsorption completed; physical body removed and exact terrain installed"},pending_->action_fingerprint);
+    receipts_[receipt.transaction%receipts_.size()].acknowledgements=pending_->acknowledgements;
+    pending_->present=false;
+    metrics_.maximum_pause_ns=std::max(metrics_.maximum_pause_ns,now_ns()-pause_started_ns_);
+    return completed;
 }
 
 void Coordinator::refresh_admission(std::uint32_t work) {
@@ -611,8 +851,11 @@ Result Coordinator::prepare_next() {
         if (fragmented==Outcome::Accepted) return finish({fragmented,pending_->shard,pending_->transaction,
             Phase::Prepared,"disconnected island staged; parent retains inventory until physical reservation"});
         ++metrics_.fragment_refusals;
-        return finish({fragmented,shard.handle(),0,shard.phase(),
-            "FragmentCapacity: disconnected inventory retained in current owner until a complete child fits"});
+        if (fragmented!=Outcome::Capacity && fragmented!=Outcome::Unsupported)
+            return finish({fragmented,shard.handle(),0,shard.phase(),"fragment source preflight refused"});
+        if (auto* physical=body(shard.handle())) physical->fragment_deferred=true;
+        // A refused split retains its complete compound body and continues
+        // play. Another smaller detached World component may still fit.
     }
     if (admission_calls_>std::numeric_limits<std::uint64_t>::max()-9) return finish({Outcome::GenerationExhausted});
     ++admission_calls_;
@@ -703,18 +946,18 @@ Outcome Coordinator::commit_prepared() {
     if (pending_->source_parent.id) {
         auto* parent=registry_.find(pending_->source_parent);auto* physical=body(pending_->source_parent);
         const auto old_mass=parent->geometry().mass;
+        if (ingress_fences_.size()+pending_->fragment_fences.size()>ingress_fences_.capacity())
+            return Outcome::Capacity;
         const auto transferred=registry_.commit_fragment(pending_->source_parent,pending_->shard,pending_->captured_tick);
         if (transferred!=Outcome::Accepted) {
             if (transferred==Outcome::Quarantined) quarantined_=true;
             return transferred;
         }
-        const auto& mass=parent->geometry().mass;
-        const auto cs=std::cos(physical->pose.rotation),sn=std::sin(physical->pose.rotation);
-        const auto dx=mass.com_x-old_mass.com_x,dy=mass.com_y-old_mass.com_y;
-        physical->pose.vx-=physical->pose.angular_velocity*(sn*dx+cs*dy);
-        physical->pose.vy+=physical->pose.angular_velocity*(cs*dx-sn*dy);
+        preserve_material_point_velocity(pending_->source_parent,old_mass);
         physical->geometry_pending=true;physical->geometry_pending_tick=pending_->captured_tick;
         physical->geometry_pending_ns=now_ns();
+        physical->fragment_deferred=false;
+        ingress_fences_.insert(ingress_fences_.end(),pending_->fragment_fences.begin(),pending_->fragment_fences.end());
         const auto offset_x=shard->bounds().x-parent->bounds().x,offset_y=shard->bounds().y-parent->bounds().y;
         for (auto& exposure:exposures_) {
             if (exposure.shard!=pending_->source_parent || exposure.consumed) continue;
@@ -786,8 +1029,12 @@ Result Coordinator::quarantine(Handle h,const char* detail) noexcept {
 }
 
 Result Coordinator::acknowledge(const Acknowledgement& a) {
-    if (static_cast<unsigned>(a.kind)>static_cast<unsigned>(AckKind::BodyRetired))
+    if (static_cast<unsigned>(a.kind)>static_cast<unsigned>(AckKind::ReabsorptionComplete))
         return finish({Outcome::Invalid,a.shard,a.transaction,Phase::Empty,"unknown acknowledgement kind"});
+    if (a.kind==AckKind::ReabsorptionFrozen || a.kind==AckKind::ReabsorptionComplete)
+        return acknowledge_reabsorption(a);
+    if (pending_->present && pending_->reabsorption && pending_->shard==a.shard)
+        return finish({Outcome::Fenced,a.shard,a.transaction,Phase::Active,"reabsorption requires its exact physical handoff receipts"});
     const auto fingerprint=ack_fingerprint(a);
     if (a.shard.session!=session_) return finish({Outcome::Retired,a.shard,a.transaction});
     auto* shard=registry_.find(a.shard); auto* b=body(a.shard);
@@ -868,10 +1115,18 @@ Result Coordinator::acknowledge(const Acknowledgement& a) {
 }
 
 Result Coordinator::cancel(std::uint64_t transaction) {
-    if (const auto* done=prior(transaction)) return done->result;
+    if (const auto* done=prior(transaction);done && !(pending_->present && pending_->reabsorption && pending_->transaction==transaction))
+        return done->result;
     if (!pending_->present || transaction!=pending_->transaction)
         return finish({transaction<next_transaction_ ? Outcome::Expired : Outcome::Stale,{},transaction});
     const auto h=pending_->shard;
+    if (pending_->reabsorption) {
+        if (pending_->world_committed) return finish({Outcome::Fenced,h,transaction,Phase::Draining,
+            "World handoff already committed; complete physical retirement"});
+        pending_->present=false;
+        return remember({Outcome::Cancelled,h,transaction,Phase::Active,
+            "reabsorption cancelled before physical freeze; inventory remains with body"},pending_->action_fingerprint);
+    }
     auto* shard=registry_.find(h);
     if (shard->owns_inventory()) return quarantine(h,"cancel after commit retains inactive shard inventory");
     const auto result=registry_.cancel_precommit(h);
@@ -921,6 +1176,8 @@ Outcome Coordinator::rebuild_mask(bool capture_contact) {
     for (std::size_t slot=0;slot<bodies_.size();++slot) {
         const auto& b=bodies_[slot]; const auto* shard=registry_.find(b.shard);
         if (!shard || !shard->owns_inventory() || !b.has_body) continue;
+        if (pending_->present && pending_->reabsorption && pending_->reabsorption_mask_removed && pending_->shard==b.shard)
+            continue;
         const auto sb=shard->bounds(); const auto c=std::cos(b.pose.rotation),s=std::sin(b.pose.rotation);
         for (std::size_t at=0;at<shard->area();++at) if (shard->structural(at) || shard->role(at)==Role::Cargo) {
             const auto lx=static_cast<double>(at%sb.width)+.5,ly=static_cast<double>(at/sb.width)+.5;
@@ -1138,6 +1395,7 @@ Result Coordinator::begin_owner_world_tick() {
 }
 
 Result Coordinator::after_owner_world_tick(std::span<const PoseSample> poses) {
+    if (!world_) return finish({Outcome::Retired,{},0,Phase::Retired,"World attachment retired"});
     if (attached_ && owner_tick_admitted_)
         world_->object_shard_mutations_->set_external_fire_claims({}, 0);
     if (!attached_) return finish({Outcome::Unsupported, {}, 0, Phase::Suspended,
@@ -1175,9 +1433,11 @@ Result Coordinator::after_owner_world_tick(std::span<const PoseSample> poses) {
         rebuild_terrain();
         for (const auto& shard : registry_.shards())
             if (shard.owns_inventory() && shard.geometry_dirty()) {
+                const auto previous_mass=shard.geometry().mass;
                 const auto result = registry_.rebuild_geometry(shard.handle(), last_owner_tick_);
                 if (result != Outcome::Accepted) return quarantine(shard.handle(),
                     "owner geometry rebuild capacity; inventory retained");
+                preserve_material_point_velocity(shard.handle(),previous_mass);
                 if (auto* b = body(shard.handle())) {
                     b->geometry_pending = b->has_body;
                     b->geometry_pending_tick = last_owner_tick_;
@@ -1277,8 +1537,10 @@ Result Coordinator::step(std::span<const PoseSample> poses) {
         if (quarantined_) return last_result_;
         for (const auto& shard:registry_.shards()) if (shard.owns_inventory() && shard.geometry_dirty()) {
             ScopedTime geometry_time{metrics_.geometry_ns};
+            const auto previous_mass=shard.geometry().mass;
             const auto result=registry_.rebuild_geometry(shard.handle(),world_->completed_tick_index());
             if (result!=Outcome::Accepted) return quarantine(shard.handle(),"geometry capacity; exact inventory retained");
+            preserve_material_point_velocity(shard.handle(),previous_mass);
             if (auto* b=body(shard.handle())) {
                 b->geometry_pending=b->has_body;b->geometry_pending_tick=world_->completed_tick_index();
                 b->geometry_pending_ns=b->geometry_pending ? now_ns() : 0;
@@ -1763,6 +2025,13 @@ Result Coordinator::reset(std::uint32_t scenario,std::uint64_t seed) {
 }
 
 const Snapshot& Coordinator::snapshot(bool include_world) {
+    if (!world_) {
+        snapshot_={};snapshot_.session=session_;snapshot_.world_incarnation=world_incarnation_;
+        snapshot_.bounds=config_.world_bounds;snapshot_.paused=true;snapshot_.next_transaction=next_transaction_;
+        snapshot_.last_result={Outcome::Retired,{},0,Phase::Retired,"World attachment retired"};
+        snapshot_.metrics=metrics_;snapshot_.lifetime_metrics=lifetime_metrics();snapshot_.accounting=accounting_;
+        return snapshot_;
+    }
     const auto start=now_ns();const auto b=config_.world_bounds;
     // Edits can precede the next discovery pass. Never label an old catalogue
     // complete while new topology invalidations are waiting in World.
@@ -1780,7 +2049,7 @@ const Snapshot& Coordinator::snapshot(bool include_world) {
         fire_opportunities_.capacity()*sizeof(std::uint32_t)+
         ingress_proposals_.capacity()*sizeof(TransferRequest)+
         receipts_.capacity()*sizeof(Receipt)+pending_->cells.capacity()*sizeof(Pending::Captured)+
-        pending_->terrain.capacity()*sizeof(TerrainReceipt)+terrain_scratch_.capacity()+
+        pending_->terrain.capacity()*sizeof(TerrainReceipt)+pending_->fragment_fences.capacity()*sizeof(PocketFence)+terrain_scratch_.capacity()+
         reserved_destinations_.capacity()+ingress_exclusion_.capacity()+relocations_.capacity()*sizeof(Relocation)+
         (bodies_.capacity()+body_backup_.capacity())*sizeof(BodyView)+terrain_.capacity()*sizeof(TerrainChunk)+
         (immutable_occupancy_.capacity()+immutable_occupancy_backup_.capacity()+shard_occupancy_.capacity())*
@@ -1797,8 +2066,11 @@ const Snapshot& Coordinator::snapshot(bool include_world) {
     if (include_world) snapshot_.world_materials=materials_;
     snapshot_.terrain_chunks=terrain_;
     snapshot_.shards=registry_.shards();snapshot_.bodies=bodies_;snapshot_.accounting=accounting_;snapshot_.admission=admission_;
-    if (pending_->present) snapshot_.promotion={true,pending_->shard,pending_->transaction,pending_->payload_digest,
+    if (pending_->present && !pending_->reabsorption) snapshot_.promotion={true,pending_->shard,pending_->transaction,pending_->payload_digest,
         pending_->captured_tick,registry_.find(pending_->shard)->phase(),pending_->terrain,pending_->source_parent};
+    if (pending_->present && pending_->reabsorption) snapshot_.reabsorption={true,pending_->world_committed,pending_->shard,
+        pending_->transaction,pending_->payload_digest,pending_->captured_tick,pending_->source_body_generation,
+        pending_->parent_geometry_revision,pending_->source_mask_digest,pending_->source_shape_digest,pending_->terrain};
     metrics_.snapshot_ns+=now_ns()-start;snapshot_.metrics=metrics_;snapshot_.lifetime_metrics=lifetime_metrics();
     return snapshot_;
 }

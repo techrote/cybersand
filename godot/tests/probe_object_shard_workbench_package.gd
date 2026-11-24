@@ -20,9 +20,10 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 		var image: Image = root.get_texture().get_image()
 		f.expect(not image.is_empty(),"shipped ordinary scene rendered pixels")
+	f.validate_display()
 	var result: Dictionary = {"schema":"objectshard-m4-workbench-package-launch-v1","source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"host":"ordinary-workbench","checks":f.checks,"failures":f.failures.size(),"failure_details":f.failures,
-		"diagnostics":f.diagnostics(),"display_driver":DisplayServer.get_name(),
+		"diagnostics":f.diagnostics(),"display_driver":DisplayServer.get_name(),"display_coherence":f.display_witness(),
 		"scope":"immutable delivered ZIP / shipped CMD / actual ordinary Workbench; physical GPU acceptance separate"}
 	await f.close()
 	var path: String = OS.get_environment("OBJECTSHARD_LAUNCH_RECEIPT")

@@ -19,6 +19,7 @@ REQUIRED = {
     "godot/scripts/main.gd", "godot/scripts/shared_workbench.gd", "godot/scripts/simulation_worker.gd",
     "godot/scripts/object_shard_m4_runtime.gd", "godot/scripts/object_shard_workbench_scenes.gd",
     "godot/scripts/object_shard_physics_bridge.gd", "godot/tests/test_object_shard_m4_workbench_completion.gd",
+    "godot/tests/test_object_shard_m4_material_only_workbench.gd",
     "godot/tests/probe_object_shard_workbench_package.gd", "godot/tests/profile_object_shard_m4_workbench.gd",
     "godot/addons/godot-rapier2d/runtime-provenance.windows.json", "READ-ME.md",
     "Open Workbench.cmd", "Verify Workbench.cmd", "tools/objectshard/verify_workbench_package.ps1",

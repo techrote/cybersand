@@ -234,8 +234,16 @@ var _m4_last_port_generation: int = 0 # mutex-owned admission fence
 var _m4_owner_busy: bool = false # mutex-owned; excludes a physics permit during native work
 var _m4_motion_lease: int = 0 # mutex-owned exact-frame permit; zero means no Main interval
 var _m4_motion_lease_serial: int = 0
+var _m4_interval_tick_due: bool = false # a completed physical interval still awaits its owner tick
+var _m4_interval_step_serial: int = 0
 var _m4_emissions_inflight: int = 0 # mutex-owned; included in bounded brush admission
 var _m4_cells_inflight: int = 0
+var _m4_snapshot_calls: int = 0
+var _m4_snapshot_usec: int = 0
+var _m4_snapshot_max_usec: int = 0
+var _m4_frame_copy_calls: int = 0
+var _m4_frame_copy_usec: int = 0
+var _m4_frame_copy_max_usec: int = 0
 
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
@@ -1139,7 +1147,7 @@ func object_shard_same_world_capabilities() -> Dictionary:
 	return value
 
 static func _m4_action_payload_valid(request: Dictionary) -> bool:
-	if request.size() > 20 or request.get("operation","") not in ["erase","ignite","inspect"] \
+	if request.size() > 20 or request.get("operation","") not in ["erase","ignite","inspect","reabsorb"] \
 		or not request.get("position") is Vector2i or not request.get("target") is Dictionary \
 		or not request.get("observation") is Dictionary: return false
 	for key: Variant in request:
@@ -1170,6 +1178,8 @@ func object_shard_queue_workbench_action(request: Dictionary) -> Dictionary:
 		reason = "ActionCapacity"
 	elif not _m4_action_payload_valid(request):
 		reason = "InvalidMovingAction"
+	elif request.get("operation") not in ["erase","ignite","inspect"]:
+		reason = "TransactionalReabsorptionControlRequired"
 	else:
 		for key: String in ["native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
 			if request.get(key) != _m4_capabilities.get(key): reason = "WorldIdentityChanged"
@@ -1227,10 +1237,26 @@ func _m4_drain_actions() -> void:
 		_mutex.unlock()
 
 func object_shard_owner_frame() -> Dictionary:
+	var started: int = Time.get_ticks_usec()
 	_mutex.lock()
 	var value: Dictionary = _m4_last_frame.duplicate(true)
+	var elapsed: int = Time.get_ticks_usec()-started
+	_m4_frame_copy_calls += 1
+	_m4_frame_copy_usec += elapsed
+	_m4_frame_copy_max_usec = maxi(_m4_frame_copy_max_usec,elapsed)
 	_mutex.unlock()
 	return value
+
+func object_shard_owner_profile() -> Dictionary:
+	_mutex.lock()
+	var result := {"snapshot_calls":_m4_snapshot_calls,"snapshot_usec":_m4_snapshot_usec,
+		"snapshot_max_usec":_m4_snapshot_max_usec,"frame_copy_calls":_m4_frame_copy_calls,
+		"frame_copy_usec":_m4_frame_copy_usec,"frame_copy_max_usec":_m4_frame_copy_max_usec,
+		"snapshot_scope":"native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+		"frame_copy_scope":"Main copied publication including mutex wait; excludes control receipt copy",
+		"counter_scope":"cumulative ordinary worker lifetime"}
+	_mutex.unlock()
+	return result
 
 func object_shard_acquire_motion(expected: Dictionary) -> Dictionary:
 	# This is transport admission only. The exclusive native owner publishes
@@ -1239,13 +1265,15 @@ func object_shard_acquire_motion(expected: Dictionary) -> Dictionary:
 	var reason: String = ""
 	if not _running or _m4_owner_busy: reason = "OwnerBusy"
 	elif _m4_motion_lease != 0 or not _m4_physics_ready or not _m4_held.is_empty(): reason = "MotionAlreadyHeld"
+	elif _m4_interval_tick_due: reason = "CompletedMotionAwaitingNativeTick"
 	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty(): reason = "WorldReplacementPending"
 	elif not _m4_control_queue.is_empty() or not _m4_action_queue.is_empty(): reason = "OwnerCommandPending"
 	else:
 		for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","next_transaction"]:
 			if expected.get(key) != _m4_last_frame.get(key): reason = "InstalledFrameChanged"
 		if _m4_last_frame.get("paused",true) or _m4_last_frame.get("quarantined",true) \
-			or _m4_last_frame.get("promotion",{}).get("present",false): reason = "NativeBarrierPending"
+			or _m4_last_frame.get("promotion",{}).get("present",false) \
+			or _m4_last_frame.get("reabsorption",{}).get("present",false): reason = "NativeBarrierPending"
 		for shard: Dictionary in _m4_last_frame.get("shards",[]):
 			if shard.get("geometry_pending",false): reason = "NativeGeometryPending"
 	if reason.is_empty():
@@ -1257,10 +1285,17 @@ func object_shard_acquire_motion(expected: Dictionary) -> Dictionary:
 	return result
 
 func object_shard_submit_owner_control(command: String, values: Dictionary) -> Dictionary:
-	if command not in ["prepare","acknowledge","accept_motion","retire","complete_motion"]:
+	if command not in ["prepare","acknowledge","accept_motion","retire","complete_motion","prepare_reabsorb"]:
 		return {"ok":false,"outcome":"UnsupportedM4Control"}
 	_mutex.lock()
 	var valid: bool = bool(_m4_capabilities.get("native_attached",false)) and _m4_held.is_empty() and _m4_control_queue.size() < M4_OWNER_QUEUE_LIMIT and _m4_control_results.size() < M4_OWNER_QUEUE_LIMIT and values.get("world_generation") == _m4_capabilities.get("world_generation") and values.get("shard_session") == _m4_capabilities.get("shard_session") and values.get("world_incarnation") == _m4_capabilities.get("world_incarnation")
+	if valid and _m4_motion_lease > 0:
+		valid = command in ["accept_motion","complete_motion"] and int(values.get("motion_lease",0))==_m4_motion_lease
+	if valid and command == "prepare_reabsorb":
+		var request: Dictionary = values.get("request",{})
+		valid = _m4_motion_lease == 0 and _m4_action_payload_valid(request) and request.get("operation")=="reabsorb"
+		for key: String in ["native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+			if request.get(key) != _m4_capabilities.get(key): valid = false
 	if valid:
 		_m4_serial += 1
 		_m4_control_queue.append({"serial":_m4_serial,"command":command,"values":values.duplicate(true),
@@ -1306,6 +1341,8 @@ func _m4_retire_owner(reason: String) -> void:
 	_m4_physics_ready = false
 	_m4_motion_barrier = false
 	_m4_motion_lease = 0
+	_m4_interval_tick_due = false
+	_m4_interval_step_serial = 0
 	_m4_emissions_inflight = 0
 	_m4_cells_inflight = 0
 	_m4_transport_generation += 1
@@ -1354,14 +1391,16 @@ func _m4_attach_on_owner() -> void:
 
 func _m4_publish_owner() -> void:
 	if not _m4_live: return
+	var snapshot_started: int = Time.get_ticks_usec()
 	var frame: Dictionary = _world.object_shard_snapshot(false)
+	var snapshot_elapsed: int = Time.get_ticks_usec()-snapshot_started
 	if not frame.get("ok",false):
 		_mutex.lock()
 		_m4_held = "NativeSnapshotRefused"
 		_mutex.unlock()
 		return
 	var identity: Array = [int(_world.revision),frame.get("tick",0),frame.get("next_transaction",0),
-		frame.get("paused",true),frame.get("promotion",{}).duplicate(true)]
+		frame.get("paused",true),frame.get("promotion",{}).duplicate(true),frame.get("reabsorption",{}).duplicate(true)]
 	for shard: Dictionary in frame.get("shards",[]):
 		identity.append([shard.id,shard.generation,shard.body_generation,shard.material_revision,
 			shard.geometry_revision,shard.applied_physics_revision,shard.pose_serial,
@@ -1374,6 +1413,9 @@ func _m4_publish_owner() -> void:
 	frame["world_generation"] = _world_generation
 	frame["world_revision"] = int(_world.revision)
 	_mutex.lock()
+	_m4_snapshot_calls += 1
+	_m4_snapshot_usec += snapshot_elapsed
+	_m4_snapshot_max_usec = maxi(_m4_snapshot_max_usec,snapshot_elapsed)
 	_m4_last_frame = frame
 	_mutex.unlock()
 
@@ -1391,8 +1433,15 @@ func _m4_drain_controls() -> void:
 		var command: String = str(row.command)
 		var values: Dictionary = row.values
 		var result: Dictionary = {"ok":false,"outcome":"M4ControlRefused"}
-		if command == "prepare":
+		if _m4_motion_lease > 0 and (command not in ["accept_motion","complete_motion"] \
+			or int(values.get("motion_lease",0))!=_m4_motion_lease):
+			result = {"ok":false,"outcome":"MotionLeaseOwnsNativeFrame"}
+		elif command == "prepare":
 			result = _world.object_shard_prepare_next()
+		elif command == "prepare_reabsorb":
+			if _m4_motion_lease == 0:
+				result = _world.object_shard_workbench_action(values.get("request",{}))
+				if result.get("ok",false): _m4_motion_barrier = true
 		elif command == "acknowledge":
 			result = _world.object_shard_acknowledge(values.get("receipt",{}))
 		elif command == "accept_motion":
@@ -1420,7 +1469,10 @@ func _m4_drain_controls() -> void:
 				# Only finishing a real leased interval releases one owner tick.
 				var completed_interval: bool = _m4_motion_lease > 0
 				_m4_motion_lease = 0
-				if completed_interval: _m4_motion_barrier = false
+				if completed_interval:
+					_m4_motion_barrier = false
+					_m4_interval_tick_due = true
+					_m4_interval_step_serial = int(values.get("workbench_step_serial",0))
 				_m4_physics_ready = true
 				_m4_capabilities.attached = true
 				_m4_capabilities.outcome = "AttachedToOrdinaryMainPhysics"
@@ -3075,6 +3127,9 @@ func _worker_loop() -> void:
 				_m4_attach_on_owner()
 				_m4_drain_actions()
 				_m4_drain_controls()
+				# Finish only the native tick already admitted with Main's real
+				# interval, including a pause that arrived during its substeps.
+				if _m4_live and _m4_interval_tick_due and not _m4_motion_barrier and _m4_held.is_empty(): local_paused = false
 				if _m4_live and (_m4_motion_barrier or _m4_motion_lease != 0 or not _m4_held.is_empty()): local_paused = true
 				var sample: Dictionary = local_workbench_sample
 				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
@@ -3138,13 +3193,17 @@ func _worker_loop() -> void:
 				if not _simulation_failed and _m4_live:
 					# Exactly one native owner tick happened in simulation_tick.
 					# Neither this worker nor the main-thread port may tick again.
+					if _m4_interval_step_serial > 0:
+						_workbench_step_serial = _m4_interval_step_serial
+						_m4_interval_step_serial = 0
 					var preparation: Dictionary = _world.object_shard_prepare_next()
 					_m4_publish_owner()
-					if _m4_last_frame.get("promotion",{}).get("present",false) or not _m4_last_frame.get("shards",[]).is_empty():
-						_mutex.lock()
-						_m4_motion_barrier = true
-						_mutex.unlock()
-					elif str(preparation.get("outcome","")) not in ["Accepted","Busy","Anchored","Capacity","UnknownBoundary","Unsupported","PendingEvent","Stale"]:
+					# Even before the first detached body, discovery and native
+					# chemistry must not race Main's next ownership installation.
+					_mutex.lock()
+					_m4_motion_barrier = true
+					_mutex.unlock()
+					if str(preparation.get("outcome","")) not in ["Accepted","Busy","Anchored","Capacity","UnknownBoundary","Unsupported","PendingEvent","Stale"]:
 						_mutex.lock()
 						_m4_held = "M4DiscoveryRefused"
 						_mutex.unlock()
@@ -3197,6 +3256,7 @@ func _worker_loop() -> void:
 			local_rigid_body_epoch
 		)
 		_mutex.lock()
+		if native_ticked_this_turn and _m4_live: _m4_interval_tick_due = false
 		_m4_owner_busy = false
 		_mutex.unlock()
 

@@ -307,6 +307,30 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 	_record("geometry_install", int(body.last_geometry_usec))
 	return _body_receipt(shard, body)
 
+func freeze_for_reabsorption(shard: Dictionary, transaction: int) -> Dictionary:
+	if not _main_owner() or _motion_in_progress() or motion_refused:
+		return _motion_refusal("MotionBarrierPending")
+	var body: Dictionary = _matching(shard)
+	if body.is_empty() or transaction <= 0: return _refuse("StaleBody")
+	if body.has("reabsorption_transaction"):
+		return {"ok":int(body.reabsorption_transaction)==transaction \
+			and PhysicsServer2D.body_get_mode(body.rid)==PhysicsServer2D.BODY_MODE_STATIC \
+			and PhysicsServer2D.body_get_collision_layer(body.rid)==0 \
+			and PhysicsServer2D.body_get_collision_mask(body.rid)==0,"transaction":transaction}
+	var actual: Transform2D = PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var source := Transform2D(float(shard.rotation),Vector2(float(shard.position_x),float(shard.position_y)))
+	if not actual.is_equal_approx(source) or not _same_installed_geometry(shard,body):
+		return _refuse("ReabsorptionSourcePoseChanged")
+	PhysicsServer2D.body_set_mode(body.rid,PhysicsServer2D.BODY_MODE_STATIC)
+	PhysicsServer2D.body_set_collision_layer(body.rid,0)
+	PhysicsServer2D.body_set_collision_mask(body.rid,0)
+	body["active"] = false
+	body["reabsorption_transaction"] = transaction
+	var frozen: bool = PhysicsServer2D.body_get_mode(body.rid)==PhysicsServer2D.BODY_MODE_STATIC \
+		and PhysicsServer2D.body_get_collision_layer(body.rid)==0 and PhysicsServer2D.body_get_collision_mask(body.rid)==0
+	_event("ReabsorptionFrozen",int(shard.id),{"transaction":transaction,"frozen":frozen})
+	return {"ok":frozen,"transaction":transaction,"id":int(shard.id),"frozen":frozen}
+
 
 # Called ONLY by ordinary Main after its existing rapier_bridge.step()
 # completed. A monotonic Main serial cannot replace the native applied-pose

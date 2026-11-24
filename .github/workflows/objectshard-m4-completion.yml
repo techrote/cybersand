@@ -18,9 +18,21 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: workspace/source
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Pinned read-only companion documentation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Exact source and authenticated compatibility history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: workspace/source
+          fetch-depth: 0
           persist-credentials: false
       - name: Exact native source, ASan UBSan and ordinary World
         shell: bash
@@ -28,15 +40,19 @@ jobs:
           set -euo pipefail
           mkdir -p evidence
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check > evidence/material-compatibility-gate.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compiler.py --check > evidence/material-catalogue-check.json
           python3 tools/objectshard/run_native_tests.py --output evidence/native --compiler g++-13 --sanitize --suite all --suite world --jobs 2 --timeout "$(python3 tools/ci/execution_policy.py seconds native_case_seconds)" --build-timeout "$(python3 tools/ci/execution_policy.py seconds native_compile_seconds)"
+          python3 tools/objectshard/run_benchmarks.py --output evidence/retained-lab-native-budgets --compiler g++-13 --jobs 2 --ticks 1200 --repetitions 3 --qualify --timeout "$(python3 tools/ci/execution_policy.py seconds native_case_seconds)" --build-timeout "$(python3 tools/ci/execution_policy.py seconds native_compile_seconds)"
           python3 -m unittest discover -s tools/objectshard -p 'test_*.py' -v > evidence/qualification-contracts.log 2>&1
-          python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' -v > evidence/material-compatibility.log 2>&1
+          timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' -v > evidence/material-compatibility.log 2>&1
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output evidence/material-native-parity.json
           python3 tools/ci/check_ci_provider_policy.py > evidence/provider-policy.log 2>&1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: objectshard-m4-native-${{ github.sha }}-${{ github.run_id }}
-          path: evidence/
+          path: workspace/source/evidence/
           retention-days: 60
   linux-workbench:
     if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') }}

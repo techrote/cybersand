@@ -72,7 +72,7 @@ Dictionary metrics_value(const os::Metrics& value) {
     COPY_METRIC(products_created); COPY_METRIC(output_blocked); COPY_METRIC(sand_ingested);
     COPY_METRIC(exposure_overflows); COPY_METRIC(stale_messages); COPY_METRIC(mask_cells);
     COPY_METRIC(ingress_blocked);
-    COPY_METRIC(composed_overlap_cells); COPY_METRIC(fragments); COPY_METRIC(fragment_refusals);
+    COPY_METRIC(composed_overlap_cells); COPY_METRIC(fragments); COPY_METRIC(fragment_refusals); COPY_METRIC(reabsorptions);
     COPY_METRIC(sweep_samples); COPY_METRIC(world_ns); COPY_METRIC(chemistry_ns);
     COPY_METRIC(contact_ns); COPY_METRIC(occupancy_ns); COPY_METRIC(geometry_ns);
     COPY_METRIC(discovery_ns); COPY_METRIC(terrain_ns); COPY_METRIC(exchange_ns); COPY_METRIC(relocation_ns);
@@ -376,6 +376,7 @@ Dictionary CyberObjectShardLab::workbench_action(const Dictionary& request) {
     if (operation=="erase") action=os::ShardAction::Erase;
     else if (operation=="ignite") action=os::ShardAction::Ignite;
     else if (operation=="inspect") action=os::ShardAction::Inspect;
+    else if (operation=="reabsorb") action=os::ShardAction::Reabsorb;
     else return refusal("UnsupportedAction");
     Dictionary exact=target.duplicate(true);
     exact["session"]=static_cast<std::int64_t>(session);
@@ -391,6 +392,10 @@ Dictionary CyberObjectShardLab::workbench_action(const Dictionary& request) {
     for (const auto* key:{"session","world_generation","transport_generation","owner_epoch",
         "shard_session","world_incarnation","action_id","port_generation","operation","position"})
         receipt[key]=request.get(key,Variant());
+    if (action==os::ShardAction::Reabsorb) {
+        receipt["staged"]=receipt.get("ok",false);receipt["applied"]=false;
+        if (static_cast<bool>(receipt.get("ok",false))) reabsorption_receipt_=receipt.duplicate(true);
+    }
     return receipt;
 }
 
@@ -416,6 +421,8 @@ Dictionary CyberObjectShardLab::acknowledge(const Dictionary& receipt) {
     else if (phase == "BodyActivated") ack.kind = os::AckKind::BodyActivated;
     else if (phase == "GeometryInstalled") ack.kind = os::AckKind::GeometryInstalled;
     else if (phase == "BodyRetired") ack.kind = os::AckKind::BodyRetired;
+    else if (phase == "ReabsorptionFrozen") ack.kind = os::AckKind::ReabsorptionFrozen;
+    else if (phase == "ReabsorptionComplete") ack.kind = os::AckKind::ReabsorptionComplete;
     else return refusal("UnsupportedAcknowledgement");
     if (!identity(receipt, ack.shard) || !field(receipt, "transaction", ack.transaction) ||
         !field(receipt, "body_generation", ack.body_generation) || !field(receipt, "payload_digest", ack.payload_digest) ||
@@ -434,7 +441,26 @@ Dictionary CyberObjectShardLab::acknowledge(const Dictionary& receipt) {
         value.id = static_cast<std::uint32_t>(id);
     }
     ack.terrain = std::span(terrain.data(), static_cast<std::size_t>(rows.size()));
-    try { return result(coordinator_->acknowledge(ack)); }
+    try {
+        auto receipt=result(coordinator_->acknowledge(ack));
+        if ((ack.kind==os::AckKind::ReabsorptionFrozen || ack.kind==os::AckKind::ReabsorptionComplete) &&
+            static_cast<std::int64_t>(reabsorption_receipt_.get("transaction_id",0))==static_cast<std::int64_t>(ack.transaction)) {
+            for (const auto* key:{"source_target","session","world_generation","transport_generation","owner_epoch",
+                "shard_session","world_incarnation","action_id","port_generation","operation","position"})
+                receipt[key]=reabsorption_receipt_.get(key,Variant());
+            receipt["same_world"]=true;receipt["transaction_id"]=static_cast<std::int64_t>(ack.transaction);
+            receipt["applied"]=ack.kind==os::AckKind::ReabsorptionComplete && static_cast<bool>(receipt.get("ok",false));
+            receipt["world_committed"]=static_cast<bool>(receipt.get("ok",false));
+            if (static_cast<bool>(receipt["applied"])) {
+                receipt["retired_inventory_cells"]=0;
+                PackedInt64Array quantities;
+                for (const auto value:coordinator_->world().quantity_ledger().material_cells)
+                    quantities.push_back(static_cast<std::int64_t>(value));
+                receipt["world_material_counts"]=quantities;
+            }
+        }
+        return receipt;
+    }
     catch (const std::exception& error) { return fail(error.what()); }
 }
 
@@ -500,6 +526,25 @@ Dictionary CyberObjectShardLab::snapshot(bool include_world) {
             promotion["chunks"] = expected;
         }
         output["promotion"] = promotion;
+        Dictionary reabsorption;
+        reabsorption["present"]=source.reabsorption.present;
+        if (source.reabsorption.present) {
+            const auto& staged=source.reabsorption;
+            reabsorption["session"]=static_cast<std::int64_t>(staged.shard.session);
+            reabsorption["id"]=static_cast<std::int64_t>(staged.shard.id);
+            reabsorption["generation"]=static_cast<std::int64_t>(staged.shard.generation);
+            reabsorption["body_generation"]=static_cast<std::int64_t>(staged.body_generation);
+            reabsorption["transaction"]=static_cast<std::int64_t>(staged.transaction);
+            reabsorption["captured_tick"]=static_cast<std::int64_t>(staged.captured_tick);
+            reabsorption["payload_digest"]=number(staged.payload_digest);
+            reabsorption["geometry_revision"]=static_cast<std::int64_t>(staged.geometry_revision);
+            reabsorption["mask_digest"]=number(staged.mask_digest);reabsorption["shape_digest"]=number(staged.shape_digest);
+            reabsorption["phase"]=staged.world_committed ? "WorldCommitted" : "Prepared";
+            reabsorption["source_target"]=reabsorption_receipt_.get("source_target",Dictionary());
+            Array expected;for (const auto& chunk:staged.terrain) expected.push_back(terrain_identity(chunk));
+            reabsorption["chunks"]=expected;
+        }
+        output["reabsorption"]=reabsorption;
         Array shards;
         if (source.shards.size()>carrier_cache_.size()) return fail("CarrierSnapshotCapacity");
         std::size_t slot=0;
@@ -530,6 +575,7 @@ Dictionary CyberObjectShardLab::snapshot(bool include_world) {
             row["angular_velocity"] = body ? body->pose.angular_velocity : 0.0;
             row["sleeping"] = body && body->pose.sleeping;
             row["fragment"] = body && body->source_parent.id != 0;
+            row["fragment_deferred"] = body && body->fragment_deferred;
             row["source_parent_id"] = static_cast<std::int64_t>(body ? body->source_parent.id : 0);
             row["has_body"] = body && body->has_body;
             row["geometry_pending"] = body && body->geometry_pending;

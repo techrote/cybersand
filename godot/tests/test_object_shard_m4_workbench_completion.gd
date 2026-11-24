@@ -21,6 +21,7 @@ func _run() -> void:
 		return
 	var initial_wood: int = f.material_count(7)
 	var initial_brick: int = f.material_count(43)
+	f.validate_quantity_ledger()
 	f.expect(initial_wood > 100 and initial_brick > 100, "actual authored mixed structure has Wood and Brick")
 	var original_worker: int = f.host.simulation_worker.get_instance_id()
 	var original_native: int = int(f.diagnostics().native_instance_id)
@@ -51,6 +52,7 @@ func _run() -> void:
 		"ordinary native World and worker survive detachment without a second owner")
 	f.expect(int(after.world_generation) == original_generation, "detachment preserves ordinary World generation")
 	f.validate_physics()
+	f.validate_quantity_ledger()
 	f.expect(f.material_count(7) == initial_wood, "independent uploaded World plus owning-shard Wood inventory conserved")
 	f.expect(f.material_count(43) == initial_brick, "independent uploaded World plus owning-shard Brick inventory conserved")
 	var paused_tick: int = f.tick()
@@ -58,13 +60,15 @@ func _run() -> void:
 	for i: int in range(12): await process_frame
 	f.expect(f.tick() == paused_tick and int(f.diagnostics().physical_steps) == paused_steps,
 		"Pause stops semantic and physical progression after admitted receipts drain")
-	var before_step_controls: int = int(f.diagnostics().controls_completed)
+	var before_step_intervals: int = int(f.diagnostics().physical_intervals)
+	var before_step_actor_tick: int = int(f.host.physical_actor_session.tick)
 	f.expect(f.bench.step_once(),"ordinary paused single-step request accepted")
 	await f.until(func(): return f.tick() == paused_tick+1 and bool(f.diagnostics().physics_ready) and f.coherent(),
 		"paused single-step completes one native interval and coherent physical acknowledgement")
 	for i: int in range(12): await process_frame
 	f.expect(f.host.paused and f.tick() == paused_tick+1,"single-step leaves ordinary simulation paused after exactly one tick")
-	f.expect(int(f.diagnostics().controls_completed) == before_step_controls+1,"single-step advances shared physical controls exactly once")
+	f.expect(int(f.diagnostics().physical_intervals) == before_step_intervals+1 and int(f.host.physical_actor_session.tick) == before_step_actor_tick+1,
+		"single-step advances one shared physical interval and actual actor tick")
 	var target: Dictionary = f.moving_target(7)
 	if not f.expect(not target.is_empty(), "source-bound displayed moving Wood cell available"):
 		await _finish()
@@ -109,11 +113,22 @@ func _run() -> void:
 			observations.ignite_receipt = f.bench.object_shard_m4_port.results.back().duplicate(true)
 			f.expect(observations.ignite_receipt.get("outcome") == "Applied", "native moving Wood ignition applied")
 	var pre_fire: int = f.material_count(7)
+	var ignition_state: Dictionary = f.owned_cell_state(int(ignition.get("owner",0)),int(ignition.get("cell",-1)))
+	var products_before: int = int(f.frame().get("metrics",{}).get("products_created",0))
 	f.play()
 	await f.advance(120, "ignited moving material continues native chemistry")
 	await f.pause()
 	await f.until(f.coherent, "post-combustion publication coherent")
-	f.expect(f.material_count(7) < pre_fire, "moving Wood actually undergoes continued combustion")
+	var reacted: Dictionary = f.owned_cell_state(int(ignition.get("owner",0)),int(ignition.get("cell",-1)))
+	# The admitted Wood law starts at 240 and decrements every two ticks.
+	# 120 ticks must continue that reaction, not invent an earlier expiry.
+	f.expect(f.material_count(7)<pre_fire or (reacted.get("material") == 7 and int(reacted.get("state_b",0))>0 \
+		and int(reacted.get("state_b",0))<int(ignition_state.get("state_b",0))),
+		"exact source-bound moving Wood continues its native combustion state")
+	f.expect(int(f.frame().get("metrics",{}).get("products_created",0))>products_before,
+		"continued moving Wood reaction creates authentic native Fire/Smoke products")
+	observations.combustion = {"source":ignition,"before":ignition_state,"after":reacted,
+		"products_before":products_before,"products_after":f.frame().get("metrics",{}).get("products_created",0)}
 	f.bench._tool.select(0)
 	f.bench._brush.value = 2
 	f.expect(f.bench.paint(Vector2i(340,100),2), "ordinary Sand painting remains available beside live structures")
@@ -138,6 +153,8 @@ func _run() -> void:
 	await _finish()
 
 func _finish() -> void:
+	f.validate_display()
+	observations.display_coherence = f.display_witness()
 	await f.close()
 	print(JSON.stringify({"schema":"objectshard-m4-workbench-completion-v1", "checks":f.checks,
 		"failures":f.failures, "observations":observations,

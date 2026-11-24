@@ -32,6 +32,7 @@ FOCUSED = (
     ("test_object_shard_m4_same_world_physical_chain", "objectshard-m4-sameworld-rapier-physical-chain-v1"),
     ("test_object_shard_m4_compact_motion_packets", "objectshard-m4-compact-motion-packet-v1"),
     ("test_object_shard_m4_workbench_completion", "objectshard-m4-workbench-completion-v1"),
+    ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
 )
 REGRESSIONS = (
     "test_workbench_canvas", "test_workbench_wave", "test_workbench_wave_spill",
@@ -150,13 +151,16 @@ def qualify(args: argparse.Namespace) -> dict:
                               int(execution_policy.watchdog_seconds("godot_import_seconds")), 0), None)]
         for name, schema in FOCUSED:
             flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith("workbench_completion"):
+            if name.endswith("workbench_completion") or name.endswith("material_only_workbench"):
                 flags += ("--", "--objectshard-m4-workbench")
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
         if args.regressions:
             for name in REGRESSIONS:
                 cases.append((runner.Case(name, ("--script", "res://tests/" + name + ".gd"),
                                           int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), None))
+            cases.append((runner.Case("retained_lab_profile", ("--script", "res://tests/profile_object_shard_lab.gd", "--",
+                "--objectshard-profile=" + str(output / "retained_lab_profile.json")),
+                int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-lab-profile-v1"))
         if args.profile:
             for scene in SCENES:
                 for camera in ("overview", "zoom"):
@@ -168,6 +172,15 @@ def qualify(args: argparse.Namespace) -> dict:
                         flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
                     cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("graphical_case_seconds")),
                                               0, args.render), "objectshard-m4-workbench-profile-v1"))
+            for scene in ("tower", "stress"):
+                name = f"m4_workbench_{scene}_overview_light_" + ("render" if args.render else "headless")
+                flags = ("--script", "res://tests/profile_object_shard_m4_workbench.gd", "--",
+                         "--objectshard-m4-workbench", "--scene=" + scene, "--camera=overview", "--sampling=light",
+                         "--output=" + str(output / (name + ".json")))
+                if args.render:
+                    flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
+                cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("graphical_case_seconds")),
+                                          0, args.render), "objectshard-m4-workbench-profile-v1"))
         for case, schema in cases:
             user_root = output / "isolated-user-data" / case.name
             user_root.mkdir(parents=True)
@@ -178,6 +191,13 @@ def qualify(args: argparse.Namespace) -> dict:
                     record["receipt"] = completion(output / record["log"], schema)
                     if schema == "objectshard-m4-workbench-profile-v1":
                         validate_profile(record["receipt"], commit, case.requires_display)
+                    elif schema == "objectshard-lab-profile-v1":
+                        from lab_performance import check as check_lab_budget
+                        profile = json.loads((output / "retained_lab_profile.json").read_text(encoding="utf-8"))
+                        budget = json.loads((ROOT / "tools/objectshard/lab_budgets.json").read_text(encoding="utf-8"))
+                        record["retained_lab_budget"] = check_lab_budget(profile, budget, rendered=False)
+                        if record["retained_lab_budget"]["status"] != "passed":
+                            raise ValueError("Retained standalone Lab budgets failed: " + str(record["retained_lab_budget"]["failures"]))
                 except ValueError as error:
                     record["receipt_error"] = str(error)
                     failed = True

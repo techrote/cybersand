@@ -28,6 +28,13 @@ struct CoordinatorTestAccess {
         decltype(coordinator.ingress_fences_) empty;
         coordinator.ingress_fences_.swap(empty);
     }
+    static auto restrict_ingress_history_capacity(Coordinator& coordinator) {
+        auto bounded=coordinator.ingress_fences_;
+        bounded.swap(coordinator.ingress_fences_);return bounded;
+    }
+    template<class T> static void restore_ingress_history_capacity(Coordinator& coordinator,T& previous) {
+        coordinator.ingress_fences_.swap(previous);
+    }
     static auto remove_relocation_capacity(Coordinator& coordinator) {
         decltype(coordinator.relocations_) previous;
         previous.swap(coordinator.relocations_);
@@ -1826,12 +1833,21 @@ void m4_fragmentation_is_exact_staged_and_conserves_rigid_velocity() {
     CHECK(attached.act_on_shard(stale,ShardAction::Ignite).outcome==Outcome::Stale);
     CHECK(parent->payload_digest()==old_digest);
     CHECK(attached.act_on_shard(request(observed_cell),ShardAction::Ignite).outcome==Outcome::Accepted);
+    const auto uncut_mass=parent->geometry().mass;
+    const auto uncut_pose=attached.m4_owner_readback().bodies[0].pose;
     for (int y=20;y<25;++y) {
         const auto local=static_cast<std::uint32_t>((y-bounds.y)*bounds.width+26-bounds.x);
         CHECK(attached.erase_shard(request(local)).outcome==Outcome::Accepted);
         install_geometry(attached);
     }
     CHECK(parent->geometry().islands==2 && parent->counts().structural==70);
+    const auto cut_pose=attached.m4_owner_readback().bodies[0].pose;
+    const auto cut_dx=parent->geometry().mass.com_x-uncut_mass.com_x;
+    const auto cut_dy=parent->geometry().mass.com_y-uncut_mass.com_y;
+    const auto cut_cs=std::cos(uncut_pose.rotation),cut_sn=std::sin(uncut_pose.rotation);
+    CHECK(std::abs(cut_pose.vx-(uncut_pose.vx-uncut_pose.angular_velocity*(cut_sn*cut_dx+cut_cs*cut_dy)))<1e-10);
+    CHECK(std::abs(cut_pose.vy-(uncut_pose.vy+uncut_pose.angular_velocity*(cut_cs*cut_dx-cut_sn*cut_dy)))<1e-10);
+    CHECK(cut_pose.angular_velocity==uncut_pose.angular_velocity);
     check_population_balance(attached);
     const auto source_schedule=parent->schedule(observed_cell);const auto source_payload=parent->payload(observed_cell);
     const auto original_digest=parent->payload_digest();const auto original_geometry=parent->geometry();
@@ -1919,7 +1935,151 @@ void m4_attached_replacement_destroys_coordinator_before_world() {
     }
 }
 
+void m4_settled_reabsorption_preserves_world_and_waits_for_physical_retirement() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc);const RectI64 domain{0,0,128,96};
+    owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);(void)owner.tick();
+    Coordinator attached(owner,small_config());
+    for (int y=20;y<23;++y) for (int x=20;x<23;++x)
+        CHECK(attached.edit(x,y,{Material::Wood,static_cast<std::uint16_t>(x+y),0,420}).outcome==Outcome::Accepted);
+    const auto promotion=discover(attached);CHECK(promotion.outcome==Outcome::Accepted);
+    if (promotion.outcome!=Outcome::Accepted) return;
+    CHECK(activate(attached,promotion.shard));
+    const auto* shard=attached.registry().find(promotion.shard);
+    const auto cell=static_cast<std::uint32_t>(shard->bounds().width+1);
+    const auto request=[&] {
+        const auto proof=attached.m4_owner_readback();const auto pose=proof.bodies[0].pose;
+        return ShardEditRequest{promotion.shard,attached.next_transaction(),pose.body_generation,
+            shard->geometry().revision,pose.pose_serial,shard->material_revision(),cell,
+            shard->schedule(cell).incarnation,shard->payload(cell)};
+    };
+    auto motion=next_poses(attached);motion[0].vx=1.;
+    CHECK(attached.accept_motion(motion).outcome==Outcome::Accepted);
+    CHECK(attached.act_on_shard(request(),ShardAction::Reabsorb).outcome==Outcome::Busy);
+    motion=next_poses(attached);motion[0].vx=0;motion[0].rotation=.1;
+    CHECK(attached.accept_motion(motion).outcome==Outcome::Accepted);
+    CHECK(attached.act_on_shard(request(),ShardAction::Reabsorb).outcome==Outcome::Unsupported);
+    motion=next_poses(attached);motion[0].rotation=0;motion[0].sleeping=true;
+    CHECK(attached.accept_motion(motion).outcome==Outcome::Accepted);
+    const std::array<World::TransientCompositionCell,1> actor{{{20,20,1}}};
+    CHECK(attached.set_immutable_occupancy(actor).outcome==Outcome::Accepted);
+    CHECK(attached.act_on_shard(request(),ShardAction::Reabsorb).outcome==Outcome::DestinationUnavailable);
+    CHECK(shard->counts().total()==9 && world_population(attached,Material::Wood)==0);
+    CHECK(attached.set_immutable_occupancy({}).outcome==Outcome::Accepted);
+    const auto digest=shard->payload_digest();const auto staged=attached.act_on_shard(request(),ShardAction::Reabsorb);
+    CHECK(staged.outcome==Outcome::Accepted && attached.paused());
+    CHECK(attached.snapshot(false).reabsorption.present && !attached.snapshot(false).promotion.present);
+    CHECK(shard->payload_digest()==digest && world_population(attached,Material::Wood)==0);
+    CHECK(attached.cancel(staged.transaction).outcome==Outcome::Cancelled);
+    CHECK(!attached.paused() && shard->payload_digest()==digest);
+    const auto final_request=request();const auto final=attached.act_on_shard(final_request,ShardAction::Reabsorb);
+    CHECK(final.outcome==Outcome::Accepted);
+    const auto ack=[&](AckKind kind) {
+        const auto view=attached.snapshot(false).reabsorption;
+        return Acknowledgement{view.shard,view.transaction,view.body_generation,view.payload_digest,
+            view.geometry_revision,view.mask_digest,view.shape_digest,kind,
+            kind==AckKind::ReabsorptionComplete ? view.terrain : std::span<const TerrainReceipt>{}};
+    };
+    auto bad=ack(AckKind::ReabsorptionFrozen);++bad.payload_digest;
+    CHECK(attached.acknowledge(bad).outcome==Outcome::Stale);
+    CHECK(world_population(attached,Material::Wood)==0 && shard->counts().total()==9);
+    CHECK(attached.edit(40,40,{Material::Sand}).outcome==Outcome::Fenced);
+    const auto frozen=ack(AckKind::ReabsorptionFrozen);
+    const auto transferred=attached.acknowledge(frozen);
+    if (transferred.outcome!=Outcome::Accepted)
+        std::fprintf(stderr,"Reabsorption freeze refused: %s (%s)\n",outcome_name(transferred.outcome),transferred.detail);
+    CHECK(transferred.outcome==Outcome::Accepted);
+    CHECK(attached.snapshot(false).reabsorption.world_committed && attached.paused());
+    CHECK(shard->counts().total()==0 && world_population(attached,Material::Wood)==9);
+    CHECK(attached.inspect_world(20,20)==(Payload{Material::Wood,40,0,420}));
+    CHECK(owner.transient_obstacle_at(20,20)==0);
+    CHECK(attached.begin_owner_world_tick().outcome==Outcome::Fenced);
+    CHECK(attached.cancel(final.transaction).outcome==Outcome::Fenced);
+    CHECK(attached.acknowledge(frozen).outcome==Outcome::Accepted);
+    check_population_balance(attached);
+    const auto completion=ack(AckKind::ReabsorptionComplete);
+    CHECK(!completion.terrain.empty());
+    auto wrong_terrain=completion;wrong_terrain.terrain={};
+    CHECK(attached.acknowledge(wrong_terrain).outcome==Outcome::Stale);
+    CHECK(attached.acknowledge(completion).outcome==Outcome::Accepted);
+    CHECK(attached.registry().find(promotion.shard)==nullptr && !attached.paused());
+    CHECK(attached.m4_owner_readback().active_count==0 && attached.can_detach());
+    CHECK(attached.acknowledge(completion).outcome==Outcome::Accepted);
+    CHECK(attached.act_on_shard(final_request,ShardAction::Reabsorb).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().reabsorptions==1);
+    check_population_balance(attached);
+    CHECK(attached.detach().outcome==Outcome::Retired);
+    CHECK(!attached.same_world_attached(owner));
+    CHECK(owner.stored_material(20,20)==Material::Wood && !owner.has_failed());
+    CHECK(attached.snapshot(false).last_result.outcome==Outcome::Retired);
+    CHECK(attached.snapshot(false).world_materials.empty() && attached.paused());
+    CHECK(attached.inspect_world(20,20).material==Material::Empty && attached.world_witness(20,20)==0);
+    CHECK(attached.edit(20,20,empty()).outcome==Outcome::Fenced);
+    CHECK(attached.accept_motion({}).outcome==Outcome::Fenced);
+    CHECK(attached.begin_owner_world_tick().outcome==Outcome::Fenced);
+    CHECK(attached.after_owner_world_tick().outcome==Outcome::Retired);
+    CHECK(owner.stored_material(20,20)==Material::Wood);
+}
+
+void m4_fragmentation_does_not_launder_invalid_sand_entry() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc);const RectI64 domain{0,0,128,96};
+    owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);(void)owner.tick();
+    Coordinator attached(owner,small_config());
+    for (int x:{30,32}) CHECK(attached.edit(x,31,{Material::Wood}).outcome==Outcome::Accepted);
+    for (int x=30;x<38;++x) CHECK(attached.edit(x,32,{Material::Wood}).outcome==Outcome::Accepted);
+    for (int y=30;y<36;++y) for (int x=38;x<44;++x)
+        CHECK(attached.edit(x,y,{Material::Wood}).outcome==Outcome::Accepted);
+    const auto prepared=discover(attached);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(attached,prepared.shard));
+    const auto* parent=attached.registry().find(prepared.shard);
+    auto right=next_poses(attached);right[0].x+=2;
+    CHECK(attached.accept_motion(right).outcome==Outcome::Accepted);
+    CHECK(attached.edit(31,31,{Material::Sand,213,217,-470}).outcome==Outcome::Accepted);
+    auto left=next_poses(attached);left[0].x-=2;
+    CHECK(attached.accept_motion(left).outcome==Outcome::Accepted);
+    CHECK(CoordinatorTestAccess::ingress_fences(attached)==1);
+    const auto pose=attached.m4_owner_readback().bodies[0].pose;
+    const auto bounds=parent->bounds();
+    const auto cut=static_cast<std::uint32_t>((32-bounds.y)*bounds.width+35-bounds.x);
+    const ShardEditRequest request{prepared.shard,attached.next_transaction(),pose.body_generation,
+        parent->geometry().revision,pose.pose_serial,parent->material_revision(),cut,
+        parent->schedule(cut).incarnation,parent->payload(cut)};
+    CHECK(attached.erase_shard(request).outcome==Outcome::Accepted);install_geometry(attached);
+    const auto digest=parent->payload_digest();
+    auto capacity=CoordinatorTestAccess::restrict_ingress_history_capacity(attached);
+    CHECK(attached.prepare_next().outcome!=Outcome::Accepted);
+    CHECK(!attached.paused() && parent->payload_digest()==digest);
+    CHECK(attached.m4_owner_readback().bodies[0].fragment_deferred);
+    CHECK(CoordinatorTestAccess::ingress_fences(attached)==1);
+    CoordinatorTestAccess::restore_ingress_history_capacity(attached,capacity);
+    const auto split=attached.prepare_next();CHECK(split.outcome==Outcome::Accepted);
+    if (split.outcome!=Outcome::Accepted) return;
+    const auto* child=attached.registry().find(split.shard);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::PhysicsReserved)).outcome==Outcome::Accepted);
+    const auto child_cell=static_cast<std::uint32_t>((31-child->bounds().y)*child->bounds().width+31-child->bounds().x);
+    CHECK(CoordinatorTestAccess::pocket_fenced(attached,split.shard,child_cell));
+    CHECK(CoordinatorTestAccess::ingress_fences(attached)==2);
+    install_geometry(attached);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::TerrainInstalled)).outcome==Outcome::Accepted);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::BodyActivated)).outcome==Outcome::Accepted);
+    CHECK(attached.accept_motion(next_poses(attached)).outcome==Outcome::Accepted);
+    CHECK(attached.begin_owner_world_tick().outcome==Outcome::Accepted);(void)owner.tick();
+    CHECK(attached.after_owner_world_tick().outcome==Outcome::Accepted);
+    CHECK(child->counts().cargo==0 && world_population(attached,Material::Sand)==1);
+    CHECK(CoordinatorTestAccess::pocket_fenced(attached,split.shard,child_cell));
+    CHECK(attached.edit(31,31,empty()).outcome==Outcome::Accepted);
+    CHECK(attached.accept_motion(next_poses(attached)).outcome==Outcome::Accepted);
+    CHECK(!CoordinatorTestAccess::pocket_fenced(attached,split.shard,child_cell));
+    check_population_balance(attached);
+}
+
 int main() {
+    m4_fragmentation_does_not_launder_invalid_sand_entry();
+    m4_settled_reabsorption_preserves_world_and_waits_for_physical_retirement();
     m4_attached_replacement_destroys_coordinator_before_world();
     m4_fragmentation_is_exact_staged_and_conserves_rigid_velocity();
     m4_rooted_mixed_architecture_keeps_severed_wall_caps_and_atomic_masks();
