@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Architectural Workbench / M3–M5 — Draft/HOLD:** [native module library, GOLDMAPS retrieval and staged construction](operations/world-steer-architecture.md) extend the preserved Batch Lab. [Module contract](systems/native-architectural-modules.md), [design knowledge and evaluation](systems/architectural-knowledge-and-evaluation.md), and [staged execution boundary](systems/architecture-staged-construction.md) keep observed native geometry, authored intent, hosted qualification and physical acceptance distinct.
+
 **Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).

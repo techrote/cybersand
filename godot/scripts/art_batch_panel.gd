@@ -67,9 +67,13 @@ var request_pixel_limit := 0
 var tools_button := Button.new()
 var provider_message := "Idle"
 var log_draw := false
+var _manual_log_pending := false
+var _manual_submission_sequence := 0
+var _manual_active_submission := -1
+var _manual_active_batch_sequence := -1
 var conversation: Array = []
 var _pending_traffic_path := ""
-var conversation_loaded := false
+var conversation_loaded := true
 var history_load_error := ""
 # Small, durable per-receipt files keep native Undo/Redo independent of the
 # potentially multi-gigabyte immutable Art transcript. They are replayed only
@@ -231,83 +235,13 @@ func _bind_selection() -> void:
 	selection_editor.selection_changed.connect(focus_selection)
 
 func _selection_visibility_changed() -> void:
-	if visible:
-		if conversation_loaded: _drain_pending_history_receipts()
-		else: _begin_history_restore()
+	# A new Workbench session never reopens an earlier model conversation.
+	# Hiding/revealing Art changes only the selection binding.
 	_bind_selection()
-	# Revealing the panel must not overwrite manually entered bounds with
-	# an old selection (image capture also hides and restores this Window).
 
 func _ensure_history_loaded() -> bool:
-	if conversation_loaded: return true
-	# Every mounted control, including Send after a cancelled restore and hidden
-	# PAINT history callbacks, must use the same cancellable reader. The provider's
-	# synchronous wrapper is reserved for explicit programmatic tests.
-	_begin_history_restore()
-	return conversation_loaded
-
-func _accept_restored_history(restored: Array) -> void:
-	conversation = restored
-	_history_live_turns.clear() # The validated replay is authoritative, including cleared turns.
-	last_result = provider.resumed_last_result
-	conversation_loaded = true
-	if not history_load_error.is_empty() or input_error.begins_with("Saved conversation is still restoring."): input_error = ""
-	history_load_error = ""
-	if not provider.resume_warning.is_empty(): input_error = provider.resume_warning
-	_drain_pending_history_receipts()
-
-func _begin_history_restore() -> void:
-	if conversation_loaded or provider.resume_active: return
-	if not _profile_session_error.is_empty():
-		var recovered := read_history_session()
-		if recovered.state == "error":
-			history_load_error = str(recovered.error)
-			input_error = history_load_error
-			return
-		settings.load("user://art-provider.cfg")
-		_pending_traffic_path = str(recovered.source)
-		provider.prepare_resume(_pending_traffic_path)
-		_profile_session_error = ""
-	var pending := _read_pending_history_receipts()
-	if not bool(pending.ok):
-		history_load_error = str(pending.error)
-		input_error = history_load_error
-		return
-	for item: Dictionary in pending.rows:
-		if not provider.watch_history_receipt(item):
-			history_load_error = provider.log_warning
-			input_error = history_load_error
-			return
-	for item: Dictionary in pending_history_receipts:
-		if not provider.watch_history_receipt(item):
-			history_load_error = provider.log_warning
-			input_error = history_load_error
-			return
-	var source_path := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
-	if source_path.is_empty():
-		conversation_loaded = true
-		_drain_pending_history_receipts()
-		return
-	var err := provider.begin_resume(source_path)
-	if err != OK:
-		history_load_error = "Saved conversation could not be opened. "+provider.resume_error
-		input_error = history_load_error
-		return
-	history_load_error = "Restoring saved conversation · Stop cancels"
-	input_error = history_load_error
-
-func _poll_history_restore() -> void:
-	if not provider.resume_active: return
-	var progress: Dictionary = provider.poll_resume()
-	if bool(progress.get("done",false)):
-		if bool(progress.get("ok",false)):
-			_accept_restored_history(progress.get("turns",[]))
-		else:
-			history_load_error = "Saved conversation could not be opened. "+provider.resume_error
-			input_error = history_load_error
-	else:
-		history_load_error = "Restoring saved conversation · %.1f / %.1f MiB · Stop cancels" % [float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
-		input_error = history_load_error
+	# In-memory turns belong exclusively to this Workbench session.
+	return true
 
 func focus_selection(region: Rect2i) -> void:
 	if not visible or fields.size() != 4 or wb == null or wb.applied.is_empty(): return
@@ -319,9 +253,6 @@ func focus_selection(region: Rect2i) -> void:
 	# Do not change request_area, request_guards or the executor's captured scope.
 
 func _open_conversation() -> void:
-	if not conversation_loaded:
-		_begin_history_restore()
-		if not conversation_loaded: return
 	conversation_error = ""
 	conversation_editor.open_history(conversation)
 	_update_conversation_guard()
@@ -432,8 +363,41 @@ func add_rectangle(parent: Control, target: Array[SpinBox], values: Array) -> vo
 func rectangle(values: Array[SpinBox]) -> Rect2i:
 	return Rect2i(int(values[0].value),int(values[1].value),int(values[2].value),int(values[3].value))
 
+func _register_provider_keys_for_redaction() -> void:
+	# Keep earlier and currently selected credentials in memory for the entire
+	# session. Never write raw Key-dialog values to the audit.
+	for value: Variant in keys.values():
+		if value is String and not value.is_empty() and not provider.secrets.has(value):
+			provider.secrets.append(value)
+
+func _finish_manual_audit(on_shutdown: bool = false) -> void:
+	if not _manual_log_pending: return
+	if executor.active and not on_shutdown: return
+	# No native completion is invented when the scene is closing. The last
+	# acknowledged prefix is evidence; a queued suffix may remain unresolved.
+	var native_terminal := not executor.active
+	var record := {
+		"submission_id":_manual_active_submission,
+		"batch_sequence":_manual_active_batch_sequence,
+		"audit_state":"terminal" if native_terminal else "shutdown_cancel_requested_unconfirmed",
+		"native_terminal":native_terminal,
+		"result":executor.result.duplicate(true)}
+	if not native_terminal:
+		record["reason"] = "Workbench closed after Stop request; native suffix outcome is not confirmed."
+	_register_provider_keys_for_redaction()
+	if not provider.log_event("manual_result",record):
+		input_error = "Manual drawing audit could not be saved. "+provider.log_warning
+		# A live panel can retry when storage becomes available.
+		if not on_shutdown: return
+	_manual_log_pending = false
+	_manual_active_submission = -1
+	_manual_active_batch_sequence = -1
+
 func submit_text() -> void:
 	executor.wb = wb
+	_register_provider_keys_for_redaction()
+	executor.poll()
+	_finish_manual_audit()
 	input_error = ""
 	var parsed := JSON.new()
 	if parsed.parse(input.text) != OK:
@@ -447,20 +411,38 @@ func submit_text() -> void:
 		for op: Variant in parsed.data:
 			if op is Dictionary and not op.has("material"): op.material = selected
 	if erase.button_pressed: allowed.append(0)
-	var answer: Dictionary = executor.submit(parsed.data,rectangle(fields),[rectangle(protected_fields)] if protect.button_pressed else [],allowed)
-	if answer.status == "refused": input_error = answer.reason
+	var bounds := rectangle(fields)
+	var guards := [rectangle(protected_fields)] if protect.button_pressed else []
+	_manual_submission_sequence += 1
+	var submission_id := _manual_submission_sequence
+	provider.log_event("manual_program",{
+		"submission_id":submission_id,
+		"mode":"Direct JSON","program":parsed.data,"focus_xywh":[bounds.position.x,bounds.position.y,bounds.size.x,bounds.size.y],
+		"protected":[[guards[0].position.x,guards[0].position.y,guards[0].size.x,guards[0].size.y]] if not guards.is_empty() else [],
+		"materials":allowed,"shapes":enabled_shapes(),"pixel_limit":int(pixel_limit.value)})
+	# A rejected overlapping Draw cannot retire the existing native batch's
+	# pending terminal audit. Do not enter submit() while it remains active.
+	var answer: Dictionary
+	if _manual_log_pending:
+		answer = {"status":"refused","reason":"Finish or Stop the current manual batch first."}
+	else:
+		answer = executor.submit(parsed.data,bounds,guards,allowed)
+	var batch_id := int(executor.batch_sequence) if answer.status == "queued" else -1
+	provider.log_event("manual_admission",{"submission_id":submission_id,
+		"batch_sequence":batch_id,"result":answer})
+	if answer.status == "queued":
+		_manual_active_submission = submission_id
+		_manual_active_batch_sequence = batch_id
+		_manual_log_pending = true
+	if answer.status == "refused": input_error = str(answer.reason)
 
 func _process(_delta: float) -> void:
-	_poll_history_restore()
 	_poll_traffic_export()
-	if _history_retry_needed and Time.get_ticks_msec() >= _history_retry_after_ms:
-		_history_retry_after_ms = Time.get_ticks_msec()+1000
-		_retry_history_journal()
-		if conversation_loaded: _drain_pending_history_receipts()
 	if wb == null: return
 	_bind_selection()
 	executor.wb = wb
 	executor.poll()
+	_finish_manual_audit()
 	_update_conversation_guard()
 	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
@@ -523,24 +505,22 @@ func _process(_delta: float) -> void:
 		state.tooltip_text = status_text
 
 func _exit_tree() -> void:
-	if wb != null: stop_all("Workbench closed")
+	if wb != null:
+		stop_all("Workbench closed")
+		# No additional _process tick is guaranteed during orderly shutdown.
+		# Record an explicitly unconfirmed cancellation if native work remains.
+		_finish_manual_audit(true)
 
 func mount_provider_controls(column: VBoxContainer) -> void:
-	var association := read_history_session()
-	if association.state != "error":
-		_profile_creation_allowed = bool(association.get("absent",false))
-		settings.load("user://art-provider.cfg")
-		_pending_traffic_path = str(association.source)
-		settings.set_value("session","traffic_path",_pending_traffic_path)
-	else:
-		_profile_session_error = str(association.error)
-		input_error = _profile_session_error
-		# A Workbench that read this session before the outage may still retain
-		# confirmed receipts, but cannot invent or overwrite a saved profile.
-		if wb != null and wb._art_history_session.get("state","") == "session":
-			_pending_traffic_path = str(wb._art_history_session.source)
-	provider.prepare_resume(_pending_traffic_path)
-	provider.commit_segment = _commit_traffic_path
+	# Provider preferences persist, but conversation turns and archive pointers do
+	# not. Never inspect old traffic or attach an old session during construction.
+	var profile_error := settings.load("user://art-provider.cfg")
+	if profile_error != OK and FileAccess.file_exists("user://art-provider.cfg"):
+		_profile_session_error = "Saved Art preferences are unreadable. Existing settings are preserved; session logging and Send remain available."
+	if settings.has_section_key("session","traffic_path"):
+		settings.erase_section_key("session","traffic_path")
+	# An unbound provider creates exactly one new root log lazily on first event.
+	# No commit_segment callback means it never publishes a cross-session pointer.
 	add_child(provider)
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
@@ -683,6 +663,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	key_dialog.add_child(key_field)
 	key_dialog.confirmed.connect(func() -> void:
 		keys[current_provider] = key_field.text.strip_edges()
+		_register_provider_keys_for_redaction()
 		key_field.clear())
 	key_dialog.canceled.connect(key_field.clear)
 	add_child(key_dialog)
@@ -766,7 +747,7 @@ func _save_settings() -> Error:
 		if not bool(result.get("ok",false)): err = ERR_FILE_CANT_WRITE
 	if err != OK:
 		DirAccess.remove_absolute(temporary)
-		input_error = "Could not save Art settings; the previous saved conversation is retained (%d)." % err
+		input_error = "Could not save Art preferences; the previous configuration file is retained (%d)." % err
 	return err
 
 var previous_mode := 1
@@ -794,6 +775,10 @@ func save_profile() -> void:
 	settings.set_value("session","context",context_mode.selected)
 	settings.set_value("session","guidance",guidance.text)
 	settings.set_value("session","scanline_guidance",stencil_guidance.text)
+	# Drop the obsolete pointer on the next settings save, without opening,
+	# modifying or deleting any historical archive.
+	if settings.has_section_key("session","traffic_path"):
+		settings.erase_section_key("session","traffic_path")
 	_save_settings()
 
 func change_provider(index: int) -> void:
@@ -1186,7 +1171,8 @@ func _drain_history_journal() -> void:
 			# empty deduplication state or synchronous transcript scan.
 			conversation_loaded = false
 			_history_retry_needed = true
-			_begin_history_restore()
+			# Old journal receipts never cross into a new game-session log.
+			return
 			return
 		if not provider.watch_history_receipt(item) or not _record_history_receipt(item.receipt,int(item.epoch),item.get("turn",{})):
 			_history_retry_needed = true
@@ -1205,47 +1191,24 @@ func _drain_history_journal() -> void:
 
 # Append a new human result; never rewrite the model's historical receipts or
 # use model_feedback(), which can schedule another request in an active run.
-func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
-	var epoch := captured_epoch if captured_epoch >= 0 else (int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch)
-	# Capture once, stage first, and preserve its identity through every retry.
-	# Neither a hidden callback nor a failed append starts a transcript scan.
-	if not _queue_history_receipt(receipt,epoch): return
-	if conversation_loaded: _drain_pending_history_receipts()
+func _record_history_receipt(_receipt: Dictionary, _epoch: int, _frozen_turn: Dictionary = {}) -> bool:
+	# Compatibility with the dormant legacy journal drain method. Never
+	# attach old pending receipts to a fresh game-session conversation.
+	# Old journal files remain untouched for separate forensic inspection.
+	_history_persistence_error = "Legacy cross-session Art receipt replay is retired. Original journal preserved."
+	return false
 
-func _record_history_receipt(receipt: Dictionary, epoch: int, frozen_turn: Dictionary = {}) -> bool:
-	var recorded := receipt.duplicate(true)
-	var identity := str(recorded.get("_history_receipt_id",""))
-	var committed: Dictionary = provider.history_receipt_state(identity)
-	if not bool(committed.raw) and not provider.log_event("history_result",recorded):
-		input_error = "Confirmed history result could not be archived. "+provider.log_warning
-		return false
-	var action := str(recorded.get("action","undo"))
-	var status := str(recorded.get("status","unknown"))
-	var label := str(recorded.get("label","Workbench edit"))
-	var result := "Human %s: %s" % [action,JSON.stringify(recorded)]
-	var entry := frozen_turn.duplicate(true) if not frozen_turn.is_empty() else {"role":"user","content":provider.redact("Canvas result (world epoch %d): %s" % [epoch,result]),"_history_receipt_id":identity}
-	if not bool(committed.turn):
-		if not provider.log_event("conversation",entry): return false
-		_history_live_turns[identity] = entry
-	# A committed raw event is not a committed model turn. Conversely a model
-	# turn already on disk must not be appended again after checkpoint failure.
-	var checkpoint := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
-	if not _commit_traffic_path(checkpoint):
-		return false
-	# A turn found in authoritative replay may be older than the latest result
-	# (or intentionally cleared). Cleanup must not rewind compacted context.
-	if not _history_live_turns.has(identity): return true
-	conversation.append(_history_live_turns[identity])
-	_history_live_turns.erase(identity)
-	last_result = str(entry.content)
-	provider_message = "%s %s · %s · %d native cells confirmed" % [action.capitalize(),label,
-		status,int(recorded.get("applied",0))]
-	if bool(recorded.get("remaining_group",false)):
-		provider_message += " · continuing the same history action"
-	elif not str(recorded.get("reason","")).is_empty():
-		provider_message += " · "+str(recorded.reason)
-	input_error = provider_message
-	return true
+func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
+	# A PAINT Undo/Redo completed in this live session is recorded once in this
+	# session's log. No receipt journal or prior-session transcript is required
+	# to continue using Art; the native paint history remains authoritative.
+	var epoch := captured_epoch if captured_epoch >= 0 else (int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch)
+	var event := receipt.duplicate(true)
+	event["world_epoch"] = epoch
+	if not provider.log_event("native_history_action",event):
+		input_error = "Native history completed, but its session log write failed. "+provider.log_warning
+		return
+	remember_turn("user","Canvas result (world epoch %d): Human %s: %s" % [epoch,str(receipt.get("action","undo")),JSON.stringify(receipt)])
 
 func model_context() -> Array:
 	if not _ensure_history_loaded(): return []
@@ -1280,66 +1243,27 @@ func model_feedback(feedback: String) -> void:
 		send_next.call_deferred(ui_epoch)
 
 func remember_turn(role: String, content: String, image_offset: int = -1) -> bool:
-	if not _ensure_history_loaded(): return false
-	if not _history_lost_receipt_error.is_empty():
-		input_error = _history_lost_receipt_error
-		return false
-	if _history_retry_needed and not _history_draining:
-		_drain_pending_history_receipts()
-		if _history_retry_needed:
-			input_error = "Restore the pending native history receipts before adding a later conversation turn."
-			return false
 	var entry := {"role":role,"content":provider.redact(content)}
 	if image_offset >= 0:
 		entry.image_offset = image_offset
 		entry.image_log_path = provider.log_path
 	if not provider.log_event("conversation",entry) or not persist_traffic_path():
-		input_error = "Conversation turn was not saved. "+provider.log_warning
+		input_error = "Conversation turn was not saved to this session's log. "+provider.log_warning
 		remaining_turns = 0
 		return false
 	conversation.append(entry)
 	return true
 
 func _commit_traffic_path(path: String) -> bool:
-	var previous: Variant = settings.get_value("session","traffic_path","")
-	var saved := read_history_session()
-	# The provider publishes a first complete segment before this callback.
-	# Only a panel which observed a genuinely virgin profile may create its
-	# initial pointer; a missing pre-existing profile remains a refusal.
-	if _profile_creation_allowed and str(previous).is_empty() and provider.parent_log_path.is_empty() \
-			and not FileAccess.file_exists("user://art-provider.cfg") and not DirAccess.dir_exists_absolute("user://art-provider.cfg"):
-		var directory := DirAccess.open("user://")
-		if directory != null and not directory.is_link("art-provider.cfg"):
-			saved = {"state":"no_session","source":"","error":"","absent":true}
-	if saved.state == "error" or (saved.state == "no_session" and bool(saved.get("absent",false)) and not str(previous).is_empty()):
-		input_error = "Could not checkpoint Art history; restore the original saved profile. "+str(saved.error)
-		return false
-	if str(saved.source) != str(previous) and str(saved.source) != path:
-		input_error = "Saved Art session changed; pending receipts remain bound to their original conversation."
-		return false
-	if str(saved.source) == path:
-		settings.set_value("session","traffic_path",path)
-		return true
-	settings.set_value("session","traffic_path",path)
-	if _save_settings() != OK:
-		settings.set_value("session","traffic_path",previous)
-		return false
-	_profile_creation_allowed = false
-	return true
+	# Compatibility for existing in-session edit/receipt call sites. No profile
+	# writes and no adoption of a predecessor archive.
+	return not path.is_empty() and path == provider.log_path
 
 func persist_traffic_path() -> bool:
-	if not provider.last_event_stored or provider.log_path.is_empty(): return false
-	return _commit_traffic_path(provider.log_path)
+	return provider.last_event_stored and not provider.log_path.is_empty()
 
 func send_prompt() -> void:
 	if executor.active or provider.active or capturing or remaining_turns != 0 or provider.export_active: return
-	if not _ensure_history_loaded(): return
-	if not _history_lost_receipt_error.is_empty():
-		input_error = _history_lost_receipt_error
-		return
-	if _history_retry_needed:
-		_drain_pending_history_receipts()
-		if _history_retry_needed: return
 	if wb.paint_editor != null and wb.paint_editor.busy():
 		input_error = "Wait for the shared edit to finish before sending another model request."
 		return
@@ -1459,7 +1383,26 @@ func send_next(expected_epoch: int) -> void:
 	request_url = endpoint.text.strip_edges()
 	sent_input_price = input_price.value
 	sent_output_price = output_price.value
-	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),keys.get(current_provider,""),prompt,instructions,int(tokens.value),seconds.value,png,context)
+	# Selected and previously entered credentials must already be known to the
+	# redactor before any request snapshot, including rotated keys.
+	_register_provider_keys_for_redaction()
+	var request_key: String = str(keys.get(current_provider,""))
+	# The snapshot is sufficient to manually reproduce the request from this
+	# session's standalone JSONL, without an old chat transcript or profile link.
+	provider.log_event("request_parameters",{
+		"provider":current_provider,"model":model.text.strip_edges(),"endpoint":request_url,
+		"mode":input_mode.get_item_text(run_mode),"prompt":task_prompt,
+		"guidance":guidance.text,"scanline_guidance":stencil_guidance.text,
+		"focus_xywh":[request_area.position.x,request_area.position.y,request_area.size.x,request_area.size.y],
+		"protected":[[request_guards[0].position.x,request_guards[0].position.y,request_guards[0].size.x,request_guards[0].size.y]] if not request_guards.is_empty() else [],
+		"materials":request_materials,"shapes":request_shapes,"pixel_limit":request_pixel_limit,
+		"image":image_input.button_pressed,"full_view":full_image.button_pressed,
+		"context_mode":context_mode.get_item_text(context_mode.selected),
+		"tokens":int(tokens.value),"timeout_seconds":seconds.value,
+		"turns":int(turn_limit.value),"run_seconds":run_seconds.value,
+		"minimum_interval_seconds":minimum_interval.value,"spend_limit":spend_limit.value,
+		"world_epoch":request_epoch})
+	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),request_key,prompt,instructions,int(tokens.value),seconds.value,png,context)
 	if input_error.is_empty(): remember_turn("user",prompt,provider.last_request_offset if not png.is_empty() else -1)
 	else: remaining_turns = 0
 

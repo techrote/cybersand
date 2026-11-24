@@ -164,14 +164,15 @@ func _redacted_value(value: Variant, redact_keys: bool = true) -> Variant:
 		for key: Variant in value:
 			var item: Variant = value[key]
 			var credential: bool = str(key).to_lower() in ["api_key", "apikey", "api-key", "access_token", "token", "authorization", "password"]
-			# Untrusted provider metadata can echo a request credential in a key as
-			# well as a value. Preserve other structural keys and use this request's
-			# retained secret set even after the host changes its current key.
-			clean[redact(str(key)) if redact_keys else key] = "[redacted]" if credential and item is String else _redacted_value(item,redact_keys)
+			# User-controlled JSON dictionaries can echo a secret in a PROPERTY
+			# NAME, not only its value. Preserve non-string typed native keys.
+			var safe_key: Variant = redact(key) if redact_keys and key is String else key
+			clean[safe_key] = "[redacted]" if credential and item is String else _redacted_value(item, redact_keys)
 		return clean
 	if value is Array or value is PackedStringArray:
 		var clean: Array = []
-		for item: Variant in value: clean.append(_redacted_value(item,redact_keys))
+		for item: Variant in value: clean.append(_redacted_value(item, redact_keys))
+
 		return clean
 	return value
 
@@ -189,9 +190,10 @@ func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 				if body!=parser.data: clean.body = JSON.stringify(body)
 		return clean
 	if kind == "history_result" and data is Dictionary:
-		# Native receipt field names are a trusted protocol, not provider metadata.
-		# A short local credential must not rename action/counter/source fields.
-		var clean: Dictionary = _redacted_value(data,false)
+		# Native history receipt keys are trusted protocol identifiers. Their
+		# names must survive even if a user deliberately chooses a short key.
+		var clean: Dictionary = _redacted_value(data, false)
+
 		for field: String in ["_history_receipt_id","_history_world_epoch","_history_turn_sha256"]:
 			if data.has(field): clean[field] = data[field]
 		return clean

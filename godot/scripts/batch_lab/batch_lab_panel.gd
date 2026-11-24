@@ -179,6 +179,7 @@ func _build_ui() -> void:
 	_button(actions, "Copy config", copy_configuration)
 	_button(actions, "Paste config", paste_configuration)
 	_button(actions, "Preview", preview_selected, "Compile without allocating or mutating a native World.")
+	_button(actions, "Harvest module", harvest_selected_module, "Convert this completed native material result into a reusable architectural module.")
 	_button(actions, "Save…", func() -> void: _open_file("save"))
 	_button(actions, "Open…", func() -> void: _open_file("open"))
 	_button(actions, "Export…", func() -> void: _open_file("export"))
@@ -633,6 +634,17 @@ func capture_source() -> void:
 	if _outcome(controller.configure_tile(index, config)):
 		_load_form()
 		_note("Native source captured for this tile. The ordinary Workbench remains unchanged.")
+
+
+func harvest_selected_module() -> void:
+	if blind:
+		_note("Leave blinded comparison before harvesting a named native module.")
+		return
+	if not is_instance_valid(wb):
+		_note("Open the Native Batch Lab from an installed Workbench to harvest reusable modules.")
+		return
+	wb.open_architecture_lab()
+	_outcome(wb.architecture_lab.harvest_tile(_selected_tile()))
 
 
 func _open_key() -> void:

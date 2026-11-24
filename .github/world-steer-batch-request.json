@@ -1,13 +1,19 @@
 {
   "schema": "world-steer-batch-request-v1",
-  "mission": "WORLD-STEER-BATCH-001",
-  "scope": "M0-M2",
-  "request_id": "2026-11-21-reviewed-source-evaluator-2",
-  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
-  "review_checkpoint_parent": "9c9e61df392fb619c5c9824df83be6b51c014607",
-  "platforms": ["linux", "windows"],
+  "mission": "WORLD-STEER-BATCH-M3-M5-001",
+  "scope": "M0-M2 reconciliation; M3 native modules; M4 GOLDMAPS retrieval; M5 staged construction",
+  "request_id": "2026-11-24-architecture-qualification-1",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "review_checkpoint_parent": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+  "platforms": [
+    "linux",
+    "windows"
+  ],
   "source_identity": "The executing workflow commit, tree and build ledger identify the frozen candidate.",
   "disposition": "Draft/HOLD; no merge, Ready, auto-merge or production-default promotion",
   "paid_model_dispatch": false,
-  "physical_windows_11_nvidia_acceptance": "pending owner device"
+  "physical_windows_11_nvidia_acceptance": "pending owner device",
+  "original_qualification_run": 44962406023,
+  "original_evidence_preserved": true,
+  "actual_model_calls_authorized": false
 }

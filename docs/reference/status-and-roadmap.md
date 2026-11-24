@@ -4,15 +4,41 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
+## WORLD-STEER-BATCH-M3-M5-001 — Draft/HOLD, 24 November 2026
+
+The [architectural Workbench successor](../operations/world-steer-architecture.md) reconciles the preserved #720 Batch Lab with accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. It adds native module harvesting/replay, 25 source-bound GOLDMAPS design cards, bounded retrieval, finite staged native construction, six examples and a registered 30-attempt contextual comparison. The [integration ledger](../audits/2026-11-24-world-steer-m3-m5/integration-ledger.md) preserves original campaign custody and successor qualification. Typed offline construction is independently executable; the separate Art successor owns conversational integration. Actual model quality, physical owner acceptance and any M6/M7 training remain unqualified. No merge or Ready promotion is authorized.
+
 ## WORLD-STEER-BATCH-001 M0–M2 — Draft/HOLD
 
-The [Native Batch Lab guide](../operations/world-steer-batch-lab.md) owns optional independent native construction, comparative inspection, retained attempts and bounded experiments on the dedicated branch from accepted `846fe0533b3170e7b01f690518da49fc40cc24d1`. Qualification artifacts distinguish actual native/control outcomes, protocol fixtures, pending real model comparisons and physical owner acceptance. M3–M7 remain deferred; no merge, production default, paid call or schedule is authorized here.
+The [Native Batch Lab guide](../operations/world-steer-batch-lab.md) owns optional independent native construction, comparative inspection, retained attempts and bounded experiments on the dedicated branch from accepted `846fe0533b3170e7b01f690518da49fc40cc24d1`. Qualification artifacts distinguish actual native/control outcomes, protocol fixtures, pending real model comparisons and physical owner acceptance. The subsequent M3–M5 authorization is scoped above; this original record grants no merge, production default, paid call or schedule.
+
+## CI-OPT-003 worldgen showcase execution — 2026-11-21
+
+The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
+runs seven independent worldgen showcases through the existing two-job Make
+budget. All seven remain required before the nine principal tests. The original
+compiler flags, scientific fixtures, sixteen executables and sanitizer coverage
+remain. Raw per-showcase output is retained before grouped replay, including
+flushed partial output from hung or cancelled peers; source/run/attempt checks
+reject stale or incomplete log inventories. The
+dedicated CI-only PR records source-matched execution, controlled performance
+and independent review before any merge or turnaround claim.
+
+## CI-OPT-003 soliding compilation reuse — 2026-11-21
+
+The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)
+removes 30 repeated translation-unit compilations per complete normal or
+sanitized target while retaining the original eight executables and test order.
+Compiler/configuration/source identity guards local object reuse; interrupted
+compilations cannot publish partial objects. Full Native and Windows/Linux
+regression admission remains required. The dedicated CI-only PR records exact
+source qualification and controlled timings before any merge or speed claim.
 
 ## Floating Oil in Wave Water
 

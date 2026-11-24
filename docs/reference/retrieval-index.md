@@ -4,11 +4,15 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Native architectural modules, GOLDMAPS retrieval and staged construction
+
+Use the [owner workflow](../operations/world-steer-architecture.md) for harvesting, starter parts, repeat placement, preview/approval, partial recovery and Windows inspection. The [module contract](../systems/native-architectural-modules.md) owns exact local geometry, typed roles, transformations and imported-evidence limits. The [knowledge contract](../systems/architectural-knowledge-and-evaluation.md) owns source-bound cards, family-excluded retrieval and contextual native evaluation. The [stage contract](../systems/architecture-staged-construction.md) owns host-computed permissions/budgets and the separate Art adapter. [Additive architecture questions](retrieval-questions-world-steer-architecture.json) preserve the frozen retrieval set. All remain Draft/HOLD.
 
 ## Native Workbench Batch Lab
 
@@ -360,6 +364,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
+| Can worldgen showcases run concurrently without losing sanitizer coverage or accepting partial work? | [Parallel worldgen showcase execution](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution); seven required independent showcases precede nine ordered principal tests within the existing two-job Make limit. |
+| How does soliding avoid repeated compilation without reusing stale objects or skipping tests? | [Soliding compilation reuse](../operations/ci-execution-and-performance.md#soliding-compilation-reuse), [local validation](../operations/local-build-and-validation.md#soliding-successor-validation); hosted timings and admission remain source-bound CI-OPT-003 PR evidence. |
 | How do six Native families and four Windows shards preserve CI coverage and deadlines, and may scope advice skip Native? | [Parallel validation contract](../operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31), [exact coverage](../operations/testing-validation-and-replay.md#parallel-native-and-four-way-windows-admission), and [source-bound integration audit](../audits/2026-10-31-ci-parallel-production-integration.md). Scope advice grants no exemption; predecessor timing is not resulting-head qualification. |
 | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |
 | What is the current CI provider/recovery state, and is main protected? | [Repository/release](../operations/github-development-and-release.md), then the [2026-09-24 recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for incident evidence |

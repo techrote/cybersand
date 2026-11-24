@@ -13,7 +13,9 @@ related-documents: [../systems/workbench-direct-art-batches.md, ../systems/workb
 **Draft / HOLD.** This implements the bounded M0–M2 scope authorized by the owner
 for [WORLD-STEER-BATCH-001 / #579](https://github.com/techrote/cybersand/issues/579),
 under [#549](https://github.com/techrote/cybersand/issues/549). It does not authorize
-merge, production-default changes, paid model calls or M3–M7 implementation.
+merge, production-default changes or paid model calls. The owner subsequently
+authorized the [M3–M5 architectural successor](world-steer-architecture.md), which
+preserves this foundation; its scope and qualification are recorded separately.
 Runtime and package acceptance belong to the exact-source qualification artifacts;
 the existence of this guide does not assert a successful platform run.
 

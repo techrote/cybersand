@@ -70,6 +70,19 @@ jobs:
       - name: Validate dependency pins and published runtime provenance
         if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_repository.py --require-materialized
+      - name: Verify soliding object reuse and original compiler contracts
+        run: |
+          command -v g++
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_soliding_build_inventory.py --output build/soliding-build-inventory.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/test_soliding_build_reuse.py
+      - name: Retain soliding build contract evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: soliding-build-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/soliding-build-inventory.json
+          if-no-files-found: ignore
+          retention-days: 90
       - name: Check LCB capability matrix is source-derived
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/derive_capability_matrix.py --check
       - name: Check LCB policy wire/hash contract vectors

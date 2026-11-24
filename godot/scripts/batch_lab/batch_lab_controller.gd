@@ -344,6 +344,7 @@ func start(indices: Array = []) -> Dictionary:
 		tile["_frozen_config"] = config
 		tile["_queued_usec"] = Time.get_ticks_usec()
 		tile["_restore_only"] = false
+		tile["_native_readback_current_process"] = false
 		tile["execution_origin"] = "supplied-program" if str(config.provider) in ["procedural","random","direct"] else "provider-request"
 		tile.metrics = {}
 		tile.receipts = []
@@ -510,6 +511,9 @@ func _process(_delta: float) -> void:
 		if owner.phase != "finished": continue
 		var tile: Dictionary = tiles[index]
 		tile.material_cells = owner.final_cells.duplicate()
+		# Volatile host observation only. Serialized receipts cannot mint this
+		# current-process fact; imports reset it even when they supply the field.
+		tile["_native_readback_current_process"] = not owner.final_cells.is_empty()
 		tile.source_materials = owner.initial_cells.duplicate()
 		tile.receipts = owner.receipts.duplicate(true)
 		tile["accepted_edits"] = owner.applied.get("edits",[]).duplicate(true)
@@ -720,6 +724,7 @@ static func material_image(cells: PackedByteArray, size: Vector2i) -> Image:
 func _record(tile: Dictionary) -> Dictionary:
 	var config := _config_identity(tile.get("_frozen_config",tile.config))
 	var value := {"attempt_id":tile.attempt_id,"config":config,"state":tile.state,"reason":tile.reason,
+		"_native_readback_current_process":bool(tile.get("_native_readback_current_process",false)),
 		"execution_origin":tile.execution_origin,
 		"result_extent":tile.result_extent.duplicate(),"source_materials":tile.source_materials.duplicate(),
 		"material_cells":tile.material_cells.duplicate(),"material_sha256":tile.get("material_sha256",""),
@@ -739,6 +744,7 @@ func select_attempt(index: int, identity: String) -> Dictionary:
 	var record := _find_attempt(identity)
 	if record.is_empty(): return _error("Unknown retained attempt.")
 	var tile: Dictionary = tiles[index]
+	tile["_native_readback_current_process"] = bool(record.get("_native_readback_current_process",false))
 	for key: String in ["attempt_id","state","reason","execution_origin","result_extent","source_materials","material_cells","material_sha256","receipts","accepted_edits","metrics","timings","usage","provenance","render_kind"]:
 		if record.has(key): tile[key] = record[key].duplicate(true) if record[key] is Dictionary or record[key] is Array else record[key]
 	tile.image = material_image(tile.material_cells,_extent(tile.result_extent))
@@ -778,6 +784,7 @@ func record_render(index: int, identity: String, image: Image, renderer: Diction
 
 static func _encode(record: Dictionary) -> Dictionary:
 	var value := record.duplicate(true)
+	value.erase("_native_readback_current_process")
 	value["source_materials_base64"] = "" if value.source_materials.is_empty() else Marshalls.raw_to_base64(value.source_materials)
 	value["material_cells_base64"] = "" if value.material_cells.is_empty() else Marshalls.raw_to_base64(value.material_cells)
 	value.erase("source_materials"); value.erase("material_cells")
@@ -876,6 +883,7 @@ func _decode_record(raw: Variant) -> Dictionary:
 		if edit[0]<0 or edit[1]<0 or edit[2]<1 or edit[3]<1 or edit[0]+edit[2]>size.x or edit[1]+edit[3]>size.y or int(edit[4]) not in Setup.MATERIALS:
 			return _error("Stored accepted edit is outside the native result or material palette.")
 	var value: Dictionary = raw.duplicate(true)
+	value["_native_readback_current_process"] = false
 	value.config = _canonical_numbers(value.config)
 	value.operations = _canonical_numbers(value.operations)
 	if JSON.stringify(value.config).sha256_text()!=value.provenance.get("configuration_sha256","") \
@@ -977,6 +985,7 @@ func load_session(path: String) -> Dictionary:
 		var view: Dictionary = imported_views[index]
 		var tile: Dictionary = tiles[index]
 		tile.config = view.config.duplicate(true)
+		tile["_native_readback_current_process"] = false
 		tile.attempt_id = str(view.get("attempt_id",""))
 		var record := _find_attempt(tile.attempt_id)
 		if not record.is_empty():

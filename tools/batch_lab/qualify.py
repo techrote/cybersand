@@ -29,10 +29,11 @@ def identity(project: Path) -> dict:
     names = ["scripts/shared_workbench.gd", "scripts/simulation_worker.gd",
              "scripts/art_batch_plan.gd", "scripts/art_batch_executor.gd",
              "scripts/art_provider.gd", "scripts/art_traffic_archive.gd"]
-    for directory in ("scripts/batch_lab", "batch_lab"):
+    for directory in ("scripts/batch_lab", "batch_lab", "data/batch_lab"):
         names.extend(p.relative_to(project).as_posix() for p in (project / directory).rglob("*")
                      if p.is_file() and p.suffix in {".gd", ".json", ".txt"})
-    names.extend(p.relative_to(project).as_posix() for p in (project / "tests").glob("test_batch_lab*.gd"))
+    for pattern in ("test_batch_lab*.gd", "test_native_module*.gd", "test_architectur*.gd"):
+        names.extend(p.relative_to(project).as_posix() for p in (project / "tests").glob(pattern))
     native = "cybersand_native.windows.x86_64.dll" if sys.platform == "win32" else "libcybersand_native.linux.x86_64.so"
     names.append("addons/cybersand_native/bin/" + native)
     return {name: sha(project / name) for name in sorted(names)}
@@ -80,7 +81,7 @@ def regression_cases(runner: Runner, project: Path) -> None:
     cases = [
         ("art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS"),
         ("art-archive-integrity", "test_art_traffic_integrity", "ART_TRAFFIC_INTEGRITY"),
-        ("art-lazy-history", "test_art_lazy_traffic", "ART_LAZY_TRAFFIC"),
+        ("art-lazy-history", "test_art_lazy_traffic", "ART_LAZY_RESULT"),
         ("art-history-identity", "test_art_history_receipt_identity", "ART_HISTORY_RECEIPT_IDENTITY_RESULT"),
         ("art-native", "test_art_batch_native", "ART_STAGE1_RESULT"),
         ("edit-ordering", "test_workbench_edit_ordering", "EDIT_ORDER_RESULT"),
@@ -112,6 +113,52 @@ def regression_cases(runner: Runner, project: Path) -> None:
                      env={"CYBERSAND_PAINT_HISTORY_REOPEN": "1" if phase == "reopen" else "0"})
 
 
+def architecture_cases(runner: Runner, project: Path, graphical: bool) -> None:
+    """M3–M5 consumes the original runner, native owner and package custody.
+
+    Every selected case is required. Missing scripts are failures, never a
+    permissive feature-detection skip. A fresh process performs each reopen.
+    """
+    evidence = runner.evidence / "architecture"
+    evidence.mkdir(parents=True, exist_ok=True)
+    module_env = {"NATIVE_MODULE_EVIDENCE_DIR": str(evidence / "modules"),
+                  "NATIVE_MODULE_LIBRARY_PATH": str(evidence / "modules" / "library.json")}
+    runner.godot(project, "native-module-author", "test_native_module", "NATIVE_MODULE_RESULT", env=module_env)
+    runner.godot(project, "native-module-fresh-reopen", "test_native_module", "NATIVE_MODULE_RESULT",
+                 env=dict(module_env, NATIVE_MODULE_MODE="reopen"))
+    runner.godot(project, "native-module-starter-parts", "test_native_module_examples", "NATIVE_PARTS_RESULT", env=module_env)
+    runner.godot(project, "native-module-observation-custody", "test_batch_lab_native_custody", "BATCH_NATIVE_CUSTODY_RESULT")
+    runner.execute("architecture-retrieval", [str(runner.args.godot.resolve()), "--headless", "--audio-driver", "Dummy",
+                   "--path", str(project.resolve()), "--script", "res://tests/test_architectural_retrieval.gd",
+                   "--", "--output=" + str(evidence / "retrieval-results.json")], marker="Architectural retrieval:")
+    runner.execute("architecture-independent-metrics", [sys.executable, str(ROOT / "tools/batch_lab/test_architecture_evaluation.py")])
+    stage_env = {"ARCHITECTURE_EVIDENCE_DIR": str(evidence / "stages")}
+    runner.godot(project, "architecture-context-detail", "test_architecture_context_detail",
+                 "ARCHITECTURE_CONTEXT_DETAIL:", env=stage_env)
+    runner.godot(project, "architecture-stage-plan", "test_architecture_stage_plan",
+                 "ARCHITECTURE_STAGE_PLAN:", env=stage_env)
+    runner.godot(project, "architecture-module-contracts", "test_architecture_stage_modules",
+                 "ARCHITECTURE_STAGE_MODULE_RESULT", env=stage_env)
+    runner.godot(project, "architecture-stage-native", "test_architecture_stage_native",
+                 "ARCHITECTURE_STAGE_NATIVE:", env=stage_env)
+    runner.godot(project, "architecture-stage-fresh-reopen", "test_architecture_stage_reopen",
+                 "ARCHITECTURE_STAGE_REOPEN:", env=stage_env)
+    runner.godot(project, "architecture-module-compositions", "test_architecture_module_compositions",
+                 "ARCHITECTURE_MODULE_COMPOSITIONS_RESULT", env={"ARCHITECTURE_MODULE_COMPOSITIONS_DIR": str(evidence / "stages")})
+    comparison = evidence / "comparison"
+    runner.godot(project, "architecture-native-comparison", "test_architecture_comparison", "ARCHITECTURE_COMPARISON_RESULT",
+                 env={"ARCHITECTURE_COMPARISON_DIR": str(comparison)})
+    runner.execute("architecture-native-independent-reduction", [sys.executable, str(ROOT / "tools/batch_lab/evaluate_architecture.py"),
+                   str(comparison / "cases.json"), "--registration", str(project / "data/batch_lab/architecture_experiment_registration.v1.json"),
+                   "--output", str(comparison / "analysis.json")])
+    if graphical:
+        runner.godot(project, "architecture-stage-render", "test_architecture_stage_render",
+                     "ARCHITECTURE_STAGE_RENDER:", graphical=True, env=stage_env, max_fps=60)
+    else:
+        runner.godot(project, "architecture-stage-ui", "test_architecture_stage_render",
+                     "ARCHITECTURE_STAGE_UI:", env=dict(stage_env, ARCHITECTURE_UI_ONLY="1"))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", type=Path, required=True)
@@ -120,6 +167,7 @@ def main() -> int:
     parser.add_argument("--package", type=Path)
     parser.add_argument("--graphical", action="store_true")
     parser.add_argument("--regressions", action="store_true")
+    parser.add_argument("--architecture", action="store_true", help="Require the M3–M5 module/stage successor gates")
     parser.add_argument("--allow-dirty", action="store_true", help="local development only; recorded as unqualified source")
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
@@ -128,7 +176,7 @@ def main() -> int:
     args.evidence.mkdir(parents=True, exist_ok=True)
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     if not args.allow_dirty:
-        subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "godot/scripts", "godot/tests", "godot/batch_lab"],
+        subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "godot/scripts", "godot/tests", "godot/batch_lab", "godot/data/batch_lab"],
                        cwd=ROOT, check=True)
     manifest = verify_package(args.package.resolve()) if args.package else None
     if manifest and manifest["source_commit"] != revision:
@@ -140,6 +188,7 @@ def main() -> int:
     report = {"schema": "world-steer-batch-qualification-v1", "source_commit": revision,
               "source_files_sha256": before, "development_dirty_allowed": args.allow_dirty,
               "graphical": args.graphical, "packaged": bool(manifest), "platform": sys.platform,
+              "architecture_m3_m5": args.architecture,
               "actual_model_calls": 0, "physical_owner_acceptance": "pending", "status": "running"}
     try:
         runner.godot(project, "import")
@@ -174,6 +223,8 @@ def main() -> int:
         if args.graphical:
             runner.godot(project, "batch-ui", "test_batch_lab_ui", "BATCH_LAB_UI_RESULT", graphical=True,
                          env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "ui")}, max_fps=60)
+        if args.architecture:
+            architecture_cases(runner, project, args.graphical)
         if args.regressions:
             regression_cases(runner, project)
         if identity(project) != before:
