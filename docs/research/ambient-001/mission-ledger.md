@@ -185,3 +185,32 @@ progress or a quality ranking. Oil Moth also stalled near the inaccessible cup
 on 64 of 299 measured intervals, a preserved limitation. This newly added
 fixture is included in the sixteen-case final committed-source campaign; its
 development run is not labelled clean-commit qualification.
+
+## First frozen platform campaign and capture repair
+
+At exact source `f80aab91d31ce5e753eb6056d679100d83c7b7e7`, tree
+`6bafffb712441a5c03dd0b12368ac19cff374a34`, all sixteen cases passed with
+5,959 assertions on both Linux and actual Windows. Both complete campaigns
+passed before/after source and runtime custody. Linux took 192.615 seconds;
+the Windows campaign took 151.391 seconds on its hosted runner. Independent
+reviews rehashed 1,115 source inputs, 837 loaded-project inputs and the original
+receipts. These timings are host observations, not platform performance claims.
+
+Windows run
+[45470109757](https://github.com/techrote/cybersand/actions/runs/45470109757)
+then produced all twelve requested actual ANGLE images and completed all five
+scene phases at 120 physical and at least 119 native ticks. However, the process
+logged a WASAPI device-initialization error before automatically falling back to
+silent audio. Although its exit code was zero and the capture fixture reported
+no assertion failures, the strict process-error gate correctly rejected it.
+The original failure is retained in artifact `14956927074`; package construction
+and pristine execution were not credited or attempted by that run. The observed
+renderer was Microsoft Basic Render Driver, not physical NVIDIA hardware.
+
+The narrow repair explicitly selects Godot's `Dummy` audio driver for the
+graphical qualification subprocess, matching an existing accepted Windows
+qualification convention. Error rejection and actual renderer/source checks
+remain intact. Gameplay, profiles, motors, runtimes and the ordinary interactive
+launcher are unchanged. A second source-bound campaign is requested because
+the capture runner itself is part of the qualified input set. Audio playback and
+physical owner playfeel remain outside this capture qualification.

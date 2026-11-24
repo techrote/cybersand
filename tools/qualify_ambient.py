@@ -179,7 +179,11 @@ def capture(binary: Path, project: Path, output: Path, identity: dict) -> dict:
     environment = case_environment(output / "userdata" / "capture")
     environment["CYBERSAND_SOURCE_REVISION"] = identity["source_commit"]
     environment["CYBERSAND_AMBIENT_CAPTURE"] = str(folder)
-    command = [str(binary), "--path", str(project), "--rendering-method", "gl_compatibility"]
+    # Hosted graphical workers need no audio device. Select the accepted silent
+    # backend explicitly instead of allowing an audio error and fallback, while
+    # keeping the strict process-error guard and actual renderer requirements.
+    command = [str(binary), "--audio-driver", "Dummy", "--path", str(project),
+               "--rendering-method", "gl_compatibility"]
     command += ["--rendering-driver", "opengl3_angle"] if sys.platform == "win32" else ["--display-driver", "x11"]
     command += ["--script", "res://tests/capture_ambient_examples.gd"]
     record = execute(command, output / "graphical", environment, execution_policy.complex_process_seconds())
