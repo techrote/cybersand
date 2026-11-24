@@ -3,6 +3,8 @@ extends RefCounted
 ## The returned material plane is a compilation projection, never a simulated World.
 const ArtPlan = preload("res://scripts/art_batch_plan.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
+const Module = preload("res://scripts/batch_lab/native_module.gd")
+const Connections = preload("res://scripts/batch_lab/native_module_connections.gd")
 const FORMAT := "cybersand-architecture-plan-v1"
 const MAX_STAGES := 32
 const MAX_OPERATIONS := 2048
@@ -23,6 +25,7 @@ var _materials: Array = []
 var _operations: Array = []
 var _module_refs: Array = []
 var _module_connections: Array = []
+var _new_module_connections: Array = []
 var _module_protection: Array = []
 var _protected_expected: Dictionary = {}
 var _source := PackedByteArray()
@@ -114,17 +117,18 @@ func begin(stage: Dictionary, context: Dictionary, library: RefCounted = null, c
 	_operations.clear()
 	_module_refs.clear()
 	_module_connections.clear()
+	_new_module_connections.clear()
 	_module_protection.clear()
 	_protected_expected.clear()
 	_footprint = Rect2i()
 	if canonical(stage).to_utf8_buffer().size()>MAX_INPUT_BYTES: return _fail("Stage exceeds its input budget.")
 	for field: String in ["id","intent","expected_effects"]:
 		if not stage.get(field) is String or str(stage[field]).is_empty(): return _fail("Stage needs text: "+field)
-	for field: String in ["depends_on","modules","operations","materials","protected","clearances","connections","uncertainty","refusal_conditions"]:
+	for field: String in ["depends_on","modules","operations","materials","protected","clearances","connections","module_bindings","uncertainty","refusal_conditions"]:
 		if not stage.get(field,[]) is Array: return _fail("Stage field must be an array: "+field)
 	if stage.get("modules",[]).size()>64 or stage.get("operations",[]).size()>MAX_OPERATIONS \
 		or stage.get("clearances",[]).size()>128 or stage.get("connections",[]).size()>128 \
-		or stage.get("depends_on",[]).size()>MAX_STAGES:
+		or stage.get("depends_on",[]).size()>MAX_STAGES or stage.get("module_bindings",[]).size()>512:
 		return _fail("Stage exceeds bounded module (64), operation (2048), clearance/connection (128) or dependency capacity.")
 	for dependency: Variant in stage.get("depends_on",[]):
 		if dependency not in completed: return _fail("Dependency has no completed native stage receipt: "+str(dependency))
@@ -137,6 +141,17 @@ func begin(stage: Dictionary, context: Dictionary, library: RefCounted = null, c
 	_source = context.source_cells.duplicate()
 	if _source.size()!=_region.size.x*_region.size.y*2: return _fail("Native inspection has the wrong material-plane size.")
 	if digest(_source)!=str(context.get("source_sha256","")): return _fail("Native inspection material hash does not match.")
+	# A delegated proposal is a pure computation over one inspected plane. Its
+	# source pin must survive plan/session serialization and is checked again by
+	# the normal compiler; accepting a fresh preview cannot silently rebase it.
+	if stage.has("input_snapshot_sha256"):
+		var input_hash: Variant=stage.input_snapshot_sha256
+		if not input_hash is String or input_hash.length()!=64 or input_hash!=str(context.source_sha256):
+			return _fail("Delegated construction input is stale or malformed. Inspect the current region and propose the local job again.")
+	if stage.has("input_generation"):
+		if not stage.has("input_snapshot_sha256") or not ArtPlan.integer(stage.input_generation) or int(stage.input_generation)<1 \
+			or int(stage.input_generation)!=int(context.get("generation",-1)):
+			return _fail("Delegated construction belongs to a different World generation. Reinspect and propose it again.")
 	if not context.get("paused",false): return _fail("Pause the Workbench before approving static architecture.")
 	if not stage.get("budget") is Dictionary or not ArtPlan.integer(stage.budget.get("max_checked_cells")):
 		return _fail("Stage must declare an integer maximum checked-cell budget.")
@@ -162,6 +177,7 @@ func begin(stage: Dictionary, context: Dictionary, library: RefCounted = null, c
 		_clearances.append(clearance)
 		clearance_scan += clearance.get_area()
 		if clearance_scan>MAX_RASTER_CANDIDATES: return _fail("Clearance verification exceeds the bounded cell-scan budget.")
+	var used_instances := {}
 	var module_scan := 0
 	var module_protection_scan := 0
 	for selected: Variant in stage.get("modules",[]):
@@ -183,12 +199,18 @@ func begin(stage: Dictionary, context: Dictionary, library: RefCounted = null, c
 		if _operations.size()+compiled.operations.size()>MAX_OPERATIONS: return _fail("Compiled modules exceed the bounded operation capacity.")
 		if _module_connections.size()+compiled.get("connections",[]).size()>512: return _fail("Compiled modules exceed 512 inspected connectors.")
 		_operations.append_array(compiled.operations)
-		_module_refs.append({"id":selected.module_id,"sha256":module.content_sha256,"placement":selected.placement.duplicate(true)})
-		var instance_index := _module_refs.size()-1
+		var instance_index := _module_refs.size()
+		var instance: Variant = selected.get("instance_id",instance_index if module.format==Module.FORMAT else "p-"+digest(str(stage.id).to_utf8_buffer()).left(16)+"-"+str(instance_index))
+		if selected.has("instance_id") and not Module.identifier(instance): return _fail("A placed instance id must be a stable module identifier of at most 64 characters.")
+		if used_instances.has(instance) or (instance is String and instance in context.get("live_module_instances",[])):
+			return _fail("A stage cannot reuse an existing placed instance identity. Select its live connector or author a new instance id.")
+		used_instances[instance]=true
+		_module_refs.append({"id":selected.module_id,"sha256":module.content_sha256,"instance_id":instance,"placement":selected.placement.duplicate(true)})
 		for connector: Dictionary in compiled.get("connections",[]):
 			var item := connector.duplicate(true)
-			item["module_instance"] = instance_index
+			item["module_instance"] = instance
 			_module_connections.append(item)
+			_new_module_connections.append(item.duplicate(true))
 		var emitted := {}
 		var exact_cells: PackedInt32Array = compiled.cells
 		for i: int in range(0,exact_cells.size(),3): emitted[Vector2i(exact_cells[i],exact_cells[i+1])] = exact_cells[i+2]
@@ -257,27 +279,18 @@ func _cell(point: Vector2i) -> int:
 func _finish() -> Dictionary:
 	for point: Vector2i in _protected_expected:
 		if _cell(point)!=int(_protected_expected[point]): return _fail("Composition changes a module-declared protected cell.")
-	for connector: Dictionary in _module_connections:
-		if not connector.required: continue
-		if connector.kind=="line": return _fail("Required attachment lines need an explicit future line-matching adapter; this stage does not silently ignore them.")
-		var paired := false
-		var point := Vector2i(int(connector.point[0]),int(connector.point[1]))
-		var facing := Vector2i(int(connector.facing[0]),int(connector.facing[1]))
-		if not _region.has_point(point) or _cell(point)==0: return _fail("Required connector has no projected native material at its authored endpoint.")
-		for other: Dictionary in _module_connections:
-			if other.module_instance==connector.module_instance or other.kind=="line": continue
-			var other_point := Vector2i(int(other.point[0]),int(other.point[1]))
-			var other_facing := Vector2i(int(other.facing[0]),int(other.facing[1]))
-			if other_facing!=-facing or (other_point!=point and other_point!=point+facing): continue
-			if not _region.has_point(other_point) or _cell(other_point)==0: continue
-			if connector.kind in ["socket","receptor"] and other.kind!=("receptor" if connector.kind=="socket" else "socket"): continue
-			for compatibility: String in connector.compatibility:
-				if compatibility in other.compatibility: paired = true
-		if not paired: return _fail("A required module connector has no compatible opposite-facing placed partner: "+str(connector.id))
+	var existing: Variant = _context.get("existing_module_connections",[])
+	if not existing is Array or existing.size()+_module_connections.size()>512: return _fail("Fresh connection inventory exceeds the 512-descriptor stage bound.")
+	var all_connectors: Array = _module_connections.duplicate(true)
+	all_connectors.append_array(existing.duplicate(true))
+	var joined := Connections.resolve(all_connectors,_stage.get("module_bindings",[]),{"region":rect_array(_region),"projected_cells":_projected})
+	if not joined.ok: return _fail(str(joined.reason))
+	var reserved := _check_reserved_contacts(joined.contacts,all_connectors,_context.get("reserved_module_contacts",[]))
+	if not reserved.ok: return _fail(reserved.reason)
 	for clearance: Rect2i in _clearances:
 		for y: int in range(clearance.position.y,clearance.end.y):
 			for x: int in range(clearance.position.x,clearance.end.x):
-				if _cell(Vector2i(x,y))!=0: return _fail("Projected construction blocks a required empty clearance.")
+				if _cell(Vector2i(x,y))!=0: return _fail("Projected construction blocks required empty clearance at (%d, %d)."%[x,y])
 	if _stage.get("connections",[]).size()>128: return _fail("At most 128 connection requirements fit one stage.")
 	for connection: Variant in _stage.get("connections",[]):
 		if not connection is Dictionary or connection.get("kind") not in ["solid-contact","empty-contact"]:
@@ -305,7 +318,7 @@ func _finish() -> Dictionary:
 		if material==before: continue
 		# The accepted native Art contract replaces Empty/Hard wall only. All
 		# other stored identities remain protected even if a model lists them.
-		if before not in [0,58]: return _fail("Native Art cannot replace this occupied source material; use ordinary authoring to revise it first.")
+		if before not in [0,58]: return _fail("Native Art cannot replace source material %d with %d at (%d, %d); use ordinary authoring to revise it first."%[before,material,_region.position.x+index%_region.size.x,_region.position.y+index/_region.size.x])
 		changed += 1
 		if not by_material.has(material): by_material[material] = []
 		by_material[material].append([_region.position.x+index%_region.size.x,_region.position.y+index/_region.size.x])
@@ -315,7 +328,8 @@ func _finish() -> Dictionary:
 	ordered_materials.sort()
 	for material: int in ordered_materials: native_operations.append({"shape":"pixels","material":material,"points":by_material[material]})
 	var identity := {"stage":_stage,"resolved_modules":_module_refs,"source_sha256":_context.source_sha256,
-		"generation":_context.get("generation",-1),"operations":native_operations,"host_budget":changed}
+		"generation":_context.get("generation",-1),"operations":native_operations,"host_budget":changed,
+		"module_contact_result":joined,"connection_context_sha256":_context.get("connection_context_sha256","")}
 	done = true
 	result = {"ok":true,"status":"previewed","zero_writes":true,"kind":"zero-write-compilation",
 		"stage_id":_stage.id,"stage_sha256":digest(canonical(_stage).to_utf8_buffer()),
@@ -324,10 +338,20 @@ func _finish() -> Dictionary:
 		"budget":{"checked_cells":changed,"conservative_scan_bound":_scan_bound,"emitted_input_points":_checked,"unique_cells":_seen.size(),"changed_cells":changed,"limit":_limit},
 		"material_counts":counts,"operations":native_operations,"materials":_materials.duplicate(),
 		"protected":_guards.duplicate(),"resolved_modules":_module_refs,"projected_cells":_projected,
-		"module_connections":_module_connections,"new_protected_regions":_module_protection,
+		"module_connections":all_connectors,"placed_module_connections":_new_module_connections,"module_contact_result":joined,
+		"connection_context_sha256":_context.get("connection_context_sha256",""),"new_protected_regions":_module_protection,
 		"projected_sha256":digest(_projected),"compilation_usec":Time.get_ticks_usec()-_started_usec,
 		"scope":"Exact static material-operation projection; no native writes, physical simulation, stability or actor-traversal claim."}
 	return result
+
+
+static func _same_contact(a: Dictionary,b: Dictionary) -> bool:
+	return (a.a==b.a and a.b==b.b and a.a_cells==b.a_cells and a.b_cells==b.b_cells) or (a.a==b.b and a.b==b.a and a.a_cells==b.b_cells and a.b_cells==b.a_cells)
+
+static func _check_reserved_contacts(contacts: Array, connectors: Array, retained: Variant) -> Dictionary:
+	if not retained is Array: return error("Live contact reservation history must be a bounded array.")
+	return Connections.check_reserved_contacts(contacts,connectors,retained)
+
 
 static func compile(stage: Dictionary, context: Dictionary, library: RefCounted = null, completed: Array = []) -> Dictionary:
 	var compiler := new()

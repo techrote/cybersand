@@ -5,8 +5,11 @@ const FORMAT := "cybersand-native-module-library-v1"
 const DEFAULT_PATH := "user://architecture/modules/library.json"
 const MAX_MODULES := 128
 const MAX_FILE_BYTES := 64*1024*1024
+const METADATA_FIELDS := ["format","name","tags","part_type","anchor","allowed_transforms","roles",
+	"attachments","clearances","protected_regions","variation_regions","fixed_regions","design_card_ids"]
 var _modules: Dictionary = {}
 var _native_verified: Dictionary = {}
+var _summary_cache: Dictionary = {}
 var last_path := ""
 
 func count() -> int:
@@ -33,6 +36,7 @@ func add(module: Dictionary, replace := false) -> Dictionary:
 	candidate[module.id] = checked.module.duplicate(true)
 	if Module.json_bytes(candidate.values()).size()>MAX_FILE_BYTES: return Module.failure("Module library exceeds 64 MiB.")
 	_modules = candidate
+	_summary_cache[module.id] = Module.summary(checked.module)
 	# A changed manifest retires previous session qualification, even if its ID is retained.
 	if _native_verified.get(module.id,"")!=module.content_sha256: _native_verified.erase(module.id)
 	return {"ok":true,"id":module.id,"content_sha256":module.content_sha256}
@@ -87,6 +91,7 @@ func remove(identity: String) -> Dictionary:
 	if not _modules.has(identity): return Module.failure("Unknown module.")
 	_modules.erase(identity)
 	_native_verified.erase(identity)
+	_summary_cache.erase(identity)
 	return {"ok":true}
 
 func annotate(identity: String, name: String, tags: Array) -> Dictionary:
@@ -97,19 +102,57 @@ func annotate(identity: String, name: String, tags: Array) -> Dictionary:
 	module.content_sha256 = Module.content_digest(module)
 	return add(module,true)
 
+func draft_metadata(identity: String, expected_content_sha256: String, patch: Dictionary) -> Dictionary:
+	if not _modules.has(identity): return Module.failure("Unknown module.")
+	var original: Dictionary = _modules[identity]
+	if original.content_sha256!=expected_content_sha256: return Module.failure("Module metadata changed; inspect the current revision before editing.")
+	for field: Variant in patch:
+		if field not in METADATA_FIELDS: return Module.failure("Metadata editing cannot change observed geometry, identity, recipe or provenance.")
+	var candidate := original.duplicate(true)
+	for field: Variant in patch: candidate[field] = patch[field].duplicate(true) if patch[field] is Array or patch[field] is Dictionary else patch[field]
+	if original.format==Module.FORMAT_V2 and candidate.format!=Module.FORMAT_V2: return Module.failure("A V2 module cannot silently discard its connection contracts by downgrading.")
+	if candidate.format==Module.FORMAT_V2 and not candidate.has("fixed_regions"): candidate["fixed_regions"] = []
+	candidate.content_sha256 = Module.content_digest(candidate)
+	var checked := Module.validate(candidate)
+	if not checked.ok: return checked
+	return {"ok":true,"zero_writes":true,"module":checked.module,"content_sha256":checked.module.content_sha256,
+		"expected_content_sha256":expected_content_sha256,"diagnostics":[],
+		"scope":"Authored metadata draft only. Geometry and retained provenance are unchanged; native qualification is not transferred to a changed manifest."}
+
+func commit_metadata(identity: String, expected_content_sha256: String, candidate: Dictionary) -> Dictionary:
+	if not _modules.has(identity): return Module.failure("Unknown module.")
+	var original: Dictionary = _modules[identity]
+	if original.content_sha256!=expected_content_sha256: return Module.failure("Module metadata changed; this draft is stale.")
+	var checked := Module.validate(candidate)
+	if not checked.ok: return checked
+	for field: String in ["id","extent","geometry","provenance","recipe"]:
+		if Module.json_bytes(candidate[field])!=Module.json_bytes(original[field]): return Module.failure("A metadata commit cannot replace observed geometry, identity, recipe or provenance.")
+	if original.format==Module.FORMAT_V2 and candidate.format!=Module.FORMAT_V2: return Module.failure("A metadata commit cannot discard V2 connection contracts.")
+	return add(checked.module,true)
+
+func _summary(identity: String) -> Dictionary:
+	# Summaries are computed only on validated adoption. Search and UI refresh do
+	# not repeatedly decode or hash every module's exact material plane.
+	if not _summary_cache.has(identity): _summary_cache[identity] = Module.summary(_modules[identity])
+	var item: Dictionary = _summary_cache[identity].duplicate(true)
+	item.native_readback_verified = _native_verified.get(identity,"")==_modules[identity].content_sha256
+	if item.native_readback_verified: item.native_qualification_scope = "Current-session exact native material observation/replay; no physical owner acceptance."
+	return item
+
 func summaries() -> Array:
 	var result: Array = []
-	for module: Dictionary in all():
-		var item := Module.summary(module)
-		item.native_readback_verified = _native_verified.get(module.id,"")==module.content_sha256
-		if item.native_readback_verified: item.native_qualification_scope = "Current-session exact native material observation/replay; no physical owner acceptance."
-		result.append(item)
+	var ids: Array = _modules.keys()
+	ids.sort()
+	for identity: String in ids: result.append(_summary(identity))
 	return result
 
 func search(query: String, filters: Dictionary = {}) -> Array:
 	var result: Array = []
 	var terms := query.to_lower().split(" ",false)
-	for module: Dictionary in all():
+	var ids: Array = _modules.keys()
+	ids.sort()
+	for identity: String in ids:
+		var module: Dictionary = _modules[identity]
 		if filters.has("part_type") and filters.part_type!=module.part_type: continue
 		if filters.has("tag") and filters.tag not in module.tags: continue
 		if filters.has("max_extent"):
@@ -120,9 +163,7 @@ func search(query: String, filters: Dictionary = {}) -> Array:
 		for term: String in terms:
 			if not text.contains(term): match_all = false; break
 		if match_all:
-			var item := Module.summary(module)
-			item.native_readback_verified = _native_verified.get(module.id,"")==module.content_sha256
-			result.append(item)
+			result.append(_summary(identity))
 	return result
 
 static func _read_json(path: String, maximum: int) -> Dictionary:
@@ -179,13 +220,16 @@ func load_library(path: String = DEFAULT_PATH) -> Dictionary:
 	if not Module._hex(document.content_sha256) or Module.digest(Module.json_bytes(document.modules))!=document.content_sha256:
 		return Module.failure("Module library checksum differs.")
 	var candidate := {}
+	var summaries := {}
 	for raw: Variant in document.modules:
 		var checked := Module.validate(raw)
 		if not checked.ok: return checked
 		if candidate.has(checked.module.id): return Module.failure("Duplicate module identity in library.")
 		candidate[checked.module.id] = checked.module.duplicate(true)
+		summaries[checked.module.id] = Module.summary(checked.module)
 	# All-or-nothing adoption; bad imports never discard the existing library.
 	_modules = candidate
+	_summary_cache = summaries
 	_native_verified.clear()
 	last_path = path
 	return {"ok":true,"count":count(),"path":path,

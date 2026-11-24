@@ -63,6 +63,13 @@ func _initialize() -> void:
 	var paired := compile_parts(library,good,source)
 	check(paired.ok and paired.module_connections.size()==2,"opposite-facing occupied required endpoints compile")
 	check(source.source_cells==original,"required attachment verification is zero-write")
+	var named:=good.duplicate(true)
+	named[0]["instance_id"]="legacy-named-socket"
+	named[1]["instance_id"]="legacy-named-receptor"
+	check(compile_parts(library,named,source).ok,"explicit v1 instance names preserve legacy attachment interpretation")
+	var occupied_names:=source.duplicate(true); occupied_names["live_module_instances"]=["legacy-named-socket"]
+	check(not compile_parts(library,named,occupied_names).ok,"v1 explicit names cannot alias an earlier live part's detail scope")
+	check(compile_parts(library,good,occupied_names).ok,"v1 implicit stage-local integer identities retain their original meaning")
 	check(not compile_parts(library,[good[0]]).ok,"unpaired required socket refuses")
 	check(not compile_parts(library,[good[0],selected(right,[13,8])]).ok,"one-cell gap cannot satisfy a structural attachment")
 	check(not compile_parts(library,[good[0],selected(right,[12,9])]).ok,"diagonal endpoints cannot satisfy a structural attachment")

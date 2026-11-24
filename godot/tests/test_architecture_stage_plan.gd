@@ -41,6 +41,24 @@ func _initialize() -> void:
 				if first.projected_cells.decode_u16((y*64+x)*2)!=expected: exact = false
 		check(exact,"independent complete 4096-cell rectangle oracle")
 	var modified := stage()
+	modified.input_snapshot_sha256=baseline.source_sha256
+	modified.input_generation=baseline.generation
+	check(Compiler.compile(modified,baseline).ok,"delegated worker output compiles against its exact inspected source and World generation")
+	var worker_source:=context()
+	worker_source.source_cells.encode_u16(0,58)
+	worker_source.source_sha256=Compiler.digest(worker_source.source_cells)
+	check(not Compiler.compile(modified,worker_source).ok,"an unrelated in-region edit invalidates delegated output before preview")
+	worker_source=context(); worker_source.generation=2
+	check(not Compiler.compile(modified,worker_source).ok,"identical geometry in a replacement World does not reuse a delegated job")
+	modified.input_snapshot_sha256=22
+	check(not Compiler.compile(modified,baseline).ok,"non-text delegated source identity is refused without a parser exception")
+	modified=stage(); modified.input_generation=baseline.generation
+	check(not Compiler.compile(modified,baseline).ok,"generation-only worker metadata cannot claim a complete source pin")
+	modified=stage(); modified.input_snapshot_sha256=baseline.source_sha256; modified.input_generation=1.5
+	check(not Compiler.compile(modified,baseline).ok,"fractional worker generation is refused")
+	modified=stage(); modified.input_snapshot_sha256=baseline.source_sha256
+	check(Compiler.compile(modified,baseline).ok,"historical copied source may pin bytes without asserting a live generation")
+	modified = stage()
 	modified.budget.max_checked_cells = 223
 	modified.budget.estimated_cells = 1
 	check(not Compiler.compile(modified,baseline).ok,"model-estimated counts cannot bypass exact native budget")

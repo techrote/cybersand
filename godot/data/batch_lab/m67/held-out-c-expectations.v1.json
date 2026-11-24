@@ -1,0 +1,30 @@
+{
+  "format": "cybersand-m67-held-out-expectations-v1",
+  "author": "independent-specialist-C",
+  "registration_commit": "a42b3b7a5",
+  "basis": "Manual reading of the frozen catalogue's exact rectangles and connector declarations, before any comparison result. These are feasibility witnesses, not choices supplied to an experimental arm.",
+  "briefs": [
+    {
+      "id": "held-out-c-pressure-dock",
+      "feasible_assignment": [
+        {"slot": "west-threshold", "module_id": "tall-blast-door", "origin": [16,40], "transform": "identity"},
+        {"slot": "east-gallery", "module_id": "asymmetric-cable-gallery", "origin": [112,88], "transform": "identity"}
+      ],
+      "reasoning": ["The doorway's local [9,8,30,72] clearance maps exactly to [25,48,30,72]. Its six-cell jamb feet touch the shared source foundation at y120.","The gallery's local [10,3,68,25] passage maps to [122,91,68,25]. Its bottom deck ends at y119, immediately above the shared source foundation.","The x72..103 shaft is outside both part bounds and all source anchors. The connecting lower source strip is below every required empty rectangle."]
+    },
+    {
+      "id": "held-out-c-service-bearing",
+      "feasible_assignment": [
+        {"slot": "footing", "module_id": "stepped-foundation", "origin": [24,136], "transform": "identity"},
+        {"slot": "pier", "module_id": "tapered-pier", "origin": [36,72], "transform": "identity"},
+        {"slot": "valve", "module_id": "valve-chamber", "origin": [132,80], "transform": "identity"},
+        {"slot": "return", "module_id": "pipe-elbow", "origin": [180,98], "transform": "identity"}
+      ],
+      "expected_contacts": [
+        {"a": "footing/bearing", "a_span": [36,136,59,136], "b": "pier/foot", "b_span": [36,135,59,135], "cells": 24},
+        {"a": "valve/east", "a_span": [179,98,179,101], "b": "return/inlet", "b_span": [180,98,180,101], "cells": 4}
+      ],
+      "reasoning": ["The footing bearing and pier foot have exactly equal 24-cell full spans and opposing vertical facings.","The valve's local east port at x47,y18..21 maps to x179,y98..101; the elbow's west port maps to x180,y98..101. Both carry pipe role and pipe-4 compatibility.","The elbow local [0,4,28,28] empty interior maps to [180,102,28,28]. The shaft lies between x76 and119, outside every slot and source anchor.","The source column x128..131 touches the valve's west service line and joins the source foundation at y152. This establishes geometric contact only."]
+    }
+  ]
+}

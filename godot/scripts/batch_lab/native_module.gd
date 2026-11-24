@@ -2,11 +2,13 @@ extends RefCounted
 ## M3 material-only native modules. This codec/compiler cannot access a World.
 ## A stored source receipt is provenance, not fresh native admission or physics.
 const FORMAT := "cybersand-native-module-v1"
+const FORMAT_V2 := "cybersand-native-module-v2"
 const ENCODING := "uint16-le-row-major"
 const MAX_SIDE := 512
 const MAX_CELLS := 262144
 const MAX_BYTES := 2*1024*1024
 const MAX_METADATA_BYTES := 256*1024
+const MAX_CONTACT_CELLS := 8192
 const TRANSFORMS := ["identity","mirror_x","mirror_y","rotate_90","rotate_180","rotate_270"]
 const PART_TYPES := ["column_support","beam_truss","floor_ceiling","viaduct_segment",
 	"wall_facade","window_door","passage_clearance","mechanical_housing","pipework",
@@ -121,7 +123,10 @@ static func _rectangles(value: Variant, extent: Vector2i) -> bool:
 	return true
 
 static func validate(raw: Variant) -> Dictionary:
-	if not raw is Dictionary or not _keys(raw,ROOT_KEYS) or raw.format!=FORMAT:
+	if not raw is Dictionary or raw.get("format") not in [FORMAT,FORMAT_V2]:
+		return failure("Unsupported native module format or fields.")
+	var is_v2: bool = raw.format==FORMAT_V2
+	if not _keys(raw,ROOT_KEYS+["fixed_regions"] if is_v2 else ROOT_KEYS):
 		return failure("Unsupported native module format or fields.")
 	if not identifier(raw.id) or not _text(raw.name,96) or not _strings(raw.tags,32,64) or raw.part_type not in PART_TYPES:
 		return failure("Invalid module name, identifier, tags or structural vocabulary.")
@@ -144,6 +149,11 @@ static func validate(raw: Variant) -> Dictionary:
 		return failure("Module geometry size, canonical encoding or checksum differs.")
 	for key: String in ["clearances","protected_regions","variation_regions"]:
 		if not _rectangles(raw[key],extent): return failure("Invalid local "+key+".")
+	if is_v2:
+		if not _rectangles(raw.fixed_regions,extent): return failure("Invalid local fixed_regions.")
+		for fixed: Array in raw.fixed_regions:
+			for variable: Array in raw.variation_regions:
+				if rect(fixed).intersects(rect(variable)): return failure("Fixed and variable geometry regions must be disjoint.")
 	# These are declared empty spaces, not an inference that all Empty cells are a route.
 	for clearance: Array in raw.clearances:
 		var box := rect(clearance)
@@ -152,8 +162,12 @@ static func validate(raw: Variant) -> Dictionary:
 				if cells.decode_u16((y*extent.x+x)*2)!=0: return failure("Declared clearance contains observed material.")
 	if not raw.attachments is Array or raw.attachments.size()>128: return failure("Too many attachment declarations.")
 	var attachment_ids := {}
+	var contact_count := 0
+	var occupied_faces := {}
 	for attachment: Variant in raw.attachments:
-		if not attachment is Dictionary or not _keys(attachment,["id","kind","point","facing","compatibility","required","source"],["end"]):
+		var attachment_keys := ["id","kind","point","facing","compatibility","required","source"]
+		if is_v2: attachment_keys += ["role","approach","polarity","capacity","contact"]
+		if not attachment is Dictionary or not _keys(attachment,attachment_keys,["end"]):
 			return failure("Invalid attachment declaration fields.")
 		if not identifier(attachment.id) or attachment_ids.has(attachment.id) \
 			or attachment.kind not in ["vertex","line","socket","receptor"] or not _point(attachment.point,extent) \
@@ -167,6 +181,41 @@ static func validate(raw: Variant) -> Dictionary:
 				or (attachment.end[0]!=attachment.point[0] and attachment.end[1]!=attachment.point[1]):
 				return failure("Attachment lines must have distinct axis-aligned local endpoints.")
 		elif attachment.has("end"): return failure("Only attachment lines carry an end point.")
+		if is_v2:
+			if not identifier(attachment.role) or attachment.approach!="face" \
+				or attachment.polarity not in ["neutral","socket","receptor"] \
+				or not integer(attachment.capacity) or int(attachment.capacity)<1 or int(attachment.capacity)>16:
+				return failure("V2 connectors need an authored role, face approach, polarity and capacity 1–16.")
+			if (attachment.kind in ["socket","receptor"] and attachment.polarity!=attachment.kind) \
+				or (attachment.kind=="vertex" and attachment.polarity!="neutral"):
+				return failure("V2 point connector kind and polarity disagree.")
+			if not attachment.contact is Dictionary or not _keys(attachment.contact,["policy","minimum_cells","tolerance"]) \
+				or attachment.contact.policy not in ["full","overlap"] or not integer(attachment.contact.minimum_cells) \
+				or not integer(attachment.contact.tolerance) or int(attachment.contact.tolerance)!=0:
+				return failure("V2 connector contact requires full or overlap, an integer minimum and zero grid tolerance.")
+			var start := Vector2i(int(attachment.point[0]),int(attachment.point[1]))
+			var end := Vector2i(int(attachment.get("end",attachment.point)[0]),int(attachment.get("end",attachment.point)[1]))
+			var facing := Vector2i(int(attachment.facing[0]),int(attachment.facing[1]))
+			var length := absi(end.x-start.x)+absi(end.y-start.y)+1
+			if attachment.kind=="line" and (end.x-start.x)*facing.x+(end.y-start.y)*facing.y!=0:
+				return failure("V2 line facing must be perpendicular to its inclusive contact span.")
+			if int(attachment.contact.minimum_cells)<1 or int(attachment.contact.minimum_cells)>length \
+				or (attachment.contact.policy=="full" and int(attachment.contact.minimum_cells)!=length) \
+				or (attachment.kind!="line" and (attachment.contact.policy!="full" or int(attachment.capacity)!=1)):
+				return failure("V2 contact minimum must fit its span; point contacts are full and exclusive.")
+			contact_count += length
+			if contact_count>MAX_CONTACT_CELLS: return failure("V2 module exceeds 8,192 declared contact cells.")
+			var step := Vector2i(signi(end.x-start.x),signi(end.y-start.y))
+			for index: int in length:
+				var point := start+step*index
+				var face_key := "%d,%d,%d,%d" % [point.x,point.y,facing.x,facing.y]
+				if occupied_faces.has(face_key): return failure("V2 connectors cannot alias the same occupied outward face under different identifiers.")
+				occupied_faces[face_key] = true
+				if cells.decode_u16((point.y*extent.x+point.x)*2)==0:
+					return failure("Every V2 contact cell must be grounded in observed module material.")
+				var outside := point+facing
+				if Rect2i(Vector2i.ZERO,extent).has_point(outside) and cells.decode_u16((outside.y*extent.x+outside.x)*2)!=0:
+					return failure("V2 connectors must expose an Empty outward face in their own geometry.")
 		attachment_ids[attachment.id] = true
 	if not raw.roles is Array or raw.roles.size()>32: return failure("Too many material role declarations.")
 	var role_names := {}
@@ -212,7 +261,7 @@ static func harvest(cells: PackedByteArray, extent: Vector2i, region: Rect2i, me
 		"source_region":[region.position.x,region.position.y,region.size.x,region.size.y],
 		"source_plane_sha256":digest(cells),"crop_sha256":digest(crop),
 		"scope":"Exact stored material identities only. No actor state, temperature, motion or physical stability."}
-	var module := {"format":FORMAT,"id":metadata.get("id","module-"+digest(crop).left(16)),
+	var module := {"format":metadata.get("format",FORMAT),"id":metadata.get("id","module-"+digest(crop).left(16)),
 		"name":metadata.get("name","Harvested native module"),"tags":metadata.get("tags",[]),
 		"part_type":metadata.get("part_type","unclassified"),"extent":[region.size.x,region.size.y],
 		"anchor":metadata.get("anchor",[0,region.size.y-1]),
@@ -222,6 +271,7 @@ static func harvest(cells: PackedByteArray, extent: Vector2i, region: Rect2i, me
 		"protected_regions":metadata.get("protected_regions",[]),"roles":metadata.get("roles",[]),
 		"variation_regions":metadata.get("variation_regions",[]),"provenance":provenance,
 		"recipe":metadata.get("recipe",{}),"design_card_ids":metadata.get("design_card_ids",[])}
+	if module.format==FORMAT_V2: module["fixed_regions"] = metadata.get("fixed_regions",[])
 	module["content_sha256"] = content_digest(module)
 	return validate(module)
 
@@ -366,7 +416,7 @@ static func compile(module: Dictionary, placement: Dictionary, constraints: Dict
 			var material := source.decode_u16((y*size.x+x)*2)
 			if material==0: continue
 			var local := Vector2i(x,y)
-			if float(keep)<1.0 and _in_regions(local,module.variation_regions) and not _attachment_cell(local,module.attachments) and random.randf()>=float(keep):
+			if float(keep)<1.0 and _in_regions(local,module.variation_regions) and not _in_regions(local,module.get("fixed_regions",[])) and not _attachment_cell(local,module.attachments) and random.randf()>=float(keep):
 				varied += 1
 				continue
 			material = int(replacements.get(material,material))
@@ -400,6 +450,20 @@ static func compile(module: Dictionary, placement: Dictionary, constraints: Dict
 		if item.has("end"):
 			var end := origin+transform_point(Vector2i(int(item.end[0]),int(item.end[1])),size,transform)
 			item.end = [end.x,end.y]
+		item["module_format"] = module.format
+		item["module_id"] = module.id
+		item["module_sha256"] = module.content_sha256
+		if module.format==FORMAT_V2:
+			# This list is derived from this module's own exact occupied geometry.
+			# A host must still inspect the final projection before accepting contact.
+			var contact_start := Vector2i(int(item.point[0]),int(item.point[1]))
+			var contact_end := Vector2i(int(item.get("end",item.point)[0]),int(item.get("end",item.point)[1]))
+			var contact_step := Vector2i(signi(contact_end.x-contact_start.x),signi(contact_end.y-contact_start.y))
+			var own_contact: Array = []
+			for index: int in absi(contact_end.x-contact_start.x)+absi(contact_end.y-contact_start.y)+1:
+				var contact_point := contact_start+contact_step*index
+				own_contact.append([contact_point.x,contact_point.y])
+			item["own_contact_cells"] = own_contact
 		connections.append(item)
 	var clearances: Array = []
 	var protected_regions: Array = []
@@ -429,8 +493,10 @@ static func summary(module: Dictionary) -> Dictionary:
 		for kind: String in attachment.compatibility:
 			if kind not in connections: connections.append(kind)
 	return {"id":module.id,"name":module.name,"part_type":module.part_type,"vocabulary":module.part_type,
+		"format":module.format,"connector_contract":"face-adjacent-grid-v2" if module.format==FORMAT_V2 else "legacy-point-v1",
 		"tags":module.tags.duplicate(),"extent":module.extent.duplicate(),"bounds":[0,0,module.extent[0],module.extent[1]],
 		"material_roles":role_names,"observed_material_ids":identities,"attachments":module.attachments.duplicate(true),
+		"connectors":module.attachments.duplicate(true),"fixed_regions_count":module.get("fixed_regions",[]).size(),
 		"connection_types":connections,"design_card_ids":module.design_card_ids.duplicate(),
 		"content_sha256":module.content_sha256,"geometry_sha256":module.geometry.sha256,
 		"allowed_transforms":module.allowed_transforms.duplicate(),"provenance":module.provenance.duplicate(true),

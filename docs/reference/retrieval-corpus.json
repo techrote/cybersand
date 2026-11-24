@@ -3,6 +3,11 @@
   "reviewed": "2026-11-24",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
+    "systems/native-curated-parts.md",
+    "systems/native-detail-jobs.md",
+    "systems/native-module-connections-v2.md",
+    "systems/architecture-planning-and-composition.md",
+    "operations/world-steer-collaborative-architecture.md",
     "operations/world-steer-architecture.md",
     "systems/native-architectural-modules.md",
     "systems/architectural-knowledge-and-evaluation.md",
