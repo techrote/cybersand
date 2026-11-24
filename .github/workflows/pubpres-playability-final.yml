@@ -26,6 +26,11 @@ jobs:
       - name: Validate complete executed source and deliberate branch request
         id: request
         run: python3 tools/pubpres_final/request.py
+      - name: Restore exact legacy material-capability test source
+        # checkout is shallow. The adversarial test compares real committed
+        # pre-count Main/helper absence with this exact current implementation.
+        # Fetch the named control instead of weakening that source predicate.
+        run: timeout 240 git fetch --no-tags --depth=1 origin c2f8a73d34448bc1496ecd84bca02f0812c80d27
       - name: Provider, source and adversarial measurement contracts
         run: |
           python3 tools/ci/check_ci_provider_policy.py

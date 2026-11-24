@@ -1,0 +1,27 @@
+{
+  "schema": "pubpres-focused-font-peer-packet-v1",
+  "archive_sha256": "3dc89e83a4757c860a7f7f645b165eb948d3bfb1a12c294596b524f802464b5d",
+  "files": {
+    "build_packet.py": {
+      "bytes": 20029,
+      "sha256": "30575e52ee4470f69659a256d5a4c0e8ba9633344f460c32ae03f33d3ca45602"
+    },
+    "independent-replay.json": {
+      "bytes": 360960,
+      "sha256": "9bf58d62571451b0ba220b54d8792a3c031a073152dd2b01d9dc7a0948e9c2bb"
+    },
+    "replay.py": {
+      "bytes": 19412,
+      "sha256": "61abde45d78b3d8e6c89c0038a5bd4ee0be0a81a6c93f9161ba36000027dd83a"
+    },
+    "resource-readouts.json": {
+      "bytes": 16048,
+      "sha256": "644699aa897004100fd6abbb6e6b9e957323b203bfc6f88ca360ed0e69929f5d"
+    }
+  },
+  "decision": {
+    "path": "../focused-font-decision.md",
+    "sha256": "8833276bbd2ec54a00d80f998ff1b0e2700e9ee67a5c944a91da294a34993bb7"
+  },
+  "physical_acceptance": "HOLD"
+}
