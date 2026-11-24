@@ -149,3 +149,39 @@ actual Windows execution, pristine extraction and graphical launch remain
 delivery gates until their real receipts exist. Physical Windows/NVIDIA
 playfeel and ambient believability remain owner judgements. No merge, Ready
 transition or product-wide default promotion is authorized.
+
+## Source preservation and fresh qualification
+
+The implementation checkpoint is published in
+[Draft/HOLD PR #775](https://github.com/techrote/cybersand/pull/775) at
+`c63cea9ef10d21f264c9a235437f7fd40acb1072`. Every uploaded Git blob and the
+complete tree were checked against the local committed checkpoint; both trees
+are `5ef8fdf3009b4df72c3d1c5880166e36d6e72658`. The connected GitHub app supplied
+the authenticated write path because command-line Git had no write credentials.
+
+An executor recovery cleared the temporary `/dev/shm` area after a frozen-source
+Godot import was killed. The source checkout, committed reduced measurements and
+authenticated on-disk runtimes survived. Earlier raw reports stored only there
+are no longer available. Their observed development results above are retained
+as historical findings, but cannot substitute for original receipts in the final
+package. The killed import completed no credited test cases. Fresh campaigns
+now retain all logs, process receipts and reports on disk.
+
+Independent review also found that Git normalized the trajectory CSV from CRLF
+to LF while its reduced-evidence custody file still hashed the CRLF bytes. The
+writer now explicitly emits LF and the custody entry hashes the actual committed
+CSV. All 370 rows and 27 columns are unchanged; original run and source identities
+remain intact. All four retained reduced-output hashes were rechecked.
+
+The extended same-rig comparison uses three fresh 512×256 native Worlds and
+separate Rapier spaces, identical initial material bytes and physical state,
+the same Runner, authored actor identity and seed, and 300 decisions over 1,800
+completed native and Rapier steps per arm. A development run completed 2,877
+checks without failure. Idle Mechanic selected scheduled rest on 129 of 300
+decisions, completed two five-second rest intervals and resumed nonzero intent
+and normalized action. Oil Moth, Shy Crawler and Idle Mechanic travelled 443.9,
+271.0 and 201.2 cells respectively; this is accumulated physical path, not net
+progress or a quality ranking. Oil Moth also stalled near the inaccessible cup
+on 64 of 299 measured intervals, a preserved limitation. This newly added
+fixture is included in the sixteen-case final committed-source campaign; its
+development run is not labelled clean-commit qualification.

@@ -40,7 +40,7 @@ runtime hashes, test-start source hashes, input-report hashes and reduced-output
 hashes. The final integration commit is recorded by the lead; these results are
 bound to source hashes rather than an uncommitted branch name alone.
 
-B owns new `ambient_perception.gd`, `ambient_actuator.gd`, four focused fixtures,
+B owns new `ambient_perception.gd`, `ambient_actuator.gd`, five focused fixtures,
 this ledger and the reduced evidence. The lead owns production host/session hooks.
 The lead expressly delegated one narrow repair inside
 `physical_actor_rig.gd::ambient_ledge_observation`: distinguish a probe beginning
@@ -139,6 +139,7 @@ completion guards prevent an aborted helper from silently counting as success.
 | `test_ambient_native_motion.gd` | 306 | Production session scheduler and issued v2 commands, actual native/Rapier motion in three families, equal independent observer for three controllers, native Water edit, pause and clock/lease behavior, runtime custody |
 | `test_ambient_independent.gd` | 214 | B's independent review of A's engine through the real value adapters: source availability, material priority, safe neutral, copy isolation, module stream independence and contact/grounded action gates |
 | `test_ambient_ledge_geometry.gd` | 15 | Real Rapier support rays, empty drop, inside-block occlusion, canvas clipping and invalid-query budget |
+| `test_ambient_personalities_native.gd` | 2,877 | Three fresh native/Rapier worlds with the same Runner, initial material bytes/part poses, seed and 30-second budget; actual rest expiry/resumption, independently observed materials/resources and physical progression |
 
 C independently read and reran the 130-check perception fixture and the 305-check
 motion fixture before its final metadata-only platform custody repair. The final
@@ -215,6 +216,79 @@ preserves every actor's measurements, exact budget, cost counters, seed declarat
 and metric definitions. This is one four-second comparison per controller,
 with no confidence interval, broad pathfinding claim or human believability score.
 
+## Thirty-second personality observation
+
+The additional [compact personality report](evidence/personality-summary.json)
+records a longer comparison of **Oil Moth, Shy Crawler and Idle Mechanic on the
+same Runner rig**. Profile names grant no biological or physical capability. Each
+arm uses a fresh native owner and its own Rapier `World2D`, a 512×256 canvas, six
+actual actor parts/native masks, one native worker, the same floor and shallow
+material cups, the same authored actor instance 100 and the same start at
+`(220, 175)`. The profiles retain their authored modules and `shared_seed=false`;
+only their seed is set to the common comparison value 1701. Native preparation
+explicitly uses seed zero. Initial full native publication bytes and complete
+copied part poses, velocities and resource state compare exactly across arms.
+
+The run began **2026-11-24 19:18:20 UTC** on source commit
+`c63cea9ef10d21f264c9a235437f7fd40acb1072` plus the explicitly recorded new,
+then-untracked fixture. Its SHA-256 is
+`ff3095cd90955ccc87b0cd398e086c9ca63eeabf8b7c4176860ec56a1ce82f2e`.
+The production source hashes are retained individually and remained unchanged
+through execution. This is a source-hashed local fixture run, distinct from the
+lead's later complete committed-source qualification.
+
+Every arm completed **1,800 actual native steps and 1,800 Rapier steps**, accepted
+exactly 300 issued-observation commands at six-tick cadence and rejected none.
+Terminal completed physical time is 30 seconds. Its last pre-step decision uses
+29.9 seconds; requesting another delta is not counted as completed time. An
+independent numeric-ID observer queries both Oil and Water within 50 cells for
+all three profiles, including profiles that do not seek Oil. Its results never
+feed commands. All 1,800 material queries have admitted nonempty coverage.
+
+| Profile on Runner | Actual center path, cells | X range, cells | Idle intentions / 300 | Selected rest / 300 | X command sign changes | Stalled active intervals |
+|---|---:|---:|---:|---:|---:|---:|
+| Oil Moth | 443.93 | 35.50 | 0 | 0 | 11 | 64 / 299 |
+| Shy Crawler | 271.05 | 34.44 | 22 | 0 | 18 | 21 / 277 |
+| Idle Mechanic | 201.15 | 49.32 | 130 | 129 | 7 | 12 / 169 |
+
+Idle Mechanic selects its scheduled rest on 129 decisions, **43%** of the observed
+decision intervals. Two selected episodes last five completed seconds each:
+7.6–12.6 seconds and 17.2–22.2 seconds. Both expire naturally and are followed by
+a nonzero procedural intention and normalized movement command. A third rest
+starts at 27.1 seconds and is honestly marked incomplete when the observation
+ends at 30 seconds. Candidate rest activity and the selected override are recorded
+separately; losing to a higher-priority override does not count as timer completion.
+
+Physical state does not freeze during a neutral intention. The mechanic's center
+travels **37.23 cells while selected rest remains neutral**, from genuine inertia,
+gravity and articulated physical response. This drift is reported separately
+from active resumption. The path column sums center displacement every physical
+step and includes gait/vertical motion; it is not net travel, useful exploration
+or a subjective activity score.
+
+The Oil cup is physically obstructed. Oil Moth repeatedly approaches its observed
+target and selects obstruction escape on 83 decisions; its 64 stalled intervals
+are a preserved limitation. Shy Crawler selects Water avoidance on 32 decisions,
+and Idle Mechanic on 15. No actor center leaves the canvas and no supported-to-
+airborne transition occurs after initial settling. All three receive 300 own
+resource observations with energy remaining 1.0; this is coverage evidence and
+does not demonstrate energy depletion or resource-driven rest.
+
+Nearest material distances remain **nearest observed native samples**, not global
+nearest cells or proof that a target is physically reachable. Dynamic materials
+can change that distance independently of actor approach. In this controlled cup
+run the material revision remains unchanged, so the retained publication is fresh
+through revision equality even though its sampling tick is zero. The fixture
+does not award aesthetic, navigation or optimality passes to any personality.
+
+The single process completed in 15.45 wall-clock seconds with a recorded peak RSS
+of approximately 248 MiB. These are shared-host Linux observations, not Windows
+playfeel or real-time performance acceptance. A independently verified report,
+console and source hashes, all 900 decision times and 1,800 material measurements,
+profile/initial-state equality, and each of the 129 neutral selected-rest commands.
+The [independent review](evidence/personality-independent-review.json) retains that
+review separately from the implementer's assertions.
+
 ## Cost and capacity observations
 
 The separate 1024² native-material fixture retains one 2 MiB cache. One hundred
@@ -264,11 +338,23 @@ exit 137 during shared memory pressure before any result. It is not counted as a
 pass. After moving only this mission's checkout out of tmpfs and staggering native
 tests, the complete comparison passed. No other mission directory was modified.
 
+A subsequent executor memory failure ended an initial personality check-only
+attempt with exit 137 and cleared its temporary shared-memory volume. That attempt
+produced no successful result. The original four-second raw process reports on
+that volume are no longer retained there; their already committed reduced JSON,
+trajectory CSV, figure and source-custody records survived and were rechecked.
+Git's text normalization exposed a CRLF/LF mismatch in the trajectory output hash.
+The reducer now emits explicit LF and the custody record matches the committed
+CSV bytes; original source and run identities were preserved. The successful
+longer run and its complete raw report, console and execution receipt were saved
+to on-disk mission evidence, outside the cleared temporary volume.
+
 ## Reproduction and limits
 
 Run each named fixture with the pinned Godot and source-matched native libraries.
-Set `CYBERSAND_AMBIENT_PERCEPTION_REPORT` and `CYBERSAND_AMBIENT_MOTION_REPORT` to
-capture machine-readable results. The [reducer](evidence/reduce_evidence.py) checks
+Set `CYBERSAND_AMBIENT_PERCEPTION_REPORT`, `CYBERSAND_AMBIENT_MOTION_REPORT` and
+`CYBERSAND_AMBIENT_PERSONALITIES_REPORT` for their respective fixtures to capture
+machine-readable results. The [reducer](evidence/reduce_evidence.py) checks
 the motion report's source hashes before producing the retained JSON, CSV, plot
 and custody record. Its `--help` lists the report and supporting console inputs.
 

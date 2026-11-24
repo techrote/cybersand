@@ -110,25 +110,29 @@ assignment. Current scenes are 1024 by 512 cells.
 
 ## Owner walkthrough
 
-1. Open **Shared Workbench**, then **Actor Composition…**. Choose an entry under
-   **Ambient examples** and press **Load scene**. Wait for native and physical
-   admission. The normal starts remain paused and ambient remains opt-in outside
-   these explicit examples.
+1. Open **Shared Workbench**, then **Actor Composition…**. Choose **Oil / Water
+   preference garden** under **Ambient examples** and press **Load scene**. Wait
+   for native and physical admission. The normal starts remain paused and ambient
+   remains opt-in outside these explicit examples.
 2. Press **Play / Pause [P]** and observe the inhabitants. In the main toolbar,
    choose **Paint**, select Oil or Water and paint near an actor. Radius is in
    world cells. The default material preference example is an inclusive 50-cell
    circle sampled on the admitted four-cell grid, so a single unsampled cell can
    remain unobserved. Material alone does not imply a traversable route.
-3. In **Actor Composition…**, choose an actor under **Inspect**, then open
+3. In **Actor Composition…**, choose the **Runner** under **Inspect**, then open
    **Behaviour profile…**. Inspection leaves its producer active. The controller
    selector also offers **Procedural NPC / Ambient** for supported actors.
 4. Choose **Oil Moth**, press **Duplicate to customize**, give the profile a name
    and an independent seed, then select **Seek material**. Change its native
    material selection, radius, standoff or pace. Add **Rest**, reorder it or
    disable it to compare the same component vocabulary. Changes remain staged.
-5. Select **Avoid ledge**, change its duration from 10 to another admitted number
-   of simulation seconds, then press **Apply profile to this actor**. Read the
-   acknowledgement or refusal. The live inspector distinguishes chosen intent,
+5. Press **Apply profile to this actor** and read the acknowledgement or refusal.
+   Save the garden start if you want to keep those edits. To observe a physical
+   ledge trigger, load **Ten-second retreat walkway**, inspect its **Crawler**
+   using **Shy Crawler**, and open **Behaviour profile…**. Select **Avoid ledge**,
+   change its duration from 10 to another admitted number of simulation seconds,
+   and apply it to this actor. Press **Play / Pause [P]** to observe the retreat.
+   The live inspector distinguishes chosen intent,
    observed target and remaining time from actual physical travel. Pause freezes
    gameplay timers. The **Perception overlay** is optional.
 6. Close the editor, choose **Pilot inspected** to take control, then **Hand back**

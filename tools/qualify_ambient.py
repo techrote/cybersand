@@ -34,7 +34,9 @@ GODOT_WINDOWS_CONSOLE_SHA256 = "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8
 GODOT_WINDOWS_GUI_SHA256 = "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
 OWN_INPUTS = (
     "tools/qualify_ambient.py", "tools/package_ambient_evaluator.py",
+    "tools/ci/test_ambient_delivery.py",
     ".github/workflows/ambient-001-qualification.yml",
+    "tools/fixtures/ambient-001-qualification-request.json",
     "godot/data/ambient/profiles.json",
     "godot/examples/workbench/ambient-oil-water.json",
     "godot/examples/workbench/ambient-ledge-walkway.json",
@@ -52,6 +54,7 @@ CASES = (
     ("authoring_reopen", "test_ambient_authoring", ("--reopen", "ambient-qualified")),
     ("editor", "test_ambient_profile_editor", ()),
     ("native_motion", "test_ambient_native_motion", ()),
+    ("personalities", "test_ambient_personalities_native", ()),
     ("workbench", "test_ambient_workbench", ()),
     ("examples", "test_ambient_examples_native", ()),
     ("legacy_catalog", "test_workbench_actor_catalog", ()),
@@ -63,6 +66,7 @@ REPORTS = {
     "perception": "CYBERSAND_AMBIENT_PERCEPTION_REPORT",
     "editor": "CYBERSAND_AMBIENT_EDITOR_REPORT",
     "native_motion": "CYBERSAND_AMBIENT_MOTION_REPORT",
+    "personalities": "CYBERSAND_AMBIENT_PERSONALITIES_REPORT",
     "workbench": "CYBERSAND_AMBIENT_WORKBENCH_REPORT",
     "examples": "CYBERSAND_AMBIENT_EXAMPLES_REPORT",
 }
@@ -71,7 +75,8 @@ TERMINALS = {
     "perception": "AMBIENT_PERCEPTION", "ledge_geometry": "AMBIENT_LEDGE_GEOMETRY",
     "clock": "AMBIENT_CLOCK", "authoring_save": "AMBIENT_AUTHORING",
     "authoring_reopen": "AMBIENT_AUTHORING", "editor": "AMBIENT_EDITOR",
-    "native_motion": "AMBIENT_NATIVE_MOTION", "legacy_composition": "WB_ACTOR_COMPOSE",
+    "native_motion": "AMBIENT_NATIVE_MOTION", "personalities": "AMBIENT_PERSONALITIES",
+    "legacy_composition": "WB_ACTOR_COMPOSE",
 }
 TEXT_TERMINALS = {
     "workbench": r"^AMBIENT_WORKBENCH checks=(\d+) failures=(\d+) phases=\d+$",
@@ -264,6 +269,8 @@ def main() -> int:
                 record["checks"] = result["checks"]
             report["cases"].append(record)
             write_json(output / "qualification.json", report)
+            require(record["status"] == "passed",
+                    "Case failed; original process receipts retained and later cases not started: " + name)
         require(all(row["status"] == "passed" for row in report["cases"]),
                 "One or more cases failed; original process logs and reports retained")
         after = source_identity(args.allow_source_delta)

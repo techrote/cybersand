@@ -127,8 +127,8 @@ newer stale observation appear fresh. Main-thread physics and render ingestion
 consume the same immutable publication mechanism before its acknowledgement.
 
 Ledge samples are separate from canvas and obstacle information. A ray clipped
-by the canvas, beginning in non-support geometry or lacking sufficient searched
-depth is unavailable; it does not prove a cliff. A hit with an upward support
+by the canvas without a support hit, beginning in non-support geometry or lacking
+sufficient searched depth is unavailable; it does not prove a cliff. A hit with an upward support
 normal can establish a drop. An unclipped empty ray proves only that no support
 was found through its inclusive searched depth. Requests with equal reach/depth
 are shared; distinct modules retain their own results. The profile maximum

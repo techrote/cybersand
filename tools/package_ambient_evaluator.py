@@ -126,7 +126,7 @@ def build(args) -> None:
              "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch", "THIRD_PARTY_NOTICES.md",
              "LICENSE_STATUS.md", GUIDE, "docs/systems/ambient-actors.md",
              "docs/research/ambient-001", "docs/systems/workbench-actor-composition.md",
-             "docs/systems/physical-actor-rigs.md"]
+             "docs/systems/physical-actor-rigs.md", "tools/ci/test_ambient_delivery.py"]
     archive = subprocess.check_output(
         ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "archive", "HEAD", "--", *names],
         cwd=ROOT, env=dict(os.environ, GIT_LFS_SKIP_SMUDGE="1"), timeout=60)

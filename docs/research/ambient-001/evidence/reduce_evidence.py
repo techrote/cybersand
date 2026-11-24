@@ -80,7 +80,7 @@ def main() -> None:
               "material_tick", "material_revision", "oil_available", "oil_present", "oil_distance",
               "oil_x", "oil_y", "water_available", "water_present", "water_distance", "water_x", "water_y"]
     with (args.output / "native-motion-trajectories.csv").open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for campaign in motion["campaigns"]:
             for actor in campaign["actors"]:
