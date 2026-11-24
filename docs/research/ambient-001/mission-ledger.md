@@ -245,3 +245,51 @@ changed. The next Windows campaign qualifies the complete current source and
 portable archive. The completed Linux campaign is retained with an explicit
 unchanged-gameplay-input comparison instead of repeating its gameplay cases for
 this package-verifier-only change.
+
+## Final disposition — verified evaluator, Draft/HOLD
+
+The qualified implementation is
+`f4f94631d61d492554627949497e727b26043ccb`, tree
+`02f22944e9de8874f97e7acdc28990e3e0c35d10`.
+[Windows run 45475439737](https://github.com/techrote/cybersand/actions/runs/45475439737)
+passed every step, including both previously failing delivery gates. The
+complete machine-readable result and independent reviews are retained in
+[`evidence/final/final-qualification.json`](evidence/final/final-qualification.json).
+This closing ledger/receipt update changes documentation only; the evaluator
+and execution receipts remain pinned to the implementation commit above.
+
+| Final gate | Verified result |
+|---|---|
+| Windows source qualification | Sixteen cases, 5,959 assertions, zero failures; full source/runtime custody passed |
+| Source Windows graphical execution | All five ordinary examples progressed; twelve actual images, including the editor and perception overlay |
+| Pristine extracted gameplay/save/reopen | Five cases, 1,548 assertions, zero failures; the extracted project matches the qualified inputs |
+| Extracted Windows graphical execution | A second complete five-example, twelve-image pass |
+| Ordinary portable launcher | `SHARED_WORKBENCH_LAUNCH_READY`, zero exit and no error diagnostics |
+| Pristine and post-launch inventory | All 1,172 original payload files match their manifest hashes; only declared generated metadata/userdata are mutable afterward |
+| Independent archive audit | All 1,173 ZIP members safely and uniquely named, all payload hashes/CRC verified; exact engine/runtime/source and embedded qualification linkage |
+| Delivery refusal tests | Forty-one independent methods passed, including missing/changed receipts and shader UID/source-injection boundaries |
+| Linux gameplay | Sixteen cases and 5,959 assertions at `38177d57`; all 835 Godot inputs, 837 loaded project inputs and runtimes are unchanged at the final implementation, proven by the source bridge |
+
+The actual Windows captures are 1028×578 and use ANGLE with Microsoft Basic
+Render Driver. Both source and extracted sets have matched displayed actor and
+material-publication identities. They establish real hosted Windows rendering;
+physical Windows/NVIDIA playfeel and ambient believability remain owner
+judgements. No native runtime, motor, material law, equipment implementation or
+accepted host capacity was changed or promoted.
+
+The evaluator is
+`CyberSand-AMBIENT-001-Windows-f4f94631d61d.zip`, 95,212,785 bytes, SHA-256
+`8324c9390565b8c1f5106f0d8ee40e5286f0bd718403b1626ac09f31b7a396ec`.
+The [verified evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45475439737/artifacts/14959278583)
+and [original Windows evidence artifact](https://github.com/techrote/cybersand/actions/runs/45475439737/artifacts/14958974304)
+retain their separate API download digests. The first two failed delivery runs
+remain historical failures; neither is substituted for this completed gate.
+
+The same-rig thirty-second comparisons preserve two complete five-second rests
+and resumptions for Idle Mechanic, Shy Crawler's Water avoidance, and Oil Moth's
+prolonged obstruction at an inaccessible cup. Rest is neutral intention rather
+than frozen physics, nearest observed material is not guaranteed nearest material,
+and the short scripted ground baseline approached the initial fixed Oil point
+more closely. These results do not establish global navigation or aesthetic
+superiority. The experimental feature remains opt-in, **Draft/HOLD**, unmerged
+and awaiting owner acceptance.
