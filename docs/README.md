@@ -69,10 +69,7 @@ MoltenGlass H1 from this Materials Lab continuation.
 
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
-Workbench Art conversation lifetime: [lazy restoration, immutable linked traffic,
-crash handling, atomic checkpoints and cancellable export](systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
-PR #681 remains Draft/HOLD; its qualification ledger owns measured platform
-results and the remaining physical Windows acceptance.
+Workbench Art uses [one write-only audit per game session](systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026), accepted in #727. New sessions do not restore old conversations. The [Art finisher and Windows evaluator](operations/art-workbench-final-evaluation.md) consolidate dialog, provider and responsiveness repairs as a separate Draft/HOLD candidate.
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 defines the common desktop/agent/remote foundation and the GEN-008 candidate

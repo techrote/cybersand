@@ -36,6 +36,19 @@ func local(cell: Vector2i) -> Vector2:
 	var view: Rect2 = host.view_content_rect()
 	return view.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.camera_origin.floor()))*view.size/Vector2(host.current_view_size)
 
+func window_screen_rect(window: Window) -> Rect2:
+	return window.get_screen_transform()*window.get_visible_rect()
+
+func control_screen_rect(control: Control) -> Rect2:
+	return control.get_viewport().get_screen_transform()*(control.get_global_transform_with_canvas()*Rect2(Vector2.ZERO,control.size))
+
+func button_with_text(node: Node, text: String) -> Button:
+	if node is Button and node.text == text: return node
+	for child: Node in node.get_children():
+		var found := button_with_text(child,text)
+		if found != null: return found
+	return null
+
 func select_area(a: Vector2i,b: Vector2i) -> void:
 	editor.select_tool("Select")
 	var press := InputEventMouseButton.new()
@@ -83,6 +96,13 @@ func selection_checks() -> void:
 	check(bench.applied.edits == authored_before and host.simulation_worker.paint_state().revision == native_before.revision,"selection updates do not mutate native materials or authoring history")
 
 func layout_checks() -> void:
+	for i: int in 2: await process_frame
+	check(panel.last_visible_ui_usec > 0,"visible control projection exposes a bounded numerical timing receipt")
+	panel.hide()
+	for i: int in 2: await process_frame
+	check(panel.last_visible_ui_usec == 0,"hidden Art reports no visible control projection work")
+	panel.show()
+	await process_frame
 	check(panel.size == Vector2i(640,400) and panel.min_size == Vector2i(520,320),"compact default and minimum window sizes")
 	check(panel.draw.get_parent() == panel.undo_button.get_parent() and panel.stop.get_parent() == panel.redo_button.get_parent(),"send stop and shared history occupy one toolbar")
 	check(not panel.protected_row.visible,"unused protected bounds do not consume a row")
@@ -105,6 +125,138 @@ func layout_checks() -> void:
 			check(rect.position.x >= 0 and rect.end.x <= panel.size.x+1,"compact control fits window width: "+str(width)+" / "+control.get_class())
 		check(panel.input.size.y >= 64 and panel.state.get_global_rect().end.y <= panel.size.y+1,"prompt and status fit compact window")
 	panel.size = Vector2i(640,400)
+	# Owner regression #713: long Note content and notices must never move the
+	# ConfirmationDialog Apply/Cancel footer outside small Art windows.
+	var original_root_size: Vector2i = root.size
+	root.size = Vector2i(1280,720)
+	var conversation_dialog = panel.conversation_editor
+	for art_size: Vector2i in [Vector2i(520,320),Vector2i(640,400)]:
+		panel.size = art_size
+		panel._open_conversation()
+		for i: int in range(3): await process_frame
+		conversation_dialog.draft.append({"role":"user","content":("long note content\n").repeat(400),"image_offset":0})
+		conversation_dialog._rebuild(conversation_dialog.draft.size()-1)
+		panel.conversation_error = ("A long validation notice must scroll, not resize the footer. ").repeat(70)
+		panel._update_conversation_guard()
+		for i: int in range(3): await process_frame
+		# Test the popup and its buttons in the SAME screen coordinate space.
+		# Control.get_global_rect() uses the containing canvas, which is not a
+		# reliable Window-local reference for an embedded nested subwindow.
+		var popup_origin := Vector2(conversation_dialog.position)
+		if root.gui_embed_subwindows:
+			popup_origin += Vector2(panel.position)
+		var popup_rect := Rect2(popup_origin,Vector2(conversation_dialog.size))
+		var ok_button: Button = conversation_dialog.get_ok_button()
+		var cancel_button: Button = conversation_dialog.get_cancel_button()
+		var apply_rect := Rect2(ok_button.get_screen_position(),ok_button.size)
+		var cancel_rect := Rect2(cancel_button.get_screen_position(),cancel_button.size)
+		print("ART_CONVERSATION_LAYOUT ",JSON.stringify({
+			"art_size":art_size,"embedded":root.gui_embed_subwindows,
+			"popup_position":conversation_dialog.position,"popup_size":conversation_dialog.size,
+			"popup_screen_rect":popup_rect,"apply_screen_rect":apply_rect,"cancel_screen_rect":cancel_rect,
+			"apply_visible":ok_button.is_visible_in_tree(),"cancel_visible":cancel_button.is_visible_in_tree()}))
+		check(conversation_dialog.size.y <= art_size.y+1,
+			"Conversation stays within small Art window height: "+str(art_size))
+		check(conversation_dialog.size.x <= art_size.x+1,
+			"Conversation and retained-image label stay within small Art window width: "+str(art_size))
+		check(ok_button.is_visible_in_tree() and popup_rect.encloses(apply_rect),
+			"Apply footer remains clickable after long Note: "+str(art_size))
+		check(cancel_button.is_visible_in_tree() and popup_rect.encloses(cancel_rect),
+			"Cancel footer remains clickable after long Note: "+str(art_size))
+		conversation_dialog.get_cancel_button().pressed.emit()
+		# Closing a nested Window can be deferred to a later frame. Drain that
+		# lifecycle before the next iteration opens it again; otherwise the
+		# previous Cancel can hide the freshly opened dialog.
+		for i: int in range(2): await process_frame
+		conversation_dialog.hide()
+		for i: int in range(2): await process_frame
+		panel.conversation_error = ""
+	root.size = original_root_size
+	panel.size = Vector2i(640,400)
+
+func scaled_layout_checks() -> void:
+	var original_root_size := root.size
+	var dialog = panel.conversation_editor
+	for root_size: Vector2i in [Vector2i(1280,720),Vector2i(1920,1080)]:
+		root.size = root_size
+		for scale: float in [1.0,1.25,1.5]:
+			panel.content_scale_factor = scale
+			dialog.content_scale_factor = scale
+			for logical_size: Vector2i in [Vector2i(520,320),Vector2i(640,400)]:
+				panel.size = Vector2i((Vector2(logical_size)*scale).ceil())
+				panel._open_conversation()
+				var note := button_with_text(dialog,"+ Note")
+				check(note != null,"ordinary + Note control is available")
+				note.pressed.emit()
+				dialog.content.text = ("Long note content\n").repeat(400)
+				panel.conversation_error = ("Long validation notice must scroll. ").repeat(70)
+				panel._update_conversation_guard()
+				for i: int in 3: await process_frame
+				var label := "%s / %.2f / %s" % [root_size,scale,logical_size]
+				var popup_rect := window_screen_rect(dialog)
+				var apply_rect := control_screen_rect(dialog.get_ok_button())
+				var cancel_rect := control_screen_rect(dialog.get_cancel_button())
+				check(popup_rect.encloses(apply_rect) and popup_rect.encloses(cancel_rect),
+					"scaled Apply and Cancel remain within actual popup content: "+label)
+				check(window_screen_rect(root).encloses(apply_rect) and window_screen_rect(root).encloses(cancel_rect),
+					"scaled Apply and Cancel remain within desktop viewport: "+label)
+				for control: Control in [panel.draw,panel.stop,panel.endpoint,panel.conversation_button,panel.input,panel.state]:
+					check(window_screen_rect(panel).encloses(control_screen_rect(control)),
+						"scaled ordinary Art control remains reachable: "+label+" / "+control.get_class())
+				print("ART_CONVERSATION_SCALED_LAYOUT ",JSON.stringify({"root":root_size,"scale":scale,
+					"logical_art_size":logical_size,"art_size":panel.size,"popup_screen":popup_rect,
+					"apply_screen":apply_rect,"cancel_screen":cancel_rect,"display":DisplayServer.get_name()}))
+				dialog.get_cancel_button().pressed.emit()
+				for i: int in 2: await process_frame
+				panel.conversation_error = ""
+			# Traffic and guidance are independent windows. Long status/path text
+			# must not push the traffic editor below the visible content area.
+			panel.traffic_window.content_scale_factor = scale
+			panel._show_scaled_window(panel.traffic_window,Vector2i(900,600))
+			panel._set_traffic_path(("Long diagnostic path / export status ").repeat(200))
+			var guidance_window: Window = panel.guidance.get_parent()
+			guidance_window.content_scale_factor = scale
+			panel._show_scaled_window(guidance_window,Vector2i(700,400))
+			for i: int in 3: await process_frame
+			print("ART_AUXILIARY_SCALED_LAYOUT ",JSON.stringify({"root":root_size,"root_viewport":root.get_visible_rect(),
+				"scale":scale,"traffic_size":panel.traffic_window.size,"guidance_size":guidance_window.size,
+				"art_embeds_subwindows":panel.gui_embed_subwindows,"root_embeds_subwindows":root.gui_embed_subwindows,
+				"native_usable_screen":DisplayServer.screen_get_usable_rect(panel.traffic_window.current_screen),
+				"traffic_screen":window_screen_rect(panel.traffic_window),"guidance_screen":window_screen_rect(guidance_window)}))
+			for control: Control in [panel.export_button,panel.export_cancel,panel.traffic_text]:
+				check(window_screen_rect(panel.traffic_window).encloses(control_screen_rect(control)),
+					"traffic control remains visible with long status at scale %.2f / %s" % [scale,control.get_class()])
+				check(window_screen_rect(root).encloses(control_screen_rect(control)),
+					"traffic control stays on the root viewport at scale %.2f / %s" % [scale,control.get_class()])
+			if scale == 1.0:
+				# Godot 4.7 Window::_popup_base clamps even embedded popups to
+				# DisplayServer's usable screen. The headless dummy reports zero;
+				# preferred popup size therefore needs the real display-backed run.
+				# All control/root reachability assertions above still run headless.
+				var usable_screen := DisplayServer.screen_get_usable_rect(panel.traffic_window.current_screen).size
+				if usable_screen.x >= 900 and usable_screen.y >= 600:
+					check(panel.traffic_window.size == Vector2i(900,600),
+						"Traffic preserves its preferred 900x600 size when the root has room")
+					check(guidance_window.size == Vector2i(700,400),
+						"Guidance preserves its preferred 700x400 size when the root has room")
+				else:
+					print("ART_AUXILIARY_PREFERRED_SIZE_UNQUALIFIED ",JSON.stringify({"display":DisplayServer.get_name(),
+						"usable_screen":usable_screen,"root":root_size}))
+			check(panel.traffic_text.size.y > 100 and panel.traffic_path.tooltip_text.length() > 1000,
+				"long traffic status is bounded with its full value available in tooltip")
+			check(window_screen_rect(guidance_window).encloses(control_screen_rect(panel.guidance)),
+				"guidance editor remains inside its scaled window")
+			check(window_screen_rect(root).encloses(control_screen_rect(panel.guidance)),
+				"scaled guidance remains inside the root viewport")
+			panel.traffic_window.hide()
+			guidance_window.hide()
+	panel.content_scale_factor = 1.0
+	dialog.content_scale_factor = 1.0
+	panel.traffic_window.content_scale_factor = 1.0
+	panel.guidance.get_parent().content_scale_factor = 1.0
+	panel.size = Vector2i(640,400)
+	root.size = original_root_size
+	panel._set_traffic_path("")
 
 func conversation_checks() -> void:
 	panel.conversation.clear()
@@ -141,6 +293,8 @@ func conversation_checks() -> void:
 	panel._open_conversation()
 	dialog.content.text = "Must not overwrite a new turn"
 	panel.remember_turn("assistant","new live turn")
+	panel._update_conversation_guard()
+	check(dialog.get_ok_button().disabled,"new live turns invalidate the editor without repeatedly comparing transcript content")
 	panel._apply_conversation_edits()
 	check(dialog.visible and panel.conversation.size() == 3 and panel.conversation[0].content == "Edited request","stale editor cannot overwrite new conversation turns")
 	panel._open_conversation()
@@ -153,6 +307,13 @@ func conversation_checks() -> void:
 	panel._apply_conversation_edits()
 	check(panel.conversation[0].content == "Edited request","scheduled turns also prevent history edits")
 	panel.remaining_turns = 0
+	panel._open_conversation()
+	dialog.content.text = "Must not overwrite an in-place change"
+	panel.conversation[0].content = "out-of-band changed turn"
+	panel._apply_conversation_edits()
+	check(dialog.visible and panel.conversation[0].content == "out-of-band changed turn",
+		"Apply performs full snapshot validation even for an unexpected in-place mutation")
+	panel.conversation[0].content = "Edited request"
 	panel._open_conversation()
 	dialog.content.text = "Cannot save"
 	var original_path: String = panel.provider.log_path
@@ -181,6 +342,177 @@ func conversation_checks() -> void:
 	for invalid: Variant in [null,{},[{"role":"system","content":"not a conversation role"}],[{"role":"user","content":3}],[{"role":"user","content":"x","image_offset":-1}]]:
 		check(Provider.checked_conversation(invalid) == null,"invalid transcript rejected without runtime errors")
 
+func large_conversation_checks() -> void:
+	# Exercise the actual dialog at its admitted turn capacity. UI list filling
+	# yields between slices; a complete immutable draft exists before Apply.
+	var original: Array = panel.conversation
+	panel.conversation = []
+	for i: int in Provider.MAX_CONVERSATION_TURNS:
+		panel.conversation.append({"role":"user","content":"A short editable message %d" % i})
+	var started := Time.get_ticks_usec()
+	panel._open_conversation()
+	var opening_usec := Time.get_ticks_usec()-started
+	var dialog = panel.conversation_editor
+	check(dialog.list_loading and dialog.messages.item_count < panel.conversation.size(),
+		"large message list yields instead of adding every row in one UI callback")
+	check(dialog.last_list_slice_items > 0 and dialog.last_list_slice_items <= dialog.LIST_ITEMS_PER_FRAME
+		and dialog.last_list_slice_usec > 0 and dialog.max_list_slice_usec >= dialog.last_list_slice_usec,
+		"list population records its bounded item count and script work timing")
+	check(dialog.draft.size() == Provider.MAX_CONVERSATION_TURNS,
+		"yielding list population retains the complete editable draft")
+	var note := button_with_text(dialog,"+ Note")
+	note.pressed.emit()
+	check(dialog.list_loading and dialog.draft.size() == Provider.MAX_CONVERSATION_TURNS+1,
+		"+ Note remains responsive while the long message list is populating")
+	dialog.remove_button.pressed.emit()
+	check(dialog.list_loading and dialog.draft.size() == Provider.MAX_CONVERSATION_TURNS,
+		"Remove remains responsive while the long message list is populating")
+	dialog.messages.select(0)
+	dialog.messages.item_selected.emit(0)
+	dialog.content.text = "Updated while list is filling"
+	dialog.content.text_changed.emit()
+	check(dialog.draft[0].content == "A short editable message 0",
+		"typing updates its caption without serializing the entire message into the draft each key")
+	dialog.flush_message()
+	check(dialog.draft[0].content == "Updated while list is filling"
+		and dialog.baseline[0].content == "A short editable message 0"
+		and panel.conversation[0].content == "A short editable message 0",
+		"message flush owns its changed entry without mutating the baseline or live context")
+	started = Time.get_ticks_usec()
+	for i: int in 100: panel._update_conversation_guard()
+	var guard_usec := Time.get_ticks_usec()-started
+	# Closing during list population must not reopen the editor or continue
+	# building a hidden list. Reopening creates a fresh independent generation.
+	dialog.get_cancel_button().pressed.emit()
+	for i: int in 3: await process_frame
+	check(not dialog.visible and not dialog.list_loading,
+		"Cancel during large list population stops hidden layout work")
+	panel.conversation = [{"role":"user","content":"fresh short conversation"}]
+	panel._open_conversation()
+	for i: int in 3: await process_frame
+	check(dialog.messages.item_count == 1 and dialog.content.text == "fresh short conversation",
+		"reopen cannot receive rows from a cancelled older list generation")
+	dialog.content.text = ("long note line\n").repeat(2000)
+	dialog.content.text_changed.emit()
+	dialog.flush_message()
+	check(dialog.draft[0].content == dialog.content.text and dialog.messages.get_item_text(0).length() < 100,
+		"long note keeps complete text with a bounded readable caption")
+	dialog.hide()
+	panel.conversation = []
+	for i: int in Provider.MAX_CONVERSATION_TURNS:
+		panel.conversation.append({"role":"user","content":"List completion message %d" % i})
+	panel._open_conversation()
+	var deadline := Time.get_ticks_msec()+10000
+	while dialog.list_loading and Time.get_ticks_msec() < deadline: await process_frame
+	check(not dialog.list_loading and dialog.messages.item_count == Provider.MAX_CONVERSATION_TURNS,
+		"incremental population exposes every admitted conversation turn")
+	dialog.messages.select(Provider.MAX_CONVERSATION_TURNS-1)
+	dialog.messages.item_selected.emit(Provider.MAX_CONVERSATION_TURNS-1)
+	check(dialog.content.text == "List completion message 16383",
+		"last conversation turn remains selectable and editable after full population")
+	dialog.hide()
+	var closing_dialog = panel.ConversationEditor.new()
+	panel.add_child(closing_dialog)
+	closing_dialog.open_history(panel.conversation)
+	closing_dialog.queue_free()
+	for i: int in 3: await process_frame
+	check(not is_instance_valid(closing_dialog),
+		"dialog destruction during list population does not retain a live continuation")
+	panel.conversation = original
+	print("ART_CONVERSATION_RESPONSIVENESS ",JSON.stringify({"turns":Provider.MAX_CONVERSATION_TURNS,
+		"open_usec":opening_usec,"100_guard_usec":guard_usec,"last_list_slice_usec":dialog.last_list_slice_usec,
+		"max_list_slice_usec":dialog.max_list_slice_usec,"display":DisplayServer.get_name()}))
+
+func callback_stop_checks() -> void:
+	# Direct drawing shares the same Stop boundary as model-assisted drawing.
+	# Its append-only program intent must not admit native work after Stop.
+	var manual_native_before: Dictionary = host.simulation_worker.paint_state()
+	var manual_authored_before: Array = bench.applied.edits.duplicate(true)
+	var manual_sequence_before: int = panel.executor.batch_sequence
+	var manual_admissions_before: int = panel.provider.traffic.count('"kind":"manual_admission"')
+	var manual_old_length: int = panel.provider.traffic.length()
+	panel.input_mode.select(0)
+	panel.input.text = '[{"shape":"rectangle","x0":8,"y0":8,"x1":9,"y1":9,"material":58}]'
+	panel.paint_material.select(panel.paint_material.get_item_index(58))
+	for i: int in 4: panel.fields[i].value = [0,0,512,512][i]
+	var manual_stopped := {"value":false}
+	var manual_observer := func() -> void:
+		if not manual_stopped.value and panel.provider.traffic.substr(manual_old_length).contains('"kind":"manual_program"'):
+			manual_stopped.value = true
+			panel.stop_all("Fixture Stop from manual program audit")
+	panel.provider.traffic_changed.connect(manual_observer)
+	panel.submit_text()
+	panel.provider.traffic_changed.disconnect(manual_observer)
+	check(manual_stopped.value,"Stop occurs during real Direct JSON program audit")
+	check(panel.executor.batch_sequence == manual_sequence_before and not panel.executor.active,
+		"Stop during manual program audit prevents native drawing admission")
+	check(panel.provider.traffic.count('"kind":"manual_admission"') == manual_admissions_before,
+		"cancelled manual program records no later native admission")
+	panel.stop_all("Fixture cleanup")
+	for i: int in 3: await process_frame
+	check(host.simulation_worker.paint_state().revision == manual_native_before.revision and bench.applied.edits == manual_authored_before,
+		"cancelled manual program leaves real native and authored cells unchanged")
+	# Stop may also be requested while the panel is auditing parameters, before
+	# Provider.send has created its active request generation.
+	panel.current_provider = "LM Studio"
+	panel.source.select(0)
+	panel.endpoint.text = "http://127.0.0.1:1/v1"
+	panel.model.text = "cancel-before-dispatch-fixture"
+	panel.input_mode.select(1)
+	panel.input.text = "Return []"
+	panel.turn_limit.value = 1
+	panel.image_input.button_pressed = false
+	var old_length: int = panel.provider.traffic.length()
+	var requests_before: int = panel.provider.traffic.count('"kind":"request"')
+	var parameter_stop := {"value":false}
+	var parameter_observer := func() -> void:
+		if not parameter_stop.value and panel.provider.traffic.substr(old_length).contains('"kind":"request_parameters"'):
+			parameter_stop.value = true
+			panel.stop_all("Fixture Stop from request parameter audit")
+	panel.provider.traffic_changed.connect(parameter_observer)
+	panel.send_prompt()
+	panel.provider.traffic_changed.disconnect(parameter_observer)
+	check(parameter_stop.value,"Stop occurs during the real Send parameter audit")
+	check(not panel.provider.active and panel.provider.request == null,
+		"Stop during parameter audit prevents HTTP dispatch")
+	check(panel.provider.traffic.count('"kind":"request"') == requests_before,
+		"cancelled Send parameters produce no later provider request event")
+	panel.stop_all("Fixture cleanup")
+	for target: String in ["message","local_geometry"]:
+		var native_before: Dictionary = host.simulation_worker.paint_state()
+		var authored_before: Array = bench.applied.edits.duplicate(true)
+		var sequence_before: int = panel.executor.batch_sequence
+		var admission_before: int = panel.provider.traffic.count('"kind":"drawing_admission"')
+		panel.provider.serial += 1
+		panel.request_epoch = host.simulation_worker.art_state().epoch
+		panel.request_area = Rect2i(0,0,512,512)
+		panel.request_guards = []
+		panel.request_materials = [0,58]
+		panel.request_shapes = panel.SHAPES
+		panel.request_material = 58
+		panel.request_pixel_limit = 0
+		panel.request_local = true
+		panel.request_scanline = false
+		panel.remaining_turns = 1
+		old_length = panel.provider.traffic.length()
+		var interrupted := {"value":false}
+		var observer := func() -> void:
+			if not interrupted.value and panel.provider.traffic.substr(old_length).contains('"kind":"'+target+'"'):
+				interrupted.value = true
+				panel.stop_all("Fixture Stop from "+target+" audit")
+		panel.provider.traffic_changed.connect(observer)
+		panel.provider_finished(panel.provider.serial,'[{"shape":"rectangle","x0":8,"y0":8,"x1":9,"y1":9,"material":58}]',{},"")
+		panel.provider.traffic_changed.disconnect(observer)
+		check(interrupted.value,"Stop occurs synchronously during "+target+" audit callback")
+		check(panel.executor.batch_sequence == sequence_before and not panel.executor.active,
+			"Stop during "+target+" cannot admit the old response to native drawing")
+		check(panel.provider.traffic.count('"kind":"drawing_admission"') == admission_before,
+			"cancelled "+target+" callback records no later drawing admission")
+		panel.stop_all("Fixture cleanup")
+		for i: int in 3: await process_frame
+		check(host.simulation_worker.paint_state().revision == native_before.revision and bench.applied.edits == authored_before,
+			"Stop during "+target+" leaves real native and authored cells unchanged")
+
 func run() -> void:
 	root.size = Vector2i(1280,900)
 	set_meta("cybersand_feature","shared_workbench")
@@ -200,7 +532,10 @@ func run() -> void:
 		await process_frame
 		await selection_checks()
 		await layout_checks()
+		await scaled_layout_checks()
 		conversation_checks()
+		await large_conversation_checks()
+		await callback_stop_checks()
 	host.queue_free()
 	await process_frame
 	await process_frame

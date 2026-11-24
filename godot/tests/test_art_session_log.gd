@@ -75,8 +75,9 @@ func run() -> void:
 	# Key-dialog confirmation must register arbitrary formats even before a
 	# model Send. Direct JSON can carry extra user-defined keys and values.
 	var canary := "art-audit::custom!secret?2026"
+	panel.key_button.pressed.emit()
 	panel.key_field.text = canary
-	panel.key_dialog.confirmed.emit()
+	panel.key_dialog.get_ok_button().pressed.emit()
 	check(panel.provider.secrets.has(canary),"Key dialog registers secret immediately")
 	panel.keys["NVIDIA"] = "other-provider::secret!2026"
 	var nested := {}

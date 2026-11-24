@@ -204,13 +204,15 @@ unchanged. Older dated boundaries below retain their historical scope.
 
 ## WB-ART-002 direct drawing — 2026-11-10
 
-**2026-11-20 conversation lifetime candidate:** PR #681 retains Draft/HOLD while
-finishing [lazy restore and immutable linked traffic](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
-Idle Workbench startup must perform no archive I/O. Explicit Art opening restores
-incrementally; native atomic publication protects session checkpoints and full
-audit exports. Missing or inconsistent histories preserve their saved pointer.
-Source-matched runtime evidence and owner Windows acceptance are separate from
-implementation; the PR ledger records their exact tested identities.
+**Accepted session contract, #727:** every new Workbench game session starts
+with an empty Art conversation and writes one lazy root JSONL. No historical
+conversation is restored. Same-session collaboration survives Art Hide/reopen.
+
+**24 November finisher, Draft/HOLD:** the
+[Art evaluation guide](../operations/art-workbench-final-evaluation.md) owns
+consolidation of #763/#756/#765/#766, provider failure lifecycle, long-history
+responsiveness and physical no-server acceptance. Native/source and runtime
+qualification are separate from the owner's Windows hardware verdict.
 
 **Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only.
 

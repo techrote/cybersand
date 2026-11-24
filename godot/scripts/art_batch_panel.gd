@@ -18,6 +18,20 @@ var request_material := 58
 var erase := CheckBox.new()
 const Provider = preload("res://scripts/art_provider.gd")
 var provider := Provider.new()
+# Last close/stop operation only; no unbounded UI event journal or credentials.
+var last_close_timing: Dictionary = {}
+var last_stop_timing: Dictionary = {}
+var last_send_timing: Dictionary = {}
+var last_finished_timing: Dictionary = {}
+# Captured user turn for the current provider admission only. Large request
+# preparation may finish after controls change or Art is hidden/reopened.
+var _pending_provider_send: Dictionary = {}
+var last_native_poll_usec := 0
+var last_request_epoch_usec := 0
+var last_send_epoch_usec := 0
+# GDScript control/status projection only, excluding deferred engine layout/render.
+# Zero when Art is hidden; native/provider lifetime work has separate receipts.
+var last_visible_ui_usec := 0
 var input_mode := OptionButton.new()
 var source := OptionButton.new()
 var model := LineEdit.new()
@@ -29,6 +43,7 @@ var image_input := CheckBox.new()
 var key_dialog := ConfirmationDialog.new()
 var key_field := LineEdit.new()
 var key_button := Button.new()
+var key_dialog_provider := ""
 var traffic_window := Window.new()
 var traffic_text := TextEdit.new()
 var traffic_dirty := false
@@ -40,6 +55,8 @@ var export_cancel := Button.new()
 var export_message := ""
 var export_destination := ""
 var settings := ConfigFile.new()
+var _saved_settings_text := ""
+var _settings_were_saved := false
 var keys: Dictionary = {}
 var rows: Array[Control] = []
 var prompt_text := "Draw a cyberpunk robot statue using a few rectangles, discs and lines."
@@ -48,12 +65,19 @@ var current_provider := "LM Studio"
 var request_epoch := 0
 var request_local := false
 const ArtPlan = preload("res://scripts/art_batch_plan.gd")
-const NVIDIA_MODELS := {
-	"Qwen3 Next 80B Instruct · text": "qwen/qwen3-next-80b-a3b-instruct",
-	"Qwen2.5 Coder 32B · text": "qwen/qwen2.5-coder-32b-instruct",
-	"Nemotron 3.5 Lightning · text": "nvidia/nemotron-3.5-lightning-30b-a3b",
-	"Nemotron 3.5 Super VL · image": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+# Curated menu entries are convenience choices, not a request allowlist.
+# Preserve exact user-specified local names and NVIDIA Build identifiers.
+const LM_STUDIO_MODELS := {
+	"KAT Coder V2.5 Dev REAP-50 · local": "kat-coder-v2.5-dev-reap-50@q6_k",
+	"Daisyrose 27B · local": "daisyrose-27b",
+	"LFM2.5 24B Turbo-Brilliance · local": "lfm2.5-24b-a2b-turbo-brilliance-50x-neo-max-imatrix",
 }
+const NVIDIA_MODELS := {
+	"Kimi K3.1 Pro": "moonshotai/kimi-k3_1-pro",
+	"Mistral Large 4": "mistralai/mistral-large-4-1t-a52b",
+	"Nemotron 3.5 Super VL": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+}
+const INVALID_LEGACY_MODEL := "astra5-6"
 var ui_epoch := 0
 var capturing := false
 var request_area: Rect2i
@@ -72,6 +96,8 @@ var _manual_submission_sequence := 0
 var _manual_active_submission := -1
 var _manual_active_batch_sequence := -1
 var conversation: Array = []
+var conversation_revision := 0
+var conversation_editor_revision := -1
 var _pending_traffic_path := ""
 var conversation_loaded := true
 var history_load_error := ""
@@ -142,9 +168,10 @@ func _ready() -> void:
 	title = "Art workbench"
 	size = Vector2i(640,400)
 	min_size = Vector2i(520,320)
+	size_changed.connect(_sync_window_minimum.bind(self,Vector2i(520,320)))
 	transient = true
 	exclusive = false
-	close_requested.connect(hide)
+	close_requested.connect(_close_art_window)
 	visibility_changed.connect(_selection_visibility_changed)
 	var dense := Theme.new()
 	dense.default_font_size = 14
@@ -234,6 +261,18 @@ func _bind_selection() -> void:
 	selection_editor = wb.paint_editor
 	selection_editor.selection_changed.connect(focus_selection)
 
+func _close_art_window() -> void:
+	# Preserve the existing policy: closing hides the window but does not Stop.
+	# This diagnostic measures just the synchronous UI close path, not the first
+	# responsive subsequent frame; the isolated regression measures that gap.
+	var began_usec := Time.get_ticks_usec()
+	var pending_request: bool = provider.active
+	hide()
+	last_close_timing = {"close_usec":Time.get_ticks_usec() - began_usec,
+		"hidden":not visible, "provider_active_before":pending_request,
+		"provider_active_after":provider.active}
+
+
 func _selection_visibility_changed() -> void:
 	# A new Workbench session never reopens an earlier model conversation.
 	# Hiding/revealing Art changes only the selection binding.
@@ -254,16 +293,22 @@ func focus_selection(region: Rect2i) -> void:
 
 func _open_conversation() -> void:
 	conversation_error = ""
+	conversation_editor_revision = conversation_revision
 	conversation_editor.open_history(conversation)
 	_update_conversation_guard()
 
-func _conversation_block_reason() -> String:
+func _conversation_block_reason(check_contents: bool = false) -> String:
 	if not conversation_loaded: return "Open the saved conversation successfully before editing it."
 	var blocked := history_block_reason()
 	if not blocked.is_empty(): return "Stop the agent and wait for its confirmed result before applying history edits."
 	if wb != null and (wb.busy() or (wb.paint_editor != null and wb.paint_editor.busy())):
 		return "Wait for the current Workbench operation before applying history edits."
-	if conversation != conversation_editor.baseline:
+	# Ordinary UI polling must not compare every byte of a long conversation
+	# each frame. All live turn admissions increment the revision; Apply also
+	# checks the full snapshot to reject an unexpected out-of-band mutation.
+	if conversation_revision != conversation_editor_revision \
+			or conversation.size() != conversation_editor.baseline.size() \
+			or (check_contents and conversation != conversation_editor.baseline):
 		return "Conversation changed while this editor was open. Reopen it to edit the latest history."
 	return ""
 
@@ -276,7 +321,7 @@ func _update_conversation_guard() -> void:
 func _apply_conversation_edits() -> void:
 	conversation_editor.flush_message()
 	conversation_error = ""
-	var blocked := _conversation_block_reason()
+	var blocked := _conversation_block_reason(true)
 	if not blocked.is_empty():
 		conversation_editor.notice.text = blocked
 		return
@@ -299,6 +344,7 @@ func _apply_conversation_edits() -> void:
 		_update_conversation_guard()
 		return
 	conversation = clean
+	conversation_revision += 1
 	last_image = "" # The next request must not rely on an image removed from context.
 	conversation_editor.hide()
 	input_error = "Conversation updated for future requests; no canvas edits were executed."
@@ -307,6 +353,7 @@ func mount_tools(actions: HBoxContainer) -> void:
 	var options := Window.new()
 	options.title = "Drawing tools"
 	options.close_requested.connect(options.hide)
+	options.size_changed.connect(_sync_window_minimum.bind(options,Vector2i(480,145)))
 	add_child(options)
 	options.hide()
 	var fields_box := VBoxContainer.new()
@@ -329,7 +376,7 @@ func mount_tools(actions: HBoxContainer) -> void:
 	hint.text = "Line and polyline widths are in cells. Pixel limit 0 adds no cap."
 	fields_box.add_child(hint)
 	tools_button.text = "Tools…"
-	tools_button.pressed.connect(func() -> void: options.popup_centered(Vector2i(480,145)))
+	tools_button.pressed.connect(_show_scaled_window.bind(options,Vector2i(480,145)))
 	actions.add_child(tools_button)
 
 func enabled_shapes() -> Array:
@@ -394,10 +441,12 @@ func _finish_manual_audit(on_shutdown: bool = false) -> void:
 	_manual_active_batch_sequence = -1
 
 func submit_text() -> void:
+	var epoch := ui_epoch
 	executor.wb = wb
 	_register_provider_keys_for_redaction()
 	executor.poll()
 	_finish_manual_audit()
+	if epoch != ui_epoch: return
 	input_error = ""
 	var parsed := JSON.new()
 	if parsed.parse(input.text) != OK:
@@ -420,6 +469,9 @@ func submit_text() -> void:
 		"mode":"Direct JSON","program":parsed.data,"focus_xywh":[bounds.position.x,bounds.position.y,bounds.size.x,bounds.size.y],
 		"protected":[[guards[0].position.x,guards[0].position.y,guards[0].size.x,guards[0].size.y]] if not guards.is_empty() else [],
 		"materials":allowed,"shapes":enabled_shapes(),"pixel_limit":int(pixel_limit.value)})
+	# Audit observers can Stop direct drawing too. Preserve the intent record,
+	# but never admit a new native batch after that generation was cancelled.
+	if epoch != ui_epoch: return
 	# A rejected overlapping Draw cannot retire the existing native batch's
 	# pending terminal audit. Do not enter submit() while it remains active.
 	var answer: Dictionary
@@ -437,22 +489,45 @@ func submit_text() -> void:
 	if answer.status == "refused": input_error = str(answer.reason)
 
 func _process(_delta: float) -> void:
+	last_visible_ui_usec = 0
 	_poll_traffic_export()
 	if wb == null: return
 	_bind_selection()
 	executor.wb = wb
+	var native_poll_begin_usec := Time.get_ticks_usec()
 	executor.poll()
+	last_native_poll_usec = Time.get_ticks_usec() - native_poll_begin_usec
 	_finish_manual_audit()
 	_update_conversation_guard()
 	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
 		if provider.active or capturing or executor.active or remaining_turns != 0: stop_all("Run time limit reached")
 		run_deadline_ms = 0
+	# Hidden requests retain the same World lifetime guard as visible requests.
+	# Hide is allowed to continue; a replacement World invalidates the old work.
+	if provider.active:
+		var epoch_begin_usec := Time.get_ticks_usec()
+		var current_epoch: int = wb.host.simulation_worker.art_state().epoch
+		last_request_epoch_usec = Time.get_ticks_usec() - epoch_begin_usec
+		if current_epoch != request_epoch: stop_all("Canvas changed")
+	# Native receipts and model-turn chaining must continue even while Art is
+	# hidden. Handle them before skipping the window-only controls below.
+	if log_draw and not executor.active:
+		provider.log_event("native_result",executor.result)
+		log_draw = false
+		model_feedback(JSON.stringify(executor.result))
+	if remaining_turns == 0 and not provider.active and not capturing and not log_draw:
+		run_deadline_ms = 0
+	# Closing Art is Hide, not Stop. Keep HTTP/authoritative native work live,
+	# but avoid repeatedly rebuilding model controls, tooltips and status text
+	# while the model-mode window is invisible.
+	if not visible and input_mode.selected != 0:
+		return
+	var visible_ui_begin_usec := Time.get_ticks_usec()
 	draw.disabled = executor.active
 	var history_replaying: bool = wb.paint_editor != null and wb.paint_editor.history_replaying()
 	stop.disabled = not executor.active and not provider.active and not capturing \
 		and remaining_turns == 0 and not history_replaying and not provider.export_active and not provider.resume_active
-	if provider.active and wb.host.simulation_worker.art_state().epoch != request_epoch: stop_all("Canvas changed")
 	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0 \
 		or provider.export_active or provider.resume_active or (wb.paint_editor != null and wb.paint_editor.busy())
 	export_button.disabled = not history_block_reason().is_empty()
@@ -469,14 +544,12 @@ func _process(_delta: float) -> void:
 	for control: Control in model_controls: control.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
 	input_mode.tooltip_text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
-	if log_draw and not executor.active:
-		provider.log_event("native_result",executor.result)
-		log_draw = false
-		model_feedback(JSON.stringify(executor.result))
-	if remaining_turns == 0 and not provider.active and not capturing and not log_draw:
-		run_deadline_ms = 0
 	var status_text := "Idle"
-	if provider.active: status_text = "Waiting for model · Stop available"
+	if provider.active:
+		match str(provider.last_request_timing.get("status","")):
+			"preparing_request": status_text = "Preparing request · Stop available"
+			"preparing_response": status_text = "Preparing response · Stop available"
+			_: status_text = "Waiting for model · Stop available"
 	elif waiting_until_ms > Time.get_ticks_msec():
 		status_text = "Waiting to send · %.1fs · Stop available" % ((waiting_until_ms-Time.get_ticks_msec())/1000.0)
 	elif capturing: status_text = "Capturing current view · Stop available"
@@ -503,6 +576,7 @@ func _process(_delta: float) -> void:
 	if state.text != status_text:
 		state.text = status_text
 		state.tooltip_text = status_text
+	if visible: last_visible_ui_usec = Time.get_ticks_usec() - visible_ui_begin_usec
 
 func _exit_tree() -> void:
 	if wb != null:
@@ -515,6 +589,9 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	# Provider preferences persist, but conversation turns and archive pointers do
 	# not. Never inspect old traffic or attach an old session during construction.
 	var profile_error := settings.load("user://art-provider.cfg")
+	if profile_error == OK:
+		_saved_settings_text = settings.encode_to_text()
+		_settings_were_saved = true
 	if profile_error != OK and FileAccess.file_exists("user://art-provider.cfg"):
 		_profile_session_error = "Saved Art preferences are unreadable. Existing settings are preserved; session logging and Send remain available."
 	if settings.has_section_key("session","traffic_path"):
@@ -523,6 +600,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	# No commit_segment callback means it never publishes a cross-session pointer.
 	add_child(provider)
 	provider.finished.connect(provider_finished)
+	provider.request_started.connect(_provider_request_started)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
 		if log_draw: provider.log_event("native_receipt",receipt))
 	executor.manual_receipt.connect(func(receipt: Dictionary) -> void:
@@ -535,9 +613,9 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	source.item_selected.connect(change_provider)
 	row.add_child(source)
 	model.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	model.placeholder_text = "Model ID"
+	model.placeholder_text = "Model ID (custom names allowed)"
 	row.add_child(model)
-	history.tooltip_text = "Previously used model IDs"
+	history.tooltip_text = "Provider presets followed by saved/custom model IDs. Presets do not confirm API access, local model loading or image support; check your configured endpoint. Model ID and URL remain editable."
 	history.fit_to_longest_item = false
 	history.clip_text = true
 	history.custom_minimum_size.x = 34
@@ -546,15 +624,11 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 		history.select(0))
 	row.add_child(history)
 	key_button.text = "Key…"
-	key_button.pressed.connect(func() -> void:
-		key_dialog.title = current_provider+" key · memory only"
-		key_field.text = keys.get(current_provider,"")
-		key_dialog.popup_centered(Vector2i(540,100))
-		key_field.grab_focus())
+	key_button.pressed.connect(_open_key_dialog)
 	row.add_child(key_button)
 	var traffic_button := Button.new()
 	traffic_button.text = "Traffic…"
-	traffic_button.pressed.connect(func() -> void: traffic_window.popup_centered(Vector2i(900,600)); refresh_traffic())
+	traffic_button.pressed.connect(func() -> void: _show_scaled_window(traffic_window,Vector2i(900,600)); refresh_traffic())
 	row.add_child(traffic_button)
 	column.add_child(row); rows.append(row)
 	row = HBoxContainer.new()
@@ -601,6 +675,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	add_child(spending)
 	spending.hide()
 	spending.close_requested.connect(spending.hide)
+	spending.size_changed.connect(_sync_window_minimum.bind(spending,Vector2i(400,280)))
 	var spending_fields := VBoxContainer.new()
 	spending.add_child(spending_fields)
 	spending_fields.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -621,7 +696,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	var spending_button := Button.new()
 	spending_button.text = "Limits…"
 	spending_button.tooltip_text = "Request pacing, run duration and estimated spending. Zero disables each limit."
-	spending_button.pressed.connect(func() -> void: spending.popup_centered(Vector2i(400,280)))
+	spending_button.pressed.connect(_show_scaled_window.bind(spending,Vector2i(400,280)))
 	row.add_child(spending_button)
 	conversation_button.text = "Conversation…"
 	conversation_button.tooltip_text = "View, edit or remove conversation messages used as future model context. Raw traffic and native receipts are retained."
@@ -637,6 +712,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	guidance.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	guidance.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	guidance_window.min_size = Vector2i(360,220)
+	guidance_window.size_changed.connect(_sync_window_minimum.bind(guidance_window,Vector2i(360,220)))
 	guidance.text = settings.get_value("session","guidance",Provider.INSTRUCTIONS)
 	var stencil_window := Window.new()
 	stencil_window.title = "Scanline guidance"
@@ -648,27 +724,31 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	stencil_guidance.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	stencil_guidance.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	stencil_window.min_size = Vector2i(360,220)
+	stencil_window.size_changed.connect(_sync_window_minimum.bind(stencil_window,Vector2i(360,220)))
 	stencil_guidance.text = settings.get_value("session","scanline_guidance",STENCIL_INSTRUCTIONS)
 	var edit_guidance := Button.new()
 	edit_guidance.text = "Guidance…"
 	edit_guidance.pressed.connect(func() -> void:
 		var window := stencil_window if input_mode.selected == 2 else guidance_window
-		window.popup_centered(Vector2i(700,400)))
+		_show_scaled_window(window,Vector2i(700,400)))
 	row.add_child(edit_guidance)
 	model_controls.assign([context_mode,turn_limit,spending_button,edit_guidance])
 	column.add_child(row)
 	key_field.secret = true
 	key_field.placeholder_text = "Paste API key; never saved in profiles or traffic"
-	key_field.custom_minimum_size.x = 500
+	key_field.custom_minimum_size.x = 360
+	key_field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	key_dialog.add_child(key_field)
-	key_dialog.confirmed.connect(func() -> void:
-		keys[current_provider] = key_field.text.strip_edges()
-		_register_provider_keys_for_redaction()
-		key_field.clear())
+	key_dialog.confirmed.connect(_apply_provider_key)
 	key_dialog.canceled.connect(key_field.clear)
+	key_dialog.close_requested.connect(key_field.clear)
+	key_dialog.size_changed.connect(_sync_window_minimum.bind(key_dialog,Vector2i(380,90)))
+	key_dialog.visibility_changed.connect(func() -> void:
+		if not key_dialog.visible: _clear_hidden_key.call_deferred())
 	add_child(key_dialog)
 	traffic_window.title = "Art traffic · complete redacted requests / responses / native results"
 	traffic_window.min_size = Vector2i(600,350)
+	traffic_window.size_changed.connect(_sync_window_minimum.bind(traffic_window,Vector2i(600,350)))
 	traffic_window.close_requested.connect(traffic_window.hide)
 	add_child(traffic_window)
 	traffic_window.hide()
@@ -700,12 +780,63 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	actions.add_child(export_cancel)
 	box.add_child(actions)
 	traffic_path.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	traffic_path.max_lines_visible = 3
+	traffic_path.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	box.add_child(traffic_path)
 	traffic_text.editable = false
 	traffic_text.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	traffic_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(traffic_text)
 	load_profile()
+
+func _sync_window_minimum(window: Window, logical_minimum: Vector2i) -> void:
+	# Window sizes are pixels; controls lay out in content-scaled coordinates.
+	# Raising UI scale must raise the matching minimum, rather than clip rows.
+	var scaled := Vector2i((Vector2(logical_minimum)*window.content_scale_factor).ceil())
+	if window.min_size != scaled: window.min_size = scaled
+
+func _show_scaled_window(window: Window, logical_size: Vector2i) -> void:
+	# Traffic and guidance are independently useful windows, often larger than
+	# compact Art. Preserve their preferred size when the actual host can fit
+	# it; clamp to the embedding viewport or native screen, not Art's own box.
+	var available := Vector2i.ZERO
+	var ancestor := window.get_parent()
+	while ancestor != null:
+		if ancestor is Viewport and ancestor.gui_embed_subwindows:
+			available = Vector2i(ancestor.get_visible_rect().size)
+			break
+		ancestor = ancestor.get_parent()
+	if available == Vector2i.ZERO:
+		available = DisplayServer.screen_get_usable_rect(window.current_screen).size
+	var preferred := Vector2i((Vector2(logical_size)*window.content_scale_factor).ceil())
+	if available.x > 0 and available.y > 0:
+		preferred = preferred.min(Vector2i((Vector2(available)*0.9).floor()))
+	window.popup_centered(preferred)
+
+func _open_key_dialog() -> void:
+	# A nonexclusive dialog can outlive a provider switch. Bind the credential
+	# to the provider named in its title, never to the later menu selection.
+	key_dialog_provider = current_provider
+	key_dialog.title = key_dialog_provider+" key · memory only"
+	key_field.text = keys.get(key_dialog_provider,"")
+	_show_scaled_window(key_dialog,Vector2i(540,100))
+	key_field.grab_focus()
+
+func _apply_provider_key() -> void:
+	if key_dialog_provider.is_empty(): return
+	keys[key_dialog_provider] = key_field.text.strip_edges()
+	_register_provider_keys_for_redaction()
+	key_field.clear()
+
+func _clear_hidden_key() -> void:
+	# ConfirmationDialog may hide before emitting confirmed. Defer the generic
+	# cleanup so confirmation reads the value, while X/Cancel still clear it.
+	if not key_dialog.visible: key_field.clear()
+
+func _set_traffic_path(text: String) -> void:
+	if traffic_path.text == text: return
+	traffic_path.text = text
+	traffic_path.tooltip_text = text
 
 func _begin_traffic_export(path: String) -> void:
 	var blocked := history_block_reason()
@@ -715,7 +846,7 @@ func _begin_traffic_export(path: String) -> void:
 	var err := provider.begin_export(path)
 	if err == OK: export_destination = path
 	export_message = "Exporting full session · Cancel export or Stop to interrupt" if err == OK else "Export refused (%d): %s" % [err,provider.export_message]
-	traffic_path.text = export_message
+	_set_traffic_path(export_message)
 
 func _poll_traffic_export() -> void:
 	if not provider.export_active: return
@@ -726,18 +857,22 @@ func _poll_traffic_export() -> void:
 		if err == OK and not provider.export_message.is_empty(): export_message += " · "+provider.export_message
 	else:
 		export_message = "Exporting · %.1f / %.1f MiB · Cancel export or Stop to interrupt" % [float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
-	traffic_path.text = export_message
+	_set_traffic_path(export_message)
 
 func _cancel_traffic_export() -> void:
 	if not provider.export_active: return
 	provider.cancel_export()
 	export_message = "Export cancelled; existing destination preserved."
-	traffic_path.text = export_message
+	_set_traffic_path(export_message)
 
 func _save_settings() -> Error:
 	if not _profile_session_error.is_empty():
 		input_error = _profile_session_error
 		return ERR_FILE_CANT_READ
+	var serialized := settings.encode_to_text()
+	if _settings_were_saved and serialized == _saved_settings_text \
+			and FileAccess.file_exists("user://art-provider.cfg"):
+		return OK
 	# Never truncate the only committed profile/session pointer. Reuse the native
 	# same-directory replacement; Godot's Windows rename first deletes its target.
 	var temporary := "user://art-provider.cfg."+Crypto.new().generate_random_bytes(16).hex_encode()+".partial"
@@ -748,6 +883,9 @@ func _save_settings() -> Error:
 	if err != OK:
 		DirAccess.remove_absolute(temporary)
 		input_error = "Could not save Art preferences; the previous configuration file is retained (%d)." % err
+	else:
+		_saved_settings_text = serialized
+		_settings_were_saved = true
 	return err
 
 var previous_mode := 1
@@ -787,19 +925,42 @@ func change_provider(index: int) -> void:
 	load_profile()
 
 func load_profile() -> void:
-	var defaults := {"LM Studio":["http://127.0.0.1:1234/v1","wb-art-instruct"],"OpenAI":["https://api.openai.com/v1","gpt-5.6-luna"],"NVIDIA":["https://integrate.api.nvidia.com/v1","qwen/qwen3-next-80b-a3b-instruct"]}
+	# Defaults seed new profiles only. Availability and modality are properties
+	# of the configured service; a menu entry makes no live capability promise.
+	var defaults := {"LM Studio":["http://127.0.0.1:1234/v1","kat-coder-v2.5-dev-reap-50@q6_k"],
+		"OpenAI":["https://api.openai.com/v1","gpt-5.6-luna"],
+		"NVIDIA":["https://integrate.api.nvidia.com/v1","nvidia/nemotron-3.5-super-vl-120b-a12b"]}
 	endpoint.text = settings.get_value(current_provider,"endpoint",defaults[current_provider][0])
-	model.text = settings.get_value(current_provider,"model",defaults[current_provider][1])
+	var saved_model: String = str(settings.get_value(current_provider,"model",defaults[current_provider][1]))
+	# A retired, nonexistent built-in ID must not reappear as the active choice.
+	# Do not rewrite disk settings or delete historical records during display.
+	model.text = defaults[current_provider][1] if saved_model == INVALID_LEGACY_MODEL else saved_model
 	tokens.value = settings.get_value(current_provider,"tokens",8192)
 	seconds.value = settings.get_value(current_provider,"seconds",180)
-	history.clear(); history.add_item("▾")
-	if current_provider == "NVIDIA":
-		for label: String in NVIDIA_MODELS:
-			history.add_item(label)
-			history.set_item_metadata(history.item_count-1,NVIDIA_MODELS[label])
-	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
+	history.clear()
+	history.add_item("▾")
+	var curated: Dictionary = NVIDIA_MODELS if current_provider == "NVIDIA" else (
+		LM_STUDIO_MODELS if current_provider == "LM Studio" else {})
+	var offered_ids: Dictionary = {}
+	for label: String in curated:
+		history.add_item(label)
+		history.set_item_metadata(history.item_count-1,curated[label])
+		offered_ids[str(curated[label])] = true
+	# Display saved/custom names separately. Keep the stored history untouched,
+	# including historical retired IDs, without suggesting invalid astra5-6.
+	var custom: Array[String] = []
+	for value: Variant in settings.get_value(current_provider,"history",[]):
+		if not value is String or value == INVALID_LEGACY_MODEL or offered_ids.has(value) or custom.has(value):
+			continue
+		custom.append(value)
+	if not custom.is_empty():
+		var separator := history.item_count
+		history.add_item("— Saved / custom —")
+		history.set_item_disabled(separator,true)
+		for value: String in custom: history.add_item(value)
 
 func stop_all(reason: String = "Human Stop") -> void:
+	var began_usec := Time.get_ticks_usec()
 	if provider.resume_active:
 		provider.cancel_resume()
 		history_load_error = "Conversation restoration cancelled; saved history preserved. Reopen Art or Conversation to retry."
@@ -808,12 +969,16 @@ func stop_all(reason: String = "Human Stop") -> void:
 	run_deadline_ms = 0
 	waiting_until_ms = 0
 	ui_epoch += 1; capturing = false
+	_pending_provider_send = {}
 	provider.cancel(reason)
 	executor.stop(reason)
 	if wb != null and wb.paint_editor != null and wb.paint_editor.history_replaying():
 		wb.paint_editor.cancel()
 	provider_message = reason
 	input_error = history_load_error if not history_load_error.is_empty() else reason
+	last_stop_timing = {"stop_usec":Time.get_ticks_usec() - began_usec,
+		"provider_cancel_usec":int(provider.last_request_timing.get("cancel_usec",0)),
+		"active_after":provider.active}
 
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
@@ -1252,7 +1417,34 @@ func remember_turn(role: String, content: String, image_offset: int = -1) -> boo
 		remaining_turns = 0
 		return false
 	conversation.append(entry)
+	conversation_revision += 1
 	return true
+
+func _can_dispatch_provider_request(epoch: int, world_epoch: int) -> bool:
+	# A deferred worker completion can run before the next _process epoch poll.
+	# Check the captured World at the actual main-thread dispatch boundary too.
+	if epoch != ui_epoch or not is_inside_tree() or is_queued_for_deletion():
+		if int(_pending_provider_send.get("ui_epoch",-1)) == epoch: _pending_provider_send = {}
+		return false
+	if not is_instance_valid(wb) or not is_instance_valid(wb.host): return false
+	if world_epoch != _send_request_epoch():
+		stop_all("Canvas changed")
+		return false
+	return true
+
+func _provider_request_started(id: int, request_offset: int) -> void:
+	if _pending_provider_send.is_empty() or int(_pending_provider_send.id) != id: return
+	var pending := _pending_provider_send
+	_pending_provider_send = {}
+	if id != provider.serial or not _can_dispatch_provider_request(int(pending.ui_epoch),int(pending.world_epoch)): return
+	var began_usec := Time.get_ticks_usec()
+	# The offset belongs to this admitted request. Never consult a previous
+	# request's offset while outbound value preparation is still pending.
+	remember_turn("user",str(pending.prompt),request_offset if bool(pending.has_image) else -1)
+	var timing: Dictionary = pending.timing
+	timing.conversation_log_usec = Time.get_ticks_usec()-began_usec
+	timing.request_started_after_usec = Time.get_ticks_usec()-int(pending.began_usec)
+	timing.request_started = true
 
 func _commit_traffic_path(path: String) -> bool:
 	# Compatibility for existing in-session edit/receipt call sites. No profile
@@ -1279,15 +1471,22 @@ func send_prompt() -> void:
 		return
 	task_prompt = input.text
 	run_mode = input_mode.selected
-	run_epoch = wb.host.simulation_worker.art_state().epoch
+	last_send_epoch_usec = 0
+	run_epoch = _send_request_epoch()
 	last_image = ""
 	remaining_turns = int(turn_limit.value) if turn_limit.value > 0 else -1
 	run_deadline_ms = Time.get_ticks_msec()+int(run_seconds.value*1000) if run_seconds.value > 0 else 0
 	send_next(ui_epoch)
 
+func _send_request_epoch() -> int:
+	var began_usec := Time.get_ticks_usec()
+	var epoch: int = wb.host.simulation_worker.art_state().epoch
+	last_send_epoch_usec += Time.get_ticks_usec() - began_usec
+	return epoch
+
 func send_next(expected_epoch: int) -> void:
 	if expected_epoch != ui_epoch or remaining_turns == 0: return
-	if run_epoch != wb.host.simulation_worker.art_state().epoch:
+	if run_epoch != _send_request_epoch():
 		stop_all("Canvas changed")
 		return
 	var due := next_request_ms
@@ -1310,7 +1509,7 @@ func send_next(expected_epoch: int) -> void:
 	input_error = ""
 	ui_epoch += 1
 	var epoch := ui_epoch
-	request_epoch = wb.host.simulation_worker.art_state().epoch
+	request_epoch = _send_request_epoch()
 	request_area = rectangle(fields)
 	request_guards = [rectangle(protected_fields)] if protect.button_pressed else []
 	request_shapes = enabled_shapes()
@@ -1353,8 +1552,15 @@ func send_next(expected_epoch: int) -> void:
 		observation = "Image world rectangle x=%d y=%d w=%d h=%d, image %d by %d pixels, world epoch %d." % [image_cells.position.x,image_cells.position.y,image_cells.size.x,image_cells.size.y,view.get_width(),view.get_height(),request_epoch]
 		provider.log_event("observation",{"mapping":observation,"sha256":png.sha256_text()})
 		capturing = false
-	if epoch != ui_epoch or request_epoch != wb.host.simulation_worker.art_state().epoch: return
+	if epoch != ui_epoch or request_epoch != _send_request_epoch(): return
+	var preparation_begin_usec := Time.get_ticks_usec()
+	last_send_timing = {"schema":1,"profile_usec":0,"context_usec":0,
+		"parameters_log_usec":0,"provider_send_usec":0,"conversation_log_usec":0,"total_usec":0,
+		"request_started":false,"request_started_after_usec":0}
+	var send_timing := last_send_timing
+	var profile_begin_usec := Time.get_ticks_usec()
 	save_profile()
+	send_timing.profile_usec = Time.get_ticks_usec() - profile_begin_usec
 	var instructions := guidance.text+" Work area XYWH="+JSON.stringify([request_area.position.x,request_area.position.y,request_area.size.x,request_area.size.y])+"; allowed materials="+JSON.stringify(request_materials)+"; protected rectangles="+str(request_guards)+"."
 	request_scanline = run_mode == 2
 	request_local = current_provider == "LM Studio" or request_scanline
@@ -1367,7 +1573,9 @@ func send_next(expected_epoch: int) -> void:
 		if request_pixel_limit > 0:
 			instructions += " Maximum %d points per pixels operation." % request_pixel_limit
 	instructions += "\nUse only the current work area above, even when previous turns used a different area.\nSelected drawing material: %d. Use it for drawing. Return [] when finished." % request_material
+	var context_begin_usec := Time.get_ticks_usec()
 	var context := model_context()
+	send_timing.context_usec = Time.get_ticks_usec() - context_begin_usec
 	var prompt := task_prompt
 	if not observation.is_empty(): prompt += "\n"+observation
 	if sent_turns > 0:
@@ -1389,6 +1597,7 @@ func send_next(expected_epoch: int) -> void:
 	var request_key: String = str(keys.get(current_provider,""))
 	# The snapshot is sufficient to manually reproduce the request from this
 	# session's standalone JSONL, without an old chat transcript or profile link.
+	var parameters_begin_usec := Time.get_ticks_usec()
 	provider.log_event("request_parameters",{
 		"provider":current_provider,"model":model.text.strip_edges(),"endpoint":request_url,
 		"mode":input_mode.get_item_text(run_mode),"prompt":task_prompt,
@@ -1402,12 +1611,45 @@ func send_next(expected_epoch: int) -> void:
 		"turns":int(turn_limit.value),"run_seconds":run_seconds.value,
 		"minimum_interval_seconds":minimum_interval.value,"spend_limit":spend_limit.value,
 		"world_epoch":request_epoch})
-	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),request_key,prompt,instructions,int(tokens.value),seconds.value,png,context)
-	if input_error.is_empty(): remember_turn("user",prompt,provider.last_request_offset if not png.is_empty() else -1)
-	else: remaining_turns = 0
+	send_timing.parameters_log_usec = Time.get_ticks_usec() - parameters_begin_usec
+	# Audit observers can invoke Stop synchronously. A cancelled run must not
+	# create a new provider generation after its request snapshot was written.
+	# remaining_turns can already be zero for the last admitted turn, so the
+	# generation is the cancellation authority here.
+	if epoch != ui_epoch:
+		send_timing.total_usec = Time.get_ticks_usec() - preparation_begin_usec
+		return
+	var expected_id: int = provider.serial+1
+	_pending_provider_send = {"id":expected_id,"ui_epoch":epoch,"world_epoch":request_epoch,
+		"prompt":prompt,"has_image":not png.is_empty(),"timing":send_timing,"began_usec":preparation_begin_usec}
+	var provider_send_begin_usec := Time.get_ticks_usec()
+	var send_error: String = provider.send(current_provider,request_url,model.text.strip_edges(),request_key,prompt,instructions,int(tokens.value),seconds.value,png,context,_can_dispatch_provider_request.bind(epoch,request_epoch))
+	send_timing.provider_send_usec = Time.get_ticks_usec() - provider_send_begin_usec
+	# total_usec measures this Send callback; a later request_started callback
+	# reports its own conversation work and elapsed admission wait separately.
+	send_timing.total_usec = Time.get_ticks_usec() - preparation_begin_usec
+	if epoch != ui_epoch: return
+	if not send_error.is_empty():
+		if int(_pending_provider_send.get("id",-1)) == expected_id: _pending_provider_send = {}
+		input_error = send_error
+		remaining_turns = 0
 
 func provider_finished(_id: int, text: String, _response: Dictionary, error: String) -> void:
-	if request_epoch != wb.host.simulation_worker.art_state().epoch:
+	# A prior finished observer can Stop or replace the request while the
+	# signal is being delivered. Only the current generation may edit the World.
+	if _id != provider.serial: return
+	if int(_pending_provider_send.get("id",-1)) == _id: _pending_provider_send = {}
+	var began_usec := Time.get_ticks_usec()
+	var timing := {"schema":1,"total_usec":0,"world_check_usec":0,"operations_parse_usec":0,"native_submit_usec":0}
+	_apply_provider_response(_id,text,error,timing)
+	timing.total_usec = Time.get_ticks_usec() - began_usec
+	last_finished_timing = timing
+
+func _apply_provider_response(id: int, text: String, error: String, timing: Dictionary) -> void:
+	var epoch_begin_usec := Time.get_ticks_usec()
+	var current_epoch: int = wb.host.simulation_worker.art_state().epoch
+	timing.world_check_usec = Time.get_ticks_usec() - epoch_begin_usec
+	if request_epoch != current_epoch:
 		provider.log_event("discarded","Canvas changed or Stop requested; no drawing")
 		return
 	var received_input: Variant = provider.usage.get("input_tokens",provider.usage.get("prompt_tokens"))
@@ -1415,18 +1657,22 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 	if ArtPlan.integer(received_input) and ArtPlan.integer(received_output) and received_input >= 0 and received_output >= 0 and (sent_input_price > 0 or sent_output_price > 0):
 		run_spend += (float(received_input)*sent_input_price+float(received_output)*sent_output_price)/1000000.0
 		provider.log_event("estimated_spend",{"run_usd":run_spend,"ceiling_usd":run_spend_limit})
+		if id != provider.serial: return
 		if run_spend_limit > 0 and run_spend >= run_spend_limit:
 			remaining_turns = 0
 			spend_status = "Estimated spending ceiling reached"
 			provider.log_event("run_limit",spend_status)
+			if id != provider.serial: return
 	elif run_spend_limit > 0 and error.is_empty():
 		remaining_turns = 0
 		spend_status = "Provider usage unavailable; spending ceiling cannot be tracked"
 		provider.log_event("run_limit",spend_status)
+		if id != provider.serial: return
 	if provider.retry_after_seconds > 0:
 		provider_wait_ms = Time.get_ticks_msec()+int(provider.retry_after_seconds*1000)
 		provider_wait_url = request_url
 		provider.log_event("provider_rate_wait",{"seconds":provider.retry_after_seconds})
+		if id != provider.serial: return
 	if not error.is_empty():
 		if provider.retry_after_seconds > 0 and remaining_turns != 0:
 			send_next.call_deferred(ui_epoch)
@@ -1438,8 +1684,12 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 		remember_turn("user","Request failed: "+error)
 		return
 	provider.log_event("message",text)
+	if id != provider.serial: return
 	remember_turn("assistant",text)
+	if id != provider.serial: return
+	var operations_begin_usec := Time.get_ticks_usec()
 	var operations: Variant = Provider.operations(text,request_material)
+	timing.operations_parse_usec = Time.get_ticks_usec() - operations_begin_usec
 	if not request_scanline:
 		input_error = tool_error(operations,request_shapes,request_pixel_limit)
 		if not input_error.is_empty():
@@ -1458,12 +1708,16 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 	if request_local and operations is Array:
 		var fitted := local_operations(operations)
 		provider.log_event("local_geometry",{"accepted":fitted.size(),"returned":operations.size(),"origin":str(request_area.position)})
+		if id != provider.serial: return
 		if fitted.is_empty():
 			input_error = "No usable shapes in the local response. See Traffic."
 			model_feedback(input_error)
 			return
 		operations = fitted
+	if id != provider.serial: return
+	var submit_begin_usec := Time.get_ticks_usec()
 	var answer: Dictionary = executor.submit(operations,request_area,request_guards,request_materials)
+	timing.native_submit_usec = Time.get_ticks_usec() - submit_begin_usec
 	provider.log_event("drawing_admission",answer)
 	if answer.status=="refused":
 		input_error = answer.reason+" · See Traffic."
@@ -1545,4 +1799,4 @@ func refresh_traffic() -> void:
 	if content.length() > 120000: content = "[Showing latest matching traffic; Save JSONL exports the complete session]\n"+content.right(120000)
 	traffic_text.text = content
 	var active_path: String = provider.log_path if not provider.log_path.is_empty() else provider.parent_log_path
-	traffic_path.text = export_message if not export_message.is_empty() else (ProjectSettings.globalize_path(active_path) if not active_path.is_empty() else "No traffic file yet")+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")
+	_set_traffic_path(export_message if not export_message.is_empty() else (ProjectSettings.globalize_path(active_path) if not active_path.is_empty() else "No traffic file yet")+(" · "+provider.log_warning if not provider.log_warning.is_empty() else ""))

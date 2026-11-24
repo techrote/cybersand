@@ -64,10 +64,7 @@ the frozen evaluation and existing historical fixtures retain their original sco
 
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
 
-For duplicate Art archives, hidden Workbench startup, linked session identity,
-missing-history refusal, crash recovery and cancellable full JSONL export,
-retrieve [conversation lifetime](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-and its [explicit capacities](../systems/workbench-art-providers.md#explicit-capacity-outcomes).
+For Art session-only logging, same-session collaboration, provider errors and complete redacted traffic, retrieve the [provider contract](../systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026). For absent-LM-Studio Send/X, the consolidated dialog repair, exact presets and Windows diagnostic evaluator, retrieve the [Art finisher guide](../operations/art-workbench-final-evaluation.md). Old linked archive restoration is an explicit diagnostic path only.
 
 
 ## Architectural Generator catalogue

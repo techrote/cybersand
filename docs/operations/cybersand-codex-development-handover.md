@@ -10,19 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## Workbench Art traffic lifetime — 2026-11-20
+## Art Workbench finisher — 2026-11-24
 
-[Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the
-lazy conversation and immutable segment repair. Read the
-[provider contract](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-for current lifetime, validation, Stop/export and capacity behavior; the
-[dated finisher record](../audits/2026-11-20-wb-art-traffic-lifetime.md) separates
-engineering measurements from exact-source final qualification in the PR ledger.
-All destructive and multi-gigabyte tests use isolated synthetic user data.
-Existing archives remain immutable, and missing history must retain its saved
-pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready,
-merge or enable auto-merge. Hosted Windows evidence does not establish acceptance
-on the owner's physical Windows installation.
+Accepted #727 supplies an empty conversation and one lazy root JSONL per new
+Workbench game session. Closing/hiding Art preserves the current in-memory
+conversation; old archives are never automatically restored. Historical #681
+linked restoration remains a diagnostic/reference path, not normal product flow.
+
+ART-WORKBENCH-FINAL-001 reconciles #763/#756/#765/#766 on accepted `00cdb02f`.
+Read the [evaluation guide](art-workbench-final-evaluation.md) and
+[provider contract](../systems/workbench-art-providers.md). The exact primary
+reproduction is Send to an absent LM Studio server followed by ordinary X/Hide;
+a mock HTTP404 does not reproduce it. The new candidate remains Draft/HOLD,
+without native rebuild, unrelated feature imports or merge authority.
 
 ## World Art finisher — 2026-11-20
 
