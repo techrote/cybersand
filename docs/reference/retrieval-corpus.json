@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "reviewed": "2026-11-20",
-  "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
+  "reviewed": "2026-11-24",
+  "scope": "Explicit current-answer corpus; status and scope accompany every chunk. Navigation and retrieval: explicit-only packets are excluded in manifest and fallback modes. Historical authority remains separately opt-in.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
     "operations/gen008-flatten-qualification.md",
@@ -147,7 +147,13 @@
     "tools/art-pipeline-unification.md",
     "tools/world-art-preview.md",
     "tools/world-art-capture.md",
-    "tools/world-art-evaluation.md"
+    "tools/world-art-evaluation.md",
+    "operations/getting-started.md",
+    "operations/workbench-first-session.md",
+    "operations/workbench-painting-and-history.md",
+    "operations/workbench-saving.md",
+    "operations/workbench-art.md",
+    "operations/showcase-guide.md"
   ],
   "navigation": [
     "README.md",

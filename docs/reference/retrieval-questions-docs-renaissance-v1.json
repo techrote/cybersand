@@ -1,0 +1,709 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-24",
+  "source_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "purpose": "DOCS-RENAISSANCE additive source-grounded current question set, frozen before the implementation evaluation. Existing frozen sets unchanged. Some new guide destinations are absent at baseline; that absence is measured, not silently repaired in the baseline.",
+  "method": "Offline lexical ranking plus separate independent source/context applicability review; no paid model dispatch or embedding claim.",
+  "questions": [
+    {
+      "id": "DR01",
+      "category": "launch",
+      "query": "I cloned CyberSand on Windows. Must I have C:/kybersand and dev.cmd before I can open the Workbench?",
+      "canonical": [
+        "operations/getting-started.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "A source-only checkout has launch-desktop.cmd; dev.cmd belongs to the separate companion workspace.",
+        "Verify materialized runtime inputs and the exact Godot pin; the configured main scene is the Feature Launcher."
+      ],
+      "sources": [
+        "../tools/launch_desktop.ps1",
+        "../godot/project.godot"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR02",
+      "category": "pins",
+      "query": "Can I use any Godot 4 build, and which godot-cpp version matches the native library?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "operations/getting-started.md"
+      ],
+      "facts": [
+        "The runtime pin is exactly 4.7.stable.official.5b4e0cb0f.",
+        "godot-cpp is pinned to 101ae38034304346a46ea9ea84ae156d3e860496 and API 4.7; version similarity alone is insufficient."
+      ],
+      "sources": [
+        "../third_party/godot-runtime.lock.json",
+        "../third_party/native-toolchain.lock.json"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR03",
+      "category": "lfs",
+      "query": "The native DLL is tiny text beginning version https://git-lfs.github.com/spec/v1. Is this a usable evaluator?",
+      "canonical": [
+        "operations/getting-started.md",
+        "operations/current-and-historical-validation.md"
+      ],
+      "facts": [
+        "It is an unresolved Git LFS pointer, not executable bytes.",
+        "Materialize the intended committed object and verify its SHA/size/source provenance; a pointer identity check alone does not qualify a launch."
+      ],
+      "sources": [
+        "../tools/launch_desktop.ps1",
+        "../tools/ci/check_repository.py"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR04",
+      "category": "smoke",
+      "query": "What is a small source-checkout validation before I launch expensive native and Godot matrices?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "Use structural documentation/repository checks and relevant focused tests; the C header syntax check is a bounded native interface probe.",
+        "Passing cheap checks does not establish native runtime or physical acceptance; do not claim an unexecuted full matrix."
+      ],
+      "sources": [
+        "../Makefile",
+        "../tools/ci/check_docs.py"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR05",
+      "category": "owner",
+      "query": "Can native pool workers touch scene-tree objects and Rapier bodies?",
+      "canonical": [
+        "architecture/data-ownership-and-lifetimes.md",
+        "architecture/simulation-tick-and-threading.md"
+      ],
+      "facts": [
+        "Native C++ owns authoritative cellular state and internal pool workers call no Godot APIs.",
+        "The exclusive desktop simulation owner may use its adapter/value APIs; live scene tree and Rapier ownership remain on the allowed main thread."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "../native/include/cybersand/world.hpp"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR06",
+      "category": "storage",
+      "query": "The old rule says every Cell is four bytes and all richer material state must be a sidecar. Is that current doctrine?",
+      "canonical": [
+        "architecture/chunk-tile-and-buffer-model.md",
+        "systems/world-storage-and-interest-region.md",
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Distinguish the historical compact cell experiment from accepted eight-byte PrecisionStorage.",
+        "Current source and approved intent do not imply a permanent four-byte or sidecar-only prohibition."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp",
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR07",
+      "category": "water-default",
+      "query": "Does a new player session still default to PressureFlow, or does it use Wave Flow Water?",
+      "canonical": [
+        "architecture/liquid-solver-family-policy.md",
+        "operations/workbench-water-lab.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Accepted gameplay source selects Wave Flow with its gameplay spill/ballistic profile for new sessions.",
+        "Pressure, Wave, inertial and FreeMass remain distinct families; a default is not a claim that all families share semantics."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "architecture/liquid-solver-family-policy.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR08",
+      "category": "ballistic",
+      "query": "Water must never move upward ballistically, correct?",
+      "canonical": [
+        "architecture/ballistic-water-v1.md",
+        "architecture/wave-flow-v1.md",
+        "systems/water-design.md"
+      ],
+      "facts": [
+        "The blanket prohibition is stale: accepted optional Water ballistic and Wave release paths exist.",
+        "State the admitted family and bounds; this does not establish every generic solid/equipment successor as accepted."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp",
+        "architecture/ballistic-water-v1.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR09",
+      "category": "quantity",
+      "query": "Can I treat FreeMass Water and other-liquid CellularYield amounts as identical quantity rules?",
+      "canonical": [
+        "architecture/liquid-state-transition-matrix.md",
+        "architecture/liquid-solver-family-policy.md",
+        "systems/intermaterial-interactions.md"
+      ],
+      "facts": [
+        "Water FreeMass and other-liquid CellularYield have different quantity semantics.",
+        "Use the selected family policy and explicit normalization/receipt contract; do not silently unify amounts or conservation claims."
+      ],
+      "sources": [
+        "architecture/liquid-state-transition-matrix.md",
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR10",
+      "category": "materials-effective",
+      "query": "If I edit viscosity in Materials Lab, does every specialized material kernel use the new value?",
+      "canonical": [
+        "operations/materials-lab-authoring.md",
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "facts": [
+        "Declared and effective properties are distinct; specialized kernels can ignore or refuse candidate properties.",
+        "A compiled candidate is not proof that all production consumers use it; inspect admitted backend and native comparison result."
+      ],
+      "sources": [
+        "../tools/material_catalogue/native_capabilities.py",
+        "../tools/material_catalogue/lab.py"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR11",
+      "category": "audition",
+      "query": "Can Materials Lab already audition an edited material in my ordinary live Workbench World?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Accepted Materials Lab supports its documented inspection and isolated candidate experiments.",
+        "The current-scene audition successor is unmerged at the recorded source; do not present candidate behavior as shipped."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md",
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR12",
+      "category": "painting",
+      "query": "How do I paint, erase, fill and undo in a first Workbench session?",
+      "canonical": [
+        "operations/workbench-painting-and-history.md",
+        "operations/workbench-first-session.md",
+        "systems/paint-editor-bounded-shapes.md"
+      ],
+      "facts": [
+        "Use the actual toolbar/tool controls and their bounded operation outcomes.",
+        "Explain history boundaries, partial completion and refusal; never invent shortcuts or unlimited fills."
+      ],
+      "sources": [
+        "../godot/scripts/shared_workbench.gd",
+        "systems/paint-editor-bounded-shapes.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR13",
+      "category": "receipts",
+      "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+      "canonical": [
+        "systems/workbench-direct-art-batches.md",
+        "reference/interfaces-and-message-contracts.md",
+        "operations/workbench-art.md"
+      ],
+      "facts": [
+        "Queue acceptance is not native application or visible publication.",
+        "Follow native acknowledgements and applicable session/generation/sequence identity before claiming applied state."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "systems/workbench-direct-art-batches.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR14",
+      "category": "stop",
+      "query": "If I press Stop during a long paint or Art operation, does that roll back everything already applied?",
+      "canonical": [
+        "operations/workbench-painting-and-history.md",
+        "operations/workbench-art.md",
+        "systems/workbench-direct-art-batches.md"
+      ],
+      "facts": [
+        "Stop cancels pending work according to the contract; already applied work can remain.",
+        "Report partial native receipts/history outcomes and use supported Undo where applicable; do not promise rollback."
+      ],
+      "sources": [
+        "systems/workbench-direct-art-batches.md",
+        "systems/paint-editor-bounded-shapes.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR15",
+      "category": "save",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "canonical": [
+        "reference/level-saves-and-replay.md",
+        "operations/workbench-saving.md"
+      ],
+      "facts": [
+        "Authored setup/layout persistence differs from exact evolved physical continuation.",
+        "Do not promise all live actors, queues or provider/conversation state; consult explicit format and separate checkpoint contracts."
+      ],
+      "sources": [
+        "reference/level-saves-and-replay.md",
+        "architecture/shared-workbench-authoring-data.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR16",
+      "category": "flatten",
+      "query": "What does Flatten Bake History store, and should plants stop growing automatically afterwards?",
+      "canonical": [
+        "architecture/shared-workbench-authoring-data.md",
+        "operations/workbench-saving.md",
+        "operations/gen008-flatten-qualification.md"
+      ],
+      "facts": [
+        "The material baseline stores uint16 material identities, two bytes per cell, without preserving full live simulation metadata.",
+        "Flatten history and authored Save are distinct; do not promise plant energy reset or exact physical continuation unless source implements it."
+      ],
+      "sources": [
+        "architecture/shared-workbench-authoring-data.md",
+        "../godot/native_extension/material_baseline_file.cpp"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR17",
+      "category": "gentek",
+      "query": "Are eighty Genteks current, and what are Gentek, Variant, Preset and Composition?",
+      "canonical": [
+        "systems/architectural-generator.md",
+        "operations/architectural-generator-playtest.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Accepted catalogue and controls are source-backed and separate from unmerged SWARM negotiation.",
+        "Use the owner terminology without implying live Workbench Gentek rule authoring or every future Composition capability."
+      ],
+      "sources": [
+        "systems/architectural-generator.md",
+        "../godot/native_extension/cyber_world_generator.cpp"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR18",
+      "category": "swarm",
+      "query": "Can I use reciprocal SWARM-004/005/006 negotiation in accepted main because a candidate has passing tests?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "systems/architectural-generator.md"
+      ],
+      "facts": [
+        "The consolidated SWARM candidate remains unmerged at the recorded source.",
+        "Passing candidate tests and an evaluator do not imply accepted-main availability or physical owner acceptance."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR19",
+      "category": "actors",
+      "query": "Does Shared Workbench support independent actors now, and is the later Actor Compose finisher already accepted?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Accepted actor composition exposes the existing model catalogue and per-instance control within its bounded contract.",
+        "Separate merged #683 from unmerged final/repair successors such as #762; do not infer availability from title."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "../godot/scripts/shared_workbench.gd"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR20",
+      "category": "equipment",
+      "query": "Do all physical rigs accept every liquid or ballistic equipment tool?",
+      "canonical": [
+        "systems/actor-usables.md",
+        "systems/workbench-liquid-equipment.md",
+        "systems/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "Equipment has explicit actor/model/control and capacity admission; not every rig/tool combination is supported.",
+        "Distinguish accepted equipment paths from pending recovery work."
+      ],
+      "sources": [
+        "systems/actor-usables.md",
+        "systems/workbench-liquid-equipment.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR21",
+      "category": "provider",
+      "query": "How do I configure a local LM Studio endpoint and custom model without sending a paid cloud request?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md"
+      ],
+      "facts": [
+        "Provider selection, endpoint and model are explicit settings; use the documented local provider path.",
+        "A documentation walkthrough must not dispatch paid inference or expose credentials; model availability/errors are separate from geometry application."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR22",
+      "category": "hide",
+      "query": "Does hiding the Art window mean its request was stopped?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md"
+      ],
+      "facts": [
+        "Hide and Stop have different semantics; do not describe window visibility as cancellation.",
+        "Use the documented Stop/request state and native receipts to determine remaining work."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR23",
+      "category": "session",
+      "query": "After accepted ART-SESSION-LOG-001, are yesterday’s Art conversation messages automatically restored on the next game launch?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Accepted #727 uses session-only conversation lifetime and one JSONL audit per game session.",
+        "Old lazy conversation restore instructions from #681 are superseded for the current accepted path; old audit files are not an implicit chat restore."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR24",
+      "category": "privacy",
+      "query": "Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "Traffic and prompts can be private; inspect and redact exported logs instead of treating all diagnostics as safe.",
+        "Share minimal source/runtime/error evidence and synthetic reproduction data; never include credentials."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR25",
+      "category": "strata",
+      "query": "Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "systems/depth-layers-and-parallax.md",
+        "operations/semantic-depth-authoring.md"
+      ],
+      "facts": [
+        "Standalone four-plane presentation/authoring exists within its own documented ownership.",
+        "Ordinary Shared Workbench integration remains a separately unmerged candidate at the recorded source; do not conflate it with standalone availability."
+      ],
+      "sources": [
+        "systems/depth-layers-and-parallax.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR26",
+      "category": "progression",
+      "query": "The render FPS is high and texture uploads are fast. Does that prove physical simulation and actor movement are playable?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "operations/profiling-observability-and-performance.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Rendering and upload timing do not alone establish physical progression, input responsiveness or owner playfeel.",
+        "Use source-matched progression evidence and distinguish hosted/software rendering from physical GPU acceptance."
+      ],
+      "sources": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "operations/profiling-observability-and-performance.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR27",
+      "category": "web",
+      "query": "Does enabling Web pthreads make the browser keep presenting while a native tick is running?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "operations/web-threading.md"
+      ],
+      "facts": [
+        "Web native tick ownership remains synchronous; internal pthreads do not establish asynchronous presentation.",
+        "Desktop has separate simulation-owner scheduling; do not promise backend parity."
+      ],
+      "sources": [
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/scripts/simulation_worker.gd"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR28",
+      "category": "runtime",
+      "query": "Can I publish a rebuilt native DLL by editing its hash in the provenance JSON?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "operations/current-and-historical-validation.md"
+      ],
+      "facts": [
+        "No: publication requires source-matched build and execution evidence, artifact identity and guarded branch/source custody.",
+        "A hand-edited hash or stale predecessor pass is not qualification; preserve exact LFS object and source inputs."
+      ],
+      "sources": [
+        "../tools/ci/check_repository.py",
+        "operations/github-development-and-release.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR29",
+      "category": "merge",
+      "query": "A documentation or implementation Draft has skipped expensive jobs. Can I mark it Ready or merge it automatically?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Draft skips are not behavior passes and Ready/merge remain explicitly owner-controlled under this mission.",
+        "Implementation acceptance needs all applicable exact-head gates; documentation qualification does not prove runtime or physical acceptance."
+      ],
+      "sources": [
+        "../AGENTS.md",
+        "operations/github-development-and-release.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR30",
+      "category": "ci",
+      "query": "May I use the native-scope advisory to skip required jobs or copy an unmerged higher-fanout CI experiment into production policy?",
+      "canonical": [
+        "operations/ci-execution-and-performance.md",
+        "operations/github-development-and-release.md"
+      ],
+      "facts": [
+        "The source-scope advisory does not authorize native skipping.",
+        "Use accepted workflow policy; separate ongoing optimization experiments and preserve mandatory case coverage."
+      ],
+      "sources": [
+        "../.github/workflows/native-scope-advisory.yml",
+        "operations/ci-execution-and-performance.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR31",
+      "category": "history",
+      "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+      "canonical": [
+        "operations/documentation-maintenance.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Historical records retain their original scope and confer no present implementation authority.",
+        "Ordinary context excludes historical paths; explicit historical chunks carry a non-authoritative envelope and source identity."
+      ],
+      "sources": [
+        "../tools/docs/retrieval_policy.py",
+        "../AGENTS.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR32",
+      "category": "fallback",
+      "query": "If the retrieval manifest is missing, may fallback load old execution prompts and omit the current World Art guides?",
+      "canonical": [
+        "operations/documentation-maintenance.md"
+      ],
+      "facts": [
+        "Fallback must preserve current selection and authority boundaries, including explicit-only document routing and navigation exclusion.",
+        "Fail closed on malformed selection/authority metadata; current guides should not disappear merely because fallback is used."
+      ],
+      "sources": [
+        "../tools/docs/retrieval_eval.py",
+        "../tools/docs/retrieval_policy.py"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR33",
+      "category": "intent",
+      "query": "Does the 14 November owner authoring-intent decision itself authorize engine implementation or historical ticket retirement?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md",
+        "reference/product-intent-and-priorities.md",
+        "operations/documentation-maintenance.md"
+      ],
+      "facts": [
+        "The record captures approved intent and limits, not automatic implementation or historical-retirement permission.",
+        "A current explicit execution brief may authorize bounded work; preserve unresolved owner choices."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md",
+        "../AGENTS.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR34",
+      "category": "ramcache",
+      "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "Persistent-area and RAMCACHE successors remain unmerged at the recorded source.",
+        "Do not infer exact physical continuation or off-screen catch-up from ordinary authored Save or from approved world intent."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR35",
+      "category": "art-render",
+      "query": "Can I use the World Art viewer and large PNG captures without treating its dimensions as native playable World capacity?",
+      "canonical": [
+        "tools/art-pipeline-unification.md",
+        "tools/world-art-capture.md",
+        "tools/world-art-preview.md"
+      ],
+      "facts": [
+        "World Art viewer/capture is a separate art workflow with its own dimensions and bounds.",
+        "Art-only output dimensions do not enlarge native simulation capacity or establish physical GPU acceptance."
+      ],
+      "sources": [
+        "tools/art-pipeline-unification.md",
+        "tools/world-art-capture.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false
+    },
+    {
+      "id": "DR36",
+      "category": "unknown",
+      "query": "Which unresolved future destructible-architecture design should I implement next purely from current documentation?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "facts": [
+        "Abstain from inventing an owner decision or implementation authorization.",
+        "Identify the current approved-intent and active programme records, report unresolved boundaries, and work only within the explicit task."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": true
+    }
+  ],
+  "fixture_notes": [
+    "DR07 source path corrected before final fixture freeze: main.gd owns the inspected player default. Query, expected facts and destinations were unchanged."
+  ]
+}

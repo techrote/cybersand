@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: GENTEK-SHOWCASE-INTEGRATION-001 — eight classic showcase integration
 status: Draft
 document-kind: research

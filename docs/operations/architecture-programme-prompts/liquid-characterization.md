@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture experiment: characterize FreeMass and CellularYield from retained evidence
 status: Planned
 document-kind: runbook

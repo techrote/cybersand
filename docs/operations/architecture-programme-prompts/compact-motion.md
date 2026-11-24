@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture experiment: compare compact liquid flow memory inline and in sidecars
 status: Planned
 document-kind: runbook

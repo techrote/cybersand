@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: GENTEK-CLASSIC-001 compact architectural sampler batch
 status: Draft
 document-kind: research

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
 canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
-last-reviewed: 2026-09-18
+last-reviewed: 2026-11-24
 related-documents: [../reference/retrieval-index.md, ../reference/validation-evidence.md, source-checkpoint-and-recovery.md, microscenarios-programme.md]
 ---
 
@@ -39,6 +39,47 @@ Approved. `Ambiguous` marks unresolved evidence or intent, not approval. A page'
 status describes its purpose; label conflicting or future claims individually.
 Source establishes present behavior; ADRs establish accepted direction. If they
 disagree, record both and the missing decision before changing implementation.
+
+## Current selection, fallback and historical authority
+
+Authority and retrieval selection are separate. Keep the supported authority
+values `current-documentation`, `owner-confirmed-intent` and
+`historical-non-authoritative`; this programme adds no new authority category.
+The flat metadata field `retrieval: explicit-only` marks a current-path research
+or execution packet that is deliberately outside ordinary answers. Omitted
+`retrieval`, or explicit `retrieval: default`, permits current selection subject
+to the manifest and authority checks. It does not mean the claims are approved
+implementation or verified runtime behavior.
+
+The default [manifest](../reference/retrieval-corpus.json) is authoritative for
+selection. Its excluded focused packets also carry `retrieval: explicit-only`
+so the missing-manifest fallback preserves that boundary. The evaluator refuses
+explicit-only or navigation documents in a default manifest and in direct default
+chunking. Fallback discovers the focused architecture, systems, operations,
+reference, decisions, research and tools directories plus `MATERIAL_LAB.md`, then
+excludes navigation and explicit-only packets. It validates authority first, so
+an excluded packet cannot hide malformed authority or a copied historical tag.
+
+The supported flat parser accepts quoted/padded field names and ordinary quoted
+selection values; duplicate authority or retrieval keys and unsupported selection
+syntax fail closed. This is not a guarantee for arbitrary YAML anchors, tags or
+complex keys. [Current-selection tests](../../tools/ci/test_current_retrieval_selection.py)
+exercise manifest, fallback and direct chunking, including real-corpus equality;
+the original [historical tests](../../tools/ci/test_historical_retrieval.py) remain
+separate and unchanged.
+
+Explicit `--historical` retrieval still requires the isolated historical manifest
+and puts `historical-non-authoritative` plus a non-current instruction warning on
+every chunk. Existing `retrieval: explicit-history-only` archive metadata retains
+its own accepted scope; it is not parsed as a new current selection value. No link
+expansion imports audits into default context. Direct agent instructions must
+observe the same boundary rather than recursively loading every historical link.
+
+The local evaluator reads no persistent cache. Selection policy is now
+`historical-isolation-v2`; external indexes must rebuild with the current
+selection rules and per-chunk authority envelope before claiming equivalent
+containment. This repository cannot attest an unseen external cache, vector
+index or assistant prompt assembly.
 
 ## Documentation-update checklist
 
@@ -89,6 +130,8 @@ From the source root:
 python tools/ci/check_docs.py
 python tools/ci/check_repository.py
 python tools/ci/check_m11_consistency.py
+python -m unittest discover -s tools/ci -p test_historical_retrieval.py
+python -m unittest discover -s tools/ci -p test_current_retrieval_selection.py
 python tools/docs/retrieval_eval.py --output <local-output.json>
 git diff --check
 ```
@@ -108,3 +151,32 @@ lexical baseline, not proof about an embedding model, a deployed vector database
 or unseen questions. Keep fixture wording stable during before/after comparisons;
 disclose corrected expectations and iterations. Add independent future questions
 before the next implementation checkpoint to avoid tuning only to this set.
+
+## Updating documentation when a programme is accepted
+
+Refresh accepted main and the principal live record before editing status. The
+[current-state register](../reference/status-and-roadmap.md) owns the dated
+programme snapshot; keep acceptance facts there instead of copying an active PR
+ledger into every guide. The README presents durable capabilities and links to
+current manuals, not a queue of Draft candidates.
+
+| Accepted change area | Reconcile these canonical reader paths |
+|---|---|
+| Publication/progression or renderer/camera | Ownership/threading and rendering references, player controls, troubleshooting, validation interpretation |
+| ObjectShard or actor/equipment behavior | Body/cell coupling, actor composition and usable contracts, player tutorials, save boundaries |
+| Art providers/UI/lifetime | Provider/direct-batch contracts, Art user guide, cancellation/privacy and any actual setup labels |
+| Architectural catalogue or SWARM | Generator contract, architectural walkthrough, terminology/limits and examples; only then README capability text |
+| Batch/model orchestration or Gremlin | Accepted host/action/receipt contract, user/developer entry points and honest prototype/runtime boundary |
+| Materials Lab audition | Declared/effective and candidate states, Lab user workflow, production-source boundaries |
+| Strata Theatre integration | Layer ownership, current Workbench controls and persistence; retain standalone demonstration identity |
+| Persistent areas/RAMCACHE | Authored-save versus physical-state contract, residency/catch-up and failure semantics, user recovery guide |
+| CI engineering/publication | Accepted build/release/CI policy and exact-source procedures; preserve required case coverage and historical measurements |
+| PAINT/history | Operation limits, partial receipts, Undo/Redo, protection and end-to-end tutorial |
+
+For each update: inspect source, record the acceptance basis and remaining physical
+limits, revise the canonical contract first, then the current-state register,
+user guide, navigation, corpus and affected additive questions. Preserve old
+captured evidence and frozen question sets. Rerun structure, containment, ranking
+and a small source-grounded answer audit; explicitly distinguish the three
+results. Update the asset manifest if an image's feature/source scope changes.
+A changed status or screenshot caption must not imply tests that never ran.

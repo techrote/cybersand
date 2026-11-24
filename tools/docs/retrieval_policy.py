@@ -8,9 +8,44 @@ import json
 from pathlib import Path
 import re
 
-POLICY_VERSION = "historical-isolation-v1"
+POLICY_VERSION = "historical-isolation-v2"
 HISTORICAL_AUTHORITY = "historical-non-authoritative"
 HISTORICAL_PREFIXES = ("docs/history", "docs/audits")
+FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research", "tools"}
+NAVIGATION = (
+    "docs/README.md", "docs/reference/retrieval-index.md", "README.md", "AGENTS.md",
+    "CONTRIBUTING.md", "third_party/README.md", "godot/native_extension/README.md",
+    ".github/pull_request_template.md",
+)
+
+
+def retrieval_selection(metadata: dict | None = None) -> str:
+    """Read selection separately from authority using the flat metadata grammar.
+
+    ``explicit-only`` preserves deliberately excluded execution/research packets
+    when the main manifest is unavailable. It grants no authority and does not
+    turn a current-path document into a historical one.
+    """
+    declared = (metadata or {}).get("retrieval", "default")
+    if not isinstance(declared, str):
+        raise ValueError("Unsupported retrieval selection scalar")
+    declared = declared.strip()
+    if len(declared) >= 2 and declared[0] == declared[-1] and declared[0] in "\"'":
+        declared = declared[1:-1]
+    if declared not in {"default", "explicit-only"}:
+        raise ValueError("Unsupported retrieval selection scalar")
+    return declared
+
+
+def default_selection_allowed(path: Path, root: Path, metadata: dict | None = None) -> bool:
+    """Call after require_authority; never use selection to hide bad authority."""
+    selection = retrieval_selection(metadata)
+    relative = path.resolve().relative_to(root.resolve()).as_posix()
+    kind = (metadata or {}).get("document-kind", "")
+    if not isinstance(kind, str):
+        raise ValueError("Unsupported document-kind scalar")
+    return (selection != "explicit-only" and relative not in NAVIGATION
+            and kind.strip("\"'") != "navigation")
 
 
 def frontmatter_field(line: str) -> tuple[str, str] | None:

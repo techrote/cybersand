@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture programme source synthesis
 status: Planned
 document-kind: evidence

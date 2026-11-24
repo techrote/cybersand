@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture decision: reconcile Cell, liquid and sparse-motion experiment evidence
 status: Planned
 document-kind: runbook

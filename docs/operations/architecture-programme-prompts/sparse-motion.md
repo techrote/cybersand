@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture experiment: gate and test bounded sparse ballistic material transfer
 status: Planned
 document-kind: runbook
