@@ -63,7 +63,7 @@ static func _intent(value: Dictionary, options: Dictionary) -> Dictionary:
 	for material: Variant in materials:
 		if not Campaign._integer(material,1,65535): return _fail("Proposed structural palette needs integer material identities; the host still decides admission.")
 	return {"ok":true,"text":str(value.text).strip_edges(),"seed":int(value.get("seed",37901)),"family":str(value.get("family","")),
-		"max_alternatives":int(options.get("max_alternatives",3)),"mode":str(options.get("mode","offline")),"materials":materials.duplicate()}
+		"max_alternatives":int(options.get("max_alternatives",3)),"mode":str(options.get("mode","offline")),"materials":materials.map(func(material: Variant)->int:return int(material))}
 
 func submit_intent(intent: Dictionary, inspection: Dictionary, module_summaries: Array = [], options: Dictionary = {}) -> Dictionary:
 	if _serial>=MAX_REQUESTS: return _fail("Planning request budget is exhausted. Preserve this history before starting a new planning session.")
@@ -104,7 +104,12 @@ func submit_intent(intent: Dictionary, inspection: Dictionary, module_summaries:
 		_state="awaiting-proposal"
 		changed.emit(summary())
 		transport_requested.emit(_active.duplicate(true))
-		if _active.is_empty() and not _result.is_empty(): return _result.duplicate(true)
+		# An owner seam may synchronously answer, refuse or cancel during emission.
+		# A different reentrant request must not be returned as this request's result.
+		if _active.is_empty():
+			if _result.get("request_id")==identity: return _result.duplicate(true)
+			return _fail(_message)
+		if _active.get("request_id")!=identity: return _fail("This proposal was replaced during owner dispatch.")
 		return {"ok":true,"status":"awaiting-proposal","request_id":identity,"zero_writes":true,"real_model_calls":0,
 			"scope":"A proposal-only request was emitted. The injected host transport must separately witness any genuine model call."}
 	var alternatives: Array=[]
@@ -203,11 +208,11 @@ func accept_response(identity: String, response: Variant) -> Dictionary:
 			return _finish_refusal(identity,"Alternative identity, title or summary is malformed or duplicated.")
 		var checked:=Campaign.validate(candidate.get("campaign"))
 		if not checked.ok: return _finish_refusal(identity,checked.reason)
-		if checked.campaign.region!=_active.inspection.region: return _finish_refusal(identity,"A response cannot expand the host-selected inspected region.")
+		if Compiler.rect(checked.campaign.region)!=Compiler.rect(_active.inspection.region): return _finish_refusal(identity,"A response cannot expand the host-selected inspected region.")
 		for node: Dictionary in checked.campaign.nodes:
 			if node.kind=="group": continue
 			for material: Variant in node.stage.get("materials",[]):
-				if material!=0 and material not in _active.materials: return _finish_refusal(identity,"A response cannot expand the host-proposed material palette.")
+				if not Campaign._integer(material,0,65535) or (int(material)!=0 and int(material) not in _active.materials): return _finish_refusal(identity,"A response cannot expand the host-proposed material palette.")
 		identities.append(candidate.id)
 		alternatives.append({"id":candidate.id,"title":candidate.title,"summary":candidate.summary,"campaign":checked.campaign,
 			"campaign_sha256":Compiler.digest(Compiler.canonical(checked.campaign).to_utf8_buffer()),"strategy_source":str(_active.mode),
