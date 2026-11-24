@@ -1,0 +1,491 @@
+--- a/main/main.cpp
++++ b/main/main.cpp
+@@ -5069,26 +5069,38 @@
+ 	NavigationServer3D::get_singleton()->process(process_step * time_scale);
+ #endif // NAVIGATION_3D_DISABLED
+ 
+-	GodotProfileZoneGrouped(_profile_zone, "RenderingServer::sync");
+-	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
+-
+-	GodotProfileZoneGrouped(_profile_zone, "RenderingServer::draw");
+-	const bool has_pending_resources_for_processing = RD::get_singleton() && RD::get_singleton()->has_pending_resources_for_processing();
+-	bool wants_present = (DisplayServer::get_singleton()->can_any_window_draw() ||
+-								 DisplayServer::get_singleton()->has_additional_outputs()) &&
+-			RenderingServer::get_singleton()->is_render_loop_enabled();
+-
+-	if (wants_present || has_pending_resources_for_processing) {
+-		wants_present |= force_redraw_requested;
+-		if ((!force_redraw_requested) && OS::get_singleton()->is_in_low_processor_usage_mode()) {
+-			if (RenderingServer::get_singleton()->has_changed()) {
+-				RenderingServer::get_singleton()->draw(wants_present, scaled_step); // flush visual commands
++	// The opt-in PUBPRES arm preserves this entire real Main producer turn.
++	// Only a bounded number of sync/draw opportunities may be deferred while
++	// an actual render-owner draw is pending. No callback, physics clock, draw
++	// signal, frames_drawn increment or force-redraw reset is manufactured.
++	const bool pubpres_may_defer = !exit && !editor && !project_manager && !EngineDebugger::is_active() &&
++			fixed_fps == -1 && !movie_writer && !force_redraw_requested &&
++			!OS::get_singleton()->is_in_low_processor_usage_mode() &&
++			RenderingServer::get_singleton()->is_render_loop_enabled() &&
++			(DisplayServer::get_singleton()->can_any_window_draw() || DisplayServer::get_singleton()->has_additional_outputs());
++	const bool pubpres_deferred_draw = static_cast<RenderingServerDefault *>(rendering_server)->pubpres_defer_main_draw(pubpres_may_defer, scaled_step);
++	if (!pubpres_deferred_draw) {
++		GodotProfileZoneGrouped(_profile_zone, "RenderingServer::sync");
++		RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
++
++		GodotProfileZoneGrouped(_profile_zone, "RenderingServer::draw");
++		const bool has_pending_resources_for_processing = RD::get_singleton() && RD::get_singleton()->has_pending_resources_for_processing();
++		bool wants_present = (DisplayServer::get_singleton()->can_any_window_draw() ||
++									 DisplayServer::get_singleton()->has_additional_outputs()) &&
++				RenderingServer::get_singleton()->is_render_loop_enabled();
++
++		if (wants_present || has_pending_resources_for_processing) {
++			wants_present |= force_redraw_requested;
++			if ((!force_redraw_requested) && OS::get_singleton()->is_in_low_processor_usage_mode()) {
++				if (RenderingServer::get_singleton()->has_changed()) {
++					static_cast<RenderingServerDefault *>(rendering_server)->pubpres_draw_after_main_sync(wants_present, scaled_step); // flush visual commands
++					Engine::get_singleton()->increment_frames_drawn();
++				}
++			} else {
++				static_cast<RenderingServerDefault *>(rendering_server)->pubpres_draw_after_main_sync(wants_present, scaled_step); // flush visual commands
+ 				Engine::get_singleton()->increment_frames_drawn();
+-			}
+-		} else {
+-			RenderingServer::get_singleton()->draw(wants_present, scaled_step); // flush visual commands
+-			Engine::get_singleton()->increment_frames_drawn();
+-			force_redraw_requested = false;
++				force_redraw_requested = false;
++			}
+ 		}
+ 	}
+ 
+--- a/servers/rendering/rendering_server_default.cpp
++++ b/servers/rendering/rendering_server_default.cpp
+@@ -30,6 +30,9 @@
+ 
+ #include "rendering_server_default.h"
+ 
++#include "core/config/engine.h"
++#include "core/io/file_access.h"
++#include "core/io/json.h"
+ #include "core/object/callable_mp.h"
+ #include "core/os/os.h"
+ #include "core/profiling/profiling.h"
+@@ -300,6 +303,10 @@
+ 	} else {
+ 		_finish();
+ 	}
++	// All render-owner writes have retired before Main serializes evidence.
++	if (pubpres_budget_track) {
++		_pubpres_write_evidence();
++	}
+ }
+ 
+ /* STATUS INFORMATION */
+@@ -330,6 +337,10 @@
+ }
+ 
+ void RenderingServerDefault::set_frame_profiling_enabled(bool p_enable) {
++	if (pubpres_budget_requested == "4" && create_thread) {
++		sync();
++	}
++	pubpres_profile_enabled = p_enable;
+ 	RSG::utilities->capturing_timestamps = p_enable;
+ }
+ 
+@@ -362,6 +373,10 @@
+ }
+ 
+ void RenderingServerDefault::set_print_gpu_profile(bool p_enable) {
++	if (pubpres_budget_requested == "4" && create_thread) {
++		sync();
++	}
++	pubpres_profile_enabled = p_enable;
+ 	RSG::utilities->capturing_timestamps = p_enable;
+ 	print_gpu_profile = p_enable;
+ }
+@@ -426,6 +441,11 @@
+ /* INTERPOLATION */
+ 
+ void RenderingServerDefault::set_physics_interpolation_enabled(bool p_enabled) {
++	if (pubpres_budget_requested == "4" && create_thread) {
++		// The completed draw marker cannot retire newer commands behind it.
++		sync();
++	}
++	pubpres_interpolation_enabled = p_enabled;
+ 	RSG::canvas->set_physics_interpolation_enabled(p_enabled);
+ 	RSG::scene->set_physics_interpolation_enabled(p_enabled);
+ }
+@@ -433,22 +453,199 @@
+ /* EVENT QUEUING */
+ 
+ void RenderingServerDefault::sync() {
++	const bool record = pubpres_budget_track && Thread::is_main_thread();
++	const uint64_t started = record ? OS::get_singleton()->get_ticks_usec() : 0;
+ 	if (create_thread) {
+ 		command_queue.sync();
+ 	} else {
+ 		command_queue.flush_all(); // Flush all pending from other threads.
+ 	}
++	if (record) {
++		const uint64_t elapsed = OS::get_singleton()->get_ticks_usec() - started;
++		++pubpres_sync_calls;
++		pubpres_sync_total_usec += elapsed;
++		pubpres_sync_max_usec = MAX(pubpres_sync_max_usec, elapsed);
++	}
++}
++
++bool RenderingServerDefault::pubpres_defer_main_draw(bool p_allowed, double p_render_step) {
++	if (!pubpres_budget_track || !Thread::is_main_thread()) {
++		return false;
++	}
++	++pubpres_eligibility_checks;
++	bool eligible = p_allowed && create_thread && !pubpres_interpolation_enabled &&
++			!pubpres_profile_enabled && !print_gpu_profile &&
++			RenderingDevice::get_singleton() == nullptr &&
++			server_thread != Thread::MAIN_ID;
++	const Variant metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
++	if (eligible && metadata.get_type() == Variant::DICTIONARY) {
++		const Dictionary handshake = metadata;
++		const Variant schema = handshake.get("schema", Variant());
++		const Variant enabled = handshake.get("enabled", Variant());
++		const Variant connected = handshake.get("connected", Variant());
++		const Variant ready = handshake.get("candidate_ready", Variant());
++		const Variant owner_id = handshake.get("owner_instance", Variant());
++		const Variant source = handshake.get("source_revision", Variant());
++		const Variant process_frame = handshake.get("process_frame", Variant());
++		eligible = schema.get_type() == Variant::STRING && String(schema) == "pubpres-actual-submission-v1" &&
++				enabled.get_type() == Variant::BOOL && bool(enabled) &&
++				connected.get_type() == Variant::BOOL && bool(connected) &&
++				ready.get_type() == Variant::BOOL && bool(ready) &&
++				owner_id.get_type() == Variant::INT && int64_t(owner_id) != 0 &&
++				source.get_type() == Variant::STRING &&
++				process_frame.get_type() == Variant::INT && int64_t(process_frame) >= 0 &&
++				uint64_t(int64_t(process_frame)) == Engine::get_singleton()->get_process_frames();
++		if (eligible) {
++			const String revision = source;
++			eligible = revision.length() == 40;
++			for (int index = 0; eligible && index < revision.length(); ++index) {
++				const char32_t character = revision[index];
++				eligible = (character >= '0' && character <= '9') || (character >= 'a' && character <= 'f');
++			}
++			Object *owner = ObjectDB::get_instance(ObjectID(uint64_t(int64_t(owner_id))));
++			eligible = eligible && owner != nullptr &&
++					owner->has_method(SNAME("_commit_workbench_presentation_submission")) &&
++					is_connected(SNAME("frame_pre_draw"), Callable(owner, SNAME("_commit_workbench_presentation_submission")));
++		}
++	} else {
++		eligible = false;
++	}
++	if (eligible) {
++		++pubpres_eligible_checks;
++	}
++	return pubpres_frame_budget.defer_if_pending(pubpres_budget_requested == "4" && eligible, p_render_step);
++}
++
++void RenderingServerDefault::_pubpres_draw(bool p_present, double p_step, uint64_t p_serial,
++		uint64_t p_submitted_usec, uint64_t p_process_frame, uint32_t p_deferred_turns, double p_carried_step) {
++	const uint64_t started = OS::get_singleton()->get_ticks_usec();
++	// Exactly one real draw. Its returned CPU work is not a GPU fence and does
++	// not grant a Rapier step or a scanout/pixel visibility claim.
++	_draw(p_present, p_step);
++	const uint64_t ended = OS::get_singleton()->get_ticks_usec();
++	if (pubpres_frame_rows_data && pubpres_frame_rows_written < PUBPRES_MAX_FRAME_ROWS) {
++		PubpresFrameRow &row = pubpres_frame_rows_data[pubpres_frame_rows_written];
++		row.serial = p_serial;
++		row.process_frame = p_process_frame;
++		row.submitted_usec = p_submitted_usec;
++		row.render_start_usec = started;
++		row.render_end_usec = ended;
++		row.previous_batch_deferred_turns = p_deferred_turns;
++		row.applied_render_step = p_step;
++		row.carried_render_step = p_carried_step;
++		row.actual_render_owner = create_thread && Thread::get_caller_id() == server_thread;
++		row.inline_main = !create_thread && Thread::is_main_thread();
++	} else {
++		pubpres_frame_rows_overflow = true;
++	}
++	++pubpres_frame_rows_written;
++	// This release publication follows all actual draw work and trace writes.
++	// Main still executes the original queue barrier before a following draw.
++	pubpres_frame_budget.complete_draw(p_serial);
++}
++
++void RenderingServerDefault::_pubpres_write_evidence() {
++	Dictionary result;
++	result["schema"] = "pubpres-engine-frame-budget-v1";
++	result["requested"] = pubpres_budget_requested;
++	result["render_thread_created"] = create_thread;
++	result["eligibility_checks"] = pubpres_eligibility_checks;
++	result["eligible_checks"] = pubpres_eligible_checks;
++	result["deferred_turns"] = pubpres_frame_budget.deferrals();
++	result["maximum_deferred_per_draw"] = pubpres_frame_budget.max_budget_spent();
++	result["limit"] = cybersand_pubpres::FrameBudget::MAX_DEFERRED_TURNS;
++	result["deferred_render_step_total"] = pubpres_frame_budget.deferred_render_step_total();
++	result["consumed_render_step_total"] = pubpres_frame_budget.consumed_render_step_total();
++	result["pending_render_step"] = pubpres_frame_budget.pending_render_step();
++	result["actual_draw_submissions"] = pubpres_frame_budget.submitted();
++	result["actual_render_cpu_completions"] = pubpres_frame_budget.completed();
++	result["completion_fault"] = pubpres_frame_budget.faulted();
++	result["trace_rows"] = pubpres_frame_rows_written;
++	result["trace_capacity"] = PUBPRES_MAX_FRAME_ROWS;
++	result["trace_overflow"] = pubpres_frame_rows_overflow;
++	result["sync_calls"] = pubpres_sync_calls;
++	result["sync_total_usec"] = pubpres_sync_total_usec;
++	result["sync_max_usec"] = pubpres_sync_max_usec;
++	result["scope"] = "whole_process_actual_draw_cpu_only_no_gpu_fence_no_scanout_no_physics_credit";
++	Array rows;
++	const uint64_t count = MIN(pubpres_frame_rows_written, uint64_t(PUBPRES_MAX_FRAME_ROWS));
++	for (uint64_t index = 0; pubpres_frame_rows_data && index < count; ++index) {
++		const PubpresFrameRow &row = pubpres_frame_rows_data[index];
++		Dictionary entry;
++		entry["serial"] = row.serial;
++		entry["process_frame"] = row.process_frame;
++		entry["submitted_usec"] = row.submitted_usec;
++		entry["render_start_usec"] = row.render_start_usec;
++		entry["render_end_usec"] = row.render_end_usec;
++		entry["previous_batch_deferred_turns"] = row.previous_batch_deferred_turns;
++		entry["applied_render_step"] = row.applied_render_step;
++		entry["carried_render_step"] = row.carried_render_step;
++		entry["actual_render_owner"] = row.actual_render_owner;
++		entry["inline_main"] = row.inline_main;
++		rows.push_back(entry);
++	}
++	Dictionary evidence = result.duplicate(true);
++	evidence["frames"] = rows;
++	Error file_error = ERR_INVALID_PARAMETER;
++	if (!pubpres_budget_trace_path.is_empty()) {
++		Ref<FileAccess> file = FileAccess::open(pubpres_budget_trace_path, FileAccess::WRITE, &file_error);
++		if (file.is_valid()) {
++			file->store_string(JSON::stringify(evidence, "\t", true, true) + "\n");
++			file->flush();
++			file_error = file->get_error();
++			file.unref();
++		}
++	}
++	result["trace_write_error"] = int(file_error);
++	result["trace_sha256"] = file_error == OK ? FileAccess::get_sha256(pubpres_budget_trace_path) : String();
++	print_line("PUBPRES_FRAME_BUDGET_RESULT " + JSON::stringify(result));
+ }
+ 
+ void RenderingServerDefault::draw(bool p_present, double frame_step) {
+ 	ERR_FAIL_COND_MSG(!Thread::is_main_thread(), "Manually triggering the draw function from the RenderingServer can only be done on the main thread. Call this function from the main thread or use call_deferred().");
++	if (pubpres_budget_requested == "4" && create_thread) {
++		// A completed old draw does not retire later material/canvas commands.
++		// Every manual/forced entry drains them before replenishing allowance.
++		sync();
++	}
++	_pubpres_admit_draw(p_present, frame_step);
++}
++
++void RenderingServerDefault::pubpres_draw_after_main_sync(bool p_present, double frame_step) {
++	ERR_FAIL_COND(!Thread::is_main_thread());
++	// Only Main::iteration calls this immediately after its real queue barrier.
++	// Do not add a redundant second barrier to the measured Main path.
++	_pubpres_admit_draw(p_present, frame_step);
++}
++
++void RenderingServerDefault::_pubpres_admit_draw(bool p_present, double frame_step) {
++	if (!pubpres_budget_track) {
++		// With no registered experiment, preserve the original draw path.
++		RS::get_singleton()->emit_signal(SNAME("frame_pre_draw"));
++		changes = 0;
++		if (create_thread) {
++			command_queue.push(this, &RenderingServerDefault::_draw, p_present, frame_step);
++		} else {
++			_draw(p_present, frame_step);
++		}
++		return;
++	}
++	const uint32_t previous_deferred = pubpres_frame_budget.current_budget_spent();
++	const double carried_step = pubpres_frame_budget.pending_render_step();
++	frame_step = pubpres_frame_budget.consume_render_step(frame_step);
++	const uint64_t serial = pubpres_frame_budget.begin_draw();
++	const uint64_t submitted = pubpres_budget_track ? OS::get_singleton()->get_ticks_usec() : 0;
++	const uint64_t process_frame = Engine::get_singleton()->get_process_frames();
+ 	// Needs to be done before changes is reset to 0, to not force the editor to redraw.
++	// The application commits only already prepared presentation bookkeeping
++	// in this real submission signal. No deferred Main turn emits the signal.
+ 	RS::get_singleton()->emit_signal(SNAME("frame_pre_draw"));
+ 	changes = 0;
+ 	if (create_thread) {
+-		command_queue.push(this, &RenderingServerDefault::_draw, p_present, frame_step);
+-	} else {
+-		_draw(p_present, frame_step);
++		command_queue.push(this, &RenderingServerDefault::_pubpres_draw, p_present, frame_step,
++				serial, submitted, process_frame, previous_deferred, carried_step);
++	} else {
++		_pubpres_draw(p_present, frame_step, serial, submitted, process_frame, previous_deferred, carried_step);
+ 	}
+ }
+ 
+@@ -469,6 +666,17 @@
+ 	RenderingServer::init();
+ 
+ 	create_thread = p_create_thread;
++	pubpres_budget_requested = OS::get_singleton()->get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD");
++	pubpres_budget_trace_path = OS::get_singleton()->get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD_TRACE");
++	pubpres_budget_track = pubpres_budget_requested == "0" || pubpres_budget_requested == "4";
++	if (pubpres_budget_track) {
++		const Error allocation_error = pubpres_frame_rows.resize(PUBPRES_MAX_FRAME_ROWS);
++		if (allocation_error == OK) {
++			pubpres_frame_rows_data = pubpres_frame_rows.ptrw();
++		} else {
++			pubpres_frame_rows_overflow = true;
++		}
++	}
+ }
+ 
+ RenderingServerDefault::~RenderingServerDefault() {
+--- a/servers/rendering/rendering_server_default.h
++++ b/servers/rendering/rendering_server_default.h
+@@ -44,6 +44,99 @@
+ #include "servers/rendering/rendering_server_types.h"
+ #include "servers/server_wrap_mt_common.h"
+ 
++#include <atomic>
++#include <cstdint>
++#include <cmath>
++
++// Experimental Main/render-owner rendezvous, not a physics or GPU clock.
++// One Main producer owns every field except the explicitly atomic completion
++// token/fault flag. The render owner publishes a token only AFTER its actual
++// draw function returns. No old token can retire commands appended behind it:
++// the caller must execute the original queue barrier before another draw.
++namespace cybersand_pubpres {
++
++class FrameBudget {
++public:
++	static constexpr uint32_t MAX_DEFERRED_TURNS = 4;
++
++private:
++	std::atomic<uint64_t> completed_serial{ 0 };
++	std::atomic<bool> completion_fault{ false };
++	uint64_t submitted_serial = 0;
++	uint64_t deferred_total = 0;
++	uint32_t deferred_since_draw = 0;
++	uint32_t maximum_deferred_since_draw = 0;
++	double deferred_render_step = 0.0;
++	double total_deferred_render_step = 0.0;
++	double total_consumed_render_step = 0.0;
++
++public:
++	// Main only. This does not consume or produce any physical-step credit,
++	// reset the budget when a token arrives, or enqueue another rendering job.
++	bool defer_if_pending(bool p_allowed, double p_render_step = 0.0) {
++		if (!p_allowed || !std::isfinite(p_render_step) || p_render_step < 0.0 ||
++				completion_fault.load(std::memory_order_acquire) ||
++				submitted_serial == 0 ||
++				completed_serial.load(std::memory_order_acquire) >= submitted_serial ||
++				deferred_since_draw >= MAX_DEFERRED_TURNS) {
++			return false;
++		}
++		deferred_render_step += p_render_step;
++		total_deferred_render_step += p_render_step;
++		++deferred_since_draw;
++		++deferred_total;
++		if (deferred_since_draw > maximum_deferred_since_draw) {
++			maximum_deferred_since_draw = deferred_since_draw;
++		}
++		return true;
++	}
++
++	// Main only, immediately before a real draw admission. The rasterizer uses
++	// frame_step for shader/particle time; skipped opportunities must not erase
++	// elapsed render time. This never changes any physical-step clock.
++	double consume_render_step(double p_current_step) {
++		const double carried = deferred_render_step;
++		deferred_render_step = 0.0;
++		total_consumed_render_step += carried;
++		return p_current_step + carried;
++	}
++
++	// Main only, at an actual draw admission after the existing queue barrier.
++	// RenderingServer's manual/forced-draw entry must drain too when the arm is
++	// active. Only that actual draw replenishes the bounded producer allowance.
++	uint64_t begin_draw() {
++		++submitted_serial;
++		deferred_since_draw = 0;
++		return submitted_serial;
++	}
++
++	// Render-owner only, after the corresponding _draw has actually returned.
++	// An unexpected/out-of-order/duplicate token permanently refuses further
++	// deferral. The caller still performs the original synchronization path.
++	void complete_draw(uint64_t p_serial) {
++		const uint64_t previous = completed_serial.load(std::memory_order_relaxed);
++		if (p_serial == 0 || p_serial != previous + 1) {
++			completion_fault.store(true, std::memory_order_release);
++			return;
++		}
++		completed_serial.store(p_serial, std::memory_order_release);
++	}
++
++	// Main observations only. A token is render-owner CPU completion, not a
++	// fence proving GPU completion or a physical monitor's presentation time.
++	uint64_t submitted() const { return submitted_serial; }
++	uint64_t completed() const { return completed_serial.load(std::memory_order_acquire); }
++	uint64_t deferrals() const { return deferred_total; }
++	uint32_t current_budget_spent() const { return deferred_since_draw; }
++	uint32_t max_budget_spent() const { return maximum_deferred_since_draw; }
++	double pending_render_step() const { return deferred_render_step; }
++	double deferred_render_step_total() const { return total_deferred_render_step; }
++	double consumed_render_step_total() const { return total_consumed_render_step; }
++	bool faulted() const { return completion_fault.load(std::memory_order_acquire); }
++};
++
++} // namespace cybersand_pubpres
++
+ class RenderingServerDefault : public RenderingServer {
+ 	GDSOFTCLASS(RenderingServerDefault, RenderingServer);
+ 
+@@ -83,6 +176,41 @@
+ 	WorkerThreadPool::TaskID server_task_id = WorkerThreadPool::INVALID_TASK_ID;
+ 	bool exit = false;
+ 	bool create_thread = false;
++
++	// Default-off PUBPRES experiment. A fixed number of complete Main producer
++	// turns may precede the original barrier while an actual draw is pending.
++	cybersand_pubpres::FrameBudget pubpres_frame_budget;
++	String pubpres_budget_requested;
++	String pubpres_budget_trace_path;
++	bool pubpres_budget_track = false;
++	bool pubpres_interpolation_enabled = false;
++	bool pubpres_profile_enabled = false;
++	uint64_t pubpres_eligibility_checks = 0;
++	uint64_t pubpres_eligible_checks = 0;
++	uint64_t pubpres_sync_calls = 0;
++	uint64_t pubpres_sync_total_usec = 0;
++	uint64_t pubpres_sync_max_usec = 0;
++	struct PubpresFrameRow {
++		uint64_t serial = 0;
++		uint64_t process_frame = 0;
++		uint64_t submitted_usec = 0;
++		uint64_t render_start_usec = 0;
++		uint64_t render_end_usec = 0;
++		uint32_t previous_batch_deferred_turns = 0;
++		double applied_render_step = 0.0;
++		double carried_render_step = 0.0;
++		bool actual_render_owner = false;
++		bool inline_main = false;
++	};
++	static constexpr uint32_t PUBPRES_MAX_FRAME_ROWS = 32768;
++	Vector<PubpresFrameRow> pubpres_frame_rows;
++	PubpresFrameRow *pubpres_frame_rows_data = nullptr;
++	uint64_t pubpres_frame_rows_written = 0;
++	bool pubpres_frame_rows_overflow = false;
++	void _pubpres_draw(bool p_present, double p_step, uint64_t p_serial,
++			uint64_t p_submitted_usec, uint64_t p_process_frame, uint32_t p_deferred_turns, double p_carried_step);
++	void _pubpres_write_evidence();
++	void _pubpres_admit_draw(bool p_present, double frame_step);
+ 
+ 	void _assign_mt_ids(WorkerThreadPool::TaskID p_pump_task_id);
+ 	void _thread_exit();
+@@ -1203,6 +1331,8 @@
+ 
+ 	virtual void draw(bool p_present, double frame_step) override;
+ 	virtual void sync() override;
++	bool pubpres_defer_main_draw(bool p_allowed, double p_render_step); // Internal C++; no public API binding.
++	void pubpres_draw_after_main_sync(bool p_present, double frame_step);
+ 	virtual bool has_changed() const override;
+ 	virtual void init() override;
+ 	virtual void finish() override;
