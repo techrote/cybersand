@@ -85,8 +85,10 @@ class PackageGuards(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             common = root / "native-input.cpp"
-            common.write_text("// original source\n", encoding="utf-8")
-            expected = hashlib.sha256(common.read_bytes()).hexdigest()
+            # Match the retained source-manifest contract on every host. This
+            # artificial CRLF fixture verifies canonical LF hashing explicitly.
+            common.write_bytes(b"// original source\r\n")
+            expected = hashlib.sha256(common.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
             for name, relative in (("native", "godot/addons/cybersand_native/runtime-provenance.json"),
                                    ("rapier", "godot/addons/godot-rapier2d/runtime-provenance.windows.json")):
                 artifact = root / (name + ".dll")

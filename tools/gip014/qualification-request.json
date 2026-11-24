@@ -1,8 +1,10 @@
 {
   "schema": "cybersand-goblin-qualification-request-v1",
-  "implementation_source": "0dd019246bd97f1c3ada39a32e4a704614c32414",
+  "implementation_source": "5199cd5806e72819bbe512c000aee8dcee6efca1",
   "mission": "GIP-014-goblin-GAMEPLAY-QA-001",
-  "request": 1,
+  "request": 2,
+  "prior_failed_run": 45460161994,
+  "change": "Correct only the artificial package unit fixture's CRLF/LF expected hash; preserve strict runtime source checks",
   "scope": "One focused GitHub-hosted Windows developer evaluator; source tests and extracted package qualification",
   "draft_hold": true,
   "native_rebuild": false,
