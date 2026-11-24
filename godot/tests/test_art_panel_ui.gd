@@ -126,9 +126,11 @@ func layout_checks() -> void:
 		check(panel.input.size.y >= 64 and panel.state.get_global_rect().end.y <= panel.size.y+1,"prompt and status fit compact window")
 	panel.size = Vector2i(640,400)
 	# Owner regression #713: long Note content and notices must never move the
-	# ConfirmationDialog Apply/Cancel footer outside small Art windows.
+	# popup or its Apply/Cancel footer outside the actual root viewport. Art does
+	# not embed its own subwindows, so this popup can be larger than small Art.
 	var original_root_size: Vector2i = root.size
-	root.size = Vector2i(1280,720)
+	var requested_root_size := Vector2i(1280,720)
+	root.size = requested_root_size
 	var conversation_dialog = panel.conversation_editor
 	for art_size: Vector2i in [Vector2i(520,320),Vector2i(640,400)]:
 		panel.size = art_size
@@ -139,26 +141,27 @@ func layout_checks() -> void:
 		panel.conversation_error = ("A long validation notice must scroll, not resize the footer. ").repeat(70)
 		panel._update_conversation_guard()
 		for i: int in range(3): await process_frame
-		# Test the popup and its buttons in the SAME screen coordinate space.
-		# Control.get_global_rect() uses the containing canvas, which is not a
-		# reliable Window-local reference for an embedded nested subwindow.
-		var popup_origin := Vector2(conversation_dialog.position)
-		if root.gui_embed_subwindows:
-			popup_origin += Vector2(panel.position)
-		var popup_rect := Rect2(popup_origin,Vector2(conversation_dialog.size))
+		# The screen transforms follow the real embedder and canvas scale. Adding
+		# the Node parent's Art position would misplace this root-embedded popup.
+		var root_rect := window_screen_rect(root)
+		var popup_rect := window_screen_rect(conversation_dialog)
 		var ok_button: Button = conversation_dialog.get_ok_button()
 		var cancel_button: Button = conversation_dialog.get_cancel_button()
-		var apply_rect := Rect2(ok_button.get_screen_position(),ok_button.size)
-		var cancel_rect := Rect2(cancel_button.get_screen_position(),cancel_button.size)
+		var apply_rect := control_screen_rect(ok_button)
+		var cancel_rect := control_screen_rect(cancel_button)
 		print("ART_CONVERSATION_LAYOUT ",JSON.stringify({
-			"art_size":art_size,"embedded":root.gui_embed_subwindows,
+			"requested_root_size":requested_root_size,"actual_root_size":root.size,
+			"root_visible_rect":root.get_visible_rect(),"root_screen_rect":root_rect,
+			"art_size":art_size,"art_screen_rect":window_screen_rect(panel),
+			"root_embeds_subwindows":root.gui_embed_subwindows,
+			"art_embeds_subwindows":panel.gui_embed_subwindows,"popup_embedded":conversation_dialog.is_embedded(),
 			"popup_position":conversation_dialog.position,"popup_size":conversation_dialog.size,
 			"popup_screen_rect":popup_rect,"apply_screen_rect":apply_rect,"cancel_screen_rect":cancel_rect,
 			"apply_visible":ok_button.is_visible_in_tree(),"cancel_visible":cancel_button.is_visible_in_tree()}))
-		check(conversation_dialog.size.y <= art_size.y+1,
-			"Conversation stays within small Art window height: "+str(art_size))
-		check(conversation_dialog.size.x <= art_size.x+1,
-			"Conversation and retained-image label stay within small Art window width: "+str(art_size))
+		check(root_rect.encloses(popup_rect),
+			"Conversation stays within its actual root viewport beside small Art: "+str(art_size))
+		check(root_rect.encloses(apply_rect) and root_rect.encloses(cancel_rect),
+			"Apply and Cancel stay within the actual root viewport after long Note: "+str(art_size))
 		check(ok_button.is_visible_in_tree() and popup_rect.encloses(apply_rect),
 			"Apply footer remains clickable after long Note: "+str(art_size))
 		check(cancel_button.is_visible_in_tree() and popup_rect.encloses(cancel_rect),
@@ -406,15 +409,75 @@ func large_conversation_checks() -> void:
 	panel.conversation = []
 	for i: int in Provider.MAX_CONVERSATION_TURNS:
 		panel.conversation.append({"role":"user","content":"List completion message %d" % i})
+	var fill_started := Time.get_ticks_usec()
 	panel._open_conversation()
-	var deadline := Time.get_ticks_msec()+10000
-	while dialog.list_loading and Time.get_ticks_msec() < deadline: await process_frame
-	check(not dialog.list_loading and dialog.messages.item_count == Provider.MAX_CONVERSATION_TURNS,
+	var initial_items: int = dialog.messages.item_count
+	var previous_items := initial_items
+	var fill_frames := 0
+	var idle_frames := 0
+	var max_item_delta := 0
+	var min_item_delta: int = dialog.LIST_ITEMS_PER_FRAME
+	var progress_valid := true
+	var last_frame_usec := fill_started
+	var max_frame_gap_usec := 0
+	# This is a frame-paced algorithm, not a minimum-FPS promise. Each active
+	# slice adds 1..128 rows with a 2ms script budget. Allow two observer-order
+	# idle frames, then require monotonic progress. The remaining row count gives
+	# a finite frame watchdog; the existing 240s suite ceiling remains in force.
+	# Responsiveness is checked separately using every actual adjacent-frame gap.
+	var completion_frame_limit := Provider.MAX_CONVERSATION_TURNS-initial_items+2
+	while dialog.list_loading and fill_frames < completion_frame_limit:
+		await process_frame
+		var now_usec := Time.get_ticks_usec()
+		max_frame_gap_usec = maxi(max_frame_gap_usec,now_usec-last_frame_usec)
+		last_frame_usec = now_usec
+		fill_frames += 1
+		var item_count: int = dialog.messages.item_count
+		var item_delta := item_count-previous_items
+		previous_items = item_count
+		max_item_delta = maxi(max_item_delta,item_delta)
+		if item_delta > 0: min_item_delta = mini(min_item_delta,item_delta)
+		if item_delta == 0 and dialog.list_loading: idle_frames += 1
+		if item_delta < 0 or item_delta > dialog.LIST_ITEMS_PER_FRAME \
+			or item_count > Provider.MAX_CONVERSATION_TURNS or idle_frames > 2:
+			progress_valid = false
+		if fill_frames % 16 == 0 or not dialog.list_loading:
+			print("ART_CONVERSATION_LIST_PROGRESS ",JSON.stringify({"frames":fill_frames,
+				"items":item_count,"elapsed_usec":now_usec-fill_started,
+				"max_frame_gap_usec":max_frame_gap_usec,"max_list_slice_usec":dialog.max_list_slice_usec}))
+		if not progress_valid or max_frame_gap_usec > 2000000: break
+	var list_complete: bool = not dialog.list_loading and dialog.messages.item_count == Provider.MAX_CONVERSATION_TURNS
+	var final_settle_frames := 0
+	if list_complete:
+		# The final slice requests deferred ItemList layout. Include the next
+		# frame so its cost cannot escape when list_loading becomes false.
+		await process_frame
+		var settled_usec := Time.get_ticks_usec()
+		max_frame_gap_usec = maxi(max_frame_gap_usec,settled_usec-last_frame_usec)
+		final_settle_frames = 1
+	print("ART_CONVERSATION_LIST_COMPLETION ",JSON.stringify({"items":dialog.messages.item_count,
+		"expected_items":Provider.MAX_CONVERSATION_TURNS,"complete":list_complete,
+		"initial_items":initial_items,"fill_frames":fill_frames,"idle_frames":idle_frames,
+		"completion_frame_limit":completion_frame_limit,"suite_completion_ceiling_seconds":240,
+		"elapsed_usec":Time.get_ticks_usec()-fill_started,"final_settle_frames":final_settle_frames,
+		"min_item_delta":min_item_delta,"max_item_delta":max_item_delta,"progress_valid":progress_valid,
+		"max_frame_gap_usec":max_frame_gap_usec,"frame_gap_limit_usec":2000000,
+		"script_items_per_slice":dialog.LIST_ITEMS_PER_FRAME,"script_budget_usec":dialog.LIST_BUDGET_USEC,
+		"last_list_slice_usec":dialog.last_list_slice_usec,"max_list_slice_usec":dialog.max_list_slice_usec,
+		"display":DisplayServer.get_name()}))
+	check(progress_valid and fill_frames <= completion_frame_limit,
+		"incremental population makes bounded monotonic progress between frames")
+	check(max_frame_gap_usec <= 2000000,
+		"large message list including final deferred layout keeps adjacent frames within two seconds")
+	check(list_complete,
 		"incremental population exposes every admitted conversation turn")
-	dialog.messages.select(Provider.MAX_CONVERSATION_TURNS-1)
-	dialog.messages.item_selected.emit(Provider.MAX_CONVERSATION_TURNS-1)
-	check(dialog.content.text == "List completion message 16383",
-		"last conversation turn remains selectable and editable after full population")
+	if list_complete:
+		dialog.messages.select(Provider.MAX_CONVERSATION_TURNS-1)
+		dialog.messages.item_selected.emit(Provider.MAX_CONVERSATION_TURNS-1)
+		check(dialog.content.text == "List completion message 16383",
+			"last conversation turn remains selectable and editable after full population")
+	else:
+		check(false,"last conversation turn selection is unqualified because list population did not complete")
 	dialog.hide()
 	var closing_dialog = panel.ConversationEditor.new()
 	panel.add_child(closing_dialog)

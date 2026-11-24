@@ -540,6 +540,14 @@ func loaded_conversation_apply_checks() -> void:
 		editor.push_input(event,true)
 	for _index in range(3): await process_frame
 	check(editor.content.text.begins_with("Zx"),"ordinary TextEdit key event replaces the selected first character")
+	if DisplayServer.get_name()!="headless":
+		# Retain the actual edited Conversation and its Apply/Cancel controls.
+		# Rendering/readback belongs outside both measured UI intervals.
+		await RenderingServer.frame_post_draw
+		var screenshot := root.get_texture().get_image()
+		check(screenshot != null and not screenshot.is_empty()
+			and screenshot.save_png(str(spec.output)+"/conversation-before-apply.png")==OK,
+			"displayed changed conversation framebuffer is retained before Apply")
 	checkpoint("before actual edited near-cap Apply")
 	begin_measurement()
 	began = Time.get_ticks_usec()

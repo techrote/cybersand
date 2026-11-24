@@ -121,7 +121,7 @@ func open_history(turns: Array) -> void:
 	draft = baseline.duplicate()
 	notice.text = HELP
 	_rebuild(0 if not draft.is_empty() else -1)
-	# Stay inside the parent Art window at small resolutions and DPI scales.
+	# Fit the popup's actual embedding viewport or native screen at this scale.
 	popup_centered_clamped(Vector2i((Vector2(760,480)*content_scale_factor).ceil()),0.9)
 
 func _sync_minimum() -> void:

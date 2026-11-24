@@ -415,6 +415,10 @@ def main() -> int:
             raise RuntimeError("Matrix did not execute all required arms")
         if args.graphical and (report.get("display") == "headless" or not (args.output / "art-window.png").is_file()):
             raise RuntimeError("Graphical fixture omitted rendered framebuffer evidence")
+        conversation_capture = args.output / "conversation-before-apply.png"
+        if args.graphical and args.group == "conversation-apply" and (
+                not conversation_capture.is_file() or conversation_capture.stat().st_size == 0):
+            raise RuntimeError("Graphical changed-Apply fixture omitted its actual Conversation framebuffer")
         print(f"Art Workbench: {report['checks']} checks, {len(report['cases'])} cases, failures=0, display={report['display']}")
         return 0
     finally:
