@@ -45,6 +45,16 @@ def wave_result(text: str, platform: str) -> dict:
     return row
 
 
+def art_session_history_result(text: str) -> dict:
+    """Require accepted #727's session-only receipt, never retired restoration evidence."""
+    row = json_marker(text, "ART_HISTORY_SESSION_RESULT")
+    custody.require(set(row) == {"checks", "failures", "scope"}
+                    and type(row.get("checks")) is int and row["checks"] >= 10
+                    and row.get("failures") == [] and row.get("scope") == "session-only",
+                    "Art history did not complete the accepted session-only audit")
+    return row
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", type=Path, required=True)
@@ -95,13 +105,14 @@ def main() -> None:
         for label, script, marker in (
                 ("art-provider", "test_art_provider", "ART_PROVIDER_KEYLESS"),
                 ("art-receipt-identity", "test_art_history_receipt_identity", "ART_HISTORY_RECEIPT_IDENTITY_RESULT"),
-                ("art-durability", "test_art_history_durability", "ART_HISTORY_DURABILITY_RESULT"),
+                ("art-durability", "test_art_history_durability", "ART_HISTORY_SESSION_RESULT"),
                 ("art-native-render", "test_art_batch_native_render", "ART_STAGE1_RESULT"),
                 ("art-undo", "test_art_undo", "ART_UNDO_RESULT"),
                 ("actors-session", "test_workbench_actor_composition_session", "Workbench actor composition session:"),
                 ("actors-native", "test_workbench_actor_composition_native", "Workbench actor composition native:")):
-            runner.godot(project, label, script, marker, graphical=label == "art-native-render",
-                         env={"ART_HISTORY_DURABILITY_CASE": "suite"} if label == "art-durability" else None)
+            text = runner.godot(project, label, script, marker, graphical=label == "art-native-render")
+            if label == "art-durability":
+                runner.results[-1]["completion"] = art_session_history_result(text)
         for phase in ("author", "reopen"):
             frames = evidence / ("actors-" + phase + "-frames")
             text = runner.godot(project, "actors-" + phase, "test_workbench_actor_composition", "WB_ACTOR_COMPOSE",

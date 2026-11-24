@@ -12,6 +12,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 **Current SWARM-004/005/006 consolidated delivery:** [unified integration, reconciliation ledger and physical owner acceptance](operations/swarm456-unified-mainline.md). One new candidate supersedes the two earlier mergedown operations; their source/evidence remains intact. Draft/HOLD until exact-source qualification and physical Windows/NVIDIA acceptance.
 
+Its [24 November closure](operations/swarm456-unified-mainline.md#closure-qualification--24-november-2026)
+retains Q1–Q5 failures, reconciles accepted Art session behavior and qualifies
+direct Windows engine process custody without changing the native solver.
+
 **SWARM-004/005 mainline candidate:** [integration, exact donor custody, experimental controls and owner evaluation](operations/swarm45-mainline-integration.md). The registered negative holdout results remain intact; new-source platform/publication and physical-owner acceptance remain separate gates.
 
 SWARM-006 Draft/HOLD: [integration successor, qualification boundaries and owner

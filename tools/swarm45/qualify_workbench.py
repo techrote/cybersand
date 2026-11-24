@@ -14,7 +14,7 @@ import sys
 
 import runtime_custody as custody
 from shared import (HEADLESS_CASES, graphical_processes, historical_refresh_errors, input_report_errors, layout_identity,
-                    legacy, package_identity, ui_report_errors, verify_engine, verify_project)
+                    legacy, package_identity, qualification_engine, ui_report_errors, verify_engine, verify_project)
 
 
 def main() -> int:
@@ -27,7 +27,8 @@ def main() -> int:
     parser.add_argument("--package-zip", type=Path)
     args = parser.parse_args()
     platform = "windows" if os.name == "nt" else "linux"
-    runtime, project, output, engine = (p.resolve() for p in (args.runtime, args.project, args.output, args.godot))
+    runtime, project, output = (p.resolve() for p in (args.runtime, args.project, args.output))
+    engine = qualification_engine(args.godot, platform)
     custody.require(sys.platform in ("linux", "win32"), "Unsupported execution OS")
     custody.require(not output.exists() or not any(output.iterdir()), "Graphical evidence must be new")
     receipt = custody.verify(runtime)

@@ -48,8 +48,8 @@ jobs:
           python3 tools/swarm45/publish_runtime.py stage --bundle build/swarm45-publication --gate build/swarm45-publication-gate.json
           git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
           git add -- godot/tools/gentek_reciprocal godot/tools/gentek_reciprocal.exe godot/tools/swarm004-runtime.linux.json godot/tools/swarm004-runtime.windows.json
-          python3 tools/swarm45/publish_runtime.py check-index
-      - name: Commit exactly eight paths and push with the request-head lease
+          python3 tools/swarm45/publish_runtime.py check-index --bundle build/swarm45-publication
+      - name: Commit the verified eight-path payload and push with the request-head lease
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"

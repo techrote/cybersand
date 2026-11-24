@@ -225,19 +225,45 @@ def stage(bundle: Path, gate_path: Path) -> None:
     print("Staged exactly eight verified runtime paths; original source/build identities retained")
 
 
-def check_index() -> None:
-    current_request()
-    changed = custody.git(custody.ROOT, "diff", "--cached", "--name-only", "--no-renames").splitlines()
-    custody.require(sorted(changed) == PATHS, "Staged publication exceeds or omits one of the eight allowed paths")
-    for path in (*RUNTIMES.values(), *CLIS.values()):
-        payload = run_request.git(custody.ROOT, "show", ":" + path)
-        binary = custody.ROOT / path
-        expected = ("version https://git-lfs.github.com/spec/v1\noid sha256:" + custody.sha(binary)
-                    + "\nsize " + str(binary.stat().st_size) + "\n").encode()
-        custody.require(payload == expected, "Staged runtime is not its exact Git LFS pointer")
-    mode = custody.git(custody.ROOT, "ls-files", "--stage", "--", CLIS["linux"]).split()[0]
-    custody.require(mode == "100755", "Published Linux CLI must retain executable Git mode")
+def verify_staged_payload(root: Path, bundle: Path, files_sha256: dict) -> dict:
+    """Verify all eight index entries, including qualified byte-identical paths.
+
+    Git omits unchanged files from a staged diff. Admission therefore depends on
+    the complete verified payload, not on making each runtime appear changed.
+    An omitted genuinely changed file, unrelated edit or substituted payload is
+    still refused before publication.
+    """
+    custody.require(set(files_sha256) == set(PATHS), "Publication inventory must contain exactly eight paths")
+    changed = [name.decode() for name in run_request.git(root, "diff", "--cached", "--name-only", "--no-renames", "-z").split(b"\0") if name]
+    custody.require(bool(changed) and set(changed).issubset(PATHS),
+                    "Staged publication is empty or exceeds the eight allowed paths")
+    binaries = {*RUNTIMES.values(), *CLIS.values()}
+    for path in PATHS:
+        original, installed = bundle / path, root / path
+        custody.require(original.is_file() and not original.is_symlink()
+                        and installed.is_file() and not installed.is_symlink()
+                        and custody.sha(original) == files_sha256[path]
+                        and custody.sha(installed) == files_sha256[path],
+                        "Materialized publication differs from qualified bytes: " + path)
+        expected = original.read_bytes()
+        if path in binaries:
+            expected = ("version https://git-lfs.github.com/spec/v1\noid sha256:" + files_sha256[path]
+                        + "\nsize " + str(original.stat().st_size) + "\n").encode()
+        custody.require(run_request.git(root, "show", ":" + path) == expected,
+                        "Staged publication differs from qualified bytes: " + path)
+        mode = custody.git(root, "ls-files", "--stage", "--", path).split()[0]
+        custody.require(mode == ("100755" if path == CLIS["linux"] else "100644"),
+                        "Published runtime path has an unexpected Git mode: " + path)
+    return {"permitted_paths": PATHS, "changed_paths": sorted(changed),
+            "unchanged_byte_identical_paths": sorted(set(PATHS) - set(changed))}
+
+
+def check_index(bundle: Path) -> None:
+    request = current_request()
+    plan = verify_bundle(bundle, request)
+    result = verify_staged_payload(custody.ROOT, bundle, plan["files_sha256"])
     custody.git(custody.ROOT, "diff", "--exit-code", "--", *PATHS)
+    print(json.dumps(result, sort_keys=True))
 
 
 def main() -> None:
@@ -251,7 +277,8 @@ def main() -> None:
     fetch_parser = commands.add_parser("download")
     fetch_parser.add_argument("--gate", type=Path, required=True)
     fetch_parser.add_argument("--output", type=Path, required=True)
-    commands.add_parser("check-index")
+    index_parser = commands.add_parser("check-index")
+    index_parser.add_argument("--bundle", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "gate":
         gate(args.output)
@@ -260,7 +287,7 @@ def main() -> None:
     elif args.command == "download":
         download(args.gate, args.output)
     else:
-        check_index()
+        check_index(args.bundle)
 
 
 if __name__ == "__main__":

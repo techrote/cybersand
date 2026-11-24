@@ -14,6 +14,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 The [consolidated runbook](../operations/swarm456-unified-mainline.md) reconciles current accepted main with #715 and #716 in one branch. It preserves source-feasible parts, source-bound receptors, bounded reciprocal recovery, final/provisional inspection, historical read-only authority and ordinary Workbench features. Recovery and both SWARM-005 controls remain OFF. Exact-source platform/scientific qualification and physical owner acceptance are required; predecessor results remain historical. Draft/HOLD, with one eventual manual merge only after all gates pass.
 
+The 24 November closure continues this same candidate through accepted main
+`00cdb02f` (#727). Q5 remains failed because its Windows process receipts identify
+the console launcher while Godot reports the child engine PID. A source-matched
+successor launches the actual pinned engine and preserves strict process joins;
+the native definition and registered scientific policy remain unchanged.
+
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
 The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)

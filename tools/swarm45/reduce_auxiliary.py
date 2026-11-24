@@ -31,7 +31,7 @@ SMOKE_CASES = (
     ("paint-generated-reopen", "test_paint_editor_generated_workbench", "PAINT_EDITOR_GENERATED_WORKBENCH", True),
     ("art-provider", "test_art_provider", "ART_PROVIDER_KEYLESS", False),
     ("art-receipt-identity", "test_art_history_receipt_identity", "ART_HISTORY_RECEIPT_IDENTITY_RESULT", False),
-    ("art-durability", "test_art_history_durability", "ART_HISTORY_DURABILITY_RESULT", False),
+    ("art-durability", "test_art_history_durability", "ART_HISTORY_SESSION_RESULT", False),
     ("art-native-render", "test_art_batch_native_render", "ART_STAGE1_RESULT", True),
     ("art-undo", "test_art_undo", "ART_UNDO_RESULT", False),
     ("actors-session", "test_workbench_actor_composition_session", "Workbench actor composition session:", False),
@@ -183,7 +183,12 @@ def validate_smokes(directory: Path, value: dict, receipt: dict) -> None:
         engine_project = engine_project or pair
         custody.require(pair == engine_project, "Smoke changed its engine or source project")
         if marker:
-            original = smokes.wave_result(text, receipt["platform"]) if label == "workbench-wave" else original_completion(text, marker)
+            if label == "workbench-wave":
+                original = smokes.wave_result(text, receipt["platform"])
+            elif label == "art-durability":
+                original = smokes.art_session_history_result(text)
+            else:
+                original = original_completion(text, marker)
             custody.require(original == row.get("completion"), "Smoke summary differs from original assertion receipt: " + label)
             if label == "workbench-wave":
                 custody.require(set(original.get("sections", {})) == WATER_SECTIONS, "Water omitted a required actual Workbench section")

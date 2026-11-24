@@ -21,7 +21,9 @@ $sha = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e68
 if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $sha) { throw 'Godot archive pin mismatch' }
 $engineDir = Join-Path $env:RUNNER_TEMP 'swarm45-godot'
 Expand-Archive $zip $engineDir
-$engine = Join-Path $engineDir 'Godot_v4.7-stable_win64_console.exe'
+# Use the actual engine in every source/package/preservation lane. The console
+# wrapper has a different PID and cannot satisfy the strict report/process join.
+$engine = Join-Path $engineDir 'Godot_v4.7-stable_win64.exe'
 'GODOT_EXE=' + $engine | Out-File -Append $env:GITHUB_ENV
 if (-not $Package) { exit 0 }
 $notices = Join-Path $env:RUNNER_TEMP 'swarm45-notices'
@@ -40,7 +42,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Redistribution licence download failed' }
 $vc = Join-Path $env:RUNNER_TEMP 'swarm45-vc-runtime'
 & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
 if ($LASTEXITCODE -ne 0) { throw 'Runtime staging failed' }
-python tools/swarm45/package_owner.py --engine $engine.Replace('_console.exe','.exe') --engine-notices $notices --runtime build/swarm45-windows --vc-runtime $vc --output build/swarm45-owner
+python tools/swarm45/package_owner.py --engine $engine --engine-notices $notices --runtime build/swarm45-windows --vc-runtime $vc --output build/swarm45-owner
 if ($LASTEXITCODE -ne 0) { throw 'Evaluator packaging failed' }
 python tools/swarm006/seal_owner.py --package build/swarm45-owner --output build/swarm456-sealed --source $env:TARGET_SOURCE
 if ($LASTEXITCODE -ne 0) { throw 'Unified evaluator sealing failed' }
@@ -54,4 +56,4 @@ $validation = Join-Path $env:RUNNER_TEMP 'swarm45-pristine-package'
 if (-not $?) { throw 'Source-bound fresh owner ZIP extraction failed' }
 'SWARM45_PACKAGE=' + $validation | Out-File -Append $env:GITHUB_ENV
 'SWARM45_PACKAGE_ZIP=' + (Resolve-Path $archive).Path | Out-File -Append $env:GITHUB_ENV
-'SWARM45_PACKAGE_ENGINE=' + (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+'SWARM45_PACKAGE_ENGINE=' + (Join-Path $validation 'Godot_v4.7-stable_win64.exe') | Out-File -Append $env:GITHUB_ENV

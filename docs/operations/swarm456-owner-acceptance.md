@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Launch and physical Windows NVIDIA acceptance of the exact consolidated SWARM-004/005/006 evaluator
 canonical-for: [swarm456-windows-launch, swarm456-physical-acceptance]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-24
 related-documents: [swarm456-unified-mainline.md, swarm006-workbench-playtest.md]
 ---
 
@@ -83,9 +83,14 @@ A source-time local termination is separate from a qualified foreign joint.
   equipment; play through collision, presentation and useful traversal. Note any
   responsiveness or NVIDIA rendering issue.
 
-Report **PASS** or **FAIL** with the full source SHA from `candidate-manifest.json`,
-archive SHA-256, Windows/GPU/driver identity, exact expression/seed/crop/options,
-and screenshots or saved-map/log evidence. On FAIL, include reproduction steps
-and whether the issue also occurs with recovery OFF. A failed candidate is repaired
-and requalified before another acceptance request. Physical acceptance is the
-remaining owner decision only after the PR's autonomous engineering gates pass.
+First report whether the result is **useful, visually convincing and responsive**,
+with **PASS** or **FAIL**, the full source SHA from `candidate-manifest.json` and
+the archive SHA-256. On failure, reproduction steps, expression/seed/crop/options,
+Windows/GPU/driver details and whether recovery OFF also fails help diagnosis.
+Screenshots and locally collected logs are optional; inspect them before sharing.
+Private authored maps are not required and must remain local unless you explicitly
+choose to share them. The launcher and comparison helper upload nothing.
+
+A failed candidate is repaired and requalified before another acceptance request.
+Physical acceptance is the remaining owner decision only after the PR's autonomous
+engineering gates pass.

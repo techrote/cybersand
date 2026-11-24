@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Consolidated reciprocal Workbench candidate, explicit reconciliation, source-matched qualification and mandatory physical owner admission
 canonical-for: [swarm456-unified-mainline, swarm456-owner-evaluation, swarm456-reconciliation]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-24
 related-documents: [swarm456-owner-acceptance.md, swarm45-mainline-integration.md, swarm006-integration-finisher.md, swarm006-workbench-playtest.md, ../systems/gentek-reciprocal-assembly.md, ../systems/gentek-negotiated-recovery.md, ../architecture/experimental-workbench-authoring-patch.md]
 ---
 
@@ -22,6 +22,54 @@ The predecessor runbooks and registered evidence retain their original source,
 execution and scientific scope. Their earlier instruction to wait for a separate
 SWARM-004/005 merge is replaced by this combined delivery. Neither original donor
 branch, PR, archive, scientific policy nor frozen result is modified.
+
+## Closure qualification — 24 November 2026
+
+The closure mission continues principal [PR #729](https://github.com/techrote/cybersand/pull/729),
+whose recovered Q5 execution head is `d59a82241eaf7d7bf48551139e41c3da277a8eff`.
+Accepted main is reconciled through `00cdb02f103265b6dc5224c68283e9a0c8cb449f`
+(#727 session-only Art logging). A real merge retains both histories; the sole
+shared-workbench conflict preserves the reciprocal busy-history refusal before
+Art's session-only guard. No unmerged programme is imported. Native algorithms,
+definitions, budgets, material semantics and all three default-OFF controls are
+unchanged. The original main baseline below remains a historical identity;
+`tools/swarm45/run_request.py::ACCEPTED_MAIN` now fences the reconciled main.
+The scoped accepted-main smoke and independent reader also require #727's
+`ART_HISTORY_SESSION_RESULT` with session-only scope, complete checks and zero
+failures. The retired durability marker cannot stand in for this new receipt.
+
+[Q4 / 44983553549](https://github.com/techrote/cybersand/actions/runs/44983553549)
+and [Q5 / 44988900817](https://github.com/techrote/cybersand/actions/runs/44988900817)
+each remain failed aggregates despite six successful constituent jobs. Q4 rejected
+the actual native-prefixed Flatten capacity-failure reason. Its narrow reason
+whitelist repair was already present in Q5; these are separate failures.
+
+Q5's Windows `transaction/create` launched console-wrapper PID **5148**, while
+the byte-original Godot report and unique log marker identify engine PID **7432**.
+Report hashes and marker contents agree. All 17 Linux UI joins match, while all
+17 Windows source joins retain different wrapper/engine PIDs. The original
+evidence contains no OS parent/child witness that can qualify that mismatch.
+It must not be repaired by rewriting receipts or accepting arbitrary PID aliases.
+`prepare_windows.ps1` and `shared.py::qualification_engine` now select the actual
+pinned `Godot_v4.7-stable_win64.exe` consistently for source, preservation and
+pristine-package execution. `reduce_evidence.py::ui_process_report` keeps strict
+PID equality, original report hashes and unique original-log equality, with
+separate diagnostic reasons. Byte-original Linux-positive and Windows-refused
+fixtures retain their original line endings and identities.
+
+The leased publisher verifies the entire eight-path qualified payload against
+the Git index and materialized files. A path may be absent from the staged diff
+only when its indexed bytes already equal the admitted payload. Unknown paths,
+missing genuinely changed files, substituted metadata or LFS pointers, pointer-only
+working files and wrong Git modes are refused. Publication still requires a
+successful source-exact qualification, immutable artifact digest and branch lease.
+
+Fresh complete qualification, source/pristine Windows execution, guarded runtime
+publication and broad materialized-source gates are required for this reconciled
+candidate. Retained Q5 native/scientific/material evidence is independently
+verified historical evidence, not a pass claim for the new application source.
+The canonical final decision packet will record actual run and artifact identities
+after those gates terminate; physical Windows 11/NVIDIA acceptance remains pending.
 
 ## Exact starting source and ownership
 

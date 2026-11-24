@@ -14,6 +14,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 For combined source, conflict decisions, V1–V4/schema-5/6 compatibility, final inspector, scientific distinctions, source-matched evaluator and owner admission, read the [unified runbook](../operations/swarm456-unified-mainline.md). [Focused questions](retrieval-questions-swarm456.json) supplement the unchanged frozen set. Predecessor runbooks retain their original evidence scope.
 
+The runbook's [closure qualification](../operations/swarm456-unified-mainline.md#closure-qualification--24-november-2026)
+explains the retained Q5 Windows wrapper/engine PID refusal, direct-engine repair,
+accepted-main Art reconciliation and exact eight-path publication accounting.
+
 ## SWARM-004/005 mainline integration
 
 For the current donor map, source-identity correction, default-OFF Experimental controls, V1/V2/V3 compatibility, known-matrix replay and the reconstructed package's physical-owner gate, read the [integration runbook](../operations/swarm45-mainline-integration.md). [Focused questions](retrieval-questions-swarm45.json) are additive to the unchanged frozen set.

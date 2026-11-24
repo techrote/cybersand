@@ -217,6 +217,25 @@ def verify_project(project: Path, receipt: dict) -> None:
                     "Project is not running the source-built adapter")
 
 
+def qualification_engine(engine: Path, platform: str) -> Path:
+    """Launch the actual pinned engine, so its PID is the report's PID.
+
+    Godot's Windows console executable is a wrapper which starts the sibling
+    GUI executable. Its Popen PID cannot be joined to OS.get_process_id() from
+    the engine without separately captured parent/child evidence. Q5 retained
+    no such evidence; keep that refusal and avoid the wrapper for new runs.
+    """
+    custody.require(engine.is_file() and not engine.is_symlink(), "Missing or linked qualification engine")
+    if platform == "windows":
+        name = "Godot_v4.7-stable_win64.exe"
+        custody.require(engine.name in (name, "Godot_v4.7-stable_win64_console.exe"),
+                        "Qualification requires the pinned Windows engine filename")
+        engine = engine.with_name(name)
+        custody.require(engine.is_file() and not engine.is_symlink(),
+                        "Missing or linked actual Windows engine beside the console wrapper")
+    return engine.resolve()
+
+
 def verify_engine(engine: Path) -> str:
     import subprocess
     version = subprocess.check_output([str(engine), "--version"], text=True, timeout=30).strip()

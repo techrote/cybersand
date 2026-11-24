@@ -148,6 +148,8 @@ class SmokeOriginalEvidence(unittest.TestCase):
             text = "Godot import completed\n"
             if marker:
                 result = {"checks": 8, "failures": []}
+                if label == "art-durability":
+                    result = {"checks": 13, "failures": [], "scope": "session-only"}
                 if label == "workbench-wave":
                     result = {"schema": "workbench-wave-631-v1", "failures": 0, "assertions": 8,
                               "real_workbench": True, "native_ticks": 8, "platform": "Linux", "godot": "4.7-stable (official)",
@@ -208,6 +210,31 @@ class SmokeOriginalEvidence(unittest.TestCase):
 
     def test_complete_named_original_receipts_are_accepted(self):
         self.check()
+
+    def test_retired_or_wrong_scope_art_history_cannot_qualify_new_session_smoke(self):
+        index = next(i for i, row in enumerate(self.rows) if row["label"] == "art-durability")
+        row = self.rows[index]
+        log = self.directory / "art-durability.log"
+        valid = {"checks": 13, "failures": [], "scope": "session-only"}
+        # Retired cross-session durability evidence is not the accepted #727 test.
+        log.write_text("ART_HISTORY_DURABILITY_RESULT " + json.dumps({"checks": 345, "failures": []}) + "\n")
+        with self.assertRaisesRegex(ValueError, "Missing/duplicate completion"):
+            self.check()
+        for change in ({"scope": "cross-session"}, {"checks": 9}, {"checks": True},
+                       {"failures": ["old log changed"]}, {"failures": 0}):
+            with self.subTest(change=change):
+                altered = {**valid, **change}
+                row["completion"] = altered
+                log.write_text("ART_HISTORY_SESSION_RESULT " + json.dumps(altered) + "\n")
+                self.save()
+                with self.assertRaisesRegex(ValueError, "accepted session-only audit"):
+                    self.check()
+        row["completion"] = valid
+        self.save()
+        line = "ART_HISTORY_SESSION_RESULT " + json.dumps(valid) + "\n"
+        log.write_text(line + line)
+        with self.assertRaisesRegex(ValueError, "Missing/duplicate completion"):
+            self.check()
 
     def test_rehashed_summary_cannot_hide_failed_exit_or_missing_actual_receipt(self):
         self.rows[1]["exit_code"] = 99

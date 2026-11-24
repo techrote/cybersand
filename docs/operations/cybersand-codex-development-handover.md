@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Unified SWARM closure qualification — 2026-11-24
+
+The existing #729 [closure qualification](swarm456-unified-mainline.md#closure-qualification--24-november-2026)
+reconciles accepted #727 Art session logging at `00cdb02f` without changing native
+solver behavior. Q1–Q5 retain their failed dispositions. Q5's Windows console
+wrapper/engine PID mismatch requires fresh direct-engine execution; original
+reports remain immutable. Exact eight-path publication now accounts for verified
+byte-identical paths. Source qualification, publication, broad gates and physical
+owner acceptance remain distinct; the principal candidate stays Draft/HOLD.
+
 ## Unified SWARM-004/005/006 mergedown — 2026-11-22
 
 The owner authorized a [single consolidated integration](swarm456-unified-mainline.md) from accepted main `662df51c`, preserving reviewed #715 and #716 histories. This supersedes separate later-merge instructions in the 21 November entries below. Retain historical evidence and defaults. New source, actual Linux/Windows runtimes, full qualification, independent final-source review and physical NVIDIA acceptance remain required. Keep Draft/HOLD until all gates permit one manual merge. No Swarm brush implementation belongs to this mission.

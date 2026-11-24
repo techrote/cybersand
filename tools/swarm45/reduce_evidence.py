@@ -64,6 +64,26 @@ def json_marker(text: str, marker: str) -> dict:
     return rows[0]
 
 
+def ui_process_report(directory: Path, records: dict, row: dict, text: str,
+                      relative: str, report_hash: bool = True) -> dict:
+    """Join byte-original UI evidence without accepting a wrapper PID alias.
+
+    A matching report and stdout marker alone do not prove that their reported
+    process is the launched child. Keep exact PID equality on both platforms.
+    Split the diagnostics so an absent parent/child witness cannot be mistaken
+    for a path representation problem or corrected by relabelling old reports.
+    """
+    original = document(directory, records, relative + ".json")
+    if report_hash:
+        custody.require(row.get("report_sha256") == custody.sha(directory / (relative + ".json")),
+                        "Original UI report hash differs from process receipt: " + relative)
+    custody.require(row.get("process_id") == original.get("process_id"),
+                    "Original UI process identity differs from report (wrapper/child evidence is not interchangeable): " + relative)
+    custody.require(json_marker(text, "SWARM004_WORKBENCH ") == original,
+                    "Original UI report differs from its unique original log marker: " + relative)
+    return original
+
+
 def command_path(value: object) -> str:
     custody.require(isinstance(value, str) and bool(value), "Missing original process command path")
     return value.replace("\\", "/")
@@ -391,21 +411,15 @@ def validate_graphical(directory: Path, value: dict, receipt: dict) -> None:
         reports = {}
         for mode in modes:
             row, text = process(mode, name, 420, legacy.UI_SCRIPT, True, name)
-            original = document(directory, records, name + "/" + mode + ".json")
-            custody.require(row.get("report_sha256") == custody.sha(directory / name / (mode + ".json"))
-                            and row.get("process_id") == original.get("process_id")
-                            and json_marker(text, "SWARM004_WORKBENCH ") == original,
-                            "Original UI process/report/log join failed: " + name + "/" + mode)
+            original = ui_process_report(directory, records, row, text, name + "/" + mode)
             reports[mode] = original
             if mode == "evaluate" and original.get("native_can_apply") is True:
                 modes.append("reopen")
         examples[name] = validate_example(directory / name, name, reports, receipt, layout["godot/" + legacy.UI_SCRIPT])
     row, text = process("lifecycle", "lifecycle", 300, legacy.UI_SCRIPT, True)
-    lifecycle = document(directory, records, "lifecycle/lifecycle.json")
-    custody.require(row.get("fixture_sha256") == receipt["files"][receipt["fixture"]]["sha256"]
-                    and row.get("process_id") == lifecycle.get("process_id")
-                    and json_marker(text, "SWARM004_WORKBENCH ") == lifecycle,
-                    "Original lifecycle fixture/process/report join failed")
+    lifecycle = ui_process_report(directory, records, row, text, "lifecycle/lifecycle", report_hash=False)
+    custody.require(row.get("fixture_sha256") == receipt["files"][receipt["fixture"]]["sha256"],
+                    "Original lifecycle fixture identity differs")
     errors = ui_report_errors(lifecycle, "lifecycle", "transaction", receipt["source_commit"],
                              receipt["files"][receipt["cli"]]["sha256"], layout["godot/" + legacy.UI_SCRIPT], platform)
     custody.require(not errors, "Original lifecycle assertions failed: " + "; ".join(errors))
