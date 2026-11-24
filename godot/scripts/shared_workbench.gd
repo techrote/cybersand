@@ -14,6 +14,7 @@ const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place s
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
 var _materials_lab_window: Window
 var _materials_lab_panel: Control
+var material_audition: RefCounted
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
 var _generated_active: Dictionary = {}
@@ -113,6 +114,10 @@ func open_materials_lab() -> void:
 			margin.add_theme_constant_override("margin_" + side,10)
 		_materials_lab_window.add_child(margin)
 		var panel := preload("res://scripts/material_lab_panel.gd").new()
+		if material_audition == null:
+			material_audition = preload("res://scripts/material_audition_controller.gd").new()
+			material_audition.bind(self)
+		panel.bind_current_scene(material_audition)
 		_materials_lab_panel = panel
 		panel.name = "MaterialsLabPanel"
 		margin.add_child(panel)
@@ -804,6 +809,18 @@ func load_water_comparison(scene_id: String) -> bool:
 	message = "Preparing Water comparison scene with requested solver / tuning…"
 	return true
 
+func load_material_audition_demo(scene_id: String) -> Dictionary:
+	if not _editable(): return {"ok":false,"error":message}
+	if _liquids == null or _liquids.bridge == null:
+		return {"ok":false,"error":"Native policy interface unavailable."}
+	var policy: PackedInt32Array = PackedInt32Array(applied.get("liquid_policy",[]))
+	if policy.is_empty(): policy = _liquids.bridge.default_liquid_policy()
+	var candidate: Dictionary = preload("res://scripts/workbench_material_audition_scenes.gd").create(scene_id,policy)
+	if candidate.is_empty(): return {"ok":false,"error":"Unknown material audition scene."}
+	if not apply(candidate): return {"ok":false,"error":message}
+	message = "Installing material audition scene. Previous scene and its session profile are replaced."
+	return {"ok":true,"status":"pending","scene_id":scene_id}
+
 func installed(candidate: Dictionary) -> void:
 	if art_batches != null: art_batches.executor.canvas_changed()
 	_pending_request_serial = 0
@@ -1237,6 +1254,10 @@ func save_setup() -> bool:
 		else "Saved starting setup · ") + _name.text
 	if host.simulation_worker.has_failed():
 		message += ". Native owner remains failed; restart the application and Load this start. Failed runtime state was not captured."
+	if material_audition != null:
+		var material_state: Dictionary = material_audition.material_audition_state()
+		if material_state.get("changes_behavior",false):
+			message += ". Material audition profile is separate: save it in Materials Lab and reapply after loading."
 	return true
 
 func load_setup() -> bool:

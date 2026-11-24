@@ -1,0 +1,130 @@
+extends SceneTree
+
+# Adversarial view/state-machine qualification with an explicit fake owner.
+# This does not claim native activation or native material behavior evidence.
+const PanelScript = preload("res://scripts/material_lab_audition_panel.gd")
+const Profiles = preload("res://scripts/material_audition_profile.gd")
+const Fixtures = preload("res://tests/test_material_audition_profile.gd")
+var checks := 0
+var failures := 0
+
+class Owner extends RefCounted:
+	var state := Fixtures.fixture_state()
+	var submitted: Dictionary = {}
+	var completion: Dictionary = {}
+	var requests := 0
+	var request_id := ""
+	func material_audition_state() -> Dictionary: return state.duplicate(true)
+	func request_material_audition(request: Dictionary) -> Dictionary:
+		requests += 1
+		submitted = request.duplicate(true)
+		request_id = "request-%d" % requests
+		return {"ok":true,"status":"pending","request_id":request_id}
+	func poll_material_audition(_request: String) -> Dictionary:
+		return completion.duplicate(true) if not completion.is_empty() else {"ok":true,"status":"pending","request_id":request_id}
+	func cancel_material_audition(_request: String) -> Dictionary:
+		completion = {"ok":false,"status":"cancelled","error":"Cancelled before admission","request_id":request_id}
+		return completion.duplicate(true)
+	func activate() -> Dictionary:
+		state.revision += 1
+		state.profile = submitted.profile.duplicate(true)
+		for row: Dictionary in state.capabilities:
+			if row.change_class == "live": row.effective = Profiles.value_for(state.profile,row)
+		completion = {"ok":true,"status":"active","request_id":request_id,"state":state.duplicate(true)}
+		return completion.duplicate(true)
+
+func expect(value: bool, message: String) -> void:
+	checks += 1
+	if not value:
+		failures += 1
+		push_error("MAT_AUDITION_UI_CONTRACT: " + message)
+
+func _initialize() -> void:
+	run.call_deferred()
+
+func run() -> void:
+	root.size = Vector2i(1000,650)
+	var panel := PanelScript.new()
+	root.add_child(panel)
+	await process_frame
+	expect(panel._buttons.apply.disabled,"standalone Lab cannot imply current-scene activation")
+	var owner := Owner.new()
+	panel.bind_current_scene(owner)
+	panel.select_material(2)
+	await process_frame
+	expect(not panel._buttons.apply.disabled,"bound current-scene owner admits an explicit application control")
+	var density_key := "material:2:density"
+	expect(panel._controls.has(density_key),"capability-driven density control is present")
+	panel._controls[density_key].value = 500
+	expect(owner.requests==0,"changing a numeric control never submits intermediate native transactions")
+	var result: Dictionary = panel.apply_draft()
+	expect(result.get("status")=="pending" and owner.requests==1,"one deliberate Apply queues one complete profile")
+	expect(owner.submitted.session_id=="fixture-session" and owner.submitted.world_id=="123" and owner.submitted.expected_revision==0,"request captures host, World and prior revision")
+	expect(panel.active_state.profile.materials.is_empty(),"pending draft is not advertised as native-active")
+	panel._controls[density_key].value = 700
+	panel._complete(owner.activate())
+	expect(int(panel.active_state.profile.materials[0].density)==500,"native acknowledgement owns active value")
+	expect(int(panel.draft_profile.materials[0].density)==700,"newer edits survive a late successful receipt")
+	expect(panel._draft_binding.expected_revision==1,"new draft is bound to acknowledged configuration revision")
+	expect(not panel._buttons.revert.disabled,"accepted previous configuration can be restored separately")
+	owner.completion.clear()
+	panel.revert_configuration()
+	expect(owner.submitted.profile.materials.is_empty(),"Revert requests the prior configuration, without a cell mutation command")
+	panel._complete(owner.activate())
+	expect(panel.active_state.profile.materials.is_empty(),"reversion updates active configuration readback")
+	owner.completion.clear()
+	panel._controls[density_key].get_line_edit().text = "-1"
+	panel._controls[density_key].get_line_edit().text_changed.emit("-1")
+	var prior_requests := owner.requests
+	expect(not panel.apply_draft().get("ok",true) and owner.requests==prior_requests,"out-of-range typed input refuses before native submission")
+	panel.use_active_as_draft()
+	panel._controls[density_key].value = 400
+	owner.completion.clear()
+	panel.apply_draft()
+	var before_cancel := panel.active_state.duplicate(true)
+	panel.cancel_pending()
+	expect(panel._pending.is_empty() and panel.active_state==before_cancel,"acknowledged cancellation leaves active configuration unchanged")
+	owner.completion.clear()
+	owner.state.revision += 1
+	panel.refresh_scene()
+	expect(panel._buttons.apply.disabled and not panel._buttons.rebase.disabled,"an external revision makes the old draft visibly stale")
+	prior_requests = owner.requests
+	panel.apply_draft()
+	expect(owner.requests==prior_requests,"stale UI intent cannot be silently rebased by Apply")
+	panel.rebase_draft()
+	expect(not panel._buttons.apply.disabled,"explicit Keep draft captures the newer revision")
+	panel.apply_draft()
+	var unrelated := owner.activate()
+	unrelated.request_id = "unrelated"
+	panel._complete(unrelated)
+	expect(not panel._pending.is_empty(),"unrelated asynchronous receipt cannot complete this request")
+	panel._complete(owner.completion)
+	expect(panel._pending.is_empty(),"matching terminal receipt completes the request")
+	owner.completion.clear()
+	owner.state.world_id = "replacement-world"
+	owner.state.revision = 0
+	owner.state.profile = Profiles.defaults()
+	panel.refresh_scene()
+	expect(panel._buttons.apply.disabled and panel._previous_profile.is_empty(),"World replacement retires the prior configuration history and old binding")
+	panel.use_active_as_draft()
+	expect(panel._draft_binding.world_id=="replacement-world" and panel.draft_profile.materials.is_empty(),"explicit adoption binds to replacement World defaults")
+	panel.select_material(3)
+	expect(not panel._controls.has("material:3:viscosity"),"unsupported Water viscosity is visible without an actionable live slider")
+	expect(panel._controls.has("reaction:5:probability_threshold"),"admitted selected-material pair exposes its actual inclusive threshold")
+	panel._controls["reaction:5:probability_threshold"].value = 0
+	panel._name.text = "Slow contact"
+	var path := "user://mat-audition-ui-" + Crypto.new().generate_random_bytes(8).hex_encode() + ".json"
+	expect(panel.save_profile(path).get("ok",false),"mounted profile action writes a named draft")
+	panel.use_active_as_draft()
+	prior_requests = owner.requests
+	expect(panel.load_profile(path).get("ok",false) and owner.requests==prior_requests,"loading a named profile prepares a draft without activation")
+	expect(panel.draft_profile.reactions==[{"slot":5,"probability_threshold":0}],"profile load restores exact admitted reaction values")
+	DirAccess.remove_absolute(path)
+	panel.apply_draft()
+	owner = null
+	panel._process(1.0)
+	expect(panel._pending.is_empty() and not panel.active_state.get("ok",false),"destroyed host terminates pending UI state without claiming cancellation or activation")
+	panel.queue_free()
+	await process_frame
+	print("MAT_AUDITION_UI_CONTRACT: %d checks, %d failures; fake-owner state machine only" % [checks,failures])
+	quit(1 if failures else 0)

@@ -1,17 +1,19 @@
 ---
-title: Materials Lab v1 inspection, candidate authoring and native tests
+title: Materials Lab inspection, isolated authoring and current-scene audition
 status: Current
 document-kind: runbook
-scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+scope: Accepted Materials Lab v1 plus Draft/HOLD scene-local material audition; native inspection, isolated authoring and explicitly admitted current-World configuration
 canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
-last-reviewed: 2026-11-12
+last-reviewed: 2026-11-24
 related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscenario-reference-pack.md, ../architecture/material-authoring-catalogue-plan.md, ../systems/intermaterial-interactions.md, ../audits/2026-11-11-materials-lab-v1.md]
 ---
 
 # Materials Lab v1
 
-**Current implementation merged in [PR #562](https://github.com/techrote/cybersand/pull/562);
-production activation remains unimplemented.** The desktop **Materials Lab** opens from the feature launcher,
+**Materials Lab v1 merged in [PR #562](https://github.com/techrote/cybersand/pull/562).**
+This branch adds the **MAT-AUDITION-LIVE-001 Draft/HOLD candidate** described below.
+Its source-qualified native and platform evidence is separate from v1 acceptance;
+physical owner acceptance and integration remain gates. The desktop **Materials Lab** opens from the feature launcher,
 the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`.
 It combines native material inspection, structured candidate editing, compiled
 candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The
@@ -34,14 +36,93 @@ It does not replace native production definitions, the simulation worker, the
 Workbench or World. Production still has 132 slots, including invalid reserved
 ID 10. The synthetic powder at 132 exists only inside an external candidate build.
 
-The five tabs are **Inspect**, **Edit copy**, **Reactions**, **Try originals**
-(unchanged built-in materials) and **Compare edits** (your copy against the
-original). In Inspect, drag the edge between column titles to set widths;
+The tabs are **Inspect**, **Edit copy**, **Reactions**, **Try originals**
+(unchanged built-in materials), **Compare edits** (your copy against the
+original), and **Current scene** (explicitly admitted runtime configuration). In Inspect, drag the edge between column titles to set widths;
 double-click a divider to restore its width. The table scrolls sideways if it
 gets wider than the window. **Defined value** is the saved definition; **Value
 used** includes engine overrides. Hover any cell to read the whole explanation
 and its technical name. **Show technical details and reaction data** reveals
 the full reference information.
+
+## Current-scene audition candidate — 24 November 2026
+
+**Draft/HOLD.** Open the ordinary Workbench, then **Materials Lab… → Current
+scene**. The material browser selects the material for this tab too. A Lab
+opened directly from the launcher has no current Workbench owner; its current
+scene controls remain unavailable while inspection and isolated experiments work.
+
+The audition view shows each relevant property or sparse reaction slot with its
+compiled **Declared** value, native owner **Active** value, editable **Draft**,
+actual consumer, range and applicability. Live controls come from the current
+owner's native capability readback. A descriptor field does not become editable
+merely because it appears in the catalogue. Classification distinguishes live,
+pause required, isolated comparison, restart required, unsupported and descriptive
+fields; only `live` rows submit values through this first implementation.
+
+The admitted profile is a complete replacement of scene-local overrides:
+
+| Control | Scope and limits |
+| --- | --- |
+| Density | Integer 1–65535 for admitted movable, density-exchange materials. It changes directional native density comparisons. It does not change Rapier body mass or impulse laws, and does not enable forbidden powder–powder swaps. |
+| Viscosity | Integer 0–255 only where the current native generic-liquid consumer actually reads it. The bounded family includes Paste, Slush, Brine, Cement, Toxic Sludge, Mercury and Molten Glass, subject to the active solver/policy admission. Water, Lava, Acid and Oil descriptor viscosity does not become a live movement slider. Mercury's existing diagnostic override and an independently selected liquid consumer can refuse the edit. |
+| Sparse reaction probability | Integer threshold 0–255 for an existing admitted slot. The exact probability is `(T + 1) / 256`; zero is 1/256. Slot priority, endpoint identities, roles, products and initialization effects remain canonical. |
+
+Use **Apply draft** to submit one immutable validated profile at the existing
+native owner's boundary. Changing a numeric control alone sends no transaction.
+Application preserves the existing native World and its cells. The view changes
+the Active column only after an identified native receipt. Edits made while an
+application is pending remain a newer unapplied draft. A refused/stale transaction
+cannot be relabelled as active. **Cancel pending apply** requests cancellation;
+only the owner's terminal receipt establishes whether cancellation occurred.
+
+**Revert configuration** applies the previously acknowledged configuration.
+**Reset to accepted defaults** removes the scene-local overrides. Both are
+configuration operations: cells already moved, reacted, burned or disappeared
+remain in their current state, and Paint history is unchanged. These controls do
+not restore a simulation snapshot. A later scene replacement retires the old
+configuration binding and revert history. The view retains the old draft for
+inspection; **Use active as draft** adopts the new World's values, while **Keep
+draft for current scene** explicitly binds a reviewed draft to the current World
+and revision. An external revision requires the same explicit reconciliation.
+
+**Save named profile…** saves the draft, name, optional description, stable IDs,
+schema, runtime compatibility identity and observed native library digest in a
+validated, digested JSON envelope. A temporary sibling protects an existing file
+against an incomplete write. **Load named profile…** validates all keys, duplicate
+JSON fields, digest, admitted values and runtime identity before replacing the
+draft. It does not apply the profile. Imports from another runtime are refused;
+this is not a promise of cross-platform or cross-version deterministic replay.
+The file never embeds a live host session or World lease.
+
+An ordinary Workbench authored-scene save does **not** retain an auditioned
+profile. Save the named profile separately, reopen the scene, load the profile,
+then deliberately Apply. Native physical-state save refuses unsupported active
+material configuration rather than silently serializing it as defaults. The
+[scene-local material contract](../systems/material-audition.md) owns that
+persistence boundary and the future persistent-area seam.
+
+### Ordinary authored demonstration scenes
+
+The Current scene tab offers four small scene recipes. **Load demo…** explicitly
+replaces the current authored scene after explaining that operation. It is
+separate from live Apply. The recipes preserve the selected Water policy and
+contain ordinary finite construction/material stamps, no private fixture owner.
+Save work you want to retain before replacing a scene.
+
+| Scene | Experiment |
+| --- | --- |
+| Density sorter, 512² | Sand and Salt doses over separate Water basins, sloped hoppers, cavities and shelves. Compare Sand density 500, 1600 and 2400; repaint a dose to observe a new contact in the continuing scene. |
+| Brine flow channels, 512² | Three finite reservoirs, restricted outlets and stepped channels. Compare admitted Brine viscosity 0, 96 and 240. All Brine cells share the scene profile; the three bays do not have independent hidden parameters. |
+| Salt contact gallery, 512² | Salt/Water trays plus an isolated Salt/Ice pocket. Inspect each slot's actual roles/products before adjusting its inclusive threshold. Declared rule readback is distinct from observed contact and executed native chemistry. |
+| Industrial settling works, 1024×512 | Sand classification, a Brine raceway and Salt/Water processing among Metal supports, glass and a timber service deck. Paint, erase a gate, run the scene and refine the same profile. |
+
+Source: [audition view](../../godot/scripts/material_lab_audition_panel.gd),
+[profile envelope](../../godot/scripts/material_audition_profile.gd), and
+[ordinary scene recipes](../../godot/scripts/workbench_material_audition_scenes.gd).
+The schema/persistence and fake-owner UI state-machine tests explicitly identify
+their limits; native effects, native owner continuity, graphical target-OS runs
+and the extracted Windows evaluator require their independent receipts.
 
 ## Launch and prerequisites
 

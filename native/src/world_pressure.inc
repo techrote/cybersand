@@ -2160,6 +2160,13 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
     }
     for (const char c : std::string_view{"cybersand-physical-state"}) hash_byte(hash, static_cast<std::uint8_t>(c));
     hash_integer(hash, physical_state_hash_version());
+    // Version7 adds only effective nondefault material values. Profile names,
+    // UI revision numbers and World tokens are not physical simulation state.
+    if (material_audition_changes_behavior()) {
+        for (const auto value : material_audition_->density) hash_integer(hash, value);
+        for (const auto value : material_audition_->viscosity) hash_integer(hash, value);
+        for (const auto value : material_audition_->probability_threshold) hash_integer(hash, value);
+    }
     QuantityHashWriter quantity_hash{hash};
     if (quiescent) {
         // Keep the original construction binding, baseline and exact present
@@ -2474,6 +2481,8 @@ void refuse_state(const char* detail) {
 }  // namespace
 
 std::vector<std::uint8_t> World::save_physical_state() const {
+    if (material_audition_changes_behavior())
+        throw std::logic_error("scene-local material audition profile is not supported by physical-state save; export the named profile separately");
     // wave_flow_v1 retained flux has no registered CYPS section: refuse rather
     // than write a continuation that would silently drop authoritative state.
     if (wave_ != nullptr) throw std::logic_error("wave_flow_v1 physical-state save is not admitted");

@@ -15,6 +15,7 @@ const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
 const PaintEditorExecutor = preload("res://scripts/workbench_paint_editor_executor.gd")
+const MaterialAuditionMailbox = preload("res://scripts/material_audition_mailbox.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -33,6 +34,7 @@ const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
 
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
+var _material_audition := MaterialAuditionMailbox.new() # All access under _mutex.
 var _native_worker_request: int = int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0))
 # The Linux test build uses the compiled native phased backend. Unsupported
 # platforms retain the script world as a functional compatibility fallback.
@@ -236,6 +238,7 @@ var _water_explicit_sink: int = 0
 
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
+	_material_audition.refuse_pending("A scene control command superseded the pending configuration.","scene_command")
 	_lab_request_revision += 1
 	_paint_epoch += 1
 	_invalidate_art_locked("Canvas command changed")
@@ -1115,11 +1118,15 @@ func start_worker(spawn_position: Vector2) -> Error:
 
 
 func stop_worker() -> void:
+	_mutex.lock()
+	_material_audition.refuse_pending("The native owner stopped before activation.","stopped")
+	_mutex.unlock()
 	if not _thread.is_started():
 		_retire_prepared_physical_liquid()
 		return
 	_mutex.lock()
 	_running = false
+	_material_audition.refuse_pending("The native owner stopped before activation.","stopped")
 	_lab_request_revision += 1
 	_paint_epoch += 1
 	_invalidate_art_locked("Simulation worker stopped")
@@ -1212,6 +1219,7 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 		_mutex.unlock()
 		return 0
 	_lab_request_revision += 1
+	_material_audition.refuse_pending("Actor reset retired the pending material configuration.","scene_command")
 	_paint_epoch += 1
 	_invalidate_art_locked("Actors reset")
 	_reset_requested = true
@@ -2326,6 +2334,7 @@ func queue_reset(
 	runtime_enclosure_recovery_enabled: bool = true
 ) -> void:
 	_mutex.lock()
+	_material_audition.refuse_pending("Canvas reset retired the pending material configuration.","scene_command")
 	_lab_request_revision += 1
 	_paint_epoch += 1
 	_invalidate_art_locked("Canvas reset")
@@ -2342,6 +2351,47 @@ func queue_reset(
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
 	_physical_usable_frame.clear()
+	_mutex.unlock()
+
+
+func _material_audition_error_locked() -> String:
+	if not _running: return "The native owner is stopped."
+	if _simulation_failed: return "The native World has failed; restart the session."
+	if _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
+		return "The current scene is changing; wait for its native acknowledgement."
+	if _workbench_extent == Vector2i.ZERO: return "Current-scene audition requires an ordinary Workbench canvas."
+	return ""
+
+func material_audition_state() -> Dictionary:
+	_mutex.lock()
+	_material_audition.enabled = true
+	var result: Dictionary = _material_audition.state(_material_audition_error_locked())
+	_mutex.unlock()
+	return result
+
+func material_audition_request(request: Dictionary) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _material_audition.request(request,_material_audition_error_locked())
+	_mutex.unlock()
+	return result
+
+func material_audition_poll(request_id: String) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _material_audition.poll(request_id)
+	_mutex.unlock()
+	return result
+
+func material_audition_cancel(request_id: String) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _material_audition.cancel(request_id)
+	_mutex.unlock()
+	return result
+
+func _consume_material_audition() -> void:
+	# No independent scheduling or World ownership. The optional mailbox is
+	# serviced at an existing between-tick boundary, including paused turns.
+	_mutex.lock()
+	_material_audition.consume(_world,_world_generation,_material_audition_error_locked())
 	_mutex.unlock()
 
 
@@ -2784,6 +2834,7 @@ func _worker_loop() -> void:
 		_legacy_edit_inflight = false
 		_world_change_inflight = false
 		_mutex.unlock()
+		_consume_material_audition()
 		_consume_material_capture()
 		# A paused snapshot can arise from a stale body sample even during Play.
 		# Acknowledge the UI pause only after this worker turn actually consumed
