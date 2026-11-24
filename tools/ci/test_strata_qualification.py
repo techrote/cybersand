@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """Adverse controls for Strata's source/evidence acceptance boundary."""
 from copy import deepcopy
+import io
+from pathlib import Path
+import subprocess
+import tarfile
+import tempfile
 import unittest
 import qualify_strata_workbench as gate
+import package_strata_workbench as package
 
 
 def witness():
@@ -68,6 +74,47 @@ class Acceptance(unittest.TestCase):
         gate.validate_result(data, "industrial-assembly", "reopen", "a"*40)
         data["fresh_process_reopen"] = False
         with self.assertRaises(RuntimeError): gate.validate_result(data, "industrial-assembly", "reopen", "a"*40)
+
+
+class ArchivedGeneratorProfiles(unittest.TestCase):
+    def test_actual_source_profiles_and_adverse_copies(self):
+        # Use the real canonical recipes and nested style/schema assets from
+        # the committed source. The established stager defines the contract;
+        # this catches disagreement between staging and independent admission.
+        archive = subprocess.check_output(["git", "archive", "HEAD", "--", "examples/worldgen"], cwd=package.ROOT)
+        with tempfile.TemporaryDirectory(prefix="Strata archived profiles ") as temporary:
+            folder = Path(temporary)
+            originals = set()
+            with tarfile.open(fileobj=io.BytesIO(archive)) as tree:
+                for member in tree:
+                    if not member.isfile():
+                        continue
+                    path = folder / member.name
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_bytes(tree.extractfile(member).read())
+                    originals.add(member.name)
+            profiles = package.stage_generator_profiles(folder)
+            record = {"generator_profiles_sha256":profiles}
+            names = package.payload(folder)
+            package.verify_generator_profiles(folder, record, originals, names)
+            self.assertIn("gen007-deepworks.json", profiles)
+            self.assertIn("gen007-qualification.json", profiles)
+            for retained in ("architectural/habitation-arcology.style.json", "schemas/semantic-planes-v1.schema.json"):
+                self.assertIn("examples/worldgen/" + retained, names)
+                self.assertNotIn(Path(retained).name, profiles)
+            missing_record = deepcopy(record)
+            missing_record["generator_profiles_sha256"].pop("gen007-deepworks.json")
+            with self.assertRaises(RuntimeError):
+                package.verify_generator_profiles(folder, missing_record, originals, names)
+            copied_name = "godot/authoring/worldgen/gen007-deepworks.json"
+            missing_copy = dict(names)
+            missing_copy.pop(copied_name)
+            with self.assertRaises(RuntimeError):
+                package.verify_generator_profiles(folder, record, originals, missing_copy)
+            copied = folder / copied_name
+            copied.write_bytes(copied.read_bytes() + b"\n")
+            with self.assertRaises(RuntimeError):
+                package.verify_generator_profiles(folder, record, originals, package.payload(folder))
 
 
 if __name__ == "__main__":

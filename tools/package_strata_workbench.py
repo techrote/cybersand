@@ -49,6 +49,17 @@ def launcher_text(source: dict) -> str:
         '"%~dp0Godot_v4.7-stable_win64_console.exe" --path "%~dp0godot" %* -- --workbench\n'
         'set "strata_exit=%errorlevel%"\nif not "%strata_exit%"=="0" pause\nexit /b %strata_exit%\n')
 
+
+def verify_generator_profiles(folder: Path, record: dict, originals: set[str], names: dict[str, str]) -> None:
+    # The established stager copies direct canonical recipes only. Nested
+    # architectural styles and schemas remain archived assets, not profiles.
+    profiles = {Path(name).name:sha(folder / name) for name in originals
+                if Path(name).parent == Path("examples/worldgen") and Path(name).suffix == ".json"}
+    require(record.get("generator_profiles_sha256") == profiles and all(
+        names.get("godot/authoring/worldgen/" + name) == digest for name,digest in profiles.items()),
+        "Portable generator profiles differ from archived source recipes")
+
+
 def verify(folder: Path, *, pristine: bool = False) -> dict:
     record = json.loads((folder / MANIFEST).read_text(encoding="utf-8"))
     require(record.get("schema") == "strata-workbench-evaluation-v1" and record.get("draft_hold") is True,
@@ -80,10 +91,7 @@ def verify(folder: Path, *, pristine: bool = False) -> dict:
     originals = {name for name in archived if not name.startswith("godot/.godot/") and
                  ("/bin/" not in name or name in materialized) and name not in omitted}
     require(originals <= set(names), "Payload manifest silently omits an archived source asset")
-    profiles = {Path(name).name:sha(folder / name) for name in originals if name.startswith("examples/worldgen/") and name.endswith(".json")}
-    require(record.get("generator_profiles_sha256") == profiles and all(
-        names.get("godot/authoring/worldgen/" + name) == digest for name,digest in profiles.items()),
-        "Portable generator profiles differ from archived source recipes")
+    verify_generator_profiles(folder, record, originals, names)
 
     require((folder / "Open Workbench.cmd").read_text(encoding="utf-8") == launcher_text(source),
             "Ordinary evaluator launcher differs from the qualified launcher")
@@ -144,11 +152,13 @@ def build(args) -> Path:
 
 1. Extract the entire ZIP into a writable folder, then run **Open Workbench.cmd**.
 2. Open **Strata Theatre** in the ordinary Workbench. The normal presentation starts unchanged.
-3. Choose **Industrial assembly hall**, **Science-fiction arcology** or **Organic industrial cavern**.
+3. Scroll to **Open a complete example scene**, choose **Industrial assembly hall**,
+   **Science-fiction arcology** or **Organic industrial cavern**, then press **Load selected example…**.
    Loading a scene intentionally replaces the authored start. Toggling presentation does not replace the live play World.
 4. Turn layered presentation on. Compare **Stack** with **Flat** inspection and the ordinary disabled view.
 5. Select Play, Rear architecture, Effects or Background. Paint or erase the selected plane;
    try visibility, solo, lock, opacity, depth, parallax and haze. Hidden/locked targets reject editing.
+   Move or close the floating Strata panel while painting; reopen it from **Strata Theatre** when needed.
 6. Pan and zoom, play with ordinary actors, then disable/re-enable Strata. Actors and the live play World should continue.
 7. Try per-plane Undo/Redo. Save a named composition, exit completely, reopen and load that name.
 
