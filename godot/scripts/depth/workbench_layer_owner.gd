@@ -104,7 +104,7 @@ func prepare(candidate: Dictionary, expected_generation: int = -1) -> Dictionary
 					Vector2i(rectangle[2], rectangle[3]), int(rectangle[4])):
 				return _error("Native preparation rejected the complete %s layout." % id)
 		if world.has_failed(): return _error("The candidate %s plane entered native quarantine." % id)
-		var packet: Dictionary = world.take_render_snapshot(true)
+		var packet: Dictionary = _take_snapshot(world)
 		_snapshot_calls += 1
 		if bool(packet.get("failed", false)) or not packet.get("cells") is PackedByteArray \
 				or not packet.get("rectangles") is PackedInt32Array \
@@ -217,6 +217,32 @@ func set_presentation(patch: Dictionary) -> bool:
 	return true
 
 
+func update_extensions(patch: Dictionary) -> bool:
+	if _document.is_empty() or not _pending.is_empty():
+		last_error = "Finish scene preparation before changing authored extensions."
+		return false
+	for key: Variant in patch:
+		if key not in Document.EXTENSION_KEYS:
+			last_error = "An extension edit cannot change native geometry or plane ownership."
+			return false
+	var candidate := Document.upgraded(_document)
+	for key: Variant in patch: candidate[key] = patch[key].duplicate(true) if patch[key] is Dictionary else patch[key]
+	last_error = Document.validate(candidate)
+	if not last_error.is_empty(): return false
+	_document = Document.canonical(candidate)
+	return true
+
+
+func _make_executor() -> RefCounted:
+	# A narrow factory lets mounted test subclasses exercise containment with
+	# actual native prefixes. Production always uses the existing paint executor.
+	return PaintExecutor.new()
+
+
+func _take_snapshot(world: Object) -> Dictionary:
+	return world.take_render_snapshot(true)
+
+
 func _visibility_error(id: String) -> String:
 	if _document.is_empty() or id not in IDS or not _worlds.has(id):
 		return "Decorative authoring requires one of the three initialized native planes."
@@ -266,7 +292,7 @@ func _run(id: String, kind: String, cells: PackedInt32Array, region: Rect2i,
 	request._epoch = _generation
 	request._settings_revision = 0
 	request.operation_id = _operation_serial
-	var executor := PaintExecutor.new()
+	var executor: RefCounted = _make_executor()
 	executor.begin(request, Document.extent_of(_document), _native_materials)
 	var receipt: Dictionary = {}
 	# Existing executor retains its 4096-cell validation/application slices. The
@@ -300,7 +326,7 @@ func paint_disc(id: String, cell: Vector2i, radius: int, material: int) -> Dicti
 	return paint_cells(id, triples, _generation)
 
 
-func paint_cells(id: String, cells: PackedInt32Array, expected_generation: int = -1) -> Dictionary:
+func paint_cells(id: String, cells: PackedInt32Array, expected_generation: int = -1, expected_before: PackedInt32Array = PackedInt32Array()) -> Dictionary:
 	var error := edit_error(id)
 	if not error.is_empty(): return _error(error)
 	if expected_generation != -1 and expected_generation != _generation:
@@ -318,7 +344,7 @@ func paint_cells(id: String, cells: PackedInt32Array, expected_generation: int =
 	candidate_row.revision = int(candidate_row.revision) + 1
 	error = Document.validate(candidate)
 	if not error.is_empty(): return _error(error)
-	var receipt := _run(id, "edit", cells, Rect2i())
+	var receipt := _run(id, "edit", cells, Rect2i(), expected_before)
 	if not receipt.get("ok", false): return receipt
 	_document = candidate
 	_dirty[id] = true
@@ -394,7 +420,7 @@ func snapshot_layer(id: String, force: bool = false) -> Dictionary:
 	if _failed.has(id): return {"failed": true, "error": _failed[id], "layer_id": id,
 		"owner_id": _owner_id(id), "generation": _generation}
 	if _dirty.get(id, false):
-		var packet: Dictionary = _worlds[id].take_render_snapshot(true)
+		var packet: Dictionary = _take_snapshot(_worlds[id])
 		_snapshot_calls += 1
 		if bool(packet.get("failed", false)):
 			_failed[id] = str(packet.get("error", "Native publication failed."))

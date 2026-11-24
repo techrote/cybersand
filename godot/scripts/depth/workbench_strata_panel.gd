@@ -5,6 +5,7 @@ extends PanelContainer
 const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const NAMES: Array[String] = ["Play · actors and collision", "Rear architecture", "Atmosphere / effects", "Background"]
 const DEMOS: Array[String] = ["industrial-assembly", "arcology", "cavern"]
+const AuthoringPanel = preload("res://scripts/depth/workbench_strata_authoring_panel.gd")
 var controller: Node
 var _syncing: bool = false
 var _active := OptionButton.new()
@@ -22,6 +23,10 @@ var _clock := Label.new()
 var _status := Label.new()
 var _demo := OptionButton.new()
 var _values: Dictionary = {}
+var _tabs := TabContainer.new()
+var _authoring: Node
+var _demo_ids: Array[String] = []
+var _scene_description := Label.new()
 
 func mount(mediator: Node) -> void:
 	controller = mediator
@@ -31,13 +36,18 @@ func mount(mediator: Node) -> void:
 	for side: String in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 12)
 	add_child(margin)
-	var rows := VBoxContainer.new()
-	rows.add_theme_constant_override("separation", 8)
-	margin.add_child(rows)
+	var outer := VBoxContainer.new()
+	outer.add_theme_constant_override("separation", 8)
+	margin.add_child(outer)
 	var heading := Label.new()
 	heading.text = "STRATA THEATRE"
 	heading.add_theme_font_size_override("font_size", 19)
-	rows.add_child(heading)
+	outer.add_child(heading)
+	_tabs.custom_minimum_size = Vector2(540, 420)
+	_tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	outer.add_child(_tabs)
+	var rows := _page("Layers")
 	_enabled.text = "Layered presentation"
 	_enabled.tooltip_text = "Switch the view without resetting the current play scene."
 	_enabled.toggled.connect(func(value: bool) -> void: _presentation({"enabled":value}))
@@ -79,22 +89,42 @@ func mount(mediator: Node) -> void:
 	note.add_theme_color_override("font_color", Color("b4c1cc"))
 	rows.add_child(note)
 	_button(rows, "Reset presentation settings", "reset_presentation")
-	rows.add_child(HSeparator.new())
+	_button(rows, "Fit scene in the ordinary camera", "fit_scene")
+	_authoring = AuthoringPanel.new()
+	add_child(_authoring)
+	_authoring.mount(controller, _tabs)
+	var scene_rows := _page("Scenes")
 	var demo_label := Label.new()
 	demo_label.text = "Open a complete example scene"
-	rows.add_child(demo_label)
-	for title: String in ["Industrial assembly hall", "Science-fiction arcology", "Organic / industrial cavern"]:
-		_demo.add_item(title)
-	rows.add_child(_demo)
+	scene_rows.add_child(demo_label)
+	var catalogue: Array = []
+	if controller != null and controller.has_method("scene_catalogue"): catalogue = controller.call("scene_catalogue")
+	if catalogue.is_empty():
+		for i: int in DEMOS.size():
+			catalogue.append({"id":DEMOS[i],"label":["Industrial assembly hall", "Science-fiction arcology", "Organic / industrial cavern"][i],"description":"Native four-plane reference scene, 1024 × 768."})
+	for entry: Dictionary in catalogue:
+		_demo_ids.append(str(entry.get("id", "")))
+		_demo.add_item(str(entry.get("label", entry.get("name", entry.get("id", "Scene")))))
+		_demo.set_item_metadata(_demo.item_count - 1, str(entry.get("description", "")))
+	scene_rows.add_child(_demo)
+	_scene_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	scene_rows.add_child(_scene_description)
+	_demo.item_selected.connect(func(index: int) -> void: _scene_description.text = str(_demo.get_item_metadata(index)))
+	if _demo.item_count > 0: _scene_description.text = str(_demo.get_item_metadata(0))
 	var demo_button := Button.new()
 	demo_button.text = "Load selected example…"
 	demo_button.tooltip_text = "Loads a new authored scene, including its play layout and actor. Save your current scene first."
 	demo_button.pressed.connect(func() -> void:
-		if controller != null: controller.call("load_demo", DEMOS[_demo.selected]))
-	rows.add_child(demo_button)
+		if controller != null and _demo.selected >= 0 and _demo.selected < _demo_ids.size(): controller.call("load_demo", _demo_ids[_demo.selected]))
+	scene_rows.add_child(demo_button)
+	_button(scene_rows, "Fit loaded scene", "fit_scene")
+	var scene_note := Label.new()
+	scene_note.text = "Loading replaces the authored scene through the ordinary Workbench. Save existing work first. Stack / Flat and atmosphere switches preserve the current Play World; a complete scene load deliberately installs a new authored start."
+	scene_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	scene_rows.add_child(scene_note)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.add_theme_color_override("font_color", Color("cad5e0"))
-	rows.add_child(_status)
+	outer.add_child(_status)
 	if controller != null and controller.has_method("document"):
 		refresh(controller.call("document"))
 
@@ -132,6 +162,18 @@ func refresh(document: Dictionary, status: String = "") -> void:
 	_clock.text = "Clock: ordinary play simulation. Actors and collision live on this plane." if effective_name == "play" else "Clock: static · 0 Hz · paused. Painting changes this plane; it has no actors or cross-plane collisions."
 	_status.text = status
 	_syncing = false
+	if is_instance_valid(_authoring): _authoring.refresh(document, status)
+
+func _page(title: String) -> VBoxContainer:
+	var scroll := ScrollContainer.new()
+	scroll.name = title
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_tabs.add_child(scroll)
+	var rows := VBoxContainer.new()
+	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rows.add_theme_constant_override("separation", 8)
+	scroll.add_child(rows)
+	return rows
 
 func _slider(parent: Control, caption: String, slider: HSlider, low: float, high: float,
 		step: float, action: Callable) -> void:

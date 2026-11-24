@@ -6,10 +6,13 @@ extends RefCounted
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
+const Atmosphere = preload("res://scripts/depth/strata_atmosphere_profiles.gd")
+const Provenance = preload("res://scripts/depth/strata_authoring_provenance.gd")
 const IDS := ["play", "scripted", "effects", "background"]
 const FORMAT := "cybersand-strata-workbench"
 const SCENE_FORMAT := "cybersand-strata-scene"
-const VERSION := 1
+const VERSION := 2
+const LEGACY_VERSION := 1
 const MAGIC := [67, 89, 83, 83, 84, 82, 65, 84] # CYSSTRAT
 const HEADER_SIZE := 52
 const MANIFEST_LIMIT := 8 * 1024 * 1024
@@ -19,6 +22,7 @@ const MAX_RECTANGLES := 32768
 const MAX_LAYOUT_WRITES := 16 * 1024 * 1024
 const MAX_REVISION := 2147483647
 const SCENE_KEYS := ["format", "version", "extent", "content_domain", "presentation", "planes"]
+const EXTENSION_KEYS := ["atmosphere", "authoring"]
 const PRESENTATION_KEYS := ["enabled", "mode", "active", "solo", "parallax_strength", "fog_strength"]
 const PLANE_KEYS := ["id", "revision", "bounds", "visible", "locked", "opacity", "depth", "clock", "rectangles"]
 const CLOCK_KEYS := ["mode", "rate_hz", "paused"]
@@ -37,7 +41,20 @@ static func default_document(extent: Vector2i) -> Dictionary:
 	return {"format": SCENE_FORMAT, "version": VERSION, "extent": [extent.x, extent.y],
 		"content_domain": "authored-material-layout",
 		"presentation": {"enabled": false, "mode": "stack", "active": "play", "solo": "",
-			"parallax_strength": 0.75, "fog_strength": 0.20}, "planes": planes}
+			"parallax_strength": 0.75, "fog_strength": 0.20}, "planes": planes,
+		"atmosphere": Atmosphere.default_configuration(), "authoring": Provenance.default_configuration()}
+
+
+static func upgraded(document: Dictionary) -> Dictionary:
+	# V1 retains its exact meaning and can still be read and written as V1.
+	# Adding an extension is the explicit, lossless migration boundary.
+	if not validate(document).is_empty(): return {}
+	var result := canonical(document)
+	if int(result.version) == LEGACY_VERSION:
+		result.version = VERSION
+		result.atmosphere = Atmosphere.default_configuration()
+		result.authoring = Provenance.default_configuration()
+	return result
 
 
 static func extent_of(document: Dictionary) -> Vector2i:
@@ -53,9 +70,11 @@ static func plane(document: Dictionary, id: String) -> Dictionary:
 
 
 static func validate(document: Variant) -> String:
-	if not Setup._keys(document, SCENE_KEYS) or not document.format is String \
+	if not document is Dictionary or not Setup._integer(document.get("version"), LEGACY_VERSION, VERSION):
+		return "Unsupported Strata scene version."
+	var keys: Array = SCENE_KEYS + EXTENSION_KEYS if int(document.version) == VERSION else SCENE_KEYS
+	if not Setup._keys(document, keys) or not document.format is String \
 			or document.format != SCENE_FORMAT \
-			or not Setup._integer(document.version, VERSION, VERSION) \
 			or not document.content_domain is String \
 			or document.content_domain != "authored-material-layout":
 		return "Unsupported Strata scene fields, version or state domain."
@@ -65,6 +84,11 @@ static func validate(document: Variant) -> String:
 		if not Setup._integer(side, 512, 2048) or int(side) % 64 != 0:
 			return "Strata canvas sides must be 512–2048 cells in multiples of 64."
 	var extent := extent_of(document)
+	if int(document.version) == VERSION:
+		var extension_error: String = Atmosphere.validate(document.atmosphere, extent)
+		if not extension_error.is_empty(): return extension_error
+		extension_error = Provenance.validate(document.authoring)
+		if not extension_error.is_empty(): return extension_error
 	var presentation: Variant = document.presentation
 	if not Setup._keys(presentation, PRESENTATION_KEYS) \
 			or not presentation.enabled is bool or not presentation.mode is String \
@@ -123,6 +147,9 @@ static func canonical(document: Dictionary) -> Dictionary:
 		row.clock.rate_hz = 0
 		for index: int in row.rectangles.size():
 			row.rectangles[index] = Array(PackedInt32Array(row.rectangles[index]))
+	if int(result.version) == VERSION:
+		result.atmosphere = Atmosphere.canonical(result.atmosphere)
+		result.authoring = Provenance.canonical(result.authoring)
 	return result
 
 
@@ -188,7 +215,8 @@ static func write_named(label: String, setup: Dictionary, generated: Dictionary,
 	var source := _source(setup, generated, baseline)
 	if source.has("error"): return str(source.error)
 	if extent_of(document) != Setup.extent_of(setup): return "Play and Strata canvas dimensions differ."
-	var manifest := JSON.stringify({"format": FORMAT, "version": VERSION,
+	var version := int(document.version)
+	var manifest := JSON.stringify({"format": FORMAT, "version": version,
 		"starting_setup": setup, "scene": document, "play_source": source.metadata}).to_utf8_buffer()
 	var payload: PackedByteArray = source.payload
 	if manifest.is_empty() or manifest.size() > MANIFEST_LIMIT or payload.size() > PAYLOAD_LIMIT:
@@ -201,7 +229,7 @@ static func write_named(label: String, setup: Dictionary, generated: Dictionary,
 		return "The native atomic file replacement service is unavailable."
 	var header := PackedByteArray(MAGIC)
 	if header.resize(HEADER_SIZE) != OK: return "Insufficient capacity for the Strata header."
-	header.encode_u32(8, VERSION)
+	header.encode_u32(8, version)
 	header.encode_u32(12, manifest.size())
 	header.encode_u32(16, payload.size())
 	for index: int in 32: header[20 + index] = checksum[index]
@@ -239,7 +267,7 @@ static func read_named(label: String) -> Dictionary:
 		return _refuse("Strata scene is truncated or exceeds its bounded capacity.")
 	file.seek(0)
 	var header := file.get_buffer(HEADER_SIZE)
-	if header.size() != HEADER_SIZE or header.decode_u32(8) != VERSION:
+	if header.size() != HEADER_SIZE or int(header.decode_u32(8)) not in [LEGACY_VERSION, VERSION]:
 		return _refuse("Unsupported or truncated Strata envelope version.")
 	var manifest_size := int(header.decode_u32(12))
 	var payload_size := int(header.decode_u32(16))
@@ -256,10 +284,11 @@ static func read_named(label: String) -> Dictionary:
 		return _refuse("Strata scene manifest is not valid JSON.")
 	var manifest: Variant = parser.data
 	if not Setup._keys(manifest, MANIFEST_KEYS) or not manifest.format is String or manifest.format != FORMAT \
-			or not Setup._integer(manifest.version, VERSION, VERSION):
+			or not Setup._integer(manifest.version, int(header.decode_u32(8)), int(header.decode_u32(8))):
 		return _refuse("Unsupported Strata manifest fields or version.")
 	var error := validate(manifest.scene)
 	if not error.is_empty(): return _refuse(error)
+	if int(manifest.scene.version) != int(manifest.version): return _refuse("Strata envelope and scene versions disagree.")
 	error = Setup.validate(manifest.starting_setup)
 	if not error.is_empty(): return _refuse(error)
 	var setup: Dictionary = MaterialBaseline._canonical_setup(manifest.starting_setup)

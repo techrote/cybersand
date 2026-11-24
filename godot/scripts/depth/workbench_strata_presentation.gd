@@ -7,6 +7,8 @@ const Surface = preload("res://scripts/depth/depth_layer_surface.gd")
 const Transform = preload("res://scripts/depth/depth_compositor.gd")
 const Appearance = preload("res://scripts/material_appearance_lut.gd")
 const Document = preload("res://scripts/depth/workbench_layer_document.gd")
+const Atmosphere = preload("res://scripts/depth/strata_atmosphere.gd")
+const AtmosphereProfiles = preload("res://scripts/depth/strata_atmosphere_profiles.gd")
 const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const REAR_IDS: Array[String] = ["background", "effects", "scripted"]
 const HAZE_SHADER: String = "shader_type canvas_item; render_mode unshaded; uniform float haze = 0.0; varying vec4 vertex_colour; void vertex() { vertex_colour = COLOR; } void fragment() { vec4 c = texture(TEXTURE, UV); c.rgb = mix(c.rgb, vec3(0.055,0.105,0.15), haze); COLOR = c * vertex_colour; }"
@@ -28,6 +30,7 @@ var _glow_view: TextureRect
 var _clip: Control
 var _surfaces: Dictionary = {}
 var _drawables: Dictionary = {}
+var _atmospheres: Dictionary = {}
 var _document: Dictionary = {}
 var _expected: Dictionary = {}
 var _accepted: Dictionary = {}
@@ -98,6 +101,10 @@ func prepare(authored_extent: Vector2i) -> bool:
 		drawable.material = haze
 		_clip.add_child(drawable)
 		_drawables[id] = drawable
+		var atmosphere := Atmosphere.new()
+		atmosphere.name = "VisualAtmosphere_" + id
+		drawable.add_child(atmosphere)
+		_atmospheres[id] = atmosphere
 	_prepared = true
 	visible = false
 	return _accept()
@@ -191,6 +198,9 @@ func apply_document(candidate: Dictionary) -> bool:
 		seen.append(str(plane.id))
 	if seen.size() != IDS.size(): return _reject("Strata presentation requires all four planes")
 	_document = candidate.duplicate(true)
+	for id: String in REAR_IDS:
+		if not _atmospheres[id].configure(_document.get("atmosphere", AtmosphereProfiles.default_configuration()), extent, id):
+			return _reject(_atmospheres[id].last_error)
 	_apply_visibility()
 	sync_view()
 	return _accept()
@@ -274,6 +284,7 @@ func sync_view() -> void:
 		var drawable: TextureRect = _drawables[id]
 		drawable.position = _logical_for_layer(Vector2.ZERO, id) / _view_size * _content.size
 		drawable.size = Vector2(extent) / _view_size * _content.size
+		_atmospheres[id].scale = drawable.size / Vector2(extent)
 
 func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
 	# Input may follow a pan/zoom/resize in the same event batch, before our
@@ -309,6 +320,7 @@ func diagnostics() -> Dictionary:
 		info["identity"] = _accepted.get(id, {}).duplicate(true)
 		info["expected"] = _expected.get(id, {}).duplicate(true)
 		info["effective_visible"] = effective_visible(id)
+		info["atmosphere"] = _atmospheres[id].diagnostics()
 		layers[id] = info
 		uploads += int(info.get("upload_count", 0))
 		bytes += int(info.get("uploaded_bytes", 0))
@@ -331,6 +343,7 @@ func diagnostics() -> Dictionary:
 		"play_overlay_instance_ids":_overlay_modulates.keys()}
 
 func detach() -> void:
+	for atmosphere: Node2D in _atmospheres.values(): atmosphere.set_plane_active(false)
 	_set_enabled(false)
 	if is_instance_valid(_view):
 		_view.self_modulate = _original_modulate
@@ -355,6 +368,7 @@ func _apply_visibility() -> void:
 		var drawable: TextureRect = _drawables[id]
 		var was_visible: bool = drawable.visible
 		drawable.visible = _enabled and effective_visible(id)
+		_atmospheres[id].set_plane_active(drawable.visible)
 		var plane: Dictionary = _plane(id)
 		drawable.modulate = Color(1.0, 1.0, 1.0, float(plane.get("opacity", 1.0)))
 		var fog: float = float(_document.get("presentation", {}).get("fog_strength", 0.2))
@@ -404,6 +418,12 @@ func _set_enabled(value: bool) -> void:
 			surface.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	_enabled = value
 	visible = value
+	if not value:
+		for atmosphere: Node2D in _atmospheres.values(): atmosphere.set_plane_active(false)
+
+
+func reset_atmosphere_phase() -> void:
+	for atmosphere: Node2D in _atmospheres.values(): atmosphere.reset_phase()
 
 func _capture_overlays() -> void:
 	if not is_instance_valid(_view): return

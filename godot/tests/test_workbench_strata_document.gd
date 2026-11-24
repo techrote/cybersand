@@ -38,7 +38,7 @@ func run() -> void:
 	var changed := scene.duplicate(true)
 	changed.unknown = 42
 	variants.append(changed)
-	changed = scene.duplicate(true); changed.version = 2; variants.append(changed)
+	changed = scene.duplicate(true); changed.version = Document.VERSION + 1; variants.append(changed)
 	changed = scene.duplicate(true); changed.format = 7; variants.append(changed)
 	changed = scene.duplicate(true); changed.content_domain = 7; variants.append(changed)
 	changed = scene.duplicate(true); changed.extent = [512]; variants.append(changed)
@@ -61,6 +61,9 @@ func run() -> void:
 	changed = scene.duplicate(true); changed.planes[1].rectangles = [[500,500,13,13,58]]; variants.append(changed)
 	changed = scene.duplicate(true); changed.planes[1].rectangles = [[32,32,1,1,58,true]]; variants.append(changed)
 	changed = scene.duplicate(true); changed.content_domain = "exact-physical-continuation"; variants.append(changed)
+	changed = scene.duplicate(true); changed.atmosphere.unknown = true; variants.append(changed)
+	changed = scene.duplicate(true); changed.authoring.records = [null]; variants.append(changed)
+	changed = scene.duplicate(true); changed.version = 1; variants.append(changed) # V1 cannot silently discard extensions.
 	for index: int in variants.size():
 		var refused: Dictionary = owner.prepare(variants[index],owner.generation())
 		check(not refused.get("ok",false),"invalid candidate refused %d" % index)
@@ -93,7 +96,7 @@ func run() -> void:
 	bad_bytes.append(original.slice(0,8))
 	bad_bytes.append(original.slice(0,51))
 	bad_bytes.append(original.slice(0,original.size()-1))
-	var bytes := original.duplicate(); bytes.encode_u32(8,2); bad_bytes.append(bytes)
+	var bytes := original.duplicate(); bytes.encode_u32(8,Document.VERSION + 1); bad_bytes.append(bytes)
 	bytes = original.duplicate(); bytes.encode_u32(12,0xffffffff); bad_bytes.append(bytes)
 	bytes = original.duplicate(); bytes.encode_u32(16,0xffffffff); bad_bytes.append(bytes)
 	bytes = original.duplicate(); bytes[20] ^= 1; bad_bytes.append(bytes)
@@ -107,6 +110,24 @@ func run() -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
 	file.store_buffer(original); file.close()
 	check(Document.read_named(label).get("layered",false),"original scene remains recoverable after all failures")
+	# Explicit V1 construction and its original envelope shape remain exact.
+	var legacy := scene.duplicate(true)
+	legacy.version = 1
+	legacy.erase("atmosphere")
+	legacy.erase("authoring")
+	check(Document.validate(legacy).is_empty(), "original V1 fields remain supported")
+	check(Document.write_named(label, setup, {}, {}, legacy).is_empty(), "V1 authored envelope still writes")
+	var legacy_bytes := FileAccess.get_file_as_bytes(path)
+	check(legacy_bytes.decode_u32(8) == 1, "V1 writer retains V1 header")
+	var reopened := Document.read_named(label)
+	check(reopened.get("document", {}) == legacy, "V1 reopen preserves exact authored meaning")
+	var upgraded := Document.upgraded(legacy)
+	check(upgraded.version == 2 and upgraded.planes == legacy.planes and upgraded.presentation == legacy.presentation,
+		"explicit V1 upgrade retains all native layout and presentation values")
+	check(not upgraded.atmosphere.enabled and upgraded.atmosphere.effects.is_empty() and upgraded.authoring.records.is_empty(),
+		"migration adds only empty disabled extension defaults")
+	check(Document.write_named(label, setup, {}, {}, upgraded).is_empty(), "upgraded V2 saves through existing atomic replacement")
+	check(Document.read_named(label).get("document", {}) == upgraded, "V2 extensions round trip exactly")
 	owner.retire()
 	check(owner.stats().native_world_count == 0 and owner.stats().pending_native_world_count == 0,"all native owner references retire")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))

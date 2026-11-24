@@ -9,6 +9,8 @@ const LayerPanel = preload("res://scripts/depth/workbench_strata_panel.gd")
 const Scenes = preload("res://scripts/depth/workbench_strata_scenes.gd")
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
+const Atmosphere = preload("res://scripts/depth/strata_atmosphere_profiles.gd")
+const Authoring = preload("res://scripts/depth/workbench_strata_authoring.gd")
 const MAX_EDIT_CELLS := 16384
 const MAX_STROKE_POINTS := 1024
 const NONPLAY := ["scripted", "effects", "background"]
@@ -36,6 +38,7 @@ var selection := Rect2i()
 var cursor := Vector2i(-1,-1)
 var clipboard: Dictionary = {}
 var _closed := false
+var _authoring: RefCounted
 
 
 func mount(workbench: Control) -> void:
@@ -382,7 +385,7 @@ func edit_cells(id: String, cells: PackedInt32Array) -> bool:
 	last_edit_receipt = receipt.duplicate(true)
 	if not receipt.get("ok",false): return _refuse(str(receipt.get("error",receipt.get("reason","Native paint refused."))))
 	last_edit_receipt["published"] = _publish(id)
-	if not last_edit_receipt.published: return false
+	if not last_edit_receipt.published: return true # Native commit succeeded; stale pixels are a separate receipt field.
 	return _say("Edited %s · %d cells · independent static-plane Undo." % [id,int(receipt.get("changed",cells.size()/3))])
 
 
@@ -404,7 +407,7 @@ func _history(action: String) -> bool:
 	last_edit_receipt = receipt.duplicate(true)
 	if not receipt.get("ok",false): return _refuse(str(receipt.get("error",receipt.get("reason","No retained history."))))
 	last_edit_receipt["published"] = _publish(id)
-	if not last_edit_receipt.published: return false
+	if not last_edit_receipt.published: return true # History was committed even when its later display failed.
 	return _say("%s %s authored edit. Play history and simulation are unchanged." % [action.capitalize(),id])
 
 
@@ -659,3 +662,117 @@ func shutdown() -> void:
 
 func _exit_tree() -> void:
 	shutdown()
+
+
+func _authoring_service() -> RefCounted:
+	if _authoring == null:
+		_authoring = Authoring.new()
+		_authoring.mount(self)
+	return _authoring
+
+
+func authoring_materials() -> Array[Dictionary]:
+	return _authoring_service().authoring_materials()
+
+
+func authoring_plane_state(id: String) -> Dictionary:
+	return _authoring_service().authoring_plane_state(id)
+
+
+func fit_scene() -> bool:
+	if not has_document(): return _refuse("Load or enable a scene before fitting the view.")
+	_show_overview()
+	if is_instance_valid(presenter): presenter.sync_view()
+	return _say("Fit to the existing Workbench Overview camera.")
+
+
+func scene_catalogue() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for id: String in Scenes.Showcase.ids():
+		var entry: Dictionary = Scenes.Showcase.metadata(id)
+		if entry.has("error"): continue
+		entry.label = "%s · %d × %d" % [entry.title, entry.extent[0], entry.extent[1]]
+		result.append(entry)
+	var labels := ["Industrial assembly hall", "Science-fiction arcology", "Organic / industrial cavern"]
+	for index: int in Scenes.IDS.size():
+		result.append({"id":Scenes.IDS[index], "label":labels[index] + " · original 1024 × 768",
+			"description":"Original #769 native four-plane reference scene; static decoration."})
+	return result
+
+
+func atmosphere_profiles() -> Array[Dictionary]:
+	return Atmosphere.presets()
+
+
+func atmosphere_presets() -> Array[Dictionary]:
+	return atmosphere_profiles()
+
+
+func atmosphere_state() -> Dictionary:
+	return _document.get("atmosphere", Atmosphere.default_configuration()).duplicate(true)
+
+
+func set_atmosphere(configuration: Dictionary) -> bool:
+	if not _ensure_current(): return false
+	if not _pending.is_empty() or _apply_serial > 0: return _refuse("Wait for scene admission before changing atmosphere.")
+	if not layer_owner.update_extensions({"atmosphere":configuration}): return _refuse(layer_owner.last_error)
+	_document = layer_owner.document()
+	if not presenter.apply_document(_document): return _refuse(presenter.last_error)
+	return _say("Atmosphere settings saved in the authored scene · presentation-only motion, no native material or physics changes.")
+
+
+func set_atmosphere_settings(patch: Dictionary) -> bool:
+	var configuration := atmosphere_state()
+	for key: Variant in patch:
+		if key not in ["enabled", "paused", "seed"]: return _refuse("Use the regional effect controls for this atmosphere setting.")
+		configuration[key] = patch[key]
+	return set_atmosphere(configuration)
+
+
+func add_atmosphere(preset: String, plane: String, region: Rect2i, seed: int) -> bool:
+	if not _ensure_current(): return false
+	if plane not in NONPLAY or not layer_owner.can_edit(plane): return _refuse("Select a visible, unlocked decorative plane for an authored visual effect.")
+	var configuration := atmosphere_state()
+	var id := "effect-" + Crypto.new().generate_random_bytes(6).hex_encode()
+	var effect: Dictionary = Atmosphere.make_effect(preset, plane, region, seed, id)
+	if effect.is_empty(): return _refuse("Unknown atmosphere profile.")
+	configuration.effects.append(effect)
+	configuration.enabled = true
+	return set_atmosphere(configuration)
+
+
+func add_atmosphere_profile(preset: String, plane: String, region: Array, seed: int) -> bool:
+	if region.size() != 4: return _refuse("An effect region needs x, y, width and height.")
+	for component: Variant in region:
+		if not Setup._integer(component, 0, 2048): return _refuse("Effect coordinates must be bounded integer cells.")
+	return add_atmosphere(preset, plane, Rect2i(int(region[0]), int(region[1]), int(region[2]), int(region[3])), seed)
+
+
+func update_atmosphere_effect(id: String, patch: Dictionary) -> bool:
+	var configuration := atmosphere_state()
+	for effect: Dictionary in configuration.effects:
+		if effect.id != id: continue
+		if not layer_owner.can_edit(str(effect.plane)): return _refuse("The effect's native plane is hidden or locked.")
+		for key: Variant in patch:
+			if key not in ["region", "seed", "count", "speed", "strength", "direction", "colour", "enabled"]:
+				return _refuse("Effect identity and plane cannot be changed by a settings patch.")
+			effect[key] = patch[key]
+		return set_atmosphere(configuration)
+	return _refuse("Unknown atmosphere effect identity.")
+
+
+func remove_atmosphere_effect(id: String) -> bool:
+	var configuration := atmosphere_state()
+	for index: int in configuration.effects.size():
+		var effect: Dictionary = configuration.effects[index]
+		if effect.id == id:
+			if not layer_owner.can_edit(str(effect.plane)): return _refuse("The effect's native plane is hidden or locked.")
+			configuration.effects.remove_at(index)
+			return set_atmosphere(configuration)
+	return _refuse("Unknown atmosphere effect identity.")
+
+
+func reset_atmosphere_phase() -> bool:
+	if not is_instance_valid(presenter): return _refuse("Enable Strata before restarting visual motion.")
+	presenter.reset_atmosphere_phase()
+	return _say("Visual atmosphere restarted from its deterministic seed; authored geometry and history are unchanged.")

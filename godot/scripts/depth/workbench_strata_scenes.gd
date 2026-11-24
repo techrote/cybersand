@@ -5,12 +5,16 @@ extends RefCounted
 # axis-aligned material rectangles; the same native palette draws every plane.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Document = preload("res://scripts/depth/workbench_layer_document.gd")
+const Showcase = preload("res://scripts/depth/strata_showcase_scenes.gd")
 const IDS: Array[String] = ["industrial-assembly", "arcology", "cavern"]
 
 static func ids() -> Array[String]:
-	return IDS.duplicate()
+	var result := IDS.duplicate()
+	result.append_array(Showcase.ids())
+	return result
 
 static func make(id: String, policy: PackedInt32Array) -> Dictionary:
+	if id in Showcase.IDS: return Showcase.make(id, policy)
 	if id not in IDS: return {"error":"Unknown Strata example"}
 	var path: String = "res://data/strata/" + id + ".json"
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
