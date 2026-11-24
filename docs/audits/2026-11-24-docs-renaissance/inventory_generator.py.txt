@@ -1,0 +1,163 @@
+from pathlib import Path
+import collections, datetime, hashlib, json, re, subprocess, sys
+from urllib.parse import urlsplit, unquote
+
+root = Path.cwd().resolve()
+if not (root / 'AGENTS.md').is_file(): raise SystemExit('Run this dated inventory generator from the repository root.')
+audit = root / 'docs/audits/2026-11-24-docs-renaissance'
+base = '00cdb02f103265b6dc5224c68283e9a0c8cb449f'
+sys.path.insert(0, str(root / 'tools/ci'))
+import check_docs
+
+tracked = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', base], cwd=root, text=True).splitlines()
+helpers = {'tools/ci/check_docs.py', 'tools/ci/test_historical_retrieval.py', 'tools/docs/retrieval_eval.py', 'tools/docs/retrieval_policy.py'}
+paths = {p for p in tracked if p.endswith('.md') or p in helpers or (p.startswith('docs/reference/') and p.endswith('.json') and ('retrieval' in Path(p).name or 'questions' in Path(p).name))}
+paths |= {'docs/history/engineering/retrieval-corpus.json', 'docs/history/engineering/retrieval-questions.json'}
+base_paths = sorted(paths)
+raw = subprocess.run(['git', 'cat-file', '--batch'], input=''.join(base + ':' + p + '\n' for p in base_paths).encode(), cwd=root, stdout=subprocess.PIPE, check=True).stdout
+old = {}
+offset = 0
+for p in base_paths:
+    end = raw.index(b'\n', offset)
+    header = raw[offset:end].decode()
+    size = int(header.split()[-1])
+    old[p] = raw[end+1:end+1+size]
+    offset = end+size+2
+paths |= {'docs/operations/getting-started.md', 'docs/operations/workbench-first-session.md', 'docs/operations/workbench-painting-and-history.md', 'docs/operations/workbench-saving.md', 'docs/operations/workbench-art.md', 'docs/operations/showcase-guide.md', 'docs/reference/retrieval-questions-docs-renaissance-v1.json', 'tools/ci/test_current_retrieval_selection.py'}
+
+def sha(data): return hashlib.sha256(data).hexdigest()
+def meta(data): return check_docs.metadata(data.decode('utf-8-sig'))
+def maps(m, key):
+    result = {}
+    for x in m.get(key, []):
+        rel = x if isinstance(x, str) else x['path']
+        result[(root / 'docs' / rel).resolve().relative_to(root).as_posix()] = None if isinstance(x, str) else x.get('reason')
+    return result
+
+m = json.loads((root / 'docs/reference/retrieval-corpus.json').read_text())
+om = json.loads(old['docs/reference/retrieval-corpus.json'])
+selected, navigation, excluded = [maps(m, k) for k in ('documents', 'navigation', 'excluded')]
+osel, onav, oex = [maps(om, k) for k in ('documents', 'navigation', 'excluded')]
+selection_paths = {p for p in excluded if p.endswith('.md') and p in old and meta((root / p).read_bytes()).get('retrieval') == 'explicit-only' and meta(old[p]).get('retrieval') != 'explicit-only'}
+claim_map = collections.defaultdict(list)
+for name in ('claims-a.json', 'claims-b.json', 'claims-c.json', 'claims-lead.json'):
+    x = json.loads((audit / name).read_text())
+    for c in x if isinstance(x, list) else x['claims']:
+        for p in c.get('documents', [c.get('document')]):
+            if p: claim_map[p].append({**c, 'ledger': name})
+deep_reviews = collections.defaultdict(list)
+for name in ('source-reviews-c.json', 'late-user-guide-review-b.json', 'late-play-tower-review-b.json', 'late-standalone-review-b.json', 'residual-source-review-a.json', 'material-catalogue-source-review-a.json', 'generation-source-review-a.json', 'decisions-discovery-source-review-a.json', 'late-sampled-review-b.json', 'late-world-art-review-b.json', 'source-reviews-lead.json'):
+    if not (audit / name).exists(): continue
+    reviewed = json.loads((audit / name).read_text())
+    for original in reviewed.get('documents', reviewed.get('reviews', reviewed.get('checks', []))):
+        row = dict(original)
+        path = row.get('path', row.get('document'))
+        if not path: continue
+        row['path'] = path
+        row['inspection'] = row.get('inspection', row.get('reviewed_scope', row.get('method', row.get('scope', reviewed.get('method')))))
+        row['source_locators'] = row.get('source_locators', row.get('evidence', list(row.get('source_sha256', reviewed.get('source_sha256', {})))))
+        if row.get('disposition') == 'source-reviewed-preserved': row['disposition'] = 'reviewed-preserved'
+        if name == 'material-catalogue-source-review-a.json':
+            row['disposition'] = 'narrow-source-inspection'
+            row['inspection'] = 'Bounded native identity/capability and pair-participant table checks only. A explicitly retained wider scientific/material-behavior claims at original evidence scope; this is not a complete source or runtime requalification.'
+        deep_reviews[path].append({**row, 'record': name})
+overlap = collections.defaultdict(list)
+for item in json.loads((audit / 'github-intake.json').read_text())['active_write_sets']:
+    for p in item['paths']: overlap[p].append(item['number'])
+# Final intake adds actual newer published candidates without discarding original overlaps.
+for item in json.loads((audit / 'github-final-candidates.json').read_text())['records']:
+    if item.get('state') != 'open' or item.get('merged'): continue
+    for file in item.get('files', []):
+        p = file['filename'] if isinstance(file, dict) else file
+        if item['number'] not in overlap[p]: overlap[p].append(item['number'])
+inbound = collections.defaultdict(list)
+oldanchors = {}
+for p, data in old.items():
+    if not p.endswith('.md'): continue
+    text = data.decode('utf-8-sig')
+    oldanchors[p] = check_docs.anchors(text)
+    for target in re.findall(r'\[[^\]]*\]\(([^\s)]+)(?:\s+[^)]*)?\)', check_docs.visible_markdown(text)):
+        u = urlsplit(target)
+        if u.scheme or target.startswith('//') or not u.path: continue
+        dst = ((root / p).parent / unquote(u.path)).resolve()
+        if dst.is_relative_to(root): inbound[dst.relative_to(root).as_posix()].append({'source': p, 'fragment': unquote(u.fragment) or None})
+
+rows = []
+for p in sorted(paths):
+    data = (root / p).read_bytes()
+    previous = old.get(p)
+    md = p.endswith('.md')
+    metadata = meta(data) if md else {}
+    original_meta = meta(previous) if md and previous else {}
+    history = p.startswith(('docs/history/', 'docs/audits/'))
+    role = 'default' if p in selected else 'navigation' if p in navigation else 'historical-only' if history else 'explicit-excluded' if p in excluded else 'outside-default'
+    oldrole = 'default' if p in osel else 'navigation' if p in onav else 'historical-only' if history else 'explicit-excluded' if p in oex else 'outside-default'
+    claims = claim_map[p]
+    changed = data != previous
+    preserved_reviews = [r for r in deep_reviews[p] if r.get('disposition') == 'reviewed-preserved']
+    if not changed and (preserved_reviews or claims):
+        level, disposition = 'source-reviewed-preserved', 'reviewed-preserved'
+        priority = min([c['priority'] for c in claims] + [r.get('priority', 'P1') for r in preserved_reviews])
+        state = 'Source inspection of the recorded claims/controls; original bytes preserved'
+        reason = 'No consequential accepted-source correction justified within the recorded review scope; no fresh runtime acceptance.'
+    elif claims:
+        level, disposition = 'source-reconciled', 'add' if previous is None else 'correct/consolidate'
+        priority = min(c['priority'] for c in claims)
+        state = 'Owning lane recorded source basis; independent outcomes are in review packet'
+        reason = 'Consequential correction, preserving original dated material in immutable Git or byte snapshots.'
+    elif any(r.get('disposition') == 'narrow-source-inspection' for r in deep_reviews[p]):
+        level, disposition, priority = 'source-inspected-narrow', 'preserve; wider semantic reconciliation pending', 'P1'
+        state = 'Only the recorded table/identity/capability source checks are qualified'
+        reason = 'Bounded source comparison supports preserving those rows; original wider scientific evidence is not freshly qualified.'
+    elif p in selection_paths:
+        level, disposition, priority = 'metadata-and-selection-only', 'correct selection metadata', 'P1'
+        state = 'Routing regression exercised; body not source-reconciled'
+        reason = 'Already excluded by original manifest; explicit-only restores the same choice under fallback. Body, status and authority unchanged.'
+    elif p in {'tools/docs/retrieval_eval.py', 'tools/docs/retrieval_policy.py', 'tools/ci/check_docs.py', 'tools/ci/test_current_retrieval_selection.py', 'docs/reference/retrieval-corpus.json'}:
+        level, disposition, priority = 'implementation-and-regression-reviewed', 'narrow selection repair', 'P0'
+        state = 'Lead independent review and focused regression tests'
+        reason = 'Concrete fallback/direct-ingestion defect; no engine or CI scheduling change.'
+    elif p == 'AGENTS.md':
+        level, disposition, priority = 'instruction-read', 'preserve', 'P0'
+        state, reason = 'Read at intake; unchanged', 'All binding substantive guards retained; no policy edit.'
+    elif role in {'default', 'navigation'}:
+        level, disposition = 'metadata-and-structural', 'preserve; defer deeper reconciliation'
+        high_consequence = (p.startswith('docs/operations/') and metadata.get('document-kind') in {'guide', 'runbook', 'contract', 'design'}) or (p.startswith(('docs/decisions/', 'docs/tools/'))) or (p.startswith('docs/architecture/') and metadata.get('document-kind') != 'index') or (p.startswith(('docs/systems/', 'docs/reference/')) and (metadata.get('document-kind') == 'contract' or re.search(r'material|liquid|water|physic|actor|owner|persist|save|thread|worker|simulation|runtime|interface|invariant|configuration|capacity|serial|replay|security|provider|state|generat|settled|solid', p)))
+        priority = 'P1' if high_consequence else 'P2'
+        state = 'Semantic source reconciliation pending'
+        reason = 'Accounted and structurally checked; no semantic PASS. Recheck source before using dated runbook commands on a new task.'
+    elif history:
+        level, disposition, priority = 'metadata-only', 'preserve historical isolation', 'P3'
+        state, reason = 'No current semantic review claimed', 'Historical authority and evidence unchanged; no broad retirement.'
+    elif role == 'explicit-excluded':
+        level, disposition, priority = 'metadata-only', 'preserve exclusion', 'P2'
+        state = 'Explicit reproduction/task scope retained'
+        reason = excluded.get(p) or 'Outside default answers; inspect deliberately for its original scope.'
+    else:
+        level, disposition, priority = 'inventory-only', 'preserve', 'P3'
+        state, reason = 'No semantic review claimed', 'Ancillary documentation/fixture/tool outside ordinary answer corpus; frozen sets unchanged.'
+    audience = 'developers and coding agents' if p.startswith(('docs/architecture/', 'tools/')) else 'players and authors' if p.startswith('docs/operations/workbench-') or p.endswith(('getting-started.md', 'showcase-guide.md')) else 'developers and evaluators' if p.startswith('docs/operations/') else 'reference readers and agents' if p.startswith(('docs/reference/', 'docs/systems/')) else 'historical researchers' if history else 'mixed (inferred from path/metadata)'
+    anchors = None
+    if md:
+        before = oldanchors.get(p, set())
+        after = check_docs.anchors(data.decode('utf-8-sig'))
+        missing = before - after
+        anchors = {'old_count': len(before), 'current_count': len(after), 'removed_original_slugs': sorted(missing), 'baseline_inbound_links': len(inbound[p]), 'baseline_inbound_links_to_removed_slugs': [x for x in inbound[p] if x['fragment'] in missing]}
+    rows.append({'path': p, 'baseline_present': previous is not None, 'baseline_sha256': sha(previous) if previous else None, 'current_sha256': sha(data), 'baseline_bytes': len(previous) if previous else 0, 'current_bytes': len(data), 'metadata': metadata, 'baseline_metadata': original_meta, 'canonical_topics': metadata.get('canonical-for', []), 'audience': audience, 'authority_declared': metadata.get('authority'), 'effective_retrieval_authority': 'historical-non-authoritative' if history else 'current-documentation', 'corpus_role_before': oldrole, 'corpus_role_after': role, 'review_level': level, 'review_state': state, 'priority': priority, 'freshness': {'last_reviewed': metadata.get('last-reviewed'), 'caveat': 'Metadata date is not proof of source correctness'}, 'changed': changed, 'change_class': 'metadata-only-routing' if p in selection_paths else 'new' if previous is None else 'substantive-or-tooling' if changed else 'preserved', 'active_candidate_overlaps': sorted(set(overlap[p])), 'overlap_receipts': ['github-intake.json', 'github-final-candidates.json'], 'overlap_disposition': 'Accepted-main facts only; reconcile with owning programme at adoption' if overlap[p] else None, 'stale_links': 'Default/navigation local links and anchors checked; semantic staleness requires source review' if role in {'default', 'navigation'} else 'Outside ordinary link sweep; no all-link PASS claimed', 'canonical_overlap': 'Unique canonical topic ownership checked' if role == 'default' else None, 'claims': [c['id'] for c in claims], 'source_review_records': sorted({r['record'] for r in deep_reviews[p]}), 'source_review_scope': [r.get('inspection') for r in deep_reviews[p]], 'source_review_findings': [r.get('verified', r.get('findings', [])) for r in deep_reviews[p]], 'source_basis': sorted({s for c in claims for s in c.get('sources', c.get('evidence', []))} | {s for r in deep_reviews[p] for s in r.get('source_locators', [])}), 'contradictions_corrected': [c['claim'] for c in claims if c.get('disposition') != 'reviewed-preserved'], 'disposition': disposition, 'disposition_reason': reason, 'owner_dependent_choice': 'Candidate adoption remains owner-gated; no new policy/design decision' if overlap[p] else None, 'anchor_preservation': anchors})
+
+summary = {'baseline_markdown_count': sum(p.endswith('.md') for p in base_paths), 'baseline_entry_count': len(base_paths), 'inventory_entry_count': len(rows), 'current_markdown_count': sum(r['path'].endswith('.md') for r in rows), 'default_documents_before': len(osel), 'default_documents_after': len(selected), 'navigation_documents': len(navigation), 'new_current_guides': sum(not r['baseline_present'] and r['path'].endswith('.md') and r['corpus_role_after'] == 'default' for r in rows), 'source_reconciled_current_markdown': sum(r['review_level'] == 'source-reconciled' and r['path'].endswith('.md') and r['corpus_role_after'] in {'default', 'navigation'} for r in rows), 'source_reviewed_preserved_current_markdown': sum(r['review_level'] == 'source-reviewed-preserved' and r['path'].endswith('.md') and r['corpus_role_after'] in {'default', 'navigation'} for r in rows), 'source_reviewed_current_markdown_total': sum(r['review_level'] in {'source-reconciled', 'source-reviewed-preserved'} and r['path'].endswith('.md') and r['corpus_role_after'] in {'default', 'navigation'} for r in rows), 'metadata_only_routing_changes': len(selection_paths), 'changed_markdown_excluding_routing': sum(r['changed'] and r['path'].endswith('.md') and r['change_class'] != 'metadata-only-routing' for r in rows), 'unreviewed_default_semantics': sum(r['corpus_role_after'] == 'default' and r['review_level'] in {'metadata-and-structural', 'source-inspected-narrow'} for r in rows), 'unreviewed_default_p1': sum(r['corpus_role_after'] == 'default' and r['review_level'] in {'metadata-and-structural', 'source-inspected-narrow'} and r['priority'] == 'P1' for r in rows), 'source_inspected_narrow_current_markdown': sum(r['corpus_role_after'] in {'default', 'navigation'} and r['review_level'] == 'source-inspected-narrow' for r in rows), 'review_levels': dict(collections.Counter(r['review_level'] for r in rows)), 'priorities': dict(collections.Counter(r['priority'] for r in rows)), 'corpus_roles': dict(collections.Counter(r['corpus_role_after'] for r in rows))}
+report = {'schema_version': 2, 'authority': 'historical-non-authoritative', 'created_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'accepted_source': base, 'scope': 'All 508 baseline tracked Markdown, 25 current retrieval JSON files, 2 historical retrieval JSON files, 4 retrieval/checker scripts; plus 6 current guides, 1 question set, 1 regression. New mission evidence/assets are separately manifested and excluded from coverage denominator.', 'generator_sha256': sha(Path(__file__).read_bytes()), 'generator': 'inventory_generator.py.txt', 'method': 'Exact git cat-file baseline bytes and current bytes; lane claims and candidate write sets. Metadata/links do not imply source-semantic review; historical text is not ordinary answer context.', 'summary': summary, 'documents': rows}
+(audit / 'inventory.json').write_text(json.dumps(report, indent=2) + '\n')
+(audit / 'inventory-coverage.json').write_text(json.dumps(summary, indent=2) + '\n')
+lines = ['---', 'title: Documentation inventory and disposition', 'status: Current', 'document-kind: evidence', 'authority: historical-non-authoritative', 'retrieval: explicit-history-only', 'scope: Dated coverage and per-file disposition; not ordinary current-answer context', 'last-reviewed: 2026-11-24', '---', '', '# Documentation inventory and disposition', '', 'The [complete JSON inventory](inventory.json) accounts for every baseline Markdown file and relevant retrieval entry plus new current guides/tooling. It retains before/after hashes, metadata, canonical topics, audiences, priority, review depth, disposition, active overlaps, source claims and incoming-anchor effects. New mission evidence and images have separate manifests and do not inflate current-document coverage. The [dated generator](inventory_generator.py.txt) runs from the repository root using the immutable baseline and committed lane receipts; it needs no scratch snapshot.', '', '## Coverage', '', '| Measure | Count |', '|---|---|']
+for key in ['baseline_markdown_count', 'inventory_entry_count', 'default_documents_before', 'default_documents_after', 'navigation_documents', 'new_current_guides', 'source_reconciled_current_markdown', 'source_reviewed_preserved_current_markdown', 'source_reviewed_current_markdown_total', 'metadata_only_routing_changes', 'source_inspected_narrow_current_markdown', 'unreviewed_default_semantics', 'unreviewed_default_p1']:
+    lines.append('| ' + key.replace('_', ' ') + ' | ' + str(summary[key]) + ' |')
+lines += ['', '**Review depth is explicit.** Source-reconciled means the owning lane recorded a substantive claim and source basis; independent outcomes are in the review packet. Metadata-only routing changes add `retrieval: explicit-only` to 27 already excluded packets and do not certify their prose. Structural checks cover local paths/anchors and metadata, not runtime correctness. Source-reviewed-preserved means a recorded source inspection justified keeping original bytes; the stated review scope does not imply every claim or runtime was requalified. Source-inspected-narrow records bounded table/identity checks without claiming a full semantic review. Historical evidence remains preserved.', '', '## Current entry and answer documents', '', 'Every default and navigation document is listed below. The JSON additionally accounts for all exclusions, historical files and ancillary documentation. A preserved page is not an unqualified semantic PASS.', '', '| Path | Priority | Review / disposition | Active overlap |', '|---|---|---|---|']
+for r in rows:
+    if r['corpus_role_after'] in {'default', 'navigation'}:
+        lines.append(f"| `{r['path']}` | {r['priority']} | {r['review_level']}; {r['disposition']} | {', '.join('#'+str(n) for n in r['active_candidate_overlaps']) or 'None recorded'} |")
+lines += ['', '## Selection-only packets', '', 'These 27 packets were already excluded by the original manifest. Their bodies, statuses and authority remain unchanged; selection metadata prevents fallback/direct default ingestion.', '', '| Path | Disposition |', '|---|---|']
+for p in sorted(selection_paths): lines.append(f'| `{p}` | Preserve explicit task/research scope; metadata-only correction |')
+lines += ['', '## Consequence-ranked residual work', '', f"- **P1:** {summary['unreviewed_default_p1']} default documents remain without bounded consequential source review. Coverage records are claim-scoped; source inspection is not full scientific or runtime requalification. Active candidate overlaps still require their owning programme at acceptance.", '- **P1:** Resolve remaining retrieval primary-destination misses using source/context evidence. Accurate bounded answers and correct abstentions are evaluated separately from ranking.', '- **P1:** Runtime/evaluator and physical owner acceptance remain with their owning programmes; documentation does not adopt unmerged implementations.', '- **P2:** Three low-use operator/research references retain metadata/structural review only: `docs/reference/procedural-spatial-operators.md`, `docs/research/bounded-decompression-impulse-events.md`, and `docs/research/lumped-gas-region-pressure-bookkeeping.md`. Their deeper mathematical/research semantics are explicit backlog; they were not silently certified. Further consolidation requires local applicability and preserved evidence.', '- **P3:** Ancillary research/assets and historical Markdown retain original scope; low-consequence style churn was deferred.', '', '## Preservation and incoming links', '', 'Machine entries retain all original/current heading slugs and baseline incoming links affected by removed slugs. Immutable Git and exact `.md.txt` snapshots preserve condensed front-door history. Lane preservation records and the aggregate packet identify originals. Original historical reports and frozen question sets remain unchanged.', '']
+(audit / 'inventory.md').write_text('\n'.join(lines))
+print(json.dumps(summary, indent=2))

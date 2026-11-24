@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B /root/product_showcase",
+  "reviewed_at": "2026-11-24T19:59:25.130245+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "document": "docs/systems/material-visual-pattern-library.md",
+  "document_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+  "method": "Independent review of baseline-relative prose delta against accepted material projection, shader, key-dispatch and capture fixture source; deliberately consulted original October capture audit for plate/viewport provenance. No GPU, graphical, native or physical campaign executed.",
+  "claims": [
+    {
+      "claim_id": "L-57",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": [
+        "kVisualStateSources selects StateA for Water and Zero for Brine; project_visual_state normalizes Water state through WaterExperimentPolicy and returns zero for Brine. Shader flair29 supplies the shared ripple finish and fixed salt motes without a Brine mass channel.",
+        "The original October audit identifies an 81-row inventory and exact320×180 logical /1920×1080 output fixture. Current source enumerates132 material definitions ending HeatShieldTile131. Static fixture explicitly lists seven IDs then38–80 inclusive:50 materials. The revised caption accurately limits that old plate.",
+        "Sixfold linear scaling has36 output pixels per cell by arithmetic; shader fragment can evaluate a second snapshot for temporal smoothing, so the revised prose correctly avoids a universal layout or measured cost claim."
+      ],
+      "source_locators": [
+        "native/include/cybersand/material_appearance.hpp::kVisualStateSources/project_visual_state",
+        "native/include/cybersand/material.hpp::kMaterialDefinitions/kLastMaterial",
+        "godot/shaders/material_palette.gdshader::apply_material_flair/fragment",
+        "godot/tests/capture_material_review.gd::_statics/_inventory",
+        "docs/audits/2026-10-18-material-readability-pass.md#apparatus"
+      ]
+    },
+    {
+      "claim_id": "L-58",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": [
+        "shared_workbench._input delegates to paint_editor.key_input and marks handled input. Paint mode requires host.paused before G selects Fill.",
+        "main._unhandled_key_input returns from the Shared Workbench branch, where G queues the equipment drain toggle. Its ordinary Main branch maps G to set_glow_enabled. This is not a universal shortcut."
+      ],
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::_input",
+        "godot/scripts/workbench_paint_editor_controller.gd::key_input",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/workbench_liquid_equipment_panel.gd::toggle"
+      ]
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_controller.gd",
+      "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/workbench_liquid_equipment_panel.gd",
+      "sha256": "30fd3eba2e3e68ff9859192fd46a5ada5955de536d4cdee4db601cf3505b44dc",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "godot/tests/capture_material_review.gd",
+      "sha256": "641559ee5f0d78b3bacfe2aae5e82ebfcb43e7990722013397c2c5336f84c348",
+      "byte_equal_accepted_source": true
+    },
+    {
+      "path": "docs/audits/2026-10-18-material-readability-pass.md",
+      "sha256": "4fe1250e0186e7f52c1292037dda819150087a5913c5b655d70ff54594b9dd99",
+      "byte_equal_accepted_source": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "B-L57-01",
+      "priority": "P2",
+      "status": "resolved-before-final-review",
+      "finding": "The old static plate caption implied every current static material.",
+      "resolution": "Lead scoped it to the original50 listed IDs; source fixture inspected and final document hash retained."
+    }
+  ],
+  "limitations": [
+    "Only the corrected projection, host-control and plate/scale scope was independently requalified; unchanged shader recipe/performance prose retains its original evidence.",
+    "No graphical, GPU-performance, application playfeel or physical owner acceptance is claimed."
+  ]
+}

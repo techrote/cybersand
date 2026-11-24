@@ -1,0 +1,32 @@
+{
+  "command": [
+    "python3",
+    "tools/ci/check_docs.py"
+  ],
+  "result": "PASS",
+  "exit_code": 0,
+  "recorded_utc": "2026-11-24T20:35:22.272967+00:00",
+  "elapsed_seconds": 1.058,
+  "scope": "Frozen 151 default documents and 8 navigation routes: metadata, canonical authority, relative paths/anchors and frozen fixture identity; not source semantics or external URL uptime.",
+  "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/final-docs.log.txt",
+  "output_sha256": "8a9940dcdcb7e5b3435b1bfd297ec4ee52cf46a803b400714bf12e3f7f29fec5",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "documentation_freeze_commit": "ff66f4b385fcddf4544c2e8769eb2dd72b15398a",
+  "observed": {
+    "status": "passed",
+    "documents": 151,
+    "navigation_link_documents": 8,
+    "canonical_claims": 280,
+    "local_links": 3513,
+    "heading_anchors": 489,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "authority": "historical-non-authoritative",
+  "method": "Bounded CLI help and watchdog-value read only; no compilation or physics campaign",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "source_files": {
+    "tools/physics/run.py": "60a663ab384c14ba3633cb73e553d0fc35b542e619f125bc6acf7ad1ed6941d9",
+    "tools/physics/test_characterisation_cli.py": "513db5608e722bcd03823744a33f4f81554eb31aedecbde8a3a452e45296e720",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+  },
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "tools/physics/run.py",
+        "--help"
+      ],
+      "started_utc": "2026-11-24T19:21:47.152301+00:00",
+      "exit_code": 0,
+      "output": "docs/audits/2026-11-24-docs-renaissance/validation/physics-source-options-0.log.txt",
+      "sha256": "a7271126636725185692863c69f5e46547a64c4f1b53216c19093e8d7ec1c17e"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/execution_policy.py",
+        "seconds",
+        "operation_seconds"
+      ],
+      "started_utc": "2026-11-24T19:21:47.205812+00:00",
+      "exit_code": 0,
+      "output": "docs/audits/2026-11-24-docs-renaissance/validation/physics-source-options-1.log.txt",
+      "sha256": "f807fe6dc767be2e7021d41540114b33b30fa7784f6de5521251f23a3eb66468"
+    }
+  ]
+}

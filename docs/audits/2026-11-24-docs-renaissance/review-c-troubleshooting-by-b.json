@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B / product_showcase",
+  "reviewed_at": "2026-11-24T19:20:26.114803+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "claim_id": "C-17",
+  "priority": "P1",
+  "document": "docs/operations/troubleshooting.md",
+  "document_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+  "result": "source-verified",
+  "method": "Independent review of the new first-launch/Workbench symptom table and failure-report guidance against actual owner, input and provider source. The retained physics table is not requalified.",
+  "source_locators": [
+    "tools/launch_desktop.ps1",
+    "godot/scripts/feature_launcher.gd",
+    "godot/scripts/shared_workbench.gd::_save_block_reason/save_setup/request_flatten/load_setup",
+    "godot/scripts/art_batch_executor.gd::poll",
+    "godot/scripts/art_batch_panel.gd::_ensure_history_loaded/stop_all/close_requested",
+    "godot/scripts/art_provider.gd::redact/_redacted_value",
+    "godot/scripts/workbench_actor_catalog.gd"
+  ],
+  "observations": [
+    "Launcher exact-version/LFS checks are real; script import does not supply missing native APIs.",
+    "Save polls completion then rechecks native fences. It may save settled authored data after a failed owner, but rejects unconfirmed legacy brush execution. The table preserves that conditional boundary and directs restart plus Load.",
+    "Flatten is material-only and explicitly refuses a failed native owner. Queued drawing and partial Stop results are not described as completed or safely replayable.",
+    "Art close/hide is separate from stop_all; session-only _ensure_history_loaded does not reopen prior chat. Redaction cannot make all prompts, endpoints or scene content public, so minimal safe diagnostics are appropriate.",
+    "Actor/input and incomplete-package symptoms route to current canonical guides without promising generic model control, feature parity or evaluator acceptance."
+  ],
+  "findings": [],
+  "limitations": [
+    "Source review only. No model/provider request, interactive recovery reproduction or new physical/runtime qualification.",
+    "The review does not certify every unchanged physics symptom row."
+  ],
+  "source_sha256": {
+    "tools/launch_desktop.ps1": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+    "godot/scripts/feature_launcher.gd": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+    "godot/scripts/shared_workbench.gd": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+    "godot/scripts/art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+    "godot/scripts/art_batch_panel.gd": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+    "godot/scripts/art_provider.gd": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+    "godot/scripts/workbench_actor_catalog.gd": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927"
+  }
+}

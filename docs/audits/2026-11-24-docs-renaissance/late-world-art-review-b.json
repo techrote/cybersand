@@ -1,0 +1,281 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B /root/product_showcase",
+  "recorded_at": "2026-11-24T20:09:50.001350+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Full read of four current Art-tool pages; source/command/control/capacity/publication and acceptance inspection. Actual Python-only existing unit tests and CLI-help invocations; no new graphical capture, package build, provider call or hardware acceptance.",
+  "documents": [
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "claim_id": "B-40",
+      "disposition": "corrected",
+      "full_read": true,
+      "reviewed_scope": "Standalone World Art pipeline #685 and physical acceptance harness #694 are accepted-source ancestors. Current integration is not Draft/HOLD; original qualification and donor evidence remain dated. Its15 collections/120 features and16,384-side/16,777,216-cell adapter limits are presentation-only, with50M ordinary and100M streamed output budgets.",
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "baseline_byte_equal": false
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "claim_id": "B-41",
+      "disposition": "corrected",
+      "full_read": true,
+      "reviewed_scope": "New standalone World Art source checkouts use accepted main, not the old integration branch. The pinned4.7.stable.official.5b4e0cb0f executable is explicit; the launcher copies a temporary plugin-free project. Viewer controls, session-only framebuffer pins, last-good reload and current-source full exports remain separate from in-scene Workbench Art and native simulation.",
+      "sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "baseline_byte_equal": false
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "claim_id": "B-42",
+      "disposition": "corrected",
+      "full_read": true,
+      "reviewed_scope": "Accepted standalone unattended capture uses real display-backed Godot framebuffer bytes, exclusive output claims, sealed manifests and fresh-directory retry; source and output caps, return codes and explicit streamed transport remain distinct from native playability. Current docs specify the exact Godot pin and retain original graphical qualification scope.",
+      "sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "baseline_byte_equal": false
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "claim_id": "B-43",
+      "disposition": "reviewed-preserved",
+      "full_read": true,
+      "reviewed_scope": "The unchanged World Art Windows evaluation guide correctly separates a frozen source-qualified package from current main and physical owner acceptance, documents actual bundled launch/capture/verify commands, fresh outputs, pinned package/source hashes, Windows-only rebuild/smoke and partial outcomes for skipped physical/manual checks.",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "baseline_byte_equal": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "tools/world_art_preview_launcher.py",
+      "sha256": "1475f0a77cf1eae5e68431681303cd3d0dc67a71be9bcf46217f35a196640fd4",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "1475f0a77cf1eae5e68431681303cd3d0dc67a71be9bcf46217f35a196640fd4",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "tools/world_art_capture_support.py",
+      "sha256": "4f8f1c1fec4fd11626c5b5ab758b177204fe72451a19b699fbd9ce69d7d4af20",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "4f8f1c1fec4fd11626c5b5ab758b177204fe72451a19b699fbd9ce69d7d4af20",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "tools/world_art_stream_png.py",
+      "sha256": "4352b180b59fedced2c284398d3bfbd871d80f93c9dc2e6da71ffbfc4234ea26",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "4352b180b59fedced2c284398d3bfbd871d80f93c9dc2e6da71ffbfc4234ea26",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "tools/world_art_evaluation_package.py",
+      "sha256": "42978207589dcf5741b90dc261c54a02f0c26ac2bcc6d16425b02d34ae420382",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "42978207589dcf5741b90dc261c54a02f0c26ac2bcc6d16425b02d34ae420382",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "tools/test_world_art_capture.py",
+      "sha256": "b48392430d92190133979a82a8f5dd873a043f0005eded1be07066876c507173",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "b48392430d92190133979a82a8f5dd873a043f0005eded1be07066876c507173",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "tools/test_world_art_evidence.py",
+      "sha256": "54bc8ad99d3d41ac9bd6a36b32225673f553fe97993931dd109fb3e330cc9f5a",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "54bc8ad99d3d41ac9bd6a36b32225673f553fe97993931dd109fb3e330cc9f5a",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "godot/tools/world_design_pack_adapter.gd",
+      "sha256": "69a909152586c4d6d62c40ba75e7c99ff48358081616feb1b1bf1a3be9a26188",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "69a909152586c4d6d62c40ba75e7c99ff48358081616feb1b1bf1a3be9a26188",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "godot/tools/world_art_render_rig.gd",
+      "sha256": "a1d07c0885eba11baefcb58da3497aa73cb802cc17db327ecea4fc7566475dc2",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "a1d07c0885eba11baefcb58da3497aa73cb802cc17db327ecea4fc7566475dc2",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "godot/tools/world_art_full_export.gd",
+      "sha256": "8bdbcd95cf71f51b504eacaa4ff6b6ec20dd86a3c00e427f8b1563dee9a82258",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "8bdbcd95cf71f51b504eacaa4ff6b6ec20dd86a3c00e427f8b1563dee9a82258",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "godot/tools/world_art_capture.gd",
+      "sha256": "ad33aec70532b1b86fef08d9fa2a473a07d286422daca758b0f22faefc47449a",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "ad33aec70532b1b86fef08d9fa2a473a07d286422daca758b0f22faefc47449a",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "godot/tools/world_art_preview.gd",
+      "sha256": "2fa9edc8f1438b274c6b74731ffd92273412d2405b066a547ff5054bea4f4c85",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "2fa9edc8f1438b274c6b74731ffd92273412d2405b066a547ff5054bea4f4c85",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "examples/world-art-capture/build_gallery.py",
+      "sha256": "e639d37c07768fec1dd676279520e2f2acb55e82aa862c0eab710ed3438d70dd",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "e639d37c07768fec1dd676279520e2f2acb55e82aa862c0eab710ed3438d70dd",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": "tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1",
+      "sha256": "2f4e7349dbca0f5e45cfc8a33104bf39ae5b2899154fbd71406d1a8d37c14951",
+      "baseline_byte_equal": false,
+      "git_blob_sha256": "f38e465f052589665979606839bd6b67152527b70d68f3e3b82e46660ac2e997",
+      "git_diff_from_baseline": [],
+      "normalization": "Repository .gitattributes text eol=crlf; working CRLF bytes differ from LF Git blob only.",
+      "normalized_byte_equal": true
+    },
+    {
+      "path": ".github/workflows/world-art-capture.yml",
+      "sha256": "77090b9a6322876295b1f6ed954aa2187a10237020a56dc5689f6dca8c0daae3",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "77090b9a6322876295b1f6ed954aa2187a10237020a56dc5689f6dca8c0daae3",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": ".github/workflows/world-art-preview.yml",
+      "sha256": "710eee70318da7731c929f982b3ad8d9c6760cea764dbc76f2fc0e87e2d48a5f",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "710eee70318da7731c929f982b3ad8d9c6760cea764dbc76f2fc0e87e2d48a5f",
+      "git_diff_from_baseline": []
+    },
+    {
+      "path": ".github/workflows/world-art-physical-nvidia-acceptance.yml",
+      "sha256": "4da2a57d328483aea768fd4e04699da4de5d88bc07c56b3f4181266f1fb3d194",
+      "baseline_byte_equal": true,
+      "git_blob_sha256": "4da2a57d328483aea768fd4e04699da4de5d88bc07c56b3f4181266f1fb3d194",
+      "git_diff_from_baseline": []
+    }
+  ],
+  "merge_ancestry": [
+    {
+      "commit": "d5b0371501eb7ccd32c261f738b4a2612218fbc1",
+      "ancestor_exit_code": 0
+    },
+    {
+      "commit": "8d07e04459a2705a6f96c908c0b565a483cc5beb",
+      "ancestor_exit_code": 0
+    }
+  ],
+  "atlas_inventory": {
+    "collections": 15,
+    "features": 120,
+    "files": [
+      {
+        "path": "docs/world-design/ashroot-nursery/pack.json",
+        "features": 8,
+        "sha256": "a3dbcd6988d4a1483d6b14aa47eb3b17d550f2fef5fd1f202e820dd0f8c31452"
+      },
+      {
+        "path": "docs/world-design/carved-ice-choir/pack.json",
+        "features": 8,
+        "sha256": "b59bb27e1d5cb8bab1b4352fdc35a3db403baea3ef52787a1a3ae9fd99245839"
+      },
+      {
+        "path": "docs/world-design/cathedral-of-capacitors/pack.json",
+        "features": 8,
+        "sha256": "7345463373d48a494173b7ab0fd0fad43d7f63f2e5dc77f57d1657df926911d3"
+      },
+      {
+        "path": "docs/world-design/chalkbone-coast/pack.json",
+        "features": 8,
+        "sha256": "a3d610a2ec795536f153506e777685ced37cd52bcb6d6d99a119179a8e7c14ef"
+      },
+      {
+        "path": "docs/world-design/coral-telegraph/pack.json",
+        "features": 8,
+        "sha256": "fc46fcb10c32788b5a08247b1515cde938203aa13765c3f0feaddd9218a66c49"
+      },
+      {
+        "path": "docs/world-design/drowned-observatory/pack.json",
+        "features": 8,
+        "sha256": "3dd3d5281935e1ccb720179ea60c1523e97365f7aad30586293a37d0cf96bbef"
+      },
+      {
+        "path": "docs/world-design/dust-meridian/pack.json",
+        "features": 8,
+        "sha256": "f8588e782e85eafe4a9c80e6499c61449a2df19f7df43de37fe65149545a93b8"
+      },
+      {
+        "path": "docs/world-design/emberglass-fumaroles/pack.json",
+        "features": 8,
+        "sha256": "6165fbf3696d52825325689b73ca5bdacc954b5c6c763b2b498be3484c486add"
+      },
+      {
+        "path": "docs/world-design/fallow-carnival/pack.json",
+        "features": 8,
+        "sha256": "85d7ff966aac5948700dfe91464baecdecd7491ff95e11405ad536613dd188b0"
+      },
+      {
+        "path": "docs/world-design/ironroot-necropolis/pack.json",
+        "features": 8,
+        "sha256": "332887ddbb8f8adc4066883dee5a3b73f6d983dfa418e22ebb3d4a029d7f3592"
+      },
+      {
+        "path": "docs/world-design/lumen-fault/pack.json",
+        "features": 8,
+        "sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd"
+      },
+      {
+        "path": "docs/world-design/mirror-marsh/pack.json",
+        "features": 8,
+        "sha256": "81837a8066d8d523f0d9c77c71bea8233317af2ba01c25e8d1c71feda0143cf4"
+      },
+      {
+        "path": "docs/world-design/signal-orchard/pack.json",
+        "features": 8,
+        "sha256": "729f15196c15590fdb4f528e1ab1d72ac675da4bad32f036dd64f72ab80f5162"
+      },
+      {
+        "path": "docs/world-design/silt-clockworks/pack.json",
+        "features": 8,
+        "sha256": "1c1cbd1141c3c4254878635e6e3ece60055c53a1f44b824e87ef48a9b8ca17f5"
+      },
+      {
+        "path": "docs/world-design/tectonic-archive/pack.json",
+        "features": 8,
+        "sha256": "8f5b57fe69557f7a99ad1b615dd9200ca2901115a91f36e69b84093d2aa66d1f"
+      }
+    ]
+  },
+  "executed": [
+    {
+      "result": "PASS",
+      "tests": 32,
+      "evidence": "capture-b/world-art-unit-evidence.json"
+    },
+    {
+      "result": "PASS",
+      "commands": 3,
+      "evidence": "capture-b/world-art-cli-help.json"
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P0",
+      "finding": "Merged pipeline still marked Draft/HOLD and source checkout pointed at old integration branch.",
+      "status": "corrected; independent review pending"
+    },
+    {
+      "priority": "P1",
+      "finding": "Source examples named a4.7 executable without the precise current pin or enough separation from original graphical results.",
+      "status": "corrected; independent review pending"
+    }
+  ],
+  "limits": [
+    "No current download/extraction of the frozen Windows artifact; its recorded expiry and hash are checked against the committed acceptance script, not newly asserted artifact availability.",
+    "No new Linux/Windows framebuffer,67M image, Windows package or physical NVIDIA execution.",
+    "No native World, source artwork, production shader, provider, dependency or CI scheduling change."
+  ]
+}

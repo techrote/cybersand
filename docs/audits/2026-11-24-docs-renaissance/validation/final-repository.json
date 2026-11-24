@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "tools/ci/check_repository.py"
+  ],
+  "result": "PASS",
+  "exit_code": 0,
+  "recorded_utc": "2026-11-24T20:29:15.087939+00:00",
+  "elapsed_seconds": 1.776,
+  "scope": "Repository invariants, retained runtime hashes and source input provenance; two Linux runtimes materialized, sixteen other runtime pointers intentionally remain.",
+  "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/final-repository.log.txt",
+  "output_sha256": "c2039d26d38e270d42b231bccbc81320e30653fee90f241ca65e2d14aff13d00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "documentation_head": "0763548960edb6acd310666950aec7fa9ec4c502"
+}

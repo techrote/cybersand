@@ -1,0 +1,41 @@
+{
+  "documents": 151,
+  "chunks": 1784,
+  "questions": 32,
+  "canonical_hit_at_1": 18,
+  "canonical_hit_at_k": 31,
+  "mrr_at_k": 0.7146,
+  "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+}
+Q01 rank=4 systems/granular-interaction-policy.md :: Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response
+Q02 rank=2 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > How are writes into a neighboring tile made safe?
+Q03 rank=4 operations/gen008-flatten-qualification.md :: Flatten / Bake History evaluation > Windows owner acceptance
+Q04 rank=2 reference/configuration-reference.md :: Configuration reference > Adapter worker policy
+Q05 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > Current desktop worker loop
+Q06 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > What happens when a tick fails or overloads?
+Q07 rank=1 decisions/ADR-009-rapier-2d-rigid-body-backend.md :: ADR-009: Rapier2D rigid-body backend > Why choose an explicit adapter owner?
+Q08 rank=2 decisions/ADR-007-rigid-body-cellular-coupling.md :: ADR-007: Separate rigid-body occupancy coupling > Why not remove and restore body pixels?
+Q09 rank=2 systems/physical-free-flight.md :: 4LY physical free-flight and assisted velocity control > Who owns the chassis, contacts and equipment?
+Q10 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+Q11 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > Does an identical save reproduce the next tick?
+Q12 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > Choose the right persistence contract
+Q13 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > May saving run concurrently with a tick?
+Q14 rank=1 architecture/determinism-and-boundary-transfers.md :: Determinism and boundary transfers > Replay state coverage
+Q15 rank=4 systems/themed-construction-materials.md :: Themed construction material palette > Appearance boundaries
+Q16 rank=1 architecture/rendering-and-gameplay-bridges.md :: Rendering and gameplay bridges > What does native publication return under pressure?
+Q17 rank=3 operations/profiling-observability-and-performance.md :: Profiling, observability, and performance > Avoid common misreadings
+Q18 rank=1 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > Are simulation tiles double buffered?
+Q19 rank=None tools/world-art-capture.md :: World Art unattended capture — real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels
+Q20 rank=1 operations/configuration-and-capacity-budgets.md :: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space
+Q21 rank=4 architecture/lcb-pressure-inertial-handoff.md :: LCB pressure and inertial implementation handoff > Inertial (`inertial_cellular_v1`, #212)
+Q22 rank=1 systems/water-design.md :: Water design > Coherent emission and surface adhesion
+Q23 rank=1 systems/water-design.md :: Water design > How should I diagnose a shimmering pool?
+Q24 rank=3 reference/invariants.md :: Architectural and simulation invariants > Fidelity invariants
+Q25 rank=1 architecture/principles-and-non-goals.md :: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?
+Q26 rank=2 architecture/overview.md :: Architecture overview > Are the named production modules already separate classes?
+Q27 rank=1 systems/smoke-heat-pressure-roadmap.md :: Smoke, heat, and pressure roadmap
+Q28 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands
+Q29 rank=2 operations/local-build-and-validation.md :: Local build and validation > Web compile, export and execution are different checks
+Q30 rank=1 reference/validation-evidence.md :: Validation evidence ledger > Platform limits and honest outcomes
+Q31 rank=1 operations/current-and-historical-validation.md :: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?
+Q32 rank=5 operations/microscenarios-programme.md :: CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol

@@ -1,0 +1,18 @@
+{
+  "authority": "historical-non-authoritative",
+  "previous_input_sha256": "32562d600e8258155d7a89204357dec0c7e129abf37885f5598fdc95fbaf49b7",
+  "frozen_input_sha256": "3e836adba3478a6de22476cad5786d233caa305e1ab544b77ca7b009ded7fa78",
+  "changed_top5_text_or_order": [
+    "DR09",
+    "DR17"
+  ],
+  "unchanged_review_questions": [
+    "DR06",
+    "DR07",
+    "DR08",
+    "DR16",
+    "DR19",
+    "DR31"
+  ],
+  "method": "Compares full rendered top5 texts in rank order; score-only deltas do not change text applicability."
+}

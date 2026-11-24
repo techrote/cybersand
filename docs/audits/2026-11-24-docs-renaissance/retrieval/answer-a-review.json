@@ -1,0 +1,766 @@
+{
+  "schema": 1,
+  "phase": "post-pass1 saved-context independent audit",
+  "input": "/workspace/scratch/855d9af51e68/c-lane/answer-a-input.json",
+  "input_sha256": "02b2591c7cb82471152b0fca5823d4ff2ecfbba87c39f9801a5d61d59f12fcfb",
+  "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+  "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+  "classification_counts": {
+    "sufficient": 5,
+    "partial": 2,
+    "wrong-context": 1,
+    "abstention": 0
+  },
+  "ranking_is_not_applicability": true,
+  "results": [
+    {
+      "classification": "wrong-context",
+      "bounded_answer_from_saved_context": "The retrieved passages describe a legacy four-byte experiment and a planned candidate matrix. They do not establish the current in-memory Cell size or a permanent sidecar-only rule. I would withhold that specific implementation answer and consult the current storage contract and source.",
+      "correctness": "The abstention is appropriate. A confident four-byte or sidecar-only answer would be false at the accepted source. The expected eight-byte fact is absent even though canonical_rank is1.",
+      "sufficient_hits": [],
+      "missing": [
+        "Current PrecisionStorage size/alignment8/8",
+        "No permanent four-byte/sidecar-only production doctrine"
+      ],
+      "misleading": [
+        {
+          "rank": 2,
+          "text": "Current-envelope research registration says legacy material/state/epoch remain byte4."
+        },
+        {
+          "rank": 3,
+          "text": "Planned programme candidate table labels raw baseline Current4B; its page-top historical qualification is absent from this section chunk."
+        },
+        {
+          "rank": 1,
+          "text": "The expected canonical owner-intent path matched only its Save/Flatten section, not the storage question."
+        }
+      ],
+      "sources": [
+        "native/include/cybersand/precision_storage.hpp::PrecisionStorage/static_assert",
+        "native/src/world.cpp::World::Chunk::Cell"
+      ],
+      "repair": "A added a direct four-byte/sidecar-only FAQ to current storage contract. C notified to qualify the exact old research chunks or route them explicitly; original results remain preserved.",
+      "id": "DR06",
+      "query": "The old rule says every Cell is four bytes and all richer material state must be a sidecar. Is that current doctrine?",
+      "canonical_rank": 1,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 18.765149,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Save, Flatten and compatibility",
+          "text_sha256": "e116d2a2cb52fd73c64287ce5d25bd2d79141c61c0e00229a72871b10cae3a6b",
+          "corpus_document": {
+            "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+            "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+            "bytes": 8458
+          }
+        },
+        {
+          "rank": 2,
+          "score": 15.710797,
+          "path": "operations/cell-layout-experiment.md",
+          "heading": "Cell layout experiment > L4 concrete preregistration, September11",
+          "text_sha256": "997a6507b4f8ab61cfcc367fd888cae33232e3318fd763809e15433bbe9b47be",
+          "corpus_document": {
+            "path": "docs/operations/cell-layout-experiment.md",
+            "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+            "bytes": 26101
+          }
+        },
+        {
+          "rank": 3,
+          "score": 14.29177,
+          "path": "operations/architecture-programme.md",
+          "heading": "CyberSand architecture experimental programme > D. Candidate matrix and controlled variables",
+          "text_sha256": "eb18137bb11c4c7bc73e7a8c1a74c67913ab0ff8c228a27b2d4f0529a217164a",
+          "corpus_document": {
+            "path": "docs/operations/architecture-programme.md",
+            "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+            "bytes": 54792
+          }
+        },
+        {
+          "rank": 4,
+          "score": 14.237011,
+          "path": "operations/procedural-qualification.md",
+          "heading": "Procedural Deepworks qualification and visual review > How is deliberate composition kept procedural?",
+          "text_sha256": "fdd384a320018e6cbd77451d33785da88c3eb6fb84c347c5684fdfef1e12c0d6",
+          "corpus_document": {
+            "path": "docs/operations/procedural-qualification.md",
+            "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+            "bytes": 21341
+          }
+        },
+        {
+          "rank": 5,
+          "score": 13.661275,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "heading": "Canonical material catalogue and interaction authoring \u2014 adopted Planned baseline > 11. Current-main review and implementation admission \u2014 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts",
+          "text_sha256": "243b07d54743693dd4980468e9ebe2ee7b0f642f33d354a8a59239ba9a0d23e0",
+          "corpus_document": {
+            "path": "docs/architecture/material-authoring-catalogue-plan.md",
+            "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+            "bytes": 69643
+          }
+        }
+      ]
+    },
+    {
+      "classification": "sufficient",
+      "bounded_answer_from_saved_context": "New native sandbox and Shared Workbench player sessions use Wave Flow with waterfall spill and ballistic release. Plain WorldConfig keeps those overlays disabled on the FreeMass carrier. PF and IN remain selectable laws with different semantics. Wave is not a fifth LiquidSolverFamily enum: the four entries are FreeMass,CellularYield,PressureFlow and InertialCellular.",
+      "correctness": "Supported by ranks1/2 and independently by accepted constructor/source. Frozen expected-fact wording informally calls Wave a family; the answer must preserve the exact enum/config distinction instead.",
+      "sufficient_hits": [
+        1,
+        2
+      ],
+      "missing": [],
+      "misleading": [
+        {
+          "rank": 5,
+          "text": "Ballistic Limits still said no default changes and all CI/publication/review open, contradicting the accepted player profile and confusing source availability with dated gates."
+        }
+      ],
+      "sources": [
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water/gameplay_water_options",
+        "godot/scripts/main.gd::_ready",
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidSolverFamily"
+      ],
+      "repair": "A corrected the residual ballistic Limits chunk after retaining this failed-context evidence. Frozen query/facts unchanged; enum qualification belongs in audit.",
+      "id": "DR07",
+      "query": "Does a new player session still default to PressureFlow, or does it use Wave Flow Water?",
+      "canonical_rank": 2,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 21.294702,
+          "path": "systems/water-design.md",
+          "heading": "Water design",
+          "text_sha256": "f7431a200ccc8a123ef207d926f1e5e10b26cfb116e67bb21a50234c924757a3",
+          "corpus_document": {
+            "path": "docs/systems/water-design.md",
+            "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+            "bytes": 23202
+          }
+        },
+        {
+          "rank": 2,
+          "score": 21.195725,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Status",
+          "text_sha256": "71a2831eb31df25c62ac0bc0b458a77551f50790ee3b76941314eb2b03fc7d80",
+          "corpus_document": {
+            "path": "docs/architecture/liquid-solver-family-policy.md",
+            "sha256": "20db2741af9deaa1ad79a5c2d7b8d99dbdfd723a61c8e9fef3fe61de474c4b14",
+            "bytes": 68535
+          }
+        },
+        {
+          "rank": 3,
+          "score": 20.710706,
+          "path": "operations/wave-flow-evaluation.md",
+          "heading": "Wave Flow evaluation > Water Lab (consolidated Workbench UI)",
+          "text_sha256": "17109743df193396889f4f70b1d1d1e458e3702ea4d05e1cc11bbdbc08f7af73",
+          "corpus_document": {
+            "path": "docs/operations/wave-flow-evaluation.md",
+            "sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+            "bytes": 17230
+          }
+        },
+        {
+          "rank": 4,
+          "score": 19.948119,
+          "path": "architecture/wave-flow-v1.md",
+          "heading": "Wave flow Water solver (experimental) > Controls",
+          "text_sha256": "0b057504218ec9d2903e6ebf0c72fef7ce421db43dafea77d99dff6bc0f1d207",
+          "corpus_document": {
+            "path": "docs/architecture/wave-flow-v1.md",
+            "sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+            "bytes": 47213
+          }
+        },
+        {
+          "rank": 5,
+          "score": 19.637152,
+          "path": "architecture/ballistic-water-v1.md",
+          "heading": "Ballistic Water and hybrid spray (experimental) > Limits and open decisions",
+          "text_sha256": "1c80afab2c73bd06a3728c10622dbf489b29889b1bc8ff3c619c886535a341a0",
+          "corpus_document": {
+            "path": "docs/architecture/ballistic-water-v1.md",
+            "sha256": "1cd7ce532ae1fc11ab8d0cffc87d6978c352a04a3a903e5349700f43d4cff1a4",
+            "bytes": 17008
+          }
+        }
+      ]
+    },
+    {
+      "classification": "partial",
+      "bounded_answer_from_saved_context": "No universal ban follows. The accepted source contains an opt-in signed-vertical IN law that admits rising liquid, with its own identity and bounded impulse; original v1 still refuses negative vertical velocity. The retrieved text is insufficient to explain the full Wave/parcel release path or generalize this to other materials or equipment.",
+      "correctness": "The bounded rejection of the universal negative is correct. Rank1 gives a valid IN counterexample, but the remaining hits concern player/granular behavior or a historical IN model, not the expected Wave/ballistic scope.",
+      "sufficient_hits": [
+        1
+      ],
+      "missing": [
+        "Explicit current Wave spill/ballistic release explanation",
+        "Bounded Water-only parcel owner and non-generalization to solids/equipment"
+      ],
+      "misleading": [
+        {
+          "rank": 4,
+          "text": "Historical proposed IN model uses vy>=0 and illustrative vmax64; source current vmax32 and optional signed law must not be replaced by that model."
+        }
+      ],
+      "sources": [
+        "native/src/world_inertial.inc::diagnostic_set_inertial_cell/impart_inertial_velocity",
+        "native/include/cybersand/inertial_cellular.hpp::InertialParameters",
+        "native/src/world_ballistic.inc",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water"
+      ],
+      "repair": "Retain partial-applicability result; current canonical ballistic header explains accepted Water scope, but rank1-only success does not prove the full expected answer was retrieved.",
+      "id": "DR08",
+      "query": "Water must never move upward ballistically, correct?",
+      "canonical_rank": 1,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 14.201733,
+          "path": "architecture/ballistic-water-v1.md",
+          "heading": "Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law",
+          "text_sha256": "75d323f3dbea44b06760e082e10fe76e6a452cba04686ecf118ec4f0eb9daffd",
+          "corpus_document": {
+            "path": "docs/architecture/ballistic-water-v1.md",
+            "sha256": "1cd7ce532ae1fc11ab8d0cffc87d6978c352a04a3a903e5349700f43d4cff1a4",
+            "bytes": 17008
+          }
+        },
+        {
+          "rank": 2,
+          "score": 10.429362,
+          "path": "systems/granular-interaction-policy.md",
+          "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response",
+          "text_sha256": "a2909281b2801d172fbaa2e29cd1e3837e5a0c975e6ca8f884b869157ea5dff2",
+          "corpus_document": {
+            "path": "docs/systems/granular-interaction-policy.md",
+            "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+            "bytes": 12363
+          }
+        },
+        {
+          "rank": 3,
+          "score": 10.206396,
+          "path": "systems/granular-interaction-policy.md",
+          "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover?",
+          "text_sha256": "e32b0c9c1985871d9916b3267d6b3600b8ee61cf638281f062901ec040d19c00",
+          "corpus_document": {
+            "path": "docs/systems/granular-interaction-policy.md",
+            "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+            "bytes": 12363
+          }
+        },
+        {
+          "rank": 4,
+          "score": 10.201121,
+          "path": "architecture/liquid-state-transition-matrix.md",
+          "heading": "Liquid material and solver state-transition matrix > 5. Velocity and momentum (IN; PF flow)",
+          "text_sha256": "15fc52b234efef77e1c9f578e75b44de07d67d47f1a4c1d047c7243581902f66",
+          "corpus_document": {
+            "path": "docs/architecture/liquid-state-transition-matrix.md",
+            "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+            "bytes": 26899
+          }
+        },
+        {
+          "rank": 5,
+          "score": 9.049359,
+          "path": "systems/player-environment-profiles-and-traversal.md",
+          "heading": "Player/environment tuning profiles and sampled traversal > Step, knee and clamber bands",
+          "text_sha256": "56dd556e2080b7198fc26cde3fef7ef4e70ba1f713fd59ea7525675f5ebd287c",
+          "corpus_document": {
+            "path": "docs/systems/player-environment-profiles-and-traversal.md",
+            "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+            "bytes": 6898
+          }
+        }
+      ]
+    },
+    {
+      "classification": "sufficient",
+      "bounded_answer_from_saved_context": "No. Original FreeMass Water uses fractional mass, while CellularYield paths use whole-cell motion with material-specific rules. Water CY/IN need their explicit quantity admission/normalization; Wave and PF add different state and accounting. Use the applied policy and native receipt instead of treating all liquid amounts as the same law.",
+      "correctness": "Ranks1/4 explicitly distinguish current routing and semantics, including normalization. The answer does not infer universal interspecies conservation from a conserved Water transfer.",
+      "sufficient_hits": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "missing": [],
+      "misleading": [
+        {
+          "rank": 1,
+          "text": "Its compact Water row said conserved pairwise mass before the following correct policy qualification; could be overgeneralized to every current Water law."
+        },
+        {
+          "rank": 2,
+          "text": "A September owner-clarification chunk describes then-current Water as FreeMass only. Its heading/date and Planned scope constrain that historical statement."
+        }
+      ],
+      "sources": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "native/src/world_quantity.inc",
+        "native/src/world.cpp::update_water/update_cell",
+        "native/src/world_wave.inc"
+      ],
+      "repair": "A changed compact material table to multiple admitted motion laws with explicit quantity accounting; detailed family distinctions retained.",
+      "id": "DR09",
+      "query": "Can I treat FreeMass Water and other-liquid CellularYield amounts as identical quantity rules?",
+      "canonical_rank": 5,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 22.438201,
+          "path": "systems/materials-and-rule-kernels.md",
+          "heading": "Materials and rule kernels > Current material families",
+          "text_sha256": "ee7ab6a4095fae5308454169d4e4fe6ed0c4bd71409282e8187d37923ab0c7cf",
+          "corpus_document": {
+            "path": "docs/systems/materials-and-rule-kernels.md",
+            "sha256": "00290a64b835cc967413100aba000d48bdca2430966ad33af8eb25100755361a",
+            "bytes": 17432
+          }
+        },
+        {
+          "rank": 2,
+          "score": 19.474097,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Owner clarifications recorded 2026-09-20 > Water and other native liquids still use distinct motion/quantity paths",
+          "text_sha256": "88aad11bb98f699a966fe9d006dc6e143cd0f0f1f9435976441979a2ac185876",
+          "corpus_document": {
+            "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+            "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+            "bytes": 39009
+          }
+        },
+        {
+          "rank": 3,
+          "score": 18.404683,
+          "path": "systems/water-design.md",
+          "heading": "Water design > WEX-005 disposition and the opt-in LCB lane (2026-10-23)",
+          "text_sha256": "90efda59605eee3cc535c2d1ee4c8a1d1a22fa3a9f3422ed02e58df345b38111",
+          "corpus_document": {
+            "path": "docs/systems/water-design.md",
+            "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+            "bytes": 23202
+          }
+        },
+        {
+          "rank": 4,
+          "score": 17.982362,
+          "path": "systems/water-design.md",
+          "heading": "Water design",
+          "text_sha256": "f7431a200ccc8a123ef207d926f1e5e10b26cfb116e67bb21a50234c924757a3",
+          "corpus_document": {
+            "path": "docs/systems/water-design.md",
+            "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+            "bytes": 23202
+          }
+        },
+        {
+          "rank": 5,
+          "score": 16.899773,
+          "path": "architecture/liquid-state-transition-matrix.md",
+          "heading": "Liquid material and solver state-transition matrix > Status and inputs",
+          "text_sha256": "170fe5df83ed65d18b2f969ea5a3fba82327d5006473398d2eb47a534660aef9",
+          "corpus_document": {
+            "path": "docs/architecture/liquid-state-transition-matrix.md",
+            "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+            "bytes": 26899
+          }
+        }
+      ]
+    },
+    {
+      "classification": "sufficient",
+      "bounded_answer_from_saved_context": "Flatten captures the complete row-major little-endian uint16 stored-material plane, including Empty, and retires earlier construction/Undo history. It does not save automatically or reset the live World. A live Plant keeps its energy and growth state; reopening the material-only start initializes ordinary new Plant state rather than restoring the previous energy.",
+      "correctness": "Ranks1/2/5 supply both normal and fault-recovery boundaries. The answer correctly separates live non-resetting capture from later fresh reconstruction.",
+      "sufficient_hits": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "missing": [],
+      "misleading": [],
+      "sources": [
+        "native/include/cybersand/material_baseline.hpp::copy",
+        "godot/scripts/shared_workbench.gd::request_flatten/_poll_flatten/save_setup",
+        "godot/scripts/workbench_material_baseline.gd"
+      ],
+      "repair": "None required for this saved context; source-inspected, no runtime Plant experiment claimed.",
+      "id": "DR16",
+      "query": "What does Flatten Bake History store, and should plants stop growing automatically afterwards?",
+      "canonical_rank": 1,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 18.980435,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > Windows owner acceptance",
+          "text_sha256": "3c4f441ebdf17048427d57cd8fe645ff5f53d1456dc4ce462d4dab4dd8af54be",
+          "corpus_document": {
+            "path": "docs/operations/gen008-flatten-qualification.md",
+            "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+            "bytes": 14701
+          }
+        },
+        {
+          "rank": 2,
+          "score": 17.685502,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > What Flatten does",
+          "text_sha256": "bc941538d07ff9ee9741a7f1b3fb020e110a3570dd584bb614db0efa6e298de2",
+          "corpus_document": {
+            "path": "docs/operations/gen008-flatten-qualification.md",
+            "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+            "bytes": 14701
+          }
+        },
+        {
+          "rank": 3,
+          "score": 16.555497,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation",
+          "text_sha256": "ced8e093c54ae50a1fadb1a994c87f51716fcf68f6ef6909b90a6adb92598125",
+          "corpus_document": {
+            "path": "docs/operations/gen008-flatten-qualification.md",
+            "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+            "bytes": 14701
+          }
+        },
+        {
+          "rank": 4,
+          "score": 15.893747,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > Reproduce focused tests",
+          "text_sha256": "be3d1d5abd67e26cd9598550e8b77f84b45d6c0fa9f013ea4a713bcdde30a9f4",
+          "corpus_document": {
+            "path": "docs/operations/gen008-flatten-qualification.md",
+            "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+            "bytes": 14701
+          }
+        },
+        {
+          "rank": 5,
+          "score": 15.546474,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > Recovering after a native owner fault",
+          "text_sha256": "6bf56c0e308fdf8cf35758100a043005338a2bcc015990e3d0091fba90e402fb",
+          "corpus_document": {
+            "path": "docs/operations/gen008-flatten-qualification.md",
+            "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+            "bytes": 14701
+          }
+        }
+      ]
+    },
+    {
+      "classification": "sufficient",
+      "bounded_answer_from_saved_context": "Yes,accepted #691 includes80 Genteks plus13 earlier presets. A Gentek is a native generator/sampler; a variant changes admitted geometry/material/aperture choices; a preset saves a named configuration; a composition combines up tofive styles into a map. SWARM assembly and the separate evaluator acceptance remain distinct. Native module versions are a separate serialized identity.",
+      "correctness": "Ranks1/3/4 support acceptance and terminology. Source independently confirms93presets,86module names and91module/version entries. A preset count must not be relabelled a module count.",
+      "sufficient_hits": [
+        1,
+        3,
+        4
+      ],
+      "missing": [],
+      "misleading": [
+        {
+          "rank": 2,
+          "text": "Glossary Variant wording used v1/v2/v3 and could conflate author parameter variation with native module version; canonical guide is more precise."
+        },
+        {
+          "rank": 5,
+          "text": "Separate evaluator guide still uses candidate Draft/HOLD wording; this does not undo accepted #691 catalogue or prove live GitHub draft flag."
+        }
+      ],
+      "sources": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets/MAX_STYLES",
+        "godot/scripts/architectural_generator_dialog.gd",
+        "native/src/world_generation.cpp::ModuleRegistry::builtins/Generator::builtin_modules",
+        "godot/native_extension/cyber_world_generator.cpp::get_catalogue"
+      ],
+      "repair": "A aligned glossary Variant with canonical admitted-parameter meaning; no invented version series. Separate evaluator status remains source-bound.",
+      "id": "DR17",
+      "query": "Are eighty Genteks current, and what are Gentek, Variant, Preset and Composition?",
+      "canonical_rank": 1,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 22.409462,
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Choose a Gentek and its parameters",
+          "text_sha256": "1ade76483de36e4f836ccab8715bdc376ec7bdca7419c5003b509ff97ecc4223",
+          "corpus_document": {
+            "path": "docs/operations/architectural-generator-playtest.md",
+            "sha256": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+            "bytes": 8851
+          }
+        },
+        {
+          "rank": 2,
+          "score": 21.352861,
+          "path": "reference/glossary.md",
+          "heading": "Glossary > Authoring and acceptance",
+          "text_sha256": "0a8236fce8c70a55008b0f9d1b7cf8d98bea661fc8da9511f5645e50a84864f9",
+          "corpus_document": {
+            "path": "docs/reference/glossary.md",
+            "sha256": "7ffbed7d0521ead4c80a5b859471a235d8887a23db69581f5dd35229a089ef91",
+            "bytes": 8013
+          }
+        },
+        {
+          "rank": 3,
+          "score": 18.927888,
+          "path": "systems/architectural-generator.md",
+          "heading": "Architectural Generator \u2014 Phase A and bounded Phase B",
+          "text_sha256": "55820902e316a17d4270dd11e9ee780989299524302e354d77e983007fb62b6e",
+          "corpus_document": {
+            "path": "docs/systems/architectural-generator.md",
+            "sha256": "cac1e0ebd6eef5a7e9d9a19ad47c3e82e76399f05062af4cddfdb329a67ee9d7",
+            "bytes": 26155
+          }
+        },
+        {
+          "rank": 4,
+          "score": 16.201159,
+          "path": "systems/architectural-generator.md",
+          "heading": "Architectural Generator \u2014 Phase A and bounded Phase B > 80-Gentek integration candidate \u2014 20 November 2026",
+          "text_sha256": "e5a7636fe34081dcabb2d938223622513a7045a03bc9b0de8207386e9a1826dd",
+          "corpus_document": {
+            "path": "docs/systems/architectural-generator.md",
+            "sha256": "cac1e0ebd6eef5a7e9d9a19ad47c3e82e76399f05062af4cddfdb329a67ee9d7",
+            "bytes": 26155
+          }
+        },
+        {
+          "rank": 5,
+          "score": 14.932537,
+          "path": "operations/gentek80-evaluation.md",
+          "heading": "GENTEK 80 \u2014 Windows evaluation",
+          "text_sha256": "fa9aff595c75fde0cc18a655fb9d3ba8ad33c0f0c554bbe2b8872c9d0b3cd0e4",
+          "corpus_document": {
+            "path": "docs/operations/gentek80-evaluation.md",
+            "sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+            "bytes": 18806
+          }
+        }
+      ]
+    },
+    {
+      "classification": "sufficient",
+      "bounded_answer_from_saved_context": "Yes. #683 is accepted and supports independently controlled physical actors and human pilot handoff in the ordinary Workbench. Its59model identities have different capabilities and admission limits. The later Actor Compose finisher remains unmerged. External Policy exposes a bounded interface; it does not start a model provider or inference service.",
+      "correctness": "Ranks1/2/5 directly support all requested scope distinctions and match source plus the lead live GitHub intake.",
+      "sufficient_hits": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "missing": [],
+      "misleading": [
+        {
+          "rank": 4,
+          "text": "Retrieved body is only as fresh. beneath a long heading; this is an unhelpful split fragment, not evidence for producer semantics."
+        }
+      ],
+      "sources": [
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/physical_actor_session.gd::set_workbench_control/takeover",
+        "godot/scripts/workbench_actor_control.gd",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ],
+      "repair": "No content repair required for requested answer. Report low-information chunk quality without claiming a retriever redesign.",
+      "id": "DR19",
+      "query": "Does Shared Workbench support independent actors now, and is the later Actor Compose finisher already accepted?",
+      "canonical_rank": 1,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 26.747384,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Implementation and scope",
+          "text_sha256": "d57922388eb62ebcb73ea726f83dbbf504d03ff30f8405abb8a9e34b9d81cc26",
+          "corpus_document": {
+            "path": "docs/systems/workbench-actor-composition.md",
+            "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+            "bytes": 24686
+          }
+        },
+        {
+          "rank": 2,
+          "score": 24.081496,
+          "path": "operations/workbench-actor-composition.md",
+          "heading": "Mixed Actor Workshop owner procedure",
+          "text_sha256": "1c8bb539c5fdfdeb7e3b22a349913fb0c971e52d521504d5d872b5368c088f1a",
+          "corpus_document": {
+            "path": "docs/operations/workbench-actor-composition.md",
+            "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+            "bytes": 14161
+          }
+        },
+        {
+          "rank": 3,
+          "score": 19.1549,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Reuse and research boundaries",
+          "text_sha256": "5e966da8f67483c407892e1279d14c5412d68f8848e90d41f2e1e2bd441e5cb8",
+          "corpus_document": {
+            "path": "docs/systems/workbench-actor-composition.md",
+            "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+            "bytes": 24686
+          }
+        },
+        {
+          "rank": 4,
+          "score": 18.096571,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Producer and policy interface",
+          "text_sha256": "466c7c5da99a01cdb23d48db4b88b901b4ae48d54258b54e696179bab7cc039b",
+          "corpus_document": {
+            "path": "docs/systems/workbench-actor-composition.md",
+            "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+            "bytes": 24686
+          }
+        },
+        {
+          "rank": 5,
+          "score": 17.469437,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Reading capability and qualification correctly",
+          "text_sha256": "e03fdd43696eb1753c3f661d2da4d8a3197e9720bf19a31126fd838445023e81",
+          "corpus_document": {
+            "path": "docs/systems/workbench-actor-composition.md",
+            "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+            "bytes": 24686
+          }
+        }
+      ]
+    },
+    {
+      "classification": "partial",
+      "bounded_answer_from_saved_context": "The retrieved recovery passage says older audits qualify only their recorded source; a later source needs applicable qualification. I would not restore an old runtime from an Approved label alone. These hits do not contain the canonical historical-authority envelope or current guarded-publication procedure, so I would withhold operational restoration steps and retrieve those first.",
+      "correctness": "The bounded refusal to infer current runtime authority is correct, but the complete current/historical routing explanation is missing. A lower hit actively offers an old task handoff verbatim under a current envelope.",
+      "sufficient_hits": [
+        4
+      ],
+      "missing": [
+        "Canonical historical-non-authoritative envelope and selection rule",
+        "Current guarded runtime source/lease/provenance authority"
+      ],
+      "misleading": [
+        {
+          "rank": 5,
+          "text": "soliding-stage3-freeze Compact overnight parent handoff contains verbatim continuation/delegation/branch/task instructions with only an old scope/date in the envelope. This is a concrete current-path instruction-contamination risk despite no docs/audits inclusion."
+        }
+      ],
+      "sources": [
+        "AGENTS.md historical authority guidance",
+        "tools/docs/retrieval_policy.py",
+        "docs/operations/documentation-maintenance.md",
+        "docs/operations/github-development-and-release.md"
+      ],
+      "repair": "C notified to qualify the exact old current-path handoff and improve current authority destinations. No historical deletion or automatic retirement authorized.",
+      "id": "DR31",
+      "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+      "canonical_rank": null,
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "reviewer": "Specialist A / technical_reference",
+      "method": "Read actual saved top-five text,derive bounded answer,then compare accepted source; no external model dispatch",
+      "context_hits": [
+        {
+          "rank": 1,
+          "score": 10.534717,
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "heading": "ADR-004: Interest region and safe reconfiguration > Which margin policy is actually approved?",
+          "text_sha256": "de0ba8cbb58722f7bfe47bd86dac53ed0a834f815bf53fbfa2cb165f625b9df5",
+          "corpus_document": {
+            "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+            "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+            "bytes": 5074
+          }
+        },
+        {
+          "rank": 2,
+          "score": 8.864804,
+          "path": "architecture/soliding-lifecycle.md",
+          "heading": "Scalable soliding representation lifecycle > Which representation owns the material?",
+          "text_sha256": "a28913dad683ebae74d2b4050d32664011aaec805793b0cd3344c73a69038099",
+          "corpus_document": {
+            "path": "docs/architecture/soliding-lifecycle.md",
+            "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+            "bytes": 19320
+          }
+        },
+        {
+          "rank": 3,
+          "score": 8.822665,
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Save, Flatten and compatibility",
+          "text_sha256": "cfaa5add546dcf6f27bf5eed5170a5812fa126da09d1710d78957040470fde62",
+          "corpus_document": {
+            "path": "docs/reference/product-intent-and-priorities.md",
+            "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+            "bytes": 15494
+          }
+        },
+        {
+          "rank": 4,
+          "score": 8.71018,
+          "path": "operations/current-and-historical-validation.md",
+          "heading": "Current validation and retained M11 integrity > Recovery and older checkpoint records",
+          "text_sha256": "84ad3d4eac61e086652d704b1c9f8622767db56faf5f504a6762e1a97344f14b",
+          "corpus_document": {
+            "path": "docs/operations/current-and-historical-validation.md",
+            "sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+            "bytes": 7683
+          }
+        },
+        {
+          "rank": 5,
+          "score": 8.498409,
+          "path": "operations/soliding-stage3-freeze.md",
+          "heading": "Issue 12 Stage 3 execution freeze > Compact overnight parent handoff",
+          "text_sha256": "de0acbc8bcfc83fdcf615f4d96459450a7f7677f4126b0703c36d72841399774",
+          "corpus_document": {
+            "path": "docs/operations/soliding-stage3-freeze.md",
+            "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+            "bytes": 25036
+          }
+        }
+      ]
+    }
+  ],
+  "corpus_identity_sha256": "306d7bbfe67aedd3ffe8f06a177a850e5e724f3e0e997973658f44d9cab2d749",
+  "corpus_identity_hash_method": "SHA-256 of UTF-8 json.dumps(input[\"corpus\"], sort_keys=True, separators=(\",\", \":\")); ensure_ascii=True (Python default), array order retained. This is the corpus identity array digest, not the manifest-file hash.",
+  "evidence_field_correction": "Renamed the previously mislabeled corpus_manifest_sha256 field; hash value, raw input, answers and ratings are unchanged."
+}

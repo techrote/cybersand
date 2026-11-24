@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-11-24T20:00:49.961874+00:00",
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "--",
+    ".",
+    ":(exclude)docs/audits/2026-11-24-docs-renaissance/preserved/**"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "scope": "Current prose/tool/assets evidence whitespace only; byte-exact preserved originals deliberately separated. Full baseline-relative check exit2 is retained in diff-check-b-final.json and is not relabelled PASS."
+}

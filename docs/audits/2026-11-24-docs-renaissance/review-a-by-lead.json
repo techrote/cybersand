@@ -1,0 +1,450 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewed_utc": "2026-11-24T20:13:38.792425+00:00",
+  "claims": [
+    {
+      "claim_id": "A-01",
+      "priority": "P1",
+      "document": "docs/architecture/overview.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Inspected native World, worker _create_world, main _ready and gameplay Water constructor; copied state and separate fallback owners match the overview.",
+      "document_sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230"
+    },
+    {
+      "claim_id": "A-02",
+      "priority": "P0",
+      "document": "docs/architecture/shared-workbench-authoring-data.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read request_flatten/_poll_flatten/save_setup and host_definition_claim. Token/generation checks precede authored-only adoption; the oversized observation projection preserves full-definition hash/count.",
+      "document_sha256": "b6ad1a6e57f91e4e97ed2be3ab690fac85bdc875a964e73f0a4c51a618696810"
+    },
+    {
+      "claim_id": "A-03",
+      "priority": "P1",
+      "document": "docs/architecture/ballistic-water-v1.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Ballistic-enabled selection and physical format precedence confirm native-default-off versus gameplay-on; historical universal limitations now scoped.",
+      "document_sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce"
+    },
+    {
+      "claim_id": "A-04",
+      "priority": "P0",
+      "document": "docs/architecture/data-ownership-and-lifetimes.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Worker, physical session and native failure latch/quarantine preserve separate mutation owners; gas sanitation retains still-live masked labels.",
+      "document_sha256": "06031844ea34676d3fbd6a616e5fcd7e41d1212b88af5c2f24ad760d642f5f68"
+    },
+    {
+      "claim_id": "A-05",
+      "priority": "P1",
+      "document": "docs/architecture/simulation-tick-and-threading.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Worker owns a Godot Thread; World pool is separate. Native failure containment and publication counters support only their named stages.",
+      "document_sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170"
+    },
+    {
+      "claim_id": "A-06",
+      "priority": "P0",
+      "document": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "upload_texture_patches reaches texture.update(image) through finish_texture_upload. Full backing sizes are exact arithmetic, not performance results.",
+      "document_sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848"
+    },
+    {
+      "claim_id": "A-07",
+      "priority": "P1",
+      "document": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "PrecisionStorage has sizeof/alignof8/8 and material16/state_a16/state_b8/epoch8 masks. Setup allows512\u20132048 per-axis multiples64, defaults2048\u00b2. Rule-radius exception is explicit.",
+      "document_sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6"
+    },
+    {
+      "claim_id": "A-08",
+      "priority": "P1",
+      "document": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "capacity_error checks8actors,8parts/model and separate64 summed body/proxy bounds. Released equipment retains its slot; ObjectShard is not inferred.",
+      "document_sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23"
+    },
+    {
+      "claim_id": "A-09",
+      "priority": "P0",
+      "document": "docs/reference/level-saves-and-replay.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Actual World version order is Wave hash6/format0, C2048=5, ballistic/signed=4, IN=3, otherwise2. Decoder accepts2\u20135 with digest checks; Wave save/restore refuses. Save does not read live World.",
+      "document_sha256": "f89f3809989f9d1ff01beb25225b01d568fc7e32be5559846c2aefb8c3496964"
+    },
+    {
+      "claim_id": "A-10",
+      "priority": "P1",
+      "document": "docs/reference/glossary.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "World::begin_tick wakes newly included blocks once from requested/applied region difference; there is no elapsed-time catch-up. Updated persistence and Water vocabulary matches source.",
+      "document_sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb"
+    },
+    {
+      "claim_id": "A-11",
+      "priority": "P1",
+      "document": "docs/architecture/liquid-solver-family-policy.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Four applied LiquidSolverFamily values plus request-only MaterialDefault; Wave is WorldConfig overlay, not a fifth applied enum. Arbitrary-material authoring remains planned.",
+      "document_sha256": "20db2741af9deaa1ad79a5c2d7b8d99dbdfd723a61c8e9fef3fe61de474c4b14"
+    },
+    {
+      "claim_id": "A-12",
+      "priority": "P0",
+      "document": "docs/systems/water-design.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Water routing agrees with select_gameplay_water, default policy and Wave/quantity source. Original255-unit FreeMass limits are locally scoped rather than universal player-Water claims.",
+      "document_sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed"
+    },
+    {
+      "claim_id": "A-13",
+      "priority": "P1",
+      "document": "docs/systems/materials-and-rule-kernels.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Native hard/granular predicates call generated maps. lab.py supported_fields admits viscosity only for kernels18/23/25 and separates applicability; no production installer is claimed.",
+      "document_sha256": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2"
+    },
+    {
+      "claim_id": "A-14",
+      "priority": "P1",
+      "document": "docs/architecture/material-authoring-catalogue-plan.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Accepted merge intake #562/#563/#565 and actual native/Lab consumers support the new implementation map; historical design admission is preserved, not generalized.",
+      "document_sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32"
+    },
+    {
+      "claim_id": "A-15",
+      "priority": "P1",
+      "document": "docs/systems/workbench-actor-composition.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Independently counted8fleet+46physical+barrel+4flight=59. Value-only actor control returns bounded actions and creates no model/provider dispatch.",
+      "document_sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790"
+    },
+    {
+      "claim_id": "A-16",
+      "priority": "P1",
+      "document": "docs/reference/configuration-reference.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Compared gameplay table with select_gameplay_water and native Wave defaults. Verified32768 runs/stamps,2048\u00b2x2 capture,15000000\u00b5s timeout and130 valid nonempty material identities.",
+      "document_sha256": "efad0c6b106e57195a04ed79867093023efb20a83f1b3306bfafd8a0bb1b9412"
+    },
+    {
+      "claim_id": "A-17",
+      "priority": "P0",
+      "document": "docs/reference/interfaces-and-message-contracts.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Paint executor checks generation/revision/authoring identity; queue, native result, authored history, display and provider stages remain separate.",
+      "document_sha256": "c86a286ddeea49ec3dc0124ae1eb6f866bb4b98d454fda30381177042d0de44c"
+    },
+    {
+      "claim_id": "A-18",
+      "priority": "P0",
+      "document": "docs/reference/invariants.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "New invariants agree with direct source checks of non-reset Flatten, save boundary, Wave refusal, capability consumer and independent actor pilot authority.",
+      "document_sha256": "9046c10bb957d545ae5b8aa3929af47d1f05e89547900c25bd3de01d7e0e3f1c"
+    },
+    {
+      "claim_id": "A-19",
+      "priority": "P1",
+      "document": "docs/systems/world-storage-and-interest-region.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Setup and native region setter/begin_tick establish host dimensions and waking. Owner game-time catch-up intent is separate from unmerged RAMCACHE.",
+      "document_sha256": "f86472cc3467883814544fc3bce98f6cf8d3576ae80ac6b6f3f74930008cd289"
+    },
+    {
+      "claim_id": "A-20",
+      "priority": "P1",
+      "document": "docs/systems/architectural-generator.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Independently counted93 builtin preset calls, inspected #582/#691 merge intake and exact Save\u2026 UI action. Recipe persistence is separate from Workbench Save start.",
+      "document_sha256": "d3b42911f626ac1bc857d6e1fb11e7ea09f71b10137d1bf917be1ce9e5c3cecd"
+    },
+    {
+      "claim_id": "A-21",
+      "priority": "P1",
+      "document": "docs/architecture/inertial-cellular-v1.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Inertial v1 gravity4/vmax32 and signed gravity2 verified. Diagnostic/setter rejects negative vertical input without signed law and clamps admitted motion.",
+      "document_sha256": "3f33223ef0e88e20b22f0775cd731145ac9f946c8f396747d09f69735a7aa022"
+    },
+    {
+      "claim_id": "A-22",
+      "priority": "P1",
+      "document": "docs/architecture/pressure-flow-v1.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "PF remains an opt-in material law distinct from gameplay Wave; physical format depends on actual World extensions, not PF selection alone.",
+      "document_sha256": "57e42584e1320481b46f2f0a62894047b08a7b935197d8edcded228997d1fc9c"
+    },
+    {
+      "claim_id": "A-23",
+      "priority": "P1",
+      "document": "docs/architecture/pressure-optimization.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Inspected final gas relabel: dangling unvisited labels become vacuum only if absent from live table. Still-live masked identity and reference fallback remain intact.",
+      "document_sha256": "1df19ea0874396cd77e2b39ca84b47ecb7f616b68f0ff6cabcfaaa8b05264698"
+    },
+    {
+      "claim_id": "A-24",
+      "priority": "P1",
+      "document": "docs/research/sandspiel-performance-and-material-port.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Verified sizeof/alignof PrecisionStorage static_assert=8 and World::Chunk::Cell alias. Current policy admission and Wave update path prevent treating original pairwise Water or Sandspiel study as universal current behavior.",
+      "document_sha256": "700bfea745a7a9d3d35da618ddf4b730f1718bad85bcf5ca45b7c85a92d0eee4"
+    },
+    {
+      "claim_id": "A-25",
+      "priority": "P1",
+      "document": "docs/systems/material-appearance-and-rendering.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Inspected main.gd Image.create_from_data(world_extent...) and texture.update(image), workbench_setup fresh2048\u00b2 and render projection/storage. RG8 payload arithmetic is1024\u00b2\u00d72 and2048\u00b2\u00d72, not measured performance.",
+      "document_sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b"
+    },
+    {
+      "claim_id": "A-26",
+      "priority": "P1",
+      "document": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Inspected running policy0x0F, Water/Brine IN qualification and PF variant mask0x07, actual physical_state_hash_version/format_version2\u20136/0\u20135 and Water Lab route. Original handoff table is explicitly dated, not current missing support.",
+      "document_sha256": "1f8bae20d9fe8fe39f340430fd1a5216d6c429dfd46e13921ee380349973b802"
+    },
+    {
+      "claim_id": "A-27",
+      "priority": "P1",
+      "document": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Accepted running policy and source include PF/IN. Original extension gates and owner admissions remain scoped; available source does not imply comparative scientific campaign or unrelated authority.",
+      "document_sha256": "3995a836ec1c0b5599ac7d2b7a7f8da2e4ee2f750f9866113358e5613081ac01"
+    },
+    {
+      "claim_id": "A-28",
+      "priority": "P1",
+      "document": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Running policy admits Water/IN so its former unavailable-family negative is stale. Current player select_gameplay_water enables Wave; original FreeMass fixture and M0/arm hashes remain unchanged.",
+      "document_sha256": "28a761724505a50abf26e118be38ab0c777f05b3bea0f8686da1b306fcacd14e"
+    },
+    {
+      "claim_id": "A-29",
+      "priority": "P1",
+      "document": "docs/operations/material-catalogue-shadow.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read material_rules.cpp generated capability consumer and material_lab_service.gd runtime_activefalse validation. Source keeps shadow directory unconsumed and bounded hard/granular header consumed; #562/#563 merge statuses in verified GitHub intake, not old Draft language. No broad descriptor/reaction migration is inferred.",
+      "document_sha256": "7c0cec2e6da081eb47e8cfab73917c4d40c79a6d1370b38881eabd9b2337b16b"
+    },
+    {
+      "claim_id": "A-30",
+      "priority": "P1",
+      "document": "docs/architecture/liquid-state-transition-matrix.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read running policy Water/BrineIN/PF admission, native InertialCellularParameters bound32, signed_vertical clamp/impulse admission and physical format selector. Original modelvmax64 and worked examples remain clearly dated; old hash2/pendingReady does not describe current source.",
+      "document_sha256": "8ee8ef37d787b35c7c0cfd6b74278eb9dd135d7f664e99ad860e06db252ea580"
+    },
+    {
+      "claim_id": "A-31",
+      "priority": "P1",
+      "document": "docs/architecture/module-boundaries.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read PreparedWorldBuilder, LiquidSolverPolicy and current checkpoint getters; accepted native consumers and scoped physical persistence exist while generalized application replay/streaming remain absent.",
+      "document_sha256": "f6a112f5017fa0c0d964d912c0e39451a04d46340a6515fe250dbce808ab177f"
+    },
+    {
+      "claim_id": "A-32",
+      "priority": "P1",
+      "document": "docs/architecture/principles-and-non-goals.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read MAX_PENDING_BRUSH_COMMANDS=8, MAX_BRUSH_FOOTPRINT_CELLS=4096 and both admission branches in simulation_worker.gd. Source uses dynamic Arrays with guards; accepted bounded Lab/compiler tooling remains distinct from runtime material programs.",
+      "document_sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc"
+    },
+    {
+      "claim_id": "A-33",
+      "priority": "P1",
+      "document": "docs/architecture/determinism-and-boundary-transfers.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read World::state_hash uint64 capacity/event-count conversions and hash_wave_state, content_hash omission, plus actual physical version getters and physical_state_hash implementation. No new cross-platform execution result inferred.",
+      "document_sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a"
+    },
+    {
+      "claim_id": "A-34",
+      "priority": "P0",
+      "document": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read prepared builder ownership, token check and copied lifecycle=prepared capture, commit/discard API, host_definition_claim oversized projection and complete-geometry boundary. Old checkpoint instructions now locally dated; current version getters and false host qualifiers remain explicit.",
+      "document_sha256": "e2ca5966ecf90b0e4d40b013646ac4f3bb34c0c5ae3d9efe7ab641c6c9a96dae"
+    },
+    {
+      "claim_id": "A-35",
+      "priority": "P1",
+      "document": "docs/systems/workbench-liquid-equipment.md",
+      "reviewer": "/root (lead agent, independent of author /root/technical_reference)",
+      "method": "Accepted-source inspection and changed-document review",
+      "verdict": "supported",
+      "basis": "Read equipment _edit/place validation into ui.applied.equipment, configure transient state, generated write_named starting_setup serialization and shared_workbench save dispatch. Water Lab Equipment route and PAINT key priority match source; live stock is not serialized. Final admission-lock paragraph independently reread: original #553 worker drift is historical; today's additional actor drift is not hidden.",
+      "document_sha256": "0ab911b1e8b30a3ca83fa525ca927c59e12635412a1cdbf1cf4e3847806aaab8"
+    },
+    {
+      "claim_id": "A-38",
+      "priority": "P1",
+      "document": "docs/systems/procedural-world-generation.md",
+      "reviewer": "/root (lead, independent of Specialist A)",
+      "method": "Read exact changed text and owning accepted source",
+      "verdict": "supported",
+      "basis": "Read parse_recipe schema4 explicit limit160000000 versus schemas1\u20133 default64000000, native hard bound1000000000, and stage_cells copied receipt path. Source confirms three payload forms and separate playable Workbench adoption.",
+      "document_sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab"
+    },
+    {
+      "claim_id": "A-39",
+      "priority": "P1",
+      "document": "docs/systems/intermaterial-interactions.md",
+      "reviewer": "/root (lead, independent of Specialist A)",
+      "method": "Read exact changed text and owning accepted source",
+      "verdict": "supported",
+      "basis": "Read full MaterialRules production resolver: namespace-scope partner/participant arrays,65,536 uint8 first-match table built from InteractionRules::match_pair_from, probability/product selection and orientation. Sparse authored rules remain semantic authority; no new tuning result inferred.",
+      "document_sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6"
+    },
+    {
+      "claim_id": "A-40",
+      "priority": "P1",
+      "document": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "reviewer": "/root (lead, independent of Specialist A)",
+      "method": "Read exact changed text and owning accepted source; no numerical/scientific or runtime rerun",
+      "verdict": "supported",
+      "basis": "Independently read diagnostic dispatch kinds0\u20135, GenerationJob allocation and cost arithmetic typed16/other4; schema4 fixed_geometry checks theme/brush/override/modifier edits and mappings. Source supports normalized/spatial/stage distinctions and live World admission boundary. Launcher/UI names verified.",
+      "document_sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe"
+    },
+    {
+      "claim_id": "A-41",
+      "priority": "P1",
+      "document": "docs/systems/procedural-typed-spatial-fields.md",
+      "reviewer": "/root (lead, independent of Specialist A)",
+      "method": "Read exact changed text and owning accepted source; no numerical/scientific or runtime rerun",
+      "verdict": "supported",
+      "basis": "Independently read Generator::compile accepted schemas and prepared_spatial geometry_inputs before SpatialGraph::compile; schema1 prohibits typed inputs, schemas2\u20134 admit them. Read native/Godot current typed page and graph/hierarchy/plane/provenance/quality builders; these are distinct from live Shared Workbench authoring.",
+      "document_sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42"
+    },
+    {
+      "claim_id": "A-42",
+      "priority": "P1",
+      "document": "docs/systems/settled-region-discovery.md",
+      "reviewer": "/root (independent of Specialist A)",
+      "method": "Read changed paragraphs and actual accepted source; no runtime or mathematical/performance requalification",
+      "verdict": "supported",
+      "basis": "Read accepted SettledRegions constructor, storage_bytes/capacity accessors, budget scheduler, generation-bound tickets, private staged child publication and test body for unit-budget batch-atomic split. Coordinator frontier32T and member2\u00d7frontier=64T agree. Live #65closed and owner two-track routing distinguish source implementation from Stage4 acceptance.",
+      "document_sha256": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b"
+    },
+    {
+      "claim_id": "A-43",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "reviewer": "/root (independent of Specialist A)",
+      "method": "Read changed paragraphs and actual accepted source; no runtime or mathematical/performance requalification",
+      "verdict": "supported",
+      "basis": "Read adapter workbench-vs-ordinary bearing branch and accumulate_granular_bearing; existing bridge applies cellular results, actor rig applies bounded Rapier torque. General cellular torque/shape feedback remains a distinct planned contract. Historical September#11Planned wording locally scoped without changing separate ownership decision.",
+      "document_sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2"
+    },
+    {
+      "claim_id": "A-44",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "reviewer": "/root (independent of Specialist A)",
+      "method": "Read changed paragraphs and actual accepted source; no runtime or mathematical/performance requalification",
+      "verdict": "supported",
+      "basis": "Read Wave custom transport refusal and exact prepared Workbench baseline comparator/canonicalization, plus select_gameplay_water. Retained v1 transport fields apply only within admitted solver; approved approximate-fidelity policy unchanged.",
+      "document_sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223"
+    },
+    {
+      "claim_id": "A-45",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "reviewer": "/root (independent of Specialist A)",
+      "method": "Read changed paragraphs and actual accepted source; no runtime or mathematical/performance requalification",
+      "verdict": "supported",
+      "basis": "Same native Wave/adapter source boundary independently checked; version1 granular policy unaffected. Original Issue13 decision remains retained historical settings, no new live mutation or storage policy.",
+      "document_sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26"
+    }
+  ],
+  "findings": [
+    {
+      "id": "ROOT-A-01",
+      "priority": "P2",
+      "finding": "Generator recipe Save used a nonliteral UI button label.",
+      "source": "godot/scripts/architectural_generator_dialog.gd:191,385",
+      "resolution": "Resolved: literal Save\u2026 / Load\u2026 labels match architectural_generator_dialog.gd; independently rechecked."
+    }
+  ],
+  "limitations": [
+    "Independent review is source-based, not a new runtime or physical owner acceptance.",
+    "Retained historical test sections keep their original source/platform scope."
+  ]
+}

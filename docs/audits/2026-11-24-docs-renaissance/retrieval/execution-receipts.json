@@ -1,0 +1,288 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Original evaluator on exact git-archive source and new evaluator on current documented source. Fallback uses byte-identical Markdown projection, deliberate manifest absence. No score/expectation adjustment.",
+  "commands": [
+    {
+      "name": "renaissance-fallback-baseline",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/c-lane/baseline-full/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/c-lane/fallback-baseline-final",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/retrieval-questions-docs-renaissance-v1.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/renaissance-fallback-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.329,
+      "source_root": "/workspace/scratch/855d9af51e68/c-lane/fallback-baseline-final",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "document_count": 171,
+      "chunk_count": 2284,
+      "summary": {
+        "questions": 36,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 26,
+        "mrr_at_k": 0.6111,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "5e22fb9859fe691e9cea9fc884947aae0e3fe8558623dc9fe43b6ab23bbeb400"
+    },
+    {
+      "name": "owner-intent-fallback-baseline",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/c-lane/baseline-full/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/c-lane/fallback-baseline-final",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/c-lane/baseline-full/docs/reference/owner-intent-retrieval-questions.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/owner-intent-fallback-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.83,
+      "source_root": "/workspace/scratch/855d9af51e68/c-lane/fallback-baseline-final",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "document_count": 171,
+      "chunk_count": 2284,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.6667,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "e8349aecce4d5a838e1bdbe89bb754802671cf5bf9083f01841565b427f81ae7"
+    },
+    {
+      "name": "challenges-baseline",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/c-lane/baseline-full/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/c-lane/baseline-full",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/c-lane/baseline-full/docs/reference/retrieval-challenges.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/challenges-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.531,
+      "source_root": "/workspace/scratch/855d9af51e68/c-lane/baseline-full",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "fixture_sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "document_count": 145,
+      "chunk_count": 1941,
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 127,
+        "canonical_hit_at_k": 162,
+        "mrr_at_k": 0.8655,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "2ff76443acb26c9dc1cd49dc21ae1da321c13c35ea7c9226548587afce4fd754"
+    },
+    {
+      "name": "frozen-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/cybersand-docs",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/retrieval-questions.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/frozen-post.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.906,
+      "source_root": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "document_count": 151,
+      "chunk_count": 1755,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 17,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.6953,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "c7b2bfb12d1808f73d28971962b24d2797612be9b68b81fbde8af61cc95f5c65"
+    },
+    {
+      "name": "owner-intent-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/cybersand-docs",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/owner-intent-retrieval-questions.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/owner-intent-post.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.776,
+      "source_root": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "document_count": 151,
+      "chunk_count": 1755,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.3389,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "598e733dba0b6b6830a77b324fc4386439e2cf1c4f117da2f331f753d300e200"
+    },
+    {
+      "name": "challenges-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/cybersand-docs",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/retrieval-challenges.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/challenges-post.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.275,
+      "source_root": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "document_count": 151,
+      "chunk_count": 1755,
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 127,
+        "canonical_hit_at_k": 159,
+        "mrr_at_k": 0.8589,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "f459390c573a3a7e71db4b10f81772063565ffbd431c1ac55c159e92ba85b3c2"
+    },
+    {
+      "name": "renaissance-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/cybersand-docs",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/retrieval-questions-docs-renaissance-v1.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/renaissance-post.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.975,
+      "source_root": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "document_count": 151,
+      "chunk_count": 1755,
+      "summary": {
+        "questions": 36,
+        "canonical_hit_at_1": 25,
+        "canonical_hit_at_k": 33,
+        "mrr_at_k": 0.775,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "7d635f25529980b26ca32f9c4ee67e91a6a60e407cc08bed165dd6d3cf42752b"
+    },
+    {
+      "name": "renaissance-fallback-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/c-lane/fallback-post-final",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/retrieval-questions-docs-renaissance-v1.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/renaissance-fallback-post.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.853,
+      "source_root": "/workspace/scratch/855d9af51e68/c-lane/fallback-post-final",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "document_count": 151,
+      "chunk_count": 1755,
+      "summary": {
+        "questions": 36,
+        "canonical_hit_at_1": 25,
+        "canonical_hit_at_k": 33,
+        "mrr_at_k": 0.775,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "d9b2f4cc5eb293fbf055acd4709dd939e6f4b15547bb18570655de8663344ec5"
+    },
+    {
+      "name": "owner-intent-fallback-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/c-lane/fallback-post-final",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/reference/owner-intent-retrieval-questions.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/owner-intent-fallback-post.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.753,
+      "source_root": "/workspace/scratch/855d9af51e68/c-lane/fallback-post-final",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "document_count": 151,
+      "chunk_count": 1755,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.3389,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "14d37b694cb38ef2b9eade752cde45df883b6e576fa67c1a10189cce05e7724a"
+    },
+    {
+      "name": "historical-post",
+      "command": [
+        "python3",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/tools/docs/retrieval_eval.py",
+        "--root",
+        "/workspace/scratch/855d9af51e68/cybersand-docs",
+        "--queries",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/history/engineering/retrieval-questions.json",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/retrieval/historical-post.json",
+        "--historical"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.165,
+      "source_root": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "fixture_sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "document_count": 13,
+      "chunk_count": 331,
+      "summary": {
+        "questions": 10,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.8033,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "result_sha256": "8063829ca58071bdbe68c39999fc5444af2c5db55935bfc7ac0c9e5b03aebf03"
+    }
+  ]
+}

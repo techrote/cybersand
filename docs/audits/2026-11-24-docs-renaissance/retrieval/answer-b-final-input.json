@@ -1,0 +1,1633 @@
+{
+  "created_utc": "2026-11-24T18:08:46.230742+00:00",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "bytes": 13377
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "bytes": 17327
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "bytes": 10175
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "06031844ea34676d3fbd6a616e5fcd7e41d1212b88af5c2f24ad760d642f5f68",
+      "bytes": 41068
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "4a85c1007a438d86f52d7b51a6c59b5aee0c85d6e900857e14fdfb07ec65aea8",
+      "bytes": 11309
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "3f33223ef0e88e20b22f0775cd731145ac9f946c8f396747d09f69735a7aa022",
+      "bytes": 31169
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "bdacfa2db93d74044d212940ea375d08404e1c376a96cde250443f19690607a2",
+      "bytes": 84579
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "20db2741af9deaa1ad79a5c2d7b8d99dbdfd723a61c8e9fef3fe61de474c4b14",
+      "bytes": 68535
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "bytes": 69643
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "bytes": 9128
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "57e42584e1320481b46f2f0a62894047b08a7b935197d8edcded228997d1fc9c",
+      "bytes": 32910
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "1df19ea0874396cd77e2b39ca84b47ecb7f616b68f0ff6cabcfaaa8b05264698",
+      "bytes": 20589
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "bytes": 10171
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+      "bytes": 16647
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "b6ad1a6e57f91e4e97ed2be3ab690fac85bdc875a964e73f0a4c51a618696810",
+      "bytes": 26234
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "bytes": 27268
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "bytes": 47213
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+      "bytes": 8851
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "2058a267c012000c43c4d08b2dfb6fcba3eb40889571f46d737becbbd0efc619",
+      "bytes": 56325
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "bytes": 27225
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "bytes": 12906
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+      "bytes": 7683
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "bytes": 12481
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "5330204fbce4760de584fb8cf89f252f7fdeeb60fa20776f991a96cf75c17300",
+      "bytes": 12006
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "bytes": 4574
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "bytes": 14701
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "bytes": 18806
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "sha256": "058e577a398309e70c32dd9e26b4a97527d1105e1b8cf3cd89f172a3824936b6",
+      "bytes": 6031
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "bytes": 12936
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa",
+      "bytes": 91797
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "0f8ed826d60d97f0d863556422559e720f6ac92f38157701b8015d43ea177a66",
+      "bytes": 19717
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "bytes": 13039
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "bytes": 32883
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "bytes": 17952
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "bytes": 6545
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+      "bytes": 25259
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "bytes": 6662
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "2c90bcbfbe3c5ec5d63ff6855ea4ae5f3638c50b8f6beb30655891e67d2c38fc",
+      "bytes": 30570
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "bytes": 17230
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "bytes": 10151
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "bytes": 14161
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "bytes": 8232
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "267ab8574fc3f8ec784676b5b1ff090586c7a4a0a83452dfbbadb68acbfc6448",
+      "bytes": 4982
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "bytes": 5546
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "106941278ff1e090c7660a0109eebb63dcb096740626769621b7a15696ee5545",
+      "bytes": 5762
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "a90d40a836232b58c71c3ce4d5fb12c29ecd1e6ba67fcc78765631c3da09ac4c",
+      "bytes": 18703
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "efad0c6b106e57195a04ed79867093023efb20a83f1b3306bfafd8a0bb1b9412",
+      "bytes": 93746
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "bytes": 8086
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c86a286ddeea49ec3dc0124ae1eb6f866bb4b98d454fda30381177042d0de44c",
+      "bytes": 101025
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "9046c10bb957d545ae5b8aa3929af47d1f05e89547900c25bd3de01d7e0e3f1c",
+      "bytes": 49788
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "f89f3809989f9d1ff01beb25225b01d568fc7e32be5559846c2aefb8c3496964",
+      "bytes": 18303
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "bytes": 15494
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "0129a0c91e52524127395bd5deae8afcddd1b59465546fdda5539e6002cb7132",
+      "bytes": 19858
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "bytes": 12818
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "cac1e0ebd6eef5a7e9d9a19ad47c3e82e76399f05062af4cddfdb329a67ee9d7",
+      "bytes": 26155
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "bytes": 13442
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "bytes": 21861
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2",
+      "bytes": 17482
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "bytes": 15769
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "bytes": 62162
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "0edcd936c2a82cc7e0e8c0e5b586a84fa9841e87bb7b5edd74c60c96dd82afc3",
+      "bytes": 28537
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "bytes": 23202
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "bytes": 24686
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+      "bytes": 11227
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "bytes": 11511
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "21d0d16074f0d1e3203addc8c5707bcaa70d85b6d7f0eec6e3ca12e3db96890c",
+      "bytes": 11007
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "f86472cc3467883814544fc3bce98f6cf8d3576ae80ac6b6f3f74930008cd289",
+      "bytes": 13822
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "d24aa9fe1631a5506044ace6653cc035e2f469d0add9bc5f037943b6c483f281",
+      "bytes": 11786
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "4aa4f20c295f3dd92fc4854d4c02e5571c3acb49a3cf90c1e0538909ceaae72a",
+      "bytes": 16243
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "bytes": 12488
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "99ce3e3d637d456d18d93fbf1e22f1fcf713df1753a24dd2928b4702bce34b44",
+      "bytes": 8616
+    }
+  ],
+  "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+  "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+  "authority_policy_sha256": "7a3c02b2b0ef1160696089091d0494ed1ba6c00b6c2bcefa229ef5b0a961db51",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit current manifest if present; otherwise focused directories and MATERIAL_LAB; explicit-only and navigation documents excluded; historical paths and tagged copies rejected"
+  },
+  "context_result_sha256": "7d635f25529980b26ca32f9c4ee67e91a6a60e407cc08bed165dd6d3cf42752b",
+  "review_instructions": "Derive bounded answers from actual saved top5 first; independently compare source. Canonical hit/rank is not answer truth. Preserve abstention/missing facts and distinguish dated claims.",
+  "results": [
+    {
+      "id": "DR01",
+      "category": "launch",
+      "query": "I cloned CyberSand on Windows. Must I have C:/kybersand and dev.cmd before I can open the Workbench?",
+      "canonical": [
+        "operations/getting-started.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "A source-only checkout has launch-desktop.cmd; dev.cmd belongs to the separate companion workspace.",
+        "Verify materialized runtime inputs and the exact Godot pin; the configured main scene is the Feature Launcher."
+      ],
+      "sources": [
+        "../tools/launch_desktop.ps1",
+        "../godot/project.godot"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 31.171599,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > Windows development commands",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-11-24\nSection: Local build and validation > Windows development commands\nFrom `C:/kybersand`, the companion workspace provides `dev.cmd` / `tools/dev.py`. Host paths, installation and environment overrides belong to `C:/kybersand/docs/LOCAL_DEVELOPMENT.md`. Source-only clones do not contain these wrappers; the repository-native scripts are listed below. ```powershell .\\dev.cmd doctor .\\dev.cmd native-bindings .\\dev.cmd native-build .\\dev.cmd native-test .\\dev.cmd godot-test .\\dev.cmd web # Optional internally parallel Web profile: .\\dev.cmd web --profile threaded ``` The repository also contains `launch-desktop.cmd` / `tools/launch_desktop.ps1` for source-only Windows checkouts. It validates the pinned Godot/runtime inputs, prints checkout/runtime identity, exports the exact checkout SHA to the child Godot process as `CYBERSAND_SOURCE_REVISION` for recording provenance, and does **not** rebuild or replace retained runtimes. `native-bindings` builds pinned Windows godot-cpp; `native-build` builds the GDExtension. `native-test` compiles/runs the C header check and native tests; `godot-test` imports the project then runs all `test_*.gd` runners. Godot tests load the installed DLL: running them alone does **not** rebuild that DLL. Record its hash and source identity with the result. The wrapper allows 240 s for import, 180 s per Godot runner, and rejects Godot error output even with exit 0."
+        },
+        {
+          "rank": 2,
+          "score": 27.338898,
+          "path": "operations/web-threading.md",
+          "title": "Web worker profiles and reference tests",
+          "heading": "Web worker profiles and reference tests > Build and preview",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Web worker profiles and reference tests\nPath: operations/web-threading.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation\ncanonical-for: [web-worker-profiles, worker-reference-benchmark]\nlast-reviewed: 2026-09-08\nSection: Web worker profiles and reference tests > Build and preview\nFrom `C:/kybersand`: ```powershell .\\dev.cmd web --profile threaded .local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open ``` While the preview server is running: ```powershell .\\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/ ``` `dev.cmd web` builds compatibility. Use export-only only with a matching fresh side module; successful packaging does not prove source-to-binary freshness. The [build guide](github-development-and-release.md) owns exact dependency pins and unresolved CI/toolchain drift. Native/Web generated bindings stay separate. The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate WASM MIME and no-cache behavior. Threaded hosting needs a secure context (HTTPS or localhost) and cross-origin isolation. Serve the complete export, including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum success is structural evidence; open the actual browser for execution. Local delivery is a separate explicit workflow after acceptance: `Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`; compatibility uses `C:/cybersand/web`. Documenting this command does not execute delivery or remote publication."
+        },
+        {
+          "rank": 3,
+          "score": 22.10803,
+          "path": "operations/physics-characterisation.md",
+          "title": "Reproducible physics characterisation",
+          "heading": "Reproducible physics characterisation > How do I reproduce a run?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Reproducible physics characterisation\nPath: operations/physics-characterisation.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes\ncanonical-for: [physics-measurement-tooling, physics-baseline-procedure]\nlast-reviewed: 2026-10-19\nSection: Reproducible physics characterisation > How do I reproduce a run?\nWork in `C:/kybersand/source`; keep raw files under `C:/kybersand/validation/local/<date>-physics/`. Build the adapter with `C:/kybersand/dev.cmd native-build` before Godot measurements. The Python runner builds its own native CLI by default; `--skip-build` requires an identified, source-matched executable. The installed Godot DLL is not rebuilt by `godot-test`. ```text C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py native --group expanded --output C:/kybersand/validation/local/2026-09-09-physics/native-expanded C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py native --group controls --output C:/kybersand/validation/local/2026-09-09-physics/native-controls C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group controls --output C:/kybersand/validation/local/2026-09-09-physics/godot-controls-final C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group expanded --output C:/kybersand/validation/local/2026-09-09-physics/godot-expanded C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group finalists --seeds 20 --ticks 7200 --output C:/kybersand/validation/local/2026-09-09-physics/godot-creep ``` [run.py](../../tools/physics/run.py) records commands, fixture JSON, actual HEAD, dirty status, source-file hashes, executable hashes and platform in each result directory. New Godot batches also capture their own manifest. A seed is a coordinate translation, **not a new engine random stream**. The checked-in generator plus explicit configuration is the replay input; CYSD1 is not used. All runs start with newly constructed authority. Do not edit sources between batches; preserve each tested source snapshot if iterating. Defaults are five seeds `0..4`, 1,800 completed ticks, `dt = 1/60 s`. Finalists use seeds `0..19` and 7,200 ticks. The separate interpreted fallback defaults to one seed/180 ticks, overridable with `--fallback-ticks`; it is a semantic reference with no native Water-mass or rule-event parity claim. Timeouts are 180 seconds per native CLI run, 300 for its build, and 3,600 per Godot batch. A failed run retains its output; it must not be counted as completed evidence."
+        },
+        {
+          "rank": 4,
+          "score": 21.761117,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-11-24\nSection: Local build and validation > First launch from a source checkout\nUse this repository's launcher and retained runtime for a first exploration. A native rebuild is a separate development task. The [player getting-started guide](getting-started.md) walks through opening the Workbench; this page owns the build, identity and validation procedure. From a new checkout with Git and Git LFS installed: ```sh git clone https://github.com/techrote/cybersand.git cd cybersand git lfs install --local git lfs pull git rev-parse HEAD git status --short python3 tools/ci/check_repository.py --require-materialized ``` On Windows, use `python` instead of `python3` when that is the installed command. `git lfs pull` obtains the committed runtime payloads. A small text pointer is not a usable DLL or shared library. `check_repository.py` checks the runtime bytes and recorded source inputs; it also checks documentation and dependencies, so read the actual failure rather than assuming every failure means a broken DLL. **Windows:** install the [exact Godot pin](#which-build-inputs-are-required), then run from this repository root in PowerShell: ```powershell .\\launch-desktop.cmd -Godot C:\\path\\to\\Godot_v4.7-stable_win64.exe -PrintIdentityOnly .\\launch-desktop.cmd -Godot C:\\path\\to\\Godot_v4.7-stable_win64.exe ``` The path is an example: use the actual executable location. The launcher also accepts `CYBERSAND_GODOT`, or searches `C:\\Godot47`. It validates the pinned Godot version, materialized Windows runtimes and CyberSand DLL hash; it prints the checkout/runtime identity and performs no build or replacement. The default project scene is [Feature Launcher](../../godot/project.godot), which routes to the ordinary **Shared Workbench** and standalone scenes. `-Editor` opens the same project in the editor. `dev.cmd` is not required for a source-only checkout. **Linux x86_64:** with the pinned Godot executable and materialized Linux runtimes, use an explicit executable path: ```sh CYBERSAND_GODOT=/absolute/path/to/Godot_v4.7-stable_linux.x86_64 \"$CYBERSAND_GODOT\" --version \"$CYBERSAND_GODOT\" --headless --editor --path godot --import \"$CYBERSAND_GODOT\" --path godot ``` The version output must match the table below. The last command requires a graphical session. Import and launch are separate steps; successful project import is not proof that native gameplay or every feature ran. A software display is useful for reproducible graphical tests, but does not establish the owner's Windows/NVIDIA playfeel."
+        },
+        {
+          "rank": 5,
+          "score": 21.699957,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Launch and prerequisites > Windows launch",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Accepted desktop native inspection, candidate authoring, isolated World comparisons and existing-material MicroScenarios; no runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-24\nSection: Materials Lab v1 > Launch and prerequisites > Windows launch\nFrom a source checkout, run the checked desktop launcher: ```powershell .\\launch-desktop.cmd -Godot \"C:\\Tools\\Godot\\Godot_v4.7-stable_win64.exe\" ``` Choose **Materials Lab** in the feature launcher. The wrapper accepts its named Godot/Editor/identity options; it does not forward arbitrary Godot arguments. A complete evaluator may instead supply **Open-Materials-Lab.cmd**, its own compiler/dependencies and qualification manifest. Follow that package's launcher and keep its payload together. The [completion record](../audits/2026-11-11-materials-lab-completion.md) identifies the historical package; its existence does not qualify a different archive or guarantee a current download. Basic inspection uses the matching runtime, while candidate compilation needs the additional tools below. For source candidate compilation, start Godot from a configured x64 C++20 compiler environment; for MSVC use an **x64 Native Tools Command Prompt** with Python available. Select `cl` or its full executable path in the Edit copy tab. An executable path alone cannot supply MSVC's missing SDK include/library environment. The Python default on Windows is `python`. From **PowerShell inside the cloned repository**, resolve the checkout before launching. PowerShell requires `&` before a quoted executable path: ```powershell $labCheckout = git rev-parse --show-toplevel & \"C:\\Tools\\Godot\\Godot_v4.7-stable_win64.exe\" --path \"$labCheckout\\godot\" -- --materials-lab ``` The exact Windows execution status belongs to the dated qualification record. Linux screenshots and a successful cross-build are not Windows graphical or human acceptance."
+        }
+      ]
+    },
+    {
+      "id": "DR02",
+      "category": "pins",
+      "query": "Can I use any Godot 4 build, and which godot-cpp version matches the native library?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "operations/getting-started.md"
+      ],
+      "facts": [
+        "The runtime pin is exactly 4.7.stable.official.5b4e0cb0f.",
+        "godot-cpp is pinned to 101ae38034304346a46ea9ea84ae156d3e860496 and API 4.7; version similarity alone is insufficient."
+      ],
+      "sources": [
+        "../third_party/godot-runtime.lock.json",
+        "../third_party/native-toolchain.lock.json"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 16.562111,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > Repository-native build and test commands",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-11-24\nSection: Local build and validation > Repository-native build and test commands\nFrom the source root on a configured Linux host: ```sh make c-header-check make -n test make -j2 test make sanitize make thread-sanitize ``` `make test` includes the current native World, soliding, worldgen and material baseline targets. The [Makefile](../../Makefile) is the executable inventory; `make sanitize` and `make thread-sanitize` have distinct target coverage, so do not claim that either alone executes every subsystem sanitizer. Focused generation and soliding sanitizer targets remain available. The default AddressSanitizer configuration enables leak detection; a historical hosted exception is not a new default. These commands may compile substantial native source. They are procedures, not pass claims. Set a budget appropriate to the selected target and host; do not reuse historical 120/300-second examples as current full-suite budgets. The accepted [CI execution policy](ci-execution-and-performance.md) derives hosted allowances without weakening scientific cases or sanitizer failures. A GDExtension rebuild additionally needs pinned godot-cpp and SCons: ```sh export GODOT_CPP_ROOT=/absolute/path/to/pinned-godot-cpp export SCONS_PYTHON=/absolute/path/to/build-venv/bin/python SCONS_JOBS=2 tools/build_pinned_godot_cpp.sh linux CYBERSAND_NATIVE_OUTPUT=\"$PWD/build/libcybersand_native.linux.x86_64.so\" \\ tools/build_native_extension.sh ``` The example writes the candidate extension under ignored `build/`, leaving the retained library alone. Inspect and qualify the candidate before installing it into a test project. Installing a locally built library does not create accepted runtime provenance: [guarded publication](github-development-and-release.md#source-matched-runtime-publication) requires its actual source, input hashes, target-platform execution and lease. The build scripts enforce pinned dependency revision and source checks; do not use `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT` to report a reproducible release. For Windows GDExtension cross-builds, use `build_pinned_godot_cpp.sh windows` and [build_native_extension_windows.sh](../../tools/build_native_extension_windows.sh) with the pinned `LLVM_MINGW_ROOT`/`WINDOWS_CXX` inputs. A PE/import inspection is separate from execution on Windows. The root `build_windows_msvc.bat` is a native core build entry point with its explicit test list, not the complete Godot/native qualification matrix. The [Windows execution helper](../../tools/ci/run_windows_godot_regressions.py) and accepted workflow own source-bound Windows Godot execution."
+        },
+        {
+          "rank": 2,
+          "score": 15.117807,
+          "path": "operations/getting-started.md",
+          "title": "Getting started with CyberSand desktop",
+          "heading": "Getting started with CyberSand > Source checkout on Linux",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Getting started with CyberSand desktop\nPath: operations/getting-started.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: First launch from a source checkout or identified evaluator, desktop prerequisites and user navigation\ncanonical-for: [desktop-first-launch]\nlast-reviewed: 2026-11-24\nSection: Getting started with CyberSand > Source checkout on Linux\nMaterialize LFS and use the pinned Linux Godot executable. With that executable available as `godot`, from the repository root: ```sh godot --version python3 tools/ci/check_repository.py --require-materialized godot --path godot ``` The version must match the pin above. The provenance checker and [build guide](local-build-and-validation.md) distinguish missing files, stale native inputs and a valid retained runtime. A native library built for another platform is not a substitute. Launching directly is supported, but does not perform all of the Windows wrapper's checks on your behalf. To enter the Workbench directly after prerequisites are satisfied: ```sh godot --path godot -- --workbench ```"
+        },
+        {
+          "rank": 3,
+          "score": 14.295351,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > Establish source and runtime identity",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Current task intake, ownership and handoff; implementation status, intent and qualification have separate canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-24\nSection: Development handover > Establish source and runtime identity\nFrom the intended source checkout: ```bash git rev-parse --show-toplevel git status --short git branch --show-current git rev-parse HEAD 'HEAD^{tree}' git log -1 --format='%H %cI %s' git lfs ls-files ``` Review remote configuration locally if needed; do not paste credential-bearing URLs into an issue or report. `git lfs ls-files` identifies tracked objects; it does not prove every required object is materialized or that the runtime matches changed native source. Run the appropriate [repository/provenance check](current-and-historical-validation.md) and compare the selected runtime's input ledger before launch or packaging. The pinned executable version is `4.7.stable.official.5b4e0cb0f` in [the Godot lock](../../third_party/godot-runtime.lock.json). A nearby patch release is not the same qualification target. The native locks, per-platform runtime provenance and Rapier provenance are separate records. A documentation-only head can legitimately retain a runtime built at an earlier commit when all recorded source inputs still match; do not relabel its build commit as the documentation head. Conversely, matching a DLL filename does not establish source identity. Use an isolated test profile for application procedures. Do not overwrite owner maps, Art archives, provider settings or ordinary user data to make a test pass. Portable evaluators, source checkouts, rebuilt runtimes and Web/fallback paths have different prerequisites; [getting started](getting-started.md) and [local builds](local-build-and-validation.md) explain them."
+        },
+        {
+          "rank": 4,
+          "score": 14.220653,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-11-24\nSection: Local build and validation > First launch from a source checkout\nUse this repository's launcher and retained runtime for a first exploration. A native rebuild is a separate development task. The [player getting-started guide](getting-started.md) walks through opening the Workbench; this page owns the build, identity and validation procedure. From a new checkout with Git and Git LFS installed: ```sh git clone https://github.com/techrote/cybersand.git cd cybersand git lfs install --local git lfs pull git rev-parse HEAD git status --short python3 tools/ci/check_repository.py --require-materialized ``` On Windows, use `python` instead of `python3` when that is the installed command. `git lfs pull` obtains the committed runtime payloads. A small text pointer is not a usable DLL or shared library. `check_repository.py` checks the runtime bytes and recorded source inputs; it also checks documentation and dependencies, so read the actual failure rather than assuming every failure means a broken DLL. **Windows:** install the [exact Godot pin](#which-build-inputs-are-required), then run from this repository root in PowerShell: ```powershell .\\launch-desktop.cmd -Godot C:\\path\\to\\Godot_v4.7-stable_win64.exe -PrintIdentityOnly .\\launch-desktop.cmd -Godot C:\\path\\to\\Godot_v4.7-stable_win64.exe ``` The path is an example: use the actual executable location. The launcher also accepts `CYBERSAND_GODOT`, or searches `C:\\Godot47`. It validates the pinned Godot version, materialized Windows runtimes and CyberSand DLL hash; it prints the checkout/runtime identity and performs no build or replacement. The default project scene is [Feature Launcher](../../godot/project.godot), which routes to the ordinary **Shared Workbench** and standalone scenes. `-Editor` opens the same project in the editor. `dev.cmd` is not required for a source-only checkout. **Linux x86_64:** with the pinned Godot executable and materialized Linux runtimes, use an explicit executable path: ```sh CYBERSAND_GODOT=/absolute/path/to/Godot_v4.7-stable_linux.x86_64 \"$CYBERSAND_GODOT\" --version \"$CYBERSAND_GODOT\" --headless --editor --path godot --import \"$CYBERSAND_GODOT\" --path godot ``` The version output must match the table below. The last command requires a graphical session. Import and launch are separate steps; successful project import is not proof that native gameplay or every feature ran. A software display is useful for reproducible graphical tests, but does not establish the owner's Windows/NVIDIA playfeel."
+        },
+        {
+          "rank": 5,
+          "score": 13.978886,
+          "path": "operations/github-development-and-release.md",
+          "title": "Repository development and release",
+          "heading": "Repository development and release > Source-matched runtime publication",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Repository development and release\nPath: operations/github-development-and-release.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Contribution boundaries, Draft qualification, source-matched runtime publication and release prerequisites\ncanonical-for: [repository-policy, ci-contradictions, release-prerequisites]\nlast-reviewed: 2026-11-24\nSection: Repository development and release > Source-matched runtime publication\nA source-only documentation edit does not require rebuilding unchanged native inputs. A native/binding input change does. Use the applicable guarded publisher and request contract; an old publisher's branch, source SHA or approval does not provide a lease for new work. For native Windows/Linux publication, verify: 1. **Source custody:** the intended exact source, native and build-input hashes, dependency pins, clean/declared deltas and source branch are identified. 2. **Actual builds and execution:** both required target artifacts and the scoped native/Godot/package cases have complete, positive-count, error-free original evidence. Compilation and cross-compilation are labelled separately. 3. **Artifact identity:** library SHA-256/size, provenance input set, build/execution source and committed LFS object agree. Downloaded bytes are actually available; naming a hash alone is not custody. 4. **Publication lease:** the expected branch head still matches the authorized immutable request. Reject competing source pushes or mismatched evidence. 5. **Write boundary:** append only the publisher's allowed runtime/provenance paths, with the required parent and atomic lease. Native publication normally appends the two libraries and two provenance manifests; the actual contract is authoritative for its precise scope. 6. **Resulting-head admission:** recheck source/provenance and every applicable complete gate after publication/integration. Scoped publisher tests do not replace the full implementation or owner acceptance requirements. ```mermaid flowchart TD S[\"Frozen source and request\"] --> I[\"Verify inputs and dependency pins\"] I --> B[\"Build target runtimes\"] B --> E[\"Execute scoped target tests\"] E --> C{\"Artifacts and branch lease agree?\"} C -->|No| R[\"Refuse publication; retain evidence\"] C -->|Yes| P[\"Append allowed runtime and provenance paths\"] P --> Q[\"Qualify resulting head and request owner review\"] ``` [Architectural Generator publication](../systems/architectural-generator.md#retained-runtime-publication) is one concrete existing contract. The [current/historical gate guide](current-and-historical-validation.md) explains what repository provenance checks can establish. Do not hand-edit hashes, reuse an old source lease, overwrite another programme's branch or weaken a failed required check to complete publication."
+        }
+      ]
+    },
+    {
+      "id": "DR12",
+      "category": "painting",
+      "query": "How do I paint, erase, fill and undo in a first Workbench session?",
+      "canonical": [
+        "operations/workbench-painting-and-history.md",
+        "operations/workbench-first-session.md",
+        "systems/paint-editor-bounded-shapes.md"
+      ],
+      "facts": [
+        "Use the actual toolbar/tool controls and their bounded operation outcomes.",
+        "Explain history boundaries, partial completion and refusal; never invent shortcuts or unlimited fills."
+      ],
+      "sources": [
+        "../godot/scripts/shared_workbench.gd",
+        "systems/paint-editor-bounded-shapes.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 22.978993,
+          "path": "operations/workbench-first-session.md",
+          "title": "Your first Shared Workbench session",
+          "heading": "Your first Workbench session > Make room to work",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Your first Shared Workbench session\nPath: operations/workbench-first-session.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: A small paused material authoring tutorial with simulation, saving and fresh-session reconstruction\ncanonical-for: [workbench-first-session]\nlast-reviewed: 2026-11-24\nSection: Your first Workbench session > Make room to work\n1. Choose **Pilot \u2192 Observer / no human pilot** so actor movement does not distract from editing. 2. Pause with **Play / Pause [P]**. Use the visible button if a text field has focus. Precise shapes, Fill and Undo/Redo require a paused scene. 3. Select **Overview** to locate your work, then zoom in with the mouse wheel. Middle-drag pans. Use an empty part of the canvas away from bodies and sources. 4. In the main tool selector choose **Paint**. The smaller painting row provides Brush, Eraser, Line, Rectangle, Outline, Select, Fill and Paste. The initial canvas is finite. The coordinate controls and status help you stay inside it. There is no need to populate the whole canvas for this exercise."
+        },
+        {
+          "rank": 2,
+          "score": 20.618371,
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "title": "PAINT-001 native-backed Workbench painting editor",
+          "heading": "PAINT-001 \u2014 bounded painting editor > Using the editor",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: PAINT-001 native-backed Workbench painting editor\nPath: systems/paint-editor-bounded-shapes.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted native Workbench painting, bounded execution, shared history and reconstructible authored starts\ncanonical-for: []\nlast-reviewed: 2026-11-24\nSection: PAINT-001 \u2014 bounded painting editor > Using the editor\nOpen the ordinary Workbench and pause. Its existing material picker now contains the loaded native runtime's supported materials. The additional compact tool row provides Brush, Eraser, Line, Rectangle, Outline, Select, Fill and Paste, with Copy, Undo, Redo, Cancel, named Save start and Load start beside it. A gesture queues and completes one operation; the status distinguishes planning, queued, native execution, completion, refusal and partial completion. | Action | Control | | --- | --- | | Freehand / erase | B / E; right-drag also erases | | Straight line / filled rectangle / outline | L / R / O, then drag | | Select a rectangle | S, then drag | | Capture exact selected native materials | Ctrl+C | | Paste the captured stamp | Ctrl+V or V, position preview, click or drag and release | | Four-connected fill | G, then click; a containing selection defines the capture bounds | | Brush radius 0\u201324 | Existing radius field; `[` / `]` | | Undo / redo | Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z | | Save named authored start | Ctrl+S or Save start | | Cancel preview / stop native operation | Escape or Cancel | Undo/Redo follows the latest edit in the shared manual/agent timeline. The **Art batches** panel exposes the same Undo and Redo actions. Stop an active agent run and wait for its native result, deferred human strokes and provider activity to settle before using either panel's history controls or shortcuts. Tool keys apply to paused painting and respect focused text fields. Existing playing/actor controls retain their input paths. Pan and zoom use the existing host mapping: aspect-fit local coordinates plus the floored camera origin. A camera-button press cancels an unfinished gesture. Leaving the canvas or Escape cancels without committing. There is no second viewport or simulation controller. The overlay shows selection, canonical brush/line/rectangle footprints and multi-material paste, including Empty. Up to 16,384 preview cells/spans are shown exactly; larger previews explicitly show bounds. A copied selection can be pasted repeatedly during the session. There is no disk-backed stamp library yet."
+        },
+        {
+          "rank": 3,
+          "score": 19.747683,
+          "path": "operations/workbench-painting-and-history.md",
+          "title": "Workbench painting, selection and history",
+          "heading": "Painting and history > A reusable multi-material stamp",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Workbench painting, selection and history\nPath: operations/workbench-painting-and-history.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Current human painting controls, bounded copy and fill, native completion, cancellation and shared Undo/Redo\ncanonical-for: [workbench-painting-user-guide]\nlast-reviewed: 2026-11-24\nSection: Painting and history > A reusable multi-material stamp\n1. Pause and paint a small structure with two materials and a clear opening. 2. Select a rectangle around it and **Copy**. Wait for native capture. 3. Choose **Paste** and move the preview to a clear position entirely within the canvas. Release to apply and wait for completion. 4. Repeat at another position. Undo reverses the latest acknowledged paste. The captured stamp includes Empty, so pasting can erase destination cells. Source and destination may overlap because Copy owns an immutable material snapshot. World replacement invalidates the clipboard; ordinary edits do not rewrite it. A protected or off-canvas destination can refuse the operation. There is no disk-backed stamp library in this editor."
+        },
+        {
+          "rank": 4,
+          "score": 19.126924,
+          "path": "operations/workbench-first-session.md",
+          "title": "Your first Shared Workbench session",
+          "heading": "Your first Workbench session > Set the materials in motion",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Your first Shared Workbench session\nPath: operations/workbench-first-session.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: A small paused material authoring tutorial with simulation, saving and fresh-session reconstruction\ncanonical-for: [workbench-first-session]\nlast-reviewed: 2026-11-24\nSection: Your first Workbench session > Set the materials in motion\nPress **Play / Pause [P]**. Sand should fall into the container. Pause again after observing it. A simulation tick invalidates construction Undo/Redo when the old native state is no longer safe to restore; Undo is not physics rewind. For a Water variation, restore the authored start, pause, select **Water** and paint a small patch. Fresh Workbench sessions select the Wave gameplay profile. Open **Water Lab\u2026 \u2192 Solvers & scenes** to inspect the requested and applied law. Changing a control stages a request; **Apply solver / tuning** and its native readback establish what actually runs. The [Water Lab guide](workbench-water-lab.md) explains fair comparisons and law-specific limits."
+        },
+        {
+          "rank": 5,
+          "score": 18.510896,
+          "path": "operations/workbench-first-session.md",
+          "title": "Your first Shared Workbench session",
+          "heading": "Your first Workbench session > Close and reopen",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Your first Shared Workbench session\nPath: operations/workbench-first-session.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: A small paused material authoring tutorial with simulation, saving and fresh-session reconstruction\ncanonical-for: [workbench-first-session]\nlast-reviewed: 2026-11-24\nSection: Your first Workbench session > Close and reopen\n1. Wait for all drawing and saving to finish. 2. Use **Menu [F2]** or close Godot. Returning to the launcher closes the session. 3. Open Development workbench again, enter `first-container` and click **Load start**. 4. Wait for reconstruction. Check the material layout and authored actors, then paint a small new mark to confirm the scene is editable. Undo/Redo stacks and the Art conversation are session-local. They are not restored by loading the authored start. A flattened save rebuilds initial material state from stored IDs; it does not resume the previous tick."
+        }
+      ]
+    },
+    {
+      "id": "DR13",
+      "category": "receipts",
+      "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+      "canonical": [
+        "systems/workbench-direct-art-batches.md",
+        "reference/interfaces-and-message-contracts.md",
+        "operations/workbench-art.md"
+      ],
+      "facts": [
+        "Queue acceptance is not native application or visible publication.",
+        "Follow native acknowledgements and applicable session/generation/sequence identity before claiming applied state."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "systems/workbench-direct-art-batches.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 19.249198,
+          "path": "systems/workbench-direct-art-batches.md",
+          "title": "Direct Art batches and native completion",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Ownership, capacities and completion",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Direct Art batches and native completion\nPath: systems/workbench-direct-art-batches.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted desktop drawing, native completion, Stop, shared PAINT ordering, Undo/Redo and authored persistence\ncanonical-for: [workbench-direct-art-batches]\nlast-reviewed: 2026-11-24\nSection: Direct art batches \u2014 WB-ART-002 Stage 1 > Ownership, capacities and completion\n`art_batch_plan.gd` validates geometry and lazily emits points. Rectangle/disc raster buffers do not grow with the entire drawing. `art_batch_executor.gd` streams one outstanding chunk to the existing `simulation_worker.gd` owner. The existing `MAX_BRUSH_FOOTPRINT_CELLS` (4096) is an internal chunk size, **not** a batch or lifetime edit ceiling. Explicit pixels are not limited to 32. Input/recipe storage still consumes ordinary process memory; this is not a claim of unbounded capacity. No new native storage, native locks or physics is added. The worker applies points with the ordinary native `emit_disc(..., radius=0)` primitive, alongside ordinary brush execution. On the exclusive World thread it checks installed canvas, selected area, protected rectangles and source material: only existing Empty/Hard Wall cells can be overwritten. It reads native material before and after each eligible point and reports actual checked/changed/excluded counts plus per-point readback, World generation and tick. Enabled materials are also checked at queue admission. No main-thread direct World access is added. Queue acceptance is `queued`, never applied. `executing` means the worker has claimed a chunk. Completion follows actual receipts for every chunk; failures or Stop preserve/report a partial prefix. Unchanged points count as checked, not changed. Excluded cells are distinct from failed writes. Readback is bounded to one chunk and consumed, not accumulated as an exhaustible receipt store."
+        },
+        {
+          "rank": 2,
+          "score": 18.285944,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Provider/native boundary and Stop",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Provider/native boundary and Stop\n[`art_provider.gd`](../../godot/scripts/art_provider.gd) owns the cancellable threaded Godot `HTTPRequest` and payload/response adapters. [`art_batch_panel.gd`](../../godot/scripts/art_batch_panel.gd) owns request state and the UI. Its accepted structured-text forms include a JSON array, operations envelope, single shape, JSON fence and recognized final packet after reasoning text. Alias normalization does not execute arbitrary prose or code. The panel passes parsed operations to the existing [`art_batch_executor.gd`](../../godot/scripts/art_batch_executor.gd). Native worker epoch is captured before inference. Reset, Load or World replacement invalidates old results. Admission means queued; only native stored-material readback establishes changed/unchanged/excluded/refused outcomes. A network response cannot substitute for that receipt. **Stop** cancels pending HTTP/capture, invalidates the request generation, stops scheduled turns and asks native queued work to retire. An executing native chunk may finish at its normal boundary. Its actual prefix remains reportable; there is no assumed rollback or uncertain replay. Closing the Art window only hides it. It is not Stop and does not end the Workbench session. Optional **Image** captures the actual post-draw canvas view, resizing to at most 768 pixels on the longest axis. **Full view** uses the visible canvas rather than only the Focus intersection. Art/traffic windows hide for capture and are restored afterward. A graphical runtime is required; headless native renders are not evidence that this capture path ran. Image bytes can appear in raw traffic and remain private content. HTTP response-body capacity is 16 MiB. The visible timeout bounds requests; automatic redirects are disabled so the configured endpoint remains the credential destination. Errors, HTTP 429 and malformed output have visible outcomes. This contract does not assert that every unmerged close/error repair has been applied."
+        },
+        {
+          "rank": 3,
+          "score": 15.737163,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-11-24\nSection: Local build and validation > Isolated test data and diagnostics\nGodot tests and graphical captures must not overwrite the owner's saved scenes, Art traffic or local provider configuration. Use the repository's [isolated Godot runner](../../tools/physics/isolated_godot.py) or the appropriate existing test/capture harness with its own user profile. Inspect that harness's arguments and refusal rules before invoking it; a normal interactive launch intentionally uses the user's ordinary application data. For a useful failure report, record the checkout SHA and dirty state, exact Godot version, native runtime/provenance identity, platform, command, fixture or small synthetic setup, steps, expected result, actual result and whether the operation was queued, applied, displayed or refused. Include the first relevant error and completion status, not only a green process exit. Preserve the original failed result alongside a successful retry. Art prompts, traffic, endpoint credentials and owner maps may be private: inspect and redact attachments, and prefer a synthetic reproduction. [Troubleshooting](troubleshooting.md) covers common launch, focus, runtime and capacity failures."
+        },
+        {
+          "rank": 4,
+          "score": 13.995214,
+          "path": "systems/workbench-direct-art-batches.md",
+          "title": "Direct Art batches and native completion",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Shared Undo and Redo",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Direct Art batches and native completion\nPath: systems/workbench-direct-art-batches.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted desktop drawing, native completion, Stop, shared PAINT ordering, Undo/Redo and authored persistence\ncanonical-for: [workbench-direct-art-batches]\nlast-reviewed: 2026-11-24\nSection: Direct art batches \u2014 WB-ART-002 Stage 1 > Shared Undo and Redo\nThe Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on one chronological history. Only confirmed stored-material changes enter it. Adjacent bounded parts of one direct batch or model drawing submission share an action: one Undo reverses the retained parts, and Redo reapplies them in order. A human edit between chunks closes that group and has its own entry. Undo never jumps over later manual work to target an earlier agent action. Use Stop and wait for batch execution, native receipts, deferred human edits, image capture, provider activity and any scheduled follow-up turn to settle. An idle native chunk boundary alone does not enable Undo. After retirement, Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled or unacknowledged suffixes never enter history. The operation uses PAINT's bounded native preflight and receipt path. Its trusted human inverse can restore the recorded materials without granting ordinary agent submissions broader material, source, protected-region or work-area permissions. History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144 cells per part. The UI labels a partially retained group **Agent drawing (retained tail)** and explains when its older part is no longer undoable. No-change agent receipts preserve the existing Redo branch. Simulation, World replacement or another mutation outside the recorded timeline still invalidate history through its generation/revision/tick fence. History is session-local. When the Art panel exists, confirmed history results append a human canvas-result turn and `native_history_action` event to its current session, with applied counts and continuation/refusal status. Native history does not require cross-session Art replay or a durable receipt journal. They do not rewrite earlier model receipts or automatically request another model turn. The chosen conversation/context mode still governs future requests. The existing persistence limits also apply to history replay. Agent streaming does not preflight the entire authored recipe, so a highly fragmented result can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and Undo/Redo can also refuse a target part before writing if its intermediate authored recipe exceeds those limits, even when the eventual group baseline would be compact. The UI reports the actual confirmed progress and refusal; there is no promise of unbounded or atomic rollback for arbitrary agent output."
+        },
+        {
+          "rank": 5,
+          "score": 13.753003,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Collaboration, scanline and pacing preview",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Collaboration, scanline and pacing preview\nThe retained section name is a compatibility anchor. These current controls are implemented, although separate Batch/agent programmes are not implied: | Control | Accepted behavior | | --- | --- | | Full context | Current-session conversation. | | Compacted | Most recent 12 turns plus latest-result summary. | | Custom | Currently the same bounded selection as Compacted. | | None | No previous conversation in the next request. | | Turns | Default 1; zero continues until Stop, model completion or another limit. | | Limits\u2026 | Minimum request interval, elapsed-run limit and estimated spending ceiling; zero disables the corresponding bound. | | Conversation\u2026 | Edit future request context in this session; do not rewrite earlier native receipts. | | Scanline | Admitted local-to-focus line/stencil output through the same native executor. | Spending uses user-entered token rates and returned usage after a response. A ceiling can be exceeded by one request; missing usage cannot become a known cost. There is no live price lookup or prepaid-credit guarantee. Automatic paid dispatch is not a documentation or qualification prerequisite."
+        }
+      ]
+    },
+    {
+      "id": "DR15",
+      "category": "save",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "canonical": [
+        "reference/level-saves-and-replay.md",
+        "operations/workbench-saving.md"
+      ],
+      "facts": [
+        "Authored setup/layout persistence differs from exact evolved physical continuation.",
+        "Do not promise all live actors, queues or provider/conversation state; consult explicit format and separate checkpoint contracts."
+      ],
+      "sources": [
+        "reference/level-saves-and-replay.md",
+        "architecture/shared-workbench-authoring-data.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": null,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 22.338489,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Lazy reopening and traffic storage",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention > Lazy reopening and traffic storage\nThe former automatic cross-session restore contract is retired by #727. This anchor remains for incoming links. The legacy archive/parser code is available for deliberate read-only diagnosis and historical tests, not ordinary new-session startup. Old archives are preserved; this is not permission to migrate or delete them. Authored World Save and native edit history have separate contracts."
+        },
+        {
+          "rank": 2,
+          "score": 20.822573,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "title": "Shared manual and Art authoring runbook",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Shared manual and Art authoring runbook\nPath: operations/wb-art-paint-integrated-candidate.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Accepted generator, PAINT and Art workflow; native receipts, shared history, authored save and bounded verification\ncanonical-for: [integrated-paint-agent-workbench]\nlast-reviewed: 2026-11-24\nSection: Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence\nThe native authoring document records completed edits in order. **Save start** refuses while shared mutation, replacement or receipt work remains unresolved. A failed save preserves the existing named file; it cannot serialize unseen queued work as applied. Fragmented drawing can still exceed the 32,768-stamp or 1 MiB ordinary save envelope. The UI must report that refusal instead of dropping history or silently truncating a start. Generated starts retain their resolved recipe plus ordered edits; actors retain authored settings/spawns and supported equipment. **Flatten / Bake History\u2026** is an accepted, separate explicit material-baseline operation. It retires previous construction/Undo history but does not save automatically or capture exact physical continuation. Use [the saving guide](workbench-saving.md) for recovery and the distinction between current live World, authored baseline and disk file. Art conversation is session-local after #727. Hiding the Art window retains the same session; returning to the launcher ends it. A World Save is not a provider conversation save. Native history does not require a restored traffic archive."
+        },
+        {
+          "rank": 3,
+          "score": 20.805866,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026\nEvery new Workbench session starts with an empty in-memory conversation. Hiding/reopening Art within that session retains it. Ending the session discards it. Send and direct drawing do not restore earlier traffic. The obsolete `traffic_path` preference is not read for session continuation and is removed on a successful preferences save. An unavailable old log cannot block new Send. Model requests record `request_parameters`, including the chosen work area, materials, tools and limits. Direct drawing records `manual_program`, `manual_admission` and terminal `manual_result`. These records support diagnosis and manual re-entry; prompts do not capture the exact source World or reproduce an evolving simulation by themselves. Native PAINT Undo/Redo is authoritative independently of Art. If an Art window exists, `history_edited()` appends `native_history_action` to this session log and a human canvas-result turn. It does not initiate another model request. A logging failure must not cause a native edit to repeat. Old pending-history journals remain untouched and are not injected into a new session."
+        },
+        {
+          "rank": 4,
+          "score": 19.750523,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Current implementation map",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Accepted-main implementation, separately identified candidates, approved direction and unresolved decisions\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-24\nSection: Status and foundational roadmap > Current implementation map\n| Area | Available on the accepted source | Canonical route and important boundary | |---|---|---| | Shared Workbench | One creative workspace for generated/native material scenes, painting, actor setup, Art and inspection | [First session](../operations/workbench-first-session.md); [authoring contract](../architecture/shared-workbench-authoring-data.md). An acknowledged application is different from a queued request. | | Painting and history | Native material tools, selection/copy-paste, bounded edit operations, Undo/Redo and explicit Flatten | [Painting](../operations/workbench-painting-and-history.md). Partial operations, cancellation and history limits retain their actual receipt semantics. | | Architectural generation | GEN-007 project authoring and the accepted 80-Gentek extension alongside established presets | [Generator](../systems/architectural-generator.md); [playtest](../operations/architectural-generator-playtest.md). SWARM negotiation is a separate unmerged programme. | | Materials and reactions | Native material identities, specialized kernels, generated hard/granular capability consumers and bounded reaction rules | [Materials](../systems/materials-and-rule-kernels.md); [catalogue](../systems/building-material-catalogue.md). A declared field is not necessarily an effective runtime control. | | Materials Lab | Material inspection, candidate authoring and admitted isolated native comparisons | [Materials Lab](../operations/materials-lab-authoring.md). Current-scene audition is still an unmerged successor. | | Water | Distinct solver families, unified Water Lab, Wave gameplay profile with spill/ballistic release and accepted Oil interaction work | [Water Lab](../operations/workbench-water-lab.md); [family policy](../architecture/liquid-solver-family-policy.md); [Wave](../architecture/wave-flow-v1.md). Defaults are host/profile specific; the generic native World is not interchangeable with a gameplay preset. | | Actors and equipment | Independent Workbench actor composition and existing physical actor/control/equipment paths | [Actor guide](../operations/workbench-actor-composition.md); [technical contract](../systems/workbench-actor-composition.md). Continuous-play sandbox/pilot/stack repairs remain candidates. | | Art Workbench | Provider-assisted conversation, direct native drawing, receipts, Stop/Hide and one traffic audit per game session | [Art guide](../operations/workbench-art.md); [provider contract](../systems/workbench-art-providers.md). Accepted #727 removed cross-session conversation restore. Local-provider and window repairs remain unmerged. | | Authored persistence | Saved setup/start data and standalone material-baseline files; Flatten captures stored material IDs while preserving the live World | [Saving](../operations/workbench-saving.md); [save/reference formats](level-saves-and-replay.md). Ordinary authored Save is not a complete evolved physical checkpoint. | | Native runtime | C++20 World, sparse storage, bounded phased workers, desktop owner thread and main-thread Rapier/presentation | [Architecture](../architecture/overview.md); [ownership](../architecture/data-ownership-and-lifetimes.md). Failed-world quarantine, explicit capacity outcomes and immutable handoffs remain essential. | | Rendering and recording | Native material snapshots and Godot presentation, with existing recording/diagnostic paths | [Rendering](../architecture/rendering-and-gameplay-bridges.md). Render FPS, tick counters and recorded presentation do not by themselves prove physical progression or complete replay. | | Standalone exhibitions | Deepworks, Blacksite Nine, Neon Reliquary, player playground, Thunderbowl and Strata Theatre retain their own entry points and owners | [Showcases](../operations/showcase-guide.md). Four-layer Strata is not yet ordinary Workbench layer editing. | | World Art | Accepted shared renderer, viewer, capture tools and source-bound evaluator support | [World Art](../tools/art-pipeline-unification.md). Art-only extents and exports"
+        },
+        {
+          "rank": 5,
+          "score": 19.450395,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Reproducible qualification and local setup",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Reproducible qualification and local setup\nUse a source-matched native runtime and the exact pinned Godot. Deterministic provider fixtures can test payloads, parsing, offsets, cancellation and receipts without sending a paid request. For the current session boundary, inspect/run [`test_art_session_log.gd`](../../godot/tests/test_art_session_log.gd) through the [focused test guidance](../operations/testing-validation-and-replay.md). Legacy lazy-restore/durability suites retain their original scope; their existence does not reinstate that behavior in the normal panel. The [integrated authoring runbook](../operations/wb-art-paint-integrated-candidate.md) provides a bounded Direct JSON/manual/Undo/Save walkthrough. Native compilation, headless fixtures, graphical capture, real provider inference and physical owner acceptance remain distinct evidence. No external model call was dispatched for the documentation update. <a id=\"2026-11-11-scanline-qualification\"></a> <a id=\"final-graphical-pipeline-qualification---2026-11-11\"></a> <a id=\"art-workbench-provider-connection--stage-2\"></a>"
+        }
+      ]
+    },
+    {
+      "id": "DR22",
+      "category": "hide",
+      "query": "Does hiding the Art window mean its request was stopped?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md"
+      ],
+      "facts": [
+        "Hide and Stop have different semantics; do not describe window visibility as cancellation.",
+        "Use the documented Stop/request state and native receipts to determine remaining work."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 17.897383,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026\nEvery new Workbench session starts with an empty in-memory conversation. Hiding/reopening Art within that session retains it. Ending the session discards it. Send and direct drawing do not restore earlier traffic. The obsolete `traffic_path` preference is not read for session continuation and is removed on a successful preferences save. An unavailable old log cannot block new Send. Model requests record `request_parameters`, including the chosen work area, materials, tools and limits. Direct drawing records `manual_program`, `manual_admission` and terminal `manual_result`. These records support diagnosis and manual re-entry; prompts do not capture the exact source World or reproduce an evolving simulation by themselves. Native PAINT Undo/Redo is authoritative independently of Art. If an Art window exists, `history_edited()` appends `native_history_action` to this session log and a human canvas-result turn. It does not initiate another model request. A logging failure must not cause a native edit to repeat. Old pending-history journals remain untouched and are not injected into a new session."
+        },
+        {
+          "rank": 2,
+          "score": 15.548392,
+          "path": "operations/workbench-art.md",
+          "title": "Art Workbench practical guide",
+          "heading": "Art Workbench > Stop, Hide and native results",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench practical guide\nPath: operations/workbench-art.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Direct drawing and configured provider use, native result handling, session lifetime and private traffic\ncanonical-for: [workbench-art-user-guide]\nlast-reviewed: 2026-11-24\nSection: Art Workbench > Stop, Hide and native results\n**Stop** cancels pending HTTP/capture and scheduled turns, invalidates the request generation and requests the native executor to stop. A native slice already executing can finish at its boundary. A reported **partial** result can therefore have changed the canvas. Read the confirmed count and use available Undo; do not assume cancellation rolled everything back. Closing the Art window **hides** it. It does not mean Stop, save, or end of the Workbench session. Reopen **Art batches** to inspect the same session. For Undo/Redo, Stop first and wait for model, capture, drawing, deferred manual strokes and receipt processing to settle. Both Art and manual controls use the same chronological history. ```mermaid flowchart TD A[\"Direct JSON or model response\"] --> B[\"Parse and validate drawing\"] B --> C[\"Queue native work\"] C --> D[\"Native slice and stored-material readback\"] D --> E[\"Completed or partial receipt\"] E --> F[\"History and visible result\"] S[\"Stop\"] --> C S --> E ``` **Queued is admission, not applied success.** A result from before Reset, Load or World replacement is stale and must not draw into the new scene. Source failures, rejection and missing acknowledgements are not success receipts."
+        },
+        {
+          "rank": 3,
+          "score": 13.805174,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "title": "Shared manual and Art authoring runbook",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Shared manual and Art authoring runbook\nPath: operations/wb-art-paint-integrated-candidate.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Accepted generator, PAINT and Art workflow; native receipts, shared history, authored save and bounded verification\ncanonical-for: [integrated-paint-agent-workbench]\nlast-reviewed: 2026-11-24\nSection: Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence\nThe native authoring document records completed edits in order. **Save start** refuses while shared mutation, replacement or receipt work remains unresolved. A failed save preserves the existing named file; it cannot serialize unseen queued work as applied. Fragmented drawing can still exceed the 32,768-stamp or 1 MiB ordinary save envelope. The UI must report that refusal instead of dropping history or silently truncating a start. Generated starts retain their resolved recipe plus ordered edits; actors retain authored settings/spawns and supported equipment. **Flatten / Bake History\u2026** is an accepted, separate explicit material-baseline operation. It retires previous construction/Undo history but does not save automatically or capture exact physical continuation. Use [the saving guide](workbench-saving.md) for recovery and the distinction between current live World, authored baseline and disk file. Art conversation is session-local after #727. Hiding the Art window retains the same session; returning to the launcher ends it. A World Save is not a provider conversation save. Native history does not require a restored traffic archive."
+        },
+        {
+          "rank": 4,
+          "score": 13.556299,
+          "path": "operations/workbench-art.md",
+          "title": "Art Workbench practical guide",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench practical guide\nPath: operations/workbench-art.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Direct drawing and configured provider use, native result handling, session lifetime and private traffic\ncanonical-for: [workbench-art-user-guide]\nlast-reviewed: 2026-11-24\nSection: Art Workbench > Conversation and private traffic\nEach new Workbench session starts with an empty in-memory conversation. Hiding and reopening Art within that session keeps it; ending the session discards it. Provider/model/endpoint/control preferences can persist in `user://art-provider.cfg`. Previous conversations are not automatically restored. The first log event creates one new JSONL file under `user://art-traffic/`. Requests, responses, direct programs and native results append there for the session. **Traffic\u2026** shows the path, a readable or Raw JSONL view, filtering, copy and **Save full JSONL\u2026** export. Old archives are preserved on disk but are not attached to a new session. Logs are evidence for manual diagnosis, not exact replay of an evolving World. The logger redacts known key/bearer patterns and configured credentials, but prompts, model replies, canvas images and other private content remain sensitive. Inspect and redact a diagnostic extract before sharing it. An endpoint is the destination for its request and credentials; automatic HTTP redirects are disabled. Never paste unrelated secrets into a prompt."
+        },
+        {
+          "rank": 5,
+          "score": 12.650193,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "title": "Shared manual and Art authoring runbook",
+          "heading": "Integrated PAINT and agent Shared Workbench > A small end-to-end authoring exercise",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Shared manual and Art authoring runbook\nPath: operations/wb-art-paint-integrated-candidate.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Accepted generator, PAINT and Art workflow; native receipts, shared history, authored save and bounded verification\ncanonical-for: [integrated-paint-agent-workbench]\nlast-reviewed: 2026-11-24\nSection: Integrated PAINT and agent Shared Workbench > A small end-to-end authoring exercise\n1. Open **Development workbench**. Stay paused and use a blank canvas, or install a small completed native preview through **New from generator\u2026**. 2. In Paint mode, choose Hard Wall, draw a short rectangle, then use Eraser to open a gap. Select the result, **Copy**, and **Paste** a second instance. 3. Open **Art batches**, select **Direct JSON**, and use the [small rectangle/disc example](workbench-art.md#draw-without-a-model). Choose a clear work area: ordinary Art overwrites only existing Empty/Hard Wall, with body/source/protected-area checks applied separately. 4. Wait for the terminal native result. Inspect actual changed/excluded counts. **Queued** alone does not establish that a cell changed. 5. Make another human edit. Use **Undo** twice and **Redo** twice. The latest human edit is reached before the preceding Art drawing; the Art panel and Paint row address the same timeline. 6. Enter a unique name in the painting row and **Save start [Ctrl+S]**. Exit, reopen and **Load start**. Check the authored geometry and spawns, then make a new edit. A reopened start has no old in-memory Undo stack. This procedure uses no paid model request. It was source-checked for the current documentation baseline; no fresh interactive graphical execution is claimed. The [Art guide](workbench-art.md) separately covers provider configuration, session conversation, Stop versus hiding, and private traffic."
+        }
+      ]
+    },
+    {
+      "id": "DR23",
+      "category": "session",
+      "query": "After accepted ART-SESSION-LOG-001, are yesterday\u2019s Art conversation messages automatically restored on the next game launch?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Accepted #727 uses session-only conversation lifetime and one JSONL audit per game session.",
+        "Old lazy conversation restore instructions from #681 are superseded for the current accepted path; old audit files are not an implicit chat restore."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 29.322871,
+          "path": "operations/workbench-art.md",
+          "title": "Art Workbench practical guide",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench practical guide\nPath: operations/workbench-art.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Direct drawing and configured provider use, native result handling, session lifetime and private traffic\ncanonical-for: [workbench-art-user-guide]\nlast-reviewed: 2026-11-24\nSection: Art Workbench > Conversation and private traffic\nEach new Workbench session starts with an empty in-memory conversation. Hiding and reopening Art within that session keeps it; ending the session discards it. Provider/model/endpoint/control preferences can persist in `user://art-provider.cfg`. Previous conversations are not automatically restored. The first log event creates one new JSONL file under `user://art-traffic/`. Requests, responses, direct programs and native results append there for the session. **Traffic\u2026** shows the path, a readable or Raw JSONL view, filtering, copy and **Save full JSONL\u2026** export. Old archives are preserved on disk but are not attached to a new session. Logs are evidence for manual diagnosis, not exact replay of an evolving World. The logger redacts known key/bearer patterns and configured credentials, but prompts, model replies, canvas images and other private content remain sensitive. Inspect and redact a diagnostic extract before sharing it. An endpoint is the destination for its request and credentials; automatic HTTP redirects are disabled. Never paste unrelated secrets into a prompt."
+        },
+        {
+          "rank": 2,
+          "score": 26.072582,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "title": "Shared manual and Art authoring runbook",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Shared manual and Art authoring runbook\nPath: operations/wb-art-paint-integrated-candidate.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Accepted generator, PAINT and Art workflow; native receipts, shared history, authored save and bounded verification\ncanonical-for: [integrated-paint-agent-workbench]\nlast-reviewed: 2026-11-24\nSection: Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence\nThe native authoring document records completed edits in order. **Save start** refuses while shared mutation, replacement or receipt work remains unresolved. A failed save preserves the existing named file; it cannot serialize unseen queued work as applied. Fragmented drawing can still exceed the 32,768-stamp or 1 MiB ordinary save envelope. The UI must report that refusal instead of dropping history or silently truncating a start. Generated starts retain their resolved recipe plus ordered edits; actors retain authored settings/spawns and supported equipment. **Flatten / Bake History\u2026** is an accepted, separate explicit material-baseline operation. It retires previous construction/Undo history but does not save automatically or capture exact physical continuation. Use [the saving guide](workbench-saving.md) for recovery and the distinction between current live World, authored baseline and disk file. Art conversation is session-local after #727. Hiding the Art window retains the same session; returning to the launcher ends it. A World Save is not a provider conversation save. Native history does not require a restored traffic archive."
+        },
+        {
+          "rank": 3,
+          "score": 24.968106,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention\n**Traffic\u2026** shows readable messages or Raw JSONL, filtering, copy, the current session file path and **Save full JSONL\u2026**. Requests, responses, native admission, terminal results and cancellation carry their actual timestamps and content. The bounded live viewer and full file are different things; disk errors remain visible and missing disk content is not recovered from a bounded tail. The first log event creates one new root JSONL under `user://art-traffic/`. Requests and results append to this file for the Workbench session. No older file is linked or copied into it. The original source already has a redactor for configured keys, bearer strings, common credential formats and URL secrets; request Authorization headers are excluded from logged request objects. Prompts, responses, images and arbitrary private strings can still be sensitive. Inspect and redact an extract before publishing a bug report."
+        },
+        {
+          "rank": 4,
+          "score": 22.76014,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026\nEvery new Workbench session starts with an empty in-memory conversation. Hiding/reopening Art within that session retains it. Ending the session discards it. Send and direct drawing do not restore earlier traffic. The obsolete `traffic_path` preference is not read for session continuation and is removed on a successful preferences save. An unavailable old log cannot block new Send. Model requests record `request_parameters`, including the chosen work area, materials, tools and limits. Direct drawing records `manual_program`, `manual_admission` and terminal `manual_result`. These records support diagnosis and manual re-entry; prompts do not capture the exact source World or reproduce an evolving simulation by themselves. Native PAINT Undo/Redo is authoritative independently of Art. If an Art window exists, `history_edited()` appends `native_history_action` to this session log and a human canvas-result turn. It does not initiate another model request. A logging failure must not cause a native edit to repeat. Old pending-history journals remain untouched and are not injected into a new session."
+        },
+        {
+          "rank": 5,
+          "score": 22.456226,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Collaboration, scanline and pacing preview",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Collaboration, scanline and pacing preview\nThe retained section name is a compatibility anchor. These current controls are implemented, although separate Batch/agent programmes are not implied: | Control | Accepted behavior | | --- | --- | | Full context | Current-session conversation. | | Compacted | Most recent 12 turns plus latest-result summary. | | Custom | Currently the same bounded selection as Compacted. | | None | No previous conversation in the next request. | | Turns | Default 1; zero continues until Stop, model completion or another limit. | | Limits\u2026 | Minimum request interval, elapsed-run limit and estimated spending ceiling; zero disables the corresponding bound. | | Conversation\u2026 | Edit future request context in this session; do not rewrite earlier native receipts. | | Scanline | Admitted local-to-focus line/stencil output through the same native executor. | Spending uses user-entered token rates and returned usage after a response. A ceiling can be exceeded by one request; missing usage cannot become a known cost. There is no live price lookup or prepaid-credit guarantee. Automatic paid dispatch is not a documentation or qualification prerequisite."
+        }
+      ]
+    },
+    {
+      "id": "DR24",
+      "category": "privacy",
+      "query": "Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?",
+      "canonical": [
+        "systems/workbench-art-providers.md",
+        "operations/workbench-art.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "Traffic and prompts can be private; inspect and redact exported logs instead of treating all diagnostics as safe.",
+        "Share minimal source/runtime/error evidence and synthetic reproduction data; never include credentials."
+      ],
+      "sources": [
+        "systems/workbench-art-providers.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 23.636892,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention\n**Traffic\u2026** shows readable messages or Raw JSONL, filtering, copy, the current session file path and **Save full JSONL\u2026**. Requests, responses, native admission, terminal results and cancellation carry their actual timestamps and content. The bounded live viewer and full file are different things; disk errors remain visible and missing disk content is not recovered from a bounded tail. The first log event creates one new root JSONL under `user://art-traffic/`. Requests and results append to this file for the Workbench session. No older file is linked or copied into it. The original source already has a redactor for configured keys, bearer strings, common credential formats and URL secrets; request Authorization headers are excluded from logged request objects. Prompts, responses, images and arbitrary private strings can still be sensitive. Inspect and redact an extract before publishing a bug report."
+        },
+        {
+          "rank": 2,
+          "score": 20.783594,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-11-24\nSection: Local build and validation > Isolated test data and diagnostics\nGodot tests and graphical captures must not overwrite the owner's saved scenes, Art traffic or local provider configuration. Use the repository's [isolated Godot runner](../../tools/physics/isolated_godot.py) or the appropriate existing test/capture harness with its own user profile. Inspect that harness's arguments and refusal rules before invoking it; a normal interactive launch intentionally uses the user's ordinary application data. For a useful failure report, record the checkout SHA and dirty state, exact Godot version, native runtime/provenance identity, platform, command, fixture or small synthetic setup, steps, expected result, actual result and whether the operation was queued, applied, displayed or refused. Include the first relevant error and completion status, not only a green process exit. Preserve the original failed result alongside a successful retry. Art prompts, traffic, endpoint credentials and owner maps may be private: inspect and redact attachments, and prefer a synthetic reproduction. [Troubleshooting](troubleshooting.md) covers common launch, focus, runtime and capacity failures."
+        },
+        {
+          "rank": 3,
+          "score": 18.258952,
+          "path": "operations/workbench-art.md",
+          "title": "Art Workbench practical guide",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench practical guide\nPath: operations/workbench-art.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Direct drawing and configured provider use, native result handling, session lifetime and private traffic\ncanonical-for: [workbench-art-user-guide]\nlast-reviewed: 2026-11-24\nSection: Art Workbench > Conversation and private traffic\nEach new Workbench session starts with an empty in-memory conversation. Hiding and reopening Art within that session keeps it; ending the session discards it. Provider/model/endpoint/control preferences can persist in `user://art-provider.cfg`. Previous conversations are not automatically restored. The first log event creates one new JSONL file under `user://art-traffic/`. Requests, responses, direct programs and native results append there for the session. **Traffic\u2026** shows the path, a readable or Raw JSONL view, filtering, copy and **Save full JSONL\u2026** export. Old archives are preserved on disk but are not attached to a new session. Logs are evidence for manual diagnosis, not exact replay of an evolving World. The logger redacts known key/bearer patterns and configured credentials, but prompts, model replies, canvas images and other private content remain sensitive. Inspect and redact a diagnostic extract before sharing it. An endpoint is the destination for its request and credentials; automatic HTTP redirects are disabled. Never paste unrelated secrets into a prompt."
+        },
+        {
+          "rank": 4,
+          "score": 16.551454,
+          "path": "reference/validation-evidence.md",
+          "title": "Validation evidence ledger",
+          "heading": "Validation evidence ledger > Platform limits and honest outcomes",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Validation evidence ledger\nPath: reference/validation-evidence.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: How to locate and interpret source-bound validation; dated results do not certify a new runtime or every platform\ncanonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]\nlast-reviewed: 2026-11-24\nSection: Validation evidence ledger > Platform limits and honest outcomes\nOld sanitizer results and current Windows fixtures do **not** prove Linux, Firefox or Safari work. Historical M11, dated Chromium compatibility/threaded results, later Linux native/headless/rendered evidence and physical Windows observations retain separate scope. Browser support must be established on the actual source, profile and browser; a successful Web compile is insufficient. The existing records do not supply universal Firefox/Safari acceptance. Web toolchain/template/export-identity obligations remain separately tracked. Use explicit outcomes: **PASS** for executed criteria that passed; **FAIL** for an executed failure; **SKIP** for a deliberately suppressed gate; **NOT RUN** for no execution; **BLOCKED** for an unavailable prerequisite. Describe the reason and preserve failed attempts. A Draft-skipped expensive job is not a green runtime result. A documentation candidate can be qualified as documentation while runtime and physical acceptance remain outside its scope. Keep diagnostic evidence minimal and safe to share. Record source, version, short reproduction, actual result and relevant sanitized output. Art traffic and owner maps can contain private content; do not attach whole archives merely to report a UI defect. Never publish provider credentials."
+        },
+        {
+          "rank": 5,
+          "score": 13.607984,
+          "path": "systems/workbench-art-providers.md",
+          "title": "Art Workbench provider and session contract",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Art Workbench provider and session contract\nPath: systems/workbench-art-providers.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Accepted provider adapters, request/native boundary, current-session conversation, cancellation and private traffic\ncanonical-for: [workbench-art-providers]\nlast-reviewed: 2026-11-24\nSection: Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026\nEvery new Workbench session starts with an empty in-memory conversation. Hiding/reopening Art within that session retains it. Ending the session discards it. Send and direct drawing do not restore earlier traffic. The obsolete `traffic_path` preference is not read for session continuation and is removed on a successful preferences save. An unavailable old log cannot block new Send. Model requests record `request_parameters`, including the chosen work area, materials, tools and limits. Direct drawing records `manual_program`, `manual_admission` and terminal `manual_result`. These records support diagnosis and manual re-entry; prompts do not capture the exact source World or reproduce an evolving simulation by themselves. Native PAINT Undo/Redo is authoritative independently of Art. If an Art window exists, `history_edited()` appends `native_history_action` to this session log and a human canvas-result turn. It does not initiate another model request. A logging failure must not cause a native edit to repeat. Old pending-history journals remain untouched and are not injected into a new session."
+        }
+      ]
+    },
+    {
+      "id": "DR25",
+      "category": "strata",
+      "query": "Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "systems/depth-layers-and-parallax.md",
+        "operations/semantic-depth-authoring.md"
+      ],
+      "facts": [
+        "Standalone four-plane presentation/authoring exists within its own documented ownership.",
+        "Ordinary Shared Workbench integration remains a separately unmerged candidate at the recorded source; do not conflate it with standalone availability."
+      ],
+      "sources": [
+        "systems/depth-layers-and-parallax.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 27.994262,
+          "path": "systems/depth-layers-and-parallax.md",
+          "title": "Depth layers and parallax prototypes",
+          "heading": "Depth layers and parallax prototypes > Strata Theatre controls",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Depth layers and parallax prototypes\nPath: systems/depth-layers-and-parallax.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership\ncanonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]\nlast-reviewed: 2026-10-20\nSection: Depth layers and parallax prototypes > Strata Theatre controls\n- **1-5** \u2014 Flat / Relief / Four layers / Hybrid / Diorama. - **WASD / arrows** \u2014 camera pan. - **Space** \u2014 pause dynamic planes; **Step** advances admitted dynamic planes once. - **E** \u2014 rear reactor sequence. - **R** \u2014 reset all four worlds. - **Left mouse** \u2014 paint selected layer/material. - **Right mouse** \u2014 erase selected layer. - **Middle mouse** \u2014 toggle automatic camera motion. - **Tab** \u2014 hide/show controls. - **Esc** \u2014 return to a fresh ordinary sandbox. Background remains immutable even if selected as a paint target, making the failure visible rather than hiding it in UI policy."
+        },
+        {
+          "rank": 2,
+          "score": 21.241024,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > Choose the correct owning contract",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Current task intake, ownership and handoff; implementation status, intent and qualification have separate canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-24\nSection: Development handover > Choose the correct owning contract\n| Task | Read first | Preserve | |---|---|---| | Painting, generator application, Art drawing or history | [Shared authoring](../architecture/shared-workbench-authoring-data.md), [direct batches](../systems/workbench-direct-art-batches.md) | Baseline/revision identity, one edit ordering, native completion receipts, bounded cancellation and history semantics. | | Save, Flatten or persistent-area work | [Save formats](../reference/level-saves-and-replay.md), [owner Save intent](../reference/product-intent-and-priorities.md#save-flatten-and-compatibility) | Authored layout versus live physical state; Flatten is a two-byte material plane and does not reset the live World. Persistent-area candidates have separate owners. | | Materials, Water, reactions or Lab | [Materials](../systems/materials-and-rule-kernels.md), [Water families](../architecture/liquid-solver-family-policy.md), [Lab](materials-lab-authoring.md) | Material identity, effective consumers, family-specific quantity/physics, immutable compatibility evidence and reviewed source transitions. | | Actors, equipment or destruction | [Actor composition](../systems/workbench-actor-composition.md), [coupling](../architecture/rigid-body-and-cellular-coupling.md) | Main-thread Rapier, native material authority, producer leases and actual accepted capabilities. ObjectShard/actor/equipment successors remain separate candidates. | | Rendering, scheduling or physical progression | [Threading](../architecture/simulation-tick-and-threading.md), [rendering](../architecture/rendering-and-gameplay-bridges.md) | Snapshot lifetime, accepted worker ownership, physical progression evidence and public receipt identity. PUBPRES findings do not silently select a new architecture. | | Strata or scene depth | [Depth layers](../systems/depth-layers-and-parallax.md), [semantic planes](../systems/procedural-semantic-planes.md) | Standalone layered owners versus ordinary Workbench integration; Strata Theatre names the four-layer feature only. | | Provider integration | [Art providers](../systems/workbench-art-providers.md), [Art guide](workbench-art.md) | Current session-only lifetime, actual transport/receipt states, credentials and private traffic boundaries. No paid dispatch from a documentation test. | | Build, qualification or publication | [Build](local-build-and-validation.md), [release](github-development-and-release.md), [validation](testing-validation-and-replay.md) | Exact source/artifact/platform evidence, mandatory tests, guarded publication leases and explicit owner merge authority. |"
+        },
+        {
+          "rank": 3,
+          "score": 20.577505,
+          "path": "systems/depth-layers-and-parallax.md",
+          "title": "Depth layers and parallax prototypes",
+          "heading": "Depth layers and parallax prototypes > Purpose",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Depth layers and parallax prototypes\nPath: systems/depth-layers-and-parallax.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership\ncanonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]\nlast-reviewed: 2026-10-20\nSection: Depth layers and parallax prototypes > Purpose\nres://depth_lab.tscn is an opt-in comparison host for visual and figurative depth in CyberSand. It deliberately keeps several ideas visible side by side instead of making one of them production authority. The lab is called **Strata Theatre**. It can be opened directly, with --depth-lab, or from the ordinary desktop sandbox with **F4**. [Deepworks](../operations/deepworks-exhibition.md) reuses these four material planes in a separate 1024 \u00d7 1024 exhibition host, opened with `--deepworks` or `res://deepworks.tscn`. Its sixteen districts, source programme, independent clocks and camera/painting controls belong to that guide. Strata Theatre retains its original default dimensions and controls. | View | Meaning | |---|---| | Flat | Foreground-only control. | | Quantized relief | Bounded quantized samples of the foreground material image are offset/scaled behind the source silhouette to imply thickness. | | Four layers | Four independently authored material worlds are rendered together with different scale/parallax factors. | | Hybrid | Four layers plus foreground relief, distance haze and rear-scene reflection masked by foreground liquid IDs. | | Diorama | Hybrid plus a faster near-camera foreground-derived frame and pointer-centred cutaway. | None of the presentation-only modes creates authoritative Z coordinates, colliders, hidden material mass or a second owner of the play world."
+        },
+        {
+          "rank": 4,
+          "score": 19.910132,
+          "path": "operations/showcase-guide.md",
+          "title": "Explore CyberSand showcases and laboratories",
+          "heading": "Explore the showcases",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Explore CyberSand showcases and laboratories\nPath: operations/showcase-guide.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Launcher navigation, distinct standalone demonstrations, genuine retained images and their limits\ncanonical-for: [showcase-navigation]\nlast-reviewed: 2026-11-24\nSection: Explore the showcases\nThe feature launcher is a collection of distinct scenes and laboratories. Each entry has its own controls and reset behavior. **F2 returns to the launcher and closes the current session.** Save authored Workbench work before leaving it. | Launcher entry | Why open it? | Guide and boundary | | --- | --- | --- | | Development workbench | Paint, generate, place actors, run material experiments and save starts. | [First session](workbench-first-session.md); ordinary authoring front door. | | Materials Lab | Inspect effective native properties and compare candidate definitions. | [Materials Lab](materials-lab-authoring.md); candidate Worlds remain isolated. | | Player playground | Try seven movement presets on a shared course. | [Controls](../systems/player-control-playground.md); experimental handling, not physical acceptance. | | Deepworks | Explore sixteen districts with foreground/rear material exhibits and four material planes. | [Exhibition](deepworks-exhibition.md); free-camera viewer, not the ordinary actor session. | | Blacksite Nine | Traverse a continuous 3\u00d73 industrial complex in one native world. | [Blacksite guide](blacksite-nine-demo.md); district camera changes preserve the complex. | | Neon Reliquary | Visit the machine cathedral and three district tiles below it. | [Scene guide](neon-reliquary-demo.md); switching district reconstructs that tile, not seamless streaming. | | Actor sandbox | Compare the articulated Rapier catalogue through F5. | [Physical actors](../systems/physical-actor-rigs.md); distinct from Workbench Actor Composition. | | Materials sandbox / Experiment Tower | Inspect structured native material experiments. | [Experiment Tower](experiment-tower.md). | | Liquid comparison / Wave Flow | Compare law-specific Water behavior and apparatus. | [Liquid comparison](lcb-manual-comparison-ux.md), [Wave evaluation](wave-flow-evaluation.md). | | Thunderbowl / Physical Thunderbowl | Exercise controller contracts, scripted pilots and physical equipment. | [Control reference](../systems/thunderbowl-control-reference.md); sampled virtual-tag rewards and physical lab have different scopes. | | 4LY Flight Lab | Inspect the dedicated physical drone training plant. | [Flight contract](../systems/physical-free-flight.md); calibration and handling claims are qualified separately. | | World generation workbench | Inspect generation stages and semantic authoring previews. | [Generation Workbench 2](../systems/generation-workbench-2.md); separate from the Shared Workbench generator dialog. | | Semantic depth | Compare generated refinery and cavern projections. | [Depth authoring](semantic-depth-authoring.md); four-plane semantic scene. | | Strata Theatre | Explore standalone layering, parallax and depth modes. | [Layered world contract](../systems/depth-layers-and-parallax.md); ordinary Workbench integration is a separate candidate. | The [World Art viewer](../tools/world-art-preview.md) supplies another standalone viewer/capture workflow. Its artwork dimensions are not native playable World limits. It is not an automatic import of every reference image into simulation."
+        },
+        {
+          "rank": 5,
+          "score": 19.11078,
+          "path": "systems/depth-layers-and-parallax.md",
+          "title": "Depth layers and parallax prototypes",
+          "heading": "Depth layers and parallax prototypes > Generated semantic-depth host",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Depth layers and parallax prototypes\nPath: systems/depth-layers-and-parallax.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership\ncanonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]\nlast-reviewed: 2026-10-20\nSection: Depth layers and parallax prototypes > Generated semantic-depth host\n[GEN-005](procedural-semantic-planes.md) adds a separate opt-in semantic depth scene using the same four-World and compositor owners. One native hierarchy produces all four proposals, typed links, finite fixtures and play-only actor placements. Its subclass validates complete copied bundles and owner-issued runtime observations; the original Strata/Deepworks commands retain their existing scopes. The base reset has a candidate-owner preparation hook before its commit, allowing the existing actor session to stage against candidate play without exposing a partly replaced World set. See [ADR-014](../decisions/ADR-014-semantic-plane-admission.md)."
+        }
+      ]
+    },
+    {
+      "id": "DR34",
+      "category": "ramcache",
+      "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "Persistent-area and RAMCACHE successors remain unmerged at the recorded source.",
+        "Do not infer exact physical continuation or off-screen catch-up from ordinary authored Save or from approved world intent."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 27.585667,
+          "path": "systems/world-storage-and-interest-region.md",
+          "title": "World storage and interest region",
+          "heading": "World storage and interest region > Approved area intent and accepted behavior",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: World storage and interest region\nPath: systems/world-storage-and-interest-region.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate\ncanonical-for: [world-storage, camera-interest-region]\nlast-reviewed: 2026-11-24\nSection: World storage and interest region > Approved area intent and accepted behavior\nThe [14 November owner record](../decisions/2026-11-14-owner-authoring-intent.md#world-extent-persistence-and-time) asks for one fixed canvas plus persistent areas, with useful approximation and bounded catch-up measured in **game time**, not real offline wall time. Existing interest-region re-entry only restores current eligibility; it does not implement that catch-up. Do not turn a source limitation into a permanent rejection of the owner's desired feature, or describe an unmerged RAMCACHE evaluator as accepted. The [roadmap](../reference/status-and-roadmap.md) is the current programme route."
+        },
+        {
+          "rank": 2,
+          "score": 26.345948,
+          "path": "reference/product-intent-and-priorities.md",
+          "title": "Product intent and priorities",
+          "heading": "Product intent and priorities > World extent, persistence and time",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Product intent and priorities\nPath: reference/product-intent-and-priorities.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Approved design\nscope: Source-linked owner direction and preserved preferences; implementation, qualification and execution permission remain separate\ncanonical-for: [owner-intent, product-priorities, preserved-material-feel]\nlast-reviewed: 2026-11-24\nSection: Product intent and priorities > World extent, persistence and time\n**Approved:** one fixed canvas plus persistent areas loaded while travelling should cover most intended uses. Broad continuous canvases should support biomes or small towns; presentation can later disguise boundaries. Non-square/broad maps do not imply a change to the display-pixel scale. A useful simulated border around the active view, potentially extended in the travel direction, is desirable. On returning to an area, approximate headless catch-up is preferred to a visibly frozen room. Use **game time**, not elapsed real-world offline time. Occasional transitions lasting a few seconds and an optional deliberate **simulate ahead** control are acceptable. Quantized or approximate catch-up can be useful. Retained state, cross-area exchanges, safe workload budgets, activity margins and policy evolution need their own contracts. Track last accounted simulation time when an area can continue running in a border. Headless work still costs compute. Persistent-area/RAMCACHE candidates are not accepted-main guarantees merely because this intent is approved."
+        },
+        {
+          "rank": 3,
+          "score": 23.738159,
+          "path": "architecture/overview.md",
+          "title": "Architecture overview",
+          "heading": "Architecture overview > Which contract should foundational work load next?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Architecture overview\nPath: architecture/overview.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Current execution paths and authority map; routes to the contracts that govern changes\ncanonical-for: [architecture-entry-point]\nlast-reviewed: 2026-11-24\nSection: Architecture overview > Which contract should foundational work load next?\n- Ownership/concurrency: [lifetimes](data-ownership-and-lifetimes.md), [tick order](simulation-tick-and-threading.md), [spatial geometry](chunk-tile-and-buffer-model.md). - Materials and Water: [kernels](../systems/materials-and-rule-kernels.md), [solver distinctions](../systems/water-design.md), [native policy](liquid-solver-family-policy.md). - Authoring: [shared data](shared-workbench-authoring-data.md), [save boundaries](../reference/level-saves-and-replay.md), [actor composition](../systems/workbench-actor-composition.md). - Physics/presentation: [coupling](rigid-body-and-cellular-coupling.md), [render bridge](rendering-and-gameplay-bridges.md), [standalone Strata Theatre](../systems/depth-layers-and-parallax.md). - Evidence and decisions: [invariants](../reference/invariants.md), [roadmap](../reference/status-and-roadmap.md), [ADRs](../decisions/). **Approved direction, not accepted implementation at this source:** persistent areas with bounded catch-up, ordinary Workbench four-plane authoring, live-scene material audition and further physical-structure integration. Follow their programme records before claiming availability. **Planned:** complete application replay, safe live capacity reconfiguration and broader typed command contracts. **Deferred:** asynchronous Web ownership and GPU field experiments. **Rejected in the current architecture:** shared mutable rendering reads, per-cell locks and full-world double buffering as the ordinary model."
+        },
+        {
+          "rank": 4,
+          "score": 22.3145,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Approved direction and unresolved choices",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Accepted-main implementation, separately identified candidates, approved direction and unresolved decisions\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-24\nSection: Status and foundational roadmap > Approved direction and unresolved choices\nThe [14 November owner record](../decisions/2026-11-14-owner-authoring-intent.md) establishes paint-and-play authoring, convincing physical behavior, useful prepared destruction, live material experimentation, four-layer presentation and fixed canvases connected by persistent areas. It also specifies **game-time** catch-up, not real-world offline elapsed time. These intentions remain separate from implementation and from permission to resume a held branch. | Question | Current disposition and owning route | |---|---| | Does ordinary Save capture all evolved materials and physical state? | Authored formats and material-baseline capture have distinct semantics. Desired evolved-layout Save must not be described as complete physical continuation. [Save contracts](level-saves-and-replay.md) and [owner intent](product-intent-and-priorities.md#save-flatten-and-compatibility) preserve the difference. | | Do large scenes and busy physics remain responsive? | This is an active owner-visible problem. PUBPRES, PAINT and actor successors own their repairs; counters and hosted graphical passes do not settle playfeel. | | Can every material property be edited live? | No such general accepted contract exists. Effective consumers, specialized kernels and safe audition scope must be identified separately. | | Are rigid-body motion, cutting and chemistry fully unified? | Accepted coupling and actor tools have bounded contracts. ObjectShard owns the unmerged successor; no automatic promotion from an isolated prototype. | | Is complete replay or cross-platform physical identity available? | No general authored-save promise supplies it. Use [determinism](../architecture/determinism-and-boundary-transfers.md) and the versioned native checkpoint contracts for exact supported scopes. | | Are wider persistent worlds complete? | Fixed authored canvases are current; general residency/streaming/catch-up remain separately scoped candidate or Planned work. | | May old material source locks be updated to make validation pass? | No. Preserve frozen evidence and use the existing reviewed transition process for authorized changes. Documentation does not grant a protected-source transition. | | Is the project publicly licensed or ready for public distribution? | No project license has been selected. [License status](../../LICENSE_STATUS.md) and [third-party notices](../../THIRD_PARTY_NOTICES.md) remain authoritative. |"
+        },
+        {
+          "rank": 5,
+          "score": 22.191583,
+          "path": "systems/world-storage-and-interest-region.md",
+          "title": "World storage and interest region",
+          "heading": "World storage and interest region",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: World storage and interest region\nPath: systems/world-storage-and-interest-region.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate\ncanonical-for: [world-storage, camera-interest-region]\nlast-reviewed: 2026-11-24\nSection: World storage and interest region\n**Current:** native World supports sparse signed-coordinate storage and explicit capacity limits. Ordinary demo/Web level exchange uses a1024\u00d71024 backing; Shared Workbench has its own finite512\u20132048-per-axis authoring schema and fresh 2048\u00d72048 setup. These host bounds do not limit native signed sparse coordinates. See [`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd). Camera-interest filtering in the phased backend pauses excluded work and wakes newly included resident activity blocks once at tick entry, without elapsed-time catch-up. Safe live capacity expansion is **Planned**. Persistent areas with bounded game-time catch-up are approved owner direction and have separate unmerged GEN-006 candidates; this accepted baseline does not include their residency/cache manager. General sparse-world persistence and continuous streaming remain separate. CYSD1 reconstructs a finite demo level; Workbench authored starts and native CYPS have their own narrower contracts in [save and replay](../reference/level-saves-and-replay.md). **Current GEN-001/GEN-002 source:** opt-in native procedural generators can prepare complete deterministic chunks on demand, and `World::install_generated_chunk` can admit one absent chunk through the exclusive owner. The workbench generates copied previews in its own bounded cache. These additions do not supply the Deferred manager for loading/evicting simulation residents or the Planned serializer for modified sparse worlds. See [procedural generation](procedural-world-generation.md) for that implemented candidate scope, [field/mask controls](procedural-generation-fields-and-modifiers.md) for the extension, and the dated [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md)/[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md) evidence for validation limits. A \u201c2\u00d7\u201d workload is a validation target whose dimensions must be stated; it is not a maximum world size or proof that storage streaming exists. Current finite demo dimensions and reserved capacities do not define the future stored-world limit. Source identity is recorded in the [checkpoint](../operations/source-checkpoint-and-recovery.md); dated execution and artifact limits are in the [evidence ledger](../reference/validation-evidence.md)."
+        }
+      ]
+    },
+    {
+      "id": "DR35",
+      "category": "art-render",
+      "query": "Can I use the World Art viewer and large PNG captures without treating its dimensions as native playable World capacity?",
+      "canonical": [
+        "tools/art-pipeline-unification.md",
+        "tools/world-art-capture.md",
+        "tools/world-art-preview.md"
+      ],
+      "facts": [
+        "World Art viewer/capture is a separate art workflow with its own dimensions and bounds.",
+        "Art-only output dimensions do not enlarge native simulation capacity or establish physical GPU acceptance."
+      ],
+      "sources": [
+        "tools/art-pipeline-unification.md",
+        "tools/world-art-capture.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 34.834323,
+          "path": "tools/world-art-capture.md",
+          "title": "World Art unattended capture",
+          "heading": "World Art unattended capture \u2014 real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: World Art unattended capture\nPath: tools/world-art-capture.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Production Godot framebuffer capture, streamed PNG transport, provenance and publication safety\ncanonical-for: [world-art-unattended-capture]\nlast-reviewed: 2026-11-20\nSection: World Art unattended capture \u2014 real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels\nThe standard Godot `Image` full export is limited to 50,000,000 output pixels. **Explicitly** add `--stream-large` to `--capture` to allow an authored composition to export at up to **100,000,000 output pixels and 65,536 pixels per output axis** without allocating a world-sized output `Image`. The source art adapter still requires at most 16,777,216 native material cells and 16,384 cells per input side. For example, an authored 1024\u00d74096 map at 4\u00d7 requests a real 4096\u00d716384 (67,108,864-pixel) PNG: ~~~bash python3 tools/world_art_preview_launcher.py --capture --godot=godot \\ --pack=/absolute/your/pack.json --shots=full --scale=4 --stream-large \\ --output-dir=/absolute/captures/streamed-001 ~~~ Godot renders the original RG8 production shaders into 512-native-cell tiles with a 32-cell halo, writes each exact cropped RGB8 framebuffer tile with SHA-256, then the trusted Python transport verifies and assembles those pixels by scanline with `zlib` into a final RGB PNG. The manifest is marked complete **only after** tile coverage, byte counts and SHA-256, PNG CRC/deflate, pixel length, output dimensions, source identity and source-immutability checks pass. Intermediate RGB files are deleted on success; failed evidence is retained with a failure status. This is streamed PNG *transport*, not a second material renderer. The CLI `--verify-bundle` also validates PNGs in bounded memory. Ordinary capture, viewer screenshots and all `--shots=viewport,detail` remain unchanged. The interactive **Save full** button retains its stricter 50M bound; use this CLI when a truly larger whole-map PNG is required. **No native playable World size, physics or save/load compatibility is inferred from art preview dimensions.**"
+        },
+        {
+          "rank": 2,
+          "score": 32.474565,
+          "path": "tools/world-art-preview.md",
+          "title": "World Art interactive viewer",
+          "heading": "World Art interactive viewer > Output and limits",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: World Art interactive viewer\nPath: tools/world-art-preview.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Standalone Godot World Art inspection, navigation, comparison and export controls\ncanonical-for: [world-art-interactive-viewer]\nlast-reviewed: 2026-11-20\nSection: World Art interactive viewer > Output and limits\nEach export creates a unique directory under `user://world-art-preview/captures/` containing its PNG, `metadata.json` and `status.json`. Use `--export-root=/absolute/output` to choose a destination. The isolated project is named **CyberSand World Art Preview**; on Windows its default data directory is below `%APPDATA%\\Godot\\app_userdata\\CyberSand World Art Preview\\`. Existing images are never overwritten. Source directories and uncertain symlink/junction aliases are refused as output locations. Partial output remains incomplete on failure. Metadata records the actual source, dimensions, camera, settings, source RG8 hash, renderer identity and PNG hash. Art sources support up to **16,384 cells per axis / 16,777,216 cells total**. Interactive full-image exports stop at **50,000,000 output pixels**. The pixel cost is shown before export. For larger exports, use the same renderer through [unattended capture with `--stream-large`](world-art-capture.md#optional-bounded-streamed-full-png-above-50-million-pixels), with a **100,000,000-pixel / 65,536-per-output-axis** limit. There is no automatic crop, distortion or source resizing to evade these limits. The art adapter's dimensions do not change native World, gameplay, production import or saved-world limits. Transparent/empty material cells reveal the presentation background; PNG exports are the composited opaque framebuffer, not an RGBA cutout of a native world."
+        },
+        {
+          "rank": 3,
+          "score": 30.227611,
+          "path": "tools/art-pipeline-unification.md",
+          "title": "Unified World Art pipeline",
+          "heading": "ART-PIPELINE-UNIFICATION-001 \u2014 integrated World Art Preview and unattended capture > Compatibility contract (independent limits)",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: Unified World Art pipeline\nPath: tools/art-pipeline-unification.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Standalone World Art renderer ownership, art capacity, source provenance and native compatibility boundaries\ncanonical-for: [world-art-pipeline, world-art-capacity-and-compatibility]\nlast-reviewed: 2026-11-20\nSection: ART-PIPELINE-UNIFICATION-001 \u2014 integrated World Art Preview and unattended capture > Compatibility contract (independent limits)\nThis tooling accepts any **positive, non-square or non-power-of-two** pack size provided `width <= 16384`, `height <= 16384` and `width \u00d7 height <= 16,777,216`. That is the read-only **art adapter** contract, **not** a change in playable native World size. There is no native simulation allocation, native save-file compatibility claim, water/pressure solver, entity simulation or collision correctness claim. The normal full PNG path uses a bounded Godot output image with **at most 50,000,000 output pixels**, from a source image of at most 16,777,216 native cells. At a larger output scale, `--capture --stream-large` explicitly enables a second **bounded 100,000,000-output-pixel, 65,536-pixel-per-axis** path. Godot draws the **same RG8 production material shaders** in halo-overdrawn tiles and writes source-hashed RGB8 framebuffer bytes. Python only assembles those exact bytes into a standards-compliant RGB PNG using scanline compression; it does not recolour, rasterise or alter geometry. The final PNG is revalidated before any manifest is marked complete. Export scale is explicit. Exports above the selected budget **fail** with a diagnostic, retaining incomplete evidence but never a false completed capture. There is no silent clipping, source downsampling or unbounded full-image allocation. The interactive viewer retains its 50M `Save full` image bound and displays the pixel cost; to produce an over-50M whole-map PNG use the unattended CLI with `--stream-large`. Viewport/detail captures work independently of the full-image budget. | Native input | Native cells | Full 1\u00d7 | Full 2\u00d7 ordinary | Full 2\u00d7 `--stream-large` | | --- | ---: | --- | --- | --- | | 512\u00d7512 | 262,144 | Yes | Yes | Yes | | 1024\u00d71024 | 1,048,576 | Yes | Yes | Yes | | 2048\u00d71024 | 2,097,152 | Yes | Yes | Yes | | 1024\u00d72048 | 2,097,152 | Yes | Yes | Yes | | 4096\u00d71024 | 4,194,304 | Yes | Yes | Yes | | 1024\u00d74096 | 4,194,304 | Yes | Yes | Yes | | 512\u00d78192 | 4,194,304 | Yes | Yes | Yes | | 8192\u00d7512 | 4,194,304 | Yes | Yes | Yes | | 2048\u00d78192 | 16,777,216 | Yes | **Refused: 67,108,864 pixels** | **Yes: streamed** | | 16384\u00d71024 | 16,777,216 | Yes | **Refused: 67,108,864 pixels** | **Yes: streamed** | The JSON evidence states `previewable`, `full_exportable`, `full_export_mode: framebuffer|streamed|refused`, `requested_output_pixels`, reason when rejected, and `native_playable: \"not-qualified-by-art-pipeline\"`. Requests above 100M output pixels or 65,536 pixels per streamed axis remain refused. **Art preview support does not grant native gameplay admission**."
+        },
+        {
+          "rank": 4,
+          "score": 26.161502,
+          "path": "tools/world-art-evaluation.md",
+          "title": "World Art Windows evaluation",
+          "heading": "World Art Windows evaluation > Capacity and compatibility",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: World Art Windows evaluation\nPath: tools/world-art-evaluation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Portable owner evaluation of the standalone World Art viewer, capture tools and verified gallery\ncanonical-for: [world-art-windows-evaluation]\nlast-reviewed: 2026-11-21\nSection: World Art Windows evaluation > Capacity and compatibility\nThe read-only art adapter accepts positive dimensions up to **16,384 cells per axis** and **16,777,216 cells total**, including 1024\u00d74096, 512\u00d78192, 8192\u00d7512, 2048\u00d78192 and 16384\u00d71024. Ordinary full PNG export is bounded to **50,000,000 output pixels**. The interactive viewer uses that ordinary bound. For a larger whole-map image, explicitly select the same renderer's streamed capture path. The limit is **100,000,000 output pixels**, at most **65,536 per output axis**. Godot renders original shader pixels in tiles; Python streams those exact RGB bytes into PNG scanlines. There is no silent resizing or crop. ```powershell .\\dependencies\\python\\python.exe -B .\\tools\\world_art_preview_launcher.py ` --godot .\\Godot_v4.7-stable_win64_console.exe --rendering-driver opengl3_angle ` --capture --pack 'C:\\MyArt\\1024x4096\\pack.json' --shots full ` --scale 4 --stream-large --output-dir 'C:\\ArtCaptures\\tall-4x' ``` This produces 4096\u00d716384 pixels when the source pack is 1024\u00d74096. Over-budget requests fail with an explanation. Preview limits do not increase native World simulation or save/import limits, and static images do not qualify physics, Rapier, traversal, Water behaviour or gameplay performance. Material conditions are explicit synthetic creation-state fixtures."
+        },
+        {
+          "rank": 5,
+          "score": 24.198711,
+          "path": "tools/world-art-evaluation.md",
+          "title": "World Art Windows evaluation",
+          "heading": "World Art Windows evaluation > Gallery and evidence",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v2",
+          "text": "Document: World Art Windows evaluation\nPath: tools/world-art-evaluation.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Portable owner evaluation of the standalone World Art viewer, capture tools and verified gallery\ncanonical-for: [world-art-windows-evaluation]\nlast-reviewed: 2026-11-21\nSection: World Art Windows evaluation > Gallery and evidence\n**Gallery.html** links the 45 scene images (full, viewport and detail for each of fifteen collections), all 120 reusable feature images, extremely tall and wide examples, the 67,108,864-pixel streamed capture, ten input dimensions and before/after framing examples. All PNG pixels come from the real Godot RG8 production material shaders. The gallery builder only indexes verified images. The extreme-size images are deliberately simple qualification fixtures that make missing edges, incorrect framing and material-coordinate defects visible. The fifteen original collections provide the artistic acceptance samples. Open a PNG at its original resolution when inspecting boundaries or far edges. `world-art-evaluation.json` records the exact source commit, every included file's SHA-256, engine pins, bundled Python identity and capture-manifest identities. `evidence/` retains each original sealed capture manifest, PNG and Windows test report. Their original source paths describe the machine where capture occurred; copied artwork is mapped by collection and its unchanged pack SHA-256. Paths need not exist on the evaluation computer. The exact JSON source for temporary large-canvas, framing and comparison fixtures is retained under `evidence/source-inputs/`. Its manifest binds each copied pack to the corresponding capture's input SHA-256. The gallery links these packs so they can be opened in the viewer with the single-pack command. The package contains only positive, independently validated capture bundles. Failed-case diagnostics remain in the full Actions qualification artifact. The Windows package smoke receipt is a separate Actions artifact: it records executing the packaged viewer launcher and bundled Python capture with a restricted PATH, including a verified fresh Godot framebuffer capture."
+        }
+      ]
+    }
+  ]
+}

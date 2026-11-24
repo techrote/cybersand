@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-11-24T19:41:32.910088+00:00",
+  "reviewer": "Specialist B",
+  "claims": [
+    "B-30",
+    "B-31",
+    "B-32",
+    "B-33"
+  ],
+  "method": "Bounded accepted-source inspection and existing guide comparison; unchanged historical qualification not rerun.",
+  "documents": [
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce"
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168"
+    }
+  ],
+  "executed": [
+    {
+      "command": "python3 tools/physics/issue13.py --help",
+      "exit_code": 0,
+      "scope": "Argument parser only; no build, simulation or historical transport campaign."
+    }
+  ],
+  "original_headings_preserved": true,
+  "historical_audits_changed": false,
+  "independent_review_fix": "A requested exact attribution: Setup owns recipes/limits, shared_workbench.load_setup owns file precedence. Corrected."
+}

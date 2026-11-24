@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-24T19:27:19.473136+00:00",
+  "execution": "Observed actual tools/ci/check_docs.py output after late B guides and A link repair; source working tree at documentation HEAD a2b14595fcdde182f746e4e556decabc9e3c37c7 with uncommitted docs.",
+  "command": [
+    "python3",
+    "tools/ci/check_docs.py"
+  ],
+  "exit_code": 0,
+  "result": {
+    "status": "passed",
+    "documents": 151,
+    "navigation_link_documents": 8,
+    "canonical_claims": 280,
+    "local_links": 3384,
+    "heading_anchors": 477,
+    "questions": 32,
+    "errors": [],
+    "warnings": []
+  },
+  "prior_interim_failure": {
+    "status": "failed",
+    "documents": 151,
+    "local_links": 3380,
+    "heading_anchors": 477,
+    "errors": [
+      "docs/architecture/liquid-prepared-setup-and-receipts.md: broken link pressure-flow-optimization.md"
+    ],
+    "resolution": "Specialist A corrected the new relative link to pressure-optimization.md. Original checker was not disabled."
+  }
+}

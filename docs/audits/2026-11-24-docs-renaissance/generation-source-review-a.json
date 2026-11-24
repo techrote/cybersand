@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "recorded_at": "2026-11-24T19:56:38.276995+00:00",
+  "method": "Full document reading and bounded direct accepted-source checks of consequential APIs, budgets, defaults, status and owner boundaries; no runtime or scientific campaign.",
+  "runtime_execution": false,
+  "reviews": [
+    {
+      "document": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "document_sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "disposition": "source-reviewed-corrected",
+      "claim_id": "A-40",
+      "baseline_bytes_equal": false,
+      "scope": [
+        "Read entire contract; checked scalar kind/default catalogue, 64-node/16-depth/4096-work bounds, immutable context/normalized consumer boundary, current diagnostic payload/cost forms, schema-4 fixed geometry restrictions, standalone editor route.",
+        "Corrected exhaustive old diagnostic list, typed cost distinction, schema-4 modifier restriction and ambiguous preview host. Retained original scalar mathematics, context semantics, image provenance and dated regression evidence."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+        "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+        "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+        "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+        "godot/scripts/worldgen_workbench.gd": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f",
+        "godot/scripts/feature_launcher.gd": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+      }
+    },
+    {
+      "document": "docs/systems/procedural-hierarchical-generation.md",
+      "document_sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "disposition": "source-reviewed-preserved",
+      "claim_id": null,
+      "baseline_bytes_equal": true,
+      "scope": [
+        "Read full contract; checked schema3/algorithm4 introduction and current compile acceptance, grammar schema/algorithm1, finite region/window ownership, greedy priority/fallback ordering, immutable geometry export and current hierarchy example control.",
+        "Inspected final-raster four-neighbor square-clearance implementation and separately computed any-contact Solid support receipt; no actor traversal or full support inference. Checked declared limits and explicit publication boundaries.",
+        "Original schema-3 description is its introduced contract, not an exclusive restriction; current generator contract owns schema4. No consequential current contradiction found in this bounded review."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+        "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+        "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+        "godot/scripts/worldgen_workbench.gd": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f",
+        "godot/scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908"
+      }
+    },
+    {
+      "document": "docs/systems/procedural-semantic-planes.md",
+      "document_sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "disposition": "source-reviewed-preserved",
+      "claim_id": null,
+      "baseline_bytes_equal": true,
+      "scope": [
+        "Read full contract; checked PlanePlan schema1/algorithm1 over accepted immutable semantic plan, four role/default clock declarations, normalized-or-Boolean mask difference from scalar consumer policy, play-only base and frozen background guards.",
+        "Inspected native limit/default structures, candidate configure-before-swap, host install generation/idempotent duplicate/content-conflict checks, finite retired ledger, private four-World publication and finite fixture scheduling limits.",
+        "Native ProjectionShape::Native is generated provenance metadata; authored templates explicitly reject it, so existing fill/shell/omit authoring list remains correct. No new actor, Web or reaction-performance qualification inferred."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+        "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+        "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+        "godot/scripts/depth/semantic_plane_runtime.gd": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+      }
+    },
+    {
+      "document": "docs/systems/procedural-typed-spatial-fields.md",
+      "document_sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "disposition": "source-reviewed-corrected",
+      "claim_id": "A-41",
+      "baseline_bytes_equal": false,
+      "scope": [
+        "Read contract and inspected bounded type/schema/unit/cache/preparation API declarations and compiler limits:64 nodes,16 depth,256 cache entries,1M sample work,16M preparation work/16MiB,16 subgraph families,1024 expansion calls,512/8192 expansion costs.",
+        "Verified already accepted grammar geometry preparation before typed compilation, typed page and graph/hierarchy/plane/provenance/comparison controls; corrected obsolete future-grammar language and clarified host.",
+        "Preserved mathematical/operator guarantees and frozen numerical regressions; this review does not independently reprove every transform/derivative/seed algorithm or rerun platform scientific acceptance."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+        "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+        "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+        "godot/scripts/worldgen_workbench.gd": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f",
+        "godot/scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908",
+        "godot/scripts/feature_launcher.gd": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+      }
+    }
+  ]
+}

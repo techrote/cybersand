@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "executed_utc": "2026-11-24T19:46:40.070140+00:00",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "tools/lcb/scenario_catalogue.py",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "exit_code": 0,
+      "duration_seconds": 0.102,
+      "log": "validation/late-operations-c-0.log.txt",
+      "log_sha256": "af3524b63690a45ceeebc4c771332e2a8c8479edb3e077c28c389e07555012c5",
+      "output": "25 scenario definitions match the catalogue",
+      "scope": "Python fixture/check-only or metadata planner; no native, Godot, packet creation or physical execution."
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/lcb_registry.py",
+        "build",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "exit_code": 0,
+      "duration_seconds": 0.952,
+      "log": "validation/late-operations-c-1.log.txt",
+      "log_sha256": "358d5acc81b5c8dfeecaaf6fe922611a9fd1e5519ace72f486dbe1a4fcb02baf",
+      "output": "scenario registry matches its sources",
+      "scope": "Python fixture/check-only or metadata planner; no native, Godot, packet creation or physical execution."
+    },
+    {
+      "command": [
+        "python3",
+        "tools/play/create_manual_packet.py",
+        "--plan-json"
+      ],
+      "cwd": "/workspace/scratch/855d9af51e68/cybersand-docs",
+      "exit_code": 0,
+      "duration_seconds": 0.086,
+      "log": "validation/late-operations-c-2.log.txt",
+      "log_sha256": "7af04d6b816033fae948a85fa881f062a966541d585ad90d119d5cbf271fe073",
+      "output": "{\"artifact_minutes\": 10, \"controls_minutes\": 45, \"dependency_minutes\": 20, \"engine_minutes\": 26, \"headroom_minutes\": 10, \"job_minutes\": 180, \"metadata_minutes\": 5, \"packet_minutes\": 10, \"sequential_minutes\": 166, \"setup_minutes\": 5, \"source_checkout_minutes\": 25}",
+      "scope": "Python fixture/check-only or metadata planner; no native, Godot, packet creation or physical execution."
+    }
+  ],
+  "sources_sha256": {
+    "tools/lcb/scenario_catalogue.py": "492d8ea2d132d735c7fbe92ed7c69e6a2f436aacc2758feaa18286a47354cf50",
+    "tools/lcb/lcb_registry.py": "a9377b340e1164c662114cb93a7387387fa7c7b8f2d4810b0ba05e5c5a82a1d0",
+    "tools/play/create_manual_packet.py": "f9b18267c206da7c3457fcb6817a668ead227df8588ffe5daf7f8ca0732205e8",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "command": "python3 /workspace/scratch/855d9af51e68/mission/render_readme_preview.py --repo-root . --output docs/audits/2026-11-24-docs-renaissance/preview",
+  "attempts": [
+    {
+      "result": "ERROR",
+      "reason": "Initial PyMuPDF filled tuple was accessed as Rect; repaired conversion to fitz.Rect."
+    },
+    {
+      "result": "ERROR",
+      "reason": "Literal caption text check did not normalize narrow-layout line breaks; repaired whitespace normalization."
+    },
+    {
+      "result": "PASS",
+      "scope": "Rendered both layouts and asserted current caption."
+    },
+    {
+      "result": "PASS",
+      "scope": "Rerendered with lossless PDF stream deflate; final files and hashes in manifest."
+    }
+  ],
+  "runtime_or_application_source_changes": false
+}

@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "/root",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "updated_utc": "2026-11-24T20:07:38.832347+00:00",
+  "documents": [
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "baseline_bytes_equal": true,
+      "inspection": "Read the complete guide, inspect the listed accepted source owners and independently reconcile catalogue/reaction facts. No visual quality, GPU performance, full scientific fixture or physical acceptance requalification.",
+      "findings": [
+        "All51 accepted building IDs81\u2013131, names and hard-occupancy classification agree with native declarations; source catalogue review by A independently retained.",
+        "All42 documented pair rules matched mechanically including partner, inclusive threshold and role-oriented products, with zero missing/extra/mismatched rows.",
+        "Reviewed full prose for combustible/static distinction, generic Acid fallback, timber-only Fungus/Mite predicate and presentation-only pattern claims; no consequential correction demonstrated."
+      ],
+      "source_locators": [
+        "native/include/cybersand/material.hpp",
+        "native/include/cybersand/material_capabilities.hpp",
+        "native/include/cybersand/interaction_rules.hpp",
+        "native/src/material_rules.cpp",
+        "native/src/world.cpp",
+        "godot/shaders/material_palette.gdshader"
+      ],
+      "source_sha256": {
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "evidence": [
+        "material-catalogue-source-review-a.json",
+        "material-reaction-table-review-lead.json"
+      ]
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "baseline_bytes_equal": true,
+      "inspection": "Read the complete guide, inspect the listed accepted source owners and independently reconcile catalogue/reaction facts. No visual quality, GPU performance, full scientific fixture or physical acceptance requalification.",
+      "findings": [
+        "Read complete43-material themed guide and compared IDs38\u201380/hard classification/kernel assignment with native source and A independent accounting.",
+        "OakTimber and ThatchRoof combustible; other41 inert kernels, generic Acid and timber-only feeding remain distinct from bespoke sparse pair reactions.",
+        "Pattern/lighting/orientation language describes presentation or per-cell future variation; no demonstrated current API/default contradiction requiring rewrite."
+      ],
+      "source_locators": [
+        "native/include/cybersand/material.hpp",
+        "native/include/cybersand/material_capabilities.hpp",
+        "native/include/cybersand/interaction_rules.hpp",
+        "native/src/material_rules.cpp",
+        "native/src/world.cpp",
+        "godot/shaders/material_palette.gdshader"
+      ],
+      "source_sha256": {
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "evidence": [
+        "material-catalogue-source-review-a.json",
+        "material-reaction-table-review-lead.json"
+      ]
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "baseline_bytes_equal": true,
+      "inspection": "Read full accepted owner-confirmed-intent decision and original linked assistant-transcription comment6871615830; checked provenance, confirmed/interpretation distinctions and historical phase-specific authorization. Preserve owner intent unchanged rather than treating implementation as specification.",
+      "findings": [
+        "Paint/play, prepared destruction, current-scene audition, Strata, game-time catch-up and compatibility caveats are accurately scoped as intent.",
+        "Historical M1 authorization remains dated; present task authorization is separately explicit and does not rewrite the record.",
+        "No new algorithm, policy, physical acceptance or archival-retirement permission inferred."
+      ],
+      "source_locators": [
+        "https://github.com/techrote/cybersand/issues/571#issuecomment-6871615830"
+      ],
+      "evidence": [
+        "owner-intent-provenance-refresh.json"
+      ]
+    }
+  ]
+}

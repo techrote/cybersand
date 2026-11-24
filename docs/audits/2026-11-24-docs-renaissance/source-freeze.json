@@ -1,0 +1,12 @@
+{
+  "authority": "historical-non-authoritative",
+  "recorded_utc": "2026-11-24T20:38:00Z",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "accepted_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "local_current_documentation_freeze": "ff66f4b385fcddf4544c2e8769eb2dd72b15398a",
+  "published_current_documentation_head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "published_tree": "854e793fb3cd2cdbbaf8e635eebdf71556f883b2",
+  "draft": true,
+  "pr": "https://github.com/techrote/cybersand/pull/774",
+  "note": "Current documentation bytes frozen before final retrieval. Later evidence-only commits change the repository tree but not this corpus. Exact final PR head is reported separately."
+}

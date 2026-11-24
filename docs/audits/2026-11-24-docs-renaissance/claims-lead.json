@@ -1,0 +1,948 @@
+[
+  {
+    "id": "L-01",
+    "priority": "P0",
+    "document": "docs/reference/status-and-roadmap.md",
+    "claim": "Accepted main and merged foundations are distinct from open candidates; #758 is open non-Draft despite its title.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-02",
+    "priority": "P1",
+    "document": "docs/reference/status-and-roadmap.md",
+    "claim": "The capability map describes accepted Workbench, generation, actor, materials, persistence and Art boundaries; no completed RPG or unmerged programme availability.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/shared_workbench.gd",
+      "godot/scripts/workbench_actor_catalog.gd",
+      "native/include/cybersand/world.hpp",
+      "godot/scripts/art_batch_panel.gd"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-03",
+    "priority": "P0",
+    "document": "docs/reference/status-and-roadmap.md",
+    "claim": "Active PUBPRES, ObjectShard, Equipment, RAMCACHE, actor finisher, Gentek evaluator, Art successors, Batch, SWARM, Gremlin, live Lab and Strata remain separately gated.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-04",
+    "priority": "P1",
+    "document": "docs/reference/status-and-roadmap.md",
+    "claim": "Implementation, source/runtime qualification and physical owner acceptance are separate; approved direction is not shipped behavior.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/reference/validation-evidence.md",
+      "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "AGENTS.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-05",
+    "priority": "P0",
+    "document": "docs/operations/cybersand-codex-development-handover.md",
+    "claim": "Checkout/source ownership and accepted-main intake replace obsolete branch-continuation instructions while preserving all merge, runtime and safety gates.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "AGENTS.md",
+      "tools/ci/check_repository.py",
+      "third_party/native-toolchain.lock.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-06",
+    "priority": "P0",
+    "document": "docs/operations/cybersand-codex-development-handover.md",
+    "claim": "Native World, worker, main-thread Rapier, copied publication, quarantined failure and prepared replacement retain their current ownership.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/simulation_worker.gd",
+      "godot/native_extension/cyber_native_cell_world.cpp",
+      "godot/scripts/physical_actor_session.gd",
+      "docs/decisions/ADR-010-failed-tick-quarantine.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-07",
+    "priority": "P0",
+    "document": "docs/operations/cybersand-codex-development-handover.md",
+    "claim": "Validation and draft handoff must name exact source/runtime and blockers; no implicit Ready, merge or owner-acceptance authority.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "AGENTS.md",
+      ".github/workflows/documentation.yml",
+      "docs/operations/github-development-and-release.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-08",
+    "priority": "P1",
+    "document": "docs/reference/product-intent-and-priorities.md",
+    "claim": "14 November intent is paint-and-play Workbench convergence, approachable/deep authoring and game feel before consequential combat/scoring.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/decisions/2026-11-14-owner-authoring-intent.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-09",
+    "priority": "P0",
+    "document": "docs/reference/product-intent-and-priorities.md",
+    "claim": "Desired evolved-layout saving is separate from ordinary authored Save; explicit material-only Flatten preserves live state while retiring authored history.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "godot/scripts/shared_workbench.gd::save_setup/request_flatten",
+      "godot/scripts/workbench_material_baseline.gd",
+      "native/include/cybersand/material_baseline.hpp"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-10",
+    "priority": "P1",
+    "document": "docs/reference/product-intent-and-priorities.md",
+    "claim": "Prepared destruction, live material audition, Workbench Strata and persistent areas are approved direction with unresolved implementation choices.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-11",
+    "priority": "P1",
+    "document": "docs/reference/product-intent-and-priorities.md",
+    "claim": "Area catch-up intent uses game time rather than real-world offline time, and permits bounded approximate simulation without requiring seamless streaming.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/decisions/2026-11-14-owner-authoring-intent.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-12",
+    "priority": "P1",
+    "document": "docs/reference/product-intent-and-priorities.md",
+    "claim": "Material/actor preferences, approximation safeguards and bounded prior PLAY/LCB decisions retain their original scope.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/reference/product-intent-and-priorities.md@00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "docs/decisions/ADR-010-failed-tick-quarantine.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-13",
+    "priority": "P0",
+    "document": "docs/operations/source-checkpoint-and-recovery.md",
+    "claim": "Git source, runtime bytes/source inputs, dependency pins, tests and evaluator identity are distinct; old native source commit may be legitimate only if guarded source inputs still match.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "tools/ci/check_repository.py",
+      "tools/ci/check_repository.py"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-14",
+    "priority": "P0",
+    "document": "docs/operations/source-checkpoint-and-recovery.md",
+    "claim": "Git bundles do not contain LFS payloads/toolchains/user saves; recovery should preserve separate verified originals and not overwrite active work.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "AGENTS.md",
+      ".gitattributes",
+      "docs/operations/source-checkpoint-and-recovery.md@00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-15",
+    "priority": "P0",
+    "document": "docs/reference/validation-evidence.md",
+    "claim": "Compilation, source checks, LFS pointer validation, headless/graphical/package tests and physical owner acceptance support different claims.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "AGENTS.md",
+      "tools/ci/check_repository.py",
+      "docs/operations/local-build-and-validation.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-16",
+    "priority": "P1",
+    "document": "docs/reference/validation-evidence.md",
+    "claim": "M11 checks frozen historical source rather than current runtime; optional working-tree comparison is a separate test and frozen evidence must not be reattested.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/ci/check_m11_consistency.py",
+      "docs/operations/current-and-historical-validation.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-17",
+    "priority": "P1",
+    "document": "docs/reference/validation-evidence.md",
+    "claim": "Frozen retrieval external sources resolve against the CI-pinned companion context; historical tests retain their original authority.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/reference/retrieval-questions.json",
+      ".github/workflows/documentation.yml",
+      "docs/audits/2026-11-24-docs-renaissance/companion-context.json"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-18",
+    "priority": "P0",
+    "document": "docs/reference/validation-evidence.md",
+    "claim": "REC-style tick/input sampling is not complete application replay; Save formats, solver continuations and counters must retain source-specific meaning.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/reference/level-saves-and-replay.md",
+      "native/include/cybersand/world.hpp",
+      "docs/reference/validation-evidence.md@00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-19",
+    "priority": "P1",
+    "document": "docs/reference/validation-evidence.md",
+    "claim": "Older Windows cross-build, renderer-specific and historical negative evidence cannot establish fresh platform/GPU acceptance.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/reference/validation-evidence.md@00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "docs/operations/local-build-and-validation.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-20",
+    "priority": "P1",
+    "document": "docs/operations/wave-flow-evaluation.md",
+    "claim": "Wave foundation is accepted; old Windows packages remain manifest/source-specific, not a current candidate requirement.",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-intake.json",
+      "godot/scripts/workbench_water_lab.gd"
+    ],
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "verification": "source-inspected; GitHub live intake for merge/issue status; no new campaign runtime",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-21",
+    "priority": "P1",
+    "document": "docs/operations/wave-flow-evaluation.md",
+    "claim": "Current Water Lab tab/actions and Workbench Play/Pause/Step labels replace superseded popup wording; v2 tuning is separate from Gameplay default.",
+    "sources": [
+      "godot/scripts/workbench_water_lab.gd",
+      "godot/scripts/workbench_water_spray_panel.gd",
+      "godot/scripts/shared_workbench.gd",
+      "godot/native_extension/cyber_native_cell_world.cpp"
+    ],
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "verification": "source-inspected; GitHub live intake for merge/issue status; no new campaign runtime",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-22",
+    "priority": "P1",
+    "document": "docs/operations/rapier-2d-migration-runbook.md",
+    "claim": "Backend diagnosis uses source-root exact Godot and current execution-policy allowance, independent profile and bounded fixture; companion dev.cmd and blanket180s are not mandatory.",
+    "sources": [
+      "godot/tests/support/ci_execution_policy.json",
+      "tools/ci/execution_policy.py",
+      "godot/tests/test_rapier_backend_preflight.gd",
+      "tools/ci/run_godot_regressions.py"
+    ],
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "verification": "source-inspected; GitHub live intake for merge/issue status; no new campaign runtime",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-23",
+    "priority": "P0",
+    "document": "docs/operations/material-liveness-investigation.md",
+    "claim": "PhaseA #377 is merged evidence-only; its historical Ready/merge permission is not current-task authorization.",
+    "sources": [
+      "https://github.com/techrote/cybersand/pull/377",
+      "AGENTS.md"
+    ],
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "verification": "source-inspected; GitHub live intake for merge/issue status; no new campaign runtime",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-24",
+    "priority": "P1",
+    "document": "docs/operations/material-liveness-investigation.md",
+    "claim": "H1 is not inferred repaired by Lab/capability acceptance: current source retains original MoltenGlass thermal law and no proposed cooling-continuation branch; historical campaign evidence is not rerun.",
+    "sources": [
+      "native/src/world.cpp::update_rule_kernel/schedule_pending_reaction_wake",
+      "tools/material_liveness/run.py",
+      "https://github.com/techrote/cybersand/issues/354"
+    ],
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "verification": "source-inspected; GitHub live intake for merge/issue status; no new campaign runtime",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-25",
+    "priority": "P1",
+    "document": "docs/decisions/ADR-005-water-model.md",
+    "claim": "Original FreeMass decision is scoped; accepted CY/PF/IN and player Wave are not erased by a universal pairwise description or old fluid deferral.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+      "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+      "native/src/world.cpp",
+      "docs/systems/water-design.md"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-26",
+    "priority": "P0",
+    "document": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+    "claim": "Failed-tick quarantine remains binding; current non-Wave native formats and authored flattened recovery are separate from failed-owner continuation and full application replay.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/world.hpp::physical_state_format_version",
+      "native/src/world_pressure.inc::save_physical_state/restore_physical_state",
+      "godot/scripts/shared_workbench.gd::save_setup"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-27",
+    "priority": "P1",
+    "document": "docs/operations/gameplay-recording.md",
+    "claim": "F10 recorder belongs to the ordinary Main host; Shared Workbench hides that UI and returns before the F10 handler.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/main.gd::_unhandled_key_input",
+      "godot/scripts/shared_workbench.gd::setup",
+      "godot/scripts/gameplay_recorder.gd"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-28",
+    "priority": "P1",
+    "document": "docs/operations/gameplay-recording.md",
+    "claim": "Recorder ROI is clamped to legacy1024 bounds; uint8 material evidence is not an eight-byte Cell or two-byte Flatten/full replay.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/gameplay_recorder.gd::start_recording",
+      "godot/scripts/cell_world.gd::WORLD_WIDTH/WORLD_HEIGHT",
+      "https://github.com/techrote/cybersand/issues/135"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-29",
+    "priority": "P1",
+    "document": "docs/operations/physical-actor-programme.md",
+    "claim": "F5 family catalogue has46 original rigs plusfour4LY; Workbench59-identity composition is separate and some models are single-part.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/physical_actor_catalog.gd::RIG_IDS/SET_IDS/rigs_in_set",
+      "godot/scripts/physical_flight_profile.gd::IDS",
+      "godot/scripts/workbench_actor_catalog.gd"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-30",
+    "priority": "P1",
+    "document": "docs/operations/physical-actor-programme.md",
+    "claim": "Current launcher includes ordinary Development workbench and standalone generation preview as distinct current routes; accepted generated maps can be installed into shared owner.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/feature_launcher.gd",
+      "godot/scripts/workbench_generator_dialog.gd",
+      "godot/scripts/shared_workbench.gd"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-31",
+    "priority": "P0",
+    "document": "docs/systems/explore001-generated-playable-maps.md",
+    "claim": "EXPLORE-001 #542 is accepted, not still an unmerged Draft or current Ready/merge permission.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "https://github.com/techrote/cybersand/pull/542",
+      "godot/scripts/workbench_generator_dialog.gd",
+      "godot/scripts/workbench_generated_map.gd"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-32",
+    "priority": "P1",
+    "document": "docs/systems/explore001-generated-playable-maps.md",
+    "claim": "Current generated Save UI,32768stamp bound,1MiB envelope and separate32M/64area native replay work are source-backed; explicit Flatten is now available.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/shared_workbench.gd",
+      "godot/scripts/workbench_setup.gd::MAX_STAMPS/MAX_RUNS",
+      "godot/scripts/workbench_generated_map.gd::edit_work_error/write_named"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-33",
+    "priority": "P0",
+    "document": "docs/systems/explore001-generated-playable-maps.md",
+    "claim": "Qualification follows selected source-matched runtime and isolated same-profile reopen pair; old exact candidate branch and former active-overlap list are historical.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/operations/local-build-and-validation.md",
+      "godot/tests/test_explore001_generated_workbench.gd",
+      "https://github.com/techrote/cybersand/pull/542"
+    ],
+    "verification": "source-inspected; no new runtime qualification claimed",
+    "independent_review": "Source-verified by Specialist A; review-lead-liveness-by-a.json. Source/status review, no campaign or runtime rerun.",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-liveness-by-a.json"
+  },
+  {
+    "id": "L-34",
+    "priority": "P1",
+    "document": "docs/systems/flow-transport-and-profiles.md",
+    "claim": "Wave explicitly refuses configured custom cellular transport; v1 schema parameters do not silently tune the player Wave profile.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/src/world_wave.inc::validate_wave_flow_config",
+      "native/include/cybersand/transport_policy.hpp"
+    ],
+    "verification": "source-inspected; original scientific results not rerun",
+    "independent_review": "Source-verified by Specialist A; review-lead-flow-by-a.json",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-flow-by-a.json"
+  },
+  {
+    "id": "L-35",
+    "priority": "P1",
+    "document": "docs/systems/flow-transport-and-profiles.md",
+    "claim": "Transport carrying uses precision-normalized mass, preserves current state fields, and must obey each caller footprint including INread3/write2.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/src/world.cpp::mix_after_motion",
+      "native/src/world_inertial.inc",
+      "native/include/cybersand/precision_storage.hpp"
+    ],
+    "verification": "source-inspected; original scientific results not rerun",
+    "independent_review": "Source-verified by Specialist A; review-lead-flow-by-a.json",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-flow-by-a.json"
+  },
+  {
+    "id": "L-36",
+    "priority": "P1",
+    "document": "docs/systems/smoke-heat-pressure-roadmap.md",
+    "claim": "Accepted bounded PF gas compartments and Wave pressure are distinct from unimplemented general heat/gas-mixture fields.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/pressure_flow.hpp",
+      "native/src/world_pressure.inc",
+      "native/src/world_wave.inc",
+      "native/src/world.cpp::RuleKernel::Gas/Rocket"
+    ],
+    "verification": "source-inspected; original scientific results not rerun",
+    "independent_review": "Source-verified by Specialist A; review-lead-flow-by-a.json",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-flow-by-a.json"
+  },
+  {
+    "id": "L-37",
+    "priority": "P2",
+    "document": "docs/systems/activity-dirty-regions-and-waking.md",
+    "claim": "Source review confirms existing activity/waking and RenderSnapshotExchange::publish source link in world.cpp; original document preserved unchanged after independent reviewer caught an incorrect proposed link relocation.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/src/world.cpp::RenderSnapshotExchange::publish",
+      "native/src/render_snapshot.cpp",
+      "docs/systems/activity-dirty-regions-and-waking.md"
+    ],
+    "verification": "source-inspected; original scientific results not rerun",
+    "independent_review": "Specialist A found proposed link error; restored original bytes and independently verified source function.",
+    "disposition": "source-reviewed-preserved",
+    "additional_review_records": [
+      "review-lead-flow-by-a.json"
+    ]
+  },
+  {
+    "id": "L-38",
+    "priority": "P1",
+    "document": "docs/operations/physics-characterisation-plan.md",
+    "claim": "September proposed thresholds/recoverablebaseline/uncommittedqualification are dated evidence; current read-only discovery is implemented without production soliding admission.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/world.hpp",
+      "native/src/world.cpp",
+      "native/include/cybersand/settled_regions.hpp",
+      "native/include/cybersand/soliding_lifecycle.hpp"
+    ],
+    "verification": "source-inspected; original scientific results not rerun",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-39",
+    "priority": "P1",
+    "document": "docs/operations/physics-characterisation-plan.md",
+    "claim": "New physics qualification follows selected source and current source-root procedures, not mandatory old companion scripts or automatic rebuild for every docs edit.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/operations/local-build-and-validation.md",
+      "tools/ci/run_godot_regressions.py",
+      "third_party/godot-runtime.lock.json"
+    ],
+    "verification": "source-inspected; original scientific results not rerun",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-40",
+    "priority": "P1",
+    "document": "docs/architecture/wave-flow-v1.md",
+    "claim": "Waterwall spill and sheet/crest controls are accepted #672/#676 behavior; former Draft/HOLD claims are historical.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/wave_flow.hpp",
+      "native/src/world_wave.inc",
+      "docs/audits/2026-11-24-docs-renaissance/github-intake.json",
+      "docs/audits/2026-11-24-docs-renaissance/github-late-water-intake.json"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-41",
+    "priority": "P1",
+    "document": "docs/architecture/wave-flow-v1.md",
+    "claim": "Bare native Wave disabled/one substep differs from ordinary gameplay enabled/two substeps/spill; smoothing adds four bytes per resident cell beyond the base nine-byte side arrays.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+      "godot/scripts/main.gd",
+      "godot/scripts/wave_flow_evaluation.gd",
+      "native/include/cybersand/wave_flow.hpp",
+      "native/src/world.cpp"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-42",
+    "priority": "P0",
+    "document": "docs/operations/liquid-characterization.md",
+    "claim": "September non-admissions are source-bound historical research constraints, not a present ban on accepted CY/PF/IN, Wave flux, ballistic transport or eight-byte cells. Original measurements and G-final authority preserved.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-09-11-issue-15-coverage.md",
+      "native/include/cybersand/liquid_solver_policy.hpp",
+      "native/src/world.cpp",
+      "native/include/cybersand/wave_flow.hpp",
+      "docs/reference/status-and-roadmap.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-43",
+    "priority": "P1",
+    "document": "docs/operations/lcb-manual-comparison-ux.md",
+    "claim": "Current comparison UI has eight presets and two protected setups; selections stage requests and explicit apply/load owns replacement. Workbench Water Lab is a separate integrated authoring route.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/liquid_comparison_panel.gd",
+      "godot/scripts/feature_launcher.gd",
+      "godot/scripts/main.gd",
+      "godot/scripts/workbench_water_spray_panel.gd"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "Source-verified by Specialist A; review-lead-flow-by-a.json",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-flow-by-a.json"
+  },
+  {
+    "id": "L-44",
+    "priority": "P0",
+    "document": "docs/operations/lcb-manual-comparison-ux.md",
+    "claim": "Merged App/Trial constructor slices do not close still-open #202/#203; old coverage gaps and release instructions retain dated scope rather than denying accepted generator/host behavior.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-late-water-intake.json",
+      "docs/audits/2026-11-24-docs-renaissance/github-intake.json",
+      "godot/scripts/shared_workbench.gd",
+      "godot/native_extension/cyber_demo_bridge.cpp"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-45",
+    "priority": "P1",
+    "document": "docs/reference/material-effects-register.md",
+    "claim": "Material shader lacks a general velocity input despite native IN/Wave/ballistic motion; decorative shader spray remains distinct from native parcels and October GPU timings remain historical.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/shaders/material_palette.gdshader",
+      "native/include/cybersand/material_appearance.hpp",
+      "godot/scripts/main.gd",
+      "docs/audits/2026-10-18-material-fidelity-pass-2.md"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "Source-verified by Specialist A; review-lead-flow-by-a.json",
+    "disposition": "corrected",
+    "independent_review_record": "review-lead-flow-by-a.json"
+  },
+  {
+    "id": "L-46",
+    "priority": "P0",
+    "document": "docs/operations/microscenario-reference-pack.md",
+    "claim": "MS-001/INT-000 are accepted #44/#55 infrastructure; original branch identity and #29 admission instructions are not current branch directions.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/operations/microscenarios-programme.md",
+      "docs/audits/2026-11-24-docs-renaissance/github-microscenario-intake.json",
+      "godot/scripts/microscenario_reference_pack.gd",
+      "godot/scripts/microscenario_host.gd"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-47",
+    "priority": "P1",
+    "document": "docs/operations/microscenario-reference-pack.md",
+    "claim": "Flood5031units and Stress visited-cell sums, worker parity and original Windows-crossbuild wording are dated source-bound measurements, not fresh current-runtime qualification. Fixture identities and objective semantics remain preserved.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-09-19-issue-28-ms001.md",
+      "godot/scripts/microscenario_reference_pack.gd",
+      "godot/tests/run_microscenario.gd"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-48",
+    "priority": "P1",
+    "document": "docs/architecture/item-authored-material-programs.md",
+    "claim": "General item-program IR remains planned, distinct from accepted bounded Lab/compiler tooling. Current catalogue has IDs0\u2013131 except10,130 paintables; enum byte width differs from eight-byte cell storage, and IN admits radius3 reads/radius2 writes.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/material.hpp",
+      "native/include/cybersand/precision_storage.hpp",
+      "native/include/cybersand/inertial_cellular.hpp",
+      "native/src/world.cpp",
+      "godot/scripts/material_lab_service.gd"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-49",
+    "priority": "P0",
+    "document": "docs/operations/configuration-and-capacity-budgets.md",
+    "claim": "Failed-World quarantine is implemented rather than future; diagnostic face/material array is4\u00d7132=528 entries. No RAMCACHE capacity policy or active candidate design changed.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/native_extension/cyber_native_cell_world.hpp::BodyDiagnostics",
+      "godot/native_extension/cyber_native_cell_world.cpp",
+      "native/include/cybersand/material.hpp",
+      "native/src/world.cpp::require_healthy/tick"
+    ],
+    "verification": "source-inspected",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-50",
+    "priority": "P1",
+    "document": "docs/architecture/soliding-lifecycle.md",
+    "claim": "Accepted opt-in read-only tile/connectivity discovery exists; it remains distinct from the standalone model and unavailable production ownership-transfer/acceleration tiers.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/world.hpp::settled_discovery_tile/settled_region",
+      "native/src/world.cpp",
+      "native/include/cybersand/soliding_lifecycle.hpp",
+      "native/tests/test_soliding_lifecycle.cpp"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-51",
+    "priority": "P1",
+    "document": "docs/architecture/soliding-lifecycle.md",
+    "claim": "Existing authored/native save contracts do not serialize the proposed aggregate lifecycle; native CYPS2\u20135 excludes host/Rapier and Wave continuation is refused.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/world.hpp::physical_state_format_version",
+      "native/src/world_pressure.inc",
+      "native/include/cybersand/soliding_lifecycle.hpp::cell_save_admissible"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-52",
+    "priority": "P0",
+    "document": "docs/operations/soliding-stage3b-production-plan.md",
+    "claim": "September source/runtime checkpoints and earlier #65-active blocker are historical. Current issue intake leaves66/67/68/70 open; dependency readiness grants no new branch/campaign/merge permission and cells remain source authority.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-soliding-precision-intake.json",
+      "native/include/cybersand/world.hpp",
+      "native/include/cybersand/settled_world_discovery.hpp",
+      "docs/audits/2026-09-24-cybersand-recovery-audit.md"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-53",
+    "priority": "P1",
+    "document": "docs/operations/soliding-measurement.md",
+    "claim": "Current-named discovery-off arm and September Windows compiler/workspace commands retain original scope; source-root development is not required to adopt an obsolete workspace or treat old control timings as present-main measurements.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/experiments/run_soliding_baseline.py::DEFAULT_CXX/prepare/main",
+      "docs/systems/settled-region-discovery.md",
+      "docs/operations/soliding-stage3b-production-plan.md"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-54",
+    "priority": "P0",
+    "document": "docs/operations/state-precision-experiment.md",
+    "claim": "Issue17 completion/issue-write authorization is historical, not current permission. current4 names an old experiment control; current source uses eight-byte cells and later runtime Water policy rather than universal fixed compile-time arms.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-soliding-precision-intake.json",
+      "native/include/cybersand/precision_storage.hpp",
+      "native/include/cybersand/water_experiment_policy.hpp"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-55",
+    "priority": "P1",
+    "document": "docs/operations/water-feel-lab-experiment.md",
+    "claim": "Original Water Feel experiment is separate from ordinary Workbench Water Lab; accepted prepared paths exist while old H-ready result, work assignments and unmerged qualifier retain dated evidence scope.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/main.gd::water_lab_apply_result",
+      "native/include/cybersand/water_experiment_policy.hpp",
+      "godot/native_extension/cyber_demo_bridge.hpp",
+      "docs/audits/2026-11-24-docs-renaissance/github-soliding-precision-intake.json"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-56",
+    "priority": "P1",
+    "document": "docs/operations/soliding-macro-fracture-fixture.md",
+    "claim": "Preregistered coherent-body fracture fixtures remain Planned and correctly distinguish model, true Rapier angular motion, source/runtimes, exact member accounting and future production ownership prerequisites. Reviewed text preserved byte-identical.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/soliding_lifecycle.hpp",
+      "native/tests/test_soliding_lifecycle.cpp",
+      "native/include/cybersand/world.hpp",
+      "docs/audits/2026-09-19-issue-12-phase0-reuse.md"
+    ],
+    "verification": "source-inspected; no campaign executed",
+    "independent_review": "pending",
+    "disposition": "source-reviewed-preserved"
+  },
+  {
+    "id": "L-57",
+    "priority": "P1",
+    "document": "docs/systems/material-visual-pattern-library.md",
+    "claim": "Brine projects a zero condition byte rather than Water mass; original 81-row inventory and 50-material static plate remain dated evidence, and sixfold pixel scaling is an example, not a universal viewport or measured cost.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/material_appearance.hpp",
+      "godot/shaders/material_palette.gdshader",
+      "docs/audits/material-readability-2026-10-18/"
+    ],
+    "verification": "source-inspected; no GPU, shader performance or physical acceptance campaign",
+    "independent_review": "pending Specialist B",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-58",
+    "priority": "P1",
+    "document": "docs/systems/material-visual-pattern-library.md",
+    "claim": "G toggles glow in ordinary non-Workbench Main; Shared Workbench PAINT Fill and equipment Drain take their respective contextual paths, so G is not a universal glow shortcut.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/main.gd::_unhandled_key_input",
+      "godot/scripts/workbench_paint_editor_controller.gd",
+      "godot/scripts/workbench_liquid_equipment.gd"
+    ],
+    "verification": "source-inspected; no GPU, shader performance or physical acceptance campaign",
+    "independent_review": "pending Specialist B",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-59",
+    "priority": "P1",
+    "document": "docs/reference/status-and-roadmap.md",
+    "claim": "Final live intake adds actual open Draft successors #771 CI closure, #772 Gremlin native integration, #773 Art consolidation and #775 Ambient actors. Main remains 00cdb02f; candidate bodies are reported as unmerged work and do not establish accepted features or physical acceptance.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-final-refresh.json",
+      "docs/audits/2026-11-24-docs-renaissance/github-final-candidates.json"
+    ],
+    "verification": "Live GitHub lifecycle/body and first100changed-file intake; no candidate source import",
+    "independent_review": "pending Specialist C",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-60",
+    "priority": "P0",
+    "document": "docs/operations/soliding-programme.md",
+    "claim": "Owner October27 routing separates native structural detachment TrackA from settled-region scaling TrackB. Old September branch assignments and Stage3B ordering are scoped history, not universal detachment prerequisites or fresh execution authority; accepted source retains read-only discovery, not arbitrary terrain handoff.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-soliding-precision-intake.json",
+      "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json",
+      "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "native/include/cybersand/world.hpp",
+      "native/include/cybersand/soliding_lifecycle.hpp",
+      "godot/scripts/simulation_worker.gd"
+    ],
+    "verification": "Full guide reading, owning-source inspection and live lifecycle/intent receipt; no experiment execution or new programme authorization",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  },
+  {
+    "id": "L-61",
+    "priority": "P0",
+    "document": "docs/operations/microscenarios-programme.md",
+    "claim": "MS000/MS001/INT000 are implemented; original Materials Laboratory scenario is not the complete modern Workbench Materials Lab. Live#30/14/18/20/49 are closed while#45 remainsopen; old scientific graph/admission is retained within historical scope and does not prohibit separately accepted Water/ballistic features or restart completed branches.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json",
+      "godot/scripts/microscenario_contract.gd",
+      "godot/scripts/microscenario_reference_pack.gd",
+      "native/include/cybersand/interaction_rules.hpp",
+      "godot/scripts/shared_workbench.gd",
+      "native/include/cybersand/water_experiment_policy.hpp"
+    ],
+    "verification": "Full guide reading, owning-source inspection and live lifecycle/intent receipt; no experiment execution or new programme authorization",
+    "independent_review": "pending",
+    "disposition": "corrected"
+  }
+]

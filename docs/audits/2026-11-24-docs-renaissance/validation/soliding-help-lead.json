@@ -1,0 +1,29 @@
+{
+  "authority": "historical-non-authoritative",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "executed_utc": "2026-11-24T19:43:15.051941+00:00",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "tools/experiments/run_soliding_baseline.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: run_soliding_baseline.py [-h] {prepare,run} ...\n\nIssue #12 immutable Current ordinary-sleep control; retain every attempt.\nPrepare snapshots native inputs from an explicit Git commit before\ncompilation. Run never recompiles or reads a changed World implementation.\nThis harness makes no soliding performance claim and never publishes an\nexperimental DLL.\n\npositional arguments:\n  {prepare,run}\n\noptions:\n  -h, --help     show this help message and exit\n",
+      "stderr": "",
+      "scope": "Help only; no compile, campaign or platform execution."
+    },
+    {
+      "command": [
+        "python3",
+        "tools/experiments/run_stage3_cost.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: run_stage3_cost.py [-h] {prepare,run} ...\n\nImmutable, sequential Stage-3 producer/journal/connectivity cost campaign.\n\npositional arguments:\n  {prepare,run}\n\noptions:\n  -h, --help     show this help message and exit\n",
+      "stderr": "",
+      "scope": "Help only; no compile, campaign or platform execution."
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "head": "9a2ade2be809bc8219a84653e1e4e81368d689b4",
+  "tree": "ed6e236740c3e5a041e23eaf9d8ff66af573f3aa",
+  "scope": "Published documentation/preservation checkpoint; later working-tree documentation changes not covered by this run",
+  "checks": [
+    {
+      "name": "ready validation scope",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704534576",
+      "job_id": 138704534576
+    },
+    {
+      "name": "linux build x86_64",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704522661",
+      "job_id": 138704522661
+    },
+    {
+      "name": "linux x86_64",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704447593",
+      "job_id": 138704447593
+    },
+    {
+      "name": "Native family / ${{ matrix.suite }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997610/job/138704447121",
+      "job_id": 138704447121
+    },
+    {
+      "name": "retained execution and physical timing history",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704446829",
+      "job_id": 138704446829
+    },
+    {
+      "name": "linux regression shard ${{ matrix.shard }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704446615",
+      "job_id": 138704446615
+    },
+    {
+      "name": "native",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997610/job/138704446406",
+      "job_id": 138704446406
+    },
+    {
+      "name": "windows sharded execution coverage",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704446376",
+      "job_id": 138704446376
+    },
+    {
+      "name": "readback",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997752/job/138704446249",
+      "job_id": 138704446249
+    },
+    {
+      "name": "art workbench graphical smoke",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704445867",
+      "job_id": 138704445867
+    },
+    {
+      "name": "windows",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997752/job/138704445710",
+      "job_id": 138704445710
+    },
+    {
+      "name": "linux",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997752/job/138704445634",
+      "job_id": 138704445634
+    },
+    {
+      "name": "complete execution budgets",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704445558",
+      "job_id": 138704445558
+    },
+    {
+      "name": "windows headless regression shard ${{ matrix.shard }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704445136",
+      "job_id": 138704445136
+    },
+    {
+      "name": "windows x86_64",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704444711",
+      "job_id": 138704444711
+    },
+    {
+      "name": "Native evidence and provider policy",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997610/job/138704444578",
+      "job_id": 138704444578
+    },
+    {
+      "name": "ready validation scope",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997610/job/138704444044",
+      "job_id": 138704444044
+    },
+    {
+      "name": "plan",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997752/job/138704443692",
+      "job_id": 138704443692
+    },
+    {
+      "name": "physical-actor-stress",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997710/job/138704443522",
+      "job_id": 138704443522
+    },
+    {
+      "name": "Linux 4.7 native Workbench session logging",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997717/job/138704442287",
+      "job_id": 138704442287
+    },
+    {
+      "name": "Windows 4.7 real Workbench session logging",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997717/job/138704441246",
+      "job_id": 138704441246
+    },
+    {
+      "name": "exact-source report-only Native scope",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466998013/job/138704441212",
+      "job_id": 138704441212
+    },
+    {
+      "name": "actual-windows-causal-gate",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997855/job/138704441185",
+      "job_id": 138704441185
+    },
+    {
+      "name": "consistency",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45466997641/job/138704440977",
+      "job_id": 138704440977
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "authority": "historical-non-authoritative",
+  "repository": "https://github.com/techrote/cybersand",
+  "repository_root_observed": "/workspace/scratch/855d9af51e68/cybersand-docs",
+  "documentation_branch": "docs/docs-renaissance-001",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "accepted_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "scope": "Accepted source/dependency/runtime bytes unchanged; documentation candidate is separate.",
+  "runtime_manifests": [
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "size": 5253776,
+      "matches_recorded_hash": true,
+      "source_input_validation": "check_repository.py PASS; original source inputs not reattested"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
+      "manifest_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "source_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "size": 117275416,
+      "matches_recorded_hash": true,
+      "source_input_validation": "check_repository.py PASS; original source inputs not reattested"
+    }
+  ],
+  "dependency_locks": [
+    {
+      "path": "third_party/native-toolchain.lock.json",
+      "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414"
+    },
+    {
+      "path": "third_party/godot-runtime.lock.json",
+      "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+    },
+    {
+      "path": "godot/third_party/rapier2d.lock.json",
+      "sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285"
+    }
+  ],
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "materialization": {
+    "selected_linux_runtime_files": 2,
+    "other_retained_runtime_files_still_pointers": 16,
+    "require_materialized_all_platform_check": "NOT RUN; sixteen known pointers remain"
+  },
+  "execution_scope": "Three native material renders and bounded keyless provider test; see capture-b and B validation. Graphical capture BLOCKED; no physical owner/GPU qualification."
+}

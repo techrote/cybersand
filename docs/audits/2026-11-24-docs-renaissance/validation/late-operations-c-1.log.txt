@@ -1,0 +1,1 @@
+scenario registry matches its sources

@@ -1,26 +1,46 @@
 {
   "source": "README.md",
-  "source_sha256": "662af401df48910bd99001b783958f2577a357de038e4e1604b8500bfceaaf40",
+  "source_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+  "recorded_at": "2026-11-24T19:31:57.720004+00:00",
+  "previous_source_sha256": "662af401df48910bd99001b783958f2577a357de038e4e1604b8500bfceaaf40",
   "renderer": "pandoc --from=gfm --to=html5 plus PyMuPDF Story 1.26.6",
   "scope": "Static Markdown layout approximation, not actual GitHub browser rendering. Narrow code blocks wrap for printed review; GitHub may scroll them. No application capture or physical GPU claim.",
+  "pdf_processing": "Lossless stream deflate; source PNG pixels are retained.",
+  "style_note": "Reconstructed consistent 960/390 widths, 48/36 margins and sans-serif16 body after caption correction; original one-off CSS was not retained.",
+  "reproduction_script": "render_readme_preview.py.txt",
   "previews": [
     {
       "name": "desktop",
       "width": 960,
-      "height": 4503.4736328125,
+      "height": 4579,
+      "margin": 48,
       "pdf": "readme-desktop.pdf",
       "top_png": "readme-desktop-top.png",
-      "pdf_sha256": "f223f820317c2045b7bf5dafc6795be0f7ce11e7fcce0e0fc8809a91ad86d814",
-      "bytes": 1457400
+      "gallery_png": "readme-desktop-gallery.png",
+      "pdf_sha256": "57c93b1dc9bdc610ff75d4a6c9fdd484362182872b6548f2a7e6675764098b1d",
+      "bytes": 1457330,
+      "top_png_sha256": "daa917888185eda89aea8a1120cc2de94651ad2ebe956ac63eac8aa2bede4dd5",
+      "gallery_png_sha256": "1ddf14f295c1d3272c8c828440a36fafa8896c05c8b5fa3b2a5c3010868c9b7e"
     },
     {
       "name": "narrow",
       "width": 390,
-      "height": 5855.162109375,
+      "height": 5918,
+      "margin": 36,
       "pdf": "readme-narrow.pdf",
       "top_png": "readme-narrow-top.png",
-      "pdf_sha256": "bd088f827b2f5b0990b3ee341f8a2292e15573489c065f4e76369d0ebcf211e4",
-      "bytes": 1457596
+      "gallery_png": "readme-narrow-gallery.png",
+      "pdf_sha256": "66542cbe388f3c3e3cd9e72e7bf6481b9656cdb99f890a947be19408b8c5782c",
+      "bytes": 1457543,
+      "top_png_sha256": "30b2039cc9e76a8d3167ea8edf7a84221a20897b394d9ba56d6684287cc309ac",
+      "gallery_png_sha256": "72a0933323578a664985eee740cbde0d221bd1381d6bf9ce6b5e1e26d3de030b"
     }
-  ]
+  ],
+  "independent_visual_review": {
+    "reviewer": "Technical lead (/root)",
+    "method": "Viewed the four regenerated desktop/narrow top/gallery PNGs",
+    "result": "Clear layout and final caption; static approximation scope retained",
+    "reported_at": "2026-11-24",
+    "receipt": "Parent collaboration message confirming actual review of all four images."
+  }
 }

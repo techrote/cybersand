@@ -1,0 +1,12 @@
+2026-11-24T20:37:48.4517575Z ##[endgroup]
+2026-11-24T20:37:49.8072196Z Traceback (most recent call last):
+2026-11-24T20:37:49.8079581Z   File "D:\a\cybersand\cybersand\tools\lcb\in_tools_current_main_admission.py", line 225, in <module>
+2026-11-24T20:37:49.8080242Z     raise SystemExit(main())
+2026-11-24T20:37:49.8184047Z                      ^^^^^^
+2026-11-24T20:37:49.8184907Z   File "D:\a\cybersand\cybersand\tools\lcb\in_tools_current_main_admission.py", line 219, in main
+2026-11-24T20:37:49.8186070Z     result = check()
+2026-11-24T20:37:49.8252744Z              ^^^^^^^
+2026-11-24T20:37:49.8253988Z   File "D:\a\cybersand\cybersand\tools\lcb\in_tools_current_main_admission.py", line 194, in check
+2026-11-24T20:37:49.8254972Z     raise AdmissionError(
+2026-11-24T20:37:49.8256181Z AdmissionError: working source changed for godot/scripts/physical_actor_session.gd: 56df9dde65f3d2a8650bc7575e886fe19a24380e != bde4503df99d7e317cfb0987004d525f72177316
+2026-11-24T20:37:49.8527949Z ##[error]Process completed with exit code 1.

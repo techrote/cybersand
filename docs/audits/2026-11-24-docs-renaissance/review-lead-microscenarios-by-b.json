@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B / product_showcase",
+  "reviewed_at": "2026-11-24T19:24:05.896014+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "document": "docs/operations/microscenario-reference-pack.md",
+  "document_sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+  "method": "Independent accepted-source and original dated-evidence inspection; exact Git ancestry for both recorded merges; changed prose compared with source and preserved objective semantics.",
+  "claims": [
+    {
+      "claim_id": "L-46",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "MS-001 and INT-000 merge commits are both accepted-baseline ancestors, with original PR44/PR55 merge subjects. Current reference pack defines all three scenarios and shared host/CLI routes. Removing live branch/admission instructions changes no scientific gate or new tuning authority.",
+      "source_locators": [
+        "git:c1edf907cce1693fa45f89e9f1f573f05483c1e4",
+        "git:910717aac101363ec2b1b89e4041a22bc9a97b97",
+        "godot/scripts/microscenario_reference_pack.gd",
+        "godot/scripts/microscenario_host.gd",
+        "docs/operations/microscenarios-programme.md",
+        "docs/audits/2026-11-24-docs-renaissance/github-microscenario-intake.json"
+      ]
+    },
+    {
+      "claim_id": "L-47",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": "Original audit contains Flood5031 and exact four visited-cell sums now labelled retained measurements. Current source preserves Flood protected-water at tick180, zero complete/positive fail, three geometry-only witnesses, and four180-tick stress profiles. CLI refuses enabled player/body owners; caller source-sha is explicit metadata, not inferred runtime identity. Current prose no longer implies old Windows cross-build is a current runtime or Windows execution result.",
+      "source_locators": [
+        "docs/audits/2026-09-19-issue-28-ms001.md",
+        "godot/scripts/microscenario_reference_pack.gd::flood_control/flood_control_witness/simulation_stress",
+        "godot/tests/run_microscenario.gd"
+      ]
+    }
+  ],
+  "ancestry": [
+    {
+      "commit": "c1edf907cce1693fa45f89e9f1f573f05483c1e4",
+      "exit_code": 0,
+      "stderr": "",
+      "subject": "Merge PR #44: complete MS-001 reference MicroScenario pack"
+    },
+    {
+      "commit": "910717aac101363ec2b1b89e4041a22bc9a97b97",
+      "exit_code": 0,
+      "stderr": "",
+      "subject": "Merge PR #55: complete INT-000 interaction substrate"
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "No MicroScenario campaign, GUI or Windows/Web execution rerun.",
+    "Unchanged later owner-review fixture dispositions were not recertified by these two claims."
+  ]
+}

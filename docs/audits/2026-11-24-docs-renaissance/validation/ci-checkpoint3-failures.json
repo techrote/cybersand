@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-11-24T19:08:00Z",
+  "authority": "historical evidence",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "baseline_actor_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+  "baseline_admission_tool_blob": "e6a76711074064ab24cf4400856a68553eb27ae6",
+  "jobs": [
+    {
+      "job_id": 138697024892,
+      "workflow_run": 45464886438,
+      "head": "657730d4d1238303977c1511e213d8d77446ef03",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45464886438/job/138697024892",
+      "method": "Downloaded original job log; retained relevant failure lines, not a runtime acceptance result.",
+      "excerpt": [
+        "2026-11-24T18:57:07.4720431Z     \"docs/operations/soliding-stage3-freeze.md: broken link ../audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt\"",
+        "2026-11-24T18:57:07.4782964Z ##[error]Process completed with exit code 1."
+      ],
+      "classification": "Documentation checkpoint packaging omission: referenced byte-exact preserved source file was not yet committed."
+    },
+    {
+      "job_id": 138697025136,
+      "workflow_run": 45464886231,
+      "head": "657730d4d1238303977c1511e213d8d77446ef03",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45464886231/job/138697025136",
+      "method": "Downloaded original job log; retained relevant failure lines, not a runtime acceptance result.",
+      "excerpt": [
+        "2026-11-24T18:56:58.6782948Z \u001b[36;1mpython tools/lcb/in_tools_current_main_admission.py | tee build/in-tools-windows-gate/source-admission.json\u001b[0m",
+        "2026-11-24T18:56:58.6783758Z \u001b[36;1mpython tools/lcb/test_in_tools_current_main_admission.py -v 2>&1 | tee build/in-tools-windows-gate/source-admission-tests.log\u001b[0m",
+        "2026-11-24T18:57:00.0814909Z   File \"D:\\a\\cybersand\\cybersand\\tools\\lcb\\in_tools_current_main_admission.py\", line 225, in <module>",
+        "2026-11-24T18:57:00.0967189Z   File \"D:\\a\\cybersand\\cybersand\\tools\\lcb\\in_tools_current_main_admission.py\", line 219, in main",
+        "2026-11-24T18:57:00.0969201Z   File \"D:\\a\\cybersand\\cybersand\\tools\\lcb\\in_tools_current_main_admission.py\", line 194, in check",
+        "2026-11-24T18:57:00.0970405Z     raise AdmissionError(",
+        "2026-11-24T18:57:00.0971182Z AdmissionError: working source changed for godot/scripts/physical_actor_session.gd: 56df9dde65f3d2a8650bc7575e886fe19a24380e != bde4503df99d7e317cfb0987004d525f72177316",
+        "2026-11-24T18:57:00.1099669Z ##[error]Process completed with exit code 1."
+      ],
+      "classification": "Admission guard mismatch already present at accepted main: application file and guard both unchanged in this documentation branch."
+    }
+  ],
+  "baseline_admission_record_blob": "50e66122f4900f86221a7c9be766574d9d01ac84",
+  "admission_adopted_main": "24a8bbe8ccf0d17196ebbab580b924930a964584",
+  "admission_expected_actor_blob": "bde4503df99d7e317cfb0987004d525f72177316",
+  "resolution": "Missing preserved source records committed and documentation CI passed at remote9a2ade2be809bc8219a84653e1e4e81368d689b4. Windows campaign admission mismatch remains; guard/application/record unchanged from accepted main."
+}

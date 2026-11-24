@@ -1,0 +1,538 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist B /root/product_showcase",
+  "reviewed_utc": "2026-11-24T18:24:33.723860+00:00",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "head_at_review": "829a92be670bec20f8cddbec0dc5b2c25844c63a",
+  "method": "Compare complete tracked working tree against accepted baseline (including product commit), enumerate untracked files separately, verify every lane preservation record against git-show bytes, check unchanged frozen fixtures and old history/audits, inspect bounded helper diff, verify README/PDF identities and visually inspect both top PNGs.",
+  "changed_tracked_paths": 124,
+  "untracked_paths": 136,
+  "out_of_scope_paths": [],
+  "prior_historical_evidence_changes": [],
+  "frozen_fixture_checks": [
+    {
+      "path": "docs/reference/owner-intent-retrieval-questions.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-architecture.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-art-traffic.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-cathedral.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-ci.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-lcb-reassess.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-lcb005.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-lockstep.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat-auth-353a.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat-auth.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat354-recovery.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat354.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-materials-lab.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-megablock.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-play.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-wave-flow.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-workbench-actors.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-workbench-host-claims.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-world-art.json",
+      "unchanged": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions.json",
+      "unchanged": true
+    },
+    {
+      "path": "tools/ci/test_historical_retrieval.py",
+      "unchanged": true
+    }
+  ],
+  "preservation_records": 55,
+  "preservation_checks": [
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/overview.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/reference/level-saves-and-replay.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/reference/glossary.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/systems/water-design.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/systems/workbench-actor-composition.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/reference/configuration-reference.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/reference/invariants.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/systems/architectural-generator.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/pressure-optimization.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-a.json",
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": null,
+      "recorded_current_hash_matches": true
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "README.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/workbench-water-lab.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/materials-lab-authoring.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/workbench-actor-composition.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/systems/workbench-art-providers.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-b.json",
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/README.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/reference/retrieval-index.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/local-build-and-validation.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/github-development-and-release.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/current-and-historical-validation.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/documentation-maintenance.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "CONTRIBUTING.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/architecture-programme.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/cell-layout-experiment.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-c.json",
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-lead.json",
+      "path": "docs/reference/status-and-roadmap.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-lead.json",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-lead.json",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-lead.json",
+      "path": "docs/reference/validation-evidence.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    },
+    {
+      "ledger": "preservation-lead.json",
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "baseline_hash_bytes_match": true,
+      "local_copy_matches": true,
+      "recorded_current_hash_matches": null
+    }
+  ],
+  "preservation_failures": [],
+  "preview": {
+    "readme_source_hash_matches": true,
+    "scope": "Static Markdown layout approximation, not actual GitHub browser rendering. Narrow code blocks wrap for printed review; GitHub may scroll them. No application capture or physical GPU claim.",
+    "artifacts": [
+      {
+        "name": "desktop",
+        "pdf_hash_matches": true,
+        "pdf_bytes_match": true,
+        "top_png_sha256": "a88c23627118bb9ce27e85f0a9d8241623b07c57b494115f99981a80cee9a9dc",
+        "top_png_visually_reviewed": true
+      },
+      {
+        "name": "narrow",
+        "pdf_hash_matches": true,
+        "pdf_bytes_match": true,
+        "top_png_sha256": "0caa052defccc827ae79ccb4e77eb355cddfdd641c20119cf503dd72d69f941f",
+        "top_png_visually_reviewed": true
+      }
+    ]
+  },
+  "containment": {
+    "default_documents": 151,
+    "audits_or_history_in_default": []
+  },
+  "frozen_answer_context_transfer": {
+    "questions": 11,
+    "all_exact_text_and_order_equal": true,
+    "proof_file": "retrieval/answer-b-final-delta.json"
+  },
+  "findings": [
+    {
+      "id": "B-FINAL-01",
+      "priority": "P1",
+      "status": "awaiting-explicit-stage",
+      "finding": "Four exact referenced synthetic capture/test .log files are ignored by global repository patterns and require explicit staging. Lead approved force-adding only these audit files without ignore-rule changes.",
+      "paths": [
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/import-headless.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/provider-keyless.log"
+      ],
+      "privacy_check": "Content is isolated import/native marker/Xvfb error/keyless fixture output; no provider dispatch. All four inspected/scanned for credential/prompt/request-payload markers:0."
+    }
+  ],
+  "review_limits": [
+    "Inspection of working tree at stated head; lead owns final commit/tree/final-source refresh",
+    "Preservation by byte copies and immutable Git originals does not itself prove every condensed editorial sentence; lane cross-reviews cover consequential claims",
+    "Static README preview is not GitHub browser rendering; native headless output is not graphical or physical acceptance",
+    "No extra engine/build/test matrix executed for this review"
+  ]
+}

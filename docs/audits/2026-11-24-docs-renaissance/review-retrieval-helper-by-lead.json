@@ -1,0 +1,45 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewer": "/root (lead agent, independent of author /root/retrieval_onboarding)",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": [
+    "tools/docs/retrieval_policy.py",
+    "tools/docs/retrieval_eval.py",
+    "tools/ci/check_docs.py",
+    "tools/ci/test_current_retrieval_selection.py"
+  ],
+  "defect": "Fallback admitted deliberately excluded focused packets/navigation and omitted five selected current documents.",
+  "review": [
+    "Shared focused/navigation definitions and explicit-only selection retain authority vocabulary.",
+    "Authority is checked before exclusion; manifest, fallback and direct chunk routes enforce selection. Malformed/duplicate scalars fail closed.",
+    "BM25 scoring/tokenization and frozen questions are unchanged.",
+    "Equality regression compares actual fallback with actual manifest. No engine, AGENTS or CI scheduling change."
+  ],
+  "findings": [
+    {
+      "id": "ROOT-RAG-01",
+      "priority": "P0",
+      "finding": "Initial current-selection parsing also rejected the real historical retrieval: explicit-history-only scalar. Synthetic historical16tests had missed this.",
+      "resolution": "C restricted current selection validation to default mode, added real-style historical-envelope regression; unchanged historical corpus works."
+    }
+  ],
+  "executed_checks": [
+    {
+      "command": "python3 -m unittest discover -s tools/ci -p test_historical_retrieval.py",
+      "result": "PASS",
+      "tests": 16
+    },
+    {
+      "command": "python3 -m unittest discover -s tools/ci -p test_current_retrieval_selection.py",
+      "result": "PASS",
+      "tests": 12
+    }
+  ],
+  "verdict": "Supported narrow repair after historical regression correction; answer applicability is separately audited.",
+  "reviewed_file_sha256": {
+    "tools/docs/retrieval_policy.py": "7a3c02b2b0ef1160696089091d0494ed1ba6c00b6c2bcefa229ef5b0a961db51",
+    "tools/docs/retrieval_eval.py": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+    "tools/ci/check_docs.py": "1e07debdd4fb17d93d040ce4c8f907ae36986d39fe59411e2e94c27c16d956c0",
+    "tools/ci/test_current_retrieval_selection.py": "b9aab75652381d5e8d9cc2899751d36f97351f723db313d3f231fa019f995047"
+  }
+}

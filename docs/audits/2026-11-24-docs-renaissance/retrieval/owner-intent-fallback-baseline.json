@@ -1,0 +1,1326 @@
+{
+  "retrieval_policy": "historical-isolation-v1",
+  "authority": "current-documentation",
+  "historical_opt_in": false,
+  "link_expansion": false,
+  "cache_policy": "No persistent cache is read; external caches require rebuild with this policy and per-chunk authority.",
+  "created_utc": "2026-11-24T18:08:38.704150+00:00",
+  "corpus_root": "/workspace/scratch/855d9af51e68/c-lane/fallback-baseline-final",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit current manifest if present; otherwise focused directories plus navigation README/AGENTS; historical paths and tagged copies rejected"
+  },
+  "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+  "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+  "corpus_manifest_sha256": null,
+  "corpus_manifest": "docs/reference/retrieval-corpus.json",
+  "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+  "corpus": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+      "bytes": 10289
+    },
+    {
+      "path": "README.md",
+      "sha256": "8f9e4ae34375a970fe2473e1fb1bb27af308a688f1e7e1f70dd3d5de1453f971",
+      "bytes": 14465
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "69a1ce59b0fa7405ba73e7e2ec8591756b7b8b34f222d1a52b5481e9e39f8ab3",
+      "bytes": 60508
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "246f130a0fa07d4ae5f8330e8e3929ad588d793f323900e90a9a6e557d9082f7",
+      "bytes": 16079
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "112060dc5d88ffc99b56f04c5667597f9e73ca1adb1b9353bc5d078f79763c40",
+      "bytes": 39570
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "4a85c1007a438d86f52d7b51a6c59b5aee0c85d6e900857e14fdfb07ec65aea8",
+      "bytes": 11309
+    },
+    {
+      "path": "docs/architecture/in-tools-gameplay-admission.md",
+      "sha256": "5a2b5e0882b991a72c3549d99eb6d35ecfa1e17d37be17c9af9cb5ec6f910d51",
+      "bytes": 7409
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "bdacfa2db93d74044d212940ea375d08404e1c376a96cde250443f19690607a2",
+      "bytes": 84579
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "826b8454abdb75620120736c005a65a5b993c742846e0fe7985edf2c08f3005d",
+      "bytes": 66230
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "752a352b88ec125b1e8c3d319eeb35f0c8529eff3ecfda9969a4389ac4bd2977",
+      "bytes": 63265
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "cf0046c5ccce66ee0c1f0cc150f1a873d9a03ef50016770f28f5700f89476b57",
+      "bytes": 32330
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "ad0b728477160ba8b52737ca6204d55d36be70dfe04e9380bcd93f7b1a56adfc",
+      "bytes": 20378
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "eeb3bdee911991e0529f9f9b10f6d444a6e0a3f906680f8643a70e96e5a075a0",
+      "bytes": 15352
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "eb25808450399ed44f230e037928c3541dc70d667014171b1ba0b7dd213c6c11",
+      "bytes": 24788
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "94fdd3d39211766309798ce7e16f3dea8821f486c5055cdd2f621d2752322a73",
+      "bytes": 25476
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "bytes": 47213
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "22c82ce2edb6e615cf097a45d6a36b505cd7a057d782439c7949db0b1a0b3e41",
+      "bytes": 7714
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/cell-layout.md",
+      "sha256": "4cba39319acfc325a5d0889f21d298af5e7422bd02e36f3de22b427167f2ec25",
+      "bytes": 13535
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/compact-motion.md",
+      "sha256": "9c95cb5149d16ec2605995dad1b87ead01540526c713787fcebf149297b773a0",
+      "bytes": 12920
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/decision-review.md",
+      "sha256": "1ffb2596de1513430850644c6363a9a2b0781af13ec51d1addf9c6bf8bf36038",
+      "bytes": 11684
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/fractional-presentation.md",
+      "sha256": "bf4a7b4f65dcc8c8dd28c3d0f7cc9a352b774ba94bceb0db558b71451ee051e1",
+      "bytes": 22611
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/liquid-characterization.md",
+      "sha256": "1bdcbf48ffc557f967a939758bf0a158cf7100f49474a2dc1238ad49d01a1275",
+      "bytes": 12698
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/soliding-supplement.md",
+      "sha256": "d321bc0ab3a13d57da3dc79fccc2cc4f281c3d7748d4de812fc789b95686eac5",
+      "bytes": 14623
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/sparse-motion.md",
+      "sha256": "27f11a3696c1df951fef964634e5cef553291c6b1893cb15c068c9cccebc3e60",
+      "bytes": 13665
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/state-precision.md",
+      "sha256": "66e01e2202422866a4145511cd707dbc3dc73beeb159b93d173c077c09a09c50",
+      "bytes": 13192
+    },
+    {
+      "path": "docs/operations/architecture-programme-source-ledger.md",
+      "sha256": "605886fbd2aa3c7ed90cdb309ecb638e3d40d6f17711a721cd9f72993151d999",
+      "bytes": 19414
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "bytes": 12906
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "6419dd47e240b6d16023cacf50215952996ab7a08b9213cb188ef6ecf4efb870",
+      "bytes": 128043
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "bytes": 3762
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "f3083780031d5512435c07d4d454ef8f5bdb029ac33f2e1d7181e0b52fa1c862",
+      "bytes": 14140
+    },
+    {
+      "path": "docs/operations/gentek-interlaced-viaduct.md",
+      "sha256": "99fb6fc8386c5fc681116f82ac56c4fcdbacd7a715a5abe3ac28e68546401c0a",
+      "bytes": 7167
+    },
+    {
+      "path": "docs/operations/gentek-rosework-showcase.md",
+      "sha256": "9a69080e953d9443ed8d28a871c71f08eccfe04789c3c0653d9d97f08c893ff5",
+      "bytes": 7461
+    },
+    {
+      "path": "docs/operations/gentek-showcase-integration-001.md",
+      "sha256": "49a4c97f8df0bef8cc46709f143f9013e505fb988cf60c8d1e1abfb4f3725217",
+      "bytes": 5733
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "bytes": 18806
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "bytes": 18051
+    },
+    {
+      "path": "docs/operations/in-tools-fixtures-and-playtest.md",
+      "sha256": "f5db7cc0b91bf316cdb4addc7f9807f3faa99881046712f65c29bc932498286b",
+      "bytes": 3406
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "bytes": 117202
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "0f8ed826d60d97f0d863556422559e720f6ac92f38157701b8015d43ea177a66",
+      "bytes": 19717
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "bytes": 13039
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "ae468a2213585d4be04d8e9b333f5d432981c6e1da37b764b52696708a4e9267",
+      "bytes": 32150
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "bytes": 17952
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-connectivity.md",
+      "sha256": "2c2735201f880243c279db0c00f51ec944029148008f3252b3c544f1a1064a8d",
+      "bytes": 6159
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-measurement.md",
+      "sha256": "b26e01bdfbc4a4a9096cfe94473d8245b81d5382a1712ec03b2e3e8c72798d28",
+      "bytes": 4209
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-producer.md",
+      "sha256": "54634fcb38f9111544de170030ee33517bacb742a540eb5ddaa848317b8c2332",
+      "bytes": 6365
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-verification.md",
+      "sha256": "6e7d37aa0ead70dabac3a2e661475a813696e1a3ed7d3e3004401c431b645e1e",
+      "bytes": 3772
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-astra-review.md",
+      "sha256": "4b0c8d0167c8274d5da0878489723d7f26b2fa82f66c6d76ee37f3f62cacc2b8",
+      "bytes": 14763
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "bytes": 32428
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "bytes": 17230
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "de75e024d6b86b5a40cd7a0d148ea86295acc3dfd91565a3f917f16a13e37db8",
+      "bytes": 40397
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f",
+      "bytes": 13944
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "726497a27ac4745af06a4941cf4b658983a2833e0aa9c0eef3aed4c28342b35b",
+      "bytes": 15344
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "bee8124fee89b2cb426da2ff01e491cbe883ca2bd84aee4c16d7ce95b26fff5b",
+      "bytes": 90310
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "0edd84df08e0e653fc73f4c47d7e2931749e725951c3c836bc3f2340e6f4d396",
+      "bytes": 99376
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "02ad3d26a1193669dc0d582a46c4254da016b25f1281ff69ea9ba4afe61d6a6e",
+      "bytes": 47306
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "2ea330678ce74d6206213b39213aa5783374b61bda2efa0a48a575d2f76af552",
+      "bytes": 15430
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "fc8f06018d923481d37c766acea8113130d7739b99c84871ce3ad89e760b573b",
+      "bytes": 20969
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+      "bytes": 73249
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33",
+      "bytes": 161415
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "bytes": 77127
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/gentek-80-integration-001.md",
+      "sha256": "b88833bd3a8a2d0f83eae9546cf0f2de3287bd412797fe571ff824e8c13f0668",
+      "bytes": 27575
+    },
+    {
+      "path": "docs/research/gentek-classic-001.md",
+      "sha256": "cd3e5084d006295487f89d62ef7942527354d05105c14aeeab38ce1deca17a97",
+      "bytes": 10686
+    },
+    {
+      "path": "docs/research/gentek-interlock-001.md",
+      "sha256": "1d08ce0ad02099fec38059c89f78f4a76fd17e8aa91a9f3f20d42e7a60942ee7",
+      "bytes": 6805
+    },
+    {
+      "path": "docs/research/gentek-metabolist-001.md",
+      "sha256": "965fe83637d28623c28b48a59b01cf79bfd32ebe60f245855d7fd240fb3a85f1",
+      "bytes": 7691
+    },
+    {
+      "path": "docs/research/gentek-showcase-cathedral-001.md",
+      "sha256": "fb2fa9b04071193d5c8803cf37e109bdc5f70fc21966d339763a0c286a37cd60",
+      "bytes": 17810
+    },
+    {
+      "path": "docs/research/gentek-showcase-megablock-001.md",
+      "sha256": "691cfb58914cdaa26530dd09218a8a27bd1cb6ab2f77bd56866640022f3421e7",
+      "bytes": 12535
+    },
+    {
+      "path": "docs/research/gentek-showcase-megatruss-001.md",
+      "sha256": "71298ce6750e92fdbb8c6247ca350908bcebbc6b1d5a9f72e110da6b258d66d5",
+      "bytes": 17197
+    },
+    {
+      "path": "docs/research/gentek-suspended-001.md",
+      "sha256": "523df79d74e7da2b8eb566664f6563746ed2880fda6f33828b0e3d5c64b7b410",
+      "bytes": 6647
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "b9a500aa2ad7545b53ce03fe40f12b9a09cfc7c7d16661a541dd82fcfa485072",
+      "bytes": 24845
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "bytes": 13442
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "bytes": 21861
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "2140d649728829bf1b5163eb0686ab8eadd6493be7512ad5e25e21359a5c2e24",
+      "bytes": 14476
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "cb0ad9d255d648064362b2c13dfa9e5c76eae388705d52ed47988024a5fe714c",
+      "bytes": 23872
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "bytes": 62162
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "0edcd936c2a82cc7e0e8c0e5b586a84fa9841e87bb7b5edd74c60c96dd82afc3",
+      "bytes": 28537
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "b6c24131a38f2ede5a2b6426db193c1976ea5ce770a0b96195079279b75b5428",
+      "bytes": 23536
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "e3d659856dff8529cf5b85237c4b1aae3db31f6e11c975eab561a38501560ee0",
+      "bytes": 26400
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "0608fbdc4ed4a4b38cd3ce47422bbbaeee07ce1c0a080b555f820d377692538d",
+      "bytes": 13532
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "21d0d16074f0d1e3203addc8c5707bcaa70d85b6d7f0eec6e3ca12e3db96890c",
+      "bytes": 11007
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "de44534954f0d38639f220cab5a56135fec0a0589777be21460543400885953b",
+      "bytes": 12516
+    }
+  ],
+  "document_count": 171,
+  "chunk_count": 2284,
+  "summary": {
+    "questions": 6,
+    "canonical_hit_at_1": 4,
+    "canonical_hit_at_k": 4,
+    "mrr_at_k": 0.6667,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "OI01",
+      "query": "What does the owner want CyberSand and Workbench to become?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Paint-and-play authoring system with accessible controls; integrate useful capabilities through Workbench."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "canonical_rank": null,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 10.233719,
+          "path": "operations/workbench-water-lab.md",
+          "title": "Workbench Water Lab — consolidated controls",
+          "heading": "Workbench Water Lab",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Workbench Water Lab — consolidated controls\nPath: operations/workbench-water-lab.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Water Lab controls and Waterwall-stack review repairs above PR 631; experimental, merge held\ncanonical-for: [workbench-water-lab-controls]\nlast-reviewed: 2026-11-20\nSection: Workbench Water Lab\nThe owner's evaluation found the top Workbench toolbar had become a stack of Water solver, comparison, live status, equipment and apparatus rows. Wave Flow was also absent from the older liquid-policy presets menu, making the correct selection hard to discover. This change consolidates those *existing* controls; it deliberately does **not** add another Water solver or native authority."
+        },
+        {
+          "rank": 2,
+          "score": 8.406042,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "title": "Liquid solver family policy and API specification",
+          "heading": "Liquid solver family policy and API specification > Native policy foundation (Current, 2026-10-24)",
+          "part": 4,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Liquid solver family policy and API specification\nPath: architecture/liquid-solver-family-policy.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Approved design\nscope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped\ncanonical-for: [liquid-solver-family-policy]\nlast-reviewed: 2026-11-03\nSection: Liquid solver family policy and API specification > Native policy foundation (Current, 2026-10-24)\nhosts (deliberate host/oracle difference).** The oracle's `gdscript_fallback` build models a host that can *decode* a request. It accepts a default policy and refuses only non-default assignments as `platform_unsupported`. No such GDScript decoder exists. `CyberMicroScenarioHost.install` therefore refuses **every** explicit request, including the explicit default, as `platform_unsupported` when the native handshake (`build_liquid_policy_world`, `get_liquid_solver_policy`) is missing. Without the handshake it could neither validate nor read back what it applied. Callers that want defaults on such a host pass no request (`null`). The oracle vectors remain the contract for a decoding host; adding a fallback decoder would have to reproduce them first."
+        },
+        {
+          "rank": 3,
+          "score": 7.966324,
+          "path": "operations/architecture-programme.md",
+          "title": "CyberSand architecture synthesis and experimental programme",
+          "heading": "CyberSand architecture experimental programme > K. Baseline, rollback and comparison strategy",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: CyberSand architecture synthesis and experimental programme\nPath: operations/architecture-programme.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Planned\nscope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection\ncanonical-for: [architecture-experimental-programme]\nlast-reviewed: 2026-10-24\nSection: CyberSand architecture experimental programme > K. Baseline, rollback and comparison strategy\nKeep intake source and each experiment as recoverable commits/branches, with reference fixtures and full registered input identity. Build candidates separately; never overwrite the only reference executable or the owner's loaded DLL. Preserve the intentional dirty DLL and all unrelated work. Raw outputs stay in the active workspace; `C:/cybersand` remains the functional-deliverables directory. Use fresh-world A/B selection or distinct binaries, not unsafe live state-layout switching. Normalize layout-specific state into semantic records for comparison; epoch-shortening variants intentionally differ in raw bookkeeping but must retain equivalent material behavior. Keep observer-off controls so instrumentation cannot silently become the improvement. Preserve failed and ambiguous runs. If a candidate loses, retain the control and close its experiment with the evidence; do not generate a migration by momentum. Serial, fallback and unavailable Buffered are not interchangeable exact rollback implementations."
+        },
+        {
+          "rank": 4,
+          "score": 7.713264,
+          "path": "operations/workbench-actor-composition.md",
+          "title": "Mixed Actor Workshop owner procedure",
+          "heading": "Mixed Actor Workshop owner procedure > Automated qualification apparatus",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Mixed Actor Workshop owner procedure\nPath: operations/workbench-actor-composition.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: WB-ACTOR-COMPOSE-001 ordinary Workbench controls, authored example and source-matched qualification procedure\ncanonical-for: [workbench-actor-composition-owner-procedure]\nlast-reviewed: 2026-11-20\nSection: Mixed Actor Workshop owner procedure > Automated qualification apparatus\nUse the repository-pinned Godot/Rapier and matching native extension. The new multi-part response-owner capacity requires rebuilt matching Windows and Linux runtimes; a baseline DLL/SO must not be relabeled as this candidate. Follow [local build and validation](local-build-and-validation.md) and retain source, runtime hashes, exact commands, logs and the platform alongside results. From the repository root, with `GODOT` naming the pinned executable: ```sh \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_catalog.gd -- --save actor-compose-schema \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_catalog.gd -- --reopen actor-compose-schema \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_composition_session.gd \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_composition_native.gd \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_equipment_extent.gd CYBERSAND_ACTOR_COMPOSITION_REPORT=/absolute/path/author.json \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_composition.gd CYBERSAND_ACTOR_COMPOSITION_REOPEN=1 CYBERSAND_ACTOR_COMPOSITION_REPORT=/absolute/path/reopen.json \"$GODOT\" --headless --path godot --script tests/test_workbench_actor_composition.gd ``` The integration writer uses named start `actor-compose-589-evaluation`; set `CYBERSAND_ACTOR_COMPOSITION_NAME` in both processes to isolate another run. The second invocation is a new process with a fresh native World and physical owner. Its completion marker is `WB_ACTOR_COMPOSE` followed by JSON checks, failures, per-actor movement/support, equipment receipts, native/Rapier progression and elapsed/cost observations. A nonzero exit or any failure means it did not pass. Retain failed logs, not only the final result. For actual framebuffer evidence, remove `--headless` in an available graphical display and set `CYBERSAND_ACTOR_COMPOSITION_CAPTURE` to an absolute output directory. PNGs come from the real application framebuffer after presentation; the capture refuses the headless driver. Captions in the JSON identify human, scripted, policy and passive roles, phase and tick. A software-rendered Linux capture proves the displayed application state, not Windows playfeel or hardware frame pacing. Run the relevant existing Workbench input, canvas, combined-authoring, generated-start, material-baseline, Flatten, PAINT and physical actor/equipment regressions too. The dedicated qualification runner records their outcomes. Catalogue, controller and gameplay results are separate from performance: compare no NPC, one script, heterogeneous scripts, mixed producers and equipment on both small and 2048 × 1024 canvases, retaining actual tick progression, decision cost, frame/publication timing and memory. Do not infer performance from slot limits. Windows graphical execution and owner acceptance remain explicit requirements when the build environment cannot run a Windows desktop. A portable package must contain the source-matched native/Rapier runtimes, pinned Godot, project resources and this example; its launcher must open interactive Shared Workbench."
+        },
+        {
+          "rank": 5,
+          "score": 7.633096,
+          "path": "operations/workbench-actor-composition.md",
+          "title": "Mixed Actor Workshop owner procedure",
+          "heading": "Mixed Actor Workshop owner procedure",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Mixed Actor Workshop owner procedure\nPath: operations/workbench-actor-composition.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: WB-ACTOR-COMPOSE-001 ordinary Workbench controls, authored example and source-matched qualification procedure\ncanonical-for: [workbench-actor-composition-owner-procedure]\nlast-reviewed: 2026-11-20\nSection: Mixed Actor Workshop owner procedure\nThis is the owner workflow for the Draft/HOLD actor-composition candidate linked to [#589](https://github.com/techrote/cybersand/issues/589). It opens the ordinary Shared Workbench. F5, Thunderbowl and Flight Lab are not required. The [system contract](../systems/workbench-actor-composition.md) owns the precise capability, producer, persistence and capacity boundaries."
+        }
+      ]
+    },
+    {
+      "id": "OI02",
+      "query": "Should saving a settled canvas flatten everything and destroy the session Undo history?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Save desired evolved layout without unexpected live Undo destruction.",
+        "Explicit two-byte material Flatten differs from ordinary Save and a full checkpoint."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.557631,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent — 14 November 2026",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Save, Flatten and compatibility",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Owner authoring and world intent — 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: current-documentation\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent — 14 November 2026 > Save, Flatten and compatibility\n**Confirmed:** saving should preserve the desired evolved material layout without unexpectedly destroying the session's Undo history. Oil painted in mid-air and allowed to settle should restart in its saved location. Acid used to damage a wall, followed by water and fire cleanup, should not reappear merely because the original construction strokes were replayed. **Confirmed:** explicit Flatten is a material-occupancy snapshot using two bytes per cell, allowing burdensome or blocking construction history to be discarded. It is not a full physical checkpoint. Normal map saves need not always flatten; richer authoring data can remain useful. Neither this clarification nor the word “save” requires persisting the entire session's Undo stack. **Confirmed:** do not promise advanced cross-version compatibility of all old maps. Flatten may provide a fallback that recovers useful material layout in newer versions. Material identity mapping and container/version handling remain engineering details. This is not a guarantee that every old simulation state or every future material ID remains interpretable. Flatten is also distinct from merging the visual/semantic layers of Strata."
+        },
+        {
+          "rank": 2,
+          "score": 19.161987,
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "title": "PAINT-001 native-backed Workbench painting editor",
+          "heading": "PAINT-001 — bounded painting editor > Undo and authored-start persistence",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: PAINT-001 native-backed Workbench painting editor\nPath: systems/paint-editor-bounded-shapes.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Current\nscope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints\ncanonical-for: []\nlast-reviewed: 2026-11-12\nSection: PAINT-001 — bounded painting editor > Undo and authored-start persistence\nOnly native-confirmed edits enter the shared chronological history. A manual gesture remains one record, including its native chunks. Agent receipts retain the first stored material before a cell changes and its latest stored material afterward. A direct batch or one model drawing submission can span bounded history parts of at most 262,144 cells; one Undo or Redo traverses adjacent retained parts of that submission in order. A human edit between agent chunks closes the preceding agent group and remains a separate history entry. Undo therefore reaches the most recent edit first and cannot skip later human work to reverse an earlier agent drawing. Up to 32 parts and 1,048,576 retained edit cells are kept. If those limits evict an older part of an agent drawing, the surviving entry is labelled **Agent drawing (retained tail)** and the UI reports that the older part is no longer undoable. A no-change agent receipt preserves existing Undo and Redo. A captured part that returns every cell to its original material contributes no history record and removes its redundant authored stamps. Undo/Redo preflights expected stored source IDs and uses PAINT's existing native mutation and acknowledgement path. Both interfaces share the generation, revision and tick fence. Confirmed agent edits recorded through this seam advance the fence instead of invalidating manual history. An outside edit not recorded in this timeline, a simulation tick or World replacement still invalidates unsafe history. Undo is paused construction editing; it does not restore temperature, velocity or evolved physics state. Its trusted human inverse does not expand the agent's ordinary material, source or scope policy. History completion appends a new human canvas result to the agent conversation and a durable `history_result` traffic event. It preserves historical model receipts and does not automatically issue another model request. The existing context-mode rules still govern later requests. Undo/Redo stacks remain session-local; saving persists the resulting authored start, not those stacks. Before native writes, `workbench_paint_editor_history.gd` checks that the complete operation can be reconstructed through existing Setup-v2 or GEN-007 start formats. It coalesces exact material row runs into boxes, preserving Empty. The Workbench-only constructor now admits **32,768** authored rectangles/ stamps (previously 4,096), subject to the unchanged **1 MiB** save envelope and native construction-area checks. Generated-map replay also has a conservative maximum of 64 world areas, capped at 32 million touched cells, validated before save and in the native prepared constructor. Other MicroScenario recipes retain their 4,096-record limit. This source change requires a rebuilt GDExtension before Windows qualification. The editor queries a native capability handshake and retains the"
+        },
+        {
+          "rank": 3,
+          "score": 16.682761,
+          "path": "operations/gen008-flatten-qualification.md",
+          "title": "Flatten and Bake History qualification and owner evaluation",
+          "heading": "Flatten / Bake History evaluation > Windows owner acceptance",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Flatten and Bake History qualification and owner evaluation\nPath: operations/gen008-flatten-qualification.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance\ncanonical-for: [flatten-baseline-qualification]\nlast-reviewed: 2026-11-13\nSection: Flatten / Bake History evaluation > Windows owner acceptance\nDownload the source-matched evaluation ZIP identified in the dated record or PR. Verify its SHA-256, extract the complete archive into a new writable folder with a short path, and run **Open Workbench.cmd**. Keep the included source, dependencies and qualification records together. The full package also includes the accepted Materials Lab authoring tools; its separate launcher remains available. 1. Open **New from generator…**, select a real profile and install a map. Paint several materials, erase some cells, and alternate a few manual and agent edits. 2. Run simulation long enough to move or transform material. Move an actor or let it fall, then click **Flatten / Bake History…** and confirm. Observe that the live simulation continues, actors retain their motion and no tick-zero restart occurs. The previous Undo history should now be empty. 3. Pause. Paint a distinctive new mark and erase part of the flattened map. Add a small agent mark. Undo and Redo the subsequent operations in chronological order. 4. Explicitly **Save named start** under a new name. Completely exit Godot. 5. Launch again and Load that name. The flattened material layout and subsequent acknowledged edits should return without regenerating the former profile. Actor spawns/settings reconstruct normally; transient physics from the earlier process is not expected to resume. 6. Continue painting and agent authoring, Undo/Redo those new edits, and try Restore start. Confirm ordinary input, Fill, Copy/Paste, generator preview and Materials Lab remain usable. 7. Start a longer drawing operation, attempt Flatten while it is pending, then Stop/wait for acknowledgement and retry. The refusal must explain why; no old history or existing save may disappear during a refused/cancelled preparation. Report the evaluation source SHA, ZIP SHA-256, saved name and exact steps for any failure. Automated graphical frames do not substitute for this owner interaction."
+        },
+        {
+          "rank": 4,
+          "score": 16.462898,
+          "path": "architecture/shared-workbench-authoring-data.md",
+          "title": "Shared workbench authoring data and convergence",
+          "heading": "Shared workbench authoring data and convergence > Flatten and storage compatibility > Native readback, edit fencing and failure atomicity",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Shared workbench authoring data and convergence\nPath: architecture/shared-workbench-authoring-data.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation\ncanonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]\nlast-reviewed: 2026-11-20\nSection: Shared workbench authoring data and convergence > Flatten and storage compatibility > Native readback, edit fencing and failure atomicity\n`CyberDemoBridge.capture_material_baseline` returns privately allocated, complete LE16 bytes, extent, SHA-256 and source generation/revision/tick. It is invoked only by `CyberSimulationWorker._consume_material_capture`, outside a native tick, and reads `World::stored_material` without mutating the World. No pointer to live cell storage crosses the boundary. A single finite copy and value handoff replace per-cell cross-language reads. `validate_material_baseline` checks complete length and the real native catalogue before any narrowing. Staging explicitly detaches the PackedByteArray so an old readback cannot alter the retained authored plane. The request refuses queued/executing PAINT, agent chunks, legacy brush commands, unconsumed receipts and prepared replacements. A native queue admission is not an acknowledged edit. While capture/staging owns its slot, new construction edits are refused; ordinary simulation is not paused. The request carries worker/session World generation, owner request revision, authoring generation and a **15-second bounded deadline**. UI polling and Cancel never wait for a thread join. A cancelled in-flight copy can finish on the existing owner, but its retired token cannot publish a new baseline. A failed capture, allocation, validation, stale token or owner fault retains the old authored baseline/history and existing saved files. Once the whole baseline is staged, `material_capture_finish(token,true)` checks the lease again and advances the authoring generation and editor epochs. Main then swaps authoring references in the same callback, without yield or a native write. The independent authoring generation is necessary because paused Flatten does not change native World generation/revision/tick. Old PAINT requests are refused even if those native values still match. Legacy requests without the new field are admitted only in initial authoring generation one. Old provider replies, agent chunks and deferred turns are retired on successful adoption. Failure does not retire unrelated history or cancel a pending model request. No Undo Flatten, previous-World rollback or special simulated-world capture mode exists. Ordinary subsequent Undo/Redo and explicit Restore retain their existing bounded semantics. Process death before explicit Save cannot change an existing named file."
+        },
+        {
+          "rank": 5,
+          "score": 16.328619,
+          "path": "architecture/shared-workbench-authoring-data.md",
+          "title": "Shared workbench authoring data and convergence",
+          "heading": "Shared workbench authoring data and convergence > Flatten and storage compatibility",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Shared workbench authoring data and convergence\nPath: architecture/shared-workbench-authoring-data.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation\ncanonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]\nlast-reviewed: 2026-11-20\nSection: Shared workbench authoring data and convergence > Flatten and storage compatibility\n**Current on the GEN-008 implementation branch; approved 11 November 2026:** Flatten copies the complete current native **stored material IDs**, including Empty and identities produced by material motion or reactions. It captures at a completed tick boundary on the existing exclusive worker. It does not read RG8, palette colours, fractional Water dithering, body masks or ballistic presentation. The captured plane becomes the new authored baseline and earlier construction, procedural reconstruction and manual/agent Undo/Redo history are discarded. Subsequent supported edits use the same chronological history relative to it. **The installed live World is unchanged.** There is no prepared-World call during Flatten, no tick restart, cell-state initialization, actor respawn, Rapier rebuild, velocity reset or change to simulation options/material laws. Simulation resumes its ordinary owner loop after copying and may advance while the UI validates the snapshot. Such later simulation changes are deliberately outside the captured baseline. Actors retain live positions and velocities; their existing authored spawns/configuration remain the normal Save/Load reconstruction inputs. Flatten does not Save. Explicit **Save start** writes the standalone baseline, supported acknowledged post-Flatten edits and unchanged Setup-v2 actor/configuration metadata. **Load start** and **Restore start** construct a normal fresh World from that data through the existing prepared native/Rapier transaction. Full saved material identity is checked before publication. Old generator recipes, source files and pre-Flatten painting instructions are unnecessary. Temperature, velocity, fractional fluid quantity, airborne parcels, tick and other transient physical state are not persisted by this material-only format."
+        }
+      ]
+    },
+    {
+      "id": "OI03",
+      "query": "Must physical simulation be scientifically consistent even when authored effects feel better?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Convincing over consistent; authored alternatives welcome.",
+        "Correctness checks and failed evidence retain scoped meanings."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 17.259431,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent — 14 November 2026",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Physical character and destructible structures",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Owner authoring and world intent — 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: current-documentation\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent — 14 November 2026 > Physical character and destructible structures\n**Confirmed principle:** “convincing>consistent.” Deliberately authored effects, approximations and selectable behaviours are desirable for appearance, art, feel, feasibility, significant performance savings and interesting possibilities. The owner does not regard scientific parameter sweeps as the primary way to judge feel at this stage. Representative scenes and continued owner evaluation matter. This does not retroactively make a failed experiment pass. **Confirmed outcome:** cutting or blasting coherent pieces loose so that they move, roll or topple is valuable. Full building structural-integrity analysis is not a prerequisite; deliberately rigged collapses can be useful. **Exploratory owner suggestion:** “prepare then declare,” using authored chunk sizes and break conditions for predictable detachment. This is a promising mechanism to investigate, not a selected algorithm. A fracture piece need not equal a storage chunk. Native ownership/ACK preparation is a separate concern. **Engineering interpretation, not a new owner dictate:** correctness and targeted performance checks remain useful for data loss, ownership and specific technical claims. Historical scientific campaign thresholds should not silently become universal product-feel requirements."
+        },
+        {
+          "rank": 2,
+          "score": 14.618276,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "title": "Water hybrid, saturated-head and compartment-pressure extension programme",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Relationship to #49 and #45 > #45 is no longer treated as an inevitable pressure implementation",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Water hybrid, saturated-head and compartment-pressure extension programme\nPath: operations/water-hybrid-pressure-extension-programme.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Planned\nscope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption\ncanonical-for: [water-hybrid-pressure-extension-programme]\nlast-reviewed: 2026-10-24\nSection: Water hybrid, saturated-head and compartment-pressure extension programme > Relationship to #49 and #45 > #45 is no longer treated as an inevitable pressure implementation\n#45 remains the existing owner of the saturated-head architecture question, but its implementation decision must consume the extension evidence before assuming a new head/pressure carrier is necessary. The corrected communicating-head fixture should be treated as an explicit physical control whose boundary assumptions are stated. In particular, equal free-surface levels are not a universal target when the gas volumes above the liquids are sealed at different pressures. With the corrected #49 control and the relevant hybrid evidence, the acceptable #45 dispositions include: - the hybrid mechanism supplies enough intended deep-release behavior and no additional saturated-head mechanism is justified; - #45 remains necessary, but only under explicit vented/open-head boundary assumptions; - a bounded Water head mechanism is still valuable while sealed-space behavior is deliberately outside scope; - compartment pressure must become an explicit optional boundary condition before a sealed-head fixture has a meaningful target; - the generic feature is not worth its complexity for the intended game domain, and rare set-piece effects such as a rising-water chase are better authored with explicit material sources/sinks/spawners. A no-go/defer is a legitimate architecture result. Do not implement #45 merely because the issue exists."
+        },
+        {
+          "rank": 3,
+          "score": 11.68727,
+          "path": "reference/invariants.md",
+          "title": "Architectural and simulation invariants",
+          "heading": "Architectural and simulation invariants > Physical actor invariants",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Architectural and simulation invariants\nPath: reference/invariants.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Approved design\nscope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger\ncanonical-for: [invariant-register]\nlast-reviewed: 2026-11-20\nSection: Architectural and simulation invariants > Physical actor invariants\nFor the [Workbench composition candidate](../systems/workbench-actor-composition.md), inspection never grants human producer authority. Source switching uses existing takeover cancellation and generation fences without reconstructing the body. Eight logical slots, eight prepared parts per actor and 64 response bodies/mask proxies are separate bounds; equipment remains reserved after release. Complete validation and prepared adoption precede changing the applied authored map. Contract: [articulated actors](../systems/physical-actor-rigs.md), [physical commands](interfaces-and-message-contracts.md#physical-actor-control-and-effects). Sources: [session](../../godot/scripts/physical_actor_session.gd), [runtime](../../godot/scripts/physical_actor_rig.gd), [effects](../../godot/scripts/physical_actor_effects.gd), [equipment owner](../../godot/scripts/physical_usable_equipment.gd), [physical usable runtime](../../godot/scripts/physical_usable_runtime.gd). Focused catalogue, Rapier, session, effects and integration runners detect the listed boundaries; execution evidence remains separately dated. | ID | Status and narrow claim | |---|---| | RIG-001 | Current: main-thread Rapier owns every live part/joint; the cellular owner receives copied values and alone writes native materials | | RIG-002 | Current: physical actor graphics use actual declared rectangle/circle collider dimensions and published transforms; authored leg, rotor and held parts are physical bodies; SetP circles explicitly retain conservative square native masks | | RIG-003 | Current: installation checks at most eight actors, eight parts per actor including held objects, and 64 total coupled bodies before activation | | RIG-004 | Current: human, demo and policy producers use one normalized action path; run/actor/epoch/sequence/issued-observation leases prevent stale authority from controlling a replacement | | RIG-005 | Current: cancellation clears stored launch intent and pending effects without interpreting it as charged release or deleting physical velocity | | RIG-006 | Approved and Current authored policy: bounded gyro assistance, approximate slides and controlled flex/play are permitted; finite gyro momentum and exact mechanical joint emulation are not required | | RIG-007 | Current: physical command/environment version 2 is distinct from sampled actor rows and Thunderbowl v1; no tag, metal, neural-service or reward equivalence is implied | | RIG-008 | Current: new desktop assemblies wait for matching reset/epoch and installed initial terrain; a retired world's cached geometry cannot release the fence | | RIG-009 | Current: worker effect batches are admitted wholly within eight pending requests or explicitly refused; bounded copied admission diagnostics are separate from actual-cell receipts | | RIG-010 | Current: ACT-005 equipment is one real coupled part whose body ID survives held, released, fixed, deployed and nearby pickup transitions; selection/lifecycle epochs revoke superseded authority without teleporting the part or erasing momentum | | RIG-011 | Current: physical usable requests carry run, actor, generation, equipment epoch, instance, body and request identity; one pending request per actor includes extracted work, and a whole batch is admitted within eight slots or explicitly refused | | RIG-012 | Current: physical source clearance and target protection use actual"
+        },
+        {
+          "rank": 4,
+          "score": 11.261561,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 3. Orthogonal material classification",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 3. Orthogonal material classification\n**Decision proposed:** no single inheritance hierarchy should control all simulation fields. Use six independent dimensions. | Dimension | Example | Effects | |---|---|---| | Stable identity | `cybersand:wood` ↔ frozen byte 7 | Save/content references and compatibility | | Browse category and tags | `Organics / Wood`, `construction`, `timber` | Search/picker only; can belong to many filtered collections | | Physical capabilities | `hard_surface`, `granular_support`, density target exchange | Native collision/transport predicates; explicit flags | | Behaviour preset and state contract | `legacy.wood.v1`, current `Combustible` kernel | Only tested native mechanism and valid parameter consumers | | Semantic interaction membership | `int.family.combustible-kernel`, `aqueous-contact` | Rule selectors, not inferred from colour/name/category | | Appearance programme | RGBA, flair, projection, procedural finish | Godot shader/display only; never physics or per-cell extra paint by implication | **Proposed browse taxonomy:** Natural media (powders, liquids, vapours, ice), Organics/life (woods/fibres, plants/fungi, agents), Construction (masonry, earth/clay, concrete, roofing), Metals (base, alloys, fabricated, weathered), Glass/ceramic/crystal, Polymers/composites, Reactive/energetic, Devices/special. Browsing taxonomy is deliberately **not** mechanical inheritance. Wrought Iron and Copper do not automatically gain base-Metal charge; Chemical Glass does not automatically gain base-Glass phase reactions; building woods do not automatically become Fungus/Mite timber substrates. Even two visually identical materials may have different native capabilities. Overlapping semantic families are allowed. If a future authored family sets an effective parameter that overlaps another, compilation must require a unique explicit override or fail with the conflicting source locations—not rely on array insertion order."
+        },
+        {
+          "rank": 5,
+          "score": 11.144632,
+          "path": "systems/physical-actor-rigs.md",
+          "title": "Articulated Rapier actors and shared physical control",
+          "heading": "Articulated Rapier actors and shared physical control > Which usable examples exist?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Articulated Rapier actors and shared physical control\nPath: systems/physical-actor-rigs.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate\ncanonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]\nlast-reviewed: 2026-10-22\nSection: Articulated Rapier actors and shared physical control > Which usable examples exist?\n**Current experimental ACT-005 source:** the entire [U01-U32 catalogue](actor-usables.md) is selectable on physical equipment. Every rig has a defined default loadout in [`physical_usable_loadouts.gd`](../../godot/scripts/physical_usable_loadouts.gd). Each loadout names its usable, power, strategy and purpose; no physical actor is left with an unspecified equipment policy. SetP explicitly starts with an empty mount and human movement strategy; F5 can still select ordinary equipment. Mount definitions bind a specific host/held part, grip, joint, aiming limits and clearance. The equipment owner aims the actual configured joint when it supports aiming. The shot direction comes from the current held body's pose; a limited joint cannot acquire an unlimited virtual muzzle. The suspended payload, hammer and blade preserve their authored mechanical roles. A selection change retools the existing held chassis without allocating another body. Release clears the held connection and retains the same object, pose, velocity and body ID. A short collision grace ages with physical time even after input cancellation. Pickup checks the owning grip's proximity and terrain clearance; it does not teleport the object or reset its velocity. An already held, remote, occluded or ambiguously owned item is refused. A released chassis must return before it can select another usable. Processors are deployed by dropping that real body, waiting for supported settling, and fixing it at its current pose. A worker receipt admits processing; blocked output leaves recipe inputs and stock unchanged. The body and its rotated intake/output ports remain visible while it works, jams or exhausts. Physical pickup retires processing authority. See the [processor contract](actor-usables.md#u23u32-fixed-functional-objects). The main-thread owner applies recoil once for the matching admitted use. Native material effects use copied physical source/part information under worker ownership. Protected cells, foreign part occupancy, bounds and source clearance remain checked. The physical command, worker admission and changed-cell receipt are separate results; a valid command does not guarantee an unobstructed effect. Late receipts are fenced by run, actor, control generation, equipment epoch and request identity. The older ACT-004 direct mount/effect fixtures retain their bounded deposit/cut/rocket-charge substrate for regression; it is not a second unleased policy API for the full catalogue."
+        }
+      ]
+    },
+    {
+      "id": "OI04",
+      "query": "Does prepared declared destruction require automatic whole-building stability and storage-sized chunks?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Prepared declaration exploratory; blast/cut rolling pieces desired.",
+        "Fracture pieces are not specified as storage chunks."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "canonical_rank": null,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 17.458274,
+          "path": "reference/invariants.md",
+          "title": "Architectural and simulation invariants",
+          "heading": "Architectural and simulation invariants > Hierarchical generation invariants",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Architectural and simulation invariants\nPath: reference/invariants.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Approved design\nscope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger\ncanonical-for: [invariant-register]\nlast-reviewed: 2026-11-20\nSection: Architectural and simulation invariants > Hierarchical generation invariants\nContract: [hierarchical places and routes](../systems/procedural-hierarchical-generation.md). Source: [semantic API](../../native/include/cybersand/generation_grammar.hpp), [planner](../../native/src/generation_grammar.cpp), and [generator](../../native/src/world_generation.cpp). | ID | Status and narrow claim | |---|---| | GRAMMAR-001 | Current: semantic region/rule/slot identities exclude storage-chunk size, request order, recipe revision and finite window; a region-grid-size change explicitly changes identity | | GRAMMAR-002 | Current: region-contained features may cross storage chunks; canonical boundary/socket ownership and explicit routes do not require either owning chunk to have been generated | | GRAMMAR-003 | Current: hard layout requirements precede preferences; bounded priority search may reject a feasible alternative rather than silently relaxing a constraint | | GRAMMAR-004 | Current: omitted features require authored fallback receipts; required neighbors and support are rechecked after omission | | GRAMMAR-005 | Current: finite curve order controls placement/inspection but never substitutes for explicit route edges, matching sockets or final-cell clearance | | GRAMMAR-006 | Current: exported geometry is immutable declared context; semantic planning and typed fields do not read partial raster output or live World state | | GRAMMAR-007 | Current: final hard material overrides preserve authority and can fail a route report; geometric clearance is qualified for the declared floating square profile, not an actor/controller | | GRAMMAR-008 | Current: compile/budget failure publishes no partial plan, material or diagnostic packet; semantic inspection does not grant World admission or streaming authority | | GRAMMAR-009 | Current: final support qualification is separate from route success; each declared floor/ceiling/wall check needs at least one final Solid contact and reports partial missing contacts without claiming gravity stability or apparatus preservation |"
+        },
+        {
+          "rank": 2,
+          "score": 14.107616,
+          "path": "architecture/inertial-cellular-v1.md",
+          "title": "Inertial cellular reference",
+          "heading": "Inertial cellular reference > Why does IN require radius three?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Inertial cellular reference\nPath: architecture/inertial-cellular-v1.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Current-main Water and Brine inertial reference, retained integer momentum, whole-cell admission, carrier ownership, radius and state costs; source-bound native/application evidence remains distinct from scientific comparison and human acceptance\ncanonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]\nlast-reviewed: 2026-11-03\nSection: Inertial cellular reference > Why does IN require radius three?\nTravel writes reach at most two cells per axis: after saturation and nonnegative damping |v|≤32 and |accumulator|≤15, so division by16 produces at most two unit moves. Eligibility is rechecked before each actual step. At most one extra neighborhood probe occurs after or alongside a final travel position. Starting vy32/ay15 reaches y+2 and U7 reads y+3; a contact-side query can similarly reach x±3. Shared powder-exchange Stone bracing inspects one further neighbor of a target within the same radius-three envelope. Brine does not execute the Water carrying stencil. Absent storage reads as Empty on the exclusive serial owner path, as in Current cellular motion. Eligibility queries allocate nothing; an actual serial move uses the shared destination allocator and its explicit capacity/failure contract. Phased jobs retain the prepared-domain guard and never allocate missing storage themselves. Reserving Empty chunks must not change the IN motion tuple at positive or negative chunk seams. An IN World therefore explicitly requires `maximum_rule_radius>=3`. The existing scheduler validates radius≤half an even core, prepares neighbor chunks, and separates same-phase expanded domains. Candidate/control comparisons must use identical admitted execution geometry; the protected exact Current preset retains radius2. Native boundary tests exercise signed coordinates, core8/core64, chunk seams, observed read3/write2 reach, no prepared tick allocation and actual four-worker execution. Configured workers and observed task participants are separate `TickStats` values. The Water successor above adds its own complete carrying/packing proof, actual `maximum()` quantity, coherence, direct-ingress refusal and existing normalization preparation. The historical radius3 Brine proof alone never qualified that mapping."
+        },
+        {
+          "rank": 3,
+          "score": 13.717262,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "title": "Data ownership and lifetimes",
+          "heading": "Data ownership and lifetimes > Which transitions require exclusive ownership?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Data ownership and lifetimes\nPath: architecture/data-ownership-and-lifetimes.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated\ncanonical-for: [resource-ownership-and-lifetimes]\nlast-reviewed: 2026-11-20\nSection: Data ownership and lifetimes > Which transitions require exclusive ownership?\nSetup, reset, reservation, rule/configuration replacement, level export/import and World destruction must not overlap job views or producer access. Jobs may not retain a view beyond their barrier. Native pool workers never call Godot; the desktop owner only calls its exclusive adapter/value APIs. `ParallelState` constructs its complete activity buffers before binding job spans and never resizes them afterward. Its pool retires before those spans and owners. A native pool constructor that fails after starting a worker must also stop, notify and join the started prefix before mutex/condition-variable member unwind; its destructor would not run for the failed constructor. The shared cleanup helper covers that exceptional path and ordinary destruction. C API construction publishes typed refusal only after this retirement, with no worker count fallback; the existing live World remains owned by its caller. The [dated reproduction and repair](../audits/2026-10-25-water-inertial-native.md#contiguous-activity-storage-and-constructor-retirement--2026-10-25) separates the original hang, packed-storage proof and final source proof. Level export clears transient obstacles; coupling must be rebuilt before the next cellular tick. Import builds a validated candidate before replacing World. See [level saves](../reference/level-saves-and-replay.md) for the exact scope. **Approved:** future reconfiguration drains affected work before replacing storage, then resumes on a whole tick. **Planned:** active-only next buffers, buffered halos/transfers, bounded general gameplay results and serialization staging. Their sizes, retirement/full-queue policy and live-resize failure API are not implemented. Do not infer them from Current snapshot backpressure. Lifetime fixtures are linked in the [validation ledger](../reference/validation-evidence.md); the rationale remains [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md). Sampled [granular support queries](../systems/granular-interaction-policy.md) read current cells and copied body occupancy only under this exclusive owner, outside native jobs. Their bounded neighbourhood adds no job view, cache or Rapier object."
+        },
+        {
+          "rank": 4,
+          "score": 13.511571,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "title": "Data ownership and lifetimes",
+          "heading": "Data ownership and lifetimes > Who may mutate each resource?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Data ownership and lifetimes\nPath: architecture/data-ownership-and-lifetimes.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated\ncanonical-for: [resource-ownership-and-lifetimes]\nlast-reviewed: 2026-11-20\nSection: Data ownership and lifetimes > Who may mutate each resource?\n**Current:** each selected cellular world has one external owner. In the ordinary desktop sandbox that is `CyberSimulationWorker`; on Web it is the main-thread controller. Native World coordinates its internal jobs. Queries, export, publication and mutation require serialization by that owner; calling a method through GDExtension does not make World generally thread-safe. Native pool workers call no Godot APIs. The desktop Godot owner may call exclusive adapter/value APIs, but must not touch live scene-tree or Rapier objects. | Resource | Owner and permitted mutation | Lifetime and pressure | |---|---|---| | `World::chunks_` and chunk cell arrays | World coordinator creates/reserves chunks; serial work or phase-exclusive jobs mutate cells | Until World/chunk destruction; construction capacity bounds growth | | Optional temperatures | Chunk owns optional SoA; owner prepares it, permitted rules/movement use it | Allocated on demand or reservation; counted tick allocations | | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication | | Delayed pair deadline | Workers report through fixed disjoint job spans into two preallocated `ParallelState` flag/deadline buffers; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; buffers outlive job spans and pool, excluded blocks retain deadlines, clear/replacement discards them | | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state | | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs | | Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Other constructors and full evidence stay open | | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers | | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound"
+        },
+        {
+          "rank": 5,
+          "score": 13.091726,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Current implementation map",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-21\nSection: Status and foundational roadmap > Current implementation map\n**Layered exhibition source, 2026-10-20:** [Deepworks](../operations/deepworks-exhibition.md) adds one 1024 × 1024 composition with sixteen districts, 32 foreground/rear native exhibits and all 51 MAT-002 building materials. Four independent full-size worlds run at 30/20/15/0 Hz; the true distant background is frozen. Finite reaction sources preserve products, while the camera/painting viewer supports whole-map reset, apparatus focus and a guided tour. It does not install an ordinary actor session. The shared [depth APIs](../systems/depth-layers-and-parallax.md) now admit each axis from 8 through 1024, including non-square worlds, while preserving Strata Theatre's 640 × 360 default. Native ABI and material rules are unchanged. Runtime and actual rendered acceptance remain separately scoped by the [dated exhibition audit](../audits/2026-10-20-deepworks-exhibition.md). **Connected scene content, 2026-10-18:** [Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 × 320 districts into one 960 × 960 native region: a surface laboratory between two wastelands, above six dense underground industrial districts. Twelve reciprocal ports and a common final passage carve connect the whole map. Shift+F11 and the Web demo menu install the complex; the 3×3 map, atlas and following views change only the camera, while R resets all nine districts together. Its fixed interest region and world-coordinate presentation preserve continuity without introducing a streaming subsystem. The [dated scene audit](../audits/2026-10-18-blacksite-nine.md) owns recipe, runtime and visual evidence; physics programmes retain their gates. **Scene content, 2026-10-18:** [Neon Reliquary](../operations/neon-reliquary-demo.md) adds an ornate machine-cathedral demo and the three tiles beneath it: Middle Cyberberbia, Sewertech Alley and Industrial Underswamp. They use the shared native MicroScenario host, with desktop/Web entry points, five views per tile, Above/Below navigation and themed distant scenery. District changes load original layouts. It is an aesthetic showcase; existing physics programmes retain their own gates. | Area | Implemented scope and canonical contract | |---|---| | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) | | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) | | Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) | | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81–131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). | | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) | | Bodies and"
+        }
+      ]
+    },
+    {
+      "id": "OI05",
+      "query": "Should persistent areas catch up with real offline time or game time, and can transitions pause briefly?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Game time, occasional few-second transition acceptable, optional simulate ahead."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 37.478759,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent — 14 November 2026",
+          "heading": "Owner authoring and world intent — 14 November 2026 > World extent, persistence and time",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Owner authoring and world intent — 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: current-documentation\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent — 14 November 2026 > World extent, persistence and time\n**Confirmed:** one fixed canvas plus persistent areas loaded while travelling should cover most intended uses. Broad continuous canvases should accommodate biomes or small towns; later presentation can disguise boundaries. The prepared brief interprets moving beyond “1:1 canvases” as allowing non-square/broad maps, not changing display-pixel scale. Concrete dimensions await practical work. **Confirmed:** a useful simulated border around the viewport/activity, potentially extended in the travel direction, is desirable. On returning to an area, approximate headless catch-up is preferable to a conspicuously frozen room. Use **game time**, not real-world offline time. Occasional transitions lasting a few seconds are acceptable. An optional deliberate **simulate ahead** control is desired. Approximation and quantisation can be acceptable. **Engineering questions:** retained state, bounded catch-up algorithms, activity margins, cross-area exchanges and material-policy evolution remain unresolved. Track the last simulated/accounted-for time rather than merely last visit if an area can keep simulating in a border. Headless execution still consumes compute. These observations do not authorise implementation or a large benchmark campaign."
+        },
+        {
+          "rank": 2,
+          "score": 21.610598,
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "title": "ADR-004 — Interest region and safe reconfiguration",
+          "heading": "ADR-004: Interest region and safe reconfiguration > Which alternatives are rejected?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: ADR-004 — Interest region and safe reconfiguration\nPath: decisions/ADR-004-interest-region-and-reconfiguration.md\nauthority: current-documentation\ndocument-kind: decision\nstatus: Approved design\nscope: Accepted scalable interest/capacity direction, current construction limits and unresolved margin/reconfiguration semantics\ncanonical-for: [decision-interest-capacity-reconfiguration]\nlast-reviewed: 2026-09-08\nSection: ADR-004: Interest region and safe reconfiguration > Which alternatives are rejected?\n**Rejected:** silently clipping requests, fixed current-size windows forever, reserving the largest imaginable world and growing containers during worker execution. These restrictions are production direction, not proof that every prototype path is compliant: lazy coordinator preparation can still allocate inside a tick, and current failure can follow partial progress. **Approved choice, Current (issue #2, 2026-09-08):** pause excluded phased work, retain its activity/quiet state, wake newly included resident blocks once at tick entry (including sleepers), and resume without elapsed-time catch-up. The owner authorized engineering judgement for this separate policy. Serial keeps its whole-active-chunk behavior and ignores the filter; no new cross-mode equality. The [interest contract](../systems/world-storage-and-interest-region.md) owns exact core selection, custom geometry, coalescing and bounded-work semantics. Rechecking sleeping blocks costs bounded work on real transitions and can expose capacity exhaustion; retaining only existing wake flags would be cheaper but could leave stale sleepers frozen. That alternative is **Rejected for this fix**, as are automatic catch-up, periodic full-cell wake scans and repeated unchanged-region wake. General field/streaming catch-up remains **Planned separately**. Failed Worlds accept only a latched region request; reset/replacement is still required."
+        },
+        {
+          "rank": 3,
+          "score": 16.035487,
+          "path": "reference/product-intent-and-priorities.md",
+          "title": "Product intent and priorities",
+          "heading": "Product intent and priorities > Owner clarification — 2026-11-14",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Product intent and priorities\nPath: reference/product-intent-and-priorities.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence\ncanonical-for: [owner-intent, product-priorities, preserved-material-feel]\nlast-reviewed: 2026-11-08\nSection: Product intent and priorities > Owner clarification — 2026-11-14\nThe [dated owner clarification](../decisions/2026-11-14-owner-authoring-intent.md) records the current paint-and-play Workbench direction, convincing behaviour, prepared-destruction exploration, Save/Flatten intent, live material audition, Strata presentation, broad canvases and game-time catch-up. Use that scoped record for these questions. Earlier dated passages below preserve their original scope; neither this clarification nor historical execution wording grants new work or merge permission."
+        },
+        {
+          "rank": 4,
+          "score": 13.109732,
+          "path": "systems/activity-dirty-regions-and-waking.md",
+          "title": "Activity, dirty regions, and waking",
+          "heading": "Activity, dirty regions, and waking > Approved requirements and open work",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Activity, dirty regions, and waking\nPath: systems/activity-dirty-regions-and-waking.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements\ncanonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]\nlast-reviewed: 2026-11-04\nSection: Activity, dirty regions, and waking > Approved requirements and open work\n**Approved:** new fields/events must declare wake reach, quiet eligibility, delayed work, conservation, and interaction with interest filtering. Sleeping interiors should not require a periodic full-cell scan to discover outside change. **Current:** native re-entry follows the explicit pause/wake policy. **Planned:** future field/streaming time semantics and separate persistence dirtiness once storage serialization exists. No generalized field catch-up API is implemented. [Native fixtures](../../native/tests/test_world.cpp) cover quiet sleep, local edge wake, Water rest, capacity, and snapshot pressure. Their presence does not prove every field/boundary combination. Extend shifted/mirrored edge tests when rule reach changes. Issue #2 regressions cover exclusion, sleep, overlapping/disjoint re-entry, core/chunk boundaries, unchanged/coalesced regions, neighbors, retained temperature, conservation, worker parity and failed-world recovery. These are bounded fixtures, not every future field or material combination."
+        },
+        {
+          "rank": 5,
+          "score": 12.383995,
+          "path": "systems/player-control-playground.md",
+          "title": "Player control playground",
+          "heading": "Player control playground > Immediate shared-course pause transitions",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Player control playground\nPath: systems/player-control-playground.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields\ncanonical-for: [player-control-playground, player-movement-presets, player-material-field]\nlast-reviewed: 2026-11-05\nSection: Player control playground > Immediate shared-course pause transitions\n**Current source behavior; final hosted acceptance is recorded separately:** P, Escape and the selected gamepad's Start route through the same shared-course pause setter. Every actual pause/resume transition immediately cancels input authority and queued button/equipment edges, before the next physics callback. A pause then resume within one callback interval therefore cannot retain an old press or lease. The existing native worker, World, actor session and Rapier bridge remain the owners; release controls to neutral before fresh input rearms. The pause toggle respects window/UI ownership. Unselected controllers and keyboard-only sessions cannot use Start; modal/unfocused input cannot resume. The panel's explicit Play / resume button uses the same cancellation path. Resume refuses failed native work, pending reconstruction/reset or unready terrain. Controls outside the composed course retain their previous behavior. Ordinary actor-picker and environment-tuning opening, GUI focus acquisition and window-focus-loss notification also revoke course authority immediately. The visible MicroScenario Pause / resume button calls the central pause setter as an explicit UI action, including while its Seed field retains text focus. The keyboard/gamepad toggle remains context-gated. Every successful transition still requires neutral controls before fresh physical input can rearm. The [INPUT010 audit](../audits/2026-10-31-play-input010-pause-transitions.md) records an actual failing-before callback-gap reproduction, all-five-rig automatic Main/native/Rapier regressions, original local environmental failures and required exact-head hosted results. Injected focus/device enumeration is explicitly synthetic; this is not physical-controller or OS-focus acceptance. The [INPUT011 audit](../audits/2026-10-31-play-input011-authority-transitions.md) preserves the rapid modal/focus failure and the separately reproduced focused button refusal. Its v2 five-rig cases include both explicit-button success and keyboard-toggle refusal with retained text focus, actual later neutral/fresh Rapier steps, and the matched stale-input negative. The ordinary parent runner requires source-bound raw-evidence readback before accepting each rig case; synthetic window notifications do not establish real OS-focus delivery."
+        }
+      ]
+    },
+    {
+      "id": "OI06",
+      "query": "Are Materials Lab comparison tabs and a separate Strata Theatre enough for Workbench authoring?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Live Workbench material audition desired.",
+        "Four-layer Strata should be available as a Workbench option."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 33.418105,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent — 14 November 2026",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Owner authoring and world intent — 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: current-documentation\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation\n**Confirmed:** Materials Lab should support easy material modification and audition, including changing values in a Workbench window for dynamic/custom trials. The existing comparison tabs are appreciated; isolated comparisons alone do not fulfil the desired current-scene interaction. Which properties can apply safely at runtime remains an engineering question. **Confirmed:** the four-layer Strata Theatre presentation should be an available Workbench option. Its visual impact is important. Historical integration exclusions are not a permanent rejection; the prototype's exact clocks and cross-layer event rules are not automatically the eventual product contract."
+        },
+        {
+          "rank": 2,
+          "score": 20.829706,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-12\nSection: Materials Lab v1\n**Current implementation merged in [PR #562](https://github.com/techrote/cybersand/pull/562); production activation remains unimplemented.** The desktop **Materials Lab** opens from the feature launcher, the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`. It combines native material inspection, structured candidate editing, compiled candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The [dated qualification record](../audits/2026-11-11-materials-lab-v1.md) distinguishes the preceding implementation's evidence. The [completion record](../audits/2026-11-11-materials-lab-completion.md) owns the subsequent native contact diagnostics, runtime publication and Windows package qualification. On supported desktop displays, the Workbench opens the Lab in its own native window, preserving physical-pixel text and local input while the game retains its canvas scaling. Headless/Web displays retain the embedded fallback. Closing the Lab returns to the same Workbench session; its owner policy is refreshed when reopened. Native placement fits the client, title bar and borders within the usable desktop work area on the owning screen. A desktop too small for the existing 1000x650 client plus its borders receives an explicit capacity refusal. The Lab uses the accepted [catalogue compiler](material-catalogue-shadow.md). It does not replace native production definitions, the simulation worker, the Workbench or World. Production still has 132 slots, including invalid reserved ID 10. The synthetic powder at 132 exists only inside an external candidate build. The five tabs are **Inspect**, **Edit copy**, **Reactions**, **Try originals** (unchanged built-in materials) and **Compare edits** (your copy against the original). In Inspect, drag the edge between column titles to set widths; double-click a divider to restore its width. The table scrolls sideways if it gets wider than the window. **Defined value** is the saved definition; **Value used** includes engine overrides. Hover any cell to read the whole explanation and its technical name. **Show technical details and reaction data** reveals the full reference information."
+        },
+        {
+          "rank": 3,
+          "score": 20.579968,
+          "path": "systems/depth-layers-and-parallax.md",
+          "title": "Depth layers and parallax prototypes",
+          "heading": "Depth layers and parallax prototypes > Purpose",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Depth layers and parallax prototypes\nPath: systems/depth-layers-and-parallax.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership\ncanonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]\nlast-reviewed: 2026-10-20\nSection: Depth layers and parallax prototypes > Purpose\nres://depth_lab.tscn is an opt-in comparison host for visual and figurative depth in CyberSand. It deliberately keeps several ideas visible side by side instead of making one of them production authority. The lab is called **Strata Theatre**. It can be opened directly, with --depth-lab, or from the ordinary desktop sandbox with **F4**. [Deepworks](../operations/deepworks-exhibition.md) reuses these four material planes in a separate 1024 × 1024 exhibition host, opened with `--deepworks` or `res://deepworks.tscn`. Its sixteen districts, source programme, independent clocks and camera/painting controls belong to that guide. Strata Theatre retains its original default dimensions and controls. | View | Meaning | |---|---| | Flat | Foreground-only control. | | Quantized relief | Bounded quantized samples of the foreground material image are offset/scaled behind the source silhouette to imply thickness. | | Four layers | Four independently authored material worlds are rendered together with different scale/parallax factors. | | Hybrid | Four layers plus foreground relief, distance haze and rear-scene reflection masked by foreground liquid IDs. | | Diorama | Hybrid plus a faster near-camera foreground-derived frame and pointer-centred cutaway. | None of the presentation-only modes creates authoritative Z coordinates, colliders, hidden material mass or a second owner of the play world."
+        },
+        {
+          "rank": 4,
+          "score": 19.933243,
+          "path": "../README.md",
+          "title": "CyberSand",
+          "heading": "CyberSand",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: CyberSand\nPath: ../README.md\nauthority: current-documentation\n\nSection: CyberSand\n<img width=\"1196\" height=\"2644\" alt=\"cybersand_material_tiles_preview\" src=\"https://github.com/user-attachments/assets/f49ebc85-d2bc-4404-96f2-a4eac07b6deb\" /> Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, the Deepworks exhibition, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session. CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent is a reusable foundation for cyberpunk RPG and exploration games. F5 selects from **46 articulated Rapier actors** in the sandbox, Blacksite and all four showcase districts, with keyboard, scripted-demo or external-policy control. Applying restores the selected map and starts paused; R retains the actor. WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the selected rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby item. Sampled rigs and the original physical hull trials remain reference choices. New sandbox and Shared Workbench sessions start with Wave Flow, waterfall spill and ballistic release. Open **Water Lab** to tune the flat-ground surge or select an earlier Water law. [Water controls](docs/operations/workbench-water-lab.md)"
+        },
+        {
+          "rank": 5,
+          "score": 19.247222,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Launch and prerequisites",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v1",
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-12\nSection: Materials Lab v1 > Launch and prerequisites\nUse a complete checkout of the implementation branch and its history. Git LFS and the ordinary [desktop dependencies](local-build-and-validation.md) remain required. Godot is pinned to **4.7.stable.official.5b4e0cb0f** and godot-cpp to `101ae38034304346a46ea9ea84ae156d3e860496`. Rebuild the matching GDExtension: an older retained production binary predates the new read-only inspector methods. An older library causes an explicit rebuild message, not a metadata fallback. Use a freshly qualified branch runtime only when its provenance matches the checkout's native inputs; the completion publisher provides that explicit path. ```sh # Use the existing pinned build environment; see the local-build guide for setup. tools/build_pinned_godot_cpp.sh linux tools/build_native_extension.sh godot --path godot -- --materials-lab ``` Read-only inspection and native experiments require the matching engine library. Candidate authoring additionally requires Python 3, Git history and a C++20 compiler for **Build + check definition**. The Edit copy tab accepts Python and compiler executable paths without shell arguments. A compiler override is also available through `CYBERSAND_LAB_CXX`. Source tools must remain next to the Godot project; this is a desktop source workflow, not an exported/Web authoring service. No install operation writes production sources. The standalone Lab uses window pixels for readable controls instead of shrinking the game's 1920×1080 canvas. Tabs scroll when their contents exceed the available space, including the 1000×650 Workbench window minimum. Inspection columns keep their useful widths and can scroll horizontally. Closing the standalone Lab restores the launcher's original scaling. These presentation changes do not alter the simulation viewport or the shared Workbench's controls."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,782 @@
+{
+  "schema": 1,
+  "lane": "A",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "claims": [
+    {
+      "id": "A-01",
+      "priority": "P1",
+      "document": "docs/architecture/overview.md",
+      "claim": "Accepted native/host/physics ownership and authoring front door; separate native defaults, player Wave profile, current renderer and pending programmes",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/world.hpp",
+        "godot/scripts/simulation_worker.gd::_create_world/_worker_loop",
+        "godot/scripts/main.gd::_ready/upload_texture_patches",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+        "godot/scripts/shared_workbench.gd::request_flatten"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-02",
+      "priority": "P0",
+      "document": "docs/architecture/shared-workbench-authoring-data.md",
+      "claim": "Accepted Workbench integrations, native receipt versus queue semantics, host-claim projection, and non-resetting material-only Flatten",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/workbench_setup.gd",
+        "godot/scripts/workbench_material_baseline.gd",
+        "godot/scripts/microscenario_host.gd::host_definition_claim",
+        "native/include/cybersand/material_baseline.hpp"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-03",
+      "priority": "P1",
+      "document": "docs/architecture/ballistic-water-v1.md",
+      "claim": "Ballistic Water exists in accepted main; native default-off differs from player Wave profile; historical no-upward and persistence claims scoped",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/world.hpp::physical_state_format_version",
+        "native/src/world_ballistic.inc",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-04",
+      "priority": "P0",
+      "document": "docs/architecture/data-ownership-and-lifetimes.md",
+      "claim": "Explicit authoring/native/physics/publication ownership; current actor composition and accepted native containment separated from historical evidence",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/simulation_worker.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/physical_actor_session.gd",
+        "native/src/world_pressure.inc"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-05",
+      "priority": "P1",
+      "document": "docs/architecture/simulation-tick-and-threading.md",
+      "claim": "Current two-level desktop scheduling; distinguish native, publication, rendering and physical progression; accepted exception quarantine",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/simulation_worker.gd::_worker_loop",
+        "native/src/world.cpp::tick",
+        "godot/native_extension/cyber_native_cell_world.cpp::record_native_failure",
+        "godot/scripts/main.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-06",
+      "priority": "P0",
+      "document": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "claim": "Full-image upload remains current; dynamic Workbench extent and distinct native/history/render acknowledgements",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/main.gd::upload_texture_patches/apply_render_patches_to_image",
+        "godot/scripts/simulation_worker.gd",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-07",
+      "priority": "P1",
+      "document": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "claim": "Current 8-byte storage ABI and logical fields; distinguish Wave mass and host canvas bounds from native sparse geometry",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/precision_storage.hpp",
+        "native/src/world.cpp::World::Chunk",
+        "godot/scripts/workbench_setup.gd::fresh/validate"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-08",
+      "priority": "P1",
+      "document": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "claim": "Accepted actor coupling and explicit proxy/body capacity; no inference of pending ObjectShard feature delivery",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/workbench_physics_bridge.gd",
+        "godot/scripts/physical_actor_session.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-09",
+      "priority": "P0",
+      "document": "docs/reference/level-saves-and-replay.md",
+      "claim": "Save/Flatten/CYSD/CYPS distinctions including all current versions and explicit Wave unsupported continuation",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/world.hpp::physical_state_format_version",
+        "native/src/world_pressure.inc::save_physical_state/restore_physical_state",
+        "godot/scripts/workbench_material_baseline.gd",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-10",
+      "priority": "P1",
+      "document": "docs/reference/glossary.md",
+      "claim": "Correct reentry, Water quantity and persistence vocabulary; add accepted authoring and evidence terminology",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/src/world.cpp::begin_tick",
+        "native/include/cybersand/world.hpp",
+        "godot/scripts/workbench_material_baseline.gd",
+        "docs/decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-11",
+      "priority": "P1",
+      "document": "docs/architecture/liquid-solver-family-policy.md",
+      "claim": "Distinguish four policy enum families, Wave FreeMass overlay, ballistic owner and player presets; per-material Wave authoring remains planned",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/include/cybersand/world.hpp",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-12",
+      "priority": "P0",
+      "document": "docs/systems/water-design.md",
+      "claim": "Replace universal obsolete FreeMass-only description with precise accepted Water families, Wave defaults and historical negative-control scope",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/world.hpp",
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/src/world_quantity.inc",
+        "native/src/world_wave.inc",
+        "godot/native_extension/cyber_native_cell_world.cpp"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-13",
+      "priority": "P1",
+      "document": "docs/systems/materials-and-rule-kernels.md",
+      "claim": "Current generated capability consumer and isolated Lab boundary; unsupported/effective property distinctions and native descriptor defaults",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/src/material_rules.cpp::is_hard_surface/supports_granular_load",
+        "native/include/cybersand/material.hpp",
+        "tools/material_catalogue/native_capabilities.py",
+        "tools/material_catalogue/lab.py::supported_fields"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-14",
+      "priority": "P1",
+      "document": "docs/architecture/material-authoring-catalogue-plan.md",
+      "claim": "Bound accepted Materials Lab and generated native consumer, while preserving dated broader material-authoring design/permissions",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/src/material_rules.cpp",
+        "native/include/cybersand/material_capabilities.hpp",
+        "tools/material_catalogue/lab.py",
+        "docs/decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-15",
+      "priority": "P1",
+      "document": "docs/systems/workbench-actor-composition.md",
+      "claim": "Accepted59-model actor composition separated from pending finisher; no implicit model/provider and truthful authored/live handoff boundaries",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/workbench_actor_control.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/physical_actor_session.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-16",
+      "priority": "P1",
+      "document": "docs/reference/configuration-reference.md",
+      "claim": "Explicit native versus gameplay Water defaults and current authoring capacities with distinct constructor/schema/runtime limits",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/world.hpp",
+        "native/include/cybersand/wave_flow.hpp",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+        "godot/scripts/workbench_setup.gd",
+        "godot/scripts/simulation_worker.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-17",
+      "priority": "P0",
+      "document": "docs/reference/interfaces-and-message-contracts.md",
+      "claim": "Correct accepted Wave/failure interfaces and exact queue/native/history/display/provider stage meanings",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/simulation_worker.gd",
+        "godot/scripts/workbench_paint_editor_executor.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/native_extension/cyber_native_cell_world.cpp"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-18",
+      "priority": "P0",
+      "document": "docs/reference/invariants.md",
+      "claim": "Stable current invariants for authored receipts, Flatten, save boundaries, Wave defaults/refusal and material consumer scope",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/shared_workbench.gd",
+        "native/include/cybersand/world.hpp",
+        "native/src/material_rules.cpp",
+        "godot/scripts/workbench_actor_catalog.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-19",
+      "priority": "P1",
+      "document": "docs/systems/world-storage-and-interest-region.md",
+      "claim": "Correct host dimensions, accepted finite generator adoption, and explicit approved area/catch-up versus unmerged persistence manager",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/workbench_setup.gd",
+        "godot/scripts/shared_workbench.gd",
+        "native/src/world.cpp::set_simulation_region/install_generated_chunk",
+        "docs/decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-20",
+      "priority": "P1",
+      "document": "docs/systems/architectural-generator.md",
+      "claim": "Accepted #582/#691 catalogue and canonical Gentek vocabulary; preserve original integration qualification and pending evaluator distinction",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets",
+        "native/src/world_generation.cpp::Generator::builtin_modules",
+        "godot/native_extension/cyber_world_generator.cpp::get_catalogue"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-21",
+      "priority": "P1",
+      "document": "docs/architecture/inertial-cellular-v1.md",
+      "claim": "Separate default v1 nonnegative vertical motion from accepted opt-in signed IN; current persistence version precedence",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/inertial_cellular.hpp",
+        "native/src/world_inertial.inc::diagnostic_set_inertial_cell/impart_inertial_velocity",
+        "native/include/cybersand/world.hpp::physical_state_format_version"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-22",
+      "priority": "P1",
+      "document": "docs/architecture/pressure-flow-v1.md",
+      "claim": "Native PF availability and policy defaults do not define player Wave profile; newer actual-instance physical identities",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/world.hpp",
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-23",
+      "priority": "P1",
+      "document": "docs/architecture/pressure-optimization.md",
+      "claim": "PF cache semantics stay opt-in and source-qualified; moving-mask correction is accepted, not still pending",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/src/world_pressure_cache.inc",
+        "native/src/world_pressure.inc",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-24",
+      "priority": "P1",
+      "claim": "Current CyberSand adaptation uses eight-byte aligned PrecisionStorage; retained four-byte Sandspiel/old experiment measurements are historical. Water adaptation has law-specific quantity accounting, not one universal 8-bit pairwise rule.",
+      "independent_review": "source-verified-by-lead",
+      "document": "docs/research/sandspiel-performance-and-material-port.md",
+      "sources": [
+        "native/include/cybersand/precision_storage.hpp::PrecisionStorage/static_assert",
+        "native/src/world.cpp::World::Chunk::Cell",
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/src/world_wave.inc"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-25",
+      "priority": "P1",
+      "claim": "Current RG8 presentation is separate from eight-byte Cell storage. ImageTexture.update submits the complete backing image at installed canvas extent; 1024\u00b2 and2048\u00b2 payloads differ and byte sizes are not transfer timings.",
+      "independent_review": "source-verified-by-lead",
+      "document": "docs/systems/material-appearance-and-rendering.md",
+      "sources": [
+        "godot/scripts/main.gd::create_render_textures/upload_texture/update_render_texture",
+        "godot/scripts/workbench_setup.gd::fresh/validation",
+        "native/include/cybersand/precision_storage.hpp",
+        "native/include/cybersand/material_appearance.hpp::project_visual_state"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-26",
+      "priority": "P1",
+      "document": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "claim": "Current PF and Water/Brine IN are accepted; original October API/IN model requirements and then-pending host/hash boundaries are scoped as historical, not current absence or universal hash2.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "native/src/world_inertial.inc",
+        "native/src/world.cpp::physical_state_hash/save_physical_state",
+        "godot/scripts/workbench_water_lab.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-27",
+      "priority": "P1",
+      "document": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "claim": "LCB October admission did not make inertial perpetually unimplemented or authorize unrelated research. Accepted Water/Brine IN and PF variants are source-available; scientific campaign and future gates remain separate.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "native/src/world_inertial.inc",
+        "native/src/world_pressure.inc"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-28",
+      "priority": "P1",
+      "document": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "claim": "Water-IN is accepted and cannot be reused as current family_unavailable negative. Frozen October campaign/arm evidence stays historical; native FreeMass comparison control is separate from new player Wave defaults.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "native/src/world_inertial.inc",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+        "godot/tests/test_liquid_solver_policy.gd"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-29",
+      "priority": "P1",
+      "document": "docs/operations/material-catalogue-shadow.md",
+      "claim": "Accepted #563 consumes only generated hard/granular maps; #562 Lab uses isolated compiled candidates. Original shadow directory stays unconsumed, descriptors/rules retain their native owners and source-transition guards remain active.",
+      "sources": [
+        "native/src/material_rules.cpp::MaterialRules::is_hard_surface/supports_granular_load",
+        "native/include/cybersand/material_capabilities.hpp",
+        "tools/material_catalogue/native_capabilities.py",
+        "tools/material_catalogue/compatibility.py::NATIVE_CAPABILITY_ROUTE/REVIEWED_TRANSITIONS",
+        "godot/scripts/material_lab_service.gd"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-30",
+      "priority": "P1",
+      "document": "docs/architecture/liquid-state-transition-matrix.md",
+      "claim": "Reference-model Proposed rows, vmax64/nonnegative-vy examples and hash2 checkpoint remain historical; accepted Water/Brine IN uses current bounds, optional signed law and versions2\u20135/unsupported Wave continuation. No original model mathematics or frozen examples changed.",
+      "sources": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "native/include/cybersand/inertial_cellular.hpp::InertialParameters",
+        "native/src/world_inertial.inc",
+        "native/src/world_pressure.inc::physical_state_hash/save_physical_state",
+        "native/include/cybersand/precision_storage.hpp"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-31",
+      "priority": "P1",
+      "document": "docs/architecture/module-boundaries.md",
+      "claim": "Current per-World pressure/liquid policy, prepared native receipts and bounded physical checkpoints exist; general command framework, replay/streaming and class extraction remain separately planned. Generated hard/granular maps are bounded native consumers.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/include/cybersand/prepared_world.hpp",
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/src/world_pressure.inc::save_physical_state/restore_physical_state",
+        "native/src/material_rules.cpp::is_hard_surface/supports_granular_load"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-32",
+      "priority": "P1",
+      "document": "docs/architecture/principles-and-non-goals.md",
+      "claim": "Dynamic desktop brush Arrays have current eight-command and 4,096-cell admission guards. Bounded accepted material tooling, native checkpoint and authoring paths do not imply a general runtime material compiler, replay or queue framework.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/simulation_worker.gd::MAX_PENDING_BRUSH_COMMANDS/MAX_BRUSH_FOOTPRINT_CELLS/queue_emit_disc/queue_emit_cells",
+        "godot/scripts/material_lab_service.gd",
+        "native/include/cybersand/world.hpp::physical_state_format_version"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-33",
+      "priority": "P1",
+      "document": "docs/architecture/determinism-and-boundary-transfers.md",
+      "claim": "Current state hash widens capacities/counts to uint64 and includes enabled Wave state; content hash omits retained Wave motion. Versioned native physical hash/quantity already exist, while full host replay remains absent. No new cross-platform equivalence or scientific result is claimed.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "native/src/world.cpp::state_hash/content_hash/hash_integer",
+        "native/src/world_pressure.inc::physical_state_hash_impl/liquid_comparison_hash",
+        "native/include/cybersand/world.hpp::physical_state_hash_version/physical_state_format_version",
+        "native/src/world_quantity.inc"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-34",
+      "priority": "P0",
+      "document": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "claim": "Prepared native/host paths and #680 observation projection are accepted source. Old unmerged/Ready instructions, universal hash2 and native-only checkpoint limits are locally dated; actual versions, one-use prepared token versus owner adoption and false full-match qualifications remain explicit.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/native_extension/cyber_demo_bridge.hpp::prepared_liquid_run_capture",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp::prepare_liquid_default_demo",
+        "godot/scripts/microscenario_host.gd::host_definition_claim",
+        "godot/scripts/simulation_worker.gd::_apply_prepared_default_liquid",
+        "godot/scripts/microscenario_catalogue.gd::whole_cell_water_family",
+        "native/include/cybersand/world.hpp::physical_state_hash_version/physical_state_format_version"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-35",
+      "priority": "P1",
+      "document": "docs/systems/workbench-liquid-equipment.md",
+      "claim": "Accepted apparatus is reached via Water Lab Equipment, not an unmerged integration branch. Generated-start Setup can retain manually authored apparatus, distinct from automatic generator placement/actor usables. Save persists authored block, not live stock or device state; pending #724 repairs remain separate.",
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "sources": [
+        "godot/scripts/shared_workbench.gd::save_setup/load_equipment_start",
+        "godot/scripts/workbench_water_lab.gd::GROUPS",
+        "godot/scripts/workbench_liquid_equipment_panel.gd::place/_edit/configure",
+        "godot/scripts/workbench_generated_map.gd::write_named",
+        "godot/scripts/workbench_liquid_equipment.gd::validate/reset",
+        "godot/scripts/simulation_worker.gd::queue_workbench_equipment",
+        "docs/reference/status-and-roadmap.md::Equipment recovery"
+      ],
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-36",
+      "priority": "P0",
+      "document": "docs/systems/actor-usables.md",
+      "claim": "Accepted Workbench equipment uses Actor Composition and M/Alt/N/U while leaving PAINT pointer controls; applying starting equipment preserves terrain/body poses but restarts controller resources. Ordinary F5 Equip only retains held-chassis semantics. Worker request admission is not application: one pending/inflight request per actor, eight globally, cancellation serialized with finite effect commit. Authored saves do not resume live equipment state.",
+      "sources": [
+        "godot/scripts/workbench_actor_panel.gd::mount",
+        "godot/scripts/shared_workbench.gd::apply_actor_equipment",
+        "godot/scripts/main.gd::_publish_workbench_keyboard",
+        "godot/scripts/workbench_actor_catalog.gd::equipment_error",
+        "godot/scripts/simulation_worker.gd::_set_physical_usable_state_locked/_cancel_physical_usables_locked/_consume_physical_usables",
+        "godot/scripts/physical_usable_runtime.gd::request_error",
+        "godot/scripts/physical_actor_session.gd::submit",
+        "godot/scripts/workbench_setup.gd"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-B",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-equipment-by-b.json"
+    },
+    {
+      "id": "A-37",
+      "priority": "P1",
+      "document": "docs/systems/physical-actor-rigs.md",
+      "claim": "The 46 articulated rigs remain their own catalogue; accepted Workbench exposes 59 entries across Fleet/passive barrel/rigs/4LY with per-entry capabilities, eight actors/eight parts/64 proxy admission. Workbench Actor Composition and Pilot inspected are separate from legacy F5, with #762 unmerged and scientific/feel acceptance still separate.",
+      "sources": [
+        "godot/scripts/workbench_actor_catalog.gd::ids/capacity_error",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/scripts/gcr_review_fleet.gd::count",
+        "godot/scripts/physical_flight_profile.gd::IDS",
+        "godot/scripts/rigid_body_coupling.gd::MAX_BODIES",
+        "godot/scripts/workbench_actor_panel.gd",
+        "godot/scripts/main.gd::_publish_workbench_keyboard",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-B",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-equipment-by-b.json"
+    },
+    {
+      "id": "A-38",
+      "priority": "P1",
+      "document": "docs/systems/procedural-world-generation.md",
+      "claim": "Accepted generation schemas keep distinct source contracts: native default64M and hard1B logical charge, Godot schemas1\u20133 cap64M while explicit schema4 may request160M; absence retains64M. Scalar, typed and actual-stage diagnostic payloads remain separate receipt forms. Standalone recipe preview is distinct from accepted Workbench material adoption.",
+      "sources": [
+        "godot/native_extension/cyber_world_generator.cpp::parse_recipe",
+        "native/include/cybersand/world_generation.hpp::Limits/ChunkResult",
+        "native/src/world_generation.cpp::Generator::compile/Generator::accepts/GenerationJob::advance",
+        "godot/scripts/worldgen_workbench.gd",
+        "godot/scripts/architectural_generator_dialog.gd",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-39",
+      "priority": "P1",
+      "document": "docs/systems/intermaterial-interactions.md",
+      "claim": "Accepted production MaterialRules uses namespace-scope derived partner/participant tables plus a 65,536-entry byte first-match lookup prepared at load. InteractionRules sparse catalogue remains semantic authority with original rule order/probabilities/role products; direct source-level delegation to a per-query linear resolver is obsolete.",
+      "sources": [
+        "native/src/material_rules.cpp::kPartnerSets/kParticipants/FirstMatchTable/MaterialRules::pair_reaction",
+        "native/include/cybersand/interaction_rules.hpp::match_pair_from/pair_rules",
+        "native/tests/test_world.cpp::test_pair_reaction_tables_match_resolver"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-40",
+      "priority": "P1",
+      "document": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "claim": "Current generation diagnostics include retained normalized field/modifier/module, typed spatial, and stage material channels; normalized/stage overhead is four logical operations per cell, typed overhead sixteen. Explicit schema 4 fixes room_size and wall_thickness globally, rejecting per-cell theme/brush/override/modifier variation. Standalone generation preview remains separate from live World admission.",
+      "sources": [
+        "native/src/world_generation.cpp::Generator::Impl::diagnostic/Generator::compile/GenerationJob::GenerationJob/GenerationJob::advance",
+        "native/include/cybersand/world_generation.hpp::ChunkResult",
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/worldgen_workbench.gd::_build_ui/accept_chunk"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-41",
+      "priority": "P1",
+      "document": "docs/systems/procedural-typed-spatial-fields.md",
+      "claim": "Typed spatial fields are accepted in schemas 2\u20134; accepted GEN-004 integration prepares immutable exported geometry before spatial compilation, not a future grammar implementation. Standalone generation editor currently includes typed page and GEN-007 graph/hierarchy/plane/provenance/comparison controls; these are separate from Shared Workbench Architectural Generator and persistent streaming.",
+      "sources": [
+        "native/src/world_generation.cpp::Generator::compile",
+        "native/include/cybersand/generation_typed_fields.hpp::SpatialGraph",
+        "godot/scripts/worldgen_workbench.gd::_build_ui/_build_spatial_tab",
+        "godot/scripts/worldgen_workbench_tools.gd::build_graph_tab/build_hierarchy_tab/build_inspector_tab/build_quality_tab",
+        "godot/scripts/feature_launcher.gd::_ready/launch"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-42",
+      "priority": "P1",
+      "document": "docs/systems/settled-region-discovery.md",
+      "claim": "Accepted read-only discovery includes #65 bounded reconstruction tickets, staged children, budgeted publication/reclamation and explicit capacity waits/refusals; publication-member pool is 2\u00d7frontier = 64T, with separate 32T reconstruction seeds/staged members. The original Stage-3A next-review instruction is historical. Track B acceleration gates do not become universal prerequisites for later owner-authorized bounded Track A detachment.",
+      "sources": [
+        "native/include/cybersand/settled_regions.hpp::SettledRegions/advance/region_visible/service_ticket_preflight_regions/service_ticket_preparing/finalize_ticket_commit",
+        "native/src/settled_world_discovery.cpp::SettledWorldDiscoveryCoordinator::Impl",
+        "native/tests/test_settled_regions.cpp::reconstruction_split_is_batch_atomic_under_unit_budget",
+        "docs/audits/2026-11-24-docs-renaissance/github-soliding-precision-intake.json",
+        "docs/operations/soliding-programme.md"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-43",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "claim": "The September #11 Planned label is historical; accepted source includes REM-002 bounded ordinary-body granular bearing/displacement. Generalized cellular shape/torque feedback remains separate from already implemented Rapier actor joints and bounded actuator torque. Approved separate material/body ownership remains unchanged.",
+      "sources": [
+        "godot/native_extension/cyber_native_cell_world.cpp::accumulate_granular_bearing",
+        "godot/scripts/rapier_physics_bridge.gd::apply_cellular_results",
+        "godot/scripts/physical_actor_rig.gd::_apply_angular_impulse",
+        "docs/architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-44",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "claim": "Retained transport v1 settings do not waive current solver admission: player Water uses Wave, native Wave rejects configured custom transport, and the prepared Workbench accepts only exact Baseline canonicalized to native defaults. Approved bounded-fidelity direction and fixed historical transport settings remain unchanged.",
+      "sources": [
+        "native/src/world_wave.inc::World::validate_wave_flow_config",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp::prepared_liquid_detail::is_workbench_baseline_transport/CyberDemoBridge::prepare_liquid_candidate",
+        "godot/native_extension/cyber_native_cell_world.cpp::create_gameplay_world/select_gameplay_water",
+        "native/src/world.cpp::World::update_rule_kernel"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    },
+    {
+      "id": "A-45",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "claim": "Granular InteractionPolicy v1 defaults and original transport decision remain current within their declared owners; the retained transport subsection now states Wave custom-profile refusal and exact prepared-Workbench Baseline normalization. This adds applicability, not a new policy, storage requirement, live descriptor mutation or revised scientific result.",
+      "sources": [
+        "native/include/cybersand/interaction_policy.hpp::InteractionPolicy",
+        "native/src/world_wave.inc::World::validate_wave_flow_config",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp::prepared_liquid_detail::is_workbench_baseline_transport/CyberDemoBridge::prepare_liquid_candidate"
+      ],
+      "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "verification": "source-inspected",
+      "independent_review": "source-verified-by-lead",
+      "disposition": "corrected",
+      "independent_review_record": "review-a-by-lead.json"
+    }
+  ]
+}

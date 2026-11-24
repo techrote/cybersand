@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "lane": "C",
+  "records": [
+    {
+      "path": "docs/README.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "69a1ce59b0fa7405ba73e7e2ec8591756b7b8b34f222d1a52b5481e9e39f8ab3",
+      "bytes": 60508,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__README.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+      "bytes": 73249,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__retrieval-index.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "bytes": 117202,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__local-build-and-validation.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "bytes": 18051,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__github-development-and-release.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "bytes": 32428,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__testing-validation-and-replay.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__current-and-historical-validation.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__documentation-maintenance.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "4c0a2319e69acf1c58a552f397fd1be545c15806578d2a6a9d41be13be35cfd7",
+      "bytes": 1201,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/CONTRIBUTING.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents an original metadata label becoming a new current or historical answer page. Read only as dated evidence.",
+      "reason": "Current entry-point reconciliation; original source and all old anchors remain recoverable."
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents original labels from creating new answer documents.",
+      "reason": "Actual saved-context review found obsolete current-storage claims or task instructions; narrow local qualification preserves original evidence and all heading anchors."
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cell-layout-experiment.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents original labels from creating new answer documents.",
+      "reason": "Actual saved-context review found obsolete current-storage claims or task instructions; narrow local qualification preserves original evidence and all heading anchors."
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt",
+      "method": "Exact git-show bytes. Text suffix prevents original labels from creating new answer documents.",
+      "reason": "Actual saved-context review found obsolete current-storage claims or task instructions; narrow local qualification preserves original evidence and all heading anchors."
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__web-threading.md.txt",
+      "method": "Exact git-show bytes; original historical workspace commands retained as evidence, not new source-checkout requirements.",
+      "reason": "P1 fresh-checkout Web onboarding falsely required companion dev.cmd; source-known toolchain/template gaps and benchmark command ownership now explicit."
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__troubleshooting.md.txt",
+      "method": "Exact git-show bytes; existing headings retained and historical evidence unchanged.",
+      "reason": "Selective source-backed operational guidance, counter/billing/authority boundaries and practical troubleshooting."
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__profiling-observability-and-performance.md.txt",
+      "method": "Exact git-show bytes; existing headings retained and historical evidence unchanged.",
+      "reason": "Selective source-backed operational guidance, counter/billing/authority boundaries and practical troubleshooting."
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__atlas-agent-runner.md.txt",
+      "method": "Exact git-show bytes; existing headings retained and historical evidence unchanged.",
+      "reason": "Selective source-backed operational guidance, counter/billing/authority boundaries and practical troubleshooting."
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation.md.txt",
+      "method": "Exact git-show bytes; named measurement records and headings retained.",
+      "reason": "Current reproduction paths, actual separate watchdogs, Windows artifact-manifest scope and provisional historical physics thresholds."
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__play-desktop-manual-qualification.md.txt",
+      "method": "Exact git-show baseline bytes; original headings retained at current path.",
+      "reason": "Bounded source reconciliation of current operational/admission claims; historical commands/results remain original evidence."
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios.md.txt",
+      "method": "Exact git-show baseline bytes; original headings retained at current path.",
+      "reason": "Bounded source reconciliation of current operational/admission claims; historical commands/results remain original evidence."
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-scenario-catalogue.md.txt",
+      "method": "Exact git-show baseline bytes; original headings retained at current path.",
+      "reason": "Bounded source reconciliation of current operational/admission claims; historical commands/results remain original evidence."
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-flight-lab.md.txt",
+      "method": "Exact git-show baseline bytes; original headings and numerical experiment evidence retained.",
+      "reason": "Current source/qualification/recording boundaries reconciled without changing source or past evidence."
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-environment-profiles-and-traversal.md.txt",
+      "method": "Exact git-show baseline bytes; original headings and numerical experiment evidence retained.",
+      "reason": "Current source/qualification/recording boundaries reconciled without changing source or past evidence."
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme-water-feel-addendum.md.txt",
+      "method": "Exact git-show bytes; text suffix preserves original metadata without adding an answer document.",
+      "reason": "Current-path historical sequencing and issue-state instructions required local applicability correction; original evidence, numeric gates and heading anchors retained."
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "baseline_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706,
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__development-claims-remediation-programme.md.txt",
+      "method": "Exact git-show bytes; text suffix preserves original metadata without adding an answer document.",
+      "reason": "Current-path historical sequencing and issue-state instructions required local applicability correction; original evidence, numeric gates and heading anchors retained."
+    }
+  ]
+}

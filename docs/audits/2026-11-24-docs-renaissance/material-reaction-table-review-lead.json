@@ -1,0 +1,309 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewed_utc": "2026-11-24T19:52:10.845438+00:00",
+  "reviewer": "/root independent of Specialist A catalogue accounting",
+  "method": "Read complete catalogue prose; mechanically compare every listed building partner, inclusive threshold and role-specific products against all native literal pair rules, preserving first/second role orientation. Source inspection, not a reaction execution campaign.",
+  "native_building_reactions": 42,
+  "documented_reactions": 42,
+  "missing_or_mismatched": [],
+  "unexpected_or_mismatched": [],
+  "document_sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+  "native_source_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+  "comparison_rows": [
+    {
+      "material_id": 98,
+      "partner": "acid",
+      "inclusive_threshold": 192,
+      "partner_product": "foam",
+      "material_product": "salt"
+    },
+    {
+      "material_id": 99,
+      "partner": "acid",
+      "inclusive_threshold": 224,
+      "partner_product": "foam",
+      "material_product": "dust"
+    },
+    {
+      "material_id": 99,
+      "partner": "water",
+      "inclusive_threshold": 6,
+      "partner_product": "water",
+      "material_product": "paste"
+    },
+    {
+      "material_id": 100,
+      "partner": "lava",
+      "inclusive_threshold": 6,
+      "partner_product": "lava",
+      "material_product": "lava"
+    },
+    {
+      "material_id": 101,
+      "partner": "lava",
+      "inclusive_threshold": 24,
+      "partner_product": "lava",
+      "material_product": "moltenglass"
+    },
+    {
+      "material_id": 102,
+      "partner": "water",
+      "inclusive_threshold": 24,
+      "partner_product": "water",
+      "material_product": "paste"
+    },
+    {
+      "material_id": 102,
+      "partner": "lava",
+      "inclusive_threshold": 64,
+      "partner_product": "lava",
+      "material_product": "redbrick"
+    },
+    {
+      "material_id": 103,
+      "partner": "fire",
+      "inclusive_threshold": 48,
+      "partner_product": "fire",
+      "material_product": "terracottatile"
+    },
+    {
+      "material_id": 103,
+      "partner": "lava",
+      "inclusive_threshold": 128,
+      "partner_product": "lava",
+      "material_product": "terracottatile"
+    },
+    {
+      "material_id": 103,
+      "partner": "water",
+      "inclusive_threshold": 10,
+      "partner_product": "water",
+      "material_product": "paste"
+    },
+    {
+      "material_id": 105,
+      "partner": "fire",
+      "inclusive_threshold": 255,
+      "partner_product": "steam",
+      "material_product": "water"
+    },
+    {
+      "material_id": 105,
+      "partner": "lava",
+      "inclusive_threshold": 255,
+      "partner_product": "stone",
+      "material_product": "steam"
+    },
+    {
+      "material_id": 105,
+      "partner": "steam",
+      "inclusive_threshold": 32,
+      "partner_product": "water",
+      "material_product": "packedsnow"
+    },
+    {
+      "material_id": 105,
+      "partner": "salt",
+      "inclusive_threshold": 64,
+      "partner_product": "brine",
+      "material_product": "slush"
+    },
+    {
+      "material_id": 105,
+      "partner": "moltenglass",
+      "inclusive_threshold": 255,
+      "partner_product": "glass",
+      "material_product": "steam"
+    },
+    {
+      "material_id": 106,
+      "partner": "water",
+      "inclusive_threshold": 48,
+      "partner_product": "brine",
+      "material_product": "salt"
+    },
+    {
+      "material_id": 107,
+      "partner": "water",
+      "inclusive_threshold": 16,
+      "partner_product": "water",
+      "material_product": "paste"
+    },
+    {
+      "material_id": 107,
+      "partner": "fire",
+      "inclusive_threshold": 6,
+      "partner_product": "fire",
+      "material_product": "dust"
+    },
+    {
+      "material_id": 108,
+      "partner": "water",
+      "inclusive_threshold": 128,
+      "partner_product": "steam",
+      "material_product": "cement"
+    },
+    {
+      "material_id": 109,
+      "partner": "water",
+      "inclusive_threshold": 6,
+      "partner_product": "water",
+      "material_product": "sand"
+    },
+    {
+      "material_id": 110,
+      "partner": "fire",
+      "inclusive_threshold": 40,
+      "partner_product": "fire",
+      "material_product": "sand"
+    },
+    {
+      "material_id": 113,
+      "partner": "acid",
+      "inclusive_threshold": 192,
+      "partner_product": "smoke",
+      "material_product": "salt"
+    },
+    {
+      "material_id": 115,
+      "partner": "fire",
+      "inclusive_threshold": 96,
+      "partner_product": "fire",
+      "material_product": "fire"
+    },
+    {
+      "material_id": 115,
+      "partner": "spark",
+      "inclusive_threshold": 255,
+      "partner_product": "empty",
+      "material_product": "fire"
+    },
+    {
+      "material_id": 116,
+      "partner": "spark",
+      "inclusive_threshold": 255,
+      "partner_product": "empty",
+      "material_product": "lava"
+    },
+    {
+      "material_id": 116,
+      "partner": "fire",
+      "inclusive_threshold": 64,
+      "partner_product": "lava",
+      "material_product": "lava"
+    },
+    {
+      "material_id": 117,
+      "partner": "water",
+      "inclusive_threshold": 3,
+      "partner_product": "water",
+      "material_product": "rustedsteel"
+    },
+    {
+      "material_id": 117,
+      "partner": "brine",
+      "inclusive_threshold": 12,
+      "partner_product": "brine",
+      "material_product": "rustedsteel"
+    },
+    {
+      "material_id": 117,
+      "partner": "acid",
+      "inclusive_threshold": 160,
+      "partner_product": "smoke",
+      "material_product": "rust"
+    },
+    {
+      "material_id": 120,
+      "partner": "lava",
+      "inclusive_threshold": 255,
+      "partner_product": "lava",
+      "material_product": "moltenglass"
+    },
+    {
+      "material_id": 121,
+      "partner": "lava",
+      "inclusive_threshold": 255,
+      "partner_product": "lava",
+      "material_product": "moltenglass"
+    },
+    {
+      "material_id": 122,
+      "partner": "lava",
+      "inclusive_threshold": 8,
+      "partner_product": "lava",
+      "material_product": "moltenglass"
+    },
+    {
+      "material_id": 123,
+      "partner": "lava",
+      "inclusive_threshold": 255,
+      "partner_product": "lava",
+      "material_product": "moltenglass"
+    },
+    {
+      "material_id": 124,
+      "partner": "water",
+      "inclusive_threshold": 48,
+      "partner_product": "water",
+      "material_product": "paste"
+    },
+    {
+      "material_id": 124,
+      "partner": "fire",
+      "inclusive_threshold": 64,
+      "partner_product": "smoke",
+      "material_product": "coal"
+    },
+    {
+      "material_id": 125,
+      "partner": "fire",
+      "inclusive_threshold": 64,
+      "partner_product": "fire",
+      "material_product": "oil"
+    },
+    {
+      "material_id": 125,
+      "partner": "lava",
+      "inclusive_threshold": 255,
+      "partner_product": "lava",
+      "material_product": "oil"
+    },
+    {
+      "material_id": 126,
+      "partner": "fire",
+      "inclusive_threshold": 96,
+      "partner_product": "smoke",
+      "material_product": "fire"
+    },
+    {
+      "material_id": 126,
+      "partner": "lava",
+      "inclusive_threshold": 64,
+      "partner_product": "lava",
+      "material_product": "fire"
+    },
+    {
+      "material_id": 127,
+      "partner": "fire",
+      "inclusive_threshold": 128,
+      "partner_product": "fire",
+      "material_product": "fire"
+    },
+    {
+      "material_id": 128,
+      "partner": "lava",
+      "inclusive_threshold": 255,
+      "partner_product": "lava",
+      "material_product": "oil"
+    },
+    {
+      "material_id": 128,
+      "partner": "fire",
+      "inclusive_threshold": 32,
+      "partner_product": "smoke",
+      "material_product": "oil"
+    }
+  ]
+}

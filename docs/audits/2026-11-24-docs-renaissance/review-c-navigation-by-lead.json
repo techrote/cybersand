@@ -1,0 +1,89 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewer": "/root (independent of /root/retrieval_onboarding)",
+  "reviewed_utc": "2026-11-24T18:51:06.859332+00:00",
+  "claims": [
+    {
+      "claim_id": "C-07",
+      "document": "tools/docs/retrieval_eval.py",
+      "priority": "P0",
+      "document_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "verdict": "supported",
+      "basis": "Shared selection routing repairs the measured manifest/fallback mismatch; root helper review and12 regression tests retain historical authority, scoring and frozen sets."
+    },
+    {
+      "claim_id": "C-08",
+      "document": "docs/operations/documentation-maintenance.md",
+      "priority": "P1",
+      "document_sha256": "5330204fbce4760de584fb8cf89f252f7fdeeb60fa20776f991a96cf75c17300",
+      "verdict": "supported",
+      "basis": "Selection and authority vocabularies match parser, policyv2 is cache identity, default/fallback and explicit history are separate. Three evaluation dimensions and acceptance update recipe remain distinct."
+    },
+    {
+      "claim_id": "C-09",
+      "document": "docs/reference/retrieval-questions-docs-renaissance-v1.json",
+      "priority": "P1",
+      "document_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "verdict": "supported",
+      "basis": "Reviewed36 questions covering current claims, adversarial stale phrases, pending candidates and abstention.36uniqueIDs, canonical/source paths resolve, existing frozen sets untouched. New expected destinations absent at baseline are disclosed."
+    },
+    {
+      "claim_id": "C-14",
+      "document": "docs/README.md",
+      "priority": "P1",
+      "document_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "verdict": "supported",
+      "basis": "Reader routes lead to current firstlaunch/Workbench/user manuals and canonical ownership. History is explicit navigation, not default corpus; portal has no duplicate active candidate list. Final audience portal and complete question routes reread; new links route existing canonical owners, navigation remains outside answer chunks.",
+      "reviewed_document_sha256": {
+        "docs/README.md": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+        "docs/reference/retrieval-index.md": "37aa6cc9c04af60c8fa7a3b89c2fbc732e63db560434abe612de9fa5f04f51b6"
+      }
+    },
+    {
+      "claim_id": "C-15",
+      "document": "CONTRIBUTING.md",
+      "priority": "P1",
+      "document_sha256": "bc291623ae12a4923d4b52329d5a8858fdc9316241bb7a0b97d71f8c9effc1af",
+      "verdict": "supported",
+      "basis": "Source-root onboarding, isolated profiles, AGENTS guards, Draft/owner gates and license status match current policy and supplied source; no public original-work license invented."
+    }
+  ],
+  "metadata_only_routing_review": {
+    "count": 27,
+    "paths": [
+      "docs/architecture/in-tools-gameplay-admission.md",
+      "docs/operations/architecture-programme-prompts/cell-layout.md",
+      "docs/operations/architecture-programme-prompts/compact-motion.md",
+      "docs/operations/architecture-programme-prompts/decision-review.md",
+      "docs/operations/architecture-programme-prompts/fractional-presentation.md",
+      "docs/operations/architecture-programme-prompts/liquid-characterization.md",
+      "docs/operations/architecture-programme-prompts/soliding-supplement.md",
+      "docs/operations/architecture-programme-prompts/sparse-motion.md",
+      "docs/operations/architecture-programme-prompts/state-precision.md",
+      "docs/operations/architecture-programme-source-ledger.md",
+      "docs/operations/gentek-interlaced-viaduct.md",
+      "docs/operations/gentek-rosework-showcase.md",
+      "docs/operations/gentek-showcase-integration-001.md",
+      "docs/operations/in-tools-fixtures-and-playtest.md",
+      "docs/operations/soliding-stage3-spark-connectivity.md",
+      "docs/operations/soliding-stage3-spark-measurement.md",
+      "docs/operations/soliding-stage3-spark-producer.md",
+      "docs/operations/soliding-stage3-spark-verification.md",
+      "docs/operations/soliding-stage3b-astra-review.md",
+      "docs/research/gentek-80-integration-001.md",
+      "docs/research/gentek-classic-001.md",
+      "docs/research/gentek-interlock-001.md",
+      "docs/research/gentek-metabolist-001.md",
+      "docs/research/gentek-showcase-cathedral-001.md",
+      "docs/research/gentek-showcase-megablock-001.md",
+      "docs/research/gentek-showcase-megatruss-001.md",
+      "docs/research/gentek-suspended-001.md"
+    ],
+    "method": "Exact byte comparison with only retrieval: explicit-only line removed reproduces accepted source; substantive claims and historical evidence unchanged."
+  },
+  "limitations": [
+    "Source/structure review, not an independent runtime or external vector-index qualification.",
+    "Ranking and context applicability are separately recorded; expected destination hits do not certify answers."
+  ]
+}

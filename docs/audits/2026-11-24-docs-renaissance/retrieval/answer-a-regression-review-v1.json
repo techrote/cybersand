@@ -1,0 +1,474 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "method": "Read immutable saved top-five context,derive bounded answer,compare accepted source/owner record. Deterministic ranking and independent answer applicability reported separately; no external model dispatch.",
+  "input": "answer-a-regression-input-v1.json",
+  "input_sha256": "dacd25e9083bdfb25af5989eee8575b3edd23bb1a5452e020cde171455dd327b",
+  "classification_counts": {
+    "sufficient": 2,
+    "partial": 5,
+    "wrong-context": 0,
+    "abstention": 0
+  },
+  "expected_paths_or_facts_modified": false,
+  "findings_resolved_before_this_snapshot": [
+    "A24: old current Sandspiel paragraph falsely asserted four-byte cells",
+    "A25: material-appearance opening treated1024square as universal canvas size and called Cell four bytes",
+    "A26\u201328: LCB handoff/status/negative controls retained then-unimplemented Water-IN as current absence"
+  ],
+  "residual_review_items": [
+    {
+      "priority": "P1",
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "reason": "Retained October25 scope/Status uses isolated Water-IN and hash2 vocabulary; current policy/context provides correct later availability, but independently retrieved model chunks need local present-day applicability. Do not rewrite frozen reference-model mathematics or historical evidence."
+    },
+    {
+      "priority": "P2",
+      "path": "docs/reference/retrieval-questions.json",
+      "reason": "Frozen LCB03 expected facts are source-checkpoint-specific and stale as current-source acceptance. Preserve this set; any future current semantics suite must be separately versioned and reviewed."
+    }
+  ],
+  "results": [
+    {
+      "id": "OI01",
+      "query": "What does the owner want CyberSand and Workbench to become?",
+      "classification": "sufficient",
+      "canonical_rank": null,
+      "bounded_answer_from_saved_context": "The owner wants an accessible paint-and-play authoring environment, combining material painting, simulation, generation, actors and model-assisted creation through Workbench. Deeper controls should remain available without making simple exploration difficult. This is product intent, not a claim that every future game or integration exists.",
+      "supporting_hits": [
+        4
+      ],
+      "assessment": "The current synthesis accurately preserves the separately retained14November record. Rank4 supports the fact even though the frozen expected primary decision path is absent. This is still a primary-record ranking miss.",
+      "missing": [],
+      "context_cautions": [],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "docs/decisions/2026-11-14-owner-authoring-intent.md::Paint, play and the Workbench",
+        "docs/reference/product-intent-and-priorities.md::What the owner wants Workbench to become"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Install, paint, save and reopen",
+          "score": 10.622291,
+          "text_sha256": "b1eb878afbb072c0074d45583dbef93a378756674a231eb7461660c820eb466c"
+        },
+        {
+          "rank": 2,
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Save what you mean",
+          "score": 10.602791,
+          "text_sha256": "b382a45e17162a3961826410e2b04c99cb13112200aed8cb1d35b338c1420fdc"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > How does authoring become a running scene?",
+          "score": 8.881461,
+          "text_sha256": "426df7d9775bf329673b848002820961dd130b5ecc76071d5ea9114d6fbdd913"
+        },
+        {
+          "rank": 4,
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > What the owner wants Workbench to become",
+          "score": 8.798083,
+          "text_sha256": "b06befcbc5a10a585d8c76aaed3724fa2ae873559c1bc904980ce7db092ccd8f"
+        },
+        {
+          "rank": 5,
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > First inspection and safe experiment",
+          "score": 8.394519,
+          "text_sha256": "4f28aca8ba7fa6f8163b89272f69595394ada693cd29a03c247bbf85d44afd16"
+        }
+      ]
+    },
+    {
+      "id": "OI04",
+      "query": "Does prepared declared destruction require automatic whole-building stability and storage-sized chunks?",
+      "classification": "sufficient",
+      "canonical_rank": null,
+      "bounded_answer_from_saved_context": "No. Prepared declared destruction is an exploratory idea for authored break conditions and moving pieces. Whole-building structural integrity is not a prerequisite, and fracture pieces need not equal storage chunks. No universal fragment size or algorithm was selected.",
+      "supporting_hits": [
+        1
+      ],
+      "assessment": "The synthesis directly links and agrees with the original physical-character clarification. Primary decision ranking still fails; correct synthesis is not a reason to modify that frozen expectation.",
+      "missing": [],
+      "context_cautions": [],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "docs/decisions/2026-11-14-owner-authoring-intent.md::Physical character and destructible structures",
+        "docs/reference/product-intent-and-priorities.md::Convincing physical behavior and prepared destruction"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Convincing physical behavior and prepared destruction",
+          "score": 25.275266,
+          "text_sha256": "27162498a335922f9a152df2d9663d045159301916f3cc800c7fe62676379b17"
+        },
+        {
+          "rank": 2,
+          "path": "reference/invariants.md",
+          "heading": "Architectural and simulation invariants > Hierarchical generation invariants",
+          "score": 16.967719,
+          "text_sha256": "7c1f8c3552484a3478f4719eaef7ae2082281ef26e98a04cf9eed88d84494dae"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/inertial-cellular-v1.md",
+          "heading": "Inertial cellular reference > Why does IN require radius three?",
+          "score": 13.705304,
+          "text_sha256": "f408fe7beba98cf1b8c3e04ce324f3dfc65e6ed5ae5b8570837e238c5bce63da"
+        },
+        {
+          "rank": 4,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "heading": "Data ownership and lifetimes > Which transitions require exclusive ownership?",
+          "score": 13.31677,
+          "text_sha256": "9560d57b1db6dbab0c09d2218bfaebf6e09f9cc2c945896c0dbdf3edcb2f33eb"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "heading": "Data ownership and lifetimes > Who may mutate each resource?",
+          "score": 13.138372,
+          "text_sha256": "b113611798c407aa9bea07d514abd6d43681284d7e2c8dc1d0d5a611c0c139cf"
+        }
+      ]
+    },
+    {
+      "id": "RENDER-COPY-01",
+      "query": "Does chunk-run native render copying change pixels, Water state, dirty retention or GPU upload size?",
+      "classification": "partial",
+      "canonical_rank": null,
+      "bounded_answer_from_saved_context": "The retrieved context distinguishes copied dirty RG8 patches from full-image GPU submission and keeps rendering separate from simulation ownership. The GPU upload remains the full installed backing extent. These hits do not establish the exact chunk-run copier equivalence for byte output, stride/coordinates or Water nonmutation; I would consult its literal oracle and source before answering that narrower part.",
+      "supporting_hits": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "assessment": "Current rendering and storage statements are now accurate. The expected copier-contract destination remains absent; broad renderer facts cannot substitute for the exact copy qualification.",
+      "missing": [
+        "Exact chunk-run byte/nonmutation oracle and stride/negative-coordinate conditions"
+      ],
+      "context_cautions": [],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "native/src/world.cpp::World::copy_render_cells",
+        "native/tests/render_copy_reference.hpp",
+        "native/tests/render_copy_qualification.inc",
+        "godot/scripts/main.gd::upload_texture_patches"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "systems/material-appearance-and-rendering.md",
+          "heading": "Material appearance and rendering > Dirty bytes versus GPU upload",
+          "score": 25.043981,
+          "text_sha256": "083b18f8efa28f8702c0d6e9dea5b8ae82dc43b8a4c13fad447f865ce7334552"
+        },
+        {
+          "rank": 2,
+          "path": "reference/glossary.md",
+          "heading": "Glossary > Publication and physics",
+          "score": 24.424325,
+          "text_sha256": "0e6357a6159079e81326022cde50b88f18c67e8a91a7bde1078153714fa4f418"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > How does data move on desktop and Web?",
+          "score": 21.629588,
+          "text_sha256": "92c1686b9ba64cc5cf5d6dc3713ee3f7ff1613f620d859ca643b7196471bb6dd"
+        },
+        {
+          "rank": 4,
+          "path": "research/sandspiel-performance-and-material-port.md",
+          "heading": "Sandspiel performance study and material port ledger > Current adoption boundaries",
+          "score": 19.748107,
+          "text_sha256": "a0a5dc808537fa01b56e2861641d1bae0d2c2204ebe1f0fc375034c19c3da9d3"
+        },
+        {
+          "rank": 5,
+          "path": "systems/material-appearance-and-rendering.md",
+          "heading": "Material appearance and rendering",
+          "score": 19.199933,
+          "text_sha256": "60d0242b60a868825c7d4ee16be0d695070ecb864035e4273c1be97d048af960"
+        }
+      ]
+    },
+    {
+      "id": "C06",
+      "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
+      "classification": "partial",
+      "canonical_rank": null,
+      "bounded_answer_from_saved_context": "The snippets describe a generic rectangular Rapier barrel and source-bound penetration fixtures. They do not establish a generally solved half-depth support law or reversible soliding. The half-depth figures are proposed/fixture envelopes; later behavior requires its own evidence and owner evaluation.",
+      "supporting_hits": [
+        1,
+        2,
+        4
+      ],
+      "assessment": "Safe bounded answer. Full owner clarification about not accepting old barrel support as final and the specific independent#12/WEX routing are missing. Old experimental targets must not become fresh owner acceptance.",
+      "missing": [
+        "Original owner acceptance qualification",
+        "Specific independent#12/WEX integration boundary"
+      ],
+      "context_cautions": [],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "docs/reference/product-intent-and-priorities.md::Actors and physical feel",
+        "docs/operations/development-claims-remediation-programme.md",
+        "docs/architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Scope and evidence boundary",
+          "score": 30.448845,
+          "text_sha256": "1704d801d9cd2dbdcc646449872be388ebd65e8d43295bf21f9fccbf6020f374"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "heading": "Rigid-body and cellular coupling > What does the fixture prove, and what remains open?",
+          "score": 25.098897,
+          "text_sha256": "afc2d8f38dcec83ab132afee9f21708357191c651404406627af6bb019d242cf"
+        },
+        {
+          "rank": 3,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Phase 3: parameter experiments, then model changes",
+          "score": 16.721785,
+          "text_sha256": "a4d81950005d06942b12e2196ae543dc78d5d8845a3f05bedf6e7a3c29f9c198"
+        },
+        {
+          "rank": 4,
+          "path": "operations/physics-characterisation.md",
+          "heading": "Reproducible physics characterisation > What is measured, and what remains a proposal?",
+          "score": 15.062079,
+          "text_sha256": "244dc8100f4faa6fc55ba18d235635529c02f3af3f19e2166d30a540a33ad5a2"
+        },
+        {
+          "rank": 5,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Phase 2: isolate each behaviour",
+          "score": 14.672498,
+          "text_sha256": "47ac28888be74554cef7285e9fc6e35bcbb82fd2e6869a0546233d777814a28a"
+        }
+      ]
+    },
+    {
+      "id": "USABLE02",
+      "query": "Can a delayed physical equipment request or receipt fire a replaced, dropped or cancelled tool, and how is the worker queue bounded?",
+      "classification": "partial",
+      "canonical_rank": null,
+      "bounded_answer_from_saved_context": "Pending physical equipment work is bounded to eight requests and one pending/in-flight request per actor. Cancellation retires requests and late results and is serialized with bounded material consumption. Already launched projectiles/devices have their own lifetime. The retrieved set does not spell out the complete issued-observation/equipment identity envelope, so I would not implement a replacement-safe protocol from it alone.",
+      "supporting_hits": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "assessment": "The bounded answer matches worker admission/cancellation and session guards. Exact usable_index/instance_id/equipment_epoch plus run/request/body/lease identity is absent; the16-command liquid-apparatus queue at rank5 is a separate subsystem and must not replace the physical8-request limit.",
+      "missing": [
+        "Complete issued-observation, tool-instance/epoch, request and body identity checks"
+      ],
+      "context_cautions": [
+        {
+          "rank": 5,
+          "qualification": "Different liquid-apparatus16-command queue; do not conflate with physical actor request8 bound."
+        }
+      ],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "godot/scripts/simulation_worker.gd::_set_physical_usable_state_locked/_consume_physical_usables",
+        "godot/scripts/physical_usable_runtime.gd::MAX_REQUESTS/request_error",
+        "godot/scripts/physical_actor_session.gd::submit",
+        "godot/scripts/physical_usable_equipment.gd"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "systems/actor-usables.md",
+          "heading": "Actor usables \u2014 32-item catalogue and physical equipment > Desktop controls",
+          "score": 20.140337,
+          "text_sha256": "341121ed0aa7e29f4d7ab7261286dc1faeb3fd0672d3fa578b6b2c6a821e28a4"
+        },
+        {
+          "rank": 2,
+          "path": "reference/configuration-reference.md",
+          "heading": "Configuration reference > Actor usable values",
+          "score": 18.028745,
+          "text_sha256": "6e48ac86ade2bab0edcbff8542bbe1be9e187b5317757e02f561934659db0588"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Physical equipment and material authority",
+          "score": 17.998684,
+          "text_sha256": "e7038b304d3970ca9d911b05cc2f9851ed1825a50ebfec64a22473d6b3b63816"
+        },
+        {
+          "rank": 4,
+          "path": "systems/player-control-playground.md",
+          "heading": "Player control playground > Live adversarial delivery qualification",
+          "score": 16.789134,
+          "text_sha256": "ab892c9729c4dd0060ecf73bc388b92b0838c79baaa83f5a34b7c23c37bd3332"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-liquid-equipment.md",
+          "heading": "Workbench liquid equipment \u2014 valves, drain, nozzle and pump > Ownership, lifetime and commands",
+          "score": 16.539447,
+          "text_sha256": "09daaa809ca7f8846c4706c443b0961203bfb38415d3c0dbae06b1f063650003"
+        }
+      ]
+    },
+    {
+      "id": "LCB01",
+      "query": "Has LCB-000 passed, what landed, and may #200 or #212 start?",
+      "classification": "partial",
+      "canonical_rank": null,
+      "bounded_answer_from_saved_context": "LCB-000 Gates A\u2013E passed at the October24 checkpoint and the owner then admitted bounded pressure/inertial work. Those families subsequently entered accepted source, including Water-IN. That historical admission does not authorize unrelated Stage4, whole-world streaming or a new current branch assignment. A completed comparative campaign is separate from source availability.",
+      "supporting_hits": [
+        2,
+        3,
+        5
+      ],
+      "assessment": "Current accepted-family statement and dated gate distinction are supported after repair. Exact#215/#217/#226 merge identity and the narrow codec-freeze decision are absent from these hits; the frozen roadmap destination still misses. Rank1 locally scopes its old then-pending-family statement as historical, and must not override ranks2/5.",
+      "missing": [
+        "Exact original integrated merge identity",
+        "Narrow native-codec freeze versus global ABI scope"
+      ],
+      "context_cautions": [
+        {
+          "rank": 1,
+          "qualification": "This historical campaign account says#212 outside that accepted checkpoint; its opening explicitly says prerequisites later landed."
+        }
+      ],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "docs/architecture/liquid-prepared-setup-and-receipts.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/architecture/inertial-cellular-v1.md"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "operations/lcb-scenario-catalogue.md",
+          "heading": "LCB scenario catalogue and controlled runner > Status",
+          "score": 19.411643,
+          "text_sha256": "bb8c1eeba880434a5a74ef452a59897cdc0db01dee51c70f2d9f8688f315acf1"
+        },
+        {
+          "rank": 2,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > LCB experimental pressure lane reconciliation (2026-10-23)",
+          "score": 18.490824,
+          "text_sha256": "76b89b1a460f31870eeb2739f63ec52e39b5fe21cc0ed2281e06c0c6a0309a1e"
+        },
+        {
+          "rank": 3,
+          "path": "operations/lcb-water-comparison-and-fixtures.md",
+          "heading": "LCB Water comparison contract and reference fixtures > Negative controls (registered; owners in brackets)",
+          "score": 17.833744,
+          "text_sha256": "1f94adb628e75d7fdeda693431d920f62f0858ce6aff4f21ea4436419c506843"
+        },
+        {
+          "rank": 4,
+          "path": "operations/architecture-programme.md",
+          "heading": "CyberSand architecture experimental programme > Water hybrid/pressure extension checkpoint \u2014 2026-09-20",
+          "score": 17.28429,
+          "text_sha256": "d20d3999a947759f1f25dfad2363103f11b82637544b76c3bb09b54378668e7b"
+        },
+        {
+          "rank": 5,
+          "path": "operations/lcb-water-comparison-and-fixtures.md",
+          "heading": "LCB Water comparison contract and reference fixtures > Status",
+          "score": 17.033973,
+          "text_sha256": "6eb5191287f69f71b69d6ee8d70cd1db0e2e37e97b1d89d881723e9030f6aa3e"
+        }
+      ]
+    },
+    {
+      "id": "LCB03",
+      "query": "Is the pressure_flow_v1 Water family implemented, and what does it admit, store and refuse?",
+      "classification": "partial",
+      "canonical_rank": 5,
+      "bounded_answer_from_saved_context": "PressureFlow is implemented for Water with reference, cached and cached-dormant variants. Other liquid mappings can be rejected, policy is validated before World allocation, and optional gas/head parameters have explicit bounds/defaults. Family state and the World gas table are separate from material cells. The current native profile and player Wave overlay remain distinct. Complete version/persistence details should be retrieved from the current contract rather than assumed from the old v2 checkpoint.",
+      "supporting_hits": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "assessment": "Current mapping/refusal and parameter facts are supported, but exact current pressure storage and all format variants are not fully present. The frozen expected facts explicitly describe the old#246 reference-only/main and#201branch split; reproducing them as current would be false. Preserve the fixture and audit this applicability limit.",
+      "missing": [
+        "Complete current pressure storage, gas identity and physical-format selection"
+      ],
+      "context_cautions": [
+        {
+          "rank": 3,
+          "qualification": "Transition matrix retains October25 scope and old hash2/isolated-Water-IN wording; current policy/source must govern current availability and exact formats."
+        }
+      ],
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_locators": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "native/include/cybersand/pressure_flow.hpp",
+        "native/src/world_pressure.inc",
+        "native/src/world.cpp::physical_state_hash/save_physical_state"
+      ],
+      "hits": [
+        {
+          "rank": 1,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Status",
+          "score": 18.442168,
+          "text_sha256": "71a2831eb31df25c62ac0bc0b458a77551f50790ee3b76941314eb2b03fc7d80"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Native policy foundation (Current, 2026-10-24)",
+          "score": 16.864708,
+          "text_sha256": "9fa25298f7f50a33e150444ead359874275b04f50e8dd1e2f81612e60beea039"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/liquid-state-transition-matrix.md",
+          "heading": "Liquid material and solver state-transition matrix > Status and inputs",
+          "score": 16.471473,
+          "text_sha256": "170fe5df83ed65d18b2f969ea5a3fba82327d5006473398d2eb47a534660aef9"
+        },
+        {
+          "rank": 4,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Native policy foundation (Current, 2026-10-24)",
+          "score": 16.376306,
+          "text_sha256": "7a4c213324d2f64febc406a38f5476cac757982433ceb9cb11f8b8fd4bd866d9"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/pressure-flow-v1.md",
+          "heading": "pressure_flow_v1 reference \u2014 corrected Water pressure family > Physical-state hash v2 > Liquid comparison projections",
+          "score": 15.98132,
+          "text_sha256": "6ea81c8533ee0eb8fae73c8f98bac7eb9287ee0c80dcc9bc38201720df5f0dff"
+        }
+      ]
+    }
+  ],
+  "post_review_resolutions": [
+    {
+      "claim": "A-30",
+      "document": "docs/architecture/liquid-state-transition-matrix.md",
+      "result": "Local current applicability and original model/version qualification corrected after this saved-context review. Input, rankings and original answer judgments remain unchanged; later retrieval must be executed separately."
+    }
+  ]
+}

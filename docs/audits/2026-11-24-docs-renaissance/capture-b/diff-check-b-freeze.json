@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-11-24T20:32:24.122954+00:00",
+  "scope": "Full baseline-relative tracked diff and separately labelled non-preservation scopes. Byte-exact historical originals are not trimmed to satisfy whitespace.",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+      ],
+      "exit_code": 2,
+      "stdout": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt:214: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt:271: new blank line at EOF.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "--",
+        ".",
+        ":(exclude)docs/audits/2026-11-24-docs-renaissance/preserved/**"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

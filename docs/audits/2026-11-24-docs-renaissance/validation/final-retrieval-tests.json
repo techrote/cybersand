@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/ci",
+    "-p",
+    "test_*retrieval*.py",
+    "-v"
+  ],
+  "result": "PASS",
+  "exit_code": 0,
+  "recorded_utc": "2026-11-24T20:29:27.305527+00:00",
+  "elapsed_seconds": 0.338,
+  "scope": "Existing historical authority isolation and new current manifest/fallback/chunk selection regressions; no external model or cache",
+  "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/final-retrieval-tests.log.txt",
+  "output_sha256": "d0d8936577ef6c47146f2df8b6f351bb9d963d7a2a658bb3cafd6c4d54812ff7",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+}

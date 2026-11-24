@@ -1,0 +1,45 @@
+{
+  "documents": 151,
+  "chunks": 1784,
+  "questions": 36,
+  "canonical_hit_at_1": 24,
+  "canonical_hit_at_k": 32,
+  "mrr_at_k": 0.7593,
+  "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+}
+DR01 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands
+DR02 rank=1 operations/local-build-and-validation.md :: Local build and validation > Repository-native build and test commands
+DR03 rank=2 operations/local-build-and-validation.md :: Local build and validation > First launch from a source checkout
+DR04 rank=2 operations/getting-started.md :: Getting started with CyberSand > Choose your installation route
+DR05 rank=1 architecture/data-ownership-and-lifetimes.md :: Data ownership and lifetimes > Who may mutate each resource?
+DR06 rank=1 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > What is stored per cell and per chunk? > Is the old four-byte, sidecar-only rule current?
+DR07 rank=2 systems/water-design.md :: Water design
+DR08 rank=1 architecture/ballistic-water-v1.md :: Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law
+DR09 rank=None systems/materials-and-rule-kernels.md :: Materials and rule kernels > Current material families
+DR10 rank=1 operations/materials-lab-authoring.md :: Materials Lab v1 > Browse and inspect actual behaviour
+DR11 rank=1 operations/materials-lab-authoring.md :: Materials Lab v1 > First inspection and safe experiment
+DR12 rank=1 operations/workbench-first-session.md :: Your first Workbench session > Make room to work
+DR13 rank=1 systems/workbench-direct-art-batches.md :: Direct art batches — WB-ART-002 Stage 1 > Ownership, capacities and completion
+DR14 rank=1 operations/workbench-art.md :: Art Workbench > Stop, Hide and native results
+DR15 rank=None systems/workbench-art-providers.md :: Art Workbench provider and session contract > Diagnostics and retention > Lazy reopening and traffic storage
+DR16 rank=1 operations/gen008-flatten-qualification.md :: Flatten / Bake History evaluation > Windows owner acceptance
+DR17 rank=1 operations/architectural-generator-playtest.md :: Architectural Generator walkthrough > Choose a Gentek and its parameters
+DR18 rank=1 reference/status-and-roadmap.md :: Status and foundational roadmap > Active candidates and integration boundaries
+DR19 rank=3 systems/physical-actor-rigs.md :: Articulated Rapier actors and shared physical control > Which actors are physical?
+DR20 rank=2 systems/physical-actor-rigs.md :: Articulated Rapier actors and shared physical control > How do I select and control them?
+DR21 rank=1 operations/workbench-art.md :: Art Workbench > Connect a provider you already use
+DR22 rank=1 systems/workbench-art-providers.md :: Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+DR23 rank=1 operations/workbench-art.md :: Art Workbench > Conversation and private traffic
+DR24 rank=2 operations/troubleshooting.md :: Troubleshooting simulation and integration > A useful failure report
+DR25 rank=1 systems/depth-layers-and-parallax.md :: Depth layers and parallax prototypes > Strata Theatre controls
+DR26 rank=1 operations/profiling-observability-and-performance.md :: Profiling, observability, and performance > Avoid common misreadings
+DR27 rank=1 operations/web-threading.md :: Web worker profiles and reference tests
+DR28 rank=4 reference/validation-evidence.md :: Validation evidence ledger > Source and artifact custody
+DR29 rank=1 operations/github-development-and-release.md :: Repository development and release > Current CI provider and draft gating
+DR30 rank=1 operations/github-development-and-release.md :: Repository development and release > Parallel validation and source-scope advice — 2026-10-31
+DR31 rank=None operations/soliding-stage3b-production-plan.md :: Issue 12 Stage 3B production implementation plan > Live execution checkpoint — 2026-09-24 > Recovery-era checkpoint — 2026-09-21 (historical)
+DR32 rank=1 operations/documentation-maintenance.md :: Documentation maintenance and retrieval contract > Current selection, fallback and historical authority
+DR33 rank=1 decisions/2026-11-14-owner-authoring-intent.md :: Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific
+DR34 rank=4 systems/world-storage-and-interest-region.md :: World storage and interest region > Approved area intent and accepted behavior
+DR35 rank=1 tools/world-art-capture.md :: World Art unattended capture — real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels
+DR36 rank=None decisions/ADR-004-interest-region-and-reconfiguration.md :: ADR-004: Interest region and safe reconfiguration > Failed-world boundary

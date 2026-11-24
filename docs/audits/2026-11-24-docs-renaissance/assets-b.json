@@ -21,7 +21,7 @@
     {
       "path": "docs/images/neon-reliquary/overview.png",
       "description": "Neon Reliquary standalone application capture",
-      "original_source": "original identity in linked evidence",
+      "original_source": "14c9f3e4128c76e0580b466a8943a7313a6168b1",
       "evidence": "docs/audits/2026-10-18-neon-reliquary-evidence.json",
       "capture_scope": "Retained original standalone Godot render; not current Workbench UI.",
       "sha256": "e1e0e0efcfcc63cf5160fbdcb462a5d92edf7a21470f8fa608598c4c0b0fe1a9",
@@ -31,7 +31,9 @@
       "used_or_linked_from": "README.md",
       "ownership_license": "Original CyberSand repository output; no public license selected. See LICENSE_STATUS.md and THIRD_PARTY_NOTICES.md.",
       "new_file": false,
-      "processing": "None after original capture; original pixels preserved."
+      "processing": "None after original capture; original pixels preserved.",
+      "source_identity_note": "Original scene implementation over baseline ec05d7227885bda59bf72a5889b004296b9a07e5; listed source-file hashes and unchanged retained runtime are in the linked original evidence.",
+      "additional_current_guide": "docs/operations/neon-reliquary-demo.md"
     },
     {
       "path": "docs/images/materials-lab-v1/01-inspector-water.png",
@@ -81,7 +83,7 @@
     {
       "path": "docs/images/blacksite-nine/blacksite-nine.png",
       "description": "Blacksite Nine connected-complex atlas",
-      "original_source": "original identity in linked capture manifest",
+      "original_source": "Unavailable as a full checkout revision in original capture",
       "evidence": "docs/images/blacksite-nine/capture.json",
       "capture_scope": "Retained paused tick-zero X11 llvmpipe render, 3 pixels per cell.",
       "sha256": "a0b42651d8459bcb24b8aa1803ed2e8fa807e47d0c9734c01a2f0e87b5a08080",
@@ -91,7 +93,11 @@
       "used_or_linked_from": "docs/operations/showcase-guide.md",
       "ownership_license": "Original CyberSand repository output; no public license selected. See LICENSE_STATUS.md and THIRD_PARTY_NOTICES.md.",
       "new_file": false,
-      "processing": "None after original capture; original pixels preserved."
+      "processing": "None after original capture; original pixels preserved.",
+      "source_identity_note": "Original capture explicitly says source_revision unavailable/revision not embedded. Its apparatus script-set SHA-256 and native runtime identity are retained, not recertified as current source.",
+      "original_script_set_sha256": "4339929ee4d3ae1e6826907cf6b1113165745f6424951b340f3f1388b43a6597",
+      "original_native_sha256": "43e747137249041d56a522dbe0ec35219082ea555e1ec1cbdd40971c6a58db9c",
+      "additional_current_guide": "docs/operations/blacksite-nine-demo.md"
     },
     {
       "path": "docs/images/semantic-depth/refinery-guide.png",

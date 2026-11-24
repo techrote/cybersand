@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "tools/ci/check_m11_consistency.py"
+  ],
+  "result": "PASS",
+  "exit_code": 0,
+  "recorded_utc": "2026-11-24T20:29:13.599138+00:00",
+  "elapsed_seconds": 0.278,
+  "scope": "Historical retained M11 records against their source-pinned Git objects; not present runtime qualification.",
+  "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/final-m11.log.txt",
+  "output_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "documentation_head": "0763548960edb6acd310666950aec7fa9ec4c502"
+}

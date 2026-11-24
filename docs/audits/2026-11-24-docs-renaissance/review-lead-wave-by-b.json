@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B / product_showcase",
+  "reviewed_at": "2026-11-24T19:12:14.491909+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Independent source inspection of actual dispatch, constants, UI labels, save/evidence fields and accepted-source GitHub intake; exact current guide hashes. No runtime, graphical or physical campaign rerun.",
+  "claims": [
+    {
+      "claim_id": "L-20",
+      "priority": "P1",
+      "document": "docs/operations/wave-flow-evaluation.md",
+      "document_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "result": "source-verified",
+      "observations": "The accepted Wave foundation and current Water Lab are separated from source-specific original Windows packages and physical owner acceptance. No old package is advertised as a current required candidate.",
+      "source_locators": [
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json",
+        "godot/scripts/workbench_water_lab.gd"
+      ]
+    },
+    {
+      "claim_id": "L-21",
+      "priority": "P1",
+      "document": "docs/operations/wave-flow-evaluation.md",
+      "document_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "result": "source-verified",
+      "observations": "Five Water Lab groups, Apply solver / tuning, Restore native Wave values and Close Water Lab match source. The original v2 tuning table is explicitly distinct from the gameplay Wave preset (two substeps, floor gain1024, damping16, calm damping8, sleep90, spill and ballistic enabled). The final limitation now explicitly scopes default-off to bare native WorldConfig.",
+      "source_locators": [
+        "godot/scripts/workbench_water_lab.gd::GROUPS/_build",
+        "godot/scripts/workbench_water_spray_panel.gd::WAVE_SPINS/_revert_wave",
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water"
+      ]
+    },
+    {
+      "claim_id": "L-27",
+      "priority": "P1",
+      "document": "docs/operations/gameplay-recording.md",
+      "document_sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "result": "source-verified",
+      "observations": "Shared Workbench setup hides the old Layout children and Main key dispatch returns before the ordinary F10 recorder branch. The ordinary Main host retains F10; this is not a Workbench or independent-scene capture shortcut.",
+      "source_locators": [
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/gameplay_recorder.gd::start_recording"
+      ]
+    },
+    {
+      "claim_id": "L-28",
+      "priority": "P1",
+      "document": "docs/operations/gameplay-recording.md",
+      "document_sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "result": "source-verified",
+      "observations": "start_recording clamps ROI against CyberCellWorld width/height1024. Recorded retained bytes are row-major uint8 serialized material IDs; visual-condition and temperature channels are explicitly omitted. This does not promise a larger Workbench capture, physical Cell state, Flatten uint16 state or exact replay.",
+      "source_locators": [
+        "godot/scripts/gameplay_recorder.gd::start_recording",
+        "godot/scripts/gameplay_recorder.gd::_write_frame",
+        "godot/scripts/cell_world.gd::WORLD_WIDTH/WORLD_HEIGHT"
+      ]
+    },
+    {
+      "claim_id": "L-29",
+      "priority": "P1",
+      "document": "docs/operations/physical-actor-programme.md",
+      "document_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "result": "source-verified",
+      "observations": "RIG_IDS contains46 originals, Flight.IDS containsfour 4LY entries, and the Workbench adds eight registered flyers plus one passive barrel for59 identities. 4LY and the barrel may be single-part. F5 catalogue labels and historical scientific-family counts are not represented as the full Workbench catalogue.",
+      "source_locators": [
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS/rigs_in_set",
+        "godot/scripts/physical_flight_profile.gd::IDS/entry",
+        "godot/scripts/workbench_actor_catalog.gd::ids",
+        "godot/authoring/flyers/manifest.json"
+      ]
+    },
+    {
+      "claim_id": "L-30",
+      "priority": "P1",
+      "document": "docs/operations/physical-actor-programme.md",
+      "document_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "result": "source-verified",
+      "observations": "The launcher exposes Development workbench and a separate World generation workbench. The Shared Workbench generator dialog previews and installs accepted generation into its existing owner; standalone generation preview has its own scene. No standalone mechanism or pending successor is promoted to a shipped Workbench feature.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/scripts/workbench_generator_dialog.gd",
+        "godot/scripts/shared_workbench.gd"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "B-L-01",
+      "priority": "P2",
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "finding": "The final default-off sentence could be misread as the ordinary player default despite the accepted gameplay profile.",
+      "status": "resolved",
+      "resolution": "Lead qualified this as bare native WorldConfig and explicitly distinguished new ordinary player/Workbench sessions. B inspected the corrected final text at the hash in this report."
+    }
+  ],
+  "limitations": [
+    "This review qualifies documentation applicability against accepted source; it does not demonstrate new hardware performance, physical owner acceptance or permission to merge.",
+    "Existing package, graphical and scientific evidence retain their original source/platform scope."
+  ],
+  "source_sha256": {
+    "docs/audits/2026-11-24-docs-renaissance/github-intake.json": "295e493ae4c449aab72415164bf71cd1482144596e16fb837470c608afcf50af",
+    "godot/authoring/flyers/manifest.json": "2ddb4de6bdd6ba270f070cdef2003812608960ea34e42d7bf62a40375b4827a5",
+    "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+    "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+    "godot/scripts/feature_launcher.gd": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+    "godot/scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+    "godot/scripts/main.gd": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+    "godot/scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+    "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+    "godot/scripts/shared_workbench.gd": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+    "godot/scripts/workbench_actor_catalog.gd": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+    "godot/scripts/workbench_generator_dialog.gd": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+    "godot/scripts/workbench_water_lab.gd": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d",
+    "godot/scripts/workbench_water_spray_panel.gd": "e47f1ddc48090fa08dc182c389dfb36d459eb15f6d9db4b6928e7efa06c91894"
+  }
+}

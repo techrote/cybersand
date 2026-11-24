@@ -1,0 +1,479 @@
+[
+  {
+    "id": "C-01",
+    "priority": "P0",
+    "document": "docs/operations/local-build-and-validation.md",
+    "claim": "The source checkout launches feature_launcher.tscn; the companion workspace and dev.cmd are optional, and launch-desktop.cmd does not build or forward arbitrary application arguments.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/project.godot",
+      "launch-desktop.cmd",
+      "tools/launch_desktop.ps1"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-02",
+    "priority": "P0",
+    "document": "docs/operations/local-build-and-validation.md",
+    "claim": "Godot and godot-cpp are exact pins; LFS pointer validation is distinct from materialized runtime identity and runnable qualification.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "third_party/native-toolchain.lock.json",
+      "tools/ci/check_repository.py",
+      "tools/launch_desktop.ps1",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-03",
+    "priority": "P1",
+    "document": "docs/operations/testing-validation-and-replay.md",
+    "claim": "Current Godot/Linux/Windows shard counts derive from discovered source inventory and budgets; accepted Windows workflow supplies a native candidate, and fixed four-shard statements are historical.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      ".github/workflows/gdextension.yml",
+      "tools/ci/run_windows_godot_regressions.py",
+      "tools/ci/run_godot_regressions.py",
+      "tools/ci/godot_job_plan.py"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-04",
+    "priority": "P1",
+    "document": "docs/operations/local-build-and-validation.md",
+    "claim": "A bounded target/syntax check is a useful first step; old 120/300-second full-suite budgets and frozen test counts are not current suite limits.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "Makefile",
+      "tools/ci/run_godot_regressions.py"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-05",
+    "priority": "P0",
+    "document": "docs/operations/github-development-and-release.md",
+    "claim": "Runtime publication is source/branch/input/lease scoped; historical publisher restoration and branch continuation are not active authorization, and Draft remains owner-gated.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "AGENTS.md",
+      "tools/ci/check_repository.py",
+      "tools/ci/gentek80_runtime_publication.py"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-06",
+    "priority": "P1",
+    "document": "docs/operations/github-development-and-release.md",
+    "claim": "Accepted repository Web paths still have source-visible toolchain/template gaps; current companion wrapper state is not inferred from an old transcript.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      ".github/workflows/web-demo.yml",
+      "tools/build_web.py",
+      "godot/export_presets.cfg"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-07",
+    "priority": "P0",
+    "document": "tools/docs/retrieval_eval.py",
+    "claim": "Default fallback previously bypassed explicit exclusions, adding27 current execution/research packets plus4 navigation documents and omitting5 selected current documents. Narrow selection metadata now applies consistently to manifest, fallback and direct chunking.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/docs/retrieval_eval.py",
+      "tools/docs/retrieval_policy.py",
+      "docs/reference/retrieval-corpus.json",
+      "tools/ci/check_docs.py",
+      "tools/ci/test_current_retrieval_selection.py"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Root independent review found real historical-envelope regression; fixed without changing history, with a focused real-style test and actual historical evaluation.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative"
+  },
+  {
+    "id": "C-08",
+    "priority": "P0",
+    "document": "docs/operations/documentation-maintenance.md",
+    "claim": "retrieval: explicit-only is current selection metadata, not a new authority category; authority validates before exclusion, navigation is not a default answer source, historical explicit-history-only vocabulary remains unchanged.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/docs/retrieval_policy.py",
+      "tools/docs/retrieval_eval.py",
+      "tools/ci/check_docs.py",
+      "tools/ci/test_current_retrieval_selection.py"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Root independently reviewed narrowed helper scope and real-history compatibility; regression suites retained.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative"
+  },
+  {
+    "id": "C-09",
+    "priority": "P1",
+    "document": "docs/reference/retrieval-questions-docs-renaissance-v1.json",
+    "claim": "A separately versioned 36-question suite measures ranking independently from corpus containment and source-grounded answer correctness; frozen existing sets are unchanged.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/docs/retrieval_eval.py",
+      "docs/reference/retrieval-questions.json",
+      "docs/reference/owner-intent-retrieval-questions.json"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "A reviewed high-risk expected facts and8 actual saved contexts; B reviewed11 actual saved contexts; limitations retained.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative"
+  },
+  {
+    "id": "C-10",
+    "priority": "P0",
+    "document": "docs/operations/architecture-programme.md",
+    "claim": "September four-byte Cell controls and experiment no-migration statements do not describe or forbid current eight-byte aligned PrecisionStorage. Dated tables/matrix are locally qualified so isolated chunks retain applicability.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/precision_storage.hpp",
+      "native/src/world.cpp",
+      "docs/architecture/chunk-tile-and-buffer-model.md"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-11",
+    "priority": "P0",
+    "document": "docs/operations/cell-layout-experiment.md",
+    "claim": "L2/L4 byte4/sidecar carriers are dated synthetic experiment controls; current Cell aliases eight-byte aligned PrecisionStorage and original workspace assignments are not new work authorization.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "native/include/cybersand/precision_storage.hpp",
+      "native/src/world.cpp",
+      "docs/operations/cell-layout-experiment.md@baseline"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-12",
+    "priority": "P0",
+    "document": "docs/operations/soliding-stage3-freeze.md",
+    "claim": "The old overnight model/branch/task assignment is historical; current entry routes to accepted source and current handover without weakening Stage3 boundaries or admitting Stage4.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/operations/soliding-stage3-freeze.md@baseline",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/systems/settled-region-discovery.md"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-13",
+    "priority": "P1",
+    "document": "docs/operations/current-and-historical-validation.md",
+    "claim": "M11 validates28 frozen source hashes at its historical checkpoint; working-tree equality is separate and history must not be reattested to new source.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/ci/check_m11_consistency.py",
+      "docs/reference/validation-evidence.md"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Source-verified by Specialist A; review-c-onboarding-by-a.json. No runtime/publication acceptance.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-onboarding-by-a.json"
+  },
+  {
+    "id": "C-14",
+    "priority": "P1",
+    "document": "docs/README.md",
+    "claim": "Audience portal and retrieval routing point to current canonical topics; old chronological entry content remains byte-preserved and original anchors continue to route readers.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/reference/retrieval-corpus.json",
+      "docs/audits/2026-11-24-docs-renaissance/preservation-c.json"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Independent source/structural review supported; see named review record.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "documents": [
+      "docs/README.md",
+      "docs/reference/retrieval-index.md"
+    ],
+    "independent_review_record": "review-c-navigation-by-lead.json"
+  },
+  {
+    "id": "C-15",
+    "priority": "P1",
+    "document": "CONTRIBUTING.md",
+    "claim": "Developer entry supports a source-only checkout, bounded validation and Draft review without inventing license, Ready or merge authority.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "AGENTS.md",
+      "third_party/native-toolchain.lock.json",
+      "docs/operations/github-development-and-release.md"
+    ],
+    "verification": "source-inspected; execution evidence separately recorded",
+    "independent_review": "Independent source/structural review supported; see named review record.",
+    "disposition": "corrected",
+    "authority": "historical-non-authoritative",
+    "independent_review_record": "review-c-navigation-by-lead.json"
+  },
+  {
+    "id": "C-16",
+    "priority": "P1",
+    "document": "docs/operations/web-threading.md",
+    "claim": "Web source checkout uses tools/build_web.py and serve_web.py, not a required companion dev.cmd. Current pin/template/native-bindings gaps limit fresh reproducible exports. Direct benchmark runner does not mutate process worker settings and reports explicit JSON.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/build_web.py",
+      "tools/serve_web.py",
+      ".github/workflows/web-demo.yml",
+      ".github/workflows/web-toolchain.yml",
+      "third_party/godot-runtime.lock.json",
+      "godot/scripts/worker_benchmark.gd",
+      "godot/tests/run_worker_benchmark.gd"
+    ],
+    "verification": "Source-inspected; both --help commands executed successfully. No Web compile, export, benchmark or browser run.",
+    "independent_review": "Independent source/structural review supported; see named review record.",
+    "disposition": "corrected",
+    "independent_review_record": "review-c-web-by-lead.json"
+  },
+  {
+    "id": "C-17",
+    "priority": "P1",
+    "document": "docs/operations/troubleshooting.md",
+    "claim": "Troubleshooting now routes actual launcher/runtime, native receipts, pending save, failed-owner authored recovery, provider/session privacy and package identity without implying physical-state restoration.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/launch_desktop.ps1",
+      "godot/scripts/shared_workbench.gd::request_flatten/save_setup",
+      "godot/scripts/art_batch_executor.gd",
+      "godot/scripts/art_batch_panel.gd",
+      "docs/operations/workbench-art.md",
+      "docs/operations/getting-started.md"
+    ],
+    "verification": "Source inspected; safe execution recorded separately",
+    "independent_review": "Independent source/structural review supported; see named review record.",
+    "disposition": "corrected",
+    "independent_review_record": "review-c-troubleshooting-by-b.json"
+  },
+  {
+    "id": "C-18",
+    "priority": "P1",
+    "document": "docs/operations/profiling-observability-and-performance.md",
+    "claim": "Full native RG8 submission scales as 2 \u00d7 width \u00d7 height; 2 MiB is a 1024-square example. Observed worker participation is not utilization, resident cell accounting omits solver sidecars, and source benchmark entry does not require companion dev.cmd.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/main.gd::_ready/update_render_texture",
+      "native/src/world.cpp::resident_cell_bytes",
+      "native/include/cybersand/world.hpp::TickStats",
+      "godot/tests/run_worker_benchmark.gd",
+      "godot/scripts/worker_benchmark.gd"
+    ],
+    "verification": "Source inspected; safe execution recorded separately",
+    "independent_review": "Independent source/structural review supported; see named review record.",
+    "disposition": "corrected",
+    "independent_review_record": "review-c-observability-atlas-by-lead.json"
+  },
+  {
+    "id": "C-19",
+    "priority": "P0",
+    "document": "docs/operations/atlas-agent-runner.md",
+    "claim": "Accepted Atlas tooling is distinct from dated paid/visual/artistic qualification; explicit dry runs are offline, credit-check can use network credentials, attestation is not an account billing guarantee, hosted limits differ from local caps and publish is separately authorized create-only.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/atlas_agent/runner.py",
+      "tools/atlas_agent/cli.py",
+      "tools/atlas_agent/credit_gate.py",
+      "tools/atlas_agent/gitops.py",
+      "tools/atlas_agent/workflow_run.py",
+      "tools/atlas_agent/schemas/config.schema.json",
+      ".github/workflows/atlas-agent-runner.yml"
+    ],
+    "verification": "Source inspected; explicit dry-run synthetic fixture and verify-receipt both exited0, simulated=true. No live gate, external provider, capture or publication executed.",
+    "independent_review": "Independent source review supported; see named review record. C-19 P2 source_clean exception and receipt hash-name clarification repaired after review.",
+    "disposition": "corrected",
+    "independent_review_record": "review-c-observability-atlas-by-lead.json"
+  },
+  {
+    "id": "C-20",
+    "priority": "P1",
+    "document": "docs/operations/physics-characterisation.md",
+    "claim": "Physics reproduction uses actual source-root/compiler/Godot options and source-matched artifacts. Legacy campaign 180/300/3600 watchdogs remain distinct from CLI oracle operation_seconds 300; Godot runner Windows artifact enumeration cannot qualify arbitrary Linux artifacts. Half-depth screens retain historical provisional scope.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/physics/run.py",
+      "tools/physics/test_characterisation_cli.py",
+      "tools/ci/execution_policy.py",
+      "godot/tests/support/ci_execution_policy.json",
+      "docs/reference/product-intent-and-priorities.md"
+    ],
+    "verification": "Source-inspected; --help and watchdog query only, no physics campaign or compile",
+    "independent_review": "Lead independently source-reviewed and supported; no physics campaign/runtime acceptance claimed.",
+    "disposition": "corrected",
+    "independent_review_record": "review-c-physics-by-lead.json"
+  },
+  {
+    "id": "C-21",
+    "priority": "P1",
+    "document": "docs/operations/play-desktop-manual-qualification.md",
+    "claim": "Manual PLAY qualification reads current source watchdogs600/1200/1200/300/3600; older30/180/240/15/150 limits are historical, not new acceptance deadlines. Packet source/device qualification and first failures remain separate.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/play/create_manual_packet.py::packet_text",
+      "godot/tests/support/ci_execution_policy.json",
+      "tools/ci/execution_policy.py"
+    ],
+    "verification": "Source inspected; bounded Python metadata/planner checks recorded separately. No native/Godot campaign or packet/physical execution.",
+    "independent_review": "Pending lead source review",
+    "disposition": "corrected"
+  },
+  {
+    "id": "C-22",
+    "priority": "P0",
+    "document": "docs/operations/microscenarios.md",
+    "claim": "MicroScenario valid material IDs0\u2013131 except10 and reserved Workbench extent/32768rectangle extension are distinguished from ordinary1024/4096 budgets. September host non-admission is not a current ban on accepted ballistic Water.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/microscenario_contract.gd",
+      "godot/scripts/microscenario_catalogue.gd",
+      "godot/scripts/microscenario_host.gd",
+      "godot/scripts/workbench_setup.gd",
+      "native/include/cybersand/ballistic_water.hpp"
+    ],
+    "verification": "Source inspected; bounded Python metadata/planner checks recorded separately. No native/Godot campaign or packet/physical execution.",
+    "independent_review": "Pending lead source review",
+    "disposition": "corrected"
+  },
+  {
+    "id": "C-23",
+    "priority": "P1",
+    "document": "docs/operations/lcb-scenario-catalogue.md",
+    "claim": "LCB registry campaign blocks are separate from accepted native/app families; full27scenario UI is unimplemented despite existing8preset/2setup panel. Older CYPS2/3 claims are locally qualified against actual configuration-selected formats and Wave unsupported physical save. Runner output dirs and caller-supplied source flag are explicit.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "tools/lcb/lcb_registry.py",
+      "godot/scripts/liquid_comparison_panel.gd",
+      "godot/tests/run_lcb_scenario_suite.gd",
+      "native/include/cybersand/world.hpp::physical_state_hash_version/physical_state_format_version",
+      "docs/audits/2026-11-24-docs-renaissance/github-late-water-intake.json"
+    ],
+    "verification": "Source inspected; bounded Python metadata/planner checks recorded separately. No native/Godot campaign or packet/physical execution.",
+    "independent_review": "Pending lead source review",
+    "disposition": "corrected"
+  },
+  {
+    "id": "C-24",
+    "priority": "P1",
+    "document": "docs/systems/physical-flight-lab.md",
+    "claim": "Flight Lab normalized controller digest, current development/human defaults and distinct course-loader versus explicit final-score admission checks are source-qualified; historical teacher score and unresolved independent custody/learned-policy admission remain separate.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/physical_flight_controller.gd::controller_hash",
+      "godot/tests/test_physical_flight_profile.gd",
+      "godot/scripts/physical_flight_lab_screen.gd",
+      "godot/scripts/physical_flight_sealed_suite.gd::resolve",
+      "godot/qualification/4ly003_teacher_qualification.gd::_run",
+      "godot/scripts/physical_flight_episode.gd",
+      "godot/scripts/physical_flight_observation_adapter.gd",
+      "tools/ci/readback_4ly003_development.py"
+    ],
+    "verification": "Full guide read plus accepted source inspection of listed controls/defaults/ownership/recording boundaries. Normalized controller identity independently calculated in Python. No Godot, physics, teaching, training or physical qualification executed.",
+    "independent_review": "Pending lead review",
+    "disposition": "corrected"
+  },
+  {
+    "id": "C-25",
+    "priority": "P0",
+    "document": "docs/systems/player-environment-profiles-and-traversal.md",
+    "claim": "PENV is a sampled-character/ordinary Main tuning path with actual actor/blind-run refusals and separate prepared replacement. REC001v2 player/scenario profile metadata belongs to the current actor sample, not necessarily the material generation; queued profile changes are not published application.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "godot/scripts/player_environment_profiles.gd",
+      "godot/scripts/player_environment_panel.gd",
+      "godot/scripts/main.gd::apply_player_environment_profile/_player_configuration_for_microscenario",
+      "godot/scripts/simulation_worker.gd::queue_player_environment_profile",
+      "godot/scripts/sampled_character.gd::_try_traverse_horizontal/move_vertical",
+      "godot/scripts/shared_workbench.gd",
+      "godot/scripts/gameplay_recorder.gd::_frame_metadata",
+      "godot/tests/test_gameplay_recorder.gd",
+      "godot/tests/test_penv001_player_environment.gd"
+    ],
+    "verification": "Full guide read plus accepted source inspection of listed controls/defaults/ownership/recording boundaries. Normalized controller identity independently calculated in Python. No Godot, physics, teaching, training or physical qualification executed.",
+    "independent_review": "Pending lead review",
+    "disposition": "corrected"
+  },
+  {
+    "id": "C-26",
+    "priority": "P1",
+    "document": "docs/operations/architecture-programme-water-feel-addendum.md",
+    "claim": "September Water H/compact-history/ballistic sequence is historical scope, not a current ban; live #14/#18/#20 closure is separate from perceptual acceptance, and semantic budgets do not describe the accepted eight-byte carrier.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json",
+      "native/include/cybersand/precision_storage.hpp",
+      "native/include/cybersand/ballistic_water.hpp",
+      "native/include/cybersand/water_experiment_policy.hpp",
+      "docs/decisions/2026-11-14-owner-authoring-intent.md"
+    ],
+    "verification": "Full original/current page reading, authenticated live issue-state/body inspection, bounded accepted-source and existing decision cross-check. No runtime or formal study executed; no exit certification inferred.",
+    "independent_review": "Pending lead independent review",
+    "disposition": "corrected"
+  },
+  {
+    "id": "C-27",
+    "priority": "P0",
+    "document": "docs/operations/development-claims-remediation-programme.md",
+    "claim": "REM original RAG, branch sequence and issue-action instructions are locally dated; current #79/#87 closed state conflicts with retained parent-body wording and does not certify open #82/#83/#86 or all F01\u2013F19 repairs. Global current questions route to current state/accepted source while original gates remain preserved.",
+    "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "sources": [
+      "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json",
+      "AGENTS.md",
+      "docs/operations/soliding-programme.md",
+      "docs/reference/status-and-roadmap.md",
+      "native/include/cybersand/water_experiment_policy.hpp"
+    ],
+    "verification": "Full original/current page reading, authenticated live issue-state/body inspection, bounded accepted-source and existing decision cross-check. No runtime or formal study executed; no exit certification inferred.",
+    "independent_review": "Pending lead independent review",
+    "disposition": "corrected"
+  }
+]

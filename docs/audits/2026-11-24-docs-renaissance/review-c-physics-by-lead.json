@@ -1,0 +1,25 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewed_utc": "2026-11-24T19:28:40.002903+00:00",
+  "reviewer": "/root (lead, independent of Specialist C)",
+  "claims": [
+    {
+      "claim_id": "C-20",
+      "priority": "P1",
+      "document": "docs/operations/physics-characterisation.md",
+      "verdict": "supported",
+      "document_sha256": "819fa3cae011b127aaad1d9d053caf2cf6519f4af5f9d5347995a8818ef2b33f",
+      "basis": [
+        "Read run.py actual --cxx/--godot/default compiler and Windows artifact enumeration; both native and Godot documented source-root commands are supported argument forms.",
+        "Read retained build300/native180/Godot3600 subprocess timeouts and distinct CLI oracle watchdog_seconds(operation_seconds).",
+        "Half-depth thresholds now explicitly original provisional fixture direction; current owner intent link preserved."
+      ],
+      "method": "Independent source and diff inspection; C help/policy execution receipt inspected; no full campaign or compilation."
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "No physics campaign, Web export, native rebuild or physical owner acceptance was performed by this review."
+  ]
+}

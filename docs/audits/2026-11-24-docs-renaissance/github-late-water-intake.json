@@ -1,0 +1,33 @@
+{
+  "retrieved_at": "2026-11-24T19:12:18Z",
+  "scope": "Additional accepted Wave/current liquid programme intake; no present merge permission",
+  "pull_request": {
+    "number": 676,
+    "url": "https://github.com/techrote/cybersand/pull/676",
+    "title": "WAVE-WATERWALL-002 — ledge discharge, deep slosh and crest flight",
+    "state": "closed",
+    "draft": false,
+    "merged": true,
+    "merge_commit_sha": "501c0f0b040dd01dcead9d9b1b10a09f11803585",
+    "merged_at": "2026-11-20T20:33:18Z",
+    "head_sha": "57de8e73f93f10e63761b7e8d2430ddafcb970cb"
+  },
+  "issues": [
+    {
+      "number": 202,
+      "url": "https://github.com/techrote/cybersand/issues/202",
+      "title": "LCB-003: Full multi-solver manual liquid comparison application and scenarios",
+      "state": "open",
+      "updated_at": "2026-10-26T00:14:09Z",
+      "closed_at": null
+    },
+    {
+      "number": 203,
+      "url": "https://github.com/techrote/cybersand/issues/203",
+      "title": "LCB-004: Publish and qualify the full manual multi-solver liquid comparison build",
+      "state": "open",
+      "updated_at": "2026-10-26T00:14:11Z",
+      "closed_at": null
+    }
+  ]
+}

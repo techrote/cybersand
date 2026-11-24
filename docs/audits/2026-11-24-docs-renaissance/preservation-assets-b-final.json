@@ -1,0 +1,398 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-24T19:58:13.991024+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Compare each B preserved original with git show accepted baseline and recorded hash/size; compare all image bytes/dimensions with manifest; compare nine reused image payloads byte-for-byte with baseline. Refresh only current destination sizes/hashes in preservation-b.",
+  "preserved_originals": 23,
+  "image_references": 12,
+  "preserved_checks": [
+    {
+      "path": "README.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "current_bytes": 8056
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+      "current_bytes": 8851
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "d68e5979fc3627d591a068eaecbcf6e8148b978664612678c5a51955c93ea9fa",
+      "current_bytes": 18917
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "current_bytes": 32883
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "current_bytes": 14161
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "current_bytes": 4574
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "current_bytes": 10151
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "current_bytes": 14701
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "current_bytes": 15769
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+      "current_bytes": 11227
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "current_bytes": 11511
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "current_bytes": 19496
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "current_bytes": 16238
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "current_bytes": 14615
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "current_bytes": 15031
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "current_bytes": 22856
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "current_bytes": 62186
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "current_bytes": 16253
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "current_bytes": 13126
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "current_bytes": 22554
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "current_bytes": 42135
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "current_bytes": 18984
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "checks": {
+        "baseline_identity": true,
+        "copy_equals_baseline": true
+      },
+      "current_sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "current_bytes": 26054
+    }
+  ],
+  "image_checks": [
+    {
+      "path": "docs/images/gentek80-integration/eight-showcases.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "e3d467367af9076b3ac581a23251c116375a5c2c569e387f4f0b201635909805",
+      "bytes": 59498,
+      "dimensions": [
+        1536,
+        932
+      ]
+    },
+    {
+      "path": "docs/images/neon-reliquary/overview.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "e1e0e0efcfcc63cf5160fbdcb462a5d92edf7a21470f8fa608598c4c0b0fe1a9",
+      "bytes": 927453,
+      "dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/images/materials-lab-v1/01-inspector-water.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "030edca4c12fe267dd56091f655228fa69f40ed4a3ed0c723dfe3d33175fced6",
+      "bytes": 355198,
+      "dimensions": [
+        1680,
+        1050
+      ]
+    },
+    {
+      "path": "docs/images/materials-lab-v1/02-inspector-slush.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "feb22c26e60ea5a337d5a187f6bc1ac445d4c5528b308aae1b212da8a616baa0",
+      "bytes": 278702,
+      "dimensions": [
+        1680,
+        1050
+      ]
+    },
+    {
+      "path": "docs/images/deepworks/deepworks-atlas.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "331431e917a612857d60ecd71c92af83e066f405468ba80c4ec79282fa6b7ac0",
+      "bytes": 2698657,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "path": "docs/images/blacksite-nine/blacksite-nine.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "a0b42651d8459bcb24b8aa1803ed2e8fa807e47d0c9734c01a2f0e87b5a08080",
+      "bytes": 2174686,
+      "dimensions": [
+        2880,
+        2880
+      ]
+    },
+    {
+      "path": "docs/images/semantic-depth/refinery-guide.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "ecf9521d1b37419c36f50c8211658f13ff9a6150ed78301438469a41a75520ec",
+      "bytes": 275164,
+      "dimensions": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "docs/images/wcx-ballistic-water/drop-spray-t114.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "2ad4d7bd74bda893d481cbd4848339115cb0138819fb6f46c46fde7492b6546a",
+      "bytes": 152495,
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "docs/images/in-tools-361/liquid-lab-leak.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true,
+        "byte_equal_baseline": true
+      },
+      "sha256": "6b4e3c87a856ef8d3fd1b5f62ea63aa6f31809724587ceaef895b7f5f815dfa9",
+      "bytes": 192305,
+      "dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-interlaced-viaduct-native.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true
+      },
+      "sha256": "a4c6387ea94069b86fce410e8b54ba71d020f588be282b29b68f4abc6ac9408f",
+      "bytes": 16919,
+      "dimensions": [
+        1024,
+        512
+      ]
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-cathedral-megaframe-native.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true
+      },
+      "sha256": "c6afa8fd16af8e52e27bf8918ba338e2d6dae5aeecccc05676907d58455a6e32",
+      "bytes": 13821,
+      "dimensions": [
+        1024,
+        512
+      ]
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-megatruss-station-native.png",
+      "checks": {
+        "sha256": true,
+        "bytes": true,
+        "dimensions": true
+      },
+      "sha256": "1b009fe4c33b3b830be8f7d177057be40e5bb4fc2560d24e1fa2b33e77e4f12c",
+      "bytes": 9970,
+      "dimensions": [
+        1024,
+        512
+      ]
+    }
+  ],
+  "result": "PASS",
+  "failures": []
+}

@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "reviewed_lane": "lead",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "recorded_at": "2026-11-24T19:47:03.795393+00:00",
+  "method": "Independent exact-text and accepted-source review; no runtime tests or scientific/physical qualification performed",
+  "claim_count": 3,
+  "findings": [],
+  "claims": [
+    {
+      "claim_id": "L-50",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "observations": "WorldConfig disables discovery/connectivity by default. Public settled_discovery_tile/settled_region return optional snapshots by value; implementation delegates only to the read-only coordinator. The model header explicitly excludes World/Godot/Rapier/runtime/save integration and exercises synthetic members. Current observational discovery is therefore real while production ownership-transfer/acceleration remains Planned.",
+      "source_locators": [
+        "native/include/cybersand/world.hpp::WorldConfig/settled_discovery_tile/settled_region",
+        "native/src/world.cpp::settled_discovery_tile/settled_region",
+        "native/include/cybersand/soliding_lifecycle.hpp",
+        "native/tests/test_soliding_lifecycle.cpp"
+      ],
+      "reviewed_document_sha256": {
+        "docs/architecture/soliding-lifecycle.md": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233"
+      }
+    },
+    {
+      "claim_id": "L-51",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "observations": "physical_state_format_version returns0forWave and2–5 otherwise per active policy. save_physical_state refuses Wave, unhealthy/in-progress owners and settled discovery; it serializes native state, not host/Rapier or the independent proposed aggregate lifecycle. model::Snapshot::cell_save_admissible is only stable+Cells+included ownership logic. The guide links the complete supported checkpoint boundary and does not claim model persistence integration.",
+      "source_locators": [
+        "native/include/cybersand/world.hpp::physical_state_format_version",
+        "native/src/world_pressure.inc::World::save_physical_state",
+        "native/include/cybersand/soliding_lifecycle.hpp::Snapshot::cell_save_admissible"
+      ],
+      "reviewed_document_sha256": {
+        "docs/architecture/soliding-lifecycle.md": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233"
+      }
+    },
+    {
+      "claim_id": "L-56",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "source-reviewed-preserved",
+      "observations": "Full preregistration remains Planned, blocked. The standalone synthetic registry/test cannot certify a real Rapier ownership transfer. Source-native read-only discovery adds no aggregate motion owner. The cited Phase0 audit states its quarter-turn was explicitly assigned and does not establish off-centre torque/free angular motion. Fixture ledger correctly requires future source/runtime, exact member accounting, parent/child motion and failure probes; none is presented as newly run.",
+      "source_locators": [
+        "native/include/cybersand/soliding_lifecycle.hpp",
+        "native/tests/test_soliding_lifecycle.cpp",
+        "native/include/cybersand/world.hpp",
+        "docs/audits/2026-09-19-issue-12-phase0-reuse.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/soliding-macro-fracture-fixture.md": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43"
+      },
+      "baseline_bytes_equal": true
+    },
+    {
+      "claim_id": "L-60",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "source-verified",
+      "method": "Independent full current guide reading, actual saved live issue/PR body inspection and bounded accepted-source ownership inspection; no new runtime or policy decision.",
+      "observations": "The #12 body explicitly records October 27 owner direction for two independent tracks: finite native-terrain structural detachment first, while #66→#67→#68→#70 remain Track B scaling dependencies. The actual saved #281 issue is open with unmerged candidate failures; #282 is open Draft and merged=false. Current guide correctly distinguishes owner-approved intent from proposed PR/runtime acceptance, preserves the dated September stage ladder and branches, and does not make Track B a universal prerequisite. Native World provides optional read-only discovery; standalone lifecycle and ordinary Rapier actors do not establish accepted arbitrary terrain detachment. The separate November owner intent is linked without inventing an algorithm.",
+      "source_locators": [
+        "docs/audits/2026-11-24-docs-renaissance/github-soliding-precision-intake.json::issue12.body",
+        "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json::issue281/pr282",
+        "docs/decisions/2026-11-14-owner-authoring-intent.md",
+        "native/include/cybersand/world.hpp",
+        "native/include/cybersand/soliding_lifecycle.hpp",
+        "native/include/cybersand/settled_regions.hpp",
+        "godot/scripts/simulation_worker.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/soliding-programme.md": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9"
+      },
+      "reviewed_evidence_sha256": {
+        "github-soliding-precision-intake.json": "cdb6f85862a27be6ae96394c61b985fad9e00e5f3a725aa1fefbf2913d13f091",
+        "github-final-programmes.json": "93612348ff1daa3e802ac6f2fc27cece507e779babc477da73d69cfc26e8e9aa"
+      },
+      "recorded_at": "2026-11-24T20:11:52.141538+00:00"
+    }
+  ]
+}

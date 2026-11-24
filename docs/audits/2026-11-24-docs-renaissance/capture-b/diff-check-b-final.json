@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-24T20:00:01.440561+00:00",
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+  ],
+  "exit_code": 2,
+  "stdout": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt:214: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt:271: new blank line at EOF.\n",
+  "stderr": "",
+  "scope": "All baseline-relative tracked documentation/tool changes, including earlier committed product checkpoint; untracked assets handled separately."
+}

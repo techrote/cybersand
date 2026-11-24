@@ -1,0 +1,26 @@
+usage: run.py [-h] [--group {smoke,screen,expanded,controls,finalists}]
+              --output OUTPUT [--seeds SEEDS] [--ticks TICKS]
+              [--fallback-ticks FALLBACK_TICKS] [--godot GODOT] [--cxx CXX]
+              [--skip-build]
+              {native,godot}
+
+Rebuild and run issue #9 fixtures; raw evidence stays outside the source tree.
+Python standard library only. Each result links a source/file/artifact
+manifest. Use --help. No production descriptor, scene or installed dependency
+is retuned.
+
+positional arguments:
+  {native,godot}
+
+options:
+  -h, --help            show this help message and exit
+  --group {smoke,screen,expanded,controls,finalists}
+  --output OUTPUT
+  --seeds SEEDS
+  --ticks TICKS
+  --fallback-ticks FALLBACK_TICKS
+                        Short, separately labelled interpreted reference
+                        coverage
+  --godot GODOT
+  --cxx CXX
+  --skip-build          Use only with a recorded source-matched native CLI

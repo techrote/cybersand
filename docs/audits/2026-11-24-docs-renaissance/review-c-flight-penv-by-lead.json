@@ -1,0 +1,38 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewed_utc": "2026-11-24T19:57:39.425854+00:00",
+  "reviewer": "/root, independent of Specialist C",
+  "claims": [
+    {
+      "claim_id": "C-24",
+      "priority": "P1",
+      "document": "docs/systems/physical-flight-lab.md",
+      "document_sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "verdict": "supported",
+      "basis": [
+        "Independently read lower-level resolve: version, preflight, reviewer, suite SHA, nonempty matching GITHUB_SHA and bounded geometry; no teacher digest check there.",
+        "Independently read explicit qualification runner: --admit-final and actual teacher-source SHA matching, in addition to suite/source checks; custody remains protocol evidence, not proven by reviewer text.",
+        "Read controller_hash and normalized-source conformance test; screen selects Trainer/human/unsupported_hover, resets seed0 development. Historical training/custody claims scoped to retained evidence."
+      ],
+      "method": "Independent diff and accepted-source inspection; no runtime, teacher score or physics campaign."
+    },
+    {
+      "claim_id": "C-25",
+      "priority": "P0",
+      "document": "docs/systems/player-environment-profiles-and-traversal.md",
+      "document_sha256": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10",
+      "verdict": "supported",
+      "basis": [
+        "Independently read actual Main apply function: actor/blind-set refusals; prepared-liquid private-candidate route; ordinary queued copy pauses and selects micro/Water/Tower/default fresh reset.",
+        "Read recorder _frame_metadata: profile comes from current_context lab_context fallback; test deliberately expects wrong-later-player-profile, while material generation retains separate serial/tick identity.",
+        "Read profile publication label/hash matching and panel Apply + fresh reset label. No queued=applied claim remains."
+      ],
+      "method": "Independent diff and accepted-source inspection; no runtime, teacher score or physics campaign."
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "No graphical controls execution, final-score qualification or independent custody signoff."
+  ]
+}

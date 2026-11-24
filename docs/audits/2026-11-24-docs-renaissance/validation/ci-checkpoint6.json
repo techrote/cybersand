@@ -1,0 +1,238 @@
+{
+  "authority": "historical-non-authoritative",
+  "head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "scope": "First observation of current-documentation freeze checkpoint; some checks still in progress, not the final evidence head.",
+  "checks": [
+    {
+      "name": "windows",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710840/job/138759932959",
+      "job_id": 138759932959
+    },
+    {
+      "name": "linux",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710840/job/138759932882",
+      "job_id": 138759932882
+    },
+    {
+      "name": "linux build x86_64",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759896392",
+      "job_id": 138759896392
+    },
+    {
+      "name": "linux",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710753/job/138759884099",
+      "job_id": 138759884099
+    },
+    {
+      "name": "windows headless regression shard ${{ matrix.shard }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759872131",
+      "job_id": 138759872131
+    },
+    {
+      "name": "windows sharded execution coverage",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759808773",
+      "job_id": 138759808773
+    },
+    {
+      "name": "art workbench graphical smoke",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759808347",
+      "job_id": 138759808347
+    },
+    {
+      "name": "linux regression shard ${{ matrix.shard }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759808036",
+      "job_id": 138759808036
+    },
+    {
+      "name": "retained execution and physical timing history",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759807928",
+      "job_id": 138759807928
+    },
+    {
+      "name": "windows x86_64",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759807785",
+      "job_id": 138759807785
+    },
+    {
+      "name": "linux x86_64",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759807415",
+      "job_id": 138759807415
+    },
+    {
+      "name": "physical-actor-stress",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759807165",
+      "job_id": 138759807165
+    },
+    {
+      "name": "complete execution budgets",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759806529",
+      "job_id": 138759806529
+    },
+    {
+      "name": "ready validation scope",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711086/job/138759806345",
+      "job_id": 138759806345
+    },
+    {
+      "name": "Native family / ${{ matrix.suite }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710577/job/138759805462",
+      "job_id": 138759805462
+    },
+    {
+      "name": "readback",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710753/job/138759805298",
+      "job_id": 138759805298
+    },
+    {
+      "name": "native",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710577/job/138759805097",
+      "job_id": 138759805097
+    },
+    {
+      "name": "Native evidence and provider policy",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710577/job/138759804997",
+      "job_id": 138759804997
+    },
+    {
+      "name": "windows",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710753/job/138759804749",
+      "job_id": 138759804749
+    },
+    {
+      "name": "plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710840/job/138759804479",
+      "job_id": 138759804479
+    },
+    {
+      "name": "ready validation scope",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710577/job/138759803728",
+      "job_id": 138759803728
+    },
+    {
+      "name": "plan",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710753/job/138759803585",
+      "job_id": 138759803585
+    },
+    {
+      "name": "actual-windows-causal-gate",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482711019/job/138759802250",
+      "job_id": 138759802250
+    },
+    {
+      "name": "Windows 4.7 real Workbench session logging",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710778/job/138759801989",
+      "job_id": 138759801989
+    },
+    {
+      "name": "consistency",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710814/job/138759801739",
+      "job_id": 138759801739
+    },
+    {
+      "name": "Linux 4.7 native Workbench session logging",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710778/job/138759801513",
+      "job_id": 138759801513
+    },
+    {
+      "name": "windows-angle",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710800/job/138759801397",
+      "job_id": 138759801397
+    },
+    {
+      "name": "complete-dry-run-workflow / run",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710644/job/138759801250",
+      "job_id": 138759801250
+    },
+    {
+      "name": "linux-opengl-llvmpipe",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710800/job/138759801034",
+      "job_id": 138759801034
+    },
+    {
+      "name": "linux-opengl-llvmpipe",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710579/job/138759800931",
+      "job_id": 138759800931
+    },
+    {
+      "name": "exact-source report-only Native scope",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710679/job/138759800694",
+      "job_id": 138759800694
+    },
+    {
+      "name": "windows-angle",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710579/job/138759800421",
+      "job_id": 138759800421
+    },
+    {
+      "name": "tests",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45482710644/job/138759800385",
+      "job_id": 138759800385
+    }
+  ]
+}

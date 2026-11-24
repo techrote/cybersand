@@ -1,0 +1,189 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C / retrieval_onboarding",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "updated_utc": "2026-11-24T20:31:34.050671+00:00",
+  "documents": [
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "baseline_bytes_equal": true,
+      "inspection": "Read entire current runbook; checked watchdog constants, native parent arithmetic, dynamic Godot planner, workflow max-parallel/Draft/cancellation gates, performance baseline sample/ratio policy and artifact retention against source. Actual planner derivations executed; process-ownership tests and full CI were not rerun.",
+      "findings": [
+        "Current policy constants and dynamic family parents agree with source.",
+        "The 246/233 Godot counts are explicitly intake observations linked to 2026-11-01 qualification; current executable planners produce 340 Linux / 317 Windows cases and remain authoritative.",
+        "Shared concurrency text explicitly is not an account-wide cap; no separate CI mission default was changed.",
+        "No consequential current policy correction justified from this inspection."
+      ],
+      "source_locators": [
+        "godot/tests/support/ci_execution_policy.json",
+        "tools/ci/execution_policy.py",
+        "tools/ci/godot_job_plan.py",
+        "tools/ci/native_execution_policy.py",
+        "tools/ci/performance_history.py",
+        ".github/workflows/native.yml",
+        ".github/workflows/gdextension.yml",
+        ".github/workflows/documentation.yml"
+      ],
+      "source_sha256": {
+        "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+        "tools/ci/godot_job_plan.py": "c6023abfd8694ae36188e44e038315089ab402e1b7ca476851dee55a64e92b58",
+        "tools/ci/native_execution_policy.py": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb",
+        "tools/ci/performance_history.py": "dd0994efd22585e2194cbcc7e81c08d23a9b25bc6179b4ddb3a0380d1b2b937a",
+        ".github/workflows/native.yml": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+        ".github/workflows/gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+        ".github/workflows/documentation.yml": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d"
+      },
+      "execution_evidence": "validation/planner-execution.json",
+      "active_overlap_disposition": "CI Engineering candidates own implementation/scheduling changes; reviewed accepted source only.",
+      "limitations": "Source-backed read-only review, not fresh process isolation, runtime, hosted performance or physical qualification."
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "baseline_bytes_equal": true,
+      "inspection": "Read the complete guide and relevant accepted source for viewer controls, declared seeds, native recipe, structural receipt checks, capture CLI and historical measurement helper. Checked retained qualification scope separately from current source availability. No generator, native, Godot, graphical capture or physical qualification was executed.",
+      "findings": [
+        "Current viewer launch path, paused start, P/N/O/F8 controls and wheel/middle camera match accepted source; source additionally supports Space/R/Escape but the guide need not enumerate them.",
+        "The four declared seeds and source-derived hierarchy/plane receipt checks match; measured fixture counts and original Linux performance/render outcomes stay explicitly source-pinned historical evidence.",
+        "Retained measurement helper has its own historical 180-second timeout and getrusage maximum-child memory scope; guide does not redefine current CI watchdog policy from it.",
+        "The committed recipe is 61845 bytes with SHA-256 688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b. Its builder writes fixtures at module level, so it was inspected, not invoked for --help.",
+        "No consequential current operational correction justified; original bytes preserved."
+      ],
+      "source_locators": [
+        "godot/scripts/worldgen_qualification.gd",
+        "godot/scripts/worldgen_qualification_data.gd",
+        "godot/tools/capture_gen007.gd",
+        "tools/worldgen/build_gen007_recipe.py",
+        "examples/worldgen/gen007-deepworks.json",
+        "docs/audits/gen007/measure-process.py",
+        "docs/audits/gen007/qualification.json",
+        "docs/images/gen007/capture-manifest.json"
+      ],
+      "source_sha256": {
+        "godot/scripts/worldgen_qualification.gd": "5b4a54e0a4933646e5822947040f1c3613a7387c3853a25f95d4b5429db354f5",
+        "godot/scripts/worldgen_qualification_data.gd": "ea518a05167d728df2dab4528152d6462c5b8dc873f75b8a3179eb6bf707da47",
+        "godot/tools/capture_gen007.gd": "e25bb1d7fa8065f81a495fd6c74a39a33721f308651216d7d22c7cb6ec3144bd",
+        "tools/worldgen/build_gen007_recipe.py": "4a73e637874162b4e9f820c173ff57b6a1978d55b6831106af7520874c159140",
+        "examples/worldgen/gen007-deepworks.json": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+        "docs/audits/gen007/measure-process.py": "5a1a9a418639341383fed922d72858903edbe360c7cd3ae4a1d15d351d7dde0c",
+        "docs/audits/gen007/qualification.json": "501dd5faa51b2c8882ab4be409bbbc9d42043da525816a3aea8920857fea787e",
+        "docs/images/gen007/capture-manifest.json": "d44c8c89ce69ece4c944067b45fdad0bf9a0faffa5b58c99d0ba8bec68eec978"
+      },
+      "limitations": "Source and original evidence inspection is not a fresh run or acceptance of current runtime/visual/physical behavior."
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "baseline_bytes_equal": true,
+      "inspection": "Full ADR read; accepted immutable slot/lease publication, desktop deep-copy/acknowledgement, full GPU texture upload, failure quarantine and synchronous Web scope checked. Generalized bounded GameplayBridge remains explicitly Planned.",
+      "findings": [
+        "RenderSnapshotExchange::publish returns CapacityExceeded/Backpressure before clearing dirty state, skips leased slots, captures owned RG8 bytes and clears dirty flags only after all bytes.",
+        "Godot desktop publication duplicates pending packet values; consumers validate before acknowledgement; full texture.update remains separate from CPU patching.",
+        "Current source supports the bounded implementation/approved constraints; no changes to decision text are justified."
+      ],
+      "source_locators": [
+        "native/src/render_snapshot.cpp",
+        "native/src/render_snapshot_internal.hpp",
+        "native/src/world.cpp",
+        "godot/scripts/simulation_worker.gd",
+        "godot/scripts/main.gd",
+        "godot/tests/test_render_patch_handoff_regression.gd"
+      ],
+      "source_sha256": {
+        "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+        "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+        "godot/scripts/main.gd": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+        "godot/tests/test_render_patch_handoff_regression.gd": "d1a923a36179e0c16b9809f7367468177a89b21e6314864a9c85d6ff2a544846"
+      },
+      "limitations": "Full decision prose plus bounded accepted-source checks; no new implementation, runtime/native/graphical campaign or independent physical acceptance."
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "baseline_bytes_equal": true,
+      "inspection": "Full approved ADR read; checked native CPU World authority and configured GL Compatibility presentation. Bounded source search of Godot GDScript/GLSL/gdshader found canvas_item presentation shaders and no compute-list/pipeline backend. No device execution or global future-design decision.",
+      "findings": [
+        "Current project desktop/mobile renderer is gl_compatibility; material shader is canvas_item and consumes presentation rather than owning cells.",
+        "Deferral explicitly distinguishes rejected GPU terrain authority at this stage from possible future nonauthoritative fields; no permanent compute ban or physical GPU validation inferred."
+      ],
+      "source_locators": [
+        "godot/project.godot",
+        "godot/shaders/material_palette.gdshader",
+        "native/src/world.cpp"
+      ],
+      "source_sha256": {
+        "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+        "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+      },
+      "limitations": "Full decision prose plus bounded accepted-source checks; no new implementation, runtime/native/graphical campaign or independent physical acceptance."
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "baseline_bytes_equal": true,
+      "inspection": "Full ADR read; source checked canonical finite region identities, west/north shared boundary keys, bounded priorities/omission semantics, immutable proposals, final override precedence, Empty clearance and separate support qualification.",
+      "findings": [
+        "region_id uses authored namespace/grid/signed region address; cell_owner uses floor semantics, boundary identity/seed does not depend on either compilation window.",
+        "Grammar placement is finite greedy priority with explicit omissions; service proposals and traversable passages are separated, hard overrides are last.",
+        "Final raster verification qualifies Empty-square clearance/connectivity and declared support only, not post-simulation stability or controller performance. No decision drift found."
+      ],
+      "source_locators": [
+        "native/src/generation_grammar.cpp",
+        "native/include/cybersand/generation_grammar.hpp",
+        "native/src/world_generation.cpp"
+      ],
+      "source_sha256": {
+        "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+        "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+        "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52"
+      },
+      "limitations": "Full decision prose plus bounded accepted-source checks; no new implementation, runtime/native/graphical campaign or independent physical acceptance."
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "priority": "P1",
+      "disposition": "reviewed-preserved",
+      "review_level": "source-reviewed-preserved",
+      "current_sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "baseline_bytes_equal": true,
+      "inspection": "Full ADR read; checked four-plane native private result/Ready transition, depth host all-candidate staging before swap, copied/idempotent bundle admission, identity-bound one-use runtime events and play-only actor owner.",
+      "findings": [
+        "PlaneGenerationJob samples all four cells per cursor and only marks Ready after all data/hashes/receipt; result rejects Pending access.",
+        "Depth reset constructs and validates all candidate Worlds/owners before swapping active world/layer dictionaries.",
+        "Runtime event identity is copied from owner-issued observations, one-use serials consumed only on accepted admission; bounds/rate/source-tick checks apply. Actor session remains play-plane owned. No decision correction justified."
+      ],
+      "source_locators": [
+        "native/src/generation_planes.cpp",
+        "godot/scripts/depth/depth_layer_runtime.gd",
+        "godot/scripts/depth/semantic_plane_runtime.gd"
+      ],
+      "source_sha256": {
+        "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+        "godot/scripts/depth/depth_layer_runtime.gd": "c9498a006fe98d30408478ef78cad1c7784049fa84791a9b64d201631c38c3cd",
+        "godot/scripts/depth/semantic_plane_runtime.gd": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+      },
+      "limitations": "Full decision prose plus bounded accepted-source checks; no new implementation, runtime/native/graphical campaign or independent physical acceptance."
+    }
+  ]
+}

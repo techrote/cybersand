@@ -13,7 +13,8 @@
       ],
       "documents": [
         "README.md",
-        "docs/operations/architectural-generator-playtest.md"
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/gentek80-evaluation.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -30,7 +31,8 @@
       ],
       "documents": [
         "README.md",
-        "docs/operations/getting-started.md"
+        "docs/operations/getting-started.md",
+        "docs/operations/explore001-desktop-playtest.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -111,7 +113,8 @@
       "documents": [
         "docs/operations/workbench-art.md",
         "docs/operations/workbench-painting-and-history.md",
-        "docs/systems/workbench-direct-art-batches.md"
+        "docs/systems/workbench-direct-art-batches.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -128,7 +131,9 @@
       ],
       "documents": [
         "docs/operations/workbench-saving.md",
-        "README.md"
+        "README.md",
+        "docs/operations/explore001-desktop-playtest.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -145,7 +150,8 @@
       ],
       "documents": [
         "docs/operations/workbench-saving.md",
-        "docs/operations/gen008-flatten-qualification.md"
+        "docs/operations/gen008-flatten-qualification.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -169,14 +175,16 @@
     {
       "id": "B-11",
       "priority": "P0",
-      "claim": "Generator preview is separate from installed World; Install explicitly replaces map; Save project differs from Save start.",
+      "claim": "Generator preview is separate from installed World; Install explicitly replaces map; Generator Save\u2026 stores project controls separately from Save start.",
       "evidence": [
         "godot/scripts/workbench_generator_dialog.gd::_install",
         "godot/scripts/architectural_generator_dialog.gd::save_project"
       ],
       "documents": [
         "docs/operations/architectural-generator-playtest.md",
-        "docs/operations/workbench-first-session.md"
+        "docs/operations/workbench-first-session.md",
+        "docs/operations/explore001-desktop-playtest.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -210,7 +218,9 @@
       ],
       "documents": [
         "docs/operations/workbench-art.md",
-        "docs/systems/workbench-art-providers.md"
+        "docs/systems/workbench-art-providers.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/operations/gentek80-evaluation.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -273,7 +283,8 @@
       ],
       "documents": [
         "docs/systems/workbench-direct-art-batches.md",
-        "docs/operations/workbench-art.md"
+        "docs/operations/workbench-art.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md"
       ],
       "status": "source-inspected",
       "independent_review": "source-verified-by-Specialist-A",
@@ -363,6 +374,411 @@
       ],
       "status": "source-inspected",
       "independent_review": "retained-capture-artifacts-verified-by-Specialist-A; no rerun",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-23",
+      "priority": "P1",
+      "claim": "Gentek80 catalogue/main integration is accepted through #684/#691; the #758 Windows evaluator remains unmerged in the 24 November snapshot. Original #691 archive/qualification text is historical and cannot reinstate Art restoration after accepted #727.",
+      "documents": [
+        "docs/operations/gentek80-evaluation.md"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A; source/session and saved live status",
+      "evidence": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets",
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ],
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-24",
+      "priority": "P1",
+      "claim": "The manual 1024\u00b2 material runbook belongs to ordinary Main and Web demos; its native picker exposes130 paintable entries, while accepted Materials Lab v1 and Shared Workbench have distinct launch routes and capabilities.",
+      "documents": [
+        "docs/MATERIAL_LAB.md"
+      ],
+      "evidence": [
+        "godot/scripts/main.gd::PAINTABLE_MATERIAL_IDS",
+        "godot/scripts/web_demo_controller.gd",
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/material_lab_panel.gd"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-25",
+      "priority": "P1",
+      "claim": "Ordinary desktop Main F3 expands statistics and Shift+F3 hides them; Web F3 toggles visibility directly. Brush keys and legacy32/750\u00b5s versus Workbench128/4000\u00b5s consumer budgets are host-specific; Workbench returns before those Main shortcuts.",
+      "documents": [
+        "docs/MATERIAL_LAB.md"
+      ],
+      "evidence": [
+        "godot/scripts/main.gd::_unhandled_key_input/HARD_SURFACE_CHUNKS_PER_FRAME/WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME",
+        "godot/scripts/web_demo_controller.gd::_unhandled_key_input",
+        "godot/scripts/feature_navigation.gd"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-26",
+      "priority": "P1",
+      "claim": "The reusable MicroScenario host, reference pack and INT-000 infrastructure exist in accepted source; the old Materials Laboratory readiness graph is retained policy context, not a missing new implementation prerequisite.",
+      "documents": [
+        "docs/MATERIAL_LAB.md"
+      ],
+      "evidence": [
+        "godot/scripts/microscenario_host.gd::install/capture",
+        "godot/scripts/microscenario_reference_pack.gd",
+        "native/include/cybersand/interaction_rules.hpp",
+        "tools/interactions/batch.py",
+        "docs/operations/microscenarios-programme.md#live-infrastructure-checkpoint--2026-09-20"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-27",
+      "priority": "P1",
+      "claim": "Current Blacksite Nine and Neon routes begin at named feature-launcher entries; Shift+F11/F11 are ordinary Main shortcuts, not Shared Workbench routes. Desktop F2 closes those standalone sessions; reopening original authored scenes is not Workbench Save or Paint history.",
+      "documents": [
+        "docs/operations/blacksite-nine-demo.md",
+        "docs/operations/neon-reliquary-demo.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/blacksite_nine_presentation.gd",
+        "godot/scripts/showcase_presentation.gd"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-28",
+      "priority": "P1",
+      "claim": "World generation workbench is a standalone preview with Profile JSON \u2192 Save accepted or Load JSON \u2192 Apply JSON, preserving accepted generation recipes and session-local Undo rather than running World state. GEN-007 Deepworks recipe is distinct from standalone Deepworks exhibition; Shared Workbench uses New from generator.",
+      "documents": [
+        "docs/systems/generation-workbench-2.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/scripts/worldgen_workbench.gd::_build_profile_dialog/load_profile/save_profile/_undo/_redo",
+        "godot/scripts/worldgen_workbench_tools.gd::load_qualification",
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/workbench_generator_dialog.gd"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-29",
+      "priority": "P1",
+      "claim": "Deepworks guide is preserved after checking its current launcher, free-camera/no-F5 host, reset-all-four-worlds behavior, independent30/20/15/0Hz clocks, no cross-plane material transfer and actual input/UI labels.",
+      "documents": [
+        "docs/operations/deepworks-exhibition.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/exhibition/deepworks.gd::reset_exhibition/_unhandled_key_input",
+        "godot/scripts/exhibition/deepworks_map.gd",
+        "godot/scripts/exhibition/deepworks_runtime.gd",
+        "godot/scripts/depth/depth_layer_runtime.gd"
+      ],
+      "status": "source-inspected; reviewed-preserved",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "reviewed-preserved",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-30",
+      "priority": "P1",
+      "claim": "Player playground, Play session and Development workbench are distinct accepted launcher routes. The seven-preset standalone course uses Reset \u00b7 R; old PLAY qualification and issue lists remain dated evidence.",
+      "documents": [
+        "docs/systems/player-control-playground.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/player_playground.gd::_build_ui/_input",
+        "godot/scripts/player_playground_course.gd::PRESETS/MECHANICAL_PRESETS",
+        "godot/scripts/main.gd::apply_playable_session"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-31",
+      "priority": "P1",
+      "claim": "Current Workbench replaces the obsolete #391/#406 manual with Actor Composition, PAINT, Water Lab and authored Save guidance: eight actors/eight parts/64 bodies-proxies; 32768 stamps/rectangles subject native capacity; ordinary/generated JSON1MiB; material Flatten distinct from Save. Named original fixtures and historical qualification remain preserved.",
+      "documents": [
+        "docs/systems/player-control-playground.md"
+      ],
+      "evidence": [
+        "godot/scripts/shared_workbench.gd::setup/save_setup/load_setup",
+        "godot/scripts/workbench_actor_catalog.gd::MAX_ACTORS/MAX_PARTS/capacity_error",
+        "godot/scripts/rigid_body_coupling.gd::MAX_BODIES",
+        "godot/scripts/workbench_setup.gd::fresh/native_rectangle_budget/water_evaluation/engine_benchmark/stress_canvas",
+        "godot/scripts/workbench_paint_editor_controller.gd",
+        "godot/scripts/simulation_worker.gd::queue_workbench_source"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-32",
+      "priority": "P1",
+      "claim": "Experiment Tower is entered through ordinary Main after Materials sandbox / Experiment Tower; F9 is bypassed by Shared Workbench. Its floor/tube, release/sequence, pause/step and observation controls and retained Water Feel apparatus are distinct from Workbench Water Lab.",
+      "documents": [
+        "docs/operations/experiment-tower.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/scripts/main.gd::_unhandled_key_input/tower_reset/tower_floor_select/tower_focus_tube/tower_command",
+        "godot/scripts/tower_panel.gd::setup",
+        "godot/scripts/experiment_tower.gd::VERSION/FLOORS",
+        "godot/scripts/web_demo_controller.gd::tower_command"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-33",
+      "priority": "P1",
+      "claim": "issue13.py remains a fixed Windows compiler/.exe apparatus, not a generic Linux command; its old C:/kybersand output is historical. MS-000 extraction already exists, with focus-neutral Tower controls; original scientific gates and comparisons remain preserved.",
+      "documents": [
+        "docs/operations/experiment-tower.md"
+      ],
+      "evidence": [
+        "tools/physics/issue13.py::main",
+        "godot/scripts/tower_panel.gd::button/setup",
+        "godot/scripts/microscenario_host.gd",
+        "godot/scripts/main.gd::_apply_microscenario_definition/_microscenario_installed",
+        "docs/operations/microscenarios-programme.md",
+        "docs/audits/2026-09-19-issue-27-microscenarios.md"
+      ],
+      "status": "source-inspected; issue13.py --help executed exit0 only",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-34",
+      "priority": "P1",
+      "claim": "Standalone Strata Theatre has its named launcher/direct/depth-lab entry, ordinary Main-only F4, original Escape-to-Main and global F2-to-launcher; its four-World paint/events do not expose ordinary Workbench Save/Flatten/history or unmerged integrated Strata.",
+      "documents": [
+        "docs/systems/depth-layers-and-parallax.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/depth/depth_lab.gd::_unhandled_key_input/_input/reset_lab",
+        "godot/scripts/depth/depth_layer_runtime.gd::reset/DEFAULT_RATES/configure_rates"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-35",
+      "priority": "P1",
+      "claim": "Semantic-depth-authoring is preserved after checking standalone launcher/example selection, source control table, paused candidate adoption/reset, independent30/20/15/0 clocks, sampled play-only actors and the22-image capture procedure; retained evidence stays dated and no capture campaign rerun is claimed.",
+      "documents": [
+        "docs/operations/semantic-depth-authoring.md"
+      ],
+      "evidence": [
+        "godot/scripts/depth/semantic_depth_demo.gd::load_example/_unhandled_key_input/reset_example",
+        "godot/scripts/depth/semantic_plane_runtime.gd::_prepare_candidate_owners/_validate_actors",
+        "examples/worldgen/semantic-refinery.json::semantic_planes.policies/actors",
+        "examples/worldgen/semantic-flooded-cavern.json::semantic_planes.policies/actors",
+        "godot/tests/test_semantic_depth_render.gd",
+        "godot/tools/capture_semantic_depth.gd",
+        "docs/images/semantic-depth/capture-manifest.json"
+      ],
+      "status": "source-inspected; reviewed-preserved",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "reviewed-preserved",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-36",
+      "priority": "P1",
+      "claim": "4LY currently has separate Workbench Actor Composition, ordinary F5 set4LY and standalone Flight Lab routes. candidate_4ly002 remains the frozen calibration label, not an unmerged feature status; old measured-source and learned-policy/owner-feel boundaries remain unchanged.",
+      "documents": [
+        "docs/systems/physical-free-flight.md"
+      ],
+      "evidence": [
+        "godot/scripts/workbench_actor_catalog.gd::ids/FAMILY_NAMES",
+        "godot/scripts/workbench_actor_panel.gd::mount",
+        "godot/scripts/actor_prototype_panel.gd::_refresh_description",
+        "godot/scripts/physical_flight_profile.gd::entry",
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/tests/test_physical_flight_gameplay_render.gd"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-37",
+      "priority": "P1",
+      "claim": "Thunderbowl sampledv1, physicalv2 and usable-course hosts remain separate from ordinary Workbench. Physical picker consumes46RIG_IDS despite old41header, distinct from F5four4LY and Workbench59; exact course/processor labels and keyboard/pointer equipment controls are source-qualified.",
+      "documents": [
+        "docs/systems/thunderbowl-control-reference.md"
+      ],
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/examples/thunderbowl/physical_thunderbowl_scene.gd::_build_ui/_physics_process",
+        "godot/examples/thunderbowl/thunderbowl_scene.gd",
+        "godot/scripts/physical_actor_arena.gd::VERSION/default_config"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-38",
+      "priority": "P1",
+      "claim": "The retained SetA sampled motors require an explicit Sampled \u2014 Runner, Skimmer or Crawler selection in ordinary F5 / Actor sandbox. Selecting a set initially chooses its articulated Rapier counterpart; ordinary Workbench uses separate Actor Composition. Sampled state and collision remain simulation-owner controlled through bounded copied actions and observations.",
+      "documents": [
+        "docs/systems/actor-control-prototypes.md"
+      ],
+      "evidence": [
+        "godot/scripts/actor_prototype_panel.gd::_select_set/_populate_models",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/actor_prototype_session.gd::configure/submit_action/submit_rig_action",
+        "godot/scripts/simulation_worker.gd::queue_actor_prototype_reset"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-39",
+      "priority": "P1",
+      "claim": "The retained sampled contract has six sets / 29 rigs, distinct from the 46 physical rigs and broader Workbench chooser. Sampled F5 comparisons use their selected set (at most seven actors), while the session has eight slots; existing copied action/observation, lease and owner restrictions are retained without new runtime qualification.",
+      "documents": [
+        "docs/systems/actor-rigs.md"
+      ],
+      "evidence": [
+        "godot/scripts/actor_rig_catalog.gd::SET_IDS/RIG_IDS",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/scripts/actor_prototype_panel.gd::_select_set/_populate_models",
+        "godot/scripts/main.gd::actor_prototype_definitions/_unhandled_key_input",
+        "godot/scripts/actor_prototype_session.gd::MAX_ACTORS/MAX_LEASE_TICKS/DEFAULT_LEASE_TICKS/submit_rig_action"
+      ],
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "disposition": "corrected",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-40",
+      "priority": "P0",
+      "claim": "Standalone World Art pipeline #685 and physical acceptance harness #694 are accepted-source ancestors. Current integration is not Draft/HOLD; original qualification and donor evidence remain dated. Its15 collections/120 features and16,384-side/16,777,216-cell adapter limits are presentation-only, with50M ordinary and100M streamed output budgets.",
+      "documents": [
+        "docs/tools/art-pipeline-unification.md"
+      ],
+      "evidence": [
+        "git:d5b0371501eb7ccd32c261f738b4a2612218fbc1",
+        "git:8d07e04459a2705a6f96c908c0b565a483cc5beb",
+        "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json",
+        "docs/world-design/*/pack.json::features",
+        "godot/tools/world_design_pack_adapter.gd::MAX_SIDE/MAX_CELLS",
+        "godot/tools/world_art_full_export.gd::MAX_PIXELS/MAX_STREAM_PIXELS/MAX_STREAM_SIDE",
+        "tools/world_art_capture_support.py::classify_art_dimensions"
+      ],
+      "disposition": "corrected",
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-41",
+      "priority": "P0",
+      "claim": "New standalone World Art source checkouts use accepted main, not the old integration branch. The pinned4.7.stable.official.5b4e0cb0f executable is explicit; the launcher copies a temporary plugin-free project. Viewer controls, session-only framebuffer pins, last-good reload and current-source full exports remain separate from in-scene Workbench Art and native simulation.",
+      "documents": [
+        "docs/tools/world-art-preview.md"
+      ],
+      "evidence": [
+        "tools/world_art_preview_launcher.py::FILES/PROJECT/make_project/main",
+        "tools/world_art_evaluation_package.py::VERSION",
+        "godot/tools/world_art_preview.gd::_unhandled_key_input/reload_pack/pin_current/export_art",
+        "godot/tools/world_art_full_export.gd",
+        "git:d5b0371501eb7ccd32c261f738b4a2612218fbc1"
+      ],
+      "disposition": "corrected",
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-42",
+      "priority": "P1",
+      "claim": "Accepted standalone unattended capture uses real display-backed Godot framebuffer bytes, exclusive output claims, sealed manifests and fresh-directory retry; source and output caps, return codes and explicit streamed transport remain distinct from native playability. Current docs specify the exact Godot pin and retain original graphical qualification scope.",
+      "documents": [
+        "docs/tools/world-art-capture.md"
+      ],
+      "evidence": [
+        "tools/world_art_preview_launcher.py::build_parser/run_capture/main",
+        "tools/world_art_capture_support.py::claim_output_directory/verify_bundle/classify_art_dimensions",
+        "tools/world_art_stream_png.py",
+        "godot/tools/world_art_capture.gd",
+        "godot/tools/world_art_full_export.gd",
+        "tools/test_world_art_capture.py::UnitTests",
+        "tools/test_world_art_evidence.py::EvidenceTests",
+        ".github/workflows/world-art-capture.yml"
+      ],
+      "disposition": "corrected",
+      "status": "source-inspected",
+      "independent_review": "source-verified-by-Specialist-A",
+      "independent_review_record": "review-b-by-a.json"
+    },
+    {
+      "id": "B-43",
+      "priority": "P1",
+      "claim": "The unchanged World Art Windows evaluation guide correctly separates a frozen source-qualified package from current main and physical owner acceptance, documents actual bundled launch/capture/verify commands, fresh outputs, pinned package/source hashes, Windows-only rebuild/smoke and partial outcomes for skipped physical/manual checks.",
+      "documents": [
+        "docs/tools/world-art-evaluation.md"
+      ],
+      "evidence": [
+        "tools/world_art_evaluation_package.py::VERSION/ENGINES/build/verify/smoke/write_launchers",
+        "tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1::SourceCommit/Assert-NvidiaRenderer/Report",
+        "examples/world-art-capture/build_gallery.py",
+        ".github/workflows/world-art-capture.yml",
+        ".github/workflows/world-art-physical-nvidia-acceptance.yml",
+        "godot/tools/world_art_preview.gd"
+      ],
+      "disposition": "reviewed-preserved",
+      "status": "source-inspected; reviewed-preserved",
+      "independent_review": "source-verified-by-Specialist-A",
       "independent_review_record": "review-b-by-a.json"
     }
   ]

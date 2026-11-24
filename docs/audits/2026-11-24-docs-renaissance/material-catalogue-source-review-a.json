@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "method": "Static parsing of accepted native literal tables and current Markdown ID/name rows; no engine execution or runtime behavior qualification.",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "parser_note": "Initial line-greedy pattern returned131 and was rejected by assertion; two adjacent descriptor literals share one source line. Corrected bounded field pattern verifies132 before comparison.",
+  "total_material_slots": 132,
+  "pair_rules": 56,
+  "original_pair_rules": 14,
+  "building_pair_rules": 42,
+  "building_pair_participants": [
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    113,
+    115,
+    116,
+    117,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128
+  ],
+  "building_pair_participant_count": 25,
+  "checks": [
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "ids": "81-131",
+      "doc_rows": 51,
+      "native_rows": 51,
+      "name_mismatches": [],
+      "all_solid": true,
+      "all_explicit_hard_capability": true,
+      "combustible_ids": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97
+      ]
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "ids": "38-80",
+      "doc_rows": 43,
+      "native_rows": 43,
+      "name_mismatches": [],
+      "all_solid": true,
+      "all_explicit_hard_capability": true,
+      "combustible_ids": [
+        46,
+        47
+      ]
+    }
+  ],
+  "source_sha256": {
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+    "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8"
+  }
+}

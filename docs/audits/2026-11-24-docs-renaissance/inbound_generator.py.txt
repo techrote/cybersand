@@ -1,0 +1,50 @@
+from pathlib import Path
+from urllib.parse import urlsplit,unquote
+import datetime,hashlib,json,re,subprocess,sys
+root=Path.cwd().resolve();audit=root/'docs/audits/2026-11-24-docs-renaissance';base='00cdb02f103265b6dc5224c68283e9a0c8cb449f'
+sys.path.insert(0,str(root/'tools/ci'));import check_docs
+inv=json.loads((audit/'inventory.json').read_text());entries=inv['documents'];changed={r['path'] for r in entries if r['path'].endswith('.md') and r['changed'] and r['change_class']!='metadata-only-routing'}
+allpaths=sorted(r['path'] for r in entries if r['path'].endswith('.md'))
+originals=[r['path'] for r in entries if r['path'].endswith('.md') and r['baseline_present']]
+raw=subprocess.run(['git','cat-file','--batch'],input=''.join(base+':'+p+'\n' for p in originals).encode(),stdout=subprocess.PIPE,check=True).stdout
+old={};offset=0
+for p in originals:
+ end=raw.index(b'\n',offset);size=int(raw[offset:end].split()[-1]);old[p]=raw[end+1:end+size+1].decode('utf-8-sig');offset=end+size+2
+current={p:(root/p).read_text(encoding='utf-8-sig') for p in allpaths}
+a_old={p:check_docs.anchors(t) for p,t in old.items()};a_new={p:check_docs.anchors(t) for p,t in current.items()}
+
+def resolve(src,target):
+ u=urlsplit(target)
+ if u.scheme:
+  prefix='/techrote/cybersand/blob/main/'
+  if u.netloc!='github.com' or not u.path.startswith(prefix):return None
+  dst=unquote(u.path[len(prefix):])
+ elif target.startswith('//'):return None
+ else:
+  target_path=unquote(u.path)
+  dst=((root/src).parent/target_path).resolve().relative_to(root).as_posix() if target_path else src
+ return dst,unquote(u.fragment)
+
+def scan(texts):
+ rows=[];plain=0
+ for src,text in texts.items():
+  for target in re.findall(r'\[[^\]]*\]\(([^\s)]+)(?:\s+[^)]*)?\)',check_docs.visible_markdown(text)):
+   try:r=resolve(src,target)
+   except ValueError:continue
+   if not r:continue
+   dst,anchor=r
+   if dst not in changed:continue
+   if not anchor:plain+=1;continue
+   rows.append({'from':src,'target':dst,'anchor':anchor,'old_valid':anchor in a_old.get(dst,set()),'current_valid':anchor in a_new.get(dst,set()),'source_scope':'historical-evidence' if src.startswith(('docs/history/','docs/audits/')) else 'current-or-focused'})
+ return rows,plain
+baseline,bplain=scan(old);now,nplain=scan(current)
+baseline_lost=[x for x in baseline if x['old_valid'] and not x['current_valid']]
+current_refs={(x['from'],x['target'],x['anchor']) for x in now}
+newly=[x for x in baseline_lost if (x['from'],x['target'],x['anchor']) in current_refs]
+superseded=[{**x,'disposition':'Reference occurred inside a rewritten current page and no longer exists in its current bytes; preserve original source and target through immutable baseline links.', 'preserved_source_url':'https://github.com/techrote/cybersand/blob/'+base+'/'+x['from'],'preserved_target_url':'https://github.com/techrote/cybersand/blob/'+base+'/'+x['target']+'#'+x['anchor']} for x in baseline_lost if (x['from'],x['target'],x['anchor']) not in current_refs]
+removed={p:sorted(a_old.get(p,set())-a_new.get(p,set())) for p in changed if a_old.get(p,set())-a_new.get(p,set())}
+report={'schema':2,'authority':'historical-non-authoritative','baseline':base,'created_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'Mechanically inspect links in every baseline Markdown byte stream and every current inventoried Markdown file; no historical instructions ingested as authority. Only heading references into substantive/new edited Markdown are listed. Relative and GitHub blob/main links handled; source-pinned external links remain original evidence.','edited_markdown_targets':len(changed),'baseline_markdown_sources':len(old),'current_markdown_sources':len(current),'baseline_inbound_heading_references':len(baseline),'current_inbound_heading_references':len(now),'baseline_plain_path_references_to_edited_docs':bplain,'current_plain_path_references_to_edited_docs':nplain,'baseline_inbound_links':baseline,'inbound_links':now,'newly_unresolved':newly,'superseded_baseline_references':superseded,'current_unresolved_heading_references':[x for x in now if not x['current_valid']],'removed_original_slugs':removed,'generator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'inventory_sha256':hashlib.sha256((audit/'inventory.json').read_bytes()).hexdigest()}
+previous=audit/'inbound-review.json';checkpoint=audit/'inbound-review-checkpoint.json'
+if previous.exists() and not checkpoint.exists():checkpoint.write_bytes(previous.read_bytes())
+previous.write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps({k:v for k,v in report.items() if k not in ['baseline_inbound_links','inbound_links','scope','removed_original_slugs','superseded_baseline_references']},indent=2))

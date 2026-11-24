@@ -1,0 +1,79 @@
+{
+  "reviewer": "Specialist A / technical_reference",
+  "method": "Final manifest reread and exact retained/new asset byte hashes; original provenance records read; no capture rerun",
+  "manifest_sha256": "123f1a5aa7254adc75cb4b110e91ba96f544c08109ed12bb11c1d1d49b47f5ca",
+  "assets": [
+    {
+      "path": "docs/images/gentek80-integration/eight-showcases.png",
+      "sha256": "e3d467367af9076b3ac581a23251c116375a5c2c569e387f4f0b201635909805",
+      "bytes": 59498,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/neon-reliquary/overview.png",
+      "sha256": "e1e0e0efcfcc63cf5160fbdcb462a5d92edf7a21470f8fa608598c4c0b0fe1a9",
+      "bytes": 927453,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/materials-lab-v1/01-inspector-water.png",
+      "sha256": "030edca4c12fe267dd56091f655228fa69f40ed4a3ed0c723dfe3d33175fced6",
+      "bytes": 355198,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/materials-lab-v1/02-inspector-slush.png",
+      "sha256": "feb22c26e60ea5a337d5a187f6bc1ac445d4c5528b308aae1b212da8a616baa0",
+      "bytes": 278702,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/deepworks/deepworks-atlas.png",
+      "sha256": "331431e917a612857d60ecd71c92af83e066f405468ba80c4ec79282fa6b7ac0",
+      "bytes": 2698657,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/blacksite-nine/blacksite-nine.png",
+      "sha256": "a0b42651d8459bcb24b8aa1803ed2e8fa807e47d0c9734c01a2f0e87b5a08080",
+      "bytes": 2174686,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/semantic-depth/refinery-guide.png",
+      "sha256": "ecf9521d1b37419c36f50c8211658f13ff9a6150ed78301438469a41a75520ec",
+      "bytes": 275164,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/wcx-ballistic-water/drop-spray-t114.png",
+      "sha256": "2ad4d7bd74bda893d481cbd4848339115cb0138819fb6f46c46fde7492b6546a",
+      "bytes": 152495,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/in-tools-361/liquid-lab-leak.png",
+      "sha256": "6b4e3c87a856ef8d3fd1b5f62ea63aa6f31809724587ceaef895b7f5f815dfa9",
+      "bytes": 192305,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-interlaced-viaduct-native.png",
+      "sha256": "a4c6387ea94069b86fce410e8b54ba71d020f588be282b29b68f4abc6ac9408f",
+      "bytes": 16919,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-cathedral-megaframe-native.png",
+      "sha256": "c6afa8fd16af8e52e27bf8918ba338e2d6dae5aeecccc05676907d58455a6e32",
+      "bytes": 13821,
+      "result": "matches manifest"
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-megatruss-station-native.png",
+      "sha256": "1b009fe4c33b3b830be8f7d177057be40e5bb4fc2560d24e1fa2b33e77e4f12c",
+      "bytes": 9970,
+      "result": "matches manifest"
+    }
+  ]
+}

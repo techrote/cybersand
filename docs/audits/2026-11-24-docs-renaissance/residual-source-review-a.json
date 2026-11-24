@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "recorded_at": "2026-11-24T19:44:45.828233+00:00",
+  "runtime_execution": false,
+  "reviews": [
+    {
+      "document": "docs/systems/granular-interaction-policy.md",
+      "document_sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "disposition": "source-reviewed-preserved",
+      "baseline_bytes_equal": true,
+      "method": "Read the full current contract and inspect bounded accepted-source owners for its consequential claims. No runtime or scientific requalification.",
+      "verified": [
+        "Nine explicit granular capability IDs2,13,14,19,23,25,26,27,29 match the fallback and generated native predicate.",
+        "InteractionPolicy v1 defaults downward8/9,side9/9,Mercury30ticks; constructor validates support1..9 and period1..60.",
+        "Packing checks stored/visible material per explicit argument and updated epoch; paused active cores do not become stable support.",
+        "character_box_collides admits finite positive\u226432\u00d732 boxes, modes0..3, hard occupancy throughout. C1 thresholds24/72 admit\u22641/2 conservative edge relocations.",
+        "Sampled runtime enclosure recovery remains separately switchable; bounded32radius/128axis candidates and frozen burial-safe behavior do not establish physical body acceptance.",
+        "Powder-powder swaps refused; Oil downward powder displacement refused. Mercury exchange_permitted schedules the next modulo opportunity without replaying missed moves.",
+        "state_hash retains interaction version/configuration/deadlines; CYSD1 is not complete replay. Transport-profile experiments and wider native/fallback semantic differences remain separate."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+        "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+        "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+        "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+        "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+      },
+      "residual": "Scientific owner acceptance for granular/body response is not inferred from existing source or the dated C1 tests."
+    }
+  ]
+}

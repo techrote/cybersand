@@ -1,0 +1,15 @@
+{
+  "authority": "historical-non-authoritative",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "source_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "procedure": "Exact git-archive baseline was used for original evaluator and structural checker. Git archive initially materialized LFS;18runtime files were restored to exact committed pointer bytes before docs checks.834original image assets were byte-hash verified identical then hardlinked to reduce duplicate disk use; never modified. Baseline corpus hashes exactly matched earlier copied baseline. Full source snapshot removed only after all before checks/context/hash receipts were preserved, to relieve shared disk ENOSPC; reconstruct raw source with git show at this immutable commit. Frozen question files and old evaluator were not modified.",
+  "saved": [
+    "check-docs-baseline.json",
+    "check-docs-baseline.stdout.txt",
+    "baseline-retrieval_eval.py.txt",
+    "baseline-retrieval_policy.py.txt",
+    "baseline-check_docs.py.txt"
+  ],
+  "companion_pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "companion_context": "../companion-context.json"
+}

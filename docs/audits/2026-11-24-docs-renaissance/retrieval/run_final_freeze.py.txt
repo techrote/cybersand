@@ -1,0 +1,63 @@
+from pathlib import Path
+import datetime, hashlib, json, subprocess, sys, tempfile, time
+root=Path.cwd().resolve();audit=root/'docs/audits/2026-11-24-docs-renaissance';evidence=audit/'retrieval';out=evidence/'final-freeze'
+if not (root/'AGENTS.md').is_file(): raise SystemExit('Run this dated evaluation driver from the repository root.')
+# A distinct output directory preserves every prior failed/improved context.
+if out.exists(): raise SystemExit('Final-freeze output already exists; do not overwrite retained evidence.')
+out.mkdir()
+sys.path.insert(0,str(root/'tools/docs'))
+import retrieval_eval as reval
+import retrieval_policy as policy
+fallback_directory=tempfile.TemporaryDirectory(prefix='cybersand-docs-final-fallback-')
+fallback=Path(fallback_directory.name)
+# Project the exact current candidate-discovery set, retaining all explicitly
+# excluded packets and navigation files so the real fallback must reject them.
+# No historical body is needed in default discovery; historical queries execute
+# against the unchanged actual historical manifest in the source checkout.
+candidates=[]
+for p in (root/'docs').rglob('*.md'):
+ rel=p.relative_to(root/'docs')
+ if rel.parts[0] in policy.FOCUSED or rel.as_posix() in {'README.md','MATERIAL_LAB.md'}: candidates.append(p)
+candidates += [root/p for p in ['README.md','AGENTS.md','CONTRIBUTING.md'] if (root/p).exists()]
+projected=[]
+for p in candidates:
+ rel=p.relative_to(root);target=fallback/rel;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(p.read_bytes());projected.append({'path':rel.as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+(out/'fallback-projection.json').write_text(json.dumps({'authority':'historical-non-authoritative','method':'Exact current Markdown candidate set for real missing-manifest discovery; includes excluded packets and navigation; no manifest installed; history evaluated separately on real unchanged source history','files':projected},indent=2)+'\n')
+query_names={'frozen':'docs/reference/retrieval-questions.json','owner-intent':'docs/reference/owner-intent-retrieval-questions.json','challenges':'docs/reference/retrieval-challenges.json','renaissance':'docs/reference/retrieval-questions-docs-renaissance-v1.json'}
+specs=[(tag+'-post',root,fixture,False) for tag,fixture in query_names.items()]
+specs += [(tag+'-fallback-post',fallback,fixture,False) for tag,fixture in query_names.items()]
+specs += [('historical-post',root,'docs/history/engineering/retrieval-questions.json',True)]
+receipts=[]
+initial=[{'path':p.relative_to(root).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in reval.selected_paths(root)]
+for name,source,fixture,history in specs:
+ command=['python3',str(root/'tools/docs/retrieval_eval.py'),'--root',str(source),'--queries',str(root/fixture),'--output',str(out/(name+'.json'))]+(['--historical'] if history else [])
+ started=time.monotonic();run=subprocess.run(command,cwd=root,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60);(out/(name+'.stdout.txt')).write_text(run.stdout)
+ row={'name':name,'command':command,'exit_code':run.returncode,'elapsed_seconds':round(time.monotonic()-started,3)}
+ if run.returncode==0:
+  report=json.loads((out/(name+'.json')).read_text());row.update({k:report[k] for k in ['created_utc','fixture_sha256','evaluator_sha256','authority_policy_sha256','corpus_manifest_sha256','document_count','chunk_count','summary']});row['result_sha256']=hashlib.sha256((out/(name+'.json')).read_bytes()).hexdigest();print(name,report['summary'],flush=True)
+ else:print(name,'FAILED',run.stdout[-2000:],flush=True)
+ receipts.append(row)
+final=[{'path':p.relative_to(root).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in reval.selected_paths(root)]
+identity={'authority':'historical-non-authoritative','accepted_source':'00cdb02f103265b6dc5224c68283e9a0c8cb449f','checkout_head_at_end':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'source_document_bytes_stable_through_run':initial==final,'current_document_hashes':final,'commands':receipts};(out/'execution-receipts.json').write_text(json.dumps(identity,indent=2)+'\n')
+if initial!=final:raise SystemExit('Corpus changed during evaluation; keep output as rejected snapshot and rerun after renewed freeze.')
+for tag in query_names:
+ a=json.loads((out/(tag+'-post.json')).read_text());b=json.loads((out/(tag+'-fallback-post.json')).read_text());equal=a['corpus']==b['corpus'] and a['results']==b['results'];print(tag,'manifest/fallback equality',equal,flush=True)
+ if not equal:raise SystemExit('Manifest/fallback equality failed for '+tag)
+a=json.loads((out/'renaissance-post.json').read_text())
+for tag in ['a','b']:
+ previous=evidence/f'answer-{tag}-frozen-input.json';old=json.loads(previous.read_text());ids=[r['id'] for r in old['results']]
+ new={k:a[k] for k in ['created_utc','corpus','fixture_sha256','evaluator_sha256','authority_policy_sha256','corpus_manifest_sha256','method']};new['context_result_sha256']=hashlib.sha256((out/'renaissance-post.json').read_bytes()).hexdigest();new['review_instructions']='Read actual top-five passages; compare old input texts in order. Preserve bounded partial/abstention judgments when details are absent; no substitution or expected-fact tuning.';new['results']=[r for r in a['results'] if r['id'] in ids]
+ target=out/f'answer-{tag}-input.json';target.write_text(json.dumps(new,indent=2)+'\n');changes=[]
+ for before in old['results']:
+  after=next(r for r in new['results'] if r['id']==before['id'])
+  if [h['text'] for h in before['hits']]!=[h['text'] for h in after['hits']]:changes.append(before['id'])
+ delta={'authority':'historical-non-authoritative','method':'Full rendered top-five text/order comparison; score-only changes are separately retained but do not modify text applicability','previous_input':str(previous.relative_to(audit)),'previous_input_sha256':hashlib.sha256(previous.read_bytes()).hexdigest(),'new_input':str(target.relative_to(audit)),'new_input_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'changed_top5_text_or_order':changes,'unchanged_question_ids':[qid for qid in ids if qid not in changes]};(out/f'answer-{tag}-delta.json').write_text(json.dumps(delta,indent=2)+'\n');print('reviewer',tag,'changed',changes,flush=True)
+# Preserve actual context for the separate seven owner/challenge regressions.
+old=json.loads((evidence/'answer-a-regression-input-v1.json').read_text()); oldrows=old.get('results',old.get('questions',[])); ids=[r['id'] for r in oldrows]
+combined=[]
+for tag in ['owner-intent','challenges']:
+ data=json.loads((out/(tag+'-post.json')).read_text())
+ combined += [r for r in data['results'] if r['id'] in ids]
+extra={'authority':'historical-non-authoritative','method':a['method'],'results':combined,'original_question_ids':ids,'source_results':{tag:hashlib.sha256((out/(tag+'-post.json')).read_bytes()).hexdigest() for tag in ['owner-intent','challenges']}}
+(out/'answer-a-regression-input.json').write_text(json.dumps(extra,indent=2)+'\n')
+print('Final evidence directory',out,flush=True)

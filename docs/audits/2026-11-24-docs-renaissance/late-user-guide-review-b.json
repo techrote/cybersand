@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B / product_showcase",
+  "recorded_at": "2026-11-24T19:17:35.280949+00:00",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "documents": [
+    {
+      "claim": "B-24",
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "disposition": "corrected",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/main.gd::PAINTABLE_MATERIAL_IDS",
+        "godot/scripts/web_demo_controller.gd",
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/material_lab_panel.gd"
+      ]
+    },
+    {
+      "claim": "B-25",
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "disposition": "corrected",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/main.gd::_unhandled_key_input/HARD_SURFACE_CHUNKS_PER_FRAME/WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME",
+        "godot/scripts/web_demo_controller.gd::_unhandled_key_input",
+        "godot/scripts/feature_navigation.gd"
+      ]
+    },
+    {
+      "claim": "B-26",
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "disposition": "corrected",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/microscenario_host.gd::install/capture",
+        "godot/scripts/microscenario_reference_pack.gd",
+        "native/include/cybersand/interaction_rules.hpp",
+        "tools/interactions/batch.py",
+        "docs/operations/microscenarios-programme.md#live-infrastructure-checkpoint--2026-09-20"
+      ]
+    },
+    {
+      "claim": "B-27",
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "disposition": "corrected",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/blacksite_nine_presentation.gd",
+        "godot/scripts/showcase_presentation.gd"
+      ]
+    },
+    {
+      "claim": "B-27",
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "disposition": "corrected",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/blacksite_nine_presentation.gd",
+        "godot/scripts/showcase_presentation.gd"
+      ]
+    },
+    {
+      "claim": "B-28",
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "disposition": "corrected",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/scripts/worldgen_workbench.gd::_build_profile_dialog/load_profile/save_profile/_undo/_redo",
+        "godot/scripts/worldgen_workbench_tools.gd::load_qualification",
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/workbench_generator_dialog.gd"
+      ]
+    },
+    {
+      "claim": "B-29",
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "disposition": "reviewed-preserved",
+      "inspection": "Current source for the listed control/host/route claims; original scientific and graphical evidence retained, not re-executed.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/exhibition/deepworks.gd::reset_exhibition/_unhandled_key_input",
+        "godot/scripts/exhibition/deepworks_map.gd",
+        "godot/scripts/exhibition/deepworks_runtime.gd",
+        "godot/scripts/depth/depth_layer_runtime.gd"
+      ]
+    }
+  ],
+  "execution": "Source inspection only; no fresh GUI session or showcase/native test campaign. Existing evidence scope preserved.",
+  "deepworks_bytes_equal_baseline": true
+}

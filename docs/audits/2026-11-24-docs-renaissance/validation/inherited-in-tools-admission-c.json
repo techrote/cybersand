@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C / retrieval_onboarding",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "inspected_at": "2026-11-24T19:24:01.320593+00:00",
+  "classification": "Inherited fixed-source campaign admission conflict; documentation has not changed the authority source",
+  "campaign_adopted_main": "24a8bbe8ccf0d17196ebbab580b924930a964584",
+  "authority_path": "godot/scripts/physical_actor_session.gd",
+  "expected_campaign_blob": "bde4503df99d7e317cfb0987004d525f72177316",
+  "accepted_baseline_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+  "working_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+  "working_bytes_equal_accepted_baseline": true,
+  "accepted_baseline_sha256": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+  "working_sha256": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+  "source_checks": {
+    "guard": "4868e1a48fc72375e26c625e8e8a2f443f1efe580683ac49239e575dc1dc244b",
+    "registration": "8a113f8d99b88ea227175deaedce751f465ce8228c0c57fda889f7e21e592428"
+  },
+  "observed_result": "Read-only admission check exits 1: working source changed relative to frozen campaign authority; same path bytes already exist at accepted baseline",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f:godot/scripts/physical_actor_session.gd"
+      ],
+      "started_utc": "2026-11-24T19:24:01.187511+00:00",
+      "exit_code": 0,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/in-tools-admission-c-0.log.txt",
+      "output_sha256": "e3b162a014cfeb64d4a978aa60cb8361a5657c7d02d80e5648ec26e43d2c3ad6"
+    },
+    {
+      "command": [
+        "git",
+        "hash-object",
+        "--path=godot/scripts/physical_actor_session.gd",
+        "godot/scripts/physical_actor_session.gd"
+      ],
+      "started_utc": "2026-11-24T19:24:01.193481+00:00",
+      "exit_code": 0,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/in-tools-admission-c-1.log.txt",
+      "output_sha256": "e3b162a014cfeb64d4a978aa60cb8361a5657c7d02d80e5648ec26e43d2c3ad6"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/in_tools_current_main_admission.py"
+      ],
+      "started_utc": "2026-11-24T19:24:01.196402+00:00",
+      "exit_code": 1,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/in-tools-admission-c-2.log.txt",
+      "output_sha256": "c2192f45b26d15a362f7c0e9f9d3fb28bb9b418c131cacb27a4710bbe034550d"
+    }
+  ],
+  "actions": "No guard, frozen hash, workflow, engine or CI policy edited. Owning programme must decide applicability and source-qualified successor admission. This is not a runtime test failure or permission to bypass the gate."
+}

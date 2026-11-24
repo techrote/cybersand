@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-24T19:27:19.473136+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Compare every B preserved byte-exact original with git show baseline:path and recorded SHA256/size; compare each asset SHA256/size/PNG dimensions. Original imagery was not edited.",
+  "preserved_originals": 16,
+  "image_references": 12,
+  "result": "PASS",
+  "failures": []
+}

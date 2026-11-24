@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Technical lead /root",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewed_utc": "2026-11-24T20:33:01.315521+00:00",
+  "method": "Full current document/diff reading, independent accepted source inspection and original authenticated lifecycle receipt reading. No engine execution, formal H study, all-remediation exit certification or issue action.",
+  "claims": [
+    {
+      "claim_id": "C-26",
+      "result": "source-verified",
+      "reviewer": "Technical lead /root",
+      "observations": "Read full guide and original/current diff. PrecisionStorage has eight-byte/alignment static assertion and World::Chunk actually aliases it; WaterExperimentPolicy separates semantic mass/coherence budgets; ballistic pool exists with bounded explicit ownership. Live14/18/20closed state does not prove old H/packing acceptance. Local historical qualifier preserves experiment controls without current implementation ban.",
+      "source_locators": [
+        "native/include/cybersand/precision_storage.hpp::PrecisionStorage",
+        "native/src/world.cpp::World::Chunk",
+        "native/include/cybersand/ballistic_water.hpp::BallisticWaterConfig",
+        "native/include/cybersand/water_experiment_policy.hpp::WaterExperimentPolicy",
+        "github-final-programmes.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/architecture-programme-water-feel-addendum.md": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5"
+      }
+    },
+    {
+      "claim_id": "C-27",
+      "result": "source-verified",
+      "reviewer": "Technical lead /root",
+      "observations": "Read full current programme and delta. Live79/80/81/84/85/87closed versus82/83/86open, parent79body still says remainsopen. Original RAG/gates retained as September evidence; no fresh F01–19 certification inferred. Current questions route to source/current register; preserved issue-action/branch/order text is scoped, no authority to reopen/close/merge.",
+      "source_locators": [
+        "github-final-programmes.json",
+        "AGENTS.md",
+        "docs/operations/soliding-programme.md",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/development-claims-remediation-programme.md": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3"
+      }
+    }
+  ],
+  "source_sha256": {
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+    "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "AGENTS.md": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+    "docs/decisions/2026-11-14-owner-authoring-intent.md": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+    "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json": "93612348ff1daa3e802ac6f2fc27cece507e779babc477da73d69cfc26e8e9aa"
+  },
+  "findings": []
+}

@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-11-24T20:00:01.279608+00:00",
+  "command": [
+    "python3",
+    "tools/ci/check_docs.py"
+  ],
+  "working_directory": "/workspace/scratch/855d9af51e68/cybersand-docs",
+  "exit_code": 0,
+  "stdout": "{\n  \"status\": \"passed\",\n  \"documents\": 151,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 280,\n  \"local_links\": 3476,\n  \"heading_anchors\": 485,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+  "stderr": "",
+  "scope": "Current working-tree documentation check after B source freeze; final integrated head is owned by lead."
+}

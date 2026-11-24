@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_reference",
+  "recorded_at": "2026-11-24T20:33:50.124080+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "preservation_ledger_sha256": "33301a089c2528e5267caac83793209d840c86762d1497d6b31dbaf40d5703d8",
+  "method": "Read each preserved file and compare its full bytes, length and declared SHA-256 with git show of the accepted source. This is preservation integrity, not independent semantic review of every C edit.",
+  "records": [
+    {
+      "path": "docs/README.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__README.md.txt",
+      "bytes": 60508,
+      "sha256": "69a1ce59b0fa7405ba73e7e2ec8591756b7b8b34f222d1a52b5481e9e39f8ab3",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__retrieval-index.md.txt",
+      "bytes": 73249,
+      "sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__local-build-and-validation.md.txt",
+      "bytes": 117202,
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__github-development-and-release.md.txt",
+      "bytes": 18051,
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__testing-validation-and-replay.md.txt",
+      "bytes": 32428,
+      "sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__current-and-historical-validation.md.txt",
+      "bytes": 7539,
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__documentation-maintenance.md.txt",
+      "bytes": 6809,
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/CONTRIBUTING.md.txt",
+      "bytes": 1201,
+      "sha256": "4c0a2319e69acf1c58a552f397fd1be545c15806578d2a6a9d41be13be35cfd7",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme.md.txt",
+      "bytes": 54792,
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cell-layout-experiment.md.txt",
+      "bytes": 26101,
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt",
+      "bytes": 25036,
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__web-threading.md.txt",
+      "bytes": 6183,
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__troubleshooting.md.txt",
+      "bytes": 5027,
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__profiling-observability-and-performance.md.txt",
+      "bytes": 11287,
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__atlas-agent-runner.md.txt",
+      "bytes": 19010,
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation.md.txt",
+      "bytes": 22281,
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__play-desktop-manual-qualification.md.txt",
+      "bytes": 9578,
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios.md.txt",
+      "bytes": 20649,
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-scenario-catalogue.md.txt",
+      "bytes": 25219,
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-flight-lab.md.txt",
+      "bytes": 17283,
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-environment-profiles-and-traversal.md.txt",
+      "bytes": 6898,
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme-water-feel-addendum.md.txt",
+      "bytes": 8984,
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "baseline_bytes_equal": true
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "preserved_path": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__development-claims-remediation-programme.md.txt",
+      "bytes": 14706,
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "baseline_bytes_equal": true
+    }
+  ],
+  "result": "PASS",
+  "limitations": [
+    "No new runtime, graphical or physical qualification.",
+    "C-12 current text scope remains the Stage3 historical execution envelope and current routing; unrelated later C prose is reviewed elsewhere."
+  ]
+}
