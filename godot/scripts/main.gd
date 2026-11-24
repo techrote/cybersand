@@ -3,6 +3,7 @@ extends Control
 const MaterialPublisher = preload("res://scripts/blit_material_publisher.gd")
 const FullImageRingPublisher = preload("res://scripts/full_image_ring_publisher.gd")
 const MaterialPublicationDeadline = preload("res://scripts/material_publication_deadline.gd")
+const MaterialPublicationSteps = preload("res://scripts/material_publication_steps.gd")
 const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -1759,6 +1760,10 @@ var _uploaded_workbench_frame: Dictionary = {}
 var _material_deadline = MaterialPublicationDeadline.new()
 var _material_deadline_hz: int = MaterialPublicationDeadline.requested_hz(
 	OS.get_environment("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"))
+var _material_steps = MaterialPublicationSteps.new()
+var _material_step_interval: int = MaterialPublicationSteps.requested_interval(
+	OS.get_environment("CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL"))
+var _material_step_uploads_after_cancellation: int = 0
 # Changed-pixel old occupancy from the *previous* GPU texture, sampled before
 # accepting each patch. Only consulted while palette snapshot_blend < 1.
 # An oversized/full refresh is unknown rather than optimistically empty.
@@ -1965,6 +1970,7 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 func _ready() -> void:
 	_material_deadline.configure(_material_deadline_hz)
+	_configure_material_steps()
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
@@ -2147,6 +2153,7 @@ func _notification(what: int) -> void:
 
 func _exit_tree() -> void:
 	_material_deadline.cancel("exit_tree")
+	_material_steps.cancel("exit_tree")
 	if workbench_pose_trace.active:
 		var saved: Dictionary = finish_workbench_pose_trace()
 		print("WORKBENCH_POSE_TRACE_EXIT ",JSON.stringify(saved))
@@ -2191,6 +2198,7 @@ func _process(delta: float) -> void:
 	# A paused World may publish no newer mailbox. An already offered material
 	# packet still drains at its fixed deadline on every ordinary process turn.
 	_drain_material_deadline()
+	_drain_material_steps()
 	if _pubpres_trace_enabled:
 		_pubpres_packet_observed("material_consumption", material_started_usec, latest_snapshot,
 			{"uploaded_serial":last_uploaded_render_snapshot_serial, "ack_serial":_engine_lab_last_ack_serial})
@@ -4712,6 +4720,11 @@ func _material_deadline_identity(snapshot: CyberSimulationSnapshot) -> Array:
 
 
 func _offer_material_snapshot(snapshot: CyberSimulationSnapshot, now_usec: int = -1) -> void:
+	if _material_steps.enabled() and not _material_step_publisher_supported():
+		_retire_material_step_policy("publisher_changed")
+	if _material_steps.enabled() and shared_workbench != null:
+		_offer_material_step_snapshot(snapshot, now_usec)
+		return
 	if not _material_deadline.enabled() or shared_workbench == null:
 		consume_render_snapshot(snapshot)
 		return
@@ -4757,6 +4770,123 @@ func _drain_material_deadline(now_usec: int = -1) -> void:
 
 func material_deadline_status() -> Dictionary:
 	return _material_deadline.status()
+
+
+func _configure_material_steps() -> void:
+	var reason: String = ""
+	if _material_deadline.enabled():
+		reason = "material_deadline_selected"
+	elif OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION") != "full":
+		reason = "full_publication_required"
+	elif OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") not in ["", "2"]:
+		reason = "two_slot_publication_required"
+	_material_steps.configure(_material_step_interval, reason)
+
+
+func _material_step_publisher_supported() -> bool:
+	return _material_publication_mode in ["", "full"] \
+		and _material_blit_publisher == null and _material_full_ring == null \
+		and OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION") == "full" \
+		and OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") in ["", "2"]
+
+
+func _retire_material_step_policy(reason: String) -> void:
+	var pending: bool = _material_steps.status().pending_count > 0
+	_material_steps.configure(_material_step_interval, reason)
+	if pending:
+		# No abandoned offer is acknowledged. A paused owner must still emit a
+		# fresh cumulative/full packet for the restored immediate path.
+		simulation_worker.request_render_full_refresh()
+
+
+func material_edit_admitted() -> void:
+	if shared_workbench != null:
+		_material_steps.mark_edit_admitted()
+
+
+func _material_step_identity(snapshot: CyberSimulationSnapshot) -> Array:
+	var identity: Array = _material_deadline_identity(snapshot)
+	if identity.is_empty():
+		return []
+	# Session/epoch values alone do not identify a recreated owner object.
+	identity.append(physical_actor_session.bridge.get_instance_id() if physical_actor_session != null else 0)
+	return identity
+
+
+func _material_step_completed_witness(identity: Array) -> Dictionary:
+	if identity.size() != 4 or physical_actor_session == null or not physical_actor_session.active():
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge or bridge != rapier_bridge or not bridge.is_initialized() \
+			or identity != [bridge._session, bridge._epoch, last_uploaded_world_generation, bridge.get_instance_id()] \
+			or physical_actor_session.tick != _workbench_completed_step \
+			or _workbench_completed_step <= 0 or _workbench_completed_step_usec <= 0 \
+			or bridge.manual_step_count() <= 0:
+		return {}
+	# _workbench_completed_step is written only after the sole Main owner's
+	# real Rapier step and complete_step transaction. This is a read-only gate.
+	return {"session_step":_workbench_completed_step,
+		"rapier_step":bridge.manual_step_count(), "completed_usec":_workbench_completed_step_usec}
+
+
+func _offer_material_step_snapshot(snapshot: CyberSimulationSnapshot, now_usec: int = -1) -> void:
+	if snapshot.simulation_failed or simulation_worker.has_failed():
+		_material_steps.cancel("native_failure")
+		return
+	var identity: Array = _material_step_identity(snapshot)
+	if identity.is_empty():
+		_material_steps.cancel("owner_transition")
+		consume_render_snapshot(snapshot)
+		return
+	var offered: bool = _material_steps.offer(snapshot, identity,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec,
+		last_uploaded_world_generation, last_uploaded_render_snapshot_serial)
+	if not offered:
+		var reason: String = _material_steps.status().last_offer_result
+		if reason in ["new_world_requires_full", "world_mismatch", "invalid_offer"]:
+			last_render_patch_validation_error = "material step policy refused: " + reason
+			reject_render_snapshot(snapshot)
+
+
+func _drain_material_steps(now_usec: int = -1) -> void:
+	if not _material_steps.enabled():
+		return
+	if not _material_step_publisher_supported():
+		_retire_material_step_policy("publisher_changed")
+		return
+	var identity: Array = _material_step_identity(latest_snapshot)
+	if identity.is_empty() or simulation_worker.has_failed():
+		_material_steps.cancel("owner_transition_or_failure")
+		return
+	# The protected state includes queued AND inflight legacy edits. Precise
+	# Paint and Art authoring busy states also bypass this presentation hold.
+	var paint: Dictionary = simulation_worker.paint_state()
+	var now: int = Time.get_ticks_usec() if now_usec < 0 else now_usec
+	_material_steps.observe_paint_busy(bool(paint.get("legacy_busy", false)) \
+		or bool(paint.get("busy", false)) or bool(paint.get("art_busy", false)), now)
+	var witness: Dictionary = _material_step_completed_witness(identity)
+	var selected: CyberSimulationSnapshot = _material_steps.take_due(identity, witness, now,
+		"paused" if paused else "")
+	if selected == null:
+		return
+	var before_serial: int = last_uploaded_render_snapshot_serial
+	consume_render_snapshot(selected)
+	var accepted: bool = selected.render_snapshot_serial > before_serial \
+		and last_uploaded_render_snapshot_serial == selected.render_snapshot_serial \
+		and last_uploaded_world_generation == selected.render_world_generation
+	var counted: bool = _material_steps.complete(selected, accepted, _material_step_completed_witness(identity),
+		Time.get_ticks_usec() if now_usec < 0 else now_usec)
+	if accepted and not counted:
+		# An accepted resize can recreate textures, deliberately cancelling the
+		# selected policy transaction. Its real upload remains visible in the
+		# normal serial/ACK trace and this explicit supplementary counter.
+		_material_step_uploads_after_cancellation += 1
+
+
+func material_step_status() -> Dictionary:
+	var result: Dictionary = _material_steps.status()
+	result.accepted_uploads_after_policy_cancellation = _material_step_uploads_after_cancellation
+	return result
 
 
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
@@ -5156,6 +5286,7 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 func _close_physical_actors() -> void:
 	_material_deadline.cancel("physical_owner_closed")
+	_material_steps.cancel("physical_owner_closed")
 	_workbench_presentation_state.clear()
 	_workbench_presentation_identity.clear()
 	_workbench_sample_steps.clear()
@@ -6177,8 +6308,11 @@ func queue_brush_mutation(
 	# Retained compatibility entry point for existing disc-oriented fixtures.
 	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
 		return false
-	return simulation_worker.queue_emit_disc(
+	var admitted: bool = simulation_worker.queue_emit_disc(
 		world_x,world_y,radius,material_id,emission_flags)
+	if admitted:
+		material_edit_admitted()
+	return admitted
 
 
 func queue_brush_footprint_mutation(
@@ -6190,17 +6324,23 @@ func queue_brush_footprint_mutation(
 	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
 		return false
 	if brush_shape == "circle" and (brush_size_px & 1) == 1:
-		return simulation_worker.queue_emit_disc(
+		var admitted: bool = simulation_worker.queue_emit_disc(
 			world_x,
 			world_y,
 			(brush_size_px - 1) / 2,
 			material_id,
 			emission_flags
 		)
+		if admitted:
+			material_edit_admitted()
+		return admitted
 	var cells: PackedInt32Array = brush_footprint_cells(world_x, world_y)
 	if cells.is_empty():
 		return false
-	return simulation_worker.queue_emit_cells(cells, material_id, emission_flags)
+	var admitted: bool = simulation_worker.queue_emit_cells(cells, material_id, emission_flags)
+	if admitted:
+		material_edit_admitted()
+	return admitted
 
 
 func handle_painting() -> void:
@@ -6268,6 +6408,7 @@ func view_content_rect() -> Rect2:
 
 func create_render_textures() -> void:
 	_material_deadline.cancel("textures_recreated")
+	_material_steps.cancel("textures_recreated")
 	material_presentation_timeline.reset()
 	_create_material_texture_pair(image, image)
 	_material_pending_rectangles.clear()
@@ -6525,6 +6666,7 @@ func validate_render_patch_payload(
 
 func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	_material_deadline.cancel("render_packet_rejected")
+	_material_steps.cancel("render_packet_rejected")
 	rejected_render_snapshot_count += 1
 	if snapshot.render_snapshot_serial != last_rejected_render_snapshot_serial:
 		push_error(
@@ -6675,6 +6817,8 @@ func _create_material_texture_pair(current: Image, previous: Image) -> void:
 			"initialization_usec":Time.get_ticks_usec()-setup_started,
 			"submitted_bytes":(current.get_width()*current.get_height()+previous.get_width()*previous.get_height())*render_channels}
 	_material_blit_publisher = publisher
+	if _material_steps.enabled() and not _material_step_publisher_supported():
+		_retire_material_step_policy("publisher_changed")
 
 
 func _material_publication_rid(value: Texture2D) -> RID:

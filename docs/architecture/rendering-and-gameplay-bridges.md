@@ -139,6 +139,19 @@ the existing full-refresh recovery. This experiment is source implemented,
 but graphical correctness and comparative playability remain unqualified in the
 [implementation checkpoint](../audits/2026-11-24-pubpres-playability-final/material-deadline-implementation.md).
 
+**Separate completed-step experiment, default off:**
+[`MaterialPublicationSteps`](../../godot/scripts/material_publication_steps.gd)
+can hold one cumulative Full2 packet until two genuine completed session/Rapier
+steps beyond the last accepted upload, or the first-offer scheduled hold
+deadline. It is mutually exclusive with the time policy. Paused/ownerless
+operation, new Worlds and admitted painting preserve immediate publication.
+Exact owner/bridge identity and paired counter deltas gate the count; only the
+unchanged accepted transaction grants an ACK. The 16,667us scheduled deadline
+does not bound actual visible age during a Main stall. The
+[configuration](../reference/configuration-reference.md#workbench-completed-step-material-experiment)
+and [implementation/qualification record](../audits/2026-11-24-pubpres-playability-final/completion-count-architecture.md)
+separate source correctness from still-unqualified graphical and physical gains.
+
 No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.

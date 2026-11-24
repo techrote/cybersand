@@ -1,0 +1,82 @@
+{
+  "schema": "pubpres-final03-linux-decision-evidence-index-v1",
+  "application_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "application_tree": "351b947a50ce054361660eba9379006122527547",
+  "run": 45452580606,
+  "artifact": 14954600370,
+  "artifact_sha256": "afc128e3d90d952b3c801ba489d9ce66db51d10c7420094fb9f2096dbb20da71",
+  "artifact_bytes": 131344255,
+  "files": [
+    {
+      "path": "final03-linux-complete-frozen-replay.json",
+      "bytes": 1128866,
+      "sha256": "7a07c5f2ed98d41b25d7ab4bc87d2787d949d796210b603ae2d2014131fe6e8d"
+    },
+    {
+      "path": "final03-linux-hidden-frame-samples.json",
+      "bytes": 432120,
+      "sha256": "a492737b1ee306b58ef653d27051a4bccc163a2f8c57fb49eee33e0456651fa8"
+    },
+    {
+      "path": "final03-linux-independent-correctness.json",
+      "bytes": 433334,
+      "sha256": "32c03eee14b916671f6171e464923216986a77bc5a0eba04502db9fba6c25427"
+    },
+    {
+      "path": "final03-linux-independent-physical.json",
+      "bytes": 746593,
+      "sha256": "6844bd5f227ef833ef7763278ee0503d9c1e3ec746a7dd3a0006ef5c2b7ac803"
+    },
+    {
+      "path": "final03-linux-mixed-hidden-positions.json",
+      "bytes": 50745,
+      "sha256": "ba06c52d30cc1e89d9b82e15ef501073cde67b331892e170ed7d3e3f6aa2af5b"
+    },
+    {
+      "path": "historical-c90-causal-stage-recovery.json",
+      "bytes": 87356,
+      "sha256": "c9eeaf9dfcca0e0cb7bde6b8fe56de2081fd1eef890c3a3475b0a32b94cb6b0c"
+    },
+    {
+      "path": "physical-tables.md",
+      "bytes": 8378,
+      "sha256": "28bc13ad146fdcf4aa4a03326d8fd3bfd49948290a99fce3041ade9cb40d91f2"
+    },
+    {
+      "path": "process-resources.json",
+      "bytes": 96315,
+      "sha256": "9b212496a32d98b6d44978117cf438559468da8d42fdf43f3e30d10e6c1f1c3c"
+    },
+    {
+      "path": "readers/build_packet.py",
+      "bytes": 7907,
+      "sha256": "507a20b12bf9b5ca3b15f927ef33079121dff57b8200ecbc3119606ea7e6df4c"
+    },
+    {
+      "path": "readers/extract_final03_hidden_samples.py",
+      "bytes": 8939,
+      "sha256": "5756f3e435fa3729c1b3ea0984e313e546c865e2f63ba3cd36c17285b745fcaf"
+    },
+    {
+      "path": "readers/recover_historical_causal_stages.py",
+      "bytes": 6250,
+      "sha256": "22f7192973a8f68f462ab9c2f4e4dbfcedf33c54166287a33a4d8cecf694fdd5"
+    },
+    {
+      "path": "readers/reduce_final03_zip.py",
+      "bytes": 5714,
+      "sha256": "27f934f5f7119cb94e91dbdfe15d7bb0d76220e566578328d28d062e5bb84534"
+    },
+    {
+      "path": "readers/replay_final03_correctness.py",
+      "bytes": 8290,
+      "sha256": "77a4cbdf7ce4eb0b787dfba6ae5c17a0937376301e9fd84b348a7f183de4f95f"
+    },
+    {
+      "path": "readers/replay_final03_linux.py",
+      "bytes": 15310,
+      "sha256": "4f322c3868a09123a987e2b61f9a5e6bef31e61ae4cd3217fd0ae3580a3ca7a4"
+    }
+  ],
+  "scope": "Copied original independent replay receipts preserve their bytes and reader identities. Raw hosted archive remains the authoritative source; no timing process was re-executed for this packet."
+}

@@ -32,7 +32,7 @@ def validate(root=ROOT):
     request = json.loads((root / REQUEST).read_text(encoding="utf-8"))
     if set(request) != {"schema", "phase", "purpose", "frozen_reference", "payload_sha256"}:
         raise ValueError("Unexpected run-request fields")
-    if request["schema"] != "pubpres-playability-final-request-v1" or request["phase"] not in ("development", "final", "delivery"):
+    if request["schema"] != "pubpres-playability-final-request-v1" or request["phase"] not in ("development", "final", "delivery", "progression"):
         raise ValueError("Unregistered campaign phase")
     if request["frozen_reference"] != FROZEN or not isinstance(request["purpose"], str) or not request["purpose"].strip():
         raise ValueError("Frozen reference or purpose differs")

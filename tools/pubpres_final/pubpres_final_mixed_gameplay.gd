@@ -609,7 +609,7 @@ func identity() -> Dictionary:
 		result.files[path] = FileAccess.get_sha256(path)
 	for path: String in ["res://tests/pubpres_final_mixed_gameplay.gd","res://tests/pubpres_final_mixed_registration.json",
 		"res://tests/pubpres_final_presentation_probe.gd","res://scripts/physical_actor_overlay.gd",
-		"res://scripts/material_publication_deadline.gd",
+		"res://scripts/material_publication_deadline.gd","res://scripts/material_publication_steps.gd",
 		"res://scripts/workbench_setup.gd","res://scripts/workbench_actor_catalog.gd",
 		"res://scripts/physical_actor_catalog.gd","res://scripts/gcr_flyer_authoring.gd",
 		"res://authoring/flyers/manifest.json","res://authoring/flyers/needle.json",
@@ -629,7 +629,7 @@ func identity() -> Dictionary:
 
 func effective_selectors() -> Dictionary:
 	var requested := {}
-	for key: String in ["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ","CYBERSAND_DIAG_PRESENTATION_OBSERVER","CYBERSAND_DIAG_FULL_IMAGE_SLOTS","CYBERSAND_MATERIAL_PUBLICATION","CYBERSAND_DIAG_PHYSICS_PUBLICATION",
+	for key: String in ["CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL","CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ","CYBERSAND_DIAG_PRESENTATION_OBSERVER","CYBERSAND_DIAG_FULL_IMAGE_SLOTS","CYBERSAND_MATERIAL_PUBLICATION","CYBERSAND_DIAG_PHYSICS_PUBLICATION",
 		"CYBERSAND_DIAG_PRESENTATION","CYBERSAND_DIAG_MATERIAL_TIMING","CYBERSAND_DIAG_RENDER_CADENCE",
 		"CYBERSAND_DIAG_NATIVE_RENDEZVOUS","CYBERSAND_DIAG_MATERIAL_POOL_POLICY",
 		"CYBERSAND_DIAG_SAME_FRAME_CONTINUATION","CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE",
@@ -640,6 +640,8 @@ func effective_selectors() -> Dictionary:
 	for item: Dictionary in host.get_property_list(): properties[str(item.name)] = true
 	var presentation: Variant = host.get("workbench_presentation_frame") if properties.has("workbench_presentation_frame") else null
 	return {"requested":requested,
+		"material_steps_api_present":host.has_method("material_step_status"),
+		"material_steps":host.call("material_step_status") if host.has_method("material_step_status") else null,
 		"material_deadline":host.call("material_deadline_status") if host.has_method("material_deadline_status") else null,
 		"material":host.call("material_publication_status") if host.has_method("material_publication_status") else null,
 		"physics":host.simulation_worker.call("physics_publication_mode") if host.simulation_worker.has_method("physics_publication_mode") else null,

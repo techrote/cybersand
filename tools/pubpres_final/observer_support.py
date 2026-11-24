@@ -10,16 +10,29 @@ ROOT = Path(__file__).resolve().parents[2]
 DIRECTORY = ROOT / "tools/pubpres_final_observers"
 sys.path.insert(0, str(DIRECTORY))
 import bundle as observer_bundle
-from execute_with_resources import execute_with_resources
+from execute_with_resources import execute_with_resources as _execute_with_resources
 from presentation_metrics import PROBE, validate_cpu_trace
 from results import digest, need
+from material_steps_status import SELECTOR as MATERIAL_STEPS_SELECTOR, validate_policy_observation
 
 SELECTOR = "CYBERSAND_DIAG_PRESENTATION_OBSERVER"
 
 
-def validate_observers(receipt: Path, process: dict, project: Path, enabled: bool) -> dict:
+def execute_with_resources(engine, args, folder, source_sha, settings, timeout, wrapper=None):
+    # Existing ordinary runners get an explicit control. The prospective count
+    # runner supplies its own registered0/2. The complete owned-process/CPU
+    # executor remains unchanged and independently SHA-pinned.
+    explicit = dict(settings)
+    explicit.setdefault(MATERIAL_STEPS_SELECTOR, "0")
+    need(explicit[MATERIAL_STEPS_SELECTOR] in ("0", "2"), "Unregistered material-step process selector")
+    return _execute_with_resources(engine, args, folder, source_sha, explicit, timeout, wrapper)
+
+
+def validate_observers(receipt: Path, process: dict, project: Path, enabled: bool,
+                       *, expected_material_steps: int = 0) -> dict:
     need(type(enabled) is bool, "Presentation observer state must be explicitly enabled or disabled")
     data = json.loads(receipt.read_bytes())
+    material_steps = validate_policy_observation(data, project, expected_material_steps)
     expected = "1" if enabled else "0"
     need(all(data[phase]["requested"].get(SELECTOR) == expected
              for phase in ("selectors_before", "selectors_after")),
@@ -35,7 +48,7 @@ def validate_observers(receipt: Path, process: dict, project: Path, enabled: boo
              "Disabled presentation observer unexpectedly emitted a sidecar")
         result = {"bundle": observer_bundle.identity(), "presentation": None,
                   "cpu": validate_cpu_trace(receipt.parent / "process-cpu.json", process, data)}
-    return {"presentation_enabled": enabled, **result,
+    return {"presentation_enabled": enabled, "material_steps_policy": material_steps, **result,
             "scope": "Additional submitted-pose and whole-process CPU evidence. Disabled pose/freshness is unavailable, never zero; actual displayed pixels and input-device latency remain unobserved."}
 
 

@@ -40,6 +40,10 @@ jobs:
 
   engine-font-windows:
     needs: plan
+    # Progression is a new application/native experiment. The unchanged font
+    # engine already has a separately registered retained-artifact execution;
+    # rebuilding it cannot answer the new count/scheduling question.
+    if: needs.plan.outputs.phase != 'progression'
     runs-on: windows-2022
     timeout-minutes: 180
     outputs:
@@ -254,6 +258,7 @@ jobs:
 
   renderer-windows:
     needs: [plan, runtimes, engine-font-windows]
+    if: needs.plan.outputs.phase != 'progression'
     timeout-minutes: 180
     runs-on: windows-2022
     steps:
@@ -311,6 +316,9 @@ jobs:
 
   evaluator-windows:
     needs: [plan, runtimes]
+    # The verified c2 evaluator remains available. A newer evaluator requires
+    # its own complete package gates after the prospective arms are assessed.
+    if: needs.plan.outputs.phase != 'progression'
     timeout-minutes: 180
     runs-on: windows-2022
     steps:
@@ -402,7 +410,7 @@ jobs:
 
   native-authority:
     needs: plan
-    if: needs.plan.outputs.phase == 'final'
+    if: needs.plan.outputs.phase == 'final' || needs.plan.outputs.phase == 'progression'
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     env: {CXX: g++-13, CC: gcc-13}

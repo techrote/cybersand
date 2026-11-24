@@ -248,6 +248,8 @@ func poll() -> void:
 		return
 	var admitted: Dictionary = worker.art_queue(chunk.points,chunk.material,area,guards,epoch,materials)
 	if admitted.status == "queued":
+		if wb.host.has_method("material_edit_admitted"):
+			wb.host.material_edit_admitted()
 		pending_chunk = {}
 		waiting = true
 		result.status = "queued"

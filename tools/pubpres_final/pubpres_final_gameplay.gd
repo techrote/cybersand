@@ -22,6 +22,7 @@ func identity() -> Dictionary:
 	for path: String in ["res://tests/pubpres_final_gameplay.gd",
 		"res://scripts/physical_actor_overlay.gd",
 		"res://scripts/material_publication_deadline.gd",
+		"res://scripts/material_publication_steps.gd",
 		"res://scripts/full_image_ring_publisher.gd","res://tests/pubpres_final_presentation_probe.gd"]:
 		result.files[path] = FileAccess.get_sha256(path) if FileAccess.file_exists(path) else null
 	return result
@@ -31,6 +32,9 @@ func effective_selectors() -> Dictionary:
 	result.requested["CYBERSAND_DIAG_FULL_IMAGE_SLOTS"] = OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS")
 	result.requested["CYBERSAND_DIAG_PRESENTATION_OBSERVER"] = OS.get_environment("CYBERSAND_DIAG_PRESENTATION_OBSERVER")
 	result.requested["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"] = OS.get_environment("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ")
+	result.requested["CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL"] = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL")
+	result["material_steps_api_present"] = host.has_method("material_step_status")
+	result["material_steps"] = host.call("material_step_status") if host.has_method("material_step_status") else null
 	result["material_deadline"] = host.call("material_deadline_status") if host.has_method("material_deadline_status") else null
 	return result
 

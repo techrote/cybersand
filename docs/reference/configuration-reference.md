@@ -30,6 +30,35 @@ renderer owner, publication backend or full-image slot count. It is not persiste
 in a level or promoted to a production default. Main blocking may overrun the
 deadline; the interval is not a guarantee of displayed-frame delivery.
 
+## Workbench completed-step material experiment
+
+**Current PUBPRES-PLAYABILITY-FINAL source, Draft/HOLD:**
+`CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL` admits only the exact string `2`.
+Missing, `0`, or any other value leaves this experiment off. Enabled admission
+requires explicit `CYBERSAND_MATERIAL_PUBLICATION=full`,
+`CYBERSAND_DIAG_FULL_IMAGE_SLOTS` unset or `2`, and the time-deadline policy off.
+If both policies are selected, the existing time policy remains active and the
+count policy reports `material_deadline_selected`; they never stack. Actual
+publisher changes retire and disable the count policy with an explicit reason.
+
+One immutable cumulative packet can wait for two genuine completed session and
+Rapier steps after the last actually accepted upload. A first-offer scheduled
+added-hold deadline of **16,667 microseconds**, shortened by a separate
+**1,000,000-microsecond source-age guard**, preserves finite admission at the next
+available Main turn without inventing steps. Neither value is a physical
+playability acceptance threshold or a guaranteed displayed-frame latency bound.
+Replacing the packet cannot renew its deadline. Paused/no-owner/new-World paths
+and admitted ordinary painting preserve immediate consumption.
+
+`Main.material_step_status()` exposes requested/effective values, exact pending
+and owner/bridge identity, both completed-step anchors, real accepted-upload
+counts, paint priority, replacements, actual hold and deadline overrun. It
+separately reports selected uploads accepted after policy cancellation. The
+[source and qualification record](../audits/2026-11-24-pubpres-playability-final/completion-count-architecture.md)
+describes retained controls, pure/authority tests and pending GPU/playability
+gates. This selector changes no native sample, terrain, collision, material,
+Rapier, physics timestep or callback-admission contract.
+
 ## Architectural Generator project controls
 
 [Architectural Generator](../systems/architectural-generator.md) owns explicit

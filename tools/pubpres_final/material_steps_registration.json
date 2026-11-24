@@ -1,0 +1,34 @@
+{
+  "schema": "pubpres-final-material-steps-registration-v1",
+  "order": [
+    0,
+    2,
+    2,
+    0
+  ],
+  "primary_cases": [
+    "wave_512_follow",
+    "wave_gameplay_2048_follow"
+  ],
+  "material": "full",
+  "full_image_slots": 2,
+  "render_thread": "safe",
+  "physics": "early",
+  "presentation": "coherent",
+  "material_deadline_hz": 0,
+  "same_frame_continuation": false,
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "maximum_status_samples": 6000,
+  "scheduled_added_hold_usec": 16667,
+  "source_age_guard_usec": 1000000,
+  "policy_sha256": "a20ccad2c447c88df08e709a8e25d799604377ff1c731248f1504d65dd342ff1",
+  "presentation_observer": true,
+  "require_treatment_exercise": [
+    "deferred_turns",
+    "replaced_offers",
+    "independently_joined_count_due"
+  ],
+  "scope": "Prospective same-source/runtime/official Godot4.7 Safe comparison. Only completed-step material interval0/2 varies, in complete0/2/2/0 order. The full unchanged V3 physical/native/terrain/input/Water/GPU oracle runs before additive scheduling observations. Count2 has a fixed first-offer16667us scheduled hold bound and cannot promise a display deadline. No-op/deadline-only, invalid and adverse arms are retained; lack of actual deferral, coalescing or independently joined two-completion eligibility refuses an exercised bounded-policy conclusion. Count-before-deadline, simultaneous count/deadline and deadline-only uses are reported separately; simultaneous eligibility does not identify a uniquely count-caused release. Native and Rapier progress never comes from scheduling counters. Submitted-pose freshness is reported together with every hidden/withheld/censored episode; actual display/scanout is unknown. Draft/HOLD, no default or NVIDIA acceptance."
+}

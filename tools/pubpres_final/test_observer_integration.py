@@ -30,6 +30,7 @@ class ObserverIntegrationTests(unittest.TestCase):
             def write():receipt.write_text(json.dumps(data))
             write()
             with patch.object(support.observer_bundle,"identity",return_value={"synthetic":True}), \
+                    patch.object(support,"validate_policy_observation",return_value={"synthetic":True}), \
                     patch.object(support,"validate_cpu_trace",return_value={"synthetic":True}):
                 result=support.validate_observers(receipt,{},root,False)
                 self.assertIsNone(result["presentation"])

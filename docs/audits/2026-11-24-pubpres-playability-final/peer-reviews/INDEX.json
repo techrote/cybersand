@@ -1,0 +1,36 @@
+{
+  "schema": "pubpres-endpoint-causal-independent-peer-index-v1",
+  "files": [
+    {
+      "path": "submerged-endpoint-independent-peer.json",
+      "bytes": 32259,
+      "sha256": "629d9b375715aed8900ca51dce653cc727356666b8dc02c1ae4c17d8ee2af905"
+    },
+    {
+      "path": "audit_endpoint_reproduction.py",
+      "bytes": 11135,
+      "sha256": "5a82c59bc2431746d0ac7f965c668aeebf144729fbd22aef634fe06c7224a29e"
+    },
+    {
+      "path": "causal-entry-retained-data-independent-peer.json",
+      "bytes": 316085,
+      "sha256": "8e21780974ce604ba6cfe92422e62c141a26e8cadc21578782d0a219b6e5ec7a"
+    },
+    {
+      "path": "replay_causal_entry_peer.py",
+      "bytes": 6295,
+      "sha256": "4b2a1669d424ffcd1df712e833a0111c811802f93b93d1b7b066e105d9d2887f"
+    },
+    {
+      "path": "causal-entry-retained-data-independent-peer.original.json",
+      "bytes": 313656,
+      "sha256": "603ee837252c343a1d70f7e9cab870eace545553d0670feb2a299f9ef296172d"
+    },
+    {
+      "path": "replay_causal_entry_peer.original.py",
+      "bytes": 4653,
+      "sha256": "184610d580d2d30e8271c601b10b0597b2e8440deac8224c9f924e58655d7de2"
+    }
+  ],
+  "scope": "Read-only independent retained-evidence replays. Original peer retained across causal reader hardening. No new application execution or changed performance result."
+}

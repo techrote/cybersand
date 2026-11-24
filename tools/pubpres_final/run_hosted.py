@@ -21,7 +21,7 @@ def main():
         parser.add_argument("--" + key, type=Path, required=True)
     args = parser.parse_args()
     phase = os.environ.get("PUBPRES_FINAL_PHASE")
-    if phase not in ("development", "final", "delivery"):
+    if phase not in ("development", "final", "delivery", "progression"):
         raise ValueError("Missing verified campaign phase")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -38,6 +38,11 @@ def main():
     report["prospectively_retired_experiments"] = {
         "sha256": hashlib.sha256(retired_path.read_bytes()).hexdigest(),
         "record": json.loads(retired_path.read_bytes())}
+    if phase == "progression":
+        scope = ROOT / "tools/pubpres_final/progression_scope.json"
+        report["prospective_progression_scope"] = {
+            "sha256": hashlib.sha256(scope.read_bytes()).hexdigest(),
+            "record": json.loads(scope.read_bytes())}
     def save():
         (output / "INVENTORY.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     def run(label, arguments, seconds):
@@ -69,14 +74,28 @@ def main():
         observer_ok = run("observer-calibration", [*common, "--mode", "observer-abba", "--slots", "2",
             "--case", primary[0], "--case", primary[1], "--output", str(output / "observer-calibration")], 4800)
         if observer_ok:
+            if phase == "progression" and windows:
+                # Existing exact producer clocks answer the still-open small
+                # Windows workload. Retain tracing OFF/ON/ON/OFF perturbation;
+                # never treat the enabled timing as optimization evidence.
+                run("causal-wave512", [str(ROOT / "tools/pubpres_final/run_causal_comparison.py"),
+                    "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
+                    "--correctness-summary", str(output / "correctness/SUMMARY.json"),
+                    "--output", str(output / "causal-wave512")], 2400)
             run("mixed-eight-actor", [str(ROOT / "tools/pubpres_final/run_mixed_qualification.py"),
                 "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
                 "--correctness-summary", str(output / "correctness/SUMMARY.json"),
                 "--output", str(output / "mixed-eight-actor"), *display], 1500)
-            run("material-deadlines", [str(ROOT / "tools/pubpres_final/run_deadline_comparison.py"),
-                "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
-                "--correctness-summary", str(output / "correctness/SUMMARY.json"),
-                "--output", str(output / "material-deadlines"), *display], 7200)
+            if phase != "progression":
+                run("material-deadlines", [str(ROOT / "tools/pubpres_final/run_deadline_comparison.py"),
+                    "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
+                    "--correctness-summary", str(output / "correctness/SUMMARY.json"),
+                    "--output", str(output / "material-deadlines"), *display], 7200)
+            else:
+                run("material-completed-steps", [str(ROOT / "tools/pubpres_final/run_material_steps_comparison.py"),
+                    "--source", str(ROOT), "--runtime", str(runtime / "C"), "--engine", str(engine),
+                    "--correctness-summary", str(output / "correctness/SUMMARY.json"),
+                    "--output", str(output / "material-completed-steps"), *display], 4800)
             observed_common = [*common, "--presentation-observer"]
             run("source-abba", [*observed_common, "--mode", "source-abba", "--case", primary[0], "--case", primary[1],
                 "--output", str(output / "source-abba")], 4800)

@@ -689,6 +689,8 @@ func _consume_plan() -> void:
 		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
 		_notify_history(job,{"status":"refused","reason":_message},false)
 		return
+	if host.has_method("material_edit_admitted"):
+		host.material_edit_admitted()
 	_operation = {"kind":"edit","operation_id":admitted.operation_id,"job":job,"planned":planned}
 	_say(str(job.label)+" queued · awaiting native confirmation…")
 

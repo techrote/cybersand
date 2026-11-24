@@ -1,0 +1,38 @@
+{
+  "schema": "pubpres-causal-completion-native-peer-review-v1",
+  "reviewer": "native/progression specialist, independent of root implementation",
+  "review_scope": "Four exact working-tree sources before hosted execution; source/provenance/authority review plus bounded parser tests only.",
+  "reviewed_root_head": "eedb95b4f0560f6454999c193f3e43cc460e01e7",
+  "reviewed_files_sha256": {
+    "tools/pubpres_final/run_causal_comparison.py": "e469ef4cf3f17b2c2d4a19c4a1beef8ed3d1b77d1214a56ef0909a4d3727f9bd",
+    "tools/pubpres_final/causal_completion_contract.py": "ffa71febfba4066694a7b694ec9ac4cc5c0c9ac90ff68752dc38c1708a33af1d",
+    "tools/pubpres_final/causal_completion_registration.json": "3379642aafbb59bb60f4a2b1b23a2093c38fb916acb988c1f42dfe6693e7814a",
+    "tools/pubpres_final/test_causal_completion_contract.py": "04ac7e08c099c2fce29d90377eba27858b44b0a7fda914657857f67af232864c"
+  },
+  "result": "NO_BLOCKING_SOURCE_FINDING",
+  "findings": [
+    "Fixed prospective Windows Wave512 OFF/ON/ON/OFF has exact native/application/official engine controls and explicit Full2/Early/coherent/deadline0/count0.",
+    "Original complete physical and causal reducers remain unchanged and current driver custody covers their exact bytes. Every ON actual completion must retain its exact native-application and transaction-exit join. Missing producer boundary joins remain explicit.",
+    "Count0 baseline validator is supplied by reviewed count-driver API; absent legacy capability is source-bound, not accepted from arbitrary null.",
+    "Original source/base/causal sidecar hashes authenticate observed_intervals before unchanged union/partition algebra. No native start is inferred from a duration.",
+    "Same-source physical outcome parity and complete hardware/workload matching precede interpretation. All four ON/OFF perturbation ratios are retained and no optimization winner is issued.",
+    "Full presentation windows retain withheld and censored observations. Hosted clocks do not establish GPU completion, scanout or physical NVIDIA acceptance."
+  ],
+  "local_test": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/pubpres_final",
+      "-p",
+      "test_causal_completion_contract.py",
+      "-v"
+    ],
+    "returncode": 0,
+    "methods": 6,
+    "scope": "Synthetic parser/registration controls; no actual graphical or physical process."
+  },
+  "physical_acceptance": "HOLD"
+}

@@ -89,6 +89,19 @@ timing. The original physical mailbox, terrain admission and Rapier step gates
 remain authoritative. A new submitted-pose/CPU observer is separately calibrated
 before its measurements are used in comparisons.
 
+A separate default-off [completed-step material experiment](../audits/2026-11-24-pubpres-playability-final/completion-count-architecture.md)
+omits an accepted Full2 transaction until two real completed steps beyond the
+last actual upload or a first-offer scheduled deadline. It preserves one
+cumulative packet, ordinary paint priority and exact accepted histories/ACKs.
+It cannot stack with the 30/60 Hz policy. Its local authority tests pass;
+graphical correctness, physical benefit and freshness remain unqualified.
+The [prospective count measurement contract](../audits/2026-11-24-pubpres-playability-final/completion-count-measurement.md)
+adds exact seven-pair/14-boundary GPU/ACK reconstruction, source-bound ordinary
+count0 controls and same-source0/2/2/0 comparisons. Actual deferred replacement
+and independently joined two-completion eligibility must be observed. Count-only,
+simultaneous count/deadline and deadline-only cases remain distinct; hidden and
+censored presentation episodes accompany visible-pose freshness.
+
 ## Comparison and evidence contract
 
 [Prospective registration](../../tools/pubpres_final/registration.json) defines
