@@ -1,0 +1,36 @@
+{
+  "build_inputs": 1283,
+  "contract_file": "actor-custody-replay-contract.json",
+  "contract_sha256": "172f77d2f56c6cece5c7ddebdd10abf3c4a2e800d76e859ee7b918e34958583c",
+  "new_product_execution": false,
+  "original_qualification_attempt": "1",
+  "original_qualification_run": "45112739808",
+  "original_qualification_source": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+  "original_semantic_reducer_replay": [
+    {
+      "case_count": 42,
+      "report_sha256": "c98552bac765bf45c99b54cac482c7bd7d6587e65c97a553d4ad097db3273366",
+      "role": "linux",
+      "status": "passed"
+    },
+    {
+      "case_count": 42,
+      "report_sha256": "ecffe70c3b4543dee9892cc978e1b99b2a15a9f1fe2710e69b30362d8f69d11b",
+      "role": "windows",
+      "status": "passed"
+    },
+    {
+      "case_count": 18,
+      "report_sha256": "eda699699bca4cc2acdf996597f8010611fb8c8e757a09942d8bfc771a5bd7ca",
+      "role": "installed-windows",
+      "status": "passed"
+    }
+  ],
+  "reducer_dependency_verification_file": "reducer-imports-verified.json",
+  "result_file": "actor-custody-replay-result.json",
+  "result_sha256": "c59f4f99ea29a72f2a05db4f5a344aa3ac1b61f940708441161781f5694bbc6a",
+  "source_inputs": 105,
+  "source_selector_sha256": "2d9da3ba94f4c829a89fcbadc247518825db8a621601137359f019bc66e03822",
+  "trusted_acquisition_record": "actor-custody-replay-acquisition.json",
+  "trusted_acquisition_record_sha256": "d13c0a0b6aeb44d2fd3a83e0d8b6e291327197dab26ad06d8b7c1456b4432f32"
+}
