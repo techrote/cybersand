@@ -132,3 +132,128 @@ Final source-bound hosted Linux, Windows and extracted Windows evaluator results
 GOLDMAPS recommendations remain recommendations. Source artwork, native geometry, schema/policy admission, graphical qualification and owner acceptance retain their original identities. A reference card, including one for an originally refused native map, can inform an authored strategy without admitting its artwork as a native module.
 
 Future powerful planners or compact detail workers can produce the same bounded typed stages. Each delegated result still passes through host inspection, compilation, owner decision and exact native receipts. Model training or a new hierarchical solver is not required to use the implemented independent authoring pathway.
+
+## Windows package qualification and owner review
+
+The following review separates the implemented packaging sequence from a result
+actually observed in a particular campaign. Use the canonical final decision
+packet to identify the completed run, source commit, archive SHA-256 and native
+DLL hash. This worksheet cannot supply a missing run result or physical owner
+acceptance.
+
+### Required extracted-evaluator sequence
+
+The existing `world-steer-batch-qualification.yml` workflow keeps four jobs:
+source/experiment guards, Linux native and graphical qualification, the pinned
+Windows cross-build, and Windows graphical execution plus extracted evaluation.
+The Windows job performs the following dependent gates:
+
+| Gate | Concrete authority and required observation |
+| --- | --- |
+| Native custody | Verify the downloaded candidate's source commit/tree and native build inputs before copying the DLL; verify the Rapier hash and official Godot 4.7 archive pin. A successful build alone is not an application qualification. |
+| Windows source execution | Run `qualify.py --graphical --regressions --architecture` against the checked-out application. It requires real native modules, fresh-process reopen, stage contracts, six typed constructions, three modular constructions, the 30-case offline comparison, all nine rendered planes and interactive module controls. Existing ordinary Workbench/Art regressions remain in this source run. |
+| Committed-source packaging | The accepted packager reads `git archive HEAD`, installs the verified candidate DLL, engine, Rapier, runtime dependencies and notices, and creates `candidate-manifest.json`. It does not package arbitrary working-tree code or editor caches. |
+| Architecture evidence attachment | `bundle_architecture_evidence.py` accepts only a clean, passed, graphical Windows report with the same source and native hash. It first verifies every existing package payload hash, then adds bounded `architecture-evidence/` files and their provenance to the package manifest. Imported files still do not gain fresh native authority. |
+| Archive and fresh extraction | Compress the complete evaluator, record the outer ZIP SHA-256, and extract it into a new directory under the runner's temporary path. The extracted application is distinct from the source checkout. |
+| Extracted execution | Run `qualify.py --package <extracted-directory> --project <extracted-directory>/godot --godot <extracted-console-engine> --graphical --architecture`. Before execution, verify all packaged file hashes, runtime provenance, source/tree/input identities and runtime dependencies. Run the Batch and architecture suites with a separate user-data root; require an unchanged application identity afterward. This package run does not repeat the additional `--regressions` group already required by the source run. |
+| Publish qualified candidate | Publish the owner ZIP and checksum only after extracted execution succeeds. Preserve the Windows logs and outcomes even on failure. The package remains Draft/HOLD. |
+
+The archive contains the completed **source Windows** evidence and
+`architecture-evidence/source-qualification.json`. The later **extracted
+Windows** qualification report is retained in the campaign's
+`evidence/extracted-evaluator/` output. These two reports describe different
+executions and must not be conflated. Both should identify the same frozen
+application source and native bytes; the extracted report must say
+`packaged: true` and `graphical: true`.
+
+Hosted Windows graphics use Godot's compatibility renderer with the
+`opengl3_angle` driver. The shipped shortcut performs a headless project import,
+then launches the packaged GUI engine through `--workbench` using the project's
+normal compatibility settings. Qualification exercises that application route
+through the console engine; it does not record a physical owner double-click or
+certify the owner's default GPU driver. Record those observations separately.
+
+### Concrete owner walkthrough
+
+Use the [owner guide](../../operations/world-steer-architecture.md) for the full
+controls. Start in a writable extracted directory and keep the complete package
+together. The following checks use the offline authoring path and require no
+model credentials. Record a pass, refusal, failure or untested result for each
+row; a refusal can be the correct result for a deliberately invalid proposal.
+
+| Review step | Owner action and evidence to retain |
+| --- | --- |
+| Confirm the candidate | Compare the ZIP SHA-256 with the published checksum. Record `candidate-manifest.json` source commit, native DLL hash, Godot version, Windows build, GPU and driver. Launch **Open Workbench.cmd**. Record whether import and the actual window open successfully on this machine. |
+| Establish a known World | In ordinary Workbench, create a paused **512 × 512** Empty canvas. Open **Architecture…**. Inspect the live canvas and window layout at the intended display scale. Opening the panel should create no construction or provider request. |
+| Construct a complete typed example | Select **Assembly hangar**, then **Load example**. Preview the structure stage and inspect its region, projection and exact host cost. The live native canvas should remain unchanged until approval. Approve, wait for **completed**, inspect the receipt/result, then repeat for services and detail. Retain the final session and a screenshot of the actual Workbench view. |
+| Exercise real reusable parts | On another blank canvas, use **Build 8 starter parts**. Confirm the live World and existing Batch experiment remain intact. Search for **return pipe**, inspect its source/material identities, and propose repeated mirrored placements inside a declared region. Review the zero-write projection, then approve and inspect the native result. Use the ordinary Undo and Redo controls to verify the geometry reverses and returns. |
+| Try a complete module composition | Load **Modular assembly hangar**, **Modular service stack** or **Modular transfer viaduct** after the starter library exists. Inspect the pinned module references and complete its three stages. Judge repetition, connections and useful open space in the actual material geometry. Optional seeded thinning is a separate detail experiment; it does not promise continued structural connectivity. |
+| Harvest and roundtrip | Name/tag and harvest a supported region from the actual World, or select a completed non-blinded Batch tile and harvest it. Export its module, then import it in a fresh application session. Its retained provenance should be historical until fresh native observation. An identity placement with no palette or thinning can establish original-module authority only when the full observed crop, including Empty cells, matches exactly. Transformed variants retain their separate stage evidence. |
+| Check refusal and revision | Preview a proposal, then make a small ordinary edit inside its inspected region before approving. Approval should refuse the stale source. Repreview or revise deliberately. Also try an out-of-region placement or a protected intersection: preview should refuse without construction. Restore a valid proposal and confirm **Skip** does not satisfy a dependent stage. |
+| Check Stop and recovery | Start a sufficiently large proposal and request **Stop / cancel** while it is applying. If it already finished, record completion rather than manufacturing a partial result. Otherwise inspect the acknowledged prefix and partial/cancelled record; pending suffixes must not appear as completed geometry. Use ordinary Undo or a newly inspected recovery stage. Preserve the original stopped/refused record. |
+| Retrieve useful context | Enter a concrete architectural intent in **References** and inspect the small returned context pack. Check whether topology, space, connections and module compatibility help the intended construction. Source observations and authored interpretations should remain distinguishable; a Gold recommendation is not owner acceptance or permission to import refused source geometry. |
+| Save and reopen | Save the architecture session, modules and the ordinary Workbench **Save start** separately. Exit the application completely. Reopen the authored World and then the session. Inspect actual geometry and module identities. The session should resume no queued work and should require fresh inspection/approval for further construction. Imported historical receipts should remain identifiable. |
+| Play and judge the architecture | After saving the authored start, use ordinary Workbench actor/inspection controls, choose the actor and spawn location explicitly, and test the intended routes with Play/Step. Record headroom, access, recovery routes, collisions, visibility and any material behavior that matters. Compare multiple scales and families in true side elevation. Static connected components and rectangular clearance tests do not replace this gameplay observation. |
+
+For visual judgement, record the example, camera/view, stage and any changes
+made. Useful questions are whether major supports appear believable, required
+connections read clearly, rooms and passages have purpose, detail responds to
+its host, and asymmetry remains coherent. The owner's named-example review is
+valuable subjective evidence, but it is not a blinded experiment and should not
+be reported as one.
+
+For modular examples, **Load example** binds a new proposal to the modules
+actually present in the current library. A bundled modular `*-plan.json` instead
+pins the original harness's `source-part-library.json`; newly built starters or
+the separately harvested `modules/*.module.json` can have the same geometry but
+different provenance/content hashes. A mismatch is a correct refusal. Exact
+programmatic replay can bind `Library.load_library` to the paired original
+library. The shipped UI imports individual module documents and its example
+picker supplies the straightforward local replay route; it does not provide a
+bulk-library import control. Bundled whole-composition `stages/*-module.json`
+(typed examples) and `stages/modular-*.module.json` (modular examples) remain
+directly importable as individual modules.
+
+### Acceptance record
+
+Retain a short record with the package/source/runtime identities, device and
+driver, completed steps, exact refusals or errors, saved sessions/World starts,
+screenshots, chosen actor and tested routes. Keep at least these conclusions
+separate:
+
+- **Hosted qualification:** the named source Windows and extracted Windows
+  reports passed or failed their required gates.
+- **Physical interaction:** the owner actually launched and operated this
+  package on the recorded machine and driver, with observed limitations.
+- **Architectural preference:** the owner accepts, requests revision of, or has
+  not reviewed each construction's visual and spatial qualities.
+- **Gameplay acceptance:** the specified actor/routes and relevant dynamic
+  behavior passed, failed, or remain untested.
+- **Model/Art integration:** this remains an offline typed-plan prototype until
+  the separately owned Art adapter and an authorized genuine-model campaign are
+  completed. A successful manual session does not qualify inference quality.
+
+Owner observations do not automatically merge the implementation, promote the
+PR to Ready, alter physical defaults, authorize inference spending or establish
+GOLDMAPS acceptance. Record an explicit disposition and unresolved gates in the
+canonical decision packet.
+
+### Independent comparison audit
+
+`independent-native-comparison-review.py` is an evidence-only review tool in this
+audit directory. It imports no application compiler or production evaluator.
+Run it against an extracted `architecture/comparison` directory to independently
+reconstruct every before/after plane and original native receipt readback hash,
+check the matched realized detail budget and protection, and report declared
+anchor contacts. It writes `independent-stage-audit-c.json` beside the original
+unchanged evidence:
+
+```text
+python docs/audits/2026-11-24-world-steer-m3-m5/independent-native-comparison-review.py <comparison-evidence-directory>
+```
+
+Its current thirty-case controls deliberately give the four nonrandom strategies
+the same geometry inside each matched block. Native equivalence and contextual
+diagnostic separation from random placements are useful engineering results;
+they establish no reference/retrieval superiority, aesthetic preference or
+language-model optimization.

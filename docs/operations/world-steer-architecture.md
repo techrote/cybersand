@@ -17,7 +17,7 @@ and the ordinary Workbench history. No model account is required for the offline
 typed plans, starter parts or example constructions.
 
 The [integration ledger](../audits/2026-11-24-world-steer-m3-m5/integration-ledger.md)
-and final decision packet identify the tested source, runtime, campaign and
+and [final decision packet](../audits/2026-11-24-world-steer-m3-m5/FINAL-DECISION-PACKET.md) identify the tested source, runtime, campaign and
 Windows package. A successful hosted graphical run does not establish physical
 Windows/NVIDIA or owner gameplay acceptance. Keep the candidate Draft/HOLD.
 
@@ -69,6 +69,11 @@ material plane and computes the exact proposed footprint, material permissions,
 protected cells, clearances, connection requirements and execution budget. The
 image is explicitly a projection. It has performed no writes and has not
 simulated physics. Empty previews or queued commands are not completed geometry.
+
+New module selections and fresh previews fit their complete material extent.
+Use **Fit** to restore that view, **1:1** for one cell per view pixel, the mouse
+wheel to zoom and a right/middle drag to pan. Ordinary session refreshes retain
+your chosen inspection framing.
 
 Review the stage JSON and projected material result. **Approve stage** performs
 a fresh native inspection. If the World, dependencies or plan changed since the
@@ -174,7 +179,7 @@ not an architectural quality score.
 **Save session…** retains the finite plan and historical execution records in a
 separate architecture document. **Open session…** reopens it for review and
 fresh inspection. It does not replay pending writes automatically, trust imported
-completion flags or replace the current World. Use ordinary Workbench **Save**
+completion flags or replace the current World. Use ordinary Workbench **Save start [Ctrl+S]**
 to retain the authored World itself, and save/export the modules separately.
 
 On reopening a World and session, compare the actual native material geometry
@@ -184,14 +189,32 @@ When a stage fails or stops, inspect its exact partial result, then deliberately
 revise, undo or propose a recovery stage. The retained record keeps the failure
 and acknowledged prefix visible.
 
+The preview pane may retain its last projected image after completion,
+cancellation or a plan change while the label says **No current approval preview**.
+It is not a continuously refreshed native World view. **Inspect + preview**
+creates a new projection of the current source; native receipts and final
+readback establish completed construction.
+
 The evaluator's qualification evidence contains source/runtime hashes, native
 module manifests, full material planes, stage receipts, saved examples, actual
 graphical captures and fresh-process reopen results. Material-ID diagnostic
 images are labelled separately from rendered application captures. The packaged
 `architecture-evidence/` directory contains the completed source Windows outputs
 and a separately hashed provenance manifest. Import its `modules/*.module.json`
-or `stages/*-module.json` through **Import module…**; inspect the adjacent native
+or `stages/*-module.json` (typed examples) and `stages/modular-*.module.json`
+(modular examples) through **Import module…**; inspect the adjacent native
 planes, recipes and receipts as historical evidence.
+
+For interactive modular-example replay, build the starter parts and use the
+shipped example picker. It pins the current library's actual module identities.
+The archived modular `*-plan.json` recipes instead pin the accompanying
+`stages/source-part-library.json`, including its original native provenance;
+equivalent geometry from a fresh harvest has a different content identity and
+correctly refuses those old pins. Exact programmatic replay pairs the archived
+plan with that library through `NativeModuleLibrary.load_library(path)`. The UI
+imports individual module documents rather than whole-library JSON. An exported
+whole-composition `*-module.json` (typed) or `modular-*.module.json` (modular)
+is directly importable through the module UI.
 
 ## Integration and acceptance boundaries
 

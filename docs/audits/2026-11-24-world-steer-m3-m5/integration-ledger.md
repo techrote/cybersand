@@ -137,3 +137,45 @@ nine-example selection, actual starter harvesting, six mirrored placements,
 historical-only import and exact native replay qualification. The corrected
 primary recipes and required nine rendered outcomes still require the final
 source-bound hosted campaign.
+
+## Final qualification and archival closure
+
+The [final decision packet](FINAL-DECISION-PACKET.md) closes the pending
+qualification entries above. Final application source
+`fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52`, tree
+`ce012a8c6b616ab038d4dc65f4ac1896a6388795`, passed all four jobs in campaign
+[45454711939](https://github.com/techrote/cybersand/actions/runs/45454711939):
+47/47 Linux process cases, 47/47 Windows source cases and 29/29 freshly extracted
+Windows evaluator cases. Accepted Art session logging also passed on both
+platforms at this source. The final packet/evidence commit is archival only;
+it is not substituted for this tested application identity.
+
+The first M3–M5 source `1fb4fbb5b1edd6cee16ee9094691f3438f8577eb` also passed
+all four campaign jobs. Final screenshot review nevertheless found clipped
+module/stage inspector framing. The narrow correction fits new content, adds
+Fit/1:1 controls and directly tests/captures visible bounds, navigation and
+resizing. No native source, recipe, corpus or experimental registration changed.
+Original successful reports and the defective UI captures remain preserved.
+
+Cross-review at final source verified nine exact native planes, 27 completed
+stages, 76 receipt chunks, nine native Godot frames and three actual UI captures
+per environment. Native planes agree across all three environments; the final
+Windows source and extracted images agree byte-for-byte. Each platform
+replicates the same thirty registered comparison attempts. All four contextual
+arms converge; no retrieval-causality or model-quality claim follows.
+
+The final interactive Windows ZIP is 97,970,858 bytes with SHA-256
+`d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da`.
+Lead and independent specialist audits checked all 1,330 manifest-listed files,
+59 application identities, 105 native inputs and 204 embedded evidence files.
+[Final hosted custody](hosted-custody-45454711939.json),
+[qualified observations](qualified-observations-custody.json) and
+[independent review custody](evidence/reviews/manifest.json) keep original
+runner outputs separate from later read-only analyses. The original 75-attempt
+pilot and 72 evaluable planes are included in the durable evidence archive.
+
+All three specialists cross-reviewed the final packet and owner workflow.
+Art conversation integration, authorized model execution, blinded/human
+preference and physical owner Windows/gameplay acceptance remain explicit
+gates. M6/M7 has bounded typed interfaces, not a claimed model dispatcher.
+Disposition remains **Draft / HOLD**; no merge or Ready promotion occurred.
