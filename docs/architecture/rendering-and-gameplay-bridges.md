@@ -94,6 +94,30 @@ remove the later stalls. See
 [`_create_material_texture_pair`](../../godot/scripts/main.gd), and the linked
 evaluation for exact source/platform evidence and remaining acceptance gates.
 
+**PUBPRES-PLAYABILITY-FINAL experiment, default off:** with explicit Full
+publication and `CYBERSAND_DIAG_FULL_IMAGE_SLOTS=3`,
+[`CyberFullImageRingPublisher`](../../godot/scripts/full_image_ring_publisher.gd)
+owns exactly three persistent R8/RG8 ImageTextures. Main updates the spare that
+was absent from its preceding current/previous pair, then rotates the exact
+current and previous histories. A queued upload owns an immutable Image copy.
+The selector does not change native ticks, physics admission, ACKs, material
+timing, camera or World-generation blending. Missing or other selector values
+retain the ordinary two-slot Full path; Blit remains separately selected.
+Structural refusal rebuilds the exact two CPU histories before ACK.
+
+The additional declared logical storage is one full plane (8 MiB for 2048-square
+RG8). Three slots provide reuse distance, not a GPU fence or bounded driver wait.
+Source identity, slot count, stable resource IDs, logical byte count and upload
+destination are exposed in `material_publication_status()`. The distinct
+[ring transition oracle](../../godot/tests/pubpres_full_image_ring_oracle.gd)
+retains the 180-admission tape and first current/previous GPU read comparisons;
+the original two-slot oracle stays unchanged. The
+[queued publication fixture](../../godot/tests/test_full_image_ring_publication.gd)
+also wraps and poisons caller Images, tests R8/RG8 and NPOT sizes, and rejects
+foreign owners and invalid shape/format. These are correctness requirements;
+the experiment remains Draft/HOLD until matched actual Rapier and ordinary
+Workbench evidence establishes its end-to-end effect.
+
 No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.

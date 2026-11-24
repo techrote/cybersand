@@ -42,6 +42,13 @@ rendering does not establish physical Windows/NVIDIA acceptance.
 
 ## Workbench publication and progression repair — 2026-11-20
 
+**Physical playability continuation, 2026-11-24:**
+[PUBPRES-PLAYABILITY-FINAL-001](pubpres-playability-final-001.md) continues the
+frozen #757 source on `codex/pubpres-playability-final-001-20261124`. It owns the
+current implementation and prospective qualification work. The predecessor's
+completed captures include negative physical results; they do not establish
+playability. All work remains Draft/HOLD without production default promotion.
+
 **Completion successor, 2026-11-22:** [Draft/HOLD #757](https://github.com/techrote/cybersand/pull/757)
 is the current-main integration candidate for PUBPRES-COMPLETION-001. Use its
 [canonical handover](pubpres-completion-001.md) for current source, bounded

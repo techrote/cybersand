@@ -309,6 +309,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Workbench sparse publication, physical progression and timed presentation evaluation | [PUBPRES-INTEGRATION-001](../operations/pubpres-integration-evaluation.md) |
 | Playability successor, reachable staging, native probes, default-off same-frame continuation, v3 M/I/C measurements and Windows reopen | [PUBPRES-PLAYABILITY-001 and pending acceptance](../operations/pubpres-playability-evaluation.md), [additive retrieval questions](retrieval-questions-pubpres-playability.json) |
 | Current-main PUBPRES recovery, bounded physical/renderer repairs, exact-source Windows delivery and unresolved completion gates | [PUBPRES-COMPLETION-001 handover](../operations/pubpres-completion-001.md) |
+| Active frozen-757 continuation, occupied-mask bounds, bounded full-image ring, recovered EGL handoff and prospective physical qualification | [PUBPRES-PLAYABILITY-FINAL-001 handover](../operations/pubpres-playability-final-001.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Desktop gameplay-state recording, frame format, bounded drops and evidence limits | [Gameplay recording](../operations/gameplay-recording.md), [ownership](../architecture/data-ownership-and-lifetimes.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |

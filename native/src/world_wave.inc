@@ -134,6 +134,12 @@ struct World::WaveState {
     [[nodiscard]] std::int32_t oil_drop_threshold() const noexcept { return maximum / 4; }
     std::uint32_t round = 0;
     bool mask_present = false;
+    // Exact occupied bounds, rebuilt by the exclusive owner before dispatch.
+    // The configured mask region is storage capacity, often the whole canvas;
+    // probing every cell of that allocation for one small body is redundant.
+    // Keep the original region for dry/clean classification so this elides
+    // only lookups known to return zero, without changing derived state.
+    RectI64 occupied_mask_bounds{};
     // Hybrid release. `launch` and `final_round` are tick-local; `launch_backoff`
     // is carried state: the tick after a refused or deferred launch spills natively.
     bool launch = false, final_round = false, launch_backoff = false;
@@ -455,6 +461,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     const auto& mask = transient_obstacles_->region;
     std::int32_t mask_first = 0, mask_last = 0;
     std::int32_t mask_first_x = 0, mask_last_x = 0;
+    std::int32_t occupied_first = 0, occupied_last = 0;
+    std::int32_t occupied_first_x = 0, occupied_last_x = 0;
     if (state.mask_present) {
         const auto clipped_y = wave_clip_mask_axis(origin_y, rows, mask.y, mask.height);
         mask_first = clipped_y[0];
@@ -462,6 +470,13 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         const auto clipped_x = wave_clip_mask_axis(origin_x, size, mask.x, mask.width);
         mask_first_x = clipped_x[0];
         mask_last_x = clipped_x[1];
+        const auto& occupied = state.occupied_mask_bounds;
+        const auto occupied_y = wave_clip_mask_axis(origin_y, rows, occupied.y, occupied.height);
+        occupied_first = occupied_y[0];
+        occupied_last = occupied_y[1];
+        const auto occupied_x = wave_clip_mask_axis(origin_x, size, occupied.x, occupied.width);
+        occupied_first_x = occupied_x[0];
+        occupied_last_x = occupied_x[1];
     }
     constexpr std::uint32_t kMaximumGroup = 64;
     bool skip[kMaximumGroup] = {}, empty[kMaximumGroup] = {};
@@ -526,8 +541,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
             }
         }
-        if (masked_column) {
-            for (auto r = mask_first; r < mask_last; ++r) {
+        if (masked_column && lx >= occupied_first_x && lx < occupied_last_x) {
+            for (auto r = occupied_first; r < occupied_last; ++r) {
                 const auto body = transient_obstacle_at(origin_x + lx, origin_y + r);
                 if (body == 0U) continue;
                 // Water resting on a body presses it down (the existing contract).
@@ -1433,6 +1448,26 @@ void World::advance_wave_flow(TickStats& stats) {
             scratch.launch_overflow = 0;
         }
     state.mask_present = !transient_obstacles_->occupied_indices.empty();
+    state.occupied_mask_bounds = {};
+    if (state.mask_present) {
+        const auto& mask = transient_obstacles_->region;
+        const auto mask_width = static_cast<std::size_t>(mask.width);
+        auto min_x = mask_width, min_y = static_cast<std::size_t>(mask.height);
+        std::size_t max_x = 0, max_y = 0;
+        for (const auto index : transient_obstacles_->occupied_indices) {
+            const auto x = index % mask_width, y = index / mask_width;
+            min_x = std::min(min_x, x); max_x = std::max(max_x, x);
+            min_y = std::min(min_y, y); max_y = std::max(max_y, y);
+        }
+        // Entries were admitted by set_transient_obstacle from representable
+        // global coordinates, even if the allocated region extends beyond an
+        // int64 endpoint. Do not form the allocated region's endpoint here.
+        state.occupied_mask_bounds = {
+            mask.x + static_cast<std::int64_t>(min_x),
+            mask.y + static_cast<std::int64_t>(min_y),
+            static_cast<std::int64_t>(max_x - min_x + 1U),
+            static_cast<std::int64_t>(max_y - min_y + 1U)};
+    }
     diagnostics.prepare_nanoseconds += elapsed(started);
     diagnostics.last_falling_units = diagnostics.last_falling_cells = 0;
     diagnostics.last_tasks = static_cast<std::uint32_t>(state.tasks.size());

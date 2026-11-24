@@ -1,6 +1,7 @@
 extends Control
 
 const MaterialPublisher = preload("res://scripts/blit_material_publisher.gd")
+const FullImageRingPublisher = preload("res://scripts/full_image_ring_publisher.gd")
 const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -1743,6 +1744,7 @@ var image: Image
 var texture: Texture2D
 var previous_texture: Texture2D
 var _material_blit_publisher: MaterialPublisher
+var _material_full_ring: FullImageRingPublisher
 var _material_publication_mode: String = ""
 var _material_publication_fallback: String = ""
 var _material_publication_last: Dictionary = {}
@@ -6493,6 +6495,26 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 
 
 func update_render_texture() -> void:
+	if _material_full_ring != null:
+		# finish_texture_upload has swapped Main's old pair. The third texture
+		# was absent from that pair; upload there, then bind the exact new pair.
+		if texture == _material_full_ring.previous and previous_texture == _material_full_ring.current \
+				and _material_full_ring.publish(image):
+			texture = _material_full_ring.current
+			previous_texture = _material_full_ring.previous
+			_material_publication_last = _material_full_ring.last_update.duplicate()
+			return
+		# Any structural refusal reconstructs both exact histories before ACK.
+		# Do not continue with a partially rotated or foreign resource.
+		_material_publication_fallback = "full image ring ownership or source refused"
+		_material_full_ring = null
+		var recovery_started: int = Time.get_ticks_usec()
+		texture = ImageTexture.create_from_image(image.duplicate())
+		previous_texture = ImageTexture.create_from_image(_material_previous_cpu_image())
+		_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width()*image.get_height()*render_channels*2,
+			"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec()-recovery_started,
+			"recovery_rebuilt_pair":true}
+		return
 	if texture is MaterialPublisher.MaterialPlane:
 		var regions: Array[Rect2i] = []
 		for offset: int in range(0, _material_pending_rectangles.size(), 6):
@@ -6542,6 +6564,7 @@ func _create_material_texture_pair(current: Image, previous: Image) -> void:
 		_material_publication_mode = OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION").to_lower()
 		if _material_publication_mode not in ["auto", "full", "blit"]: _material_publication_mode = "full"
 	_material_publication_fallback = ""
+	_material_full_ring = null
 	var publisher: MaterialPublisher
 	if _material_publication_mode != "full":
 		if MaterialPublisher.supported_driver():
@@ -6554,7 +6577,15 @@ func _create_material_texture_pair(current: Image, previous: Image) -> void:
 		texture = publisher.current
 		previous_texture = publisher.previous
 		_material_publication_last = publisher.last_update.duplicate()
-	else:
+	elif _material_publication_mode == "full" and OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") == "3":
+		_material_full_ring = FullImageRingPublisher.create_pair(current, previous)
+		if _material_full_ring != null:
+			texture = _material_full_ring.current
+			previous_texture = _material_full_ring.previous
+			_material_publication_last = _material_full_ring.last_update.duplicate()
+		else:
+			_material_publication_fallback = "full image ring creation refused"
+	if publisher == null and _material_full_ring == null:
 		var setup_started: int = Time.get_ticks_usec()
 		# Initial creation is queued too. These inputs may alias Main's mutable
 		# image, including reset/mode-switch followed by another same-frame edit.
@@ -6591,6 +6622,8 @@ func material_publication_status() -> Dictionary:
 	var result: Dictionary = _material_publication_last.duplicate()
 	result["requested_mode"] = _material_publication_mode
 	result["backend"] = "blit" if texture is MaterialPublisher.MaterialPlane else "full"
+	result["full_image_slots_requested"] = OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS")
+	result["full_image_slots"] = 3 if _material_full_ring != null else (0 if _material_blit_publisher != null else 2)
 	result["fallback_reason"] = _material_publication_fallback
 	result["policy"] = ""
 	result["driver"] = RenderingServer.get_current_rendering_driver_name()

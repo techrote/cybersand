@@ -171,6 +171,15 @@ are a numerical capacity contract, not a high-pressure physical model.
 
 ### Sparse work
 
+- The exclusive owner derives the exact bounding rectangle of the current
+  nonzero transient body cells before dispatch. The column pass probes only
+  that occupied rectangle, instead of the configured obstacle allocation
+  (which can cover a complete Workbench canvas for one small actor). The
+  original configured region still determines dry/clean metadata, so this
+  removes only lookups that must return zero. Cells, impulses, column order,
+  barriers and physical sample admission are unchanged. This scoped PUBPRES
+  successor is Draft/HOLD; [source proof and qualification](../audits/2026-11-24-pubpres-playability-final/native-architecture.md)
+  distinguish native measurements from whole-Workbench playability.
 - A chunk is solved until it is at exact rest, and again when an owner edit,
   kernel write, body mask or region re-entry touches it; its eight neighbours
   are solved with it. Rest means 30 consecutive ticks in which no cell changed

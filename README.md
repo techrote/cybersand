@@ -141,6 +141,11 @@ The [PUBPRES-PLAYABILITY-001 evaluation](docs/operations/pubpres-playability-eva
 routes the opt-in staging change, matched progression measurements and new
 Windows evaluator. Draft/HOLD; graphical and physical NVIDIA acceptance remain pending.
 
+The [PUBPRES physical playability successor](docs/operations/pubpres-playability-final-001.md)
+continues frozen #757 with occupied-mask bounds, an explicit three-slot publication
+experiment and source-exact physical comparisons. Qualification is in progress;
+the recovered negative controls and physical NVIDIA acceptance remain separate.
+
 The active Windows workspace is `C:/kybersand`; from there:
 
 ```text

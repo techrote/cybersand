@@ -1,0 +1,1852 @@
+{
+  "schema": "pubpres-final-historical-independent-reduction-v1",
+  "review_date": "2026-11-24",
+  "window": "First 144 original completed rapier_step events; 143 inter-completion gaps; elapsed rate from capture start to completion 144.",
+  "scope": "Independent trace SHA check and raw timing reduction, not a replacement of the full frozen V3 semantic reducer or replay of physical GPU hardware.",
+  "source_refs": {
+    "frozen_candidate": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "corrected_workflow_head": "53ad974603f4ae89e9a1c1bd19e9e2fcefbed83e",
+    "detached_audit": "bda07360cc0873d2ec182caa23c61a3ab9167c5e"
+  },
+  "artifacts": [
+    {
+      "run_id": 45105890195,
+      "artifact_id": 14787448688,
+      "zip_bytes": 24589929,
+      "zip_sha256": "a5494806d0e0590b6778fb2d64f6aee495a2acb94949e30c3c7769cdb90af459",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45105890195/artifacts/14787448688",
+      "downloaded_zip_crc_and_sha_verified": true
+    },
+    {
+      "run_id": 45078090513,
+      "artifact_id": 14779020615,
+      "zip_bytes": 45566707,
+      "zip_sha256": "6ef9b2f903253cdcb5ce418ae7b56cff237a27e961c7d6ed05b98bfefb228194",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45078090513/artifacts/14779020615",
+      "downloaded_zip_crc_and_sha_verified": true
+    },
+    {
+      "run_id": 45078090513,
+      "artifact_id": 14778950415,
+      "zip_bytes": 49419962,
+      "zip_sha256": "e4d0c605e29ea4c0e8d14cd90bd1b974881800034c5ba183504d1269e43cb4bd",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45078090513/artifacts/14778950415",
+      "downloaded_zip_crc_and_sha_verified": true
+    }
+  ],
+  "measurements": [
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 11.433383431137724,
+      "gap": {
+        "count": 143,
+        "max": 424.824,
+        "p50": 8.812,
+        "p95": 274.7241,
+        "p99": 291.31330000000014
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 91.123,
+        "p50": 3.2864,
+        "p95": 4.03116,
+        "p99": 52.83997199999952
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 340.107,
+        "p50": 3.902,
+        "p95": 269.512,
+        "p99": 281.35402999999997
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 248.481,
+        "p50": 0.1145,
+        "p95": 0.9755499999999998,
+        "p99": 144.41298999999998
+      },
+      "upload": {
+        "count": 43,
+        "max": 284.275,
+        "p50": 255.708,
+        "p95": 270.35290000000003,
+        "p99": 279.71211999999997
+      },
+      "main_callback": {
+        "count": 45,
+        "max": 285.211,
+        "p50": 255.953,
+        "p95": 271.2736,
+        "p99": 280.54436000000004
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "f821ea7ad4f86f164aaad5e04645d84ca2c46b08dcb4da154796f8b517ddb20b",
+      "artifact_id": 14787448688,
+      "receipt_relative_path": "wave512/wave_512_follow/0-C/receipt.json",
+      "receipt_sha256": "1cb714ac3cdf0cf790f328c72bb5805fce271f61f796e18391aa0d3be6b4c6ea",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 11.148868440178076,
+      "gap": {
+        "count": 143,
+        "max": 537.394,
+        "p50": 8.842,
+        "p95": 277.62469999999996,
+        "p99": 282.6718
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 11.8906,
+        "p50": 3.25945,
+        "p95": 3.875905,
+        "p99": 6.58293699999999
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 531.594,
+        "p50": 3.743,
+        "p95": 271.88595,
+        "p99": 278.09968999999995
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 168.108,
+        "p50": 0.1135,
+        "p95": 0.3774999999999997,
+        "p99": 132.76820999999984
+      },
+      "upload": {
+        "count": 44,
+        "max": 499.483,
+        "p50": 254.755,
+        "p95": 270.603,
+        "p99": 402.23463000000004
+      },
+      "main_callback": {
+        "count": 46,
+        "max": 500.402,
+        "p50": 255.50150000000002,
+        "p95": 271.52925,
+        "p99": 398.61154999999934
+      },
+      "gap_gt500": 1,
+      "trace_sha256": "f3bd6de7f1cf13d8e6875b134e4e88c10fe941ddfc95db6a574a9bf707e753d0",
+      "artifact_id": 14787448688,
+      "receipt_relative_path": "wave512/wave_512_follow/1-C/receipt.json",
+      "receipt_sha256": "815def3542fbe511ff5570e2bbee70c89b10352cc85a19a8a28c1fc9d876162b",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 10.694177636677345,
+      "gap": {
+        "count": 143,
+        "max": 285.732,
+        "p50": 8.916,
+        "p95": 277.1778,
+        "p99": 284.13522
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 52.508,
+        "p50": 3.2792000000000003,
+        "p95": 6.43955,
+        "p99": 26.364125999999807
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 279.968,
+        "p50": 4.2165,
+        "p95": 271.3637,
+        "p99": 277.67584999999997
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 151.296,
+        "p50": 0.1295,
+        "p95": 0.4731999999999997,
+        "p99": 116.90076999999954
+      },
+      "upload": {
+        "count": 46,
+        "max": 273.413,
+        "p50": 253.7285,
+        "p95": 267.26824999999997,
+        "p99": 273.00620000000004
+      },
+      "main_callback": {
+        "count": 47,
+        "max": 274.653,
+        "p50": 254.436,
+        "p95": 268.3799,
+        "p99": 274.28868
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "5e6b47f48600c1bf6c81603debd51d705cff51873c7e3afd05ce1129367dbd96",
+      "artifact_id": 14787448688,
+      "receipt_relative_path": "wave512/wave_512_follow/2-C/receipt.json",
+      "receipt_sha256": "311bf63a7834eaa7185deeeac81304d7b69e7000aa009594c39ac0adb32f19f2",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 10.874960833148874,
+      "gap": {
+        "count": 143,
+        "max": 288.365,
+        "p50": 8.9,
+        "p95": 279.22290000000004,
+        "p99": 282.92502
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 9.5103,
+        "p50": 3.34645,
+        "p95": 5.6718399999999995,
+        "p99": 9.188901
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 283.429,
+        "p50": 3.864,
+        "p95": 272.77275,
+        "p99": 277.82779
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 36.832,
+        "p50": 0.118,
+        "p95": 0.40579999999999994,
+        "p99": 2.7607799999999934
+      },
+      "upload": {
+        "count": 46,
+        "max": 276.118,
+        "p50": 253.5845,
+        "p95": 272.58074999999997,
+        "p99": 275.00604999999996
+      },
+      "main_callback": {
+        "count": 47,
+        "max": 277.405,
+        "p50": 254.331,
+        "p95": 273.4754,
+        "p99": 276.07192
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "dac6241c8355c7774dccf0e6c782b5183286418009f1e4a36df89c6284d23b91",
+      "artifact_id": 14787448688,
+      "receipt_relative_path": "wave512/wave_512_follow/3-C/receipt.json",
+      "receipt_sha256": "bd912837bb450aaf15137603312bc6f467314f87951926ff478de437b1e6f3e9",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "rate": 13.239685847998661,
+      "gap": {
+        "count": 143,
+        "max": 252.677,
+        "p50": 6.648,
+        "p95": 241.2914,
+        "p99": 248.98828
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 109.7271,
+        "p50": 2.4955,
+        "p95": 4.105225,
+        "p99": 99.40614499999992
+      },
+      "native_complete_to_rapier": null,
+      "rapier_solver": {
+        "count": 144,
+        "max": 46.88,
+        "p50": 0.08,
+        "p95": 0.24409999999999984,
+        "p99": 15.276339999999841
+      },
+      "upload": {
+        "count": 44,
+        "max": 244.666,
+        "p50": 218.9035,
+        "p95": 238.69055,
+        "p99": 243.31709
+      },
+      "main_callback": {
+        "count": 45,
+        "max": 245.387,
+        "p50": 218.854,
+        "p95": 239.5896,
+        "p99": 243.9746
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "bb96facda367fca5f115359592a7f26522951cfed5d1f28d820e635ba47b89f6",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_512_follow/0-M/receipt.json",
+      "receipt_sha256": "97db9d1030aa02e039f57189a515b66c193ee89d6ae53dbb3dbc52995ddbff5d",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "210b23ace8728427f8416c2f6ec119054f87f635b9bf6d169b447e31e8c13b39",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 12.1794994327229,
+      "gap": {
+        "count": 143,
+        "max": 267.532,
+        "p50": 7.625,
+        "p95": 252.3288,
+        "p99": 264.58218
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 109.1017,
+        "p50": 2.76795,
+        "p95": 4.0810299999999975,
+        "p99": 5.263235999999999
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 263.151,
+        "p50": 3.17,
+        "p95": 248.44004999999999,
+        "p99": 260.3755
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 123.335,
+        "p50": 0.0945,
+        "p95": 0.2127999999999997,
+        "p99": 101.55751999999998
+      },
+      "upload": {
+        "count": 46,
+        "max": 260.104,
+        "p50": 225.82150000000001,
+        "p95": 249.995,
+        "p99": 257.9935
+      },
+      "main_callback": {
+        "count": 47,
+        "max": 260.993,
+        "p50": 226.619,
+        "p95": 251.1007,
+        "p99": 258.9874
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "48a26b4de3ce32b153834ab4ea3e52ecea26f7ef74936ff01f7746cef305c4ae",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_512_follow/1-C/receipt.json",
+      "receipt_sha256": "c233038da762ccf1ad14795d34e33f7a787c754ab7c83fe432367d17aefd5de4",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 11.469702144579419,
+      "gap": {
+        "count": 143,
+        "max": 499.165,
+        "p50": 7.605,
+        "p95": 255.44840000000002,
+        "p99": 390.48076000000276
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 87.0544,
+        "p50": 2.85675,
+        "p95": 5.388944999999997,
+        "p99": 8.444500999999999
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 493.802,
+        "p50": 3.1464999999999996,
+        "p95": 250.6161,
+        "p99": 334.58174999999903
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 181.169,
+        "p50": 0.1085,
+        "p95": 0.4592999999999992,
+        "p99": 63.576409999999456
+      },
+      "upload": {
+        "count": 47,
+        "max": 491.209,
+        "p50": 225.008,
+        "p95": 245.877,
+        "p99": 484.68482
+      },
+      "main_callback": {
+        "count": 50,
+        "max": 492.224,
+        "p50": 224.7345,
+        "p95": 247.39665,
+        "p99": 485.22729
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "97f3c85b8a0e1b391f3d2c3127a164cce2147cb39479f93357e186f63f433b6e",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_512_follow/2-C/receipt.json",
+      "receipt_sha256": "b153fddbe2d5e5908de2ec0c001171cf7e774b0257bd392d558ec7e00260b84e",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "rate": 12.696436577552083,
+      "gap": {
+        "count": 143,
+        "max": 262.031,
+        "p50": 7.181,
+        "p95": 248.0975,
+        "p99": 254.39190000000005
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 93.2503,
+        "p50": 2.6210500000000003,
+        "p95": 3.5363999999999987,
+        "p99": 6.442347999999982
+      },
+      "native_complete_to_rapier": null,
+      "rapier_solver": {
+        "count": 144,
+        "max": 135.588,
+        "p50": 0.0975,
+        "p95": 0.21609999999999985,
+        "p99": 94.75773999999998
+      },
+      "upload": {
+        "count": 45,
+        "max": 248.443,
+        "p50": 130.878,
+        "p95": 240.7414,
+        "p99": 245.55528
+      },
+      "main_callback": {
+        "count": 46,
+        "max": 249.416,
+        "p50": 131.676,
+        "p95": 241.34924999999998,
+        "p99": 246.39424999999997
+      },
+      "gap_gt500": 0,
+      "trace_sha256": "d0573edb94a215fae1cbb816a386e2126e4ad56e8ba2f99822d15a5c56e0d002",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_512_follow/3-M/receipt.json",
+      "receipt_sha256": "f63b0e0c013a6e378c33cd3b6acb978aeb33d8c3c2c9281053d5e7f859b90547",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "210b23ace8728427f8416c2f6ec119054f87f635b9bf6d169b447e31e8c13b39",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "extent": [
+          512,
+          512
+        ],
+        "name": "basin512",
+        "setup_sha256": "9de2abe4f79c464b8026aead8ea526d2e30c14a55ce178ab8b4e611f9bd63da6",
+        "source": "authored_setup_v2"
+      }
+    },
+    {
+      "source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "rate": 2.781222061634546,
+      "gap": {
+        "count": 143,
+        "max": 882.631,
+        "p50": 342.116,
+        "p95": 770.5303,
+        "p99": 849.7852600000002
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 334.8055,
+        "p50": 136.11285,
+        "p95": 278.09047499999997,
+        "p99": 328.302603
+      },
+      "native_complete_to_rapier": null,
+      "rapier_solver": {
+        "count": 144,
+        "max": 11.163,
+        "p50": 0.6755,
+        "p95": 0.88845,
+        "p99": 2.3150499999999905
+      },
+      "upload": {
+        "count": 109,
+        "max": 830.37,
+        "p50": 182.134,
+        "p95": 683.8203999999995,
+        "p99": 771.2782800000001
+      },
+      "main_callback": {
+        "count": 168,
+        "max": 831.22,
+        "p50": 25.96,
+        "p95": 537.4782500000001,
+        "p99": 762.9303800000002
+      },
+      "gap_gt500": 17,
+      "trace_sha256": "16bd1f6eff09e7689a0f01a72ae4de22ad4d0908a8888d5d3af4703394a66305",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_gameplay_2048_follow/0-M/receipt.json",
+      "receipt_sha256": "386b0a4373ed42541408b134162f977534c4231ade28989f995088931bf5bd57",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "210b23ace8728427f8416c2f6ec119054f87f635b9bf6d169b447e31e8c13b39",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.589699984093142,
+      "gap": {
+        "count": 143,
+        "max": 861.466,
+        "p50": 278.342,
+        "p95": 505.18290000000013,
+        "p99": 816.262060000001
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 334.684,
+        "p50": 106.99680000000001,
+        "p95": 272.858975,
+        "p99": 315.8234489999999
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 751.159,
+        "p50": 124.666,
+        "p95": 373.72879999999964,
+        "p99": 740.2318399999999
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 11.388,
+        "p50": 0.6245,
+        "p95": 0.7338999999999998,
+        "p99": 2.7309899999999905
+      },
+      "upload": {
+        "count": 101,
+        "max": 739.454,
+        "p50": 220.287,
+        "p95": 490.298,
+        "p99": 730.765
+      },
+      "main_callback": {
+        "count": 124,
+        "max": 741.287,
+        "p50": 77.6275,
+        "p95": 393.0775999999998,
+        "p99": 731.03611
+      },
+      "gap_gt500": 8,
+      "trace_sha256": "f7a5b0e7ea4986f0df635147ea3ee0cfe26a4b2f6812bfa67aa8ad1397fb0294",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_gameplay_2048_follow/1-C/receipt.json",
+      "receipt_sha256": "29361eb96bf503e47147b558d76e67a8fc92087af9bd5c9793ca71a633d727ef",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.638362622615663,
+      "gap": {
+        "count": 143,
+        "max": 904.565,
+        "p50": 278.967,
+        "p95": 378.0777,
+        "p99": 726.0248600000018
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 336.4021,
+        "p50": 116.38445,
+        "p95": 291.69864,
+        "p99": 327.71115
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 795.204,
+        "p50": 120.2415,
+        "p95": 267.36920000000003,
+        "p99": 517.8587399999999
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 84.989,
+        "p50": 0.644,
+        "p95": 4.396649999999989,
+        "p99": 69.55309999999979
+      },
+      "upload": {
+        "count": 103,
+        "max": 803.445,
+        "p50": 236.712,
+        "p95": 346.8457000000001,
+        "p99": 501.5510000000005
+      },
+      "main_callback": {
+        "count": 117,
+        "max": 805.218,
+        "p50": 227.756,
+        "p95": 343.0914,
+        "p99": 484.43712000000045
+      },
+      "gap_gt500": 5,
+      "trace_sha256": "17b6953c9d7a15382e2603e4be1a50ac59e57fb0b00e81750e2ebe815217fe02",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_gameplay_2048_follow/2-C/receipt.json",
+      "receipt_sha256": "b1da92b675942d2c8a1a617ca18f17281d95c32c0da7c0dd33400db698741bb6",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "rate": 2.7711457375179225,
+      "gap": {
+        "count": 143,
+        "max": 875.807,
+        "p50": 344.141,
+        "p95": 749.5475000000009,
+        "p99": 840.7846200000002
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 314.7492,
+        "p50": 152.1491,
+        "p95": 280.53653999999995,
+        "p99": 297.282704
+      },
+      "native_complete_to_rapier": null,
+      "rapier_solver": {
+        "count": 144,
+        "max": 237.639,
+        "p50": 0.6955,
+        "p95": 0.90365,
+        "p99": 9.050649999999964
+      },
+      "upload": {
+        "count": 119,
+        "max": 780.239,
+        "p50": 166.04,
+        "p95": 553.0244999999999,
+        "p99": 723.9094799999993
+      },
+      "main_callback": {
+        "count": 167,
+        "max": 781.752,
+        "p50": 32.229,
+        "p95": 523.0655999999997,
+        "p99": 680.5908000000003
+      },
+      "gap_gt500": 14,
+      "trace_sha256": "4dc50fe0475e76d6ed120657e5f5be4c72080ee27592cdfcf3a6c601dd27b2c2",
+      "artifact_id": 14779020615,
+      "receipt_relative_path": "main-abba/v3-raw/wave_gameplay_2048_follow/3-M/receipt.json",
+      "receipt_sha256": "168f7a8a2d7f03d83e1da1de4f1fe752eb3d3f0ae7b59d868137c43b670f3ed3",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "210b23ace8728427f8416c2f6ec119054f87f635b9bf6d169b447e31e8c13b39",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.6811723347730725,
+      "gap": {
+        "count": 143,
+        "max": 816.761,
+        "p50": 273.512,
+        "p95": 577.2070000000003,
+        "p99": 777.9527400000001
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 312.7636,
+        "p50": 112.485,
+        "p95": 278.27268,
+        "p99": 300.744427
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 742.324,
+        "p50": 104.8925,
+        "p95": 353.71399999999977,
+        "p99": 725.6946399999997
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 76.796,
+        "p50": 0.6245,
+        "p95": 1.1845999999999983,
+        "p99": 34.725699999999804
+      },
+      "upload": {
+        "count": 95,
+        "max": 751.784,
+        "p50": 161.048,
+        "p95": 560.3591,
+        "p99": 736.02208
+      },
+      "main_callback": {
+        "count": 120,
+        "max": 753.201,
+        "p50": 78.951,
+        "p95": 509.54134999999985,
+        "p99": 721.2895400000002
+      },
+      "gap_gt500": 10,
+      "trace_sha256": "0106d792c789652c326d10c3bb2a7dd7c702c764d85b28ceca0cb56ff14a029e",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "causal/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "f6d294886233b3d16c6b7eb47c177a363387a5a3f2592c1f016cba268a523153",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.6191380017532713,
+      "gap": {
+        "count": 143,
+        "max": 772.457,
+        "p50": 281.906,
+        "p95": 485.45970000000017,
+        "p99": 753.3146
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 342.6786,
+        "p50": 113.575,
+        "p95": 288.5457349999999,
+        "p99": 332.495702
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 741.937,
+        "p50": 129.183,
+        "p95": 304.90734999999984,
+        "p99": 556.9933399999996
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 61.762,
+        "p50": 0.64,
+        "p95": 1.6839499999999958,
+        "p99": 39.086419999999684
+      },
+      "upload": {
+        "count": 101,
+        "max": 745.363,
+        "p50": 192.528,
+        "p95": 513.553,
+        "p99": 739.35
+      },
+      "main_callback": {
+        "count": 119,
+        "max": 746.661,
+        "p50": 111.405,
+        "p95": 351.11429999999893,
+        "p99": 738.17716
+      },
+      "gap_gt500": 7,
+      "trace_sha256": "aba620dde13117d5e4e3c83bfdb43a2debfb1f22d3944c69f527ce712bdd9590",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "continuation-abba/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "59b9e26c15369d88bc97a8f06dc4b5c1399f8c9077a580fe8c6ddfaa9188c3a3",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.7256723299128383,
+      "gap": {
+        "count": 143,
+        "max": 871.978,
+        "p50": 285.519,
+        "p95": 380.0159,
+        "p99": 772.2185000000005
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 338.7415,
+        "p50": 110.7205,
+        "p95": 298.381585,
+        "p99": 332.1782749999999
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 763.89,
+        "p50": 97.826,
+        "p95": 283.06445,
+        "p99": 677.3964699999991
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 216.556,
+        "p50": 0.648,
+        "p95": 0.8988999999999996,
+        "p99": 94.13274999999902
+      },
+      "upload": {
+        "count": 91,
+        "max": 753.726,
+        "p50": 97.293,
+        "p95": 372.674,
+        "p99": 631.8506999999992
+      },
+      "main_callback": {
+        "count": 113,
+        "max": 755.229,
+        "p50": 46.594,
+        "p95": 356.6562000000001,
+        "p99": 609.7319199999996
+      },
+      "gap_gt500": 5,
+      "trace_sha256": "2f9de1ea235f2246c30c87602d6f1f62d47dd1bbef2f9db6803892afabecdf0f",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "continuation-abba/wave_gameplay_2048_follow/1-C/receipt.json",
+      "receipt_sha256": "6a83630bbfa793e46ca5decf986741581cf34958c418409ada8fda5b67b284a4",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.6740742978448546,
+      "gap": {
+        "count": 143,
+        "max": 794.262,
+        "p50": 281.338,
+        "p95": 374.846,
+        "p99": 625.2832600000006
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 320.8633,
+        "p50": 112.2534,
+        "p95": 264.878475,
+        "p99": 304.31265299999984
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 744.87,
+        "p50": 142.625,
+        "p95": 273.42235,
+        "p99": 496.7894999999996
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 198.944,
+        "p50": 0.6685000000000001,
+        "p95": 0.8879499999999996,
+        "p99": 21.008069999999993
+      },
+      "upload": {
+        "count": 98,
+        "max": 598.257,
+        "p50": 213.6365,
+        "p95": 369.8057000000005,
+        "p99": 536.0867900000001
+      },
+      "main_callback": {
+        "count": 116,
+        "max": 599.727,
+        "p50": 111.888,
+        "p95": 343.00275,
+        "p99": 526.1476999999996
+      },
+      "gap_gt500": 6,
+      "trace_sha256": "5ef538b62e499022f4e6b26372e1db7fe34dc2dc1e029d4c4fa135bcf759fcfa",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "continuation-abba/wave_gameplay_2048_follow/2-C/receipt.json",
+      "receipt_sha256": "94ae57fe8e8e2e8a05b97199e6d90e2422856f52c92ebf1000e4f987d1312f49",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.6505657198037182,
+      "gap": {
+        "count": 143,
+        "max": 776.406,
+        "p50": 286.109,
+        "p95": 362.4601,
+        "p99": 609.6622200000013
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 325.5427,
+        "p50": 104.86664999999999,
+        "p95": 282.38951,
+        "p99": 322.102193
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 746.887,
+        "p50": 139.98250000000002,
+        "p95": 273.2301,
+        "p99": 445.06893999999886
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 12.894,
+        "p50": 0.637,
+        "p95": 0.7847999999999998,
+        "p99": 2.452229999999995
+      },
+      "upload": {
+        "count": 102,
+        "max": 762.352,
+        "p50": 235.6835,
+        "p95": 344.4379,
+        "p99": 538.5510999999998
+      },
+      "main_callback": {
+        "count": 117,
+        "max": 764.113,
+        "p50": 195.405,
+        "p95": 343.1736,
+        "p99": 535.8902
+      },
+      "gap_gt500": 4,
+      "trace_sha256": "c2da71393af2388581736255c52afd417bb09e01c9f073ea5c88bd306ef2a5ea",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "continuation-abba/wave_gameplay_2048_follow/3-C/receipt.json",
+      "receipt_sha256": "04fc54f8649e3446466f0cbb9a015947b9cfb06912f8d7af725c8237a6df87d7",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.5712665712659017,
+      "gap": {
+        "count": 143,
+        "max": 828.323,
+        "p50": 281.301,
+        "p95": 366.9258,
+        "p99": 808.0314600000002
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 330.0603,
+        "p50": 114.91614999999999,
+        "p95": 303.000275,
+        "p99": 318.63468299999994
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 798.631,
+        "p50": 123.96000000000001,
+        "p95": 283.68029999999993,
+        "p99": 768.2638
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 228.7,
+        "p50": 0.661,
+        "p95": 0.8604499999999998,
+        "p99": 44.46349999999963
+      },
+      "upload": {
+        "count": 102,
+        "max": 787.947,
+        "p50": 174.83550000000002,
+        "p95": 446.02445000000023,
+        "p99": 757.41772
+      },
+      "main_callback": {
+        "count": 120,
+        "max": 789.51,
+        "p50": 114.64750000000001,
+        "p95": 367.6226999999998,
+        "p99": 758.74602
+      },
+      "gap_gt500": 6,
+      "trace_sha256": "e126fa63284c33b67164ea44ddfaf93fe362b32d1326592ea64c3fb863f08f3a",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "renderer-abba/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "b5389817daef622d531ee6e59dc74d5ad68186c0914d0e50efe34893e2ce0398",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.472093375007134,
+      "gap": {
+        "count": 143,
+        "max": 883.496,
+        "p50": 273.228,
+        "p95": 409.524,
+        "p99": 863.2450600000005
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 321.3754,
+        "p50": 117.11725,
+        "p95": 286.268645,
+        "p99": 316.88980999999995
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 766.19,
+        "p50": 144.8385,
+        "p95": 284.22684999999996,
+        "p99": 738.5766099999997
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 60.654,
+        "p50": 0.635,
+        "p95": 0.9107499999999995,
+        "p99": 43.57885999999989
+      },
+      "upload": {
+        "count": 107,
+        "max": 5.577,
+        "p50": 3.239,
+        "p95": 3.8687,
+        "p99": 4.4079799999999985
+      },
+      "main_callback": {
+        "count": 128,
+        "max": 7.203,
+        "p50": 4.7065,
+        "p95": 5.62145,
+        "p99": 5.997120000000001
+      },
+      "gap_gt500": 7,
+      "trace_sha256": "8c8c9829423679d3a6fa0927efd5c8ed8650926956f3fe5dce7cf3026f413770",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "renderer-abba/wave_gameplay_2048_follow/1-C/receipt.json",
+      "receipt_sha256": "2ee0e13259fd8950c2648bcaf7fa63f77627e8aca3079d1189b46c6552415c43",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.7684403328317906,
+      "gap": {
+        "count": 143,
+        "max": 862.501,
+        "p50": 273.88,
+        "p95": 352.8843,
+        "p99": 752.8469600000016
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 327.2942,
+        "p50": 115.55584999999999,
+        "p95": 282.9384,
+        "p99": 313.380987
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 696.533,
+        "p50": 118.8315,
+        "p95": 249.89405,
+        "p99": 602.8833999999993
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 119.11,
+        "p50": 0.624,
+        "p95": 2.298449999999997,
+        "p99": 31.384749999999855
+      },
+      "upload": {
+        "count": 100,
+        "max": 9.574,
+        "p50": 3.133,
+        "p95": 3.8026999999999997,
+        "p99": 6.823780000000014
+      },
+      "main_callback": {
+        "count": 119,
+        "max": 11.233,
+        "p50": 4.524,
+        "p95": 5.2245,
+        "p99": 8.57023999999999
+      },
+      "gap_gt500": 4,
+      "trace_sha256": "c5d098fb72b0d6ed73c5df0c227af1e720494676bd60f52a2f7c91cf766c7e3f",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "renderer-abba/wave_gameplay_2048_follow/2-C/receipt.json",
+      "receipt_sha256": "176007b53beeac0ee03b14011c83528102f4ef29b8d56d76a466a0a7ee80e6fa",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.6090351292201244,
+      "gap": {
+        "count": 143,
+        "max": 812.791,
+        "p50": 278.206,
+        "p95": 440.03830000000045,
+        "p99": 791.9559000000004
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 335.1294,
+        "p50": 121.96199999999999,
+        "p95": 268.87042499999995,
+        "p99": 320.3112539999999
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 750.506,
+        "p50": 102.1275,
+        "p95": 290.7184499999999,
+        "p99": 689.1455799999992
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 58.278,
+        "p50": 0.6535,
+        "p95": 0.9880499999999993,
+        "p99": 23.030099999999877
+      },
+      "upload": {
+        "count": 101,
+        "max": 739.627,
+        "p50": 232.12,
+        "p95": 494.981,
+        "p99": 679.605
+      },
+      "main_callback": {
+        "count": 122,
+        "max": 741.114,
+        "p50": 93.36250000000001,
+        "p95": 473.28465000000034,
+        "p99": 670.4774400000003
+      },
+      "gap_gt500": 6,
+      "trace_sha256": "e6ee0bfe99dd39563f5afe1be24bbccdf2926f2c89089dcd0835ec1d44a5d387",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "renderer-abba/wave_gameplay_2048_follow/3-C/receipt.json",
+      "receipt_sha256": "565013ef5ca0118162821ae13d96de6403f82d4c0bd7f0dccc2aba44298296f6",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "rate": 3.594293071318687,
+      "gap": {
+        "count": 143,
+        "max": 829.149,
+        "p50": 271.731,
+        "p95": 585.3297,
+        "p99": 783.2822000000003
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 311.2727,
+        "p50": 104.98245,
+        "p95": 281.59177,
+        "p99": 305.20216899999997
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 739.614,
+        "p50": 133.25400000000002,
+        "p95": 477.56629999999916,
+        "p99": 724.5970199999999
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 96.334,
+        "p50": 0.6205,
+        "p95": 0.8397499999999999,
+        "p99": 12.044979999999999
+      },
+      "upload": {
+        "count": 95,
+        "max": 728.106,
+        "p50": 227.003,
+        "p95": 590.0579999999999,
+        "p99": 727.9518400000001
+      },
+      "main_callback": {
+        "count": 125,
+        "max": 729.722,
+        "p50": 49.883,
+        "p95": 524.8996,
+        "p99": 725.7929600000001
+      },
+      "gap_gt500": 11,
+      "trace_sha256": "53c64d682374c66368da491cdf8b6f62e1ef7170733081c6aa784cbf77c87d64",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "source-abba/00-D/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "0a54c0649e62ea6e0dbba3c0a27b46c7f69ad98d2a587b5c4ef2a0d0acc12a62",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "7d593ebbbdab2fb73b47bb123e9fae86967c77614aabf47ca466a7fa910cb62b",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.864183088214872,
+      "gap": {
+        "count": 143,
+        "max": 780.439,
+        "p50": 271.753,
+        "p95": 365.3234,
+        "p99": 756.2211400000003
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 329.2427,
+        "p50": 126.08914999999999,
+        "p95": 272.56205,
+        "p99": 313.739874
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 666.869,
+        "p50": 109.1345,
+        "p95": 271.75165,
+        "p99": 574.1810599999991
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 43.178,
+        "p50": 0.6165,
+        "p95": 0.77035,
+        "p99": 28.012469999999816
+      },
+      "upload": {
+        "count": 94,
+        "max": 745.566,
+        "p50": 154.41750000000002,
+        "p95": 402.59769999999924,
+        "p99": 729.3626099999999
+      },
+      "main_callback": {
+        "count": 111,
+        "max": 747.058,
+        "p50": 92.465,
+        "p95": 355.54,
+        "p99": 713.357200000001
+      },
+      "gap_gt500": 5,
+      "trace_sha256": "19030de217b572d9c35361233f0fc30d01ecb89d193257b297ec797c99423160",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "source-abba/01-C/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "ec83a8c17b09e88084a72c6b142fb663264c07522f50692575ebc553c186a767",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.553137491961643,
+      "gap": {
+        "count": 143,
+        "max": 799.202,
+        "p50": 278.366,
+        "p95": 382.0282,
+        "p99": 707.1373400000024
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 339.8562,
+        "p50": 130.40805,
+        "p95": 263.79902999999996,
+        "p99": 317.38955699999997
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 799.67,
+        "p50": 125.86500000000001,
+        "p95": 269.92485,
+        "p99": 765.0384799999998
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 111.154,
+        "p50": 0.652,
+        "p95": 2.099599999999992,
+        "p99": 104.54518999999999
+      },
+      "upload": {
+        "count": 101,
+        "max": 765.09,
+        "p50": 234.697,
+        "p95": 364.322,
+        "p99": 747.357
+      },
+      "main_callback": {
+        "count": 122,
+        "max": 766.818,
+        "p50": 108.9915,
+        "p95": 359.7065,
+        "p99": 707.6987100000011
+      },
+      "gap_gt500": 6,
+      "trace_sha256": "27eae2e79bbc72a580316efab7139e6c539326ae9a75abf67f767500679fc1d4",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "source-abba/02-C/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "8a63f500c472a33a68ddf867f905cfd8e5ddd11d6bf0d03e07ac561fdb8dc677",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "rate": 3.639706743772506,
+      "gap": {
+        "count": 143,
+        "max": 819.992,
+        "p50": 284.893,
+        "p95": 419.5760000000002,
+        "p99": 756.7290400000003
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 325.8723,
+        "p50": 109.66825,
+        "p95": 284.36886999999996,
+        "p99": 313.76227199999994
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 674.612,
+        "p50": 107.1575,
+        "p95": 280.52074999999996,
+        "p99": 531.6613299999999
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 108.993,
+        "p50": 0.632,
+        "p95": 0.8692999999999999,
+        "p99": 58.230699999999445
+      },
+      "upload": {
+        "count": 100,
+        "max": 809.987,
+        "p50": 236.25,
+        "p95": 380.6842499999999,
+        "p99": 734.5400900000004
+      },
+      "main_callback": {
+        "count": 121,
+        "max": 811.249,
+        "p50": 111.339,
+        "p95": 355.594,
+        "p99": 690.0881999999993
+      },
+      "gap_gt500": 6,
+      "trace_sha256": "321a32142b8430ac3b8797202792deb4cc1c9a75a158a83a10eda744b105fa9b",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "source-abba/03-D/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "c882db577d0b43f20a4fabb2a9826c9286a0e47ec21a3d0a916af96f66f96df6",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "7d593ebbbdab2fb73b47bb123e9fae86967c77614aabf47ca466a7fa910cb62b",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    },
+    {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "rate": 3.537552383719486,
+      "gap": {
+        "count": 143,
+        "max": 797.701,
+        "p50": 273.919,
+        "p95": 712.325000000001,
+        "p99": 766.1530000000002
+      },
+      "native_tick": {
+        "count": 144,
+        "max": 321.0628,
+        "p50": 104.2267,
+        "p95": 289.84007499999996,
+        "p99": 312.201422
+      },
+      "native_complete_to_rapier": {
+        "count": 144,
+        "max": 782.616,
+        "p50": 112.604,
+        "p95": 619.6890999999991,
+        "p99": 738.0539299999998
+      },
+      "rapier_solver": {
+        "count": 144,
+        "max": 27.337,
+        "p50": 0.6074999999999999,
+        "p95": 0.7595,
+        "p99": 8.364099999999953
+      },
+      "upload": {
+        "count": 99,
+        "max": 737.251,
+        "p50": 233.171,
+        "p95": 713.2276999999999,
+        "p99": 733.8298199999999
+      },
+      "main_callback": {
+        "count": 130,
+        "max": 738.377,
+        "p50": 101.2,
+        "p95": 558.2873500000001,
+        "p99": 734.25113
+      },
+      "gap_gt500": 11,
+      "trace_sha256": "49fa4cb3c91830b9cfbc69c1fee9909545be559e1d4fb40e04163cdf3a0b52fe",
+      "artifact_id": 14778950415,
+      "receipt_relative_path": "sustained/wave_gameplay_2048_follow/0-C/receipt.json",
+      "receipt_sha256": "17a8de61391d71a66aabaf10821584953e5ec84007e979b289362f512f52c37f",
+      "runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "active_windows_native_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+        "active_windows_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "renderer": "opengl3_angle",
+        "render_thread": {
+          "requested": "safe",
+          "runtime": "safe"
+        },
+        "adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "cpu": "AMD EPYC 9V74 80-Core Processor"
+      },
+      "fixture": {
+        "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+        "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "name": "reference2048",
+        "receipts": 256,
+        "setup_sha256": "34b8c5bdb36fcf665df56d0bab71750380000db8e73770685dc5dc6e1d178308"
+      }
+    }
+  ]
+}

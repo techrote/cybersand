@@ -88,6 +88,12 @@ source/runtime identities, platform results, failures and remaining owner checks
 
 ## Workbench publication and progression candidate
 
+The active [PUBPRES physical playability continuation](../operations/pubpres-playability-final-001.md)
+preserves frozen #757 and its negative controls. It implements tight occupied-mask
+bounds, an explicit three-slot full-image experiment, and source-exact independent
+physical qualification. The first development checkpoint is unqualified;
+Draft/HOLD and physical owner acceptance remain in force.
+
 The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. Matched actual gameplay rejected the temporary automatic Windows software-ANGLE full-upload override; the repair removes it while retaining explicit full selection. The candidate also removes overdue non-progressing owner turns after a completed body sample. Native health fences and real physical admission remain intact. It remains Draft/HOLD pending fresh source-matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments and policies are retained separately.
 
 ## Workbench playability successor — 2026-11-21

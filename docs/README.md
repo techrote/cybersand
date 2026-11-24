@@ -44,6 +44,11 @@ v3 matched progression campaign and new Windows evaluator. The original negative
 v2 results remain preserved. Draft/HOLD; continuation graphical timing and
 physical NVIDIA acceptance remain pending.
 
+The active [PUBPRES-PLAYABILITY-FINAL-001 continuation](operations/pubpres-playability-final-001.md)
+preserves frozen #757 and owns the occupied-mask repair, bounded full-image ring,
+engine handoff recovery and new comparative qualification. Draft/HOLD; initial
+source and local tests do not qualify the Windows interactive evaluator.
+
 For native-independent font/startup and queued-history diagnosis before native
 builds, use [isolated render diagnostics](operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
 

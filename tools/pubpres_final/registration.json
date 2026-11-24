@@ -1,0 +1,23 @@
+{
+  "schema": "pubpres-playability-final-registration-v1",
+  "predecessor": {
+    "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "campaign_path": "tools/pubpres_playability/campaign.json",
+    "campaign_sha256": "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef"
+  },
+  "primary_cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "confirmation_cases": ["wave_1024_follow_4", "wave_landscape_follow", "pressure_512_follow", "freemass_2048_follow"],
+  "source_order": ["D", "C", "C", "D"],
+  "slot_order": [2, 3, 3, 2],
+  "material": "full",
+  "physics": "early",
+  "render_thread": "safe",
+  "same_frame_continuation": false,
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "sustained_minimum_usec": 60000000,
+  "reported_gap_thresholds_ms": [100, 250, 500, 1000],
+  "direction_rule": "Preserve run_source_abba.compare_registered_direction: every candidate rate exceeds every control rate, every candidate p95/p99 is lower than every control p95/p99, and candidate maxima and severe-gap counts do not exceed the worse control. Capture success and material-submit-call savings are not playability acceptance.",
+  "scope": "Prospective bounded tests of source changes or Full-image slot count, with original V3 native/terrain/real-callback/actor/Water/input/current-GPU gates unchanged. Full previous-history correctness remains a separate original-size transition oracle. Counterbalanced arms execute serially on the same host. Frozen original and new negative results remain retained. Physical Windows/NVIDIA acceptance is separate and HOLD."
+}
