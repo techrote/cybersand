@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped
 canonical-for: [liquid-solver-family-policy]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-24
 related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md, pressure-optimization.md]
 ---
 
@@ -12,7 +12,28 @@ related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, 
 
 ## Status
 
-**Planned authoring target, 19 November 2026.** The owner wants to choose Wave Flow or an alternative solver per material, with tuning stored separately for each material. Shared contacts will still need rules for exchanging materials of different densities and preserving their quantities and specialized behavior. The current Wave evaluation implements the Water–Oil density exchange and supports excess Oil spreading over a Water-backed surface. Oil still runs its own burning, extinguishing and cellular motion rules. [Wave Water and Oil](wave-flow-v1.md#oil-floating-on-wave-water)
+**Planned authoring target, 19 November 2026.** The owner wants to choose Wave Flow or an alternative solver per material, with tuning stored separately for each material. Shared contacts will still need rules for exchanging materials of different densities and preserving their quantities and specialized behavior. The accepted Wave implementation supplies the Water–Oil density exchange and supports excess Oil spreading over a Water-backed surface. Oil still runs its own burning, extinguishing and cellular motion rules. [Wave Water and Oil](wave-flow-v1.md#oil-floating-on-wave-water)
+
+**Current accepted source — 24 November 2026, `00cdb02f`.** The policy enum
+still has four registered families: FreeMass, CellularYield, PressureFlow and
+InertialCellular. Wave Flow is an additional Water execution overlay on the
+FreeMass carrier, selected through `WorldConfig::wave_flow`; it is not a fifth
+`LiquidSolverFamily` enum value or a replacement for PressureFlow gas semantics.
+Ballistic Water is another explicit owner/configuration, orthogonal to those
+bulk-family choices subject to native admission.
+
+Fresh sandbox and Shared Workbench player sessions enable Wave, spill and
+ballistic release through
+[`CyberNativeCellWorld::select_gameplay_water`](../../godot/native_extension/cyber_native_cell_world.cpp)
+and [`main.gd::_ready`](../../godot/scripts/main.gd). Plain native construction
+keeps Wave and ballistic Water off. Applied receipts/readbacks identify the
+actual law; a control's staged value is not evidence it was installed.
+
+The [Wave contract](wave-flow-v1.md), [ballistic contract](ballistic-water-v1.md)
+and [configuration reference](../reference/configuration-reference.md#water-constructor-defaults-and-player-profile)
+own their extra state, limits and profile. Selecting/tuning Wave independently
+for arbitrary materials is **Planned**. Oil retains its specialized cellular
+rules even when its contacts exchange with Wave Water.
 
 **Current-main checkpoint — 2026-11-03.** At inspected main
 `89020b9eb6d540383a5bb64b58dcd29a87592c32`, all four physically distinct families
@@ -20,7 +41,9 @@ are implemented and have ordinary application constructors. The
 [#359 reassessment](../audits/2026-11-03-lcb-reassessment.md) binds the source,
 merged and parked PRs, actual worker evidence and remaining qualification.
 Pressure reference, cached and cached+dormant are three implementations of one
-family. Production defaults remain Water FreeMass and ten other liquids CY.
+family. Those native policy defaults remain Water FreeMass and ten other liquids CY;
+the current player host separately enables the Wave gameplay overlay as described
+below. This 3 November checkpoint does not define today's player preset.
 
 | Material | Admitted family/variant selection |
 |---|---|
@@ -42,8 +65,10 @@ Merged #245/#246/#253 supply PF and its variants/shared accounting; #250 supplie
 Brine IN, #254 Water IN, #256 the application selection paths and #257 the Trial
 body paths. The eight-preset panel and later PLAY LIFE011 exercise real native
 and Rapier construction. They do not establish four-family graphical feel,
-full-host performance or a preferred solver. Non-IN Worlds use physical hash2 /
-CYPS2; an IN-enabled World uses hash3 / CYPS3. See the subsystem contracts for
+full-host performance or a preferred solver. That checkpoint used physical
+hash2/CYPS2 without IN and hash3/CYPS3 with IN. Current signed-IN, ballistic,
+capacity and Wave extensions have additional identities and refusal rules in
+the [persistence table](../reference/level-saves-and-replay.md#current-native-physical-state-versions). See the subsystem contracts for
 state, memory and lifecycle; source-bound publication evidence is not a universal
 runtime acceptance claim.
 
@@ -142,7 +167,7 @@ Full host constructor, actual Rapier and Web qualification remain separate.
   [material.hpp](../../native/include/cybersand/material.hpp) has `None`,
   `FreeMass` and `CellularYield`. Each `MaterialDefinition.lateral_flow` is fixed
   at compile time.
-  - Water (ID 3) is the only `FreeMass` material, run by `World::update_water`.
+  - Water (ID 3) is the only `FreeMass` descriptor; native dispatch uses the applied policy and Wave configuration to choose its actual update path.
   - Ten liquids are `CellularYield`: Lava 8, Acid 12, Oil 16, Paste 20, Slush 21,
     Brine 24, Cement 30, Toxic Sludge 32, Mercury 33, Molten Glass 36.
   - Their kernels add specializations ([world.cpp](../../native/src/world.cpp)
@@ -822,7 +847,8 @@ handoff; no Cell layout change is implied.
 | `freemass_v1` | none: `state_a` = Water mass (policy-scaled), `state_b` = coherence delay | Current |
 | `cellular_yield_v1` | none beyond kernel use: Oil `state_b` burn, Cement/Molten Glass lifecycle, `initial_state_a` per descriptor | Current |
 | `pressure_flow_v1` | overfill quantity, signed horizontal velocity, gas pocket identity/generation and amount, derived per-tick head (scratch, not state) | Current in source: a per-chunk solver-owned `PressureChunk` (`overfill u16`, `flow i16`, `gas u32`) plus the World gas table; no Cell bits ([storage](pressure-flow-v1.md#storage-gate-b-handoff-kept)). 7ef2aac's bits 40–55 are not used |
-| `inertial_cellular_v1` | signed vx/vy (or momentum), subcell accumulator, saturation/rounding rules | Proposed (#212) |
+| `inertial_cellular_v1` | signed vx/vy, subcell accumulators, saturation/rounding rules | Current for Water/Brine: six-byte optional resident-cell array; reference and separately selected signed-vertical law are distinct ([IN contract](inertial-cellular-v1.md)) |
+| Wave overlay on FreeMass Water | Water `state_a` plus retained face flux and configured spill/ballistic state | Current for Water; extra execution configuration, not an enum family ([Wave contract](wave-flow-v1.md)) |
 
 Rules every family must meet, which become Gate B and #200 acceptance:
 
@@ -962,7 +988,9 @@ Why these choices:
 - **Brine** is the first inertial candidate. It runs on the generic
   `YieldingLiquid` kernel (viscosity 32) with no kernel-only state. Its
   chemistry (`water-salt`, `brine-sodium`, `fire-brine`, `brine-bareiron`, the
-  aqueous contact family) still needs #212 qualification.
+  aqueous contact family) has the bounded native qualification in the
+  [accepted IN contract](inertial-cellular-v1.md); later host/physical acceptance
+  remains source- and workload-specific.
 - **Toxic Sludge** is the documented substitute. Its `water-toxic-sludge` rule
   turns it into Water on contact, which weakens a layering fixture.
 - **Kernel-specialized liquids are rejected for inertial v1.** Admitting them

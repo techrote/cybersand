@@ -4,11 +4,64 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-24
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Water constructor defaults and player profile
+
+**Source-inspected on accepted main `00cdb02f`, 24 November 2026.**
+[`WorldConfig`](../../native/include/cybersand/world.hpp) and an application's
+selected preset are separate configuration layers. Native `wave_flow.enabled`
+and `ballistic_water.enabled` default to false. Fresh native sandbox and Shared
+Workbench sessions call
+[`CyberNativeCellWorld::select_gameplay_water` / `gameplay_water_options`](../../godot/native_extension/cyber_native_cell_world.cpp)
+and receive the following explicit gameplay overrides:
+
+| Setting | Gameplay profile | Native tuning when otherwise unchanged |
+|---|---:|---:|
+| Wave / ballistic Water | enabled / enabled | disabled / disabled |
+| Rounds (`substeps`) | 2 | 1 |
+| Gain / deep gain / floor gain | 32 / 32 / 1024 | 32 / 0 / 0 |
+| Flux smoothing | 16 | 0 |
+| Coast | 32 | 16 |
+| Damp shift / calm damp shift | 16 / 8 | 7 / 3 |
+| Calm / stick | 128 / 128 | 512 / 512 |
+| Sleep after | 90 | 30 |
+| Spill / full-face release | enabled / enabled | disabled / disabled |
+| Fall speed | 3 | 3 |
+| Sheet rate / coyote ticks | 64 / 4 | 0 / 0 |
+| Pool feed / deep pool feed / feed head limit | 127 / 64 / 255 | 64 / 0 / 255 |
+| Parcel launch budget per native tick | 128 | 256 (requires enabled spill and ballistic owner) |
+
+Unlisted values retain their native defaults in
+[`wave_flow.hpp`](../../native/include/cybersand/wave_flow.hpp). The profile
+requests amount-scaled body push. It does not turn Oil into a Wave-solved
+material or add gas pressure. “Reset Wave defaults” in the UI stages the original
+v2 tuning; it is different from selecting “Gameplay default”. Changes remain
+staged until the documented Apply/Load boundary; inspect the applied receipt.
+[Water Lab](../operations/workbench-water-lab.md) owns user procedures.
+
+## Current Workbench authoring capacities
+
+| Boundary | Accepted source value | Source |
+|---|---|---|
+| Authored canvas | Each axis 512–2048 in multiples of 64; fresh setup 2048×2048 | [`workbench_setup.gd::fresh/validate`](../../godot/scripts/workbench_setup.gd) |
+| Source rectangles / authored stamps | 32,768 each; runtime capability is independently queried | `MAX_RUNS`, `MAX_STAMPS`, `native_rectangle_budget` in the same source |
+| Ordinary/generated JSON | 1 MiB | `workbench_setup.gd::BYTE_LIMIT` |
+| Material-only capture | At most 2048×2048×2 bytes; 15,000,000 µs request timeout | [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) |
+| Actor composition | 8 logical actors; 8 prepared parts each; 64 response bodies and 64 occupancy proxies checked separately | [`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd) |
+| Native material identity | Valid 0–131 except reserved 10; 130 nonempty paintable entries | [`material.hpp`](../../native/include/cybersand/material.hpp) |
+
+The native diagnostic constructor separately admits extents 64–2048; that does
+not enlarge the authoring schema's 512 minimum. CYSD1 remains a 1024-square demo
+format. Ordinary MicroScenario rectangle limits and older installed library
+capabilities do not inherit the Workbench budget. Source capacity is not proof
+that an arbitrary scene meets its actual runtime/admission/performance limits.
+The [host-claim contract](../architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+explains the separate observation-array bound.
 
 ## Architectural Generator project controls
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
 canonical-for: [workbench-actor-composition, workbench-actor-control]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [physical-actor-rigs.md, actor-rigs.md, physical-free-flight.md, ../architecture/shared-workbench-authoring-data.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/workbench-actor-composition.md]
 ---
 
@@ -12,12 +12,15 @@ related-documents: [physical-actor-rigs.md, actor-rigs.md, physical-free-flight.
 
 ## Implementation and scope
 
-**Draft/HOLD implementation candidate for [#589](https://github.com/techrote/cybersand/issues/589).**
-The owner authorized implementation through WB-ACTOR-COMPOSE-001. Ordinary Shared
-Workbench now admits independently controlled physical actors through its existing
-prepared session, native worker and Rapier bridge. This contract describes the
-candidate source; it does not promote the PR, certify every experimental rig's
-playfeel, or replace the retained scientific apparatus.
+**Current accepted implementation through [#683](https://github.com/techrote/cybersand/pull/683),
+source `00cdb02f` checked 24 November 2026.** Ordinary Shared Workbench admits
+independently controlled physical actors through its existing prepared session,
+native worker and Rapier bridge. Accepted catalogue/admission and human handoff
+are distinct from the later Actor Compose finisher, pilot/stack repairs and
+Windows evaluator candidates tracked in the [roadmap](../reference/status-and-roadmap.md).
+Their unmerged improvements are not part of this contract's accepted baseline.
+Source availability does not certify every rig's playfeel or replace the retained
+scientific apparatus.
 
 The [owner procedure](../operations/workbench-actor-composition.md) explains the
 Actor Composition panel and Mixed Actor Workshop. Source ownership is divided as
@@ -128,6 +131,23 @@ rearm; it does not retire unrelated NPCs. Restore, world replacement, deletion,
 replacement and application close retire the affected sessions and observations.
 Reset/replacement/equipment Apply use explicit authored preparation and may
 restart controller and resource state; they are distinct from live handoff.
+
+## Reading capability and qualification correctly
+
+The 59 catalogue identities describe selectable models, not 59 universally
+interchangeable controllers or finished gameplay roles. `supports`,
+`equipment_error` and aggregate topology checks in
+[`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd)
+remain authoritative. In particular, selecting **External Policy** exposes the
+existing issued-observation/leased-command interface; it starts no provider,
+model, network service or inference worker. Model orchestration requires a
+separately supplied adapter.
+
+An accepted `set_actor_control` request can change the producer without a World
+rebuild. Authored Apply/Restore and equipment replacement have their own prepared
+transactions. A current-main source walkthrough does not qualify pending repairs
+to those paths; preserve the exact source/runtime identity when reporting a
+failed or successful owner evaluation.
 
 ## Producer and policy interface
 

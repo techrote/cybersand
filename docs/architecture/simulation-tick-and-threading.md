@@ -6,10 +6,39 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-24
 ---
 
 # Simulation tick and threading
+
+## Current execution boundaries
+
+At accepted main `00cdb02f`, desktop uses a dedicated **GDScript pacing owner**
+and a separate **native pool** inside `World::tick`. Main-thread Godot owns
+Rapier and textures. The pacing owner may invoke its exclusive adapter and
+value APIs; native pool workers call no Godot APIs. Web instead waits for native
+ticks on its main-thread controller. These are distinct owners, even where all
+calls eventually reach the same native World implementation.
+
+| Progress signal | What it establishes | What it does not establish |
+|---|---|---|
+| Completed native tick | That World completed one admitted tick | A new rendered frame or a Rapier step |
+| `worker_threads_observed` | Distinct task claimants in the most populated completed phase | Concurrent utilization or frame-rate benefit |
+| Published render serial | A copied render publication exists | GPU consumption or physical actor progress |
+| Main-thread render FPS | Presentation frames complete | Unstalled cellular or Rapier simulation |
+| Owner/native receipt | Its identified operation reached the documented stage | Durable Save or full-session replay unless separately recorded |
+
+The accepted renderer still performs full-image texture updates. PUBPRES
+successor investigations remain separate from this source description. Use the
+[render contract](rendering-and-gameplay-bridges.md) and
+[current roadmap](../reference/status-and-roadmap.md) for their boundaries.
+Sources: [`_worker_loop`](../../godot/scripts/simulation_worker.gd),
+[`World::tick`](../../native/src/world.cpp), and
+[`main.gd`](../../godot/scripts/main.gd).
+
+The following PLAY measurements retain their original source, platform and
+fixture identities. Their historical timings are not fresh results for the
+24 November source.
 
 ## PLAY native worker observation and reference measurements
 
@@ -322,7 +351,7 @@ Actual platform execution evidence is in the
 
 ### Waterwall exceptions between ticks
 
-**Waterwall branch follow-up (Draft/HOLD):** native exceptions can also arise
+**Current accepted Waterwall containment:** native exceptions can also arise
 between ticks while a Godot binding edits cells, prepares body occupancy or
 copies an observation. `CyberNativeCellWorld` contains standard and unknown
 exceptions at these public boundaries, quarantines the World and records the

@@ -5,30 +5,48 @@ document-kind: contract
 scope: Opt-in schema-4 architectural controls, versioned native geometry and bounded one-to-five-style project compilation
 canonical-for: [architectural-generator-controls, architectural-style-projects, architectural-zone-coverage]
 keywords: [architecture, GEN-007, styles, zones, coverage, tunnels, doors, windows, Hilbert, Arcology, Vault]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [procedural-world-generation.md, procedural-typed-spatial-fields.md, procedural-hierarchical-generation.md, generation-workbench-2.md, explore001-generated-playable-maps.md, ../operations/architectural-generator-playtest.md]
 ---
 
 # Architectural Generator — Phase A and bounded Phase B
 
-**Experimental catalogue overlay (not accepted main):** the separate Draft/HOLD
-[#624](https://github.com/techrote/cybersand/pull/624) and stacked
-[#671](https://github.com/techrote/cybersand/pull/671) add 72 compact classic
-and eight advanced showcase samplers to the existing schema-4 module contract.
-The [integration research record](../operations/gentek-showcase-integration-001.md)
-carries their source-matched 80-way qualification, exact PNG references,
-source identities and outstanding owner/Windows review. These overlays are
-not an accepted-main change to the GEN-007 contract described below.
+**Current accepted source, 24 November 2026 (`00cdb02f`).** The schema-4
+Architectural Generator foundation (#582) and the 80-Gentek integration (#691)
+are merged. Earlier Draft/HOLD instructions below describe their original
+qualification checkpoints, not today's implementation availability. The separate
+[Gentek-80 evaluator](../operations/gentek80-evaluation.md) remains a
+source-qualified evaluation workflow; its PR and physical owner acceptance are
+not implied by the catalogue's presence on main.
 
-The implementation is an opt-in initial-map authoring capability in **Shared
-Workbench → New from generator → Architectural Generator**. A small declarative
-project compiler plans finite style zones; native GEN-007 produces every terrain
-cell. The ordinary generated-start preview, confirmed World replacement, painting
-and recipe-based save/reopen remain the authority. This source contract describes
-the candidate; platform execution and owner acceptance belong to its dated
-qualification report and [PR #582](https://github.com/techrote/cybersand/pull/582).
-The PR remains under an explicit **do not merge** instruction. Ready-for-review
-state permits full CI execution; it does not grant merge approval.
+The normal route is **Shared Workbench → New from generator → Architectural
+Generator**. A bounded declarative project compiler plans one to five style
+zones; native GEN-007 produces the material geometry. Preview is separate from
+the live World. Explicit installation uses the prepared World transaction;
+The form’s **Save…** stores the generation recipe, while **Save start** saves the
+installed authored start and supported edits. The
+[practical guide](../operations/architectural-generator-playtest.md) covers those
+distinct operations.
+
+| Term | Meaning in the current authoring path |
+|---|---|
+| Gentek | A named native architectural generator/sampler, such as Cathedral Megaframe. |
+| Variant | A variation of a Gentek's geometry or parameters; it is not necessarily a separately versioned native module. |
+| Preset | A saved parameter/material configuration. The menu has 93 built-in presets: 13 earlier presets plus 72 CLASSIC and eight advanced Genteks. |
+| Composition | A bounded project combining up to five configured styles and their assigned zones into one native recipe and World. |
+
+These author-facing terms do not rename serialized fields: the project still
+stores `styles`, and native modules retain their explicit `module_version`.
+SWARM negotiation and self-assembly are separate pending work. Native geometry
+alone does not establish structural load capacity or physical playfeel.
+
+Source owners are
+[`architectural_generator_project.gd`](../../godot/scripts/architectural_generator_project.gd),
+[`architectural_generator_dialog.gd`](../../godot/scripts/architectural_generator_dialog.gd),
+[`world_generation.cpp`](../../native/src/world_generation.cpp) and
+[`CyberWorldGenerator::get_catalogue`](../../godot/native_extension/cyber_world_generator.cpp).
+The [80-style integration research](../operations/gentek-showcase-integration-001.md)
+retains exact source and image provenance from the original qualification.
 
 The [dated local qualification record](../audits/2026-11-14-architectural-generator-local.md)
 retains source identities, numerical comparisons and original native previews.
@@ -38,9 +56,10 @@ retained libraries and independently verified Windows owner package.
 
 ## 80-Gentek integration candidate — 20 November 2026
 
-The `integration/gentek-80-001` candidate starts from accepted main `de109d01`
+**Historical integration checkpoint, subsequently accepted through #691.**
+The `integration/gentek-80-001` candidate started from accepted main `de109d01`
 and reconciles repaired CLASSIC `e27ff757` with the eight-showcase aggregation
-`eb786d97`. It adds **80 Genteks (72 CLASSIC and eight advanced showcases)**
+`eb786d97`. It added **80 Genteks (72 CLASSIC and eight advanced showcases)**
 without removing the thirteen accepted presets: the ordinary form has **93
 selectable presets**, while native metadata has **91 module/version entries**.
 All additions use the existing schema-4 native project path and single World.
@@ -89,8 +108,9 @@ remaining failures belong to the [integration record](../research/gentek-80-inte
 and retained artifacts. These are requirements until their recorded run passes;
 this paragraph does not assert an unexecuted gate.
 
-The new branch remains **Draft / HOLD**. SWARM, negotiated boundaries and
-self-assembly are excluded. No shared Workbench, actor/Rapier, simulation,
+The integration branch was **Draft / HOLD** at this checkpoint; #691 later
+merged its catalogue into accepted main. SWARM, negotiated boundaries and
+self-assembly remain excluded from this accepted contract. No shared Workbench, actor/Rapier, simulation,
 material-publication or camera implementation is changed by this integration.
 
 ## Compatibility and native identity
@@ -274,8 +294,8 @@ Extended materials and aperture metadata are available on hover.
 [`custom-masonry-court.style.json`](../../examples/worldgen/architectural/custom-masonry-court.style.json)
 is a separate user-authored example: different bay/floor dimensions, masonry
 materials, no shaft and an explicit window override. **Import style JSON** places
-the complete validated definition into a selected slot. **Save project** and
-**Load project** atomically save/reload the embedded authoring configuration.
+the complete validated definition into a selected slot. **Save…** and
+**Load…** atomically save/reload the embedded authoring configuration.
 The generated map itself stores the resolved recipe, so reopening never needs
 the original project or external preset file.
 

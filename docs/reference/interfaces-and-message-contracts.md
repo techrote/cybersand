@@ -6,12 +6,36 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 ---
 
 # Interfaces and message contracts
 
-The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
+## Which acknowledgement should a caller wait for?
+
+At accepted main `00cdb02f`, current interfaces have distinct stages:
+
+| Interface observation | Valid conclusion | Invalid inference |
+|---|---|---|
+| Positive queue/request serial | Request admitted to that bounded owner path | Native cells changed or Save contains the edit |
+| Native operation result with matching identity | The identified native operation reached its reported completion/refusal/partial state | A newer World or another operation may use that result |
+| Workbench authored-history reconciliation | Confirmed edit is represented in the applied authoring state | Evolved physics or the whole session is durable |
+| Render serial consumed by Main | That render payload was accepted for display publication | The actor, native tick and UI all share an identical timestamp |
+| Provider response or tool proposal | Text/proposed bounded commands are available | Native execution or owner approval occurred |
+
+Sources: [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd),
+[`workbench_paint_editor_executor.gd`](../../godot/scripts/workbench_paint_editor_executor.gd),
+[`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd),
+[`main.gd`](../../godot/scripts/main.gd).
+[Direct Art batches](../systems/workbench-direct-art-batches.md) and
+[shared authoring](../architecture/shared-workbench-authoring-data.md) own the
+operation-specific receipt/history contracts. The generic GameplayBridge remains
+a planned broader abstraction; these implemented paths are not absent merely
+because the general schema is unfinished.
+
+## Accepted Wave and native failure interfaces
+
+The accepted [Wave Flow interface](../architecture/wave-flow-v1.md)
 adds versioned construction options and full uint16 Water mass readback without
 changing the existing C ABI. Legacy uint8 mass readback saturates at 255.
 Godot construction and diagnostic getters expose the applied override, complete
@@ -19,7 +43,7 @@ state version, flux, sparse work and capacity outcomes; render consumers still
 receive copied values. See the [evaluation guide](../operations/wave-flow-evaluation.md)
 for actual selection and target-platform qualification boundaries.
 
-The Draft Waterwall follow-up adds exception containment to potentially throwing
+The accepted Waterwall adapter includes exception containment to potentially throwing
 `CyberNativeCellWorld` bindings without changing their argument layouts or native
 Water laws. Unexpected native exceptions quarantine the World and retain one
 operation/error through `get_last_tick_error()` / `get_tick_failure_count()`.

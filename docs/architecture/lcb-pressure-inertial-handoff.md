@@ -2,9 +2,9 @@
 title: LCB pressure and inertial implementation handoff
 status: Approved design
 document-kind: design
-scope: LCB-001 pressure/W-CY and shared-native handoff plus Planned LCB-005 inertial requirements — material hooks, state, laws, boundaries, invalidating failures and campaign APIs; detailed setup/receipt/accounting codecs have their own canonical owner
+scope: Accepted pressure and inertial source routes plus preserved October 25 LCB requirements; source availability, historical model and campaign qualification remain separate
 canonical-for: [lcb-pressure-inertial-handoff]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-24
 related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
 ---
 
@@ -12,35 +12,51 @@ related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liqu
 
 ## Status
 
-**Approved requirements; pressure reference implemented, inertial Planned.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). The initial opt-in #200 start was separately scoped. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on main since #245 merged at `03785c3`, with its recorded pressure evidence; #212 is no longer owner-held but remains outside this accepted main integration/qualification checkpoint. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a global schema/ABI freeze.
+**Current source availability, 24 November 2026:** pressure reference and
+cached/dormant variants, W-CY, and Water/Brine IN are implemented in accepted
+source. Brine IN entered through #250 and Water IN through #254. Read the
+[current pressure contract](pressure-flow-v1.md), [IN contract](inertial-cellular-v1.md)
+and [family policy](liquid-solver-family-policy.md) for actual admission, state,
+limits and defaults. The Workbench [Water Lab](../operations/workbench-water-lab.md)
+provides current application controls. Availability does not certify the full
+registered common-Water scientific campaign or physical owner acceptance.
 
-Accepted main [PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
-at `ec58d919` adds W-CY motion,
-explicit normalization, native-issued refusal/failure values, typed native
-receipts and shared exact quantity accounting. Their canonical ownership is
-[native prepared setup and receipts](liquid-prepared-setup-and-receipts.md).
-The owner requested a narrow freeze of those native codecs; this does not freeze
-production Cell storage, the global ABI, pressure calibration or application
-replay. #201/#212 successor integration/qualification and #202 application integration remain pending.
+**Historical admission checkpoint:** LCB-000 Gates A–E passed and #213 closed
+completed on 24 October. The owner separately admitted bounded #200 policy and
+pressure work, then #212 inertial work. The [retained admission record](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
+and [pressure decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
+retain that sequence. The original pressure reference entered in #245 at
+`03785c3`; [#246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+at `ec58d919` added W-CY, explicit normalization, typed native outcomes and exact
+quantity accounting. The then-pending #201/#212/#202 integration statements in
+the [source-pinned handoff](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/architecture/lcb-pressure-inertial-handoff.md)
+are not current feature absences.
 
-The pressure requirements below are now implemented by the
-[`pressure_flow_v1` reference](pressure-flow-v1.md), which owns the Current
-storage, laws, parameters and limits; this page keeps the requirements it was
-built against. The inertial requirements remain **Planned** (#212). This
-page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
-and the [state-transition matrix](liquid-state-transition-matrix.md) into
-requirements.
+The owner requested a narrow native setup/receipt/accounting codec freeze;
+[native prepared setup and receipts](liquid-prepared-setup-and-receipts.md)
+owns it. It does not freeze the production Cell or global ABI, grant generic
+Stage-4 cell/Rapier ownership, full GEN-006 streaming or new pressure forces.
+The original opt-in admission did not select production defaults; later accepted
+player Wave settings have their own source contract.
 
-- Historical prepass source references are `9012425`, unchanged at checkpoint `4caa2c3`; the accepted main pressure/shared-native source is identified above.
-- The archived pressure candidate is `7ef2aacf`
-  (`tools/experiments/water_pressure_prototype/src/water_proto_b.inc`) on
-  `620826f5`. It is unqualified, with known defects.
-- Storage follows the Gate B handoff: C64-E8 unchanged, optional solver-owned
-  storage, and a World gas table.
+This page preserves the requirements and reference-model reasoning derived from
+the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
+and [transition matrix](liquid-state-transition-matrix.md). Historical prepass
+sources are `9012425`/`4caa2c3`; the archived pressure candidate `7ef2aacf` on
+`620826f5` remains unqualified with its recorded defects. No old model result is
+relabelled as a current native or application run.
 
 ## Shared integration points (both families)
 
-| Need | Where today | Requirement |
+**October 25 integration map.** The table preserves the original owner/function
+map and native requirements, including its then-current hash2 boundary and
+planned application work. Current accepted PF/IN mappings and host paths are in
+the contracts above. Native physical formats now select versions 2–5 according
+to admitted state; Wave hash6 has no exact physical-save format. Use the
+[current version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions),
+not this original API checkpoint, when implementing a reader or binding.
+
+| Need | Original owner | Requirement |
 |---|---|---|
 | Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). **Current on main:** Water × `pressure_flow_v1/reference` with one optional family block. Accepted main also qualifies Water × `cellular_yield_v1/reference` with its v2 viscosity block. Further candidate families must extend the running build's qualified cells and schemas. |
 | Construction | Native `PreparedWorldBuilder`; bridge `build_liquid_policy_world`; other #202 constructors | Native explicit normalization and actual payload/quantity checks occur on an unexposed candidate. Native-issued outcome preserves retained World/generation. Godot typed normalization opt-in and remaining #202 constructors are Planned. |
@@ -52,7 +68,7 @@ requirements.
 | Scheduling | `begin_tick` L3524+, block sleep after 3 quiet ticks | Sleep only when family state is at rest. Count work by visited cells and scheduled cores, not active-chunk flags (mechanism report §C). |
 | Hashing/persistence | `physical_state_hash`, `save_physical_state`, `restore_physical_state` | Current main native hash2/CYPS2 include shared accounting and construction bindings; historical content/state hashes unchanged; old CYPS1 explicitly refuses ([definition](pressure-flow-v1.md#physical-state-hash-v2)). |
 
-**APIs required to unblock the registered tests** (in
+**Original API requirements for the registered tests** (in
 `lcb-physics-contracts.json`):
 - policy readback (Current foundation; the #245 pressure adapter adds `family_parameters`);
 - versioned physical-state hash (`get_physical_state_hash()`, Current main version 2);
@@ -66,7 +82,7 @@ requirements.
 
 ## Pressure (`pressure_flow_v1`, Water only, #200)
 
-**Implementation status (2026-10-24).** `pressure_flow_v1/reference` is
+**Recorded implementation checkpoint (2026-10-24; not a current feature inventory).** `pressure_flow_v1/reference` is
 **Current on main since #245, with the shared successor accepted in #246 at `ec58d919`**; the
 [canonical design](pressure-flow-v1.md) owns its storage, gas identity, laws,
 parameters and known limits. The native suite (13 `LCB-001 pressure` cases) and
@@ -80,14 +96,17 @@ sealed-law acceptance. These are screens, not admission criteria
 ([evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md));
 earlier pre-repair metrics remain historical in that record.
 This is retained #245 evidence, not a new full characterization of the residual
-setup/receipt/accounting delta. Cached/dormant variants remain #201. A dormant
+setup/receipt/accounting delta. Cached/dormant variants were then #201 work and
+later entered through #253. The following dormant requirements retain their
+original admission meaning. A dormant
 rest certificate must preserve failed-motion body-contact probes consumed by
 coupling, material stages and future cadence/events, and prove zero future
 motion rather than freeze nonzero residual flow. It must show extra Water work
 savings while unrelated materials continue, beyond ordinary block sleep. No
 #12 skip/promotion ownership or #45 selection follows.
 
-**What it must change.** Current Water has no head term:
+**Original FreeMass control motivation.** The protected FreeMass Water law used
+for this experiment has no pressure head term:
 
 - deep release is row-local diffusion, with an approximately diffusive front
   (t^0.48–0.50) and only a weak depth response on the dam ladder;
@@ -208,6 +227,12 @@ look or speed:
 - 1024² built-ins sized before admission.
 
 ## Inertial (`inertial_cellular_v1`, #212)
+
+**Current implementation exists for Water and Brine.** The requirements below
+record the original ordered v1 model. Their examples are not a fresh native
+execution and do not specify the later optional signed-vertical IN-B1 law.
+The [current IN contract](inertial-cellular-v1.md) owns exact q16 ranges, radius,
+sidecar storage, initialization and admitted variants.
 
 **What it must add.** Retained motion between ticks. "Faster CellularYield" is
 **not** inertia: `flow_as_yielding_liquid` (L2779) only changes a per-update

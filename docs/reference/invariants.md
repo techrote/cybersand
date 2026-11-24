@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 ---
 
 # Architectural and simulation invariants
@@ -297,10 +297,10 @@ Fixtures: [native](../../native/tests/test_world.cpp),
 
 | ID | Status and requirement |
 |---|---|
-| WATER-001 | Current default pure closed fixtures conserve exact 8-bit mass. Residual native #200 additionally closes world-wide visible+PF-overfill Water against explicit setup/edit/generation/event/reaction/kernel source-sink aggregates; this preserves #160 chemistry rather than asserting reaction conservation |
-| WATER-002 | Current default FreeMass: visible mass lives in the common material grid; opt-in PF overfill remains native solver-owned cell state, without a second World authority |
+| WATER-001 | Current original FreeMass pure closed fixtures conserve exact8-bit mass; this fixture claim is not the Wave player profile. Residual native #200 additionally closes world-wide visible+PF-overfill Water against explicit setup/edit/generation/event/reaction/kernel source-sink aggregates; this preserves #160 chemistry rather than asserting reaction conservation |
+| WATER-002 | Current native FreeMass baseline: visible mass lives in the common material grid; opt-in PF overfill remains native solver-owned cell state, without a second World authority |
 | WATER-003 | Current default mass8 FreeMass transfer cannot exceed source mass or destination 255 capacity; selected-precision and PF visible/overfill bounds follow their family contracts |
-| WATER-004 | Current default FreeMass fixture: adjacent difference ≤1 rests; settled content hash is time-independent, while complete physical hash includes clock and policy |
+| WATER-004 | Current native FreeMass baseline fixture: adjacent difference ≤1 rests; settled content hash is time-independent, while complete physical hash includes clock and policy |
 | WATER-005 | Current leveling-fixture scope: free Water has no exhausted-history equilibrium rule |
 | WATER-006 | Current: mass-based display dither does not mutate mass/activity |
 | WATER-007 | Current fallback only: coherent emission preserves its supported-flow restrictions; native uses a distinct 12-tick delay |
@@ -317,12 +317,12 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-011 | Current main native: fixed job aggregates merge serially; checked external/generated overflow refuses before authority changes, while tick overflow quarantines partial progress |
 | WATER-012 | Current main native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
 | WATER-013 | Current main native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
-| WATER-014 | Current #201 branch source, pending acceptance: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
+| WATER-014 | Current accepted #201-derived source: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
 | WATER-015 | Current #201 source: incomplete derived heads/index/member proofs select complete admitted reference evaluation; no stale/partial summary is consumed as a valid cached head |
 | WATER-016 | Current #201 source: gas fixed point includes final labels and zero discovery allocation; component reuse retains global seed order, identity/history and relabelling, including paused contributors |
 | WATER-017 | Current #201 execution3 certificate law, retained unchanged by execution4: cold/invalidated inputs take ordinary warmup; failed proof defers eight eligible visits; only the exact valid tag skips motion. Usable heads/prior Water work admit bounded8-tick cost trials; deficit/uncertainty suspends32 eligible-head ticks. Off/cold invalidation never scans certificates; reactivation resets them before reading. Derived state is cold on restore and execution identity is separate from physical authority |
 | WATER-018 | Current #201 diagnostic interface: copied prepared heads may be stale after transport/edits; complete roster coverage and exact numerical errors do not grant freshness or rest authority. Net ROI Water balance is not gross face flux |
-| WATER-020 | Current repair branch, pending acceptance: final gas relabel changes unvisited labels absent from the new live table to vacuum, retains still-live masked identity, preserves already-reduced amounts/history, and treats sanitation as a non-fixed-point label change; CYPS still refuses dangling gas labels ([contract](../architecture/pressure-flow-v1.md#gas-compartments)) |
+| WATER-020 | Current accepted source: final gas relabel changes unvisited labels absent from the new live table to vacuum, retains still-live masked identity, preserves already-reduced amounts/history, and treats sanitation as a non-fixed-point label change; CYPS still refuses dangling gas labels ([contract](../architecture/pressure-flow-v1.md#gas-compartments)) |
 | WATER-021 | #201 execution4 (PR #382): a cached/dormant wake-summary bit is set only by a complete negative state-only scan and is cleared by every wake-input path (±2 producer/host/mask rectangles across seams, changed final heads, every gas pass, rebuild/cold/restore, active blocks); elision needs `sleep_after_quiet_ticks >= 2`; wake decisions equal reference |
 | WATER-019 | Current #201 adapter source: copied unsigned budget/capacity/counter values use decimal strings without signed-u64 truncation; all adapter observations remain exclusive-owner calls, not worker-owned Godot APIs |
 
@@ -449,3 +449,23 @@ materials after overrides. Native fixture feeds never paint their expected
 reaction products; every required helper must complete and no-op/aborted cases
 must fail. Counts, logical work, local timing, actual rendered pixels and visual
 quality judgments remain separately labelled evidence.
+
+
+## Accepted Workbench and persistence boundaries
+
+Source inspection at `00cdb02f` adds these stable review statements without
+promoting candidate features or historical runtime evidence.
+
+| ID | Status and narrow claim | Authoritative contract |
+|---|---|---|
+| AUTHORED-001 | Current: native queue admission, operation completion, authored recording and rendered publication are distinct; stale identities cannot grant another World's edit authority | [Interfaces](interfaces-and-message-contracts.md#which-acknowledgement-should-a-caller-wait-for) |
+| AUTHORED-002 | Current: material-only Flatten captures stored uint16 material IDs and replaces authoring baseline/history while leaving the installed World/Rapier state unchanged; Save is explicit | [Shared authoring](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility) |
+| AUTHORED-003 | Current: ordinary authored Save stores reconstructible starts and supported edits/options; it does not promise evolved physics, live leases, momentum or session Undo persistence | [Persistence](level-saves-and-replay.md#choose-the-right-persistence-contract) |
+| WATER-022 | Current: the plain native constructor leaves Wave/ballistic disabled; the fresh native sandbox/Workbench gameplay profile explicitly enables Wave, spill and ballistic release | [Configuration](configuration-reference.md#water-constructor-defaults-and-player-profile) |
+| WATER-023 | Current: Wave uses physical hash6 but physical save format0; save/restore refuses rather than omitting authoritative face-flux state | [Physical versions](level-saves-and-replay.md#current-native-physical-state-versions) |
+| MAT-AUTH-001 | Current: generated native hard/granular masks are consumed; arbitrary Lab candidates remain isolated and report runtime_active=false | [Material consumers](../systems/materials-and-rule-kernels.md#what-the-material-catalogue-and-materials-lab-currently-control) |
+| ACTOR-WB-001 | Current: inspection is distinct from human piloting; per-actor controls submit bounded leased values to the existing main-thread physical owner | [Actor composition](../systems/workbench-actor-composition.md#ownership-and-lifecycle) |
+
+The prior Water and host invariants retain their named family/source scope.
+Old branch-scoped execution descriptions do not certify later runtime artifacts.
+The [validation ledger](validation-evidence.md) continues to own executed results.

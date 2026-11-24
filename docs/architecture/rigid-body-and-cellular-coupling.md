@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-24
 ---
 
 # Rigid-body and cellular coupling
@@ -228,7 +228,7 @@ owner.
 
 ## Development workbench physical ownership
 
-The Draft #391 host stages one bounded multi-body roster at a time. Each
+The accepted Shared Workbench host stages one bounded multi-body roster at a time. Each
 instance has one session/epoch, generation, actual mass/inertia/centre of mass,
 gravity, drive sample and response budget. Collision rectangles contribute to
 the same body's wrench. The worker owns the cellular state, checks the copied
@@ -239,3 +239,24 @@ The finite canvas owns interest independently of presentation. The
 [workbench guide](../systems/player-control-playground.md#development-workbench-on-desktop)
 and [qualification record](../audits/2026-11-04-workbench-consolidation.md)
 distinguish authoring controls, observed behavior and unresolved review gates.
+
+
+## Current actor and destructible-structure boundary
+
+Accepted main includes [Workbench actor composition](../systems/workbench-actor-composition.md)
+through the existing prepared physical/native owner. A composition admits at
+most eight logical actors, eight prepared parts per actor, and separately
+checks its 64 response-body and 64 native-proxy budgets. A compound hull's several
+proxies share its actual body's response authority; they do not multiply mass.
+Equipment chassis remain reserved after release.
+
+This existing actor/body coupling does not establish ordinary Workbench
+ObjectShard detachment, moving-body material chemistry or arbitrary structure
+fracture. Those active successors require their own integration and qualification;
+consult the [current roadmap](../reference/status-and-roadmap.md). The
+[owner's desired destructible structures](../decisions/2026-11-14-owner-authoring-intent.md#physical-character-and-destructible-structures)
+remain explicit intent rather than an inherited claim of delivery.
+
+Sources: [`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd),
+[`workbench_physics_bridge.gd`](../../godot/scripts/workbench_physics_bridge.gd), and
+[`physical_actor_session.gd`](../../godot/scripts/physical_actor_session.gd).
