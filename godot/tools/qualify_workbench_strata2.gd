@@ -289,11 +289,12 @@ func composition_review() -> void:
 	view.status = str(ready.status)
 	view.reviewed_token = str(ui._token)
 	view.backend_token = str(ready.token)
+	view.backend_message = str(ready.get("message",""))
 	view.displayed_status = ui._compose_status.text
 	view.stage_count = ui._stage_previews.size()
 	view.approved = false
 	check(view.reviewed_token == view.backend_token and not view.reviewed_token.is_empty(),"Compose approval and exact reviewed backend token agree")
-	check(view.displayed_status == str(ready.get("message","")),"Compose visible status describes the ready proposal")
+	check(view.displayed_status == view.backend_message.strip_edges(),"Compose visible status describes the ready proposal")
 	ui._compose_stop.pressed.emit()
 	if not await until(func() -> bool: return not strata.authoring_state().get("busy",false),"cancel unapproved native composition preview"): return
 	var stopped: Dictionary = strata.authoring_state()
@@ -369,10 +370,15 @@ func native_reference_import(id: String) -> void:
 	approval_view.status = str(strata.authoring_state().get("status",""))
 	approval_view.reviewed_token = str(ui._token)
 	approval_view.backend_token = approved_token
+	approval_view.backend_message = str(strata.authoring_state().get("message",""))
 	approval_view.displayed_status = ui._authoring_status.text
 	approval_view.changed_counts = ui._preview_summary.text
+	approval_view.expected_region = [region.position.x,region.position.y,region.size.x,region.size.y]
+	approval_view.region_label = ui._preview_summary.text.get_slice("\n",0)
 	check(approval_view.status == "ready" and approval_view.reviewed_token == approved_token,"actual Import visible approval and reviewed token agree")
-	check(approval_view.displayed_status == str(strata.authoring_state().get("message","")),"Import visible status describes the ready native projection")
+	check(approval_view.displayed_status == approval_view.backend_message.strip_edges(),"Import visible status describes the ready native projection")
+	check(approval_view.region_label.begins_with("Target: scripted · region ") and approval_view.region_label.contains(str(approval_view.expected_region)),
+		"Import ready review states the actual approved native origin and extent")
 	strata._window.hide()
 	ui._approve.pressed.emit()
 	if not await until(func() -> bool: return not strata.authoring_state().get("busy",false),"reference bounded native ACK/readback "+id): return

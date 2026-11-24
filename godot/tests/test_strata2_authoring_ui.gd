@@ -33,7 +33,7 @@ class Mediator extends Node:
 		calls.append({"method":"preview_import","path":path,"options":options})
 		if refuse_preview: return
 		preview_serial += 1
-		state = {"status":"ready","token":"review-"+str(preview_serial),"busy":false,"can_approve":true,"cancellable":true,"plane":options.plane,"region":[32,32,64,64],"changed_cells":20,"mapped":20,"no_write":4076}
+		state = {"status":"ready","token":"review-"+str(preview_serial),"busy":false,"can_approve":true,"cancellable":true,"plane":options.plane,"stages":[{"id":"import-1","plane":options.plane,"region":[32,32,64,64]}],"changed_cells":20,"mapped":20,"no_write":4076}
 	func approve_plan(token: Variant) -> void: calls.append({"method":"approve_plan","token":token})
 	func apply_composition_settings(token: String) -> void: calls.append({"method":"apply_composition_settings","token":token})
 	func stop_authoring() -> void: calls.append({"method":"stop_authoring"})
@@ -73,6 +73,11 @@ func _run() -> void:
 	_check("unknown colours default to refusal", options.unmapped == "refuse" and options.color_distance == 0)
 	ui._preview_import()
 	_check("reviewed proposal enables approval", not ui._approve.disabled and not ui._compose_approve.disabled)
+	_check("single-stage import displays reviewed target and region without top-level alias", ui._preview_summary.text.begins_with("Target: scripted · region [32, 32, 64, 64]"))
+	mediator.state.region = [0,0,1,1]
+	ui.refresh({}, "")
+	_check("actual stage region takes precedence over stale conversion summary", ui._preview_summary.text.begins_with("Target: scripted · region [32, 32, 64, 64]"))
+	mediator.state.erase("region")
 	ui._origin[0].value += 1
 	ui.refresh({}, "")
 	_check("edited origin cannot revive old approval", ui._approve.disabled and ui._compose_approve.disabled)
@@ -181,6 +186,9 @@ func _run() -> void:
 	mediator.effects.effects[0].kind = "beacon"
 	ui._refresh_atmosphere()
 	_check("beacon direction controls visibly inactive", not ui._effect_direction[0].editable and "0.2 cycles" in ui._effect_speed.tooltip_text)
+	mediator.state.stages = [{"id":"rear","plane":"scripted","region":[32,32,64,64]}, {"id":"far","plane":"background","region":[96,32,64,64]}]
+	ui.refresh({}, "")
+	_check("multiple stages direct location review to explicit Compose targets", ui._preview_summary.text.begins_with("Target: per stage · region 2 explicit stages · inspect Compose"))
 	var failures := 0
 	for record: Dictionary in checks:
 		if not record.passed: failures += 1

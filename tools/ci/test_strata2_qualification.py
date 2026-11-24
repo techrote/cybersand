@@ -89,15 +89,20 @@ def successor_fields(data):
             "approval_enabled":True,"approval_visible":True,"proposal_visible":True,"scroll_vertical":500,
             "reviewed_token":"synthetic-compose-token","backend_token":"synthetic-compose-token",
             "displayed_status":"Review exact material-ID projection, then Approve. Synthetic verifier fixture.",
+            "backend_message":"Review exact material-ID projection, then Approve. Synthetic verifier fixture. ",
             "stage_count":3,"approved":False,"cancelled_without_approval":True,
             "stop":{"status":"cancelled","token":"","can_approve":False,"applied_cells":0,"approval_disabled":True},
             "native_hashes_before":deepcopy(data["plane_native_hashes"]),"native_hashes_after":deepcopy(data["plane_native_hashes"])}
     if reference:
+        fixture = json.loads((gate.ROOT / "godot/data/strata2/reference-imports" / (reference+".fixture.json")).read_text())
+        region = fixture["options"]["origin"] + fixture["options"]["crop"][2:]
         data["reference_import"]["ready_review"] = {
             "filename":"reference-import-"+reference+"-approval.png","status":"ready",
             "approval_enabled":True,"approval_visible":True,"proposal_visible":True,"scroll_vertical":500,
             "reviewed_token":"synthetic-test-token","backend_token":"synthetic-test-token",
             "displayed_status":"Review exact material-ID projection, then Approve. Synthetic verifier fixture.",
+            "backend_message":"Review exact material-ID projection, then Approve. Synthetic verifier fixture. ",
+            "expected_region":region,"region_label":"Target: scripted · region "+str(region),
             "changed_counts":"Synthetic changed/no-write accounting; not execution evidence."}
     return data
 
@@ -164,6 +169,8 @@ class Acceptance(unittest.TestCase):
             "missing_ready_compose": lambda d: d.pop("composition_review"),
             "compose_proposal_below_fold": lambda d: d["composition_review"].update(proposal_visible=False),
             "compose_unready_status": lambda d: d["composition_review"].update(displayed_status="Reading the actual target planes..."),
+            "compose_changed_status_content": lambda d: d["composition_review"].update(backend_message="Review exact material-ID projection, then Approve. A different warning."),
+            "missing_raw_backend_message": lambda d: d["composition_review"].pop("backend_message"),
             "compose_replaced_token": lambda d: d["composition_review"].update(backend_token="different"),
             "compose_stop_disconnected": lambda d: d["composition_review"]["stop"].update(status="ready",can_approve=True),
             "compose_stop_wrote_cells": lambda d: d["composition_review"]["stop"].update(applied_cells=1),
@@ -172,6 +179,10 @@ class Acceptance(unittest.TestCase):
             "import_approval_below_fold": lambda d: d["reference_import"]["ready_review"].update(approval_visible=False),
             "import_unreviewed_token": lambda d: d["reference_import"]["ready_review"].update(backend_token="different"),
             "import_missing_counts": lambda d: d["reference_import"]["ready_review"].update(changed_counts=""),
+            "import_changed_status_content": lambda d: d["reference_import"]["ready_review"].update(backend_message="Review exact material-ID projection, then Approve. A different warning."),
+            "import_missing_displayed_region": lambda d: d["reference_import"]["ready_review"].update(region_label="Target: scripted · region —"),
+            "import_wrong_displayed_origin": lambda d: d["reference_import"]["ready_review"].update(region_label="Target: scripted · region [0, 0, 384, 320]"),
+            "import_self_declared_wrong_region": lambda d: d["reference_import"]["ready_review"].update(expected_region=[0,0,384,320],region_label="Target: scripted · region [0, 0, 384, 320]"),
             "magnified_claimed_native_resolution": lambda d: d["native_grid_details"][0].update(pixels_per_cell_x=2.0),
             "missing_native_resolution_detail": lambda d: d.pop("native_grid_details"),
             "missing_native_reference": lambda d: d.pop("reference_import"),
@@ -232,6 +243,17 @@ class Acceptance(unittest.TestCase):
     def test_honest_admission_overrun_is_retained(self):
         data = witness(); data.update(admission_elapsed_ms=87000, admission_target_met=False)
         self.check(data)
+
+    def test_ready_status_uses_declared_display_whitespace_only(self):
+        for edge in ("", " ", "\t", "\n", "\r\n"):
+            with self.subTest(edge=repr(edge)):
+                data = witness()
+                for review in (data["composition_review"], data["reference_import"]["ready_review"]):
+                    review["backend_message"] = edge + review["displayed_status"] + edge
+                self.check(data)
+        data = witness()
+        data["composition_review"]["backend_message"] = data["composition_review"]["displayed_status"].replace("then Approve", "then  Approve")
+        with self.assertRaises(RuntimeError): self.check(data)
 
     def test_native_fault_and_import_adverse_controls(self):
         for label in gate.NATIVE_REPORTS:

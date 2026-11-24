@@ -841,8 +841,20 @@ func refresh(_document: Dictionary, status: String) -> void:
 		for stage: Dictionary in state.get("stages", []):
 			stage_text += "%s · %s · %s · %s · applied %s / changed %s\n" % [str(stage.get("id", "stage")), str(stage.get("plane", "")), str(stage.get("region", [])), str(stage.get("status", "proposed")), str(stage.get("applied", 0)), str(stage.get("changed", stage.get("changed_cells", 0)))]
 		if not stage_text.is_empty(): _plan_rows.text = stage_text
+		# Ready import locations come from the actual reviewed native stage.
+		# The conversion summary does not carry a top-level region after admission.
+		var preview_plane: String = str(state.get("plane", "—"))
+		var preview_region: String = str(state.get("region", "—"))
+		var preview_stages: Array = state.get("stages", [])
+		if preview_stages.size() == 1:
+			var single_preview_stage: Dictionary = preview_stages[0]
+			preview_plane = str(single_preview_stage.get("plane", preview_plane))
+			preview_region = str(single_preview_stage.get("region", preview_region))
+		elif preview_stages.size() > 1:
+			preview_plane = "per stage"
+			preview_region = "%d explicit stages · inspect Compose" % preview_stages.size()
 		_preview_summary.text = "Target: %s · region %s\nChanged cells: %s · mapped: %s · no-write: %s · explicit Empty: %s · unmapped: %s\nSource: %s\nProposed geometry: %s" % [
-			str(state.get("plane", "—")), str(state.get("region", "—")), str(state.get("changed_cells", "not yet read back")),
+			preview_plane, preview_region, str(state.get("changed_cells", "not yet read back")),
 			str(state.get("mapped", "—")), str(state.get("no_write", "—")), str(state.get("explicit_empty", "—")), str(state.get("unmapped", "—")),
 			str(state.get("source_sha256", "—")), str(state.get("geometry_sha256", "—"))]
 		set_process(bool(state.get("busy", false)))

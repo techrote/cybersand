@@ -129,7 +129,9 @@ def validate_ready_review(review: dict, filename: str, token: str | None = None)
             and (token is None or review["reviewed_token"] == token),
             "Displayed approval is not bound to the exact reviewed native token")
     require(isinstance(review.get("displayed_status"), str)
-            and review["displayed_status"].startswith("Review exact material-ID projection, then Approve."),
+            and review["displayed_status"].startswith("Review exact material-ID projection, then Approve.")
+            and isinstance(review.get("backend_message"), str)
+            and review["displayed_status"] == review["backend_message"].strip(),
             "Visible status did not describe the completed zero-write native preview")
 
 
@@ -249,6 +251,18 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
             validate_ready_review(review, "reference-import-"+reference+"-approval.png", imported["approved_token"])
             require(isinstance(review.get("changed_counts"),str) and review["changed_counts"],
                     "Visible import approval omitted changed/no-write proposal accounting")
+            fixture = json.loads((ROOT / "godot/data/strata2/reference-imports" / (reference + ".fixture.json")).read_text())
+            expected_region = fixture["options"]["origin"] + fixture["options"]["crop"][2:]
+            prefix = "Target: scripted · region "
+            require(review.get("expected_region") == expected_region
+                    and isinstance(review.get("region_label"),str) and review["region_label"].startswith(prefix),
+                    "Import review omitted its explicit target origin and extent")
+            try:
+                displayed_region = json.loads(review["region_label"][len(prefix):])
+            except (ValueError,TypeError) as exc:
+                raise RuntimeError("Import review target region is not a complete native coordinate array") from exc
+            require(displayed_region == expected_region and all(type(value) is int for value in displayed_region),
+                    "Displayed import region differs from the independently pinned fixture placement")
         if scene == "orbital-terminal":
             validate_visibility_probe(result)
             review = result.get("composition_review", {})
