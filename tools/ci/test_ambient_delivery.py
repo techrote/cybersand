@@ -318,6 +318,7 @@ class AmbientDeliveryCustody(unittest.TestCase):
     def package_fixture(self) -> dict:
         files = {"godot/project.godot": "; fixture project\n",
                  "godot/scripts/main.gd": "extends Node\n",
+                 "godot/shaders/depth_composite.gdshader": "shader_type canvas_item;\n",
                  "godot/icon.svg": '<svg xmlns="http://www.w3.org/2000/svg"/>\n',
                  "Open Workbench.cmd": "@echo off\n"}
         hashes = {}
@@ -349,6 +350,43 @@ class AmbientDeliveryCustody(unittest.TestCase):
         self.package_fixture()
         self.write("godot/scripts/main.gd", "extends Node2D\n")
         with self.assertRaisesRegex(RuntimeError, "changed"):
+            package.verify_package(self.folder)
+
+    def test_postlaunch_uid_for_original_shader_is_admitted(self) -> None:
+        manifest = self.package_fixture()
+        self.write("godot/shaders/depth_composite.gdshader.uid", "uid://fixture-shader\n")
+        self.assertEqual(package.verify_package(self.folder), manifest)
+
+    def test_pristine_shader_uid_sidecar_is_refused(self) -> None:
+        self.package_fixture()
+        self.write("godot/shaders/depth_composite.gdshader.uid", "uid://fixture-shader\n")
+        with self.assertRaisesRegex(RuntimeError, "unexpected"):
+            package.verify_package(self.folder, pristine=True)
+
+    def test_postlaunch_shader_uid_requires_manifested_original(self) -> None:
+        self.package_fixture()
+        self.write("godot/shaders/unknown.gdshader.uid", "uid://fixture-unknown\n")
+        with self.assertRaisesRegex(RuntimeError, "Unexpected"):
+            package.verify_package(self.folder)
+
+    def test_postlaunch_injected_shader_and_uid_are_refused(self) -> None:
+        self.package_fixture()
+        self.write("godot/shaders/unknown.gdshader", "shader_type canvas_item;\n")
+        self.write("godot/shaders/unknown.gdshader.uid", "uid://fixture-unknown\n")
+        with self.assertRaisesRegex(RuntimeError, "Unexpected"):
+            package.verify_package(self.folder)
+
+    def test_postlaunch_original_shader_mutation_with_uid_is_refused(self) -> None:
+        self.package_fixture()
+        self.write("godot/shaders/depth_composite.gdshader", "shader_type canvas_item;\nrender_mode unshaded;\n")
+        self.write("godot/shaders/depth_composite.gdshader.uid", "uid://fixture-shader\n")
+        with self.assertRaisesRegex(RuntimeError, "changed"):
+            package.verify_package(self.folder)
+
+    def test_postlaunch_uid_for_other_original_asset_type_is_refused(self) -> None:
+        self.package_fixture()
+        self.write("godot/icon.svg.uid", "uid://fixture-icon\n")
+        with self.assertRaisesRegex(RuntimeError, "Unexpected"):
             package.verify_package(self.folder)
 
     def test_postlaunch_expected_import_metadata_and_authored_data_are_allowed(self) -> None:

@@ -48,7 +48,9 @@ def verify_package(folder: Path, pristine: bool = False) -> dict:
             # are mutable. An injected executable project script is not.
             allowed = relative.startswith(("godot/.godot/", "userdata/"))
             if relative in omitted: allowed = True
-            if relative.endswith(".gd.uid") and relative[:-4] in expected:
+            # Godot generates UID sidecars for both scripts and shaders. Admit
+            # only metadata attached to an original, still-hash-checked input.
+            if relative.endswith((".gd.uid", ".gdshader.uid")) and relative[:-4] in expected:
                 allowed = True
             require(allowed, "Unexpected post-launch evaluator file: " + relative)
     return manifest

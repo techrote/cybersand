@@ -214,3 +214,34 @@ remain intact. Gameplay, profiles, motors, runtimes and the ordinary interactive
 launcher are unchanged. A second source-bound campaign is requested because
 the capture runner itself is part of the qualified input set. Audio playback and
 physical owner playfeel remain outside this capture qualification.
+
+## Second frozen campaign and generated shader metadata
+
+Source `38177d57d7d5dc99763f5366668890c4f53a15e6`, tree
+`f00fa44682bb46318b4505700e04fee1484a0b17`, again completed all sixteen Linux
+cases and 5,959 assertions with passed custody in 194.996 seconds. The independent
+review confirms that every Godot input and loaded project input is identical to
+the first freeze; only qualification tooling, its request marker and this ledger
+changed.
+
+Windows run
+[45472012444](https://github.com/techrote/cybersand/actions/runs/45472012444)
+completed its full headless campaign, actual source graphical capture, evaluator
+build, pristine extraction verification, extracted gameplay/save/reopen, extracted
+graphical capture and ordinary launcher. Its final post-launch integrity check
+then rejected `godot/shaders/depth_composite.gdshader.uid`. The verifier already
+admitted generated script UID sidecars tied to original inputs but omitted the
+equivalent shader metadata. The run remains an overall failed delivery gate;
+its original evidence artifact is `14957578782`, and no evaluator artifact was
+published from it.
+
+The narrow correction permits a generated `.gdshader.uid` only when its exact
+corresponding `.gdshader` is an original manifest input whose bytes still pass
+the existing hash check. Pristine extraction still requires the exact original
+file set. Unknown shader metadata, injected shaders or scripts, and changed
+original inputs remain refused; independent temporary-file tests cover these
+conditions. No gameplay, shader source, native runtime, motor or launcher is
+changed. The next Windows campaign qualifies the complete current source and
+portable archive. The completed Linux campaign is retained with an explicit
+unchanged-gameplay-input comparison instead of repeating its gameplay cases for
+this package-verifier-only change.
