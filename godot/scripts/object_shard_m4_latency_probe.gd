@@ -11,6 +11,7 @@ const STAGES: Array[String] = [
 ]
 const MAX_EVENTS: int = 512
 const MAX_STAGE_SAMPLES: int = 256
+const MAX_CADENCE_COHORTS: int = 64
 
 var enabled: bool = false
 var epoch: int = 1
@@ -21,9 +22,22 @@ var _last_upload: Dictionary = {}
 var _last_worker_metrics: Dictionary = {}
 var _post_draw_candidate_count: int = 0
 var _input_sequence: int = 0
+var _workload: Dictionary = {"active_bodies": 0, "paused": true, "camera": "unspecified"}
+var _draw_cadence: Dictionary = {}
+var _progress_cadence: Dictionary = {}
+var _last_draw_usec: int = -1
+var _last_draw_cohort: String = ""
+var _last_progress_usec: int = -1
+var _last_progress_tick: int = -1
+var _last_progress_world: int = -1
+var _last_progress_cohort: String = ""
+var _snapshot_world: int = -1
+var _cadence_capacity_drops: int = 0
 
 
 func configure(requested: bool) -> void:
+	if requested != enabled:
+		_reset_cadence()
 	enabled = requested
 
 
@@ -34,6 +48,94 @@ func retire(reason: String) -> void:
 	epoch += 1
 	_last_upload.clear()
 	_last_snapshot_serial = 0
+	_snapshot_world = -1
+	_reset_cadence()
+
+
+# Main supplies only workload labels. These never advance native or physical
+# time. A changed label breaks the interval so a pause, reset or camera switch
+# cannot be folded into a different workload's measured rate.
+func observe_workload(active_bodies: int, paused: bool, camera: String) -> bool:
+	if not enabled or active_bodies < 0 or active_bodies > 64 or camera.length() > 64:
+		return false
+	var next: Dictionary = {"active_bodies": active_bodies, "paused": paused, "camera": camera}
+	if next != _workload:
+		_last_draw_usec = -1
+		_last_progress_usec = -1
+	_workload = next
+	return true
+
+
+func _cohort() -> String:
+	return "%d|%s|%s" % [int(_workload.active_bodies), str(_workload.paused), str(_workload.camera)]
+
+
+func _reset_cadence() -> void:
+	_draw_cadence.clear()
+	_progress_cadence.clear()
+	_last_draw_usec = -1
+	_last_draw_cohort = ""
+	_last_progress_usec = -1
+	_last_progress_tick = -1
+	_last_progress_world = -1
+	_last_progress_cohort = ""
+	_cadence_capacity_drops = 0
+
+
+func _cadence_sample(destination: Dictionary, key: String, duration: int, units: int) -> void:
+	if duration <= 0 or units <= 0:
+		return
+	if not destination.has(key):
+		if destination.size() >= MAX_CADENCE_COHORTS:
+			_cadence_capacity_drops += 1
+			return
+		destination[key] = {"workload": _workload.duplicate(), "intervals": [],
+			"interval_count": 0, "units": 0, "elapsed_usec": 0, "maximum_usec": 0}
+	var row: Dictionary = destination[key]
+	var values: Array = row.intervals
+	if values.size() >= MAX_STAGE_SAMPLES:
+		values.pop_front()
+	values.append(duration)
+	row.interval_count += 1
+	row.units += units
+	row.elapsed_usec += duration
+	row.maximum_usec = maxi(int(row.maximum_usec), duration)
+
+
+func _observe_progress(snapshot: CyberSimulationSnapshot, now_usec: int) -> void:
+	var key: String = _cohort()
+	var same_owner: bool = snapshot.render_world_generation == _last_progress_world
+	if same_owner and _last_progress_usec >= 0 and now_usec <= _last_progress_usec:
+		return
+	if same_owner and snapshot.tick_index <= _last_progress_tick:
+		# A fresh render publication without a semantic step is not progress.
+		return
+	if same_owner and key == _last_progress_cohort and _last_progress_usec >= 0 \
+			and now_usec > _last_progress_usec and not bool(_workload.paused):
+		_cadence_sample(_progress_cadence, key, now_usec - _last_progress_usec,
+			snapshot.tick_index - _last_progress_tick)
+	_last_progress_world = snapshot.render_world_generation
+	_last_progress_tick = snapshot.tick_index
+	_last_progress_usec = now_usec
+	_last_progress_cohort = key
+
+
+func _cadence_summary(source: Dictionary, units: String) -> Array:
+	var rows: Array = []
+	for key: String in source:
+		var row: Dictionary = source[key]
+		var sorted: Array = row.intervals.duplicate()
+		sorted.sort()
+		if sorted.is_empty():
+			continue
+		rows.append({"workload": row.workload.duplicate(), "interval_count": row.interval_count,
+			"units": units, "units_observed": row.units, "elapsed_usec": row.elapsed_usec,
+			"observed_units_per_second": float(row.units) * 1000000.0 / float(row.elapsed_usec),
+			"recent_interval_samples": sorted.size(),
+			"recent_p50_interval_usec": sorted[ceili(float(sorted.size()) * 0.50) - 1],
+			"recent_p95_interval_usec": sorted[ceili(float(sorted.size()) * 0.95) - 1],
+			"maximum_interval_usec": row.maximum_usec})
+	return rows
 
 
 func mark_input(position: Vector2i, operation: String, captured_usec: int = 0) -> int:
@@ -70,10 +172,16 @@ func record_duration(stage: String, start_usec: int, end_usec: int,
 # encloses other worker-side activity and its substage metrics can overlap.
 # Save the exact source-native worker fields with their actual scope.
 func observe_snapshot(snapshot: CyberSimulationSnapshot, observed_usec: int = 0) -> void:
-	if not enabled or snapshot == null or snapshot.serial <= _last_snapshot_serial:
+	if not enabled or snapshot == null:
+		return
+	if snapshot.render_world_generation != _snapshot_world:
+		_snapshot_world = snapshot.render_world_generation
+		_last_snapshot_serial = 0
+	if snapshot.serial <= _last_snapshot_serial:
 		return
 	_last_snapshot_serial = snapshot.serial
 	var now_usec: int = observed_usec if observed_usec > 0 else Time.get_ticks_usec()
+	_observe_progress(snapshot, now_usec)
 	_last_worker_metrics = {
 		"worker_step_time_ms": snapshot.worker_step_time_ms,
 		"snapshot_copy_time_ms": snapshot.snapshot_copy_time_ms,
@@ -121,9 +229,18 @@ func mark_upload(snapshot: CyberSimulationSnapshot, start_usec: int,
 
 
 func observe_post_draw(now_usec: int = 0) -> Dictionary:
-	if not enabled or _last_upload.is_empty() or int(_last_upload.epoch) != epoch:
-		return {"ok": false, "outcome": "NoVisibleUpload"}
+	if not enabled:
+		return {"ok": false, "outcome": "ProbeDisabled"}
 	var finished: int = now_usec if now_usec > 0 else Time.get_ticks_usec()
+	var key: String = _cohort()
+	if _last_draw_usec >= 0 and finished <= _last_draw_usec:
+		return {"ok": false, "outcome": "InvalidPostDrawClock"}
+	if key == _last_draw_cohort and _last_draw_usec >= 0:
+		_cadence_sample(_draw_cadence, key, finished - _last_draw_usec, 1)
+	_last_draw_usec = finished
+	_last_draw_cohort = key
+	if _last_upload.is_empty() or int(_last_upload.epoch) != epoch:
+		return {"ok": false, "outcome": "NoVisibleUpload"}
 	if finished < int(_last_upload.completed_usec):
 		return {"ok": false, "outcome": "InvalidPostDrawClock"}
 	var observed: Dictionary = _last_upload.duplicate()
@@ -166,6 +283,15 @@ func summary() -> Dictionary:
 		"no_additive_stage_total": true,
 		"input_to_post_draw_causally_proven": false,
 		"frame_serial_coherence_proven": false,
+		"cadence": {"display_backend": DisplayServer.get_name(),
+			"render_scope": "headless_callback_only" if DisplayServer.get_name() == "headless" else "renderer_post_draw_callback",
+			"hardware_present_verified": false,
+			"post_draw_intervals": _cadence_summary(_draw_cadence, "post_draw_callbacks"),
+			"native_progress_delivery": _cadence_summary(_progress_cadence, "native_semantic_ticks"),
+			"progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+			"percentile_scope": "most_recent_bounded_intervals_per_workload",
+			"cohort_capacity": MAX_CADENCE_COHORTS,
+			"capacity_dropped_intervals": _cadence_capacity_drops},
 		"scope": "ordinary_Workbench_opt_in_main_thread_observation"}
 
 
@@ -178,10 +304,11 @@ func export_jsonl(user_path: String) -> Dictionary:
 		return {"ok": false, "outcome": "FileOpenFailed"}
 	for event: Dictionary in events:
 		file.store_line(JSON.stringify(event))
+	file.store_line(JSON.stringify({"stage": "summary", "epoch": epoch, "values": summary()}))
 	file.flush()
 	file.close()
 	return {"ok": true, "outcome": "BoundedTraceWritten",
-		"events": events.size(), "path": user_path}
+		"events": events.size(), "summary_records": 1, "path": user_path}
 
 
 func _append(row: Dictionary) -> void:

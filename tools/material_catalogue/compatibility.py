@@ -546,6 +546,17 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 741},)
 
 
+# Reviewed ObjectShard M4 derived occupancy composition. This authenticates the
+# retained source ancestor; it does not refresh any material identity baseline.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1',
+  'to_lf_sha256': '1077d5928166100c704af047558d82bf58a98a0318fe7bc86afe4f81409d4b48',
+  'source_commit': 'a12636c28519543d9359d6b2abb5a9767857427d',
+  'record': 'docs/audits/2026-11-24-objectshard-m4-world-transition.md',
+  'issue': 281,
+  'pr': 754},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 
