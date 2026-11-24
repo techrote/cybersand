@@ -6,6 +6,7 @@ extends Control
 const Surface = preload("res://scripts/depth/depth_layer_surface.gd")
 const Transform = preload("res://scripts/depth/depth_compositor.gd")
 const Appearance = preload("res://scripts/material_appearance_lut.gd")
+const Document = preload("res://scripts/depth/workbench_layer_document.gd")
 const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const REAR_IDS: Array[String] = ["background", "effects", "scripted"]
 const HAZE_SHADER: String = "shader_type canvas_item; render_mode unshaded; uniform float haze = 0.0; varying vec4 vertex_colour; void vertex() { vertex_colour = COLOR; } void fragment() { vec4 c = texture(TEXTURE, UV); c.rgb = mix(c.rgb, vec3(0.055,0.105,0.15), haze); COLOR = c * vertex_colour; }"
@@ -134,6 +135,8 @@ func mount(controller_host: Control) -> bool:
 	return _accept()
 
 func apply_document(candidate: Dictionary) -> bool:
+	var reason: String = Document.validate(candidate)
+	if not reason.is_empty(): return _reject(reason)
 	var incoming: Variant = candidate.get("extent", [])
 	if not _prepared or not incoming is Array or incoming.size() != 2 \
 			or incoming[0] != extent.x or incoming[1] != extent.y:
@@ -155,24 +158,56 @@ func expect_sources(sources: Dictionary) -> bool:
 	# Binding is separate from a copied publication: an arbitrary packet cannot
 	# appoint itself the owner of a plane, even with a larger serial/generation.
 	if sources.size() != REAR_IDS.size(): return _reject("Expected exactly three decorative owner identities")
+	var generation: int = -1
 	for id: String in REAR_IDS:
 		if not sources.get(id) is Dictionary: return _reject("Missing decorative owner identity: " + id)
 		var identity: Dictionary = sources[id]
-		if not identity.has("owner_id") or str(identity.owner_id).is_empty(): return _reject("Missing decorative owner ID")
+		if identity.size() != 3 or not identity.has_all(["owner_id", "reset_generation", "revision"]):
+			return _reject("Unsupported decorative owner identity fields")
+		if not identity.owner_id is String or identity.owner_id.is_empty() or identity.owner_id.length() > 128:
+			return _reject("Decorative owner ID must be a nonempty bounded string")
 		for field: String in ["reset_generation", "revision"]:
-			if typeof(identity.get(field)) != TYPE_INT or int(identity[field]) < 0:
-				return _reject("Decorative identity must have nonnegative integer " + field)
+			if typeof(identity.get(field)) != TYPE_INT or int(identity[field]) < 1:
+				return _reject("Decorative identity must have positive integer " + field)
+		if generation >= 0 and generation != int(identity.reset_generation):
+			return _reject("Decorative owners belong to different composition generations")
+		generation = int(identity.reset_generation)
+		var previous: Dictionary = _accepted.get(id, {})
+		if not previous.is_empty():
+			if generation < int(previous.reset_generation): return _reject("Cannot bind a retired decorative generation")
+			if generation == int(previous.reset_generation) and (identity.owner_id != previous.owner_id or int(identity.revision) < int(previous.revision)):
+				return _reject("Cannot replace an owner or retreat its revision within one generation")
 	_expected = sources.duplicate(true)
 	return _accept()
 
 func apply_layer_packet(id: String, packet: Dictionary) -> bool:
 	if not _surfaces.has(id) or not _expected.has(id): return _packet_reject("Unbound decorative presentation owner")
-	if str(packet.get("layer_id", "")) != id: return _packet_reject("Decorative packet plane mismatch")
+	if not packet.get("layer_id") is String or packet.layer_id != id: return _packet_reject("Decorative packet plane mismatch")
+	if not packet.get("owner_id") is String or typeof(packet.get("reset_generation")) != TYPE_INT \
+			or typeof(packet.get("revision")) != TYPE_INT:
+		return _packet_reject("Decorative packet identity types are invalid")
+	if typeof(packet.get("channels")) != TYPE_INT or packet.channels != 2 \
+			or typeof(packet.get("layer_tick")) != TYPE_INT or packet.layer_tick != 0:
+		return _packet_reject("Static decorative publication requires RG8 and native tick zero")
+	if packet.has("failed") and (typeof(packet.failed) != TYPE_BOOL or packet.failed):
+		return _packet_reject("Decorative publication is failed or has an invalid failure state")
+	if packet.has("generation") and (typeof(packet.generation) != TYPE_INT or packet.generation != packet.reset_generation):
+		return _packet_reject("Decorative publication generation identities disagree")
 	var expected: Dictionary = _expected[id]
 	for field: String in ["owner_id", "reset_generation", "revision"]:
 		if packet.get(field) != expected.get(field): return _packet_reject("Decorative packet " + field + " does not match admitted owner")
 	var packet_extent: Variant = packet.get("extent")
-	if packet_extent != extent and packet_extent != [extent.x, extent.y]: return _packet_reject("Decorative packet extent mismatch")
+	if packet_extent is Array:
+		if packet_extent.size() != 2 or typeof(packet_extent[0]) != TYPE_INT or typeof(packet_extent[1]) != TYPE_INT \
+				or packet_extent[0] != extent.x or packet_extent[1] != extent.y:
+			return _packet_reject("Decorative packet extent mismatch")
+	elif not packet_extent is Vector2i or packet_extent != extent:
+		return _packet_reject("Decorative packet extent mismatch")
+	# This static owner publishes complete bounded planes, including Empty. A
+	# truncated or empty publication cannot advance the visible revision witness.
+	if typeof(packet.get("full_refresh")) != TYPE_BOOL or not packet.full_refresh \
+			or not packet.get("cells") is PackedByteArray or packet.cells.size() != extent.x * extent.y * 2:
+		return _packet_reject("Static decorative publication requires a complete material plane")
 	var previous: Dictionary = _accepted.get(id, {})
 	if not previous.is_empty() and packet.get("reset_generation") == previous.get("reset_generation"):
 		if typeof(packet.get("serial")) != TYPE_INT or int(packet.serial) <= int(previous.serial):

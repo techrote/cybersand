@@ -45,8 +45,10 @@ static func extent_of(document: Dictionary) -> Vector2i:
 
 
 static func plane(document: Dictionary, id: String) -> Dictionary:
-	for row: Dictionary in document.get("planes", []):
-		if row.get("id", "") == id: return row
+	var rows: Variant = document.get("planes", [])
+	if not rows is Array: return {}
+	for row: Variant in rows:
+		if row is Dictionary and row.get("id") is String and row.id == id: return row
 	return {}
 
 

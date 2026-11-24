@@ -20,9 +20,12 @@ var _document: Dictionary = {}
 var _pending: Dictionary = {}
 var _sources: Dictionary = {}
 var _history_state: Dictionary = {}
+var _publication_errors: Dictionary = {}
+var last_edit_receipt: Dictionary = {}
 var _layer_ready := false
 var _apply_serial := 0
 var _keep_on_apply := false
+var _demo_overview := false
 var _window: Window
 var _panel: Control
 var _indicator: Label
@@ -181,6 +184,7 @@ func _adopt() -> bool:
 	presenter = candidate
 	_document = layer_owner.document()
 	_sources = _pending.sources.duplicate(true)
+	_publication_errors.clear()
 	_layer_ready = true
 	_pending = {}
 	presenter.apply_document(_document)
@@ -282,13 +286,23 @@ func play_installed() -> void:
 	_apply_serial = 0
 	_keep_on_apply = false
 	if _document.is_empty() and not wb.applied.is_empty(): _document = Document.default_document(Setup.extent_of(wb.applied))
+	if _demo_overview:
+		_demo_overview = false
+		_show_overview.call_deferred()
 	_refresh_panel()
+
+
+func _show_overview() -> void:
+	if not is_instance_valid(wb) or wb.applied.is_empty(): return
+	wb._camera.select(2)
+	wb.set_camera(2)
 
 
 func play_apply_failed() -> void:
 	cancel_candidate()
 	_apply_serial = 0
 	_keep_on_apply = false
+	_demo_overview = false
 	_say("Scene replacement refused; the previous valid play and decorative composition are retained.")
 
 
@@ -312,8 +326,9 @@ func load_demo(id: String) -> bool:
 	var scene: Dictionary = Scenes.make(id,PackedInt32Array(wb.applied.liquid_policy))
 	if scene.has("error"): return _refuse(str(scene.error))
 	if not load_document(scene): return false
+	_demo_overview = true
 	wb._name.text = "strata-" + id
-	return _say(str(scene.get("title",id)) + " · installing authored scene; use Overview after admission.")
+	return _say(str(scene.get("title",id)) + " · installing the complete authored scene in Overview.")
 
 
 func save_named(label: String) -> bool:
@@ -336,19 +351,26 @@ func play_edit_reason() -> String:
 func _edit_ready(id: String) -> bool:
 	if not enabled() or id not in NONPLAY: return _refuse("Enable Strata and select a decorative plane first.")
 	if wb.busy() or not _pending.is_empty(): return _refuse("Wait for the current owner transaction.")
+	if _publication_errors.has(id): return _refuse("This plane has a committed edit awaiting a valid view. Save and reopen its authored scene before editing it again.")
 	if not layer_owner.can_edit(id) or not presenter.effective_visible(id): return _refuse("The selected plane is hidden, locked or excluded from this view.")
 	return true
 
 
 func _publish(id: String) -> bool:
+	# The native edit is already committed. Even a failed display admission must
+	# leave Save and the edit target reporting the actual authored revision.
+	_document = layer_owner.document()
 	var packet: Dictionary = layer_owner.snapshot_layer(id,true)
-	if packet.is_empty(): return _refuse("No current native publication exists for " + id + ".")
+	if packet.is_empty() or packet.get("failed",false):
+		_publication_errors[id] = "No current native publication"
+		return _refuse("Edit committed on %s, but its decorative view failed. The previous pixels remain; Save and reopen this authored scene. Play is unchanged." % id)
 	# A publication is bound to the current owner identity and authored revision,
 	# not merely to a larger serial supplied by an arbitrary caller.
 	_sources[id] = {"owner_id":packet.get("owner_id",-1),"reset_generation":packet.get("reset_generation",-1),"revision":packet.get("revision",-1)}
 	if not presenter.expect_sources(_sources) or not presenter.apply_layer_packet(id,packet):
-		return _refuse("The current native layer publication was refused; the play World remains unaffected.")
-	_document = layer_owner.document()
+		_publication_errors[id] = "Current publication refused"
+		return _refuse("Edit committed on %s, but its decorative publication was refused. The previous pixels remain; Save and reopen this authored scene. Play is unchanged." % id)
+	_publication_errors.erase(id)
 	presenter.apply_document(_document)
 	_refresh_panel()
 	return true
@@ -357,8 +379,10 @@ func _publish(id: String) -> bool:
 func edit_cells(id: String, cells: PackedInt32Array) -> bool:
 	if not _edit_ready(id): return false
 	var receipt: Dictionary = layer_owner.paint_cells(id,cells,layer_owner.generation())
+	last_edit_receipt = receipt.duplicate(true)
 	if not receipt.get("ok",false): return _refuse(str(receipt.get("error",receipt.get("reason","Native paint refused."))))
-	if not _publish(id): return false
+	last_edit_receipt["published"] = _publish(id)
+	if not last_edit_receipt.published: return false
 	return _say("Edited %s · %d cells · independent static-plane Undo." % [id,int(receipt.get("changed",cells.size()/3))])
 
 
@@ -377,8 +401,10 @@ func _history(action: String) -> bool:
 	if not _edit_ready(id): return false
 	cancel_gesture()
 	var receipt: Dictionary = layer_owner.undo(id) if action == "undo" else layer_owner.redo(id)
+	last_edit_receipt = receipt.duplicate(true)
 	if not receipt.get("ok",false): return _refuse(str(receipt.get("error",receipt.get("reason","No retained history."))))
-	if not _publish(id): return false
+	last_edit_receipt["published"] = _publish(id)
+	if not last_edit_receipt.published: return false
 	return _say("%s %s authored edit. Play history and simulation are unchanged." % [action.capitalize(),id])
 
 
@@ -398,7 +424,7 @@ func route_editor_action(action: String) -> Dictionary:
 func update_editor_controls(editor: Control) -> void:
 	if not enabled() or active_layer() == "play": return
 	var id := active_layer()
-	var allowed: bool = layer_owner.can_edit(id) and presenter.effective_visible(id) and not wb.busy()
+	var allowed: bool = layer_owner.can_edit(id) and presenter.effective_visible(id) and not wb.busy() and not _publication_errors.has(id)
 	var history: Dictionary = _history_state.get(id,{})
 	editor._copy.disabled = not selection.has_area() or not presenter.effective_visible(id) or wb.busy()
 	editor._paste.disabled = not allowed or clipboard.is_empty()
@@ -495,14 +521,16 @@ func world_input(event: InputEvent) -> bool:
 		if tool == "Fill":
 			_refuse("Decorative planes support Brush, Eraser, Line, Rectangle, Outline and bounded Select/Copy/Paste. Fill remains a Play tool.")
 			return true
-		_gesture = {"layer":id,"generation":layer_owner.generation(),"tool":tool,"anchor":cursor,"cursor":cursor,
+		_gesture = {"layer":id,"generation":layer_owner.generation(),"revision":int(Document.plane(_document,id).revision),
+			"tool":tool,"anchor":cursor,"cursor":cursor,
 			"points":[cursor],"radius":wb.paint_editor.radius(),"material":0 if tool == "Eraser" else wb.paint_editor.material_id}
 		return true
 	if _gesture.is_empty(): return true
 	var saved := _gesture
 	_gesture = {}
-	if cursor.x < 0 or saved.layer != id or int(saved.generation) != layer_owner.generation():
-		_refuse("Gesture cancelled outside its original plane.")
+	if cursor.x < 0 or saved.layer != id or int(saved.generation) != layer_owner.generation() \
+			or int(saved.revision) != int(Document.plane(_document,id).revision):
+		_refuse("Gesture cancelled outside its original plane or after another edit changed that plane.")
 		return true
 	if saved.tool == "Select":
 		var anchor: Vector2i = saved.anchor
@@ -611,6 +639,7 @@ func _clear_scene() -> void:
 	_layer_ready = false
 	_sources.clear()
 	_history_state.clear()
+	_publication_errors.clear()
 	_document = {}
 	selection = Rect2i()
 	clipboard.clear()

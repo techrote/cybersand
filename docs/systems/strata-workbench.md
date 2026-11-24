@@ -67,6 +67,10 @@ at this adapter seam, not adoption of Strata's historical prototype clocks.
 inspects only the selected plane. Solo filters visibility further. Disable
 returns to ordinary play presentation and ordinary play editing; it retains the
 authored decorative layouts and settings for later enable and Save.
+The saved layered Play lock/visibility/solo settings apply again on enable; they
+do not restrict the ordinary play editor while Strata is off. Camera position
+and zoom retain the ordinary Workbench lifecycle and are not serialized by the
+layer envelope; built-in examples open in Overview after positive admission.
 
 The selected plane is shown in both the composition panel and the ordinary paint
 toolbar. Hidden, zero-opacity, locked or solo/flat-excluded planes receive no
@@ -132,9 +136,12 @@ these identities separately and rejects foreign owners, stale generation or
 revision, duplicate/out-of-order serials and malformed/out-of-bounds bytes before
 changing pixels. Caller-owned copies cannot mutate a retained packet cache.
 
-A failed decorative operation quarantines that plane and does not reset,
-advance or otherwise mutate Play. Partial native failure is not a successful
-authored edit. The retained authored source remains available for explicit
+A partial native decorative failure quarantines that plane and does not reset,
+advance or otherwise mutate Play. Ordinary validation refusal retains a usable
+unchanged plane. Partial native failure is not a successful authored edit. A
+committed edit whose display publication fails is explicitly reported as committed
+with stale pixels; Save retains the actual authored revision and further edits
+wait for explicit reopen. The retained authored source remains available for explicit
 reconstruction; no cross-plane material transfer or automatic event forwarding
 is implemented. Atmospheric Steam/Spark-like decoration is visual material
 content, not real mass transfer into the playable World.
@@ -167,11 +174,23 @@ operation; it does not delete the destination first. Process/I/O failure handlin
 does not claim filesystem power-loss durability. RAMCACHE formats, area streaming
 and physical continuation formats remain unchanged and unconsumed.
 
+For a generated play baseline, this envelope retains the exact previously
+admitted native material bytes and their original recipe/provenance rather than
+regenerating the recipe in a new process. This deliberately makes the saved
+composition an authored-layout artifact. Its stored provenance identifies the
+original generation; it is not a fresh qualification of today's generator.
+Native ID/hash/extent admission still applies. The existing nonlayered
+generated-start reader keeps its recipe regeneration behavior.
+
+Model-assisted Art batches remain play-only in their existing subsystem. This
+milestone's all-plane authoring refers to the human tools in the Strata adapter;
+it does not authorize a provider to mutate decorative Worlds.
+
 ## Cost boundary and qualification
 
 No Strata owner, surface or per-frame callback exists on default startup. Opening
-the panel is lazy; enabling or explicitly loading a layered composition prepares
-its native planes. Static planes never tick and never request recurring native
+the panel is lazy; the first composition setting change, enabling, or explicit
+layered load prepares its native planes. Static planes never tick and never request recurring native
 publications. A dirty admitted plane uploads its complete RG8 backing once; a
 2048² upload is 8 MiB. Frozen material surfaces bake when an admitted changed
 publication becomes visible. Camera/parallax changes reuse those surfaces.

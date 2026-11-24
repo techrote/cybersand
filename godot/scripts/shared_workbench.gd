@@ -95,6 +95,9 @@ var paint_editor: Control
 # Created only by the explicit Strata action or a layered document load. The
 # ordinary startup keeps its existing World, presentation and publication path.
 var strata: Node
+# A launcher receipt is emitted only after the existing worker acknowledges the
+# first ordinary canvas. Argument recognition alone is not successful startup.
+var _launch_admission_emitted := false
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
 var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
 
@@ -601,6 +604,10 @@ func _flatten_pressed() -> void:
 	if is_flatten_pending():
 		cancel_flatten()
 		return
+	var layer_guard := strata_play_edit_reason()
+	if not layer_guard.is_empty():
+		refuse("Flatten changes Play material history. " + layer_guard)
+		return
 	_cancel()
 	_flatten_confirmation.popup_centered(Vector2i(550,190))
 
@@ -616,6 +623,8 @@ func _refuse_flatten(reason: String) -> Dictionary:
 	return {"ok":false,"reason":reason}
 
 func request_flatten(capacity_bytes: int = 2048*2048*2) -> Dictionary:
+	var layer_guard := strata_play_edit_reason()
+	if not layer_guard.is_empty(): return _refuse_flatten("Flatten changes Play material history. " + layer_guard)
 	if host == null or applied.is_empty(): return _refuse_flatten("No native Workbench is installed.")
 	if is_flatten_pending(): return {"ok":false,"reason":"Flatten is already preparing."}
 	if host.simulation_worker.has_failed():
@@ -961,6 +970,23 @@ func installed(candidate: Dictionary) -> void:
 		set_camera(2)
 		message = "Mixed Actor Workshop ready. Play, inspect an NPC, Pilot inspected, then Hand back. Paint remains available."
 	if is_instance_valid(_actor_panel): _actor_panel.refresh(true)
+	_report_launch_admission()
+
+func _report_launch_admission() -> void:
+	if _launch_admission_emitted or not "--workbench" in OS.get_cmdline_user_args(): return
+	if host == null or host.latest_snapshot == null or host.simulation_worker == null: return
+	var generation := int(host.latest_snapshot.render_world_generation)
+	if generation <= 0 or applied.is_empty(): return
+	_launch_admission_emitted = true
+	var extent := Setup.extent_of(applied)
+	print("STRATA_WORKBENCH_LAUNCH_ADMITTED " + JSON.stringify({
+		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"workbench_script":get_script().resource_path,
+		"world_generation":generation,
+		"worker_id":host.simulation_worker.get_instance_id(),
+		"extent":[extent.x,extent.y],
+		"strata_enabled":is_instance_valid(strata) and strata.enabled(),
+	}))
 
 
 func _material_counts(counts: Dictionary) -> String:
@@ -1303,6 +1329,8 @@ func load_setup() -> bool:
 	return apply(result.setup)
 
 func art_authoring_state() -> Dictionary:
+	var layer_guard := strata_play_edit_reason()
+	if not layer_guard.is_empty(): return {"busy":true,"reason":"Art authoring targets Play. " + layer_guard}
 	if is_flatten_pending(): return {"busy":true,"reason":"Wait for Flatten material capture and baseline adoption."}
 	if paint_editor == null: return {"busy":false,"reason":""}
 	if paint_editor.recovery_required():

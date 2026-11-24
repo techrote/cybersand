@@ -158,6 +158,20 @@ func _run() -> void:
 	expect(baseline_read.get("layered", false) and baseline_read.get("baseline", {}).get("cells", PackedByteArray()) == material_bytes,
 		"GEN-008 authored baseline bytes did not survive Strata envelope")
 	expect(owner.stats().layers.scripted.undo > 0, "Save cleared decorative Undo history")
+	var generated := _native_generated_play()
+	if not generated.is_empty():
+		expect(Document.write_named(name, setup, generated, {}, owner.document()).is_empty(), "Native generated play source could not be wrapped")
+		var generated_read := Document.read_named(name)
+		expect(generated_read.get("layered", false), "Generated Strata envelope could not reopen: " + str(generated_read.get("error", "")))
+		if generated_read.get("layered", false):
+			expect(generated_read.generated.cells == generated.cells, "Saved generated play bytes changed")
+			# Existing generated-start identity normalizes JSON integral numbers;
+			# Array/Dictionary Variant equality distinguishes parsed floats.
+			expect(GeneratedMaps.recipe_hash(GeneratedMaps.provenance(generated_read.generated)) \
+				== GeneratedMaps.recipe_hash(GeneratedMaps.provenance(generated)), "Saved native generated provenance changed")
+		var bad_generated := generated.duplicate(true)
+		bad_generated.plane_revision = 7
+		expect(not Document.write_named(name, setup, bad_generated, {}, owner.document()).is_empty(), "Invalid generated scalar type bypassed save admission")
 	var replacing := owner.prepare(scene, owner.generation())
 	expect(replacing.ok, "valid replacement could not prepare")
 	owner.cancel(replacing.token)
@@ -171,3 +185,28 @@ func _run() -> void:
 	print("STRATA_LAYER_REGRESSION ", JSON.stringify({"checks": checks, "failures": failures,
 		"godot": Engine.get_version_info().string, "backend": "CyberNativeCellWorld", "domain": "headless-layer-owner-only"}))
 	quit(1 if failures else 0)
+
+
+func _native_generated_play() -> Dictionary:
+	var generator: Object = ClassDB.instantiate(&"CyberWorldGenerator")
+	var recipe := {"schema": 1, "seed": 17, "chunk_size": 64, "candidate": "strata"}
+	var configured: Dictionary = generator.configure(recipe)
+	expect(configured.get("ok", false), "Native generated-source fixture configuration failed")
+	if not configured.get("ok", false): return {}
+	var cells := PackedByteArray()
+	cells.resize(512 * 512)
+	var receipts: Array = []
+	for cy: int in 8:
+		for cx: int in 8:
+			var chunk: Dictionary = generator.generate_chunk(Vector2i(cx, cy))
+			if not chunk.get("ok", false):
+				expect(false, "Native generated-source fixture chunk failed")
+				return {}
+			for y: int in 64:
+				for x: int in 64:
+					cells[(cy * 64 + y) * 512 + cx * 64 + x] = chunk.cells[y * 64 + x]
+			receipts.append(str(chunk.receipt_hash))
+	return {"recipe": recipe, "origin": Vector2i.ZERO, "extent": Vector2i(512, 512), "cells": cells,
+		"sha256": GeneratedMaps.digest(cells), "recipe_sha256": GeneratedMaps.recipe_hash(recipe),
+		"generator_fingerprint": str(configured.fingerprint), "plane_revision": str(configured.get("plane_fingerprint", "")),
+		"generator_revision": int(configured.revision), "receipt_hashes": receipts}

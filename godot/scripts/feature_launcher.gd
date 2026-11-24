@@ -13,7 +13,6 @@ func _ready() -> void:
 		launch.call_deferred("materials_lab")
 		return
 	if first_launch and "--workbench" in OS.get_cmdline_user_args():
-		print("SHARED_WORKBENCH_LAUNCH_READY")
 		launch.call_deferred("shared_workbench")
 		return
 	if first_launch and "--semantic-depth" in OS.get_cmdline_user_args():
