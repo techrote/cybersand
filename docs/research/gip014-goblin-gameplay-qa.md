@@ -15,8 +15,8 @@ It owns only an opt-in developer scene, bounded in-game action adapters, disposa
 fixtures, policies, evidence readers and focused documentation. It does not change
 ordinary Workbench startup or production gameplay. No Ready promotion or merge is
 authorized. The branch now implements a real in-process Godot controller and has
-passed native Linux development runs. The matched campaign and Windows evaluator
-qualification below remain explicit, separate gates.
+passed native Linux campaigns and the actual hosted Windows developer UI test.
+The extracted Windows evaluator remains a separate custody and qualification gate.
 
 ## Shared progress and ownership ledger
 
@@ -236,11 +236,49 @@ limits, preserved below. Production owners' sources remain untouched.
 | `replay-5199-*` | Two selected tapes refused before dispatch by a JSON integral-number enumeration bug; corrected in both action validators and26-action roundtrip controls, no replay pass attributed to these attempts |
 | `material-motion-c001` | Actual native motion passes, but the test labeled material58 as Wood; original receipt remains Wall evidence, fixture corrected to named material constants |
 | `material-motion-c002` | Corrected actual Wood7 cup:89 checks/10 operations pass in7.800s;16 Sand2 cells conserved,188 Wood cells unchanged, native tick0→16 and Sand vertical-position sum152→406 |
-| Current negative/unit controls | 173 Godot assertion/transcript checks,153 policy checks and21 Python evidence/reducer/package checks; explicitly artificial controls |
+| Current negative/unit controls | 173 Godot assertion/transcript checks,153 policy checks and23 Python evidence/reducer/package checks; explicitly artificial controls |
 | Published `89a90e34` matched12 and replay | All12 campaigns reached64 attempts;767/768 operations completed,26 IDs,7393 assertion passes/0 failures/10 not applicable. CONTROL and CURIOSITY semantic replays passed; raw timing observations differed. See evidence-retention qualification below. |
 | Windows `45466167235` | Source unit/adapter/controller/gameplay/baseline, CONTROL64, BUILDER128 and CONTROL replay pass; extracted actor/save CONTROL64 cases pass. Graphical BUILDER24 completes, but UI replay identity, canvas-size fixture and hosted audio diagnostics block evaluator publication; artifact14953994370 preserves raw evidence. |
 | UI repair lifecycle control | 53 actual Godot lifecycle checks pass with a positive in-memory replay and retained wrong-hash refusal; source89a90e34 plus recorded local delta. |
-| Corrected graphical package and regenerated Linux qualification | Pending the following committed qualification checkpoint |
+| Regenerated `1649f086` matched12 | All12 selected campaigns pass:768 attempts/767 completions,26 IDs,7393 assertion passes/0 failures/10 not applicable;247.233s plus10.912s shared import. One additional CURIOSITY605 attempt retained41 actions before shared-disk exhaustion stopped evidence export; its fresh-profile retry passes. |
+| `1649f086` replay and positive controls | CONTROL64 and CURIOSITY64 replay semantically,25.330s/20.389s; exact asynchronous observations differ. Wood/Sand89-check regression,173 contract and153 policy controls,6-action positive reproduction and passing-tape reducer N/A all pass. |
+| Windows `45469647752` | Source tests and extracted campaigns pass; actual graphical25-check test and24-action UI replay pass at1600×900, with full panel containment. Final byte custody rejects a rewritten Rapier SVG import descriptor; artifact14958115957 retained, no evaluator uploaded. |
+| Packaging repair controls | 23 Python tests pass. Only the four Rapier import descriptors named by the existing Windows runner are canonicalized CRLF→LF before package hashes; original/archive and packaged hashes are retained. Post-extraction and post-test hashes remain strict for every payload member. |
+| Longer128/256 Linux cases and final Windows evaluator | In progress; results require their own retained application evidence. |
+
+### Matched behavior comparison on published game source
+
+The retained replacement matrix uses clean application source
+`1649f086a5795d88d03d19fd161ad549365a3fc4`, construction fixture version1,
+seeds13/605,64 actions per seed, one native worker, zero intentional pacing and
+fresh profiles. Its actual game-input snapshot is
+`e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196`.
+The later package-only correction does not change these Godot/native sources;
+its Windows package carries its own exact source and runtime identities.
+
+| Policy | Completed/attempted | Distinct completed IDs | Native edit receipts | Actor drives | Reopens | Process seconds |
+| --- | --- | --- | --- | --- | --- | --- |
+| CONTROL |128/128|23|28|4|4|48.168|
+| WANDERER |128/128|10|30|10|0|37.744|
+| BUILDER |128/128|7|48|0|0|30.895|
+| TINKERER |128/128|14|32|0|8|47.927|
+| CURIOSITY |128/128|22|49|0|2|40.125|
+| RANDOM |127/128|17|66|0|0|42.374|
+
+These are observations from two seeds, not a defect-finding ranking. WANDERER
+maintains visits and breadcrumbs while delivering actual pilot input. BUILDER
+keeps several actions together to construct Wall cups with Wood ledges and Sand,
+observe Play, and erase a central opening. TINKERER completes eight save/reopen
+cycles across the two runs. CURIOSITY inspects an actually selected passive barrel
+through Details without treating it as a pilotable actor. RANDOM produces more
+edit receipts here but no actor-driving or sustained Play intervals. Its one
+Fill refusal occurs before edit admission because the captured selection does
+not wholly contain the component. That is recorded as not applicable.
+
+Independent review links these interpretations to complete raw tapes, native
+capture/receipt IDs, sampled actor commands and neutral release, actual panel
+states, and native Undo/Redo readback. A selected passing matrix does not erase
+the separately retained storage interruption or other failed attempts.
 
 ### Execution-host restart and evidence retention
 

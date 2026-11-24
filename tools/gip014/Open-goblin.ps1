@@ -158,9 +158,23 @@ try {
         }
         if ($GraphicalSmoke) {
             $profile = New-TestProfile 'construction' 'CONTROL' 16 'graphical_godot'
-            $smoke = Invoke-FixedGodot $profile 'interactive-smoke' @('--audio-driver', 'Dummy', '--rendering-method', 'gl_compatibility', '--rendering-driver', 'opengl3_angle', '--script', 'res://goblin/tests/test_interactive.gd') 180
-            if ($smoke.text -notmatch 'GOBLIN_INTERACTIVE_RESULT') { throw 'Interactive smoke emitted no result.' }
-            $report.graphical_smoke = @{ status = 'pass'; log = Get-Relative $smoke.log; log_sha256 = Get-Sha $smoke.log }
+            $report.graphical_smoke = @{ status = 'running'; profile = Get-Relative $profile }
+            Write-Json $reportPath $report
+            try {
+                $smoke = Invoke-FixedGodot $profile 'interactive-smoke' @('--audio-driver', 'Dummy', '--rendering-method', 'gl_compatibility', '--rendering-driver', 'opengl3_angle', '--script', 'res://goblin/tests/test_interactive.gd') 180
+                if ($smoke.text -notmatch 'GOBLIN_INTERACTIVE_RESULT') { throw 'Interactive smoke emitted no result.' }
+                $report.graphical_smoke = @{ status = 'pass'; log = Get-Relative $smoke.log; log_sha256 = Get-Sha $smoke.log }
+            } catch {
+                $report.graphical_smoke.status = 'failed'
+                $report.graphical_smoke.error = $_.Exception.Message
+                $failedLog = Join-Path $profile 'interactive-smoke.log'
+                if (Test-Path -LiteralPath $failedLog -PathType Leaf) {
+                    $report.graphical_smoke.log = Get-Relative $failedLog
+                    $report.graphical_smoke.log_sha256 = Get-Sha $failedLog
+                }
+                Write-Json $reportPath $report
+                throw
+            }
         }
         Assert-Payload $manifest
         $report.status = 'pass'

@@ -52,8 +52,15 @@ def windows_pin() -> dict:
             for target in node.targets:
                 if isinstance(target, ast.Name) and target.id in {"GODOT_SHA512", "GODOT_VERSION"}:
                     result[target.id] = ast.literal_eval(node.value)
-    if len(result) != 2 or re.fullmatch(r"[0-9a-f]{128}", result["GODOT_SHA512"]) is None:
+                elif isinstance(target, ast.Name) and target.id == "RAPIER_IMPORT_DESCRIPTORS":
+                    value = node.value
+                    if not isinstance(value, ast.Call) or not isinstance(value.func, ast.Name) or value.func.id != "frozenset" or len(value.args) != 1 or value.keywords:
+                        raise ValueError("Existing Windows import-descriptor rule is unavailable")
+                    result[target.id] = frozenset(ast.literal_eval(value.args[0]))
+    if len(result) != 3 or re.fullmatch(r"[0-9a-f]{128}", result["GODOT_SHA512"]) is None:
         raise ValueError("Existing Windows Godot pin is unavailable")
+    if len(result["RAPIER_IMPORT_DESCRIPTORS"]) != 4 or not all(isinstance(name, str) and name.startswith("godot/addons/godot-rapier2d/") and name.endswith(".import") and safe_relative(name) for name in result["RAPIER_IMPORT_DESCRIPTORS"]):
+        raise ValueError("Existing Windows import-descriptor scope differs")
     return result
 
 
@@ -91,7 +98,12 @@ def checked_member(path: Path, name: str) -> Path:
     return result
 
 
-def copy_committed_source(destination: Path, source_inputs: dict) -> None:
+def copy_committed_source(destination: Path, source_inputs: dict) -> dict:
+    # The accepted Windows runner already treats these four Rapier text
+    # descriptors as LF-canonical inputs. Canonicalize before freezing package
+    # bytes; extraction and post-test verification remain raw SHA comparisons.
+    import_descriptors = windows_pin()["RAPIER_IMPORT_DESCRIPTORS"]
+    normalized_imports = {}
     names = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json", "THIRD_PARTY_NOTICES.md",
              "LICENSE_STATUS.md", "docs/operations/gip014-goblin-gameplay-qa.md", "docs/research/gip014-goblin-gameplay-qa.md",
              "tools/gip014/Open-goblin.cmd", "tools/gip014/Open-goblin.ps1", *source_inputs]
@@ -117,9 +129,22 @@ def copy_committed_source(destination: Path, source_inputs: dict) -> None:
                 if pointer is None or hashlib.sha256(actual).hexdigest() != pointer[1].decode() or len(actual) != int(pointer[2]):
                     raise ValueError("Unmaterialized or changed committed LFS payload: " + entry.name)
                 data = actual
+            if entry.name in import_descriptors:
+                original = data
+                data = data.replace(b"\r\n", b"\n")
+                normalized_imports[entry.name] = {
+                    "archive_sha256": hashlib.sha256(original).hexdigest(),
+                    "packaged_sha256": hashlib.sha256(data).hexdigest(),
+                    "crlf_pairs_removed": original.count(b"\r\n"),
+                }
             target = destination / entry.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
+    if set(normalized_imports) != import_descriptors:
+        raise ValueError("Committed package lacks the existing four Rapier import descriptors")
+    rule = ROOT / "tools/ci/run_windows_godot_regressions.py"
+    return {"schema": "cybersand-goblin-import-descriptor-normalization-v1", "operation": "CRLF to LF before package manifest",
+            "rule_source": rule.relative_to(ROOT).as_posix(), "rule_source_sha256": sha(rule), "files": normalized_imports}
 
 
 def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> dict:
@@ -142,7 +167,7 @@ def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> 
     with tempfile.TemporaryDirectory(prefix="goblin-evaluator-", dir=output.parent) as temporary:
         staged = Path(temporary) / "CyberSand-goblin"
         staged.mkdir()
-        copy_committed_source(staged, inputs)
+        import_normalization = copy_committed_source(staged, inputs)
         with zipfile.ZipFile(archive_path) as engine:
             if engine.testzip() is not None:
                 raise ValueError("Pinned Godot ZIP failed integrity check")
@@ -175,6 +200,7 @@ def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> 
         manifest = {"schema": SCHEMA, "qualification": "unqualified candidate; extracted Windows self-tests required",
                     "source_commit": provenance["source_commit"], "source_tree": provenance["source_tree"], "provenance": provenance,
                     "godot_archive_sha512": pins["GODOT_SHA512"], "files_sha256": files,
+                    "import_descriptor_normalization": import_normalization,
                     "required_selftests": [{"fixture": name, "policy": "CONTROL", "seed": 13, "budget": 64} for name in REQUIRED_CASES]}
         (staged / MANIFEST).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         verify_extracted(staged)

@@ -1,8 +1,10 @@
 """Packaging guard unit controls. No Windows execution is simulated as proof."""
 import hashlib
+import io
 import json
 from pathlib import Path
 import tempfile
+import tarfile
 import unittest
 from unittest.mock import patch
 
@@ -75,6 +77,56 @@ class PackageGuards(unittest.TestCase):
         pins = package.windows_pin()
         self.assertEqual(pins["GODOT_VERSION"], "4.7.stable.official.5b4e0cb0f")
         self.assertEqual(len(pins["GODOT_SHA512"]), 128)
+        self.assertEqual(pins["RAPIER_IMPORT_DESCRIPTORS"], {
+            "godot/addons/godot-rapier2d/Radial2D.svg.import",
+            "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+            "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+        })
+
+    def test_committed_copy_normalizes_only_the_existing_four_descriptors(self):
+        # Artificial archive bytes reproduce Windows line endings, not a game
+        # defect. Assets, code, binaries and unknown descriptors stay exact.
+        names = package.windows_pin()["RAPIER_IMPORT_DESCRIPTORS"]
+        data = {name: b"[params]\r\ncompress/mode=0\r\n" for name in names}
+        data.update({"godot/addons/godot-rapier2d/other.svg.import": b"unchanged\r\n",
+                     "godot/addons/godot-rapier2d/Radial2D.svg": b"<svg/>\r\n",
+                     "godot/goblin/example.gd": b"# unchanged\r\n",
+                     package.NATIVE: b"artificial immutable binary\r\n"})
+        buffer = io.BytesIO()
+        with tarfile.open(fileobj=buffer, mode="w") as archive:
+            for name, value in data.items():
+                info = tarfile.TarInfo(name)
+                info.size = len(value)
+                archive.addfile(info, io.BytesIO(value))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(package, "git", return_value="\n".join(data)), patch.object(package.subprocess, "check_output", return_value=buffer.getvalue()):
+                receipt = package.copy_committed_source(root, {})
+            self.assertEqual(set(receipt["files"]), names)
+            for name, original in data.items():
+                expected = original.replace(b"\r\n", b"\n") if name in names else original
+                self.assertEqual((root / name).read_bytes(), expected, name)
+                if name in names:
+                    self.assertEqual(receipt["files"][name]["archive_sha256"], hashlib.sha256(original).hexdigest())
+                    self.assertEqual(receipt["files"][name]["packaged_sha256"], hashlib.sha256(expected).hexdigest())
+                    self.assertEqual(receipt["files"][name]["crlf_pairs_removed"], 2)
+
+    def test_normalized_descriptor_has_no_post_manifest_drift_exception(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, manifest = self.make_payload(directory)
+            name = sorted(package.windows_pin()["RAPIER_IMPORT_DESCRIPTORS"])[0]
+            descriptor = root / name
+            descriptor.parent.mkdir(parents=True, exist_ok=True)
+            canonical = b"[params]\ncompress/mode=0\n"
+            descriptor.write_bytes(canonical)
+            manifest["files_sha256"][name] = package.sha(descriptor)
+            (root / package.MANIFEST).write_text(json.dumps(manifest), encoding="utf-8")
+            self.assertTrue(package.verify_extracted(root)["payload_verified"])
+            for drift in (canonical.replace(b"\n", b"\r\n"), canonical.replace(b"mode=0", b"mode=1")):
+                descriptor.write_bytes(drift)
+                with self.assertRaisesRegex(ValueError, "hash mismatch"):
+                    package.verify_extracted(root)
 
     def test_dirty_source_cannot_be_packaged(self):
         with patch.object(package, "git", return_value=" M godot/script.gd"):
