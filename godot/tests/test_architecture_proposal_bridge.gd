@@ -29,6 +29,7 @@ class OwnerFixture extends RefCounted:
 	var immediate:=""
 	var reused_provider_id:=-1
 	var cancellations: Array=[]
+	var cancellation_hook:=Callable()
 	func _init() -> void:
 		# The owner is the only listener. The bridge receives its explicit callback.
 		provider.finished.connect(_owned_finished)
@@ -49,6 +50,7 @@ class OwnerFixture extends RefCounted:
 	func cancel_owned(provider_id: int,identity: String,reason: String) -> void:
 		cancellations.append({"provider_id":provider_id,"request_id":identity,"reason":reason})
 		if current_request.get("request_id")==identity and (provider_id<0 or provider_id==provider.serial): provider.cancel(reason)
+		if cancellation_hook.is_valid(): cancellation_hook.call()
 	func _owned_finished(id: int,text: String,response: Dictionary,error: String) -> void:
 		if completion.is_valid(): completion.call(id,text,response,error)
 	func deliver(text: String,error: String="",provider_id: int=-1,response: Dictionary={}) -> void:
@@ -61,6 +63,22 @@ class OwnerFixture extends RefCounted:
 			"generation":request.inspection.generation,"alternatives":[{"id":"owner-option","title":"Owner fixture option",
 			"summary":"Finite typed structure; no stage has been previewed or approved.","campaign":built.campaign}],"uncertainty":[]}
 	static func typed_text(request: Dictionary) -> String: return Compiler.canonical(typed_object(request))
+
+class CorrelationHost extends RefCounted:
+	signal proposal_transport_requested(request: Dictionary)
+	signal proposal_cancel_requested(request_id: String)
+	var state:="idle"
+	var refusals:=0
+	func summary() -> Dictionary:
+		return {"planning":{"state":state,"request_id":"same-host-fixture-id"}}
+	func accept_response(_identity: String,_response: Variant) -> Dictionary:
+		refusals+=1; state="refused"
+		return {"ok":false,"reason":"Synthetic correlation host refusal."}
+	func begin() -> void:
+		state="awaiting-proposal"
+		proposal_transport_requested.emit({"format":Bridge.REQUEST_FORMAT,"request_id":"same-host-fixture-id","mode":"proposal_transport"})
+	func stop() -> void:
+		state="cancelled"; proposal_cancel_requested.emit("same-host-fixture-id")
 
 var checks:=0
 var failures:=0
@@ -174,6 +192,24 @@ func run() -> void:
 	check(bridge.summary().real_model_calls==0 and owner.provider.secrets.is_empty() and owner.provider.request==null,"accepted interface fixtures make zero HTTP calls and store no credentials")
 	bridge.detach_owner_seam()
 	check(owner.provider.get_signal_connection_list("finished").size()==1 and not bridge.summary().bound,"detach leaves the owner's ordinary completion connection intact")
+	var seam:=Bridge.new()
+	var first_host:=CorrelationHost.new(); var next_host:=CorrelationHost.new()
+	var local_owner:=OwnerFixture.new(); var rebindings: Array=[]
+	seam.bind_owner_seam(first_host,local_owner.dispatch,local_owner.cancel_owned,live_context,"fixture")
+	first_host.begin()
+	local_owner.cancellation_hook=func()->void:
+		rebindings.append(seam.bind_owner_seam(next_host,local_owner.dispatch,local_owner.cancel_owned,live_context,"fixture"))
+	seam.detach_owner_seam()
+	check(not rebindings[0].ok and not seam.summary().bound and first_host.get_signal_connection_list("proposal_transport_requested").is_empty() and next_host.get_signal_connection_list("proposal_transport_requested").is_empty(),"reentrant cancellation cannot attach an orphan host during detach")
+	local_owner.cancellation_hook=Callable()
+	seam.bind_owner_seam(first_host,local_owner.dispatch,local_owner.cancel_owned,live_context,"fixture")
+	first_host.begin()
+	local_owner.cancellation_hook=func()->void:
+		rebindings.append(seam.bind_owner_seam(next_host,local_owner.dispatch,local_owner.cancel_owned,live_context,"fixture"))
+		next_host.begin()
+	first_host.stop()
+	check(rebindings[-1].ok and seam.summary().active and next_host.refusals==0 and first_host.get_signal_connection_list("proposal_transport_requested").is_empty(),"retiring an old host cannot refuse a replacement host with the same request ID")
+	local_owner.cancellation_hook=Callable(); seam.detach_owner_seam(); local_owner.provider.free()
 	var accepted:=Provider.new()
 	var error:=accepted.send("LM Studio","fixture://never-network","","","typed fixture","typed fixture",128,1.0,"",[])
 	check(not error.is_empty() and accepted.request==null and not accepted.active,"actual accepted Provider rejects an empty model before HTTP")
