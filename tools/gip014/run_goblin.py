@@ -336,6 +336,8 @@ def main(argv: list[str] | None = None) -> int:
             command = [str(godot)] + ([] if graphical else ["--headless"])
             if graphical and os.name == "nt":
                 command += ["--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle"]
+            if args.case == "graphical":
+                command += ["--audio-driver", "Dummy"]
             command += ["--path", str(project)]
             if args.case == "interactive":
                 command += ["res://goblin/goblin.tscn"]

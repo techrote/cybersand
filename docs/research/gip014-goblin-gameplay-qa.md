@@ -237,7 +237,24 @@ limits, preserved below. Production owners' sources remain untouched.
 | `material-motion-c001` | Actual native motion passes, but the test labeled material58 as Wood; original receipt remains Wall evidence, fixture corrected to named material constants |
 | `material-motion-c002` | Corrected actual Wood7 cup:89 checks/10 operations pass in7.800s;16 Sand2 cells conserved,188 Wood cells unchanged, native tick0→16 and Sand vertical-position sum152→406 |
 | Current negative/unit controls | 173 Godot assertion/transcript checks,153 policy checks and21 Python evidence/reducer/package checks; explicitly artificial controls |
-| Corrected matched policy, longer campaigns, final replay, Windows evaluator | Pending the following committed qualification checkpoint |
+| Published `89a90e34` matched12 and replay | All12 campaigns reached64 attempts;767/768 operations completed,26 IDs,7393 assertion passes/0 failures/10 not applicable. CONTROL and CURIOSITY semantic replays passed; raw timing observations differed. See evidence-retention qualification below. |
+| Windows `45466167235` | Source unit/adapter/controller/gameplay/baseline, CONTROL64, BUILDER128 and CONTROL replay pass; extracted actor/save CONTROL64 cases pass. Graphical BUILDER24 completes, but UI replay identity, canvas-size fixture and hosted audio diagnostics block evaluator publication; artifact14953994370 preserves raw evidence. |
+| UI repair lifecycle control | 53 actual Godot lifecycle checks pass with a positive in-memory replay and retained wrong-hash refusal; source89a90e34 plus recorded local delta. |
+| Corrected graphical package and regenerated Linux qualification | Pending the following committed qualification checkpoint |
+
+### Execution-host restart and evidence retention
+
+The execution host restarted during the first planned128-action Linux campaign.
+Its temporary home-backed worktree, raw Linux campaigns and audit files did not
+survive. Published commits, the original PR749 archive, earlier disk-backed
+attempts, and all hosted Windows artifacts remain intact. Recovered tool-output
+summaries retain the known previous outcomes, but are explicitly metadata-only;
+they are not replacement raw transcripts. The earlier local entries above must
+be read with this limitation, even where their contemporaneous notes said
+originals were retained. The interrupted128-action case has no completion claim.
+New qualification is written to the surviving conversation workspace, with fresh
+profiles and distinct attempt identities. The Windows artifacts retain complete
+raw evidence independently of that host restart.
 
 The Linux engine executable SHA-256 is
 `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`;

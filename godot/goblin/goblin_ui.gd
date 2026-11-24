@@ -66,6 +66,7 @@ var start_button: Button
 var pause_button: Button
 var stop_button: Button
 var replay_button: Button
+var panel: PanelContainer
 var state_label: Label
 var goal_label: Label
 var observation_label: Label
@@ -106,10 +107,13 @@ func _make_ui() -> void:
 	pointer = GoblinPointer.new()
 	pointer.campaign = controller
 	layer.add_child(pointer)
-	var panel := PanelContainer.new()
+	panel = PanelContainer.new()
 	layer.add_child(panel)
-	panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	panel.position = Vector2(get_viewport().get_visible_rect().size.x - 390, 24)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	panel.offset_left = -390
+	panel.offset_right = -24
+	panel.offset_top = 24
+	panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	panel.custom_minimum_size = Vector2(366, 0)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("152720")
@@ -153,6 +157,8 @@ func _make_ui() -> void:
 	replay_button = _button(column, "Replay previous campaign", _replay)
 	replay_button.disabled = true
 	state_label = _text(column, "idle", 16)
+	state_label.custom_minimum_size.x = 330
+	state_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	goal_label = _text(column, "", 14)
 	goal_label.custom_minimum_size.x = 330
 	goal_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

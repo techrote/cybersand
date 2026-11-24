@@ -35,7 +35,10 @@ func run() -> void:
 	if not check(Controller.read_launch().get("ok", false), "dedicated profile before any game mount"):
 		quit(1)
 		return
-	root.size = Vector2i(1600, 1000)
+	# Use the application's ordinary 16:9 aspect and explicitly match the
+	# canvas size; changing only the OS window leaves the project scale active.
+	root.size = Vector2i(1600, 900)
+	root.content_scale_size = Vector2i(1600, 900)
 	ui = load("res://goblin/goblin.tscn").instantiate()
 	root.add_child(ui)
 	await process_frame
@@ -68,9 +71,10 @@ func run() -> void:
 	check(not ui.controller.export_path.is_empty() and FileAccess.file_exists(ui.controller.export_path), "fixed transcript export exists")
 	check(not ui.replay_button.disabled and ui.last_tape.steps.size() == 24, "previous transcript available for replay")
 	check(ui.goal_label.text.contains(str(ui.controller.completed)), "summary displays actual completed operations")
+	check(root.get_visible_rect().encloses(ui.panel.get_global_rect()), "developer panel remains wholly inside the actual viewport")
 	await RenderingServer.frame_post_draw
 	var picture: Image = root.get_texture().get_image()
-	check(not picture.is_empty() and picture.get_width() == 1600 and picture.get_height() == 1000, "actual viewport framebuffer has expected dimensions")
+	check(not picture.is_empty() and picture.get_width() == 1600 and picture.get_height() == 900, "actual viewport framebuffer has expected dimensions")
 	var colors := {}
 	for y: int in range(20, picture.get_height(), 23):
 		for x: int in range(20, picture.get_width(), 23): colors[picture.get_pixel(x, y).to_html()] = true
@@ -78,6 +82,7 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute("user://goblin")
 	check(picture.save_png("user://goblin/interactive.png") == OK, "actual graphical capture saved")
 	ui.replay_button.pressed.emit()
+	check(ui.controller.running, "Replay accepts the in-memory transcript and current exact source identity")
 	check(await until(func() -> bool: return not ui.controller.running), "Replay button reaches a terminal result")
 	check(ui.controller.transcript.get("header", {}).get("replay", false), "Replay button dispatches the recorded sequence")
 	check(ui.controller.state == "finished" and not ui.controller.export_path.is_empty() \
@@ -88,6 +93,8 @@ func run() -> void:
 		"video_adapter": RenderingServer.get_video_adapter_name(), "renderer": RenderingServer.get_current_rendering_method(),
 		"size": [picture.get_width(), picture.get_height()], "colors_sampled": colors.size(),
 		"source": tape.header.provenance, "summary": tape.summary, "replay_result": ui.controller.replay_result,
+		"ui_state": ui.state_label.text, "ui_goal": ui.goal_label.text,
+		"panel_rect": [ui.panel.position.x, ui.panel.position.y, ui.panel.size.x, ui.panel.size.y],
 		"checks": checks, "failures": failures,
 		"physical_owner_acceptance": false}
 	var file := FileAccess.open("user://goblin/interactive-result.json", FileAccess.WRITE)

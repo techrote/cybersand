@@ -54,6 +54,14 @@ static func read_launch() -> Dictionary:
 	return {"ok": true, "launch": marker.launch, "provenance": marker.provenance, "profile": profile}
 
 
+static func same_identity(recorded: Variant, current: Variant) -> bool:
+	# JSON numbers re-enter Godot as floats; an in-memory tape normalizes whole
+	# numbers to ints. Compare every identity field in the same canonical form.
+	if not recorded is Dictionary or not current is Dictionary: return false
+	return JSON.stringify(Transcript._json_value(recorded), "", true) \
+		== JSON.stringify(Transcript._json_value(current), "", true)
+
+
 static func read_replay() -> Dictionary:
 	var profile: Dictionary = Adapter.verify_profile()
 	if not profile.get("ok", false): return profile
@@ -78,7 +86,7 @@ static func read_reproduction(provenance: Dictionary) -> Dictionary:
 	if not plan is Dictionary or plan.get("schema") != "cybersand-goblin-action-fixture-v1" \
 		or not plan.get("header") is Dictionary or not plan.get("actions") is Array:
 		return {"ok": false, "error": "unknown reproduction fixture format"}
-	if plan.header.get("provenance", {}) != provenance or int(plan.header.get("fixture_version", -1)) != Fixtures.VERSION:
+	if not same_identity(plan.header.get("provenance", {}), provenance) or int(plan.header.get("fixture_version", -1)) != Fixtures.VERSION:
 		return {"ok": false, "error": "reproduction source/runtime/fixture identity differs"}
 	if plan.actions.is_empty() or plan.actions.size() > 256:
 		return {"ok": false, "error": "reproduction requires 1..256 bounded game actions"}
@@ -106,7 +114,7 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		if not valid.ok: return {"error": "selected transcript is invalid", "details": valid.errors}
 		if replay.header.get("fixture_state", "installed") != "installed" or replay.steps.is_empty():
 			return {"error": "selected transcript did not install a fixture and dispatch game actions"}
-		if replay.header.get("provenance", {}) != provenance:
+		if not same_identity(replay.header.get("provenance", {}), provenance):
 			return {"error": "exact replay requires the recorded source snapshot and runtime identities"}
 		if int(replay.header.get("fixture_version", -1)) != Fixtures.VERSION:
 			return {"error": "exact replay requires the recorded fixture version"}
@@ -118,7 +126,7 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 	if not reproduction.is_empty():
 		if reproduction.get("schema") != "cybersand-goblin-action-fixture-v1" \
 			or not reproduction.get("header") is Dictionary or not reproduction.get("actions") is Array \
-			or reproduction.header.get("provenance", {}) != provenance \
+			or not same_identity(reproduction.header.get("provenance", {}), provenance) \
 			or int(reproduction.header.get("fixture_version", -1)) != Fixtures.VERSION:
 			return {"error": "reproduction identity differs"}
 		for action: Variant in reproduction.actions:

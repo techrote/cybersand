@@ -165,6 +165,39 @@ func run() -> void:
 		and archive_one.get("summary", {}).get("termination") == "stopped" \
 		and archive_two.get("summary", {}).get("termination") == "budget_complete",
 		"fixed per-run archives preserve the stopped and succeeding campaigns")
+
+	# Exercise the exact in-memory route used by the developer UI. The tape's
+	# canonical integral values and JSON-loaded launch provenance must compare
+	# by complete value identity, while every source/runtime field stays fenced.
+	mode = "in_memory_replay"
+	var before_replay_adapter_id: int = controller.adapter.get_instance_id()
+	var replayed: Dictionary = await controller.run_campaign(configuration("material_playground", 4, 605), launch.provenance, second)
+	retain("in_memory_replay", replayed)
+	check(replayed.get("header", {}).get("replay") == true \
+		and replayed.get("summary", {}).get("termination") == "budget_complete" \
+		and controller.attempted == 4 and controller.completed == 4 \
+		and controller.adapter.get_instance_id() != before_replay_adapter_id,
+		"an actual in-memory tape replays four operations in a fresh mounted application")
+	check(controller.replay_result.get("semantic_match") == true \
+		and controller.replay_result.get("same_source_runtime") == true \
+		and controller.replay_result.get("same_action_count") == true,
+		"in-memory replay matches independently observed semantic state and exact source/runtime identity")
+	var replay_export: Variant = JSON.parse_string(FileAccess.get_file_as_string(Controller.REPLAY_RESULT_PATH)) \
+		if FileAccess.file_exists(Controller.REPLAY_RESULT_PATH) else null
+	check(replay_export is Dictionary and replay_export.get("semantic_match") == true,
+		"successful in-memory replay exports its actual comparison result")
+	var replay_tape: Variant = JSON.parse_string(FileAccess.get_file_as_string(Controller.TRANSCRIPT_PATH))
+	check(not controller.export_path.is_empty() and replay_tape is Dictionary \
+		and replay_tape.get("header", {}).get("replay") == true \
+		and replay_tape.get("summary", {}).get("completed_actions") == 4,
+		"fixed transcript export contains the newly completed replay rather than the earlier campaign")
+	var archive_three: Variant = JSON.parse_string(FileAccess.get_file_as_string("user://goblin/run-003.json")) \
+		if FileAccess.file_exists("user://goblin/run-003.json") else null
+	check(archive_three is Dictionary and archive_three.get("header", {}).get("replay") == true \
+		and archive_three.get("summary", {}).get("completed_actions") == 4 \
+		and replayed.get("controller", {}).get("run_archive") == "user://goblin/run-003.json",
+		"in-memory replay receives its own third archive without overwriting the original tapes")
+
 	# Deliberately inconsistent replay HEADER only: this is an infrastructure
 	# refusal control, not an injected application defect or a runtime result.
 	var mismatched: Dictionary = second.duplicate(true)

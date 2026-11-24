@@ -158,7 +158,7 @@ try {
         }
         if ($GraphicalSmoke) {
             $profile = New-TestProfile 'construction' 'CONTROL' 16 'graphical_godot'
-            $smoke = Invoke-FixedGodot $profile 'interactive-smoke' @('--rendering-method', 'gl_compatibility', '--rendering-driver', 'opengl3_angle', '--script', 'res://goblin/tests/test_interactive.gd') 180
+            $smoke = Invoke-FixedGodot $profile 'interactive-smoke' @('--audio-driver', 'Dummy', '--rendering-method', 'gl_compatibility', '--rendering-driver', 'opengl3_angle', '--script', 'res://goblin/tests/test_interactive.gd') 180
             if ($smoke.text -notmatch 'GOBLIN_INTERACTIVE_RESULT') { throw 'Interactive smoke emitted no result.' }
             $report.graphical_smoke = @{ status = 'pass'; log = Get-Relative $smoke.log; log_sha256 = Get-Sha $smoke.log }
         }
