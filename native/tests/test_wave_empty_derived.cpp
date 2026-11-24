@@ -198,6 +198,47 @@ void tall_group_fallback(unsigned workers, std::vector<std::uint64_t>& values) {
         checkpoint(world, values);
     }
 }
+
+void mask_absence_and_return(unsigned workers, std::vector<std::uint64_t>& values) {
+    auto cfg = configuration(workers);
+    cfg.wave_flow.substeps = 3;
+    cfg.wave_flow.spill.enabled = true;
+    cfg.wave_flow.spill.fall = 3;
+    World world(cfg);
+    world.reserve_region({-64, -64, 192, 256});
+    world.configure_transient_obstacles({-64, -64, 192, 256}, true);
+    rect(world, -64, 191, 192, 1, Material::Wall);
+    rect(world, -64, -64, 1, 256, Material::Wall);
+    rect(world, 127, -64, 1, 256, Material::Wall);
+    require(world.set_transient_obstacle(112, -32, 1), "applicability initial body refused");
+    for (int tick = 0; tick < 24; ++tick) {
+        if (tick == 4) world.clear_transient_obstacles();
+        if (tick == 6) {
+            require(world.set_cell_state(-16, -1, Material::Water, 1020, 0), "no-mask inflow refused");
+            world.set(40, -32, Material::Oil);
+            world.set(48, -32, Material::Sand);
+            world.set(56, -32, Material::Wall);
+        }
+        if (tick == 8) world.set_simulation_region(RectI64{-48, -48, 144, 192});
+        if (tick == 10) {
+            world.set(-60, -60, Material::Stone); // paused owner edit
+            require(world.set_transient_obstacle(32, 96, 1), "returning mask refused");
+        }
+        if (tick == 12) world.set_simulation_region(std::nullopt);
+        if (tick == 14) {
+            world.clear_transient_obstacles();
+            world.configure_transient_obstacles({-16, -16, 32, 32});
+            require(world.set_transient_obstacle(0, 0, 1), "small configured mask refused");
+        }
+        if (tick == 16) {
+            world.clear_transient_obstacles();
+            world.configure_transient_obstacles({-64, -64, 192, 256}, true);
+            require(world.set_transient_obstacle(112, -32, 1), "expanded mask refused");
+        }
+        (void)world.tick();
+        checkpoint(world, values);
+    }
+}
 } // namespace
 
 int main(int argc, char** argv) {
@@ -209,7 +250,8 @@ int main(int argc, char** argv) {
         authoring_and_reentry(workers, true, values);
         paused_flux_and_reentry(workers, values);
         tall_group_fallback(workers, values);
-        std::cout << "{\"schema\":\"pubpres-empty-derived-lifecycle-v1\",\"workers\":" << workers
+        mask_absence_and_return(workers, values);
+        std::cout << "{\"schema\":\"pubpres-empty-derived-lifecycle-v2\",\"workers\":" << workers
                   << ",\"checkpoint_fields\":[\"physical\",\"state\",\"content\",\"water\",\"ballistic\",\"contacts\",\"impulse_x\",\"impulse_y\"],\"checkpoints\":[";
         for (std::size_t i = 0; i < values.size(); ++i) std::cout << (i == 0 ? "" : ",") << values[i];
         std::cout << "]}\n";

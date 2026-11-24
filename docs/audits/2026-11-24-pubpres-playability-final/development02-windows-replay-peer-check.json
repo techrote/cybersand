@@ -1,0 +1,139 @@
+{
+  "schema": "pubpres-final-windows-replay-independent-peer-check-v1",
+  "replay_sha256": "74e9b7f7f8a7cb8bccf47c6f684b348f4d8888ebf0a0296adf2ecd1a95d204bf",
+  "independent_reduction_sha256": "8be401f32b9a6ddffdc3358a1652c6099f276f39d766c9c9f1eb9e46fd38d369",
+  "actual_engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "actual_rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "all_checks_passed": true,
+  "arms": [
+    {
+      "mode": "source-abba",
+      "case": "wave_512_follow",
+      "arm": 0,
+      "receipt_sha256": "44410f4e50d56d1a3a791f6affb47ebef2dfec5a13db549e68aa4c686ea7e3cd",
+      "trace_sha256": "b7619ec996918504af8b94eb3777e432dae090cbc6565d517b7b01bbf1e2231f",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_512_follow",
+      "arm": 1,
+      "receipt_sha256": "58b35f2841e10889a1a5591254f25eb7397035ee0ee457df7a53cd06d7b16287",
+      "trace_sha256": "22825606611a9a66944bceaaec1dd8ad925f8d1c9fbf8677d828aafa27c9eaaf",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_512_follow",
+      "arm": 2,
+      "receipt_sha256": "f58074e17b7bdef12cdc53d6d4089b8050a6bbcf8fae9894b5f20a9e8ec4db6a",
+      "trace_sha256": "e3e97d08b91d0e41d489c3012e3579ee94ca5bda9a1b6dad0cf0ee7d1536504f",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_512_follow",
+      "arm": 3,
+      "receipt_sha256": "b22745969614165be210fd67e207e3059aecf5004f735c61854cb391f85368f0",
+      "trace_sha256": "baac5c9c771ebf265508cb88b1ce658bb7dfa1c165ee5f07b7f44231a5deaae9",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 0,
+      "receipt_sha256": "dc90d539b2ed700851cc3939adbc151ba525575bb713fe63f23c121e21a934fe",
+      "trace_sha256": "ae1734e23334c8a7d56ecfc53ff92462aa4b2db6d6ea10b80f3bc762a5587e4e",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 1,
+      "receipt_sha256": "4305c1fb18d056f855ab4d5afa7cd5bb59ddbd9dc25174eec2b740f99524b358",
+      "trace_sha256": "dda45d2a88ac13f7f3fcb3190ae4e0ee0df4595cdb79e0a31d4a6b601fa494f0",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 2,
+      "receipt_sha256": "75ba35f70f06d10fa7729a0a8fbc994872cebc17b4f8391c7f9a91f5e77ed2be",
+      "trace_sha256": "2fd4455cdea844d91d53b045bb48009ec2981db0e2b8ba7c37d4255a6de35017",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "source-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 3,
+      "receipt_sha256": "6229c4c416a1d2a1edabbed1b5ccebdc37c7af632af2a8b95c59fd384aa0f221",
+      "trace_sha256": "94c386d102a149470cf1b618dd6fb9fe0bc834a466525baf7c3ef6e2fc50076a",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_512_follow",
+      "arm": 0,
+      "receipt_sha256": "077964a39e12e3f7cc0bcd1f0fef05f555c0476cc1874ad4ac0c6922eb703d9b",
+      "trace_sha256": "caf1855f26010da94b10e979c4466e460332dcd18133d20903fc378b04718a2b",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_512_follow",
+      "arm": 1,
+      "receipt_sha256": "e6b9de187308d66dd4d31bfad9239f598f4edd332453f78f2a531fccf2117022",
+      "trace_sha256": "7c7381d33e091b03d8af26e0fcfc030cd03d82c237ddf03fda692d0b84f2723e",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_512_follow",
+      "arm": 2,
+      "receipt_sha256": "a604750c18f99d2be577817edbae6cf6cdfe7e40c9bf094ba911ea822b0d7238",
+      "trace_sha256": "5eb83f18fc5ed497f052dc39c166b25cfe4677344a627c544388b19454ea5984",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_512_follow",
+      "arm": 3,
+      "receipt_sha256": "a1faa55f17c903e77110abb089e07da3dfca5d3364ba13b88a2d579336e38c16",
+      "trace_sha256": "50d056dd1588d52a9ce6b4baea252a00c3766c3a2b8251aa749a3ec73ffd4093",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 0,
+      "receipt_sha256": "8255a486e37342ba181126b3329110a603bca430a7e70bc37cc66ebc3a0e0ac0",
+      "trace_sha256": "5ba64cab51dba9b529c7478a89fbf4b26be811979e99c658df53f2c764118806",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 1,
+      "receipt_sha256": "4c742a018d008c18dd8e1364290ab883ccb9aa10acd4a15d11118d7467fd3789",
+      "trace_sha256": "7d805a67d308bba3aec413492a6e6d7ad1774d51bd9fb93a8ee0979cff42fe12",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 2,
+      "receipt_sha256": "d1e6dfd31522894a3012f1a80398c6ffd698f3c95e80229263a8a8522ea9e869",
+      "trace_sha256": "89f67ac2c57744f4981fe2428b912cdfbe507d2621fc10cc67de485765c9fe0b",
+      "raw_identity_and_independent_metrics_agree": true
+    },
+    {
+      "mode": "slots-abba",
+      "case": "wave_gameplay_2048_follow",
+      "arm": 3,
+      "receipt_sha256": "1b1ca0dea4254da06d14307c257f844a9c15e367df475ebb650818296a46ca6b",
+      "trace_sha256": "ccadf5195a4217dde893f11883f62132ca05604f7627b546e742d291958ae118",
+      "raw_identity_and_independent_metrics_agree": true
+    }
+  ],
+  "scope": "Read-only independent joins of all16 replay results to original raw receipts/traces, prior stdlib reduction, actual recovered GUI/Rapier/native bytes and original failed summaries. Full reader itself reviewed separately; no binary execution, source rerun or workflow conclusion rewrite."
+}

@@ -75,7 +75,7 @@ driver function as the cause of a particular retained stall.
 | Derived Empty storage certificate | Cache only proven Empty material with zero weight/meta in a complete chunk half; retain all original settle, flux, apply, dry/clean and paused-face work. | Actual-cell certificate assertions, complete lifecycle parity across independent sources/workers, normal/sanitized material tests, raw per-tick native controls and ordinary source comparisons. | Correctness passes locally. The 24-process native screen is invalid as a complete cohort because one control observed only three of four required workers; small/no-body adverse arms and large host drift remain retained. Explicitly unselected candidate for new ordinary hosted comparison. |
 | Three Full-image slots | Add one persistent spare, update it before rotating current/previous, rebuild exact histories on structural refusal. | Actual current/previous GPU bytes, source/engine identity, fixed resources, all rotations, World changes and ACK ordering, matched physical comparisons. | Both platforms pass twelve correctness outcomes. Linux matched comparisons do not establish a gain. Original failed extent-check result and corrected independent replay remain separate. Default stays two. |
 | Recovered EGL handoff | Clear the cached current window after releasing the EGL context so the receiving thread can bind it. | Original engine artifact/source/patch/API/dependency custody; real rendering-owner observation; exact image histories; isolated stock-Safe/patched-Safe/patched-Separate comparison. | EGL initialization is repaired; ordinary Separate starts still abort. Safe controls do not establish a repeatable progression gain. This engine is not qualified for an ordinary Separate evaluator. |
-| Private font-atlas Image publication | Preserve each glyph/alpha/mipmap operation, then give queued ImageTexture create/update a private Image instead of the still-mutable atlas object. | Exact ten-site source patch, unchanged build/dependency/API gates, new binary identity, default non-mipmap font framebuffer parity, ordinary Workbench startup, then same-executable Safe/Separate controls. | Two independent source reviews pass. Windows compilation and runtime/visual qualification remain pending. This arm changes ownership, not Main/render synchronization. |
+| Private font-atlas Image publication | Preserve each glyph/alpha/mipmap operation, then give queued ImageTexture create/update a private Image instead of the still-mutable atlas object. | Exact ten-site source patch, unchanged build/dependency/API gates, new binary identity, default non-mipmap font framebuffer parity, ordinary Workbench startup, then same-executable Safe/Separate controls. | Windows build/API/provenance passed. Original renderer qualification stopped before launching because the patch reader rejected equivalent Git context alignment; independent exact source replay and corrected-reader tests pass. New actual font/startup/owner execution remains required. This arm changes ownership, not Main/render synchronization. |
 | Bounded material deadlines | Default-off 30/60 Hz presentation admission holds one immutable cumulative packet, never extends a pending deadline, and ACKs only actual accepted uploads. | Independent cumulative current/previous bytes, no skipped-packet ACKs, World/session/epoch/failure cancellation, unchanged real-step authority, matched zero/30/60 controls and freshness costs. | Policy and actual Main identity preflight pass; independent 22-boundary/8-history oracle implemented. Graphical and timing execution pending. It cannot reduce publication frequency when other Main/render work already exceeds its interval. |
 | Stale-sample continuation | Additional physics without a current native body sample. | A valid collision/coupling/geometry certificate that the current protocol does not provide. | Rejected for this implementation; no admission gate changed. |
 | Another latest-only transport queue | Duplicate existing bounded mailbox behavior. | A distinct retained-work or backpressure defect. | Existing source already coalesces pending delivery; no new queue is justified. |
@@ -127,9 +127,14 @@ completed. The original workflow remains red. Both platforms passed all twelve
 correctness processes and completed their source/slot captures; the added slot
 allocation checker rejected generated fixtures without an observed `extent`.
 The [independent decision packet](development02-independent-decision.md) retains
-all sixteen Linux raw reductions and complete frozen-gate replays, plus the eight
-valid Windows Safe engine controls. Windows source/slot replay is still being
-completed. The [renderer/evaluator audit](second-campaign-renderer-and-evaluator.md)
+all sixteen Linux and sixteen Windows raw reductions, plus the eight valid
+Windows Safe engine controls. Complete frozen-gate replays pass all sixteen
+source/slot captures on each platform. The
+[Windows custody audit](development02-windows-frozen-replay.json) and
+[independent peer check](development02-windows-replay-peer-check.json) bind actual
+GUI/Rapier/native bytes, all source inputs and original traces; the original
+failed workflows remain unchanged. The
+[renderer/evaluator audit](second-campaign-renderer-and-evaluator.md)
 retains the separate ordinary Separate crash, ten successful other evaluator
 launches and successful native authoring/Save/reopen. Collector execution was
 not reached, so that original evaluator is not qualified. Its
@@ -205,3 +210,47 @@ These are local apparatus/source results, not replacement graphical or runtime
 qualification. Both source-comparison and evaluator startup evidence explicitly
 observe deadline-off state; frozen donor API absence is recorded as null rather
 than fabricated policy telemetry.
+
+## Third hosted source and runtime custody
+
+[Run 45452580606](https://github.com/techrote/cybersand/actions/runs/45452580606)
+executes candidate `c2f8a73d34448bc1496ecd84bca02f0812c80d27`, tree
+`351b947a50ce054361660eba9379006122527547`. Its request fingerprint is
+`ca17f9d85980d94cff08fbe8b509f9f863a515ee8fd48de21fda5f7aa0348eab`.
+The registration phase `final` selects the expanded qualification workload; it
+does not grant final acceptance or select this candidate.
+
+Both native build jobs passed. The
+[independent runtime inventory](final03-native-runtime-inventory.json) verifies
+all 105 committed native inputs for each of the four binaries, source trees,
+build drivers/logs, exact compiler pins and godot-cpp dependency custody.
+Control and candidate share identical toolchain identities within each platform;
+their dependency builder is this exact candidate source. No runtime is promoted.
+
+| Platform / role | Actual binary SHA-256 |
+| --- | --- |
+| Linux frozen control D | `bc5cdbf4832d09f8b14f6ff2ed7cf1e182343d55a3a4ebc4dc1d93894d660d59` |
+| Linux candidate C | `33d9c39ecfca71c800f538dbf3edbbb85675c0c65be35d6af525f699b7d15dc0` |
+| Windows frozen control D | `505c766c6003b9d7c1e3acdee9331527210ba09a149a1588de32bf877ee3bb40` |
+| Windows candidate C | `1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b` |
+
+At this custody checkpoint, Linux graphical execution, full native normal/scoped
+ASan/UBSan and the extracted stock Windows evaluator passed. Windows graphical
+comparisons are still active. The [native/evaluator record](final03-evaluator-and-native.md)
+contains the exact original manifest, all-member/source verification and a
+separate raw-process/collector/persistence peer review. Nine hosted launches and
+the actual collector passed; physical NVIDIA and normal native OpenGL remain
+unperformed. Startup receipts and screenshots do not establish gameplay timing.
+
+The custom Godot build also passed, but its renderer qualification failed before
+any process because the proof reader treated equivalent Git brace-context
+alignment as an undeclared edit. The
+[reader correction](font-engine-patch-reader.md) and
+[independent peer review](font-engine-reader-independent-peer-review.json)
+retain that original failure, verify all eleven exact edits and independently
+reproduce every declared postimage from the original captured patch. The
+[separate new-execution qualifier](../../../tools/pubpres_final_requalification/README.md)
+pins the existing c2 application/native/engine and every new driver/observer
+input. It changes only the explicitly registered application-to-driver join;
+every original physical, font, startup, GPU and source/runtime gate remains.
+No renderer or playability pass is inherited from build success.

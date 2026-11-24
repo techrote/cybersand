@@ -575,6 +575,8 @@ private:
     void advance_wave_flow(TickStats& stats);
     void advance_floating_oil();
     void wave_column_task(std::size_t task_index) noexcept;
+    template <bool WithEmptyDerived>
+    void wave_column_task_impl(std::size_t task_index) noexcept;
     void wave_flux_task(std::size_t task_index) noexcept;
     void wave_apply_task(std::size_t task_index) noexcept;
     void wake_wave_chunk(Chunk& chunk) noexcept;

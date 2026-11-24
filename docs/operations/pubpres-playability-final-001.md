@@ -136,19 +136,46 @@ The Linux large-canvas source comparison supports a relative gain, but still
 contains 150–270 ms physical gaps. Wave512 and three-slot comparisons do not
 establish repeatable improvements. The
 [second decision packet](../audits/2026-11-24-pubpres-playability-final/development02-independent-decision.md)
-retains all controls and limits. Windows source/slot evidence is retained for
-its independent replay.
+retains all controls and limits. All sixteen Windows source/slot captures now
+also pass complete frozen-gate replay and a separate independent peer check.
+Their [Windows decision](../audits/2026-11-24-pubpres-playability-final/development02-windows-independent-decision.md)
+establishes no repeatable source gain and retains the substantially adverse
+three-slot results. The Windows current-Wave2048 candidate still reaches
+770–774 ms maximum gaps. Complete evidence validity does not imply playability.
 
-The extracted Windows evaluator passed ten included launches and actual native
+The second extracted Windows evaluator passed ten included launches and actual native
 authoring, Save and fresh-process reopen. Its optional recovered Separate engine
 crashed, so the collector was never reached and that package remains unqualified.
-The next stock-engine package must pass every included launcher, extraction,
-source/runtime refusal, persistence and collector gate with its own exact
-manifest. The separate font engine is a research artifact until its startup,
-image, ordinary gameplay and evaluator gates pass.
+The third stock-engine package subsequently passed every included launcher,
+extraction, source/runtime refusal, persistence and collector gate with its own
+exact manifest. Its [independent custody and owner procedure](../audits/2026-11-24-pubpres-playability-final/final03-evaluator-and-native.md)
+identify all nine actual hosted launches, native authoring208 checks, fresh
+reopen65 checks and the complete collected evidence. Hosted ANGLE qualification
+does not establish normal native OpenGL/WGL or physical NVIDIA behavior. The
+separate font engine remains a research artifact until its startup, image,
+ordinary gameplay and evaluator gates pass.
 
-Final source selection, sustained eight-actor mixed qualification, sanitizer
-results, a verified evaluator manifest and practical owner test procedure remain
-required. Physical Windows 11/NVIDIA Follow, controls, paint, multiple actors,
+Final source selection and complete comparative graphical qualification remain
+required. The third source's native normal/scoped ASan/UBSan tests and exact
+evaluator manifest are now independently retained. Physical Windows 11/NVIDIA Follow, controls, paint, multiple actors,
 material trails and sustained playability remain separate owner acceptance
 requirements. No hosted software-renderer result resolves them.
+
+The expanded third campaign
+[45452580606](https://github.com/techrote/cybersand/actions/runs/45452580606) is
+running exact candidate `c2f8a73d34448bc1496ecd84bca02f0812c80d27`, tree
+`351b947a50ce054361660eba9379006122527547`. Both independent native build jobs
+passed, and their four source/runtime closures were separately checked against
+all 105 native inputs, actual binary bytes, build logs and pinned dependencies.
+The [runtime inventory](../audits/2026-11-24-pubpres-playability-final/final03-native-runtime-inventory.json)
+binds that completed result. Linux graphical execution and stock Windows
+evaluator execution passed; Windows graphical comparisons are still active.
+The complete native normal/scoped ASan/UBSan run passed. The custom engine build
+passed, but the original renderer job rejected a valid combined-patch context
+alignment before any font or startup process. The
+[corrected reader and source replay](../audits/2026-11-24-pubpres-playability-final/font-engine-patch-reader.md)
+preserve that failure and the exact retained engine. A separately registered
+[new-execution qualifier](../../tools/pubpres_final_requalification/README.md)
+reuses fixed c2 application/native/engine identities with a new committed driver;
+it cannot grant runtime credit until its actual processes execute. The campaign's
+`final` registration phase does not mean the candidate passed final acceptance.

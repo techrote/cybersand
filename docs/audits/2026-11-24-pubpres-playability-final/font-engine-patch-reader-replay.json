@@ -1,0 +1,35 @@
+{
+  "schema": "pubpres-font-engine-combined-patch-replay-v1",
+  "build_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "build_run": 45452580606,
+  "build_attempt": 1,
+  "proof_sha256": "0f1d6059578d4505043fe11f1286cd7395c5cc64df7aa379106f7a0bcafdf1c5",
+  "actual_patch": {
+    "bytes": 5828,
+    "sha256": "3dd0d224ad0a0a4187bfbc71fad3bf7c3030f0601b76284f0ff64d0cb38f229e"
+  },
+  "reader_sha256": "45931b78d5c0600b693a72b3112a323b50cadd8e39a266917c879e62ee6abe73",
+  "sources": {
+    "drivers/egl/egl_manager.cpp": {
+      "before_sha256": "65f6cb972cd6f8d3242663589e213f96d3a51dcf9f65e745d5d0ca34986d8de7",
+      "after_sha256": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e",
+      "actual_patch_applied_exactly": true
+    },
+    "modules/text_server_adv/text_server_adv.cpp": {
+      "before_sha256": "f156a5b0100ab39d588a3abc09a013c468b49dbff0ed085b7cb9c2a3e577cfcf",
+      "after_sha256": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b",
+      "actual_patch_applied_exactly": true
+    },
+    "modules/text_server_fb/text_server_fb.cpp": {
+      "before_sha256": "b1a6a009a89007bcbf48f3c70a8a02da037e9aef6d9cf9fa22b9f003c756a6d7",
+      "after_sha256": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1",
+      "actual_patch_applied_exactly": true
+    }
+  },
+  "physical_acceptance": "HOLD",
+  "complete": true,
+  "payload_verified": true,
+  "payload_file_count": 10,
+  "gui_sha256": "b0c608bc47bdc05cdd2083df4dfd67861c5d36b876a1ccf7086374059c7bad15",
+  "canonical_patch_sha256": "5f9098ed6d249ef497555656af46e0d63507d578d483f17cd9ef70de3dab3d08"
+}

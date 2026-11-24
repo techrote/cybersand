@@ -1,0 +1,32 @@
+{
+  "schema": "pubpres-font-engine-reader-peer-review-v1",
+  "reviewed_source": "4fc09bbb",
+  "application_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "build_run": 45452580606,
+  "build_attempt": 1,
+  "captured_patch_sha256": "3dd0d224ad0a0a4187bfbc71fad3bf7c3030f0601b76284f0ff64d0cb38f229e",
+  "canonical_edits_sha256": "5f9098ed6d249ef497555656af46e0d63507d578d483f17cd9ef70de3dab3d08",
+  "files": 3,
+  "edits": 11,
+  "validation": {
+    "all_engine_test_methods": 20,
+    "passed": true,
+    "captured_fixture_matches_declared_exact_ordered_edits": true
+  },
+  "independently_reviewed_invariants": [
+    "complete old/new hunk counts",
+    "monotonic nonoverlapping hunk coordinates",
+    "cumulative new-coordinate displacement",
+    "exact ordered paths and regular-file mode",
+    "exact normalized removed/added bytes and coordinates",
+    "external proof hash and combined-patch digest still mandatory",
+    "unchanged source-postimage, API, PE and payload closure gates"
+  ],
+  "scope": "Canonical edit comparison admits only irrelevant unchanged-context alignment; exact externally pinned artifact remains required. No process or performance result is implied. Original c2 reader rejection remains retained.",
+  "files_sha256": {
+    "tools/pubpres_final_engine/payload.py": "45931b78d5c0600b693a72b3112a323b50cadd8e39a266917c879e62ee6abe73",
+    "tools/pubpres_final_engine/test_payload.py": "e833f7762c02a9f204d946b5aa7ba173361fafa48a6a80ae5614707634630f0b",
+    "tools/pubpres_final_engine/tests/fixtures/windows_combined_source.json": "367087ceca1e0fe0930986c1d1a3467dd1c9d833ddac7a9431fafca7809cd2dc"
+  },
+  "physical_acceptance": "HOLD"
+}

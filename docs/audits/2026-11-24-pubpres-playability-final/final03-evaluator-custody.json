@@ -1,0 +1,155 @@
+{
+  "schema": "pubpres-final-third-evaluator-package-independent-custody-v1",
+  "workflow_run": 45452580606,
+  "artifact_id": 14952245528,
+  "outer_archive_sha256": "26c4ca809ad2f95c6ed30f92cb9f70920941b5733b1e7062bf42ad5cb0088f7e",
+  "outer_archive_bytes": 102244475,
+  "inner_archive": {
+    "archive_bytes": 102830043,
+    "archive_sha256": "56a9218fe7e041abea7941b9866114b0d96514abda6e5c40b308ac00b76c3b01",
+    "candidate_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "manifest_sha256": "0288861763665cd40f2b3c950536d5aa3ccb6ffa2ad60420b6e2b7b230b56abe",
+    "physical_acceptance": "HOLD",
+    "schema": "pubpres-playability-final-windows-v1"
+  },
+  "all_outer_and_inner_zip_crcs_pass": true,
+  "complete_package_verifier_pass": true,
+  "verifier_sha256": "6c3548dd950f6e39a1d573ce9777edc4871f4c21344d2247df01cdfa0f4ab943",
+  "frozen_verifier_sha256": "6e6886d137c72d037775c5e118e9ee00b0b9820fba5500978cf9b25d5ecdfd59",
+  "manifest_sha256": "0288861763665cd40f2b3c950536d5aa3ccb6ffa2ad60420b6e2b7b230b56abe",
+  "manifest_file_count": 2533,
+  "candidate_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "sources": {
+    "C": {
+      "features": {
+        "reachable_staging_pools": true,
+        "same_frame_continuation": true,
+        "wave_column_slots": 1,
+        "wave_column_tiles": false,
+        "wave_stage_probe": true
+      },
+      "native": {
+        "bytes": 5825024,
+        "path": "sources/C/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "receipt": "sources/C/provenance/PUBPRES-RUNTIME.json",
+        "receipt_sha256": "f1d8e97e923eb8c03a9ae3592bd9a45b2784ca70eee2cdd15e0a85cd63f51be1",
+        "sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+        "source_input_count": 105
+      },
+      "parents": [
+        "515fce2862dd87d8dd01935bdf7bd1736e645901"
+      ],
+      "project": "sources/C/godot",
+      "rapier": {
+        "bytes": 9987072,
+        "path": "sources/C/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "receipt": "sources/C/godot/addons/godot-rapier2d/runtime-provenance.windows.json",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "root": "sources/C",
+      "source_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+      "source_projection": "Exact committed project and closure; new source-matched DLL/provenance and canonical recipe copies are explicit package additions.",
+      "source_tree": "351b947a50ce054361660eba9379006122527547",
+      "toolchain": {
+        "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+        "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_cpp_dependency_sha256": "c4df34a516b645985b5c65f5167d0221bf3b187b13f19cfff96b7a1453c669f2",
+        "godot_cpp_library_sha256": "322cf928ff595d02b86845813f0ebebd1de07041393f36f90b3a98fc811196c9",
+        "toolchain_drift_allowed": false
+      }
+    },
+    "D": {
+      "features": {
+        "reachable_staging_pools": true,
+        "same_frame_continuation": true,
+        "wave_column_slots": 1,
+        "wave_column_tiles": false,
+        "wave_stage_probe": true
+      },
+      "native": {
+        "bytes": 5824512,
+        "path": "sources/D/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "receipt": "sources/D/provenance/PUBPRES-RUNTIME.json",
+        "receipt_sha256": "cfe7a10bd6a2446e4f8a17931fc977ddcf98297eafc129e339c6e7fde9e7b409",
+        "sha256": "505c766c6003b9d7c1e3acdee9331527210ba09a149a1588de32bf877ee3bb40",
+        "source_input_count": 105
+      },
+      "parents": [
+        "1aaacaa6ca7038eb469012719af1a4b8473c8cc8"
+      ],
+      "project": "sources/D/godot",
+      "rapier": {
+        "bytes": 9987072,
+        "path": "sources/D/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "receipt": "sources/D/godot/addons/godot-rapier2d/runtime-provenance.windows.json",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "root": "sources/D",
+      "source_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "source_projection": "Exact committed project and closure; new source-matched DLL/provenance and canonical recipe copies are explicit package additions.",
+      "source_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+      "toolchain": {
+        "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+        "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_cpp_dependency_sha256": "c4df34a516b645985b5c65f5167d0221bf3b187b13f19cfff96b7a1453c669f2",
+        "godot_cpp_library_sha256": "322cf928ff595d02b86845813f0ebebd1de07041393f36f90b3a98fc811196c9",
+        "toolchain_drift_allowed": false
+      }
+    }
+  },
+  "engine": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "console": {
+      "path": "Godot_v4.7-stable_win64_console.exe",
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    "gui": {
+      "path": "Godot_v4.7-stable_win64.exe",
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    "vc_runtime_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "defaults": {
+    "engine": "stock",
+    "full_image_slots": 2,
+    "material": "full",
+    "render_thread": "safe",
+    "same_frame_continuation": "off",
+    "scene": "ordinary",
+    "source": "C"
+  },
+  "physical_acceptance": "HOLD",
+  "hardlinked_hash_verified_duplicate_bytes": 210307088,
+  "scope": "Read-only complete manifest, PE, exact native/Rapier input, build log, compiler/dependency, engine, VC, launcher, scene and inventory verification on Linux. Actual Windows execution is separately bound by hosted raw evidence. No Windows binary executed locally; no physical NVIDIA acceptance.",
+  "full_custody_report": {
+    "bytes": 566289,
+    "sha256": "62053834d8a73fd1f09cfb7233f29b7cbf8cf3c538fe7f621f5718adf2c4ad33",
+    "member_count": 2535,
+    "all_members_bytes": 238858367
+  },
+  "manifest_file": "final03-evaluator-manifest.json",
+  "source_projection_file": "final03-evaluator-source-projection.json",
+  "source_projection_sha256": "d96d918eea67f1cef41a60e268082c01639a0493d41b924907c89e35e134a7e6",
+  "qualification_scope": "Hosted Windows 2022 with ANGLE / Microsoft Basic Render Driver for actual CMD launches and authoring/reopen; ordinary launcher default native OpenGL and physical NVIDIA acceptance remain unperformed. Packaging and execution qualification is distinct from physical playability.",
+  "hosted_evidence": {
+    "workflow_run": 45452580606,
+    "job_id": 138659288350,
+    "job_conclusion": "SUCCESS",
+    "artifact_id": 14952210595,
+    "archive_bytes": 6072744,
+    "archive_sha256": "b804953ace3aadcad608d93dbd161136806ce991d5a5b6c917f559d866dfa69c",
+    "job_log_sha256": "788380c628fe2a7388db7b0e7c83afd7bb03832c4e8402b9476615cd38df3590",
+    "checks_summary_sha256": "734b18031bbd14985309ed28b6aeaf8c9076190eabfd1805689f5fbbde4544d2",
+    "authoring_summary_sha256": "5ace6629be6536e775c8d1171f228028380fbd9cb53fc57ee903fb04b9f8e2af",
+    "independent_execution_peer_review": {
+      "complete": true,
+      "file": "final03-evaluator-independent-peer-review.json",
+      "sha256": "0647a5a741684df7af4fced980c316063cf65195f106d88dfe1ab0500dc0a516",
+      "reader": "final03-evaluator-independent-reader.py",
+      "scope": "Actual hosted ANGLE startup/import process ownership, nine launch and seven profile identities, negative refusals, collector and native authoring/fresh-process reopen. No native OpenGL/WGL or physical NVIDIA acceptance."
+    }
+  }
+}

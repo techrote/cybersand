@@ -5,6 +5,13 @@
 included in the ordinary evaluator and has no application or physical NVIDIA
 qualification until the corresponding execution receipts exist.
 
+The first built artifact is retained unchanged after a pre-execution reader
+failure on Git's equivalent brace/hunk alignment. The
+[strict canonical-edit correction and artifact replay](../../docs/audits/2026-11-24-pubpres-playability-final/font-engine-patch-reader.md)
+preserve exact changed bytes, coordinates, file/mode closure and every other
+engine provenance gate. Any focused retry must keep application/build and
+changed driver identities separate; the original failed job remains evidence.
+
 ## Scoped repair
 
 The original pinned TextServerAdvanced and TextServerFallback pass their mutable

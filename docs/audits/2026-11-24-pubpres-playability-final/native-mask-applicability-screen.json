@@ -1,0 +1,710 @@
+{
+  "schema": "pubpres-native-mask-applicability-reduction-v1",
+  "cohorts": [
+    {
+      "cohort": "current512-one",
+      "complete_semantic_checkpoint_parity": true,
+      "measurements_in_order": [
+        {
+          "name": "current512-one-1-A",
+          "arm": "A",
+          "tick_mean_ms": 19.980048805555555,
+          "tick_p50_ms": 17.444744,
+          "tick_p95_ms": 41.124012,
+          "tick_p99_ms": 51.141224,
+          "tick_max_ms": 51.141224,
+          "prepare_mean_ms": 0.05154098611111111,
+          "column_mean_ms": 8.599873930555557,
+          "flux_mean_ms": 5.247172055555556,
+          "apply_mean_ms": 3.2125768333333333,
+          "wave_storage_bytes": 3598184,
+          "tick_counts_above_ms": {
+            "16.667": 41,
+            "33.334": 7,
+            "50": 1,
+            "100": 0,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 1.6458709999999999,
+          "whole_child_system_seconds": 0.133216,
+          "whole_child_cpu_seconds": 1.7790869999999999,
+          "whole_process_wall_seconds": 1.760759044,
+          "whole_child_average_cpu_cores": 1.0104091221694727
+        },
+        {
+          "name": "current512-one-2-B",
+          "arm": "B",
+          "tick_mean_ms": 20.89809725,
+          "tick_p50_ms": 17.240939,
+          "tick_p95_ms": 46.636798,
+          "tick_p99_ms": 109.905059,
+          "tick_max_ms": 109.905059,
+          "prepare_mean_ms": 0.06090652777777778,
+          "column_mean_ms": 7.185098902777778,
+          "flux_mean_ms": 5.384794625,
+          "apply_mean_ms": 3.46273125,
+          "wave_storage_bytes": 3598184,
+          "tick_counts_above_ms": {
+            "16.667": 40,
+            "33.334": 6,
+            "50": 3,
+            "100": 1,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 1.5643479999999998,
+          "whole_child_system_seconds": 0.15600499999999995,
+          "whole_child_cpu_seconds": 1.7203529999999998,
+          "whole_process_wall_seconds": 1.771118373,
+          "whole_child_average_cpu_cores": 0.9713371089285175
+        },
+        {
+          "name": "current512-one-3-C",
+          "arm": "C",
+          "tick_mean_ms": 17.8268955,
+          "tick_p50_ms": 15.969487,
+          "tick_p95_ms": 35.919771,
+          "tick_p99_ms": 50.572348,
+          "tick_max_ms": 50.572348,
+          "prepare_mean_ms": 0.16908019444444444,
+          "column_mean_ms": 7.239853277777778,
+          "flux_mean_ms": 4.530564597222222,
+          "apply_mean_ms": 3.142180263888889,
+          "wave_storage_bytes": 3598184,
+          "tick_counts_above_ms": {
+            "16.667": 31,
+            "33.334": 5,
+            "50": 1,
+            "100": 0,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 1.4646910000000002,
+          "whole_child_system_seconds": 0.1696120000000001,
+          "whole_child_cpu_seconds": 1.6343030000000003,
+          "whole_process_wall_seconds": 1.53822071,
+          "whole_child_average_cpu_cores": 1.0624632664060285
+        },
+        {
+          "name": "current512-one-4-C",
+          "arm": "C",
+          "tick_mean_ms": 17.92445358333333,
+          "tick_p50_ms": 15.719916,
+          "tick_p95_ms": 32.830297,
+          "tick_p99_ms": 40.586516,
+          "tick_max_ms": 40.586516,
+          "prepare_mean_ms": 0.08032127777777778,
+          "column_mean_ms": 7.062092972222222,
+          "flux_mean_ms": 5.118746083333333,
+          "apply_mean_ms": 2.4056148194444447,
+          "wave_storage_bytes": 3598184,
+          "tick_counts_above_ms": {
+            "16.667": 33,
+            "33.334": 3,
+            "50": 0,
+            "100": 0,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 1.4941430000000002,
+          "whole_child_system_seconds": 0.1401270000000001,
+          "whole_child_cpu_seconds": 1.6342700000000003,
+          "whole_process_wall_seconds": 1.555362414,
+          "whole_child_average_cpu_cores": 1.0507326043690808
+        },
+        {
+          "name": "current512-one-5-B",
+          "arm": "B",
+          "tick_mean_ms": 18.365783180555557,
+          "tick_p50_ms": 15.358151,
+          "tick_p95_ms": 39.480868,
+          "tick_p99_ms": 51.860207,
+          "tick_max_ms": 51.860207,
+          "prepare_mean_ms": 0.04822484722222222,
+          "column_mean_ms": 7.321122263888889,
+          "flux_mean_ms": 5.696354930555556,
+          "apply_mean_ms": 2.858650736111111,
+          "wave_storage_bytes": 3598184,
+          "tick_counts_above_ms": {
+            "16.667": 28,
+            "33.334": 6,
+            "50": 1,
+            "100": 0,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 1.515585999999999,
+          "whole_child_system_seconds": 0.16327599999999975,
+          "whole_child_cpu_seconds": 1.6788619999999987,
+          "whole_process_wall_seconds": 1.660739808,
+          "whole_child_average_cpu_cores": 1.0109121199556377
+        },
+        {
+          "name": "current512-one-6-A",
+          "arm": "A",
+          "tick_mean_ms": 22.050099319444445,
+          "tick_p50_ms": 19.904693,
+          "tick_p95_ms": 35.113432,
+          "tick_p99_ms": 57.368183,
+          "tick_max_ms": 57.368183,
+          "prepare_mean_ms": 0.0645095,
+          "column_mean_ms": 8.439255986111112,
+          "flux_mean_ms": 6.193102236111111,
+          "apply_mean_ms": 3.4826560416666665,
+          "wave_storage_bytes": 3598184,
+          "tick_counts_above_ms": {
+            "16.667": 52,
+            "33.334": 8,
+            "50": 1,
+            "100": 0,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 1.6222000000000012,
+          "whole_child_system_seconds": 0.15689600000000015,
+          "whole_child_cpu_seconds": 1.7790960000000013,
+          "whole_process_wall_seconds": 1.863796818,
+          "whole_child_average_cpu_cores": 0.9545546933109966
+        }
+      ],
+      "comparisons": [
+        {
+          "control": "A",
+          "candidate": "B",
+          "percent_change": {
+            "tick_mean_ms": -6.581627279107849,
+            "whole_child_cpu_seconds": -4.467673528877036
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": false,
+            "tick_p50_ms": true,
+            "tick_p95_ms": false,
+            "tick_p99_ms": false,
+            "tick_max_ms": false,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        },
+        {
+          "control": "A",
+          "candidate": "C",
+          "percent_change": {
+            "tick_mean_ms": -14.938798271643417,
+            "whole_child_cpu_seconds": -8.139266586344785
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": true,
+            "tick_p50_ms": true,
+            "tick_p95_ms": false,
+            "tick_p99_ms": true,
+            "tick_max_ms": true,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        },
+        {
+          "control": "B",
+          "candidate": "C",
+          "percent_change": {
+            "tick_mean_ms": -8.9459607881465,
+            "whole_child_cpu_seconds": -3.8432991146484685
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": true,
+            "tick_p50_ms": false,
+            "tick_p95_ms": true,
+            "tick_p99_ms": true,
+            "tick_max_ms": true,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        }
+      ]
+    },
+    {
+      "cohort": "current2048-zero",
+      "complete_semantic_checkpoint_parity": true,
+      "measurements_in_order": [
+        {
+          "name": "current2048-zero-1-A",
+          "arm": "A",
+          "tick_mean_ms": 179.2723344861111,
+          "tick_p50_ms": 117.499368,
+          "tick_p95_ms": 299.879912,
+          "tick_p99_ms": 3306.39345,
+          "tick_max_ms": 3306.39345,
+          "prepare_mean_ms": 4.577777430555556,
+          "column_mean_ms": 120.80404398611111,
+          "flux_mean_ms": 22.46250048611111,
+          "apply_mean_ms": 11.052765930555555,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 49,
+            "250": 6,
+            "500": 1,
+            "1000": 1
+          },
+          "whole_child_user_seconds": 17.039679,
+          "whole_child_system_seconds": 4.301677,
+          "whole_child_cpu_seconds": 21.341355999999998,
+          "whole_process_wall_seconds": 16.275377774,
+          "whole_child_average_cpu_cores": 1.311266398626576
+        },
+        {
+          "name": "current2048-zero-2-B",
+          "arm": "B",
+          "tick_mean_ms": 86.41687831944445,
+          "tick_p50_ms": 81.467262,
+          "tick_p95_ms": 125.971665,
+          "tick_p99_ms": 188.524295,
+          "tick_max_ms": 188.524295,
+          "prepare_mean_ms": 0.6794752222222222,
+          "column_mean_ms": 59.691310875,
+          "flux_mean_ms": 14.365565805555557,
+          "apply_mean_ms": 7.191040597222222,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 10,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 16.127889,
+          "whole_child_system_seconds": 0.6153019999999998,
+          "whole_child_cpu_seconds": 16.743191,
+          "whole_process_wall_seconds": 8.73495441,
+          "whole_child_average_cpu_cores": 1.9168034787716768
+        },
+        {
+          "name": "current2048-zero-3-C",
+          "arm": "C",
+          "tick_mean_ms": 81.23957847222222,
+          "tick_p50_ms": 79.32691,
+          "tick_p95_ms": 113.155398,
+          "tick_p99_ms": 123.884369,
+          "tick_max_ms": 123.884369,
+          "prepare_mean_ms": 0.5877361805555555,
+          "column_mean_ms": 55.62646495833334,
+          "flux_mean_ms": 13.683874375,
+          "apply_mean_ms": 6.355458416666667,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 9,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 15.381158,
+          "whole_child_system_seconds": 0.6583690000000004,
+          "whole_child_cpu_seconds": 16.039527,
+          "whole_process_wall_seconds": 8.331786755,
+          "whole_child_average_cpu_cores": 1.9251005182501217
+        },
+        {
+          "name": "current2048-zero-4-C",
+          "arm": "C",
+          "tick_mean_ms": 79.3123443611111,
+          "tick_p50_ms": 72.873663,
+          "tick_p95_ms": 116.413607,
+          "tick_p99_ms": 232.689903,
+          "tick_max_ms": 232.689903,
+          "prepare_mean_ms": 0.5717791666666666,
+          "column_mean_ms": 53.84497898611111,
+          "flux_mean_ms": 13.372187916666666,
+          "apply_mean_ms": 7.03852675,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 6,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 15.294626999999998,
+          "whole_child_system_seconds": 0.5646119999999994,
+          "whole_child_cpu_seconds": 15.859238999999999,
+          "whole_process_wall_seconds": 7.978167963,
+          "whole_child_average_cpu_cores": 1.9878296713668724
+        },
+        {
+          "name": "current2048-zero-5-B",
+          "arm": "B",
+          "tick_mean_ms": 102.38513756944445,
+          "tick_p50_ms": 90.491314,
+          "tick_p95_ms": 182.840291,
+          "tick_p99_ms": 203.537425,
+          "tick_max_ms": 203.537425,
+          "prepare_mean_ms": 0.63387075,
+          "column_mean_ms": 70.47177204166667,
+          "flux_mean_ms": 15.993791291666666,
+          "apply_mean_ms": 9.299781194444444,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 29,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 19.421896000000004,
+          "whole_child_system_seconds": 0.7910069999999996,
+          "whole_child_cpu_seconds": 20.212903000000004,
+          "whole_process_wall_seconds": 10.404630985,
+          "whole_child_average_cpu_cores": 1.9426833137225388
+        },
+        {
+          "name": "current2048-zero-6-A",
+          "arm": "A",
+          "tick_mean_ms": 79.46307009722223,
+          "tick_p50_ms": 75.776385,
+          "tick_p95_ms": 109.740559,
+          "tick_p99_ms": 191.239514,
+          "tick_max_ms": 191.239514,
+          "prepare_mean_ms": 0.6168937777777778,
+          "column_mean_ms": 55.29928802777778,
+          "flux_mean_ms": 13.049563541666666,
+          "apply_mean_ms": 6.4582155,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 8,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 16.184529999999995,
+          "whole_child_system_seconds": 0.5304230000000008,
+          "whole_child_cpu_seconds": 16.714952999999994,
+          "whole_process_wall_seconds": 8.060256357,
+          "whole_child_average_cpu_cores": 2.073749550841984
+        }
+      ],
+      "comparisons": [
+        {
+          "control": "A",
+          "candidate": "B",
+          "percent_change": {
+            "tick_mean_ms": -27.02892122825824,
+            "whole_child_cpu_seconds": -2.8910186744594335
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": false,
+            "tick_p50_ms": false,
+            "tick_p95_ms": false,
+            "tick_p99_ms": false,
+            "tick_max_ms": false,
+            "whole_child_cpu_seconds": false
+          },
+          "all_native_timing_directions_repeat": false
+        },
+        {
+          "control": "A",
+          "candidate": "C",
+          "percent_change": {
+            "tick_mean_ms": -37.947447473651465,
+            "whole_child_cpu_seconds": -16.180084621448685
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": false,
+            "tick_p50_ms": false,
+            "tick_p95_ms": false,
+            "tick_p99_ms": false,
+            "tick_max_ms": false,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        },
+        {
+          "control": "B",
+          "candidate": "C",
+          "percent_change": {
+            "tick_mean_ms": -14.962813253106855,
+            "whole_child_cpu_seconds": -13.684692976481793
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": true,
+            "tick_p50_ms": true,
+            "tick_p95_ms": true,
+            "tick_p99_ms": false,
+            "tick_max_ms": false,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        }
+      ]
+    },
+    {
+      "cohort": "current2048-one",
+      "complete_semantic_checkpoint_parity": true,
+      "measurements_in_order": [
+        {
+          "name": "current2048-one-1-A",
+          "arm": "A",
+          "tick_mean_ms": 154.24458709722222,
+          "tick_p50_ms": 151.070029,
+          "tick_p95_ms": 210.444529,
+          "tick_p99_ms": 264.359538,
+          "tick_max_ms": 264.359538,
+          "prepare_mean_ms": 0.5661880972222223,
+          "column_mean_ms": 104.74010340277778,
+          "flux_mean_ms": 31.146133194444445,
+          "apply_mean_ms": 12.560193763888888,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 71,
+            "250": 1,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 27.78536600000001,
+          "whole_child_system_seconds": 0.8902160000000006,
+          "whole_child_cpu_seconds": 28.675582000000013,
+          "whole_process_wall_seconds": 13.575821685,
+          "whole_child_average_cpu_cores": 2.112253877913248
+        },
+        {
+          "name": "current2048-one-2-B",
+          "arm": "B",
+          "tick_mean_ms": 108.32892008333333,
+          "tick_p50_ms": 103.385208,
+          "tick_p95_ms": 154.672207,
+          "tick_p99_ms": 194.237007,
+          "tick_max_ms": 194.237007,
+          "prepare_mean_ms": 0.4691976944444444,
+          "column_mean_ms": 60.68540948611111,
+          "flux_mean_ms": 28.551218291666668,
+          "apply_mean_ms": 14.230865736111111,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 42,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 19.69966199999999,
+          "whole_child_system_seconds": 0.5796219999999987,
+          "whole_child_cpu_seconds": 20.27928399999999,
+          "whole_process_wall_seconds": 10.231289127,
+          "whole_child_average_cpu_cores": 1.9820849306744441
+        },
+        {
+          "name": "current2048-one-3-C",
+          "arm": "C",
+          "tick_mean_ms": 109.44862694444444,
+          "tick_p50_ms": 107.509281,
+          "tick_p95_ms": 139.586338,
+          "tick_p99_ms": 155.241405,
+          "tick_max_ms": 155.241405,
+          "prepare_mean_ms": 0.5586908333333334,
+          "column_mean_ms": 63.936934125,
+          "flux_mean_ms": 28.6408665,
+          "apply_mean_ms": 10.969292069444444,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 55,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 19.15930399999999,
+          "whole_child_system_seconds": 0.5462190000000007,
+          "whole_child_cpu_seconds": 19.705522999999992,
+          "whole_process_wall_seconds": 10.357346125,
+          "whole_child_average_cpu_cores": 1.9025648812137186
+        },
+        {
+          "name": "current2048-one-4-C",
+          "arm": "C",
+          "tick_mean_ms": 115.9307488888889,
+          "tick_p50_ms": 111.434818,
+          "tick_p95_ms": 160.463042,
+          "tick_p99_ms": 178.416838,
+          "tick_max_ms": 178.416838,
+          "prepare_mean_ms": 0.6938973611111111,
+          "column_mean_ms": 67.25795358333333,
+          "flux_mean_ms": 30.967873444444443,
+          "apply_mean_ms": 12.420599333333334,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 56,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 19.14260200000001,
+          "whole_child_system_seconds": 0.9059489999999997,
+          "whole_child_cpu_seconds": 20.04855100000001,
+          "whole_process_wall_seconds": 11.268223191,
+          "whole_child_average_cpu_cores": 1.7792113858742975
+        },
+        {
+          "name": "current2048-one-5-B",
+          "arm": "B",
+          "tick_mean_ms": 123.57007490277778,
+          "tick_p50_ms": 113.470075,
+          "tick_p95_ms": 191.264819,
+          "tick_p99_ms": 247.84197,
+          "tick_max_ms": 247.84197,
+          "prepare_mean_ms": 0.5767450277777777,
+          "column_mean_ms": 68.37044670833333,
+          "flux_mean_ms": 33.00862466666667,
+          "apply_mean_ms": 14.827820902777779,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 64,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 20.322154000000012,
+          "whole_child_system_seconds": 1.0145689999999998,
+          "whole_child_cpu_seconds": 21.336723000000013,
+          "whole_process_wall_seconds": 11.804504978,
+          "whole_child_average_cpu_cores": 1.8075067984439128
+        },
+        {
+          "name": "current2048-one-6-A",
+          "arm": "A",
+          "tick_mean_ms": 141.1193260277778,
+          "tick_p50_ms": 137.365904,
+          "tick_p95_ms": 183.639507,
+          "tick_p99_ms": 251.369566,
+          "tick_max_ms": 251.369566,
+          "prepare_mean_ms": 0.5605692083333333,
+          "column_mean_ms": 97.70526206944444,
+          "flux_mean_ms": 28.090448263888888,
+          "apply_mean_ms": 10.757082388888888,
+          "wave_storage_bytes": 55912040,
+          "tick_counts_above_ms": {
+            "16.667": 72,
+            "33.334": 72,
+            "50": 72,
+            "100": 72,
+            "250": 1,
+            "500": 0,
+            "1000": 0
+          },
+          "whole_child_user_seconds": 27.77445899999998,
+          "whole_child_system_seconds": 0.7129930000000009,
+          "whole_child_cpu_seconds": 28.48745199999998,
+          "whole_process_wall_seconds": 12.63576846,
+          "whole_child_average_cpu_cores": 2.254508864275278
+        }
+      ],
+      "comparisons": [
+        {
+          "control": "A",
+          "candidate": "B",
+          "percent_change": {
+            "tick_mean_ms": -21.487025096403745,
+            "whole_child_cpu_seconds": -27.197693880279328
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": true,
+            "tick_p50_ms": true,
+            "tick_p95_ms": false,
+            "tick_p99_ms": true,
+            "tick_max_ms": true,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        },
+        {
+          "control": "A",
+          "candidate": "C",
+          "percent_change": {
+            "tick_mean_ms": -23.694342531969614,
+            "whole_child_cpu_seconds": -30.454926517721216
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": true,
+            "tick_p50_ms": true,
+            "tick_p95_ms": true,
+            "tick_p99_ms": true,
+            "tick_max_ms": true,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": true
+        },
+        {
+          "control": "B",
+          "candidate": "C",
+          "percent_change": {
+            "tick_mean_ms": -2.811404660536909,
+            "whole_child_cpu_seconds": -4.474078928331593
+          },
+          "both_candidates_below_both_controls": {
+            "tick_mean_ms": false,
+            "tick_p50_ms": false,
+            "tick_p95_ms": false,
+            "tick_p99_ms": true,
+            "tick_max_ms": true,
+            "whole_child_cpu_seconds": true
+          },
+          "all_native_timing_directions_repeat": false
+        }
+      ]
+    }
+  ],
+  "source_identities": {
+    "A": {
+      "source_commit": "27a08efb4a78186c0e2b19176576752e2503b998",
+      "source_tree": "24a69fea61a7f5ef02f533280a07a3c8f3e67741",
+      "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+      "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+    },
+    "B": {
+      "source_commit": "fa34fc2129125d77a5255c95bfa82af91eff05a5",
+      "source_tree": "bf7603054b69023a87d5c14902358c3d4d8c0478",
+      "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+      "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+    },
+    "C": {
+      "source_commit": "3e027cdb71ec97a6719fbd3580f552d500349075",
+      "source_tree": "e7d4b47900ed6f178c7cf0e9e4ed083bd2542cb2",
+      "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+      "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+    }
+  },
+  "percentile_policy": "Recomputed nearest-rank within each 72-tick process; p99 equals max. No averaged percentile estimates.",
+  "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+  "limits": "Two processes per arm/cohort are a development screen. Host stationarity is unproven. Kernel CPU includes setup and semantic checks outside the native tick window. No Rapier, presented-frame or input responsiveness witness. The previous 24-run refusal and adverse results remain unchanged.",
+  "physical_acceptance": "HOLD"
+}

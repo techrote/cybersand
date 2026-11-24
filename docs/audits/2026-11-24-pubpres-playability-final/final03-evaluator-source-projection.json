@@ -1,0 +1,52 @@
+{
+  "schema": "pubpres-final-evaluator-git-projection-audit-v1",
+  "candidate": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "manifest_sha256": "0288861763665cd40f2b3c950536d5aa3ccb6ffa2ad60420b6e2b7b230b56abe",
+  "sources": {
+    "C": {
+      "source_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+      "source_tree": "351b947a50ce054361660eba9379006122527547",
+      "git_verified_files": 1232,
+      "materialized_lfs_files": [],
+      "explicit_recipe_copies": 17,
+      "explicit_runtime_build_additions": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "provenance/GODOT-CPP-BUILD.log",
+        "provenance/GODOT-CPP-BUILD.sh",
+        "provenance/GODOT-CPP-CXX.sh",
+        "provenance/GODOT-CPP-DEPENDENCY.json",
+        "provenance/PUBPRES-RUNTIME.json",
+        "provenance/build.log"
+      ],
+      "projection_sha256": "c1c87c02580f12ccb78f282be225b462db97eb105afafdacf871bf524cd72682",
+      "all_actual_files_accounted": true
+    },
+    "D": {
+      "source_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "source_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+      "git_verified_files": 1224,
+      "materialized_lfs_files": [],
+      "explicit_recipe_copies": 17,
+      "explicit_runtime_build_additions": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "provenance/GODOT-CPP-BUILD.log",
+        "provenance/GODOT-CPP-BUILD.sh",
+        "provenance/GODOT-CPP-CXX.sh",
+        "provenance/GODOT-CPP-DEPENDENCY.json",
+        "provenance/PUBPRES-RUNTIME.json",
+        "provenance/build.log"
+      ],
+      "projection_sha256": "8944f7d6d8ad4789d8dcf61fffeef3fc08a347c9f2357efee1547e66ba061c44",
+      "all_actual_files_accounted": true
+    }
+  },
+  "tool_projection": {
+    "git_verified_files": 45,
+    "projection_sha256": "585a5cb2ba9815d50900e1f96504f075ed2af4becfae51643c40305c5a2dd2b1",
+    "all_actual_files_accounted": true
+  },
+  "complete": true,
+  "scope": "Read-only exact Git archive projection, including committed EOL attributes, materialized LFS content, original retained native provenance and explicit recipe copies. Native build/provenance additions are separately validated by the complete package verifier. No execution or performance claim."
+}

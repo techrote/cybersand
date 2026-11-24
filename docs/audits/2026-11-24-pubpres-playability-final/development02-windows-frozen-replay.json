@@ -1,0 +1,2113 @@
+{
+  "schema": "pubpres-final-development02-windows-frozen-replay-summary-v1",
+  "capture_driver": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+  "replay_program_sha256": "417cc2c685ed8f66d0c78cc446650db6fbb2ca005bc0f342745b609145d474dc",
+  "extent_checker_sha256": "4df9ec66b7aa6329ef3b74504cc4b76b9c7dce85875f505e8db360971708acf2",
+  "frozen_reducer_sha256": "896126129f035e4ed39f776d6514f562ff0e6815d6ba1132d8f2a685982a3be2",
+  "recorded_target_platform": "windows",
+  "offline_runtime_reader": {
+    "frozen_file_sha256": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+    "frozen_function_sha256": "d3105e0376bdff5929625c55a7dcbe6962f4d6cf3e38326807baff411357ca69",
+    "derived_function_sha256": "66259c126c4548e85b7781858e9854c3ced8b76c048fd80698d8ee281e4a6bc4",
+    "changes": "Explicit recorded target replaces exactly three execution-host platform selections; signature and error label identify offline replay. Every source/tree, native closure, binary, build log, toolchain and dependency predicate is retained.",
+    "scope": "Read-only artifact custody. No binary execution, runtime admission on this host, historical workflow rewrite or new gameplay qualification."
+  },
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "failures": [],
+  "physical_acceptance": "HOLD",
+  "original_graphical_job_conclusion": "FAILURE",
+  "scope": "Read-only replay of exact original source/runtime/raw traces. Corrected extent check binds campaign fixture dimensions independently of allocation telemetry. No workload rerun, historical summary rewrite or retrospective supplementary-observer claim.",
+  "complete": true,
+  "full_replay": {
+    "bytes": 4533653,
+    "sha256": "74e9b7f7f8a7cb8bccf47c6f684b348f4d8888ebf0a0296adf2ecd1a95d204bf",
+    "reproduce_with": "tools/pubpres_final/replay_extent_check.py",
+    "compaction": "Exact structural projection of complete replay; no recalculation or altered gate. Full raw archives plus executable identities reproduce the large report."
+  },
+  "independent_peer": {
+    "file": "development02-windows-replay-peer-check.json",
+    "bytes": 6148,
+    "sha256": "1bee14992fca9af9cc921b6d5eda268ea957e0038cea2c33d9ec13af88c9bbbd",
+    "all_checks_passed": true
+  },
+  "inputs": [
+    {
+      "purpose": "native-runtime",
+      "artifact_id": 14942875179,
+      "workflow_run": 45436083078,
+      "archive_bytes": 4444104,
+      "archive_sha256": "a075c0d34a0541309eef8c36f53216c7a04ec0c93ea942418ae774169f1de5b6",
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45436083078/artifacts/14942875179"
+    },
+    {
+      "purpose": "graphical",
+      "artifact_id": 14945083776,
+      "workflow_run": 45436083078,
+      "archive_bytes": 25488043,
+      "archive_sha256": "2420a9f5fe066bafc7be60892cb07217cceb6ccb9810739af1eadf689cf26688",
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45436083078/artifacts/14945083776"
+    },
+    {
+      "purpose": "evaluator-package",
+      "artifact_id": 14944745334,
+      "workflow_run": 45436083078,
+      "archive_bytes": 258337538,
+      "archive_sha256": "83974b52656d0b20359ada9b057b49c7dcab7fce7724a68a76bf169c8557b190",
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45436083078/artifacts/14944745334"
+    }
+  ],
+  "native_runtimes": {
+    "D": {
+      "manifest_sha256": "64a9a0babcfb659fb06ca6040d16a4ac86669d8e18f1813ec95a68cdca7bbbcc",
+      "binary_sha256": "a0d0097fe3a66a85cc75bfdbde0f63e8defd1ad1b795ae85a787df51ca06e047",
+      "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "checked_source_files": 105,
+      "build_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "source_inputs_sha256": "12c9df66fb0e58feee45ab3b676c6fc1d36b1fb62a92befb8b9326ba068b2b5c",
+      "dependency_builder_commit": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+      "toolchain": {
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_cpp_library_sha256": "783a5b1fb9e42591e7b6b382fff6f578a1b523f181b7bd379ba217adc95c3bec",
+        "godot_cpp_dependency_sha256": "200b25fd2b88ca03c19a2277121ed3f11cede0fe6df437a7875d215573a99fe8",
+        "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+        "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+        "toolchain_drift_allowed": false
+      },
+      "experimental_build": true,
+      "source_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d"
+    },
+    "C": {
+      "manifest_sha256": "df8a4040bbaeb3c5b75e10084f8920a12d4518937fbe3b667ac8a5cf612ee50b",
+      "binary_sha256": "c571e40334d65fb2828f1db772779455061a4a1bbcf73a9d62be997c24a0b3d7",
+      "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "checked_source_files": 105,
+      "build_commit": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+      "source_inputs_sha256": "da2812589f236de3934a68c41b20aa7c22230a24be69f7549676eb1414414574",
+      "dependency_builder_commit": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+      "toolchain": {
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_cpp_library_sha256": "783a5b1fb9e42591e7b6b382fff6f578a1b523f181b7bd379ba217adc95c3bec",
+        "godot_cpp_dependency_sha256": "200b25fd2b88ca03c19a2277121ed3f11cede0fe6df437a7875d215573a99fe8",
+        "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+        "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+        "toolchain_drift_allowed": false
+      },
+      "experimental_build": true,
+      "source_tree": "1acd4bb5c4f067e7d54fe731ffe12a48a6fa9fff"
+    }
+  },
+  "comparisons": [
+    {
+      "mode": "source-abba",
+      "original_summary_sha256": "aa24c8af1a393edaf0830aaff6a33099a26745cca9415fd076e35eb7a227f6c1",
+      "original_complete": true,
+      "original_failures": [],
+      "campaign_sha256": "b2c7019375a43c62f62efc5d33c628ad1662253948a0d69277484201df5cef8d",
+      "cases": [
+        {
+          "case": "wave_512_follow",
+          "registered_direction": {
+            "window": "first_144_steps",
+            "reference_role": "D",
+            "all_candidate_rates_higher": false,
+            "all_candidate_gap_quantiles_lower": {
+              "p95": true,
+              "p99": false
+            },
+            "all_candidate_max_gaps_within_worst_reference": true,
+            "all_candidate_severe_counts_within_worst_reference": {
+              "100": true,
+              "250": true,
+              "500": true,
+              "1000": true
+            },
+            "repeatable_direction": false,
+            "disposition": "NOT_ESTABLISHED"
+          },
+          "physical_outcome_parity": {
+            "arms": [
+              {
+                "arm": "D",
+                "index": 0,
+                "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 377,
+                  "attempted": 377,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 1,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 369,
+                  "attempted": 369,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 2,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 385,
+                  "attempted": 385,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "D",
+                "index": 3,
+                "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 380,
+                  "attempted": 380,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              }
+            ],
+            "pairs": [
+              {
+                "left_index": 0,
+                "right_index": 1,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 2,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 2,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 3,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 2,
+                "right_index": 3,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              }
+            ],
+            "same_source_pair_count": 2,
+            "same_source_pairs_equal": true,
+            "disposition": "Same-source equal-step body and admitted-move outcomes agree; cross-source outcomes are disclosed, not assumed.",
+            "scope": "Different-source speed deltas are whole-source comparisons. Identical initial workload alone does not establish identical physical outcomes. Repeated input admission counts remain explicit and can differ with cadence."
+          },
+          "arms": [
+            {
+              "index": 0,
+              "arm": "D",
+              "source_role": "D",
+              "receipt_sha256": "44410f4e50d56d1a3a791f6affb47ebef2dfec5a13db549e68aa4c686ea7e3cd",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 46,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+              "trace_sha256": "b7619ec996918504af8b94eb3777e432dae090cbc6565d517b7b01bbf1e2231f",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 52356384,
+                  "end_usec": 62356384,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 125,
+                  "completed_rapier_steps": 124,
+                  "rapier_steps_per_second": 12.4,
+                  "physical_gap_ms": {
+                    "count": 123,
+                    "max": 249.179,
+                    "p50": 7.333,
+                    "p95": 240.3672,
+                    "p99": 247.52216
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 41,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 52356384,
+                  "end_usec": 63576924,
+                  "duration_seconds": 11.22054,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 12.833606938703484,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 249.179,
+                    "p50": 7.333,
+                    "p95": 239.27960000000002,
+                    "p99": 246.78776000000005
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 46,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 52356384,
+                  "end_usec": 63578355,
+                  "duration_seconds": 11.221971,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 12.83197042658549,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 249.179,
+                    "p50": 7.333,
+                    "p95": 239.27960000000002,
+                    "p99": 246.78776000000005
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 46,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 1,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "58b35f2841e10889a1a5591254f25eb7397035ee0ee457df7a53cd06d7b16287",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 45,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "22825606611a9a66944bceaaec1dd8ad925f8d1c9fbf8677d828aafa27c9eaaf",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 66331614,
+                  "end_usec": 76331614,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 134,
+                  "completed_rapier_steps": 133,
+                  "rapier_steps_per_second": 13.3,
+                  "physical_gap_ms": {
+                    "count": 132,
+                    "max": 253.256,
+                    "p50": 6.8325,
+                    "p95": 235.30810000000002,
+                    "p99": 242.85054
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 42,
+                    "250": 1,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 66331614,
+                  "end_usec": 77165865,
+                  "duration_seconds": 10.834251,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 13.291181826967088,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 253.256,
+                    "p50": 6.83,
+                    "p95": 236.37820000000002,
+                    "p99": 242.44728000000003
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 46,
+                    "250": 1,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 66331614,
+                  "end_usec": 77259676,
+                  "duration_seconds": 10.928062,
+                  "completed_native_ticks": 146,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 13.268592363403501,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 253.256,
+                    "p50": 6.8325,
+                    "p95": 236.2593,
+                    "p99": 242.41061999999997
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 46,
+                    "250": 1,
+                    "500": 0,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 2,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "f58074e17b7bdef12cdc53d6d4089b8050a6bbcf8fae9894b5f20a9e8ec4db6a",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 47,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "e3e97d08b91d0e41d489c3012e3579ee94ca5bda9a1b6dad0cf0ee7d1536504f",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 53106075,
+                  "end_usec": 63106075,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 126,
+                  "completed_rapier_steps": 125,
+                  "rapier_steps_per_second": 12.5,
+                  "physical_gap_ms": {
+                    "count": 124,
+                    "max": 245.762,
+                    "p50": 6.768000000000001,
+                    "p95": 235.38354999999999,
+                    "p99": 239.41558999999998
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 41,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 53106075,
+                  "end_usec": 64357285,
+                  "duration_seconds": 11.25121,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 12.798623436945892,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 245.762,
+                    "p50": 6.79,
+                    "p95": 236.1229,
+                    "p99": 239.26572000000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 47,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 53106075,
+                  "end_usec": 64572955,
+                  "duration_seconds": 11.46688,
+                  "completed_native_ticks": 148,
+                  "completed_rapier_steps": 147,
+                  "rapier_steps_per_second": 12.819528938996484,
+                  "physical_gap_ms": {
+                    "count": 146,
+                    "max": 245.762,
+                    "p50": 6.833,
+                    "p95": 236.08825,
+                    "p99": 239.2227
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 48,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 3,
+              "arm": "D",
+              "source_role": "D",
+              "receipt_sha256": "b22745969614165be210fd67e207e3059aecf5004f735c61854cb391f85368f0",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 46,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+              "trace_sha256": "baac5c9c771ebf265508cb88b1ce658bb7dfa1c165ee5f07b7f44231a5deaae9",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 54751104,
+                  "end_usec": 64751104,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 128,
+                  "completed_rapier_steps": 127,
+                  "rapier_steps_per_second": 12.7,
+                  "physical_gap_ms": {
+                    "count": 126,
+                    "max": 455.01,
+                    "p50": 6.994,
+                    "p95": 236.8955,
+                    "p99": 241.697
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 41,
+                    "250": 1,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 54751104,
+                  "end_usec": 66008652,
+                  "duration_seconds": 11.257548,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 12.791417811409731,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 455.01,
+                    "p50": 7.053,
+                    "p95": 236.9882,
+                    "p99": 241.49572
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 47,
+                    "250": 1,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 54751104,
+                  "end_usec": 66016422,
+                  "duration_seconds": 11.265318,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 12.87136324070035,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 455.01,
+                    "p50": 7.061999999999999,
+                    "p95": 236.9573,
+                    "p99": 241.48388
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 47,
+                    "250": 1,
+                    "500": 0,
+                    "1000": 0
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "case": "wave_gameplay_2048_follow",
+          "registered_direction": {
+            "window": "first_144_steps",
+            "reference_role": "D",
+            "all_candidate_rates_higher": false,
+            "all_candidate_gap_quantiles_lower": {
+              "p95": false,
+              "p99": false
+            },
+            "all_candidate_max_gaps_within_worst_reference": true,
+            "all_candidate_severe_counts_within_worst_reference": {
+              "100": true,
+              "250": false,
+              "500": false,
+              "1000": true
+            },
+            "repeatable_direction": false,
+            "disposition": "NOT_ESTABLISHED"
+          },
+          "physical_outcome_parity": {
+            "arms": [
+              {
+                "arm": "D",
+                "index": 0,
+                "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 896,
+                  "attempted": 896,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 1,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 930,
+                  "attempted": 930,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 2,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 885,
+                  "attempted": 885,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "D",
+                "index": 3,
+                "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 861,
+                  "attempted": 861,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              }
+            ],
+            "pairs": [
+              {
+                "left_index": 0,
+                "right_index": 1,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 2,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 2,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 3,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 2,
+                "right_index": 3,
+                "same_source": false,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              }
+            ],
+            "same_source_pair_count": 2,
+            "same_source_pairs_equal": true,
+            "disposition": "Same-source equal-step body and admitted-move outcomes agree; cross-source outcomes are disclosed, not assumed.",
+            "scope": "Different-source speed deltas are whole-source comparisons. Identical initial workload alone does not establish identical physical outcomes. Repeated input admission counts remain explicit and can differ with cadence."
+          },
+          "arms": [
+            {
+              "index": 0,
+              "arm": "D",
+              "source_role": "D",
+              "receipt_sha256": "dc90d539b2ed700851cc3939adbc151ba525575bb713fe63f23c121e21a934fe",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 102,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+              "trace_sha256": "ae1734e23334c8a7d56ecfc53ff92462aa4b2db6d6ea10b80f3bc762a5587e4e",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 141263628,
+                  "end_usec": 151263628,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 34,
+                  "completed_rapier_steps": 33,
+                  "rapier_steps_per_second": 3.3,
+                  "physical_gap_ms": {
+                    "count": 32,
+                    "max": 521.336,
+                    "p50": 323.9185,
+                    "p95": 351.7774,
+                    "p99": 469.0169900000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 32,
+                    "250": 24,
+                    "500": 1,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 141263628,
+                  "end_usec": 181216468,
+                  "duration_seconds": 39.95284,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.604249410054454,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 783.007,
+                    "p50": 279.628,
+                    "p95": 517.5897000000002,
+                    "p99": 763.64152
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 136,
+                    "250": 99,
+                    "500": 8,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 141263628,
+                  "end_usec": 181473077,
+                  "duration_seconds": 40.209449,
+                  "completed_native_ticks": 146,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 3.6061175570946022,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 783.007,
+                    "p50": 279.4015,
+                    "p95": 515.7165499999998,
+                    "p99": 763.5905799999999
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 137,
+                    "250": 99,
+                    "500": 8,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 1,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "4305c1fb18d056f855ab4d5afa7cd5bb59ddbd9dc25174eec2b740f99524b358",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 106,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "dda45d2a88ac13f7f3fcb3190ae4e0ee0df4595cdb79e0a31d4a6b601fa494f0",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 145836580,
+                  "end_usec": 155836580,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 35,
+                  "completed_rapier_steps": 34,
+                  "rapier_steps_per_second": 3.4,
+                  "physical_gap_ms": {
+                    "count": 33,
+                    "max": 576.213,
+                    "p50": 315.653,
+                    "p95": 376.3475999999999,
+                    "p99": 528.4069199999999
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 32,
+                    "250": 24,
+                    "500": 1,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 145836580,
+                  "end_usec": 184588799,
+                  "duration_seconds": 38.752219,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.7159162421124843,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 769.683,
+                    "p50": 275.904,
+                    "p95": 400.8796000000003,
+                    "p99": 670.505340000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 129,
+                    "250": 104,
+                    "500": 5,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 145836580,
+                  "end_usec": 184689795,
+                  "duration_seconds": 38.853215,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 3.731994894116227,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 769.683,
+                    "p50": 275.8665,
+                    "p95": 397.88039999999967,
+                    "p99": 668.8796099999988
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 130,
+                    "250": 104,
+                    "500": 5,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 2,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "75ba35f70f06d10fa7729a0a8fbc994872cebc17b4f8391c7f9a91f5e77ed2be",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 101,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "2fd4455cdea844d91d53b045bb48009ec2981db0e2b8ba7c37d4255a6de35017",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 139690321,
+                  "end_usec": 149690321,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 36,
+                  "completed_rapier_steps": 36,
+                  "rapier_steps_per_second": 3.6,
+                  "physical_gap_ms": {
+                    "count": 35,
+                    "max": 599.427,
+                    "p50": 293.38,
+                    "p95": 573.0236,
+                    "p99": 598.10202
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 33,
+                    "250": 23,
+                    "500": 3,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 139690321,
+                  "end_usec": 178255958,
+                  "duration_seconds": 38.565637,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.733893984429714,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 774.224,
+                    "p50": 274.495,
+                    "p95": 566.4965,
+                    "p99": 748.43928
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 128,
+                    "250": 95,
+                    "500": 10,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 139690321,
+                  "end_usec": 178256472,
+                  "duration_seconds": 38.566151,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.733844220026002,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 774.224,
+                    "p50": 274.495,
+                    "p95": 566.4965,
+                    "p99": 748.43928
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 128,
+                    "250": 95,
+                    "500": 10,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 3,
+              "arm": "D",
+              "source_role": "D",
+              "receipt_sha256": "6229c4c416a1d2a1edabbed1b5ccebdc37c7af632af2a8b95c59fd384aa0f221",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": false,
+                "historical_two_slot_scope": true,
+                "uploads_checked": 100,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+              "trace_sha256": "94c386d102a149470cf1b618dd6fb9fe0bc834a466525baf7c3ef6e2fc50076a",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 136919340,
+                  "end_usec": 146919340,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 37,
+                  "completed_rapier_steps": 37,
+                  "rapier_steps_per_second": 3.7,
+                  "physical_gap_ms": {
+                    "count": 36,
+                    "max": 566.371,
+                    "p50": 293.3375,
+                    "p95": 352.68325000000004,
+                    "p99": 492.1265499999997
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 36,
+                    "250": 23,
+                    "500": 1,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 136919340,
+                  "end_usec": 174216130,
+                  "duration_seconds": 37.29679,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.8609220793532097,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 654.208,
+                    "p50": 270.729,
+                    "p95": 354.0359,
+                    "p99": 581.9155800000003
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 136,
+                    "250": 97,
+                    "500": 3,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 136919340,
+                  "end_usec": 174471765,
+                  "duration_seconds": 37.552425,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 3.8612686131454894,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 654.208,
+                    "p50": 270.6685,
+                    "p95": 353.93185,
+                    "p99": 581.6475699999999
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 137,
+                    "250": 98,
+                    "500": 3,
+                    "1000": 0
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "slots-abba",
+      "original_summary_sha256": "e2a5374b35608fa6502957af7b033603ac22c2a6d9a8c12f048c0dd2ba71be6f",
+      "original_complete": false,
+      "original_failures": [
+        {
+          "case": "wave_gameplay_2048_follow",
+          "index": 1,
+          "treatment": {
+            "role": "C",
+            "slots": 3
+          },
+          "reason": "'extent'"
+        },
+        {
+          "case": "wave_gameplay_2048_follow",
+          "index": 2,
+          "treatment": {
+            "role": "C",
+            "slots": 3
+          },
+          "reason": "'extent'"
+        },
+        {
+          "case": "wave_gameplay_2048_follow",
+          "reason": "Incomplete or reordered registered comparison"
+        }
+      ],
+      "campaign_sha256": "b2c7019375a43c62f62efc5d33c628ad1662253948a0d69277484201df5cef8d",
+      "cases": [
+        {
+          "case": "wave_512_follow",
+          "registered_direction": {
+            "window": "first_144_steps",
+            "reference_role": "D",
+            "all_candidate_rates_higher": false,
+            "all_candidate_gap_quantiles_lower": {
+              "p95": false,
+              "p99": false
+            },
+            "all_candidate_max_gaps_within_worst_reference": false,
+            "all_candidate_severe_counts_within_worst_reference": {
+              "100": false,
+              "250": false,
+              "500": false,
+              "1000": true
+            },
+            "repeatable_direction": false,
+            "disposition": "NOT_ESTABLISHED"
+          },
+          "physical_outcome_parity": {
+            "arms": [
+              {
+                "arm": "D",
+                "index": 0,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 361,
+                  "attempted": 361,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 1,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 390,
+                  "attempted": 390,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 2,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 381,
+                  "attempted": 381,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "D",
+                "index": 3,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+                "body_sha256": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 353,
+                  "attempted": 353,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              }
+            ],
+            "pairs": [
+              {
+                "left_index": 0,
+                "right_index": 1,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 2,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 2,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 2,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              }
+            ],
+            "same_source_pair_count": 6,
+            "same_source_pairs_equal": true,
+            "disposition": "Same-source equal-step body and admitted-move outcomes agree; cross-source outcomes are disclosed, not assumed.",
+            "scope": "Different-source speed deltas are whole-source comparisons. Identical initial workload alone does not establish identical physical outcomes. Repeated input admission counts remain explicit and can differ with cadence."
+          },
+          "arms": [
+            {
+              "index": 0,
+              "arm": "D",
+              "source_role": "C",
+              "receipt_sha256": "077964a39e12e3f7cc0bcd1f0fef05f555c0476cc1874ad4ac0c6922eb703d9b",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 44,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "caf1855f26010da94b10e979c4466e460332dcd18133d20903fc378b04718a2b",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 58522695,
+                  "end_usec": 68522695,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 133,
+                  "completed_rapier_steps": 132,
+                  "rapier_steps_per_second": 13.2,
+                  "physical_gap_ms": {
+                    "count": 131,
+                    "max": 248.089,
+                    "p50": 6.939,
+                    "p95": 233.236,
+                    "p99": 241.91379999999995
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 42,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 58522695,
+                  "end_usec": 69109709,
+                  "duration_seconds": 10.587014,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 13.601568865404353,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 248.089,
+                    "p50": 6.888,
+                    "p95": 235.3264,
+                    "p99": 241.73482000000004
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 45,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 58522695,
+                  "end_usec": 69234596,
+                  "duration_seconds": 10.711901,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 13.442992051550888,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 248.089,
+                    "p50": 6.888,
+                    "p95": 235.3264,
+                    "p99": 241.73482000000004
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 45,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 1,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "e6b9de187308d66dd4d31bfad9239f598f4edd332453f78f2a531fccf2117022",
+              "slots": {
+                "requested_slots": 3,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 54,
+                "fixed_texture_ids": [
+                  -9223371564341262571,
+                  -9223371564307708236,
+                  -9223371564274145986
+                ],
+                "fixed_texture_rids": [
+                  84318797955332,
+                  84323092922630,
+                  84327387889927
+                ],
+                "logical_gpu_bytes": 1572864,
+                "registered_extent": [
+                  512,
+                  512
+                ],
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "7c7381d33e091b03d8af26e0fcfc030cd03d82c237ddf03fda692d0b84f2723e",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 59943505,
+                  "end_usec": 69943505,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 87,
+                  "completed_rapier_steps": 87,
+                  "rapier_steps_per_second": 8.7,
+                  "physical_gap_ms": {
+                    "count": 86,
+                    "max": 700.931,
+                    "p50": 8.05,
+                    "p95": 474.86424999999997,
+                    "p99": 687.8146500000001
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 28,
+                    "250": 15,
+                    "500": 2,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 59943505,
+                  "end_usec": 75802450,
+                  "duration_seconds": 15.858945,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 9.080049145766,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 700.931,
+                    "p50": 7.957,
+                    "p95": 470.8752,
+                    "p99": 691.9594600000001
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 48,
+                    "250": 21,
+                    "500": 3,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 59943505,
+                  "end_usec": 76003004,
+                  "duration_seconds": 16.059499,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 8.966655809125802,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 700.931,
+                    "p50": 7.957,
+                    "p95": 470.8752,
+                    "p99": 691.9594600000001
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 48,
+                    "250": 21,
+                    "500": 3,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 2,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "a604750c18f99d2be577817edbae6cf6cdfe7e40c9bf094ba911ea822b0d7238",
+              "slots": {
+                "requested_slots": 3,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 57,
+                "fixed_texture_ids": [
+                  -9223371564274153707,
+                  -9223371564240599372,
+                  -9223371564207044840
+                ],
+                "fixed_texture_rids": [
+                  84340272791812,
+                  84344567759110,
+                  84348862726407
+                ],
+                "logical_gpu_bytes": 1572864,
+                "registered_extent": [
+                  512,
+                  512
+                ],
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "5eb83f18fc5ed497f052dc39c166b25cfe4677344a627c544388b19454ea5984",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 59611374,
+                  "end_usec": 69611374,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 90,
+                  "completed_rapier_steps": 89,
+                  "rapier_steps_per_second": 8.9,
+                  "physical_gap_ms": {
+                    "count": 88,
+                    "max": 702.398,
+                    "p50": 9.725000000000001,
+                    "p95": 455.085,
+                    "p99": 680.6253799999998
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 33,
+                    "250": 13,
+                    "500": 3,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 59611374,
+                  "end_usec": 75497197,
+                  "duration_seconds": 15.885823,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 9.064686167030818,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 709.374,
+                    "p50": 8.388,
+                    "p95": 455.44,
+                    "p99": 691.8870800000003
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 52,
+                    "250": 21,
+                    "500": 4,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 59611374,
+                  "end_usec": 75509236,
+                  "duration_seconds": 15.897862,
+                  "completed_native_ticks": 146,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 9.120723277129969,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 709.374,
+                    "p50": 8.307500000000001,
+                    "p95": 455.36899999999997,
+                    "p99": 691.6368199999998
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 52,
+                    "250": 21,
+                    "500": 4,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 3,
+              "arm": "D",
+              "source_role": "C",
+              "receipt_sha256": "a1faa55f17c903e77110abb089e07da3dfca5d3364ba13b88a2d579336e38c16",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 43,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "50d056dd1588d52a9ce6b4baea252a00c3766c3a2b8251aa749a3ec73ffd4093",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 54557335,
+                  "end_usec": 64557335,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 138,
+                  "completed_rapier_steps": 137,
+                  "rapier_steps_per_second": 13.7,
+                  "physical_gap_ms": {
+                    "count": 136,
+                    "max": 248.607,
+                    "p50": 6.721,
+                    "p95": 239.12025,
+                    "p99": 243.10515
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 42,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 54557335,
+                  "end_usec": 65018827,
+                  "duration_seconds": 10.461492,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 13.764767014112328,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 248.607,
+                    "p50": 6.739,
+                    "p95": 239.0815,
+                    "p99": 243.04838
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 44,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 54557335,
+                  "end_usec": 65200100,
+                  "duration_seconds": 10.642765,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 145,
+                  "rapier_steps_per_second": 13.624279028992934,
+                  "physical_gap_ms": {
+                    "count": 144,
+                    "max": 248.607,
+                    "p50": 6.743,
+                    "p95": 239.07725,
+                    "p99": 243.04027
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 45,
+                    "250": 0,
+                    "500": 0,
+                    "1000": 0
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "case": "wave_gameplay_2048_follow",
+          "registered_direction": {
+            "window": "first_144_steps",
+            "reference_role": "D",
+            "all_candidate_rates_higher": false,
+            "all_candidate_gap_quantiles_lower": {
+              "p95": false,
+              "p99": false
+            },
+            "all_candidate_max_gaps_within_worst_reference": false,
+            "all_candidate_severe_counts_within_worst_reference": {
+              "100": true,
+              "250": true,
+              "500": false,
+              "1000": true
+            },
+            "repeatable_direction": false,
+            "disposition": "NOT_ESTABLISHED"
+          },
+          "physical_outcome_parity": {
+            "arms": [
+              {
+                "arm": "D",
+                "index": 0,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 843,
+                  "attempted": 843,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 1,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 904,
+                  "attempted": 904,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "C",
+                "index": 2,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 888,
+                  "attempted": 888,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              },
+              {
+                "arm": "D",
+                "index": 3,
+                "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+                "water_law": "wave_flow_v1",
+                "water_profile": "gameplay_main846f",
+                "body_sha256": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+                "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+                "command_counts": {
+                  "accepted": 939,
+                  "attempted": 939,
+                  "rejected": 0
+                },
+                "command_mode": "repeated_callback"
+              }
+            ],
+            "pairs": [
+              {
+                "left_index": 0,
+                "right_index": 1,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 2,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 0,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 2,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 1,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              },
+              {
+                "left_index": 2,
+                "right_index": 3,
+                "same_source": true,
+                "bodies_equal": true,
+                "admitted_moves_equal": true
+              }
+            ],
+            "same_source_pair_count": 6,
+            "same_source_pairs_equal": true,
+            "disposition": "Same-source equal-step body and admitted-move outcomes agree; cross-source outcomes are disclosed, not assumed.",
+            "scope": "Different-source speed deltas are whole-source comparisons. Identical initial workload alone does not establish identical physical outcomes. Repeated input admission counts remain explicit and can differ with cadence."
+          },
+          "arms": [
+            {
+              "index": 0,
+              "arm": "D",
+              "source_role": "C",
+              "receipt_sha256": "8255a486e37342ba181126b3329110a603bca430a7e70bc37cc66ebc3a0e0ac0",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 97,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "5ba64cab51dba9b529c7478a89fbf4b26be811979e99c658df53f2c764118806",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 140049290,
+                  "end_usec": 150049290,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 36,
+                  "completed_rapier_steps": 36,
+                  "rapier_steps_per_second": 3.6,
+                  "physical_gap_ms": {
+                    "count": 35,
+                    "max": 828.299,
+                    "p50": 292.121,
+                    "p95": 542.6101,
+                    "p99": 733.415539999999
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 32,
+                    "250": 21,
+                    "500": 3,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 140049290,
+                  "end_usec": 176080196,
+                  "duration_seconds": 36.030906,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.9965689455602362,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 828.299,
+                    "p50": 269.421,
+                    "p95": 352.2921000000001,
+                    "p99": 689.4799200000018
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 126,
+                    "250": 87,
+                    "500": 6,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 140049290,
+                  "end_usec": 176090830,
+                  "duration_seconds": 36.04154,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.995389764144374,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 828.299,
+                    "p50": 269.421,
+                    "p95": 352.2921000000001,
+                    "p99": 689.4799200000018
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 126,
+                    "250": 87,
+                    "500": 6,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 1,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "4c742a018d008c18dd8e1364290ab883ccb9aa10acd4a15d11118d7467fd3789",
+              "slots": {
+                "requested_slots": 3,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 102,
+                "fixed_texture_ids": [
+                  -9223371627406814505,
+                  -9223371627373263084,
+                  -9223371627339708653
+                ],
+                "fixed_texture_rids": [
+                  83416854823038,
+                  83421149790468,
+                  83425444757765
+                ],
+                "logical_gpu_bytes": 25165824,
+                "registered_extent": [
+                  2048,
+                  2048
+                ],
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "7d805a67d308bba3aec413492a6e6d7ad1774d51bd9fb93a8ee0979cff42fe12",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 145370439,
+                  "end_usec": 155370439,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 29,
+                  "completed_rapier_steps": 28,
+                  "rapier_steps_per_second": 2.8,
+                  "physical_gap_ms": {
+                    "count": 27,
+                    "max": 825.802,
+                    "p50": 304.717,
+                    "p95": 729.7463999999999,
+                    "p99": 814.73978
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 27,
+                    "250": 21,
+                    "500": 5,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 145370439,
+                  "end_usec": 190836451,
+                  "duration_seconds": 45.466012,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.1672010291995703,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 852.443,
+                    "p50": 292.754,
+                    "p95": 755.9529000000001,
+                    "p99": 834.2874000000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 124,
+                    "250": 99,
+                    "500": 22,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 145370439,
+                  "end_usec": 190864094,
+                  "duration_seconds": 45.493655,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.1652765643912324,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 852.443,
+                    "p50": 292.754,
+                    "p95": 755.9529000000001,
+                    "p99": 834.2874000000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 124,
+                    "250": 99,
+                    "500": 22,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 2,
+              "arm": "C",
+              "source_role": "C",
+              "receipt_sha256": "d1e6dfd31522894a3012f1a80398c6ffd698f3c95e80229263a8a8522ea9e869",
+              "slots": {
+                "requested_slots": 3,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 96,
+                "fixed_texture_ids": [
+                  -9223371650257382697,
+                  -9223371650190276845,
+                  -9223371650156722414
+                ],
+                "fixed_texture_rids": [
+                  83421149790334,
+                  83425444757764,
+                  83429739725061
+                ],
+                "logical_gpu_bytes": 25165824,
+                "registered_extent": [
+                  2048,
+                  2048
+                ],
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "89f67ac2c57744f4981fe2428b912cdfbe507d2621fc10cc67de485765c9fe0b",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 132659933,
+                  "end_usec": 142659933,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 28,
+                  "completed_rapier_steps": 27,
+                  "rapier_steps_per_second": 2.7,
+                  "physical_gap_ms": {
+                    "count": 26,
+                    "max": 846.886,
+                    "p50": 320.124,
+                    "p95": 834.703,
+                    "p99": 844.40575
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 25,
+                    "250": 20,
+                    "500": 6,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 132659933,
+                  "end_usec": 175821497,
+                  "duration_seconds": 43.161564,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.3363017151093044,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 846.886,
+                    "p50": 292.868,
+                    "p95": 770.7806000000002,
+                    "p99": 833.6163400000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 126,
+                    "250": 91,
+                    "500": 20,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 132659933,
+                  "end_usec": 175824763,
+                  "duration_seconds": 43.16483,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.336049279007933,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 846.886,
+                    "p50": 292.868,
+                    "p95": 770.7806000000002,
+                    "p99": 833.6163400000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 126,
+                    "250": 91,
+                    "500": 20,
+                    "1000": 0
+                  }
+                }
+              }
+            },
+            {
+              "index": 3,
+              "arm": "D",
+              "source_role": "C",
+              "receipt_sha256": "1b1ca0dea4254da06d14307c257f844a9c15e367df475ebb650818296a46ca6b",
+              "slots": {
+                "requested_slots": 2,
+                "effective_slots_verified": true,
+                "historical_two_slot_scope": false,
+                "uploads_checked": 101,
+                "fixed_texture_ids": null,
+                "fixed_texture_rids": null,
+                "logical_gpu_bytes": null,
+                "registered_extent": null,
+                "scope": "Fixed logical allocation/roles and requested/effective treatment, not GPU residency or fence proof."
+              },
+              "source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "trace_sha256": "ccadf5195a4217dde893f11883f62132ca05604f7627b546e742d291958ae118",
+              "windows": {
+                "first_10s": {
+                  "start_usec": 134115144,
+                  "end_usec": 144115144,
+                  "duration_seconds": 10.0,
+                  "completed_native_ticks": 31,
+                  "completed_rapier_steps": 31,
+                  "rapier_steps_per_second": 3.1,
+                  "physical_gap_ms": {
+                    "count": 30,
+                    "max": 804.022,
+                    "p50": 299.4605,
+                    "p95": 548.705,
+                    "p99": 740.4044100000002
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 29,
+                    "250": 21,
+                    "500": 3,
+                    "1000": 0
+                  }
+                },
+                "first_144_steps": {
+                  "start_usec": 134115144,
+                  "end_usec": 175507429,
+                  "duration_seconds": 41.392285,
+                  "completed_native_ticks": 144,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.4789091735331836,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 804.574,
+                    "p50": 275.977,
+                    "p95": 577.9792000000003,
+                    "p99": 800.4289000000001
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 126,
+                    "250": 102,
+                    "500": 11,
+                    "1000": 0
+                  }
+                },
+                "whole_capture": {
+                  "start_usec": 134115144,
+                  "end_usec": 175535598,
+                  "duration_seconds": 41.420454,
+                  "completed_native_ticks": 145,
+                  "completed_rapier_steps": 144,
+                  "rapier_steps_per_second": 3.476543255658183,
+                  "physical_gap_ms": {
+                    "count": 143,
+                    "max": 804.574,
+                    "p50": 275.977,
+                    "p95": 577.9792000000003,
+                    "p99": 800.4289000000001
+                  },
+                  "physical_gap_counts_above_ms": {
+                    "100": 126,
+                    "250": 102,
+                    "500": 11,
+                    "1000": 0
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "evaluator_runtime_extraction": {
+    "receipt_sha256": "645703e03194548753e2eda1ab510fa21758063c62fe1d55b382758c0a0b9c2a",
+    "schema": "pubpres-retained-evaluator-replay-runtime-v1",
+    "artifact_id": 14944745334,
+    "artifact_sha256": "83974b52656d0b20359ada9b057b49c7dcab7fce7724a68a76bf169c8557b190",
+    "inner_archive_sha256": "e586ea69254249da61e09658c7c13a4409a0efe49d983c920cab91d6d5395b07",
+    "inner_archive_metadata": {
+      "archive_bytes": 259271421,
+      "archive_sha256": "e586ea69254249da61e09658c7c13a4409a0efe49d983c920cab91d6d5395b07",
+      "candidate_commit": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+      "manifest_sha256": "3ab9e43c63372f74b5c3bb335bf29fd5f06a5d5564b595aa0031fca0a8bec5e0",
+      "physical_acceptance": "HOLD",
+      "schema": "pubpres-playability-final-windows-v1"
+    },
+    "inner_all_zip_crcs_passed": true,
+    "selected_runtime_files": [
+      {
+        "member": "Godot_v4.7-stable_win64.exe",
+        "file": "Godot_v4.7-stable_win64.exe",
+        "bytes": 178485256,
+        "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+      },
+      {
+        "member": "Godot_v4.7-stable_win64_console.exe",
+        "file": "Godot_v4.7-stable_win64_console.exe",
+        "bytes": 198152,
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+      },
+      {
+        "member": "sources/C/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "file": "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "bytes": 9987072,
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      {
+        "member": "sources/D/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "file": "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "bytes": 9987072,
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      }
+    ],
+    "scope": "Exact retained stock engine and Rapier bytes for read-only historical evidence replay; failed evaluator remains unqualified."
+  }
+}

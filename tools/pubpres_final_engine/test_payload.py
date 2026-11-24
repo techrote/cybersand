@@ -126,6 +126,81 @@ class PayloadTests(unittest.TestCase):
         self.assertEqual(payload.normalized_patch(simple), payload.normalized_patch(decorated))
         self.assertNotEqual(payload.normalized_patch(simple), payload.normalized_patch(decorated.replace(b"+new", b"+wrong")))
 
+    def windows_patch(self):
+        path = contract.ROOT / "docs/audits/2026-11-24-pubpres-playability-final/font-engine-combined-source-lines.json"
+        fixture = json.loads(path.read_bytes())
+        data = ("\n".join(fixture["lines"]) + "\n").encode("utf-8")
+        expected = "3dd0d224ad0a0a4187bfbc71fad3bf7c3030f0601b76284f0ff64d0cb38f229e"
+        self.assertEqual(fixture["sha256"], expected)
+        self.assertEqual(contract.sha(data), expected)
+        return data
+
+    def test_actual_windows_patch_has_exact_same_ordered_edits(self):
+        # Immutable textual patch from source c2f8a73d / run45452580606 attempt1.
+        # Four identical braces receive different context alignment in Git's
+        # combined diff; all coordinates and replacement bytes remain exact.
+        path = self.folder / "engine-source.patch"
+        declared = path.read_bytes()
+        actual = self.windows_patch()
+        self.assertNotEqual(actual, declared)
+        canonical = payload.normalized_patch(actual)
+        self.assertEqual(canonical, payload.normalized_patch(declared))
+        records = json.loads(canonical)
+        self.assertEqual([len(record["edits"]) for record in records], [1, 5, 5])
+        self.assertEqual([edit["old_line"] for edit in records[1]["edits"]], [3402, 3807, 3857, 4333, 4472])
+        self.assertEqual([edit["old_line"] for edit in records[2]["edits"]], [2105, 2496, 2546, 2975, 3114])
+        path.write_bytes(actual)
+        self.proof["combined_patch"] = payload.file_record(path)
+        self.refresh()
+        self.assertTrue(self.verify()["complete"])
+
+    def test_rehashed_windows_changed_line_coordinate_and_extra_edit_are_refused(self):
+        actual = self.windows_patch()
+        path = self.folder / "engine-source.patch"
+        mutations = {
+            "changed insertion": actual.replace(b"+\t\t\t\timg = tex.image->duplicate();", b"+\t\t\t\timg = tex.image;", 1),
+            "changed insertion whitespace": actual.replace(b"+\tcurrent_window = nullptr;", b"+ current_window = nullptr;", 1),
+            "moved edit": actual.replace(b"@@ -350,6 +350,9", b"@@ -351,6 +351,9", 1),
+            "inconsistent new position": actual.replace(b"@@ -350,6 +350,9", b"@@ -350,6 +351,9", 1),
+            "additional edit": actual + b"@@ -4000,1 +4025,1 @@\n-old\n+new\n",
+            "modified file closure": actual.replace(b"text_server_fb/text_server_fb.cpp", b"text_server_fb/other.cpp"),
+        }
+        for label, changed in mutations.items():
+            with self.subTest(label=label):
+                self.assertNotEqual(changed, actual)
+                path.write_bytes(changed)
+                self.proof["combined_patch"] = payload.file_record(path)
+                self.refresh()
+                with self.assertRaises(ValueError): self.verify()
+
+    def test_windows_patch_malformed_or_noncanonical_structure_is_refused(self):
+        actual = self.windows_patch()
+        first_file = actual.split(b"diff --git a/modules/text_server_adv/", 1)[0]
+        malformed = {
+            "wrong count": actual.replace(b"@@ -350,6 +350,9", b"@@ -350,7 +350,9", 1),
+            "mode": actual.replace(b"100644", b"100755", 1),
+            "rename": actual.replace(b"b/drivers/egl/egl_manager.cpp", b"b/drivers/egl/other.cpp", 1),
+            "repeated file": actual + first_file,
+            "empty added hunk": actual + b"@@ -4000,1 +4025,1 @@\n same\n",
+            "no-op replacement": actual + b"@@ -4000,1 +4025,1 @@\n-same\n+same\n",
+            "extra body line": actual + b"+undeclared\n",
+            "truncated": actual[:-1],
+            "carriage return": actual.replace(b"\n", b"\r\n"),
+            "binary metadata": actual + b"GIT binary patch\n",
+            "invalid utf8": actual.replace(b"current_window", b"\xffwindow", 1),
+        }
+        for label, changed in malformed.items():
+            with self.subTest(label=label), self.assertRaises(ValueError):
+                payload.normalized_patch(changed)
+
+    def test_replacement_removed_bytes_and_hunk_order_are_exact(self):
+        first = b"--- a/one.cpp\n+++ b/one.cpp\n@@ -1,2 +1,2 @@\n-old\n+new\n context\n"
+        self.assertNotEqual(payload.normalized_patch(first), payload.normalized_patch(first.replace(b"-old", b"-other")))
+        ordered = first + b"@@ -8,1 +8,1 @@\n-old2\n+new2\n"
+        reversed_hunks = b"--- a/one.cpp\n+++ b/one.cpp\n@@ -8,1 +8,1 @@\n-old2\n+new2\n@@ -1,2 +1,2 @@\n-old\n+new\n context\n"
+        self.assertEqual(len(json.loads(payload.normalized_patch(ordered))[0]["edits"]), 2)
+        with self.assertRaises(ValueError): payload.normalized_patch(reversed_hunks)
+
 
 if __name__ == "__main__":
     unittest.main()

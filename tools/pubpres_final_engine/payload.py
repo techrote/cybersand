@@ -82,22 +82,84 @@ def expected_inputs(root: Path, source: str) -> dict:
 
 
 def normalized_patch(data: bytes) -> str:
-    """Ignore only Git's blob/index and function-label decoration, not hunks."""
-    lines = data.decode("utf-8").splitlines()
-    result = []
-    for index, line in enumerate(lines):
-        if line.startswith("index "):
-            need(re.fullmatch(r"index [0-9a-f]+\.\.[0-9a-f]+ 100644", line), "Unexpected patch mode/index")
-            continue
-        if line.startswith("--- a/") and (not result or not result[-1].startswith("diff --git ")):
-            name = line[len("--- a/"):]
-            result.append("diff --git a/" + name + " b/" + name)
-        if line.startswith("@@ "):
-            match = re.match(r"(@@ -\d+(?:,\d+)? \+\d+(?:,\d+)? @@)(?:.*)$", line)
-            need(match is not None, "Invalid patch hunk")
-            line = match.group(1)
-        result.append(line)
-    return "\n".join(result) + "\n"
+    """Return exact ordered edits, allowing only unchanged context alignment.
+
+    Git can match an identical closing brace on either side of an insertion.
+    Reconstruct both complete hunk line vectors before trimming their common
+    prefix/suffix; the resulting old/new coordinates and replacement bytes
+    must still match. No whitespace, changed line, mode, path or edit is ignored.
+    Only the registered regular-file, LF unified-diff representation is admitted.
+    """
+    need(isinstance(data, bytes) and 0 < len(data) < 1024 * 1024
+         and data.endswith(b"\n") and b"\r" not in data and b"\0" not in data,
+         "Invalid combined patch encoding or size")
+    try:
+        lines = data.decode("utf-8").split("\n")[:-1]
+    except UnicodeDecodeError as error:
+        raise ValueError("Combined patch is not UTF-8") from error
+    result, seen, cursor = [], set(), 0
+    path_pattern = r"[A-Za-z0-9_.\-/]+"
+    hunk_pattern = re.compile(r"@@ -([1-9][0-9]*)(?:,([1-9][0-9]*))? "
+                              r"\+([1-9][0-9]*)(?:,([1-9][0-9]*))? @@(?:[ \t].*)?")
+    while cursor < len(lines):
+        decorated_path = None
+        if lines[cursor].startswith("diff --git "):
+            match = re.fullmatch(r"diff --git a/(" + path_pattern + r") b/(" + path_pattern + r")", lines[cursor])
+            need(match is not None and match[1] == match[2], "Unexpected combined patch rename/header")
+            decorated_path = match[1]
+            cursor += 1
+            if cursor < len(lines) and lines[cursor].startswith("index "):
+                need(re.fullmatch(r"index [0-9a-f]{6,40}\.\.[0-9a-f]{6,40} 100644", lines[cursor]),
+                     "Unexpected patch mode/index")
+                cursor += 1
+        need(cursor + 1 < len(lines), "Truncated combined patch file header")
+        old_header = re.fullmatch(r"--- a/(" + path_pattern + r")", lines[cursor])
+        new_header = re.fullmatch(r"\+\+\+ b/(" + path_pattern + r")", lines[cursor + 1])
+        need(old_header is not None and new_header is not None and old_header[1] == new_header[1],
+             "Unexpected combined patch file header")
+        name = old_header[1]
+        need(not name.startswith("/") and all(part not in ("", ".", "..") for part in name.split("/"))
+             and (decorated_path is None or decorated_path == name) and name not in seen,
+             "Duplicate, aliased or mismatched combined patch path")
+        seen.add(name)
+        cursor += 2
+        edits, previous_old_end, previous_new_end, delta = [], 0, 0, 0
+        while cursor < len(lines) and lines[cursor].startswith("@@"):
+            hunk = hunk_pattern.fullmatch(lines[cursor])
+            need(hunk is not None, "Invalid patch hunk")
+            old_start, old_count = int(hunk[1]), int(hunk[2] or "1")
+            new_start, new_count = int(hunk[3]), int(hunk[4] or "1")
+            need(old_start >= previous_old_end and new_start >= previous_new_end
+                 and new_start - old_start == delta, "Overlapping, reordered or inconsistent patch hunk coordinates")
+            cursor += 1
+            old_lines, new_lines = [], []
+            while len(old_lines) < old_count or len(new_lines) < new_count:
+                need(cursor < len(lines) and lines[cursor] and lines[cursor][0] in " +-",
+                     "Truncated or malformed patch hunk body")
+                line = lines[cursor]
+                cursor += 1
+                if line[0] in " -":
+                    old_lines.append(line[1:])
+                if line[0] in " +":
+                    new_lines.append(line[1:])
+                need(len(old_lines) <= old_count and len(new_lines) <= new_count,
+                     "Patch hunk line counts differ")
+            prefix = 0
+            while prefix < min(old_count, new_count) and old_lines[prefix] == new_lines[prefix]:
+                prefix += 1
+            old_end, new_end = old_count, new_count
+            while old_end > prefix and new_end > prefix and old_lines[old_end - 1] == new_lines[new_end - 1]:
+                old_end -= 1
+                new_end -= 1
+            removed, added = old_lines[prefix:old_end], new_lines[prefix:new_end]
+            need(removed or added, "Empty/no-op patch hunk is not registered")
+            edits.append({"old_line": old_start + prefix, "new_line": new_start + prefix,
+                          "removed": removed, "added": added})
+            previous_old_end, previous_new_end = old_start + old_count, new_start + new_count
+            delta += new_count - old_count
+        need(edits, "Combined patch file has no declared edit")
+        result.append({"path": name, "mode": "100644", "edits": edits})
+    return json.dumps(result, ensure_ascii=False, separators=(",", ":"))
 
 
 def validate_proof(proof: dict, *, build_source: str, build_run: int, build_attempt: int,

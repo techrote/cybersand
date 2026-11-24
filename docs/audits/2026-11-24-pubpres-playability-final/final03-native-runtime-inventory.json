@@ -1,0 +1,150 @@
+{
+  "schema": "pubpres-final-exact-runtime-inventory-v1",
+  "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "source_tree": "351b947a50ce054361660eba9379006122527547",
+  "workflow_run": 45452580606,
+  "workflow_conclusion": "IN_PROGRESS",
+  "physical_acceptance": "HOLD",
+  "offline_reader": {
+    "frozen_file_sha256": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+    "frozen_function_sha256": "d3105e0376bdff5929625c55a7dcbe6962f4d6cf3e38326807baff411357ca69",
+    "derived_function_sha256": "66259c126c4548e85b7781858e9854c3ced8b76c048fd80698d8ee281e4a6bc4",
+    "changes": "Explicit recorded target replaces exactly three execution-host platform selections; signature and error label identify offline replay. Every source/tree, native closure, binary, build log, toolchain and dependency predicate is retained.",
+    "scope": "Read-only artifact custody. No binary execution, runtime admission on this host, historical workflow rewrite or new gameplay qualification."
+  },
+  "runtimes": [
+    {
+      "platform": "linux",
+      "artifact": {
+        "id": 14949072910,
+        "name": "pubpres-final-runtime-linux-45452580606-1",
+        "size_in_bytes": 4176101,
+        "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14949072910",
+        "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14949072910/zip",
+        "expired": false,
+        "created_at": "2026-11-24T17:57:32Z",
+        "expires_at": "2027-02-22T17:48:19Z",
+        "updated_at": "2026-11-24T17:57:32Z",
+        "digest": "sha256:b7f6aa0b7310e41b2e3a726e79edc1e75518e781f8316fb413825f8e49cee1d9",
+        "workflow_run": {
+          "id": 45452580606,
+          "repository_id": 1350077435,
+          "head_repository_id": 1350077435,
+          "head_branch": "codex/pubpres-playability-final-001-20261124",
+          "head_sha": "c2f8a73d34448bc1496ecd84bca02f0812c80d27"
+        }
+      },
+      "archive_sha256": "b7f6aa0b7310e41b2e3a726e79edc1e75518e781f8316fb413825f8e49cee1d9",
+      "archive_bytes": 4176101,
+      "arms": {
+        "D": {
+          "manifest_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/linux/payload/D/PUBPRES-RUNTIME.json",
+          "manifest_sha256": "7586a3e075c755f84c2b00c24a4955777b8cfa2e3d415796e8b504c8b6eae7ec",
+          "binary_sha256": "bc5cdbf4832d09f8b14f6ff2ed7cf1e182343d55a3a4ebc4dc1d93894d660d59",
+          "binary_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/linux/payload/D/libcybersand_native.linux.x86_64.so",
+          "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "checked_source_files": 105,
+          "build_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+          "source_inputs_sha256": "12c9df66fb0e58feee45ab3b676c6fc1d36b1fb62a92befb8b9326ba068b2b5c",
+          "dependency_builder_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+          "toolchain": {
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+            "godot_cpp_dependency_sha256": "71b11ee112fbbcb2cca13ef5d8e2235b5252f46eac42b512980ac1d80a8b6b6b",
+            "compiler_command": "/usr/bin/g++-13",
+            "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+            "toolchain_drift_allowed": false
+          },
+          "experimental_build": true
+        },
+        "C": {
+          "manifest_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/linux/payload/C/PUBPRES-RUNTIME.json",
+          "manifest_sha256": "648a1cb170b900a6c8d389af28d8e61f06a145a052e772e8be2749cbca585ceb",
+          "binary_sha256": "33d9c39ecfca71c800f538dbf3edbbb85675c0c65be35d6af525f699b7d15dc0",
+          "binary_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/linux/payload/C/libcybersand_native.linux.x86_64.so",
+          "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "checked_source_files": 105,
+          "build_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+          "source_inputs_sha256": "f9e70189fb5bee48105b75447c1530692ad8a59daf04a0e4870e8ed6996f2754",
+          "dependency_builder_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+          "toolchain": {
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+            "godot_cpp_dependency_sha256": "71b11ee112fbbcb2cca13ef5d8e2235b5252f46eac42b512980ac1d80a8b6b6b",
+            "compiler_command": "/usr/bin/g++-13",
+            "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+            "toolchain_drift_allowed": false
+          },
+          "experimental_build": true
+        }
+      }
+    },
+    {
+      "platform": "windows",
+      "artifact": {
+        "id": 14949381822,
+        "name": "pubpres-final-runtime-windows-45452580606-1",
+        "size_in_bytes": 4444574,
+        "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14949381822",
+        "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14949381822/zip",
+        "expired": false,
+        "created_at": "2026-11-24T17:53:59Z",
+        "expires_at": "2027-02-22T17:48:19Z",
+        "updated_at": "2026-11-24T17:53:59Z",
+        "digest": "sha256:0669d547096b8c5cc8e1b96acff4f0fc0f5de944f0fa9044b359be77651be75c",
+        "workflow_run": {
+          "id": 45452580606,
+          "repository_id": 1350077435,
+          "head_repository_id": 1350077435,
+          "head_branch": "codex/pubpres-playability-final-001-20261124",
+          "head_sha": "c2f8a73d34448bc1496ecd84bca02f0812c80d27"
+        }
+      },
+      "archive_sha256": "0669d547096b8c5cc8e1b96acff4f0fc0f5de944f0fa9044b359be77651be75c",
+      "archive_bytes": 4444574,
+      "arms": {
+        "D": {
+          "manifest_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/windows/payload/D/PUBPRES-RUNTIME.json",
+          "manifest_sha256": "cfe7a10bd6a2446e4f8a17931fc977ddcf98297eafc129e339c6e7fde9e7b409",
+          "binary_sha256": "505c766c6003b9d7c1e3acdee9331527210ba09a149a1588de32bf877ee3bb40",
+          "binary_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/windows/payload/D/cybersand_native.windows.x86_64.dll",
+          "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "checked_source_files": 105,
+          "build_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+          "source_inputs_sha256": "12c9df66fb0e58feee45ab3b676c6fc1d36b1fb62a92befb8b9326ba068b2b5c",
+          "dependency_builder_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+          "toolchain": {
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_cpp_library_sha256": "322cf928ff595d02b86845813f0ebebd1de07041393f36f90b3a98fc811196c9",
+            "godot_cpp_dependency_sha256": "c4df34a516b645985b5c65f5167d0221bf3b187b13f19cfff96b7a1453c669f2",
+            "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+            "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+            "toolchain_drift_allowed": false
+          },
+          "experimental_build": true
+        },
+        "C": {
+          "manifest_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/windows/payload/C/PUBPRES-RUNTIME.json",
+          "manifest_sha256": "f1d8e97e923eb8c03a9ae3592bd9a45b2784ca70eee2cdd15e0a85cd63f51be1",
+          "binary_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+          "binary_path": "/workspace/scratch/0b2a9bdf7883/evidence-root/final-03/windows/payload/C/cybersand_native.windows.x86_64.dll",
+          "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "checked_source_files": 105,
+          "build_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+          "source_inputs_sha256": "f9e70189fb5bee48105b75447c1530692ad8a59daf04a0e4870e8ed6996f2754",
+          "dependency_builder_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+          "toolchain": {
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_cpp_library_sha256": "322cf928ff595d02b86845813f0ebebd1de07041393f36f90b3a98fc811196c9",
+            "godot_cpp_dependency_sha256": "c4df34a516b645985b5c65f5167d0221bf3b187b13f19cfff96b7a1453c669f2",
+            "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+            "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+            "toolchain_drift_allowed": false
+          },
+          "experimental_build": true
+        }
+      }
+    }
+  ],
+  "verification_at": "2026-11-24T18:11:42.200858+00:00"
+}

@@ -1,0 +1,323 @@
+{
+  "schema": "pubpres-final03-evaluator-independent-peer-review-v1",
+  "complete": true,
+  "application_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "application_tree": "351b947a50ce054361660eba9379006122527547",
+  "package_manifest_sha256": "0288861763665cd40f2b3c950536d5aa3ccb6ffa2ad60420b6e2b7b230b56abe",
+  "engine": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "console": {
+      "path": "Godot_v4.7-stable_win64_console.exe",
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    "gui": {
+      "path": "Godot_v4.7-stable_win64.exe",
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    "vc_runtime_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "sources": {
+    "C": {
+      "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "D": {
+      "source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "native_sha256": "505c766c6003b9d7c1e3acdee9331527210ba09a149a1588de32bf877ee3bb40",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "launches": [
+    {
+      "label": "ordinary-open",
+      "source": "C",
+      "scene": "ordinary",
+      "pid": 1028,
+      "native_tick": 0,
+      "startup_sha256": "4155a9f847500030f45dfe48775a5b7670f2a63f9432ecb216bb2d431e152cf8",
+      "process_sha256": "aee968b7a2b152e2da3dc8027d1ddf375a0fae184acfd0b882adc58c1cd7ed7c",
+      "run_sha256": "3d1d907ae928f6dfa90e56b65cc83e8d2345a3e28f7cdfc082f407376b9f3161",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "ordinary-reopen",
+      "source": "C",
+      "scene": "ordinary",
+      "pid": 5936,
+      "native_tick": 0,
+      "startup_sha256": "dc03bd7304e1a0dbc003f4bafe3a7183441072eaac6061b57e1856cbf9ee2107",
+      "process_sha256": "d1354f5dc8cd3a1932b054b1f0e5ff93d22703daf254597d5affa1204753e792",
+      "run_sha256": "3d1d907ae928f6dfa90e56b65cc83e8d2345a3e28f7cdfc082f407376b9f3161",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "mixed2048",
+      "source": "C",
+      "scene": "mixed2048",
+      "pid": 4412,
+      "native_tick": 0,
+      "startup_sha256": "925b3b1f0a864669bd171c63ac59968716fe520bba214a69cf4248981e468d48",
+      "process_sha256": "bc9d384b1af9dc77fff9a8c694d996518e473f5b686934d5be318de4ebed7228",
+      "run_sha256": "526a96f0c83d317c20df4297d29c6d534435b761ee2a6dd522f6fe564c58a112",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "wave1024",
+      "source": "C",
+      "scene": "wave1024",
+      "pid": 2604,
+      "native_tick": 0,
+      "startup_sha256": "b949558608fb350d2b58d7f1c6b8855ac5107ec185c9002d7ed1612886ceab10",
+      "process_sha256": "f31608aad41c423899dccc35daf1bab43087e13a39e8fa5e9b38530907c8968e",
+      "run_sha256": "c6a47c1cf04e0838beadcd8436102c70524d781c14206420948a2f62d35af692",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "wave2048",
+      "source": "C",
+      "scene": "wave2048",
+      "pid": 1276,
+      "native_tick": 0,
+      "startup_sha256": "ba8011ee53fb3bfe88b0df4b7aec2d194e648db368efbe7c03786d08becced60",
+      "process_sha256": "42c744bffc7c160d8aa828405b5317ec9cfe3ae3a82330f232a0c75e7fa0317b",
+      "run_sha256": "11da8e5b9366f09023e2af543d874b1d78f27620865384efbcba49ef208ea64c",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "wave512",
+      "source": "C",
+      "scene": "wave512",
+      "pid": 4416,
+      "native_tick": 0,
+      "startup_sha256": "46824f9766f3070ca0143ce042494f685878882a504db1de40c3f8acd70a7893",
+      "process_sha256": "d31a583fbc8247d7863306c29743246d84d8bdf761521d18456794006ef82059",
+      "run_sha256": "e09311f3e72cb9061b3f2816d03e6a73e7897a6bedcfe789cb04a1aa9663827c",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "donor-ordinary-open",
+      "source": "D",
+      "scene": "ordinary",
+      "pid": 5736,
+      "native_tick": 0,
+      "startup_sha256": "72a93a90cb1f92c019cbc0387cb2da2ecd4e141b67abc185cb87ca1d939c6f10",
+      "process_sha256": "dae004c03978b09ac04dee4ba8d734c3813a46384507b0fc7577c158151b1eb7",
+      "run_sha256": "1488d18ab3af3019f33a32881be3daba770acfdb726d74573386e79c1f2e845d",
+      "source_files": 1231,
+      "native_sha256": "505c766c6003b9d7c1e3acdee9331527210ba09a149a1588de32bf877ee3bb40",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "donor-ordinary-reopen",
+      "source": "D",
+      "scene": "ordinary",
+      "pid": 5104,
+      "native_tick": 0,
+      "startup_sha256": "19aa752b2f3ee923ebf0d7981fd2317d743bf0597d2a298de163435213dc5df5",
+      "process_sha256": "4bc33fddc6f7e999149e67790124e034d254035f62c6cb1fce47c82d874f7b44",
+      "run_sha256": "1488d18ab3af3019f33a32881be3daba770acfdb726d74573386e79c1f2e845d",
+      "source_files": 1231,
+      "native_sha256": "505c766c6003b9d7c1e3acdee9331527210ba09a149a1588de32bf877ee3bb40",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    },
+    {
+      "label": "explicit-three-slots",
+      "source": "C",
+      "scene": "wave512",
+      "pid": 5652,
+      "native_tick": 0,
+      "startup_sha256": "8de43abbc8f157f97b04ed8b1d5a3e8c1c2f7963c5b3078306d24d3f3e5931d1",
+      "process_sha256": "70c7be0fa939f9f7833f85f3dc837ac3ff97c60bb895c9285a187a47c5e7bffa",
+      "run_sha256": "0e0a9ddf02ab3c42df2f57334e7d97b7e39c4fc3563aea3a592356133784120a",
+      "source_files": 1239,
+      "native_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+      "actual_render_owner": "safe",
+      "render_driver": "opengl3_angle",
+      "physical_acceptance": "HOLD"
+    }
+  ],
+  "process_owner_controls": {
+    "tests_sha256": "d5b3308265ea116e7d4283dc4dd3abf88bee4e18b872d4d2b57a31a4d50481e2",
+    "powershell": "5.1.20348.5773",
+    "cases": [
+      "clean-zero-exit",
+      "zero-exit",
+      "timeout",
+      "cancel"
+    ],
+    "all_raw_ownership_and_array_joins_passed": true
+  },
+  "collector": {
+    "archive_sha256": "4a4288a38c28af284a831e3eb5d734ffd1043c422b2f3c55021afb9ac80af008",
+    "indexed_files": 125,
+    "archive_members": 126,
+    "indexed_bytes": 2705322,
+    "matched_runs": 7,
+    "omissions": [],
+    "all_member_CRC_SHA_size_checks_passed": true,
+    "exact_duplicate_evidence_file_joins": 116,
+    "collector_only_profile_logs": [
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots2-opengl3_angle-mixed2048/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "8226bae8f73ff1816359fbd4d35192ae81ccbf46d957a80af3ab25ba48b9c083",
+        "pid": 4412
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots2-opengl3_angle-ordinary/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "d2e63488f104011a696dec92f25198ff0c40f7d32d70c71cacfc8608626233df",
+        "pid": 5936
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots2-opengl3_angle-ordinary/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-24T18.01.40.log",
+        "sha256": "de50254b0c8f7bc679584b772c8b5dfbaa41f4c811b5e970bc0b191cc4fbe0ec",
+        "pid": 1028
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots2-opengl3_angle-wave1024/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "845e35579d7f0b7fc9fe405b9b448c9621bbc8a83dfa65da536e251ded18fa12",
+        "pid": 2604
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots2-opengl3_angle-wave2048/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "37221bd77d7796a1a16a10e133cbb9d1f12c4ada88eac427f14ece485de358d1",
+        "pid": 1276
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots2-opengl3_angle-wave512/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "6528363a779aecc6e7e6c65adbad625552724c14fb48ab50fa75244706fa085d",
+        "pid": 4416
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-C-stock-safe-slots3-opengl3_angle-wave512/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "829f14e54a077f79b432249307113ab183e2de5dd0aa70fbdf56ec466fced620",
+        "pid": 5652
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-D-stock-safe-slots2-opengl3_angle-ordinary/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "sha256": "18f0f0e7c09ac57d0b9c5ecdae6abf519375612b67d20066d1ca372a9a6d1a28",
+        "pid": 5104
+      },
+      {
+        "file": "runs/Workbench-c2f8a73d3444-028886176366-D-stock-safe-slots2-opengl3_angle-ordinary/profile/APPDATA/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-24T18.11.05.log",
+        "sha256": "10cf4683b8ef0865be54325f535dee62c250934f787bc9d7798e3ebb5c8b73ca",
+        "pid": 5736
+      }
+    ],
+    "collector_only_log_terminals_join_all_nine_actual_startups": true
+  },
+  "authoring": [
+    {
+      "phase": "author",
+      "checks": 208,
+      "log_sha256": "69ad84bc02d4b82655afcf4ec2e147d204b0d0497dbacfbc25c92359554b9df2",
+      "process_sha256": "0a9b1117fb4b2ad5c4eb74a655cf4a174588365f77fd94811300173c47b7f43f",
+      "prepared_sha256": "3f36a472fc70c61c9df71f965f6d5ba061ede71633fb79af31ea6fc9c203be2e",
+      "phases": {
+        "agent": true,
+        "agent_undo_saved": true,
+        "continued_authoring": false,
+        "discovery": true,
+        "generation": true,
+        "human_after_agent": true,
+        "late_response": true,
+        "leases": true,
+        "manual": true,
+        "provider_fixture": true,
+        "reopen": false,
+        "save": true,
+        "simulation_equipment": true,
+        "stop": true
+      },
+      "screenshots_sha256": {
+        "combined-agent-and-paint.png": "a5cbf105765172df6235ea79945d8c7abc4399ebc4a202c4a99b3414dc43c75f",
+        "combined-authored-saved.png": "60479b3be07a3da053e6ece416453de3d26aa4bd2845748b28f07c6dd379fcfc",
+        "combined-equipment-simulation.png": "fea96579ee4d1586651145a868600b5d9da4ece62af62709f9cfdc6b5723e35a",
+        "combined-generator-preview.png": "1912ece93666828a8c96d6d1ed0187220aa7cc9759ca82e9f11088af484aec89",
+        "combined-generator-profiles.png": "4272a7f48f073025f145a77f425785c3a9409a83e0d0f63f210af67cc7ce08ef"
+      }
+    },
+    {
+      "phase": "reopen",
+      "checks": 65,
+      "log_sha256": "139ba67138e08d5f9447fa8d8a0dd3ac2578a26c6510535d2771da55111d5389",
+      "process_sha256": "6bc91d94771fdb53d94ee83de04d1802ef6c50df7a75ab880a7bda4012fb6d41",
+      "prepared_sha256": "3f36a472fc70c61c9df71f965f6d5ba061ede71633fb79af31ea6fc9c203be2e",
+      "phases": {
+        "agent": false,
+        "agent_undo_saved": false,
+        "continued_authoring": true,
+        "discovery": true,
+        "generation": false,
+        "human_after_agent": false,
+        "late_response": false,
+        "leases": false,
+        "manual": false,
+        "provider_fixture": false,
+        "reopen": true,
+        "save": false,
+        "simulation_equipment": false,
+        "stop": false
+      },
+      "screenshots_sha256": {
+        "combined-generator-profiles.png": "4272a7f48f073025f145a77f425785c3a9409a83e0d0f63f210af67cc7ce08ef",
+        "combined-reopened-and-continued.png": "7d778de4af408f7a36b2580471f736c87eb9c862cdfd9ed23c3edac0a0e8022c"
+      }
+    }
+  ],
+  "save_reopen": {
+    "expectation_sha256": "04d6c802d5a945b1841bf6ae384e1104ad11cb11ba9ff4b114d65919fc754728",
+    "saved_start_sha256": "0fdefb9418aa1285d43d57801bf7974bb6d189558333b48ed00c569f6d3c6f6f",
+    "prepared_sha256": "3f36a472fc70c61c9df71f965f6d5ba061ede71633fb79af31ea6fc9c203be2e",
+    "closed_audit_sha256": "7dee167549e822c5fb7414ce0838111c9a067f3ffb07fbbba248d40e6e2f9ad4",
+    "author_pid": 4276.0,
+    "author_instance": "2f5e6a66bcf500c985ae6b662ffedc13"
+  },
+  "independent_scope": [
+    "Actual raw nine startup receipts and exact GUI/import commands joined to packaged source/runtime and seven run manifests",
+    "Creation-time Job ownership, cleanup, memory PID joins and four retained negative-control outcomes",
+    "All125 collector member CRC/hash/size checks,116 duplicate evidence byte joins and9 collector-only profile log terminals joined to actual startup receipts",
+    "Real installed authoring and fresh-process reopen terminal results, source scripts, saved start and full prepared native-material digest",
+    "Retained framebuffer dimensions/hash; two representative stills separately visually inspected"
+  ],
+  "limitations": [
+    "Hosted smoke commands selected ANGLE on Microsoft Basic Render Driver; default WGL and physical NVIDIA remain unqualified.",
+    "Startup native_tick=0 is not physical progression or sustained playability evidence.",
+    "Static screenshots cannot establish input latency, temporal trails or pose freshness.",
+    "Authoring uses a deterministic provider fixture; it is not live model-provider qualification.",
+    "Authoring wrapper records continuation/full2 policy; deadline-off follows cleared environment and source default, whereas nine startup receipts separately observe live disabled deadline status.",
+    "Root separately verified full package ZIP/source projections; this peer report consumes and independently checks raw process/collector/authoring joins rather than claiming a new native build."
+  ],
+  "physical_acceptance": "HOLD",
+  "audit_program_sha256": "cffd5b65077ad01c94a9d065f25c3dde2907b9b907b50fa85a1daa9fcb8e04ac",
+  "workspace_root": "/workspace/scratch/0b2a9bdf7883"
+}
