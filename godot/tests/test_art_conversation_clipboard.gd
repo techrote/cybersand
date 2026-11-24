@@ -2,6 +2,7 @@ extends SceneTree
 ## Clipboard routes use synthetic injected values; an explicitly isolated displayed
 ## CI desktop can additionally compare ordinary clipboard edits to native TextEdit.
 const Editor = preload("res://scripts/art_conversation_editor.gd")
+const ClipboardEditor = preload("res://scripts/art_conversation_text_edit.gd")
 class ClipboardFixture extends "res://scripts/art_conversation_text_edit.gd":
 	var clipboard := ""
 	var primary := ""
@@ -41,6 +42,18 @@ func caret_offset(content: TextEdit, caret: int = 0) -> int:
 func run() -> void:
 	root.size = Vector2i(1280,720)
 	root.gui_embed_subwindows = true
+	if OS.get_cmdline_user_args().has("--native-clipboard-only"):
+		var available := OS.get_environment("CYBERSAND_TEST_OWNED_CLIPBOARD") == "1" and DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD)
+		if available:
+			compare_native_clipboard()
+		else:
+			check(false,"native clipboard diagnostic requires an explicitly owned displayed desktop")
+		await process_frame
+		print("ART_NATIVE_CLIPBOARD_ONLY_RESULT ",JSON.stringify({"checks":checks,"failures":failures,
+			"native_clipboard_differential":available,"display":DisplayServer.get_name(),
+			"qualification":"Only ordinary native TextEdit/production clipboard operations; no oversized paste or Workbench activity"}))
+		quit(0 if failures.is_empty() else 1)
+		return
 	var editor := Editor.new()
 	editor.content.free()
 	var content := ClipboardFixture.new()
@@ -232,16 +245,32 @@ func run() -> void:
 		"qualification":"Godot injected-clipboard key/menu/primary binding regression; physical owner clipboard and mouse hit-testing are not asserted"}))
 	quit(0 if failures.is_empty() else 1)
 
+func edit_snapshot(content: TextEdit) -> Dictionary:
+	var carets: Array[Dictionary] = []
+	for index: int in range(content.get_caret_count()):
+		var caret := {"line":content.get_caret_line(index),"column":content.get_caret_column(index),
+			"has_selection":content.has_selection(index)}
+		if content.has_selection(index):
+			caret.merge({"selected_text":content.get_selected_text(index),
+				"selection_origin_line":content.get_selection_origin_line(index),
+				"selection_origin_column":content.get_selection_origin_column(index),
+				"selection_from_line":content.get_selection_from_line(index),
+				"selection_from_column":content.get_selection_from_column(index),
+				"selection_to_line":content.get_selection_to_line(index),
+				"selection_to_column":content.get_selection_to_column(index)})
+		carets.append(caret)
+	return {"text":content.text,"carets":carets}
+
 func same_edit(native: TextEdit, owned: TextEdit) -> bool:
-	if native.text != owned.text or native.get_caret_count() != owned.get_caret_count(): return false
-	for caret: int in range(native.get_caret_count()):
-		if native.get_caret_line(caret)!=owned.get_caret_line(caret) or native.get_caret_column(caret)!=owned.get_caret_column(caret): return false
-		if native.get_selected_text(caret)!=owned.get_selected_text(caret): return false
-	return true
+	return edit_snapshot(native) == edit_snapshot(owned)
 
 func compare_native_clipboard() -> void:
 	var native := TextEdit.new()
-	var owned := ClipboardFixture.new()
+	# Both controls must cross the same real OS clipboard boundary. In Godot
+	# 4.7 Windows, DisplayServer converts LF to CRLF on clipboard_set; the
+	# injected fixture above deliberately bypasses that platform conversion.
+	# Compare raw round-tripped bytes, without normalizing differences away.
+	var owned := ClipboardEditor.new()
 	root.add_child(native)
 	root.add_child(owned)
 	for backward: bool in [false,true]:
@@ -250,7 +279,6 @@ func compare_native_clipboard() -> void:
 			target.clear_undo_history()
 			target.select(1,8 if backward else 0,1,0 if backward else 8)
 		DisplayServer.clipboard_set("λ\r\n日本")
-		owned.clipboard = "λ\r\n日本"
 		native.paste()
 		owned.paste()
 		check(same_edit(native,owned),"ordinary selection Paste matches native TextEdit, backward=%s" % backward)
@@ -258,6 +286,7 @@ func compare_native_clipboard() -> void:
 		owned.undo()
 		check(same_edit(native,owned),"ordinary selection Undo matches native TextEdit, backward=%s" % backward)
 	for cutting: bool in [false,true]:
+		var clipboard_results: Array[String] = []
 		for target: TextEdit in [native,owned]:
 			target.text = "one\ntwo\nthree"
 			target.clear_undo_history()
@@ -265,7 +294,14 @@ func compare_native_clipboard() -> void:
 			target.set_caret_column(1)
 			if cutting: target.cut()
 			else: target.copy()
-		check(DisplayServer.clipboard_get()==owned.clipboard and same_edit(native,owned),"whole-line clipboard operation matches native TextEdit, cutting=%s" % cutting)
+			clipboard_results.append(DisplayServer.clipboard_get())
+		print("ART_NATIVE_CLIPBOARD_WHOLE_LINE ",JSON.stringify({"cutting":cutting,
+			"display":DisplayServer.get_name(),"native_clipboard":clipboard_results[0],
+			"owned_clipboard":clipboard_results[1],"native_clipboard_utf8":clipboard_results[0].to_utf8_buffer().hex_encode(),
+			"owned_clipboard_utf8":clipboard_results[1].to_utf8_buffer().hex_encode(),
+			"native_edit":edit_snapshot(native),"owned_edit":edit_snapshot(owned)}))
+		check(clipboard_results[0]==clipboard_results[1],"whole-line raw OS clipboard matches native TextEdit, cutting=%s" % cutting)
+		check(same_edit(native,owned),"whole-line text, carets and selections match native TextEdit, cutting=%s" % cutting)
 		for target: TextEdit in [native,owned]:
 			target.set_caret_line(target.get_line_count()-1)
 			target.set_caret_column(2)
@@ -280,7 +316,6 @@ func compare_native_clipboard() -> void:
 		target.set_caret_column(1)
 		target.add_caret(1,1)
 	DisplayServer.clipboard_set("x\ny")
-	owned.clipboard = "x\ny"
 	native.paste()
 	owned.paste()
 	check(same_edit(native,owned),"multicaret line-distributed Paste matches native TextEdit")

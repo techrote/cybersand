@@ -167,6 +167,11 @@ func fixture_received(model_name: String) -> bool:
 	return FileAccess.file_exists(str(spec.accepted_dir).path_join(model_name))
 
 
+func fixture_post_arrivals() -> int:
+	var directory := DirAccess.open(str(spec.post_arrival_dir))
+	return directory.get_files().size() if directory != null else -1
+
+
 func captured_cell(point: Vector2i) -> int:
 	if not check(await until(ready),"native edit settles before stored readback"): return -1
 	var worker: RefCounted = host.simulation_worker
@@ -238,6 +243,12 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 	var initial_log := str(panel.provider.log_path)
 	var offset := log_length()
 	var serial: int = panel.provider.serial
+	var request_admissions: Array[Dictionary] = []
+	var observe_request_start := func(id: int, request_offset: int) -> void:
+		request_admissions.append({"id":id,"offset":request_offset})
+	if outgoing: panel.provider.request_started.connect(observe_request_start)
+	# Filesystem observations stay outside the Send/Stop/frame measurement.
+	var post_arrivals_before := fixture_post_arrivals() if outgoing and expectation=="cancel" else -1
 	var started := Time.get_ticks_usec()
 	var tick_before := native_tick()
 	begin_measurement()
@@ -248,23 +259,42 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 	var stop_was_active := false
 	var preparation_observed := false
 	var outgoing_preparation_observed := false
+	var stop_observation := {}
 	var bounded_retry := {}
 	if model_name.begins_with("fixture-preparation-"):
 		preparation_observed = await until(preparation_running,25000)
 		check(preparation_observed,label+" real HTTP response is actively running CPU preparation")
 		check(panel.provider.response_preparation_jobs==1,label+" retains one preparation job")
 	if outgoing:
-		# Stop's enabled state is projected by the ordinary next UI frame.
-		# Observe unfinished CPU work after that refresh, then click immediately.
-		if action=="stop_hide": await process_frame
-		outgoing_preparation_observed = await until(func() -> bool: return preparation_running("request"),25000)
+		# Wait only for the ordinary UI projection while real CPU work remains.
+		# A completed job cannot later qualify Stop-before-dispatch; fail that
+		# precondition promptly instead of waiting for a nonexistent second job.
+		if action=="stop_hide":
+			var stop_deadline := Time.get_ticks_msec()+25000
+			while panel.visible and panel.stop.disabled and panel.provider.active and panel.provider.request==null \
+					and preparation_running("request") and Time.get_ticks_msec()<stop_deadline:
+				await process_frame
+		outgoing_preparation_observed = preparation_running("request")
 		check(outgoing_preparation_observed,label+" actual Full context is actively running CPU preparation")
 		check(panel.provider.request_preparation_jobs==1 and panel.provider.request==null,label+" one request value job precedes HTTP admission")
 	if model_name.begins_with("fixture-blackhole-"):
 		check(await until(func() -> bool: return fixture_received(model_name),3000),label+" actual POST received before withholding all response bytes")
 		for _index in range(3): await process_frame
 	if action=="stop_hide":
-		if not outgoing_preparation_observed: await process_frame
+		if not outgoing: await process_frame
+		if outgoing:
+			# No yield separates this observation from the real mouse click. A
+			# worker finishing in the meantime still cannot admit HTTP until the
+			# main-thread reaper runs after this synchronous Stop input.
+			stop_observation = {"panel_visible":panel.visible,"button_visible":panel.stop.is_visible_in_tree(),
+				"button_enabled":not panel.stop.disabled,"unfinished_task":preparation_running("request"),
+				"request_absent":panel.provider.request==null,"provider_active":panel.provider.active,
+				"serial":panel.provider.serial,"request_admissions":request_admissions.size(),
+				"since_send_usec":Time.get_ticks_usec()-started}
+			check(bool(stop_observation.panel_visible) and bool(stop_observation.button_visible) and bool(stop_observation.button_enabled) \
+				and bool(stop_observation.unfinished_task) and bool(stop_observation.request_absent) and bool(stop_observation.provider_active) \
+				and int(stop_observation.serial)==serial+1 and int(stop_observation.request_admissions)==0,
+				label+" ordinary enabled Stop observes an unfinished task before HTTP admission")
 		stop_was_active = bool(panel.provider.active)
 		if stop_was_active:
 			click(panel.stop)
@@ -304,6 +334,8 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 	check(await until(settled,45000 if large_response else 12000),label+" request/native operations reach bounded terminal state")
 	for _index in range(12): await process_frame
 	var frames := end_measurement()
+	var post_arrivals_after := fixture_post_arrivals() if outgoing and expectation=="cancel" else -1
+	if outgoing: panel.provider.request_started.disconnect(observe_request_start)
 	var elapsed_usec := Time.get_ticks_usec()-started
 	var timing: Dictionary = panel.provider.last_request_timing.duplicate(true)
 	var kinds := event_counts(offset)
@@ -341,7 +373,14 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 		if expectation=="cancel":
 			check(int(kinds.get("request",0))==0 and int(kinds.get("assistant",0))==0 and int(kinds.get("usage",0))==0,
 				label+" cancellation before dispatch commits no request or assistant")
+			# The fixture server rejects bodies above 4 MiB before writing its
+			# model receipt. Near-cap cancellation therefore also requires zero
+			# actual successful HTTP admissions, independently of that receipt.
+			check(request_admissions.is_empty(),label+" cancelled outgoing preparation has no successful HTTP admission")
 			check(not fixture_received(model_name),label+" cancelled outgoing preparation sends no HTTP POST")
+	if outgoing and expectation=="cancel":
+		check(post_arrivals_before>=0 and post_arrivals_after==post_arrivals_before,
+			label+" external loopback observes no POST arrival even before body validation")
 	if model_name=="fixture-secret-boundary":
 		check(not str(panel.input_error).contains("art-fixture"),label+" credential redaction precedes 512-character error excerpt")
 		var traffic := FileAccess.get_file_as_string(panel.provider.log_path)
@@ -352,7 +391,9 @@ func execute_case(label: String, model_name: String, endpoint_name: String = "en
 		"last_audit":optional_metrics(panel.provider,"last_audit_timing"),
 		"native_poll_usec":optional_metrics(panel,"last_native_poll_usec"),"close":panel.last_close_timing.duplicate(true) if action!="visible" else {},
 		"stop":panel.last_stop_timing.duplicate(true) if action=="stop_hide" else {},
-		"stop_was_active":stop_was_active,"event_counts":kinds,"error_characters":str(panel.input_error).length(),
+		"stop_was_active":stop_was_active,"stop_observation":stop_observation,"request_admissions":request_admissions,
+		"post_arrivals":{"before":post_arrivals_before,"after":post_arrivals_after} if outgoing and expectation=="cancel" else {},
+		"event_counts":kinds,"error_characters":str(panel.input_error).length(),
 		"preparation_observed_running":preparation_observed,"bounded_retry":bounded_retry,
 		"request_preparation_observed_running":outgoing_preparation_observed,
 		"native_tick_before":tick_before,"native_tick_after":tick_after,"manual_queued":paint_queued,
@@ -398,8 +439,13 @@ func outgoing_preparation_checks() -> void:
 	await execute_case("outgoing-cpu-visible","fixture-outgoing-visible","endpoint","visible","success")
 	cases[-1].context_fixture = seed
 	await execute_case("outgoing-cpu-hide-reopen","fixture-outgoing-hide","endpoint","reopen","success")
-	await execute_case("outgoing-cpu-stop-close","fixture-outgoing-stop","endpoint","stop_hide","cancel")
+	cases[-1].context_fixture = seed
+	# A displayed UI frame can outlast the 1 MiB worker. Reuse this existing
+	# near-cap context for genuine CPU work through the ordinary Stop refresh,
+	# then for the following absent-listener Send; no worker delay is injected.
 	seed = await seed_outgoing_context(16*1024*1024-8192)
+	await execute_case("outgoing-cpu-stop-close","fixture-outgoing-stop","endpoint","stop_hide","cancel")
+	cases[-1].context_fixture = seed
 	await execute_case("near-limit-full-context-no-listener","fixture-outgoing-near-limit","absent_endpoint","hide")
 	cases[-1].context_fixture = seed
 	check(bool(cases[-1].provider.get("request_preparation_async",false)),"near-limit actual Send uses value-only outgoing preparation")

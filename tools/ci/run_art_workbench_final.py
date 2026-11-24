@@ -86,6 +86,9 @@ class Fixture(http.server.ThreadingHTTPServer):
         self.release_blackhole = threading.Event()
         self.accepted_dir = output / "received-requests"
         self.accepted_dir.mkdir()
+        self.post_arrival_dir = output / "post-arrivals"
+        self.post_arrival_dir.mkdir()
+        self.post_arrival_count = 0
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -96,6 +99,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.client_address[0] != "127.0.0.1":
             self.send_error(403)
             return
+        # Record arrival before rejecting oversized, malformed or aborted
+        # bodies. These empty markers retain no request content or headers.
+        with self.server.lock:
+            self.server.post_arrival_count += 1
+            (self.server.post_arrival_dir / f"post-arrival-{self.server.post_arrival_count}").touch(exist_ok=False)
         size = int(self.headers.get("Content-Length", "0"))
         if not 0 < size <= 4 * 1024 * 1024 or self.path != "/v1/chat/completions":
             self.send_error(400)
@@ -307,6 +315,7 @@ def main() -> int:
             "slow_connect_condition": "loopback_accept_backlog_saturated" if conditions.backlog_saturated else "unavailable_on_this_kernel",
             "slow_connect_prefilled_sockets": conditions.prefilled,
             "output": str(args.output), "accepted_dir":str(fixture.accepted_dir),
+            "post_arrival_dir":str(fixture.post_arrival_dir),
             "graphical": args.graphical,"group":args.group,
             "stall_limit_usec": args.stall_limit_ms * 1000}
     spec_path = args.output / "fixture-spec.json"
@@ -429,6 +438,11 @@ def main() -> int:
         resources["after"] = resource_snapshot()
         (args.output / "resources.json").write_text(json.dumps(resources, indent=2) + "\n", encoding="utf-8")
         (args.output / "fixture-receipts.json").write_text(json.dumps(fixture.receipts, indent=2) + "\n", encoding="utf-8")
+        (args.output / "fixture-post-arrivals.json").write_text(json.dumps({
+            "count":fixture.post_arrival_count,
+            "empty_markers":len(list(fixture.post_arrival_dir.iterdir())),
+            "scope":"every loopback POST before body, path or JSON validation; no request content retained"
+        }, indent=2) + "\n", encoding="utf-8")
         hashes = {str(p.relative_to(args.output)): hashlib.sha256(p.read_bytes()).hexdigest()
                   for p in args.output.iterdir() if p.is_file() and p.name != "hashes.json"}
         (args.output / "hashes.json").write_text(json.dumps(hashes, indent=2) + "\n", encoding="utf-8")

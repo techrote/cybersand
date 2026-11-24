@@ -117,23 +117,39 @@ jobs:
           set -euo pipefail
           if ! command -v xvfb-run >/dev/null; then sudo apt-get update && sudo apt-get install -y xvfb; fi
           export LIBGL_ALWAYS_SOFTWARE=1
+          # Each displayed arm owns a fresh profile/process. Retain every
+          # independent result before failing this stage; packaging still needs
+          # the entire stage to pass and no check or deadline is relaxed.
+          display_failed=0
           export XDG_DATA_HOME="$RUNNER_TEMP/art-display-panel"
           mkdir -p "$XDG_DATA_HOME"
-          xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_panel_ui.gd > evidence/art-panel-displayed.log 2>&1
-          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-panel-displayed.log; then cat evidence/art-panel-displayed.log; exit 1; fi
+          if ! xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_panel_ui.gd > evidence/art-panel-displayed.log 2>&1; then
+            cat evidence/art-panel-displayed.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-panel-displayed.log; then display_failed=1; fi
           export XDG_DATA_HOME="$RUNNER_TEMP/art-display-evaluator"
           mkdir -p "$XDG_DATA_HOME"
-          xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_owner_evaluator.gd > evidence/art-evaluator-displayed.log 2>&1
-          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-evaluator-displayed.log; then cat evidence/art-evaluator-displayed.log; exit 1; fi
-          grep -F 'ART_EVALUATOR_INPUT_RESULT ' evidence/art-evaluator-displayed.log
+          if ! xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_owner_evaluator.gd > evidence/art-evaluator-displayed.log 2>&1; then
+            cat evidence/art-evaluator-displayed.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-evaluator-displayed.log; then display_failed=1; fi
+          if ! grep -F 'ART_EVALUATOR_INPUT_RESULT ' evidence/art-evaluator-displayed.log; then display_failed=1; fi
           export XDG_DATA_HOME="$RUNNER_TEMP/art-display-clipboard"
           mkdir -p "$XDG_DATA_HOME"
-          CYBERSAND_TEST_OWNED_CLIPBOARD=1 xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_conversation_clipboard.gd > evidence/art-clipboard-displayed.log 2>&1
-          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-clipboard-displayed.log; then cat evidence/art-clipboard-displayed.log; exit 1; fi
-          grep -F '"native_clipboard_differential":true' evidence/art-clipboard-displayed.log
+          if ! CYBERSAND_TEST_OWNED_CLIPBOARD=1 xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_conversation_clipboard.gd > evidence/art-clipboard-displayed.log 2>&1; then
+            cat evidence/art-clipboard-displayed.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-clipboard-displayed.log; then display_failed=1; fi
+          if ! grep -F '"native_clipboard_differential":true' evidence/art-clipboard-displayed.log; then display_failed=1; fi
           for group in network preparation request-preparation lifecycle conversation-apply; do
-            xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output "evidence/art-final-displayed-$group" --group "$group" --graphical
+            if ! xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output "evidence/art-final-displayed-$group" --group "$group" --graphical; then
+              display_failed=1
+            fi
           done
+          if [ "$display_failed" -ne 0 ]; then exit 1; fi
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -210,26 +226,46 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'CPU-active process exit failed' }
           python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output evidence/art-final-request-exit --group request-preparation-exit
           if ($LASTEXITCODE -ne 0) { throw 'Outgoing CPU-active process exit failed' }
+          # Collect independent displayed failures without admitting a package
+          # unless every arm passes. Each process/profile remains isolated.
+          $displayedFailures = [System.Collections.Generic.List[string]]::new()
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-panel'
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
-          Invoke-CheckedGodot 'art-panel-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_panel_ui.gd') 240
+          try {
+            Invoke-CheckedGodot 'art-panel-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_panel_ui.gd') 240
+          } catch {
+            $displayedFailures.Add('Art panel: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          }
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-evaluator'
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
-          Invoke-CheckedGodot 'art-evaluator-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_owner_evaluator.gd') 240
-          if ((Get-Content evidence/art-evaluator-displayed.stdout.log -Raw) -notmatch 'ART_EVALUATOR_INPUT_RESULT ') { throw 'Missing displayed evaluator input receipt' }
+          try {
+            Invoke-CheckedGodot 'art-evaluator-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_owner_evaluator.gd') 240
+            if ((Get-Content evidence/art-evaluator-displayed.stdout.log -Raw) -notmatch 'ART_EVALUATOR_INPUT_RESULT ') { throw 'Missing displayed evaluator input receipt' }
+          } catch {
+            $displayedFailures.Add('Evaluator input: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          }
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-clipboard'
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
           $env:CYBERSAND_TEST_OWNED_CLIPBOARD = '1'
           try {
             Invoke-CheckedGodot 'art-clipboard-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_conversation_clipboard.gd') 240
+            if ((Get-Content evidence/art-clipboard-displayed.stdout.log -Raw) -notmatch '"native_clipboard_differential"\s*:\s*true') { throw 'Displayed native clipboard differential did not execute' }
+          } catch {
+            $displayedFailures.Add('Native clipboard: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
           } finally {
             Remove-Item Env:CYBERSAND_TEST_OWNED_CLIPBOARD
           }
-          if ((Get-Content evidence/art-clipboard-displayed.stdout.log -Raw) -notmatch '"native_clipboard_differential"\s*:\s*true') { throw 'Displayed native clipboard differential did not execute' }
           foreach ($group in @('network','preparation','request-preparation','lifecycle','conversation-apply')) {
             python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output "evidence/art-final-displayed-$group" --group $group --graphical
-            if ($LASTEXITCODE -ne 0) { throw "Displayed Art Workbench group failed: $group" }
+            if ($LASTEXITCODE -ne 0) {
+              $displayedFailures.Add("Art Workbench group: $group")
+              Write-Warning "Displayed Art Workbench group failed: $group"
+            }
           }
+          if ($displayedFailures.Count -gt 0) { throw ('Displayed qualification failures: ' + ($displayedFailures -join '; ')) }
       - name: Package exact source with retained Windows runtime
         shell: pwsh
         run: |
