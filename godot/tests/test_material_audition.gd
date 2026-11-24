@@ -141,6 +141,20 @@ func direct_adversaries() -> void:
 	expect(clay_slot >= 0 and capability(state,"probability_threshold",clay_slot,"reaction").change_class != "live","Wave Water plus inert clay exposes its unavailable initiating consumer")
 	expect(not wave.apply_material_audition(request(state,profile("wave-clay",[],[{"slot":clay_slot,"probability_threshold":255}]))).ok,"ineffective Wave pair cannot masquerade as a live edit")
 	expect(capability(state,"probability_threshold",2,"reaction").change_class == "live","active Salt retains its valid initiating contact against Wave Water")
+	# Decode a full-length owned string without truncation or overlapping-string
+	# replacement; this also guards the portable libstdc++ wire-copy seam.
+	var names: Variant = native_world()
+	var exact_name: String = "Az09._-".repeat(9) + "Q"
+	activate(names,profile(exact_name))
+	var named: Dictionary = names.get_material_audition_state()
+	expect(named.profile.profile_id == exact_name and str(named.profile.profile_id).to_utf8_buffer().size() == 64,
+		"native wire preserves all 64 admitted ASCII profile identity bytes")
+	for invalid_name: String in ["",exact_name + "x","é","prefix" + String.chr(0) + "tail"]:
+		var refused: Dictionary = names.apply_material_audition(request(named,profile(invalid_name)))
+		expect(not refused.get("ok",true) and refused.get("status") == "refused",
+			"native wire refuses empty, overlong, non-ASCII and embedded-NUL identities")
+		expect(names.get_material_audition_state() == named,
+			"refused wire identity cannot truncate into an accepted name or change active configuration")
 
 func actual_consumers() -> void:
 	for workers: int in [1,4]:

@@ -190,6 +190,13 @@ class EvidenceTests(unittest.TestCase):
         for value in ("3 assertions; 0 failures; artifacts=path", "3 assertions, 0 failures; readback", "3 checks, 0 failures"):
             self.assertEqual(subject.completion("RESULT " + value, "RESULT")["checks"], 3)
 
+    def test_mounted_lab_receipt_is_distinct_from_full_isolated_ui_suite(self):
+        marker = dict(subject.CASES)["test_material_lab_ui"]
+        self.assertEqual(marker, "MATERIAL_LAB_WORKBENCH_MOUNT:")
+        self.assertEqual(subject.completion(marker + " 24 assertions; 0 failures",marker)["checks"],24)
+        with self.assertRaises(ValueError):
+            subject.completion("MATERIAL_LAB_UI: 24 assertions; 0 failures",marker)
+
     def test_nonzero_process_preserves_original_failure_receipt(self):
         log = Path(self.temporary.name) / "nonzero.log"
         with self.assertRaisesRegex(ValueError, "Process failed"):

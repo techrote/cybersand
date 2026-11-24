@@ -49,7 +49,13 @@ func run() -> void:
 	await process_frame
 	expect(panel._buttons.apply.disabled,"standalone Lab cannot imply current-scene activation")
 	var owner := Owner.new()
+	var initial_state := owner.state.duplicate(true)
+	owner.state = {"ok":false,"error":"Waiting for the native owner boundary."}
 	panel.bind_current_scene(owner)
+	expect(panel._status.text.contains("Waiting"),"initial unavailable readback reports the actual pending owner state")
+	owner.state = initial_state
+	panel.refresh_scene()
+	expect(panel._status.text.contains("readback is ready") and not panel._status.text.contains("Waiting"),"first native readback replaces initial waiting feedback")
 	panel.select_material(2)
 	await process_frame
 	expect(not panel._buttons.apply.disabled,"bound current-scene owner admits an explicit application control")
@@ -73,6 +79,21 @@ func run() -> void:
 	panel._complete(owner.activate())
 	expect(panel.active_state.profile.materials.is_empty(),"reversion updates active configuration readback")
 	owner.completion.clear()
+	var typed_field: SpinBox = panel._controls[density_key]
+	typed_field.get_line_edit().text = "360"
+	typed_field.get_line_edit().text_changed.emit("360")
+	panel.apply_draft()
+	var submitted_draft_revision: int = panel._draft_revision
+	var submitted_profile: Dictionary = owner.submitted.profile.duplicate(true)
+	expect(int(typed_field.value)==360,"typed Apply reconciles the numeric control before an asynchronous receipt")
+	# Godot can emit the numeric focus-loss signal after the Apply button has
+	# already committed the same typed value. Reproduce that desktop ordering.
+	typed_field.value_changed.emit(360.0)
+	expect(panel._draft_revision==submitted_draft_revision and panel.draft_profile==submitted_profile,"late focus commit of the submitted value is not a newer draft")
+	expect(panel._status.text.contains("Applying at the native owner boundary"),"late duplicate control notification cannot erase pending admission feedback")
+	panel._complete(owner.activate())
+	expect(panel._status.text.contains("activated") and not panel._status.text.contains("newer draft"),"ordinary typed Apply reports activation without a false unapplied draft")
+	owner.completion.clear()
 	panel._controls[density_key].get_line_edit().text = "-1"
 	panel._controls[density_key].get_line_edit().text_changed.emit("-1")
 	var prior_requests := owner.requests
@@ -86,6 +107,13 @@ func run() -> void:
 	panel.cancel_pending()
 	expect(panel._pending.is_empty() and panel.active_state==before_cancel,"acknowledged cancellation leaves active configuration unchanged")
 	owner.completion.clear()
+	owner.state.ok = false
+	owner.state.error = "Waiting for native readback recovery."
+	panel.refresh_scene()
+	owner.state.ok = true
+	owner.state.erase("error")
+	panel.refresh_scene()
+	expect(panel._status.text.contains("readback restored") and int(panel.draft_profile.materials[0].density)==400,"same-World recovery clears waiting feedback and preserves the unsubmitted draft")
 	owner.state.revision += 1
 	panel.refresh_scene()
 	expect(panel._buttons.apply.disabled and not panel._buttons.rebase.disabled,"an external revision makes the old draft visibly stale")

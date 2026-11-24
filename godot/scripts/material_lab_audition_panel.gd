@@ -121,6 +121,7 @@ func _build() -> void:
 	_file.file_selected.connect(_file_selected)
 	add_child(_file)
 	_demo_confirm.title = "Replace the current scene with a demonstration?"
+	_demo_confirm.dialog_autowrap = true
 	_demo_confirm.confirmed.connect(_load_demo)
 	add_child(_demo_confirm)
 
@@ -172,9 +173,12 @@ func _accept_state(state: Dictionary) -> void:
 	if _available() and _draft_binding.is_empty():
 		draft_profile = active_state.profile.duplicate(true)
 		_draft_binding = _binding(active_state)
+		_set_status("Native configuration readback is ready. Review Active and Draft, then Apply deliberately.")
 	elif _available() and not _same_world(_draft_binding,active_state):
 		_previous_profile.clear()
 		_set_status("The Workbench World changed. Your previous draft is retained for inspection. Choose Use active as draft, or explicitly Keep draft for current scene before applying.")
+	elif _available() and not before.get("ok",false) and _pending.is_empty():
+		_set_status("Native configuration readback restored. Review Active and Draft; adopt or rebase the draft if its revision changed.")
 	elif not _available():
 		_set_status(str(state.get("error","Current-scene material audition is unavailable.")))
 	if changed: _refresh_fields()
@@ -298,6 +302,9 @@ func _refresh_fields() -> void:
 
 func _field_changed(key: String, value: int) -> void:
 	if _loading or not _capabilities.has(key): return
+	# A typed value can reach the draft during Apply before SpinBox emits its
+	# focus-loss notification. That notification is not a newer user edit.
+	if Profiles.value_for(draft_profile,_capabilities[key]) == value: return
 	draft_profile = Profiles.set_value(draft_profile,_capabilities[key],value)
 	draft_profile.profile_id = "trial-%d" % Time.get_ticks_usec()
 	_draft_revision += 1
@@ -319,6 +326,7 @@ func _commit_fields() -> bool:
 			_set_status("%s must be between %d and %d; no configuration was submitted." % [str(row.property),int(row.minimum),int(row.maximum)])
 			return false
 		if Profiles.value_for(draft_profile,row) != value: _field_changed(key,value)
+		field.set_value_no_signal(value)
 		field.set_meta("audition_pending_text",false)
 	return true
 

@@ -48,7 +48,7 @@ CASES = (
     ("test_material_audition_profile", "MAT_AUDITION_PROFILE:"),
     ("test_material_audition_ui_contract", "MAT_AUDITION_UI_CONTRACT:"),
     ("test_material_audition_layout", "MAT_AUDITION_LAYOUT:"),
-    ("test_material_lab_ui", "MATERIAL_LAB_UI:"),
+    ("test_material_lab_ui", "MATERIAL_LAB_WORKBENCH_MOUNT:"),
     ("test_material_lab_catalogue", "MATERIAL_LAB_CATALOGUE:"),
     ("test_material_lab_experiment", "MATERIAL_LAB_EXPERIMENT:"),
     ("test_material_lab_diagnostics", "MATERIAL_LAB_DIAGNOSTICS:"),

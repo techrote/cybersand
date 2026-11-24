@@ -77,7 +77,11 @@ String decode_profile(const Dictionary& input, cybersand::MaterialAuditionProfil
     if (input.get("profile_id",Variant()).get_type() != Variant::STRING) return "Profile identity must be a string.";
     const CharString name = static_cast<String>(input["profile_id"]).utf8();
     if (name.length() == 0 || name.length() > 64) return "Profile identity must contain 1–64 ASCII characters.";
-    profile.profile_id.assign(name.get_data(),static_cast<std::size_t>(name.length()));
+    // These bytes are independent of the destination. Construct then swap so
+    // GCC 13 does not import the newer overlapping-string replacement helper;
+    // retain the accepted GLIBCXX_3.4.30 runtime floor.
+    std::string decoded_id(name.get_data(),static_cast<std::size_t>(name.length()));
+    profile.profile_id.swap(decoded_id);
     if (input.get("materials",Variant()).get_type() != Variant::ARRAY ||
         input.get("reactions",Variant()).get_type() != Variant::ARRAY) return "Change lists must be arrays.";
     const Array materials = input["materials"], reactions = input["reactions"];

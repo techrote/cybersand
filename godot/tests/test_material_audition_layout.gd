@@ -17,6 +17,7 @@ func _initialize() -> void:
 
 func run() -> void:
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	root.gui_embed_subwindows = true
 	var scene: Control = load("res://materials_lab.tscn").instantiate()
 	root.add_child(scene)
 	var panel: Variant = scene.find_child("MaterialsLabPanel",true,false)
@@ -49,6 +50,11 @@ func run() -> void:
 		scroll.scroll_vertical = int(bar.max_value)
 		for frame: int in range(3): await process_frame
 		expect(visible.encloses(audition._buttons.demo.get_global_rect()),"demo controls remain reachable at the bottom: " + str(size))
+		audition._confirm_demo()
+		for frame: int in range(3): await process_frame
+		expect(audition._demo_confirm.dialog_autowrap,"scene replacement confirmation wraps its complete warning: " + str(size))
+		expect(audition._demo_confirm.size.x < size.x and audition._demo_confirm.size.y < size.y,"scene replacement confirmation fits the ordinary window: " + str(size))
+		audition._demo_confirm.hide()
 		if DisplayServer.get_name() != "headless":
 			var destination := OS.get_environment("MAT_AUDITION_LAYOUT_CAPTURE")
 			if not destination.is_empty():

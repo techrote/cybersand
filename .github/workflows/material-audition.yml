@@ -201,7 +201,7 @@ jobs:
 
   windows:
     name: Windows native, graphical and relocated offline evaluator
-    needs: [linux, windows-build]
+    needs: [windows-build]
     if: github.ref == 'refs/heads/mat/audition-live-001'
     runs-on: windows-2022
     timeout-minutes: 150
