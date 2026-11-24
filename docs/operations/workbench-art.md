@@ -84,9 +84,11 @@ used as future model context without rewriting past native results.
 ## Context, limits and repeated requests
 
 **Full** includes current-session conversation; **Compacted** keeps the most
-recent 12 turns and a latest-result summary. **Custom** currently uses the
-Compacted behavior; **None** omits prior conversation. These are context choices,
-not storage guarantees.
+recent 12 conversation messages, including user prompts, model replies and native
+result feedback. These are individual messages, not 12 complete request/response
+cycles. When older messages are omitted, it also adds a latest-result summary.
+**Custom** currently uses the Compacted behavior; **None** omits prior
+conversation. These are context choices, not storage guarantees.
 
 **Turns** limits requests per Send. Zero continues until Stop, model completion
 or another configured limit. **Limits…** supplies a minimum request gap, run

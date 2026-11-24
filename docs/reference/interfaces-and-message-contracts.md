@@ -1516,7 +1516,7 @@ World; existing material/semantic admission interfaces keep that responsibility.
 
 ## Native default-demo construction values
 
-The unmerged [native default-demo preparation API](../architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
+The accepted [native default-demo preparation API](../architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
 accepts `(world, liquid_policy, options)` at the exclusive owner boundary. Its
 one-use token is the same private candidate slot used by prepared rectangles and
 thermal levels. No World storage crosses the adapter. Copied native constructor

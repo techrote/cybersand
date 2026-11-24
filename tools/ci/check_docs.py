@@ -16,12 +16,12 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
-from retrieval_policy import require_authority, frontmatter_field, FOCUSED, NAVIGATION, default_selection_allowed, retrieval_selection
+from retrieval_policy import require_authority, frontmatter_field, FOCUSED, NAVIGATION, DOCUMENT_KINDS, default_selection_allowed, retrieval_selection
 from engineering_history import check as check_history
 
 ROOT = Path(__file__).resolve().parents[2]
 STATUSES = {"Current", "Approved", "Approved design", "Planned", "Deferred", "Rejected", "Ambiguous"}
-KINDS = {"contract", "design", "decision", "guide", "runbook", "reference", "evidence", "navigation", "research"}
+KINDS = DOCUMENT_KINDS
 REQUIRED = {"title", "status", "scope", "last-reviewed", "document-kind", "canonical-for", "related-documents"}
 
 def metadata(text: str) -> dict:
@@ -36,7 +36,7 @@ def metadata(text: str) -> dict:
         field = frontmatter_field(line)
         if field is not None:
             key, value = field
-            if key in {"authority", "retrieval"} and key in result:
+            if key in {"authority", "retrieval", "document-kind"} and key in result:
                 raise ValueError("Duplicate frontmatter " + key)
             if value.startswith("[") and value.endswith("]"):
                 result[key] = [v.strip().strip("\"'") for v in value[1:-1].split(",") if v.strip()]

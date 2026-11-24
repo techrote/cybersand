@@ -32,7 +32,7 @@ def metadata_and_body(text: str) -> tuple[dict, str]:
             field = frontmatter_field(line)
             if field is not None:
                 key, value = field
-                if key in {"authority", "retrieval"} and key in metadata:
+                if key in {"authority", "retrieval", "document-kind"} and key in metadata:
                     raise ValueError("Duplicate frontmatter " + key)
                 metadata[key] = value
         return metadata, body.strip()

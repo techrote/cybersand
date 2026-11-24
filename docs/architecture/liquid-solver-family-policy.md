@@ -195,6 +195,30 @@ Full host constructor, actual Rapier and Web qualification remain separate.
   act between liquids today. Examples: `int.pair.water-salt.dissolve.v1`, and
   Oil extinguished by Water inside the Oil kernel.
 
+## FreeMass and CellularYield quantity semantics
+
+FreeMass Water stores a fractional amount in each occupied Water cell and moves
+bounded quantities between cells. The default eight-bit Water policy represents
+a full cell as 255 units; other admitted precision policies define their own
+maximum. CellularYield moves whole material cells through gravity, density
+exchange and bounded lateral yield. Its viscosity and cadence controls govern
+motion eligibility, rather than making every liquid a fractional Water carrier.
+
+Water explicitly assigned to CellularYield or InertialCellular must be saturated
+at the selected Water maximum. A setup can request documented normalization;
+unsupported later fractional inputs refuse. Other yielding liquids retain their
+own material state and specialized reactions. A material-cell count and a Water
+quantity sum are therefore different measurements.
+
+Wave uses the FreeMass policy identity as its Water carrier but supplies its own
+bulk transport, retained flux and capacity rules. PressureFlow adds its own
+overfill and gas state. Do not apply the default FreeMass 255-unit cell ceiling
+to every Wave or pressure state. The applied family/configuration and the shared
+quantity ledger identify the comparison being made. Sources:
+[`World` motion dispatch](../../native/src/world.cpp),
+[`WaterExperimentPolicy`](../../native/include/cybersand/water_experiment_policy.hpp)
+and [native quantity accounting](../../native/src/world_quantity.inc).
+
 ## Native policy foundation (Current, 2026-10-24)
 
 LCB-001 [#200](https://github.com/techrote/cybersand/issues/200) foundation, under

@@ -93,7 +93,7 @@ implemented, although separate Batch/agent programmes are not implied:
 | Control | Accepted behavior |
 | --- | --- |
 | Full context | Current-session conversation. |
-| Compacted | Most recent 12 turns plus latest-result summary. |
+| Compacted | Most recent 12 individual conversation messages, including prompts, replies and native feedback; a latest-result summary is added when older messages are omitted. |
 | Custom | Currently the same bounded selection as Compacted. |
 | None | No previous conversation in the next request. |
 | Turns | Default 1; zero continues until Stop, model completion or another limit. |

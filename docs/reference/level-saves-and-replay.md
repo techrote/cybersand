@@ -35,6 +35,26 @@ Source inspection at accepted main `00cdb02f` checks
 Save, Flatten, Reset/Restore and native physical export are different actions.
 A successful round-trip of one format does not qualify another.
 
+## Authored Save and physical continuation
+
+Ordinary Workbench **Save start** writes the acknowledged authored setup,
+generated recipe or flattened material baseline, with its supported ordered
+edits and actor/equipment configuration. Loading reconstructs that starting
+scene. It does not restore the exact next simulation tick, live actor poses or
+momentum, solver queues, pending input, Undo/Redo stacks or the Art conversation.
+Pending native edits and owner transactions must settle before Save is admitted;
+the save file is not a queue checkpoint.
+
+Flatten captures stored material IDs from the evolved World, then changes the
+authored baseline without resetting that live World. A later Save persists the
+baseline; reopening initializes the materials and actors again. Complete
+physical continuation would additionally need the applicable native solver
+state and all host-owned future-affecting state. Even supported native CYPS
+exports omit Rapier and other host state, and Wave refuses exact physical save.
+See the [practical save guide](../operations/workbench-saving.md),
+[`shared_workbench.gd::save_setup`](../../godot/scripts/shared_workbench.gd)
+and the [current native versions](#current-native-physical-state-versions).
+
 ## Does an identical save reproduce the next tick?
 
 **Current: no such guarantee.** CYSD1 restores a fixed demo level and selected
@@ -111,7 +131,7 @@ when Rapier is unavailable before native import. This guarantee concerns the
 checked import paths; it is not a general transaction guarantee for simulation
 ticks or arbitrary later scene allocation failures.
 
-**Current bounded unmerged #202 source:** the normal synchronous application's
+**Current bounded application path, accepted through the #256 integration:** the normal synchronous application's
 liquid panel can explicitly arm the next ordinary body-free import with a copied
 policy, normalization opt-in and geometry in Exploratory mode. The separate
 `prepare_liquid_level` API preserves thermal tuples and stages native World,

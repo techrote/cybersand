@@ -106,6 +106,44 @@ class CurrentRetrievalSelectionTests(unittest.TestCase):
         self.manifest.unlink()
         self.assertEqual(retrieval.selected_paths(self.root), [self.current])
 
+    def test_owner_intent_authority_survives_every_chunk(self):
+        self.current.write_text("---\nauthority: 'owner-confirmed-intent'\nstatus: Approved design\n---\n# Owner direction\n" + "Desired behavior is not implemented permission. " * 40)
+        self.assertEqual(retrieval.selected_paths(self.root), [self.current])
+        chunks = retrieval.chunk_document(self.current, self.root, 20)
+        self.assertGreater(len(chunks), 1)
+        for chunk in chunks:
+            self.assertEqual(chunk["authority"], "owner-confirmed-intent")
+            self.assertIn("authority: owner-confirmed-intent\n", chunk["text"])
+            self.assertIn("status: Approved design", chunk["text"])
+
+    def test_duplicate_document_kind_cannot_override_navigation(self):
+        text = '---\ndocument-kind: navigation\n"document-kind": guide\n---\n# Index\nRoutes only.\n'
+        for parser in (retrieval.metadata_and_body, check_docs.metadata):
+            with self.subTest(parser=parser.__module__):
+                with self.assertRaisesRegex(ValueError, "Duplicate frontmatter document-kind"):
+                    parser(text)
+        self.current.write_text(text)
+        with self.assertRaisesRegex(ValueError, "Duplicate frontmatter document-kind"):
+            retrieval.selected_paths(self.root)
+        with self.assertRaisesRegex(ValueError, "Duplicate frontmatter document-kind"):
+            retrieval.chunk_document(self.current, self.root, 20)
+        self.manifest.unlink()
+        with self.assertRaisesRegex(ValueError, "Duplicate frontmatter document-kind"):
+            retrieval.selected_paths(self.root)
+
+    def test_unsupported_document_kind_fails_closed_in_every_default_entry(self):
+        for kind in ("[navigation]", "!tag navigation", "unknown-kind", ""):
+            with self.subTest(kind=kind):
+                self.current.write_text(f"---\ndocument-kind: {kind}\n---\n# Index\nRoutes only.\n")
+                self.manifest.write_text(json.dumps({"documents": ["systems/current.md"]}))
+                with self.assertRaisesRegex(ValueError, "Unsupported document-kind scalar"):
+                    retrieval.selected_paths(self.root)
+                with self.assertRaisesRegex(ValueError, "Unsupported document-kind scalar"):
+                    retrieval.chunk_document(self.current, self.root, 20)
+                self.manifest.unlink()
+                with self.assertRaisesRegex(ValueError, "Unsupported document-kind scalar"):
+                    retrieval.selected_paths(self.root)
+
     def test_history_keeps_its_own_opt_in_and_authority(self):
         # The real accepted archive uses explicit-history-only, which predates
         # the current-corpus selector and must not be rejected by its grammar.

@@ -45,6 +45,9 @@ disagree, record both and the missing decision before changing implementation.
 Authority and retrieval selection are separate. Keep the supported authority
 values `current-documentation`, `owner-confirmed-intent` and
 `historical-non-authoritative`; this programme adds no new authority category.
+Every chunk preserves an explicit `owner-confirmed-intent` declaration. That
+source can establish approved direction, but its inclusion in current retrieval
+does not turn desired behavior into delivered implementation or task permission.
 The flat metadata field `retrieval: explicit-only` marks a current-path research
 or execution packet that is deliberately outside ordinary answers. Omitted
 `retrieval`, or explicit `retrieval: default`, permits current selection subject
@@ -61,8 +64,9 @@ excludes navigation and explicit-only packets. It validates authority first, so
 an excluded packet cannot hide malformed authority or a copied historical tag.
 
 The supported flat parser accepts quoted/padded field names and ordinary quoted
-selection values; duplicate authority or retrieval keys and unsupported selection
-syntax fail closed. This is not a guarantee for arbitrary YAML anchors, tags or
+selection values; duplicate authority, retrieval or document-kind keys and
+unsupported selection/document-kind syntax fail closed. A second document-kind
+cannot override an earlier navigation exclusion. This is not a guarantee for arbitrary YAML anchors, tags or
 complex keys. [Current-selection tests](../../tools/ci/test_current_retrieval_selection.py)
 exercise manifest, fallback and direct chunking, including real-corpus equality;
 the original [historical tests](../../tools/ci/test_historical_retrieval.py) remain
@@ -76,10 +80,25 @@ expansion imports audits into default context. Direct agent instructions must
 observe the same boundary rather than recursively loading every historical link.
 
 The local evaluator reads no persistent cache. Selection policy is now
-`historical-isolation-v2`; external indexes must rebuild with the current
+`historical-isolation-v3`; external indexes must rebuild with the current
 selection rules and per-chunk authority envelope before claiming equivalent
 containment. This repository cannot attest an unseen external cache, vector
 index or assistant prompt assembly.
+
+## Does an old Approved instruction authorize restoring a runtime?
+
+A September audit or earlier execution packet retains its original source,
+date and scope even if it says **Approved**, **Current**, or tells an agent to
+restore a runtime. Historical evidence does not authorize that action today.
+Ordinary retrieval excludes historical paths; an explicitly requested historical
+chunk carries a non-authoritative envelope. A quoted old instruction inside a
+current programme page must also state its dated applicability locally.
+
+Before changing a runtime, inspect the present checkout and active task, then
+follow [current source validation](current-and-historical-validation.md) and the
+[source-matched publication contract](github-development-and-release.md#source-matched-runtime-publication).
+Preserve the old receipt; do not edit an old hash, resume an old branch assignment
+or substitute an earlier pass for current source and publication custody.
 
 ## Documentation-update checklist
 

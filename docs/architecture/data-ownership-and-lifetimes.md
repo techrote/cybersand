@@ -552,7 +552,7 @@ on identity changes. This is authoring isolation, not world mutation rebasing.
 
 ## Prepared native-default owner transaction
 
-On unmerged66bf30f8 the exclusive desktop worker owns the native default candidate
+In accepted source the exclusive desktop worker owns the native default candidate
 and private sampled owner; Main owns the frozen permanent body graph and live
 Rapier objects. Copied native origin/session identity authorizes this constructor;
 Main reads immutable published host records rather than the live World. Final
@@ -562,5 +562,7 @@ capacity refusal precedes capture/token/swap; retained World/graph/receipt/recor
 remain usable. Construction-only capacity vectors never enter tick execution.
 The [canonical prepared boundary](liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
 and [dated proof](../audits/2026-10-25-lcb003-desktop-native-default-host.md) keep
-local Windows qualification, test-resource lifetime remediation and final
-combined/platform/full-host gaps separate.
+the original `66bf30f8` local Windows qualification, test-resource lifetime
+remediation and that checkpoint's combined/platform/full-host gaps separate.
+Those historical merge prerequisites do not make the accepted constructor
+unavailable or qualify a new runtime.

@@ -42,9 +42,13 @@ git lfs pull
 ```
 
 Replace the Godot path with your installed pinned executable. The repository
-launcher checks the exact Godot version, required runtime bytes and provenance,
-prints checkout/runtime identity and starts the project. It does not rebuild
-libraries. The same launcher supports an identity-only check:
+launcher checks the exact Godot version, requires materialized native/Rapier
+libraries, verifies the native DLL against its recorded SHA-256, and prints
+checkout/runtime identity before starting the project. It does not rebuild
+libraries or compare the checkout's native source inputs with the runtime's
+build inputs. Run `python tools/ci/check_repository.py --require-materialized`
+from the source root for that separate provenance check, particularly after
+changing branches or source. The same launcher supports an identity-only check:
 
 ```powershell
 .\launch-desktop.cmd -Godot "C:\Tools\Godot\Godot_v4.7-stable_win64.exe" -PrintIdentityOnly

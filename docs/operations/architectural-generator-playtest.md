@@ -99,7 +99,10 @@ for schemas, deterministic identity and native geometry boundaries.
 3. Enter a unique name in the painting row and use **Save start [Ctrl+S]**.
    The control is visible in that row; it is not hidden under Details.
 4. Exit completely, relaunch, enter that name and choose **Load start**.
-   Wait for reconstruction before continuing.
+   The **Verify and reopen saved starting map** dialog generates and verifies
+   its saved recipe. Wait for the complete preview, then click **Install into
+   workbench** to reconstruct it. Cancelling keeps the current map; a source
+   identity mismatch refuses the proposal without replacing it.
 5. Check the generated baseline and ordered paint/erase edits. Actors reconstruct
    from authored settings and spawns. Their exit-time momentum is not restored.
 

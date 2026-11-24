@@ -33,8 +33,9 @@ evidence at the end of this page.
    human edit is reached before the preceding Art drawing; the Art panel and
    Paint row address the same timeline.
 6. Enter a unique name in the painting row and **Save start [Ctrl+S]**. Exit,
-   reopen and **Load start**. Check the authored geometry and spawns, then make
-   a new edit. A reopened start has no old in-memory Undo stack.
+   reopen and **Load start**. For a generated start, wait for the source-verified
+   preview and confirm **Install into workbench**. Check the authored geometry
+   and spawns, then make a new edit. A reopened start has no old in-memory Undo stack.
 
 This procedure uses no paid model request. It was source-checked for the current
 documentation baseline; no fresh interactive graphical execution is claimed.

@@ -1460,7 +1460,7 @@ passes actual Windows/Linux import and14 scoped cases perOS at source
 regression. The runtime-only append is `fcf0e9b6`; full exact-head ready-PR
 matrix remains a separate gate.
 
-The unmerged native default-demo API has a focused
+The accepted native default-demo API has a focused
 `test_liquid_default_demo_preparation.gd` case. It requires a fresh staged DLL
 with the new binding, compares the complete old-DLL tuple controls at four
 Water/transport configurations and exercises candidate masks, token/refusal,

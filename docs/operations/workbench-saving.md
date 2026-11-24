@@ -14,12 +14,16 @@ related-documents: [workbench-painting-and-history.md, gen008-flatten-qualificat
 of an evolved simulation. Use the name field beside **Save start [Ctrl+S]** and
 **Load start**; wait for a success message before leaving the session.
 
+Names accept 1–48 ASCII letters, digits, underscores or hyphens. Saving an
+existing name replaces that named start; use a new name to keep an earlier
+version. There is no separate overwrite-confirmation step.
+
 ## What each action means
 
 | Action | Preserved or changed |
 | --- | --- |
 | **Save start** | Saves the current authored recipe/baseline, acknowledged construction edits and supported actor/equipment configuration. |
-| **Load start** | Reconstructs that authored scene with initial material/physical state. |
+| **Load start** | Reconstructs that authored scene with initial material/physical state. A generated start first opens a verified preview; confirm **Install into workbench** to replace the current map. |
 | **Restore start** | Rebuilds the current authored start; later free simulation is discarded. Observe any refusal on generated/flattened failed owners. |
 | **Reset selected [R]** | Resets the selected actor through its current control path; this is not a global file load. |
 | **Flatten / Bake History…** | Captures the current native stored material plane as a new authored baseline and discards prior construction/Undo history. The live World continues. |
@@ -31,6 +35,14 @@ of an evolved simulation. Use the name field beside **Save start [Ctrl+S]** and
 2. Pause and make your manual or Art edits. Wait for their final native receipts.
 3. Enter a unique name and **Save start**.
 4. Close Godot, reopen the Workbench and **Load start** with that name.
+5. The **Verify and reopen saved starting map** dialog generates and verifies
+   the embedded recipe. Wait for its complete preview, then click **Install into
+   workbench**. Until that confirmation, the current map stays installed.
+
+A source-identity mismatch refuses the generated proposal and keeps the current
+map. Do not treat opening the dialog or finishing its preview as a completed
+load. Plain setup and flattened material starts use their own reconstruction
+paths and do not require this generated-preview confirmation.
 
 Generated starts embed their resolved recipe and ordered material edits. Loading
 does not depend on the original external project/style file, but still validates

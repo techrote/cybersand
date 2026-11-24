@@ -10,6 +10,8 @@ related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-
 
 # World storage and interest region
 
+## World size, capacity and camera interest
+
 **Current:** native World supports sparse signed-coordinate storage and explicit
 capacity limits. Ordinary demo/Web level exchange uses a1024×1024 backing;
 Shared Workbench has its own finite512–2048-per-axis authoring schema and fresh
@@ -36,9 +38,12 @@ for the extension, and the dated
 [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md)/[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md)
 evidence for validation limits.
 
-A “2×” workload is a validation target whose dimensions must be stated; it is
-not a maximum world size or proof that storage streaming exists. Current finite
-demo dimensions and reserved capacities do not define the future stored-world limit.
+A world-size target described as “twice the camera” or “2×” is a validation
+workload whose dimensions must be stated. It does not impose a native World
+limit. Camera view, selected simulation interest, resident storage capacity and
+the host's finite canvas are separately owned bounds. Current finite demo
+dimensions and reserved capacities do not define the future stored-world limit
+or prove that storage streaming exists.
 
 Source identity is recorded in the [checkpoint](../operations/source-checkpoint-and-recovery.md);
 dated execution and artifact limits are in the [evidence ledger](../reference/validation-evidence.md).
