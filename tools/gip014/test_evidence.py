@@ -79,6 +79,46 @@ class ReadbackControls(unittest.TestCase):
             bad["native_receipt"][key] = value
             self.assertIn(assertion, {item["id"] for item in evidence.independent_failures({"steps": [bad]})})
 
+    def test_body_protection_na_requires_exact_capture_and_saved_observation(self):
+        # Explicitly artificial positive/negative controls, not application findings.
+        save = tape([{"id": "save_layout", "args": {}}], injected=False)["steps"][0]
+        save["after"].update(authored_digest="artificial-layout", actor_ids=[1], actors=[{"id": 1, "observed": True}])
+        save["before"] = copy.deepcopy(save["after"])
+        source = dict(save["after"]["native"], paused=True)
+        capture = {"region": [0, 0, 512, 512], "admission": {"status": "queued", "operation_id": 17},
+            "source_before": copy.deepcopy(source), "source_after": copy.deepcopy(source), "error": "artificial body protection",
+            "native_receipt": {"kind": "capture", "status": "refused", "backend": "CyberNativeCellWorld",
+                "operation_id": 17, "generation": 4, "observed_generation": 4, "revision": 5, "tick": 0,
+                "region": [0, 0, 512, 512], "applied": 0, "changed": 0,
+                "reason": "Move or remove the body before editing or copying its covered cells."}}
+        save["persistence_capture"] = copy.deepcopy(capture)
+        save["persistence"] = {"read_authored_digest": "artificial-layout", "saved_native_tick": 0,
+            "native_material_equality_applicable": False, "native_material_equality_reason": "native_body_protection"}
+        reopen = copy.deepcopy(save)
+        reopen.update(index=1, action={"id": "reopen_layout", "args": {}})
+        reopen["persistence"]["saved_capture"] = copy.deepcopy(capture)
+        self.assertEqual(evidence.independent_failures({"steps": [save, reopen]}), [])
+        for mutate in (lambda r: r["persistence_capture"].update(native_receipt={}),
+                       lambda r: r["persistence_capture"]["native_receipt"].update(reason="unrelated refusal"),
+                       lambda r: r["after"].update(actors=[], actor_ids=[]),
+                       lambda r: r["persistence_capture"]["source_after"].update(revision=99),
+                       lambda r: r["persistence"].update(native_material_equality_reason="invented")):
+            bad = copy.deepcopy(reopen)
+            mutate(bad)
+            self.assertTrue(evidence.independent_failures({"steps": [save, bad]}))
+        completed_capture = copy.deepcopy(capture)
+        del completed_capture["error"]
+        completed_capture["native_receipt"].update(status="completed", reason="")
+        completed_capture.update(count=512 * 512, material_sha256="a" * 64)
+        save["persistence_capture"] = copy.deepcopy(completed_capture)
+        save["persistence"].update(material_sha256="a" * 64, native_material_equality_applicable=True, native_material_equality_reason="available")
+        reopen["persistence_capture"] = copy.deepcopy(completed_capture)
+        reopen["persistence"].update(saved_capture=copy.deepcopy(completed_capture), saved_material_sha256="a" * 64,
+            reopened_material_sha256="a" * 64, native_material_equality_applicable=True, native_material_equality_reason="available")
+        self.assertEqual(evidence.independent_failures({"steps": [save, reopen]}), [])
+        reopen["persistence_capture"]["material_sha256"] = "b" * 64
+        self.assertIn("reopen_material_capture_identity", {item["id"] for item in evidence.independent_failures({"steps": [save, reopen]})})
+
     def test_forged_counts_and_missing_source_fail(self):
         original = tape(ACTIONS)
         for key in ("source_commit", "source_tree", "godot_sha256", "native_sha256", "rapier_sha256"):
@@ -91,7 +131,7 @@ class ReadbackControls(unittest.TestCase):
 
     def test_malformed_nested_types_do_not_raise(self):
         original = tape(ACTIONS)
-        for key in ("action", "before", "after", "native_receipt", "admission", "assertions", "interval", "status", "capture_before"):
+        for key in ("action", "before", "after", "native_receipt", "admission", "assertions", "interval", "status", "capture_before", "persistence", "persistence_capture"):
             for wrong in (None, [], "wrong", 1, True):
                 with self.subTest(key=key, wrong=wrong):
                     value = copy.deepcopy(original)

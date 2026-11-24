@@ -77,10 +77,18 @@ func run() -> void:
 	check(colors.size() >= 12, "framebuffer contains rendered game and developer controls")
 	DirAccess.make_dir_recursive_absolute("user://goblin")
 	check(picture.save_png("user://goblin/interactive.png") == OK, "actual graphical capture saved")
+	ui.replay_button.pressed.emit()
+	check(await until(func() -> bool: return not ui.controller.running), "Replay button reaches a terminal result")
+	check(ui.controller.transcript.get("header", {}).get("replay", false), "Replay button dispatches the recorded sequence")
+	check(ui.controller.state == "finished" and not ui.controller.export_path.is_empty() \
+		and ui.controller.transcript.get("summary", {}).get("termination") == "budget_complete", "interactive replay retains its complete terminal evidence")
+	check(ui.controller.replay_result.get("semantic_match", false), "interactive recorded sequence agrees semantically")
+	check(FileAccess.file_exists("user://goblin/run-002.json"), "interactive replay retains a separate run archive")
 	var capture := {"evidence_kind": "graphical_godot", "display": DisplayServer.get_name(),
 		"video_adapter": RenderingServer.get_video_adapter_name(), "renderer": RenderingServer.get_current_rendering_method(),
 		"size": [picture.get_width(), picture.get_height()], "colors_sampled": colors.size(),
-		"source": tape.header.provenance, "summary": tape.summary, "checks": checks, "failures": failures,
+		"source": tape.header.provenance, "summary": tape.summary, "replay_result": ui.controller.replay_result,
+		"checks": checks, "failures": failures,
 		"physical_owner_acceptance": false}
 	var file := FileAccess.open("user://goblin/interactive-result.json", FileAccess.WRITE)
 	if file != null:

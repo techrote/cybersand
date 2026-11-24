@@ -86,7 +86,8 @@ python tools/gip014/verify_transcript.py /path/to/original/transcript.json
 The interactive scene uses ordinary Godot controls for fixture, personality, signed
 32-bit seed, action budget (1–256), pacing (0–3000 ms), Start, Pause and Stop. It
 shows the current goal, proposed action, completed/attempted counts, actual native
-generation/revision/tick, actor tick and recent outcomes. The green goblin pointer
+revision/tick, actor tick and recent outcomes; generation is retained in the
+transcript. The green goblin pointer
 follows its tool target or the observed pilot position; it is a presentation
 character, not an additional simulated physical actor. Where a policy pilots a
 Kestrel, input and pose evidence comes from that actual supported game actor.
@@ -137,8 +138,14 @@ retained separately. Previous operations' receipts cannot satisfy a new action.
 
 Save/reopen tests authored starting layouts. The normal save API does not serialize
 an evolved physical simulation. Exact native-material equality on reopen is
-asserted only when the saved native tick is zero; otherwise that particular check
-is explicitly not applicable while authored identity is still checked.
+asserted only when the saved native tick is zero and both native captures complete.
+The normal authoring reader protects transient rigid-body-covered cells from
+copying. When it returns that exact observed refusal, the optional full-material
+comparison is explicitly not applicable while ordinary Save/Load and authored
+identity are still checked. Native generation/revision/tick, receipt operation,
+unchanged paused state and an actually observed actor must substantiate that
+limitation; another capture failure cannot use it. An evolved saved tick also
+makes full-material equality inapplicable, with a separate recorded reason.
 
 Not currently supported by this adapter: grab/release, arbitrary configuration
 switches, every Workbench panel, continuous painting during Play, deletion of
@@ -154,7 +161,7 @@ native readback tests rather than promoted to a new public game API.
 | --- | --- |
 | CONTROL | Rehearse an authored edit/history/copy/save sequence, then pilot a supported actor and observe Play/step/reset |
 | WANDERER | Visit cyclic waypoints, leave three-dab breadcrumbs, revisit earlier areas and pilot an observed Kestrel |
-| BUILDER | Build small Wood-supported Sand cups, watch them, remove a ledge and occasionally add a barrel |
+| BUILDER | Build Wall cups with Wood ledges and Sand, watch them, erase a central hole in a ledge and occasionally add a barrel |
 | TINKERER | Keep a tool experiment together through Undo/Redo, copying, saving/reopening and occasional resets |
 | CURIOSITY | Prefer under-observed valid action IDs, adjacent pairs and observed state-to-action transitions |
 | RANDOM | Choose uniformly from the same concrete legal menu as a seeded baseline |
@@ -215,14 +222,22 @@ limits, preserved below. Production owners' sources remain untouched.
 | `adapter-002`, `control-dev-001` | Staging/import blocked by shared-volume exhaustion; no game pass claimed |
 | `control-dev-002` | Import process killed with signal9; cause not established, no game defect claimed |
 | `adapter-003` | 310 checks/35 records pass; genuine actor lease/input and pending native cancellation observed |
-| `adapter-004` | 26-action implementation passes; actor placement/pilot/reset/single-step added |
-| `adapter-005` | 723 checks,49 retained action records,50 real API admissions,23.040s; native and pre-native cancellations distinguished |
+| `adapter-004` | Expanded adapter passes its exercised cases; actor placement/pilot/reset/single-step added, without implying26/26 ID coverage |
+| `adapter-005` | 723 checks,49 retained records (46 completed/3 controlled cancelled refusals),25 completed IDs,50 real API admissions,23.040s |
 | `control-dev-003` | Actual Linux CONTROL64:64 completed,17 feature IDs,381 passing assertions,1 not applicable,22.521s; independent Python readback agrees |
 | `controller-b001` | Two lifecycle-test failures concerning pre-native cancellation evidence; harness corrected, originals retained |
 | `controller-b002` | Lifecycle execution passes,17.353s; pause/resume, Stop, pending admission, profile isolation, fixed archives and mismatched replay refusal |
 | Unit controls | Deliberately inconsistent fixtures test wrong cells, stale source, missing/queued receipts, missing input, malformed transcripts and reducer behavior; never reported as discovered defects |
 | Local graphical display | Display-server sockets denied by this host; graphical test not run locally |
-| Matched policy, longer campaigns, final replay, Windows evaluator | Pending the following committed qualification checkpoint |
+| Published `5199cd5806e72819bbe512c000aee8dcee6efca1` matched12 | Same construction scene, seeds13/605,64-action budgets;9 complete/3 interrupted capture-preflight cases,692 attempts/689 completions,26 IDs,6242 passing assertions/0 failures/10 not applicable,221.174s; originals retained |
+| Windows `45460161994` | Artificial Python fixture CRLF expected-hash mistake stopped the lane before gameplay; retained artifact14952576748 |
+| Windows `45461118405` | Unit, adapter, controller and both ordinary Workbench baselines pass; CONTROL stops before Save on native body-copy protection; retained artifact14951654742, no evaluator uploaded |
+| `adapter-006-diagnostic` | 784 checks/52 records pass; actual full and bounded body-protection receipts retained; ordinary actor Save/Reopen authored identity succeeds |
+| `replay-5199-*` | Two selected tapes refused before dispatch by a JSON integral-number enumeration bug; corrected in both action validators and26-action roundtrip controls, no replay pass attributed to these attempts |
+| `material-motion-c001` | Actual native motion passes, but the test labeled material58 as Wood; original receipt remains Wall evidence, fixture corrected to named material constants |
+| `material-motion-c002` | Corrected actual Wood7 cup:89 checks/10 operations pass in7.800s;16 Sand2 cells conserved,188 Wood cells unchanged, native tick0→16 and Sand vertical-position sum152→406 |
+| Current negative/unit controls | 173 Godot assertion/transcript checks,153 policy checks and21 Python evidence/reducer/package checks; explicitly artificial controls |
+| Corrected matched policy, longer campaigns, final replay, Windows evaluator | Pending the following committed qualification checkpoint |
 
 The Linux engine executable SHA-256 is
 `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`;

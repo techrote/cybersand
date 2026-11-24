@@ -52,7 +52,7 @@ static func validate_action(action: Variant) -> Dictionary:
 	elif id == "wait_ticks":
 		valid = _keys_exact(args, ["ticks"]) and _in_range(args.get("ticks"), 1, 32)
 	elif id == "select_material":
-		valid = _keys_exact(args, ["material"]) and integer(args.get("material")) and args.material in [0, 2, 3, 7, 58]
+		valid = _keys_exact(args, ["material"]) and integer(args.get("material")) and int(args.material) in [0, 2, 3, 7, 58]
 	elif id in ["brush", "erase"]:
 		valid = _keys_exact(args, ["x", "y", "radius"]) and _in_range(args.get("x"), 8, 503) \
 			and _in_range(args.get("y"), 8, 503) and _in_range(args.get("radius"), 0, 4)
@@ -67,7 +67,7 @@ static func validate_action(action: Variant) -> Dictionary:
 	elif id == "camera":
 		valid = _keys_exact(args, ["x", "y", "width", "height"]) and _in_range(args.get("x"), 0, 256) \
 			and _in_range(args.get("y"), 0, 256) and integer(args.get("width")) and integer(args.get("height")) \
-			and args.get("width") in [240, 480] and args.get("height") in [135, 270]
+			and int(args.get("width")) in [240, 480] and int(args.get("height")) in [135, 270]
 	elif id in ["actor_select", "actor_pilot"]:
 		valid = _keys_exact(args, ["actor_id"]) and _in_range(args.get("actor_id"), 1, 8)
 	elif id == "actor_place":
@@ -134,9 +134,21 @@ static func semantic_projection(record: Dictionary) -> Dictionary:
 	var ports: Dictionary = raw_ports if raw_ports is Dictionary else {}
 	var actor_input := {"instance_id": delivery.get("instance_id"), "requested_direction": delivery.get("requested_direction"),
 		"sampled_command": delivery.get("sampled_command", {}), "sampled_ports": ports.get("ports", {})}
+	var persistence := {}
+	var raw_persistence: Variant = record.get("persistence", {})
+	if raw_persistence is Dictionary:
+		for key: String in ["read_authored_digest", "expected_authored_digest", "reopened_authored_digest", "material_sha256", "saved_material_sha256", "reopened_material_sha256", "native_material_equality_applicable", "native_material_equality_reason"]:
+			if raw_persistence.has(key): persistence[key] = raw_persistence[key]
+	var capture_outcome := {}
+	var raw_persistence_capture: Variant = record.get("persistence_capture", {})
+	if raw_persistence_capture is Dictionary and raw_persistence_capture.get("native_receipt", {}) is Dictionary:
+		var capture_receipt: Dictionary = raw_persistence_capture.get("native_receipt", {})
+		for key: String in ["kind", "status", "reason", "requested_cells", "applied", "changed"]:
+			if capture_receipt.has(key): capture_outcome[key] = capture_receipt[key]
 	return {"action": {"id": action.get("id"), "args": action.get("args", {})},
 		"status": record.get("status"), "classification": record.get("classification"),
-		"state": state, "captures": materials, "receipt_accounting": accounting, "actor_input": actor_input, "assertions": assertions}
+		"state": state, "captures": materials, "receipt_accounting": accounting, "actor_input": actor_input,
+		"persistence": persistence, "persistence_capture_outcome": capture_outcome, "assertions": assertions}
 
 
 static func observation_projection(record: Dictionary) -> Dictionary:
@@ -213,6 +225,11 @@ static func _validate_capture(capture: Variant, errors: Array[String], label: St
 		errors.append(label + " is not an object.")
 		return
 	if capture.is_empty(): return
+	if capture.has("error"):
+		if not capture.error is String or capture.error.is_empty(): errors.append(label + " has an invalid capture failure.")
+		for key: String in ["native_receipt", "admission", "source_before", "source_after"]:
+			if capture.has(key) and not capture[key] is Dictionary: errors.append(label + " has malformed " + key + ".")
+		return # Retain refused capture evidence; no completed readback is claimed.
 	var region: Variant = capture.get("region")
 	var materials: Variant = capture.get("materials")
 	if not region is Array or region.size() != 4 or not materials is Array:
@@ -230,6 +247,22 @@ static func _validate_capture(capture: Variant, errors: Array[String], label: St
 		if not _in_range(material, 0, 131) or material == 10:
 			errors.append(label + " contains an invalid material ID.")
 			break
+
+
+static func _validate_persistence_capture(capture: Variant, errors: Array[String], label: String) -> void:
+	if not capture is Dictionary:
+		errors.append(label + " is not an object.")
+		return
+	for key: String in ["native_receipt", "admission", "source_before", "source_after"]:
+		if capture.has(key) and not capture[key] is Dictionary: errors.append(label + " has malformed " + key + ".")
+	if capture.has("region"):
+		var region: Variant = capture.region
+		if not region is Array or region.size() != 4:
+			errors.append(label + " has malformed region.")
+			return
+		for value: Variant in region:
+			if not _in_range(value, 0, 512): errors.append(label + " has out-of-bounds region.")
+	if capture.has("error") and not capture.error is String: errors.append(label + " has malformed error.")
 
 
 static func validate(transcript: Variant) -> Dictionary:
@@ -272,6 +305,12 @@ static func validate(transcript: Variant) -> Dictionary:
 			if not row.get(key) is Dictionary: errors.append("Step %d lacks %s evidence." % [index, key])
 		_validate_capture(row.get("capture_before", {}), errors, "Step %d before" % index)
 		_validate_capture(row.get("capture_after", {}), errors, "Step %d after" % index)
+		if row.has("persistence_capture"): _validate_persistence_capture(row.persistence_capture, errors, "Step %d persistence capture" % index)
+		if row.has("persistence"):
+			if not row.persistence is Dictionary:
+				errors.append("Step %d malformed persistence." % index)
+			elif row.persistence.has("saved_capture"):
+				_validate_persistence_capture(row.persistence.saved_capture, errors, "Step %d saved capture" % index)
 		if not row.get("assertions") is Array:
 			errors.append("Step %d lacks assertions." % index)
 			continue

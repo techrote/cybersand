@@ -65,6 +65,8 @@ func action(id: String, args: Dictionary = {}, expected_status: String = "comple
 
 func run() -> void:
 	check(Adapter.validate_action({"id": "brush", "args": {"x": 40, "y": 40, "radius": 0}}).ok, "typed valid brush")
+	check(Adapter.validate_action(JSON.parse_string('{"id":"camera","args":{"x":0,"y":0,"width":480,"height":270}}')).ok,
+		"JSON numeric camera arguments preserve the finite integer vocabulary")
 	for invalid: Dictionary in [
 		{"id": "pause"},
 		{"id": "brush", "args": {"x": 40, "y": 40, "radius": 5}},
@@ -130,6 +132,22 @@ func run() -> void:
 	installed = await adapter.install_fixture("actor_workshop", Fixtures.build("actor_workshop", adapter.policy()))
 	assertions.reset()
 	if check(installed.get("ok", false), "actual native/Rapier actor workshop installed"):
+		var protected_edit: Dictionary = await action("brush", {"x": 96, "y": 160, "radius": 0}, "refused")
+		check(protected_edit.classification == "not_applicable" and protected_edit.admission.is_empty(),
+			"body-covered readback refuses bounded editing before native mutation admission")
+		check(protected_edit.capture_before.get("native_receipt", {}).get("reason", "") == Adapter.BODY_CAPTURE_REFUSAL,
+			"bounded refusal retains the actual native body-protection receipt")
+		var actor_saved: Dictionary = await action("save_layout")
+		check(actor_saved.persistence.native_material_equality_applicable == false \
+			and actor_saved.persistence.native_material_equality_reason == "native_body_protection",
+			"normal authored actor Save succeeds with explicitly unavailable full material comparison")
+		check(actor_saved.persistence_capture.native_receipt.get("reason", "") == Adapter.BODY_CAPTURE_REFUSAL \
+			and actor_saved.persistence_capture.native_receipt.get("status", "") == "refused",
+			"actor Save retains genuine full-canvas native protection refusal")
+		var actor_reopened: Dictionary = await action("reopen_layout")
+		check(actor_reopened.persistence.native_material_equality_applicable == false \
+			and actor_reopened.persistence.saved_capture == actor_saved.persistence_capture,
+			"actor Reopen retains prior capture evidence while authored identity remains independently checked")
 		await action("actor_select", {"actor_id": 1})
 		await action("actor_place", {"model": "kestrel", "x": 280, "y": 96})
 		await action("actor_pilot", {"actor_id": 3})

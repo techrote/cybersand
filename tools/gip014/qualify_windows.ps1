@@ -33,7 +33,7 @@ $version = ((& $engine --version) -join "`n").Trim()
 if ($LASTEXITCODE -ne 0 -or $version -ne '4.7.stable.official.5b4e0cb0f') { throw 'Pinned Godot version mismatch.' }
 
 Invoke-Python @('-m', 'unittest', 'discover', '-s', 'tools/gip014', '-p', 'test_*.py') (Join-Path $outputPath 'python-contracts.log')
-$cases = @('unit', 'adapter', 'controller', 'baseline')
+$cases = @('unit', 'adapter', 'controller', 'gameplay', 'baseline')
 foreach ($case in $cases) {
     Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', $case, '--out', (Join-Path $sourceTests $case)) (Join-Path $outputPath ($case + '.log'))
 }

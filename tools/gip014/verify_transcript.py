@@ -119,6 +119,29 @@ def source_matches(capture: dict, native: dict) -> bool:
     return all(integer(receipt.get(key)) and receipt[key] == native.get(key) for key in ("generation", "revision", "tick")) and receipt.get("observed_generation") == native.get("generation") and receipt.get("region") == capture.get("region")
 
 
+def persistence_capture_state(capture: dict, observation: dict) -> str:
+    if any(not isinstance(capture.get(key, {}), dict) for key in ("native_receipt", "admission", "source_before", "source_after")) or not isinstance(observation.get("native", {}), dict):
+        return "invalid"
+    receipt, admission = capture.get("native_receipt", {}), capture.get("admission", {})
+    native = observation.get("native", {})
+    if capture.get("region") != [0, 0, 512, 512] or not source_matches(capture, native):
+        return "invalid"
+    if receipt.get("kind") != "capture" or receipt.get("backend") != "CyberNativeCellWorld":
+        return "invalid"
+    if admission.get("status") != "queued" or not integer(admission.get("operation_id")) or receipt.get("operation_id") != admission["operation_id"]:
+        return "invalid"
+    for source in (capture.get("source_before", {}), capture.get("source_after", {})):
+        if source.get("paused") is not True or source.get("failed") is not False or any(not integer(source.get(k)) or source[k] != native.get(k) for k in ("generation", "revision", "tick")):
+            return "invalid"
+    if observation.get("paused") is not True or native.get("failed") is not False:
+        return "invalid"
+    if receipt.get("status") == "completed" and "error" not in capture and capture.get("count") == 512 * 512 and isinstance(capture.get("material_sha256"), str) and len(capture["material_sha256"]) == 64:
+        return "completed"
+    if receipt.get("status") != "refused" or receipt.get("reason") != "Move or remove the body before editing or copying its covered cells." or receipt.get("applied") != 0 or receipt.get("changed") != 0 or "error" not in capture:
+        return "invalid"
+    return "native_body_protection" if any(a.get("observed") is True and a.get("id") in observation.get("actor_ids", []) for a in observation.get("actors", [])) else "invalid"
+
+
 def summarize(tape: dict) -> dict:
     states, classifications, attempts, completed, pairs, triples, assertions = (Counter() for _ in range(7))
     assertions.update({"pass": 0, "fail": 0, "not_applicable": 0})
@@ -154,6 +177,7 @@ def independent_failures(tape: dict) -> list[dict]:
     """Recheck raw observations without trusting the recorded assertion verdict."""
     failures = []
     saved = None
+    saved_tick, saved_capture, saved_observation = -1, {}, {}
     def check(row, name, condition, kind="gameplay"):
         if not condition:
             failures.append({"step": row["index"], "id": name, "kind": kind})
@@ -239,16 +263,39 @@ def independent_failures(tape: dict) -> list[dict]:
         elif name == "save_layout":
             saved = row.get("persistence", {}).get("read_authored_digest")
             check(row, "authored_save_readback", bool(saved) and saved == after.get("authored_digest"))
+            saved_tick, saved_capture, saved_observation = end["tick"], row.get("persistence_capture", {}), after
+            if "persistence_capture" in row:
+                state = persistence_capture_state(saved_capture, after)
+                persistence = row.get("persistence", {})
+                check(row, "save_capture_evidence", state != "invalid", "evidence")
+                check(row, "save_native_tick_identity", persistence.get("saved_native_tick") == saved_tick, "evidence")
+                check(row, "save_material_capture_identity", persistence.get("material_sha256", "") == saved_capture.get("material_sha256", ""), "evidence")
+                check(row, "save_material_applicability", persistence.get("native_material_equality_applicable") == (saved_tick == 0 and state == "completed"), "evidence")
         elif name == "reopen_layout":
             if saved:
                 check(row, "authored_reopen_identity", after.get("authored_digest") == saved)
             persistence = row.get("persistence", {})
+            saved_state = persistence_capture_state(saved_capture, saved_observation) if saved_capture else "unrecorded"
+            current_state = persistence_capture_state(row.get("persistence_capture", {}), after) if "persistence_capture" in row else "unrecorded"
+            custody = True
+            if "persistence_capture" in row:
+                custody = saved_state in ("completed", "native_body_protection") and current_state in ("completed", "native_body_protection") and persistence.get("saved_capture") == saved_capture and persistence.get("saved_native_tick") == saved_tick
+                check(row, "reopen_capture_evidence", custody, "evidence")
+                check(row, "reopen_material_capture_identity", persistence.get("saved_material_sha256", "") == saved_capture.get("material_sha256", "") and persistence.get("reopened_material_sha256", "") == row["persistence_capture"].get("material_sha256", ""), "evidence")
             if persistence.get("native_material_equality_applicable"):
-                check(row, "authored_reopen_materials", bool(persistence.get("saved_material_sha256")) and persistence.get("saved_material_sha256") == persistence.get("reopened_material_sha256"))
+                check(row, "reopen_material_applicability", saved_tick == 0 and ("persistence_capture" not in row or custody and saved_state == current_state == "completed"), "evidence")
+                expected_materials = saved_capture.get("material_sha256", "") if "persistence_capture" in row else persistence.get("saved_material_sha256", "")
+                actual_materials = row["persistence_capture"].get("material_sha256", "") if "persistence_capture" in row else persistence.get("reopened_material_sha256", "")
+                check(row, "authored_reopen_materials", bool(expected_materials) and expected_materials == actual_materials)
+            else:
+                reason = persistence.get("native_material_equality_reason", "")
+                justified = (saved_tick > 0 and reason in ("", "evolved_native_tick") and custody) or (reason == "native_body_protection" and custody and "native_body_protection" in (saved_state, current_state))
+                check(row, "reopen_material_na_evidence", justified, "evidence")
         elif name == "reset_fixture":
             check(row, "reset_authored_layout", bool(after.get("scene_identity")) and after.get("authored_digest") == after.get("scene_identity"))
             check(row, "reset_native_replacement", end["generation"] > start["generation"] and end["tick"] == 0)
             saved = None
+            saved_tick, saved_capture, saved_observation = -1, {}, {}
     return failures
 
 
@@ -290,6 +337,22 @@ def _verify(tape: Any) -> dict:
             issue(isinstance(row.get(key), dict), f"step {index}: {key} type")
         for key in ("capture_before", "capture_after"):
             errors.extend(f"step {index}: {key}: {error}" for error in capture_errors(row.get(key)))
+        optional_captures = []
+        if "persistence_capture" in row:
+            optional_captures.append(row["persistence_capture"])
+        if "persistence" in row:
+            issue(isinstance(row["persistence"], dict), f"step {index}: persistence type")
+            if isinstance(row["persistence"], dict) and "saved_capture" in row["persistence"]:
+                optional_captures.append(row["persistence"]["saved_capture"])
+        for captured in optional_captures:
+            issue(isinstance(captured, dict), f"step {index}: persistence capture type")
+            if not isinstance(captured, dict):
+                continue
+            for key in ("native_receipt", "admission", "source_before", "source_after"):
+                issue(key not in captured or isinstance(captured[key], dict), f"step {index}: persistence capture {key} type")
+            if "region" in captured:
+                issue(isinstance(captured["region"], list) and len(captured["region"]) == 4 and all(bounded(v, 0, 512) for v in captured["region"]), f"step {index}: persistence capture region")
+            issue("error" not in captured or isinstance(captured["error"], str), f"step {index}: persistence capture error type")
         if not isinstance(row.get("assertions"), list):
             errors.append(f"step {index}: assertion list absent")
         else:

@@ -31,6 +31,7 @@ TESTS = {
     "unit": ("test_goblin_policies", "test_goblin_contract"),
     "adapter": ("goblin_adapter",),
     "controller": ("goblin_controller",),
+    "gameplay": ("goblin_gameplay",),
     "graphical": ("goblin_interactive",),
     "baseline": ("test_workbench_deferred_paint", "test_workbench_input"),
 }
@@ -39,6 +40,7 @@ ERROR_MARKERS = ("SCRIPT ERROR:", "Parse Error:", "ERROR:", "Fatal signal", "Seg
 COMPLETION_MARKERS = {"campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_adapter": "GOBLIN_ADAPTER ",
                       "goblin_controller": "GOBLIN_CONTROLLER ", "test_goblin_policies": "GOBLIN_POLICY_UNIT ",
                       "goblin_interactive": "GOBLIN_INTERACTIVE_RESULT ",
+                      "goblin_gameplay": "GOBLIN_GAMEPLAY_RESULT ",
                       "test_goblin_contract": "GOBLIN_CONTRACT_RESULT ",
                       "test_workbench_deferred_paint": "WB_DEFERRED_PAINT ",
                       "test_workbench_input": "WORKBENCH_INPUT "}
@@ -340,7 +342,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if case == "campaign":
                     script = "res://goblin/run_campaign.gd"
-                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive"):
+                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay"):
                     script = f"res://goblin/tests/test_{case.removeprefix('goblin_')}.gd"
                 else:
                     script = f"res://tests/{case}.gd"

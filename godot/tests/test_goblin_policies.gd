@@ -172,6 +172,25 @@ func _observation_tests() -> void:
 	var new_transition: Dictionary = state_aware.next_action(supplied,
 		[{"id":"pause", "args":{}}, {"id":"panel", "args":{"panel":"details", "open":true}}])
 	_check(new_transition.id == "pause", "Curiosity favors an unobserved action from the current supplied state")
+	# Deliberately supplied passive-actor unit data: this exercises policy
+	# selection only, and is not evidence that an application actor was made.
+	var passive: Dictionary = supplied.duplicate(true)
+	passive.actor_ids = [1]
+	passive.controllable_actor_ids = []
+	var inspect_only: RefCounted = Policy.new()
+	inspect_only.configure("CURIOSITY", 13)
+	var inspect_menu := [{"id":"actor_select", "args":{"actor_id":1}},
+		{"id":"pause", "args":{}}, {"id":"panel", "args":{"panel":"details", "open":true}}]
+	inspect_only.observe_result({"action":{"id":"pause", "args":{}}, "status":"completed", "before":passive, "after":passive})
+	inspect_only.observe_result({"action":{"id":"panel", "args":{}}, "status":"completed", "before":passive, "after":passive})
+	var passive_plan: Array[Dictionary] = []
+	for _step: int in range(4): passive_plan.append(inspect_only.next_action(passive, inspect_menu))
+	_check(passive_plan[0].id == "pause" and passive_plan[1].id == "actor_select" \
+		and passive_plan[1].args.actor_id == 1,
+		"Curiosity selects an observed passive actor without requiring movement capability")
+	_check(passive_plan[2].id == "panel" and passive_plan[2].args.open == true \
+		and passive_plan[3].id == "panel" and passive_plan[3].args.open == false,
+		"passive-actor curiosity pursues an inspection instead of repeated Play/Pause")
 
 
 func _observation(index: int) -> Dictionary:

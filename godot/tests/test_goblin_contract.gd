@@ -3,6 +3,7 @@ extends SceneTree
 # Artificial unit fixtures ONLY: no native simulation/game defect claims.
 const Assertions = preload("res://goblin/goblin_assertions.gd")
 const Transcript = preload("res://goblin/goblin_transcript.gd")
+const Adapter = preload("res://goblin/goblin_adapter.gd")
 var checks := 0
 var failures: Array[String] = []
 
@@ -28,6 +29,22 @@ func record(action: Dictionary) -> Dictionary:
 	return {"action":action.duplicate(true),"before":observation(),"after":observation(),"admission":{"accepted":true},
 		"native_receipt":{},"status":"completed","classification":"game_observation","error":"","duration_usec":10,
 		"capture_before":{},"capture_after":{},"interval":{}}
+
+func persistence_capture(observed: Dictionary, protected: bool = false) -> Dictionary:
+	var source: Dictionary = observed.native.duplicate(true)
+	source.paused = true
+	var result := {"region":[0,0,512,512],"admission":{"status":"queued","operation_id":17},
+		"source_before":source.duplicate(true),"source_after":source.duplicate(true),"native_receipt":{
+		"kind":"capture","status":"refused" if protected else "completed","backend":"CyberNativeCellWorld",
+		"operation_id":17,"generation":source.generation,"observed_generation":source.generation,
+		"revision":source.revision,"tick":source.tick,"region":[0,0,512,512],"applied":0,"changed":0}}
+	if protected:
+		result.error = "artificial protected capture fixture"
+		result.native_receipt.reason = "Move or remove the body before editing or copying its covered cells."
+	else:
+		result.material_sha256 = "a".repeat(64)
+		result.count = 512 * 512
+	return result
 
 func brush() -> Dictionary:
 	var row := record({"id":"brush","args":{"x":20,"y":20,"radius":1}})
@@ -63,9 +80,13 @@ func test_actions() -> void:
 		{"id":"camera","args":{"x":256,"y":256,"width":480,"height":135}},
 		{"id":"actor_select","args":{"actor_id":8}},{"id":"actor_drive","args":{"direction":"right","ticks":16}},
 		{"id":"panel","args":{"panel":"details","open":true}},
-		{"id":"save_layout","args":{}},{"id":"reopen_layout","args":{}},{"id":"reset_fixture","args":{}}]
+		{"id":"save_layout","args":{}},{"id":"reopen_layout","args":{}},{"id":"reset_fixture","args":{}},
+		{"id":"actor_place","args":{"model":"kestrel","x":32,"y":224}},
+		{"id":"actor_pilot","args":{"actor_id":8}},{"id":"actor_reset","args":{}},{"id":"single_step","args":{}}]
 	for action: Dictionary in actions:
 		check(Transcript.validate_action(action).ok,"finite action " + action.id)
+		var restored: Dictionary = JSON.parse_string(JSON.stringify(action))
+		check(Transcript.validate_action(restored).ok and Adapter.validate_action(restored).ok,"both readers admit JSON roundtrip " + action.id)
 		var extra: Dictionary = action.duplicate(true)
 		extra.args.path = "not-a-game-argument"
 		check(not Transcript.validate_action(extra).ok,"reject extra argument " + action.id)
@@ -77,8 +98,13 @@ func test_actions() -> void:
 		{"id":"rectangle","args":{"x0":8,"y0":8,"x1":72,"y1":9}},
 		{"id":"play","args":{"ticks":33}},{"id":"wait_ticks","args":{}},
 		{"id":"select_material","args":{"material":10}},{"id":"actor_select","args":{"actor_id":0}},
+		{"id":"select_material","args":{"material":2.5}},{"id":"select_material","args":{"material":true}},
+		{"id":"select_material","args":{"material":"2"}},
+		{"id":"camera","args":{"x":0,"y":0,"width":240.5,"height":135}},
+		{"id":"camera","args":{"x":0,"y":0,"width":true,"height":135}},
+		{"id":"camera","args":{"x":0,"y":0,"width":"240","height":135}},
 		{"id":"panel","args":{"panel":"details","open":1}},{"id":"pause","args":{},"goal":"x".repeat(241)}]:
-		check(not Transcript.validate_action(invalid).ok,"malformed action refused")
+		check(not Transcript.validate_action(invalid).ok and not Adapter.validate_action(invalid).ok,"both readers refuse malformed action")
 
 func test_observers() -> void:
 	var oracle := Assertions.new()
@@ -148,10 +174,65 @@ func test_observers() -> void:
 	reopen.persistence = {"native_material_equality_applicable":true,"saved_material_sha256":"native-start","reopened_material_sha256":"different"}
 	check(failed(oracle.evaluate(reopen),"authored_reopen_materials"),"wrong reopened native materials detected")
 	reopen.persistence.native_material_equality_applicable = false
-	check(not failed(oracle.evaluate(reopen)),"evolved state not claimed as authored persistence")
+	check(failed(oracle.evaluate(reopen),"reopen_material_na_evidence"),"invented material N/A at observed tick zero rejected")
+	save.before.native.tick = 1
+	save.after.native.tick = 1
+	oracle.evaluate(save)
+	reopen.persistence.native_material_equality_reason = "evolved_native_tick"
+	check(not failed(oracle.evaluate(reopen)),"actual observed evolved Save tick supports authored-only persistence")
 	var actor := record({"id":"actor_drive","args":{"direction":"up","ticks":4}})
 	actor.interval = {"start_actor_tick":3,"end_actor_tick":8}
 	check(failed(oracle.evaluate(actor),"actor_input_admission_observed"),"idle physics advancement cannot establish input delivery")
+
+func test_protected_persistence() -> void:
+	var save := record({"id":"save_layout","args":{}})
+	save.after.actor_ids = [1]
+	save.after.actors = [{"id":1,"observed":true,"model":"reference_barrel","position":[60,60],"linear_velocity":[0,0]}]
+	save.before = save.after.duplicate(true)
+	save.persistence_capture = persistence_capture(save.after, true)
+	save.persistence = {"read_authored_digest":"unit-start","saved_native_tick":0,"material_sha256":"",
+		"native_material_equality_applicable":false,"native_material_equality_reason":"native_body_protection"}
+	var reopen := record({"id":"reopen_layout","args":{}})
+	reopen.before = save.after.duplicate(true)
+	reopen.after = save.after.duplicate(true)
+	reopen.persistence_capture = persistence_capture(reopen.after, true)
+	reopen.persistence = {"saved_native_tick":0,"saved_capture":save.persistence_capture.duplicate(true),
+		"saved_material_sha256":"","reopened_material_sha256":"","native_material_equality_applicable":false,
+		"native_material_equality_reason":"native_body_protection"}
+	var oracle := Assertions.new()
+	check(not failed(oracle.evaluate(save)),"exact artificial native body refusal preserves authored Save")
+	check(not failed(oracle.evaluate(reopen)),"exact artificial body-protection evidence supports material N/A")
+	for mutation: String in ["missing_receipt","other_refusal","missing_actor","stale_source","wrong_operation","changed_cell","invented_reason"]:
+		var bad: Dictionary = reopen.duplicate(true)
+		match mutation:
+			"missing_receipt": bad.persistence_capture.native_receipt = {}
+			"other_refusal": bad.persistence_capture.native_receipt.reason = "Unrelated refusal."
+			"missing_actor": bad.after.actors = []; bad.after.actor_ids = []
+			"stale_source": bad.persistence_capture.source_after.revision = 99
+			"wrong_operation": bad.persistence_capture.admission.operation_id = 99
+			"changed_cell": bad.persistence_capture.native_receipt.changed = 1
+			"invented_reason": bad.persistence.native_material_equality_reason = "anything_else"
+		oracle.reset()
+		oracle.evaluate(save)
+		check(failed(oracle.evaluate(bad)),"artificial persistence inconsistency rejected: " + mutation)
+	var complete_save: Dictionary = save.duplicate(true)
+	complete_save.persistence_capture = persistence_capture(complete_save.after)
+	complete_save.persistence.material_sha256 = "a".repeat(64)
+	complete_save.persistence.native_material_equality_applicable = true
+	complete_save.persistence.native_material_equality_reason = "available"
+	var complete_reopen: Dictionary = reopen.duplicate(true)
+	complete_reopen.persistence_capture = persistence_capture(complete_reopen.after)
+	complete_reopen.persistence.saved_capture = complete_save.persistence_capture.duplicate(true)
+	complete_reopen.persistence.saved_material_sha256 = "a".repeat(64)
+	complete_reopen.persistence.reopened_material_sha256 = "a".repeat(64)
+	complete_reopen.persistence.native_material_equality_applicable = true
+	complete_reopen.persistence.native_material_equality_reason = "available"
+	oracle.reset()
+	check(not failed(oracle.evaluate(complete_save)) and not failed(oracle.evaluate(complete_reopen)),"complete observed capture digests establish exact material reopen")
+	complete_reopen.persistence_capture.material_sha256 = "b".repeat(64)
+	check(failed(oracle.evaluate(complete_reopen),"reopen_material_capture_identity"),"equal comparison strings cannot hide a different actual capture digest")
+	complete_save.persistence.material_sha256 = "b".repeat(64)
+	check(failed(oracle.evaluate(complete_save),"save_material_capture_identity"),"Save comparison digest must match its retained actual capture")
 
 func test_tape() -> void:
 	var oracle := Assertions.new()
@@ -195,6 +276,18 @@ func test_tape() -> void:
 	check(comparison.semantic_match and not comparison.exact_observation_match,"semantic replay distinct from exact timed observations")
 	timed.header.initial_scene_identity = "another-start"
 	check(not Transcript.compare(tape,timed).semantic_match,"replay pins initial scene")
+	var saved := record({"id":"save_layout","args":{}})
+	saved.persistence = {"material_sha256":"a".repeat(64),"native_material_equality_applicable":true}
+	var changed_save: Dictionary = saved.duplicate(true)
+	changed_save.persistence.material_sha256 = "b".repeat(64)
+	check(Transcript.semantic_projection(saved) != Transcript.semantic_projection(changed_save),"semantic replay includes full native persistence digest")
+	for malformed_capture: Variant in ["wrong", [], {"native_receipt":"wrong"}, {"admission":[]}, {"source_before":1}, {"source_after":false}]:
+		var malformed_row: Dictionary = row.duplicate(true)
+		malformed_row.persistence_capture = malformed_capture
+		var malformed_tape: Dictionary = Transcript.create(metadata())
+		Transcript.append(malformed_tape, malformed_row, oracle.evaluate(row))
+		Transcript.finish(malformed_tape, "completed")
+		check(not Transcript.validate(malformed_tape).ok,"malformed optional persistence metadata rejected after fingerprinting")
 	var tiny := metadata()
 	tiny.budget = 1
 	var bounded: Dictionary = Transcript.create(tiny)
@@ -203,6 +296,7 @@ func test_tape() -> void:
 func _initialize() -> void:
 	test_actions()
 	test_observers()
+	test_protected_persistence()
 	test_tape()
 	print("GOBLIN_CONTRACT_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"evidence_kind":"unit_fixture",
 		"deliberately_inconsistent_data":true,"native_gameplay_executed":false}))

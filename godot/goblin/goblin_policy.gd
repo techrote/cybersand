@@ -311,7 +311,14 @@ func _curiosity_goal(observation: Dictionary, legal_actions: Array) -> void:
 			_queue.append(target.duplicate(true))
 			_step("undo")
 			_step("redo")
-		"actor_select", "actor_drive", "actor_pilot":
+		"actor_select":
+			# Passive objects are still selectable. Inspect the concrete legal
+			# target without requiring a movement capability or inventing a pilot.
+			_step("pause")
+			_queue.append(target.duplicate(true))
+			_step("panel", {"panel":"details", "open":true})
+			_step("panel", {"panel":"details", "open":false})
+		"actor_drive", "actor_pilot":
 			var actors: Array = _actor_ids(observation)
 			if not actors.is_empty():
 				var actor_id := int(actors[_rng.randi_range(0, actors.size() - 1)])

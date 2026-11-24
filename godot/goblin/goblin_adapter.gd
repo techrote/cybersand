@@ -10,6 +10,7 @@ const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const SAVE_NAME := "goblin-layout"
 const PROFILE_SCHEMA := "cybersand-goblin-profile-v1"
+const BODY_CAPTURE_REFUSAL := "Move or remove the body before editing or copying its covered cells."
 const MATERIALS := [0, 2, 3, 7, 58]
 const ACTION_IDS := ["pause", "play", "wait_ticks", "select_material", "brush", "erase",
 	"rectangle", "outline", "line", "select_region", "copy", "paste", "undo", "redo",
@@ -55,6 +56,7 @@ var _held_keys: Array[int] = []
 var _saved_authored_digest := ""
 var _saved_material_digest := ""
 var _saved_native_tick := -1
+var _saved_capture: Dictionary = {}
 var _last_edit_region := Rect2i(32, 32, 64, 64)
 
 static func _integer(value: Variant, low: int, high: int) -> bool:
@@ -95,7 +97,8 @@ static func validate_action(action: Variant) -> Dictionary:
 				return {"ok": false, "error": "shape exceeds 64 by 64 cells"}
 		"camera":
 			if not _integer(args.x, 0, 256) or not _integer(args.y, 0, 256) \
-				or args.width not in [240, 480] or args.height not in [135, 270]:
+				or not _integer(args.width, 240, 480) or not _integer(args.height, 135, 270) \
+				or int(args.width) not in [240, 480] or int(args.height) not in [135, 270]:
 				return {"ok": false, "error": "camera outside bounded views"}
 		"actor_select", "actor_pilot":
 			if not _integer(args.actor_id, 1, 8): return {"ok": false, "error": "actor id outside 1..8"}
@@ -213,6 +216,7 @@ func install_fixture(id: String, data: Dictionary, admission_row: Dictionary = {
 	_saved_authored_digest = ""
 	_saved_material_digest = ""
 	_saved_native_tick = -1
+	_saved_capture.clear()
 	_last_edit_region = Rect2i(32, 32, 64, 64)
 	return {"ok": true, "observation": observe(), "native_receipt": json_value(host.tower_context.get("liquid_construction_receipt", {}))}
 
@@ -336,11 +340,11 @@ func execute(action: Dictionary) -> Dictionary:
 	if id == "copy" and editor.selection.has_area():
 		row.capture_before = await capture(editor.selection)
 		if row.capture_before.has("error"):
-			return _finish(row, started, "refused", "adapter_failure", row.capture_before.error)
+			return _finish(row, started, "refused", _capture_failure_classification(row.capture_before), row.capture_before.error)
 	if id in EDIT_IDS and region.has_area():
 		row.capture_before = await capture(region)
 		if row.capture_before.has("error"):
-			return _finish(row, started, "refused", "adapter_failure", row.capture_before.error)
+			return _finish(row, started, "refused", _capture_failure_classification(row.capture_before), row.capture_before.error)
 	if stopped: return _finish(row, started, "refused", "cancelled", "Stop requested before game action submission")
 	if id == "fill" and region.has_area():
 		var bounded: Dictionary = Shapes.fill_connected(Vector2i(int(args.x), int(args.y)),
@@ -526,7 +530,12 @@ func execute(action: Dictionary) -> Dictionary:
 			_admit(row, {"accepted": true})
 		"save_layout":
 			var material: Dictionary = await capture(Rect2i(0, 0, 512, 512), false)
-			if material.has("error"): return _finish(row, started, "refused", "adapter_failure", material.error)
+			row["persistence_capture"] = material.duplicate(true)
+			# The ordinary capture API protects body-covered cells. Authored Save
+			# remains a supported normal operation, so only this exact observed
+			# refusal makes the optional full-layout material comparison N/A.
+			if material.has("error") and not _body_protected_capture(material):
+				return _finish(row, started, "refused", _capture_failure_classification(material), material.error)
 			bench._name.text = SAVE_NAME
 			var accepted: bool = bench.save_setup()
 			_admit(row, {"accepted": accepted})
@@ -534,11 +543,14 @@ func execute(action: Dictionary) -> Dictionary:
 			var saved: Dictionary = Setup.read_named(SAVE_NAME)
 			if saved.has("error"): return _finish(row, started, "partial", "adapter_failure", saved.error)
 			_saved_authored_digest = digest(saved.setup)
-			_saved_material_digest = str(material.material_sha256)
+			_saved_material_digest = str(material.get("material_sha256", ""))
 			_saved_native_tick = int(worker.paint_state().get("tick", -1))
+			_saved_capture = material.duplicate(true)
+			var comparison: bool = _saved_native_tick == 0 and not material.has("error")
 			row["persistence"] = {"name": SAVE_NAME, "read_authored_digest": _saved_authored_digest,
 				"material_sha256": _saved_material_digest, "saved_native_tick": _saved_native_tick,
-				"native_material_equality_applicable": _saved_native_tick == 0,
+				"native_material_equality_applicable": comparison,
+				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(material) else "evolved_native_tick"),
 				"semantics": "authored start, not evolved simulation"}
 		"reopen_layout":
 			if _saved_authored_digest.is_empty(): return _finish(row, started, "refused", "not_applicable", "no layout saved in this campaign")
@@ -553,12 +565,17 @@ func execute(action: Dictionary) -> Dictionary:
 				row["native_attempt"] = json_value(host.tower_context.get("liquid_construction_attempt", {}))
 				return _finish(row, started, "refused", "game_observation", str(host.microscenario_error))
 			var material: Dictionary = await capture(Rect2i(0, 0, 512, 512), false)
+			row["persistence_capture"] = material.duplicate(true)
+			var comparison: bool = _saved_native_tick == 0 and not _saved_material_digest.is_empty() and not material.has("error")
 			row["persistence"] = {"name": SAVE_NAME, "expected_authored_digest": _saved_authored_digest,
 				"reopened_authored_digest": digest(bench.applied), "saved_material_sha256": _saved_material_digest,
 				"reopened_material_sha256": material.get("material_sha256", ""),
-				"saved_native_tick": _saved_native_tick, "native_material_equality_applicable": _saved_native_tick == 0,
+				"saved_native_tick": _saved_native_tick, "saved_capture": _saved_capture.duplicate(true),
+				"native_material_equality_applicable": comparison,
+				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(_saved_capture) or _body_protected_capture(material) else "evolved_native_tick"),
 				"semantics": "authored start, not evolved simulation"}
-			if material.has("error"): return _finish(row, started, "partial", "adapter_failure", material.error)
+			if material.has("error") and not _body_protected_capture(material):
+				return _finish(row, started, "partial", _capture_failure_classification(material), material.error)
 		"reset_fixture":
 			var result: Dictionary = await install_fixture(fixture_id, fixture_data.duplicate(true), row)
 			if not result.get("ok", false):
@@ -571,7 +588,8 @@ func execute(action: Dictionary) -> Dictionary:
 			return _finish(row, started, "partial" if int(terminal.get("applied", 0)) > 0 else "refused",
 				"cancelled" if stopped else "game_observation", str(terminal.get("error", terminal.get("reason", receipt_status))))
 		row.capture_after = await capture(region)
-		if row.capture_after.has("error"): return _finish(row, started, "partial", "adapter_failure", row.capture_after.error)
+		if row.capture_after.has("error"):
+			return _finish(row, started, "partial", _capture_failure_classification(row.capture_after), row.capture_after.error)
 		if id not in ["undo", "redo"]: _last_edit_region = region
 	if stopped: return _finish(row, started, "partial", "cancelled", "Stop requested")
 	return _finish(row, started, "completed", "game_observation", "")
@@ -603,27 +621,76 @@ func capture(region: Rect2i, include_materials: bool = true) -> Dictionary:
 	if worker == null or editor == null or not host.paused or editor.busy(): return {"error": "capture requires an idle paused native owner"}
 	if region.size.x <= 0 or region.size.y <= 0 or not Rect2i(0, 0, 512, 512).encloses(region):
 		return {"error": "capture region outside the fixture"}
-	var state: Dictionary = worker.paint_state()
+	var state: Dictionary = _capture_source()
 	var admission: Dictionary = worker.paint_queue({"kind": "capture", "region": region,
 		"expected_generation": int(state.generation), "expected_revision": int(state.revision), "expected_tick": int(state.tick)})
-	if admission.get("status", "") != "queued": return {"error": "native capture refused", "admission": json_value(admission)}
+	var result := {"region": json_value(region), "admission": json_value(admission), "native_receipt": {},
+		"source_before": json_value(state), "source_after": {}}
+	if admission.get("status", "") != "queued":
+		result.source_after = _capture_source()
+		result.error = "native capture refused"
+		return result
 	if not await _until(func() -> bool: return worker.paint_state().get("receipt_ready", false), "operation_seconds", true):
-		return {"error": last_error, "admission": json_value(admission)}
+		result.source_after = _capture_source()
+		result.error = last_error
+		result.wait_failure_classification = _wait_failure_classification()
+		return result
 	var receipt: Dictionary = worker.paint_take_result()
+	result.source_after = _capture_source()
+	var metadata: Dictionary = receipt.duplicate()
+	metadata.erase("materials")
+	result.native_receipt = json_value(metadata)
+	var same_operation: bool = int(receipt.get("operation_id", -1)) == int(admission.operation_id) \
+		and int(receipt.get("generation", -1)) == int(state.generation) \
+		and int(receipt.get("observed_generation", -1)) == int(state.generation) \
+		and int(receipt.get("revision", -1)) == int(state.revision) \
+		and int(receipt.get("tick", -1)) == int(state.tick)
+	result["source_matches"] = same_operation
+	if not same_operation:
+		result.error = "native capture receipt belongs to a different operation or source"
+		return result
 	if receipt.get("status", "") != "completed" or receipt.get("kind", "") != "capture":
-		return {"error": "native capture did not complete", "native_receipt": json_value(receipt)}
+		result.error = "native capture did not complete: " + str(receipt.get("reason", receipt.get("status", "missing receipt")))
+		return result
 	var materials: PackedInt32Array = receipt.get("materials", PackedInt32Array())
-	if materials.size() != region.get_area(): return {"error": "native capture size differs from requested region"}
+	if materials.size() != region.get_area():
+		result.error = "native capture size differs from requested region"
+		result.received_count = materials.size()
+		return result
 	var hash := HashingContext.new()
 	hash.start(HashingContext.HASH_SHA256)
 	hash.update(materials.to_byte_array())
-	var metadata: Dictionary = receipt.duplicate()
-	metadata.erase("materials")
-	var result := {"region": json_value(region), "material_sha256": hash.finish().hex_encode(), "count": materials.size(),
-		"native_receipt": json_value(metadata), "admission": json_value(admission)}
+	result.material_sha256 = hash.finish().hex_encode()
+	result.count = materials.size()
 	if include_materials: result["materials"] = Array(materials)
 	last_capture = result.duplicate(true)
 	return result
+
+func _capture_source() -> Dictionary:
+	var state: Dictionary = worker.paint_state()
+	return {"generation": state.get("generation"), "revision": state.get("revision"), "tick": state.get("tick"),
+		"paused": state.get("paused"), "failed": worker.has_failed()}
+
+static func _body_protected_capture(captured: Dictionary) -> bool:
+	var receipt: Dictionary = captured.get("native_receipt", {})
+	var admission: Dictionary = captured.get("admission", {})
+	var before: Dictionary = captured.get("source_before", {})
+	var after: Dictionary = captured.get("source_after", {})
+	return captured.has("error") and captured.get("source_matches", false) \
+		and before.get("paused") == true and before.get("failed") == false \
+		and after.get("paused") == true and after.get("failed") == false and before == after \
+		and admission.get("status", "") == "queued" \
+		and receipt.get("operation_id", -1) == admission.get("operation_id", -2) \
+		and receipt.get("backend", "") == "CyberNativeCellWorld" \
+		and receipt.get("kind", "") == "capture" and receipt.get("status", "") == "refused" \
+		and receipt.get("reason", "") == BODY_CAPTURE_REFUSAL \
+		and int(receipt.get("applied", -1)) == 0 and int(receipt.get("changed", -1)) == 0 \
+		and receipt.get("generation", -1) == receipt.get("observed_generation", -2)
+
+static func _capture_failure_classification(captured: Dictionary) -> String:
+	var wait_failure: String = str(captured.get("wait_failure_classification", ""))
+	if wait_failure in ["timeout", "cancelled", "native_failure"]: return wait_failure
+	return "not_applicable" if _body_protected_capture(captured) else "adapter_failure"
 
 func _action_region(action: Dictionary) -> Rect2i:
 	var id: String = action.id

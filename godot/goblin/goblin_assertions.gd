@@ -8,6 +8,9 @@ var _undo: Array[Dictionary] = []
 var _redo: Array[Dictionary] = []
 var _clipboard: Dictionary = {}
 var _saved_identity: String = ""
+var _saved_native_tick := -1
+var _saved_capture: Dictionary = {}
+var _saved_observation: Dictionary = {}
 var _last_native: Dictionary = {}
 
 
@@ -16,6 +19,9 @@ func reset() -> void:
 	_redo.clear()
 	_clipboard.clear()
 	_saved_identity = ""
+	_saved_native_tick = -1
+	_saved_capture.clear()
+	_saved_observation.clear()
 	_last_native.clear()
 
 
@@ -72,6 +78,37 @@ static func _capture_matches(capture: Dictionary, native: Dictionary) -> bool:
 		if not _integer(receipt.get(key)) or receipt[key] != native.get(key): return false
 	return receipt.get("observed_generation") == native.get("generation") \
 		and _same(receipt.get("region"), capture.get("region"))
+
+
+static func _persistence_capture_state(capture: Dictionary, observation: Dictionary) -> String:
+	# A whole-layout capture can be unavailable where a real body protects its
+	# covered cells. Only this exact observed refusal admits that limitation.
+	for key: String in ["native_receipt", "admission", "source_before", "source_after"]:
+		if not capture.get(key, {}) is Dictionary: return "invalid"
+	if not observation.get("native", {}) is Dictionary or not observation.get("actor_ids", []) is Array \
+		or not observation.get("actors", []) is Array: return "invalid"
+	var receipt: Dictionary = capture.get("native_receipt", {})
+	var admission: Dictionary = capture.get("admission", {})
+	var source_before: Dictionary = capture.get("source_before", {})
+	var source_after: Dictionary = capture.get("source_after", {})
+	var native: Dictionary = observation.get("native", {})
+	if not _same(capture.get("region"), [0, 0, 512, 512]) or not _capture_matches(capture, native): return "invalid"
+	if receipt.get("kind") != "capture" or receipt.get("backend") != "CyberNativeCellWorld": return "invalid"
+	if admission.get("status") != "queued" or not _integer(admission.get("operation_id")) \
+		or receipt.get("operation_id") != admission.get("operation_id"): return "invalid"
+	for source: Dictionary in [source_before, source_after]:
+		if source.get("paused") != true or source.get("failed") != false: return "invalid"
+		for key: String in ["generation", "revision", "tick"]:
+			if not _integer(source.get(key)) or source.get(key) != native.get(key): return "invalid"
+	if observation.get("paused") != true or native.get("failed") != false: return "invalid"
+	if receipt.get("status") == "completed" and not capture.has("error") \
+		and capture.get("count") == 512 * 512 and str(capture.get("material_sha256", "")).length() == 64: return "completed"
+	if receipt.get("status") != "refused" or receipt.get("reason") != "Move or remove the body before editing or copying its covered cells." \
+		or receipt.get("applied") != 0 or receipt.get("changed") != 0 or not capture.has("error"): return "invalid"
+	var actor_ids: Array = observation.get("actor_ids", [])
+	for actor: Variant in observation.get("actors", []):
+		if actor is Dictionary and actor.get("observed") == true and actor.get("id") in actor_ids: return "native_body_protection"
+	return "invalid"
 
 
 static func _native_valid(native: Dictionary) -> bool:
@@ -433,10 +470,23 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 				if released_ports.get(port, false) != false: ports_neutral = false
 			_assert(rows, "actor_ports_released", ports_neutral, "released Q/E/S/boost", released_ports)
 		"save_layout":
-			var saved: String = str(record.get("persistence", {}).get("read_authored_digest", ""))
+			var persistence: Dictionary = record.get("persistence", {})
+			var saved: String = str(persistence.get("read_authored_digest", ""))
 			var current: String = str(after.get("authored_digest", ""))
 			_assert(rows, "authored_save_readback", not current.is_empty() and saved == current, current, saved)
-			if not current.is_empty() and saved == current: _saved_identity = saved
+			if not current.is_empty() and saved == current:
+				_saved_identity = saved
+				_saved_native_tick = int(last_native.tick)
+				_saved_capture = record.get("persistence_capture", {}).duplicate(true)
+				_saved_observation = after.duplicate(true)
+			if record.has("persistence_capture"):
+				var capture_state: String = _persistence_capture_state(_saved_capture, after)
+				_assert(rows, "save_capture_evidence", capture_state != "invalid", "completed capture or exact observed body protection", capture_state, "evidence")
+				_assert(rows, "save_native_tick_identity", persistence.get("saved_native_tick") == last_native.tick, last_native.tick, persistence.get("saved_native_tick"), "evidence")
+				_assert(rows, "save_material_capture_identity", persistence.get("material_sha256", "") == _saved_capture.get("material_sha256", ""),
+					_saved_capture.get("material_sha256", ""), persistence.get("material_sha256", ""), "evidence")
+				_assert(rows, "save_material_applicability", persistence.get("native_material_equality_applicable") == (_saved_native_tick == 0 and capture_state == "completed"),
+					_saved_native_tick == 0 and capture_state == "completed", persistence.get("native_material_equality_applicable"), "evidence")
 		"reopen_layout":
 			if _saved_identity.is_empty():
 				_unavailable(rows, "authored_reopen_identity", "No independently observed Save in this tape.")
@@ -444,12 +494,30 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 				_assert(rows, "authored_reopen_identity", after.get("authored_digest") == _saved_identity,
 					_saved_identity, after.get("authored_digest"))
 			var persistence: Dictionary = record.get("persistence", {})
+			var saved_state: String = _persistence_capture_state(_saved_capture, _saved_observation) if not _saved_capture.is_empty() else "unrecorded"
+			var current_capture: Dictionary = record.get("persistence_capture", {})
+			var current_state: String = _persistence_capture_state(current_capture, after) if record.has("persistence_capture") else "unrecorded"
+			var capture_custody := true
+			if record.has("persistence_capture"):
+				capture_custody = saved_state in ["completed", "native_body_protection"] and current_state in ["completed", "native_body_protection"] \
+					and _same(persistence.get("saved_capture"), _saved_capture) and persistence.get("saved_native_tick") == _saved_native_tick
+				_assert(rows, "reopen_capture_evidence", capture_custody, "current native capture and exact previously observed Save capture", {"saved": saved_state, "current": current_state}, "evidence")
+				_assert(rows, "reopen_material_capture_identity", persistence.get("saved_material_sha256", "") == _saved_capture.get("material_sha256", "") \
+					and persistence.get("reopened_material_sha256", "") == current_capture.get("material_sha256", ""),
+					{"saved": _saved_capture.get("material_sha256", ""), "current": current_capture.get("material_sha256", "")},
+					{"saved": persistence.get("saved_material_sha256", ""), "current": persistence.get("reopened_material_sha256", "")}, "evidence")
 			if persistence.get("native_material_equality_applicable", false):
-				_assert(rows, "authored_reopen_materials", not str(persistence.get("saved_material_sha256", "")).is_empty() \
-					and persistence.get("saved_material_sha256") == persistence.get("reopened_material_sha256"),
-					persistence.get("saved_material_sha256"), persistence.get("reopened_material_sha256"))
+				_assert(rows, "reopen_material_applicability", _saved_native_tick == 0 and (not record.has("persistence_capture") \
+					or (capture_custody and saved_state == "completed" and current_state == "completed")), "captured authored native state at tick zero", _saved_native_tick, "evidence")
+				var expected_materials: String = str(_saved_capture.get("material_sha256", "")) if record.has("persistence_capture") else str(persistence.get("saved_material_sha256", ""))
+				var actual_materials: String = str(current_capture.get("material_sha256", "")) if record.has("persistence_capture") else str(persistence.get("reopened_material_sha256", ""))
+				_assert(rows, "authored_reopen_materials", not expected_materials.is_empty() and expected_materials == actual_materials, expected_materials, actual_materials)
 			else:
-				_unavailable(rows, "authored_reopen_materials", "Authored starts do not restore evolved material state.")
+				var reason: String = str(persistence.get("native_material_equality_reason", ""))
+				var justified: bool = (_saved_native_tick > 0 and reason in ["", "evolved_native_tick"] and capture_custody) \
+					or (reason == "native_body_protection" and capture_custody and (saved_state == "native_body_protection" or current_state == "native_body_protection"))
+				_assert(rows, "reopen_material_na_evidence", justified, "observed evolved Save tick or exact native body-protection refusal", {"reason": reason, "saved_tick": _saved_native_tick, "saved_capture": saved_state, "current_capture": current_state}, "evidence")
+				if justified: _unavailable(rows, "authored_reopen_materials", "Native body protection prevents full capture." if reason == "native_body_protection" else "Authored starts do not restore evolved material state.")
 			_undo.clear()
 			_redo.clear()
 			_clipboard.clear()
@@ -463,6 +531,10 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 			_undo.clear()
 			_redo.clear()
 			_clipboard.clear()
+			_saved_identity = ""
+			_saved_native_tick = -1
+			_saved_capture.clear()
+			_saved_observation.clear()
 	var actor_ids := {}
 	for actor: Dictionary in after.get("actors", []):
 		var actor_id: Variant = actor.get("id")
