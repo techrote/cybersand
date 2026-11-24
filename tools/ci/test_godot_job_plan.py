@@ -2,6 +2,7 @@
 
 from collections import Counter
 import copy
+import math
 from pathlib import Path
 import re
 import unittest
@@ -21,11 +22,12 @@ class HostedBudgetTests(unittest.TestCase):
             with self.subTest(platform=platform):
                 self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
                                  Counter(case.name for case in cases))
-                self.assertGreaterEqual(result["shard_count"], 12)
-                self.assertLessEqual(result["shard_count"], 24)
+                self.assertGreaterEqual(result["shard_count"], math.ceil(len(cases) / 16))
+                self.assertLessEqual(result["shard_count"], min(len(cases), 256))
                 self.assertLessEqual(result["job_minutes"], 360)
                 for shard in result["shards"]:
                     self.assertTrue(shard["cases"])
+                    self.assertLessEqual(len(shard["cases"]), 16)
                     self.assertLessEqual(shard["largest_case_allowance_seconds"] + result["import_with_cleanup_seconds"]
                         + result["metadata_seconds"], result["execution_seconds"])
                     self.assertFalse(shard["watchdog_sum_is_execution_deadline"])
@@ -33,6 +35,16 @@ class HostedBudgetTests(unittest.TestCase):
                                    result["execution_seconds"], "Planning must not sum exceptional watchdog ceilings")
                 self.assertLessEqual(result["execution_minutes"] * 60 + result["setup_artifact_seconds"]
                     + result["aggregate_headroom_seconds"], result["job_minutes"] * 60)
+
+    def test_inventory_growth_beyond_24_shards_keeps_cases_and_allowances(self):
+        cases = [runner.Case("cheap" + str(i), (), 1200, 15) for i in range(400)]
+        result = subject.plan(cases, platform="linux")
+        self.assertEqual(result["shard_count"], 25)
+        self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
+                         Counter(case.name for case in cases))
+        for shard in result["shards"]:
+            self.assertEqual(len(shard["cases"]), 16)
+            self.assertTrue(all(row["timeout_seconds"] == 1200 for row in shard["cases"]))
 
     def test_cannot_shorten_a_child_to_fit_a_small_parent(self):
         huge = runner.Case("large", (), 21600, 1)
