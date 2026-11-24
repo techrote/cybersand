@@ -4,11 +4,16 @@ status: Current
 document-kind: contract
 scope: Original SetA Runner, Skimmer and Crawler motors and version-1 policy compatibility; the actor-rigs contract owns additional sets and version-2 actions
 canonical-for: [actor-control-prototypes, actor-policy-input-v1]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-24
 related-documents: [actor-rigs.md, granular-interaction-policy.md, player-environment-profiles-and-traversal.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # SetA actor controls and legacy policy compatibility
+
+This is the retained **sampled** SetA contract. Runner, Skimmer and Crawler also
+have distinct [articulated Rapier counterparts](physical-actor-rigs.md), including
+the versions offered by ordinary Workbench Actor Composition. A shared display
+name does not make their motors, body ownership or command envelopes identical.
 
 ## What is being prototyped?
 
@@ -58,14 +63,23 @@ an unsupported material structure load-bearing.
 
 ## How are the prototypes selected and controlled?
 
-**Current desktop controls:** open the actor selector with **F5** in the ordinary
-sandbox or exploratory showcase map and choose **SetA**. Select the **Sampled** baseline, **Runner**,
-**Skimmer** or **Crawler**; choose **Pilot: keyboard**, **Pilot: scripted demonstration** or
+**Current desktop controls:** choose **Actor sandbox** in the feature launcher,
+or open **F5** in an ordinary sandbox or supported exploratory showcase map.
+Choose **setA**, then explicitly select **Sampled — Runner**, **Sampled — Skimmer**
+or **Sampled — Crawler** for this contract. **Sampled — baseline character (runtime
+surfacing)** instead leaves the prototype session. Selecting a set initially
+highlights its articulated Rapier entry, whose mechanics belong to the separate
+physical contract. Choose **Pilot: keyboard**, **Pilot: scripted demonstration** or
 **Pilot: external policy input**. Two optional demonstration NPCs allow a
 small simultaneous comparison. Applying restores the selected map
 or sandbox at the owner boundary. The [physical actor programme](../operations/physical-actor-programme.md)
 describes the separate Rapier choices, protected apparatus and per-request map
 installation acknowledgements.
+
+Shared Workbench uses [Actor Composition](../operations/workbench-actor-composition.md)
+and does not open this sampled selector through F5. The exact ordinary picker
+labels and defaults are in
+[`actor_prototype_panel.gd::_populate_models`](../../godot/scripts/actor_prototype_panel.gd).
 
 The worker's `queue_actor_prototype_reset(definitions, spawn_position)` returns
 zero for immediate refusal or a positive request receipt for queued admission.

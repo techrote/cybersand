@@ -157,6 +157,8 @@ added or removed with the ordinary X/Y authoring controls and saved with the sta
   receipt lifetimes; this apparatus is not an additional actor loadout item.
   A future agent client still needs its own integration. The authored block and
   copied command/receipt interface supply the current join points.
-- The pre-implementation #361 source-admission lock (`in_tools_current_main_admission.py`)
-  pins `simulation_worker.gd`; this implementation changes that one authority
-  additively, so the lock reports drift by design. It was not repinned or weakened.
+- At the original #553 checkpoint, the pre-implementation #361 source-admission
+  lock (`in_tools_current_main_admission.py`) reported the additive
+  `simulation_worker.gd` change. That is a historical comparison, not a claim
+  that the worker is the only changed authority at today's source. This
+  documentation does not repin or weaken the retained admission lock.

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: MS-000 schema 1 and compatible MS-001 schema 2 definitions, bounded owner lifecycle, shared modes, inspection and fresh-reset comparisons; not physics architecture or full replay
 canonical-for: [microscenario-contract, microscenario-host, microscenario-capture]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-11-24
 related-documents: [microscenarios-programme.md, experiment-tower.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/level-saves-and-replay.md, ../audits/2026-09-19-issue-27-microscenarios.md]
 ---
 
@@ -26,10 +26,14 @@ objective logic without Water-specific scene scripts. The unequal-head fixture i
 #26-style apparatus, **not** a registered #26 baseline, candidate or accepted fix.
 The Sand fixture establishes a non-Water consumer.
 
-The [programme](microscenarios-programme.md) still owns ordering. #27 does not
-admit #18 compact motion, #20 sparse ballistics, #29 interaction tuning or
-#14/G-final. No #20-style ballistic event is implemented while its admission is
-held. The host is useful to exploratory #28 authoring; the separately evidenced
+The [programme](microscenarios-programme.md) owns its dependency order. The
+original #27 host extraction did not admit #18 compact motion, #20 sparse
+ballistics, #29 interaction tuning or #14/G-final. Those September scope limits
+are not a present statement that all ballistic motion is absent:
+[accepted ballistic Water](../architecture/ballistic-water-v1.md) has its own
+bounded native contract. Its presence does not grant a new generic #20 model or
+change the MicroScenario programme's admission authority. The host supports
+exploratory #28 authoring; the separately evidenced
 [MS-001 reference pack](microscenario-reference-pack.md) owns the #28 Materials Laboratory readiness checkpoint plus the exploratory Flood-Control and Simulation Stress scenarios.
 
 [Validation](../audits/2026-09-19-issue-27-microscenarios.md) distinguishes Linux
@@ -67,7 +71,7 @@ All root fields are required:
 | Fields | Meaning |
 |---|---|
 | `schema_version`, `id`, `recipe_version`, `seed`, `maturity` | Schema 1 or 2; stable ID; positive recipe version; 0..2147483647 seed; `exploratory` or existing `reference` baseline |
-| `rectangles` | Flat setup records `x,y,width,height,material`; current IDs 0..80 except reserved 10 |
+| `rectangles` | Flat setup records `x,y,width,height,material`; current IDs 0..131 except reserved 10 |
 | `partial_water_fills` | Flat records `x,y,width,height,normalized_mass,coherence`; existing fractional Water setup, not a generalized fractional-liquid solver |
 | `transport_profile`, `water_semantics` | Existing validated transport profile and native Water packet `[1,mass_bits,coherence_ticks,0]`; mass3..8, coherence0..12 |
 | `player_start`, `camera_origin`, `player_enabled`, `body_enabled`, `tools` | Initial positions, existing character/body participation and admitted `paint`, `erase`, `player` tools; no new entity system |
@@ -76,13 +80,24 @@ All root fields are required:
 | `source_recipe`, `source_recipe_hash` | Ancestral recipe identity, distinct from the canonical full definition hash and actual runtime identity |
 | `presentation` (schema 2 only) | Required bounded title/instructions/duration/baseline/profile/region metadata; forbidden in schema 1 |
 
-The finite demo world remains 1024 by 1024. Rectangles/fills must be wholly inside
-it, with positive dimensions. Limits are 4096 records per setup array; total
+Ordinary MicroScenario definitions use the finite 1024 by 1024 frame.
+Rectangles/fills must be wholly inside it, with positive dimensions. Limits are
+4096 records per setup array; total
 rectangle write area at most eight world areas and partial-Water area at most one
 world area. Overlaps are intentional, ordered setup writes, not extra capacity.
 JSON is limited to 1 MiB. Seeds select the declared deterministic recipe; they do
 not introduce a new global random-number generator. Legacy Tower supports seed
 zero only; legacy Water seed semantics remain unchanged.
+
+**Reserved Workbench extension:** only `id: workbench/blank` admits the extra
+schema-2 `extent` field and the separate 32,768-rectangle bound. The low-level
+contract accepts independent 256–2048 axes aligned to 64 cells; the ordinary
+[Workbench setup](../architecture/shared-workbench-authoring-data.md) adds its
+stricter 512–2048 authoring range. Partial fills retain the ordinary 4,096-record
+limit and the JSON limit remains 1 MiB. This special host path does not enlarge
+controlled scenario budgets or make arbitrary extra schema fields legal. Inspect
+[`microscenario_contract.gd::validate/_records`](../../godot/scripts/microscenario_contract.gd)
+for the exact consumer boundary.
 
 ### Region and execution policy
 

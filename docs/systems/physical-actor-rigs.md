@@ -2,9 +2,9 @@
 title: Articulated Rapier actors and shared physical control
 status: Current
 document-kind: contract
-scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
+scope: Accepted experimental articulated roster, ordinary sandbox and Shared Workbench admission, ACT-005 equipment and SetP movement; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-24
 related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -48,7 +48,7 @@ preparation, still within eight parts. Held and released equipment keeps its
 coupling slot for the lifetime of the actor session.
 
 The [4LY free-flight family](physical-free-flight.md) now adds an ordinary
-**F5 → set4LY** selection family with four candidate profiles: Trainer, Hauler,
+**F5 → set4LY** selection family with four implemented experimental profiles: Trainer, Hauler,
 Drifter and Dart. Original `RIG_IDS` remains exactly 46 and SetP keeps its
 existing index; this ninth selection set is additive. All drones share one
 physical single-rectangle controller/actuator, with no joints, mounts or
@@ -57,10 +57,29 @@ chassis. They differ in authored numeric handling parameters, **not** controller
 logic. The 4LY velocity profile strictly admits two world-frame move outputs,
 with neutral braking/hover while a lease is live; this does not alter legacy
 physical controls, actor IDs or sampled reference meanings. Measured acceptance
-is distinct from selectable candidate source.
+is distinct from selectable source.
+
+Accepted Shared Workbench actor composition has a broader chooser: the 46
+articulated rig IDs, eight Fleet entries, one passive barrel and four 4LY drones
+give **59 entries**. This is a different count from `RIG_IDS`; equipment, control
+and coupling capabilities are declared per entry rather than inferred from the
+total. Source is
+[`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd).
+The later Actor Compose finisher (#762) remains an unmerged candidate and does
+not redefine the accepted catalogue.
 
 ## How do I select and control them?
 
+In Shared Workbench, open **Actor Composition…**, place or inspect an actor,
+then choose **Pilot inspected** for human control. The accepted composition
+contract admits at most eight actors, eight parts per actor and 64 body proxies
+overall. The [practical actor guide](../operations/workbench-actor-composition.md)
+and [composition contract](workbench-actor-composition.md) cover preparation,
+placement, producer ownership and capability refusals. Workbench equipment uses
+the [M / Alt controls](actor-usables.md#shared-workbench), leaving the paint
+pointer with PAINT.
+
+The following F5 route belongs to the ordinary sandbox and standalone scenes.
 F5 in the ordinary sandbox, Blacksite Nine and the four showcase districts
 selects a representation, set, actor and keyboard, scripted-demo or external
 policy producer. Physical Rapier choices are the default actor route. Applying

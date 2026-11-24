@@ -2,15 +2,38 @@
 title: Issue 12 Stage 3B production implementation plan
 status: Approved design
 document-kind: runbook
-scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
+scope: Retained Stage-3B dependency and validation contract, current accepted discovery boundary and separately qualified September checkpoints; no automatic branch or campaign authorization
 canonical-for: [soliding-stage3b-production-plan]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-11-24
 related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
 # Issue 12 Stage 3B production implementation plan
 
+## Current applicability and remaining work
+
+At accepted source `00cdb02f` (24 November 2026), opt-in World discovery,
+producer witnesses and bounded connectivity are implemented. Native cells retain
+material authority; this does not enable acceleration, aggregate ownership or
+fracture. The [current discovery contract](../systems/settled-region-discovery.md)
+owns those source interfaces and the [lifecycle](../architecture/soliding-lifecycle.md)
+separates them from its standalone transfer model.
+
+Live issue intake on 24 November found #60–#65 and #69 closed, while
+[#66](https://github.com/techrote/cybersand/issues/66),
+[#67](https://github.com/techrote/cybersand/issues/67),
+[#68](https://github.com/techrote/cybersand/issues/68) and
+[#70](https://github.com/techrote/cybersand/issues/70) remain open.
+The dependency order below is retained. A dependency-ready task is not an
+instruction to resume a historical branch, claim fresh runtime qualification or
+self-admit the parent programme. Consult the [current handover](cybersand-codex-development-handover.md)
+and actual write ownership before a new assignment. Active ObjectShard work has
+its own candidate boundary; it is not silently admitted through this plan.
+
 ## Current base and boundaries
+
+**Original September production decomposition.** The hashes and source-change
+observations in this section identify that checkpoint, not today's main SHA.
 
 Production decomposition is approved from `main`
 `35d03001257e0e2a3f60fa7ce6c9f6774c93e9d7`, the same head inspected by the
@@ -28,6 +51,10 @@ authoritative interaction mutations; it does not duplicate INT-000 semantics.
 Recheck current ownership before the later central World producer handoffs.
 
 ## Live execution checkpoint — 2026-09-24
+
+**Historical qualification checkpoint.** “Live” is the retained bookmark/title
+of this dated record; its successful jobs and published runtimes are not reruns
+against the documentation programme's accepted source.
 
 The recovery programme is complete through REC-007 and REC-008 records the final
 audit. The inspected pre-REC-008 authoritative main is
@@ -288,9 +315,10 @@ therefore follow actual component incidence/subscriber fanout; #65 still owns th
 generic split/reconstruction/reclamation scheduler and #66/#67 retain fast-path and
 digest work.
 
-G4 graph incidence and the serialized #63 producer prerequisite are both closed on
-current `main`. #65 is now the active join package; #66 remains blocked until #65
-passes its source-matched runtime/provenance and final exact-head completion gates.
+At this earlier graph-incidence checkpoint, G4 and the serialized #63 producer
+prerequisite were closed, while #65 was the active join package and #66 awaited
+its acceptance. The later 24 September checkpoint above records #65's completion;
+this paragraph is not a current blocker on that already accepted work.
 
 ## Required ordering principles
 
@@ -376,6 +404,10 @@ executing the registered plan. Untouched historical Stage 3A remains a separatel
 identified reference series when it cannot share the matched authority.
 
 ## Immediate execution order
+
+This is the retained September dependency order, not a new assignment or
+publication/merge permission. Recheck current source and ownership when a task
+is explicitly commissioned.
 
 1. #56 authority/routing is complete.
 2. #58 / PR #72 is complete and G1 is closed; #57 / PR #73 is complete and

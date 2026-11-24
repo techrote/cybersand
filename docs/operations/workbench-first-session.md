@@ -19,8 +19,9 @@ needed. Start through [Getting started](getting-started.md), then choose
 
 1. Choose **Pilot → Observer / no human pilot** so actor movement does not
    distract from editing.
-2. Pause with **Play / Pause [P]**. Use the visible button if a text field has
-   focus. Precise shapes, Fill and Undo/Redo require a paused scene.
+2. Keep the fresh scene paused. If it is already running, use **Play / Pause [P]**
+   to pause it. Use the visible button if a text field has focus. Precise shapes,
+   Fill and Undo/Redo require a paused scene.
 3. Select **Overview** to locate your work, then zoom in with the mouse wheel.
    Middle-drag pans. Use an empty part of the canvas away from bodies and sources.
 4. In the main tool selector choose **Paint**. The smaller painting row provides

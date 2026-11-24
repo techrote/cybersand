@@ -2,13 +2,22 @@
 title: Soliding measurement contract
 status: Planned
 document-kind: runbook
-scope: Stage 3 discovery and Stage 4 acceleration measurements, beginning with immutable Current ordinary-sleep controls
+scope: Retained source-bound Stage 3/4 measurement registration and available apparatus; immutable Current-named controls are not present-main performance claims
 canonical-for: [soliding-measurement-contract]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, ../systems/activity-dirty-regions-and-waking.md, ../architecture/data-ownership-and-lifetimes.md, local-build-and-validation.md]
 ---
 
 # Soliding measurement contract
+
+The matrices and source hashes below preserve the September registration.
+**Current** is also the registered discovery-off control arm's name; it does
+not mean a measurement of today's accepted main. Native read-only discovery
+and later producer/connectivity foundations exist in the
+[current discovery contract](../systems/settled-region-discovery.md), while
+Stage 4 acceleration and the complete later campaign remain separately gated.
+The [Stage 3B plan](soliding-stage3b-production-plan.md#current-applicability-and-remaining-work)
+owns that dependency boundary. No campaign was re-executed for this wording.
 
 ## Admission and control identity
 
@@ -191,9 +200,16 @@ lag remain results, not permission to discard a case or enlarge a limit post hoc
 
 ## Reproduction and interpretation
 
-Run from the dedicated issue #12 worktree using the workspace Python. Evidence and
-build outputs stay under `C:/kybersand/validation/local/issue-12-2026-09-19/`; use a new
-child name for every attempt. First prepare immutable input:
+The commands in this section reproduce the **original Windows apparatus** and
+its registered source. The runner's default compiler is that workspace's
+LLVM-MinGW path and it checks the reported Clang 23.1.0 version. A normal source
+checkout does not require this old directory layout, and an arbitrary local
+compiler is not equivalent campaign evidence. Use the runner's `--help` to inspect
+its explicit `--cxx`, source and output options before an authorized repeat.
+
+Original worktree evidence and build outputs were kept under
+`C:/kybersand/validation/local/issue-12-2026-09-19/`, with a new child name for
+every attempt. The original immutable-input preparation command was:
 
 ```powershell
 C:/kybersand/.local/python/Scripts/python.exe tools/experiments/run_soliding_baseline.py prepare --source-ref de332ea --out C:/kybersand/validation/local/issue-12-2026-09-19/baseline-artifact
