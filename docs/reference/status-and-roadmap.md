@@ -4,11 +4,30 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-24
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## ObjectShard M4 ordinary Workbench — 2026-11-24
+
+The opt-in [M4 candidate](../research/objectshard-m4-workbench.md) implements the
+ordinary native World/worker and existing Main Rapier integration in Draft/HOLD
+PR #754. It adds bounded connected architecture, composed GCR/shard occupancy,
+actual promotion and pose receipts, continuing moving Wood chemistry, source-bound
+moving edits and authored-start lifecycle controls. The
+[owner guide](../operations/objectshard-workbench-playtest.md) describes its
+ordinary construction/collapse starts. Live-state persistence is not claimed.
+
+Completion requires source-matched native/sanitizer and Linux/Windows ordinary
+Workbench qualification, graphical evidence and a verified Windows evaluator.
+Physical Windows/NVIDIA display rate and playfeel remain separate owner
+observations. The historical 134 Windows checks and 26–30 headless semantic
+ticks/s do not qualify these current integration changes. The earlier below-10-FPS
+owner report remains part of the performance decision. Preserve all historical
+donors and separate active programmes; no default activation or promotion is
+authorized.
 
 ## ObjectShard M0–M3 research candidates — 2026-11-22
 

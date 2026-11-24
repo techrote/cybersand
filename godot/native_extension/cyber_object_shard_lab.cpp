@@ -72,6 +72,7 @@ Dictionary metrics_value(const os::Metrics& value) {
     COPY_METRIC(products_created); COPY_METRIC(output_blocked); COPY_METRIC(sand_ingested);
     COPY_METRIC(exposure_overflows); COPY_METRIC(stale_messages); COPY_METRIC(mask_cells);
     COPY_METRIC(ingress_blocked);
+    COPY_METRIC(composed_overlap_cells); COPY_METRIC(fragments); COPY_METRIC(fragment_refusals);
     COPY_METRIC(sweep_samples); COPY_METRIC(world_ns); COPY_METRIC(chemistry_ns);
     COPY_METRIC(contact_ns); COPY_METRIC(occupancy_ns); COPY_METRIC(geometry_ns);
     COPY_METRIC(discovery_ns); COPY_METRIC(terrain_ns); COPY_METRIC(exchange_ns); COPY_METRIC(relocation_ns);
@@ -234,8 +235,9 @@ Dictionary CyberObjectShardLab::accept_motion(const Array& poses) {
 
 Dictionary CyberObjectShardLab::advance_native(const Array& poses, bool semantic_step) {
     if (!owned()) return refusal("Fenced");
-    if (poses.size() > 3) return refusal("PoseCapacity");
-    std::array<os::PoseSample, 3> copied{};
+    if (poses.size() > static_cast<std::int64_t>(coordinator_->config().limits.max_shards) ||
+        poses.size() > static_cast<std::int64_t>(os::OwnerReadback::kBodySlots)) return refusal("PoseCapacity");
+    std::array<os::PoseSample, os::OwnerReadback::kBodySlots> copied{};
     for (std::int64_t index = 0; index < poses.size(); ++index) {
         if (poses[index].get_type() != Variant::DICTIONARY) return refusal("InvalidPose");
         const Dictionary row = poses[index];
@@ -301,6 +303,10 @@ Dictionary CyberObjectShardLab::ignite(Vector2i position) {
 }
 
 Dictionary CyberObjectShardLab::erase_shard(const Dictionary& request) {
+    return act_on_shard(request,os::ShardAction::Erase);
+}
+
+Dictionary CyberObjectShardLab::act_on_shard(const Dictionary& request,os::ShardAction action) {
     if (!owned()) return refusal("Fenced");
     os::ShardEditRequest copied;
     std::uint64_t cell{}, incarnation{}, capability{};
@@ -333,8 +339,59 @@ Dictionary CyberObjectShardLab::erase_shard(const Dictionary& request) {
     copied.capability_version = static_cast<std::uint32_t>(capability);
     copied.expected = {static_cast<cybersand::Material>(material), static_cast<std::uint16_t>(state_a),
         static_cast<std::uint8_t>(state_b), static_cast<std::int16_t>(temperature)};
-    try { return result(coordinator_->erase_shard(copied)); }
+    try {
+        auto receipt=result(coordinator_->act_on_shard(copied,action));
+        const auto* shard=coordinator_->registry().find(copied.shard);
+        if (shard) {
+            receipt["material_revision"]=static_cast<std::int64_t>(shard->material_revision());
+            receipt["geometry_revision"]=static_cast<std::int64_t>(shard->geometry().revision);
+            receipt["applied_physics_revision"]=static_cast<std::int64_t>(shard->applied_physics_revision());
+            receipt["incarnation"]=copied.cell<shard->area() ? shard->schedule(copied.cell).incarnation : 0;
+            const auto readback=coordinator_->m4_owner_readback();
+            for (std::size_t i=0;i<readback.copied_count;++i) if (readback.bodies[i].shard==copied.shard) {
+                receipt["pose_serial"]=static_cast<std::int64_t>(readback.bodies[i].pose.pose_serial);
+                receipt["body_generation"]=static_cast<std::int64_t>(readback.bodies[i].body_generation);
+                break;
+            }
+        }
+        receipt["owner"]=static_cast<std::int64_t>(copied.shard.id);
+        receipt["cell"]=copied.cell;
+        return receipt;
+    }
     catch (const std::exception& error) { return fail(error.what()); }
+}
+
+Dictionary CyberObjectShardLab::workbench_action(const Dictionary& request) {
+    if (!owned()) return refusal("Fenced");
+    const auto proof=coordinator_->m4_owner_readback();
+    std::uint64_t session{},incarnation{};
+    if (!field(request,"shard_session",session) || session!=proof.session ||
+        !field(request,"world_incarnation",incarnation) || incarnation!=proof.world_incarnation)
+        return refusal("Retired");
+    const Variant value=request.get("target",Variant());
+    if (value.get_type()!=Variant::DICTIONARY) return refusal("InvalidPayload");
+    const Dictionary target=value;
+    const String operation=request.get("operation","");
+    os::ShardAction action;
+    if (operation=="erase") action=os::ShardAction::Erase;
+    else if (operation=="ignite") action=os::ShardAction::Ignite;
+    else if (operation=="inspect") action=os::ShardAction::Inspect;
+    else return refusal("UnsupportedAction");
+    Dictionary exact=target.duplicate(true);
+    exact["session"]=static_cast<std::int64_t>(session);
+    exact["id"]=target.get("owner",0);
+    exact["sequence"]=static_cast<std::int64_t>(coordinator_->next_transaction());
+    exact["capability_version"]=os::kCapabilityVersion;
+    Dictionary receipt=act_on_shard(exact,action);
+    receipt["accepted"]=receipt.get("ok",false);
+    receipt["same_world"]=true;
+    receipt["source_target"]=target.duplicate(true);
+    receipt["transaction_id"]=receipt.get("transaction",0);
+    if (action==os::ShardAction::Inspect) receipt["receipt_id"]=receipt.get("transaction",0);
+    for (const auto* key:{"session","world_generation","transport_generation","owner_epoch",
+        "shard_session","world_incarnation","action_id","port_generation","operation","position"})
+        receipt[key]=request.get(key,Variant());
+    return receipt;
 }
 
 Dictionary CyberObjectShardLab::ignite_shard(std::int64_t id, std::int64_t generation, std::int64_t cell) {
@@ -365,8 +422,8 @@ Dictionary CyberObjectShardLab::acknowledge(const Dictionary& receipt) {
         !field(receipt, "geometry_revision", ack.geometry_revision) || !field(receipt, "mask_digest", ack.mask_digest) ||
         !field(receipt, "shape_digest", ack.shape_digest)) return refusal("InvalidAcknowledgementIdentity");
     const Array rows = receipt.get("chunks", Array());
-    if (rows.size() > 64) return refusal("TerrainReceiptCapacity");
-    std::array<os::TerrainReceipt, 64> terrain{};
+    if (rows.size() > 256) return refusal("TerrainReceiptCapacity");
+    std::array<os::TerrainReceipt, 256> terrain{};
     for (std::int64_t index = 0; index < rows.size(); ++index) {
         if (rows[index].get_type() != Variant::DICTIONARY) return refusal("InvalidTerrainReceipt");
         const Dictionary row = rows[index];
@@ -387,10 +444,10 @@ Dictionary CyberObjectShardLab::cancel(std::int64_t transaction) {
     catch (const std::exception& error) { return fail(error.what()); }
 }
 
-Dictionary CyberObjectShardLab::snapshot() {
+Dictionary CyberObjectShardLab::snapshot(bool include_world) {
     if (!owned()) return refusal("Fenced");
     try {
-        const auto& source = coordinator_->snapshot();
+        const auto& source = coordinator_->snapshot(include_world);
         Dictionary output;
         output["ok"] = !source.quarantined;
         output["session"] = static_cast<std::int64_t>(source.session);
@@ -409,6 +466,11 @@ Dictionary CyberObjectShardLab::snapshot() {
                 source.bounds.y + static_cast<std::int64_t>(index / source.bounds.width)), false);
         }
         output["world_materials"] = materials; output["world_rgba"] = pixels;
+        output["world_pixels_included"] = include_world;
+        PackedInt64Array world_counts;
+        for (const auto count:coordinator_->world().quantity_ledger().material_cells)
+            world_counts.push_back(static_cast<std::int64_t>(count));
+        output["world_material_counts"]=world_counts;
         Array chunks;
         for (const auto& chunk : source.terrain_chunks) {
             Dictionary row = terrain_identity(chunk.identity);
@@ -431,13 +493,18 @@ Dictionary CyberObjectShardLab::snapshot() {
             promotion["payload_digest"] = number(source.promotion.payload_digest);
             promotion["phase"] = os::phase_name(source.promotion.phase);
             promotion["captured_tick"] = static_cast<std::int64_t>(source.promotion.captured_tick);
+            promotion["fragment"] = source.promotion.source_parent.id != 0;
+            promotion["source_parent_id"] = static_cast<std::int64_t>(source.promotion.source_parent.id);
             Array expected;
             for (const auto& chunk : source.promotion.terrain) expected.push_back(terrain_identity(chunk));
             promotion["chunks"] = expected;
         }
         output["promotion"] = promotion;
         Array shards;
+        if (source.shards.size()>carrier_cache_.size()) return fail("CarrierSnapshotCapacity");
+        std::size_t slot=0;
         for (const auto& shard : source.shards) {
+            auto& cached=carrier_cache_[slot++];
             if (shard.phase() == os::Phase::Empty || shard.phase() == os::Phase::Retired) continue;
             const auto handle = shard.handle();
             const os::BodyView* body = nullptr;
@@ -458,6 +525,12 @@ Dictionary CyberObjectShardLab::snapshot() {
             row["position_x"] = body ? body->pose.x : static_cast<double>(bounds.x);
             row["position_y"] = body ? body->pose.y : static_cast<double>(bounds.y);
             row["rotation"] = body ? body->pose.rotation : 0.0;
+            row["vx"] = body ? body->pose.vx : 0.0;
+            row["vy"] = body ? body->pose.vy : 0.0;
+            row["angular_velocity"] = body ? body->pose.angular_velocity : 0.0;
+            row["sleeping"] = body && body->pose.sleeping;
+            row["fragment"] = body && body->source_parent.id != 0;
+            row["source_parent_id"] = static_cast<std::int64_t>(body ? body->source_parent.id : 0);
             row["has_body"] = body && body->has_body;
             row["geometry_pending"] = body && body->geometry_pending;
             row["ingress_fenced"] = body && body->ingress_fenced;
@@ -478,12 +551,14 @@ Dictionary CyberObjectShardLab::snapshot() {
                 if (opening.outcome == os::Outcome::Accepted)
                     row["pocket"] = Rect2i(opening.min_x, opening.row, opening.max_x - opening.min_x, 1);
             }
-            PackedInt32Array rectangles, states_a, states_b, temperature, roles, incarnations;
+            PackedInt32Array rectangles;
             for (const auto& rect : geometry.shapes) {
                 rectangles.push_back(rect.x); rectangles.push_back(rect.y);
                 rectangles.push_back(rect.width); rectangles.push_back(rect.height);
             }
             row["rectangles"] = rectangles;
+            if (cached.handle!=handle || cached.material_revision!=shard.material_revision()) {
+            PackedInt32Array states_a, states_b, temperature, roles, incarnations;
             PackedByteArray cell_materials, cell_pixels;
             cell_materials.resize(shard.area()); cell_pixels.resize(shard.area() * 4);
             for (std::size_t index = 0; index < shard.area(); ++index) {
@@ -494,9 +569,15 @@ Dictionary CyberObjectShardLab::snapshot() {
                 incarnations.push_back(static_cast<std::int32_t>(shard.schedule(index).incarnation));
                 rgba(cell_pixels, index, cell, true);
             }
-            row["materials"] = cell_materials; row["rgba"] = cell_pixels;
-            row["states_a"] = states_a; row["states_b"] = states_b; row["temperature"] = temperature;
-            row["roles"] = roles; row["incarnations"] = incarnations;
+            Dictionary carriers;
+            carriers["materials"] = cell_materials; carriers["rgba"] = cell_pixels;
+            carriers["states_a"] = states_a; carriers["states_b"] = states_b; carriers["temperature"] = temperature;
+            carriers["roles"] = roles; carriers["incarnations"] = incarnations;
+            cached={handle,shard.material_revision(),carriers};
+            }
+            // Godot's packed values are copy-on-write. A later caller mutation
+            // cannot alter the native cache or another published observation.
+            row.merge(cached.values);
             shards.push_back(row);
         }
         output["shards"] = shards;
@@ -575,7 +656,7 @@ void CyberObjectShardLab::_bind_methods() {
     ClassDB::bind_method(D_METHOD("prepare_next"), &CyberObjectShardLab::prepare_next);
     ClassDB::bind_method(D_METHOD("acknowledge", "receipt"), &CyberObjectShardLab::acknowledge);
     ClassDB::bind_method(D_METHOD("cancel", "transaction"), &CyberObjectShardLab::cancel);
-    ClassDB::bind_method(D_METHOD("snapshot"), &CyberObjectShardLab::snapshot);
+    ClassDB::bind_method(D_METHOD("snapshot", "include_world"), &CyberObjectShardLab::snapshot, DEFVAL(true));
     ClassDB::bind_method(D_METHOD("inspect", "position"), &CyberObjectShardLab::inspect);
     ClassDB::bind_method(D_METHOD("capabilities"), &CyberObjectShardLab::capabilities);
     ClassDB::bind_method(D_METHOD("metrics"), &CyberObjectShardLab::metrics);

@@ -6,10 +6,20 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 ---
 
 # Data ownership and lifetimes
+
+The opt-in [ObjectShard M4 Workbench owner](../research/objectshard-m4-workbench.md#same-native-world-ordinary-worker-and-existing-rapier-space)
+attaches its coordinator inside the ordinary native facade. The existing worker
+owns World and all material mutations; Main owns real Rapier objects in its
+existing space. Only copied publications, commands and receipts cross threads.
+Every accepted World replacement must dispose the attached coordinator before
+the old World dies. Refused replacement retains the old owner. Exact motion
+permits fence native ticks and brush work until installed geometry and real pose
+acknowledgements complete. This is a Draft/HOLD integration contract, not an
+import of the separately owned PUBPRES or actor programmes.
 
 The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
 keeps the existing native worker and main-thread Rapier owner. Each multipart

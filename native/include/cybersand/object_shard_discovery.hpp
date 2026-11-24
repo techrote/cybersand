@@ -66,8 +66,8 @@ public:
                 (static_cast<std::uint32_t>(max_y) - min_y + 3U);
         }
     };
-    ComponentDiscovery(Bounds bounds, Limits limits)
-        : bounds_(bounds), limits_(limits), labels_(bounds.area(), kNone),
+    ComponentDiscovery(Bounds bounds, Limits limits, bool rooted_architecture = false)
+        : bounds_(bounds), limits_(limits), rooted_architecture_(rooted_architecture), labels_(bounds.area(), kNone),
           generations_(bounds.area()), queued_(bounds.area()), queue_(bounds.area()),
           candidates_(bounds.area()) {
         frontier_.reserve(bounds.area()); roots_.reserve(bounds.area());
@@ -137,8 +137,8 @@ public:
                 x + 1U == bounds_.width || y + 1U == bounds_.height;
             visit_neighbours(at, [&](std::uint32_t next) {
                 const auto material = material_at(next);
-                candidate.anchored = candidate.anchored || material == Material::Wall;
-                if (material == candidate.material &&
+                candidate.anchored = candidate.anchored || (!rooted_architecture_ && material == Material::Wall);
+                if ((rooted_architecture_ ? cohesive(material) : material == candidate.material) &&
                     !(labels_[next] == root_ && generations_[next] == generation_)) {
                     invalidate_label(next);
                     enqueue_frontier(next);
@@ -218,8 +218,9 @@ public:
     }
     static constexpr std::uint32_t kNone = std::numeric_limits<std::uint32_t>::max();
 private:
-    [[nodiscard]] static bool cohesive(Material value) noexcept {
-        return value == Material::Wood || value == Material::RedBrick;
+    [[nodiscard]] bool cohesive(Material value) const noexcept {
+        return rooted_architecture_ ? structural_material_supported(value) :
+            value == Material::Wood || value == Material::RedBrick;
     }
     template<class Visitor> void visit_neighbours(std::uint32_t at, Visitor visitor) noexcept {
         const auto width = static_cast<std::uint32_t>(bounds_.width);
@@ -251,6 +252,7 @@ private:
     }
     Bounds bounds_;
     Limits limits_;
+    bool rooted_architecture_{};
     std::vector<std::uint32_t> labels_, generations_;
     std::vector<std::uint8_t> queued_;
     std::vector<std::uint32_t> queue_, frontier_, roots_;

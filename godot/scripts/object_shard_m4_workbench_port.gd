@@ -91,7 +91,11 @@ func interface_status(worker: Object, snapshot: CyberSimulationSnapshot) -> Dict
 	for key: String in ["worker_instance_id", "native_instance_id", "world_generation",
 			"session", "owner_epoch", "shard_session", "world_incarnation",
 			"transport_generation"]:
-		if not capabilities.get(key) is int or int(capabilities[key]) <= 0:
+		# RefCounted ObjectIDs use the high bit and can therefore be negative
+		# when transported through Godot's signed integer Variant. They are
+		# exact opaque identities, while generations/counters stay positive.
+		if not capabilities.get(key) is int or (int(capabilities[key]) == 0 \
+			if key in ["worker_instance_id","native_instance_id"] else int(capabilities[key]) <= 0):
 			return _refusal("IncompleteWorldIdentity")
 	if int(capabilities.worker_instance_id) != worker.get_instance_id():
 		return _refusal("ForeignWorkerIdentity")
@@ -193,9 +197,16 @@ func queue_intent(worker: Object, snapshot: CyberSimulationSnapshot, uploaded: D
 	if captured_usec < 0 or captured_usec > now_usec:
 		return {"ok": false, "outcome": "InvalidInputTime"}
 	_next_action += 1
+	# Input carries only the already validated publication identity. The native
+	# target is exact; copying an entire published World/shard image into every
+	# click would be redundant and could exceed the bounded worker command.
+	var observation_identity: Dictionary = {}
+	for key: String in ["world_generation","world_revision","render_serial","session","owner_epoch",
+		"shard_session","world_incarnation","transport_generation","publication_sequence"]:
+		observation_identity[key] = observation[key]
 	var request: Dictionary = {"action_id": _next_action, "port_generation": generation,
 		"operation": action, "position": position, "target": target.duplicate(true),
-		"observation": observation.duplicate(true), "world_generation": status.world_generation,
+		"observation": observation_identity, "world_generation": status.world_generation,
 		"native_instance_id": status.native_instance_id, "session": status.session,
 		"owner_epoch": status.owner_epoch, "shard_session": status.shard_session,
 		"world_incarnation": status.world_incarnation,

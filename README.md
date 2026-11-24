@@ -112,9 +112,20 @@ runtime, interactive viewer and offline gallery, or use the
 Large/asymmetric art dimensions are independent of native playable World limits.
 This integration remains Draft/HOLD pending explicit owner acceptance.
 
-## ObjectShard Lab — Draft/HOLD research
+## Destructible Workbench structures — Draft/HOLD candidate
 
-The separate [M3 continuous-play preflight](docs/operations/objectshard-m3-preflight-playtest.md) adds an opt-in exclusive-worker/Rapier rehearsal with live edits, eleven fixtures and bounded bug capture. It is a separate experimental World; ordinary Workbench attachment remains a documented seam.
+The opt-in [ordinary Workbench candidate](docs/operations/objectshard-workbench-playtest.md)
+adds a Structures panel, authored collapse scenes and witnessed moving-material
+edits through the ordinary native World, worker and Main Rapier space. Its
+[M4 integration contract](docs/research/objectshard-m4-workbench.md) defines
+same-World ownership, composed occupancy, bounded structural admission, scoped
+save/reopen and separate progression/render measurements. PR #754 remains
+Draft/HOLD; source-bound qualification and physical owner acceptance are
+separate requirements. Ordinary launch defaults are unchanged.
+
+### Retained ObjectShard laboratories
+
+The separate [M3 continuous-play preflight](docs/operations/objectshard-m3-preflight-playtest.md) adds an opt-in exclusive-worker/Rapier rehearsal with live edits, eleven fixtures and bounded bug capture. It retains its separate experimental World and original evidence; it does not qualify the M4 ordinary Workbench integration.
 Its [final qualification and Windows delivery](docs/audits/2026-11-22-objectshard-m3-final-qualification.md) bind repaired source `e034f229` to fresh Linux/Windows execution, the verified owner ZIP and independent reviews. PR #741 and the complete ObjectShard stack remain Draft/HOLD.
 
 The independent [ObjectShard Lab](docs/operations/objectshard-lab-playtest.md)
@@ -125,8 +136,8 @@ separates staged source, exact runtime evidence and owner physical acceptance.
 The [final delivery record](docs/audits/2026-11-22-objectshard-final-acceptance.md)
 links the verified Windows evaluator, passing Linux/Windows campaign and retained
 native timing failure. Physical owner acceptance remains outstanding.
-This branch candidate is not enabled in ordinary gameplay or Workbench. It does
-not claim fracture, general liquid transfer or durable shard saves.
+The historical M0–M2 Lab does not claim fracture, general liquid transfer or
+durable shard saves. Use the M4 contract for the current Workbench candidate.
 
 ## Development
 

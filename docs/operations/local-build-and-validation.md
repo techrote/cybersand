@@ -4,11 +4,30 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-24
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## ObjectShard M4 ordinary Workbench candidate qualification
+
+Use the [M4 contract](../research/objectshard-m4-workbench.md) and
+[ordinary evaluator guide](objectshard-workbench-playtest.md) for PR #754.
+`tools/objectshard/qualify_workbench.py` verifies the complete source/native
+identity before actual ordinary Workbench tests, optional Water/actor/equipment
+regressions and scene/camera profiles. `--render` records real renderer callbacks;
+it does not establish physical monitor presentation. The dedicated completion
+workflow builds exact-source Linux and Windows native candidates and verifies
+the extracted portable Workbench launcher. It does not replace retained
+production provenance or weaken `check_repository.py`.
+
+The workflow's expensive jobs run on explicit dispatch or a candidate commit
+marked `[objectshard-m4-completion]` on its declared integration branches.
+Evidence belongs to the exact published commit and loaded bytes, including when
+a reviewed local tree is published with a different Git commit identity.
+Local compiler drift must stay labelled development evidence. Historical M3
+and November 23 M4 receipts are controls, not current-candidate qualification.
 
 ## Large authored Workbench landscape admission
 

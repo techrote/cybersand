@@ -151,6 +151,22 @@ func shutdown() -> void:
 	_destroy_hard_surface_collider()
 	clear_state()
 
+func initialize_empty_workbench(space: RID) -> Error:
+	# The ordinary material-only canvas needs the same manually stepped Main
+	# space without inventing an actor or a second physics authority.
+	if _initialized: return ERR_ALREADY_IN_USE
+	if not ClassDB.class_exists(EXPECTED_SERVER_CLASS) \
+		or str(ProjectSettings.get_setting(ENGINE_SETTING,"")) != EXPECTED_ENGINE: return ERR_UNAVAILABLE
+	if not space.is_valid(): return ERR_INVALID_PARAMETER
+	_space = space
+	_hard_surface_body = _create_hard_surface_body()
+	if not _hard_surface_body.is_valid():
+		clear_state()
+		return ERR_CANT_CREATE
+	PhysicsServer2D.space_set_active(_space,false)
+	_initialized = true
+	return OK
+
 
 func is_initialized() -> bool:
 	return _initialized
@@ -671,11 +687,28 @@ func _destroy_chunk_hard_surface_colliders() -> void:
 	_pending_hard_surface_chunks = 0
 
 
+func shared_space() -> RID:
+	return _space if _initialized else RID()
+
+
+func release_hard_surface_shapes_to_material_owner() -> void:
+	# Called only after the ordinary M4 adapter installed/read back replacement
+	# terrain in this same space, between actual solver steps.
+	if not _initialized: return
+	_destroy_chunk_hard_surface_colliders()
+	_clear_full_hard_surface_shapes()
+	_hard_surface_shape_count = 0
+
+
 func step() -> void:
-	if not _initialized:
+	step_interval(fixed_delta())
+
+
+func step_interval(interval: float) -> void:
+	if not _initialized or not is_finite(interval) or interval <= 0.0 or interval > fixed_delta()+0.000000001:
 		return
 	var step_start_usec: int = Time.get_ticks_usec()
-	ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_step", _space, fixed_delta())
+	ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_step", _space, interval)
 	_last_step_time_ms = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 	_manual_step_count += 1
 

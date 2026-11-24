@@ -16,6 +16,8 @@ const MAX_SEGMENT_ROTATION: float = 0.20
 const MAX_SEGMENT_CORNER_MOTION: float = 8.0
 
 var session: int = 0
+var body_capacity: int = MAX_BODIES
+var terrain_capacity: int = MAX_TERRAIN_CHUNKS
 # M4 may borrow the existing Main Rapier space; it must never create, step,
 # destroy or pretend to own that space. M3 standalone retains its private mode.
 var _adopted_main_space: bool = false
@@ -59,11 +61,12 @@ func begin_frame() -> void:
 		timings[key] = 0
 
 
-func initialize(incarnation: int, existing_main_space: RID = RID()) -> Dictionary:
+func initialize(incarnation: int, existing_main_space: RID = RID(), maximum_bodies: int = MAX_BODIES, maximum_terrain_chunks: int = MAX_TERRAIN_CHUNKS) -> Dictionary:
 	if not _main_owner():
 		return {"ok": false, "outcome": "MainPhysicsOwnerRequired"}
-	if incarnation <= 0:
-		return _motion_refusal("InvalidSession")
+	if incarnation <= 0 or maximum_bodies < 1 or maximum_bodies > 16 or maximum_terrain_chunks < 1 or maximum_terrain_chunks > 256 \
+		or (not existing_main_space.is_valid() and (maximum_bodies != MAX_BODIES or maximum_terrain_chunks != MAX_TERRAIN_CHUNKS)):
+		return _motion_refusal("InvalidSessionOrCapacity")
 	if incarnation <= _last_physics_session:
 		return _motion_refusal("RetiredSession")
 	shutdown()
@@ -75,6 +78,8 @@ func initialize(incarnation: int, existing_main_space: RID = RID()) -> Dictionar
 	if incarnation <= 0:
 		return _refuse("InvalidSession")
 	session = incarnation
+	body_capacity = maximum_bodies
+	terrain_capacity = maximum_terrain_chunks
 	_adopted_main_space = existing_main_space.is_valid()
 	_last_main_step_serial = 0
 	space = existing_main_space if _adopted_main_space else PhysicsServer2D.space_create()
@@ -91,7 +96,7 @@ func install_terrain(chunks: Array) -> Dictionary:
 	if _motion_in_progress() or motion_refused:
 		return _motion_refusal("MotionBarrierPending")
 	var started: int = Time.get_ticks_usec()
-	if not space.is_valid() or chunks.size() > MAX_TERRAIN_CHUNKS:
+	if not space.is_valid() or chunks.size() > terrain_capacity:
 		return _refuse("TerrainCapacity")
 	# Validate the complete publication before replacing any installed chunk.
 	for chunk: Dictionary in chunks:
@@ -142,7 +147,7 @@ func reserve_body(shard: Dictionary) -> Dictionary:
 		return _refuse("BodyIdentityConflict")
 	if id <= _last_reserved_body_id:
 		return _refuse("RetiredBodyIdentity")
-	if bodies.size() >= MAX_BODIES or not _valid_rectangles(shard.rectangles, MAX_SHAPES_PER_BODY):
+	if bodies.size() >= body_capacity or not _valid_rectangles(shard.rectangles, MAX_SHAPES_PER_BODY):
 		return _refuse("ShapeCapacity")
 	var pose := Transform2D(float(shard.get("rotation", 0.0)), Vector2(
 		float(shard.get("position_x", shard.origin_x)), float(shard.get("position_y", shard.origin_y))))
@@ -189,6 +194,10 @@ func activate(shard: Dictionary) -> Dictionary:
 		return _refuse("NativeActivationBarrierPending")
 	if not _same_installed_geometry(shard, body):
 		return _refuse("StaleGeometry")
+	var inherited_velocity := Vector2(float(shard.get("vx",0.0)),float(shard.get("vy",0.0)))
+	var inherited_angular: float = float(shard.get("angular_velocity",0.0))
+	if not inherited_velocity.is_finite() or not is_finite(inherited_angular):
+		return _refuse("InvalidInitialVelocity")
 	if bool(body.active):
 		# A delayed duplicate activation is an observation of the installed body,
 		# not another physics action. In particular it must not wake a sleeper,
@@ -203,13 +212,17 @@ func activate(shard: Dictionary) -> Dictionary:
 	PhysicsServer2D.body_set_mode(body.rid, PhysicsServer2D.BODY_MODE_RIGID)
 	PhysicsServer2D.body_set_collision_layer(body.rid, 1)
 	PhysicsServer2D.body_set_collision_mask(body.rid, 1)
+	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,inherited_velocity)
+	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,inherited_angular)
 	PhysicsServer2D.body_set_state(body.rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 	body["active"] = true
 	PhysicsServer2D.body_set_max_contacts_reported(body.rid, 32)
 	_event("BodyActivated", int(shard.id), {"geometry_revision": body.geometry_revision})
 	var result: Dictionary = _body_receipt(shard, body)
 	result["activated"] = PhysicsServer2D.body_get_mode(body.rid) == PhysicsServer2D.BODY_MODE_RIGID \
-		and _readback_mass(body.rid, float(shard.mass), Vector2(float(shard.com_x), float(shard.com_y)), float(shard.inertia))
+		and _readback_mass(body.rid, float(shard.mass), Vector2(float(shard.com_x), float(shard.com_y)), float(shard.inertia)) \
+		and Vector2(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)).is_equal_approx(inherited_velocity) \
+		and is_equal_approx(float(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)),inherited_angular)
 	result["ok"] = result.activated
 	return result
 

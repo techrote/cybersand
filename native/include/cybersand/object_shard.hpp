@@ -147,7 +147,8 @@ private:
     Outcome prepare(Handle handle, std::uint64_t world, Bounds bounds,
         std::uint64_t captured_tick, const Limits& limits);
     Outcome rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) noexcept;
-    Outcome build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell) const noexcept;
+    Outcome build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell,
+        std::span<const std::uint8_t> excluded = {}) const noexcept;
     void clear_inventory() noexcept;
     void refresh_surface(std::size_t index) noexcept;
     void refresh_neighbor_surfaces(std::size_t index) noexcept;
@@ -181,6 +182,7 @@ private:
     friend class Registry;
     std::vector<std::uint32_t> queue_;
     std::vector<std::uint8_t> seen_;
+    std::vector<std::uint32_t> labels_;
     std::vector<Rect> shapes_;
 };
 
@@ -200,6 +202,14 @@ public:
     [[nodiscard]] const Shard* find(Handle handle) const noexcept;
     [[nodiscard]] Outcome prepare(Bounds bounds, std::uint64_t captured_tick, Handle& result);
     [[nodiscard]] Outcome finish_preparation(Handle handle) noexcept;
+    // Stage one complete disconnected island, with nearest-island product and
+    // cargo carriers, without taking inventory from its current owner. The
+    // largest island remains with the parent. Captured clocks and lattice
+    // coordinates survive the later exclusive parent-to-child transfer.
+    [[nodiscard]] Outcome prepare_fragment(Handle parent, std::uint64_t semantic_tick,
+        Handle& child);
+    [[nodiscard]] Outcome commit_fragment(Handle parent, Handle child,
+        std::uint64_t semantic_tick) noexcept;
     // Preflight the exact post-erase cover before changing material inventory.
     // Expected capacity refusal leaves payload, clocks and geometry unchanged.
     [[nodiscard]] Outcome erase_structural(Handle handle, std::size_t cell,
@@ -233,12 +243,25 @@ private:
     std::vector<std::uint64_t> slot_generations_;
     GeometryScratch scratch_;
     std::size_t peak_retained_bytes_{};
-    std::uint64_t construction_allocations_{5};
+    std::uint64_t construction_allocations_{6};
 };
 
 [[nodiscard]] const char* outcome_name(Outcome value) noexcept;
 [[nodiscard]] const char* phase_name(Phase value) noexcept;
 [[nodiscard]] bool valid_bounds(Bounds bounds) noexcept;
-[[nodiscard]] bool structural_material_supported(Material material) noexcept;
+[[nodiscard]] constexpr bool structural_material_supported(Material material) noexcept {
+    // Explicitly admitted inert architecture and the continuing Wood lifecycle.
+    // Do not infer admission from hard-surface appearance or MaterialState.
+    switch (material) {
+    case Material::Wood: case Material::Wall: case Material::RedBrick:
+    case Material::Concrete: case Material::GraniteBlock:
+    case Material::IndustrialBrick: case Material::ReinforcedConcrete:
+    case Material::SteelPlate: case Material::PaintedSteel:
+    case Material::CorrugatedSteel: case Material::SteelGrating:
+    case Material::CeramicTile: case Material::ChemicalGlass: case Material::DarkGlass:
+        return true;
+    default: return false;
+    }
+}
 
 } // namespace cybersand::object_shard

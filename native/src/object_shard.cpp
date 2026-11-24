@@ -1,4 +1,5 @@
 #include "cybersand/object_shard.hpp"
+#include "cybersand/interaction_rules.hpp"
 
 #include <algorithm>
 #include <limits>
@@ -73,10 +74,18 @@ bool valid_bounds(Bounds bounds) noexcept {
         bounds.y <= std::numeric_limits<std::int64_t>::max() - (bounds.height - 1);
 }
 
-bool structural_material_supported(Material material) noexcept {
-    // These are explicit cohesion capabilities, not inferred hard surfaces.
-    return material == Material::Wood || material == Material::Wall || material == Material::RedBrick;
-}
+// A future catalogue update cannot quietly remove a reaction on a moving
+// architecture cell. Admitting any reacting material needs its real lifecycle
+// and pair/sidecar support, not simply another case in the palette whitelist.
+static_assert([] {
+    for (const auto material:{Material::Concrete,Material::GraniteBlock,
+        Material::IndustrialBrick,Material::ReinforcedConcrete,Material::SteelPlate,
+        Material::PaintedSteel,Material::CorrugatedSteel,Material::SteelGrating,
+        Material::CeramicTile,Material::ChemicalGlass,Material::DarkGlass})
+        if (material_definition(material).kernel!=RuleKernel::None ||
+            InteractionRules::has_pair_rule(material)) return false;
+    return true;
+}(), "ObjectShard inert admission requires review of newly introduced material laws");
 
 Payload Shard::payload(std::size_t index) const noexcept {
     if (index >= cells_.size()) return {Material::Empty, 0, 0, ambient_temperature_};
@@ -243,15 +252,19 @@ GeometryScratch::GeometryScratch(const Limits& limits) {
     if (!valid_limits(limits)) throw std::invalid_argument("invalid ObjectShard limits");
     queue_.resize(limits.max_area);
     seen_.resize(limits.max_area);
+    labels_.resize(limits.max_area);
     shapes_.reserve(limits.max_shapes);
 }
 
-Outcome Shard::build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell) const noexcept {
+Outcome Shard::build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell,
+        std::span<const std::uint8_t> excluded) const noexcept {
     if (area() > scratch.queue_.size() || area() > scratch.seen_.size()) return Outcome::Capacity;
     scratch.shapes_.clear();
     const auto width = static_cast<std::size_t>(bounds_.width);
     std::fill_n(scratch.queue_.begin(), width, kNoShape);
-    const auto included = [&](std::size_t at) { return at != erased_cell && structural(at); };
+    const auto included = [&](std::size_t at) {
+        return at != erased_cell && (excluded.empty() || excluded[at] == 0) && structural(at);
+    };
 
     // Exact horizontal runs; merge only matching spans in the previous row.
     // queue_[x] temporarily holds that row's rectangle, making the cover linear
@@ -462,6 +475,132 @@ Outcome Registry::finish_preparation(Handle handle) noexcept {
         return Outcome::Unsupported;
     return shard->rebuild_geometry(scratch_, shard->captured_tick_);
 }
+
+Outcome Registry::prepare_fragment(Handle parent_handle, std::uint64_t tick, Handle& child_handle) {
+    auto* parent=find(parent_handle);
+    if (!parent) return Outcome::Stale;
+    if (parent->phase_!=Phase::Active || !parent->authoritative_ || parent->geometry_dirty_ ||
+        parent->applied_physics_revision_!=parent->geometry_.revision) return Outcome::Fenced;
+    if (!parent->geometry_.split_pending || parent->geometry_.islands<2) return Outcome::Unsupported;
+    const auto width=parent->bounds_.width, height=parent->bounds_.height;
+    const auto area=parent->area();
+    std::fill_n(scratch_.labels_.begin(),area,std::uint32_t{0});
+    std::uint32_t largest_root=0, largest_count=0, child_root=0, child_count=0;
+    const auto visit_neighbors=[&](std::uint32_t at,const auto& visit) {
+        if (at%width) visit(at-1);
+        if (at%width+1<width) visit(at+1);
+        if (at>=width) visit(at-width);
+        if (at+width<area) visit(at+width);
+    };
+    for (std::uint32_t start=0;start<area;++start) {
+        if (!parent->structural(start) || scratch_.labels_[start]) continue;
+        const auto root=start+1;
+        std::size_t head=0,tail=1;scratch_.queue_[0]=start;scratch_.labels_[start]=root;
+        while (head<tail) {
+            const auto at=scratch_.queue_[head++];
+            visit_neighbors(at,[&](std::uint32_t next) {
+                if (parent->structural(next) && !scratch_.labels_[next]) {
+                    scratch_.labels_[next]=root;scratch_.queue_[tail++]=next;
+                }
+            });
+        }
+        const auto count=static_cast<std::uint32_t>(tail);
+        // Stable row-major ties keep the oldest/lower local island in parent.
+        if (count>largest_count) {
+            child_root=largest_root;child_count=largest_count;
+            largest_root=root;largest_count=count;
+        } else if (count>child_count) {child_root=root;child_count=count;}
+    }
+    if (!child_root || !child_count) return Outcome::Stale;
+    // A bounded multi-source flood assigns every nonstructural carrier to its
+    // nearest structural island. Row-major seed order resolves equal distance;
+    // products and lodged Sand therefore travel with one exact owner.
+    std::size_t head=0,tail=0;
+    for (std::uint32_t at=0;at<area;++at)
+        if (parent->structural(at)) scratch_.queue_[tail++]=at;
+    while (head<tail) {
+        const auto at=scratch_.queue_[head++];
+        visit_neighbors(at,[&](std::uint32_t next) {
+            if (!scratch_.labels_[next]) {
+                scratch_.labels_[next]=scratch_.labels_[at];scratch_.queue_[tail++]=next;
+            }
+        });
+    }
+    std::uint32_t min_x=width,min_y=height,max_x=0,max_y=0;
+    for (std::uint32_t at=0;at<area;++at) if (parent->occupied(at) && scratch_.labels_[at]==child_root) {
+        min_x=std::min(min_x,at%width);max_x=std::max(max_x,at%width);
+        min_y=std::min(min_y,at/width);max_y=std::max(max_y,at/width);
+    }
+    if (min_x) --min_x;
+    if (min_y) --min_y;
+    if (max_x+1<width) ++max_x;
+    if (max_y+1<height) ++max_y;
+    const Bounds bounds{parent->bounds_.x+min_x,parent->bounds_.y+min_y,
+        static_cast<std::uint16_t>(max_x-min_x+1),static_cast<std::uint16_t>(max_y-min_y+1)};
+    const auto prepared=prepare(bounds,tick,child_handle);
+    if (prepared!=Outcome::Accepted) return prepared;
+    auto* child=find(child_handle);
+    for (std::uint32_t at=0;at<area;++at) if (parent->occupied(at) && scratch_.labels_[at]==child_root) {
+        const auto local=(at/width-min_y)*bounds.width+at%width-min_x;
+        const auto copied=child->set_cell(local,parent->payload(at),parent->role(at),tick);
+        if (copied!=Outcome::Accepted) {(void)cancel_precommit(child_handle);return copied;}
+        child->schedule_[local]=parent->schedule_[at];
+    }
+    const auto ready=child->rebuild_geometry(scratch_,tick);
+    if (ready!=Outcome::Accepted) {(void)cancel_precommit(child_handle);return ready;}
+    return Outcome::Accepted;
+}
+
+Outcome Registry::commit_fragment(Handle parent_handle, Handle child_handle, std::uint64_t tick) noexcept {
+    auto* parent=find(parent_handle);auto* child=find(child_handle);
+    if (!parent || !child || parent==child) return Outcome::Stale;
+    if (parent->phase_!=Phase::Active || !parent->authoritative_ || parent->geometry_dirty_ ||
+        parent->applied_physics_revision_!=parent->geometry_.revision ||
+        child->phase_!=Phase::PhysicsReserved || child->authoritative_ || child->geometry_dirty_)
+        return Outcome::Fenced;
+    const auto dx=child->bounds_.x-parent->bounds_.x,dy=child->bounds_.y-parent->bounds_.y;
+    if (dx<0 || dy<0 || dx+child->bounds_.width>parent->bounds_.width ||
+        dy+child->bounds_.height>parent->bounds_.height || !child->counts_.structural ||
+        child->counts_.structural>=parent->counts_.structural) return Outcome::Invalid;
+    const auto count=child->counts_.total();
+    if (parent->material_revision_>kNever-count || parent->topology_revision_>kNever-count ||
+        parent->geometry_.revision==kNever) return Outcome::GenerationExhausted;
+    const Payload empty{Material::Empty,0,0,limits_.ambient_temperature};
+    std::fill_n(scratch_.seen_.begin(),parent->area(),std::uint8_t{0});
+    const auto source_index=[&](std::size_t at) {
+        return static_cast<std::size_t>(dy+at/child->bounds_.width)*parent->bounds_.width+
+            static_cast<std::size_t>(dx)+at%child->bounds_.width;
+    };
+    for (std::size_t at=0;at<child->area();++at) if (child->occupied(at)) {
+        const auto source=source_index(at);const auto& a=parent->schedule_[source];const auto& b=child->schedule_[at];
+        if (parent->payload(source)!=child->payload(at) || parent->role(source)!=child->role(at) ||
+            a.incarnation!=b.incarnation || a.birth_tick!=b.birth_tick || a.next_due_tick!=b.next_due_tick)
+            return Outcome::Stale;
+        const auto admitted=parent->validate_cell_write(source,empty,Role::Empty,tick);
+        if (admitted!=Outcome::Accepted) return admitted;
+        scratch_.seen_[source]=1;
+    }
+    const auto cover=parent->build_shape_cover(scratch_,parent->area(),
+        std::span<const std::uint8_t>(scratch_.seen_.data(),parent->area()));
+    if (cover!=Outcome::Accepted) return cover;
+    // All capacities, counters and every source tuple are validated. This is
+    // one exclusive native transaction; no World/Rapier callback can observe
+    // its staging. Unexpected failures retain only actually debited inventory.
+    if (commit(child_handle)!=Outcome::Accepted) return Outcome::Stale;
+    std::size_t debited=0;
+    for (std::size_t at=0;at<child->area();++at) if (child->occupied(at)) {
+        if (parent->set_cell(source_index(at),empty,Role::Empty,tick)!=Outcome::Accepted) {
+            (void)quarantine_partial_commit(child_handle,
+                std::span<const std::uint32_t>(scratch_.queue_.data(),debited));
+            parent->phase_=Phase::Quarantined;return Outcome::Quarantined;
+        }
+        scratch_.queue_[debited++]=static_cast<std::uint32_t>(at);
+    }
+    if (parent->rebuild_geometry(scratch_,tick)!=Outcome::Accepted) {
+        parent->phase_=child->phase_=Phase::Quarantined;return Outcome::Quarantined;
+    }
+    return Outcome::Accepted;
+}
 Outcome Registry::erase_structural(Handle handle, std::size_t cell, std::uint64_t tick) noexcept {
     auto* shard=find(handle);
     if (!shard) return Outcome::Stale;
@@ -588,9 +727,9 @@ Counts Registry::inventory_counts() const noexcept {
 MemoryUsage Registry::memory_usage() const noexcept {
     MemoryUsage result;
     result.live_bytes = sizeof(Registry) + live(slot_generations_) +
-        live(scratch_.queue_) + live(scratch_.seen_) + live(scratch_.shapes_);
+        live(scratch_.queue_) + live(scratch_.seen_) + live(scratch_.labels_) + live(scratch_.shapes_);
     result.retained_bytes = sizeof(Registry) + retained(slot_generations_) +
-        retained(scratch_.queue_) + retained(scratch_.seen_) + retained(scratch_.shapes_);
+        retained(scratch_.queue_) + retained(scratch_.seen_) + retained(scratch_.labels_) + retained(scratch_.shapes_);
     for (const auto& shard : shards_) {
         const auto current = shard.memory_usage();
         result.live_bytes += current.live_bytes;

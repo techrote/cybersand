@@ -15,7 +15,7 @@ func _ready() -> void:
 	if first_launch and "--materials-lab" in OS.get_cmdline_user_args():
 		launch.call_deferred("materials_lab")
 		return
-	if first_launch and "--workbench" in OS.get_cmdline_user_args():
+	if first_launch and ("--workbench" in OS.get_cmdline_user_args() or "--shared-workbench" in OS.get_cmdline_user_args()):
 		print("SHARED_WORKBENCH_LAUNCH_READY")
 		launch.call_deferred("shared_workbench")
 		return

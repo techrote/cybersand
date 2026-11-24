@@ -4,11 +4,29 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-24
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## ObjectShard M4 ordinary Workbench — 2026-11-24
+
+Continue the owner-authorized completion on Draft/HOLD PR #754 using the
+[M4 contract](../research/objectshard-m4-workbench.md) and
+[ordinary Workbench guide](objectshard-workbench-playtest.md). The implementation
+attaches inside the ordinary native owner and worker, shares Main's real Rapier
+space, composes immutable/mutable occupancy and admits source-bound moving edits.
+The [recovered source ledger](../audits/2026-11-24-objectshard-m4-source-recovery.md)
+distinguishes principal source, the November 23 receipt-pacing experiment and
+historical Windows/semantic evidence. Preserve the donor PRs and failed results.
+
+Qualification must exercise the ordinary Workbench, reset/reopen, active bodies,
+native material conservation and actual loaded runtime. Headless semantic ticks
+or a Lab pass cannot resolve the earlier displayed rate below 10 FPS. Keep the
+PUBPRES, Equipment, Actor Compose and RAMCACHE branches separate; document only
+the shared native/physics seams. No merge, Ready, default activation,
+compatibility bypass or unqualified runtime publication is authorized.
 
 ## ObjectShard M0–M3 — 2026-11-22
 

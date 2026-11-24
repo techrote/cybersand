@@ -84,7 +84,7 @@ func _run() -> void:
 		"Explicit export cannot write into checked-out project tree")
 	var cadence: CyberObjectShardM4LatencyProbe = Probe.new()
 	cadence.configure(true)
-	_expect(cadence.observe_workload(3, false, "overview"), "Record active-body workload independently of rendering")
+	_expect(cadence.observe_workload(3, false, "overview"), "Record owned-body workload independently of rendering")
 	cadence.observe_post_draw(1000)
 	cadence.observe_post_draw(17000)
 	cadence.observe_post_draw(33000)

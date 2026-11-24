@@ -29,7 +29,7 @@ public:
     [[nodiscard]] Dictionary prepare_next();
     [[nodiscard]] Dictionary acknowledge(const Dictionary& receipt);
     [[nodiscard]] Dictionary cancel(std::int64_t transaction);
-    [[nodiscard]] Dictionary snapshot();
+    [[nodiscard]] Dictionary snapshot(bool include_world = true);
     [[nodiscard]] Dictionary inspect(Vector2i position) const;
     [[nodiscard]] Dictionary capabilities() const;
     [[nodiscard]] Dictionary metrics() const;
@@ -43,10 +43,19 @@ private:
     [[nodiscard]] Dictionary attach_owner_world(cybersand::World& world,
         cybersand::object_shard::Config config);
     [[nodiscard]] Dictionary after_owner_tick();
+    [[nodiscard]] Dictionary workbench_action(const Dictionary& request);
+    [[nodiscard]] Dictionary act_on_shard(const Dictionary& request,
+        cybersand::object_shard::ShardAction action);
     std::thread::id owner_;
     std::unique_ptr<cybersand::object_shard::Coordinator> coordinator_;
     bool failed_{};
     String failure_;
+    struct CarrierCache {
+        cybersand::object_shard::Handle handle{};
+        std::uint64_t material_revision{};
+        Dictionary values;
+    };
+    std::array<CarrierCache, cybersand::object_shard::OwnerReadback::kBodySlots> carrier_cache_{};
     [[nodiscard]] bool owned() const noexcept;
     [[nodiscard]] Dictionary refusal(const char* reason) const;
     [[nodiscard]] Dictionary result(const cybersand::object_shard::Result& value) const;

@@ -164,12 +164,15 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::simulation_tick);
     ClassDB::bind_method(D_METHOD("object_shard_attach", "bounds"), &CyberNativeCellWorld::object_shard_attach);
     ClassDB::bind_method(D_METHOD("object_shard_status"), &CyberNativeCellWorld::object_shard_status);
-    ClassDB::bind_method(D_METHOD("object_shard_snapshot"), &CyberNativeCellWorld::object_shard_snapshot);
+    ClassDB::bind_method(D_METHOD("object_shard_snapshot", "include_world"), &CyberNativeCellWorld::object_shard_snapshot, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("object_shard_workbench_action", "request"), &CyberNativeCellWorld::object_shard_workbench_action);
     ClassDB::bind_method(D_METHOD("object_shard_edit_cell", "cell", "material", "state_a", "state_b", "temperature"), &CyberNativeCellWorld::object_shard_edit_cell);
     ClassDB::bind_method(D_METHOD("object_shard_inspect_cell", "cell"), &CyberNativeCellWorld::object_shard_inspect_cell);
     ClassDB::bind_method(D_METHOD("object_shard_prepare_next"), &CyberNativeCellWorld::object_shard_prepare_next);
     ClassDB::bind_method(D_METHOD("object_shard_acknowledge", "receipt"), &CyberNativeCellWorld::object_shard_acknowledge);
     ClassDB::bind_method(D_METHOD("object_shard_accept_motion", "poses"), &CyberNativeCellWorld::object_shard_accept_motion);
+    ClassDB::bind_method(D_METHOD("object_shard_accept_workbench_motion", "poses", "states", "geometry", "bodies", "session", "epoch"),
+        &CyberNativeCellWorld::object_shard_accept_workbench_motion);
     ClassDB::bind_method(D_METHOD("object_shard_erase_shard", "receipt"), &CyberNativeCellWorld::object_shard_erase_shard);
     ClassDB::bind_method(D_METHOD("object_shard_ignite_shard", "id", "generation", "cell"), &CyberNativeCellWorld::object_shard_ignite_shard);
     ClassDB::bind_method(D_METHOD("object_shard_retire"), &CyberNativeCellWorld::object_shard_retire);
@@ -513,6 +516,8 @@ void CyberNativeCellWorld::retire_shard_for_world_replacement() noexcept {
 
 bool CyberNativeCellWorld::object_shard_retire() {
     if (!shard_owner()) return false;
+    if (shard_lab_->coordinator_->detach().outcome!=cybersand::object_shard::Outcome::Retired)
+        return false;
     retire_shard_for_world_replacement();
     return true;
 }
@@ -524,18 +529,29 @@ Dictionary CyberNativeCellWorld::object_shard_attach(Rect2i bounds) {
     if (world_ == nullptr || world_->has_failed() || world_->is_tick_in_progress() ||
         !workbench_ || shard_lab_.is_valid() ||
         bounds.size.x < 64 || bounds.size.y < 64 ||
-        bounds.size.x > 512 || bounds.size.y > 512 ||
-        static_cast<std::int64_t>(bounds.size.x) * bounds.size.y > 262144 ||
+        bounds.size.x > 1024 || bounds.size.y > 1024 ||
+        static_cast<std::int64_t>(bounds.size.x) * bounds.size.y > 1048576 ||
         bounds.position.x < 0 || bounds.position.y < 0 ||
         bounds.get_end().x > extent_.x || bounds.get_end().y > extent_.y ||
         world_->completed_tick_index() == 0)
         return refused;
     try {
+        for (const auto& body:current_bodies_)
+            if (body.valid && body.id>=cybersand::object_shard::Coordinator::kFirstMutableBodyId) {
+                refused["detail"]="ObjectShard reserves proxy IDs 49..64; immutable GCR roster exceeds 48";
+                return refused;
+            }
         cybersand::object_shard::Config config;
         config.scenario = 0; // Do not create or paint a competing Lab World.
         config.world_bounds = {bounds.position.x, bounds.position.y,
             static_cast<std::uint16_t>(bounds.size.x),
             static_cast<std::uint16_t>(bounds.size.y)};
+        config.limits.max_shards=16;
+        config.limits.max_area=16384;
+        config.limits.max_total_area=static_cast<std::uint32_t>(std::min<std::size_t>(65536,config.world_bounds.area()));
+        config.limits.max_shapes=512;
+        shard_gcr_mask_.assign(static_cast<std::size_t>(extent_.x)*extent_.y,0);
+        shard_gcr_cells_.reserve(shard_gcr_mask_.size());
         Ref<CyberObjectShardLab> pending = Ref<CyberObjectShardLab>(memnew(CyberObjectShardLab));
         auto receipt = pending->attach_owner_world(*world_, config);
         if (!receipt.get("ok", false)) return receipt;
@@ -571,11 +587,27 @@ Dictionary CyberNativeCellWorld::object_shard_status() const {
     status["promotion_pending"] = proof.promotion_pending;
     status["quarantined"] = proof.quarantined || shard_quarantined_;
     status["active_bodies"] = proof.active_count;
+    status["can_retire"] = shard_lab_->coordinator_->can_detach();
+    status["max_bodies"] = shard_lab_->coordinator_->config().limits.max_shards;
+    status["max_body_area"] = shard_lab_->coordinator_->config().limits.max_area;
+    status["max_total_area"] = shard_lab_->coordinator_->config().limits.max_total_area;
+    status["first_mutable_body_id"] = cybersand::object_shard::Coordinator::kFirstMutableBodyId;
+    status["support_policy"] = "boundary-rooted connected architecture; severed Wall caps travel with structure";
     return status;
 }
 
-Dictionary CyberNativeCellWorld::object_shard_snapshot() {
-    return shard_owner() ? shard_lab_->snapshot() : Dictionary{};
+Dictionary CyberNativeCellWorld::object_shard_snapshot(bool include_world) {
+    return shard_owner() ? shard_lab_->snapshot(include_world) : Dictionary{};
+}
+Dictionary CyberNativeCellWorld::object_shard_workbench_action(const Dictionary& request) {
+    if (!shard_owner() || !world_ || world_->has_failed() ||
+        request.get("native_instance_id",Variant()).get_type()!=Variant::INT ||
+        static_cast<std::int64_t>(request.get("native_instance_id",0))!=static_cast<std::int64_t>(get_instance_id())) {
+        Dictionary refusal;refusal["ok"]=false;refusal["outcome"]="ForeignNativeOwner";return refusal;
+    }
+    auto receipt=shard_lab_->workbench_action(request);
+    receipt["native_instance_id"]=static_cast<std::int64_t>(get_instance_id());
+    return receipt;
 }
 Dictionary CyberNativeCellWorld::object_shard_edit_cell(Vector2i cell,
     std::int64_t material, std::int64_t state_a, std::int64_t state_b, std::int64_t temperature) {
@@ -585,7 +617,10 @@ Dictionary CyberNativeCellWorld::object_shard_edit_cell(Vector2i cell,
         refused["outcome"] = "SameWorldWorkerRequired";
         return refused;
     }
-    return shard_lab_->edit_cell(cell, material, state_a, state_b, temperature);
+    const auto before=shard_lab_->coordinator_->world_material_revision();
+    auto receipt=shard_lab_->edit_cell(cell, material, state_a, state_b, temperature);
+    if (shard_lab_->coordinator_->world_material_revision()!=before) ++revision_;
+    return receipt;
 }
 Dictionary CyberNativeCellWorld::object_shard_inspect_cell(Vector2i cell) const {
     return shard_owner() ? shard_lab_->inspect(cell) : Dictionary{};
@@ -594,10 +629,38 @@ Dictionary CyberNativeCellWorld::object_shard_prepare_next() {
     return shard_owner() ? shard_lab_->prepare_next() : Dictionary{};
 }
 Dictionary CyberNativeCellWorld::object_shard_acknowledge(const Dictionary& receipt) {
-    return shard_owner() ? shard_lab_->acknowledge(receipt) : Dictionary{};
+    if (!shard_owner()) return {};
+    const auto before=shard_lab_->coordinator_->world_material_revision();
+    auto result=shard_lab_->acknowledge(receipt);
+    if (shard_lab_->coordinator_->world_material_revision()!=before) ++revision_;
+    return result;
 }
 Dictionary CyberNativeCellWorld::object_shard_accept_motion(const Array& poses) {
-    return shard_owner() ? shard_lab_->accept_motion(poses) : Dictionary{};
+    if (!shard_owner()) return {};
+    const auto before=shard_lab_->coordinator_->world_material_revision();
+    auto result=shard_lab_->accept_motion(poses);
+    if (shard_lab_->coordinator_->world_material_revision()!=before) ++revision_;
+    return result;
+}
+Dictionary CyberNativeCellWorld::object_shard_accept_workbench_motion(const Array& poses,
+    const PackedFloat64Array& states, const PackedFloat64Array& geometry, const Array& bodies,
+    std::int64_t session, std::int64_t epoch) {
+    Dictionary result;
+    if (!shard_owner() || !world_ || world_->has_failed() || shard_lab_->coordinator_->paused()) {
+        result["ok"]=false;result["outcome"]="SameWorldMotionHeld";return result;
+    }
+    // The worker invokes one exclusive command for the actual shared Rapier
+    // segment. Install its exact GCR sample before validating the shard pose;
+    // no native tick, equipment effect or publication can interleave. Expected
+    // pose refusal retains this actual immutable-body occupancy and holds play.
+    if (!prepare_workbench_coupling(states,geometry,bodies,session,epoch,false)) {
+        result["ok"]=false;result["outcome"]="WorkbenchMotionSampleRefused";return result;
+    }
+    result=object_shard_accept_motion(poses);
+    result["workbench_session"]=session;result["workbench_epoch"]=epoch;
+    result["workbench_sample_applied"]=true;
+    result["native_instance_id"]=static_cast<std::int64_t>(get_instance_id());
+    return result;
 }
 Dictionary CyberNativeCellWorld::object_shard_erase_shard(const Dictionary& receipt) {
     return shard_owner() ? shard_lab_->erase_shard(receipt) : Dictionary{};
@@ -610,14 +673,14 @@ Dictionary CyberNativeCellWorld::object_shard_ignite_shard(
 // Material and shard collision domains join inside the authoritative World.
 bool CyberNativeCellWorld::compose_shard_with_workbench_occupancy() {
     if (!shard_owner()) return true;
-    std::vector<cybersand::World::TransientCompositionCell> gcr;
-    gcr.reserve(raster_indices_.size());
+    auto& gcr=shard_gcr_cells_;
+    gcr.clear();
     for (const auto index : raster_indices_) {
         if (index < 0 || index >= extent_.x * extent_.y) return false;
         const auto x = index % extent_.x, y = index / extent_.x;
-        const auto id = world_->transient_obstacle_at(x, y);
+        const auto id = shard_gcr_mask_[static_cast<std::size_t>(index)];
         if (id == 0) continue;
-        if (id >= cybersand::World::kMaximumTransientBodies - 2U) return false;
+        if (id >= cybersand::object_shard::Coordinator::kFirstMutableBodyId) return false;
         gcr.push_back({x, y, id});
     }
     std::sort(gcr.begin(), gcr.end(), [](const auto& a, const auto& b) {
@@ -634,6 +697,7 @@ bool CyberNativeCellWorld::simulation_tick() {
     if (world_ == nullptr || world_->has_failed()) return false;
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
+    const auto shard_before=shard_owner() ? shard_lab_->coordinator_->world_material_revision() : 0;
     try {
         if (shard_owner()) {
             const auto admission = shard_lab_->coordinator_->begin_owner_world_tick();
@@ -652,7 +716,8 @@ bool CyberNativeCellWorld::simulation_tick() {
                 return false;
             }
         }
-        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U) ++revision_;
+        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U ||
+            (shard_owner() && shard_lab_->coordinator_->world_material_revision()!=shard_before)) ++revision_;
         succeeded = true;
     } catch (const std::exception& error) {
         record_native_failure("simulation_tick", error.what());
@@ -707,7 +772,11 @@ void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_
             if (material == cybersand::Material::Water && (emission_flags & 1) != 0) {
                 state_b = world_->config().water_experiment_policy.coherence_ticks();
             }
-            if (!world_->set_cell_state(x, y, material, state_a, state_b)) {
+            const bool written=shard_owner()
+                ? shard_lab_->coordinator_->edit(x,y,{material,state_a,state_b,
+                    world_->stored_temperature(x,y)}).outcome==cybersand::object_shard::Outcome::Accepted
+                : world_->set_cell_state(x, y, material, state_a, state_b);
+            if (!written) {
                 continue;
             }
             changed = true;
@@ -751,8 +820,11 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array&
 }
 
 void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
+    const auto shard_before=shard_owner() ? shard_lab_->coordinator_->world_material_revision() : 0;
     coupling_failure_context_ = {"clear swept mask"};
-    world_->clear_transient_obstacles();
+    if (shard_owner()) {
+        for (const auto index:raster_indices_) shard_gcr_mask_[static_cast<std::size_t>(index)]=0;
+    } else world_->clear_transient_obstacles();
     clear_observations();
     spray_tick_ = {};
     spray_budget_used_.fill(0);
@@ -775,7 +847,9 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     }
 
     coupling_failure_context_ = {"clear final mask"};
-    world_->clear_transient_obstacles();
+    if (shard_owner()) {
+        for (const auto index:raster_indices_) shard_gcr_mask_[static_cast<std::size_t>(index)]=0;
+    } else world_->clear_transient_obstacles();
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         coupling_failure_context_ = {"raster final mask", static_cast<std::uint16_t>(body_id)};
@@ -793,6 +867,7 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
         else accumulate_granular_bearing();
     }
     previous_bodies_ = current_bodies_;
+    if (shard_owner() && shard_lab_->coordinator_->world_material_revision()!=shard_before) ++revision_;
     coupling_failure_context_ = {};
 }
 
@@ -891,12 +966,13 @@ void CyberNativeCellWorld::rasterize_body_sweep(const BodyState& body,
 
 void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 center,
                                                double rotation, Vector2 half_size) {
-    rasterize_transform_in(*world_, extent_, &raster_indices_, body_id, center, rotation, half_size);
+    rasterize_transform_in(*world_, extent_, &raster_indices_, body_id, center, rotation, half_size,
+        shard_owner() ? &shard_gcr_mask_ : nullptr);
 }
 
 void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world, Vector2i canvas,
     std::vector<std::int32_t>* indices, std::uint16_t body_id, Vector2 center,
-    double rotation, Vector2 half_size) {
+    double rotation, Vector2 half_size, std::vector<std::uint16_t>* staging_mask) {
     const auto cosine = std::cos(rotation);
     const auto sine = std::sin(rotation);
     const Vector2 extent{
@@ -920,7 +996,11 @@ void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world, Vecto
             const Vector2 local{cosine * delta.x + sine * delta.y,
                                 -sine * delta.x + cosine * delta.y};
             if (std::abs(local.x) > half_size.x || std::abs(local.y) > half_size.y) continue;
-            if (world.set_transient_obstacle(x, y, body_id)) {
+            if (staging_mask) {
+                auto& target=(*staging_mask)[static_cast<std::size_t>(y)*canvas.x+x];
+                if (!target) {target=body_id;if (indices) indices->push_back(y*canvas.x+x);}
+                else target=std::min(target,body_id);
+            } else if (world.set_transient_obstacle(x, y, body_id)) {
                 if (indices) indices->push_back(y * canvas.x + x);
             }
         }

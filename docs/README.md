@@ -662,7 +662,19 @@ separate bounded/versioned work. Kinetic/contact anomalies are captured/reduced
 and routed to their real physics owner instead of being hidden in interaction rules.
 
 
-## ObjectShard M0–M2 candidate
+## ObjectShard ordinary Workbench candidate and retained laboratories
+
+The [M4 ordinary Workbench contract](research/objectshard-m4-workbench.md) owns
+the Draft/HOLD same-World integration, Main-space physics, occupancy composition,
+structural material bounds, exact moving-cell edits and performance evidence
+rules. Use the [ordinary Workbench evaluator guide](operations/objectshard-workbench-playtest.md)
+for five authored collapse starts, pause/reset, scoped authored saves and the
+remaining physical Windows/NVIDIA observations. The
+[24 November source recovery](audits/2026-11-24-objectshard-m4-source-recovery.md)
+preserves all donor identities and historical negative evidence. The
+[additive M4 retrieval questions](reference/retrieval-questions-objectshard-m4.json)
+are separate from the frozen M0–M3 fixtures. No Ready, merge, default activation
+or production runtime publication is implied.
 
 The [M3 worker/physics contract](research/objectshard-m3-preflight.md), [continuous-play guide](operations/objectshard-m3-preflight-playtest.md) and [recovery ledger](audits/2026-11-22-objectshard-m3-recovery.md) cover the executable successor. The [final M3 qualification](audits/2026-11-22-objectshard-m3-final-qualification.md) records fresh Linux/Windows execution, the repaired delivered ZIP, independent reviews, timing tails and outstanding gates. No ordinary Workbench adoption or physical owner acceptance is implied.
 

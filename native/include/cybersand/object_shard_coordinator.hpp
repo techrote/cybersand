@@ -63,6 +63,7 @@ struct PromotionView {
     std::uint64_t transaction{}, payload_digest{}, captured_tick{};
     Phase phase{Phase::Empty};
     std::span<const TerrainReceipt> terrain{};
+    Handle source_parent{};
 };
 struct BodyView {
     Handle shard{};
@@ -72,12 +73,13 @@ struct BodyView {
     std::uint64_t geometry_pending_tick{},geometry_pending_ns{};
     bool has_body{}, geometry_pending{}, pocket_open{},ingress_fenced{};
     std::uint32_t pocket_cell{};
+    Handle source_parent{}; // Nonzero only for a physical island handoff.
 };
 // Bounded owner-local M4 readback: copied body values, not a published World
 // snapshot, borrowed storage span, RID or permission to tick. Ordinary M3
 // snapshot semantics and mutable storage remain unchanged.
 struct OwnerReadback {
-    static constexpr std::size_t kBodySlots = 3;
+    static constexpr std::size_t kBodySlots = 16;
     std::uint64_t session{}, world_incarnation{}, tick{};
     std::uint32_t active_count{}, copied_count{};
     bool world_available{}, paused{}, quarantined{}, promotion_pending{}, truncated{};
@@ -95,6 +97,8 @@ struct Metrics {
     std::uint64_t steps{}, paused_calls{}, discovered_cells{}, promotions{}, refusals{};
     std::uint64_t chemistry_cells{}, products_created{}, output_blocked{}, sand_ingested{};
     std::uint64_t exposure_overflows{}, stale_messages{}, mask_cells{}, sweep_samples{},ingress_blocked{};
+    std::uint64_t composed_overlap_cells{};
+    std::uint64_t fragments{}, fragment_refusals{};
     std::uint64_t world_ns{}, chemistry_ns{}, contact_ns{}, occupancy_ns{}, geometry_ns{}, snapshot_ns{};
     std::uint64_t discovery_ns{},terrain_ns{},exchange_ns{},relocation_ns{};
     std::uint64_t maximum_pause_ns{}, maximum_geometry_age{}, maximum_geometry_wait_ns{},maximum_product_age{};
@@ -142,6 +146,7 @@ struct ShardEditRequest {
     Payload expected{};
     std::uint32_t capability_version{kCapabilityVersion};
 };
+enum class ShardAction : std::uint8_t { Erase, Ignite, Inspect };
 
 class Coordinator {
 public:
@@ -180,18 +185,24 @@ public:
     [[nodiscard]] Result ignite(std::int64_t x, std::int64_t y);
     [[nodiscard]] Result ignite_shard(Handle shard, std::uint32_t cell);
     [[nodiscard]] Result erase_shard(const ShardEditRequest& request);
+    [[nodiscard]] Result act_on_shard(const ShardEditRequest& request, ShardAction action);
+    // Retirement without replacing the World may not dispose any owned or
+    // prepared inventory. Reset/owner destruction remains explicit disposal.
+    [[nodiscard]] bool can_detach() const noexcept;
+    [[nodiscard]] Result detach();
     [[nodiscard]] Result prepare_next();
     [[nodiscard]] Result acknowledge(const Acknowledgement& receipt);
     [[nodiscard]] Result cancel(std::uint64_t transaction);
     [[nodiscard]] Result ingest(const TransferRequest& request);
     [[nodiscard]] Result emit(const TransferRequest& request);
-    [[nodiscard]] const Snapshot& snapshot();
+    [[nodiscard]] const Snapshot& snapshot(bool include_world = true);
     [[nodiscard]] Payload inspect_world(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] const Metrics& metrics() const noexcept { return metrics_; }
     [[nodiscard]] Metrics lifetime_metrics() const noexcept;
     [[nodiscard]] const Accounting& accounting() const noexcept { return accounting_; }
     [[nodiscard]] std::uint64_t next_transaction() const noexcept { return next_transaction_; }
     [[nodiscard]] std::uint64_t world_witness(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::uint64_t world_material_revision() const noexcept;
     [[nodiscard]] bool paused() const noexcept;
 
 private:
@@ -207,8 +218,12 @@ private:
     std::uint64_t last_owner_tick_{};
     bool owner_tick_admitted_{};
     std::array<std::uint64_t, kQuantityMaterialSlots> last_owner_population_{};
-    static constexpr std::uint16_t kFirstMutableBodyId = World::kMaximumTransientBodies - 2;
+public:
+    static constexpr std::uint16_t kFirstMutableBodyId =
+        World::kMaximumTransientBodies - OwnerReadback::kBodySlots + 1;
+private:
     std::vector<World::TransientCompositionCell> immutable_occupancy_;
+    std::vector<World::TransientCompositionCell> immutable_occupancy_backup_;
     std::vector<World::TransientCompositionCell> shard_occupancy_;
     Registry registry_;
     std::unique_ptr<Pending> pending_;
@@ -244,6 +259,7 @@ private:
     std::uint64_t retired_transaction_{};
     std::vector<std::uint8_t> materials_;
     std::vector<TerrainChunk> terrain_;
+    std::uint64_t terrain_source_revision_{UINT64_MAX};
     std::vector<std::uint8_t> terrain_scratch_;
     Snapshot snapshot_{};
     Metrics metrics_{};
@@ -259,9 +275,11 @@ private:
     void author_scenario(std::uint32_t scenario);
     [[nodiscard]] Result finish(Result result) noexcept;
     [[nodiscard]] bool resident(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] bool immutable_occupied(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] BodyView* body(Handle handle) noexcept;
     [[nodiscard]] const BodyView* body(Handle handle) const noexcept;
     [[nodiscard]] Outcome capture_component(std::uint32_t root);
+    [[nodiscard]] Outcome capture_fragment(Handle parent);
     [[nodiscard]] bool pending_conflict(Bounds bounds) const noexcept;
     void refresh_admission(std::uint32_t work);
     [[nodiscard]] bool validate_prepared() const noexcept;

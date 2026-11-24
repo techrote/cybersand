@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/material.hpp"
+#include "cybersand/object_shard.hpp"
 #include <algorithm>
 #include <cstdint>
 #include <limits>
@@ -119,11 +120,12 @@ private:
         if (material == Material::Wood) return 1;
         if (material == Material::RedBrick) return 2;
         if (material == Material::Wall) return 3;
+        if (structural_material_supported(material)) return 4;
         return 0;
     }
     static std::size_t checked_area(std::uint32_t width, std::uint32_t height) {
         if (width == 0 || height == 0 || width > 1024 || height > 1024 ||
-            static_cast<std::uint64_t>(width) * height > 262144)
+            static_cast<std::uint64_t>(width) * height > 1048576)
             throw std::invalid_argument("ObjectShard mutation window exceeds admitted bound");
         return static_cast<std::size_t>(width) * height;
     }

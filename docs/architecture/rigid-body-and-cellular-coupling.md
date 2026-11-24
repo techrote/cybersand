@@ -6,10 +6,19 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-24
 ---
 
 # Rigid-body and cellular coupling
+
+The Draft/HOLD [ObjectShard M4 integration](../research/objectshard-m4-workbench.md#occupancy-composition-protects-both-body-domains)
+adds an explicit composed path for immutable GCR IDs 1–48 and mutable material
+body IDs 49–64. GCR rebuilds stage their mask before atomic composition with
+current shard occupancy; they cannot clear the shard domain first. Material
+inventory remains native and separate from the derived obstacle raster.
+Main steps the existing Rapier space only under the exact-frame native owner
+permit. The ordinary path below remains the contract when this opt-in attachment
+is absent; its legacy clear/rebuild sequence must not be copied into M4.
 
 ## When a crate moves through sand, are its pixels erased and restored?
 

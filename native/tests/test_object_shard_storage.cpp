@@ -365,6 +365,51 @@ void three_owners_and_no_tick_allocations() {
         static_cast<unsigned long long>(memory.construction_allocations),
         static_cast<unsigned long long>(allocations.load() - before));
 }
+void fragments_preserve_carriers_clocks_and_refuse_without_debit() {
+    for (const auto capacity:{1U,3U}) {
+        Limits limits;limits.max_shards=capacity;
+        Registry registry(limits);Handle parent_handle;
+        CHECK(registry.prepare({-64,-32,8,6},255,parent_handle)==Outcome::Accepted);
+        auto* parent=registry.find(parent_handle);
+        CHECK(parent->set_cell(9,wood(200,400),Role::Structural,255)==Outcome::Accepted);
+        for (const auto at:{13U,14U,21U,22U})
+            CHECK(parent->set_cell(at,{Material::Concrete},Role::Structural,255)==Outcome::Accepted);
+        activate(registry,parent_handle);
+        CHECK(parent->set_cell(8,{Material::Fire,180,0,450},Role::Product,256)==Outcome::Accepted);
+        CHECK(parent->set_due(8,300)==Outcome::Accepted);
+        CHECK(parent->set_cell(17,{Material::Sand,33,2,350},Role::Cargo,256)==Outcome::Accepted);
+        CHECK(parent->set_due(17,301)==Outcome::Accepted);
+        CHECK(registry.rebuild_geometry(parent_handle,256)==Outcome::Accepted);
+        const auto& geometry=parent->geometry();
+        CHECK(parent->acknowledge_geometry(geometry.revision,geometry.mask_digest,geometry.shape_digest)==Outcome::Accepted);
+        const auto digest=parent->payload_digest();
+        Handle child_handle;const auto ready=registry.prepare_fragment(parent_handle,260,child_handle);
+        CHECK(ready==(capacity==1 ? Outcome::Capacity : Outcome::Accepted));
+        CHECK(parent->payload_digest()==digest && registry.inventory_counts().total()==7);
+        if (capacity==1) continue;
+        auto* child=registry.find(child_handle);
+        CHECK(child && child->counts().structural==1 && child->counts().products==1 && child->counts().cargo==1);
+        const auto dx=child->bounds().x-parent->bounds().x,dy=child->bounds().y-parent->bounds().y;
+        for (std::size_t at=0;at<child->area();++at) if (child->occupied(at)) {
+            const auto source=static_cast<std::size_t>(dy+at/child->bounds().width)*8+dx+at%child->bounds().width;
+            CHECK(child->payload(at)==parent->payload(source));
+            CHECK(child->role(at)==parent->role(source));
+            CHECK(child->schedule(at).birth_tick==parent->schedule(source).birth_tick);
+            CHECK(child->schedule(at).next_due_tick==parent->schedule(source).next_due_tick);
+            CHECK(child->schedule(at).incarnation==parent->schedule(source).incarnation);
+        }
+        CHECK(registry.reserve_physics(child_handle)==Outcome::Accepted);
+        const auto allocations_before=allocations.load();
+        CHECK(registry.commit_fragment(parent_handle,child_handle,260)==Outcome::Accepted);
+        CHECK(allocations.load()==allocations_before);
+        CHECK(registry.inventory_counts().total()==7);
+        CHECK(parent->counts().structural==4 && parent->counts().products==0 && parent->counts().cargo==0);
+        CHECK(child->owns_inventory() && child->geometry().islands==1);
+        CHECK(registry.commit_fragment(parent_handle,child_handle,260)==Outcome::Fenced);
+        CHECK(registry.inventory_counts().total()==7);
+        exact_cover(*parent);exact_cover(*child);
+    }
+}
 } // namespace
 
 void* operator new(std::size_t size) {
@@ -378,6 +423,7 @@ void operator delete(void* pointer, std::size_t) noexcept { std::free(pointer); 
 void operator delete[](void* pointer, std::size_t) noexcept { std::free(pointer); }
 
 int main() {
+    fragments_preserve_carriers_clocks_and_refuse_without_debit();
     payload_identity_and_activation();
     exact_geometry_holes_and_islands();
     products_cargo_and_draining();

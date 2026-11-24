@@ -6,6 +6,7 @@ const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const ObjectShardM4Port = preload("res://scripts/object_shard_m4_workbench_port.gd")
+const ObjectShardScenes = preload("res://scripts/object_shard_workbench_scenes.gd")
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
@@ -39,6 +40,9 @@ var art_history_persistence: Dictionary = {}
 var host: Control
 # Experimental same-World interface only. Default-off and never creates a World.
 var object_shard_m4_port = ObjectShardM4Port.new()
+var _object_shard_window: Window
+var _object_shard_scene: String = ""
+var _pending_object_shard_scene: String = ""
 var applied: Dictionary = {}
 var pilot_slot := -1
 var _pilot_instance_id := 0
@@ -232,6 +236,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"+",func() -> void: zoom_by(-1))
 	_button(row,"Actor Composition…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
+	_button(row,"Structures…",open_object_shard_controls)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
@@ -239,8 +244,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	if object_shard_m4_port.enabled:
 		# These tools require an exact already-displayed native target witness.
 		# Until the same-World adapter and overlay exist, they visibly refuse.
-		_tool.add_item("M4 erase moving cell")
-		_tool.add_item("M4 ignite moving cell")
+		_tool.add_item("Cut moving")
+		_tool.add_item("Ignite moving")
 	var names: Array = []
 	_model_ids = _compact_model_ids()
 	for id: String in _model_ids: names.append(ActorCatalog.entry(id).get("name",id))
@@ -598,6 +603,8 @@ func _refuse_flatten(reason: String) -> Dictionary:
 	return {"ok":false,"reason":reason}
 
 func request_flatten(capacity_bytes: int = 2048*2048*2) -> Dictionary:
+	if host != null and host.has_method("object_shard_m4_latency_report") and host.object_shard_m4_runtime.has_live_inventory():
+		return _refuse_flatten("Moving structures own material outside the terrain. Save start preserves the authored recipe; Flatten requires all shards to be returned first.")
 	if host == null or applied.is_empty(): return _refuse_flatten("No native Workbench is installed.")
 	if is_flatten_pending(): return {"ok":false,"reason":"Flatten is already preparing."}
 	if host.simulation_worker.has_failed():
@@ -935,6 +942,12 @@ func installed(candidate: Dictionary) -> void:
 		message = ("Generated native terrain installed. Place a flyer to explore; save the authored start when ready."
 			if not _generated_active.is_empty() else
 			"Choose a flyer to pilot, or use Place model to add an independent body.")
+	if not _pending_object_shard_scene.is_empty():
+		_object_shard_scene = _pending_object_shard_scene
+		_pending_object_shard_scene = ""
+		_name.text = "structures-"+_object_shard_scene
+		_set_view(Vector2(16,208),Vector2i(480,304))
+		message = str(ObjectShardScenes.manifest(_object_shard_scene).instructions)
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
 	if _pending_actor_workshop:
@@ -1248,6 +1261,8 @@ func save_setup() -> bool:
 	if not error.is_empty(): return refuse(error)
 	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
 		else "Saved starting setup · ") + _name.text
+	if object_shard_m4_port.enabled:
+		message += ". Load start reconstructs the authored scene. Moving poses, burning progress and shard inventory are not a runtime save."
 	if host.simulation_worker.has_failed():
 		message += ". Native owner remains failed; restart the application and Load this start. Failed runtime state was not captured."
 	return true
@@ -1496,6 +1511,53 @@ func _input(event: InputEvent) -> void:
 	else: return
 	get_viewport().set_input_as_handled()
 
+func enable_object_shard() -> bool:
+	if host == null or not host.has_method("object_shard_m4_latency_report"): return false
+	object_shard_m4_port.enabled = true
+	if _tool.item_count == TOOL_NAMES.size():
+		_tool.add_item("Cut moving")
+		_tool.add_item("Ignite moving")
+	host.object_shard_m4_probe.configure(true)
+	if not RenderingServer.frame_post_draw.is_connected(host._object_shard_m4_post_draw):
+		RenderingServer.frame_post_draw.connect(host._object_shard_m4_post_draw,CONNECT_DEFERRED)
+	host.object_shard_m4_runtime.enable(host)
+	message = "Structures enabled for this session. Press Play to attach to the existing native World. Supported canvases are 512 or 1024 cells per side."
+	return true
+
+func load_object_shard_scene(scene_id: String) -> bool:
+	if not _editable(): return false
+	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+	var policy: PackedInt32Array = _liquids.requested_policy
+	if policy.is_empty(): policy = PackedInt32Array(applied.liquid_policy)
+	var candidate: Dictionary = ObjectShardScenes.create(scene_id,policy)
+	if candidate.is_empty(): return refuse("Unknown structures scene.")
+	if not apply(candidate): return false
+	_pending_object_shard_scene = scene_id
+	enable_object_shard()
+	message = "Preparing ordinary Workbench structures scene…"
+	return true
+
+func open_object_shard_controls() -> void:
+	if _object_shard_window == null:
+		_object_shard_window = Window.new()
+		_object_shard_window.title = "Destructible structures · experimental"
+		_object_shard_window.size = Vector2i(620,300)
+		_object_shard_window.transient = true
+		_object_shard_window.close_requested.connect(func() -> void: _object_shard_window.hide())
+		add_child(_object_shard_window)
+		var column := VBoxContainer.new()
+		column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		_object_shard_window.add_child(column)
+		var description := Label.new()
+		description.text = "Enable on the current canvas or load a playable construction.\nCut supports with ordinary Erase; use Cut moving / Ignite moving on detached material.\nPause for deliberate edits. Restore start replaces the whole scene.\nSave start stores the authored construction, not a live physics checkpoint."
+		column.add_child(description)
+		_button(column,"Enable on current canvas",enable_object_shard)
+		for i: int in range(ObjectShardScenes.IDS.size()):
+			var id: String = ObjectShardScenes.IDS[i]
+			_button(column,ObjectShardScenes.LABELS[i],func() -> void:
+				if load_object_shard_scene(id): _object_shard_window.hide())
+	_object_shard_window.popup_centered()
+
 func object_shard_m4_status() -> Dictionary:
 	if host == null or not host.has_method("object_shard_m4_latency_report"):
 		return {"ok": false, "ready": false, "outcome": "OrdinaryWorkerRequired"}
@@ -1508,6 +1570,9 @@ func object_shard_m4_action(pos: Vector2i, action: String,
 			or applied.is_empty() or busy():
 		refuse("ObjectShard M4: no installed or available ordinary Workbench.")
 		return {"ok": false, "outcome": "WorkbenchUnavailable"}
+	if observed.is_empty() and host.object_shard_m4_runtime.enabled:
+		observed = host.object_shard_m4_runtime.visible_observation()
+		witness = host.object_shard_m4_runtime.visible_target(pos)
 	var uploaded: Dictionary = {"world_generation": host.last_uploaded_world_generation,
 		"world_revision": host.last_uploaded_revision,
 		"render_serial": host.last_uploaded_render_snapshot_serial}
@@ -1515,7 +1580,9 @@ func object_shard_m4_action(pos: Vector2i, action: String,
 		host.latest_snapshot, uploaded, observed, action, pos, witness,
 		Time.get_ticks_usec())
 	if not result.get("ok", false):
-		refuse("ObjectShard M4: " + str(result.get("outcome", "UnknownRefusal")))
+		refuse("Structures: " + str(result.get("outcome", "UnknownRefusal")))
+	else:
+		message = "Moving material operation queued on the native owner."
 	return result
 
 
@@ -1650,7 +1717,8 @@ func _process(_delta: float) -> void:
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
 	if object_shard_m4_port.enabled:
 		var m4_status: Dictionary = object_shard_m4_status()
-		_status.text += " · M4 %s" % ("same-World candidate" if m4_status.get("ready",false) else "refused: " + str(m4_status.get("outcome","unavailable")))
+		var physical: Dictionary = host.object_shard_m4_runtime.diagnostics()
+		_status.text += " · structures %s · %d bodies" % [str(physical.get("phase",m4_status.get("outcome","unavailable"))),int(physical.get("body_count",0))]
 	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
 	equipment.refresh(context)

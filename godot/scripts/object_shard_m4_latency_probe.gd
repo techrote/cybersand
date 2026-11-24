@@ -22,7 +22,7 @@ var _last_upload: Dictionary = {}
 var _last_worker_metrics: Dictionary = {}
 var _post_draw_candidate_count: int = 0
 var _input_sequence: int = 0
-var _workload: Dictionary = {"active_bodies": 0, "paused": true, "camera": "unspecified"}
+var _workload: Dictionary = {"owned_material_bodies": 0, "paused": true, "camera": "unspecified"}
 var _draw_cadence: Dictionary = {}
 var _progress_cadence: Dictionary = {}
 var _last_draw_usec: int = -1
@@ -55,10 +55,10 @@ func retire(reason: String) -> void:
 # Main supplies only workload labels. These never advance native or physical
 # time. A changed label breaks the interval so a pause, reset or camera switch
 # cannot be folded into a different workload's measured rate.
-func observe_workload(active_bodies: int, paused: bool, camera: String) -> bool:
-	if not enabled or active_bodies < 0 or active_bodies > 64 or camera.length() > 64:
+func observe_workload(owned_material_bodies: int, paused: bool, camera: String) -> bool:
+	if not enabled or owned_material_bodies < 0 or owned_material_bodies > 64 or camera.length() > 64:
 		return false
-	var next: Dictionary = {"active_bodies": active_bodies, "paused": paused, "camera": camera}
+	var next: Dictionary = {"owned_material_bodies": owned_material_bodies, "paused": paused, "camera": camera}
 	if next != _workload:
 		_last_draw_usec = -1
 		_last_progress_usec = -1
@@ -67,7 +67,7 @@ func observe_workload(active_bodies: int, paused: bool, camera: String) -> bool:
 
 
 func _cohort() -> String:
-	return "%d|%s|%s" % [int(_workload.active_bodies), str(_workload.paused), str(_workload.camera)]
+	return "%d|%s|%s" % [int(_workload.owned_material_bodies), str(_workload.paused), str(_workload.camera)]
 
 
 func _reset_cadence() -> void:
@@ -286,6 +286,7 @@ func summary() -> Dictionary:
 		"cadence": {"display_backend": DisplayServer.get_name(),
 			"render_scope": "headless_callback_only" if DisplayServer.get_name() == "headless" else "renderer_post_draw_callback",
 			"hardware_present_verified": false,
+			"body_count_scope": "owned material bodies including sleeping; no awake-body inference",
 			"post_draw_intervals": _cadence_summary(_draw_cadence, "post_draw_callbacks"),
 			"native_progress_delivery": _cadence_summary(_progress_cadence, "native_semantic_ticks"),
 			"progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",

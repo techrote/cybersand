@@ -1516,7 +1516,7 @@ void m4_exclusive_mutable_capacity_refuses_fourth_real_owner() {
         CHECK(activate(coordinator, prepared.shard));
         const auto proof = coordinator.m4_owner_readback();
         CHECK(proof.active_count == i + 1);
-        CHECK(proof.truncated == (i >= gate::kBodyLimit));
+        CHECK(proof.truncated == (i >= OwnerReadback::kBodySlots));
         gate::GeometryTicket ticket{};
         const auto outcome = adapter.stage_geometry(cybersand::object_shard::CoordinatorTestAccess::world(coordinator),
             coordinator, owner, prepared.shard, ticket);
@@ -1679,7 +1679,7 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     const std::array<Cell, 1> immutable{{{6, 7, 1}}};
     CHECK(attached.set_immutable_occupancy(immutable).outcome == Outcome::Accepted);
     CHECK(owner.transient_obstacle_at(6, 7) == 1);
-    CHECK(owner.transient_obstacle_at(31, 31) >= 62);
+    CHECK(owner.transient_obstacle_at(31, 31) >= Coordinator::kFirstMutableBodyId);
     auto poses = next_poses(attached);
     for (auto& pose: poses) { pose.y += 1.0; pose.pose_serial += 1; }
     CHECK(attached.accept_motion(poses).outcome == Outcome::Accepted);
@@ -1704,7 +1704,226 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     CHECK(owner.completed_tick_index() == before_physics_tick + 1);
 }
 
+void m4_rooted_mixed_architecture_keeps_severed_wall_caps_and_atomic_masks() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    wc.initial_chunk_reserve=32;wc.maximum_chunk_count=128;
+    wc.active_chunk_capacity=128;wc.active_core_capacity=128;
+    World owner(wc);
+    const RectI64 domain{0,0,128,96};
+    owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);
+    (void)owner.tick();
+    Coordinator attached(owner,small_config());
+    CHECK(attached.can_detach());
+    bool competing_owner_refused=false;
+    try {Coordinator second(owner,small_config());}
+    catch (const std::invalid_argument&) {competing_owner_refused=true;}
+    CHECK(competing_owner_refused);
+    for (int x=0;x<128;++x) CHECK(attached.edit(x,88,{Material::Wall}).outcome==Outcome::Accepted);
+    for (int y=60;y<88;++y) CHECK(attached.edit(30,y,{Material::Wall}).outcome==Outcome::Accepted);
+    for (int y=40;y<60;++y) for (int x=26;x<46;++x) {
+        const auto material=x<36 ? Material::Wood : x<41 ? Material::RedBrick : Material::Concrete;
+        CHECK(attached.edit(x,y,{material}).outcome==Outcome::Accepted);
+    }
+    for (int i=0;i<30 && !attached.snapshot(false).admission.census_complete;++i)
+        CHECK(attached.prepare_next().outcome!=Outcome::Accepted);
+    CHECK(attached.snapshot(false).admission.eligible==0);
+    // Only the middle is erased. The small Wall cap still touches the facade;
+    // it must travel with the disconnected mixed structure, not pin it forever.
+    for (int y=64;y<68;++y) CHECK(attached.edit(30,y,empty()).outcome==Outcome::Accepted);
+    const auto prepared=discover(attached);
+    CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(attached,prepared.shard));
+    const auto* shard=attached.registry().find(prepared.shard);
+    CHECK(shard && shard->counts().structural==404);
+    CHECK(attached.accounting().promoted[static_cast<unsigned>(Material::Wall)]==4);
+    CHECK(attached.accounting().promoted[static_cast<unsigned>(Material::Wood)]==200);
+    CHECK(attached.accounting().promoted[static_cast<unsigned>(Material::RedBrick)]==100);
+    CHECK(attached.accounting().promoted[static_cast<unsigned>(Material::Concrete)]==100);
+    check_population_balance(attached);
+    CHECK(!attached.can_detach());
+    CHECK(attached.detach().outcome==Outcome::Fenced);
+    CHECK(attached.same_world_attached(owner));
+    using Cell=World::TransientCompositionCell;
+    const std::array<Cell,2> touching{{{30,50,1},{80,80,2}}};
+    CHECK(attached.set_immutable_occupancy(touching).outcome==Outcome::Accepted);
+    CHECK(owner.transient_obstacle_at(30,50)==1);
+    CHECK(owner.transient_obstacle_at(31,50)>=Coordinator::kFirstMutableBodyId);
+    CHECK(owner.transient_obstacle_at(80,80)==2);
+    CHECK(attached.metrics().composed_overlap_cells>0);
+    const std::array<Cell,2> duplicate{{{30,50,1},{30,50,2}}};
+    CHECK(attached.set_immutable_occupancy(duplicate).outcome==Outcome::Invalid);
+    CHECK(owner.transient_obstacle_at(30,50)==1);
+    CHECK(owner.transient_obstacle_at(31,50)>=Coordinator::kFirstMutableBodyId);
+    CHECK(!attached.snapshot(false).quarantined && !owner.has_failed());
+    CHECK(attached.set_immutable_occupancy({}).outcome==Outcome::Accepted);
+    CHECK(owner.transient_obstacle_at(30,50)>=Coordinator::kFirstMutableBodyId);
+    CHECK(owner.transient_obstacle_at(80,80)==0);
+    check_population_balance(attached);
+    CHECK(attached.snapshot(false).world_materials.empty());
+    CHECK(attached.snapshot(true).world_materials.size()==128U*96U);
+}
+
+void m4_sixteen_attached_owners_preserve_seventeenth_inventory() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    wc.initial_chunk_reserve=64;wc.maximum_chunk_count=256;
+    wc.active_chunk_capacity=256;wc.active_core_capacity=256;
+    World owner(wc);
+    const RectI64 domain{0,0,256,128};
+    owner.reserve_region({-32,-32,320,192});owner.reserve_temperature_region({-32,-32,320,192});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);
+    (void)owner.tick();
+    auto config=small_config();config.world_bounds={0,0,256,128};
+    config.limits.max_shards=16;config.limits.max_total_area=32768;
+    Coordinator attached(owner,config);
+    for (int n=0;n<17;++n) for (int y=0;y<3;++y) for (int x=0;x<3;++x)
+        CHECK(attached.edit(8+(n%8)*29+x,8+(n/8)*30+y,{Material::Wood}).outcome==Outcome::Accepted);
+    for (int n=0;n<16;++n) {
+        const auto prepared=discover(attached);
+        CHECK(prepared.outcome==Outcome::Accepted);
+        if (prepared.outcome!=Outcome::Accepted) return;
+        CHECK(activate(attached,prepared.shard));
+        CHECK(attached.m4_owner_readback().active_count==static_cast<unsigned>(n+1));
+        check_population_balance(attached);
+    }
+    CHECK(!attached.m4_owner_readback().truncated);
+    CHECK(attached.prepare_next().outcome==Outcome::Capacity);
+    CHECK(world_population(attached,Material::Wood)==9);
+    CHECK(owned_population(attached,Material::Wood)==17U*9U);
+    CHECK(attached.snapshot(false).admission.reason==AdmissionReason::BodySlots);
+    check_population_balance(attached);
+}
+
+void m4_fragmentation_is_exact_staged_and_conserves_rigid_velocity() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc);const RectI64 domain{0,0,128,96};
+    owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);(void)owner.tick();
+    Coordinator attached(owner,small_config());
+    for (int y=20;y<25;++y) for (int x=20;x<35;++x)
+        CHECK(attached.edit(x,y,{Material::Wood,static_cast<std::uint16_t>(x+y),0,350}).outcome==Outcome::Accepted);
+    const auto prepared=discover(attached);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(attached,prepared.shard));
+    auto motion=next_poses(attached);motion[0].rotation=.1;motion[0].vx=2.;motion[0].vy=3.;motion[0].angular_velocity=.5;
+    CHECK(attached.accept_motion(motion).outcome==Outcome::Accepted);
+    const auto request=[&](std::uint32_t at) {
+        const auto* shard=attached.registry().find(prepared.shard);
+        const auto proof=attached.m4_owner_readback();const auto pose=proof.bodies[0].pose;
+        return ShardEditRequest{prepared.shard,attached.next_transaction(),pose.body_generation,
+            shard->geometry().revision,pose.pose_serial,shard->material_revision(),at,
+            shard->schedule(at).incarnation,shard->payload(at)};
+    };
+    auto* parent=attached.registry().find(prepared.shard);const auto bounds=parent->bounds();
+    const auto observed_cell=static_cast<std::uint32_t>((21-bounds.y)*bounds.width+21-bounds.x);
+    const auto observed=request(observed_cell);
+    CHECK(attached.act_on_shard(observed,ShardAction::Inspect).outcome==Outcome::Accepted);
+    const auto old_digest=parent->payload_digest();
+    CHECK(attached.act_on_shard(observed,ShardAction::Inspect).outcome==Outcome::Accepted);
+    CHECK(parent->payload_digest()==old_digest);
+    auto stale=request(observed_cell);++stale.incarnation;
+    CHECK(attached.act_on_shard(stale,ShardAction::Ignite).outcome==Outcome::Stale);
+    CHECK(parent->payload_digest()==old_digest);
+    CHECK(attached.act_on_shard(request(observed_cell),ShardAction::Ignite).outcome==Outcome::Accepted);
+    for (int y=20;y<25;++y) {
+        const auto local=static_cast<std::uint32_t>((y-bounds.y)*bounds.width+26-bounds.x);
+        CHECK(attached.erase_shard(request(local)).outcome==Outcome::Accepted);
+        install_geometry(attached);
+    }
+    CHECK(parent->geometry().islands==2 && parent->counts().structural==70);
+    check_population_balance(attached);
+    const auto source_schedule=parent->schedule(observed_cell);const auto source_payload=parent->payload(observed_cell);
+    const auto original_digest=parent->payload_digest();const auto original_geometry=parent->geometry();
+    const auto source_pose=attached.m4_owner_readback().bodies[0].pose;
+    const auto staged=attached.prepare_next();CHECK(staged.outcome==Outcome::Accepted);
+    const auto* child=attached.registry().find(staged.shard);
+    CHECK(child && !child->owns_inventory() && parent->payload_digest()==original_digest);
+    CHECK(attached.snapshot(false).promotion.source_parent==prepared.shard);
+    CHECK(owned_population(attached,Material::Wood)==70);
+    // Cancellation before any physical reservation leaves every source tuple.
+    CHECK(attached.cancel(staged.transaction).outcome==Outcome::Cancelled);
+    CHECK(parent->payload_digest()==original_digest && parent->geometry().revision==original_geometry.revision);
+    const auto retry=attached.prepare_next();CHECK(retry.outcome==Outcome::Accepted);
+    child=attached.registry().find(retry.shard);
+    CHECK(child && child->counts().structural==30);
+    if (!child) return;
+    const auto child_bounds=child->bounds();
+    const auto child_cell=static_cast<std::uint32_t>((21-child_bounds.y)*child_bounds.width+21-child_bounds.x);
+    CHECK(child->payload(child_cell)==source_payload);
+    CHECK(child->schedule(child_cell).birth_tick==source_schedule.birth_tick);
+    CHECK(child->schedule(child_cell).next_due_tick==source_schedule.next_due_tick);
+    CHECK(child->schedule(child_cell).incarnation==source_schedule.incarnation);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::PhysicsReserved)).outcome==Outcome::Accepted);
+    CHECK(parent->counts().structural==40 && child->owns_inventory());
+    CHECK(parent->payload(observed_cell).material==Material::Empty);
+    CHECK(owned_population(attached,Material::Wood)==70 && world_population(attached,Material::Wood)==0);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::TerrainInstalled)).outcome==Outcome::Accepted);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::BodyActivated)).outcome==Outcome::Fenced);
+    install_geometry(attached);
+    CHECK(attached.acknowledge(ack_for(attached,AckKind::BodyActivated)).outcome==Outcome::Accepted);
+    CHECK(!attached.paused() && attached.m4_owner_readback().active_count==2);
+    const auto proof=attached.m4_owner_readback();
+    const auto cs=std::cos(source_pose.rotation),sn=std::sin(source_pose.rotation);
+    double px=0,py=0;
+    for (std::size_t i=0;i<proof.copied_count;++i) {
+        const auto& physical=proof.bodies[i];const auto* shard=attached.registry().find(physical.shard);
+        const auto& mass=shard->geometry().mass;
+        const auto dx=static_cast<double>(shard->bounds().x-bounds.x)+mass.com_x-original_geometry.mass.com_x;
+        const auto dy=static_cast<double>(shard->bounds().y-bounds.y)+mass.com_y-original_geometry.mass.com_y;
+        CHECK(std::abs(physical.pose.vx-(source_pose.vx-source_pose.angular_velocity*(sn*dx+cs*dy)))<1e-10);
+        CHECK(std::abs(physical.pose.vy-(source_pose.vy+source_pose.angular_velocity*(cs*dx-sn*dy)))<1e-10);
+        CHECK(physical.pose.angular_velocity==source_pose.angular_velocity);
+        px+=mass.mass*physical.pose.vx;py+=mass.mass*physical.pose.vy;
+    }
+    CHECK(std::abs(px-original_geometry.mass.mass*source_pose.vx)<1e-9);
+    CHECK(std::abs(py-original_geometry.mass.mass*source_pose.vy)<1e-9);
+    CHECK(attached.metrics().fragments==1);
+    check_population_balance(attached);
+    CHECK(attached.begin_owner_world_tick().outcome==Outcome::Accepted);(void)owner.tick();
+    CHECK(attached.after_owner_world_tick().outcome==Outcome::Accepted);
+    CHECK(child->payload(child_cell).state_b==source_payload.state_b-1);
+    install_geometry(attached);check_population_balance(attached);
+}
+
+void m4_attached_replacement_destroys_coordinator_before_world() {
+    const auto new_world=[] {
+        WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+        auto owner=std::make_unique<World>(wc);const RectI64 domain{0,0,128,96};
+        owner->reserve_region({-32,-32,192,160});owner->reserve_temperature_region({-32,-32,192,160});
+        owner->set_simulation_region(domain);owner->configure_transient_obstacles(domain,true);(void)owner->tick();
+        return owner;
+    };
+    auto owner=new_world();auto attached=std::make_unique<Coordinator>(*owner,small_config());
+    for (int replacement=0;replacement<4;++replacement) {
+        CHECK(attached->edit(30,30,{Material::Wood}).outcome==Outcome::Accepted);
+        const auto pending=discover(*attached);CHECK(pending.outcome==Outcome::Accepted);
+        if (pending.outcome!=Outcome::Accepted) return;
+        CHECK(activate(*attached,pending.shard));
+        const auto stale=geometry_ack(*attached,pending.shard);
+        const auto before=owned_population(*attached,Material::Wood);
+        auto candidate=new_world();
+        // The retained-cell preparation admission does not discard a live
+        // owner merely because a replacement World was successfully built.
+        CHECK(!attached->can_detach());CHECK(attached->same_world_attached(*owner));
+        CHECK(owned_population(*attached,Material::Wood)==before);
+        // Exact lifetime order used at all native facade replacement fences.
+        attached.reset();owner.swap(candidate);candidate.reset();
+        attached=std::make_unique<Coordinator>(*owner,small_config());
+        CHECK(attached->acknowledge(stale).outcome==Outcome::Retired);
+        CHECK(attached->set_immutable_occupancy({}).outcome==Outcome::Accepted);
+        CHECK(attached->begin_owner_world_tick().outcome==Outcome::Accepted);(void)owner->tick();
+        CHECK(attached->after_owner_world_tick().outcome==Outcome::Accepted);
+        CHECK(owned_population(*attached,Material::Wood)==0);
+        CHECK(!owner->has_failed());
+    }
+}
+
 int main() {
+    m4_attached_replacement_destroys_coordinator_before_world();
+    m4_fragmentation_is_exact_staged_and_conserves_rigid_velocity();
+    m4_rooted_mixed_architecture_keeps_severed_wall_caps_and_atomic_masks();
+    m4_sixteen_attached_owners_preserve_seventeenth_inventory();
     m4_attached_owner_one_world_native_material_and_mask();
     m4_composed_transient_collision_is_atomic();
     m4_same_world_promotion_and_exact_motion();
