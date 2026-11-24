@@ -16,6 +16,7 @@ import re
 from m67.reduce_comparison import canonical_bytes as comparison_canonical_bytes
 
 MAX_FILE_BYTES = 128 * 1024 * 1024
+NATIVE_TICK_SOURCE = "CyberSimulationWorker.take_latest_snapshot(0).tick_index"
 FLAGSHIP_EXTENTS = {"orbital-fabrication": [1024, 1024], "terraced-arcology": [1024, 1024],
                     "monumental-viaduct": [1536, 768], "biomechanical-vault": [1024, 768]}
 
@@ -210,6 +211,7 @@ def verify(root: Path, source: str, native: str) -> dict:
 
     gameplay = gate.document("gameplay/architecture-gameplay.json")
     gate.normal_capacity(gameplay)
+    gate.require(gameplay.get("native_tick_source") == NATIVE_TICK_SOURCE, "Gameplay requires current worker publication, not render-cache tick measurements")
     gate.require(gameplay.get("cropped_route_worlds") is False and gameplay.get("display") not in (None, "", "headless")
                  and gameplay.get("manifest_sha256") == gate.files["flagships/flagships-native.json"],
                  "Gameplay requires this invocation's complete actual flagship Worlds and display")
@@ -226,6 +228,7 @@ def verify(root: Path, source: str, native: str) -> dict:
                      "Missing actual Workbench gameplay capture")
     reopened = gate.document("gameplay/architecture-gameplay-reopen.json")
     gate.normal_capacity(reopened)
+    gate.require(reopened.get("native_tick_source") == NATIVE_TICK_SOURCE, "Fresh actor replay requires worker publication tick measurements")
     gate.require(reopened.get("route_source_revision") == source and reopened.get("route_report_sha256") == gate.files["gameplay/architecture-gameplay.json"],
                  "Reopen must consume this exact process's actor report")
     gate.require(len(reopened.get("attempts", [])) == 4 and {row["id"] for row in reopened["attempts"]} == family_ids

@@ -10,6 +10,15 @@
     "packaging_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
     "pr": 773,
     "qualified_application": "981a740828decbeac04d5a14511d0222095de0a9",
+    "qualified_interface_probe": {
+      "art_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+      "checks": 43,
+      "failures": 0,
+      "log_sha256": "3a2dcec17533852fb9912d26684dc84274a9613312a83e93a301b0589cfbb462",
+      "production_bridge": "3f0f146e8052cfa8f20af5da6cc1cf89cc662d31",
+      "required_owner_mapping": "Pass the live-context guard as Provider.send argument11 through asynchronous preparation.",
+      "scope": "Disposable controlled interface fixtures only; zero HTTP, inference or native calls; no integrated Art scene claim."
+    },
     "retained_prior_packaging_failure": {
       "outcome": "post-launch import descriptor verification failure",
       "run": 45493176632,
@@ -38,6 +47,13 @@
       "correct_refusals_retained": 10,
       "name": "pressure-dock"
     },
+    "held_out_scope": {
+      "all_original_proposals_retained": true,
+      "feasible_briefs": 3,
+      "independent_briefs": 4,
+      "seed_replications_are_independent_briefs": false,
+      "seeds_per_brief": 2
+    },
     "manifest_sha256": "4763904334ec5f275f9980075aa6d02d89cb5ebc0595834ba989cd9a68c8ff76",
     "proposals": 60,
     "refused_before_native": 37,
@@ -45,10 +61,33 @@
     "source": "2861317ebe279dca8c2d000c48a6933221507aac"
   },
   "development_catalogue": {
+    "attempt_breakdown": {
+      "asymmetric_parts_in_variant_placements": 4,
+      "native_identity_replays": 40,
+      "native_template_builds": 40,
+      "native_variant_placements": 20
+    },
     "attempts": 100,
     "capacity": 128,
     "checks": 801,
     "source": "43ea4dd05f0786b2c174386860f95d6b804f1c59"
+  },
+  "development_full_world_hangar": {
+    "actor_ticks": 1092,
+    "application_files_match": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+    "capacity": 1024,
+    "checks": 32,
+    "command_refusals": 0,
+    "cropped": false,
+    "display": "headless",
+    "failures": [],
+    "geometry_input_source": "5e6ef0d1fe412e369b0550ca2d9502087cd21e3a",
+    "left_corridor": false,
+    "native_ticks": 1091,
+    "persistent_contact_samples": 12,
+    "report_sha256": "bbd9a8de04093dc643060fca6373f9d179ba0077ca29045e92f85955af7591fd",
+    "scope": "One actual full-size hangar Midge route at normal capacity, headless on the compatible reused development native runtime. Does not replace the final four displayed source/extracted trials.",
+    "source": "ff3f1a9436a0155db32d714b099e5f71ec409e61"
   },
   "development_observations": [
     {
@@ -66,6 +105,8 @@
       "bytes": 14359,
       "capacity": 128,
       "checks": 438,
+      "console_checks": 439,
+      "count_note": "Report438 precedes final evidence-write assertion; console439. Original report bytes retained.",
       "display": "headless",
       "evidence_relative_path": "flagships-native-development/flagships-native.json",
       "failures": 0,
@@ -77,6 +118,8 @@
       "bytes": 3608,
       "capacity": 16,
       "checks": 80,
+      "console_checks": 81,
+      "count_note": "Report80 precedes final evidence-write assertion; console81. Original report bytes retained.",
       "display": "headless",
       "evidence_relative_path": "hierarchy-native-core16/hierarchy-native.json",
       "failures": 0,
@@ -233,6 +276,7 @@
     "archive_authority": "b9535405853a5cd16e4bba968ec7167222861c42",
     "comparative_families": 12,
     "evidence_authority": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+    "gold_astra_intervention_arms": 8,
     "gold_nominees": 25,
     "immutable_states": 76,
     "negative_interventions": 5,
@@ -241,9 +285,11 @@
       183
     ],
     "owner_accepted_at_authority": 0,
-    "primary_scan_maps": 67,
+    "primary_policy_schema_population": 67,
     "protected_features": 27,
     "recovered_maps": 70,
+    "retrieval_card_count": 25,
+    "retrieval_cards_replaced_by_export": false,
     "upstream_export": {
       "actual_consumer_report_sha256": "e041123d2e22806c5fef05c307f080a6e3f1d8fef5ff910fd5a5d066fdf26794",
       "bytes": 1640704,
@@ -257,6 +303,7 @@
     }
   },
   "implementation": {
+    "changed_count_semantics": "Actual changed material rows summed across execution stages; not unique final occupied cells.",
     "detail_worker_types": 8,
     "flagship_families": 4,
     "goldmaps_cards": 25,
@@ -284,16 +331,28 @@
     "proposal_bridge": "A found teardown and nested-dispatch reentrancy; B repaired at3f0f146e8052cfa8f20af5da6cc1cf89cc662d31. Runtime outcome tracked separately.",
     "windows_launcher": "A found unlisted-file acceptance; C8daddc adds exact pristine inventory and generated-cache-only postimport classification.20synthetic guards pass; actual Windows remains hosted.",
     "workflow": "B found host-rebind authority retention; root repaired it.60 combined fixture checks passed after recovery.",
-    "workshop": "A reviewed exact1024attachment cells/128contacts/256outside exception and root recovery authority at4da5f0fe473c3882743dfbd2da7b791af9e94aaf. Independent reducer239d725065b0a3456d0bdd5e558e04a2b6283e7d awaits native final artifact."
+    "workshop": "A reviewed exact1024attachment cells/128contacts/256outside exception and root recovery authority at4da5f0fe473c3882743dfbd2da7b791af9e94aaf; current reducer96584c777c89c67e26ccc0f7b4e3d71542ef9bf1 passed53adversaries and independently verified ff5d default1024 native report6be71c5c4527d00ca23339da5ea8a59d39938cc3728a95b9ed9130b164216c43. Fresh Reopen12 checks passed separately."
   },
   "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
+  "model_trial_handoff": {
+    "automatic_retries": 0,
+    "briefs": 3,
+    "calls_observed": 0,
+    "current_ui": "offline_only",
+    "missing_gate": "Exclusive qualified owner proposal route, truthful transport UI mode and identified authorized local serving model.",
+    "paid_calls_authorized": false,
+    "protocol": "owner-local-model-trial.v1.json",
+    "requests_per_brief": 1,
+    "sha256": "c73c8873f826961a7a1d18a74237006b7434e63602e41e9c6bb02fa70c4f9d81",
+    "status": "registered_not_executed"
+  },
   "native_inputs": {
     "changed": false,
     "final_build_policy": "Existing source-exact platform build gate retained.",
     "normalized_input_count": 105
   },
   "negative_results": [
-    "Earlier30-case comparison: four contextual arms had identical matched geometry.",
+    "Earlier30-case comparison: four contextual arms had identical matched geometry; no causal retrieval/prompt advantage identified, and this uninformative contrast does not prove no possible effect.",
     "Six random additive detail controls had20\u2013240 unattached cells; frame controls identical; some panel/pipe seeds invariant; random wear component count unchanged.",
     "Full-World Play at developmentcapacity128 failed scheduling-core capacity on its first tick.",
     "Original arcology crop bound mismatch retained; corrected source and fresh reopen passed only crop scope.",
@@ -303,7 +362,8 @@
     "Initial flagship report438 versus console439 final write assertion is preserved; successor reporting corrected without rewriting old evidence.",
     "Recovered system default was Godot4.7.2; its60fixture checks remain diagnostic. Required pinned4.7 was recovered and60checks repeated successfully.",
     "First dff native-hierarchy launch stopped at GDScript type inference before creating a World; explicit Dictionary annotation fixed and sourceff5d passed89native checks/default1024 plus12freshreopen checks.",
-    "Actual GOLDexport initially refused legitimate source tags longer than128characters; a bounded512-character tag reader passed31checks without mutating the corpus."
+    "Actual GOLDexport initially refused legitimate source tags longer than128characters; a bounded512-character tag reader passed31checks without mutating the corpus.",
+    "First hosted run45506178712 at fc8194 passed Linux89/89 but failed Windows1/126 gameplay assertions: all four routes completed; render-cached native tick sampling lagged the actor counter by3 on the vault. No owner package or extracted qualification resulted. Original failed evidence retained; correction requires a new source."
   ],
   "owner_gates": [
     "Draft/HOLD review",
@@ -324,10 +384,55 @@
     "unapproved reference-art transmission"
   ],
   "pull_request": 777,
+  "qualification_attempts": [
+    {
+      "guard": "passed",
+      "linux": {
+        "artifact": 14974993415,
+        "artifact_bytes": 26206036,
+        "artifact_sha256": "a42ce8cf66e85d8b440d6ae6281e2635ba58a8f3a1c63eb966f20f611b7a39f3",
+        "collaborative_custody_checks": 4386,
+        "independently_hashed_files": 499,
+        "passed": 89,
+        "process_groups": 89
+      },
+      "retained_as_failed": true,
+      "run": 45506178712,
+      "source": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+      "tree": "d632b6b77f7829c1e61d035844b52060c972e908",
+      "windows_extracted": "not_run",
+      "windows_package": "not_run",
+      "windows_runtime_build": "passed",
+      "windows_source": {
+        "artifact": 14974697855,
+        "artifact_bytes": 22544923,
+        "artifact_sha256": "4ad0e55840c858dbc738cdeca003d4cfc0dff2d0df08ae1838d5bc14a5a58a68",
+        "failed_vault_counters": {
+          "actor_advance": 1133,
+          "render_cache_advance": 1130,
+          "worker_published_tick": 1133
+        },
+        "failure": "Vault render-cached native tick advancement1130 versus actor1133 violates the prior minus2 assertion; the contemporaneous fresh worker publication is1133. Worker-publication sampling correction requires a new source-specific campaign.",
+        "gameplay_checks": 126,
+        "gameplay_failures": 1,
+        "outcome": "failed",
+        "persistent_contact_samples_per_route": 12,
+        "routes_completed": 4
+      }
+    }
+  ],
   "repository": "techrote/cybersand",
   "schema": "cybersand-collaborative-architecture-decision-packet-v1",
+  "source_freeze": {
+    "application": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+    "local_tree_equivalent": "a8dbe1142707f0f7520fd8c6e720d5ecb7ba804b",
+    "run": 45506178712,
+    "started_utc": "2026-11-24T23:00:50Z",
+    "state": "first_campaign_linux_pass_windows_gameplay_witness_failure",
+    "tree": "d632b6b77f7829c1e61d035844b52060c972e908"
+  },
   "state": "implementation_checkpoint_final_qualification_pending",
   "training": false,
-  "updated_utc": "2026-11-24T22:53:54.154508+00:00",
+  "updated_utc": "2026-11-24T23:45:00Z",
   "windows_evaluator": null
 }

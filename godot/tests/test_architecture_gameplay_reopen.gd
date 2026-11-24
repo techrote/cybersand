@@ -14,6 +14,7 @@ func run() -> void:
 	for previous: Dictionary in prior.attempts: await reopen(previous)
 	output={"format":"cybersand-architecture-actor-reopen-v1","source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"route_source_revision":prior.get("source_revision",""),"route_report_sha256":FileAccess.get_sha256(manifest_path),
+		"native_tick_source":Witness.NATIVE_TICK_SOURCE,
 		"native_active_core_capacity":int(ProjectSettings.get_setting("cybersand/native_active_core_capacity",1024)),
 		"development_memory_configuration":development_core_capacity>0,"godot":Engine.get_version_info().string,
 		"display":DisplayServer.get_name(),"attempts":attempts,
@@ -46,6 +47,7 @@ func reopen(previous: Dictionary) -> void:
 	var old_command: Dictionary=previous.get("first_command",{}).duplicate(true)
 	check(not old_command.is_empty() and not wb.submit_actor_policy(actor_id,old_command),identity+": prior-process issued command cannot control the reopened owner")
 	var native_begin:=native_tick()
+	var render_cached_begin:=render_cached_native_tick()
 	var first: Dictionary=wb.actor_observation(actor_id,true)
 	var actor_begin:=int(first.tick)
 	var target:=spawn+Vector2(24,-8)
@@ -62,15 +64,21 @@ func reopen(previous: Dictionary) -> void:
 		var command:=ActorSession.make_command(observed,int(observed.get("last_sequence",-1))+1,Witness.action(observed,target),12)
 		var accepted: bool=wb.submit_actor_policy(actor_id,command)
 		accepted_all=accepted_all and accepted
-		samples.append(Witness.sample(observed,native_tick(),command,accepted))
+		samples.append(Witness.sample(observed,native_tick(),command,accepted,render_cached_native_tick()))
 		await process_frame
 	var final: Dictionary=wb.actor_observation(actor_id)
 	check(accepted_all and samples.size()>=30,identity+": newly issued observation-bound commands are accepted after reopen")
 	check(int(final.tick)>actor_begin and native_tick()>native_begin and final.position.distance_to(spawn)>1.0,identity+": fresh native and Rapier owners produce measured actor movement")
+	var native_end:=native_tick()
+	var render_cached_end:=render_cached_native_tick()
 	await pause_owners(actor_id,identity)
 	attempts.append({"id":identity,"start_sha256":FileAccess.get_sha256(path),"source_crop_sha256":captured.get("config",{}).get("source_provenance",{}).get("crop_sha256",""),
 		"spawn":previous.spawn,"final_position":Witness._json(final.position),"actor_ticks":int(final.tick)-actor_begin,
-		"native_ticks":native_tick()-native_begin,"fresh_commands_accepted":accepted_all,"samples":samples})
+		"native_tick_source":Witness.NATIVE_TICK_SOURCE,"native_ticks":native_end-native_begin,
+		"native_tick_bounds":{"begin":native_begin,"end":native_end},
+		"render_cached_native_tick_bounds":{"begin":render_cached_begin,"end":render_cached_end},
+		"render_cached_native_ticks":render_cached_end-render_cached_begin,
+		"acknowledged_pause_ticks":{"native_published":native_tick(),"native_render_cached":render_cached_native_tick(),"actor":int(wb.actor_observation(actor_id).get("tick",-1))},"fresh_commands_accepted":accepted_all,"samples":samples})
 
 func finish() -> void:
 	output["checks"]=checks; output["failures"]=failures; output["passed"]=failures.is_empty()

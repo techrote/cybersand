@@ -3,6 +3,7 @@ extends RefCounted
 ## leased actor actions; no pose, velocity, collision or World mutation API.
 const FORMAT := "cybersand-architecture-actor-witness-v1"
 const CONTROLLER := "midge-observed-waypoint-pd-v1"
+const NATIVE_TICK_SOURCE := "CyberSimulationWorker.take_latest_snapshot(0).tick_index"
 
 static func descriptor(value: Dictionary) -> Dictionary:
 	var result: Dictionary=value.get("witness",value).duplicate(true)
@@ -46,11 +47,11 @@ static func action(view: Dictionary, target: Vector2, landing := false) -> Dicti
 		return {"move":Vector2.ZERO,"effort":1.0,"primary":false,"secondary":true,"auxiliary":true}
 	return {"move":Vector2(steering,-throttle).limit_length(1.0),"effort":1.0,"primary":false,"secondary":false,"auxiliary":false}
 
-static func sample(view: Dictionary, native_tick: int, command: Dictionary, accepted: bool) -> Dictionary:
+static func sample(view: Dictionary, native_tick: int, command: Dictionary, accepted: bool, render_cached_tick: int = -1) -> Dictionary:
 	var position: Vector2=view.get("position",Vector2.ZERO)
 	var velocity: Vector2=view.get("velocity",Vector2.ZERO)
 	var normal: Vector2=view.get("contact_normal",Vector2.ZERO)
-	return {"native_tick":native_tick,"actor_tick":int(view.get("tick",-1)),
+	return {"native_tick":native_tick,"render_cached_native_tick":render_cached_tick,"actor_tick":int(view.get("tick",-1)),
 		"observation_id":view.get("observation_id",""),"run_id":view.get("run_id",""),"epoch":view.get("epoch",-1),
 		"position":[position.x,position.y],"velocity":[velocity.x,velocity.y],
 		"rotation":view.get("rotation",0.0),"angular_velocity":view.get("angular_velocity",0.0),

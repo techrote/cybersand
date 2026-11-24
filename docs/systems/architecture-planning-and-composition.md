@@ -85,7 +85,7 @@ The consumer preserves 70 recovered maps, the distinct 67-map primary policy/sch
 
 Source static planes are uint8; current native authoring planes are LE16. `widen_source_static_plane` performs an explicit lossless identity conversion after checking extent and source digest, retaining both hashes. This conversion is not native execution or material-policy qualification. The consumer reads source family names as supplied; it does not invent equivalence between a new export taxonomy and the frozen design-card taxonomy.
 
-The compatibility tests currently cover bounded schema fixtures and hostile inputs. A live owner-delivery export must be independently identified and validated before claiming that complete upstream export qualified. No corpus file is modified by this consumer.
+The compatibility tests cover bounded schema fixtures and hostile inputs. The separately identified actual archive member `corpus-export/knowledge.v1.json` (SHA-256 `711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557`) also passed the optional read-only intake invocation at consumer source `b49a0947e614e09a7807dd35043f20f88e31381b`: nineteen synthetic assertions, eleven actual-export assertions and one retention assertion. The initial longer-source-tag refusal is preserved; a consumer-specific 512-character bound retains the source text exactly. See [the actual intake review](../audits/2026-11-24-world-steer-m6-m7/goldmaps-consumer-review-b.md). This is knowledge-schema/browsing qualification, with no native module import or owner acceptance. No corpus file is modified by this consumer.
 
 ## Qualification and scientific scope
 

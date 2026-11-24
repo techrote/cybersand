@@ -28,6 +28,40 @@ Launch the complete evaluator through **Open Workbench.cmd**. Keep its Godot,
 native extension, Rapier and project files together. In Shared Workbench, pause
 the World and open **Architecture…**.
 
+### Open an already constructed flagship
+
+The supplied starts are ordinary authored documents. **Load start** reads named
+documents from the Workbench user folder; it is not a file browser and does not
+search the evaluator's evidence directory automatically.
+
+After the first launch, close the application. On Windows, open this folder in
+Explorer (create its final `workbench` directory if necessary):
+
+```text
+%APPDATA%\Godot\app_userdata\Cyber Sand Reference Sandbox\workbench
+```
+
+Copy one source file from the evaluator's
+`architecture-evidence\collaborative\flagships` folder into that user folder,
+using the destination name below. Keep the source file unchanged. If a
+destination already contains your own work, use another valid name instead of
+overwriting it.
+
+| Supplied source file | Destination filename | Name to enter beside Load start |
+| --- | --- | --- |
+| `orbital-fabrication-workbench-start.json` | `setup-m67-orbital-fabrication.json` | `m67-orbital-fabrication` |
+| `terraced-arcology-workbench-start.json` | `setup-m67-terraced-arcology.json` | `m67-terraced-arcology` |
+| `monumental-viaduct-workbench-start.json` | `setup-m67-monumental-viaduct.json` | `m67-monumental-viaduct` |
+| `biomechanical-vault-workbench-start.json` | `setup-m67-biomechanical-vault.json` | `m67-biomechanical-vault` |
+
+Reopen **Open Workbench.cmd**, enter that name and choose **Load start**. Wait
+for native loading to finish. This restores the authored geometry paused; it
+does not replay a historical Architecture approval or a running simulation.
+These flagship starts contain no actor. Add an accepted actor through ordinary
+Workbench controls when you want to try movement, or edit the structure first.
+The separate recorded gameplay starts retain an external-policy controller and
+need an explicit owner control choice before manual play.
+
 The Construction tab separates three kinds of evidence:
 
 | View | What it shows | What it establishes |
@@ -51,7 +85,8 @@ the bounded code-authored recipes. This action performs no native World writes
 and does not pretend to harvest a completed construction.
 
 For native evidence from the packaged qualification, use **Import library…** and
-choose the accompanying `curated-library-v2.json`. Imported content retains its
+choose `architecture-evidence\collaborative\catalogue\curated-library-v2.json`
+inside the extracted evaluator. Imported content retains its
 exact module hashes and historical provenance. Its current-session observation
 flags start false. An exact identity placement and complete native readback can
 establish new observation for that content. A palette, mirror, overlap or changed
@@ -259,3 +294,13 @@ Use an Empty World of at least 512 × 512 and add the curated templates or impor
 The first access-gallery proposal deliberately intersects a protected passage and should refuse. Select that leaf and choose **Propose clear access gallery** to review the finite repair. The optional screen may be explicitly skipped. To exercise Stop, start the cladding trial and stop it while it is running. Wait for its acknowledged native terminal. **Propose recovery from stopped trial** is available only for that partial stage and requires the stopped region to remain unchanged; the host re-inspects it. The new recovery campaign retains prior history, has separate preview and approval for every stage, and does not erase on selection. If the trial already completed before Stop, this convenience recovery is unavailable; no partial result is invented.
 
 The extracted Windows qualification starts the unchanged **Open Workbench.cmd** in a pristine extraction before any runner import. It records the actual child process, visible window and accepted Workbench route, then closes only that observed process. The source/runtime/payload manifest is checked before launch; later Godot-generated `.import` sidecar rewrites are recorded separately while executable and source bytes remain strict. Subsequent native, UI and full-World actor cases are separate gates. Hosted launcher execution does not establish physical owner acceptance.
+
+## Optional first local-model trial
+
+The current Intent controls remain offline. The [first local-model trial guide](world-steer-first-model-trial.md)
+provides five runnable offline preflight commands and a registered three-request
+trial for a future qualified owner proposal route. It identifies the exact
+missing integration and the evidence a genuine request must retain. This
+protocol permits no paid or cloud calls; those require separate owner authority
+and an explicit budget. Opening Architecture, importing parts or running the
+offline preflight makes no inference request.

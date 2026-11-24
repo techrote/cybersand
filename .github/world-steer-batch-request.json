@@ -2,9 +2,9 @@
   "schema": "world-steer-batch-request-v1",
   "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
   "scope": "Preserved M0-M5 regression gates;40 native parts/v2 contacts; bounded detail, hierarchy, full-size native Worlds and actual extracted Windows evaluator",
-  "request_id": "2026-11-24-collaborative-qualification-1",
+  "request_id": "2026-11-24-collaborative-qualification-2",
   "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-  "review_checkpoint_parent": "001ead437297d71238f59c7becb3f93c8bf02b24",
+  "review_checkpoint_parent": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
   "platforms": [
     "linux",
     "windows"
@@ -18,6 +18,6 @@
   "foundation_qualification_run": 45454711939,
   "original_evidence_preserved": true,
   "native_inputs_changed": false,
-  "source_specific_reason": "First combined successor qualification after independently reviewed connection, planning, detail, hierarchical recovery, native flagship and owner-control implementation. Focused pinned4.7 normal-capacity native89/reopen12/flagships446 and pure/receipt adversaries passed; final graphical Linux/Windows/extracted source remains mandatory.",
+  "source_specific_reason": "Correct the full-World gameplay witness to sample the worker immutable completion publication used by the accepted physics path, retaining render-cache counters as diagnostics. First run45506178712 passed Linux89/89; Windows completed four routes but failed one cached native-versus-actor counter assertion. Original failure retained. No production physics, route, controller, native input, material or bound change. The existing complete Linux/Windows/extracted campaign requalifies the exact successor; clarified owner loading instructions and reviewed model-trial handoff included.",
   "art_boundary": "Qualified fa22 Art successor identified; no proposal-only owner route/handoff exists. This campaign qualifies the independent Architecture workflow against accepted provider contracts without importing the separate branch."
 }

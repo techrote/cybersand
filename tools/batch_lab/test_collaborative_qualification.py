@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 import qualify
 from bundle_architecture_evidence import bundle
-from verify_collaborative_evidence import Custody, FLAGSHIP_EXTENTS, sha, verify, comparison_canonical_bytes
+from verify_collaborative_evidence import Custody, FLAGSHIP_EXTENTS, NATIVE_TICK_SOURCE, sha, verify, comparison_canonical_bytes
 from verify_windows_launcher import audit_payload, owned
 
 SOURCE = "1" * 40
@@ -120,9 +120,9 @@ def fixture(root: Path) -> None:
     flagship_sha = write(root, "flagships/flagships-native.json", complete(core_capacity=1024, examples=examples))
     write(root, "flagships/flagships-render.json", complete(native_source_revision=SOURCE, display="synthetic-test",
           renders=frames(root, "flagships", 12)))
-    actor_sha = write(root, "gameplay/architecture-gameplay.json", capacity(cropped_route_worlds=False,
+    actor_sha = write(root, "gameplay/architecture-gameplay.json", capacity(cropped_route_worlds=False, native_tick_source=NATIVE_TICK_SOURCE,
           display="synthetic-test", manifest_sha256=flagship_sha, attempts=attempts))
-    write(root, "gameplay/architecture-gameplay-reopen.json", capacity(route_source_revision=SOURCE,
+    write(root, "gameplay/architecture-gameplay-reopen.json", capacity(route_source_revision=SOURCE, native_tick_source=NATIVE_TICK_SOURCE,
           route_report_sha256=actor_sha, attempts=reopened))
     plane_sha = write(root, "ui/connected-native-region.u16le", b"\0\0")
     records = [dict(source_revision=SOURCE, status="completed", result_sha256="result", expected_sha256="result") for _ in range(3)]
@@ -307,6 +307,14 @@ class EvidenceTests(unittest.TestCase):
     def test_actual_png_hash_is_required(self):
         write(self.root, "catalogue/rendered/synthetic-0.png", PNG + b"changed")
         with self.assertRaisesRegex(ValueError, "digest mismatch"): verify(self.root, SOURCE, NATIVE)
+
+    def test_render_cached_ticks_do_not_qualify_native_progress(self):
+        self.mutate("gameplay/architecture-gameplay.json", lambda row: row.update(native_tick_source="host.latest_snapshot.tick_index"))
+        with self.assertRaisesRegex(ValueError, "worker publication"): verify(self.root, SOURCE, NATIVE)
+
+    def test_reopened_render_cached_ticks_do_not_qualify_native_progress(self):
+        self.mutate("gameplay/architecture-gameplay-reopen.json", lambda row: row.update(native_tick_source="host.latest_snapshot.tick_index"))
+        with self.assertRaisesRegex(ValueError, "worker publication"): verify(self.root, SOURCE, NATIVE)
 
     def test_cropped_route_cannot_qualify_full_world(self):
         self.mutate("gameplay/architecture-gameplay.json", lambda row: row.update(cropped_route_worlds=True))

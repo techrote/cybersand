@@ -45,7 +45,14 @@ func installed() -> bool:
 	return wb!=null and not wb.applied.is_empty() and not wb.busy() and host.pending_microscenario_apply.is_empty()
 
 func native_tick() -> int:
-	return int(host.latest_snapshot.tick_index) if host.latest_snapshot!=null else -1
+	# Match main._physics_process: immutable worker completion can precede the
+	# render callback that refreshes host.latest_snapshot. Peeking consumes no
+	# publication or render acknowledgment and changes no simulation behavior.
+	var snapshot: RefCounted=host.simulation_worker.take_latest_snapshot(0) if host!=null and host.simulation_worker!=null else null
+	return int(snapshot.tick_index) if snapshot!=null else -1
+
+func render_cached_native_tick() -> int:
+	return int(host.latest_snapshot.tick_index) if host!=null and host.latest_snapshot!=null else -1
 
 func start_host() -> bool:
 	root.size=Vector2i(1280,900)
@@ -87,6 +94,7 @@ func run() -> void:
 			if not check(not descriptor.is_empty(),"source-bound native route crop can be replayed in a labelled 512 World"): continue
 		await run_route(descriptor)
 	output={"format":Witness.FORMAT,"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"native_tick_source":Witness.NATIVE_TICK_SOURCE,
 		"native_active_core_capacity":int(ProjectSettings.get_setting("cybersand/native_active_core_capacity",1024)),
 		"development_memory_configuration":development_core_capacity>0,
 		"cropped_route_worlds":OS.get_environment("ARCHITECTURE_GAMEPLAY_CROP")=="1",
@@ -183,6 +191,7 @@ func run_route(descriptor: Dictionary) -> void:
 	var actor_before: Dictionary=wb.actor_observation(actor_id)
 	var session_identity: int=host.physical_actor_session.get_instance_id()
 	var native_begin:=native_tick()
+	var render_cached_begin:=render_cached_native_tick()
 	var actor_begin:=int(actor_before.get("tick",0))
 	if not check(wb.toggle_pause(),identity+": Play begins actual coupled simulation"): return
 	print("ARCHITECTURE_GAMEPLAY_PHASE route-playing / ",identity)
@@ -218,7 +227,7 @@ func run_route(descriptor: Dictionary) -> void:
 		last_tick=tick; latest=view; last_progress=Time.get_ticks_msec()
 		if tick-last_reported>=120:
 			last_reported=tick
-			print("ARCHITECTURE_GAMEPLAY_PROGRESS ",JSON.stringify({"id":identity,"actor_tick":tick,"native_tick":native_tick(),"position":Witness._json(view.get("position",Vector2.ZERO)),"target_index":target_index,"contacts":contacts,"suspended":view.get("suspended",false),"fault":view.get("fault","")}))
+			print("ARCHITECTURE_GAMEPLAY_PROGRESS ",JSON.stringify({"id":identity,"actor_tick":tick,"native_tick":native_tick(),"render_cached_native_tick":render_cached_native_tick(),"position":Witness._json(view.get("position",Vector2.ZERO)),"target_index":target_index,"contacts":contacts,"suspended":view.get("suspended",false),"fault":view.get("fault","")}))
 		if tick-actor_begin>int(descriptor.max_ticks): break
 		var position: Vector2=view.get("position",Vector2.ZERO)
 		if not position.is_finite() or not str(view.get("fault","")).is_empty(): break
@@ -234,10 +243,11 @@ func run_route(descriptor: Dictionary) -> void:
 		var accepted: bool=wb.submit_actor_policy(actor_id,command)
 		if not accepted: refusals+=1
 		if is_landing and bool(view.get("grounded",false)) and absf(position.x-landing.x)<=16.0: contacts+=1
-		samples.append(Witness.sample(view,native_tick(),command,accepted))
+		samples.append(Witness.sample(view,native_tick(),command,accepted,render_cached_native_tick()))
 		if contacts>=12: stop_reason="landed-with-persistent-contact"; break
 		await process_frame
 	var native_end:=native_tick()
+	var render_cached_end:=render_cached_native_tick()
 	var actor_end:=int(latest.get("tick",0))
 	var finished_waypoints:=target_index==waypoints.size()
 	var outcome:="completed" if finished_waypoints and contacts>=12 and refusals==0 and not left_corridor else "route-failed"
@@ -251,20 +261,24 @@ func run_route(descriptor: Dictionary) -> void:
 		"native_diagnostic":native_diagnostic,
 		"source_derivation":descriptor.get("source_derivation",{}),
 		"last_observation":Witness._json(latest),"workbench_frame_error":str(host.get("_workbench_frame_error")),
-		"left_corridor":left_corridor,"native_ticks":native_end-native_begin,"actor_ticks":actor_end-actor_begin,"elapsed_usec":Time.get_ticks_usec()-start_usec,
+		"left_corridor":left_corridor,"native_tick_source":Witness.NATIVE_TICK_SOURCE,
+		"native_tick_bounds":{"begin":native_begin,"end":native_end},
+		"render_cached_native_tick_bounds":{"begin":render_cached_begin,"end":render_cached_end},
+		"render_cached_native_ticks":render_cached_end-render_cached_begin,"native_ticks":native_end-native_begin,"actor_ticks":actor_end-actor_begin,"elapsed_usec":Time.get_ticks_usec()-start_usec,
 		"samples":samples,"saved_start_name":name_text,"start_path":identity+"-workbench-start.json",
 		"saved_start_sha256":FileAccess.get_sha256(evidence.path_join(identity+"-workbench-start.json")),
 		"retained_session_id":str(session_identity),"first_command":first_command,
 		"inspection_region":[inspection_region.position.x,inspection_region.position.y,inspection_region.size.x,inspection_region.size.y],
 		"source_crop_sha256":before.get("config",{}).get("source_provenance",{}).get("crop_sha256","")}
 	attempts.append(record)
-	print("ARCHITECTURE_GAMEPLAY_ROUTE_RESULT ",JSON.stringify({"id":identity,"status":outcome,"stop_reason":stop_reason,"actor_ticks":actor_end-actor_begin,"native_ticks":native_end-native_begin,"fault":latest.get("fault",""),"frame_error":record.workbench_frame_error,"native_diagnostic":native_diagnostic}))
+	print("ARCHITECTURE_GAMEPLAY_ROUTE_RESULT ",JSON.stringify({"id":identity,"status":outcome,"stop_reason":stop_reason,"actor_ticks":actor_end-actor_begin,"native_ticks":native_end-native_begin,"native_tick_source":Witness.NATIVE_TICK_SOURCE,"render_cached_native_ticks":render_cached_end-render_cached_begin,"fault":latest.get("fault",""),"frame_error":record.workbench_frame_error,"native_diagnostic":native_diagnostic}))
 	check(finished_waypoints,identity+": actual actor enters every requested waypoint")
 	check(contacts>=12,identity+": actual support contacts persist at the landing pad")
 	check(refusals==0 and not left_corridor,identity+": issued commands are admitted and recorded flight stays in the selected corridor")
 	check(native_end-native_begin>=actor_end-actor_begin-2 and actor_end>actor_begin,identity+": native and Rapier owners both advance the sampled route")
 	check(host.physical_actor_session.get_instance_id()==session_identity,identity+": route does not replace the live actor owner")
 	if not await pause_owners(actor_id,identity): return
+	record["acknowledged_pause_ticks"]={"native_published":native_tick(),"native_render_cached":render_cached_native_tick(),"actor":int(wb.actor_observation(actor_id).get("tick",-1))}
 	var settled: Dictionary=await wb.capture_batch_source(inspection_region)
 	check(settled.get("ok",false) and settled.config.source_cells==before.config.source_cells,identity+": exact route material geometry survives the measured actor trial")
 	if settled.get("ok",false): record["ordinary_history"]=await verify_paint_history(inspection_region,settled.config.source_cells,actor_id,identity)
