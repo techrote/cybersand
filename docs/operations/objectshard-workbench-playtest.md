@@ -29,6 +29,12 @@ your own authored scene. Ordinary launches keep their existing defaults.
 The candidate is bounded; an unsupported canvas, roster or exhausted geometry
 budget must show a refusal while preserving existing ownership.
 
+For your own construction, use **Details** to set **New width** and **height**
+to 512 or 1,024, create the **New blank** canvas, then choose **Enable on current
+canvas**. The ordinary 2,048-cell default exceeds this candidate's supported
+extent and is visibly refused. Loading any of the five demonstration starts
+sets up a supported canvas directly.
+
 From a qualified source checkout, the equivalent explicit entry is:
 
 ```text
@@ -49,7 +55,11 @@ mass installation receipts. The falling material should keep its identity,
 interact with the terrain, and remain available for further edits.
 
 Use **Cut moving** for a witnessed edit of a moving structure, and
-**Ignite moving** to ignite supported combustible material. Pause for a
+**Ignite moving** to ignite supported combustible material. These tools mark
+one visible cell, and the ordinary paint radius is disabled. Hold and move
+slowly to make successive edits; each edit waits for the preceding native and
+geometry receipts. Releasing the button or switching tools cancels the held
+intent. No interpolated stroke is stored for later replay. Pause for a
 deliberate cut when a rapidly moving target is difficult to select. If the
 observed target changed before execution, a stale-target refusal is a safe
 outcome; it must not erase unrelated native terrain.
@@ -58,8 +68,8 @@ Ordinary painting remains available around the moving structures. Use Sand,
 Water and Fire to observe coupled behavior. Switching tools or camera modes
 must not replace the native World, duplicate the material, or restart a body.
 
-For a quiet body lying almost horizontally or vertically, choose **Settle into
-canvas** and select its material. The candidate freezes the real body, checks
+For a quiet body lying almost horizontally or vertically, **Pause**, choose
+**Settle into canvas**, and select its material. The candidate freezes the real body, checks
 the destination cells, transfers its exact inventory back to native terrain,
 and removes its physical body only after the corresponding receipts. This
 explicit conversion snaps its origin to the nearest cell. A moving, oblique,
@@ -120,7 +130,9 @@ another after pausing when comparing responsiveness.
 Water contact can extinguish moving Wood; Sand can lodge in supported pockets
 and contribute to mass. This candidate does not add buoyancy, fluid drag or
 native Sand impact impulses to mutable structures. Dense fluid with no nearby
-empty relocation cells can stop the candidate with a refusal. Restore start
+empty relocation cells can stop the candidate with a refusal. The attached
+search is bounded to 64 cells and 1,048,576 destination probes per composition;
+the saved diagnostics include those bounds. Restore start
 recovers the authored setup without treating that refusal as successful motion.
 
 ## Physical Windows/NVIDIA observations

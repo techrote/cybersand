@@ -24,6 +24,7 @@ import native_candidate_identity as native
 import run_godot_regressions as runner
 from native_receipt import verify as verify_linux_receipt
 from qualify_lab import RAPIER_HASHES, VERSION, require_custody
+from process_resources import run_observed_case
 
 FOCUSED = (
     ("test_object_shard_m4_latency_probe", "objectshard-m4-workbench-probe-test-v1"),
@@ -34,6 +35,8 @@ FOCUSED = (
     ("test_object_shard_m4_workbench_completion", "objectshard-m4-workbench-completion-v1"),
     ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
     ("test_object_shard_m4_fragment_reabsorption", "objectshard-m4-fragment-reabsorption-v1"),
+    ("test_object_shard_m4_lifecycle_adverse", "objectshard-m4-lifecycle-adverse-v1"),
+    ("test_object_shard_m4_lifecycle_fuzz", "objectshard-m4-lifecycle-fuzz-v1"),
 )
 REGRESSIONS = (
     "test_workbench_canvas", "test_workbench_wave", "test_workbench_wave_spill",
@@ -89,6 +92,41 @@ def validate_profile(value: dict, source: str, rendered: bool) -> None:
         raise ValueError("Missing renderer submission witness")
     if rendered == (value.get("display_driver") == "headless") or (not rendered and submissions != 0):
         raise ValueError("Graphical and headless evidence scopes disagree")
+    intervals = value.get("completed_physical_intervals")
+    if type(intervals) is not int or abs(intervals - value["completed_semantic_ticks"]) > 1:
+        raise ValueError("Native and complete physical interval progression disagree")
+    physical_seconds = value.get("simulated_physical_seconds")
+    if type(physical_seconds) not in (int, float) or not math.isclose(physical_seconds, intervals / 60.0, abs_tol=1e-8):
+        raise ValueError("Physical time is not bound to completed actual intervals")
+    supports = value.get("before_cut_supports", {})
+    if any(type(supports.get(key)) is not int for key in ("material_bodies_before_cut", "missing_support_cells", "support_cells")) or \
+            supports["material_bodies_before_cut"] != 0 or supports["missing_support_cells"] != 0 or supports["support_cells"] <= 0:
+        raise ValueError("Missing actual intact foundation witness")
+    contacts = value.get("material_contact_deltas", {})
+    for material, scenes in (("water", ("viaduct", "mixed")), ("sand", ("mixed",))):
+        events = contacts.get("relocated_" + material + "_cells")
+        if value["scene"] in scenes and (type(events) is not int or events <= 0):
+            raise ValueError("Missing committed native " + material + " interaction")
+
+
+def validate_render_control(value: dict, source: str) -> None:
+    if value.get("source_commit") != source or value.get("display_driver") in (None, "headless"):
+        raise ValueError("Renderer controls need actual graphical exact-source observations")
+    rows = value.get("windows", [])
+    if [row.get("label") for row in rows] != ["intact_paused", "intact_playing", "detached_paused", "detached_playing"]:
+        raise ValueError("Missing paired intact/detached pause/play windows")
+    for row in rows:
+        if row.get("elapsed_usec", 0) < 12_000_000 or row.get("render_submissions", 0) <= 0:
+            raise ValueError("Incomplete actual renderer control window")
+        if row.get("native_pose_echo_checks") != row.get("native_pose_acknowledgements"):
+            raise ValueError("Renderer control lacks exact native pose echoes")
+        if row["label"].endswith("paused"):
+            if row.get("semantic_ticks") != 0 or row.get("actual_physics_steps") != 0:
+                raise ValueError("Paused renderer control advanced simulation")
+        elif row.get("semantic_ticks", 0) <= 0 or row.get("actual_physics_steps", 0) <= 0:
+            raise ValueError("Playing renderer control did not progress")
+    if max(rows[-1].get("awake_bodies_before", 0), rows[-1].get("awake_bodies_after", 0)) <= 0:
+        raise ValueError("Detached renderer control never observed an awake body")
 
 
 def committed_inputs() -> dict[str, str]:
@@ -161,7 +199,7 @@ def qualify(args: argparse.Namespace) -> dict:
                               int(execution_policy.watchdog_seconds("godot_import_seconds")), 0), None)]
         for name, schema in FOCUSED:
             flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption")):
+            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz")):
                 flags += ("--", "--objectshard-m4-workbench")
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
         if args.regressions:
@@ -172,6 +210,20 @@ def qualify(args: argparse.Namespace) -> dict:
                 "--objectshard-profile=" + str(output / "retained_lab_profile.json")),
                 int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-lab-profile-v1"))
         if args.profile:
+            if args.render:
+                # Godot 4.7 DummyRenderer texture_2d_update is a no-op; real
+                # ImageTexture pixel readback belongs only to a renderer lane.
+                overlay_flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
+                                 "--script", "res://tests/test_object_shard_m4_overlay_identity.gd")
+                cases.append((runner.Case("test_object_shard_m4_overlay_identity", overlay_flags,
+                              int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True),
+                              "objectshard-m4-overlay-identity-v1"))
+                flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
+                         "--script", "res://tests/profile_object_shard_m4_render_control.gd", "--",
+                         "--objectshard-m4-workbench", "--output=" + str(output / "m4_render_controls.json"))
+                cases.append((runner.Case("m4_render_controls", flags,
+                              int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True),
+                              "objectshard-m4-render-control-v1"))
             for scene in SCENES:
                 for camera in ("overview", "zoom"):
                     name = f"m4_workbench_{scene}_{camera}_" + ("render" if args.render else "headless")
@@ -195,12 +247,14 @@ def qualify(args: argparse.Namespace) -> dict:
             user_root = output / "isolated-user-data" / case.name
             user_root.mkdir(parents=True)
             case_env = dict(environment, XDG_DATA_HOME=str(user_root), APPDATA=str(user_root), LOCALAPPDATA=str(user_root))
-            record, failed = runner.run_case(str(engine), case, output, "ordinary-workbench-m4", env=case_env)
+            record, failed = run_observed_case(runner, str(engine), case, output, "ordinary-workbench-m4", env=case_env)
             if schema and not failed:
                 try:
                     record["receipt"] = completion(output / record["log"], schema)
                     if schema == "objectshard-m4-workbench-profile-v1":
                         validate_profile(record["receipt"], commit, case.requires_display)
+                    elif schema == "objectshard-m4-render-control-v1":
+                        validate_render_control(record["receipt"], commit)
                     elif schema == "objectshard-lab-profile-v1":
                         from lab_performance import check as check_lab_budget
                         profile = json.loads((output / "retained_lab_profile.json").read_text(encoding="utf-8"))

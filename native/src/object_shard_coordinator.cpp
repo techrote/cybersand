@@ -114,7 +114,8 @@ Coordinator::Coordinator(Config config, World* owner_world)
         config_.max_pause_calls == 0 || !std::isfinite(config_.max_translation_per_step) ||
         config_.max_translation_per_step <= 0 || config_.max_translation_per_step > 8 ||
         !std::isfinite(config_.max_rotation_per_step) || config_.max_rotation_per_step <= 0 ||
-        config_.max_rotation_per_step > .25)
+        config_.max_rotation_per_step > .25 || config_.relocation_probe_budget==0 ||
+        config_.relocation_probe_budget>kMaximumRelocationProbes)
         throw std::invalid_argument("ObjectShard Lab configuration outside bounded M0-M2 envelope");
     discovery_ = std::make_unique<ComponentDiscovery>(config_.world_bounds, config_.limits, attached_);
     component_.reserve(config_.limits.max_area);
@@ -188,6 +189,7 @@ void Coordinator::initialize_attached_world(World& owner) {
     immutable_occupancy_.reserve(owner.transient_occupancy_capacity());
     immutable_occupancy_backup_.reserve(owner.transient_occupancy_capacity());
     shard_occupancy_.reserve(std::min<std::size_t>(region.area(), config_.limits.max_total_area * 4U));
+    proposed_indices_.reserve(shard_occupancy_.capacity());
     // This watch listens to the *existing* World and its real native tick.
     owner.enable_object_shard_mutation_watch({region.x, region.y, region.width, region.height});
     last_owner_tick_ = owner.completed_tick_index();
@@ -285,7 +287,9 @@ Metrics Coordinator::lifetime_metrics() const noexcept {
     CS_ADD_METRIC(steps);CS_ADD_METRIC(paused_calls);CS_ADD_METRIC(discovered_cells);CS_ADD_METRIC(promotions);CS_ADD_METRIC(refusals);
     CS_ADD_METRIC(chemistry_cells);CS_ADD_METRIC(products_created);CS_ADD_METRIC(output_blocked);CS_ADD_METRIC(sand_ingested);
     CS_ADD_METRIC(exposure_overflows);CS_ADD_METRIC(stale_messages);CS_ADD_METRIC(mask_cells);CS_ADD_METRIC(sweep_samples);CS_ADD_METRIC(ingress_blocked);
-    CS_ADD_METRIC(composed_overlap_cells);CS_ADD_METRIC(fragments);CS_ADD_METRIC(fragment_refusals);CS_ADD_METRIC(reabsorptions);
+    CS_ADD_METRIC(composed_overlap_cells);CS_ADD_METRIC(composed_reuses);CS_ADD_METRIC(fragments);CS_ADD_METRIC(fragment_refusals);CS_ADD_METRIC(reabsorptions);
+    CS_ADD_METRIC(relocation_probes);CS_ADD_METRIC(relocation_probe_limit_hits);
+    CS_ADD_METRIC(relocated_cells);CS_ADD_METRIC(relocated_water_cells);CS_ADD_METRIC(relocated_sand_cells);
     CS_ADD_METRIC(world_ns);CS_ADD_METRIC(chemistry_ns);CS_ADD_METRIC(contact_ns);CS_ADD_METRIC(occupancy_ns);CS_ADD_METRIC(geometry_ns);CS_ADD_METRIC(snapshot_ns);
     CS_ADD_METRIC(discovery_ns);CS_ADD_METRIC(terrain_ns);CS_ADD_METRIC(exchange_ns);CS_ADD_METRIC(relocation_ns);
 #undef CS_ADD_METRIC
@@ -1172,7 +1176,12 @@ void Coordinator::rebuild_terrain() {
 // the mechanical overlap solver before the next combustion opportunity.
 Outcome Coordinator::rebuild_mask(bool capture_contact) {
     const auto start=now_ns(); const auto wb=config_.world_bounds;
-    std::fill(proposed_mask_.begin(),proposed_mask_.end(),0);
+    if (attached_) {
+        // Includes a previously refused partial raster: every nonzero entry
+        // acquires its index before the write, so retry cannot retain ghosts.
+        for (const auto at:proposed_indices_) proposed_mask_[at]=0;
+        proposed_indices_.clear();
+    } else std::fill(proposed_mask_.begin(),proposed_mask_.end(),0);
     for (std::size_t slot=0;slot<bodies_.size();++slot) {
         const auto& b=bodies_[slot]; const auto* shard=registry_.find(b.shard);
         if (!shard || !shard->owns_inventory() || !b.has_body) continue;
@@ -1195,6 +1204,10 @@ Outcome Coordinator::rebuild_mask(bool capture_contact) {
                 if (!resident(x,y)) return Outcome::NotResident;
                 const auto wi=static_cast<std::size_t>(y-wb.y)*wb.width+static_cast<std::size_t>(x-wb.x);
                 const auto id=static_cast<std::uint16_t>(slot+1);
+                if (attached_ && !proposed_mask_[wi]) {
+                    if (proposed_indices_.size()==proposed_indices_.capacity()) return Outcome::Capacity;
+                    proposed_indices_.push_back(static_cast<std::uint32_t>(wi));
+                }
                 // Two physically disjoint subcell shapes can cover the same
                 // World carrier. This derived mask is their union, not an
                 // inventory arbitration rule or an additional material owner.
@@ -1202,6 +1215,9 @@ Outcome Coordinator::rebuild_mask(bool capture_contact) {
             }
         }
     }
+    // Preserve exactly the old row-major relocation priority and the native
+    // composer's ordered-input contract, independently of body/shape order.
+    if (attached_) std::sort(proposed_indices_.begin(),proposed_indices_.end());
     const auto exposure_start=exposures_.size();
     const auto accepted_start=accounting_.accepted_exposures;
     ingress_fences_backup_.assign(ingress_fences_.begin(),ingress_fences_.end());
@@ -1243,6 +1259,9 @@ Outcome Coordinator::rebuild_mask(bool capture_contact) {
 Outcome Coordinator::reconcile_overlap() {
     ScopedTime timing{metrics_.relocation_ns};
     const auto wb=config_.world_bounds;
+    World::TransientCompositionReceipt composed;
+    const auto maximum_radius=attached_ ? kAttachedRelocationRadius : kStandaloneRelocationRadius;
+    std::uint32_t probes=0;
     relocations_.clear();std::fill(reserved_destinations_.begin(),reserved_destinations_.end(),0);
     std::fill(ingress_exclusion_.begin(),ingress_exclusion_.end(),0);
     // Mechanical displacement is not a lodging authority. Never move World
@@ -1271,16 +1290,26 @@ Outcome Coordinator::reconcile_overlap() {
     // Reserve every destination before moving the first World inventory cell.
     // Static terrain is Rapier's responsibility; movable material is displaced
     // by its canonical World move, preserving all World-owned solver sidecars.
-    for (std::size_t at=0;at<proposed_mask_.size();++at) if (proposed_mask_[at]) {
+    const auto mask_entries=attached_ ? proposed_indices_.size() : proposed_mask_.size();
+    for (std::size_t entry=0;entry<mask_entries;++entry) {
+        const auto at=attached_ ? static_cast<std::size_t>(proposed_indices_[entry]) : entry;
+        if (!proposed_mask_[at]) continue;
         const auto x=wb.x+static_cast<std::int64_t>(at%wb.width),y=wb.y+static_cast<std::int64_t>(at/wb.width);
         const auto payload=inspect_world(x,y);
         if (payload.material==Material::Empty || MaterialRules::is_hard_surface(payload.material)) continue;
         if (relocations_.size()==relocations_.capacity()) return Outcome::Capacity;
         bool found=false;
-        for (int radius=1;radius<=8 && !found;++radius)
+        for (int radius=1;radius<=maximum_radius && !found;++radius)
             for (int dy=-radius;dy<=radius && !found;++dy)
-                for (int dx=-radius;dx<=radius && !found;++dx) {
-                    if (std::max(std::abs(dx),std::abs(dy))!=radius || !resident(x+dx,y+dy)) continue;
+                // Same row-major ring order as the original solver, without
+                // revisiting the interior square at every larger radius.
+                for (int dx=-radius;dx<=radius && !found;dx+=(std::abs(dy)==radius ? 1 : 2*radius)) {
+                    if (attached_ && probes==config_.relocation_probe_budget) {
+                        ++metrics_.relocation_probe_limit_hits;
+                        return Outcome::Capacity;
+                    }
+                    ++probes;++metrics_.relocation_probes;
+                    if (!resident(x+dx,y+dy)) continue;
                     const auto dest=static_cast<std::size_t>(y+dy-wb.y)*wb.width+static_cast<std::size_t>(x+dx-wb.x);
                     if (proposed_mask_[dest] || reserved_destinations_[dest] || ingress_exclusion_[dest] ||
                         (attached_ && immutable_occupied(x+dx,y+dy)) ||
@@ -1292,7 +1321,7 @@ Outcome Coordinator::reconcile_overlap() {
     if (attached_) {
         shard_occupancy_.clear();
         std::uint64_t overlaps=0;
-        for (std::size_t at = 0; at < proposed_mask_.size(); ++at) if (proposed_mask_[at]) {
+        for (const auto at:proposed_indices_) {
             const auto x=wb.x+static_cast<std::int64_t>(at%wb.width);
             const auto y=wb.y+static_cast<std::int64_t>(at/wb.width);
             // Both disjoint rigid surfaces can conservatively cover one cell.
@@ -1307,11 +1336,11 @@ Outcome Coordinator::reconcile_overlap() {
         }
         // One native ownership transaction, including the GCR domain. A GCR
         // proxy and mutable shard cannot silently claim the same cell.
-        auto receipt = world_->compose_transient_obstacles(immutable_occupancy_,
+        composed = world_->compose_transient_obstacles(immutable_occupancy_,
             shard_occupancy_, kFirstMutableBodyId);
-        if (receipt.outcome != World::TransientCompositionOutcome::Applied ||
-            !world_->transient_composition_current(receipt))
-            return receipt.outcome == World::TransientCompositionOutcome::Quarantined
+        if (composed.outcome != World::TransientCompositionOutcome::Applied ||
+            !world_->transient_composition_current(composed))
+            return composed.outcome == World::TransientCompositionOutcome::Quarantined
                 ? Outcome::Quarantined : Outcome::DestinationUnavailable;
         metrics_.mask_cells += shard_occupancy_.size();
         metrics_.composed_overlap_cells += overlaps;
@@ -1337,6 +1366,17 @@ Outcome Coordinator::reconcile_overlap() {
             }
         }
     } catch (...) {return Outcome::Quarantined;}
+    // A search or refused preflight is not a fluid interaction witness. These
+    // counters publish only completely committed native carrier relocations.
+    metrics_.relocated_cells+=relocations_.size();
+    for (const auto& move:relocations_) {
+        metrics_.relocated_water_cells+=move.payload.material==Material::Water ? 1U : 0U;
+        metrics_.relocated_sand_cells+=move.payload.material==Material::Sand ? 1U : 0U;
+    }
+    if (attached_) {
+        accepted_composition_=composed;
+        composed_material_revision_=world_material_revision();
+    }
     return Outcome::Accepted;
 }
 
@@ -1370,11 +1410,14 @@ Result Coordinator::accept_motion(std::span<const PoseSample> poses) {
     if (quarantined_) return finish({Outcome::Quarantined});
     if (paused()) return finish({Outcome::Fenced, {}, 0, Phase::Suspended,
         "motion awaits installed geometry or promotion acknowledgement"});
+    const auto limit_hits=metrics_.relocation_probe_limit_hits;
     const auto accepted = apply_poses(poses);
     if (accepted == Outcome::Quarantined)
         return quarantine({}, "partial substep occupancy application; clocks held");
     if (accepted != Outcome::Accepted) return finish({accepted, {}, 0, Phase::Suspended,
-        "actual motion segment refused; no semantic tick advanced"});
+        metrics_.relocation_probe_limit_hits!=limit_hits
+            ? "World displacement candidate-work budget exhausted before material mutation"
+            : "actual motion segment refused; no semantic tick advanced"});
     return finish({Outcome::Accepted, {}, 0, Phase::Active,
         "motion segment occupancy and contact applied; semantic tick unchanged"});
 }
@@ -1463,6 +1506,20 @@ Result Coordinator::set_immutable_occupancy(
             (i && std::pair{cells[i-1].y,cells[i-1].x}>=std::pair{cell.y,cell.x}))
             return finish({Outcome::Invalid,{},0,Phase::Suspended,
                 "immutable roster must be ordered and outside the mutable ID range"});
+    }
+    // Every admitted pose/geometry change reaches rebuild_mask before its
+    // owner barrier opens. The actual native receipt additionally expires on
+    // World tick, clear/set, retirement and replacement. A World mutation
+    // witness prevents an unchanged roster from hiding new material overlap.
+    if (!world_->object_shard_mutations_->exhausted() &&
+        composed_material_revision_==world_material_revision() &&
+        world_->transient_composition_current(accepted_composition_) &&
+        cells.size()==immutable_occupancy_.size() &&
+        std::equal(cells.begin(),cells.end(),immutable_occupancy_.begin(),[](const auto& a,const auto& b) {
+            return a.x==b.x && a.y==b.y && a.body_id==b.body_id;
+        })) {
+        ++metrics_.composed_reuses;
+        return finish({});
     }
     immutable_occupancy_backup_.assign(immutable_occupancy_.begin(), immutable_occupancy_.end());
     immutable_occupancy_.assign(cells.begin(), cells.end());
@@ -2043,6 +2100,7 @@ const Snapshot& Coordinator::snapshot(bool include_world) {
     const auto memory=registry_.memory_usage();
     metrics_.world_bytes=world_->resident_cell_bytes();
     metrics_.coordinator_bytes=sizeof(Coordinator)+sizeof(Pending)+materials_.capacity()+proposed_mask_.capacity()*sizeof(std::uint16_t)+
+        proposed_indices_.capacity()*sizeof(std::uint32_t)+
         discovery_->storage_bytes()+
         component_.capacity()*sizeof(std::uint32_t)+exposures_.capacity()*sizeof(Exposure)+
         (ingress_fences_.capacity()+ingress_fences_backup_.capacity())*sizeof(PocketFence)+

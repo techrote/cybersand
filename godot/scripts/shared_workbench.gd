@@ -46,6 +46,10 @@ var _object_shard_export_folder: Button
 var _object_shard_scene: String = ""
 var _pending_object_shard_scene: String = ""
 var _object_shard_seen_result: Vector2i = Vector2i.ZERO
+var _object_shard_pointer_tool: int = -1
+var _object_shard_pointer_local: Vector2 = Vector2(-1,-1)
+var _object_shard_pointer_attempt: Array = []
+var _object_shard_tool_mode: int = -1
 var applied: Dictionary = {}
 var pilot_slot := -1
 var _pilot_instance_id := 0
@@ -219,6 +223,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host.world_view.mouse_filter = Control.MOUSE_FILTER_STOP
 	host.world_view.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	host.world_view.gui_input.connect(_world_input)
+	host.world_view.mouse_exited.connect(_cancel_object_shard_pointer)
+	host.world_view.resized.connect(_cancel_object_shard_pointer)
 	var compact := Theme.new()
 	compact.default_font_size = 13
 	theme = compact
@@ -243,7 +249,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
-	_picker(row,_tool,TOOL_NAMES)
+	_picker(row,_tool,TOOL_NAMES,func(_index: int) -> void:
+		cancel_stroke()
+		_update_object_shard_tool_controls())
 	if object_shard_m4_port.enabled:
 		# These tools require an exact already-displayed native target witness.
 		# Until the same-World adapter and overlay exist, they visibly refuse.
@@ -1361,6 +1369,7 @@ func _cancel() -> void:
 
 func cancel_stroke() -> void:
 	if paint_editor != null: paint_editor.cancel_preview()
+	_cancel_object_shard_pointer()
 	_drag_button = 0
 	_pan = false
 	_last_cell = Vector2i(-1,-1)
@@ -1486,6 +1495,11 @@ func zoom_by(direction: int) -> void:
 	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
 
 func _input(event: InputEvent) -> void:
+	# Release outside the World view must stop a material hold immediately,
+	# even when its prior native receipt is still pending.
+	if event is InputEventMouseButton and not event.pressed \
+		and event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]:
+		_cancel_object_shard_pointer()
 	if paint_editor != null and paint_editor.key_input(event):
 		get_viewport().set_input_as_handled()
 		return
@@ -1547,6 +1561,7 @@ func load_object_shard_scene(scene_id: String) -> bool:
 	return true
 
 func open_object_shard_controls() -> void:
+	cancel_stroke()
 	if _object_shard_window == null:
 		_object_shard_window = Window.new()
 		_object_shard_window.title = "Destructible structures · experimental"
@@ -1558,7 +1573,7 @@ func open_object_shard_controls() -> void:
 		column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_object_shard_window.add_child(column)
 		var description := Label.new()
-		description.text = "Enable on the current canvas or load a playable construction.\nErase lower support stems for a full drop; a narrow cut leaves stumps to land on.\nUse Cut moving / Ignite moving on detached material.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
+		description.text = "Enable on the current canvas or load a playable construction.\nErase lower support stems for a full drop; a narrow cut leaves stumps to land on.\nCut moving / Ignite moving affect one visible cell at a time; hold and move slowly.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
 		column.add_child(description)
 		_button(column,"Enable on current canvas",enable_object_shard)
 		for i: int in range(ObjectShardScenes.IDS.size()):
@@ -1671,9 +1686,86 @@ func _pick(pos: Vector2i) -> void:
 			return
 	select_instance(0)
 
+func _cancel_object_shard_pointer() -> void:
+	_object_shard_pointer_tool = -1
+	_object_shard_pointer_local = Vector2(-1,-1)
+	_object_shard_pointer_attempt.clear()
+
+func _update_object_shard_tool_controls() -> void:
+	var mode: int = _tool.selected if object_shard_m4_port.enabled else -1
+	if mode == _object_shard_tool_mode: return
+	_object_shard_tool_mode = mode
+	_cancel_object_shard_pointer()
+	if paint_editor != null: paint_editor.cancel_preview()
+	var exact: bool = mode in [5,6,7]
+	_brush.editable = not exact
+	_brush.tooltip_text = "Moving material tools target one visible cell; the ordinary paint radius does not apply." if exact \
+		else "Radius in cells. Zero paints one cell; [ and ] adjust width."
+	_tool.tooltip_text = "One visible owned cell per native receipt. Hold and move slowly; release stops immediately. No stroke is queued." if mode in [5,6] \
+		else "Pause, then click one visible owned cell to return its whole settled body." if mode==7 else ""
+
+func _update_object_shard_cursor() -> void:
+	if host.brush_preview == null: return
+	if not object_shard_m4_port.enabled or _tool.selected not in [5,6,7]:
+		if paint_editor != null: host.brush_preview.hide()
+		return
+	var pixel: Vector2i = host.view_pixel_from_local_point(host.world_view.get_local_mouse_position())
+	if pixel.x < 0:
+		host.brush_preview.hide()
+		return
+	var area: Rect2 = host.view_content_rect()
+	var scale: Vector2 = area.size/Vector2(host.current_view_size)
+	var corner: Vector2 = area.position+Vector2(pixel)*scale
+	host.brush_preview.points = PackedVector2Array([corner,corner+Vector2(scale.x,0),
+		corner+scale,corner+Vector2(0,scale.y),corner])
+	host.brush_preview.show()
+
+func _pump_object_shard_pointer(pressed: bool = false) -> void:
+	if _object_shard_pointer_tool not in [5,6]: return
+	if _drag_button == 0 or _tool.selected != _object_shard_pointer_tool or busy() or applied.is_empty():
+		_cancel_object_shard_pointer()
+		return
+	var pixel: Vector2i = host.view_pixel_from_local_point(_object_shard_pointer_local)
+	if pixel.x < 0:
+		_cancel_object_shard_pointer()
+		return
+	var pos := Vector2i(host.camera_origin.floor())+pixel
+	var runtime: RefCounted = host.object_shard_m4_runtime
+	var action: String = "erase" if _object_shard_pointer_tool==5 else "ignite"
+	if not runtime.capabilities.get("attached",false):
+		# Preserve the real port's explicit unbound refusal. A press before
+		# attachment never becomes a deferred edit in a later World.
+		if pressed: object_shard_m4_action(pos,action)
+		_cancel_object_shard_pointer()
+		return
+	if not runtime.held_reason.is_empty() or not object_shard_m4_port.held_reason().is_empty():
+		_cancel_object_shard_pointer()
+		return
+	if object_shard_m4_port.pending_count()>0 or not runtime.physics_ready():
+		if pressed: message = "Holding one-cell tool: waiting for the current native/physics receipt."
+		return
+	if int(runtime.publication.get("publication_sequence",-1))!=int(runtime.frame.get("publication_sequence",-2)): return
+	var attempt: Array = [runtime.publication.get("publication_sequence",-1),pos,_object_shard_pointer_tool]
+	if attempt==_object_shard_pointer_attempt: return
+	_object_shard_pointer_attempt = attempt
+	var target: Dictionary = runtime.visible_target(pos)
+	if target.is_empty():
+		if pressed: message = "Point at a visible moving material cell; this tool does not paint ordinary terrain."
+		return
+	# A stationary igniter must not reset the same cell's burn countdown on
+	# each publication. Future cells passing the held pointer remain eligible.
+	if action=="ignite" and (int(target.expected.material)!=7 or int(target.expected.state_b)>0):
+		if pressed: message = "Ignite moving targets unburning Wood."
+		return
+	# Keep only the current held pointer. Re-read its visible native witness
+	# after every receipt/geometry barrier; never replay a stored stroke or
+	# retry a previously rejected source identity.
+	object_shard_m4_action(pos,action,runtime.visible_observation(),target)
+
 func _world_input(event: InputEvent) -> void:
 	# An M4 moving-body operation can never route through the ordinary terrain
 	# painter, including right drag or an active paint-editor interception.
+	_update_object_shard_tool_controls()
 	var m4_moving_tool: bool = object_shard_m4_port.enabled and _tool.selected in [5, 6, 7]
 	if not m4_moving_tool and not applied.is_empty() and paint_editor != null \
 			and paint_editor.world_input(event): return
@@ -1681,6 +1773,7 @@ func _world_input(event: InputEvent) -> void:
 		if m4_moving_tool:
 			# A blocked or aborted pointer stroke cannot resume after Apply/F2.
 			_drag_button = 0
+			_cancel_object_shard_pointer()
 			_last_cell = Vector2i(-1, -1)
 			if event is InputEventMouseButton and event.pressed \
 					and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
@@ -1688,15 +1781,18 @@ func _world_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
+			_cancel_object_shard_pointer()
 			_pan = event.pressed
 			if _pan: _camera.select(0)
 			return
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+			_cancel_object_shard_pointer()
 			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
 		_drag_button = event.button_index if event.pressed else 0
+		if not event.pressed: _cancel_object_shard_pointer()
 		_last_cell = Vector2i(-1,-1)
 	elif event is InputEventMouseMotion:
 		if _pan:
@@ -1705,18 +1801,27 @@ func _world_input(event: InputEvent) -> void:
 			return
 	else: return
 	var pixel: Vector2i = host.view_pixel_from_local_point(event.position)
-	if pixel.x < 0: return
+	if pixel.x < 0:
+		if m4_moving_tool: _cancel_object_shard_pointer()
+		return
 	var pos := Vector2i(host.camera_origin.floor()) + pixel
-	if _drag_button == 0 or pos == _last_cell: return
-	_last_cell = pos
 	if m4_moving_tool:
+		if _drag_button == 0: return
 		if _tool.selected == 7:
+			_drag_button = 0
 			var result: Dictionary = host.object_shard_m4_runtime.request_reabsorption(pos)
 			if not result.get("ok",false): refuse("Settle into canvas: "+str(result.get("outcome","unavailable")))
 			else: message = "Native owner is checking a settled material return; inventory stays owned until the physics freeze receipt."
 		else:
-			object_shard_m4_action(pos, "erase" if _tool.selected == 5 else "ignite")
+			var pressed: bool = event is InputEventMouseButton and event.pressed
+			if pressed:
+				_object_shard_pointer_tool = _tool.selected
+				_object_shard_pointer_attempt.clear()
+			_object_shard_pointer_local = event.position
+			_pump_object_shard_pointer(pressed)
 		return
+	if _drag_button == 0 or pos == _last_cell: return
+	_last_cell = pos
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
 		paint(pos,0 if _drag_button == MOUSE_BUTTON_RIGHT else int(applied.material))
 		return
@@ -1732,6 +1837,7 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	_update_object_shard_tool_controls()
 	if object_shard_m4_port.enabled and object_shard_m4_port.pending_count() > 0:
 		object_shard_m4_port.poll_results(host.simulation_worker)
 	if object_shard_m4_port.enabled and not object_shard_m4_port.results.is_empty():
@@ -1746,8 +1852,9 @@ func _process(_delta: float) -> void:
 				message = "Moving target changed before the native edit. Try its current position, or Pause for a deliberate cut."
 			else:
 				message = "Moving material edit: "+str(terminal.get("outcome","refused"))+". The native receipt did not authorize an edit."
+	_pump_object_shard_pointer()
 	_poll_flatten()
-	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
+	_update_object_shard_cursor()
 	if step_pending:
 		if host.simulation_worker.has_failed() or not host._workbench_frame_error.is_empty() or not str(host.tower_context.get("workbench_refusal","")).is_empty():
 			step_requested = false

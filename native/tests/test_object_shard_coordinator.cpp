@@ -1711,6 +1711,237 @@ void m4_attached_owner_one_world_native_material_and_mask() {
     CHECK(owner.completed_tick_index() == before_physics_tick + 1);
 }
 
+void m4_sparse_occupancy_matches_legacy_and_reuse_requires_fresh_witnesses() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc);
+    const RectI64 domain{0,0,128,96};
+    owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);
+    (void)owner.tick();
+    Coordinator attached(owner,small_config()), legacy(small_config());
+    for (auto* coordinator:{&attached,&legacy}) {
+        make_supported(*coordinator);erase_support(*coordinator);
+        const auto prepared=discover(*coordinator);CHECK(prepared.outcome==Outcome::Accepted);
+        if (prepared.outcome!=Outcome::Accepted) return;
+        CHECK(activate(*coordinator,prepared.shard));
+    }
+    // The legacy path retains its full row-major mask scan. Compare the whole
+    // actual native field through varied accepted physical poses, including
+    // old cells that the sparse clear must retire after every rotation.
+    for (int step=0;step<24;++step) {
+        for (auto* coordinator:{&attached,&legacy}) {
+            auto poses=next_poses(*coordinator);
+            poses[0].x+=.43;poses[0].y+=.21;
+            poses[0].rotation=.12*std::sin(static_cast<double>(step)*.4);
+            CHECK(coordinator->accept_motion(poses).outcome==Outcome::Accepted);
+        }
+        bool identical=true;
+        for (int y=0;y<96;++y) for (int x=0;x<128;++x)
+            identical=identical && (owner.transient_obstacle_at(x,y)!=0)==
+                (legacy.world().transient_obstacle_at(x,y)!=0);
+        CHECK(identical);
+        CHECK(owned_population(attached,Material::Wood)==owned_population(legacy,Material::Wood));
+    }
+    // Walk a rotated body partly over the resident edge. Refusal occurs
+    // during raster construction after some cells have already been visited;
+    // a subsequent valid pose must clear that scratch without ghost cells.
+    bool edge_refused=false;
+    for (int step=0;step<128 && !edge_refused;++step) {
+        std::array<Outcome,2> outcomes{};std::size_t index=0;
+        for (auto* coordinator:{&attached,&legacy}) {
+            auto poses=next_poses(*coordinator);poses[0].x+=1.0;
+            outcomes[index++]=coordinator->accept_motion(poses).outcome;
+        }
+        CHECK(outcomes[0]==outcomes[1]);
+        CHECK(outcomes[0]==Outcome::Accepted || outcomes[0]==Outcome::NotResident);
+        edge_refused=outcomes[0]==Outcome::NotResident;
+    }
+    CHECK(edge_refused && !attached.paused());
+    for (auto* coordinator:{&attached,&legacy}) {
+        auto poses=next_poses(*coordinator);poses[0].x-=1.0;poses[0].rotation=-poses[0].rotation;
+        CHECK(coordinator->accept_motion(poses).outcome==Outcome::Accepted);
+    }
+    bool retry_identical=true;
+    for (int y=0;y<96;++y) for (int x=0;x<128;++x)
+        retry_identical=retry_identical && (owner.transient_obstacle_at(x,y)!=0)==
+            (legacy.world().transient_obstacle_at(x,y)!=0);
+    CHECK(retry_identical);
+    using Cell=World::TransientCompositionCell;
+    const std::array<Cell,1> gcr{{{5,6,1}}};
+    CHECK(attached.set_immutable_occupancy(gcr).outcome==Outcome::Accepted);
+    auto reused=attached.metrics().composed_reuses;
+    const auto mask_cells=attached.metrics().mask_cells;
+    CHECK(attached.set_immutable_occupancy(gcr).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==reused+1 && attached.metrics().mask_cells==mask_cells);
+    reused=attached.metrics().composed_reuses;
+    // Legacy clear/set invalidates the actual World receipt even though the
+    // immutable input and material revisions have not changed.
+    owner.clear_transient_obstacles();CHECK(owner.set_transient_obstacle(5,6,1));
+    CHECK(attached.set_immutable_occupancy(gcr).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==reused);
+    bool restored=true;
+    for (int y=0;y<96;++y) for (int x=0;x<128;++x)
+        if (legacy.world().transient_obstacle_at(x,y))
+            restored=restored && owner.transient_obstacle_at(x,y)>=Coordinator::kFirstMutableBodyId;
+    CHECK(restored);
+    // A native World material edit forces renewed overlap validation even
+    // though the exact GCR field and geometry remain unchanged.
+    CHECK(attached.edit(70,30,{Material::Sand,91,37,270}).outcome==Outcome::Accepted);
+    CHECK(attached.set_immutable_occupancy(gcr).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==reused);
+    CHECK(attached.set_immutable_occupancy(gcr).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==++reused);
+    CHECK(attached.begin_owner_world_tick().outcome==Outcome::Accepted);(void)owner.tick();
+    CHECK(attached.after_owner_world_tick().outcome==Outcome::Accepted);
+    CHECK(attached.set_immutable_occupancy(gcr).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==reused);
+    const std::array<Cell,1> moved{{{6,6,1}}};
+    CHECK(attached.set_immutable_occupancy(moved).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==reused);
+    CHECK(owner.transient_obstacle_at(5,6)==0 && owner.transient_obstacle_at(6,6)==1);
+    CHECK(attached.set_immutable_occupancy(moved).outcome==Outcome::Accepted);
+    CHECK(attached.metrics().composed_reuses==reused+1);
+    check_population_balance(attached);
+}
+
+void m4_attached_displacement_crosses_original_mixed_pool_with_exact_inventory() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc);
+    const RectI64 domain{0,0,512,512};
+    owner.reserve_region({-32,-32,576,576});owner.reserve_temperature_region({-32,-32,576,576});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);
+    (void)owner.tick();
+    auto config=small_config();config.world_bounds={0,0,512,512};
+    config.limits.max_shards=16;config.limits.max_area=16384;config.limits.max_total_area=65536;
+    config.limits.max_shapes=512;
+    Coordinator attached(owner,config);
+    const auto box=[&](int x,int y,int width,int height,Material material) {
+        bool admitted=true;
+        const auto amount=material==Material::Water ? owner.config().water_experiment_policy.maximum() : 0;
+        for (int row=0;row<height;++row) for (int column=0;column<width;++column)
+            admitted=attached.edit(x+column,y+row,{material,static_cast<std::uint16_t>(amount),0,200}).outcome==Outcome::Accepted && admitted;
+        CHECK(admitted);
+    };
+    // Same facade, supports and 136x22 Water over 136x12 Sand as the ordinary
+    // mixed Workbench preset; no thinner substitute population is admitted.
+    box(0,464,512,48,Material::Wall);box(0,0,3,512,Material::Wall);box(509,0,3,512,Material::Wall);
+    box(120,244,96,8,Material::RedBrick);
+    box(120,252,8,112,Material::Wood);box(208,252,8,112,Material::Wood);
+    for (const int y:{276,308,340,360}) box(120,y,96,4,Material::RedBrick);
+    box(164,252,6,108,Material::Wood);
+    for (const int x:{138,194}) box(x,364,4,100,Material::Wall);
+    box(108,452,136,12,Material::Sand);box(108,430,136,22,Material::Water);
+    box(104,430,4,34,Material::Wall);box(244,430,4,34,Material::Wall);
+    for (const int x:{137,193}) box(x,366,6,98,Material::Empty);
+    const auto prepared=discover(attached);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(attached,prepared.shard));
+    const auto wood=owned_population(attached,Material::Wood);
+    const auto sand=owned_population(attached,Material::Sand);
+    const auto starting=owner.quantity_ledger();
+    const auto water=starting.water_visible+starting.water_overfill+starting.water_ballistic;
+    bool completed=true;
+    for (int step=0;step<77;++step) {
+        const auto before=owner.quantity_ledger();
+        auto poses=next_poses(attached);poses[0].y+=1.25;
+        const auto accepted=attached.accept_motion(poses);
+        CHECK(accepted.outcome==Outcome::Accepted);
+        if (accepted.outcome!=Outcome::Accepted) {
+            std::fprintf(stderr,"Mixed pool stopped at segment %d: %s (%s)\n",step,outcome_name(accepted.outcome),accepted.detail);
+            completed=false;break;
+        }
+        const auto after=owner.quantity_ledger();
+        CHECK(after.material_cells==before.material_cells);
+        CHECK(after.water_visible==before.water_visible && after.water_overfill==before.water_overfill &&
+            after.water_ballistic==before.water_ballistic);
+        if (step%4==3) {
+            CHECK(attached.begin_owner_world_tick().outcome==Outcome::Accepted);(void)owner.tick();
+            CHECK(attached.after_owner_world_tick().outcome==Outcome::Accepted);
+        }
+    }
+    CHECK(completed);
+    CHECK(attached.metrics().relocated_water_cells>0 && attached.metrics().relocated_sand_cells>0);
+    CHECK(attached.metrics().relocation_probe_limit_hits==0 && !attached.paused() && !owner.has_failed());
+    CHECK(owned_population(attached,Material::Wood)==wood && owned_population(attached,Material::Sand)==sand);
+    const auto final=owner.quantity_ledger();
+    CHECK(final.water_visible+final.water_overfill+final.water_ballistic==water);
+    check_population_balance(attached);
+}
+
+void m4_displacement_radius_and_work_refuse_before_any_material_move() {
+    const auto exercise=[](bool limited_work) {
+        WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+        World owner(wc);
+        const RectI64 domain{0,0,128,96};
+        owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+        owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);
+        (void)owner.tick();
+        auto config=small_config();
+        if (limited_work) config.relocation_probe_budget=1;
+        Coordinator attached(owner,config);
+        const auto amount=static_cast<std::uint16_t>(owner.config().water_experiment_policy.maximum());
+        bool authored=true;
+        if (!limited_work) {
+            for (int y=0;y<96;++y) for (int x=0;x<128;++x)
+                authored=attached.edit(x,y,{Material::Water,amount,0,200}).outcome==Outcome::Accepted && authored;
+            // An Empty destination exists, but lies beyond the declared 64-cell
+            // attached search radius. The solver may not teleport to it.
+            authored=attached.edit(100,30,empty()).outcome==Outcome::Accepted && authored;
+        }
+        for (int y=30;y<33;++y) for (int x=30;x<33;++x)
+            authored=attached.edit(x,y,{Material::Wood,47,0,231}).outcome==Outcome::Accepted && authored;
+        if (limited_work) for (int x=30;x<33;++x)
+            authored=attached.edit(x,34,{Material::Water,amount,0,200}).outcome==Outcome::Accepted && authored;
+        CHECK(authored);
+        const auto prepared=discover(attached);CHECK(prepared.outcome==Outcome::Accepted);
+        if (prepared.outcome!=Outcome::Accepted) return;
+        CHECK(activate(attached,prepared.shard));
+        std::vector<Payload> before;std::vector<std::uint16_t> mask;
+        for (int y=0;y<96;++y) for (int x=0;x<128;++x) {
+            before.push_back(attached.inspect_world(x,y));mask.push_back(owner.transient_obstacle_at(x,y));
+        }
+        const auto prior=attached.m4_owner_readback().bodies[0].pose;
+        auto poses=next_poses(attached);
+        poses[0].y+=limited_work ? 1.5 : .25;
+        if (!limited_work) poses[0].x+=.25;
+        const auto result=attached.accept_motion(poses);
+        CHECK(result.outcome==(limited_work ? Outcome::Capacity : Outcome::DestinationUnavailable));
+        const auto retained=attached.m4_owner_readback().bodies[0].pose;
+        CHECK(retained.x==prior.x && retained.y==prior.y && retained.pose_serial==prior.pose_serial);
+        bool unchanged=true;std::size_t at=0;
+        for (int y=0;y<96;++y) for (int x=0;x<128;++x,++at)
+            unchanged=unchanged && attached.inspect_world(x,y)==before[at] && owner.transient_obstacle_at(x,y)==mask[at];
+        CHECK(unchanged && !owner.has_failed() && !attached.paused());
+        CHECK(attached.metrics().relocated_cells==0 && attached.metrics().relocated_water_cells==0);
+        CHECK(attached.metrics().relocation_probe_limit_hits==(limited_work ? 1U : 0U));
+        if (limited_work) CHECK(attached.metrics().relocation_probes==1);
+        check_population_balance(attached);
+    };
+    exercise(false);exercise(true);
+    // Preserve the original laboratory contract behaviorally: a large Empty
+    // escape region exists eleven cells from the entering material, but its
+    // native solver still refuses beyond radius8 rather than adopting M4's
+    // wider bounded displacement policy implicitly.
+    Coordinator standalone(small_config());bool authored=true;
+    for (int y=0;y<96;++y) for (int x=0;x<128;++x)
+        authored=standalone.edit(x,y,{Material::Water,255,0,200}).outcome==Outcome::Accepted && authored;
+    for (int y=24;y<40;++y) for (int x=44;x<52;++x)
+        authored=standalone.edit(x,y,empty()).outcome==Outcome::Accepted && authored;
+    for (int y=30;y<33;++y) for (int x=30;x<33;++x)
+        authored=standalone.edit(x,y,{Material::Wood}).outcome==Outcome::Accepted && authored;
+    CHECK(authored);
+    const auto prepared=discover(standalone);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(standalone,prepared.shard));
+    const auto original=standalone.m4_owner_readback().bodies[0].pose;
+    auto poses=next_poses(standalone);poses[0].x+=.25;poses[0].y+=.25;
+    CHECK(standalone.accept_motion(poses).outcome==Outcome::DestinationUnavailable);
+    const auto retained=standalone.m4_owner_readback().bodies[0].pose;
+    CHECK(retained.x==original.x && retained.y==original.y && retained.pose_serial==original.pose_serial);
+    CHECK(standalone.metrics().relocated_cells==0 && !standalone.world().has_failed());
+    check_population_balance(standalone);
+}
+
 void m4_rooted_mixed_architecture_keeps_severed_wall_caps_and_atomic_masks() {
     WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
     wc.initial_chunk_reserve=32;wc.maximum_chunk_count=128;
@@ -2152,6 +2383,9 @@ void m4_returned_inventory_resumes_exact_ordinary_world_chemistry() {
 }
 
 int main() {
+    m4_attached_displacement_crosses_original_mixed_pool_with_exact_inventory();
+    m4_displacement_radius_and_work_refuse_before_any_material_move();
+    m4_sparse_occupancy_matches_legacy_and_reuse_requires_fresh_witnesses();
     m4_returned_inventory_resumes_exact_ordinary_world_chemistry();
     m4_fragmentation_does_not_launder_invalid_sand_entry();
     m4_settled_reabsorption_preserves_world_and_waits_for_physical_retirement();

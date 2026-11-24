@@ -21,11 +21,20 @@ func _install(shape: String) -> bool:
 		authored.edits.append_array([[140,440,20,8,7],[149,448,2,16,1]])
 	if not f.expect(f.bench.apply(authored),"fresh native "+shape+" construction admitted"): return false
 	if not await f.until(f.installed,"fresh "+shape+" World installed"): return false
+	f.bench.set_camera(2)
 	f.play()
 	if not await f.until(func(): return f.runtime().physics_ready(),"ordinary material owner rebound"): return false
 	await f.pause()
 	f.bench._brush.value = 3
-	var points: Array = [Vector2i(146,437),Vector2i(164,437)] if shape=="fragment" else [Vector2i(150,453)]
+	var points: Array[Vector2i] = [Vector2i(146,437),Vector2i(164,437)]
+	if shape=="return":
+		# Remove the complete stem with bounded ordinary disc painting. The flat
+		# plank must actually fall to the floor and sleep before being returned;
+		# zero velocity immediately after body activation is not settlement.
+		f.bench._brush.value = 2
+		points.clear()
+		for y: int in [450,454,458,461]:
+			for x: int in [149,150]: points.append(Vector2i(x,y))
 	for point: Vector2i in points:
 		if not f.expect(f.bench.paint(point,0),"ordinary support cut "+str(point)): return false
 		await process_frame
@@ -47,11 +56,88 @@ func _target_for_source(position: Vector2i) -> Dictionary:
 				if target.get("owner")==int(shard.id) and target.get("cell")==index: return target
 	return {}
 
+func _pointer_local(position: Vector2i) -> Vector2:
+	var area: Rect2 = f.host.view_content_rect()
+	return area.position+(Vector2(position)-Vector2(f.host.camera_origin.floor())+Vector2(0.5,0.5)) \
+		*area.size/Vector2(f.host.current_view_size)
+
+func _pointer_button(position: Vector2i, pressed: bool) -> void:
+	var event := InputEventMouseButton.new()
+	event.position = _pointer_local(position)
+	event.button_index = MOUSE_BUTTON_LEFT
+	event.pressed = pressed
+	f.host.world_view.gui_input.emit(event)
+
+func _pointer_move(position: Vector2i) -> void:
+	var event := InputEventMouseMotion.new()
+	event.position = _pointer_local(position)
+	event.button_mask = MOUSE_BUTTON_MASK_LEFT
+	f.host.world_view.gui_input.emit(event)
+
+func _cut_neck_with_pointer() -> bool:
+	if not await f.until(func(): return f.runtime().physics_ready() and f.coherent() \
+		and f.runtime().publication.get("publication_sequence")==f.runtime().frame.get("publication_sequence"),
+		"pointer starts on the latest completely displayed native publication"): return false
+	var first: Dictionary = _target_for_source(Vector2i(154,425))
+	var second: Dictionary = _target_for_source(Vector2i(154,426))
+	if not f.expect(not first.is_empty() and not second.is_empty(),"both neck cells have actual displayed native witnesses"): return false
+	f.bench._tool.select(5)
+	var before: int = f.bench.object_shard_m4_port.results.size()
+	_pointer_button(first.position,true)
+	f.expect(not f.bench._brush.editable,"moving Cut disables the unrelated ordinary radius control")
+	if not f.expect(f.bench.object_shard_m4_port.pending_count()==1,"real mounted pointer press queues exactly one witnessed cell"):
+		print("M4_POINTER_REFUSAL ",JSON.stringify({"message":f.bench.message,"target":first,
+			"pointer_tool":f.bench._object_shard_pointer_tool,"display":f.runtime().visible_observation(),
+			"native_sequence":f.runtime().frame.get("publication_sequence"),"drag_button":f.bench._drag_button,
+			"area":f.host.view_content_rect(),"camera":f.host.camera_origin,"view":f.host.current_view_size,
+			"local_pointer":_pointer_local(first.position),
+			"roundtrip":f.host.view_pixel_from_local_point(_pointer_local(first.position)),
+			"selected_tool":f.bench._tool.selected,"signal_connections":f.host.world_view.gui_input.get_connections().size()}))
+		_pointer_button(first.position,false)
+		return false
+	_pointer_move(second.position)
+	f.expect(f.bench.object_shard_m4_port.pending_count()==1,"pointer motion cannot queue an unwitnessed stroke behind pending geometry")
+	if not await f.until(func(): return f.bench.object_shard_m4_port.results.size()==before+2 \
+		and f.runtime().physics_ready() and f.coherent(),"held current pointer cuts its next visible cell only after the first receipt and geometry"):
+		_pointer_button(second.position,false)
+		return false
+	_pointer_button(second.position,false)
+	for index: int in range(2):
+		var terminal: Dictionary = f.bench.object_shard_m4_port.results[before+index]
+		var source: Dictionary = terminal.get("native_receipt",{}).get("source_target",{})
+		var expected: Dictionary = first if index==0 else second
+		f.expect(terminal.get("outcome")=="Applied" and source.get("owner")==expected.owner and source.get("cell")==expected.cell,
+			"actual pointer cut has its exact native source cell receipt "+str(index))
+	for frame: int in range(3): await process_frame
+	f.expect(f.bench.object_shard_m4_port.results.size()==before+2 and f.bench.object_shard_m4_port.pending_count()==0,
+		"pointer release does not replay held or prior stroke positions")
+	# Use a real read-only native operation as the pending barrier. Releasing
+	# a newly held Cut or changing its tool must cancel that held intent before
+	# the genuine inspector receipt arrives; no fake worker state is installed.
+	for cancel_by_tool: bool in [false,true]:
+		var target: Dictionary = f.moving_target(7)
+		var queued: Dictionary = f.bench.object_shard_m4_action(target.position,"inspect",f.runtime().visible_observation(),target)
+		if not f.expect(queued.get("ok",false),"real native inspect supplies a pending pointer barrier"): return false
+		var before_action: int = f.bench.object_shard_m4_port._next_action
+		_pointer_button(target.position,true)
+		if cancel_by_tool:
+			f.bench._tool.select(0)
+			f.bench._tool.item_selected.emit(0)
+		else:
+			_pointer_button(target.position,false)
+		if not await f.until(func(): return f.bench.object_shard_m4_port.pending_count()==0 \
+			and f.runtime().physics_ready() and f.coherent(),"pending native receipt drains after pointer cancellation"): return false
+		f.expect(f.bench.object_shard_m4_port._next_action==before_action,
+			"tool switch cancels current held intent" if cancel_by_tool else "release cancels current held intent before its barrier closes")
+	f.expect(f.bench._brush.editable,"ordinary paint radius returns after leaving moving tools")
+	return true
+
 func _settled() -> bool:
 	for shard: Dictionary in f.frame().get("shards",[]):
 		if not shard.get("has_body",false): continue
 		var angle: float = wrapf(float(shard.rotation),-PI,PI)
-		return Vector2(float(shard.vx),float(shard.vy)).length()<=0.25 \
+		return int(shard.get("pose_serial",0))>0 and bool(shard.get("sleeping",false)) \
+			and Vector2(float(shard.vx),float(shard.vy)).length()<=0.25 \
 			and absf(float(shard.angular_velocity))<=0.01 \
 			and absf(angle-roundf(angle/(PI/2.0))*(PI/2.0))<=0.001
 	return false
@@ -64,17 +150,8 @@ func _run() -> void:
 	await f.until(f.coherent,"pre-cut native World and material body display coherent")
 	var inventory: int = f.material_count(7)
 	var parent: int = int(f.frame().shards[0].id)
-	for position: Vector2i in [Vector2i(154,425),Vector2i(154,426)]:
-		var target: Dictionary = _target_for_source(position)
-		if not f.expect(not target.is_empty(),"exact native neck cell visible at "+str(position)):
-			await _finish(); return
-		var queued: Dictionary = f.bench.object_shard_m4_action(target.position,"erase",f.runtime().visible_observation(),target)
-		if not f.expect(queued.get("ok",false),"moving neck cut admitted"):
-			await _finish(); return
-		await f.until(func(): return f.bench.object_shard_m4_port.pending_count()==0,"actual cut terminal receipt")
-		if not f.expect(f.bench.object_shard_m4_port.results.back().get("outcome")=="Applied","native neck cut applied"):
-			await _finish(); return
-		await f.until(func(): return f.runtime().physics_ready() and f.coherent(),"changed parent geometry actually installed")
+	if not await _cut_neck_with_pointer():
+		await _finish(); return
 	f.play()
 	if not await f.until(func(): return f.body_count()==2 and f.runtime().physics_ready(),"two actual physical islands activate after native transfer"):
 		await _finish(); return
@@ -89,10 +166,32 @@ func _run() -> void:
 	evidence.fragment = f.diagnostics()
 	if not await _install("return"):
 		await _finish(); return
+	var before_fall_y: float = float(f.frame().shards[0].position_y)
+	if not await f.advance(90,"returned body receives ninety real physical intervals before settlement"):
+		await _finish(); return
 	if not await f.until(_settled,"actual Rapier body settles nearly on the material grid"):
 		await _finish(); return
 	await f.pause()
 	await f.until(f.coherent,"settled body is exactly the displayed source")
+	f.expect(float(f.frame().shards[0].position_y)-before_fall_y>8.0,"returned plank actually fell toward the floor")
+	var resting_body: Dictionary = f.diagnostics().physics.bodies[0]
+	var resting_rid: RID = f.runtime().bridge.bodies[int(resting_body.id)].rid
+	var query := PhysicsTestMotionParameters2D.new()
+	query.from = PhysicsServer2D.body_get_state(resting_rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+	query.motion = Vector2(0,0.1)
+	query.margin = 0.001
+	query.recovery_as_collision = true
+	var collision := PhysicsTestMotionResult2D.new()
+	var hit: bool = PhysicsServer2D.body_test_motion(resting_rid,query,collision)
+	var installed_floor: bool = false
+	if hit:
+		for chunk: Dictionary in f.runtime().bridge.terrain.values():
+			if chunk.rid == collision.get_collider_rid(): installed_floor = true
+	f.expect(bool(resting_body.sleeping) and hit and installed_floor and collision.get_collision_normal().y < -0.9,
+		"nonmutating actual Rapier query proves sleeping contact with installed terrain before return")
+	evidence.settled_contact = {"hit":hit,"installed_terrain":installed_floor,
+		"normal":[collision.get_collision_normal().x,collision.get_collision_normal().y]}
+	evidence.settled_body = resting_body
 	var before: int = f.material_count(7)
 	var target: Dictionary = f.moving_target(7)
 	if not f.expect(not target.is_empty(),"settled owned Wood has exact displayed witness"):
@@ -111,11 +210,28 @@ func _run() -> void:
 	f.expect(f.material_count(7)==before,"independent ordinary World image conserves returned Wood")
 	evidence.reabsorption = receipt
 	evidence.final = f.diagnostics()
+	var exported: Dictionary = f.bench.save_object_shard_diagnostics()
+	if f.expect(exported.get("ok",false),"ordinary Structures action writes owner diagnostics"):
+		var report: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(exported.path)))
+		if f.expect(report is Dictionary,"saved owner report is readable JSON"):
+			f.expect(report.get("schema")=="objectshard-m4-workbench-diagnostics-v1" \
+				and report.get("source_commit")==OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+				"owner report binds the actual launched source")
+			f.expect(int(report.get("runtime",{}).get("native_tick",-1))==f.tick() \
+				and int(report.get("capabilities",{}).get("max_body_area",0))==16384,
+				"owner report includes actual native progress and advertised body bounds")
+			var cadence: Dictionary = report.get("probe",{}).get("cadence",{})
+			f.expect(cadence.has("post_draw_intervals") and cadence.has("native_progress_delivery") \
+				and cadence.get("hardware_present_verified")==false,
+				"owner report separates renderer callbacks from native progression and physical display evidence")
+		evidence.diagnostics_export = exported
 	await _finish()
 
 func _finish() -> void:
+	if f.failures.is_empty(): await f.validate_quantity_ledger()
 	f.validate_display()
 	evidence.display_coherence = f.display_witness()
+	evidence.inventory_witnesses = f.inventory_witnesses
 	await f.close()
 	print(JSON.stringify({"schema":"objectshard-m4-fragment-reabsorption-v1","checks":f.checks,"failures":f.failures,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"evidence":evidence,

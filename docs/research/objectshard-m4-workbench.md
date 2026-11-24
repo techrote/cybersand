@@ -171,9 +171,18 @@ The eventual seam is a source-bound mutable-body feedback receipt, rather than
 importing another programme's actor, equipment or force-law development branch.
 
 Overlap relocation preflights every destination before moving any material.
-It searches at most eight cells in Chebyshev distance and excludes occupied,
-reserved, shard-covered, immutable GCR and protected ingress cells. Dense fluid
-with no valid nearby destination refuses the motion receipt. Since Rapier has
+The attached Workbench searches at most 64 cells in Chebyshev distance, with
+at most 1,048,576 examined destination candidates per complete composition.
+The retained standalone laboratory keeps its eight-cell radius. The search
+excludes occupied, reserved, shard-covered, immutable GCR and protected ingress
+cells, preserving deterministic ring order and native World sidecars. Exhausted
+work returns `Capacity`; no valid bounded destination returns
+`DestinationUnavailable`. Both refuse before any material or mask commit.
+The `relocated_cells`, `relocated_water_cells` and `relocated_sand_cells`
+counters count successfully committed carrier-move events, including repeated
+moves of the same cell; they are not inventory censuses or momentum-transfer
+witnesses. The separate probe and limit-hit counters include refused preflight
+work. Since Rapier has
 already completed that segment, the session holds for Restore; it does not
 claim to roll physics back or discard the obstructing inventory. Partial
 post-commit failure quarantines the owner. This bound must remain visible in
@@ -187,11 +196,32 @@ refusal; it is never re-hit against a different World cell. Successful receipts
 copy the original target and separately identify the resulting transaction and
 post-edit revisions. Geometry changes must be installed before more motion.
 
+The ordinary pointer tools expose that cell-level authority directly: a
+one-cell cursor, disabled ordinary paint radius and at most one outstanding
+moving-cell request. A held pointer supplies only its current position after
+each native/geometry barrier. Release, tool change, pan, resize and navigation
+cancel the intent. A stationary igniter does not repeatedly reset an already
+burning cell's reaction lifetime.
+
 The native snapshot supplies owned inventory and material counts independently
-of the displayed World raster. Conservation witnesses must count both without
-counting a prepared component twice, and account explicitly for authoring,
-reactions, transfers and reset disposal. A self-reported zero ledger residual
-alone is not an independent material witness.
+of the displayed World raster. That raster is a material projection: ballistic
+Water overlays and fractional-Water dithering do not constitute additional grid
+carriers. Conservation witnesses must count authoritative stored cells and
+owned shard cells without counting a prepared component twice, then account
+separately for airborne quantities, pressure-held Water, authoring, reactions,
+transfers and reset disposal. A self-reported zero ledger residual alone is not
+an independent material witness.
+
+An explicit on-demand inventory inspection uses the existing exclusive worker
+and native read APIs at a paused, no-motion, no-edit boundary. It captures raw
+stored material cells, owning-shard payloads, an independent Water-region scan,
+all bounded ballistic parcel quantities and the ordinary quantity ledger.
+Exact owner, publication, tick and revision identities fence the request and
+the completed copy. Resume, edits, replacement, stale identity, an occupied
+single-result slot or an incomplete parcel copy refuse the read. This is a
+bounded diagnostic transaction outside timed profiles, not another simulation
+owner or a full rasterization on each frame. Ordinary **Save diagnostics**
+continues to produce its compact operational report.
 
 ## Ordinary authoring and lifecycle
 
@@ -253,6 +283,22 @@ the ordinary worker. Packed shard cells and colours are reused until their
 material revision changes. Hard terrain rebuilds follow its source revision.
 The bounded Main receipt rendezvous services admitted transactions without
 creating extra cellular ticks or allowing unbounded waits.
+
+The rendezvous has an eight-millisecond budget and at most 48 operations per
+Main poll. It can finish several already admitted segments in one poll. Initial
+physics binding still requires a positive native readiness receipt. After that
+binding, a completed native publication and installed geometry/terrain establish
+local readiness without another zero-lease worker round trip. The next physical
+interval still needs the exclusive worker's exact-publication motion permit,
+and every completed segment still needs its exact native pose acknowledgement.
+The suppressed-readiness counter measures only the redundant control commands;
+it is not a count of skipped physical or native acknowledgements.
+
+The moving-material texture cache includes World generation, World incarnation,
+session, shard identity and generation, body generation, material revision and
+dimensions. A new owner cannot reuse retired pixels merely because its small
+revision counter matches. Pixel-update qualification runs with an actual Godot
+renderer; the headless dummy renderer cannot establish texture replacement.
 
 The latency probe separates native progress observed by Main, renderer
 post-draw intervals and individual work durations. Its cheap ordinary cohorts

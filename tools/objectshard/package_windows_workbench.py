@@ -10,7 +10,7 @@ import shutil
 import sys
 
 from package_windows_lab import ROOT, copy_committed_tree, git, native, sha, stage_vc_runtime, verify_vc_runtime, windows
-from verify_workbench_package import MANIFEST, SCHEMA, verify
+from verify_workbench_package import ENTRY, MANIFEST, SCHEMA, verify
 
 
 def launchers(source: str) -> dict[str, str]:
@@ -28,7 +28,7 @@ def launchers(source: str) -> dict[str, str]:
               '"%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64_console.exe" --headless --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --editor --quit\n'
               'if errorlevel 1 goto failed\n'
               'if /i "%~1"=="--self-test" goto selftest\n'
-              'start "CyberSand Workbench" "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" res://main.tscn -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower\n'
+              'start "CyberSand Workbench" "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower\n'
               'exit /b %errorlevel%\n'
               '\n:selftest\nif not defined OBJECTSHARD_LAUNCH_RECEIPT goto failed\n'
               'start "Workbench launch qualification" /wait "%OBJECTSHARD_PACKAGE_ROOT%\\Godot_v4.7-stable_win64.exe" --rendering-driver opengl3_angle --path "%OBJECTSHARD_PACKAGE_ROOT%\\godot" --script res://tests/probe_object_shard_workbench_package.gd -- --shared-workbench --objectshard-m4-workbench --object-shard-scene=tower\n'
@@ -66,8 +66,7 @@ def package(args: argparse.Namespace) -> dict:
                 "godot": engine_identity, "rapier": {"path": windows.RAPIER, "sha256": windows.RAPIER_SHA256},
                 "vc_runtime_sha256": vc_hash, "ordinary_production_defaults_changed": False,
                 "physical_owner_acceptance": "OWNER-PENDING: Windows 11/NVIDIA display and playfeel",
-                "entry": {"scene": "godot/main.tscn", "host": "ordinary-workbench", "launcher": "Open Workbench.cmd",
-                          "opt_in": True, "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]},
+                "entry": ENTRY,
                 "files_sha256": {p.relative_to(args.output).as_posix(): sha(p)
                                  for p in sorted(args.output.rglob("*")) if p.is_file()}}
     (args.output / MANIFEST).write_text(json.dumps(identity, indent=2, sort_keys=True) + "\n", encoding="utf-8")

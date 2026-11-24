@@ -11,20 +11,47 @@ from verify_package import NATIVE, RAPIER, digest, safe_path
 
 MANIFEST = "objectshard-workbench-manifest.json"
 SCHEMA = "objectshard-m4-workbench-package-v1"
+ENTRY = {"scene": "godot/main.tscn", "startup_scene": "godot/feature_launcher.tscn", "host": "ordinary-workbench",
+         "launcher": "Open Workbench.cmd", "opt_in": True,
+         "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}
 REQUIRED = {
     NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe",
     "Godot-LICENSE.txt", "Godot-COPYRIGHT.txt", "vcruntime140.dll",
     "Microsoft-Visual-C-Runtime-LICENSE.docx", "Microsoft-Visual-Studio-2022-LICENSE.docx",
     "source-built-candidate-provenance.json", "godot/project.godot", "godot/main.tscn",
+    "godot/feature_launcher.tscn", "godot/scripts/feature_launcher.gd",
     "godot/scripts/main.gd", "godot/scripts/shared_workbench.gd", "godot/scripts/simulation_worker.gd",
     "godot/scripts/object_shard_m4_runtime.gd", "godot/scripts/object_shard_workbench_scenes.gd",
     "godot/scripts/object_shard_physics_bridge.gd", "godot/tests/test_object_shard_m4_workbench_completion.gd",
     "godot/tests/test_object_shard_m4_material_only_workbench.gd",
     "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
+    "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+    "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd",
+    "godot/tests/test_object_shard_m4_overlay_identity.gd", "godot/tests/profile_object_shard_m4_render_control.gd",
     "godot/tests/probe_object_shard_workbench_package.gd", "godot/tests/profile_object_shard_m4_workbench.gd",
     "godot/addons/godot-rapier2d/runtime-provenance.windows.json", "READ-ME.md",
     "Open Workbench.cmd", "Verify Workbench.cmd", "tools/objectshard/verify_workbench_package.ps1",
 }
+
+
+def verify_inventory(root: Path, inventory: dict) -> None:
+    """Reject unlisted loadable inputs; permit only ordinary generated cache."""
+    code_suffixes = {".exe", ".dll", ".so", ".dylib", ".gdextension", ".gd", ".gdc", ".cs",
+                     ".tscn", ".tres", ".pck", ".gdshader", ".gdshaderinc", ".ps1", ".cmd", ".bat", ".py"}
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            raise ValueError("External package path: " + path.relative_to(root).as_posix())
+        if not path.is_file():
+            continue
+        relative = path.relative_to(root).as_posix()
+        if relative in inventory or relative == MANIFEST:
+            continue
+        suffix = path.suffix.lower()
+        generated_cache = relative.startswith("godot/.godot/") and suffix not in code_suffixes
+        generated_uid = relative.endswith((".gd.uid", ".gdshader.uid")) and relative[:-4] in inventory
+        generated_import = relative.startswith("godot/") and relative.endswith(".import") and relative[:-7] in inventory
+        if not (generated_cache or generated_uid or generated_import):
+            raise ValueError("Unlisted package input: " + relative)
 
 
 def verify(root: Path) -> dict:
@@ -33,15 +60,14 @@ def verify(root: Path) -> dict:
         raise ValueError("Unsupported ordinary Workbench evaluator manifest")
     if any(not re.fullmatch(r"[0-9a-f]{40}", manifest.get(k, "")) for k in ("source_commit", "source_tree")):
         raise ValueError("Missing exact source identity")
-    if manifest.get("entry") != {"scene": "godot/main.tscn", "host": "ordinary-workbench",
-                                 "launcher": "Open Workbench.cmd", "opt_in": True,
-                                 "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}:
+    if manifest.get("entry") != ENTRY:
         raise ValueError("Incomplete ordinary Workbench entry contract")
     if manifest.get("ordinary_production_defaults_changed") is not False:
         raise ValueError("Evaluator must retain opt-in activation")
     inventory = manifest.get("files_sha256", {})
     if not isinstance(inventory, dict) or not REQUIRED.issubset(inventory):
         raise ValueError("Incomplete Workbench package inventory: " + str(sorted(REQUIRED - inventory.keys())))
+    verify_inventory(root, inventory)
     for relative, expected in inventory.items():
         if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
             raise ValueError("Malformed digest: " + relative)

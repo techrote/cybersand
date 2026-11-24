@@ -17,7 +17,8 @@ $root = [IO.Path]::GetFullPath($Package)
 $manifest = Get-Content -LiteralPath (Join-Path $root 'objectshard-workbench-manifest.json') -Raw | ConvertFrom-Json
 if ($manifest.schema -ne 'objectshard-m4-workbench-package-v1') { throw 'Unsupported Workbench manifest' }
 if ($manifest.source_commit -notmatch '^[0-9a-f]{40}$' -or $manifest.source_tree -notmatch '^[0-9a-f]{40}$') { throw 'Missing exact source identity' }
-if ($manifest.entry.scene -ne 'godot/main.tscn' -or $manifest.entry.host -ne 'ordinary-workbench' -or
+if ($manifest.entry.scene -ne 'godot/main.tscn' -or $manifest.entry.startup_scene -ne 'godot/feature_launcher.tscn' -or
+    $manifest.entry.host -ne 'ordinary-workbench' -or
     $manifest.entry.launcher -ne 'Open Workbench.cmd' -or $manifest.entry.opt_in -isnot [bool] -or -not $manifest.entry.opt_in -or
     ($manifest.entry.scenario_ids -join ',') -ne 'tower,viaduct,timber,mixed,stress' -or
     $manifest.ordinary_production_defaults_changed -isnot [bool] -or $manifest.ordinary_production_defaults_changed) {
@@ -29,15 +30,34 @@ $required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', '
     'Godot-LICENSE.txt', 'Godot-COPYRIGHT.txt', 'vcruntime140.dll',
     'Microsoft-Visual-C-Runtime-LICENSE.docx', 'Microsoft-Visual-Studio-2022-LICENSE.docx',
     'source-built-candidate-provenance.json', 'godot/project.godot', 'godot/main.tscn',
+    'godot/feature_launcher.tscn', 'godot/scripts/feature_launcher.gd',
     'godot/scripts/main.gd', 'godot/scripts/shared_workbench.gd', 'godot/scripts/simulation_worker.gd',
     'godot/scripts/object_shard_m4_runtime.gd', 'godot/scripts/object_shard_workbench_scenes.gd',
     'godot/scripts/object_shard_physics_bridge.gd', 'godot/tests/test_object_shard_m4_workbench_completion.gd',
     'godot/tests/test_object_shard_m4_material_only_workbench.gd',
+    'godot/tests/test_object_shard_m4_fragment_reabsorption.gd',
+    'godot/tests/test_object_shard_m4_lifecycle_adverse.gd',
+    'godot/tests/test_object_shard_m4_lifecycle_fuzz.gd',
+    'godot/tests/test_object_shard_m4_overlay_identity.gd', 'godot/tests/profile_object_shard_m4_render_control.gd',
     'godot/tests/probe_object_shard_workbench_package.gd', 'godot/tests/profile_object_shard_m4_workbench.gd',
     'godot/addons/godot-rapier2d/runtime-provenance.windows.json', 'READ-ME.md',
     'Open Workbench.cmd', 'Verify Workbench.cmd', 'tools/objectshard/verify_workbench_package.ps1')
 foreach ($relative in $required) {
     if ($null -eq $manifest.files_sha256.PSObject.Properties[$relative]) { throw "Missing inventory: $relative" }
+}
+$codeSuffixes = @('.exe','.dll','.so','.dylib','.gdextension','.gd','.gdc','.cs','.tscn','.tres','.pck',
+    '.gdshader','.gdshaderinc','.ps1','.cmd','.bat','.py')
+foreach ($item in Get-ChildItem -LiteralPath $root -Recurse -Force) {
+    $relative = $item.FullName.Substring($root.TrimEnd([IO.Path]::DirectorySeparatorChar).Length + 1).Replace('\','/')
+    if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw "External package path: $relative" }
+    if ($item.PSIsContainer) { continue }
+    if ($relative -eq 'objectshard-workbench-manifest.json' -or $null -ne $manifest.files_sha256.PSObject.Properties[$relative]) { continue }
+    $cache = $relative.StartsWith('godot/.godot/') -and ([IO.Path]::GetExtension($relative).ToLowerInvariant() -notin $codeSuffixes)
+    $uid = ($relative.EndsWith('.gd.uid') -or $relative.EndsWith('.gdshader.uid')) -and
+        $null -ne $manifest.files_sha256.PSObject.Properties[$relative.Substring(0,$relative.Length-4)]
+    $import = $relative.StartsWith('godot/') -and $relative.EndsWith('.import') -and
+        $null -ne $manifest.files_sha256.PSObject.Properties[$relative.Substring(0,$relative.Length-7)]
+    if (-not ($cache -or $uid -or $import)) { throw "Unlisted package input: $relative" }
 }
 $count = 0
 foreach ($entry in $manifest.files_sha256.PSObject.Properties) {

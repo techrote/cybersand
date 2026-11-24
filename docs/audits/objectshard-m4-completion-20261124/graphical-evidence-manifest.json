@@ -1,0 +1,60 @@
+{
+  "schema": "objectshard-m4-development-graphical-evidence-v1",
+  "scope": "retained actual software-renderer development observations; source identities are measured frozen commits, not relabelled final published qualification; physical monitor/GPU acceptance unverified",
+  "records": [
+    {
+      "file": "graphical-baseline-profile.json",
+      "sha256": "8708c26f2fef243bc65a22b285d6afa3c50007a086ecac867832fb2f8a68cecd",
+      "bytes": 25155,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-render-baseline/profile-rerun2.json"
+    },
+    {
+      "file": "graphical-baseline-source.json",
+      "sha256": "1452925c7cf01a3df1fd301828d449ee42c2c71033040c35df60505c2dbcb968",
+      "bytes": 472,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-render-baseline/source.json"
+    },
+    {
+      "file": "graphical-controls-before-readiness.json",
+      "sha256": "502b2caf40c6cb884af6046c56e163441032c055ee16400097899c355e22abe0",
+      "bytes": 4496,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-render-controls-sparse/controls.json"
+    },
+    {
+      "file": "graphical-controls-before-readiness-source.json",
+      "sha256": "e44efd2704ecf3676d811a24691e62dfc10d829bca0513bf9b298e7f8f7233a1",
+      "bytes": 244,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-render-controls-sparse/source.json"
+    },
+    {
+      "file": "graphical-controls-default.json",
+      "sha256": "594c08b559bcfb1bb23e16da2354abbc614ecfb3d2e62876342adbe3e6b9aae4",
+      "bytes": 4520,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-final-render-controls/default/controls.json"
+    },
+    {
+      "file": "graphical-controls-four-threads.json",
+      "sha256": "bc1e10f418eb82b9df175851362f6d0e114dc7134c4c7d36ecce569b508ae50a",
+      "bytes": 4509,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-final-render-controls/lp4/controls.json"
+    },
+    {
+      "file": "graphical-controls-source.json",
+      "sha256": "f8f23e1ce69b946a969057f5f7c5effbac7d3e9997901c89bc298f4814f7ecf8",
+      "bytes": 703,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-final-render-controls/source.json"
+    },
+    {
+      "file": "graphical-final-native-receipt.json",
+      "sha256": "9314b9858959803668329605c5aab150041e5680bcfe120e3ed7256281e5c814",
+      "bytes": 15316,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-final-render-controls/compiled-native-provenance.json"
+    },
+    {
+      "file": "graphical-overlay-identity.json",
+      "sha256": "613071a9ac9a620310cfa971f60afa60d80ffe51b19541b21721612dca7c1a42",
+      "bytes": 298,
+      "original_local_path": "/workspace/scratch/7a2d2d3cb075/m4-final-graphical-review/overlay.log"
+    }
+  ]
+}

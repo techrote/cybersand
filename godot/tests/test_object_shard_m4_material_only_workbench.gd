@@ -8,6 +8,7 @@ var host: Control
 var bench: Control
 var checks: int = 0
 var failures: Array[String] = []
+var steady_window: Dictionary = {}
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -20,6 +21,7 @@ func _check(value: bool, label: String) -> bool:
 	return value
 
 func _until(predicate: Callable, label: String) -> bool:
+	print("M4_MATERIAL_ONLY_WAIT ",label)
 	var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while not predicate.call() and Time.get_ticks_msec()<deadline:
 		if host != null and host.object_shard_m4_runtime.enabled \
@@ -62,11 +64,20 @@ func _run() -> void:
 	await _until(_ready,"already admitted interval drained")
 	bench._brush.value = 3
 	for cut: Rect2i in Scenes.manifest("tower").cut_rects:
-		_check(bench.paint(cut.position+cut.size/2,0),"ordinary brush cuts actual support")
-		await process_frame
+		var centers: Array[int] = []
+		for y: int in range(cut.position.y+3,cut.end.y-3,4): centers.append(y)
+		if centers.is_empty() or centers.back()!=cut.end.y-4: centers.append(cut.end.y-4)
+		for y: int in centers:
+			_check(bench.paint(Vector2i(cut.position.x+cut.size.x/2,y),0),"ordinary brush cuts the complete lower support stem")
+			await process_frame
 	_check(bench.toggle_pause(),"Resume after support cut")
-	if not await _until(func(): return host.object_shard_m4_runtime.bridge.bodies.size()>0,"coherent native inventory detached without actors"):
+	if not await _until(func(): return host.object_shard_m4_runtime.bridge.bodies.size()>0 and _ready(),"coherent native inventory detached without actors"):
 		await _finish(); return
+	var before_controls: int = host.object_shard_m4_runtime.controls_completed
+	var before_steps: int = host.object_shard_m4_runtime.physical_steps
+	var before_intervals: int = host.object_shard_m4_runtime.physical_intervals
+	var before_suppressed: int = host.object_shard_m4_runtime.redundant_readiness_receipts_suppressed
+	var before_snapshots: int = host.simulation_worker.object_shard_owner_profile().snapshot_calls
 	var native_tick: int = int(host.object_shard_m4_runtime.frame.tick)
 	if not await _until(func(): return int(host.object_shard_m4_runtime.frame.tick)>=native_tick+30,"30 native chemistry ticks accompany real material motion"):
 		await _finish(); return
@@ -74,6 +85,16 @@ func _run() -> void:
 	_check(host.physical_actor_session == null and host.rigid_bodies.is_empty(),"continued play remains actorless")
 	_check(bench.toggle_pause(),"Pause before authored restore")
 	await _until(_ready,"final admitted interval drained")
+	var completed_intervals: int = host.object_shard_m4_runtime.physical_intervals-before_intervals
+	steady_window = {"intervals":completed_intervals,"steps":host.object_shard_m4_runtime.physical_steps-before_steps,
+		"owner_controls":host.object_shard_m4_runtime.controls_completed-before_controls,
+		"owner_snapshots":int(host.simulation_worker.object_shard_owner_profile().snapshot_calls)-before_snapshots,
+		"redundant_readiness_suppressed":host.object_shard_m4_runtime.redundant_readiness_receipts_suppressed-before_suppressed}
+	_check(host.object_shard_m4_runtime.redundant_readiness_receipts_suppressed-before_suppressed>=completed_intervals,
+		"each completed actorless native tick synchronizes without another zero-lease readiness receipt")
+	_check(host.object_shard_m4_runtime.controls_completed-before_controls \
+		==host.object_shard_m4_runtime.physical_steps-before_steps+completed_intervals,
+		"unchanged actorless play consumes exactly one native control per actual segment and leased interval completion")
 	var generation: int = int(host.object_shard_m4_runtime.diagnostics().world_generation)
 	_check(bench.restore_start(),"whole-World authored restore admitted")
 	await _until(_installed,"fresh actorless authored start installed")
@@ -84,7 +105,8 @@ func _run() -> void:
 func _finish() -> void:
 	var result: Dictionary = {"schema":"objectshard-m4-material-only-workbench-v1",
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
-		"checks":checks,"failures":failures,"scope":"actual ordinary actorless Workbench native and Rapier"}
+		"checks":checks,"failures":failures,"readiness_window":steady_window,
+		"scope":"actual ordinary actorless Workbench native and Rapier"}
 	if host != null:
 		result["runtime"] = host.object_shard_m4_runtime.diagnostics()
 		host.queue_free()

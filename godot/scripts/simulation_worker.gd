@@ -212,6 +212,8 @@ var _workbench_prepared_sample: int = -1
 # OBJECTSHARD-M4: exclusively the EXISTING Worker; no additional World, tick
 # or independent worker. Mutex holds copied transport values, never native refs.
 const M4_OWNER_QUEUE_LIMIT: int = 16
+const M4_INVENTORY_INSPECTION_USEC: int = 15000000
+const M4_INVENTORY_MAX_PARCELS: int = 65536
 var _m4_attach_requested: bool = false
 var _m4_live: bool = false # worker-owned
 var _m4_world_generation: int = -1 # worker-owned
@@ -244,6 +246,10 @@ var _m4_snapshot_max_usec: int = 0
 var _m4_frame_copy_calls: int = 0
 var _m4_frame_copy_usec: int = 0
 var _m4_frame_copy_max_usec: int = 0
+var _m4_inventory_serial: int = 0
+var _m4_inventory_request: Dictionary = {} # one mutex-owned on-demand read request
+var _m4_inventory_result: Dictionary = {} # one immutable copied result, consumed once
+var _m4_inventory_inflight: bool = false
 
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
@@ -1261,6 +1267,118 @@ func object_shard_owner_profile() -> Dictionary:
 	_mutex.unlock()
 	return result
 
+func _m4_inventory_error_locked(source: Dictionary, consuming: bool = false) -> String:
+	# Exactly the eleven integer identity fields below, never caller payloads.
+	if source.size()!=11: return "InvalidInventorySource"
+	if not _running or _simulation_failed or not _m4_capabilities.get("attached",false): return "InventoryOwnerUnavailable"
+	if not _paused: return "PauseOwnerBeforeInventoryInspection"
+	if not consuming and _m4_owner_busy: return "OwnerBusy"
+	if _m4_motion_lease!=0 or _m4_interval_tick_due or not _m4_physics_ready: return "InventoryMotionPending"
+	if not _m4_held.is_empty() or _m4_last_frame.get("quarantined",true): return "InventoryOwnerHeld"
+	if _m4_last_frame.get("paused",true) or _m4_last_frame.get("promotion",{}).get("present",false) \
+		or _m4_last_frame.get("reabsorption",{}).get("present",false): return "InventoryOwnershipPending"
+	for shard: Dictionary in _m4_last_frame.get("shards",[]):
+		if shard.get("geometry_pending",false): return "InventoryGeometryPending"
+	if not _m4_control_queue.is_empty() or not _m4_control_results.is_empty() \
+		or not _m4_action_queue.is_empty() or not _m4_action_results.is_empty() \
+		or _legacy_edits_pending_locked() or _paint_holds_slot_locked() or _art_holds_slot_locked() \
+		or _material_capture_holds_slot_locked(): return "InventoryEditsPending"
+	if _world_change_inflight or _reset_requested or not _lab_request.is_empty() \
+		or not _prepared_physical_publication.is_empty(): return "InventoryWorldReplacementPending"
+	for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","world_revision","next_transaction"]:
+		if typeof(source.get(key))!=TYPE_INT or source[key]!=_m4_last_frame.get(key): return "InventorySourceChanged"
+	for key: String in ["native_instance_id","transport_generation","owner_epoch","shard_session"]:
+		if typeof(source.get(key))!=TYPE_INT or source[key]!=_m4_capabilities.get(key): return "InventoryOwnerChanged"
+	return ""
+
+func object_shard_request_inventory_inspection(source: Dictionary) -> Dictionary:
+	_mutex.lock()
+	var error: String = _m4_inventory_error_locked(source)
+	if error.is_empty() and (not _m4_inventory_request.is_empty() or not _m4_inventory_result.is_empty() or _m4_inventory_inflight):
+		error = "InventoryInspectionSlotOccupied"
+	if error.is_empty():
+		_m4_inventory_serial += 1
+		_m4_inventory_request = {"token":_m4_inventory_serial,"source":source.duplicate(true),
+			"deadline":Time.get_ticks_usec()+M4_INVENTORY_INSPECTION_USEC}
+	var result: Dictionary = {"ok":error.is_empty(),"outcome":"InventoryInspectionQueued" if error.is_empty() else error,
+		"token":_m4_inventory_serial if error.is_empty() else 0}
+	_mutex.unlock()
+	return result
+
+func object_shard_take_inventory_inspection(token: int) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = {}
+	if token<=0:
+		result = {"ok":false,"outcome":"InvalidInventoryInspectionToken","token":token}
+	elif not _m4_inventory_result.is_empty() and int(_m4_inventory_result.get("token",0))==token:
+		result = _m4_inventory_result.duplicate(true)
+		_m4_inventory_result.clear()
+	elif int(_m4_inventory_request.get("token",0))!=token:
+		result = {"ok":false,"outcome":"InventoryInspectionRetired","token":token}
+	_mutex.unlock()
+	return result
+
+func _m4_native_inventory_identity() -> Dictionary:
+	var status: Dictionary = _world.object_shard_status()
+	return {"native_instance_id":_world.get_instance_id(),"session":status.get("session",-1),
+		"world_incarnation":status.get("world_incarnation",-1),"tick":int(_world.get_tick_index()),
+		"world_revision":int(_world.revision)}
+
+func _m4_consume_inventory_inspection() -> void:
+	# Exclusive worker only, after ordinary writes/publication in this turn.
+	# No full-grid rasterization occurs unless this bounded read was requested.
+	_mutex.lock()
+	if _m4_inventory_request.is_empty() or _m4_inventory_inflight:
+		_mutex.unlock()
+		return
+	var request: Dictionary = _m4_inventory_request.duplicate(true)
+	_m4_inventory_inflight = true
+	var error: String = _m4_inventory_error_locked(request.source,true)
+	if Time.get_ticks_usec()>int(request.deadline): error = "InventoryInspectionDeadline"
+	_mutex.unlock()
+	var result: Dictionary = {"schema":"objectshard-m4-inventory-inspection-v1","token":request.token,
+		"ok":false,"source":request.source,"extent":_workbench_extent,
+		"bounded_maximum_parcels":M4_INVENTORY_MAX_PARCELS,
+		"scope":"one paused exclusive-owner raw-grid and parcel inspection; no tick, edit, or per-frame raster"}
+	if error.is_empty():
+		var before: Dictionary = _m4_native_inventory_identity()
+		for key: String in before:
+			if before[key]!=request.source.get(key): error = "InventoryNativeSourceChanged"
+		if error.is_empty():
+			var captured: Dictionary = _world.object_shard_snapshot(true)
+			var water: Dictionary = _world.water_experiment_observation(Vector2i.ZERO,_workbench_extent)
+			var parcels: PackedFloat64Array = _world.inspect_ballistic_parcels(M4_INVENTORY_MAX_PARCELS)
+			var spray: Dictionary = _world.get_water_spray()
+			var after: Dictionary = _m4_native_inventory_identity()
+			result["native_before"] = before
+			result["native_after"] = after
+			if before!=after: error = "InventoryNativeSourceChanged"
+			elif not captured.get("ok",false) or not spray.get("healthy",false) or _world.has_failed(): error = "InventoryNativeReadRefused"
+			elif int(captured.get("tick",-1))!=int(request.source.tick) or int(water.get("tick",-1))!=int(request.source.tick): error = "InventoryNativeTickChanged"
+			elif int(captured.get("session",-1))!=int(request.source.session) \
+				or int(captured.get("world_incarnation",-1))!=int(request.source.world_incarnation): error = "InventoryNativeOwnerChanged"
+			elif int(captured.get("width",0))!=_workbench_extent.x or int(captured.get("height",0))!=_workbench_extent.y \
+				or captured.get("world_materials",PackedByteArray()).size()!=_workbench_extent.x*_workbench_extent.y: error = "InventoryGridIncomplete"
+			elif parcels.size()%5!=0 or parcels.size()/5!=int(spray.get("live",-1)): error = "InventoryParcelsIncomplete"
+			if error.is_empty():
+				captured.erase("world_rgba") # Raw material bytes are the independent witness; do not transfer redundant display pixels.
+				result["raw_snapshot"] = captured
+				result["water_observation"] = water
+				result["ballistic_parcels"] = parcels
+				result["water_spray"] = spray
+	_mutex.lock()
+	var final_error: String = _m4_inventory_error_locked(request.source,true)
+	if not final_error.is_empty(): error = final_error
+	if Time.get_ticks_usec()>int(request.deadline): error = "InventoryInspectionDeadline"
+	result["ok"] = error.is_empty()
+	result["outcome"] = "InventoryInspected" if error.is_empty() else error
+	if not error.is_empty():
+		for key: String in ["raw_snapshot","water_observation","ballistic_parcels","water_spray"]: result.erase(key)
+	_m4_inventory_result = result
+	_m4_inventory_request.clear()
+	_m4_inventory_inflight = false
+	_mutex.unlock()
+
 func object_shard_acquire_motion(expected: Dictionary) -> Dictionary:
 	# This is transport admission only. The exclusive native owner publishes
 	# immutable proof before becoming idle; Main never calls or borrows World.
@@ -1271,6 +1389,7 @@ func object_shard_acquire_motion(expected: Dictionary) -> Dictionary:
 	elif _m4_interval_tick_due: reason = "CompletedMotionAwaitingNativeTick"
 	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty(): reason = "WorldReplacementPending"
 	elif not _m4_control_queue.is_empty() or not _m4_action_queue.is_empty(): reason = "OwnerCommandPending"
+	elif not _m4_inventory_request.is_empty() or _m4_inventory_inflight: reason = "InventoryInspectionPending"
 	else:
 		for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","next_transaction"]:
 			if expected.get(key) != _m4_last_frame.get(key): reason = "InstalledFrameChanged"
@@ -1337,6 +1456,9 @@ func _m4_retire_owner(reason: String) -> void:
 	_m4_control_results.clear()
 	_m4_action_queue.clear()
 	_m4_action_results.clear()
+	_m4_inventory_request.clear()
+	_m4_inventory_result.clear()
+	_m4_inventory_inflight = false
 	_m4_frame_identity.clear()
 	_m4_last_action_id = 0
 	_m4_last_port_generation = 0
@@ -1388,7 +1510,8 @@ func _m4_attach_on_owner() -> void:
 		"world_incarnation":int(proof.world_incarnation),
 		"transport_generation":_m4_transport_generation,
 		"operations":["erase","ignite","inspect"],"outcome":"NativeBoundPhysicsHeld"}
-	for key: String in ["max_bodies","max_body_area","max_total_area","physical_fragmentation","settled_reabsorption"]:
+	for key: String in ["max_bodies","max_body_area","max_total_area","physical_fragmentation","settled_reabsorption",
+		"relocation_radius","relocation_probe_budget"]:
 		if proof.has(key): _m4_capabilities[key] = proof[key]
 	_m4_attach_requested = false
 	_mutex.unlock()
@@ -1692,6 +1815,7 @@ func _workbench_sample_pending() -> bool:
 	# Main's exact-pose receipts have no reason to wait for the next cellular
 	# timer deadline. Servicing one still creates no additional native tick.
 	pending = pending or not _m4_control_queue.is_empty() or not _m4_action_queue.is_empty()
+	pending = pending or not _m4_inventory_request.is_empty()
 	_mutex.unlock()
 	return pending
 
@@ -3260,6 +3384,7 @@ func _worker_loop() -> void:
 			local_rigid_body_states,
 			local_rigid_body_epoch
 		)
+		_m4_consume_inventory_inspection()
 		_mutex.lock()
 		if native_ticked_this_turn and _m4_live: _m4_interval_tick_due = false
 		_m4_owner_busy = false

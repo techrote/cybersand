@@ -21,7 +21,7 @@ func _run() -> void:
 		return
 	var initial_wood: int = f.material_count(7)
 	var initial_brick: int = f.material_count(43)
-	f.validate_quantity_ledger()
+	await f.validate_quantity_ledger()
 	f.expect(initial_wood > 100 and initial_brick > 100, "actual authored mixed structure has Wood and Brick")
 	var original_worker: int = f.host.simulation_worker.get_instance_id()
 	var original_native: int = int(f.diagnostics().native_instance_id)
@@ -56,7 +56,7 @@ func _run() -> void:
 		"ordinary native World and worker survive detachment without a second owner")
 	f.expect(int(after.world_generation) == original_generation, "detachment preserves ordinary World generation")
 	f.validate_physics()
-	f.validate_quantity_ledger()
+	await f.validate_quantity_ledger()
 	f.expect(f.material_count(7) == initial_wood, "independent uploaded World plus owning-shard Wood inventory conserved")
 	f.expect(f.material_count(43) == initial_brick, "independent uploaded World plus owning-shard Brick inventory conserved")
 	var paused_tick: int = f.tick()
@@ -154,6 +154,7 @@ func _run() -> void:
 func _finish() -> void:
 	f.validate_display()
 	observations.display_coherence = f.display_witness()
+	observations.inventory_witnesses = f.inventory_witnesses
 	await f.close()
 	print(JSON.stringify({"schema":"objectshard-m4-workbench-completion-v1", "checks":f.checks,
 		"failures":f.failures, "observations":observations,

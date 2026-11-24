@@ -57,6 +57,8 @@ class ActualWorkloadTests(unittest.TestCase):
                 "completed_semantic_ticks": 180, "actual_physics_steps": 720,
                 "native_pose_acknowledgements": 720, "active_body_count_max": 1,
                 "native_pose_echo_checks": 720,
+                "completed_physical_intervals": 180, "simulated_physical_seconds": 3.0,
+                "before_cut_supports": {"material_bodies_before_cut": 0, "missing_support_cells": 0, "support_cells": 800},
                 "elapsed_usec": 10_000_000, "semantic_ticks_per_wall_second": 18.0,
                 "shard_dimensions": [{"width": 48, "height": 64}],
                 "active_body_cohorts": {"1": {"wall_usec": 1_000_000}},
@@ -72,6 +74,8 @@ class ActualWorkloadTests(unittest.TestCase):
                          {"completed_semantic_ticks": 179}, {"actual_physics_steps": 0},
                          {"native_pose_acknowledgements": 0}, {"active_body_count_max": 0},
                          {"native_pose_echo_checks": 719}, {"native_pose_echo_checks": True},
+                         {"completed_physical_intervals": 182}, {"simulated_physical_seconds": 10.0},
+                         {"before_cut_supports": {"material_bodies_before_cut": 1, "missing_support_cells": 0, "support_cells": 800}},
                          {"elapsed_usec": True}, {"semantic_ticks_per_wall_second": float("nan")},
                          {"shard_dimensions": []}, {"active_body_cohorts": {}}):
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):
@@ -88,6 +92,36 @@ class ActualWorkloadTests(unittest.TestCase):
         value["render_submissions"] = 0
         with self.assertRaises(ValueError):
             qualify_workbench.validate_profile(value, "a" * 40, True)
+
+    def test_fluid_profile_requires_committed_carrier_events(self) -> None:
+        value = {**self.profile(), "scene": "mixed", "material_contact_deltas": {"relocated_water_cells": 4, "relocated_sand_cells": 2}}
+        qualify_workbench.validate_profile(value, "a" * 40, False)
+        value["material_contact_deltas"] = {"relocation_probes": 10000}
+        with self.assertRaisesRegex(ValueError, "committed native"):
+            qualify_workbench.validate_profile(value, "a" * 40, False)
+        for malformed in (True, float("nan"), 1.0):
+            value["material_contact_deltas"] = {"relocated_water_cells": malformed, "relocated_sand_cells": 2}
+            with self.assertRaisesRegex(ValueError, "committed native"):
+                qualify_workbench.validate_profile(value, "a" * 40, False)
+
+
+class RenderControlTests(unittest.TestCase):
+    def test_actual_graphical_pause_play_controls_reject_missing_progress(self):
+        rows = []
+        for label in ("intact_paused", "intact_playing", "detached_paused", "detached_playing"):
+            paused = label.endswith("paused")
+            rows.append({"label": label, "elapsed_usec": 12_100_000, "render_submissions": 42,
+                         "semantic_ticks": 0 if paused else 10, "actual_physics_steps": 0 if paused else 40,
+                         "native_pose_echo_checks": 0 if paused else 40, "native_pose_acknowledgements": 0 if paused else 40,
+                         "awake_bodies_before": 1 if label.startswith("detached") else 0})
+        value = {"source_commit": "a" * 40, "display_driver": "windows", "windows": rows}
+        qualify_workbench.validate_render_control(value, "a" * 40)
+        for changed in ({**value, "display_driver": "headless"}, {**value, "windows": rows[:3]}):
+            with self.assertRaises(ValueError):
+                qualify_workbench.validate_render_control(changed, "a" * 40)
+        rows[1]["semantic_ticks"] = 0
+        with self.assertRaisesRegex(ValueError, "did not progress"):
+            qualify_workbench.validate_render_control(value, "a" * 40)
 
 
 if __name__ == "__main__":

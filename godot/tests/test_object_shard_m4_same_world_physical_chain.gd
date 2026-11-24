@@ -239,9 +239,28 @@ func _run() -> void:
             var kind: String = "BodyRetired" if installed_geometry.get("retired_body",false) else "GeometryInstalled"
             expect(world.object_shard_acknowledge(_ack(changed,kind)).get("ok",false),
                 "real native revisioned changed-geometry acknowledgment")
-    if bridge!=null:
-        bridge.shutdown()
-    expect(world.object_shard_retire(),"worker-owned attached Coordinator explicitly retires")
+    var retained_wood: int = _wood_count()
+    var retained_owner: Dictionary = world.object_shard_status()
+    expect(not world.object_shard_retire(),"explicit owner retirement refuses live material inventory")
+    expect(world.object_shard_status().get("attached",false) and _wood_count()==retained_wood
+        and world.object_shard_status().get("shard_session")==retained_owner.get("shard_session"),
+        "refused retirement retains the exact native owner and every owned Wood cell")
+    # A deliberate whole-World replacement is the existing scoped disposal
+    # authority. Ordinary same-World retirement must never destroy inventory.
+    var replacement: int = adapter.prepare_liquid_world(world,
+        PackedInt32Array([0,200,256,8,1]),profile.packed,
+        PackedInt32Array([1,8,12,0]),PackedInt32Array(),
+        adapter.default_liquid_policy(),options)
+    if not expect(replacement>0 and adapter.commit_liquid_world(world,replacement),
+        "explicit fresh authored World safely replaces live owned material"):
+        _finish()
+        return
+    if bridge!=null: bridge.shutdown()
+    expect(not world.object_shard_status().get("attached",true),
+        "whole-World replacement retires its previous coordinator")
+    expect(world.simulation_tick() and world.object_shard_attach(Rect2i(0,0,256,256)).get("ok",false),
+        "fresh empty material owner can attach to the replacement World")
+    expect(world.object_shard_retire(),"empty attached Coordinator explicitly retires without material loss")
     expect(world.simulation_tick() and world.get_instance_id()==original_instance,
         "ordinary World remains alive and progressing after shard retirement")
     _finish()

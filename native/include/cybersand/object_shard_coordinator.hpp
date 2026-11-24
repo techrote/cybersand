@@ -23,6 +23,9 @@ struct Config {
     std::uint32_t max_pause_calls{240};
     double max_translation_per_step{4.0};
     double max_rotation_per_step{0.20};
+    // Attached World displacement has a global candidate-work limit, in
+    // addition to its finite radius and preallocated relocation inventory.
+    std::uint32_t relocation_probe_budget{1'048'576};
 };
 struct PoseSample {
     Handle shard{};
@@ -106,7 +109,9 @@ struct Metrics {
     std::uint64_t steps{}, paused_calls{}, discovered_cells{}, promotions{}, refusals{};
     std::uint64_t chemistry_cells{}, products_created{}, output_blocked{}, sand_ingested{};
     std::uint64_t exposure_overflows{}, stale_messages{}, mask_cells{}, sweep_samples{},ingress_blocked{};
-    std::uint64_t composed_overlap_cells{};
+    std::uint64_t composed_overlap_cells{}, composed_reuses{};
+    std::uint64_t relocation_probes{}, relocation_probe_limit_hits{};
+    std::uint64_t relocated_cells{}, relocated_water_cells{}, relocated_sand_cells{};
     std::uint64_t fragments{}, fragment_refusals{}, reabsorptions{};
     std::uint64_t world_ns{}, chemistry_ns{}, contact_ns{}, occupancy_ns{}, geometry_ns{}, snapshot_ns{};
     std::uint64_t discovery_ns{},terrain_ns{},exchange_ns{},relocation_ns{};
@@ -231,10 +236,15 @@ private:
 public:
     static constexpr std::uint16_t kFirstMutableBodyId =
         World::kMaximumTransientBodies - OwnerReadback::kBodySlots + 1;
+    static constexpr int kStandaloneRelocationRadius = 8;
+    static constexpr int kAttachedRelocationRadius = 64;
+    static constexpr std::uint32_t kMaximumRelocationProbes = 1'048'576;
 private:
     std::vector<World::TransientCompositionCell> immutable_occupancy_;
     std::vector<World::TransientCompositionCell> immutable_occupancy_backup_;
     std::vector<World::TransientCompositionCell> shard_occupancy_;
+    World::TransientCompositionReceipt accepted_composition_{};
+    std::uint64_t composed_material_revision_{};
     Registry registry_;
     std::unique_ptr<Pending> pending_;
     std::vector<BodyView> bodies_;
@@ -246,6 +256,9 @@ private:
     std::uint64_t admission_calls_{};
     bool admission_resource_valid_{};
     std::vector<std::uint16_t> proposed_mask_;
+    // Attached-only sparse traversal, bounded by the same raster capacity as
+    // shard_occupancy_. The standalone Lab retains its historical allocation.
+    std::vector<std::uint32_t> proposed_indices_;
     struct Relocation { std::int64_t from_x{},from_y{},to_x{},to_y{}; Payload payload{}; };
     std::vector<Relocation> relocations_;
     std::vector<std::uint8_t> reserved_destinations_;

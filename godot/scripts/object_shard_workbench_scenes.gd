@@ -52,15 +52,17 @@ static func create(id: String, policy: PackedInt32Array) -> Dictionary:
 			_box(e,208,252,8,112,WOOD)
 			for y: int in [276,308,340,360]: _box(e,120,y,96,4,beam)
 			_box(e,164,252,6,108,WOOD)
-			for x: int in [138,194]: _box(e,x,364,4,100,WALL)
 			if id == "mixed":
 				# Both carriers are directly below the facade's real fall path.
 				# A flame touches a wooden pillar before and during release;
 				# native chemistry, gravity and displaced water decide its fate.
-				_box(e,108,452,136,12,Setup.SAND)
-				_box(e,108,430,136,22,Setup.WATER)
+				# Fill eight extra columns, then restore the eight support
+				# columns below. Depths and exact total Water/Sand populations
+				# remain 2992/1632 while real foundations stay connected.
+				_box(e,108,452,144,12,Setup.SAND)
+				_box(e,108,430,144,22,Setup.WATER)
 				_box(e,104,430,4,34,WALL)
-				_box(e,244,430,4,34,WALL)
+				_box(e,252,430,4,34,WALL)
 				_box(e,128,316,4,20,Setup.FIRE)
 			else:
 				# The fixed raised footing gives a falling coherent facade a
@@ -69,6 +71,9 @@ static func create(id: String, policy: PackedInt32Array) -> Dictionary:
 			if id == "timber":
 				_box(e,136,312,24,24,WOOD)
 				_box(e,180,280,20,24,WOOD)
+			# Fluids occupy the free space around the foundations, never
+			# overwrite their bottom cells before the owner cuts them.
+			for x: int in [138,194]: _box(e,x,364,4,100,WALL)
 		"viaduct":
 			for x: int in [54,166,278]:
 				_box(e,x,300,96,6,BRICK)
@@ -76,8 +81,10 @@ static func create(id: String, policy: PackedInt32Array) -> Dictionary:
 					_box(e,x+s*8,306+s*4,8,8,WOOD)
 					_box(e,x+88-s*8,306+s*4,8,8,WOOD)
 				_box(e,x+40,326,16,10,WOOD)
-				_box(e,x+46,336,4,128,WALL)
-			_box(e,54,448,320,16,Setup.WATER)
+			# Twelve extra fill columns compensate the three four-cell
+			# foundations, retaining the original 5120 Water carriers.
+			_box(e,54,448,332,16,Setup.WATER)
+			for x: int in [54,166,278]: _box(e,x+46,336,4,128,WALL)
 		"stress":
 			for i: int in range(8):
 				var x: int = 40+i*56

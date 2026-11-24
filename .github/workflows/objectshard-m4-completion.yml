@@ -46,7 +46,8 @@ jobs:
           python3 tools/objectshard/run_benchmarks.py --output evidence/retained-lab-native-budgets --compiler g++-13 --jobs 2 --ticks 1200 --repetitions 3 --qualify --timeout "$(python3 tools/ci/execution_policy.py seconds native_case_seconds)" --build-timeout "$(python3 tools/ci/execution_policy.py seconds native_compile_seconds)"
           python3 -m unittest discover -s tools/objectshard -p 'test_*.py' -v > evidence/qualification-contracts.log 2>&1
           timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' -v > evidence/material-compatibility.log 2>&1
-          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output evidence/material-native-parity.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output build/objectshard-m4-material-parity.json
+          cp build/objectshard-m4-material-parity.json evidence/material-native-parity.json
           python3 tools/ci/check_ci_provider_policy.py > evidence/provider-policy.log 2>&1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

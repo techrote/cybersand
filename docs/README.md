@@ -672,6 +672,10 @@ for five authored collapse starts, pause/reset, scoped authored saves and the
 remaining physical Windows/NVIDIA observations. The
 [24 November source recovery](audits/2026-11-24-objectshard-m4-source-recovery.md)
 preserves all donor identities and historical negative evidence. The
+[completion negative-result record](audits/2026-11-24-objectshard-m4-completion-negative-results.md)
+retains failed ordinary runs and the superseded first hosted campaign. The
+[rendered performance decision](audits/2026-11-24-objectshard-m4-render-decision.md)
+retains actual paused/playing controls and the unresolved physical display HOLD. The
 [additive M4 retrieval questions](reference/retrieval-questions-objectshard-m4.json)
 are separate from the frozen M0–M3 fixtures. No Ready, merge, default activation
 or production runtime publication is implied.

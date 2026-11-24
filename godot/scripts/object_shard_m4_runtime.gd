@@ -51,6 +51,7 @@ var native_pose_echo_checks: int = 0
 var total_pump_usec: int = 0
 var max_pump_usec: int = 0
 var controls_completed: int = 0
+var redundant_readiness_receipts_suppressed: int = 0
 var owner_replacements: int = 0
 
 func enable(host: Control) -> Dictionary:
@@ -315,8 +316,17 @@ func _synchronize() -> bool:
 				_hold("RetiredBodyCleanupFailed",removed)
 				return false
 	_last_synced_sequence = int(frame.get("publication_sequence",0))
-	# A successful native release authenticates the worker/main binding only
-	# after every actual shape/mass/terrain installation has succeeded.
+	if capabilities.get("attached",false):
+		# Initial binding was already authenticated by the exclusive owner.
+		# A repeated zero-lease complete command changes no native barrier and
+		# admits no physical time. The next interval still needs the exact
+		# mutex-owned publication lease, after these actual installations.
+		_physics_ready = int(frame.get("tick",-1))>=_required_native_tick
+		phase = "Ready" if _physics_ready else "AwaitingCompletedNativeTick"
+		redundant_readiness_receipts_suppressed += 1
+		return true
+	# Authenticate first attachment only after every actual shape/mass/terrain
+	# installation succeeds. Leased interval completion always remains native.
 	_complete_requested = true
 	return _send("complete_motion",{},"complete")
 
@@ -543,6 +553,24 @@ func visible_observation() -> Dictionary:
 		if publication.has(key): value[key] = publication[key]
 	return value
 
+func request_inventory_inspection() -> Dictionary:
+	if _host==null or _host.simulation_worker==null or not physics_ready():
+		return {"ok":false,"outcome":"WaitForPhysicalReceipt"}
+	if not _host.paused: return {"ok":false,"outcome":"PauseBeforeInventoryInspection"}
+	if int(publication.get("publication_sequence",-1))!=int(frame.get("publication_sequence",-2)):
+		return {"ok":false,"outcome":"WaitForDisplayedInventoryPublication"}
+	var source: Dictionary = {}
+	for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","world_revision","next_transaction"]:
+		source[key] = frame.get(key)
+	for key: String in ["native_instance_id","transport_generation","owner_epoch","shard_session"]:
+		source[key] = capabilities.get(key)
+	return _host.simulation_worker.object_shard_request_inventory_inspection(source)
+
+func take_inventory_inspection(token: int) -> Dictionary:
+	if _host==null or _host.simulation_worker==null:
+		return {"ok":false,"outcome":"InventoryInspectionRetired","token":token}
+	return _host.simulation_worker.object_shard_take_inventory_inspection(token)
+
 func visible_target(position: Vector2i) -> Dictionary:
 	if publication.is_empty(): return {}
 	for shard: Dictionary in publication.get("shards",[]):
@@ -613,6 +641,7 @@ func diagnostics() -> Dictionary:
 		"physical_steps":physical_steps,"physical_intervals":physical_intervals,
 		"motion_lease":_motion_lease,"motion_permits_refused":motion_permits_refused,"last_motion_permit":last_motion_permit.duplicate(true),
 		"native_pose_acknowledgements":native_pose_acknowledgements,"controls_completed":controls_completed,
+		"redundant_readiness_receipts_suppressed":redundant_readiness_receipts_suppressed,
 		"native_pose_echo_checks":native_pose_echo_checks,
 		"pump_usec_total":total_pump_usec,"pump_usec_max":max_pump_usec,"owner_replacements":owner_replacements,
 		"receipt":last_receipt.duplicate(true),"physics":bridge.diagnostics(),

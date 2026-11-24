@@ -1,0 +1,8 @@
+{
+  "checks": 11,
+  "display_driver": "X11",
+  "failures": [],
+  "schema": "objectshard-m4-overlay-identity-v1",
+  "scope": "actual graphical texture storage readback; synthetic native-style publications; no native or Rapier claims",
+  "source_commit": "348146492b1fb90c950eba5898d719156bcc5c11"
+}

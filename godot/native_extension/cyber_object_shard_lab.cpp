@@ -72,7 +72,9 @@ Dictionary metrics_value(const os::Metrics& value) {
     COPY_METRIC(products_created); COPY_METRIC(output_blocked); COPY_METRIC(sand_ingested);
     COPY_METRIC(exposure_overflows); COPY_METRIC(stale_messages); COPY_METRIC(mask_cells);
     COPY_METRIC(ingress_blocked);
-    COPY_METRIC(composed_overlap_cells); COPY_METRIC(fragments); COPY_METRIC(fragment_refusals); COPY_METRIC(reabsorptions);
+    COPY_METRIC(composed_overlap_cells); COPY_METRIC(composed_reuses); COPY_METRIC(fragments); COPY_METRIC(fragment_refusals); COPY_METRIC(reabsorptions);
+    COPY_METRIC(relocation_probes); COPY_METRIC(relocation_probe_limit_hits);
+    COPY_METRIC(relocated_cells); COPY_METRIC(relocated_water_cells); COPY_METRIC(relocated_sand_cells);
     COPY_METRIC(sweep_samples); COPY_METRIC(world_ns); COPY_METRIC(chemistry_ns);
     COPY_METRIC(contact_ns); COPY_METRIC(occupancy_ns); COPY_METRIC(geometry_ns);
     COPY_METRIC(discovery_ns); COPY_METRIC(terrain_ns); COPY_METRIC(exchange_ns); COPY_METRIC(relocation_ns);

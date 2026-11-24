@@ -591,6 +591,8 @@ Dictionary CyberNativeCellWorld::object_shard_status() const {
     status["max_bodies"] = shard_lab_->coordinator_->config().limits.max_shards;
     status["max_body_area"] = shard_lab_->coordinator_->config().limits.max_area;
     status["max_total_area"] = shard_lab_->coordinator_->config().limits.max_total_area;
+    status["relocation_radius"] = cybersand::object_shard::Coordinator::kAttachedRelocationRadius;
+    status["relocation_probe_budget"] = shard_lab_->coordinator_->config().relocation_probe_budget;
     status["first_mutable_body_id"] = cybersand::object_shard::Coordinator::kFirstMutableBodyId;
     status["physical_fragmentation"] = true;
     status["settled_reabsorption"] = true;
@@ -833,21 +835,27 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     spray_tick_ = {};
     spray_budget_used_.fill(0);
     raster_indices_.clear();
-    for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
-        const auto& body = current_bodies_[body_id];
-        if (!body.valid) continue;
-        const auto& previous = previous_bodies_[body_id];
-        coupling_failure_context_ = {"raster swept mask", static_cast<std::uint16_t>(body_id)};
-        if (previous.valid) rasterize_body_sweep(body, previous);
-        else rasterize_body(body);
-    }
-    if (!compose_shard_with_workbench_occupancy()) {
-        record_native_failure("ObjectShard GCR swept compose", "shared occupancy refused");
-        return;
-    }
-    if (resolve_overlaps) {
-        coupling_failure_context_ = {"reconcile overlaps"};
-        reconcile_swept_overlaps();
+    // An attached physical subsegment requests no GCR overlap reconciliation
+    // and advances no World tick here. Its intermediate sweep has no observer;
+    // install the actual final GCR raster once before accepting shard poses.
+    // Preserve the ordinary non-M4 coupling path and every real swept solve.
+    if (resolve_overlaps || !shard_owner()) {
+        for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
+            const auto& body = current_bodies_[body_id];
+            if (!body.valid) continue;
+            const auto& previous = previous_bodies_[body_id];
+            coupling_failure_context_ = {"raster swept mask", static_cast<std::uint16_t>(body_id)};
+            if (previous.valid) rasterize_body_sweep(body, previous);
+            else rasterize_body(body);
+        }
+        if (!compose_shard_with_workbench_occupancy()) {
+            record_native_failure("ObjectShard GCR swept compose", "shared occupancy refused");
+            return;
+        }
+        if (resolve_overlaps) {
+            coupling_failure_context_ = {"reconcile overlaps"};
+            reconcile_swept_overlaps();
+        }
     }
 
     coupling_failure_context_ = {"clear final mask"};

@@ -67,7 +67,9 @@ def qualify(args: argparse.Namespace) -> dict:
                     if (value.get("schema") != "objectshard-m4-workbench-package-launch-v1" or
                         type(value.get("failures")) is not int or value["failures"] != 0 or
                         type(value.get("checks")) is not int or value["checks"] < 8 or
-                        value.get("source_commit") != identity["source_commit"] or value.get("host") != "ordinary-workbench"):
+                        value.get("source_commit") != identity["source_commit"] or value.get("host") != "ordinary-workbench" or
+                        value.get("startup_scene") != "res://feature_launcher.tscn" or value.get("scene_id") != "tower" or
+                        not {"--shared-workbench", "--objectshard-m4-workbench", "--object-shard-scene=tower"}.issubset(value.get("launch_arguments", []))):
                         raise ValueError("Missing exact-source ordinary Workbench launch receipt")
                     row["launch_receipt"] = value
             if name == "spaces":
@@ -85,6 +87,19 @@ def qualify(args: argparse.Namespace) -> dict:
                     row["tamper_refused"] = True
                 finally:
                     path.write_bytes(original)
+                unexpected = target / "godot" / "unexpected-input.gdextension"
+                if unexpected.exists():
+                    raise ValueError("Unexpected-file refusal fixture would overwrite a package member")
+                try:
+                    unexpected.write_text("[configuration]\nentry_symbol = \"not_executed\"\n", encoding="utf-8")
+                    cmd = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", "call", "Verify Workbench.cmd", "--noninteractive"]
+                    run = subprocess.run(cmd, cwd=target, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=args.timeout)
+                    (output / "unlisted-input-refusal.log").write_bytes(run.stdout)
+                    if run.returncode == 0 or not re.search(rb"Unlisted package input:\s*godot/unexpected-input\.gdextension", run.stdout):
+                        raise ValueError("Verifier did not specifically refuse an unlisted loadable input")
+                    row["unlisted_input_refused"] = True
+                finally:
+                    unexpected.unlink(missing_ok=True)
             verify(target)
         if hashlib.sha256(args.zip.read_bytes()).hexdigest() != archive_hash:
             raise ValueError("Delivered archive changed during qualification")
