@@ -78,6 +78,27 @@ def successor_fields(data):
         data["saved_authoring"]["authoring_records"] = 1
         data["saved_authoring"]["raster_imports"] = [{"source_sha256":provenance["crop_file_sha256"],"plane":"scripted",
                                                     "status":"completed","historical":True,"geometry_sha256":"2"*64,"actual_sha256":"3"*64}]
+    if data["scene"] == "orbital-terminal":
+        data["play_visibility_pixels"] = {"background_remains_visible":True, "background_probe":{
+            "native_inspection_required":True,"requested_cell":[596,246],"sampled_native_cell":[596,246],
+            "sampled_material":131,"physical_pixel":[601,310],"projected_native_centre":[601.4,310.7],
+            "pixels_per_cell":[1.4,1.4],"camera_origin":[160,80],"view_size":[1024,576],
+            "expected_rgba":[0.5,0.5,0.5,1.0],"observed_rgba":[0.5,0.5,0.5,1.0],
+            "max_rgb_error":0.0,"tolerance":0.08}}
+        data["composition_review"] = {"filename":"composition-ready-approval.png","status":"ready",
+            "approval_enabled":True,"approval_visible":True,"proposal_visible":True,"scroll_vertical":500,
+            "reviewed_token":"synthetic-compose-token","backend_token":"synthetic-compose-token",
+            "displayed_status":"Review exact material-ID projection, then Approve. Synthetic verifier fixture.",
+            "stage_count":3,"approved":False,"cancelled_without_approval":True,
+            "stop":{"status":"cancelled","token":"","can_approve":False,"applied_cells":0,"approval_disabled":True},
+            "native_hashes_before":deepcopy(data["plane_native_hashes"]),"native_hashes_after":deepcopy(data["plane_native_hashes"])}
+    if reference:
+        data["reference_import"]["ready_review"] = {
+            "filename":"reference-import-"+reference+"-approval.png","status":"ready",
+            "approval_enabled":True,"approval_visible":True,"proposal_visible":True,"scroll_vertical":500,
+            "reviewed_token":"synthetic-test-token","backend_token":"synthetic-test-token",
+            "displayed_status":"Review exact material-ID projection, then Approve. Synthetic verifier fixture.",
+            "changed_counts":"Synthetic changed/no-write accounting; not execution evidence."}
     return data
 
 
@@ -130,6 +151,27 @@ class Acceptance(unittest.TestCase):
             "lost_saved_import_history": lambda d: d["saved_authoring"].update(raster_imports=[]),
             "lost_saved_effect_change": lambda d: d["saved_authoring"]["atmosphere"]["effects"][0].update(strength=0.5),
             "no_transitions": lambda d: d.update(transitions=[]),
+            "missing_pixel_oracle": lambda d: d.pop("play_visibility_pixels"),
+            "hardcoded_background_success": lambda d: d["play_visibility_pixels"].update(background_remains_visible=False),
+            "downsampled_exact_colour": lambda d: d["play_visibility_pixels"]["background_probe"].update(pixels_per_cell=[0.71,0.71]),
+            "wrong_native_texel": lambda d: d["play_visibility_pixels"]["background_probe"].update(sampled_native_cell=[596,247]),
+            "wrong_native_material": lambda d: d["play_visibility_pixels"]["background_probe"].update(sampled_material=0),
+            "relaxed_colour_tolerance": lambda d: d["play_visibility_pixels"]["background_probe"].update(tolerance=0.2),
+            "unmeasured_framebuffer_colour": lambda d: d["play_visibility_pixels"]["background_probe"].pop("observed_rgba"),
+            "false_colour_error": lambda d: d["play_visibility_pixels"]["background_probe"].update(observed_rgba=[0.7,0.5,0.5,1.0]),
+            "colour_outside_tolerance": lambda d: d["play_visibility_pixels"]["background_probe"].update(observed_rgba=[0.7,0.5,0.5,1.0],max_rgb_error=0.2),
+            "wrong_framebuffer_pixel": lambda d: d["play_visibility_pixels"]["background_probe"].update(physical_pixel=[602,310]),
+            "missing_ready_compose": lambda d: d.pop("composition_review"),
+            "compose_proposal_below_fold": lambda d: d["composition_review"].update(proposal_visible=False),
+            "compose_unready_status": lambda d: d["composition_review"].update(displayed_status="Reading the actual target planes..."),
+            "compose_replaced_token": lambda d: d["composition_review"].update(backend_token="different"),
+            "compose_stop_disconnected": lambda d: d["composition_review"]["stop"].update(status="ready",can_approve=True),
+            "compose_stop_wrote_cells": lambda d: d["composition_review"]["stop"].update(applied_cells=1),
+            "compose_review_mutates_native": lambda d: d["composition_review"]["native_hashes_after"].update(effects="9"*64),
+            "missing_ready_import": lambda d: d["reference_import"].pop("ready_review"),
+            "import_approval_below_fold": lambda d: d["reference_import"]["ready_review"].update(approval_visible=False),
+            "import_unreviewed_token": lambda d: d["reference_import"]["ready_review"].update(backend_token="different"),
+            "import_missing_counts": lambda d: d["reference_import"]["ready_review"].update(changed_counts=""),
             "magnified_claimed_native_resolution": lambda d: d["native_grid_details"][0].update(pixels_per_cell_x=2.0),
             "missing_native_resolution_detail": lambda d: d.pop("native_grid_details"),
             "missing_native_reference": lambda d: d.pop("reference_import"),

@@ -118,6 +118,48 @@ def instance_id(value) -> bool:
     return (isinstance(value, str) and re.fullmatch(r"-?[1-9][0-9]{0,18}", value) is not None
             and -(1 << 63) <= int(value) < (1 << 63))
 
+def validate_ready_review(review: dict, filename: str, token: str | None = None) -> None:
+    require(review.get("filename") == filename and review.get("status") == "ready"
+            and review.get("approval_enabled") is True and review.get("approval_visible") is True
+            and review.get("proposal_visible") is True
+            and type(review.get("scroll_vertical")) is int and review["scroll_vertical"] >= 0,
+            "Actual scrolled ready proposal and enabled approval were not visible together")
+    require(isinstance(review.get("reviewed_token"), str) and review["reviewed_token"]
+            and review["reviewed_token"] == review.get("backend_token")
+            and (token is None or review["reviewed_token"] == token),
+            "Displayed approval is not bound to the exact reviewed native token")
+    require(isinstance(review.get("displayed_status"), str)
+            and review["displayed_status"].startswith("Review exact material-ID projection, then Approve."),
+            "Visible status did not describe the completed zero-write native preview")
+
+
+def validate_visibility_probe(result: dict) -> None:
+    visibility = result.get("play_visibility_pixels", {})
+    probe = visibility.get("background_probe", {})
+    require(visibility.get("background_remains_visible") is True
+            and probe.get("native_inspection_required") is True
+            and probe.get("requested_cell") == [596,246] == probe.get("sampled_native_cell")
+            and probe.get("sampled_material") == 131 and probe.get("tolerance") == 0.08
+            and probe.get("view_size") == [1024,576],
+            "Exact background colour lacks the controlled native-texel identity witness")
+    for key, length in (("pixels_per_cell",2), ("camera_origin",2), ("physical_pixel",2),
+                        ("projected_native_centre",2), ("expected_rgba",4), ("observed_rgba",4)):
+        values = probe.get(key)
+        require(isinstance(values,list) and len(values) == length
+                and all(type(value) in (int,float) and math.isfinite(value) for value in values),
+                "Malformed actual pixel-oracle observation: " + key)
+    require(all(value >= 1.0 for value in probe["pixels_per_cell"])
+            and all(type(value) is int and value >= 0 for value in probe["physical_pixel"])
+            and [math.floor(value) for value in probe["projected_native_centre"]] == probe["physical_pixel"],
+            "The background colour oracle downsampled or sampled an unrecorded framebuffer pixel")
+    require(all(0 <= value <= 1 for key in ("expected_rgba","observed_rgba") for value in probe[key]),
+            "Pixel-oracle colours are not actual normalized RGBA values")
+    error = max(abs(a-b) for a,b in zip(probe["expected_rgba"][:3],probe["observed_rgba"][:3]))
+    require(type(probe.get("max_rgb_error")) in (int,float) and math.isfinite(probe["max_rgb_error"])
+            and math.isclose(error,probe["max_rgb_error"],rel_tol=1e-6,abs_tol=1e-6)
+            and error < 0.08, "Actual background colour disagrees with its unchanged exact-colour tolerance")
+
+
 def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
     """Read actual witnesses independently of the GDScript assertions."""
     require(result.get("schema") == "strata2-workbench-execution-v1", "Wrong Strata execution schema")
@@ -203,6 +245,26 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
                     and imported["play_before_sha256"] == imported["play_after_sha256"]
                     and imported.get("visual_difference",{}).get("changed_samples",0) >= 8,
                     "Actual reference import/Undo lacks independent native or framebuffer evidence")
+            review = imported.get("ready_review", {})
+            validate_ready_review(review, "reference-import-"+reference+"-approval.png", imported["approved_token"])
+            require(isinstance(review.get("changed_counts"),str) and review["changed_counts"],
+                    "Visible import approval omitted changed/no-write proposal accounting")
+        if scene == "orbital-terminal":
+            validate_visibility_probe(result)
+            review = result.get("composition_review", {})
+            validate_ready_review(review, "composition-ready-approval.png")
+            require(type(review.get("stage_count")) is int and review["stage_count"] >= 2
+                    and review.get("approved") is False and review.get("cancelled_without_approval") is True,
+                    "A real multi-plane composition was not reviewed and cancelled without approval")
+            stop = review.get("stop", {})
+            require(stop.get("status") == "cancelled" and stop.get("token") == ""
+                    and stop.get("can_approve") is False and stop.get("applied_cells") == 0
+                    and stop.get("approval_disabled") is True,
+                    "Actual Compose Stop did not retire its ready token before any native write")
+            before_hashes, after_hashes = (review.get(key,{}) for key in ("native_hashes_before","native_hashes_after"))
+            require(set(before_hashes) == {"play","scripted","effects","background"} and before_hashes == after_hashes
+                    and all(re.fullmatch(r"[0-9a-f]{64}",str(value)) for value in before_hashes.values()),
+                    "Unapproved composition review changed or omitted actual native material planes")
         transitions = result.get("transitions", [])
         require(len(transitions) >= 12, "Insufficient mode/lifecycle transitions")
         for entry in transitions:

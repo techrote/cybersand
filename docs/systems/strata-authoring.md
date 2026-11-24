@@ -84,11 +84,12 @@ The original bytes are rechecked before conversion to refuse a changed source.
 The first 32 unknown RGB values are reported for review; a skipped colour is
 never silently counted as successful native placement.
 
-The shipped synthetic alpha fixture has a central opening, partial alpha and
-one intentionally unmapped colour. With its strict sample policy, first preview
-refuses that unknown colour; add a mapping or explicitly choose **Skip and
-report**. The two source-pinned SANDMAPS examples are originally opaque RGB
-artwork. Their separately authored masks express proposed regions. Dark artwork
+The shipped synthetic alpha fixture has a central opening and deterministic
+partial-alpha controls. Its strict sample policy succeeds with 1,315 mapped
+cells and 1,757 no-write cells; the magenta control pixels are transparent or
+below threshold. Separate adverse tests exercise unknown opaque colours and
+explicit **Skip and report** behavior. The two source-pinned SANDMAPS examples
+are originally opaque RGB artwork. Their separately authored masks express proposed regions. Dark artwork
 is not claimed to be transparent or to encode authoritative rear planes.
 
 ## Exact native parts and explicit plane targets

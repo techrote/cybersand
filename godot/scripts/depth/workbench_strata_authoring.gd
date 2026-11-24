@@ -511,7 +511,11 @@ func stop_authoring() -> Dictionary:
 	if not _harvest.is_empty(): _harvest.stop = true
 	for token: int in _pending_operations:
 		controller.wb.paint_editor.strata_stop(token)
-	controller._say("Stop requested. Any acknowledged native prefix remains explicit; readback and history finish before another job.")
+	if busy():
+		controller._say("Stop requested. Any acknowledged native prefix remains explicit; readback and history finish before another job.")
+	else:
+		var stopped: Dictionary = authoring_state()
+		controller._say("Native preview cancelled; no pending native writes." if stopped.get("status", "") == "cancelled" else "Native authoring: %s; no pending owner operation." % str(stopped.get("status", "idle")))
 	return authoring_state()
 
 
@@ -526,9 +530,19 @@ func step() -> void:
 			_codec = null
 			_fail_preview(str(converted.get("error", "Raster proposal refused.")))
 	elif _session != null and bool(_session.state().get("busy", false)):
-		_session.step()
-		if _session.state().get("status", "") == "ready" and not _preview.has("composite_image"):
+		var previous_status: String = str(_session.state().get("status", ""))
+		var current: Dictionary = _session.step()
+		var current_status: String = str(current.get("status", ""))
+		if current_status == "ready" and not _preview.has("composite_image"):
 			_build_composite_preview()
+		if current_status != previous_status:
+			# The always-visible Workbench footer must agree with the actual
+			# native session. Announce transitions once, never every frame.
+			var message: String = str(current.get("error", ""))
+			if message.is_empty(): message = str(current.get("message", ""))
+			if message.is_empty():
+				message = "Native construction complete: %d cells acknowledged and read back." % int(current.get("applied_cells", 0)) if current_status == "completed" else "Native authoring: %s; %d cells acknowledged." % [current_status, int(current.get("applied_cells", 0))]
+			controller._say(message)
 	elif not _harvest.is_empty(): _step_harvest()
 
 

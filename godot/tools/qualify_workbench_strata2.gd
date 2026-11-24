@@ -25,6 +25,15 @@ func settle() -> void:
 		await super.settle()
 
 
+func _visibility_fixture_view() -> bool:
+	# Overview at 2048 cells across can map multiple textured native cells to
+	# one display pixel. A colour oracle needs a controlled resolving view.
+	# This delegates to the ordinary Workbench camera; Overview/input remain
+	# separately exercised by the gallery, transforms and scaled mouse probe.
+	wb._set_view(Vector2(160,80),Vector2i(1024,576))
+	return true
+
+
 func _world_difference(a: Image, b: Image, threshold: float = 0.003, stride: int = 2) -> Dictionary:
 	var area: Rect2 = root.get_stretch_transform()*host.world_view.get_global_transform_with_canvas()*host.view_content_rect()
 	var changed := 0
@@ -239,6 +248,72 @@ func _reference_projection(fixture: Dictionary, before: PackedByteArray) -> Dict
 		"mapped":mapped,"no_write":untouched}
 
 
+func _capture_ready_review(button: BaseButton, preview: Control, filename: String) -> Dictionary:
+	var ancestor: Node = button.get_parent()
+	while ancestor != null and not ancestor is ScrollContainer: ancestor = ancestor.get_parent()
+	var scroll: ScrollContainer = ancestor as ScrollContainer
+	if not check(scroll != null,"ready proposal has an existing authoring scroll container"): return {}
+	scroll.ensure_control_visible(button)
+	await settle()
+	var area: Rect2 = scroll.get_global_rect()
+	var button_visible: bool = area.encloses(button.get_global_rect())
+	var preview_visible: bool = area.encloses(preview.get_global_rect())
+	check(button_visible and not button.disabled,"actual ready approval is enabled and visible after scrolling")
+	check(preview_visible,"actual proposed native image is visible beside the ready approval")
+	var image: Image = strata._window.get_texture().get_image()
+	check(image != null and not image.is_empty() and image.save_png(output.path_join(filename)) == OK,"actual ready review pixels captured")
+	return {"filename":filename,"approval_enabled":not button.disabled,"approval_visible":button_visible,
+		"proposal_visible":preview_visible,"scroll_vertical":scroll.scroll_vertical,
+		"scope":"Actual scrolled Workbench controls and native-ID proposal; no automatic application."}
+
+
+func composition_review() -> void:
+	var hashes_before: Dictionary = await all_native_hashes()
+	var identity_before := play_identity()
+	check(strata.set_presentation({"enabled":true,"mode":"stack","active":"play","solo":""}),"review a visible layered construction")
+	strata.open_panel()
+	strata._panel._tabs.current_tab = 2
+	var ui: Node = strata._panel._authoring
+	if not check(not ui._compositions.is_empty(),"actual Compose catalogue has a reusable layered preset"): return
+	ui._composition.select(0)
+	for control: SpinBox in ui._module_origin: control.value = 64
+	var composition_id: String = str(ui._compositions[0].id)
+	ui._request_preview("preview_composition",[composition_id,{"origin":[64,64]}])
+	if not await until(func() -> bool: return not strata.authoring_state().get("busy",false),"actual layered construction ready preview"): return
+	ui.refresh({},"")
+	var ready: Dictionary = strata.authoring_state()
+	if not check(ready.get("can_approve",false) and not ui._compose_approve.disabled,"actual Compose preview requires explicit approval"): return
+	check(ui._stage_previews.size() >= 2 and ui._compose_preview.image_texture != null,"actual reviewed preset has plane stages and composite native-ID proposal")
+	var view: Dictionary = await _capture_ready_review(ui._compose_approve,ui._compose_preview,"composition-ready-approval.png")
+	view.id = composition_id
+	view.status = str(ready.status)
+	view.reviewed_token = str(ui._token)
+	view.backend_token = str(ready.token)
+	view.displayed_status = ui._compose_status.text
+	view.stage_count = ui._stage_previews.size()
+	view.approved = false
+	check(view.reviewed_token == view.backend_token and not view.reviewed_token.is_empty(),"Compose approval and exact reviewed backend token agree")
+	check(view.displayed_status == str(ready.get("message","")),"Compose visible status describes the ready proposal")
+	ui._compose_stop.pressed.emit()
+	if not await until(func() -> bool: return not strata.authoring_state().get("busy",false),"cancel unapproved native composition preview"): return
+	var stopped: Dictionary = strata.authoring_state()
+	ui.refresh({},"")
+	var cancelled: bool = stopped.get("status") == "cancelled" and str(stopped.get("token","")).is_empty() \
+		and not stopped.get("can_approve",true) and int(stopped.get("applied_cells",-1)) == 0 and ui._compose_approve.disabled
+	check(cancelled,"actual Compose Stop retires the unapproved token and performs zero native writes")
+	view.stop = {"status":str(stopped.get("status","")),"token":str(stopped.get("token","")),
+		"can_approve":bool(stopped.get("can_approve",true)),"applied_cells":int(stopped.get("applied_cells",-1)),
+		"approval_disabled":ui._compose_approve.disabled}
+	var hashes_after: Dictionary = await all_native_hashes()
+	check(hashes_before == hashes_after,"review and Stop of unapproved composition change no native material plane")
+	view.native_hashes_before = hashes_before
+	view.native_hashes_after = hashes_after
+	view.cancelled_without_approval = cancelled
+	record.composition_review = view
+	stable_identity(identity_before,play_identity(),"zero-write actual Compose review")
+	strata._window.hide()
+
+
 func native_reference_import(id: String) -> void:
 	var directory := "res://data/strata2/reference-imports/"
 	var fixture: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(directory+id+".fixture.json"))
@@ -288,6 +363,17 @@ func native_reference_import(id: String) -> void:
 	ui.refresh({},"")
 	if not check(not ui._approve.disabled,"final native view has a fresh reviewed token "+id): return
 	var approved_token: String = str(strata.authoring_state().get("token",""))
+	strata._window.show()
+	strata._panel._tabs.current_tab = 1
+	var approval_view: Dictionary = await _capture_ready_review(ui._approve,ui._output_preview,"reference-import-"+id+"-approval.png")
+	approval_view.status = str(strata.authoring_state().get("status",""))
+	approval_view.reviewed_token = str(ui._token)
+	approval_view.backend_token = approved_token
+	approval_view.displayed_status = ui._authoring_status.text
+	approval_view.changed_counts = ui._preview_summary.text
+	check(approval_view.status == "ready" and approval_view.reviewed_token == approved_token,"actual Import visible approval and reviewed token agree")
+	check(approval_view.displayed_status == str(strata.authoring_state().get("message","")),"Import visible status describes the ready native projection")
+	strata._window.hide()
 	ui._approve.pressed.emit()
 	if not await until(func() -> bool: return not strata.authoring_state().get("busy",false),"reference bounded native ACK/readback "+id): return
 	var completed: Dictionary = strata.authoring_state()
@@ -313,7 +399,7 @@ func native_reference_import(id: String) -> void:
 	record.reference_import = {"id":id,"source_sha256":provenance.crop_file_sha256,"mask_sha256":provenance.mask_sha256,
 		"original_source_sha256":provenance.original_sha256,"geometry_sha256":oracle.geometry_sha256,"write_mask_sha256":oracle.mask_sha256,
 		"mapped":oracle.mapped,"no_write":oracle.no_write,"plane":"scripted","region":[region.position.x,region.position.y,region.size.x,region.size.y],
-		"approved_token":approved_token,"completed_status":completed.status,"history_chunks":chunks,
+		"approved_token":approved_token,"completed_status":completed.status,"history_chunks":chunks,"ready_review":approval_view,
 		"before_sha256":digest(before),"expected_sha256":digest(oracle.expected),"actual_sha256":digest(actual),"restored_sha256":digest(restored),
 		"play_before_sha256":digest(play_before),"play_after_sha256":digest(after_play),"visual_difference":visual,
 		"scope":"Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct."}
@@ -518,6 +604,7 @@ func run() -> void:
 		if not diagnostic_headless:
 			await scene_gallery()
 			await successor_panel()
+			if scene_id == Showcase.IDS[0]: await composition_review()
 			if scene_id == Showcase.IDS[0]: await native_reference_import("asteroid-service-gallery")
 			if scene_id == Showcase.IDS[1]: await native_reference_import("rocket-hangar-frame")
 		await mode_identity()

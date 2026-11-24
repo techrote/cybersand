@@ -53,7 +53,9 @@ func _preview(path: String, options: Dictionary) -> bool:
 	strata.preview_import(path, options)
 	if not await until(_ready, "bounded native preview settles"): return false
 	var state: Dictionary = strata.authoring_state()
-	return check(state.get("can_approve",false), "actual target preview awaits explicit owner approval: " + str(state.get("error","")))
+	var ready: bool = check(state.get("can_approve",false), "actual target preview awaits explicit owner approval: " + str(state.get("error","")))
+	if ready: check(strata.status_text().begins_with("Review exact material-ID projection"), "visible Workbench footer reports ready review instead of stale preparation")
+	return ready
 
 
 func _approve() -> bool:
@@ -62,6 +64,7 @@ func _approve() -> bool:
 	if not await until(_ready, "bounded native ACK and readback settle"): return false
 	state = strata.authoring_state()
 	check(state.get("status") in ["completed","committed_stale_pixels"], "native prefix completed with explicit publication status: " + str(state.get("error","")))
+	if state.get("status") == "completed": check(strata.status_text().begins_with("Native construction complete:"), "visible footer reports acknowledged completion")
 	for stage: Dictionary in state.get("stages",[]):
 		check(stage.get("actual_sha256","") == stage.get("projected_sha256","") and str(stage.get("actual_sha256","")).length() == 64,
 			"actual target native material hash matches reviewed projection")
@@ -279,6 +282,12 @@ func run() -> void:
 	# second result consumer and no direct World reference.
 	options = _options("play",[120,80])
 	wb.applied.brush = 2
+	if not await _preview(_fixture_path,options): finish(); return
+	var cancel_before := await play_bytes()
+	strata.stop_authoring()
+	check(not strata.authoring_busy() and strata.authoring_state().get("status") == "cancelled", "ready native proposal cancels immediately before any write")
+	check(strata.status_text().begins_with("Native preview cancelled"), "visible footer reports immediate cancellation without stale Stop progress")
+	check(await play_bytes() == cancel_before, "cancelled approved-next Play preview preserves every native cell")
 	if not await _preview(_fixture_path,options): finish(); return
 	var before_noop: Dictionary = strata.authoring_plane_state("play")
 	var noop_token: String = strata.authoring_state().token

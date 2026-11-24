@@ -343,12 +343,20 @@ func panel_controls() -> void:
 	strata._window.hide()
 	stable_identity(before,play_identity(),"panel controls")
 
+func _visibility_fixture_view() -> bool:
+	# Preserve the predecessor fixture's Overview unless a successor explicitly
+	# requests a controlled native-pixel inspection using the existing camera.
+	wb.set_camera(2)
+	return false
+
 func play_visibility_pixels() -> void:
 	var original: Dictionary = strata.document().presentation.duplicate(true)
+	var original_camera_origin: Vector2 = host.camera_origin
+	var original_view_size: Vector2i = host.current_view_size
 	var background_opacity: float = Document.plane(strata.document(),"background").opacity
 	check(strata.set_presentation({"enabled":true,"mode":"stack","active":"play","solo":"","parallax_strength":0.0,"fog_strength":0.0}),"pixel fixture neutral view")
 	check(strata.set_layer_option("background","opacity",1.0),"pixel fixture opaque background")
-	wb.set_camera(2)
+	var requires_native_pixels: bool = _visibility_fixture_view()
 	var point := Vector2i(620,240)
 	var background_point := Vector2i(596,246)
 	var emission_point := Vector2i(650,240)
@@ -394,7 +402,32 @@ func play_visibility_pixels() -> void:
 	check(colour_distance(framebuffer_colour(hidden_frame,halo_point,"play"),halo_baseline) < 0.02,"background solo removes additive Play glow")
 	var surface: Image = strata.presenter._surfaces.background.get_texture().get_image()
 	var rear_colour := framebuffer_colour(hidden_frame,background_point,"background")
-	check(colour_distance(rear_colour,surface.get_pixelv(background_point)) < 0.08,"background remains visible with exact opaque source colour")
+	var expected_colour: Color = surface.get_pixelv(background_point)
+	var source_colour_error: float = colour_distance(rear_colour,expected_colour)
+	var background_visible: bool = source_colour_error < 0.08
+	var physical_transform: Transform2D = root.get_stretch_transform()*host.world_view.get_global_transform_with_canvas()
+	var native_centre := Vector2(background_point)+Vector2(0.5,0.5)
+	var physical_centre: Vector2 = physical_transform*strata.presenter.layer_to_screen(native_centre,"background")
+	var sampled_pixel := Vector2i(physical_centre.floor())
+	var pixel_centre_local: Vector2 = physical_transform.affine_inverse()*(Vector2(sampled_pixel)+Vector2(0.5,0.5))
+	var sampled_cell := Vector2i(strata.presenter.screen_to_layer(pixel_centre_local,"background").floor())
+	var next_x: Vector2 = physical_transform*strata.presenter.layer_to_screen(native_centre+Vector2.RIGHT,"background")
+	var next_y: Vector2 = physical_transform*strata.presenter.layer_to_screen(native_centre+Vector2.DOWN,"background")
+	var pixels_per_cell := Vector2(physical_centre.distance_to(next_x),physical_centre.distance_to(next_y))
+	var sampled_material: int = strata.layer_owner.material_at("background",sampled_cell)
+	if requires_native_pixels:
+		check(pixels_per_cell.x >= 1.0 and pixels_per_cell.y >= 1.0,"visibility source-colour inspection resolves every native texel")
+		check(sampled_cell == background_point and sampled_material == 131,"visibility physical pixel samples the intended native HeatShieldTile texel")
+	check(background_visible,"background remains visible with exact opaque source colour")
+	var background_probe := {"native_inspection_required":requires_native_pixels,
+		"requested_cell":[background_point.x,background_point.y],"sampled_native_cell":[sampled_cell.x,sampled_cell.y],
+		"sampled_material":sampled_material,"physical_pixel":[sampled_pixel.x,sampled_pixel.y],
+		"projected_native_centre":[physical_centre.x,physical_centre.y],"pixels_per_cell":[pixels_per_cell.x,pixels_per_cell.y],
+		"camera_origin":[host.camera_origin.x,host.camera_origin.y],"view_size":[host.current_view_size.x,host.current_view_size.y],
+		"expected_rgba":[expected_colour.r,expected_colour.g,expected_colour.b,expected_colour.a],
+		"observed_rgba":[rear_colour.r,rear_colour.g,rear_colour.b,rear_colour.a],"max_rgb_error":source_colour_error,"tolerance":0.08,
+		"scope":"Actual framebuffer pixel and copied baked native texel; no threshold relaxation."}
+	print("STRATA2_PIXEL_ORACLE ",JSON.stringify(background_probe))
 	check(strata.set_presentation({"solo":"","mode":"flat"}),"flat nonplay actual pixel")
 	var flat_frame: Image = await capture("visibility-flat-background")
 	check(colour_distance(framebuffer_colour(flat_frame,point,"play"),hidden_colour) < 0.03,"flat nonplay actually removes Play-only pixels")
@@ -433,9 +466,10 @@ func play_visibility_pixels() -> void:
 	check(await play_bytes() == play_before,"pixel fixture cleanup restores every original Play material")
 	check(strata.set_layer_option("background","opacity",background_opacity),"restore background opacity")
 	check(strata.set_presentation(original),"restore authored view after visibility proof")
-	record.play_visibility_pixels = {"play_only_delta":hidden_delta,"background_remains_visible":true,
+	record.play_visibility_pixels = {"play_only_delta":hidden_delta,"background_remains_visible":background_visible,"background_probe":background_probe,
 		"solo_flat_hidden_zero_absent":true,"half_opacity_intermediate":true,"ordinary_restored":true,
 		"emissive_material":77,"halo_visible_delta":halo_strength,"halo_half_delta":half_halo,"hidden_halo_absent":true}
+	if requires_native_pixels: wb._set_view(original_camera_origin,original_view_size)
 
 func immediate_view_input() -> void:
 	var presentation: Dictionary = strata.document().presentation.duplicate(true)

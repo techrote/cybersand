@@ -94,9 +94,11 @@ not observed depth or recovered alpha. Original source art remains unmodified.
    Overlay cutout, choose an empty destination region or separately approve
    explicit Empty writes; transparent source pixels preserve existing cells.
 4. Configure colour-to-native-material rows, maximum RGB distance and the
-   unmapped policy. Strict refusal is the default. The synthetic sample has one
-   intentionally unknown colour: add a mapping or explicitly select **Skip and
-   report** to continue. Approximate palette matching never infers depth.
+   unmapped policy. Strict refusal is the default. The shipped synthetic sample
+   succeeds with its sample palette and threshold: 1,315 mapped cells and 1,757
+   no-write cells. Its magenta control pixels are below the alpha threshold;
+   separate adverse fixtures exercise unknown opaque colours. Approximate
+   palette matching never infers depth.
 5. Press **Preview proposed native placement**. Inspect extent, mapped/no-write/
    explicit-Empty/unmapped counts, source and geometry digests, actual before
    materials and the resulting proposal. Nothing has been written yet.
@@ -133,6 +135,14 @@ cannot mark it complete. Scene replacement, stale revisions or changed
 permissions invalidate approval. Partial/Stop outcomes retain their actual
 prefix and identify the unexecuted stages. No cross-plane atomic transaction or
 structural attachment/load-bearing solver is claimed.
+
+For a first composition trial in **Orbital Fabrication Terminal**, use these
+source-reviewed anchors on an unchanged freshly loaded example: Factory service
+bay `(800, 512)`, Reactor service arch `(1056, 512)`, or Inhabited skybridge
+`(608, 512)`. Try each independently from the original scene. These placements
+pass the source geometry/clearance checks; the actual preview must still admit
+current native cells and permissions. They are suggested starting positions,
+not a full traversal, physical stability or final appearance qualification.
 
 After full native completion, **Apply reviewed depth and atmosphere** is a
 separate optional approval. It applies the displayed settings and replaces the

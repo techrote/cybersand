@@ -18,6 +18,7 @@ class FixtureHost extends RefCounted:
 	var visible := true
 	var published := true
 	var delayed := false
+	var hold_ack := false
 	var prefix_limit := -1
 	var wrong_owner := false
 	var bad_receipt := false
@@ -99,7 +100,7 @@ class FixtureHost extends RefCounted:
 		return result
 
 	func authoring_poll(token: int) -> Dictionary:
-		if not pending.has(token): return {}
+		if hold_ack or not pending.has(token): return {}
 		var operation: Dictionary = pending[token]; pending.erase(token)
 		return _capture(operation.id, operation.region) if operation.kind == "capture" else _apply(operation.id, operation.cells, operation.expected)
 
@@ -154,10 +155,69 @@ func drive(session: RefCounted, maximum: int = 4096) -> Dictionary:
 	return state
 
 
+func _ack_notice_trials(part: Dictionary) -> void:
+	# Backdate only this copied value owner's pending timestamp; no wall-clock
+	# sleep, native delay injection, watchdog change or late-ACK acceptance bypass.
+	var host := FixtureHost.new()
+	host.delayed = true; host.hold_ack = true
+	var created := begin(host, part)
+	var session: RefCounted = created.session
+	var state: Dictionary = session.state()
+	for _i: int in 16:
+		state = session.step()
+		if state.pending_owner_ack: break
+	var preview_pending: bool = state.pending_owner_ack and session._pending.kind == "preview"
+	check(preview_pending, "held preview has an actual pending copied owner operation")
+	if not preview_pending: return
+	session._pending.started_usec = Time.get_ticks_usec() - Session.ACK_NOTICE_USEC - 1
+	state = session.step()
+	check(state.status == "preparing" and state.error == Session.ACK_NOTICE_MESSAGE and host.writes == 0,
+		"overdue preview remains zero-write and explicitly waiting")
+	host.hold_ack = false
+	state = drive(session)
+	check(state.status == "ready" and state.can_approve and state.error.is_empty() and host.writes == 0,
+		"validated late observation clears only its provisional waiting notice")
+	session.approve(state.token)
+	host.hold_ack = true
+	for _i: int in 16:
+		state = session.step()
+		if state.pending_owner_ack: break
+	var apply_pending: bool = state.pending_owner_ack and session._pending.kind == "apply"
+	check(apply_pending, "held apply has an actual pending owner operation")
+	if not apply_pending: return
+	session._pending.started_usec = Time.get_ticks_usec() - Session.ACK_NOTICE_USEC - 1
+	state = session.step()
+	check(state.status == "awaiting_ack" and state.error == Session.ACK_NOTICE_MESSAGE and host.writes == 0,
+		"overdue mutation is pending without an invented native outcome")
+	host.hold_ack = false
+	state = session.step()
+	check(state.status == "applying" and not state.pending_owner_ack and state.error.is_empty() and state.applied_cells == 3,
+		"valid late ACK resumes applying and records its exact material prefix")
+	state = drive(session)
+	check(state.status == "completed" and state.error.is_empty() and state.applied_cells == 3
+		and state.stages[0].actual_sha256 == state.stages[0].projected_sha256,
+		"late ACK still requires exact final readback before clean completion")
+	host = FixtureHost.new(); host.delayed = true; host.hold_ack = true
+	created = begin(host, part); session = created.session; state = session.state()
+	for _i: int in 16:
+		state = session.step()
+		if state.pending_owner_ack: break
+	var invalid_pending: bool = state.pending_owner_ack
+	check(invalid_pending, "invalid late observation fixture is pending")
+	if not invalid_pending: return
+	session._pending.started_usec = Time.get_ticks_usec() - Session.ACK_NOTICE_USEC - 1
+	session.step()
+	host.bad_capture = true; host.hold_ack = false
+	state = drive(session)
+	check(state.status == "refused" and state.error.contains("owner") and state.error != Session.ACK_NOTICE_MESSAGE and host.writes == 0,
+		"late owner-identity failure replaces waiting notice with the genuine refusal")
+
+
 func run() -> void:
 	admitted = Executor.native_materials()
 	check(not admitted.is_empty(), "actual retained runtime provides native material admission catalogue")
 	var part := module(Vector2i(3, 2))
+	_ack_notice_trials(part)
 	var host := FixtureHost.new()
 	host.planes.scripted[64 * 512 + 65] = 77 # Transparent source pixel.
 	host.planes.effects[64 * 512 + 64] = 66

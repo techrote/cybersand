@@ -10,6 +10,7 @@ const History = preload("res://scripts/workbench_paint_editor_history.gd")
 const Codec = preload("res://scripts/depth/strata_import_codec.gd")
 const TILE_SIDE := 64
 const ACK_NOTICE_USEC := 15000000
+const ACK_NOTICE_MESSAGE := "The owner ACK exceeded 15 seconds. Outcome remains pending; no zero-write or completed claim is inferred from a timeout."
 const FENCE_KEYS := ["scene_id", "owner_id", "generation", "revision", "authored_serial", "permission_sha256"]
 
 var _host: Object
@@ -490,9 +491,13 @@ func step() -> Dictionary:
 		var receipt: Dictionary = _host.authoring_poll(int(_pending.operation_id))
 		if receipt.is_empty():
 			if Time.get_ticks_usec() - int(_pending.started_usec) > ACK_NOTICE_USEC:
-				_error = "The owner ACK exceeded 15 seconds. Outcome remains pending; no zero-write or completed claim is inferred from a timeout."
+				_error = ACK_NOTICE_MESSAGE
 				if _approved: _status = "awaiting_ack"
 		else:
+			# A delayed reply resolves only the provisional waiting notice. The
+			# normal receipt handlers still validate identity and native outcome.
+			if _error == ACK_NOTICE_MESSAGE: _error = ""
+			if _status == "awaiting_ack": _status = "stopping" if _stop else "applying"
 			var operation := _pending; _pending = {}
 			if operation.kind == "apply": _handle_apply(receipt, operation)
 			else: _handle_capture(receipt, operation)

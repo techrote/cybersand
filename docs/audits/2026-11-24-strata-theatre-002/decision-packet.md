@@ -80,8 +80,9 @@ Actual refined captures still require the corrected campaign at this checkpoint.
 Two available SANDMAPS reference images are pinned to repository revision
 `99a166e7fcae45eb22be1740e9f33f62faccbcc7`. They are opaque RGB originals;
 shipped crops are exact source regions and their explicit masks are authored
-interpretations. A separate original synthetic alpha fixture tests central
-holes, partial alpha and an unknown colour. Original concept art never counts
+interpretations. A separate original synthetic alpha fixture demonstrates central
+holes and partial alpha; its strict sample maps 1,315 cells and preserves 1,757
+no-write cells. Unknown opaque colours are covered by separate adverse fixtures. Original concept art never counts
 as native output evidence. See [environment/provenance details](../../systems/strata-environments.md).
 
 ## Executed local witnesses and reviews
