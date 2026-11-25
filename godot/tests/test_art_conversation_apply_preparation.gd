@@ -54,7 +54,7 @@ func drain() -> void:
 		and not panel.provider.conversation_edit_active(),"prepared edit retires and worker is reaped")
 	for frame: int in 2: await process_frame
 
-func seed() -> void:
+func seed_conversation_fixture() -> void:
 	await drain()
 	panel._open_conversation()
 	panel.conversation_editor.draft.clear()
@@ -90,7 +90,7 @@ func unchanged(before: Dictionary,label: String) -> void:
 		label+" performs no native authoring")
 
 func cancellation_checks() -> void:
-	await seed()
+	await seed_conversation_fixture()
 	panel.last_image = "retained image marker"
 	var before := apply()
 	var snapshot: Array = panel.conversation_editor.draft.duplicate(true)
@@ -111,7 +111,7 @@ func cancellation_checks() -> void:
 	unchanged(before,"cancelled and deliberately late preparation completion")
 	outcomes.append({"case":"cancel-and-late-completion","timing":panel.last_conversation_apply_timing.duplicate(true)})
 
-	await seed()
+	await seed_conversation_fixture()
 	before = apply()
 	panel.stop_all("Owner Stop during conversation preparation")
 	await drain()
@@ -120,7 +120,7 @@ func cancellation_checks() -> void:
 	unchanged(before,"Stop")
 	panel.conversation_editor.hide()
 
-	await seed()
+	await seed_conversation_fixture()
 	before = apply()
 	panel.conversation_editor.hide()
 	await drain()
@@ -128,7 +128,7 @@ func cancellation_checks() -> void:
 	unchanged(before,"editor Hide")
 
 func stale_checks() -> void:
-	await seed()
+	await seed_conversation_fixture()
 	var before := apply()
 	check(panel.remember_turn("assistant","newer acknowledged turn"),
 		"real newer conversation turn is admitted during pure-value preparation")
@@ -139,7 +139,7 @@ func stale_checks() -> void:
 	unchanged(before,"stale conversation")
 	panel.conversation_editor.hide()
 
-	await seed()
+	await seed_conversation_fixture()
 	before = apply()
 	check(wb.new_canvas(),"actual World replacement admitted during preparation")
 	await until(ready,"replacement native World is ready")
@@ -150,7 +150,7 @@ func stale_checks() -> void:
 		"replacement World invalidates the pending edited snapshot")
 	panel.conversation_editor.hide()
 
-	await seed()
+	await seed_conversation_fixture()
 	before = apply()
 	panel.provider.secrets.append(CANARY)
 	await drain()
@@ -161,7 +161,7 @@ func stale_checks() -> void:
 	panel.conversation_editor.hide()
 
 func success_checks() -> void:
-	await seed()
+	await seed_conversation_fixture()
 	var dialog = panel.conversation_editor
 	var replacement := "prefix "+CANARY+" suffix"
 	dialog.content.text = replacement+dialog.content.text.substr(1)
@@ -194,7 +194,7 @@ func success_checks() -> void:
 		"redacted no-op Apply closes without a new conversation revision")
 	unchanged(before,"complete no-op Apply")
 
-	await seed()
+	await seed_conversation_fixture()
 	before = {"revision":panel.conversation_revision,"offset":audit_offset()}
 	observer_adopted = false
 	var target_revision: int = panel.conversation_revision+1
@@ -221,7 +221,7 @@ func success_checks() -> void:
 	reader.queue_free()
 
 func failed_append_check() -> void:
-	await seed()
+	await seed_conversation_fixture()
 	var before := apply()
 	var path := ProjectSettings.globalize_path(panel.provider.log_path)
 	var backup := path+".apply-fixture-backup"
@@ -237,7 +237,7 @@ func failed_append_check() -> void:
 	panel.conversation_editor.hide()
 
 func collaboration_fence_checks() -> void:
-	await seed()
+	await seed_conversation_fixture()
 	var session: RefCounted = panel.collaboration
 	panel.focus_selection(Rect2i(0,0,256,192))
 	session.load_example("industrial_repair")
@@ -271,7 +271,7 @@ func collaboration_fence_checks() -> void:
 	await drain()
 
 func queued_owner_check() -> void:
-	await seed()
+	await seed_conversation_fixture()
 	var before := apply()
 	var held_ready: Dictionary = {}
 	# Only callback delivery is held by this fixture. The original Provider
