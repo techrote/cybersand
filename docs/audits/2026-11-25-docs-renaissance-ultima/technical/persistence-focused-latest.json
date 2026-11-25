@@ -1,0 +1,91 @@
+{
+  "cases": [
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "capability",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "capability",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "create",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "create",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "write",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "write",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "silent-truncate",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "verify",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "same-length-corruption",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "verify",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "flush",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "write",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "close",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "write",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "verify",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "verify",
+      "replacement_calls": 0
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "replace",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "replace",
+      "replacement_calls": 1
+    },
+    {
+      "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "fault": "cleanup",
+      "kind": "injected",
+      "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+      "phase": "replace",
+      "replacement_calls": 1
+    }
+  ],
+  "checks": 84,
+  "failures": [],
+  "native_commit": "CyberDemoBridge.replace_material_baseline_file",
+  "platform": "Linux",
+  "schema": 1,
+  "source_commit": "559df7a9",
+  "scope": "Latest focused regression including pre-existing staging symlink; supersedes the 78-check focused row only, other matrix inputs unchanged."
+}

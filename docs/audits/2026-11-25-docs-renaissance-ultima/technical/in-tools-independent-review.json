@@ -1,0 +1,102 @@
+{
+  "reviewer": "Specialist A, independent of implementing lead",
+  "source_head": "ca1a34b30399895f00f78ca2258fffe9c82fe882",
+  "source_files": {
+    "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+    "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+    "godot/scripts/physical_usable_script.gd": "e21454479b42b1a54e001c02c219d8892101884348ad7aabc9ea4d1e3e58bb19",
+    "godot/scripts/physical_actor_session.gd": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_usable_runtime.gd": "f1bb3377da73df672e24abbe06a84621042c64ced45fa96ec6de01616a3c7b18",
+    "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+    "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+    "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+    "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+    "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+    "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+    "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+    "godot/tests/test_liquid_desktop_default_host.gd": "aac6d1cba59a44d285dd74b2f55256fd45d78d94c3ffcf48f545c09513f87bd3",
+    "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-07.json": "8a113f8d99b88ea227175deaedce751f465ce8228c0c57fda889f7e21e592428",
+    "tools/lcb/in_tools_current_main_admission.py": "a4115e4023ac79017909278bdea6c210f03e7b0993c01ce89260f2ace6c6e85a",
+    "tools/lcb/test_in_tools_current_main_admission.py": "0b799835b2b4968137d81ab3c8c3fc5eb697c2ebe2444df38fd8061a4c2c96dd",
+    "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-25.json": "0f51cceed94f70a6d16ab6dffb5dc2b95f2fe367cd323bd1534fcd07a5c71b7f",
+    "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800"
+  },
+  "unit": {
+    "exit_code": 0,
+    "output": "...................\n----------------------------------------------------------------------\nRan 19 tests in 1.849s\n\nOK\n"
+  },
+  "admitted": {
+    "schema": "in-tools-current-main-admission-result-v3",
+    "status": "admitted",
+    "source_commit": "ca1a34b30399895f00f78ca2258fffe9c82fe882",
+    "source_tree": "73d40d41df4416931aba967b8a2713aa7adc9037",
+    "adopted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "authority_count": 13,
+    "authority": [
+      {
+        "path": "godot/scripts/usable_catalog.gd",
+        "git_blob": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358"
+      },
+      {
+        "path": "godot/scripts/usable_runtime.gd",
+        "git_blob": "f86a439f659e5dfcb359f704571abc814df4b2c9"
+      },
+      {
+        "path": "godot/scripts/physical_usable_script.gd",
+        "git_blob": "f802aea7d80787db540a7e68ef2b3789b15dd0e1"
+      },
+      {
+        "path": "godot/scripts/physical_actor_session.gd",
+        "git_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e"
+      },
+      {
+        "path": "godot/scripts/physical_usable_equipment.gd",
+        "git_blob": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616"
+      },
+      {
+        "path": "godot/scripts/physical_usable_runtime.gd",
+        "git_blob": "d67582b8cdb24cb86e4a5be315cdc4594a82a5b9"
+      },
+      {
+        "path": "godot/scripts/simulation_worker.gd",
+        "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03"
+      },
+      {
+        "path": "godot/native_extension/cyber_native_cell_world.cpp",
+        "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642"
+      },
+      {
+        "path": "godot/native_extension/cyber_native_cell_world.hpp",
+        "git_blob": "59a2a87d4611ec8f09a5db93f97d12570d9dd10f"
+      },
+      {
+        "path": "native/include/cybersand/world.hpp",
+        "git_blob": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a"
+      },
+      {
+        "path": "native/src/world.cpp",
+        "git_blob": "b31fe9b37c72603662c04333ff05f50bf030a050"
+      },
+      {
+        "path": "native/include/cybersand/water_normalization.hpp",
+        "git_blob": "cc63976e3de99cd4589ad471929c0f487dc9df97"
+      },
+      {
+        "path": "native/src/world_inertial.inc",
+        "git_blob": "da44b76b699bb459d88128b8dbc5106f24ddaa17"
+      }
+    ],
+    "causal_fixture": {
+      "path": "godot/tests/test_liquid_desktop_default_host.gd",
+      "git_blob": "0c5cd28c2bf018b55587e6f994aeeefcf9369424"
+    },
+    "planned_count": 6,
+    "planned_execution": "NOT_RUN",
+    "gameplay_qualified": false,
+    "runtime_qualified": false
+  },
+  "causal_mutation_refusal": "working source changed for godot/tests/test_liquid_desktop_default_host.gd: e6773c026519770fa90c430ad52fe4cbef23c322 != 0c5cd28c2bf018b55587e6f994aeeefcf9369424",
+  "committed_legacy_mutation_with_restored_working_bytes_refusal": "historical registration source bytes changed",
+  "verdict": "PASS: source admission guard strengthened; runtime/Windows causality remains separately unqualified by this check"
+}

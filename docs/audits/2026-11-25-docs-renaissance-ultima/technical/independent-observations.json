@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_persistence",
+  "phase": "independent preimplementation observations; before reading other lanes findings or patches",
+  "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "inputs": {
+    "godot/scripts/workbench_setup.gd": {
+      "git_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+      "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925"
+    },
+    "godot/scripts/workbench_generated_map.gd": {
+      "git_blob": "5522ece7af755a40766804deed7fd9f817159322",
+      "sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6"
+    },
+    "godot/scripts/architectural_generator_dialog.gd": {
+      "git_blob": "dfec2ec9dc2e5c432fa5742c515222517d3b0ef9",
+      "sha256": "c1af8e309a6d8dea460dd7d9ee7a12703a3ec503acb202c245313d6950a1ccf4"
+    },
+    "godot/scripts/workbench_material_baseline.gd": {
+      "git_blob": "603301c53b26e90efaea6e00f438153c7e88fa03",
+      "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63"
+    },
+    "godot/native_extension/material_baseline_file.cpp": {
+      "git_blob": "23740d55e151aca1fbcf71bb840465458521f330",
+      "sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873"
+    }
+  },
+  "observations": [
+    {
+      "id": "A-ULT-01",
+      "priority": "P1",
+      "finding": "Three independently validated single-file save formats share an unsafe commit: Setup.write_named, Generated.write_named and architectural save_project use DirAccess.rename_absolute after flush. Pinned Godot Windows implementation removes an existing destination before MoveFileW and can lose the only old file if the latter fails. This is independently source confirmed; OS data-loss reproduction pending.",
+      "upstream_source": "https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/windows/dir_access_windows.cpp",
+      "upstream_git_blob": "20b16616634bc81c09fecc68e43d659835946277"
+    },
+    {
+      "id": "A-ULT-02",
+      "priority": "P1",
+      "finding": "All three callers assume file.get_error after flush and close establishes complete written content. Pinned Unix and Windows FileAccess.flush ignores fflush return, close discards fclose return, and last_error is only refreshed during store/read. A short buffered write can therefore need post-close byte verification. Reproduction pending.",
+      "upstream_sources": [
+        "https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/unix/file_access_unix.cpp",
+        "https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/windows/file_access_windows.cpp"
+      ],
+      "upstream_git_blobs": [
+        "68df35d6de8cf0b2c9e09bdeb628107643106c5a",
+        "6f9f466abd4062c6b37e7a2c29332398aa66afbe"
+      ]
+    },
+    {
+      "id": "A-ULT-03",
+      "priority": "P2",
+      "finding": "Generated/project failure copy overstates atomic replacement or old-file preservation despite the unsafe primitive. Existing tests only reject invalid payloads before I/O and do not reach rename or buffered flush failures."
+    },
+    {
+      "id": "A-ULT-04",
+      "priority": "P2",
+      "finding": "The accepted native material-baseline replace API checks absolute same-directory paths, distinct file identities and regular non-link endpoints; it has no format or extension restriction. Reusing it does not require a new native ABI. Material-baseline writer and native implementation should remain unchanged; strengthened small-JSON staging/readback belongs in a shared GDScript helper."
+    }
+  ],
+  "initial_contract": "One closed, verified staging file committed through the existing native same-volume replacement. Existing file must not be deleted on unsuccessful replacement. Old formats and main-thread synchronous operation remain. Atomic visibility and ordinary process/write failure safety are separate from fsync/power-loss durability; no latter claim.",
+  "platform_status": {
+    "linux": "available; exact Godot 4.7 executable verified",
+    "windows": "not yet available; no native Windows execution claimed",
+    "physical_nvidia": "not available in this lane"
+  },
+  "ownership": [
+    "three save callers",
+    "shared small-JSON transaction helper",
+    "focused persistence tests and qualification runner",
+    "technical evidence"
+  ]
+}

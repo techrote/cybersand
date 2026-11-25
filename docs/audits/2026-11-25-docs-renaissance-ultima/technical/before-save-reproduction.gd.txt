@@ -1,0 +1,18 @@
+extends SceneTree
+const Setup = preload("res://scripts/workbench_setup.gd")
+func _initialize() -> void:
+	run.call_deferred()
+func run() -> void:
+	var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	var setup: Dictionary = Setup.fresh(bridge.default_liquid_policy(),Vector2i(512,512))
+	var path: String = Setup._path("ultima-save-ordinary")
+	setup.material = 2 if OS.get_environment("SAVE_PHASE") == "prepare" else 14
+	var before: String = FileAccess.get_sha256(path) if FileAccess.file_exists(path) else ""
+	var intended: String = JSON.stringify(setup)
+	var error: String = Setup.write_named("ultima-save-ordinary",setup)
+	var file := FileAccess.open(path,FileAccess.READ)
+	var bytes := file.get_buffer(file.get_length()) if file != null else PackedByteArray()
+	if file != null: file.close()
+	var result := {"phase":OS.get_environment("SAVE_PHASE"),"before_sha256":before,"after_sha256":FileAccess.get_sha256(path),"error":error,"path":ProjectSettings.globalize_path(path),"intended_bytes":intended.to_utf8_buffer().size(),"observed_bytes":bytes.size(),"load":Setup.read_named("ultima-save-ordinary")}
+	print("SAVE_BEFORE_RESULT ",JSON.stringify(result))
+	quit()

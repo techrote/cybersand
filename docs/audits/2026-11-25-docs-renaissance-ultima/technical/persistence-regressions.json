@@ -1,0 +1,139 @@
+{
+  "schema": "ultima-a-regression-observations-v1",
+  "source_checkpoint": "fb0ebc9e75e19eec01c2dfb485fbdec980f73983",
+  "runtime_inputs": {
+    "godot/scripts/workbench_file_transaction.gd": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac",
+    "godot/scripts/workbench_setup.gd": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0",
+    "godot/scripts/workbench_generated_map.gd": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a",
+    "godot/scripts/architectural_generator_dialog.gd": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b",
+    "godot/scripts/workbench_material_baseline.gd": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873"
+  },
+  "qualification_scope": "Observed script assertions. Final persistence matrix separately retains each child return code; final integrated normal workflow matrix is the authoritative natural-exit qualification. No old run is relabelled as the final integrated head.",
+  "observations": [
+    {
+      "name": "architecture project UI",
+      "log_sha256": "46fb0ec71573cc0bfb12c8fd0988564a88c7a8a48ef34a7a7845f0e709e83ae3",
+      "log_bytes": 259,
+      "observed_completion_markers": [
+        "ARCHITECTURAL_UI checks=61 failures=0"
+      ],
+      "environment": {},
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "painting/history",
+      "log_sha256": "b4a0ed0ed58e64415519f9b70841ad5926fc75704abcf3d25700e4ed5ac3cc03",
+      "log_bytes": 339,
+      "observed_completion_markers": [
+        "PAINT_EDITOR_HISTORY_PERF cells=262144 prepare_usec=103545",
+        "PAINT_EDITOR_HISTORY checks=1884 failures=0 reopened=false"
+      ],
+      "environment": {},
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "painting/history fresh process",
+      "log_sha256": "7b2fb0c74026660c6b02a07be7a9f940687b73cfedd12c238a435bae2358b255",
+      "log_bytes": 279,
+      "observed_completion_markers": [
+        "PAINT_EDITOR_HISTORY checks=1920 failures=0 reopened=true"
+      ],
+      "environment": {
+        "CYBERSAND_PAINT_HISTORY_REOPEN": "1"
+      },
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "material baseline",
+      "log_sha256": "5da30116ef5f5b28252e201b07e19b17f1a5b4424f6b96f3833e21a70638aeb2",
+      "log_bytes": 687,
+      "observed_completion_markers": [
+        "WORKBENCH_MATERIAL_BASELINE checks=102 failures=0"
+      ],
+      "environment": {},
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "ordinary Workbench author",
+      "log_sha256": "b0ac625323af6892110ea4e2bf3aba6c9f548a3be5f9414d45a196c82ee954a4",
+      "log_bytes": 598,
+      "observed_completion_markers": [
+        "WORKBENCH_CANVAS 199 checks, 0 failures"
+      ],
+      "environment": {
+        "CYBERSAND_WORKBENCH_TEST_NAME": "ultima-regression-canvas"
+      },
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "ordinary Workbench fresh process",
+      "log_sha256": "111947f922c8d2a8cf624e3e9a365a6be40f594f886137e308c46a9a7f78bfcd",
+      "log_bytes": 596,
+      "observed_completion_markers": [
+        "WORKBENCH_CANVAS 23 checks, 0 failures"
+      ],
+      "environment": {
+        "CYBERSAND_WORKBENCH_TEST_NAME": "ultima-regression-canvas",
+        "CYBERSAND_WORKBENCH_REOPEN": "1"
+      },
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "generated Workbench author",
+      "log_sha256": "31b6e8749798252659cb8dda32aa09edc9fae3909a7a48b6e8782d5bdd46604e",
+      "log_bytes": 25102,
+      "observed_completion_markers": [
+        "EXPLORE001_RESULTS checks=77 failures=0 small=true new=true reopened=false elapsed_ms=50686"
+      ],
+      "environment": {},
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    },
+    {
+      "name": "generated Workbench fresh process",
+      "log_sha256": "56fddf63a9ea6877659b1eee2c13b07b1f3b4c8850e41a44fd9a87b19592a703",
+      "log_bytes": 389,
+      "observed_completion_markers": [
+        "EXPLORE001_RESULTS checks=24 failures=0 small=false new=false reopened=true elapsed_ms=17529"
+      ],
+      "environment": {
+        "CYBERSAND_EXPLORE_REOPEN": "1"
+      },
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process": {
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://tests/test_explore001_generated_workbench.gd"
+        ],
+        "environment": {
+          "XDG_DATA_HOME": "/workspace/scratch/1c5fccfbe328/a-qualification/regression-generated",
+          "CYBERSAND_EXPLORE_REOPEN": "1"
+        },
+        "exit_code": 0,
+        "log_sha256": "56fddf63a9ea6877659b1eee2c13b07b1f3b4c8850e41a44fd9a87b19592a703"
+      }
+    },
+    {
+      "name": "unchanged IN-TOOLS causal fixture on Linux",
+      "log_sha256": "b330873f279a30ae628bc99ddcf0b06a81f38f3f057a8c6709dd94528a901bf9",
+      "log_bytes": 2337,
+      "observed_completion_markers": [
+        "LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures"
+      ],
+      "environment": {},
+      "evidence_class": "headless Linux script/native execution; not graphical or physical acceptance",
+      "process_receipt": "Assertions and raw output observed; final integrated runner separately records natural process exit and logs."
+    }
+  ]
+}

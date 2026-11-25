@@ -1,0 +1,33 @@
+{
+  "limit_bytes": 525034,
+  "rows": [
+    {
+      "after_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+      "error": "",
+      "file_bytes": 525042,
+      "kind": "material-baseline",
+      "material": 2,
+      "path": "/workspace/scratch/1c5fccfbe328/a-qualification/baseline-comparison/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-material-baseline.json",
+      "phase": "prepare",
+      "pid": 6,
+      "plane_sha256": "dfd081418008b8aefe6f1ed0a64240c10efca6944e33a2318ed5ce22fc7ad775",
+      "prior_sha256": "",
+      "read_error": "",
+      "readable": true
+    },
+    {
+      "after_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+      "error": "Could not atomically replace the material baseline; previous named start is unchanged.",
+      "file_bytes": 525042,
+      "kind": "material-baseline",
+      "material": 2,
+      "path": "/workspace/scratch/1c5fccfbe328/a-qualification/baseline-comparison/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-material-baseline.json",
+      "phase": "attempt",
+      "pid": 20,
+      "plane_sha256": "dfd081418008b8aefe6f1ed0a64240c10efca6944e33a2318ed5ce22fc7ad775",
+      "prior_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+      "read_error": "",
+      "readable": true
+    }
+  ]
+}
