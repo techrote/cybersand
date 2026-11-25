@@ -294,3 +294,29 @@ kept off this frozen principal source until separately incorporated and tested.
 - Retain the original #773 acceptance limits, the interrupted eight-of-nine
   attempt, temporary evidence loss and any new failed hosted attempts as
   separate outcomes.
+
+## Completed original-native evidence review at source 2743
+
+The source-bound displayed campaign and full original archive are now durable.
+The native specialist's independent derived-index reduction completed 813 checks
+without failure. A separate independently authored Python verifier then ran
+verbatim under the lead's executor: exit zero, nine scenes, 25 stages, 377,234
+exact before/after readback rows and 73 original file identities verified.
+The original material PNG bytes and int32-plane hashes reconstructed every
+stage and both final native arms exactly. The index preserved all non-readback
+receipt fields and matched the canonical exact-row hashes.
+
+The specialist independently fetched the published raw stdout/execution record
+at `e536d128f85e948223b25e13931a7a801faf956d`, verified both stdout and script
+SHA-256 values and reconciled every scene against the original summary in 73
+additional checks with no failures. The [separate evidence review](independent-native-2743/README.md)
+retains the methods, outputs, exact identities and interpretation limits.
+
+This closes the original-array custody question for the frozen **2743** native
+campaign. It does not automatically qualify later source or a Windows package.
+The two arms each acknowledge **184,396 cell changes**, summed over native
+receipts; this does not mean that many distinct final occupied coordinates.
+The examples remain deterministic host-authored fixtures, genuine model calls
+remain zero, and physical actor traversal and causal retrieval benefit are not
+claimed. The earlier exit-137 campaign and temporary evidence loss remain
+retained separate outcomes.
