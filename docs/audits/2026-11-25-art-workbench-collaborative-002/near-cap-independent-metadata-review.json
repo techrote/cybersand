@@ -1,0 +1,26 @@
+{
+  "schema": "art-near-cap-metadata-independent-review-v1",
+  "method": "B independently fetched original comparison/manifest; pure numeric/custody reduction, not raw ZIP inspection or new runtime",
+  "evidence_commit": "956b0abcac1649344d11164cda7951daed042887",
+  "comparison_sha256": "88e0bc8e7180e7ba7c4c21b91ff4501cb9465032d2bf5b059d04a46ed68dd7f1",
+  "manifest_sha256": "b2012bed57c43ffcecf305412218a579403810ffe804d506e2f84a78ea641ada",
+  "checks": 49,
+  "failures": [],
+  "measurements": {
+    "baseline_action_usec": 620436,
+    "candidate_action_usec": 43440,
+    "baseline_max_frame_usec": 639012,
+    "candidate_max_frame_usec": 73356,
+    "baseline_completion_usec": 620436,
+    "candidate_completion_usec": 644979,
+    "completion_difference_usec": 24543,
+    "baseline_open_usec": 15768,
+    "candidate_open_usec": 17491,
+    "candidate_remaining_max_frame_usec": 73356
+  },
+  "limits": [
+    "One sequential baseline-first pair; no statistical distribution.",
+    "Headless native Workbench; no graphical, Windows or physical acceptance.",
+    "Full original audit SHA equality is in published per-arm receipt, pending independent raw archive replay."
+  ]
+}

@@ -146,6 +146,22 @@ with the separate baseline run, and recomputed order balance, every phase sum
 and every reported median. **238 checks, zero failures** are retained in
 [context-scan-independent-review.json](context-scan-independent-review.json).
 
+## Independent cross-lane source review
+
+Specialist C independently read exact source `3f56020b3a0ed59da2a8387788a89ffe342f34d8`.
+The review confirmed that capture/backend/source/region/typed-plane/size checks
+still precede scanning, invalid material identities still refuse, Cartesian bin
+populations remain exact in thin and uneven regions, and eligibility subtracts
+only source values other than 0 and 58. No provenance, privacy, knowledge or
+native admission path changed. The reviewer found no remaining source blocker;
+this was a read-only source review, not another benchmark execution.
+
+The final frozen application source `bcc92927ce3894a16d5544923cfbf7b1d0339fda`
+retains this exact scan algorithm. B independently fetched it and found only the
+lead's additional stored-material versus actor/body/traversability disclosure
+line relative to the isolated candidate. The final-source mapping is recorded in
+[final-bcc-source-independent-review.json](final-bcc-source-independent-review.json).
+
 ## Integration decision and remaining boundary
 
 The small packed scan is ready for integration while retaining the existing
