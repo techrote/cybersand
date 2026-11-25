@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "mission": "MERGEDOWN-RENAISSANCE-001",
+  "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "merges": [],
+  "decisions": [
+    {
+      "id": "AUTH-001",
+      "decision": "Owner explicitly authorizes qualified infrastructure and opt-in #772/#775 integration; historical HOLD text does not add a second permission gate for that scope.",
+      "source": "User mission 2026-11-25"
+    },
+    {
+      "id": "ANCESTRY-001",
+      "decision": "Use ancestry-preserving merge commits, allowed by repository, to preserve active descendants; do not force-push or rewrite evidence.",
+      "scope": [
+        772,
+        775
+      ]
+    },
+    {
+      "id": "PROTECT-001",
+      "decision": "Protect #767 and #783 active source/campaigns, #774 superseded evidence and rejected RAM/concurrency experiments; no source mutation or campaign cancellation.",
+      "scope": [
+        767,
+        783,
+        774,
+        731,
+        732,
+        733,
+        735,
+        739
+      ]
+    },
+    {
+      "id": "736-REVIEW",
+      "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+      "decision": "Independent specialist C APPROVE: one Windows Palette max-parallel line, 2 to 3; all eight Palette jobs pass; current-main delta unrelated.",
+      "runs": [
+        44978447427,
+        44978447442,
+        44978447468
+      ],
+      "next": "Expected-head merge; record main and post-merge results"
+    }
+  ]
+}
