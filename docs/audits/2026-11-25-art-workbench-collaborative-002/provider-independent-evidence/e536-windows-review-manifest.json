@@ -1,0 +1,204 @@
+{
+  "schema": "cybersand-art-e536-windows-independent-package-review-v1",
+  "workflow_run": 45541065622,
+  "source_commit": "e536d128f85e948223b25e13931a7a801faf956d",
+  "source_tree": "61d38ec119665270a9fb4eea9ae78836348d7092",
+  "evaluator_artifact": {
+    "id": 14991526130,
+    "bytes": 94375955,
+    "sha256": "afd23c48162d0af1fb560741c6a9f1d77b1e7ebcc6ea5f6f9abd5e8c55036d12"
+  },
+  "evidence_artifact": {
+    "id": 14991291608,
+    "bytes": 11942803,
+    "sha256": "1d6e44d8d39317a440a8308d931f05326b3760b0d064d29fbb44a72abb9cc080"
+  },
+  "scope": "Independent downloaded ZIP hashing and original Windows CI receipt/log review; no local Windows execution or physical-device acceptance",
+  "entries": [
+    {
+      "path": "independent-payload-review.json",
+      "bytes": 297130,
+      "sha256": "99cb076220419a9ffa24632ff5d318700b868f2cc5c4f58673c0349ff50fc39f"
+    },
+    {
+      "path": "independent-receipt-review.json",
+      "bytes": 18811,
+      "sha256": "c6dbf439d9c2bca18ace48be9738abe72952525454ca3fe029dc3ed6a65f6416"
+    },
+    {
+      "path": "installed-evaluator/installed-examples.json",
+      "bytes": 979,
+      "sha256": "6a63411fbb2d6be94e546c9922c23f82612a24488a6f7f75ed65c47f3d00985d"
+    },
+    {
+      "path": "installed-evaluator/installed-execution.json",
+      "bytes": 139,
+      "sha256": "157307c4271e1e899133911010a024b1cc9d80d5624afd18f82c3a6ecf26b427"
+    },
+    {
+      "path": "installed-evaluator/installed-result.json",
+      "bytes": 183,
+      "sha256": "45ebeab15fc5b4ecde1631257e46afcf40dab7c99d54ac63323dfa3cacc690cf"
+    },
+    {
+      "path": "installed-evaluator/runtime-modules.json",
+      "bytes": 11448,
+      "sha256": "711da67e2941669266801b604261c2ff6f34d7d350fd7310710a7f2070aa1863"
+    },
+    {
+      "path": "native-source-input-review.json",
+      "bytes": 219,
+      "sha256": "e511a8a52339adb46ac6221a1f76e5b0ca88cf0350699e00d005692294802d79"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/summary.json",
+      "bytes": 23480,
+      "sha256": "97752a415c25b9f37138db3af6093d2f35801d7ac8348021fdea34f90bf68cdf"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_authoring_proposal/process.log",
+      "bytes": 7283,
+      "sha256": "378e67b477b3462547033ff9e3d5632dfe2046c145840b40206cf44e3b8c0cab"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_collaboration_authority/process.log",
+      "bytes": 4244,
+      "sha256": "3c0dacf3406b10ff5e5035994455629fb37b3174744d26cf028e2818422cff07"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_collaboration_session/process.log",
+      "bytes": 18109,
+      "sha256": "3ec92e088c0fda0be2d454021faf49977f217c2f2529a9895188801a3a1f62e7"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_collaboration_workspace/process.log",
+      "bytes": 559,
+      "sha256": "9a55cbc2fa03613a688900e5abad52d1accc37cdb279910c031b6e6e1291881c"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_collaborative_native/process.log",
+      "bytes": 60579,
+      "sha256": "2829d9cc9894a74038e661e83dafe1eaa787aa2deeb366c1383414fe51b51c22"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_creative_cohort/process.log",
+      "bytes": 19654,
+      "sha256": "3c182037d581c1dbe953715622db71c99a44af0d1bbd569c916b8710f240656a"
+    },
+    {
+      "path": "original-records/art-collaborative-displayed/test_art_owned_transport/process.log",
+      "bytes": 13619,
+      "sha256": "6f5c861a3c62c55521ccd24b91456f4d22b6dc7d3dded3e6f0cae556b5749e77"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/summary.json",
+      "bytes": 20094,
+      "sha256": "df0a9851d5873fb9fb058b250344e163b471eb0ec619016bac2023e5f7f8065d"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_authoring_proposal/process.log",
+      "bytes": 7052,
+      "sha256": "c2faaec990c044201929ae04ee0b8c8f20d9148c9c58e1ef475b603c50b57096"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_collaboration_authority/process.log",
+      "bytes": 4013,
+      "sha256": "84d73afc50eb365714d6773841ca785d404e2be186699ebab20c349cbce10319"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_collaboration_session/process.log",
+      "bytes": 16151,
+      "sha256": "189a4b47e62e6f33931d02b26d12bc398a51595218efc12af63826af0f715f88"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_collaboration_workspace/process.log",
+      "bytes": 329,
+      "sha256": "7f8cc849c8e0698319eccef70596bbb5ecf357e58f2946191891bd484741b0cc"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_collaborative_native/process.log",
+      "bytes": 56838,
+      "sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_creative_cohort/process.log",
+      "bytes": 19423,
+      "sha256": "34fbb31283ba954469263aa9ca3b60041e38a4bcdf1e1d0fcc7fbda3986a5728"
+    },
+    {
+      "path": "original-records/art-collaborative-headless/test_art_owned_transport/process.log",
+      "bytes": 13388,
+      "sha256": "ffb689876f31db9e1d6c42e9719def0d586c17d5daea6856f3656de013ed6364"
+    },
+    {
+      "path": "original-records/installed-evaluator/art-responsiveness.json",
+      "bytes": 2899,
+      "sha256": "04818c410d560a98e7efe3c01cfe66b5ea06ac84dfb2c6bd45c527b8b5eec28e"
+    },
+    {
+      "path": "original-records/installed-evaluator/import.log",
+      "bytes": 46596,
+      "sha256": "5d4971995685682b8c2ec1f9a19f1de92733c6b0c0be03184a88c54e3b460e5f"
+    },
+    {
+      "path": "original-records/installed-evaluator/installed-examples.log",
+      "bytes": 343,
+      "sha256": "d57322593e76a85cba71dccdc3a93b125fe4d086d2b22a9195c7c2b06a2f7c74"
+    },
+    {
+      "path": "original-records/installed-evaluator/installed-import-descriptors.json",
+      "bytes": 10536,
+      "sha256": "430aef70a3d21aa73a80fa47fa70b2330e6a876387a184b315244fe12f03c522"
+    },
+    {
+      "path": "original-records/installed-evaluator/installed-launcher.log",
+      "bytes": 45,
+      "sha256": "d4b0b0a8710850ac2278edb47f88f5531210a1d49871e7449d1465b4438d8f47"
+    },
+    {
+      "path": "original-records/installed-evaluator/workbench.log",
+      "bytes": 1413,
+      "sha256": "d8b308b093d05cc38c8debb0a6a26b752bf0a856c7edda448fe5996351e89dc2"
+    },
+    {
+      "path": "package-records/APPLICATION-QUALIFICATION.json",
+      "bytes": 14219,
+      "sha256": "98dd017e129a17d34a9cb4a3ea89e40e1418810bcd376a13bcf09551381baa11"
+    },
+    {
+      "path": "package-records/Install evaluated starts.cmd",
+      "bytes": 2834,
+      "sha256": "22dc15ac811430698089652427a359d38e2fa722e34dd80a072e38a4c258569e"
+    },
+    {
+      "path": "package-records/Open Workbench.cmd",
+      "bytes": 1139,
+      "sha256": "3cff6ae611a9ca3f65872f2f6c83d870eb9745d3e1f1024e1451814ed371c5ab"
+    },
+    {
+      "path": "package-records/candidate-manifest.json",
+      "bytes": 164233,
+      "sha256": "c2a2d574ce2e899e6f0e8ebbe93dc0f425ea679e46769c0bc33b9e38471fb3fc"
+    },
+    {
+      "path": "package-records/godot/addons/cybersand_native/runtime-provenance.json",
+      "bytes": 135020,
+      "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+    },
+    {
+      "path": "package-records/godot/addons/godot-rapier2d/runtime-provenance.windows.json",
+      "bytes": 4193,
+      "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0"
+    },
+    {
+      "path": "package-records/qualification/collaborative-displayed.json",
+      "bytes": 23480,
+      "sha256": "97752a415c25b9f37138db3af6093d2f35801d7ac8348021fdea34f90bf68cdf"
+    },
+    {
+      "path": "package-records/qualification/collaborative-headless.json",
+      "bytes": 20094,
+      "sha256": "df0a9851d5873fb9fb058b250344e163b471eb0ec619016bac2023e5f7f8065d"
+    }
+  ]
+}

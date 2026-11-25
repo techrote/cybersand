@@ -33,7 +33,7 @@ custody and zero model requests for each arm.
 | Metric | Baseline e536 | Prepared candidate 8a |
 | --- | ---: | ---: |
 | Apply action return | 620.436 ms | 43.440 ms |
-| Complete edited-conversation availability | 620.436 ms, synchronous | 644.979 ms, including preparation and durable commit |
+| Driver-observed completion | 620.436 ms, synchronous | 644.979 ms, including preparation and durable commit |
 | Maximum frame gap across Apply and completion | 639.012 ms | 73.356 ms |
 | P95 frame gap in that measurement | 639.012 ms | 8.726 ms |
 | Frames sampled in that measurement | 12 | 91 |
@@ -54,6 +54,8 @@ longer occupies one application frame. **Total completion was 24.543ms slower**
 in the candidate. Editor opening was also slower in this observation. Do not
 describe this result as faster total work, universally smooth frames or a solved
 cold-start problem. A remaining 73.356ms maximum Apply frame is material.
+
+P95 is within-arm descriptive data: the baseline has 12 frame samples and the candidate 91, so it is not a comparison of matched distributions. The candidate's host adoption receipt is 629.538ms; the 644.979ms completion observation also includes the driver's wait for the next applicable frame.
 
 These are one baseline and one candidate observation on a shared host, without
 randomized ordering or a distribution of repeated runs. They establish a useful

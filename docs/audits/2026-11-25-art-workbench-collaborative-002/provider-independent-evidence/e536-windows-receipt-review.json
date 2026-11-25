@@ -1,0 +1,429 @@
+{
+  "source": {
+    "commit": "e536d128f85e948223b25e13931a7a801faf956d",
+    "tree": "61d38ec119665270a9fb4eea9ae78836348d7092"
+  },
+  "original_log_cases": [
+    {
+      "mode": "headless",
+      "name": "test_art_owned_transport",
+      "checks": 155,
+      "log_sha256": "ffb689876f31db9e1d6c42e9719def0d586c17d5daea6856f3656de013ed6364"
+    },
+    {
+      "mode": "headless",
+      "name": "test_art_authoring_proposal",
+      "checks": 80,
+      "log_sha256": "c2faaec990c044201929ae04ee0b8c8f20d9148c9c58e1ef475b603c50b57096"
+    },
+    {
+      "mode": "headless",
+      "name": "test_art_creative_cohort",
+      "checks": 251,
+      "log_sha256": "34fbb31283ba954469263aa9ca3b60041e38a4bcdf1e1d0fcc7fbda3986a5728"
+    },
+    {
+      "mode": "headless",
+      "name": "test_art_collaborative_native",
+      "checks": 739,
+      "log_sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65"
+    },
+    {
+      "mode": "headless",
+      "name": "test_art_collaboration_authority",
+      "checks": 39,
+      "log_sha256": "84d73afc50eb365714d6773841ca785d404e2be186699ebab20c349cbce10319"
+    },
+    {
+      "mode": "headless",
+      "name": "test_art_collaboration_session",
+      "checks": 182,
+      "log_sha256": "189a4b47e62e6f33931d02b26d12bc398a51595218efc12af63826af0f715f88"
+    },
+    {
+      "mode": "headless",
+      "name": "test_art_collaboration_workspace",
+      "checks": 93,
+      "log_sha256": "7f8cc849c8e0698319eccef70596bbb5ecf357e58f2946191891bd484741b0cc"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_owned_transport",
+      "checks": 155,
+      "log_sha256": "6f5c861a3c62c55521ccd24b91456f4d22b6dc7d3dded3e6f0cae556b5749e77"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_authoring_proposal",
+      "checks": 80,
+      "log_sha256": "378e67b477b3462547033ff9e3d5632dfe2046c145840b40206cf44e3b8c0cab"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_creative_cohort",
+      "checks": 251,
+      "log_sha256": "3c182037d581c1dbe953715622db71c99a44af0d1bbd569c916b8710f240656a"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_collaborative_native",
+      "checks": 779,
+      "log_sha256": "2829d9cc9894a74038e661e83dafe1eaa787aa2deeb366c1383414fe51b51c22"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_collaboration_authority",
+      "checks": 39,
+      "log_sha256": "3c0dacf3406b10ff5e5035994455629fb37b3174744d26cf028e2818422cff07"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_collaboration_session",
+      "checks": 202,
+      "log_sha256": "3ec92e088c0fda0be2d454021faf49977f217c2f2529a9895188801a3a1f62e7"
+    },
+    {
+      "mode": "displayed",
+      "name": "test_art_collaboration_workspace",
+      "checks": 94,
+      "log_sha256": "9a55cbc2fa03613a688900e5abad52d1accc37cdb279910c031b6e6e1291881c"
+    }
+  ],
+  "native_examples": [
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-after-native.png",
+      "sha256": "d7451a85c8bfac71da794394a51ed6f014673b5664844235ee60355092604bf1"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-after-workbench.png",
+      "sha256": "8ce5dd3ddaa354525e4bd96e4ceffdfada0acfda2156d0f79acb81d4b32b483f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-before-native.png",
+      "sha256": "af0c100c2bb62b9084c1de033630c639f99f6004ba6e4917d204978f00d57424"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-before-workbench.png",
+      "sha256": "027fc1e8e08efcbd7e6a5461fb90aa8bbdfa22d3e8ab652277d6ed82b4edd34e"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-direct-original-native-receipts.json",
+      "sha256": "58b0fc8990361d2d4d56b4ecf6d984ae844b02f41fa9a66d9f7b17ec649d86e2"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-editable-setup.json",
+      "sha256": "070dae6e45bd830010cb9ef88deac6a24c5329937edde1046ae067603d7afe63"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-original-native-receipts.json",
+      "sha256": "1076832cf32c5e271db56be63d0da712a2fe4d9aa7af15a9a16bf068500a12c4"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/00-industrial_repair-result.json",
+      "sha256": "80479737113e3273f369e3a6c3d2c01b8bc60ba8943c195dc578acf9de14a56b"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-after-native.png",
+      "sha256": "4083b1f50f3afe25fcb036b72365f67190cb0828694036a54b0a90ce789bbee7"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-after-workbench.png",
+      "sha256": "9a78e6ccaf250fc13db7cfbd24cd5abd10e27b8c35a1e5dd457608f8c1d7aa24"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-before-native.png",
+      "sha256": "8da61c9d5d217ea3cd1c2660110761f6d05a22a7953ee58e633019a40a534412"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-before-workbench.png",
+      "sha256": "d425eb64ee2f8143f2e4301be7c196756e75aa06f5257b3341af11a97772b594"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-direct-original-native-receipts.json",
+      "sha256": "10e0966ce3a35b849390dcaada8fbb5b1addd639e2313ee40e6252cca355bfd1"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-editable-setup.json",
+      "sha256": "a2e2d4740cf1611f54ab658175f43c2bcd8319793167b9f752f323098e36d3b3"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-original-native-receipts.json",
+      "sha256": "866c31b5462ccccc3e9dcaea7cf2449a5a97d6c2dd199246ce73b802d4dc5f2e"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/01-structural_facade-result.json",
+      "sha256": "39433b738c2e349254dac58a02cb1600129f21f92fd1fd37a42bfa7dadd81ce2"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-after-native.png",
+      "sha256": "aa73db0531ad159967077fe837ceffee3587ca2db6f77f74d9817a94b278d36a"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-after-workbench.png",
+      "sha256": "c9cfefb4066e3acde8722597362d2bf0814c85d31683675a2fca865148dd5269"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-before-native.png",
+      "sha256": "670bd87c4cb45d80d19490580e9a387dbfba5a02c5d3eaf8c7d448f607e28b5b"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-before-workbench.png",
+      "sha256": "27c5a0eee4c74fbc188a56d8d21ffd555f07cf34c137e626a8398f49d3950b83"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-direct-original-native-receipts.json",
+      "sha256": "a902def1b451de0e0401a1d2318309bbb713f5bf4cf629a308d4280aebd1244c"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-editable-setup.json",
+      "sha256": "20a7cefebce49560b1e0fa242ef6cf4056a1e96498ab94dfeb02972d155a6454"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-original-native-receipts.json",
+      "sha256": "e8f407eb17e2f14350aeac8a02a7c23028be8709c0814aede1d9458baf03a8ba"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/02-scifi_interior-result.json",
+      "sha256": "a43fd3a23df3002dab8210b31539e83dc1c575b3b48bc8345fa5979aadaf543d"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-after-native.png",
+      "sha256": "22eb21d9a4ff4680519cc7590a206fcd53649bb34192aa85e2ff4f9fa69860fb"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-after-workbench.png",
+      "sha256": "a1b403f7f3255b963ae3c07c7f72c25ebe1058ca722f1e64b370f4442b2270d4"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-before-native.png",
+      "sha256": "8da61c9d5d217ea3cd1c2660110761f6d05a22a7953ee58e633019a40a534412"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-before-workbench.png",
+      "sha256": "b3fc85f11c63cff40368eb8465bade999451f0e0bd141afee5d61fb5a76bf68f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-direct-original-native-receipts.json",
+      "sha256": "418551a5918d5fbd522da967a9341b855e26c250b8cbca0565c47b889fab3230"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-editable-setup.json",
+      "sha256": "d7e4e97946067176608bcfea050011826094721c95d10abd72f87cc616eb505b"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-original-native-receipts.json",
+      "sha256": "9e9d275606c74bc61b70f13cd8761196cee4e4f3e06e39bb2877b55f4fc943c6"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/03-revised_arcology-result.json",
+      "sha256": "fe07310372e8d574a8b027c1a754d41abf309458e59bc78e5e7c5a02718c9624"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-after-native.png",
+      "sha256": "8f3cbc227776f461cb2b456de9e3025e4bd8b56e3327938b29128e8f73b34264"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-after-workbench.png",
+      "sha256": "1120525eb889d37c77c3ad1899d29467d8991d5d1974e5b5099488be5281322f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-before-native.png",
+      "sha256": "ece66113105ce5b53c918be00977887b41f7d92bc9891adb4948c672df02f115"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-before-workbench.png",
+      "sha256": "fba97193c32a7c4e13347902f45d27c694a3ac04bd3538b830f51516ba71fd3c"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-direct-original-native-receipts.json",
+      "sha256": "94620e8b243c259dc5ffdeb989e3c5bb008a4b48d201d8aceecad1ea028435c0"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-editable-setup.json",
+      "sha256": "88d1af87bcb223a319f3878e25e72b47bc45288cc84d69e7444c4fbdbdf751b7"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-original-native-receipts.json",
+      "sha256": "eae1509c50d0cd3170a43f421080e9bdfc4d1e1837d093ddb7ba52b5449db4fa"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/04-protected_courtyard-result.json",
+      "sha256": "cfdacceb5400bcdde5a146edd0c0299751378fafb86ceab16463891e38ddf600"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-after-native.png",
+      "sha256": "5e8d7c126cbfc33f1c07ff27b94f4d2f84e6ee168ccd1f230d5a54d8ddefb62f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-after-workbench.png",
+      "sha256": "15d7bf39e5120c12b829f8336da7a1e064bef5422e3f33ddc0b9aac43860f0f9"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-before-native.png",
+      "sha256": "8da61c9d5d217ea3cd1c2660110761f6d05a22a7953ee58e633019a40a534412"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-before-workbench.png",
+      "sha256": "4afffdaa3ef14b00ec32737d9c9748c2d098a1a93002c6a4bbee56a7deb062de"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-direct-original-native-receipts.json",
+      "sha256": "2833a7ed02c8305551262982cd159b695f5eb2f7344dff32c6a93a9947918e26"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-editable-setup.json",
+      "sha256": "24cef5145914a5f5dc806b9d07fd756da5ce90d855bbed2565f23e310bfeae4a"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-original-native-receipts.json",
+      "sha256": "1b38428f572f24e16d637338650a91927116d48fb14dd5e97f8b45fd55bcd223"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/05-palette_foundry-result.json",
+      "sha256": "194a5eaadf8f56040aa6203c6056c73e45cafe41e56775cfeedba3bc57c7a747"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-after-native.png",
+      "sha256": "0fd0e6ba64fae1c678bb8045bcc91ac5e02571040064e7c71f7ce0ef960262e9"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-after-workbench.png",
+      "sha256": "6b0a87a86c1ba6610a0a85a295deb846a0ca34fc84a993cb85ed7c3ed60c42f9"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-before-native.png",
+      "sha256": "0d32a0b4f82f088e561eddaa4994bf12db2309b786102cb7f5bded60727ef107"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-before-workbench.png",
+      "sha256": "32fc4cb265b197376629fc5ffa26bf9a9e816931eeb9094da45bd6d764bbcc49"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-direct-original-native-receipts.json",
+      "sha256": "b214582fb7faf8394f1439ea7d682fcc9c72b0e1ee3f8c203a35eca533964331"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-editable-setup.json",
+      "sha256": "65fce1a58d0c6b397633696bf1582fa173de5e8397b1b38ea1087f94f2eeb57e"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-original-native-receipts.json",
+      "sha256": "ddb192f77f8c79f0f00c66d7820fc8cfec8dd333839580f588612a86d0929f9b"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/06-stopped_workshop-result.json",
+      "sha256": "621333a9f9998a7b6a6263c3fdc45c0f62ac40081f7c083105336c3bc411e60f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-after-native.png",
+      "sha256": "e9d0e86860a3cd6a519803446dafe68ac3a085ff66708f54e591974b1584c22f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-after-workbench.png",
+      "sha256": "781a682b949295ad70467f334234b48438719fef3b48726f767faaf0966af017"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-before-native.png",
+      "sha256": "8810ceaf96aba5a443a51a4082d4e0ecc6974b908d408ff7a3fd1f585668fd85"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-before-workbench.png",
+      "sha256": "dffa4689f0c112dbcd575327f817019eecf8297aeb1ae59c1e73248294ec8b01"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-direct-original-native-receipts.json",
+      "sha256": "87a534c151189f298a7f551070b96711092ac96777479fdc48059ba44250897a"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-editable-setup.json",
+      "sha256": "d13c5836632ba122720ab95df8d75420a693f029d1aa57d279b529bf485f1a34"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-original-native-receipts.json",
+      "sha256": "1e9614045e7edda4b8d4fd0604dee35fd14d68453dc87aa230bc94dde908c11c"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/07-staged_megaframe-result.json",
+      "sha256": "83d408d94d72644fcfe3b9918e3fd30ac8e252273967fccff18f2e48d892a8d8"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-after-native.png",
+      "sha256": "645b31e5e8c0259622d134a94330225de29efec644509a0c53943b4caf6230fe"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-after-workbench.png",
+      "sha256": "83e353cae6b01ea9f4e01572f6c4c7b58525b71eac4a3e094316f24bf3028c9f"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-before-native.png",
+      "sha256": "0d32a0b4f82f088e561eddaa4994bf12db2309b786102cb7f5bded60727ef107"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-before-workbench.png",
+      "sha256": "52046db3d83cc29fb8e4f3cfa5495f682df6e6801aafb65dd12a15d91e4166c2"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-direct-original-native-receipts.json",
+      "sha256": "f539a0a0b1b0d8fc7248a0c007cbbbf16154ea26a8c32b7ad1e82cf26eca2d4b"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-editable-setup.json",
+      "sha256": "d20a6fc943565aa82370ee41207fc00281346c50c8475016d80b609324edf37c"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-original-native-receipts.json",
+      "sha256": "d1e537c6722980e3e5b48d257a2f42a5330141650bbb5680f167be0af3ccd258"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/08-xeno_vault-result.json",
+      "sha256": "e79e4087e90b069ae43e9eda44f25e0615345ff40a3f0a475c5d83b504e977b9"
+    },
+    {
+      "path": "examples/art-collaborative-evaluated/creative-native-summary.json",
+      "sha256": "35b168d76ce1508b7cfc3d605357acf0532d14ee68a17e5fc57339e42db31670"
+    }
+  ],
+  "installed_setups_sha256": {
+    "art02-industrial_repair": "070dae6e45bd830010cb9ef88deac6a24c5329937edde1046ae067603d7afe63",
+    "art02-palette_foundry": "24cef5145914a5f5dc806b9d07fd756da5ce90d855bbed2565f23e310bfeae4a",
+    "art02-protected_courtyard": "88d1af87bcb223a319f3878e25e72b47bc45288cc84d69e7444c4fbdbdf751b7",
+    "art02-revised_arcology": "d7e4e97946067176608bcfea050011826094721c95d10abd72f87cc616eb505b",
+    "art02-scifi_interior": "20a7cefebce49560b1e0fa242ef6cf4056a1e96498ab94dfeb02972d155a6454",
+    "art02-staged_megaframe": "d13c5836632ba122720ab95df8d75420a693f029d1aa57d279b529bf485f1a34",
+    "art02-stopped_workshop": "65fce1a58d0c6b397633696bf1582fa173de5e8397b1b38ea1087f94f2eeb57e",
+    "art02-structural_facade": "a2e2d4740cf1611f54ab658175f43c2bcd8319793167b9f752f323098e36d3b3",
+    "art02-xeno_vault": "d20a6fc943565aa82370ee41207fc00281346c50c8475016d80b609324edf37c"
+  },
+  "immutable_examples_verified": 73,
+  "observed_runtime_modules": [
+    {
+      "name": "Godot_v4.7-stable_win64.exe",
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    {
+      "name": "vcruntime140.dll",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    {
+      "name": "cybersand_native.windows.x86_64.dll",
+      "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+    },
+    {
+      "name": "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  ],
+  "installed_result": {
+    "status": "passed",
+    "source_commit": "e536d128f85e948223b25e13931a7a801faf956d",
+    "actual_launcher": true,
+    "display": "Windows",
+    "automatic_model_requests": false
+  },
+  "installed_execution": {
+    "source_commit": "e536d128f85e948223b25e13931a7a801faf956d",
+    "timed_out": false,
+    "exit_code": 0,
+    "watchdog_seconds": 240
+  }
+}
