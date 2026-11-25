@@ -142,7 +142,7 @@ func run() -> void:
 	if not await until(installed, "ordinary native owner ready"):
 		await finish(); return
 	var requested := OS.get_environment("CYBERSAND_AMBIENT_CAPTURE_EXAMPLE")
-	for example: Dictionary in Examples.entries():
+	for example: Dictionary in Examples.legacy_entries():
 		if not requested.is_empty() and str(example.id) != requested: continue
 		await show_example(example)
 		if not failures.is_empty(): break

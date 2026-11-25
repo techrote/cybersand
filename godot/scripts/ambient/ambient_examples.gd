@@ -4,6 +4,7 @@ extends RefCounted
 # fluid patch is real native material, and every inhabitant is an existing rig.
 # The helper owns no live World, simulation loop or alternative actor host.
 const Setup = preload("res://scripts/workbench_setup.gd")
+const Living = preload("res://scripts/ambient/ambient_living_examples.gd")
 const Catalog = preload("res://scripts/workbench_actor_catalog.gd")
 const Profile = preload("res://scripts/ambient/ambient_profile.gd")
 const CONCRETE := 58
@@ -18,6 +19,10 @@ const OIL := 16
 
 
 static func entries() -> Array:
+	return legacy_entries() + Living.entries()
+
+
+static func legacy_entries() -> Array:
 	return [
 		{"id":"ambient-oil-water", "name":"Oil / Water preference garden", "description":"Three ground and wheel actors notice Oil and Water. Paint or erase nearby material and inspect the resulting intent."},
 		{"id":"ambient-ledge-walkway", "name":"Ten-second retreat walkway", "description":"A broken elevated gantry makes physical ledges distinct from walls and the canvas boundary. Shy Crawler retains its ten-second retreat."},
@@ -28,6 +33,7 @@ static func entries() -> Array:
 
 
 static func make(id: String, policy: PackedInt32Array) -> Dictionary:
+	if id.begins_with("ambient2-"): return Living.make(id, policy)
 	match id:
 		"ambient-oil-water": return _oil_water(policy)
 		"ambient-ledge-walkway": return _walkway(policy)
