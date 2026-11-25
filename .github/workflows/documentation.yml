@@ -126,6 +126,7 @@ jobs:
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_historical_retrieval.py
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_current_retrieval_selection.py
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_knowledge_retrieval.py
       - name: Evaluate current retrieval routes
         id: retrieval
         run: |
