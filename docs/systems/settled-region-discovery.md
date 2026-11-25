@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Stage 3 read-only World producer, journal and bounded connectivity foundations; acceleration remains separate
 canonical-for: [settled-region-discovery]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../architecture/soliding-lifecycle.md, ../operations/soliding-programme.md, activity-dirty-regions-and-waking.md, ../operations/soliding-measurement.md]
 ---
 
@@ -287,7 +287,7 @@ Stage-3B locality/scalability or current desktop/Web runtime acceptance.
 
 ## Synthetic journal cost preregistration (2026-09-19)
 
-**Planned measurement, frozen before execution:** the standalone
+**Historical preregistration, frozen before execution:** the standalone
 [`settled_discovery.cpp`](../../native/bench/settled_discovery.cpp) cost decomposition
 uses contiguous synthetic `DiscoveryCell` arrays, with explicitly supplied constant
 inspectable signals. These are artificial input contracts, not observations of a
@@ -302,7 +302,7 @@ service epoch, and **7 sequential repeats**. A service epoch is one invocation o
 The partially occupied registry intentionally exposes fixed-capacity memory cost.
 
 Each run separately times source initialization, journal allocation/initialization
-and all registration (including the current linear duplicate-bounds lookup, hence
+and all registration (including that checkpoint's linear duplicate-bounds lookup, hence
 quadratic total registration). It then records these fixed phases:
 
 1. Initial full classification: drain the initial queue under the chosen budget.
