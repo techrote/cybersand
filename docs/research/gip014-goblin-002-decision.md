@@ -14,9 +14,8 @@ related-documents: [gip014-goblin-002.md, goblin002-exploration-handover.md, gob
 55 typed gameplay operations, 16 policy identities, ten authored scenarios,
 observation-based discovery, bounded persistent memory, native game tapes and
 automatic reproduction/reduction tools. A self-contained Windows evaluator is
-qualified at the exact corrected source below. An adversarial experiment identified
-a narrow oracle applicability defect; the replacement evaluator now passes its
-source and extracted native regression gates. No novel production gameplay defect has
+qualified at the exact corrected source below. Two substantive test-oracle defects were identified and corrected; the
+replacement evaluator now passes its source and extracted native regression gates. No novel production gameplay defect has
 been established. No merge, Ready promotion, default activation, unfinished
 programme integration or physical NVIDIA acceptance is authorized or claimed.
 
@@ -476,6 +475,151 @@ package supersedes the owner download. The five-action historical tape remains
 an original counterexample, without an automatic-minimization claim. The repair
 corrects oracle applicability; it is not a production physics fix.
 
+
+## Corrected-source Linux results and evidence recovery
+
+The Linux job at the qualified game source `6f359ce2b24291ee219810773c641d53802fd31d`
+has finished. [Original run 45565621408](https://github.com/techrote/cybersand/actions/runs/45565621408),
+job `139039653373`, remains **failed** because four requested long budgets were
+incomplete. Its [raw artifact 15003384515](https://github.com/techrote/cybersand/actions/runs/45565621408/artifacts/15003384515)
+contains 432 files, is 50,241,858 bytes and has SHA-256
+`c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e`.
+Independent analysis validates all eight tapes and their observed coverage; it
+does not change the original campaign outcomes.
+
+The registered long programme used the Construction initial fixture, seed 1701,
+RANDOM and COVERAGE_HUNTER, and four requested horizons. It is a separate
+eight-episode programme, with one observation per policy/budget and no replicated
+uncertainty estimate. Ordinary world replacement subsequently visited other
+authored fixtures and remains part of each recorded strategy.
+
+| Policy | Requested slots | Attempted | Completed | Refused | Original terminal | Process seconds | Peak sampled RSS (MiB) |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: |
+| Coverage Hunter | 128 | 128 | 128 | 0 | budget_complete | 57.475 | 570.6 |
+| Seeded random | 128 | 128 | 128 | 0 | budget_complete | 82.765 | 584.5 |
+| Coverage Hunter | 256 | 256 | 255 | 1 | budget_complete | 191.335 | 627.1 |
+| Seeded random | 256 | 256 | 254 | 2 | budget_complete | 258.265 | 662.8 |
+| Coverage Hunter | 512 | 501 | 499 | 2 | campaign_timeout | 622.547 | 742.5 |
+| Seeded random | 512 | 436 | 434 | 2 | campaign_timeout | 622.892 | 765.5 |
+| Coverage Hunter | 1,024 | 616 | 614 | 2 | campaign_timeout | 909.762 | 787.0 |
+| Seeded random | 1,024 | 537 | 535 | 2 | campaign_timeout | 909.588 | 841.0 |
+
+Of 3,840 planned attempt slots, 2,858 actions were attempted, **2,847 were
+admitted and completed**, and eleven were refused. There were no admitted
+partial actions, no failed gameplay assertions and no retained pending action.
+Both policies completed 128 and 256 requested slots. Neither policy completed
+512 or 1,024 slots at this source. The four incomplete tapes retain
+`campaign_timeout`, their `test_failure` process status and their original
+`unresolved_observation` triage label. Each process exited normally with code 1
+within its 674- or 960-second external bound; this is not an external process
+kill or an established gameplay defect. The transported reports do not expose
+the complete decision-pause/pacing subtraction or final native pause, so the
+historical exact active-clock audit is not silently reused for these episodes.
+
+The eight gameplay processes consumed 3,654.629 recorded process seconds in
+total. The queue took 3,659.166 seconds against its 7,200-second bound; its import
+took a separately recorded 6.573 seconds. Maximum sampled gameplay-process tree
+RSS was 881,831,936 bytes. These are process costs and sampled peaks, not engine
+FPS, a memory-leak proof or a continuous allocation curve.
+
+The deduplicated State-v2 observed unions are **51 action IDs, 593 adjacent
+action transitions, 1,129 state transitions, 43 material interactions, 46
+tool/material combinations, 62 actor/environment combinations, eight lifecycle
+keys, one refusal key and 66 outcome keys**. None of these episode maps saturated.
+The numbers describe admitted observations and include the valid incomplete
+episodes. They are not a fraction of all possible gameplay. They remain separate
+from the State-v1 `5ee5dffc` comparative results above; the source, horizon mix and
+state namespaces differ.
+
+### Memory reuse at the corrected source
+
+The independent seven-episode memory experiment completed **448 of 448 actions**:
+one cultivation episode and fresh, hints-only and explicit-prefix arms for seeds
+65 and 129. Both prefix arms queued and proposed the same four retained actions:
+Pause, a bounded camera choice, material 58, and the 8 by 8 rectangle at
+coordinates 32 through 39. Each arm's native capture proves exactly 64 changed
+cells and the expected before/after material planes. The imported observations
+were not counted as fresh coverage.
+
+Hints changed the first action in both seed pairs while the recorded initial
+abstract state and paused native generation/revision/tick were equal. The
+descriptive coverage changes remained mixed:
+
+| Comparison to fresh | Seed | Distinct action difference | Adjacent transition difference | Material interaction difference | Tool/material difference |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Hints only | 65 | -2 | -2 | 0 | -1 |
+| Hints only | 129 | +3 | -1 | -2 | +1 |
+| Explicit prefix | 65 | -2 | -3 | -1 | -4 |
+| Explicit prefix | 129 | +1 | +1 | 0 | 0 |
+
+Cultivation took 21.496 process seconds; training-inclusive gameplay cost was
+188.301 seconds. The memory supervisor took 199.883 seconds and peaked at
+780,529,664 sampled tree-RSS bytes. Two measured seeds and one corpus demonstrate
+working persistence and actual prefix reuse; they do not establish a general
+search advantage.
+
+### Independent native and delivery checks
+
+The unchanged lineage auditor passed all **1,094 checks** against four Linux
+cases and twenty admitted, completed actions. Fresh-authored and Restore cases
+equal the independently rendered authored material plane. Retaining response
+replacement and selected-actor Reset preserve actual simulation exposure; their
+saved live planes differ, while Reopen returns the authored plane and equality
+is correctly inapplicable. Different evolved hashes across Windows and Linux do
+not invalidate this relation or establish identical asynchronous trajectories.
+
+The frozen custody auditor passed **18,667 checks** with no errors, covering
+eleven focused source archives with the same 816-file closure and 37 owned
+process receipts. Those receipts retain the four failed long processes; they
+are not 37 successful gameplay tests. No surviving owned PID was recorded.
+The graphical gate retains 36 checks and actual 1600 by 900 llvmpipe evidence,
+without physical-owner or NVIDIA acceptance. Controller 4-action and graphical
+24-action replay pairs matched semantically while exact observations differed.
+The laboratory also performed a legal 4-to-1 reduction through six fresh probes
+(4, 4, 2, 2, 1, 1 actions), then exported a passing ordinary unittest case. This
+legal semantic control is separate from the historical 44-to-1 oracle-defect case.
+
+### Preservation after the local executor interruption
+
+The qualified Windows download was completed before the local executor became
+unavailable. A separately reviewed passive recovery workflow subsequently
+verified **all thirteen original artifacts**, totaling 661,216,192 compressed
+bytes, and ran the exact frozen data readers without launching the game.
+[Passive run 45579669046](https://github.com/techrote/cybersand/actions/runs/45579669046)
+used driver `2a627a3131be72fcb876acec0d0b848a7e42c3e3`, distinct from game source
+`6f359ce2b24291ee219810773c641d53802fd31d`. Its worker took 31.765 seconds,
+peaked at 229,445,632 sampled tree-RSS bytes and recorded no surviving owned PID.
+
+The complete [passive stage artifact 15005776720](https://github.com/techrote/cybersand/actions/runs/45579669046/artifacts/15005776720)
+is 942,877,571 bytes with SHA-256
+`8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9`.
+It retains the original inputs, exact readers, complete reports, process
+receipts and failure history. The primary analysis is 1,040,902 bytes
+(`c32ab2dcbd84f969a8dff36c9e0b31122a0e7664e70516d7fc0334d9046306dd`);
+the memory report is 123,204 bytes
+(`6d60a463843c99ba3eb1cb30596ed7d0085f5314de77f1fb4e4df9dfdc565ccb`).
+The lineage and custody reports and their hashes are in the machine index.
+Decoded log projections are clearly distinguished from original report bytes.
+
+The six predecessor Linux raw tape bodies previously recovered locally remain
+unavailable after the executor interruption. Their recorded hashes and recovery
+summaries survive, and the actual original predecessor Windows artifacts are now
+preserved. Windows bytes are not substitutes for those six Linux tapes.
+Completion and process-survivor status of the interrupted local predecessor
+download remain unknown. The new hosted receipts describe only their own owned
+processes.
+
+
+The final [A analysis readout](../../tools/gip014/evidence/passive/A-final6f-readout.json),
+[B native adjudication](../../tools/gip014/evidence/passive/specialist-b-linux11-actual.json)
+and [C custody readout](../../tools/gip014/evidence/passive/C-final6f-readout.json)
+are committed with the complete specialist handovers. Their source-bound reviews
+separate original report bytes from decoded log projections and later interpretation.
+
+This is the pre-seal RESULTS record. The final passive archive will snapshot this
+exact documentation commit; a later delivery record will identify its actual
+bytes and hash. Archive preparation is not a new gameplay qualification.
+
 ## Boundaries, remaining work and decision
 
 The laboratory remains opt-in and confined to disposable local sessions. Tapes
@@ -504,18 +648,18 @@ claim follows from these campaigns. The final owner decision remains **retain
 the qualified evaluator for experimental review and keep PR #781 Draft/HOLD**.
 The complete `5ee5dffc` comparative and memory results are independently reviewed
 at their own exact source. The corrected Windows evaluator has passed its
-separate package gates. The corrected-source Linux long and memory outcomes
-remain pending until their raw evidence is retained and reviewed; no outcome is
-inferred from the Windows pass. The original package retains its historical
+separate package gates. The corrected-source Linux native and memory evidence is now independently
+reviewed in this packet. Four of eight long budgets remained incomplete, so the original
+Linux job stays failed; no outcome is inferred from the Windows pass. The original package retains its historical
 pass and subsequently identified oracle limitation.
 
 
 ## Corrective qualification scope
 
 Requests 9 through 11 qualify the material-history applicability correction independently.
-Linux runs all focused and graphical gates, four native lineage cases with20
+Linux ran all focused and graphical gates, four native lineage cases with20
 actual actions, the seven-episode memory experiment, and the existing eight long
-episodes at128/256/512/1024actions for RANDOM and COVERAGE_HUNTER. Windows runs
+episodes at128/256/512/1024actions for RANDOM and COVERAGE_HUNTER. Windows ran
 full source, graphical, portable-replay, isolation and extracted qualification;
 package contract3 additionally requires the actual four lineage tapes and their
 material captures before sealing. The `5ee5dffc` 142-episode comparison is not relabelled

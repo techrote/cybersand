@@ -745,3 +745,46 @@ observation retained separately from any idempotence claim. Deliberate invalid
 and preadmission refused inputs receive no completion credit. The comparative
 5ee matrix still has its own 53-ID union and source-specific metrics. Linux
 request-11 qualification remains separate and pending this Windows handover.
+
+
+## Request-11 Linux native evidence and bounded long episodes
+
+The original Linux job at source `6f359ce2b24291ee219810773c641d53802fd31d` / tree `a4f389cd3cc1a21dfe3d5566703eb946b66734ed` remains a failed qualification job: four long episodes did not finish their requested budgets. Its actual focused native evidence is now independently adjudicated. No further game process was launched to obtain this review.
+
+The fixed, previously reviewed lineage auditor `d50a77d52969008b8a0c090070c9e7665f013c7e` ran unchanged against the retained Linux source report in passive workflow run [45579669046](https://github.com/techrote/cybersand/actions/runs/45579669046). All 1,094 checks pass, with four distinct native cases and 20 admitted completed ordinary actions. The checks bind the exact source archive and snapshot, native/runtime provenance, canonical construction receipts, capture sources, latest positive progression witnesses and immutable saved lineage.
+
+| Native case | Actions | Expected full-plane relation | Actual disposition |
+|---|---:|---|---|
+| Fresh authored construction | 2 | Save and Reopen equal the independently rendered authored plane | Equality passes |
+| Retaining response change after progression | 5 | Save contains exposed live materials; Reopen restores authored materials | Equality is correctly inapplicable |
+| Authored Restore after progression | 6 | Restore re-establishes authored compatibility; Save and Reopen equal authored materials | Equality passes |
+| Selected actor Reset after progression | 7 | Reset retains material exposure; ordinary actor removal permits the full capture | Equality is correctly inapplicable |
+
+Every reopened plane, and both positive saved planes, has SHA256 `acea5f8e573d757af5c560778bbd2222f96065c298e62fcfb8996817486da14a`. The Linux retained-response Save is `85d140519fd85283c20d8d92692585a667d4a51a93ae6dfb30450eec53b3e5e8`; the selected-Reset Save is `70fc348668c692888d972870afbae2ae349ec303375b12cdb29d06271627cdb1`. The first differs from the corresponding earlier Windows/before trajectory. That is permitted: the relation concerns actual source-fenced material state, not equal asynchronous trajectories across runs or platforms.
+
+The original native gate took 32.862 seconds, sampled 649,768,960 bytes of owned-tree RSS, exited zero and retained no surviving owned process. Its separate import took 6.661 seconds. The later passive Python audit took 0.313 seconds and sampled 30,326,784 bytes; those are review costs and contribute zero new gameplay actions.
+
+The frozen A and C readers agree on all eight registered long episodes: 2,858 attempted actions, 2,847 admitted completed actions, 11 refusals, no partial rows and no recorded failing assertions. All eight tapes validate. The exact independent verifier also rejects unreported raw-invariant failures, so valid tapes with no recorded failures do not conceal a known independent failure. Both policies complete their 128- and 256-attempt budgets. Neither completes its 512- or 1,024-attempt budget.
+
+| Original episode | Attempted / completed | Original controller terminal | Process wall / cap (seconds) | Sampled peak RSS (bytes) |
+|---|---:|---|---:|---:|
+| RANDOM, 512 | 436 / 434 | campaign_timeout | 622.892 / 674 | 802,693,120 |
+| COVERAGE_HUNTER, 512 | 501 / 499 | campaign_timeout | 622.547 / 674 | 778,534,912 |
+| RANDOM, 1,024 | 537 / 535 | campaign_timeout | 909.588 / 960 | 881,831,936 |
+| COVERAGE_HUNTER, 1,024 | 616 / 614 | campaign_timeout | 909.762 / 960 | 825,188,352 |
+
+Each incomplete episode retains two refused rows, zero failed assertions, no pending action and an ordinary exit code 1 with no surviving owned process. Their original `test_failure` / `unresolved_observation` labels are preserved. Controller elapsed times are respectively 616,294, 616,186, 901,520 and 902,471 milliseconds. The registered source bounds are 614,400 active milliseconds for a 512 budget and 900,000 for a 1,024 budget, with separate outer caps of 674 and 960 seconds.
+
+These are source-bound recorded campaign deadlines under the independently checked outer process limits. The transported frozen reports do not include `decision_pause_msec`, `pacing_msec` or the final native pause publication. This review therefore does not claim a new independent exact active-time subtraction or a fresh final native-pause proof. The optional prepared terminal reader was not executed. The authoritative source branch remains `goblin_controller.gd` at this exact source: bounds at lines 198-209, timeout admission at 281-284, and retained clock/terminal evidence at 368-378. No production gameplay defect or unbounded resource escape is established by these incomplete budgets. There is one episode per policy/budget; this is not a completion-rate estimate. No supplemental CONTROL run was activated.
+
+Custody anchors:
+
+- Original Linux artifact: `15003384515`, 50,241,858 bytes, SHA256 `c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e`.
+- Original native lineage report: 647,026 bytes, SHA256 `55339e4cf1c1b5cf8bc593b1083367a276ee1653675fd17641c6d8143d6a3d60`.
+- Full unchanged B reader output: 125,105 bytes, SHA256 `d84834fa7aaa34bcbb365b0bd4ef4c6947498fa567a69918d172dff0534f1c5e`.
+- Full A primary output: 1,040,902 bytes, SHA256 `c32ab2dcbd84f969a8dff36c9e0b31122a0e7664e70516d7fc0334d9046306dd`.
+- Full C custody output: 66,553 bytes, SHA256 `37b91339a5cf53b5dd0c8df0ebedda8d33fc1df717d947fe2065e54c61ce1c95`.
+- Passive job log with the complete transported B report and bounded A/C summaries: Git blob `7e99bc3d49a24ee31c9c87872063d664de2d5b33`.
+- Passive stage artifact: `15005776720`, 942,877,571 bytes, SHA256 `8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9`.
+
+The passive driver is commit `2a627a3131be72fcb876acec0d0b848a7e42c3e3`, not the executed game source. This handover reads the exact transported report object; the frozen driver hashed and retained the original report file. The full raw results, reader bytes, pins and owned receipts remain in the stage for final passive sealing. Original failed and unresolved diagnostic attempts, the two established oracle defects, and the earlier Windows qualification retain their separate identities and dispositions.

@@ -1063,3 +1063,144 @@ The six predecessor Linux raw tape bodies previously read from the workspace are
 Frozen driver blob: `6b9c3e327437f5426776da78abef02ef62636212`. A's source review is `539e9328a5fac3fb3b3b5085d4c1f75d5b7f89e5`; B independently cleared the same final files and the root's activation, run-isolated concurrency and historical-source metadata edits. This commit registers the passive attempt; it contains no successful-execution claim. The last repository refresh found main `00cdb02f103265b6dc5224c68283e9a0c8cb449f` unchanged and PR #781 still open/Draft.
 
 B's durable source review is `6037bc1c388b56f6430d1bd4e7ac2c00080d1733` (seventeen explicit checks). Both independent source-review records are committed under `tools/gip014/evidence/passive/`. These are reviews of the recovery source and closed inputs, not raw campaign adjudications.
+
+## Corrected-source Linux actual results and passive recovery closure
+
+The Linux job at the qualified game source `6f359ce2b24291ee219810773c641d53802fd31d`
+has finished. [Original run 45565621408](https://github.com/techrote/cybersand/actions/runs/45565621408),
+job `139039653373`, remains **failed** because four requested long budgets were
+incomplete. Its [raw artifact 15003384515](https://github.com/techrote/cybersand/actions/runs/45565621408/artifacts/15003384515)
+contains 432 files, is 50,241,858 bytes and has SHA-256
+`c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e`.
+Independent analysis validates all eight tapes and their observed coverage; it
+does not change the original campaign outcomes.
+
+The registered long programme used the Construction initial fixture, seed 1701,
+RANDOM and COVERAGE_HUNTER, and four requested horizons. It is a separate
+eight-episode programme, with one observation per policy/budget and no replicated
+uncertainty estimate. Ordinary world replacement subsequently visited other
+authored fixtures and remains part of each recorded strategy.
+
+| Policy | Requested slots | Attempted | Completed | Refused | Original terminal | Process seconds | Peak sampled RSS (MiB) |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: |
+| Coverage Hunter | 128 | 128 | 128 | 0 | budget_complete | 57.475 | 570.6 |
+| Seeded random | 128 | 128 | 128 | 0 | budget_complete | 82.765 | 584.5 |
+| Coverage Hunter | 256 | 256 | 255 | 1 | budget_complete | 191.335 | 627.1 |
+| Seeded random | 256 | 256 | 254 | 2 | budget_complete | 258.265 | 662.8 |
+| Coverage Hunter | 512 | 501 | 499 | 2 | campaign_timeout | 622.547 | 742.5 |
+| Seeded random | 512 | 436 | 434 | 2 | campaign_timeout | 622.892 | 765.5 |
+| Coverage Hunter | 1,024 | 616 | 614 | 2 | campaign_timeout | 909.762 | 787.0 |
+| Seeded random | 1,024 | 537 | 535 | 2 | campaign_timeout | 909.588 | 841.0 |
+
+Of 3,840 planned attempt slots, 2,858 actions were attempted, **2,847 were
+admitted and completed**, and eleven were refused. There were no admitted
+partial actions, no failed gameplay assertions and no retained pending action.
+Both policies completed 128 and 256 requested slots. Neither policy completed
+512 or 1,024 slots at this source. The four incomplete tapes retain
+`campaign_timeout`, their `test_failure` process status and their original
+`unresolved_observation` triage label. Each process exited normally with code 1
+within its 674- or 960-second external bound; this is not an external process
+kill or an established gameplay defect. The transported reports do not expose
+the complete decision-pause/pacing subtraction or final native pause, so the
+historical exact active-clock audit is not silently reused for these episodes.
+
+The eight gameplay processes consumed 3,654.629 recorded process seconds in
+total. The queue took 3,659.166 seconds against its 7,200-second bound; its import
+took a separately recorded 6.573 seconds. Maximum sampled gameplay-process tree
+RSS was 881,831,936 bytes. These are process costs and sampled peaks, not engine
+FPS, a memory-leak proof or a continuous allocation curve.
+
+The deduplicated State-v2 observed unions are **51 action IDs, 593 adjacent
+action transitions, 1,129 state transitions, 43 material interactions, 46
+tool/material combinations, 62 actor/environment combinations, eight lifecycle
+keys, one refusal key and 66 outcome keys**. None of these episode maps saturated.
+The numbers describe admitted observations and include the valid incomplete
+episodes. They are not a fraction of all possible gameplay. They remain separate
+from the State-v1 `5ee5dffc` comparative results above; the source, horizon mix and
+state namespaces differ.
+
+### Memory reuse at the corrected source
+
+The independent seven-episode memory experiment completed **448 of 448 actions**:
+one cultivation episode and fresh, hints-only and explicit-prefix arms for seeds
+65 and 129. Both prefix arms queued and proposed the same four retained actions:
+Pause, a bounded camera choice, material 58, and the 8 by 8 rectangle at
+coordinates 32 through 39. Each arm's native capture proves exactly 64 changed
+cells and the expected before/after material planes. The imported observations
+were not counted as fresh coverage.
+
+Hints changed the first action in both seed pairs while the recorded initial
+abstract state and paused native generation/revision/tick were equal. The
+descriptive coverage changes remained mixed:
+
+| Comparison to fresh | Seed | Distinct action difference | Adjacent transition difference | Material interaction difference | Tool/material difference |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Hints only | 65 | -2 | -2 | 0 | -1 |
+| Hints only | 129 | +3 | -1 | -2 | +1 |
+| Explicit prefix | 65 | -2 | -3 | -1 | -4 |
+| Explicit prefix | 129 | +1 | +1 | 0 | 0 |
+
+Cultivation took 21.496 process seconds; training-inclusive gameplay cost was
+188.301 seconds. The memory supervisor took 199.883 seconds and peaked at
+780,529,664 sampled tree-RSS bytes. Two measured seeds and one corpus demonstrate
+working persistence and actual prefix reuse; they do not establish a general
+search advantage.
+
+### Independent native and delivery checks
+
+The unchanged lineage auditor passed all **1,094 checks** against four Linux
+cases and twenty admitted, completed actions. Fresh-authored and Restore cases
+equal the independently rendered authored material plane. Retaining response
+replacement and selected-actor Reset preserve actual simulation exposure; their
+saved live planes differ, while Reopen returns the authored plane and equality
+is correctly inapplicable. Different evolved hashes across Windows and Linux do
+not invalidate this relation or establish identical asynchronous trajectories.
+
+The frozen custody auditor passed **18,667 checks** with no errors, covering
+eleven focused source archives with the same 816-file closure and 37 owned
+process receipts. Those receipts retain the four failed long processes; they
+are not 37 successful gameplay tests. No surviving owned PID was recorded.
+The graphical gate retains 36 checks and actual 1600 by 900 llvmpipe evidence,
+without physical-owner or NVIDIA acceptance. Controller 4-action and graphical
+24-action replay pairs matched semantically while exact observations differed.
+The laboratory also performed a legal 4-to-1 reduction through six fresh probes
+(4, 4, 2, 2, 1, 1 actions), then exported a passing ordinary unittest case. This
+legal semantic control is separate from the historical 44-to-1 oracle-defect case.
+
+### Preservation after the local executor interruption
+
+The qualified Windows download was completed before the local executor became
+unavailable. A separately reviewed passive recovery workflow subsequently
+verified **all thirteen original artifacts**, totaling 661,216,192 compressed
+bytes, and ran the exact frozen data readers without launching the game.
+[Passive run 45579669046](https://github.com/techrote/cybersand/actions/runs/45579669046)
+used driver `2a627a3131be72fcb876acec0d0b848a7e42c3e3`, distinct from game source
+`6f359ce2b24291ee219810773c641d53802fd31d`. Its worker took 31.765 seconds,
+peaked at 229,445,632 sampled tree-RSS bytes and recorded no surviving owned PID.
+
+The complete [passive stage artifact 15005776720](https://github.com/techrote/cybersand/actions/runs/45579669046/artifacts/15005776720)
+is 942,877,571 bytes with SHA-256
+`8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9`.
+It retains the original inputs, exact readers, complete reports, process
+receipts and failure history. The primary analysis is 1,040,902 bytes
+(`c32ab2dcbd84f969a8dff36c9e0b31122a0e7664e70516d7fc0334d9046306dd`);
+the memory report is 123,204 bytes
+(`6d60a463843c99ba3eb1cb30596ed7d0085f5314de77f1fb4e4df9dfdc565ccb`).
+The lineage and custody reports and their hashes are in the machine index.
+Decoded log projections are clearly distinguished from original report bytes.
+
+The six predecessor Linux raw tape bodies previously recovered locally remain
+unavailable after the executor interruption. Their recorded hashes and recovery
+summaries survive, and the actual original predecessor Windows artifacts are now
+preserved. Windows bytes are not substitutes for those six Linux tapes.
+Completion and process-survivor status of the interrupted local predecessor
+download remain unknown. The new hosted receipts describe only their own owned
+processes.
+
+This is the pre-seal RESULTS record. The final passive archive will snapshot this
+exact documentation commit; a later delivery record will identify its actual
+bytes and hash. Archive preparation is not a new gameplay qualification.
+
+Two substantive test-oracle defects were established. The Monowheel oracle incorrectly equated the authored assembly origin with the offset physical root; independent native reproduction preserved that wrong expectation and automatically reduced a retained 44-action tape to one action. The persistence oracle incorrectly treated a reset native tick as proof that live materials still matched the authored layout. Its five-action retained-clock counterexample was automatically captured and independently verified, but was not automatically minimized. The corrected checks follow the pinned actor-part geometry and observed material lineage, with fresh-authored equality checks retained. No novel production gameplay defect was confirmed. Test-fixture setup, parser declarations, numeric provenance comparison and other harness repairs are recorded separately from these two oracle findings. Original failed, unresolved and incomplete attempts retain their original statuses; later corrections do not retroactively turn them into passes.
+
+The final actual-result readout packets are A `2cc2e185e1654bb2701224e5fdb459457c653eab`, B `097ac6bd740192173792c0d5cfc61bf4a2ae4394` and C `e809acb4dbfdeace11f64bce60ee749a9bed9a57`. Their updated complete handovers are committed alongside this RESULTS checkpoint. A's twenty-five output consistency checks do not add gameplay executions. The existing exact frozen readers consumed the raw evidence in the successful passive run, with full reports retained in its stage.

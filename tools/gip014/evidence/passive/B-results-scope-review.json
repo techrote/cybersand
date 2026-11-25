@@ -1,0 +1,82 @@
+{
+  "schema": "cybersand-goblin-specialist-B-results-document-review-v1",
+  "status": "pass",
+  "scope": "Read-only source/evidence-scope review of the exact pre-RESULTS document blobs. This adds no game or reader execution.",
+  "reviewed_documents": {
+    "docs/research/gip014-goblin-002-decision.md": "a04a003bcfc663b766fa40aba7e7855bc0e293c5",
+    "tools/gip014/decision-index-002.json": "01bc81474ef7f8182b52a0fd95e0ddb714aea4a4"
+  },
+  "actual_adjudication": "097ac6bd740192173792c0d5cfc61bf4a2ae4394",
+  "handover": "ea179f7e51a025ee0f405af9a166a8ff676cd399",
+  "checks": [
+    {
+      "id": "runtime_source_separate_from_passive_driver",
+      "pass": true
+    },
+    {
+      "id": "original_linux11_job_remains_failed",
+      "pass": true
+    },
+    {
+      "id": "all_four_incomplete_labels_preserved",
+      "pass": true
+    },
+    {
+      "id": "2858_attempted_2847_completed_11_refused_zero_partial",
+      "pass": true
+    },
+    {
+      "id": "no_known_recorded_or_unreported_invariant_failure_claim_is_bounded_to_validated_tapes",
+      "pass": true
+    },
+    {
+      "id": "674_and960_external_bounds_not_silently_replaced_with_active_clock_proof",
+      "pass": true
+    },
+    {
+      "id": "missing_current_active_clock_terms_and_final_pause_explicit",
+      "pass": true
+    },
+    {
+      "id": "no_current_source512_or1024_budget_completion_claim",
+      "pass": true
+    },
+    {
+      "id": "four_cases1094_checks20_actions_and_authored_capture_relations",
+      "pass": true
+    },
+    {
+      "id": "cross_platform_async_hash_variation_is_legal",
+      "pass": true
+    },
+    {
+      "id": "historical44_to1_minimization_separate_from_unminimized5_action_lineage_case",
+      "pass": true
+    },
+    {
+      "id": "two_oracle_defects_zero_confirmed_production_gameplay_defects",
+      "pass": true
+    },
+    {
+      "id": "source5ee_and_current6f_cohorts_not_pooled",
+      "pass": true
+    },
+    {
+      "id": "hosted_owned_receipts_no_hostwide_survivor_claim",
+      "pass": true
+    },
+    {
+      "id": "lost_six_predecessor_linux_raw_bodies_remain_unavailable_not_reconstructed",
+      "pass": true
+    },
+    {
+      "id": "full_raw_reports_distinct_from_transported_projections",
+      "pass": true
+    }
+  ],
+  "limitations": [
+    "Specialist A reviews quantitative coverage, behavior and memory comparison; Specialist C reviews package/archive custody.",
+    "Approval is bound to these exact document contents before any later root metadata/reference additions.",
+    "Passive seal source review is separate blobfa6037b3f597d0f1554a9bfe526068ad07d6f57c; actual sealing remains pending."
+  ]
+}

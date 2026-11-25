@@ -1,0 +1,121 @@
+{
+  "schema": "cybersand-goblin-specialist-B-passive-phase2-source-review-v1",
+  "status": "source_review_clear_pending_fixed_results_activation_and_actual_execution",
+  "reviewed": {
+    "driver_git_blob": "765ae16020018ba39e6627b6926183252d43a640",
+    "manifest_git_blob": "ff72983ba87a72a00fdf119c6b73503edfbd0e7c",
+    "workflow_git_blob": "a4a0fd12255232331cd1cbb48fa4eeb4769b0595",
+    "imported_phase1_driver_git_blob": "6b9c3e327437f5426776da78abef02ef62636212",
+    "unchanged_builder_git_blob": "5a7ea99a79632f2edd6444ceb452f829d377f568"
+  },
+  "qualified_game": {
+    "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+  },
+  "fixed_stage": {
+    "id": 15005776720,
+    "run_id": 45579669046,
+    "bytes": 942877571,
+    "sha256": "8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9",
+    "phase1_source": "2a627a3131be72fcb876acec0d0b848a7e42c3e3"
+  },
+  "checks": [
+    {
+      "id": "exact_delta_from_prior_draft",
+      "pass": true,
+      "evidence": "The765ae driver differs fromed452 only by adding .md to the fixed passive RESULTS-document suffix allowlist."
+    },
+    {
+      "id": "full_history_source_separation",
+      "pass": true,
+      "evidence": "Both Actions checkouts use fetch-depth0. Driver HEAD is GITHUB_SHA; separate qualified checkout must equal6f/treea4 and be clean. RESULTS commit/tree must be an ancestor of exact driver HEAD."
+    },
+    {
+      "id": "fixed_result_document_bytes",
+      "pass": true,
+      "evidence": "Six required owner documents plus a closed passive path extension are checked by exact Git blob, byte count and SHA256. Every file<=2MiB,total<=8MiB. No later DELIVERY commit or future outer archive hash is claimed."
+    },
+    {
+      "id": "minimal_workflow_permissions",
+      "pass": true,
+      "evidence": "Workflow grants contents:read and actions:read only. Actions are full-SHA pinned, credentials are not persisted and no Library credentials are referenced."
+    },
+    {
+      "id": "single_fixed_network_scope",
+      "pass": true,
+      "evidence": "Only stage15005776720 metadata/API302/download is requested. Exact run/source/size/SHA are checked; no original13 redownload or reader/network extension is present."
+    },
+    {
+      "id": "credential_redirect_boundary",
+      "pass": true,
+      "evidence": "Imported reviewed helper obtains authenticated GitHubAPI redirects with redirect following disabled. A fresh unauthenticated HTTPS request fetches only the official bounded storage host and preserves that host on any further redirects. SignedURLs and token values are not printed."
+    },
+    {
+      "id": "clean_builder_environment",
+      "pass": true,
+      "evidence": "Token is removed after stage transfer. Builder receives core.clean_env, suppressing GitHub/Library/proxy/upload credentials, user site and bytecode writes."
+    },
+    {
+      "id": "fresh_canonical_paths",
+      "pass": true,
+      "evidence": "Owned paths must be absolute, canonical, contained and free of symlink aliases. Six stage roots must not exist. Extraction writes exclusive files; metadata, review archives and final archive destinations must be absent."
+    },
+    {
+      "id": "zip_and_index_closure",
+      "pass": true,
+      "evidence": "Existing closed ZIP parser rejects traversal, case aliases, directory/file collisions, encrypted/special members and expansion excess. Restored file set equals every indexed phase1 path plus the one final index; every recorded member hash/size is compared."
+    },
+    {
+      "id": "exact_original_and_report_custody",
+      "pass": true,
+      "evidence": "Activated phase1 manifest/driver and original13 artifact bytes are pinned. All four final full report byte counts/SHA256 are hard-coded and checked, and phase1 reviews_pass plus five owned-reader pass receipts are required."
+    },
+    {
+      "id": "source_only_extra_review_bytes",
+      "pass": true,
+      "evidence": "Old specialist A/B/C bundles are preserved unchanged. New actual-review ZIP contains full already-executed reports, logs, receipts and fixed driver inputs. RESULTS snapshot contains only pinned passive documents. Neither executes the bundled files."
+    },
+    {
+      "id": "unchanged_bounded_builder_once",
+      "pass": true,
+      "evidence": "Exact reviewed builder SHA is verified and launched once under180s/512MiB. Its no-replace publication and per-original streamed pre/copy/post hashes remain unchanged. Final output size/SHA is independently compared with receipt."
+    },
+    {
+      "id": "overall_resource_bounds",
+      "pass": true,
+      "evidence": "Stage compressed/expanded<=2GiB,entrycount<=10000; owned disk<=6GiB/free reserve>=2GiB. Worker1200s/1536MiB,supervisor1500s,workflow step27min/job45min. Logs and passive summaries are separately bounded."
+    },
+    {
+      "id": "cancel_failure_retention",
+      "pass": true,
+      "evidence": "Interrupt130 propagation and process receipts remain intact. Failure diagnostics are sanitized and always-upload receipts cover failure/cancellation/resource-stop/log outputs. No optional retry/native branch is present."
+    },
+    {
+      "id": "explicit_upload_scope",
+      "pass": true,
+      "evidence": "Archive upload is deliverables only. Receipt upload lists passive-seal JSON/log/resource-stop plus four fixed builder metadata files; it excludes942MB stage ZIP,source checkout,root symlink and repository history."
+    },
+    {
+      "id": "no_new_gameplay_or_analysis",
+      "pass": true,
+      "evidence": "This seal source imports only the pinned process monitor and executes only the unchanged archive builder. It does not rerun A/B/C analyzers, game tests, native libraries, Godot or the deferred CONTROL1024 proposal."
+    },
+    {
+      "id": "classification_preservation",
+      "pass": true,
+      "evidence": "Human archive classification is independently supplied for all13 fixed inputs. Original raw failure and timeout records are not changed; qualifying the passive archive does not turn the original Linux11 game job into a pass."
+    }
+  ],
+  "conditional_activation_changes": [
+    "Root must bind activation_enabled=true, exact RESULTS commit/tree and all approved document identities before publication.",
+    "Root/C will correct seven-arm wording to seven-episode for the memory programme; no metric or acceptance change.",
+    "Include actual A/C readouts, updated B handover and B actual packet097ac6bd740192173792c0d5cfc61bf4a2ae4394 in the fixed RESULTS snapshot as intended."
+  ],
+  "limitations": [
+    "Source review only; no phase2 execution or final archive acceptance is claimed.",
+    "No host-wide surviving-process claim is made after earlier local transport loss.",
+    "The outer passive archive will preserve exact6f source identities and separately identify passive driver2a, final seal driver and pre-seal RESULTS documentation."
+  ],
+  "production_gameplay_defect_claimed": false,
+  "no_native_or_new_reader_execution": true
+}
