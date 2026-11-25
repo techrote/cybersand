@@ -19,3 +19,16 @@ Actual append rechecks the provider serial, owned journal path/event index, exac
 Development mechanism test `test_art_conversation_preparation.gd` passed 54 checks with real WorkerThreadPool tasks and the native atomic journal owner. It covers immutable input, wrong/forged handles, credential changes, cancellation and rapid retries, UTF-8 capacity refusal, owner free, no-op retirement, final-guard reentrancy, and adoption before a reentrant traffic observer starts a successor. There were zero HTTP exchanges and zero ordinary paint completions. This is mechanism evidence with host guard fixtures; UI/native World lifecycle and measured large-Apply qualification remain separate pending integration gates.
 
 The source-backed transport paragraph also corrects current 64KiB to 256KiB. Historical 64KiB measurements remain unchanged.
+
+## Independent review correction: refused draft visibility
+
+C identified that the first prepared-edit implementation formatted the live Traffic
+projections before the last owner/credential guard. That guard correctly refused
+the disk append, but could leave a refused draft in live Traffic. The corrected
+path stages both projections locally and publishes them only after the final
+admission and complete durable append succeed, before live adoption and observers.
+Ordinary event failure-preview behavior remains unchanged. A real worker regression
+rotates the credential set inside the final guard and checks byte-identical archive,
+raw Traffic and readable Traffic, including absence of the unpublished draft marker.
+The earlier54-check checkpoint did not exercise this visibility edge; retain it as
+an intermediate result, not qualification of the correction.

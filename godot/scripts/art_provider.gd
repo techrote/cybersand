@@ -956,38 +956,46 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 	# metadata is small; the same complete payload reaches the live and disk
 	# forms without serializing it independently three times on the UI thread.
 	var encoded_data: String = prepared_edit.encoded_data if prepared_conversation else (prepared_encoding if prepared_response else JSON.stringify(sanitized))
+	# Keep refused prepared drafts out of the live projections. Ordinary events
+	# retain their existing failure-preview behavior; prepared edits publish only
+	# after their final guard and complete durable append succeed.
+	var next_traffic := traffic
+	var next_readable := readable
 	var live_metadata := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind}
 	if encoded_data.length() > 2000000:
 		# The live tail was already bounded; do not first allocate a full giant
 		# envelope and append it to the previous buffer merely to discard it.
 		# Keep the complete small suffix, including kind/request/time identity.
 		var suffix := ","+JSON.stringify(live_metadata).trim_prefix("{")+"\n"
-		traffic = "[Earlier traffic retained on disk]\n"+encoded_data.right(1500000-suffix.length())+suffix
+		next_traffic = "[Earlier traffic retained on disk]\n"+encoded_data.right(1500000-suffix.length())+suffix
 	else:
 		var line := _encoded_event(live_metadata,encoded_data)
-		traffic += line + "\n"
-	readable += "\n" + Time.get_datetime_string_from_system(true) + " #" + str(serial) + " " + kind + "\n"
+		next_traffic += line + "\n"
+	next_readable += "\n" + Time.get_datetime_string_from_system(true) + " #" + str(serial) + " " + kind + "\n"
 	if encoded_data.length() > 262144:
 		# A readable preview is not a second giant pretty-printed archive. The
 		# session log/export retain the complete payload; Raw JSONL is a tail.
-		readable += "[Large event; full redacted content in session log/export. Last 65536 characters:]\n"+encoded_data.right(65536)+"\n"
+		next_readable += "[Large event; full redacted content in session log/export. Last 65536 characters:]\n"+encoded_data.right(65536)+"\n"
 	elif kind == "request" and sanitized is Dictionary and sanitized.get("body") is Dictionary:
 		var body: Dictionary = sanitized.body
-		readable += "Model: " + str(body.get("model", "")) + "\n"
-		if body.has("instructions"): readable += "Instructions:\n" + str(body.instructions) + "\n"
+		next_readable += "Model: " + str(body.get("model", "")) + "\n"
+		if body.has("instructions"): next_readable += "Instructions:\n" + str(body.instructions) + "\n"
 		for message: Variant in body.get("messages", body.get("input", [])):
 			if not message is Dictionary: continue
-			readable += str(message.get("role", "message")) + ":\n"
+			next_readable += str(message.get("role", "message")) + ":\n"
 			var content: Variant = message.get("content", "")
-			if content is String: readable += content + "\n"
+			if content is String: next_readable += content + "\n"
 			elif content is Array:
 				for block: Variant in content:
-					readable += str(block.text) + "\n" if block is Dictionary and block.has("text") else "[Image attached; exact bytes in Raw JSONL]\n"
-	elif sanitized is String: readable += sanitized + "\n"
-	else: readable += JSON.stringify(sanitized, "  ") + "\n"
-	if readable.length() > 2000000: readable = "[Earlier traffic retained on disk]\n" + readable.right(1500000)
-	if traffic.length() > 2000000: traffic = "[Earlier traffic retained on disk]\n" + traffic.right(1500000)
+					next_readable += str(block.text) + "\n" if block is Dictionary and block.has("text") else "[Image attached; exact bytes in Raw JSONL]\n"
+	elif sanitized is String: next_readable += sanitized + "\n"
+	else: next_readable += JSON.stringify(sanitized, "  ") + "\n"
+	if next_readable.length() > 2000000: next_readable = "[Earlier traffic retained on disk]\n" + next_readable.right(1500000)
+	if next_traffic.length() > 2000000: next_traffic = "[Earlier traffic retained on disk]\n" + next_traffic.right(1500000)
 	timing.format_usec = Time.get_ticks_usec() - format_begin_usec
+	if not prepared_conversation:
+		traffic = next_traffic
+		readable = next_readable
 	if prepared_conversation and not _conversation_edit_commit_valid(prepared_edit,true):
 		log_warning="Conversation, World or credentials changed before the actual edited append."
 		return false
@@ -1001,7 +1009,10 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 			log_warning = str(observed.error)+" Restart Workbench to validate the committed archive."
 			stored = false
 	last_event_stored = stored
-	if stored and prepared_conversation: _adopt_prepared_conversation_edit(prepared_edit)
+	if stored and prepared_conversation:
+		traffic = next_traffic
+		readable = next_readable
+		_adopt_prepared_conversation_edit(prepared_edit)
 	var signal_begin_usec := Time.get_ticks_usec()
 	traffic_changed.emit()
 	timing.signal_usec = Time.get_ticks_usec() - signal_begin_usec

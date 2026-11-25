@@ -146,6 +146,21 @@ func run() -> void:
 		return true
 	check(not provider.commit_conversation_edit(handle,id,adopt,final_guard).ok,"reentrant final guard journal change refuses old edited append")
 	check(edited_count()==baseline_count and FileAccess.get_file_as_string(provider.log_path).contains("newer admitted owner turn"),"newer audit action survives refused stale Apply")
+	# The last admission callback must fence both the archive and live projections.
+	var unpublished := "draft-refused-at-actual-append-18491"
+	var next_secret := "credential-registered-by-final-guard-83917"
+	id=identity(70);answer=begin("z".repeat(1024*1024)+unpublished+next_secret,id);handle=answer.handle
+	check(await wait_ready(handle) and callbacks.back().error.is_empty(),"unpublished draft reaches ready before final credential rotation")
+	var original_traffic: String = provider.traffic
+	var original_readable: String = provider.readable
+	var original_audit_hash := FileAccess.get_sha256(provider.log_path)
+	var rotate_and_refuse := func()->bool:
+		provider.secrets.append(next_secret)
+		return false
+	check(not provider.commit_conversation_edit(handle,id,adopt,rotate_and_refuse).ok,"credential-changing final guard refuses at actual append")
+	check(edited_count()==baseline_count and FileAccess.get_sha256(provider.log_path)==original_audit_hash,"final credential refusal leaves archive byte-identical")
+	check(provider.traffic==original_traffic and provider.readable==original_readable,"final credential refusal leaves both live traffic projections byte-identical")
+	check(not provider.traffic.contains(unpublished) and not provider.readable.contains(next_secret),"unpublished draft and newly registered credential never enter live traffic")
 	# Character admission and actual UTF-8 replay budgets are separate.
 	id=identity(8);answer=begin("€".repeat(6*1024*1024),id);handle=answer.handle
 	check(answer.ok and await wait_ready(handle),"bounded Unicode job reaches explicit byte-cap result")
