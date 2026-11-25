@@ -12,6 +12,14 @@ var captures: Array = []
 var phases: Array = []
 var folder := ""
 var started := 0
+const FRAME_INTERVAL_CAPACITY := 4096
+var _sample_draws := false
+var _last_draw_usec := 0
+var _draw_count := 0
+var _draw_total_usec := 0
+var _draw_min_usec := 0
+var _draw_max_usec := 0
+var _draw_intervals: Array[int] = []
 
 
 func _initialize() -> void:
@@ -19,6 +27,7 @@ func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
 	root.size = Vector2i(1600, 1000)
 	root.gui_embed_subwindows = true
+	RenderingServer.frame_post_draw.connect(_sample_draw_interval)
 	set_meta("cybersand_feature", "shared_workbench")
 	# Ordinary persisted-start admission keeps startup bounded before loading
 	# the explicit examples; it does not replace native/physical preparation.
@@ -54,6 +63,44 @@ func physical_tick() -> int:
 
 func native_tick() -> int:
 	return int(host.latest_snapshot.tick_index) if host != null and host.latest_snapshot != null else -1
+
+
+func _begin_draw_sampling() -> void:
+	_last_draw_usec = 0
+	_draw_count = 0
+	_draw_total_usec = 0
+	_draw_min_usec = 0
+	_draw_max_usec = 0
+	_draw_intervals.clear()
+	_sample_draws = true
+
+
+func _sample_draw_interval() -> void:
+	if not _sample_draws: return
+	var now := Time.get_ticks_usec()
+	if _last_draw_usec > 0:
+		var interval := maxi(0, now - _last_draw_usec)
+		_draw_count += 1
+		_draw_total_usec += interval
+		_draw_min_usec = interval if _draw_count == 1 else mini(_draw_min_usec, interval)
+		_draw_max_usec = maxi(_draw_max_usec, interval)
+		if _draw_intervals.size() < FRAME_INTERVAL_CAPACITY: _draw_intervals.append(interval)
+	_last_draw_usec = now
+
+
+func _end_draw_sampling() -> Dictionary:
+	_sample_draws = false
+	var ordered := _draw_intervals.duplicate()
+	ordered.sort()
+	var result := {"observed_intervals":_draw_count, "retained_intervals":ordered.size(),
+		"sample_capacity":FRAME_INTERVAL_CAPACITY, "discarded_intervals":_draw_count - ordered.size(),
+		"mean_usec":float(_draw_total_usec) / float(maxi(1, _draw_count)),
+		"minimum_usec":_draw_min_usec, "maximum_usec":_draw_max_usec,
+		"percentile_scope":"first bounded intervals; arithmetic mean and extrema include all observed intervals",
+		"measurement":"wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance"}
+	for percentile: int in [50, 95, 99]:
+		result["p%d_usec" % percentile] = ordered[maxi(0, ceili(float(percentile) * float(ordered.size()) / 100.0) - 1)] if not ordered.is_empty() else null
+	return result
 
 
 func capture(label: String, caption: String) -> void:
@@ -104,12 +151,14 @@ func show_example(example: Dictionary) -> void:
 	var first_physical := physical_tick()
 	var begin := Time.get_ticks_usec()
 	if not check(wb.toggle_pause(), "ordinary Play " + str(example.id)): return
+	_begin_draw_sampling()
 	var progressed := await until(func() -> bool:
 		return physical_tick() >= first_physical + 120 and native_tick() >= first_native + 119,
 		"two seconds of completed native and physical progression " + str(example.id))
 	phases.append({"example":example.id, "requested_physical_ticks":120,
 		"physical_ticks":physical_tick() - first_physical, "native_ticks":native_tick() - first_native,
-		"wall_usec":Time.get_ticks_usec() - begin, "memory_bytes":OS.get_static_memory_usage(), "passed":progressed})
+		"wall_usec":Time.get_ticks_usec() - begin, "memory_bytes":OS.get_static_memory_usage(),
+		"draw_intervals":_end_draw_sampling(), "passed":progressed})
 	if not progressed: return
 	await capture(str(example.id) + "-playing", str(example.name) + " during ordinary Play, after at least 120 physical ticks.")
 	if str(example.id) in ["ambient2-settlement", "ambient-oil-water"]:
@@ -123,6 +172,17 @@ func show_example(example: Dictionary) -> void:
 		editor.refresh_inspection()
 		check(editor._inspector.text.contains("Intent"), "live editor displays selected intent")
 		await capture("ambient2-behaviour-profile-editor" if str(example.id) == "ambient2-settlement" else "ambient-behaviour-profile-editor", "Actual living profile editor, searchable module catalogue and live read-only decision inspector.")
+		if str(example.id) == "ambient2-settlement":
+			var tabs: TabContainer = editor._living_body.get_parent().get_parent()
+			for tab: Dictionary in [{"index":1,"name":"personality-settings","caption":"Actual personality, memory and perception authoring controls; changes remain staged until Apply."},
+				{"index":2,"name":"places-and-peers","caption":"Actual home, interest and avoidance regions with copied-peer relationship settings."},
+				{"index":3,"name":"library-and-group","caption":"Actual saved scene profile library and bounded multi-selection group assignment controls."}]:
+				tabs.current_tab = int(tab.index)
+				if int(tab.index) == 2 and editor._region_list.item_count > 0:
+					editor._region_selected = 0
+					editor._region_list.select(0)
+					editor._show_region_fields()
+				await capture("ambient2-" + str(tab.name), str(tab.caption))
 		editor.hide()
 		wb.set_ambient_overlay(1, false)
 	wb.toggle_pause()

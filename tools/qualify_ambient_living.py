@@ -122,7 +122,8 @@ EXAMPLES = {"ambient-oil-water", "ambient-ledge-walkway", "ambient-industrial-ya
             "ambient2-cavern", "ambient2-courtyard", "ambient2-floodyard", "ambient2-aerial-habitat"}
 CAPTURES = {name + suffix + ".png" for name in EXAMPLES for suffix in ("-authored", "-playing")} | {
     "ambient-oil-water-overlay.png", "ambient-behaviour-profile-editor.png",
-    "ambient2-settlement-overlay.png", "ambient2-behaviour-profile-editor.png"}
+    "ambient2-settlement-overlay.png", "ambient2-behaviour-profile-editor.png",
+    "ambient2-personality-settings.png", "ambient2-places-and-peers.png", "ambient2-library-and-group.png"}
 
 
 def source_identity(allow_delta: bool = False) -> dict:
@@ -186,7 +187,7 @@ def validate_capture_report(folder: Path, result: dict) -> dict:
             "Capture must progress every actual ordinary example exactly once")
     captures = result.get("captures", [])
     require(len(captures) == len(CAPTURES) and {Path(row.get("path", "")).name for row in captures} == CAPTURES,
-            "Capture requires all twenty-six unique example, overlay and editor images")
+            "Capture requires all twenty-nine unique example, overlay and editor images")
     images = {}
     for item in captures:
         material = item.get("material_display", {})

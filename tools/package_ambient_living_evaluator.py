@@ -132,7 +132,7 @@ def build(args) -> None:
     names = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json",
              "third_party/native-toolchain.lock.json", "third_party/rapier-bvh-build.lock.json",
              "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch", "THIRD_PARTY_NOTICES.md",
-             "LICENSE_STATUS.md", GUIDE, "docs/systems/ambient-actors.md", "docs/systems/ambient-living-inhabitants.md",
+             "LICENSE_STATUS.md", GUIDE, "docs/operations/ambient-workbench.md", "docs/systems/ambient-actors.md", "docs/systems/ambient-living-inhabitants.md",
              "docs/research/ambient-001", "docs/research/ambient-002", "docs/systems/workbench-actor-composition.md",
              "docs/systems/physical-actor-rigs.md", "tools/ci/test_ambient_delivery.py", "tools/ci/test_ambient_living_delivery.py"]
     archive = subprocess.check_output(

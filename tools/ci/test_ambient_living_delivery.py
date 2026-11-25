@@ -165,7 +165,8 @@ class AmbientDeliveryCustody(unittest.TestCase):
                     "ambient2-cavern", "ambient2-courtyard", "ambient2-floodyard", "ambient2-aerial-habitat"]
         filenames = [name + "-" + stage + ".png" for name in examples for stage in ("authored", "playing")]
         filenames += ["ambient-oil-water-overlay.png", "ambient-behaviour-profile-editor.png",
-                      "ambient2-settlement-overlay.png", "ambient2-behaviour-profile-editor.png"]
+                      "ambient2-settlement-overlay.png", "ambient2-behaviour-profile-editor.png",
+                      "ambient2-personality-settings.png", "ambient2-places-and-peers.png", "ambient2-library-and-group.png"]
         captures = []
         images = {}
         for name in filenames:
@@ -228,7 +229,7 @@ class AmbientDeliveryCustody(unittest.TestCase):
         report = self.capture_report_fixture()
         images = runner.validate_capture_report(self.folder / "captures", report)
         self.assertEqual(set(images), {Path(row["path"]).name for row in report["captures"]})
-        self.assertEqual(len(images), 26)
+        self.assertEqual(len(images), 29)
 
     def test_missing_or_duplicate_example_phase_is_refused(self) -> None:
         valid = self.capture_report_fixture()
@@ -301,7 +302,7 @@ class AmbientDeliveryCustody(unittest.TestCase):
         report = self.capture_report_fixture()
         report["captures"][0]["rendered_actor_frame"] = {
             "available": False, "mode": "current physical fallback; no matched frame available"}
-        self.assertEqual(len(runner.validate_capture_report(self.folder / "captures", report)), 26)
+        self.assertEqual(len(runner.validate_capture_report(self.folder / "captures", report)), 29)
 
     def test_capture_call_checks_expected_source_engine_and_backend(self) -> None:
         identity, qualification = self.graphical_fixture()

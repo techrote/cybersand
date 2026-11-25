@@ -5,7 +5,7 @@ extends RefCounted
 const Setup = preload("res://scripts/workbench_setup.gd")
 const ENTRIES := [
 	{"id":"ambient2-settlement", "name":"Living settlement · Foundry Row", "description":"Eight inhabitants share a service street, individual homes and common activity areas. Two affinity groups and contrasting personalities create temporary company."},
-	{"id":"ambient2-refinery", "name":"Oil refinery · Pipe Orchard", "description":"Six inhabitants investigate real Oil and avoid Water. One elevated sealed Oil pocket is deliberately unreachable; remember failed approaches and choose another interest."},
+	{"id":"ambient2-refinery", "name":"Oil refinery · Pipe Orchard", "description":"Six inhabitants investigate real Oil and avoid Water. A sealed Oil cabinet is within a scavenger's material scope but physically inaccessible; inspect failed approaches and changing interests."},
 	{"id":"ambient2-cavern", "name":"Cavern · Echo Galleries", "description":"Native rock chambers, dead ends and alternate aerial passages challenge local exploration and recovery. The system has bounded local steering, not a guaranteed global route planner."},
 	{"id":"ambient2-courtyard", "name":"Social courtyard · Common Ground", "description":"Eight ground inhabitants have personal homes, two affinity groups and a common interest region. Observe congregation, spacing, withdrawal and renewed curiosity."},
 	{"id":"ambient2-floodyard", "name":"Floodable yard · Rain Exchange", "description":"Real Water leaves an overhead tank and changes the lower yard while six inhabitants follow evolving material observations. Paint or erase a gate to change the physical environment."},
