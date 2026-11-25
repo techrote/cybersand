@@ -21,6 +21,9 @@ CASE_NAMES = (
     'test_paint_editor_history-reopen', 'test_workbench_canvas',
     'test_workbench_canvas-reopen', 'test_explore001_generated_workbench',
     'test_explore001_generated_workbench-reopen',
+    'test_worldgen_workbench', 'test_material_lab_experiment', 'test_transport_profiles',
+    'test_water_feel_controller', 'test_art_storage_integrity', 'test_art_traffic_integrity',
+    'test_art_traffic_panel_safety', 'test_art_session_log', 'test_art_panel_ui',
 )
 
 
@@ -35,7 +38,7 @@ def digest(path):
 
 def valid_qualification():
     q = {
-        'schema': 'ultima-nonpublishing-qualification-v1', 'status': 'passed',
+        'schema': 'ultima-nonpublishing-qualification-v2', 'status': 'passed',
         'completed': True, 'host': 'win32', 'changed_inputs': [], 'errors': [],
         'source_head': HEAD, 'source_tree': TREE,
         'engine': {'version': package.windows.GODOT_VERSION,
@@ -75,6 +78,37 @@ def valid_qualification():
         'engine_sha256': q['engine']['console_sha256'],
         'cases': [{'fault': f, 'passed': True, 'exit_code': 0, 'natural_completion': True, 'engine_error_detected': False}
                   for f in ('none', 'locked-manifest')],
+    }
+    child = {'exit_code': 0, 'natural_completion': True, 'engine_error_detected': False}
+    profile_children = {
+        'before': child | {'format_loadable': True, 'acknowledged': True, 'loaded_value': 7,
+                           'sha256': 'a' * 64, 'bytes': 100},
+        'refusal': child | {'format_loadable': True, 'acknowledged': False, 'loaded_value': 7,
+                            'sha256': 'a' * 64, 'bytes': 100},
+        'replacement': child | {'format_loadable': True, 'acknowledged': True, 'loaded_value': 8,
+                                'sha256': 'b' * 64, 'bytes': 101},
+        'retry': child | {'format_loadable': True, 'acknowledged': True, 'loaded_value': 8,
+                          'sha256': 'b' * 64, 'bytes': 101},
+    }
+    q['profile_save'] = {
+        'schema': 'profile-save-qualification-v1', 'status': 'passed', 'completed': True,
+        'source_head': HEAD, 'platform': 'win32', 'engine_version': q['engine']['version'],
+        'engine_sha256': q['engine']['console_sha256'],
+        'cases': [{'kind': kind, 'fault': fault, 'evidence_class': evidence,
+                   **{name: copy.deepcopy(profile_children[name]) for name in
+                      (('before', 'replacement') if fault == 'none' else ('before', 'refusal', 'retry'))}}
+                  for kind in ('worldgen', 'material-lab', 'transport', 'water')
+                  for fault, evidence in (('none', 'real-public-caller'),
+                                          ('invalid-input', 'public-admission-refusal'),
+                                          ('locked-target', 'real-os-failure'))],
+    }
+    q['art_storage'] = {
+        'schema': 1, 'status': 'passed', 'passed': True, 'completed': True,
+        'source_head': HEAD, 'platform': 'win32', 'engine_version': q['engine']['version'],
+        'engine_sha256': q['engine']['console_sha256'],
+        'cases': [{'operation': operation, 'fault': fault, 'passed': True, **child}
+                  for operation, fault in (('export', 'none'), ('new-event', 'none'), ('append', 'none'),
+                                           ('export', 'locked-target'), ('append', 'locked-target'))],
     }
     return q
 
@@ -136,6 +170,86 @@ class QualificationAdmission(unittest.TestCase):
 
     def test_fault_engine_differs_from_normal_execution(self):
         self.q['persistence']['engine_sha256'] = 'f' * 64
+        self.require_refusal()
+
+    def test_older_qualification_contract_refuses(self):
+        self.q['schema'] = 'ultima-nonpublishing-qualification-v1'
+        self.require_refusal()
+
+    def test_profile_missing_refuses(self):
+        del self.q['profile_save']
+        self.require_refusal()
+
+    def test_profile_wrong_source_refuses(self):
+        self.q['profile_save']['source_head'] = 'f' * 40
+        self.require_refusal()
+
+    def test_profile_wrong_engine_refuses(self):
+        self.q['profile_save']['engine_sha256'] = 'f' * 64
+        self.require_refusal()
+
+    def test_profile_missing_lock_refuses_even_with_twelve_rows(self):
+        self.q['profile_save']['cases'][-1] = copy.deepcopy(self.q['profile_save']['cases'][-2])
+        self.require_refusal()
+
+    def test_profile_refusal_child_must_complete(self):
+        self.q['profile_save']['cases'][-1]['refusal']['natural_completion'] = False
+        self.require_refusal()
+
+    def test_profile_retry_cannot_have_engine_error(self):
+        self.q['profile_save']['cases'][-1]['retry']['engine_error_detected'] = True
+        self.require_refusal()
+
+    def test_profile_failed_report_refuses(self):
+        self.q['profile_save']['status'] = 'failed'
+        self.require_refusal()
+
+    def test_profile_false_success_on_refusal_refuses(self):
+        self.q['profile_save']['cases'][-1]['refusal']['acknowledged'] = True
+        self.require_refusal()
+
+    def test_profile_changed_old_bytes_refuses(self):
+        self.q['profile_save']['cases'][-1]['refusal']['sha256'] = 'f' * 64
+        self.require_refusal()
+
+    def test_profile_corrupt_reload_refuses(self):
+        self.q['profile_save']['cases'][-1]['refusal']['format_loadable'] = False
+        self.require_refusal()
+
+    def test_profile_failed_retry_refuses(self):
+        self.q['profile_save']['cases'][-1]['retry']['acknowledged'] = False
+        self.require_refusal()
+
+    def test_profile_wrong_saved_value_refuses(self):
+        self.q['profile_save']['cases'][0]['replacement']['loaded_value'] = 7
+        self.require_refusal()
+
+    def test_art_missing_refuses(self):
+        del self.q['art_storage']
+        self.require_refusal()
+
+    def test_art_wrong_source_refuses(self):
+        self.q['art_storage']['source_head'] = 'f' * 40
+        self.require_refusal()
+
+    def test_art_wrong_engine_refuses(self):
+        self.q['art_storage']['engine_sha256'] = 'f' * 64
+        self.require_refusal()
+
+    def test_art_missing_lock_refuses_even_with_five_rows(self):
+        self.q['art_storage']['cases'][-1] = copy.deepcopy(self.q['art_storage']['cases'][-2])
+        self.require_refusal()
+
+    def test_art_failed_case_refuses(self):
+        self.q['art_storage']['cases'][-1]['passed'] = False
+        self.require_refusal()
+
+    def test_art_forced_exit_refuses(self):
+        self.q['art_storage']['cases'][-1]['natural_completion'] = False
+        self.require_refusal()
+
+    def test_art_engine_error_refuses(self):
+        self.q['art_storage']['cases'][-1]['engine_error_detected'] = True
         self.require_refusal()
 
     def test_capture_missing_refuses(self):

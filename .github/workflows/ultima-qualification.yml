@@ -9,6 +9,20 @@ on:
       - 'godot/scripts/architectural_generator_dialog.gd'
       - 'godot/scripts/main.gd'
       - 'godot/scripts/gameplay_recorder.gd'
+      - 'godot/scripts/worldgen_workbench.gd'
+      - 'godot/scripts/material_lab_panel.gd'
+      - 'godot/scripts/transport_profile_panel.gd'
+      - 'godot/scripts/tower_panel.gd'
+      - 'godot/scripts/art_provider.gd'
+      - 'godot/scripts/art_traffic_archive.gd'
+      - 'godot/scripts/art_batch_panel.gd'
+      - 'godot/tests/profile_save_fault_child.gd'
+      - 'godot/tests/art_storage_fault_child.gd'
+      - 'godot/tests/test_art*.gd'
+      - 'godot/tests/test_worldgen_workbench.gd'
+      - 'godot/tests/test_material_lab_experiment.gd'
+      - 'godot/tests/test_transport_profiles.gd'
+      - 'godot/tests/test_water_feel_controller.gd'
       - 'godot/tests/run_microscenario.gd'
       - 'godot/tests/microscenario_capture_fault_child.gd'
       - 'godot/tests/gameplay_recorder_fault_child.gd'
@@ -18,6 +32,8 @@ on:
       - 'tools/ci/run_workbench_save_qualification.py'
       - 'tools/ci/run_microscenario_capture_qualification.py'
       - 'tools/ci/run_recorder_storage_qualification.py'
+      - 'tools/ci/run_profile_save_qualification.py'
+      - 'tools/ci/run_art_storage_qualification.py'
       - 'tools/ci/run_ultima_qualification.py'
       - 'tools/ci/package_ultima_evaluator.py'
       - 'tools/ci/test_package_ultima_evaluator.py'
@@ -94,6 +110,10 @@ jobs:
             workspace/source/build/ultima/microscenario-capture/*.log
             workspace/source/build/ultima/recorder-storage/*.json
             workspace/source/build/ultima/recorder-storage/*/*.log
+            workspace/source/build/ultima/profile-save/*.json
+            workspace/source/build/ultima/profile-save/*.log
+            workspace/source/build/ultima/art-storage/*.json
+            workspace/source/build/ultima/art-storage/*/*.log
           if-no-files-found: error
           retention-days: 90
 
@@ -208,5 +228,9 @@ jobs:
             workspace/source/build/ultima/microscenario-capture/*.log
             workspace/source/build/ultima/recorder-storage/*.json
             workspace/source/build/ultima/recorder-storage/*/*.log
+            workspace/source/build/ultima/profile-save/*.json
+            workspace/source/build/ultima/profile-save/*.log
+            workspace/source/build/ultima/art-storage/*.json
+            workspace/source/build/ultima/art-storage/*/*.log
           if-no-files-found: error
           retention-days: 90

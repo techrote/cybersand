@@ -60,6 +60,9 @@ NORMAL_CASES = {
     "test_workbench_generator_discovery", "test_paint_editor_history", "test_paint_editor_history-reopen",
     "test_workbench_canvas", "test_workbench_canvas-reopen", "test_explore001_generated_workbench",
     "test_explore001_generated_workbench-reopen",
+    "test_worldgen_workbench", "test_material_lab_experiment", "test_transport_profiles",
+    "test_water_feel_controller", "test_art_storage_integrity", "test_art_traffic_integrity",
+    "test_art_traffic_panel_safety", "test_art_session_log", "test_art_panel_ui",
 }
 WINDOWS_FAULT_CASES = {
     ("shared-helper", None, "injected-and-native-boundaries"),
@@ -73,10 +76,20 @@ WINDOWS_CAPTURE_CASES = {
     *((kind, None, "real-public-caller") for kind in ("controller", "cli")),
     *((kind, "locked-target", "real-os-failure") for kind in ("controller", "cli")),
 }
+WINDOWS_PROFILE_CASES = {
+    *((kind, fault, evidence) for kind in ("worldgen", "material-lab", "transport", "water")
+      for fault, evidence in (("none", "real-public-caller"),
+                              ("invalid-input", "public-admission-refusal"),
+                              ("locked-target", "real-os-failure"))),
+}
+WINDOWS_ART_CASES = {
+    *((operation, "none") for operation in ("export", "new-event", "append")),
+    *((operation, "locked-target") for operation in ("export", "append")),
+}
 
 
 def validate_qualification(qualification, head, tree):
-    require(qualification.get("schema") == "ultima-nonpublishing-qualification-v1"
+    require(qualification.get("schema") == "ultima-nonpublishing-qualification-v2"
             and qualification.get("status") == "passed" and qualification.get("completed") is True
             and qualification.get("host") == "win32" and qualification.get("changed_inputs") == []
             and qualification.get("errors") == []
@@ -131,6 +144,50 @@ def validate_qualification(qualification, head, tree):
             and all(c.get("passed") is True and c.get("exit_code") == 0
                     and c.get("natural_completion") is True and c.get("engine_error_detected") is False
                     for c in recorder_cases), "Incomplete or unsuccessful Windows recorder fault matrix")
+    profile = qualification.get("profile_save", {})
+    require(profile.get("schema") == "profile-save-qualification-v1" and profile.get("status") == "passed"
+            and profile.get("completed") is True and profile.get("platform") == "win32"
+            and profile.get("source_head") == head and profile.get("engine_version") == engine["version"]
+            and profile.get("engine_sha256") == engine["console_sha256"],
+            "Incomplete or mismatched profile save qualification")
+    profile_cases = profile.get("cases", [])
+    require(len(profile_cases) == len(WINDOWS_PROFILE_CASES)
+            and {(c.get("kind"), c.get("fault"), c.get("evidence_class")) for c in profile_cases}
+            == WINDOWS_PROFILE_CASES, "Incomplete or duplicate Windows profile fault matrix")
+    for case in profile_cases:
+        names = ("before", "replacement") if case["fault"] == "none" else ("before", "refusal", "retry")
+        require(all(case.get(name, {}).get("exit_code") == 0
+                    and case.get(name, {}).get("natural_completion") is True
+                    and case.get(name, {}).get("engine_error_detected") is False
+                    and case.get(name, {}).get("format_loadable") is True for name in names),
+                "Profile matrix child did not finish cleanly")
+        before = case["before"]
+        replacement = case["replacement"] if case["fault"] == "none" else case["retry"]
+        require(before.get("acknowledged") is True and before.get("loaded_value") == 7
+                and replacement.get("acknowledged") is True and replacement.get("loaded_value") == 8
+                and re.fullmatch(r"[0-9a-f]{64}", str(before.get("sha256", "")))
+                and re.fullmatch(r"[0-9a-f]{64}", str(replacement.get("sha256", "")))
+                and before["sha256"] != replacement["sha256"]
+                and type(before.get("bytes")) is int and before["bytes"] > 0
+                and type(replacement.get("bytes")) is int and replacement["bytes"] > 0,
+                "Profile matrix does not demonstrate successful compatible replacement")
+        if case["fault"] != "none":
+            refusal = case["refusal"]
+            require(refusal.get("acknowledged") is False and refusal.get("loaded_value") == 7
+                    and refusal.get("sha256") == before["sha256"] and refusal.get("bytes") == before["bytes"],
+                    "Profile refusal contradicts prior-file preservation")
+    art = qualification.get("art_storage", {})
+    require(art.get("schema") == 1 and art.get("status") == "passed" and art.get("passed") is True
+            and art.get("completed") is True and art.get("platform") == "win32"
+            and art.get("source_head") == head and art.get("engine_version") == engine["version"]
+            and art.get("engine_sha256") == engine["console_sha256"],
+            "Incomplete or mismatched Art storage qualification")
+    art_cases = art.get("cases", [])
+    require(len(art_cases) == len(WINDOWS_ART_CASES)
+            and {(c.get("operation"), c.get("fault")) for c in art_cases} == WINDOWS_ART_CASES
+            and all(c.get("passed") is True and c.get("exit_code") == 0
+                    and c.get("natural_completion") is True and c.get("engine_error_detected") is False
+                    for c in art_cases), "Incomplete or unsuccessful Windows Art storage matrix")
 
 
 def verify(folder, expected_manifest_sha256):

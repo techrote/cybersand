@@ -78,7 +78,7 @@ def main():
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    report = {"schema":"ultima-nonpublishing-qualification-v1", "status":"failed", "completed":False,
+    report = {"schema":"ultima-nonpublishing-qualification-v2", "status":"failed", "completed":False,
               "platform":platform.platform(), "host":sys.platform, "cases":[], "errors":[],
               "run_id":os.getenv("GITHUB_RUN_ID"), "run_attempt":os.getenv("GITHUB_RUN_ATTEMPT"),
               "limits":["No runtime publication or export", "No physical NVIDIA acceptance",
@@ -125,9 +125,27 @@ def main():
                                   timeout=execution_policy.watchdog_seconds("complex_fixture_seconds"))
         require(recorder.returncode == 0, "Recorder storage fault matrix failed")
         report["recorder_storage"] = json.loads((output / "recorder-storage/report.json").read_text())
+        for key, runner, directory in (
+                ("profile_save", "run_profile_save_qualification.py", "profile-save"),
+                ("art_storage", "run_art_storage_qualification.py", "art-storage")):
+            result = subprocess.run([sys.executable, str(ROOT / "tools/ci" / runner),
+                                     "--godot", str(engine), "--project", str(ROOT / "godot"),
+                                     "--evidence", str(output / directory)], env=env, cwd=ROOT,
+                                    timeout=execution_policy.watchdog_seconds("complex_fixture_seconds"))
+            require(result.returncode == 0, key + " fault matrix failed")
+            report[key] = json.loads((output / directory / "report.json").read_text())
         available = {case.name:case for case in regression.discover_cases()}
         plan = [
             ("test_gameplay_recorder", {}),
+            ("test_worldgen_workbench", {}),
+            ("test_material_lab_experiment", {}),
+            ("test_transport_profiles", {}),
+            ("test_water_feel_controller", {}),
+            ("test_art_storage_integrity", {}),
+            ("test_art_traffic_integrity", {}),
+            ("test_art_traffic_panel_safety", {}),
+            ("test_art_session_log", {}),
+            ("test_art_panel_ui", {}),
             ("test_workbench_material_baseline", {}),
             ("test_architectural_generator_ui", {}),
             ("test_workbench_generator_discovery", {}),
