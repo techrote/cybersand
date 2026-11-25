@@ -18,7 +18,7 @@ import package_art_workbench_final as retained
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools/ci"))
-from run_art_collaborative_gates import TESTS, validate_receipt
+from run_art_collaborative_gates import TESTS, parse_case_output, validate_receipt
 
 PROGRAMME = "ART-WORKBENCH-COLLABORATIVE-002"
 GUIDE = "docs/operations/art-workbench-collaborative-evaluation.md"
@@ -34,6 +34,9 @@ def receipt(path: Path, commit: str, tree: str, graphical: bool, check_logs: boo
             log = path.parent / case["name"] / "process.log"
             if not log.is_file() or retained.sha(log) != case["log_sha256"]:
                 raise ValueError("Complete original case log is missing or changed: " + case["name"])
+            original = parse_case_output(log.read_text(encoding="utf-8", errors="replace"), TESTS[case["name"]])
+            if original != case["result"]:
+                raise ValueError("Original case result differs from qualification receipt: " + case["name"])
     if graphical:
         ui = next(case for case in value["cases"] if case["name"] == "test_art_collaboration_workspace")
         if ui["result"].get("display") in (None, "", "headless"):
@@ -77,6 +80,8 @@ def build(args: argparse.Namespace) -> dict:
     for relative in native_paths:
         if headless["runtime"]["payloads"].get(relative) != retained.sha(output / relative):
             raise ValueError("Qualified native/Rapier payload differs from the delivered payload: " + relative)
+    if headless["runtime"].get("provenance_sha256") != retained.sha(output / "godot/addons/cybersand_native/runtime-provenance.json"):
+        raise ValueError("Qualified native provenance differs from the delivered source record")
     console = output / "Godot_v4.7-stable_win64_console.exe"
     if headless["runtime"]["godot_sha256"] != retained.sha(console):
         raise ValueError("Qualified Godot differs from delivered console engine")
@@ -122,6 +127,8 @@ def verify(output: Path) -> dict:
     for relative in (retained.NATIVE, retained.retained.RAPIER):
         if values[0]["runtime"]["payloads"].get(relative) != retained.sha(output / relative):
             raise ValueError("Delivered runtime differs from application qualification")
+    if values[0]["runtime"].get("provenance_sha256") != retained.sha(output / "godot/addons/cybersand_native/runtime-provenance.json"):
+        raise ValueError("Delivered native provenance differs from application qualification")
     if values[0]["runtime"]["godot_sha256"] != retained.sha(output / "Godot_v4.7-stable_win64_console.exe"):
         raise ValueError("Delivered Godot differs from application qualification")
     return identity

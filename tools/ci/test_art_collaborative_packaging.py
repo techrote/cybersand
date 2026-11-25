@@ -134,10 +134,16 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
             for case in value["cases"]:
                 log = path.parent / case["name"] / "process.log"
                 log.parent.mkdir()
-                log.write_text("synthetic unit log\n", encoding="utf-8")
+                log.write_text(case["marker"] + " " + json.dumps(case["result"]) + "\n", encoding="utf-8")
                 case["log_sha256"] = hashlib.sha256(log.read_bytes()).hexdigest()
             path.write_text(json.dumps(value), encoding="utf-8")
             package.receipt(path, COMMIT, TREE, False)
+            value["cases"][0]["result"]["checks"] += 1
+            path.write_text(json.dumps(value), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                package.receipt(path, COMMIT, TREE, False)
+            value["cases"][0]["result"]["checks"] -= 1
+            path.write_text(json.dumps(value), encoding="utf-8")
             log.write_text("changed log\n", encoding="utf-8")
             with self.assertRaises(ValueError):
                 package.receipt(path, COMMIT, TREE, False)
