@@ -226,7 +226,7 @@ class Runner:
             fault = "replacement-directory-permission-denied"
             lock = None
         require(staging.exists() and sha(staging) == staged_sha, "Refusal did not preserve the complete blocked staging file")
-        require(refused["transaction"]["staging_retained"] == str(staging), "Cleanup refusal not reported accurately")
+        require(Path(refused["transaction"]["staging_retained"]) == staging, "Cleanup refusal not reported accurately")
         self.preserve("helper", prepared, refused, fault)
         self.rows[-1].update(staging_sha256=staged_sha, lock=lock)
         staging.unlink()
