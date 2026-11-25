@@ -1,0 +1,871 @@
+{
+  "actual_pristine_windows_witness": {
+    "execution": {
+      "exit_code": 0,
+      "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "timed_out": false,
+      "watchdog_seconds": 240
+    },
+    "launch": {
+      "actual_launcher": true,
+      "automatic_model_requests": false,
+      "display": "Windows",
+      "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "status": "passed"
+    },
+    "module_probe_cleanup": {
+      "environment_restored": true,
+      "error": null,
+      "exit_code": -1,
+      "terminated_owned_process": true
+    },
+    "runtime_module_verification": "passed",
+    "scope": "Original hosted Windows extraction/launcher/loaded-module execution, independently checked from original records; no local physical Windows execution by reviewer."
+  },
+  "controlled_apply_comparison": {
+    "baseline_click_and_completion_usec": 620436,
+    "baseline_max_frame_usec": 639012,
+    "baseline_source": "e536d128f85e948223b25e13931a7a801faf956d",
+    "bytes": 16769024,
+    "candidate_click_return_usec": 43440,
+    "candidate_completion_delta_usec": 24543,
+    "candidate_full_completion_usec": 644979,
+    "candidate_max_frame_usec": 73356,
+    "candidate_source": "8a015efbeb7926a3c835303d3b163c01d353aca3",
+    "evidence_commit": "956b0abcac1649344d11164cda7951daed042887",
+    "interpretation": "Improved action return/frame responsiveness in this controlled pair; total completion was slower. Not a paired Windows or universal latency claim.",
+    "pairs": 1,
+    "platform": "headless Linux ordinary Workbench",
+    "same_text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+  },
+  "delivery_doc_successor": {
+    "qualification": "pending; no result inherited from bcc",
+    "runtime_changed": false,
+    "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf"
+  },
+  "fresh_collaborative_matrix": [
+    {
+      "cases": [
+        {
+          "artifact_files_verified": 0,
+          "checks": 155,
+          "kind": "headless",
+          "log_sha256": "acb1c2c48570c2d63b884bce045855a3be867b60512b08cb5912cf85bcc26622",
+          "name": "test_art_owned_transport"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 66,
+          "kind": "headless",
+          "log_sha256": "15861aea881c619c8b610fba21a96b7c56b110171c5bf984644dc3557c4b60a2",
+          "name": "test_art_conversation_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 154,
+          "kind": "headless",
+          "log_sha256": "abd909feb807c4ba3141b1114e7e9b3ff0cbe64489ab1edbaf2dc24f6c6fbdb9",
+          "name": "test_art_conversation_apply_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 107,
+          "kind": "headless",
+          "log_sha256": "553b6dbed8e2a8b364b1e42baeddd3b973a3aec23cc8a497912f1b5ca869583e",
+          "name": "test_art_authoring_proposal"
+        },
+        {
+          "artifact_files_verified": 1,
+          "checks": 251,
+          "kind": "headless",
+          "log_sha256": "2e2d5a53225bf01f6e28c4fa45fa49530df69efc53361df2536a94c0f798692a",
+          "name": "test_art_creative_cohort"
+        },
+        {
+          "artifact_files_verified": 55,
+          "checks": 739,
+          "kind": "headless",
+          "log_sha256": "af35e8ec5ab4019ecb7664ce230aea05d7cd7bc5860c587583731d4351d1ab4e",
+          "name": "test_art_collaborative_native"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 39,
+          "kind": "headless",
+          "log_sha256": "2de764734251a72d4a5bc3af8b0d2a5f93aa63971992b7e5fb9c45dfc06227f4",
+          "name": "test_art_collaboration_authority"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 182,
+          "kind": "headless",
+          "log_sha256": "cb2eab30a56dde990313d79f0acd14b72acec3bfd65a603b4ee0524d0ac922f6",
+          "name": "test_art_collaboration_session"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 93,
+          "kind": "headless",
+          "log_sha256": "9501a704fad87a67d9ac23f0c3a13bf2c047676980eea49455525caa78d82290",
+          "name": "test_art_collaboration_workspace"
+        }
+      ],
+      "mode": "headless",
+      "platform": "linux"
+    },
+    {
+      "cases": [
+        {
+          "artifact_files_verified": 0,
+          "checks": 155,
+          "kind": "displayed",
+          "log_sha256": "b7da92142f218190c14b3af2871e69fd207e56f953ba4898461a1bc1792f86e5",
+          "name": "test_art_owned_transport"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 66,
+          "kind": "displayed",
+          "log_sha256": "fc98e40bbb4426af36c471cfd16eea96b24d851a912b7e92f16bc8c5b5d9f865",
+          "name": "test_art_conversation_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 154,
+          "kind": "displayed",
+          "log_sha256": "b5d235afb27212758fe18841da12f414cd12b0f0672fbc0a59ba2c3d510aa016",
+          "name": "test_art_conversation_apply_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 107,
+          "kind": "displayed",
+          "log_sha256": "0f377c367dd9ef10816c88fe942b9da3f3f72531bd1dc5c24033bbb21a20af6d",
+          "name": "test_art_authoring_proposal"
+        },
+        {
+          "artifact_files_verified": 1,
+          "checks": 251,
+          "kind": "displayed",
+          "log_sha256": "adef01f9168d19c957172f22f40c0ba0095c97e94d88a0221576064b91773b13",
+          "name": "test_art_creative_cohort"
+        },
+        {
+          "artifact_files_verified": 73,
+          "checks": 757,
+          "kind": "displayed",
+          "log_sha256": "25750efe51be91f40d9022c457b581e55ced6494d269ead33e282094c4a9c7ee",
+          "name": "test_art_collaborative_native"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 39,
+          "kind": "displayed",
+          "log_sha256": "9f1164dafd11f7358685002a7d8bf7ba1d401cf71ab7b0ab441552b49c889456",
+          "name": "test_art_collaboration_authority"
+        },
+        {
+          "artifact_files_verified": 4,
+          "checks": 202,
+          "kind": "displayed",
+          "log_sha256": "89fe6133a8d950d058692034c1c0a3ef66c1f7103939094a70a276a3b046eb74",
+          "name": "test_art_collaboration_session"
+        },
+        {
+          "artifact_files_verified": 1,
+          "checks": 94,
+          "kind": "displayed",
+          "log_sha256": "42b85099e40f081a2b4a048fc2ce148a23bb78aafbac4363e3ee7e5a6e8dab4b",
+          "name": "test_art_collaboration_workspace"
+        }
+      ],
+      "mode": "displayed",
+      "platform": "linux"
+    },
+    {
+      "cases": [
+        {
+          "artifact_files_verified": 0,
+          "checks": 155,
+          "kind": "headless",
+          "log_sha256": "80385e378f856087ff36987c4828c8b56cd3e65a092188d7341b71d368d64040",
+          "name": "test_art_owned_transport"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 66,
+          "kind": "headless",
+          "log_sha256": "1e6607d9b1a64a6441e1bd242769767087da432016d5902c2c134098209092d9",
+          "name": "test_art_conversation_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 154,
+          "kind": "headless",
+          "log_sha256": "09b18f614be85e0ddb4018e4353bd40e559b682364ce8a8afad5d26782087fc8",
+          "name": "test_art_conversation_apply_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 107,
+          "kind": "headless",
+          "log_sha256": "4a18479799ec22d6176fb0fa754baa8f2db4123ba2fe302e8736d2f40746a44f",
+          "name": "test_art_authoring_proposal"
+        },
+        {
+          "artifact_files_verified": 1,
+          "checks": 251,
+          "kind": "headless",
+          "log_sha256": "34fbb31283ba954469263aa9ca3b60041e38a4bcdf1e1d0fcc7fbda3986a5728",
+          "name": "test_art_creative_cohort"
+        },
+        {
+          "artifact_files_verified": 55,
+          "checks": 739,
+          "kind": "headless",
+          "log_sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65",
+          "name": "test_art_collaborative_native"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 39,
+          "kind": "headless",
+          "log_sha256": "84d73afc50eb365714d6773841ca785d404e2be186699ebab20c349cbce10319",
+          "name": "test_art_collaboration_authority"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 182,
+          "kind": "headless",
+          "log_sha256": "189a4b47e62e6f33931d02b26d12bc398a51595218efc12af63826af0f715f88",
+          "name": "test_art_collaboration_session"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 93,
+          "kind": "headless",
+          "log_sha256": "7f8cc849c8e0698319eccef70596bbb5ecf357e58f2946191891bd484741b0cc",
+          "name": "test_art_collaboration_workspace"
+        }
+      ],
+      "mode": "headless",
+      "platform": "windows"
+    },
+    {
+      "cases": [
+        {
+          "artifact_files_verified": 0,
+          "checks": 155,
+          "kind": "displayed",
+          "log_sha256": "3b65b215cf8cd21994b5421fda3f4235441bbc4f0769e81fdffb941d05519470",
+          "name": "test_art_owned_transport"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 66,
+          "kind": "displayed",
+          "log_sha256": "4b5067d084570860f9a1e3b2e0d337f3cf2185ead5949ac4bcbc1611a56ddf98",
+          "name": "test_art_conversation_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 154,
+          "kind": "displayed",
+          "log_sha256": "6f1ea8a1e5587d15d44f2741a85a847ce3b843b2eadf53e3b07bd34560d544a9",
+          "name": "test_art_conversation_apply_preparation"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 107,
+          "kind": "displayed",
+          "log_sha256": "e8c780e0d26404c7c4ff76f4db5db1d2595f8f590bc349d383036beded26e266",
+          "name": "test_art_authoring_proposal"
+        },
+        {
+          "artifact_files_verified": 1,
+          "checks": 251,
+          "kind": "displayed",
+          "log_sha256": "3c182037d581c1dbe953715622db71c99a44af0d1bbd569c916b8710f240656a",
+          "name": "test_art_creative_cohort"
+        },
+        {
+          "artifact_files_verified": 73,
+          "checks": 764,
+          "kind": "displayed",
+          "log_sha256": "915cab45df6c12963ede0adc66866534b38f301cbb527f4fbee04cc52c1b7a29",
+          "name": "test_art_collaborative_native"
+        },
+        {
+          "artifact_files_verified": 0,
+          "checks": 39,
+          "kind": "displayed",
+          "log_sha256": "38db2dcf6a358bf0c5e27b16446348848d9c13b2dfe4452e6913314419c02140",
+          "name": "test_art_collaboration_authority"
+        },
+        {
+          "artifact_files_verified": 4,
+          "checks": 202,
+          "kind": "displayed",
+          "log_sha256": "20e2fe098d042749445d2d31b754c4aa535af434e3f3e3dd8d62fa16ac3a595a",
+          "name": "test_art_collaboration_session"
+        },
+        {
+          "artifact_files_verified": 1,
+          "checks": 94,
+          "kind": "displayed",
+          "log_sha256": "9a55cbc2fa03613a688900e5abad52d1accc37cdb279910c031b6e6e1291881c",
+          "name": "test_art_collaboration_workspace"
+        }
+      ],
+      "mode": "displayed",
+      "platform": "windows"
+    }
+  ],
+  "github_artifacts": [
+    {
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14993247449/zip",
+      "created_at": "2026-11-25T04:57:02Z",
+      "digest": "sha256:45df2fecb95f21fe769f15202d15411156b658d7670e249f76e4b6877f9b3f47",
+      "expired": false,
+      "expires_at": "2027-02-23T04:26:59Z",
+      "id": 14993247449,
+      "name": "art-workbench-windows-evidence-bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "size_in_bytes": 12820321,
+      "updated_at": "2026-11-25T04:57:02Z",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14993247449",
+      "workflow_run": {
+        "head_branch": "art/collaborative-002",
+        "head_repository_id": 1350077435,
+        "head_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "id": 45546845554,
+        "repository_id": 1350077435
+      }
+    },
+    {
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14992946063/zip",
+      "created_at": "2026-11-25T04:38:36Z",
+      "digest": "sha256:7ff9971f911a1b417582f05a929fdda021b2d536a78eb6434e002c172676d59a",
+      "expired": false,
+      "expires_at": "2027-02-23T04:26:59Z",
+      "id": 14992946063,
+      "name": "art-workbench-linux-bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "size_in_bytes": 17148660,
+      "updated_at": "2026-11-25T04:38:36Z",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14992946063",
+      "workflow_run": {
+        "head_branch": "art/collaborative-002",
+        "head_repository_id": 1350077435,
+        "head_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "id": 45546845554,
+        "repository_id": 1350077435
+      }
+    },
+    {
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14992534811/zip",
+      "created_at": "2026-11-25T04:56:58Z",
+      "digest": "sha256:5bf19d36afab227bbe489f9404530f24694e5f1e03d464e1613b0529f23d3699",
+      "expired": false,
+      "expires_at": "2027-02-23T04:26:59Z",
+      "id": 14992534811,
+      "name": "art-workbench-collaborative-002-windows-bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "size_in_bytes": 94402359,
+      "updated_at": "2026-11-25T04:56:58Z",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14992534811",
+      "workflow_run": {
+        "head_branch": "art/collaborative-002",
+        "head_repository_id": 1350077435,
+        "head_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "id": 45546845554,
+        "repository_id": 1350077435
+      }
+    },
+    {
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14991324294/zip",
+      "created_at": "2026-11-25T04:27:24Z",
+      "digest": "sha256:f5e9c53e877c5c35985c2eb53e7fc3aab8675c03ab6af4f441664e362702bd77",
+      "expired": false,
+      "expires_at": "2027-02-23T04:26:59Z",
+      "id": 14991324294,
+      "name": "art-workbench-qualification-scope-bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "size_in_bytes": 2738,
+      "updated_at": "2026-11-25T04:27:24Z",
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14991324294",
+      "workflow_run": {
+        "head_branch": "art/collaborative-002",
+        "head_repository_id": 1350077435,
+        "head_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "id": 45546845554,
+        "repository_id": 1350077435
+      }
+    }
+  ],
+  "independent_reviews": {
+    "experience": {
+      "complete_near_cap_audits_reparsed": 4,
+      "linux_report_sha256": "770752ba0698efd91d861603de91d10d83c5736b0564dd2e1238b573a625474a",
+      "log_cases_reparsed": 36,
+      "original_ui_images_actually_reviewed": 4,
+      "raw_records": {
+        "bytes": 2570449,
+        "local_path": "/tmp/art-c-experience-evidence-repo/docs/audits/2026-11-25-art-workbench-collaborative-002/experience-evidence/bcc-final-original-records.zip",
+        "name": "bcc-final-original-records.zip",
+        "publication_status": "not published; automatic approval review rejected raw-archive external egress; local archive retained",
+        "sha256": "3af9c2e579f0d6a4bbae8efb2b215af0c04932029bb180381e23ab77b6532f2e"
+      },
+      "windows_report_sha256": "88b0e800f5c36697376e6ad0e183ee43d1d17874cfde8ae6bae2a8c19bdf5f7e"
+    },
+    "native_geometry": {
+      "acknowledged_changed_cells_per_arm": 184396,
+      "campaigns": 4,
+      "commit": "b817670a66c7b114900a6510b73787785ab444c6",
+      "document": "docs/audits/2026-11-25-art-workbench-collaborative-002/FINAL-NATIVE-INDEPENDENT-REVIEW.md",
+      "replayed_rows": 1508936,
+      "unique_occupied_cells_claimed": false
+    },
+    "package": {
+      "commit": "c888fcf6b0da41d760a50837034328501e766f25",
+      "document": "docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/bcc-windows-independent-review.md",
+      "scope": "Independent read-only original Windows artifact and receipt review; no local Windows execution."
+    }
+  },
+  "near_cap_conversation_apply": [
+    {
+      "bytes": 16769024,
+      "click_return_usec": 25793,
+      "complete_edited_snapshots": [
+        {
+          "bytes": 16769024,
+          "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+        }
+      ],
+      "driver_observed_completion_usec": 326280,
+      "durable_audit": {
+        "format_usec": 3400,
+        "kind": "conversation_edited",
+        "sanitize_usec": 12,
+        "schema": 1,
+        "sequence": 2,
+        "signal_usec": 4,
+        "stored": true,
+        "total_usec": 21943,
+        "write_usec": 11368
+      },
+      "frames": {
+        "frames": 53,
+        "max_usec": 36174,
+        "p95_usec": 7064
+      },
+      "mode": "headless",
+      "model_requests": 0,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 45048,
+        "p95_usec": 45048
+      },
+      "open_usec": 9565,
+      "original_audits": [
+        {
+          "bytes": 33538622,
+          "relative_path": "extracted/art-final-headless-conversation-apply/isolated-profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/e0c0533a46e7d001526d350de39f8330.jsonl",
+          "sha256": "81acf0ef36a5ec2511acf1686277f2ac23501d4c42296bdbb568ec4e3aa6e6b1"
+        }
+      ],
+      "original_report_sha256": "ae57db42a08dd9c66ea85404fd584306829d62247d33c16a66f20ae781742a6b",
+      "platform": "linux",
+      "preparation": {
+        "admission_usec": 25574,
+        "asynchronous": true,
+        "commit_usec": 23680,
+        "handle": 1,
+        "prepared_after_usec": 296411,
+        "status": "committed",
+        "total_usec": 318146
+      },
+      "semantics": "click_return_usec returns control from Apply; preparation.total_usec is the owner adoption interval; driver_observed_completion_usec includes the subsequent polling observation; frames cover the measured interval.",
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096
+    },
+    {
+      "bytes": 16769024,
+      "click_return_usec": 26185,
+      "complete_edited_snapshots": [
+        {
+          "bytes": 16769024,
+          "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+        }
+      ],
+      "driver_observed_completion_usec": 675248,
+      "durable_audit": {
+        "format_usec": 2274,
+        "kind": "conversation_edited",
+        "sanitize_usec": 11,
+        "schema": 1,
+        "sequence": 2,
+        "signal_usec": 7,
+        "stored": true,
+        "total_usec": 21825,
+        "write_usec": 12308
+      },
+      "frames": {
+        "frames": 21,
+        "max_usec": 94595,
+        "p95_usec": 83004
+      },
+      "mode": "displayed",
+      "model_requests": 0,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 105509,
+        "p95_usec": 105509
+      },
+      "open_usec": 11980,
+      "original_audits": [
+        {
+          "bytes": 33538624,
+          "relative_path": "extracted/art-final-displayed-conversation-apply/isolated-profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/8b938a3a25e8d79049d6deab8ab93923.jsonl",
+          "sha256": "7f90e5b36fe8ededd67faa7fb8ea2ba05f6bcb987d5da46eb31664b2d662a5d2"
+        }
+      ],
+      "original_report_sha256": "0397cb934f1d3af675a955cae4c98eaa343be6c1fdb2d7681e0ee4a934572aa1",
+      "platform": "linux",
+      "preparation": {
+        "admission_usec": 25724,
+        "asynchronous": true,
+        "commit_usec": 23497,
+        "handle": 1,
+        "prepared_after_usec": 648603,
+        "status": "committed",
+        "total_usec": 670128
+      },
+      "semantics": "click_return_usec returns control from Apply; preparation.total_usec is the owner adoption interval; driver_observed_completion_usec includes the subsequent polling observation; frames cover the measured interval.",
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096
+    },
+    {
+      "bytes": 16769024,
+      "click_return_usec": 13359,
+      "complete_edited_snapshots": [
+        {
+          "bytes": 16769024,
+          "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+        }
+      ],
+      "driver_observed_completion_usec": 345936,
+      "durable_audit": {
+        "format_usec": 3276,
+        "kind": "conversation_edited",
+        "sanitize_usec": 13,
+        "schema": 1,
+        "sequence": 2,
+        "signal_usec": 8,
+        "stored": true,
+        "total_usec": 24700,
+        "write_usec": 15648
+      },
+      "frames": {
+        "frames": 57,
+        "max_usec": 41238,
+        "p95_usec": 7038
+      },
+      "mode": "headless",
+      "model_requests": 0,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 56462,
+        "p95_usec": 56462
+      },
+      "open_usec": 29093,
+      "original_audits": [
+        {
+          "bytes": 33538622,
+          "relative_path": "extracted/art-final-headless-conversation-apply/isolated-profile/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/51ffb9065bbb6e330e845c065185339f.jsonl",
+          "sha256": "d00c7a0f8360fd231b5c05301baa3bb5be10175895ba0f247e7c9980d158d4be"
+        }
+      ],
+      "original_report_sha256": "1f345db02dfd80ccb8c9f6cd918f53b3ecd2d317f3f55a308f80ac4ca804d591",
+      "platform": "windows",
+      "preparation": {
+        "admission_usec": 13105,
+        "asynchronous": true,
+        "commit_usec": 26252,
+        "handle": 1,
+        "prepared_after_usec": 315748,
+        "status": "committed",
+        "total_usec": 340123
+      },
+      "semantics": "click_return_usec returns control from Apply; preparation.total_usec is the owner adoption interval; driver_observed_completion_usec includes the subsequent polling observation; frames cover the measured interval.",
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096
+    },
+    {
+      "bytes": 16769024,
+      "click_return_usec": 13972,
+      "complete_edited_snapshots": [
+        {
+          "bytes": 16769024,
+          "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+        }
+      ],
+      "driver_observed_completion_usec": 622689,
+      "durable_audit": {
+        "format_usec": 3277,
+        "kind": "conversation_edited",
+        "sanitize_usec": 12,
+        "schema": 1,
+        "sequence": 2,
+        "signal_usec": 8,
+        "stored": true,
+        "total_usec": 25446,
+        "write_usec": 16878
+      },
+      "frames": {
+        "frames": 17,
+        "max_usec": 214778,
+        "p95_usec": 214778
+      },
+      "mode": "displayed",
+      "model_requests": 0,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 177676,
+        "p95_usec": 177676
+      },
+      "open_usec": 30351,
+      "original_audits": [
+        {
+          "bytes": 33538624,
+          "relative_path": "extracted/art-final-displayed-conversation-apply/isolated-profile/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/726f274e88219202dbd1370fb3f928aa.jsonl",
+          "sha256": "ae0c6866a9c9a4f7c291cddb24f757d0525eb749c6a889f6201363f1995690df"
+        }
+      ],
+      "original_report_sha256": "88a72718bfb582c7296e5a159dc80cfd1c11af57e578e8a0b8d94f1c9685ef90",
+      "platform": "windows",
+      "preparation": {
+        "admission_usec": 13077,
+        "asynchronous": true,
+        "commit_usec": 26982,
+        "handle": 1,
+        "prepared_after_usec": 582465,
+        "status": "committed",
+        "total_usec": 607413
+      },
+      "semantics": "click_return_usec returns control from Apply; preparation.total_usec is the owner adoption interval; driver_observed_completion_usec includes the subsequent polling observation; frames cover the measured interval.",
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096
+    }
+  ],
+  "near_limit_windows_displayed_response": {
+    "body_json_parse_usec": 326059,
+    "body_sanitize_usec": 1566180,
+    "close": {
+      "close_usec": 1095,
+      "hidden": true,
+      "provider_active_after": true,
+      "provider_active_before": true
+    },
+    "frames": {
+      "frames": 99,
+      "max_usec": 465486,
+      "p95_usec": 172731
+    },
+    "http_code": 200,
+    "native_tick_after": 6922,
+    "native_tick_before": 6083,
+    "response_bytes": 16773391,
+    "scope": "One source-specific hosted displayed successful response; not a matched causal comparison with predecessor hardware/body.",
+    "transport_usec": 11332308,
+    "whole_case_usec": 15331624,
+    "worker_preparation_usec": 2096300
+  },
+  "preserved_intermediate_qualified_baseline": {
+    "artifact": 14991526130,
+    "campaign": 45541065622,
+    "inner_zip_sha256": "7b96dbf667cde0e222957e84f75dd88638d92241fa8fe4af82e6178623303d73",
+    "source": "e536d128f85e948223b25e13931a7a801faf956d"
+  },
+  "preserved_predecessor": {
+    "actual_draft_at_review": false,
+    "artifact": 14968792395,
+    "campaign": 45497650568,
+    "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+    "merged": false,
+    "pr": 773,
+    "qualified_package_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+    "state": "open",
+    "state_changed_by_this_mission": false
+  },
+  "principal_campaign": {
+    "application_reuse": false,
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 138978406345,
+        "name": "Verify application qualification source"
+      },
+      {
+        "conclusion": "success",
+        "id": 138978560826,
+        "name": "Windows 4.7 collaborative Art and installed evaluator"
+      },
+      {
+        "conclusion": "success",
+        "id": 138978560829,
+        "name": "Linux 4.7 native and displayed collaborative Art"
+      }
+    ],
+    "qualification_mode": "full_required",
+    "run_id": 45546845554,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45546845554"
+  },
+  "principal_portable": {
+    "application_scope_copy": {
+      "only_difference": "LF to CRLF",
+      "original_sha256": "c4d23ad364f14585d16afa69ef011cf7433ce256e100b9181f7a566fb2bb1056",
+      "package_sha256": "658450e67fb02b03098d260d587667fa55f5db7f164742b7751acaf688fa3319",
+      "parsed_values_identical": true
+    },
+    "archive_members_including_manifest": 1201,
+    "artifact_id": 14992534811,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45546845554/artifacts/14992534811",
+    "canonical_git_files_verified": 1092,
+    "file_name": "art-workbench-collaborative-002-windows.zip",
+    "immutable_files": 1200,
+    "inner_zip_bytes": 95598830,
+    "inner_zip_sha256": "de46eaa1fa6ce3f75cea4a29286bbefa43cc257028e912b54b2265060731d95a",
+    "installed_setup_sha256": {
+      "art02-industrial_repair": "4f38c11092c96e411471bf73fb7ea33521e66c7123b409b442a99d8eb26e233f",
+      "art02-palette_foundry": "b51168d3502362c77f40a163ecac8c112c240a3cc1fc13c2590af90b8f4df872",
+      "art02-protected_courtyard": "5fdebd90c0a448b5feeca47e227e4947c4ebba523e43ecdc220beb2a5e0bd38a",
+      "art02-revised_arcology": "8dacf18ac98884a7a8ee8f9f9fc1cdc641bace499e8aae840e4162b31f3ad78e",
+      "art02-scifi_interior": "b7187a6ca557d7f72a2653a0e75b541a5a46e95b63c6a54f56be773ff3ae8407",
+      "art02-staged_megaframe": "63a3b7ca12d3058e2a4798ab9cc36d06d0dbf7ce6f4ad37e6e916d07ac1618e3",
+      "art02-stopped_workshop": "5166033ed25e5a4086b3cf316a3c17953d5a6c9c18f6b0992f4c8dda76c756fa",
+      "art02-structural_facade": "21928086340be2defcf0d4fda7ce8b6b131c5d9ee4e7960a70a6b5cdda274be6",
+      "art02-xeno_vault": "548cb4b4ae1c4960ca01b32a8462474acc07d4062ac1d2a0ad1b25cd5bcbc7e7"
+    },
+    "manifest_sha256": "55de7a0e79af94be513e31a22c8d0ba5ec1322be1aa2e9af5bacf455940fb95b",
+    "materialized_lfs_pointers_verified": 2,
+    "native_example_original_files_verified": 73,
+    "native_source_inputs_verified": 105,
+    "outer_artifact_bytes": 94402359,
+    "outer_artifact_sha256": "5bf19d36afab227bbe489f9404530f24694e5f1e03d464e1613b0529f23d3699",
+    "rapier_source_inputs_verified": 4,
+    "runtimes": {
+      "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "vcruntime140.dll": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    "setup_labels": {
+      "art02-industrial_repair": "00-industrial_repair-editable-setup.json",
+      "art02-palette_foundry": "05-palette_foundry-editable-setup.json",
+      "art02-protected_courtyard": "04-protected_courtyard-editable-setup.json",
+      "art02-revised_arcology": "03-revised_arcology-editable-setup.json",
+      "art02-scifi_interior": "02-scifi_interior-editable-setup.json",
+      "art02-staged_megaframe": "07-staged_megaframe-editable-setup.json",
+      "art02-stopped_workshop": "06-stopped_workshop-editable-setup.json",
+      "art02-structural_facade": "01-structural_facade-editable-setup.json",
+      "art02-xeno_vault": "08-xeno_vault-editable-setup.json"
+    },
+    "uncompressed_bytes": 224670932
+  },
+  "pristine_startup": {
+    "automatic_requests": false,
+    "contains_provider_config": false,
+    "platform": "Windows",
+    "scope": "Final pristine hosted Windows launcher; substantial startup gap remains.",
+    "screen_dpi": 96,
+    "startup_max_adjacent_frame_usec": 34966643,
+    "teardown_completed": true,
+    "teardown_usec": 327601,
+    "visible_idle_max_frame_usec": 162762,
+    "window_size": [
+      1028,
+      720
+    ],
+    "workbench_ready_usec": 38497889
+  },
+  "publication_boundary": {
+    "blocked_action": "Push of new raw campaign-record archive and metadata to GitHub",
+    "raw_archive_bytes": 2570449,
+    "raw_archive_sha256": "3af9c2e579f0d6a4bbae8efb2b215af0c04932029bb180381e23ab77b6532f2e",
+    "reason": "Automatic approval review treated the original records as potentially sensitive external data requiring explicit permission. No alternate raw-archive upload was attempted.",
+    "safe_alternative": "Only derived source/hash/status and timing reports are published. Original Actions artifacts and already-published A/B independent evidence remain cited."
+  },
+  "qualification_boundaries": {
+    "actor_traversal": "not established; static native clear passages only",
+    "architecture": "Owned proposal-only dispatch and separately pinned actual native handoff are verified; production Architecture factory/UI mount and combined Windows evaluator remain separate",
+    "frame_latency": "Final displayed Windows near-cap Apply max frame214.778ms and response max465.486ms remain recorded",
+    "genuine_model_creativity": "not established; zero genuine or paid inference",
+    "packaged_guide_appendices": "Three relative documentation targets are not bundled; owner companion supplies pinned online links",
+    "physical_owner_windows_nvidia_no_listener": "pending",
+    "ready_merge_default_activation": "not authorized; Draft/HOLD retained",
+    "retrieval_causal_improvement": "not established by identical deterministic fixture geometry",
+    "staged_atomicity": "Separate acknowledged native stages; no atomic multi-stage transaction claim",
+    "startup": "Substantial hosted cold-start gap remains"
+  },
+  "record_role": "Preserved qualified bcc baseline; delivery-doc successor3a0ec365 is separately awaiting qualification.",
+  "recorded_utc": "2026-11-25T05:21:47.198643+00:00",
+  "retained_gates": {
+    "core_art_regression_scripts_per_platform": 23,
+    "ordinary_final_groups_per_platform": 12,
+    "provider_and_native_actors": "Real loopback transport and actual native Workbench operations where contracted; deterministic fixture responses, no genuine inference."
+  },
+  "runtime_and_host_records": {
+    "linux": {
+      "host": {
+        "logical_cpus": 4,
+        "machine": "x86_64",
+        "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+        "processor": "x86_64"
+      },
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "payloads": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+        },
+        "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      }
+    },
+    "windows": {
+      "host": {
+        "logical_cpus": 4,
+        "machine": "AMD64",
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD"
+      },
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "payloads": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      }
+    }
+  },
+  "schema": "art-workbench-collaborative-002-final-identity-v1",
+  "separate_startup_diagnostic": {
+    "part_of_principal_application_or_package": false,
+    "pr": 782,
+    "run": 45549435385,
+    "scope": "Instrumentation-only phase experiment over frozen bcc; separately recorded by lead.",
+    "source": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+    "tree": "e7a3557e2983bb596fabe3f226e3939baf353a47"
+  },
+  "source": {
+    "commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+    "draft": true,
+    "merged": false,
+    "principal_pr": 780,
+    "production_default_promoted": false,
+    "tree": "517164084860a19f18b36cb94f77597eb3220578"
+  },
+  "status": "Draft/HOLD; exact hosted application and portable evaluator qualified; owner acceptance boundaries remain"
+}
