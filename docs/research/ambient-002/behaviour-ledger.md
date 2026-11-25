@@ -51,6 +51,36 @@ sixteen descriptive catalogue outcomes and important phase-chatter limits.
 Original readback JSON and Markdown are retained with source and data hashes.
 These baseline results remain separately labelled from the later repaired source.
 
+## Preregistered curiosity-only physical contrast
+
+The [supplementary result](curiosity-results.md) isolates curiosity through six
+actual 30-second Runner episodes at frozen application
+`a7250e15495667b2fcf564cbed1eaa8dea217c45`. External diagnostic source
+`31f8ecf8b6d8821740b545e046501f90c86e06f3` was committed before execution;
+all application project bytes remained unchanged. In each of three matched seed
+pairs, only curiosity differs between two ordinary editable profiles containing
+equal-priority investigation and patrol modules. The high setting selects
+investigation for 4.3 seconds in the first ten seconds and approaches the initial
+actual Oil sample by 32.25 horizontal cells; the low setting gives zero for both
+outcomes. Inspection begins at 2.2 seconds and the routine resumes at 4.3.
+
+All six conditions completed with 45,078 apparatus checks, unchanged complete
+source/runtime custody and 48 independently recomputed numeric values. The
+sixth case's first process was externally killed with returncode −9 and no
+report. Its original receipt and the five successful reports were checkpointed
+before retrying only that exact missing case. Both attempts remain in the
+complete archive. These six completed conditions are supplementary and are not
+added to the primary 194 count or substituted for any final-source gate.
+
+The negative result is equally explicit: selected inspection still moves, the
+later competition repeatedly switches between unchanged discovery/patrol goals
+when adjacent Oil observations cross a 24-cell novelty-memory grid boundary,
+and no explicit habituated-patch completion occurs. The finite attempt deadline
+releases that competition. All three seeds produce identical trajectories for
+these deterministic goals, so this is a scoped mechanism demonstration rather
+than independent stochastic behaviour or universal personality quality. No
+runtime correction or parameter retuning follows the observed outcomes.
+
 ## Source and authority
 
 The lane begins at predecessor `d0af9b6015c27417fddd67f79afdcf656a609571`.

@@ -423,3 +423,82 @@ retained whether they support the predeclared direction or not, and these cases
 remain separate from the original194 registry. A separate small actual-native
 material probe addresses near-field thin-patch detection without claiming added
 behavioral episodes.
+
+## Final application qualification and evidence checkpoint
+
+The application freeze `a7250e15495667b2fcf564cbed1eaa8dea217c45`, tree
+`a038e6df65d58529f4c496c01f26c65975654fa6`, completed the full Linux and Windows
+[run45540569052](https://github.com/techrote/cybersand/actions/runs/45540569052).
+All24 source cases passed on both platforms. Windows completed15,319 source
+assertions and9,270 freshly extracted assertions across eight extracted cases,
+29 original plus29 extracted graphical captures, all1,330 payload hash checks
+and the ordinary `Open Workbench.cmd` launcher. The
+[original Windows readback](evidence/windows-a7250e15-review.json) retains exact
+runtime/source, process, image and archive identities. Actual software rendering
+was ANGLE/Microsoft Basic Render Driver; owner NVIDIA playfeel remains pending.
+
+The portable inner ZIP is `CyberSand-AMBIENT-002-Windows-a7250e154956.zip`,
+109,251,295bytes, SHA256
+`51efb2851ebe5a56cddd6345187fc6cad9248bc6744ac807a3445627ced15eb9`.
+The original [portable artifact14989034906](https://github.com/techrote/cybersand/actions/runs/45540569052/artifacts/14989034906)
+and [Windows evidence14990585563](https://github.com/techrote/cybersand/actions/runs/45540569052/artifacts/14990585563)
+remain unchanged. The exact inner evaluator was made available to the owner
+before the later local execution restart.
+
+The final Linux [artifact14990266435](https://github.com/techrote/cybersand/actions/runs/45540569052/artifacts/14990266435)
+completed all122 fresh-World campaigns:194 actual physical actor episodes,
+178subjects and16passive companions;4,560World-simulation seconds and
+6,720actor-simulation seconds;273,600native ticks and273,600Rapier steps;
+62,400accepted commands, zero rejected commands and zero recorded actor-center
+canvas incidents. No World exceeds eight physical logical actors. The
+[final independent scientific readback](evidence/hosted-a725-independent/scientific-findings.md)
+verifies every original report/console/execution chain and reproduces the frozen
+reducer and independent metrics byte for byte. It checks2,910metric values,
+67,200copied-peer samples and40exact ablation groups.
+
+The stateful main ground medians improve to8.37%Runner/8.05%wheel active stalls.
+Held-random and scripted policies still cover more ground in that fixture.
+Paired median stateful-minus-memory-off horizontal-range gains are only
++0.313/+0.074/0.000cells for Runner/wheel/flyer. Adverse memory-enabled profiles
+show useful withdrawal, but the five-minute wheel retains36.66%active stalls.
+Four-actor social grouping improves against social-off, while jitter-random
+grouping, the eight-actor comparison and peer departure remain counterexamples.
+The final eight-actor sensor/production-advance costs are102.381/242.979ms per
+simulated second versus38.090/158.524legacy, measured elapsed work in small
+hosted headless fixtures, not presentation FPS.
+
+Six supplementary [curiosity-only episodes](curiosity-results.md) completed at
+the frozen application. In their preregistered first-ten-second window, high
+curiosity selects investigation for4.3seconds and approaches the first copied
+Oil location by32.252horizontal cells; low curiosity records0/0. All three
+seed pairs repeat the same fixed-goal competition. Later repeated selection of
+the same goal identities exposes novelty-grid quantization amplified by gait.
+No explicit habituated-patch completion was observed. All six successful chains,
+the externally killed missing-case attempt, exact diagnostic sources and
+independent A/B readbacks remain preserved in the complete original archive.
+
+A third local execution-environment restart at approximately04:18UTC erased
+the temporary worktrees and downloaded artifacts. It did not alter the
+published2eea source, hosted qualifications, delivered evaluator or already
+uploaded immutable A/B/C evidence blobs. The lead's closing packet write finished
+after the restart and was immediately preserved as a separate immutable blob.
+The team restores exact authored evidence bytes from those verified objects,
+without rerunning or relabelling qualification. The complete final raw Linux
+artifact is recovered from its authenticated original to make an additional
+durable byte-part copy; incomplete pre-restart archive work receives no pass credit.
+
+Documentation [run45544622566](https://github.com/techrote/cybersand/actions/runs/45544622566)
+at2eea failed only four explicit evidence-routing omissions. Its complete
+[original decoded log](evidence/docs-consistency-2eea3dbb.log) is retained, SHA256
+`d3b307619e2cfb8cf519e9a91d050781812764e9c42ce5c5f384104152a7a555`.
+The correction adds explicit retrieval exclusions for those dated pages and
+new result records; runtime-provenance/retrieval steps skipped after the failed
+docs gate must execute in the closing rerun. No checker or application contract
+is weakened.
+
+The separately identified sustained graphical observer remains in
+[run45544614719](https://github.com/techrote/cybersand/actions/runs/45544614719),
+using observer2eea and frozen applicationa725. Its running state is not a pass.
+All later evidence work preserves the application's `godot/` subtree
+`ed1a6935b1b3663e4157e6168c2bae7c8291a706`. The successor stays Draft/HOLD;
+#762 remains unaccepted and the predecessor evaluator is untouched.
