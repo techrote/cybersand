@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Accepted generator, PAINT and Art workflow; native receipts, shared history, authored save and bounded verification
 canonical-for: [integrated-paint-agent-workbench]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [workbench-first-session.md, workbench-art.md, workbench-painting-and-history.md, workbench-saving.md, ../systems/paint-editor-bounded-shapes.md, ../systems/workbench-direct-art-batches.md, ../systems/workbench-art-providers.md]
 ---
 
@@ -21,7 +21,7 @@ evidence at the end of this page.
 
 1. Open **Development workbench**. Stay paused and use a blank canvas, or install
    a small completed native preview through **New from generator…**.
-2. In Paint mode, choose Hard Wall, draw a short rectangle, then use Eraser to
+2. In Paint mode, choose **Reinforced Concrete · 58**, draw a short rectangle, then use Eraser to
    open a gap. Select the result, **Copy**, and **Paste** a second instance.
 3. Open **Art batches**, select **Direct JSON**, and use the
    [small rectangle/disc example](workbench-art.md#draw-without-a-model). Choose
@@ -37,8 +37,11 @@ evidence at the end of this page.
    preview and confirm **Install into workbench**. Check the authored geometry
    and spawns, then make a new edit. A reopened start has no old in-memory Undo stack.
 
-This procedure uses no paid model request. It was source-checked for the current
-documentation baseline; no fresh interactive graphical execution is claimed.
+This procedure uses no paid model request. The ULTIMA review exercised individual
+painting, Undo/Redo, Direct JSON, generated installation and save/reopen tasks in
+a real Linux software-rendered Workbench. The entire combined sequence above is
+still a separate manual exercise; those observations do not establish physical
+owner acceptance.
 The [Art guide](workbench-art.md) separately covers provider configuration,
 session conversation, Stop versus hiding, and private traffic.
 
@@ -88,13 +91,15 @@ be serialized as applied. Fragmented drawing can still exceed the 32,768-stamp o
 1 MiB ordinary save envelope. The UI must report that refusal instead of dropping
 history or silently truncating a start.
 
-File replacement has a format-specific boundary. The material-baseline writer
-uses native atomic replacement, including preservation of the previous named
-file when replacement fails. Ordinary setup and generated-start writers use
-Godot's rename operation; they do not establish that same guarantee for every
-I/O failure. Use a new name to retain an earlier ordinary or generated start.
-The [baseline qualification](gen008-flatten-qualification.md) records the
-stronger material-baseline failure tests.
+The **unmerged ULTIMA candidate** also makes ordinary setup, generated-start and
+architectural-project writes check the complete closed staging bytes before
+using native replacement. A refused write reports that this save did not replace
+the previous file. The preceding accepted writers used Godot rename and could
+report success after a buffered short write. Use a new name to retain an earlier
+version, and follow the canonical [replacement and failure contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+for the verified platform scope and recovery instructions. This is not an fsync
+or power-loss durability promise. The separate material-baseline writer and its
+[qualification](gen008-flatten-qualification.md) retain their established contract.
 
 Generated starts retain their resolved recipe plus ordered edits; actors retain
 authored settings/spawns and supported equipment. **Flatten / Bake History…** is

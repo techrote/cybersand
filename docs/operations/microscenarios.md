@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: MS-000 schema 1 and compatible MS-001 schema 2 definitions, bounded owner lifecycle, shared modes, inspection and fresh-reset comparisons; not physics architecture or full replay
 canonical-for: [microscenario-contract, microscenario-host, microscenario-capture]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [microscenarios-programme.md, experiment-tower.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/level-saves-and-replay.md, ../audits/2026-09-19-issue-27-microscenarios.md]
 ---
 
@@ -206,7 +206,10 @@ fresh reset, never live parameter mutation. For generic fixtures the draft is th
 installed definition; otherwise it is the selected catalogue template. Actual Water
 policy/blind-run controls remain in their original panel. The generic editor and
 capture route are disabled during a blind session to avoid leaking hidden policy.
-Use the established blind reveal/export workflow instead.
+The legacy Water export can expose the candidate mapping and overwrite its prior
+observation file. Use it only as revealed engineering metadata; the
+[Water Feel readiness boundary](water-feel-lab-experiment.md#current-implementation-outcome)
+explains why this is not a qualified formal blinded-study capture route.
 
 The root Tower entry button has the isolated #24 `FOCUS_NONE` correction; common
 launcher buttons and pickers are also non-focusable. The modal JSON editor uses
