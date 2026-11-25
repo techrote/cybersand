@@ -1,0 +1,36 @@
+{
+  "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "source_tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "campaign": 45556633896,
+  "publication_scope": "Derived source/hash/status/timing review only; no raw logs, journals, screenshots or aggregate ZIP.",
+  "files": {
+    "3a-first-windows-attempt-negative.json": {
+      "bytes": 5495,
+      "sha256": "0a2475af6b09c188eb789136102f57f00f74c5a7c5b781682db2ef25f218808a"
+    },
+    "d503-final-identity.json": {
+      "bytes": 17203,
+      "sha256": "913443e42a21235465754df908e0c86d960511a6f6ec2a8fbb4e30d8340c2d8d"
+    },
+    "d503-linux-experience-review.json": {
+      "bytes": 9678,
+      "sha256": "c489d1fec1d35c2b2811efb03892b0766de8d0d92799103c1cfe08fe58db0ae5"
+    },
+    "d503-linux-retained-groups.json": {
+      "bytes": 6209,
+      "sha256": "7ea1b843724f7da1bc30e9142153f72aa4605ab457c06edafb71185d0a32fc10"
+    },
+    "d503-qualified-status.md": {
+      "bytes": 15154,
+      "sha256": "6b39660db6f6120e01b4d200cb90afdaac353e96a2f8646c6ad14c6dbcade860"
+    },
+    "d503-windows-experience-review.json": {
+      "bytes": 9941,
+      "sha256": "9ba213cb5af383e3f4fceb16c5d50f330a09fb1fb9164c73309edc6c04126c28"
+    },
+    "d503-windows-retained-groups.json": {
+      "bytes": 6211,
+      "sha256": "45bb31f3bf667a251d04012e6cfe8ebce07de9d7583c04f8dcf5a3023099b86d"
+    }
+  }
+}

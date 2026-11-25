@@ -1,0 +1,275 @@
+{
+  "source": {
+    "commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "tree": "464c60288d5461d61578b000ae68ac029cffb5bd"
+  },
+  "evidence_kind": "independent original Linux artifact/log/audit byte review; no application rerun",
+  "gate_parser_sha256": "8512a7ce461ade9fdb490fc0c0a552c05e0d07885a85fa360edf2f4f521e6962",
+  "cases": [
+    {
+      "kind": "headless",
+      "name": "test_art_owned_transport",
+      "checks": 155,
+      "log_sha256": "13f1eb767c2091911ab631be3aa94a4c3c23850251c6d167b336f1cdcb3d0796",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_conversation_preparation",
+      "checks": 66,
+      "log_sha256": "4695bc9bb964bb44a05f676178dcadf7da674f892474c2c4719fb54d2dfec90b",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_conversation_apply_preparation",
+      "checks": 154,
+      "log_sha256": "fbcde96b4a3768fb0b6c973186ae76f9a7c00e84c4683bbd878b8398dee2e18a",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_authoring_proposal",
+      "checks": 107,
+      "log_sha256": "169fc1830099c1d4965b0bd9585bffed7aac3b54a3ad1dfc84bf88727eda9a8c",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_creative_cohort",
+      "checks": 251,
+      "log_sha256": "2e2d5a53225bf01f6e28c4fa45fa49530df69efc53361df2536a94c0f798692a",
+      "artifact_files_verified": 1
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_collaborative_native",
+      "checks": 739,
+      "log_sha256": "af35e8ec5ab4019ecb7664ce230aea05d7cd7bc5860c587583731d4351d1ab4e",
+      "artifact_files_verified": 55
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_collaboration_authority",
+      "checks": 39,
+      "log_sha256": "2de764734251a72d4a5bc3af8b0d2a5f93aa63971992b7e5fb9c45dfc06227f4",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_collaboration_session",
+      "checks": 182,
+      "log_sha256": "cb2eab30a56dde990313d79f0acd14b72acec3bfd65a603b4ee0524d0ac922f6",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "headless",
+      "name": "test_art_collaboration_workspace",
+      "checks": 93,
+      "log_sha256": "9501a704fad87a67d9ac23f0c3a13bf2c047676980eea49455525caa78d82290",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_owned_transport",
+      "checks": 155,
+      "log_sha256": "8269d223e9d999cc8134d7306225e2e82b3d8d2700368f4e891457d3d91a1bd0",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_conversation_preparation",
+      "checks": 66,
+      "log_sha256": "f5469241c86626399b7f59a77e9a00abd7a0a7c7fcc7284e02f2c479b4dc4dec",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_conversation_apply_preparation",
+      "checks": 154,
+      "log_sha256": "967322b6d6afa81b25a458103dab6178a5d3b14658394561c828daf1debb51e1",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_authoring_proposal",
+      "checks": 107,
+      "log_sha256": "a3fbaecf043ab0028a89ecff90ccfd860683d89920b9ca16d67a47aaefa12d72",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_creative_cohort",
+      "checks": 251,
+      "log_sha256": "adef01f9168d19c957172f22f40c0ba0095c97e94d88a0221576064b91773b13",
+      "artifact_files_verified": 1
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_collaborative_native",
+      "checks": 762,
+      "log_sha256": "2324a6d023a1fb76f1038ee8d7112fce170c039d527b243f80919ac6429bc716",
+      "artifact_files_verified": 73
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_collaboration_authority",
+      "checks": 39,
+      "log_sha256": "9f1164dafd11f7358685002a7d8bf7ba1d401cf71ab7b0ab441552b49c889456",
+      "artifact_files_verified": 0
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_collaboration_session",
+      "checks": 202,
+      "log_sha256": "89fe6133a8d950d058692034c1c0a3ef66c1f7103939094a70a276a3b046eb74",
+      "artifact_files_verified": 4
+    },
+    {
+      "kind": "displayed",
+      "name": "test_art_collaboration_workspace",
+      "checks": 94,
+      "log_sha256": "42b85099e40f081a2b4a048fc2ce148a23bb78aafbac4363e3ee7e5a6e8dab4b",
+      "artifact_files_verified": 1
+    }
+  ],
+  "large_apply": [
+    {
+      "kind": "headless",
+      "report_sha256": "64edc36adf63a8d6c7526070bc352d3d29b2830eb04c2eff089eb418f7bf4033",
+      "original_audits": [
+        {
+          "relative_path": "extracted/art-final-headless-conversation-apply/isolated-profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/690e775bade3aa3f1eecd225d5adf3c3.jsonl",
+          "sha256": "5bfae3cd90a2bdd59f2acdcf8ab92e8fd56abe999a0ad311583be9f136681c35",
+          "bytes": 33538622
+        }
+      ],
+      "complete_edited_snapshots": [
+        {
+          "bytes": 16769024,
+          "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+        }
+      ],
+      "model_requests": 0,
+      "events": 3,
+      "case": {
+        "actual_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "apply_completion_usec": 602763,
+        "apply_preparation": {
+          "admission_usec": 39790,
+          "asynchronous": true,
+          "commit_usec": 38221,
+          "handle": 1,
+          "prepared_after_usec": 556328,
+          "status": "committed",
+          "total_usec": 591957
+        },
+        "apply_usec": 40006,
+        "asynchronous_apply": true,
+        "case": "loaded-near-cap-edited-apply",
+        "context_bytes": 16769024,
+        "expected_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "fixture_admission_usec": 737379,
+        "frames": {
+          "frames": 88,
+          "max_usec": 55996,
+          "p95_usec": 7028
+        },
+        "last_audit": {
+          "format_usec": 3002,
+          "kind": "conversation_edited",
+          "sanitize_usec": 13,
+          "schema": 1,
+          "sequence": 2,
+          "signal_usec": 7,
+          "stored": true,
+          "total_usec": 35967,
+          "write_usec": 22838
+        },
+        "open_frames": {
+          "frames": 12,
+          "max_usec": 68015,
+          "p95_usec": 68015
+        },
+        "open_usec": 13806,
+        "timing_scope": "apply_usec is click-return; completion includes preparation and durable owner commit; frames cover both",
+        "visible_characters": 4096
+      }
+    },
+    {
+      "kind": "displayed",
+      "report_sha256": "5c9e363c3851fac3117eb69c6ee1ebec248f39b09ea65c45dc054f1e75527ae7",
+      "original_audits": [
+        {
+          "relative_path": "extracted/art-final-displayed-conversation-apply/isolated-profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/d4c108eff53ff53e91044c6173f0ebe1.jsonl",
+          "sha256": "1483ce924e69ca82b2ce7d5de957bb73f6d2b5b6af27bce47202476e92c0aa9c",
+          "bytes": 33538624
+        }
+      ],
+      "complete_edited_snapshots": [
+        {
+          "bytes": 16769024,
+          "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a"
+        }
+      ],
+      "model_requests": 0,
+      "events": 3,
+      "case": {
+        "actual_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "apply_completion_usec": 724045,
+        "apply_preparation": {
+          "admission_usec": 38822,
+          "asynchronous": true,
+          "commit_usec": 33325,
+          "handle": 1,
+          "prepared_after_usec": 686031,
+          "status": "committed",
+          "total_usec": 716719
+        },
+        "apply_usec": 39278,
+        "asynchronous_apply": true,
+        "case": "loaded-near-cap-edited-apply",
+        "context_bytes": 16769024,
+        "expected_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "fixture_admission_usec": 715810,
+        "frames": {
+          "frames": 19,
+          "max_usec": 148281,
+          "p95_usec": 148281
+        },
+        "last_audit": {
+          "format_usec": 2507,
+          "kind": "conversation_edited",
+          "sanitize_usec": 13,
+          "schema": 1,
+          "sequence": 2,
+          "signal_usec": 7,
+          "stored": true,
+          "total_usec": 31019,
+          "write_usec": 17689
+        },
+        "open_frames": {
+          "frames": 12,
+          "max_usec": 138420,
+          "p95_usec": 138420
+        },
+        "open_usec": 15135,
+        "timing_scope": "apply_usec is click-return; completion includes preparation and durable owner commit; frames cover both",
+        "visible_characters": 4096
+      }
+    }
+  ],
+  "visuals_reviewed": [
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/00-art-ordinary-context.png",
+      "sha256": "5e6babc3be7f57c23a1cab0e88a061db50cad8efceef22754a27be0b39901c81",
+      "observed": "actually reviewed original hosted Context and Proposal screenshots; complete window title, readable bounded body, paging, authorization and footer controls visible"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/01-art-ordinary-proposal.png",
+      "sha256": "b3faae09e1826ebbcb1da127278f9c98c81088117b6724d889f00702a58999b9",
+      "observed": "actually reviewed original hosted Context and Proposal screenshots; complete window title, readable bounded body, paging, authorization and footer controls visible"
+    }
+  ],
+  "status": "passed"
+}

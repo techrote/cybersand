@@ -1,0 +1,153 @@
+{
+  "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "source_tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "platform": "windows",
+  "status": "passed",
+  "scope": "Independent original retained group report, clean-source provenance and process-exit review directly from the original ZIP; no local application rerun. Exact raw group records remain in the Actions artifact.",
+  "groups": [
+    {
+      "group": "art-final-displayed-conversation-apply",
+      "checks": 24,
+      "case_count": 1,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "dd2dfd014c1206ac891f2924eb7a0a8e3ca3850ab6ea6089b1de16a8fe2c929c",
+      "provenance_sha256": "ebb873f2e26dd0dc1c94452c3b0538710b48ad4574cdb422b333a4c5a00734df",
+      "execution_sha256": "9fbc45534c44641862cfda868a26e26ca0ae6d872585a487c6ff513d7da4bb3d"
+    },
+    {
+      "group": "art-final-displayed-lifecycle",
+      "checks": 92,
+      "case_count": 2,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "b94816e11f61776c1806660387c5632bc68a11463e8f6db9b7ac4fb2c73a7a05",
+      "provenance_sha256": "4ddc8c5406f330e5596017f9156d4ef6ad4259e1ebb44284f1adb039bcfee7b8",
+      "execution_sha256": "ae705a01b7acb59f336cde260d5fa6d987549c1cd2a860dfb5ca94009678e5dc"
+    },
+    {
+      "group": "art-final-displayed-network",
+      "checks": 569,
+      "case_count": 31,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "53aaac017fa6dfd0b4de4cb405af92f1130b45b317b870c68d1b8a3bc3bf4830",
+      "provenance_sha256": "35f42cf0e744a8ba5d66fe72cc7f113f701bd8da0d167e08397b463c1c8228ce",
+      "execution_sha256": "4d9aaf86ac481b66e300c4b9bdb035f1d80307176f03aa949c33666fbe5aa846"
+    },
+    {
+      "group": "art-final-displayed-preparation",
+      "checks": 96,
+      "case_count": 3,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "472a5a0e93dc71119bffc27eed655e51fba4ef6ca7f8cdf89df44412a93de0ee",
+      "provenance_sha256": "c91587db821b4b1b3f1b067a01cd34e72eba35b7258913fa3fe7167816b93cce",
+      "execution_sha256": "ac984c5950393f5ee1633582729eba0b73f5c5b3c50347cb473cbac215689f12"
+    },
+    {
+      "group": "art-final-displayed-request-preparation",
+      "checks": 125,
+      "case_count": 4,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "d6134a09a38df358ba1a72d885a67b81a92c68cda4bb6970b0715be81571700c",
+      "provenance_sha256": "fdb0e1c61d1054d1e60ba518a37bf3c0f5f1c26cf91cadb6d3c9bb76c06749c6",
+      "execution_sha256": "6ddb0fab498b14a5e95874e02b7b90c1670969b0b7f137f7e4aeae112516c5a7"
+    },
+    {
+      "group": "art-final-headless-conversation-apply",
+      "checks": 23,
+      "case_count": 1,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "aa40ad30c3597b187045deda52ec3300a62c56f9109b3f251926542299e5bca2",
+      "provenance_sha256": "5e49dce5a11a66aa7975b545e43e43d21efb51137f72fe7ff17366a9e05d4ef8",
+      "execution_sha256": "b13c35684cf6c509e5d79cedcbf936d340d30f258290ab8b95d1c85d3f64fac9"
+    },
+    {
+      "group": "art-final-headless-lifecycle",
+      "checks": 92,
+      "case_count": 2,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "bde7803c9d8f0f67e4a68475c8bf622b119c71e0e63ba483661b6cd076f04aa3",
+      "provenance_sha256": "fe96b0e99a2c6a163359f1feeb4724aba36b10232292e96f733877afc9050653",
+      "execution_sha256": "68f7ee585b68267a556196e1ec34a08fee6cb2ef94127fd9c95f1b677ece3cbe"
+    },
+    {
+      "group": "art-final-headless-network",
+      "checks": 569,
+      "case_count": 31,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "fb847d746810929d0dab0920058ad483fe3281688d846a4f00733ac7075c9001",
+      "provenance_sha256": "aba9fa6952ca8d31dd5025e5254c9888d9682d3fa0d9697b9e59ffe8d9edbeff",
+      "execution_sha256": "5073053e07569fd3dff489fd6d7563eaf86dd7192e8fc6e9e5697f2b247aa8af"
+    },
+    {
+      "group": "art-final-headless-preparation",
+      "checks": 94,
+      "case_count": 3,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "7a9226ac19f30f5142ef72ff59b5e7920e268c08a793f00285310a3e7dbaad80",
+      "provenance_sha256": "f741ada3cd631727514d55c1fdb20cf24129ba08a89b3a4a97cb739607b48c16",
+      "execution_sha256": "6d89892f358be13d8a0265a11dc3548554452b013a6d243b36e177a539eb28cd"
+    },
+    {
+      "group": "art-final-headless-request-preparation",
+      "checks": 125,
+      "case_count": 4,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "6c55807ed8144156eeb94d4f16c70c7df3cda41fbccb837e3a1bd18ebefd3bbf",
+      "provenance_sha256": "ef528aa13f8ebe502b95e8073bee4b90d761575df357c7836a75d8020d41e70c",
+      "execution_sha256": "f52ff774dd2ca4a5f67a7cbaab0c1b3ea0626eef896493db9cb09c4b8f1f0e0e"
+    },
+    {
+      "group": "art-final-process-exit",
+      "checks": 11,
+      "case_count": 0,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "60e3a7d3485572eac34bf304901313afd6cf5a45869b8685146c6ef83e66dd67",
+      "provenance_sha256": "0d346485d16b6b087500c0814fc52c1ef35aca112a87dbf21a20e094bf6323b7",
+      "execution_sha256": "c60e280c1f40a75c98db54c5dc8f899c58bf832a6eb8949483ef190d4a348e81"
+    },
+    {
+      "group": "art-final-request-exit",
+      "checks": 13,
+      "case_count": 0,
+      "failures": [],
+      "source_clean": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "report_sha256": "0a9085790869532d6a1969c4e44b5a33b6054df73aaef83f86abce73174e6277",
+      "provenance_sha256": "edb0b46fe518ec900a518d52e5a91e39f151b8fefde6f4b11bba8c7d2e55cb20",
+      "execution_sha256": "e26c95526630d2fac8439012a98daae178c11df2ce6fd41ce91fc87c60747899"
+    }
+  ]
+}

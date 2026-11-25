@@ -1,0 +1,169 @@
+{
+  "artifact": {
+    "bytes": 4393990,
+    "crc_verified": true,
+    "id": 14995049040,
+    "members": 530,
+    "sha256": "195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040"
+  },
+  "display": "Windows",
+  "failed_group": {
+    "art_active_separately_observed": false,
+    "assertion": "art.active and first_progress_ms < 2000",
+    "early_native_receipt": true,
+    "exclusive_limit_ms": 2000,
+    "first_display_pixel": true,
+    "first_progress_ms": 2187,
+    "line": 119,
+    "name": "art-native-displayed",
+    "result": {
+      "base": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+      "checks": 151,
+      "failures": 1,
+      "last_chunk_changed": 3152,
+      "last_native_backend": "CyberNativeCellWorld",
+      "stop_prefix": 2816
+    },
+    "script": "godot/tests/test_art_batch_native.gd",
+    "stderr_sha256": "e1a1b666c3696e58abfdb7aaaf105827d335243ab758f4d00a3f6e9df8edbc16",
+    "stdout_sha256": "6bc12fa1a4630bdcd610211a7288f587b8ce5a279577e4cd57b5723ba56df4a0"
+  },
+  "interpretation": "Observed retained performance-bound breach. Application/native/test bytes unchanged by the3a delivery-doc delta; no cause attributed and no threshold relaxed. A single fresh full campaign is planned by the lead with this negative recorded in its documentation ancestry.",
+  "job": 138999860117,
+  "new_collaborative_cases": "skipped",
+  "package_and_pristine_launcher": "skipped; no artifact built",
+  "platform": "windows",
+  "prior_source_observations": [
+    {
+      "first_progress_ms": 1363,
+      "predicate_passed": true,
+      "run": 45546845554,
+      "source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+    },
+    {
+      "first_progress_ms": 1693,
+      "predicate_passed": true,
+      "run": 45541065622,
+      "source": "e536d128f85e948223b25e13931a7a801faf956d"
+    }
+  ],
+  "publication_scope": "Derived source/hash/status only; original records remain in the named Actions artifact and local verified ZIP.",
+  "qualification": "failed; no new collaborative suite or package acceptance",
+  "retained_final_groups": [
+    {
+      "cases": 1,
+      "checks": 24,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-displayed-conversation-apply",
+      "report_sha256": "807010d1891d5090c8feaf7d89282b863697fa8ea526d7266934a637ea61e75f",
+      "timed_out": false
+    },
+    {
+      "cases": 2,
+      "checks": 92,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-displayed-lifecycle",
+      "report_sha256": "fc9b43de0d3ac792dafc56c8bee66b6e38b3c015828e0f3f03232d60e0910df4",
+      "timed_out": false
+    },
+    {
+      "cases": 31,
+      "checks": 568,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-displayed-network",
+      "report_sha256": "4c626657852bac680abf47c2f7da7266f9befcf351a9edb2b435714088431479",
+      "timed_out": false
+    },
+    {
+      "cases": 3,
+      "checks": 96,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-displayed-preparation",
+      "report_sha256": "df7a4a98e4248b1a1f6b2ce403b02f55c0530e8c20fc093ab5b99dc577fc02bd",
+      "timed_out": false
+    },
+    {
+      "cases": 4,
+      "checks": 125,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-displayed-request-preparation",
+      "report_sha256": "d5e500af8626822676342c4de8f024717d8242e69abd5f0505e956f91db22706",
+      "timed_out": false
+    },
+    {
+      "cases": 1,
+      "checks": 23,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-headless-conversation-apply",
+      "report_sha256": "3cb5098f0e022e775a65ce968638be5c1560f24804a87da408bfd51a6dfc1cc0",
+      "timed_out": false
+    },
+    {
+      "cases": 2,
+      "checks": 92,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-headless-lifecycle",
+      "report_sha256": "f609762fcfb9b221bad322464c47bf511b6874cf9977e7659e070c7ee3a6f239",
+      "timed_out": false
+    },
+    {
+      "cases": 31,
+      "checks": 569,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-headless-network",
+      "report_sha256": "241ac25878011024737457f20133d8c3592b0e7d11bd869651ec9d24c2887cd6",
+      "timed_out": false
+    },
+    {
+      "cases": 3,
+      "checks": 96,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-headless-preparation",
+      "report_sha256": "95dbfc77760a849bc491d7c5ab8d0b7d38b4ab3c7408d9823d2282daf2c60b9c",
+      "timed_out": false
+    },
+    {
+      "cases": 4,
+      "checks": 125,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-headless-request-preparation",
+      "report_sha256": "dcb8873fe4a4c4c6abb2af1574d7fd2af13c7762fc4605cfca7112bc12fe6f47",
+      "timed_out": false
+    },
+    {
+      "cases": 0,
+      "checks": 11,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-process-exit",
+      "report_sha256": "c04e0d09bb7805914a1ac10b5f0db00104342cf6299a99968dfe40ffa442f9e8",
+      "timed_out": false
+    },
+    {
+      "cases": 0,
+      "checks": 13,
+      "exit_code": 0,
+      "failures": [],
+      "group": "art-final-request-exit",
+      "report_sha256": "d3c8bb76b1387877f7923070cb2e909cd9c5cb82bdbb29363a7fa40f3a16e2cd",
+      "timed_out": false
+    }
+  ],
+  "run": 45553413100,
+  "schema": "art-3a-windows-attempt1-negative-v1",
+  "source": {
+    "commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf"
+  }
+}

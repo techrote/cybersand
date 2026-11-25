@@ -1,0 +1,400 @@
+{
+  "schema": "art-collaborative-002-final-experience-qualification-v1",
+  "status": "qualified Windows evaluator; Draft/HOLD; no owner physical or genuine-model acceptance",
+  "source": {
+    "commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+    "parent": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "pull_request": 780,
+    "observed_draft": true,
+    "observed_merged": false,
+    "parent_delta": "44 appended mission-ledger lines recording the prior failed Windows attempt; application/native/Godot-tests/workflow/guide/packaging bytes unchanged"
+  },
+  "campaign": {
+    "run_id": 45556633896,
+    "run_attempt": 1,
+    "conclusion": "success",
+    "application_scope": {
+      "mode": "full_required",
+      "reuse": false
+    },
+    "jobs": {
+      "source": 139010151836,
+      "linux": 139010327379,
+      "windows": 139010327480
+    },
+    "source_job": "success",
+    "linux_job": "success",
+    "windows_job": "success",
+    "broad_draft_gates": "Native/GDExtension and other unrelated Draft-gated heavy campaigns remain skipped; not claimed executed"
+  },
+  "artifacts": [
+    {
+      "kind": "principal Windows evaluator",
+      "id": 14997576786,
+      "bytes": 94411108,
+      "sha256": "a6b1a453e63f51721e7232277fe18facef14e05a26fc1b21f7af941f8fbad433",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14997576786",
+      "expires_at": "2027-02-23T05:53:05Z"
+    },
+    {
+      "kind": "Windows original qualification evidence",
+      "id": 14997800871,
+      "bytes": 12812235,
+      "sha256": "582fefeb91865e62b96420fedffc31b95bb1ddb7462213638f55447dada73009",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14997800871",
+      "expires_at": "2027-02-23T05:53:05Z"
+    },
+    {
+      "kind": "Linux original qualification evidence",
+      "id": 14996501724,
+      "bytes": 17155267,
+      "sha256": "7bec2f9d085041466eb1edf7dd6d9d4f6369b9069939ea071eff22a45f2009af",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14996501724",
+      "expires_at": "2027-02-23T05:53:05Z"
+    },
+    {
+      "kind": "strict application qualification scope",
+      "id": 14995418392,
+      "bytes": 2738,
+      "sha256": "39078a548ef62d546eb1a3babc32ab35abfe12d167c76baba18a85ae1fb0d57e",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14995418392",
+      "expires_at": "2027-02-23T05:53:05Z"
+    }
+  ],
+  "portable": {
+    "inner_zip_bytes": 95606841,
+    "inner_zip_sha256": "4d2f73c41ad79a3a1199736410369e91a3b52f63934e6ba54347991ef4f2afb5",
+    "manifest_sha256": "eac1ef9682280b7273e3c834d8da00ec3b9e850cea2f18cb9b9657089b6f6161",
+    "immutable_files_verified": 1200,
+    "package_members": 1201,
+    "payload_bytes": 224692963,
+    "canonical_source_files_verified": 1092,
+    "materialized_lfs_pointers_verified": 2,
+    "source_matched_native_inputs": 105,
+    "source_matched_rapier_inputs": 4,
+    "native_example_original_files_verified": 73,
+    "native_example_original_bytes": 18938665,
+    "runtimes": {
+      "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "vcruntime140.dll": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    }
+  },
+  "guide": {
+    "absent_local_destinations": [],
+    "brief_ids": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B12",
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ],
+    "bundled_brief_sha256": "2a57faa57a2514dfd34287e1dacf88580a10b901929c8cbf224a6526d8bbe13f",
+    "complete_prompt_count": 24,
+    "guide_bytes": 25071,
+    "guide_sha256": "36a1b3e4f48383e332b4c34e13b43a29f4948930f208bb557bfe2b973799361a",
+    "instruction_checks": {
+      "exact_bundled_brief_path": true,
+      "explicit_no_startup_request": true,
+      "finite_direct_default": true,
+      "fixture_model_distinction": true,
+      "fresh_comparison_session": true,
+      "numeric_loopback": true,
+      "offline_24_brief_protocol": true,
+      "original_physical_pending": true,
+      "pause_before_native_operations": true,
+      "skip_retires_residual": true,
+      "unsupported_native_modules": true
+    },
+    "local_markdown_destinations": [],
+    "optional_online_destinations": [
+      "https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/systems/art-native-context-proposals.md",
+      "https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/audits/2026-11-25-art-workbench-collaborative-002/NATIVE-INDEPENDENT-REVIEW.md",
+      "https://github.com/techrote/cybersand/actions/runs/45546845554",
+      "https://github.com/techrote/cybersand/blob/c888fcf6b0da41d760a50837034328501e766f25/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/bcc-windows-independent-review.md",
+      "https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-recovery.md"
+    ],
+    "passed": true,
+    "readme_bytes": 25071,
+    "readme_equals_complete_guide_after_exact_lf_normalization": true,
+    "readme_sha256": "36a1b3e4f48383e332b4c34e13b43a29f4948930f208bb557bfe2b973799361a",
+    "scope": "Independent exact delivered guide/README/source/brief identities and ordinary Markdown link closure; online background is optional and not fetched by this check.",
+    "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "source_tree": "464c60288d5461d61578b000ae68ac029cffb5bd"
+  },
+  "installed": {
+    "result": {
+      "status": "passed",
+      "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "actual_launcher": true,
+      "display": "Windows",
+      "automatic_model_requests": false
+    },
+    "execution": {
+      "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "timed_out": false,
+      "exit_code": 0,
+      "watchdog_seconds": 240
+    },
+    "examples": {
+      "actual_installer": true,
+      "package_local_only": true,
+      "setups_sha256": {
+        "art02-industrial_repair": "ff4c8e8e42e85f702406ac6e2852240fa6fc2d3518dee675517f966c116bb9f0",
+        "art02-palette_foundry": "edab99034ce99b19a50ac527e04a6fe9d106d187117f55cfd8ac450c67731755",
+        "art02-protected_courtyard": "729105cebd76723c56605197189a6290226893ddf7ac776999138f80dc88b7bd",
+        "art02-revised_arcology": "37cae728b8c5996f2a45d94c1a30a54cafc9a10d0c15a1f3c04cdff4d32c5058",
+        "art02-scifi_interior": "bf0344b58090a11b457312518abfaf8e6d73b718c98ee9bed7acf0b333561bf1",
+        "art02-staged_megaframe": "584ebd2b07d2d039335c85352ca8f2ef27c43e3f2d5787bd45ea10847c194309",
+        "art02-stopped_workshop": "d4a44f8e069df78aa655da34ea835ef984a5fd9d39f4b561cb7772761b05a325",
+        "art02-structural_facade": "6ea8b1a77254da40c58293c471c996b29a06bfc3926c60a3cf1d53e179096e65",
+        "art02-xeno_vault": "2c04cc27d89b95a605aebd4658c95f785983f58e4cd6007e2b277cfa99501685"
+      }
+    },
+    "original_sha256": {
+      "installed-result.json": "dc2e792a82ec2afb15d2114594f4227b3f78b42317b2d3326a6ca51d1b48c583",
+      "installed-execution.json": "da49d77426c9add3a9c55bc244c162dbd70e3c48f0bbf61dc4816e3a3d06d657",
+      "installed-examples.json": "637498cd32006f944d62d6eacd06b63749f00a5de250350a1461924e7dc8f6ad",
+      "art-responsiveness.json": "29955905e497e468a28e56a3a29fbd6217629fa286f83b476d8c838724467deb"
+    },
+    "startup": {
+      "ready_usec": 39035133,
+      "startup_max_frame_gap_usec": 35481468,
+      "visible_idle_max_frame_gap_usec": 163006,
+      "teardown_usec": 334351,
+      "teardown_completed": true,
+      "automatic_requests": false,
+      "contains_provider_config": false
+    }
+  },
+  "independent_experience_review": {
+    "new_original_case_logs": 36,
+    "retained_original_group_report_sets": 24,
+    "complete_near_cap_audit_snapshots": 4,
+    "actual_original_context_and_proposal_screenshots_viewed": 4,
+    "mode": "read-only artifact, complete-audit and screenshot review; no new local application or physical Windows execution",
+    "canonical_gate_parser_sha256": "8512a7ce461ade9fdb490fc0c0a552c05e0d07885a85fa360edf2f4f521e6962"
+  },
+  "near_cap_apply": [
+    {
+      "platform": "linux",
+      "display": "headless",
+      "text_bytes": 16769024,
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096,
+      "click_return_usec": 40006,
+      "owner_adoption_total_usec": 591957,
+      "driver_observed_completion_usec": 602763,
+      "prepared_after_usec": 556328,
+      "commit_usec": 38221,
+      "audit_usec": 35967,
+      "open_usec": 13806,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 68015,
+        "p95_usec": 68015
+      },
+      "apply_frames": {
+        "frames": 88,
+        "max_usec": 55996,
+        "p95_usec": 7028
+      },
+      "complete_durable_edited_snapshots": 1,
+      "model_requests": 0,
+      "original_report_sha256": "64edc36adf63a8d6c7526070bc352d3d29b2830eb04c2eff089eb418f7bf4033"
+    },
+    {
+      "platform": "linux",
+      "display": "displayed",
+      "text_bytes": 16769024,
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096,
+      "click_return_usec": 39278,
+      "owner_adoption_total_usec": 716719,
+      "driver_observed_completion_usec": 724045,
+      "prepared_after_usec": 686031,
+      "commit_usec": 33325,
+      "audit_usec": 31019,
+      "open_usec": 15135,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 138420,
+        "p95_usec": 138420
+      },
+      "apply_frames": {
+        "frames": 19,
+        "max_usec": 148281,
+        "p95_usec": 148281
+      },
+      "complete_durable_edited_snapshots": 1,
+      "model_requests": 0,
+      "original_report_sha256": "5c9e363c3851fac3117eb69c6ee1ebec248f39b09ea65c45dc054f1e75527ae7"
+    },
+    {
+      "platform": "windows",
+      "display": "headless",
+      "text_bytes": 16769024,
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096,
+      "click_return_usec": 15019,
+      "owner_adoption_total_usec": 368878,
+      "driver_observed_completion_usec": 374685,
+      "prepared_after_usec": 317783,
+      "commit_usec": 53015,
+      "audit_usec": 51419,
+      "open_usec": 28064,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 56158,
+        "p95_usec": 56158
+      },
+      "apply_frames": {
+        "frames": 57,
+        "max_usec": 68060,
+        "p95_usec": 7041
+      },
+      "complete_durable_edited_snapshots": 1,
+      "model_requests": 0,
+      "original_report_sha256": "aa40ad30c3597b187045deda52ec3300a62c56f9109b3f251926542299e5bca2"
+    },
+    {
+      "platform": "windows",
+      "display": "displayed",
+      "text_bytes": 16769024,
+      "text_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "visible_characters": 4096,
+      "click_return_usec": 14183,
+      "owner_adoption_total_usec": 628111,
+      "driver_observed_completion_usec": 644167,
+      "prepared_after_usec": 602347,
+      "commit_usec": 27842,
+      "audit_usec": 26275,
+      "open_usec": 30406,
+      "open_frames": {
+        "frames": 12,
+        "max_usec": 197939,
+        "p95_usec": 197939
+      },
+      "apply_frames": {
+        "frames": 17,
+        "max_usec": 220611,
+        "p95_usec": 220611
+      },
+      "complete_durable_edited_snapshots": 1,
+      "model_requests": 0,
+      "original_report_sha256": "dd2dfd014c1206ac891f2924eb7a0a8e3ca3850ab6ea6089b1de16a8fe2c929c"
+    }
+  ],
+  "near_cap_response_windows_displayed": [
+    {
+      "group": "art-final-displayed-network",
+      "case": "near-limit-complete-valid-response",
+      "response_bytes": 16773391,
+      "transport_wait_usec": 11109743,
+      "whole_case_usec": 14800202,
+      "frames": {
+        "frames": 97,
+        "max_usec": 392747,
+        "p95_usec": 172282
+      },
+      "hide": {
+        "close_usec": 998,
+        "hidden": true,
+        "provider_active_after": true,
+        "provider_active_before": true
+      },
+      "manual_during_transport": true,
+      "http_code": 200,
+      "report_sha256": "53aaac017fa6dfd0b4de4cb405af92f1130b45b317b870c68d1b8a3bc3bf4830"
+    },
+    {
+      "group": "art-final-displayed-preparation",
+      "case": "near-limit-successful-assistant",
+      "response_bytes": 16773283,
+      "transport_wait_usec": 11381302,
+      "whole_case_usec": 15894171,
+      "frames": {
+        "frames": 102,
+        "max_usec": 544613,
+        "p95_usec": 172255
+      },
+      "hide": {
+        "close_usec": 1058,
+        "hidden": true,
+        "provider_active_after": true,
+        "provider_active_before": true
+      },
+      "manual_during_transport": true,
+      "http_code": 200,
+      "report_sha256": "472a5a0e93dc71119bffc27eed655e51fba4ef6ca7f8cdf89df44412a93de0ee"
+    }
+  ],
+  "timing_interpretation": "Source-specific observations, not a causal cross-host comparison. Click return, durable owner adoption and driver-observed completion are distinct. Large-response frame maxima are per case, not a guarantee across the full matrix.",
+  "strict_displayed_native_repeat": {
+    "first_progress_ms": 1367,
+    "checks": 151,
+    "failures": 0,
+    "unchanged_exclusive_limit_ms": 2000,
+    "original_stdout_sha256": "c8af32516c96ae24a885850eb5ae44ad38bed0c9bb8d7b8c83e12f3e1fa95646"
+  },
+  "retained_first_delivery_attempt": {
+    "source_commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "run_id": 45553413100,
+    "job_id": 138999860117,
+    "artifact_id": 14995049040,
+    "artifact_bytes": 4393990,
+    "artifact_sha256": "195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94",
+    "first_progress_ms": 2187,
+    "exclusive_limit_ms": 2000,
+    "checks": 151,
+    "failures": 1,
+    "assertion": "art.active and first_progress_ms < 2000",
+    "art_active_separately_printed": false,
+    "early_receipt_and_first_displayed_pixel_checks_passed": true,
+    "new_windows_collaboration_and_package": "not reached",
+    "interpretation": "Retained threshold breach; no cause attributed, no threshold relaxed, one fresh full campaign followed from its documented descendant."
+  },
+  "independent_authorities": {
+    "provider_package_commit": "fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7",
+    "provider_package_report": "docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/d503-windows-independent-review.md",
+    "native_final_commit": "f4847680f22bfc60d8003e9a71a598dfe3a85e05",
+    "native_final_report": "docs/audits/2026-11-25-art-workbench-collaborative-002/STRICT-DELIVERY-NATIVE-INDEPENDENT-REVIEW.md"
+  },
+  "boundaries": [
+    "No genuine-model creativity or retrieval-effectiveness claim; deterministic fixtures and typed loopback requests only.",
+    "Owner physical Windows/NVIDIA absent-local-listener Send then ordinary Hide acceptance remains pending.",
+    "Architecture proposal transport and separate actual Linux native StageSession handoff are verified; production Architecture factory/UI mount and combined Windows evaluator are not shipped.",
+    "Direct retains its own work-area/material/erase/protected-rectangle controls; the full multi-region creative brief governs collaborative proposals.",
+    "Native Art source overwrite authority remains Empty(0)/Hard Wall(58); declared destructive permission does not override unsupported occupied source materials.",
+    "Static clear passages do not establish physical actor traversal.",
+    "Startup and large-response frame boundaries remain; no universal latency guarantee or total-work speedup claim.",
+    "No merge, Ready promotion, paid inference, hidden startup request, production-default activation or predecessor readiness mutation."
+  ],
+  "publication": {
+    "scope": "Derived source/hash/status/timing reductions only. No new raw logs, complete journals, screenshots or aggregate ZIP are published in this evidence change. Original Actions artifacts and already-published independent evidence remain the byte authorities.",
+    "prior_raw_aggregate": "Automatic approval review rejected publication of a2.57MB raw-record aggregate because potentially sensitive raw campaign logs/audits were not explicitly authorized for external publication. The archive remains local; it was not retried or rerouted.",
+    "local_only_aggregate_sha256": "3af9c2e579f0d6a4bbae8efb2b215af0c04932029bb180381e23ab77b6532f2e"
+  }
+}
