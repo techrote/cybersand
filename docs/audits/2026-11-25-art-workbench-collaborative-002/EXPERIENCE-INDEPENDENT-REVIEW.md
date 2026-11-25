@@ -46,6 +46,27 @@ generated Godot UID sidecars. A independently ran the preceding 17 Python
 methods and reported success; the two added methods require the new 19-method
 run at the later source.
 
+## Scoped regression inventory
+
+The frozen Art workflow retained its predecessor lifecycle/large-message
+matrices, but the changed native queue/executor path warranted restoring four
+additional existing focused cases on both source platforms:
+`test_art_provider`, `test_art_deferred_manual`, `test_art_stored_material` and
+`test_art_undo`. Windows also gains the previously Linux-only direct native
+`test_art_batch_native` case. Its existing 600-second allowance is retained;
+other ordinary retained cases keep 240 seconds. Native Undo uses the repository
+execution policy's `ordinary_case_seconds` (1200 at intake). The existing
+`test_art_batch_native_render` alias exercises the same ordinary native geometry
+and actual framebuffer on both platforms using the policy's graphical allowance.
+No broad unrelated-project suite or relaxed responsiveness threshold was added.
+
+Specialist B independently found that the readable context summary stopped at
+nested detail while Copy context copied the same summary. C corrected Copy to
+retain the complete bounded inspector JSON and added a deep native-cell sentinel
+assertion; the widget remains a paged summary with an explicit omissions notice.
+Oversized complete context refuses its disclosure representation instead of
+silently authorizing a truncated copy.
+
 ## Native authority trace
 
 The coordinator never treats provider prose as execution approval. Discuss and

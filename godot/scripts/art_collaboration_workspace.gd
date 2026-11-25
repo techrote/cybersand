@@ -91,6 +91,7 @@ var _proposal_page_index := 0
 var _proposal_json := ""
 var _context: Dictionary = {}
 var _context_full_text := ""
+var _context_json := ""
 var _context_page_index := 0
 var _turns: Array = []
 var _conversation_revision := -1
@@ -399,7 +400,7 @@ func _build_context() -> void:
 	var row := HBoxContainer.new()
 	_button(row, "Inspect next context", func() -> void: context_refresh_requested.emit(context_options()))
 	_button(row, "Copy context", func() -> void:
-		if not _context_full_text.is_empty(): DisplayServer.clipboard_set(_context_full_text))
+		if not _context_json.is_empty(): DisplayServer.clipboard_set(_context_json))
 	box.add_child(row)
 
 func _bound_edit(edit: Variant, limit: int) -> void:
@@ -567,9 +568,11 @@ func set_context_inspection(value: Dictionary) -> void:
 	_context = value.duplicate(true)
 	authorize.button_pressed = false
 	var inspector: Variant = value.get("inspector", value)
-	_context_full_text = _readable(inspector)
-	if _context_full_text.length() > MAX_CONTEXT_CHARACTERS:
+	_context_json = JSON.stringify(inspector, "\t")
+	_context_full_text = "Readable summary. Copy context retains the complete admitted JSON, including nested detail.\n\n" + _readable(inspector)
+	if _context_json.length() > MAX_CONTEXT_CHARACTERS or _context_full_text.length() > MAX_CONTEXT_CHARACTERS:
 		_context_full_text = "Context inspector exceeded its display contract. No disclosure authorization is available."
+		_context_json = ""
 		_context = {}
 	_context_page_index = 0
 	_render_page(_context_full_text, _context_page_index, context_text, context_page, context_previous, context_next)

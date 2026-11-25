@@ -116,6 +116,10 @@ func run() -> void:
 	check(requests.size() == 1, "visual preview never dispatches")
 	view.set_visual_context(null,"")
 	check(not view.visual_context.visible, "removed image leaves no stale preview")
+	var nested_context := {"level_one":{"level_two":{"level_three":{"level_four":{"level_five":{"native_cell":[17,31,58],"sentinel":"complete-admitted-context"}}}}}}
+	view.set_context_inspection({"digest":"nested-context","inspector":nested_context})
+	check(JSON.parse_string(view._context_json) == nested_context, "Copy context preserves every nested admitted value without readable-summary truncation")
+	check(view._context_full_text.contains("Copy context") and not view._context_full_text.contains("complete-admitted-context"), "bounded readable summary accurately discloses omitted nested detail")
 	var full_context := "native-context ".repeat(1000)
 	view.set_context_inspection({"digest":"fixture-context-b","inspector":{"detail":full_context}})
 	check(view.context_text.text.length() <= 4096, "context view shapes at most 4096 characters")
