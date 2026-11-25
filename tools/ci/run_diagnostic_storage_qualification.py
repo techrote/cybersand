@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Verify three existing diagnostic CLIs refuse incomplete result replacement.
+"""Verify diagnostic CLI and guarded audit writers refuse incomplete replacement.
 
-Every case executes the actual bounded one-tick native/Rapier entry point. It
-qualifies storage/acknowledgement only, not a new physics or actor campaign.
+The three public CLIs execute their actual one-tick native/Rapier entry points.
+The optional Goblin foundation's fixed writer has a separate guarded private
+probe. This qualifies storage only, not a new physics, actor or Goblin campaign.
 """
 from __future__ import annotations
 
@@ -19,7 +20,7 @@ import tempfile
 from run_workbench_save_qualification import require, sha, windows_lock
 
 ENGINE_ERRORS = re.compile(r"SCRIPT ERROR|Parse Error|Failed to load script|Invalid call|Invalid access|^ERROR:", re.MULTILINE)
-KINDS = ("physics", "thunderbowl", "physical-thunderbowl")
+KINDS = ("physics", "thunderbowl", "physical-thunderbowl", "goblin")
 
 
 class Runner:
@@ -31,7 +32,13 @@ class Runner:
         self.output = self.evidence / "outputs with spaces"
         self.output.mkdir()
         profile = Path(tempfile.mkdtemp(prefix="profile-", dir=self.evidence))
-        self.env = dict(os.environ, XDG_DATA_HOME=str(profile), APPDATA=str(profile))
+        # The real Goblin adapter verifies both this disposable marker and that
+        # Godot's actual user-data path is beneath the selected profile root.
+        # No launch/provenance campaign is asserted by a fixed-byte writer probe.
+        (profile / "goblin-profile.json").write_text(
+            json.dumps({"schema":"cybersand-goblin-profile-v1"}), encoding="utf-8")
+        self.env = dict(os.environ, XDG_DATA_HOME=str(profile), APPDATA=str(profile),
+                        CYBERSAND_GOBLIN_PROFILE=str(profile))
         self.base = [str(self.engine), "--headless", "--audio-driver", "Dummy",
                      "--path", str(self.project), "--script"]
         self.sequence = 0
@@ -50,10 +57,12 @@ class Runner:
         elif kind == "thunderbowl":
             command = self.base + ["res://examples/thunderbowl/run_thunderbowl.gd", "--", "--ticks=1",
                                    "--seed=" + str(value), "--output=" + destination]
-        else:
+        elif kind == "physical-thunderbowl":
             command = self.base + ["res://examples/thunderbowl/run_physical_thunderbowl.gd", "--", "--actors=1",
                                    "--ticks=1", "--seed=" + str(value), "--output=" + destination]
-        process = subprocess.run(command, env=self.env, capture_output=True, text=True,
+        else:
+            command = self.base + ["res://tests/goblin_storage_fault_child.gd"]
+        process = subprocess.run(command, env=self.env | {"CYBERSAND_DIAGNOSTIC_VALUE":str(value)}, capture_output=True, text=True,
                                  encoding="utf-8", errors="replace", timeout=90, preexec_fn=preexec)
         output = process.stdout + process.stderr
         label = f"{self.sequence:02}-{kind}-{value}.log"
@@ -71,12 +80,24 @@ class Runner:
             acknowledged = "THUNDERBOWL_RESULT " in output
             error = "\n".join(line for line in output.splitlines() if line.startswith("THUNDERBOWL_ERROR: "))
             require(process.returncode == (0 if acknowledged else 2), "Thunderbowl result/exit disagreement")
-        else:
+        elif kind == "physical-thunderbowl":
             records = [json.loads(line) for line in output.splitlines() if line.startswith("{")]
             error = "\n".join(line for line in output.splitlines() if line.startswith("PHYSICAL_THUNDERBOWL_ERROR: "))
             acknowledged = len(records) == 1 and records[0].get("failed") is False
             require(process.returncode == (0 if acknowledged else 2), "Physical result/exit disagreement")
             require(len(records) == (1 if acknowledged else 0), "Refused output still printed a success report")
+        else:
+            marker = "GOBLIN_STORAGE_RESULT "
+            records = [json.loads(line[len(marker):]) for line in output.splitlines() if line.startswith(marker)]
+            require(len(records) == 1, "Missing guarded audit-writer completion")
+            probe = records[0]
+            require(all(probe.get(key) is True for key in
+                        ("profile_verified", "wrong_path_refused", "wrong_profile_refused", "guards_preserved")),
+                    "Goblin fixed-path/profile guard was bypassed")
+            target = Path(probe["path"])
+            acknowledged = probe["acknowledged"] is True
+            error = str(probe.get("error", ""))
+            require(process.returncode == (0 if acknowledged else 2), "Audit-writer acknowledgement/exit disagreement")
         require(bool(error) != acknowledged, "Diagnostic failure/success messages disagree")
         data = json.loads(target.read_text(encoding="utf-8"))
         if kind == "physics":
@@ -86,14 +107,19 @@ class Runner:
         elif kind == "thunderbowl":
             loaded_value = data["runner"]["config"]["seed"]
             require(data["failed"] is False and data["tick"] == 1, "Thunderbowl result invalid")
-        else:
+        elif kind == "physical-thunderbowl":
             loaded_value = data["config"]["seed"]
             require(data["failed"] is False and data["tick"] == 1, "Physical result invalid")
+        else:
+            loaded_value = data["seed"]
+            require(data["fixture"] == "ULTIMA fixed audit writer, not a campaign transcript"
+                    and data["payload"] == "Complete observed bytes. " * 64, "Audit fixture lost complete bytes")
         return {"path":str(target), "command":command, "exit_code":process.returncode,
                 "natural_completion":True, "engine_error_detected":False,
                 "acknowledged":acknowledged, "error":error, "value":loaded_value,
                 "json_valid":True, "bytes":target.stat().st_size, "sha256":sha(target),
-                "log":label, "log_sha256":sha(log)}
+                "log":label, "log_sha256":sha(log),
+                **({"guards":probe} if kind == "goblin" else {})}
 
     @staticmethod
     def success(record, value):
@@ -116,13 +142,14 @@ class Runner:
             old = self.run(kind, 7)
             self.success(old, 7)
             target = Path(old["path"])
-            stale = target.with_name(target.name + ".tmp")
+            stale = target.with_name(target.name + (".partial" if kind == "goblin" else ".tmp"))
             stale.write_bytes(b"Unrelated retained diagnostic staging\n")
             stale_digest = sha(stale)
             new = self.run(kind, 8, relative=True)
             self.success(new, 8)
-            self.rows.append({"kind":kind,"fault":"none","evidence_class":"real-public-cli",
-                              "before":old,"replacement":new,"relative_output":True,
+            self.rows.append({"kind":kind,"fault":"none",
+                              "evidence_class":"guarded-audit-writer" if kind == "goblin" else "real-public-cli",
+                              "before":old,"replacement":new,"relative_output":kind != "goblin",
                               "stale_tmp_sha256":stale_digest})
             old = self.run(kind, 7)
             self.success(old, 7)
@@ -171,7 +198,9 @@ def main():
               "godot/examples/thunderbowl/thunderbowl_driver.gd", "godot/examples/thunderbowl/run_thunderbowl.gd",
               "godot/examples/thunderbowl/run_physical_thunderbowl.gd", "godot/scripts/workbench_file_transaction.gd",
               "godot/native_extension/material_baseline_file.cpp", "tools/ci/run_diagnostic_storage_qualification.py",
-              "tools/ci/run_workbench_save_qualification.py", "godot/examples/thunderbowl/matches/mixed.json"]
+              "tools/ci/run_workbench_save_qualification.py", "godot/examples/thunderbowl/matches/mixed.json",
+              "godot/goblin/goblin_controller.gd", "godot/goblin/goblin_adapter.gd",
+              "godot/tests/goblin_storage_fault_child.gd"]
     version = subprocess.check_output([str(runner.engine), "--version"], text=True, timeout=30).strip()
     require(version == "4.7.stable.official.5b4e0cb0f", "Pinned Godot 4.7 required")
     report = {"schema":"diagnostic-storage-qualification-v1", "authority":"historical-non-authoritative",
@@ -179,7 +208,7 @@ def main():
               "platform":sys.platform, "engine_version":version, "engine_sha256":sha(runner.engine),
               "input_sha256":{path:sha(root / path) for path in inputs}, "status":"running", "completed":False,
               "cases":runner.rows,
-              "limits":["One-tick actual CLI result storage, not physics/controller acceptance or a fresh research campaign",
+              "limits":["Three one-tick actual CLIs and one guarded fixed-audit-writer probe; no physics/controller or Goblin campaign acceptance",
                         "No browser/graphical/physical-owner or power-loss qualification",
                         "Shared deterministic I/O-boundary tests are qualified separately"]}
     try:
