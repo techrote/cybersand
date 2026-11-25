@@ -164,6 +164,10 @@
   ],
   "excluded": [
     {
+      "path": "research/gip014-goblin-gameplay-qa.md",
+      "reason": "Branch-scoped GIP-014 developer-only in-game QA candidate, Draft/HOLD. Read explicitly for goblin implementation, qualification and unsupported-action boundaries; it is not ordinary accepted Workbench behavior."
+    },
+    {
       "path": "research/gentek-classic-001.md",
       "reason": "Branch-scoped Draft/HOLD PR #624 sampler catalogue and qualification scope. Read directly for explicit CLASSIC research reviews; the Architectural Generator contract remains the canonical home for accepted controls and runtime publication requirements."
     },

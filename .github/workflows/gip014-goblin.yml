@@ -1,0 +1,64 @@
+name: GIP-014 goblin focused Windows qualification
+
+on:
+  push:
+    branches: [experiment/gip014-goblin-gameplay-20261124]
+    paths: ['tools/gip014/qualification-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gip014-goblin-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  windows-developer-evaluator:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize only the accepted Windows runtime inputs
+        run: |
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'Git LFS initialization failed.' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Windows LFS payloads are unavailable.' }
+      - name: Exercise the real game and verify an extracted evaluator
+        id: qualify
+        run: |
+          & tools/gip014/qualify_windows.ps1 -Output (Join-Path $env:RUNNER_TEMP 'gip014-evidence')
+          if ($LASTEXITCODE -ne 0) { throw 'goblin qualification failed; original evidence is retained.' }
+      - name: Preserve every attempted test result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-windows-evidence-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/gip014-evidence/source-tests/
+            ${{ runner.temp }}/gip014-evidence/extracted/CyberSand-goblin/test-output/
+            ${{ runner.temp }}/gip014-evidence/extracted/CyberSand-goblin/goblin-evaluator-manifest.json
+            ${{ runner.temp }}/gip014-evidence/*.json
+            ${{ runner.temp }}/gip014-evidence/*.log
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Retain only the qualified Draft developer evaluator
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-qualified-windows-evaluator-${{ github.sha }}
+          path: ${{ runner.temp }}/gip014-evidence/CyberSand-goblin.zip
+          if-no-files-found: error
+          retention-days: 30
