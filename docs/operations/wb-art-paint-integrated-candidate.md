@@ -83,10 +83,18 @@ atomic rollback. A PAINT recovery hold also blocks new Art drawing.
 
 The native authoring document records completed edits in order. **Save start**
 refuses while shared mutation, replacement or receipt work remains unresolved.
-A failed save preserves the existing named file; it cannot serialize unseen
-queued work as applied. Fragmented drawing can still exceed the 32,768-stamp or
+These admission refusals occur before writing the named file; queued work cannot
+be serialized as applied. Fragmented drawing can still exceed the 32,768-stamp or
 1 MiB ordinary save envelope. The UI must report that refusal instead of dropping
 history or silently truncating a start.
+
+File replacement has a format-specific boundary. The material-baseline writer
+uses native atomic replacement, including preservation of the previous named
+file when replacement fails. Ordinary setup and generated-start writers use
+Godot's rename operation; they do not establish that same guarantee for every
+I/O failure. Use a new name to retain an earlier ordinary or generated start.
+The [baseline qualification](gen008-flatten-qualification.md) records the
+stronger material-baseline failure tests.
 
 Generated starts retain their resolved recipe plus ordered edits; actors retain
 authored settings/spawns and supported equipment. **Flatten / Bake History…** is

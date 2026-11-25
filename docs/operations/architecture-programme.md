@@ -363,8 +363,10 @@ variants, semantic comparator, selected seeds/scenes, physical units, fixed knob
 run horizon, capacity limits, instrumentation cost check, primary metric and gate.
 Use fresh worlds and pinned release builds. Record source HEAD plus delta,
 compiler/flags, CPU/OS, artifact/profile hashes, worker count and exact commands.
-Do not measure while other builds run. Keep raw logs in
-`C:/kybersand/validation/local/<dated-experiment>/`; retain compact tables and
+Do not measure while other builds run. Keep raw logs in the experiment's declared
+evidence directory; the September registration used
+`C:/kybersand/validation/local/<dated-experiment>/`. That historical machine path
+does not assign a directory to a new checkout. Retain compact tables and
 interpretation under source documentation. Missing PMU/GPU counters are named
 gaps, never estimated misses presented as measurements.
 
@@ -509,8 +511,12 @@ from a local transition protocol. Failed ticks continue to use ADR-010 quarantin
 Keep intake source and each experiment as recoverable commits/branches, with
 reference fixtures and full registered input identity. Build candidates separately;
 never overwrite the only reference executable or the owner's loaded DLL. Preserve
-the intentional dirty DLL and all unrelated work. Raw outputs stay in the active
-workspace; `C:/cybersand` remains the functional-deliverables directory.
+unrelated work and explicitly inventory any local runtime that needs custody.
+The September intake included an intentional dirty DLL and used `C:/cybersand`
+for functional deliverables. Those are historical machine-specific custody facts,
+not instructions to retain a mismatched runtime or use that directory today.
+A new campaign declares its source, runtime identity, active workspace and output
+directories under the current [development and release procedure](github-development-and-release.md).
 
 Use fresh-world A/B selection or distinct binaries, not unsafe live state-layout
 switching. Normalize layout-specific state into semantic records for comparison;

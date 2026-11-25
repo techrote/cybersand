@@ -294,8 +294,12 @@ Extended materials and aperture metadata are available on hover.
 [`custom-masonry-court.style.json`](../../examples/worldgen/architectural/custom-masonry-court.style.json)
 is a separate user-authored example: different bay/floor dimensions, masonry
 materials, no shaft and an explicit window override. **Import style JSON** places
-the complete validated definition into a selected slot. **Save…** and
-**Load…** atomically save/reload the embedded authoring configuration.
+the complete validated definition into a selected slot. **Save…** writes the
+complete validated authoring configuration to a temporary file and then uses
+Godot's rename operation; **Load…** validates and restores the configuration.
+This project writer does not establish preservation of an existing destination
+for every I/O failure, despite the current failure message's broader wording.
+Save to a new filename when the previous project must remain available.
 The generated map itself stores the resolved recipe, so reopening never needs
 the original project or external preset file.
 
