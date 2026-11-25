@@ -16,6 +16,7 @@ import package_ultima_evaluator as package
 HEAD = '1' * 40
 TREE = '2' * 40
 CASE_NAMES = (
+    'test_goblin_contract', 'test_goblin_policies',
     'import', 'test_gameplay_recorder', 'test_workbench_material_baseline', 'test_architectural_generator_ui',
     'test_workbench_generator_discovery', 'test_paint_editor_history',
     'test_paint_editor_history-reopen', 'test_workbench_canvas',

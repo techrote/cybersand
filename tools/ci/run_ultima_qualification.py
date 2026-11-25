@@ -137,6 +137,8 @@ def main():
         available = {case.name:case for case in regression.discover_cases()}
         plan = [
             ("test_gameplay_recorder", {}),
+            ("test_goblin_contract", {}),
+            ("test_goblin_policies", {}),
             ("test_worldgen_workbench", {}),
             ("test_material_lab_experiment", {}),
             ("test_transport_profiles", {}),

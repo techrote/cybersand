@@ -19,6 +19,8 @@ on:
       - 'godot/tests/profile_save_fault_child.gd'
       - 'godot/tests/art_storage_fault_child.gd'
       - 'godot/tests/test_art*.gd'
+      - 'godot/tests/test_goblin*.gd'
+      - 'godot/goblin/**'
       - 'godot/tests/test_worldgen_workbench.gd'
       - 'godot/tests/test_material_lab_experiment.gd'
       - 'godot/tests/test_transport_profiles.gd'
