@@ -134,7 +134,7 @@ starts empty under accepted #727; World Save/Open is a separate native contract.
 
 ## Provider/native boundary and Stop
 
-`art_provider.gd` owns one nonblocking Godot HTTPRequest with a 64 KiB
+`art_provider.gd` owns one nonblocking Godot HTTPRequest with a 256 KiB
 download chunk and static payload/response adapters. `art_batch_panel.gd` supplies compact controls and dispatches parsed
 operations to the existing Stage-1 executor. No second simulation or controller
 is introduced. Plain JSON arrays, an operations envelope, a single shape, JSON
@@ -178,6 +178,24 @@ again before publication. There is at most one retained preparation job per
 provider; repeated Send while a cancelled job drains asks the user to retry
 shortly. The main thread reaps completed tasks and owns durable append and
 assistant/native ordering.
+
+Large conversation edits have a separate finite pure-value preparation slot.
+`begin_conversation_edit` snapshots typed turns, a bounded host identity and the
+current credentials; its worker redacts and encodes without accessing the scene,
+native World or filesystem. HTTP `active` remains false. No model request is
+created. New provider dispatch refuses while this slot is preparing or ready.
+
+The deferred completion supplies only the handle, host identity and error. A
+guarded copied preview permits the owner to recognize a no-op. The one-shot
+`commit_conversation_edit` consumes the private prepared value only while the
+same credential set, provider serial, journal identity and owner guards remain
+applicable. Current image/history authority is checked on the main owner.
+After the complete durable append, the owner adopts the redacted turns before
+traffic observers run. Thus an observer's later Stop or new conversation does
+not retroactively undo the already committed edit. No caller-provided sanitized
+flag or replacement encoding grants this authority. Stop, scoped Cancel,
+owner destruction and stale credentials retire unpublished preparation; worker
+completion alone never writes an edited conversation.
 
 Large outgoing bodies also prepare their wire JSON and redacted request encoding
 on that single value-worker slot, starting at a 65,536-character payload weight.

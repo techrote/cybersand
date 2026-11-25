@@ -36,6 +36,12 @@ var response_preparation_jobs := 0
 var peak_response_preparation_jobs := 0
 var request_preparation_jobs := 0
 var peak_request_preparation_jobs := 0
+var _conversation_edit_serial := 0
+var _conversation_edit_owner: Dictionary = {}
+var _conversation_edit_preparation: RefCounted
+var conversation_edit_preparation_jobs := 0
+var peak_conversation_edit_preparation_jobs := 0
+var last_conversation_edit_timing: Dictionary = {}
 var traffic := ""
 var readable := ""
 var log_path := ""
@@ -693,6 +699,187 @@ func historical_image(offset: int, source_path: String = "") -> String:
 	if segment.is_empty(): return ""
 	return _read_historical_image(offset, path, int(segment.limit))
 
+# Large conversation edits use a distinct finite value job, never provider.active.
+# A ready handle authenticates the private prepared value; callers cannot supply
+# a sanitized flag, encoded body or substitute turns at commit.
+func conversation_edit_active() -> bool:
+	return not _conversation_edit_owner.is_empty() or (_conversation_edit_preparation != null and not _conversation_edit_preparation.reaped)
+
+func conversation_edit_state() -> Dictionary:
+	var phase: String = str(_conversation_edit_owner.get("phase","idle"))
+	if phase == "idle" and _conversation_edit_preparation != null and not _conversation_edit_preparation.reaped: phase="stopping"
+	return {"active":conversation_edit_active(),"phase":phase,
+		"handle":int(_conversation_edit_owner.get("handle",_conversation_edit_preparation.request_id if _conversation_edit_preparation != null else -1))}
+
+func _conversation_edit_guard(guard: Callable) -> bool:
+	if not guard.is_valid(): return false
+	var allowed: Variant = guard.call()
+	return allowed is bool and allowed
+
+func _conversation_edit_matches(handle: int, identity: Dictionary, check_guard: bool = true) -> bool:
+	var owned := _conversation_edit_owner
+	if owned.is_empty() or int(owned.handle) != handle or owned.identity != identity \
+			or int(owned.provider_serial) != serial or str(owned.path) != log_path or int(owned.event_index) != _event_index \
+			or _conversation_edit_preparation == null or _conversation_edit_preparation.is_cancelled() \
+			or _conversation_edit_preparation.secrets_snapshot != secrets: return false
+	if check_guard and not _conversation_edit_guard(owned.guard): return false
+	return not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle \
+		and _conversation_edit_preparation != null and not _conversation_edit_preparation.is_cancelled() \
+		and _conversation_edit_preparation.secrets_snapshot == secrets and int(owned.provider_serial) == serial \
+		and str(owned.path) == log_path and int(owned.event_index) == _event_index
+
+func begin_conversation_edit(turns: Variant, last_result: String, identity: Dictionary,
+		completion: Callable, guard: Callable) -> Dictionary:
+	var began := Time.get_ticks_usec()
+	if active or request != null or _preparation_active() or export_active or resume_active:
+		return {"ok":false,"handle":-1,"error":"Finish or Stop current provider work before applying conversation edits."}
+	if identity.is_empty() or not bounded_json_values(identity,{"items":64,"bytes":8192}) \
+			or not completion.is_valid() or not guard.is_valid():
+		return {"ok":false,"handle":-1,"error":"Conversation preparation needs a bounded identity, completion and live owner guard."}
+	if not turns is Array or turns.size() > MAX_CONVERSATION_TURNS or last_result.length() > MAX_CONVERSATION_BYTES:
+		return {"ok":false,"handle":-1,"error":"Conversation edit exceeds its bounded turn or text capacity."}
+	var checked: Variant = checked_conversation(turns)
+	if checked == null: return {"ok":false,"handle":-1,"error":"Malformed conversation edit; nothing written."}
+	var characters := 0
+	for turn: Dictionary in checked:
+		characters += str(turn.content).length()
+		if characters > MAX_CONVERSATION_BYTES:
+			return {"ok":false,"handle":-1,"error":"Conversation edit exceeds the 16 MiB character admission bound."}
+	if not _conversation_edit_guard(guard) or active or request != null or _preparation_active():
+		return {"ok":false,"handle":-1,"error":"Conversation edit context changed before preparation."}
+	_conversation_edit_serial += 1
+	var handle := _conversation_edit_serial
+	var job := ResponsePreparation.new()
+	job.direction="conversation_edit"
+	job.request_id=handle
+	job.conversation_turns=checked
+	job.conversation_last_result=last_result
+	job.secrets_snapshot=secrets.duplicate()
+	job.received_usec=Time.get_ticks_usec()
+	job.timing={"handle":handle,"phase":"preparing","admission_usec":0,"worker_usec":0,
+		"wait_usec":0,"commit_usec":0,"committed":false,"adopted":false}
+	_conversation_edit_preparation=job
+	_conversation_edit_owner={"handle":handle,"identity":identity.duplicate(true),"completion":completion,
+		"guard":guard,"phase":"preparing","provider_serial":serial,"path":log_path,"event_index":_event_index}
+	# Establish an owned journal before the worker runs. Later edited append
+	# must not invoke a first-segment adoption callback between write/adoption.
+	# This bounded metadata never contains the unpublished draft.
+	if log_path.is_empty():
+		var stored := log_event("conversation_edit_preparing",{"handle":handle,"turn_count":checked.size()})
+		if not stored or _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.get("handle",-1)) != handle:
+			_retire_conversation_edit(handle,"Could not admit conversation preparation.",false)
+			return {"ok":false,"handle":-1,"error":"Could not admit conversation preparation; live history is unchanged."}
+		_conversation_edit_owner.path=log_path
+		_conversation_edit_owner.event_index=_event_index
+	if not _conversation_edit_matches(handle,identity):
+		_retire_conversation_edit(handle,"Conversation context changed before preparation.",false)
+		return {"ok":false,"handle":-1,"error":"Conversation context changed before preparation; live history is unchanged."}
+	conversation_edit_preparation_jobs=1
+	peak_conversation_edit_preparation_jobs=maxi(peak_conversation_edit_preparation_jobs,1)
+	job.timing.admission_usec=Time.get_ticks_usec()-began
+	last_conversation_edit_timing=job.timing
+	job.start(self)
+	return {"ok":true,"handle":handle,"error":""}
+
+func _notify_conversation_edit(completion: Callable, handle: int, identity: Dictionary, error: String) -> void:
+	if completion.is_valid(): completion.call(handle,identity,error)
+
+func _retire_conversation_edit(handle: int, reason: String, notify_owner: bool = true) -> void:
+	if _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.handle) != handle: return
+	var owned := _conversation_edit_owner
+	_conversation_edit_owner={}
+	if _conversation_edit_preparation != null and int(_conversation_edit_preparation.request_id) == handle:
+		var job := _conversation_edit_preparation
+		job.cancel()
+		job.timing.phase="cancelled"
+		last_conversation_edit_timing=job.timing
+		if job.reaped or not job.asynchronous: _conversation_edit_preparation=null
+	if notify_owner:
+		var completion: Callable = owned.get("completion",Callable())
+		var safe_reason := redact(reason) if reason.length() <= 512 else "Conversation preparation cancelled."
+		_notify_conversation_edit.call_deferred(completion,handle,owned.identity.duplicate(true),safe_reason)
+
+func cancel_conversation_edit(handle: int, identity: Dictionary, reason: String = "Owner cancelled conversation edit") -> bool:
+	if _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.handle) != handle \
+			or _conversation_edit_owner.identity != identity: return false
+	_retire_conversation_edit(handle,reason)
+	return true
+
+func _conversation_edit_preparation_finished(job: RefCounted) -> void:
+	if _conversation_edit_preparation != job: return
+	conversation_edit_preparation_jobs=0
+	job.timing.worker_usec=int(job.metrics.get("total_usec",0))
+	job.timing.wait_usec=Time.get_ticks_usec()-job.received_usec
+	if _conversation_edit_owner.is_empty() or job.is_cancelled():
+		_conversation_edit_preparation=null
+		return
+	var handle: int = job.request_id
+	var identity: Dictionary = _conversation_edit_owner.identity
+	if not _conversation_edit_matches(handle,identity):
+		_retire_conversation_edit(handle,"Conversation, World or credential context changed; Apply again.")
+		return
+	if not str(job.preparation_error).is_empty():
+		_retire_conversation_edit(handle,str(job.preparation_error))
+		return
+	_conversation_edit_owner.phase="ready"
+	job.timing.phase="ready"
+	last_conversation_edit_timing=job.timing
+	var completion: Callable = _conversation_edit_owner.completion
+	_conversation_edit_owner.completion=Callable()
+	# Even a very short job reports readiness on a later main-thread boundary.
+	_notify_conversation_edit.call_deferred(completion,handle,identity.duplicate(true),"")
+
+func prepared_conversation_edit_turns(handle: int, identity: Dictionary) -> Variant:
+	if not _conversation_edit_matches(handle,identity) or _conversation_edit_owner.get("phase") != "ready": return null
+	return _conversation_edit_preparation.sanitized.turns.duplicate(true)
+
+func _conversation_edit_commit_valid(job: RefCounted, check_guard: bool = false) -> bool:
+	if job == null or job != _conversation_edit_preparation or not job.reaped \
+			or _conversation_edit_owner.get("phase") != "committing": return false
+	var handle: int = job.request_id
+	var identity: Dictionary = _conversation_edit_owner.identity
+	if not _conversation_edit_matches(handle,identity,check_guard): return false
+	if check_guard and not _conversation_edit_guard(_conversation_edit_owner.commit_guard): return false
+	return job == _conversation_edit_preparation and not _conversation_edit_owner.is_empty() \
+		and int(_conversation_edit_owner.handle) == handle and job.secrets_snapshot == secrets and not job.is_cancelled() \
+		and _conversation_edit_matches(handle,identity,false)
+
+func commit_conversation_edit(handle: int, identity: Dictionary, adopt: Callable, guard: Callable) -> Dictionary:
+	var refusal := {"ok":false,"committed":false,"adopted":false,"error":"Conversation preparation is stale or unavailable; Apply again."}
+	if not adopt.is_valid() or not guard.is_valid() or not _conversation_edit_matches(handle,identity) \
+			or _conversation_edit_owner.get("phase") != "ready":
+		if not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle and _conversation_edit_owner.identity == identity:
+			_retire_conversation_edit(handle,"Conversation preparation is stale or unavailable.",false)
+		return refusal
+	var job := _conversation_edit_preparation
+	_conversation_edit_owner.phase="committing"
+	_conversation_edit_owner.adopt=adopt
+	_conversation_edit_owner.commit_guard=guard
+	job.timing.phase="committing"
+	var began := Time.get_ticks_usec()
+	var stored := _record_event("conversation_edited",job.sanitized,null,null,"",PackedByteArray(),job)
+	job.timing.commit_usec=Time.get_ticks_usec()-began
+	job.timing.committed=stored
+	var adopted := bool(job.timing.get("adopted",false))
+	job.timing.phase="committed" if stored and adopted else "refused"
+	if _conversation_edit_serial == handle: last_conversation_edit_timing=job.timing
+	if not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle:
+		_retire_conversation_edit(handle,"Conversation edit was not committed.",false)
+	return {"ok":stored and adopted,"committed":stored,"adopted":adopted,
+		"error":"" if stored and adopted else (log_warning if not log_warning.is_empty() else "Conversation edit was not adopted; complete audit custody is retained.")}
+
+func _adopt_prepared_conversation_edit(job: RefCounted) -> void:
+	# _store_event has completed and set the durable journal identity. This
+	# main-thread callback commits live ownership before any traffic observer.
+	var handle: int = job.request_id
+	if _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.handle) != handle: return
+	var adopt: Callable = _conversation_edit_owner.get("adopt",Callable())
+	var adopted: Variant = adopt.call(job.sanitized.turns.duplicate(true)) if adopt.is_valid() else false
+	job.timing.adopted=adopted is bool and adopted
+	if not bool(job.timing.adopted): log_warning="Edited audit snapshot committed, but its live owner could not adopt it."
+	if not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle: _conversation_edit_owner={}
+	if _conversation_edit_preparation == job: _conversation_edit_preparation=null
+
 func log_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null) -> bool:
 	# These are exact pre-encoded values from the current response job, not a
 	# general journal bypass. Native admission and durable append stay here.
@@ -706,13 +893,13 @@ func _matches_prepared_assistant(value: String) -> bool:
 	return not _prepared_assistant.is_empty() and int(_prepared_assistant.serial) == serial \
 		and _prepared_assistant.secrets == secrets and value == _prepared_assistant.text
 
-func _record_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
+func _record_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray(), prepared_edit: RefCounted = null) -> bool:
 	var began_usec := Time.get_ticks_usec()
 	_audit_sequence += 1
 	var timing := {"schema":1,"sequence":_audit_sequence,"kind":kind,
 		"sanitize_usec":0,"format_usec":0,"write_usec":0,"signal_usec":0,
 		"total_usec":0,"stored":false}
-	var stored := _append_event(kind,data,timing,sanitized_projection,prepared_encoding,prepared_bytes)
+	var stored := _append_event(kind,data,timing,sanitized_projection,prepared_encoding,prepared_bytes,prepared_edit)
 	timing.total_usec = Time.get_ticks_usec() - began_usec
 	timing.stored = stored
 	# Signal observers may append another event. Do not replace the newer receipt.
@@ -720,7 +907,7 @@ func _record_event(kind: String, data: Variant, sanitized_projection: Variant = 
 	if audit_projection is Dictionary: audit_projection.merge(timing,true)
 	return stored
 
-func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_projection: Variant, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
+func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_projection: Variant, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray(), prepared_edit: RefCounted = null) -> bool:
 	last_event_stored = false
 	if kind == "request": last_request_offset = -1
 	if export_active or resume_active:
@@ -745,13 +932,17 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 	# Only the private response-preparation path supplies this encoding, after
 	# its immutable secret snapshot was checked against the owner on this thread.
 	var prepared_response := kind in ["request","response","assistant","message","conversation"] and not prepared_encoding.is_empty()
-	var sanitized: Variant = data if prepared_response else (data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data))
+	var prepared_conversation := prepared_edit != null and kind == "conversation_edited" and _conversation_edit_commit_valid(prepared_edit)
+	if prepared_edit != null and not prepared_conversation:
+		log_warning="Conversation prepared-value authority changed before append."
+		return false
+	var sanitized: Variant = prepared_edit.sanitized if prepared_conversation else (data if prepared_response else (data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data)))
 	timing.sanitize_usec = Time.get_ticks_usec() - sanitize_begin_usec
 	# A response caller can reuse its already-redacted body for a short error
 	# preview. This is not retained globally and never skips sanitization.
 	if sanitized_projection is Dictionary and sanitized is Dictionary:
 		sanitized_projection.merge(sanitized,true)
-	var admission := _admit_conversation_event(kind, sanitized)
+	var admission := _admit_conversation_event(kind, sanitized,prepared_edit if prepared_conversation else null)
 	if not admission.ok:
 		log_warning = admission.error; traffic_changed.emit()
 		return false
@@ -764,7 +955,7 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 	# Encode the (potentially multi-megabyte) payload exactly once. Envelope
 	# metadata is small; the same complete payload reaches the live and disk
 	# forms without serializing it independently three times on the UI thread.
-	var encoded_data := prepared_encoding if prepared_response else JSON.stringify(sanitized)
+	var encoded_data: String = prepared_edit.encoded_data if prepared_conversation else (prepared_encoding if prepared_response else JSON.stringify(sanitized))
 	var live_metadata := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind}
 	if encoded_data.length() > 2000000:
 		# The live tail was already bounded; do not first allocate a full giant
@@ -797,8 +988,11 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 	if readable.length() > 2000000: readable = "[Earlier traffic retained on disk]\n" + readable.right(1500000)
 	if traffic.length() > 2000000: traffic = "[Earlier traffic retained on disk]\n" + traffic.right(1500000)
 	timing.format_usec = Time.get_ticks_usec() - format_begin_usec
+	if prepared_conversation and not _conversation_edit_commit_valid(prepared_edit,true):
+		log_warning="Conversation, World or credentials changed before the actual edited append."
+		return false
 	var write_begin_usec := Time.get_ticks_usec()
-	var stored := _store_event(kind, sanitized, admission, encoded_data, prepared_bytes)
+	var stored := _store_event(kind, sanitized, admission, encoded_data,prepared_edit.encoded_data_bytes if prepared_conversation else prepared_bytes)
 	timing.write_usec = Time.get_ticks_usec() - write_begin_usec
 	if stored:
 		observed = _observe_history_event(kind,sanitized,log_path,_active_history_segments(),_history_receipts,true,true)
@@ -807,6 +1001,7 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 			log_warning = str(observed.error)+" Restart Workbench to validate the committed archive."
 			stored = false
 	last_event_stored = stored
+	if stored and prepared_conversation: _adopt_prepared_conversation_edit(prepared_edit)
 	var signal_begin_usec := Time.get_ticks_usec()
 	traffic_changed.emit()
 	timing.signal_usec = Time.get_ticks_usec() - signal_begin_usec
@@ -835,7 +1030,7 @@ func _model_projection(reported: Variant) -> String:
 	if reported.length() > 512: return "unknown (oversized model metadata; see response)"
 	return redact(reported)
 
-func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
+func _admit_conversation_event(kind: String, data: Variant, prepared_edit: RefCounted = null) -> Dictionary:
 	var result := {"ok":true,"turns":_conversation_turns,"bytes":_conversation_bytes,"error":""}
 	var turns: Variant = []
 	if kind == "conversation":
@@ -851,7 +1046,10 @@ func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
 	else: return result
 	if turns == null: return {"ok":false,"error":"Malformed conversation turn; nothing written."}
 	result.turns += turns.size()
-	for turn: Dictionary in turns: result.bytes += str(turn.content).to_utf8_buffer().size()
+	if prepared_edit != null and kind == "conversation_edited" and _conversation_edit_commit_valid(prepared_edit):
+		result.bytes=int(prepared_edit.conversation_bytes)
+	else:
+		for turn: Dictionary in turns: result.bytes += str(turn.content).to_utf8_buffer().size()
 	if int(result.turns) > MAX_CONVERSATION_TURNS or int(result.bytes) > MAX_CONVERSATION_BYTES:
 		return {"ok":false,"error":"Conversation exceeds the 16384-turn / 16 MiB replay limit; nothing written."}
 	var segments := _validated_segments.duplicate(true)
@@ -1013,6 +1211,7 @@ func _exit_tree() -> void:
 	# The panel normally stops first, but provider ownership must also be safe
 	# when removed directly or when scene teardown has no next process tick.
 	if active or request != null: cancel("Workbench closed")
+	if not _conversation_edit_owner.is_empty(): _retire_conversation_edit(int(_conversation_edit_owner.handle),"Workbench closed",false)
 	cancel_export()
 	cancel_resume()
 
@@ -1023,10 +1222,11 @@ func request_preparation_active() -> bool:
 	return _preparation != null and _preparation.direction == "request" and not _preparation.reaped
 
 func _preparation_active() -> bool:
-	return _preparation != null and not _preparation.reaped
+	return (_preparation != null and not _preparation.reaped) or conversation_edit_active()
 
 func cancel(reason: String = "Human Stop") -> void:
 	var begin_usec := Time.get_ticks_usec()
+	if not _conversation_edit_owner.is_empty(): _retire_conversation_edit(int(_conversation_edit_owner.handle),reason)
 	var was_active := active or request != null
 	var timing := last_request_timing
 	var retired := _response_owner
@@ -1217,6 +1417,9 @@ func _request_completed(result: int, code: int, headers: PackedStringArray, byte
 	_publish_response(prepared,callback_begin_usec)
 
 func _preparation_finished(prepared: RefCounted) -> void:
+	if prepared.direction == "conversation_edit":
+		_conversation_edit_preparation_finished(prepared)
+		return
 	if _preparation != prepared: return
 	_preparation = null
 	if prepared.direction == "request": request_preparation_jobs = 0
