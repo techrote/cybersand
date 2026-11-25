@@ -22,6 +22,7 @@ import uuid
 import zipfile
 
 import palette_qualification_contract as c
+import materialize_lfs
 
 ROOT = c.ROOT
 SCOPES = ('.gitattributes', 'build_windows_msvc.bat', 'tools/launch_desktop.ps1',
@@ -36,6 +37,7 @@ REQUIRED_APPARATUS = {
     'tools/play/palette_checkout_custody.py', 'tools/play/palette_qualification_contract.py',
     'tools/play/palette_windows_compiler.py', 'tools/play/run_palette_shader_qualification.py',
     'tools/ci/execution_policy.py', 'tools/ci/play_execution_contract.py',
+    'tools/ci/materialize_lfs.py', 'tools/ci/godot_timeout_diagnostics.py',
     'godot/tests/palette_qualification_context.gd', 'godot/tests/support/ci_execution_policy.gd',
     'godot/tests/support/ci_execution_policy.json',
 }
@@ -603,7 +605,6 @@ def prepare_dependencies(output: Path, source: str, archive: Path | None, *, rea
         seconds = c.policy.watchdog_seconds('dependency_prepare_seconds')
         if not reader_only:
             c.require(archive is not None and not archive.exists(), 'Refusing missing/reused engine archive output')
-            setup('lfs-setup', ['git', 'lfs', 'install', '--local'])
             if sys.platform == 'linux':
                 for program in ('xvfb-run', 'Xvfb', 'xauth'):
                     c.require(shutil.which(program) is not None, 'Missing hosted graphical prerequisite: ' + program)
@@ -615,7 +616,17 @@ def prepare_dependencies(output: Path, source: str, archive: Path | None, *, rea
             else:
                 c.require(sys.platform == 'win32', 'Unregistered hosted shader OS')
                 url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
-            command('lfs-materialization', ['git', 'lfs', 'pull', '--include=' + ','.join(sorted(runtime_paths(sys.platform))), '--exclude='], seconds)
+            started = time.monotonic()
+            row = {'label': 'lfs-materialization', 'allowance_seconds': seconds,
+                   'status': 'failed', 'receipt': 'lfs/receipt.json'}
+            result['commands'].append(row)
+            try:
+                materialize_lfs.materialize(ROOT, sorted(runtime_paths(sys.platform)), source,
+                                            output / 'lfs', seconds)
+                row['status'] = 'passed'
+            finally:
+                row['seconds'] = time.monotonic() - started
+                c.write(output / 'preparation.json', result)
             command('official-engine-download', ['curl', '--fail', '--location', '--connect-timeout', '60',
                     '--max-time', str(seconds), '--output', str(archive), url],
                     seconds + c.policy.watchdog_seconds('terminate_grace_seconds'))

@@ -94,6 +94,22 @@ Rapier is fetched through LFS in the shard. The complete setup remains within
 the existing 70-minute reserve. Use **rerun all jobs** when retrying this
 same-run/attempt artifact chain, so producer and consumers share an attempt.
 
+GDExtension and Palette dependency preparation use
+[`materialize_lfs.py`](../../tools/ci/materialize_lfs.py) for exact committed LFS
+objects. A single monotonic allowance covers source/pointer admission, setup,
+all download attempts, backoff, byte verification and bounded owned-process
+cleanup. The existing Windows shard step remains 600 seconds; Linux and Palette
+use the existing 1,200-second dependency allowance. Ten seconds are reserved for
+cleanup inside that allowance. No test or native execution timeout changes.
+
+Only the observed Git LFS batch service-timeout response may be retried, at most
+three times with two- and four-second backoff. Authentication, permanent and
+unknown errors, exhausted allowance, source movement and wrong materialized
+bytes remain failures. Each original attempt retains its full output, exit,
+elapsed time and log hash beside a source/pointer/actual-byte receipt. Existing
+native, Rapier and downstream qualification checks remain mandatory; successful
+acquisition alone is not runtime qualification.
+
 The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
 `tools/package_explore001_candidate.py` from committed project/profile bytes,
 verified LFS dependencies, official pinned Godot, and the source-built artifact.
