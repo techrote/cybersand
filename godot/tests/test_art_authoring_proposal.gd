@@ -158,6 +158,9 @@ func run() -> void:
 	refuses(malformed,context,rules,"nested procedural loops refuse")
 	malformed = packet([{"shape":"repeat","count":17,"step":[1,0],"item":rectangle()}])
 	refuses(malformed,context,rules,"unbounded repetition refuses")
+	var many_segments: Array = []
+	for index: int in 66: many_segments.append([index%64,8+index/64])
+	refuses(packet([{"shape":"polyline","points":many_segments,"material":58}]),context,rules,"polyline expansion is bounded before native raster preparation")
 	var many_ops: Array = []
 	for index: int in 65: many_ops.append(rectangle())
 	refuses(packet(many_ops),context,rules,"expanded operation budget is enforced")

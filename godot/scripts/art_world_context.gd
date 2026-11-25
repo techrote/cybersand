@@ -167,6 +167,8 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		model.erase("native_samples")
 	model.knowledge = Knowledge.select(str(policy.get("objective",""))+" "+str(policy.get("style","")),bool(policy.get("include_knowledge",true)))
 	model.tool_state = {"tool":str(policy.get("tool","Unspecified by host")).left(64)}
+	if policy.get("tool_material") is int and int(policy.tool_material) >= 0 and int(policy.tool_material) <= 255:
+		model.tool_state.material_id = int(policy.tool_material)
 	var body := JSON.stringify(model)
 	var bytes := body.to_utf8_buffer().size()
 	var omitted: Array = ["Full desktop and unrelated windows","Provider credentials and private files",

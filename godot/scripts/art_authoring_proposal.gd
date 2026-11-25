@@ -201,9 +201,14 @@ static func compile(raw: Variant, context: Dictionary, policy: Dictionary, previ
 		if not raw_operations is Array or raw_operations.is_empty() or raw_operations.size() > MAX_OPERATIONS:
 			return failure("Each stage needs a bounded nonempty operation list.")
 		var operations: Array = []
+		var expanded_native_count := operation_count
 		for raw_op: Variant in raw_operations:
 			var expanded := _expand(raw_op)
 			if not expanded.ok: return expanded
+			for expanded_op: Dictionary in expanded.operations:
+				expanded_native_count += maxi(0,expanded_op.points.size()-1) if expanded_op.shape == "polyline" else 1
+				if expanded_native_count > MAX_OPERATIONS:
+					return failure("Expanded proposal exceeds 64 native primitive operations before raster preparation.")
 			operations.append_array(expanded.operations)
 			if operations.size()+operation_count > MAX_OPERATIONS:
 				return failure("Expanded proposal exceeds 64 primitive operations.")
